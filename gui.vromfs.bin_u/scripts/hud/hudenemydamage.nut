@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_show_destroyed_parts, get_option_xr
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { format } = require("string")
 let { getRgbStrFromHsv } = require("colorCorrector")
@@ -101,9 +102,11 @@ let { getRgbStrFromHsv } = require("colorCorrector")
     this.guiScene = this.scene.getScene()
     this.listObj = this.scene.findObject("hud_enemy_damage")
 
-    g_hud_event_manager.subscribe("EnemyPartDamage", function (damageData) {
-        this.onEnemyPartDamage(damageData)
-      }, this)
+    eventbus_subscribe("EnemyPartsDamage", function(allDamageData) {
+        foreach (damageData in allDamageData) {
+          ::hudEnemyDamage.onEnemyPartDamage(damageData)
+        }
+      })
     g_hud_event_manager.subscribe("HitcamTargetKilled", function (hitcamData) {
         this.onHitcamTargetKilled(hitcamData)
       }, this)

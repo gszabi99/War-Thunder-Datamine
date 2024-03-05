@@ -171,6 +171,17 @@
         "hp": 60.5
       }
     },
+    "steel": {
+      "gear_c_dm": {
+        "hp": 39.5
+      },
+      "gear_l_dm": {
+        "hp": 41.9
+      },
+      "gear_r_dm": {
+        "hp": 41.9
+      }
+    },
     "steel_cooling_sys": {
       "oil1_dm": {
         "hp": 11.5
@@ -774,6 +785,78 @@
             "wingcontrol_r_dm": 0.4
           }
         ]
+      },
+      {
+        "name": "gear_c_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "gear_l_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "gear_r_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
       },
       {
         "name": "oil1_dm",
@@ -1814,7 +1897,7 @@
     "Range": 1380.0
   },
   "Sound": {
-    "Engine": "engine05_rb_168_sprey_WEP",
+    "Engine": "engine05_snecma_turbomecha",
     "gun": "gun_default"
   },
   "cockpit": {
@@ -2157,7 +2240,12 @@
       ]
     }
   },
-  "commonWeapons": {},
+  "commonWeapons": {
+    "Weapon": {
+      "slot": 0,
+      "preset": "ltc_common"
+    }
+  },
   "weapon_presets": {
     "preset": [
       {
@@ -2215,6 +2303,31 @@
       ]
     },
     "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "ltc_common",
+          "Weapon": [
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": true
+            }
+          ]
+        }
+      },
       {
         "index": 1,
         "tier": 8,
@@ -2435,7 +2548,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_500lb_mk_82.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_500lb_mk_82.blk",
               "emitter": "alpha_jet_pylon_tsc1",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2452,7 +2565,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_500lb_mk_82_snakeye.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_500lb_mk_82_snakeye.blk",
               "emitter": "alpha_jet_pylon_tsc1",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2469,7 +2582,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_250_samp_type_25.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_250_samp_type_25.blk",
               "emitter": "alpha_jet_pylon_tsc1",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2486,7 +2599,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_250_samp_type_25_200.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_250_samp_type_25_200.blk",
               "emitter": "alpha_jet_pylon_tsc1",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2519,6 +2632,21 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_002",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_large_group",
+            "name": "lau_51_x2",
+            "reqModification": "uk_lau_51",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/gr_tcs_lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "alpha_jet_pylon_tsc1",
               "external": true,
               "machLimit": 1.01
             }
@@ -2645,7 +2773,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_500lb_mk_82.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_500lb_mk_82.blk",
               "emitter": "alpha_jet_pylon_tsc2",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2662,7 +2790,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_500lb_mk_82_snakeye.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_500lb_mk_82_snakeye.blk",
               "emitter": "alpha_jet_pylon_tsc2",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2679,7 +2807,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_250_samp_type_25.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_250_samp_type_25.blk",
               "emitter": "alpha_jet_pylon_tsc2",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2696,7 +2824,7 @@
               "trigger": "bombs",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/fr_tcs_250_samp_type_25_200.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_250_samp_type_25_200.blk",
               "emitter": "alpha_jet_pylon_tsc2",
               "mass": 0.01,
               "dragCx": 0.01
@@ -2729,6 +2857,21 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_003",
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_large_group",
+            "name": "lau_51_x2",
+            "reqModification": "uk_lau_51",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/gr_tcs_lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "emitter": "alpha_jet_pylon_tsc2",
               "external": true,
               "machLimit": 1.01
             }
@@ -3119,13 +3262,27 @@
     "f_4c_CdMin_Fuse": {
       "tier": 1
     },
-    "structure_str": {
-      "tier": 2
-    },
     "f_4c_g_suit": {
+      "prevModification": "f_4c_CdMin_Fuse",
       "tier": 3
     },
+    "countermeasures_launcher_chaff_only": {},
+    "countermeasures_launcher_flare_only": {},
+    "countermeasures_launcher_chaff_priority": {},
+    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_belt_pack": {
+      "modClass": "armor",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "countermeasures",
+      "tier": 1
+    },
+    "structure_str": {
+      "prevModification": "countermeasures_belt_pack",
+      "tier": 2
+    },
     "new_cover": {
+      "prevModification": "structure_str",
       "tier": 4
     },
     "bk_27_air_targets": {},
@@ -3184,16 +3341,16 @@
     "minSpeed": 0.0,
     "hasSafeExit": true,
     "wreck": [
-      "blister1",
-      "blister2"
+      "blister7",
+      "blister8"
     ],
     "seat": [
       "seat_01",
       "seat_02"
     ],
     "fxEmitter": [
-      "blister1",
-      "blister2"
+      "blister7",
+      "blister8"
     ],
     "fxType": "catapult_expl_ejection"
   },

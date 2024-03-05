@@ -41,6 +41,11 @@
   "autopilotImpl": "FBW",
   "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
+    "alum_alloy18": {
+      "armor6_dm": {
+        "hp": 38.0
+      }
+    },
     "armor10": {
       "cannon1_dm": {
         "hp": 15.0
@@ -70,9 +75,12 @@
         "hp": 104.1
       }
     },
-    "armor18": {
-      "armor6_dm": {
-        "hp": 47.0
+    "armor5": {
+      "armor12_dm": {
+        "hp": 35.0
+      },
+      "armor9_dm": {
+        "hp": 35.0
       }
     },
     "armor6": {
@@ -223,9 +231,6 @@
       "cover1_dm": {
         "hp": 19.5
       },
-      "cover2_dm": {
-        "hp": 19.5
-      },
       "cover3_dm": {
         "hp": 19.5
       },
@@ -286,12 +291,12 @@
       },
       "tank4_dm": {
         "hp": 100.5
+      },
+      "tank5_dm": {
+        "hp": 100.5
       }
     },
     "steel_tank_s": {
-      "tank5_dm": {
-        "hp": 80.5
-      },
       "tank6_dm": {
         "hp": 80.5
       },
@@ -308,7 +313,16 @@
       }
     },
     "titan17": {
+      "armor10_dm": {
+        "hp": 50.0
+      },
+      "armor11_dm": {
+        "hp": 50.0
+      },
       "armor4_dm": {
+        "hp": 50.0
+      },
+      "armor8_dm": {
         "hp": 50.0
       }
     },
@@ -427,6 +441,15 @@
         "name": "airbrake_r_dm"
       },
       {
+        "name": "armor10_dm"
+      },
+      {
+        "name": "armor11_dm"
+      },
+      {
+        "name": "armor12_dm"
+      },
+      {
         "name": "armor1_dm"
       },
       {
@@ -448,6 +471,12 @@
         "name": "armor7_dm"
       },
       {
+        "name": "armor8_dm"
+      },
+      {
+        "name": "armor9_dm"
+      },
+      {
         "name": "cannon1_dm"
       },
       {
@@ -464,9 +493,6 @@
       },
       {
         "name": "cover1_dm"
-      },
-      {
-        "name": "cover2_dm"
       },
       {
         "name": "cover3_dm"
@@ -1459,41 +1485,36 @@
         "name": "tank5_dm",
         "onHit": [
           {
+            "damage": 10.0,
+            "leak": 0.1
+          },
+          {
+            "damage": 40.0,
             "fire": 0.05,
-            "leak": 0.7
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.3,
-            "leak": 0.8
-          },
-          {
-            "damage": 50.0,
-            "fire": 0.9,
-            "leak": 0.9
+            "leak": 0.2
           },
           {
             "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
+            "expl": 0.05,
+            "fire": 0.5,
+            "leak": 0.5
           }
         ],
         "onKill": [
           {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.005,
+            "leak": 0.3,
+            "nothing": 1.0
           },
           {
             "damage": 50.0,
-            "fire": 25.0,
-            "leak": 35.0
+            "fire": 0.2,
+            "leak": 1.0
           },
           {
             "damage": 80.0,
-            "fire": 50.0,
-            "leak": 30.0
+            "fire": 0.3,
+            "leak": 1.0
           }
         ]
       },
@@ -3333,7 +3354,7 @@
       "turretNo": 0,
       "nvIndex": 1
     },
-    "TV": {
+    "TV1": {
       "pos": [
         3.9,
         -0.5,
@@ -3348,7 +3369,26 @@
         38.0
       ],
       "opticType": "tv",
-      "turretNo": 1
+      "turretNo": 1,
+      "name": "KH-29T"
+    },
+    "TV2": {
+      "pos": [
+        3.9,
+        -0.5,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -15.0,
+        15.0,
+        -15.0,
+        15.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "KH-38T"
     }
   },
   "commonWeapons": {
@@ -4670,28 +4710,6 @@
               "spread": 1.5,
               "traceOffset": 1,
               "external": true
-            }
-          },
-          {
-            "iconType": "ptb",
-            "name": "ptb_left1",
-            "showInWeaponMenu": true,
-            "ShowNodes": {
-              "node": "pylon_3"
-            },
-            "ShowDmParts": {
-              "node": "tank5_dm"
-            },
-            "Weapon": {
-              "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/su_800l_su_25_left_wing_1.blk",
-              "emitter": "su_800l_su_17_22_25_drop_tank_001",
-              "bullets": 1,
-              "external": true
-            },
-            "DependentWeaponPreset": {
-              "slot": 7,
-              "preset": "ptb_right1"
             }
           }
         ]

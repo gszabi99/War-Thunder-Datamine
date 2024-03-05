@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
-let dasSensorIndicators = load_das("%rGui/hud/sensorViewIndicator.das")
+/*let dasSensorIndicators = load_das("%rGui/hud/sensorViewIndicator.das")
 
-let sensorViewIndicators = {
+let sensorViewIndicatorsDas = {
   size = flex()
   rendObj = ROBJ_DAS_CANVAS
   script = dasSensorIndicators
@@ -11,6 +11,12 @@ let sensorViewIndicators = {
   enemyColor = Color(255, 0, 0, 255)
   textColor = Color(255, 255, 255, 255)
   deadColor = Color(128, 128, 128, 255)
+  fontSize = 14
+}*/
+
+let sensorViewIndicators = {
+  size = flex()
+  rendObj = ROBJ_SENSOR_VIEW_INDICATORS
   fontSize = 14
 }
 

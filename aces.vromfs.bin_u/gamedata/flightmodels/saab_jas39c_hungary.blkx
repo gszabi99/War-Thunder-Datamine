@@ -2052,11 +2052,6 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
           "cameraFromShell": true,
           "page": [
             {
@@ -2069,7 +2064,7 @@
             },
             {
               "type": "radar",
-              "scale": 0.75,
+              "scale": 0.7,
               "hideRadarBackground": true
             },
             {
@@ -2088,10 +2083,6 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
-              "type": "rwr",
-              "scale": 1.0
-            },
-            {
               "type": "thermal",
               "turretIdx": 0
             },
@@ -2100,8 +2091,12 @@
               "turretIdx": 0
             },
             {
+              "type": "rwr",
+              "scale": 1.0
+            },
+            {
               "type": "radar",
-              "scale": 0.75,
+              "scale": 0.7,
               "hideRadarBackground": true
             }
           ]
@@ -2113,9 +2108,20 @@
             0.5,
             1.0
           ],
-          "page": {
-            "type": "map"
-          }
+          "page": [
+            {
+              "type": "map"
+            },
+            {
+              "type": "radar",
+              "scale": 0.7,
+              "hideRadarBackground": true
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2209,43 +2215,6 @@
         "engine3",
         "engine4"
       ]
-    }
-  },
-  "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        2.6,
-        -0.15,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
-      ],
-      "opticType": "tv",
-      "turretNo": 0
-    },
-    "Target": {
-      "pos": [
-        1.0,
-        -0.2,
-        0.0
-      ],
-      "head": "optic2_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -90.0,
-        90.0,
-        -155.0,
-        35.0
-      ],
-      "opticType": "targeting",
-      "turretNo": 0,
-      "nvIndex": 1
     }
   },
   "sensors": {
@@ -2503,14 +2472,54 @@
         500,
         300
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.05,
+      "index": 1
     },
     "sightTPodThermal": {
       "resolution": [
         800,
         600
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.05,
+      "index": 2
+    }
+  },
+  "gunnerOpticFps": {
+    "TV": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1
+    },
+    "Target": {
+      "pos": [
+        1.0,
+        -0.2,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -90.0,
+        90.0,
+        -155.0,
+        35.0
+      ],
+      "opticType": "targeting",
+      "turretNo": 0,
+      "nvIndex": 2
     }
   },
   "weapon_presets": {
@@ -4153,14 +4162,16 @@
               500,
               300
             ],
-            "noiseFactor": 0.05
+            "noiseFactor": 0.05,
+            "index": 1
           },
           "sightTPodThermal": {
             "resolution": [
               800,
               600
             ],
-            "noiseFactor": 0.05
+            "noiseFactor": 0.05,
+            "index": 2
           }
         }
       }

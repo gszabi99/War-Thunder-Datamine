@@ -563,7 +563,6 @@ function hitCameraInit(nest) {
 
   minAliveCrewCount = getMinAliveCrewCount()
 
-  g_hud_event_manager.subscribe("EnemyPartDamage", onEnemyPartDamage, this)
   g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, this)
   g_hud_event_manager.subscribe("HitCameraImportanEvents", onHitCameraImportantEvents, this)
 
@@ -575,6 +574,12 @@ addListenersWithoutEnv({
   function LoadingStateChange(_) {
     if (!isInFlight())
       reset()
+  }
+})
+
+eventbus_subscribe("EnemyPartsDamage", function(allDamageData) {
+  foreach (data in allDamageData) {
+    onEnemyPartDamage(data)
   }
 })
 

@@ -1652,6 +1652,50 @@
       "distSmooth": 0.9
     }
   },
+  "engine05_snecma_turbomecha_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_jet_ai_start",
+      "eventStop": "engine_jet_ai_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_snecma_turbomecha_ai",
+      "eventSurround": "",
+      "eventLod1": "engine05_snecma_turbomecha_ai",
+      "rpmSmooth": 0.014,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_cockpit_l",
+      "event_cockpit_r": "engine05_cockpit_r",
+      "leftPos": [
+        0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.02,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
   "engine05_02_nene_N1_ai": {
     "effects": {
       "path": "aircraft/engines",
@@ -7039,6 +7083,56 @@
         -5.0
       ],
       "rpmSmooth": 0.001,
+      "loadScale": 1.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9
+    }
+  },
+  "engine05_snecma_turbomecha": {
+    "startTimeout": 15.0,
+    "stopTimeout": 0.5,
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine05_snecma_turbomecha_start",
+      "eventStop": "engine05_snecma_turbomecha_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine05_snecma_turbomecha",
+      "eventSurround": "",
+      "eventLod1": "engine05_snecma_turbomecha",
+      "rpmSmooth": 0.0015,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    },
+    "cockpit": {
+      "path": "aircraft/engines",
+      "event_cockpit_l": "engine05_snecma_turbomecha_cockpit_l",
+      "event_cockpit_r": "engine05_snecma_turbomecha_cockpit_r",
+      "event_start_cockpit_l": "engine05_snecma_turbomecha_start_cockpit_l",
+      "event_start_cockpit_r": "engine05_snecma_turbomecha_start_cockpit_r",
+      "event_stop_cockpit_l": "engine05_snecma_turbomecha_stop_cockpit_l",
+      "event_stop_cockpit_r": "engine05_snecma_turbomecha_stop_cockpit_r",
+      "leftPos": [
+        -0.5,
+        1.0,
+        5.0
+      ],
+      "rightPos": [
+        -0.5,
+        1.0,
+        -5.0
+      ],
+      "rpmSmooth": 0.0015,
       "loadScale": 1.0,
       "loadSmooth": 0.05,
       "distSmooth": 0.9
@@ -21483,6 +21577,11 @@
           "playerRole": "commander",
           "player": -1
         },
+        "enemyPlaneDestroyed": {
+          "event": "07_environment/voice_message_officer_air_target_destroyed",
+          "playerRole": "commander",
+          "player": -1
+        },
         "targetShipHit": {
           "event": "07_environment/voice_message_officer_hit",
           "playerRole": "commander",
@@ -21702,6 +21801,12 @@
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 30.0
+        },
+        "cellarHit": {
+          "event": "07_environment/voice_message_officer_cellar_hit",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 5.0
         },
         "underShoot": {
           "event": "07_environment/voice_message_officer_shot_short",

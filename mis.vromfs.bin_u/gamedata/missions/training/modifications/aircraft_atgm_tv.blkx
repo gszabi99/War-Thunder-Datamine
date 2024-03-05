@@ -777,6 +777,63 @@
       },
       "else_actions": {}
     },
+    "time_out_timer_rocket": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 7.0
+        },
+        "playerControls": {
+          "setStatus": "disable",
+          "control": [
+            "ID_AGM",
+            "ID_FIRE_SECONDARY"
+          ]
+        },
+        "triggerDisable": {
+          "target": [
+            "target_start_control",
+            "view_on_target",
+            "check_spi"
+          ]
+        },
+        "__unitSetProperties": {
+          "object": "player",
+          "cannotShoot": true
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "object": "tank_target",
+          "element": ""
+        },
+        "varSetInt": {
+          "value": 15,
+          "var": "mission_end_time"
+        },
+        "triggerEnable": {
+          "target": [
+            "mission_end_timer",
+            "mission_restart"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
     "aim_activate": {
       "is_enabled": false,
       "comments": "",
@@ -959,10 +1016,68 @@
           "realtimeTriggers": true
         },
         "triggerEnable": {
-          "target": "activate_rocket"
+          "target": [
+            "activate_rocket",
+            "check_difficulty_msg"
+          ]
         }
       },
       "else_actions": {}
+    },
+    "check_difficulty_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/activation_tv_rocket",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "@fire_shortcut_id"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/activation_rocket",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": [
+            "@fire_shortcut_id",
+            "ID_AGM_LOCK"
+          ]
+        }
+      }
     },
     "activate_rocket": {
       "is_enabled": false,
@@ -979,38 +1094,6 @@
       },
       "conditions": {},
       "actions": {
-        "playHint": [
-          {
-            "hintType": "standard",
-            "name": "",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
-          {
-            "hintType": "standard",
-            "name": "hints/aircraft_modifications/activation_rocket",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": [
-              "@fire_shortcut_id",
-              "ID_AGM_LOCK"
-            ]
-          }
-        ],
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
@@ -1077,12 +1160,45 @@
           "element": ""
         },
         "triggerEnable": {
-          "target": "rocket_start"
+          "target": "check_difficulty"
         }
       },
       "else_actions": {}
     },
-    "time_out_timer_rocket": {
+    "check_difficulty": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "activate_homing"
+        }
+      },
+      "else_actions": {
+        "triggerActivate": {
+          "target": "rocket_start",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "activate_homing": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1098,43 +1214,43 @@
       "conditions": {},
       "actions": {
         "wait": {
-          "time": 7.0
+          "time": 1.0
         },
-        "playerControls": {
-          "setStatus": "disable",
-          "control": [
-            "ID_AGM",
-            "ID_FIRE_SECONDARY"
-          ]
-        },
-        "triggerDisable": {
-          "target": [
-            "target_start_control",
-            "view_on_target",
-            "check_spi"
-          ]
-        },
-        "__unitSetProperties": {
-          "object": "player",
-          "cannotShoot": true
-        },
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/aircraft_modifications/activation_rocket",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_AGM_LOCK"
+          }
+        ],
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
         },
-        "hudElementSelectionShade": {
-          "object": "tank_target",
-          "element": ""
-        },
-        "varSetInt": {
-          "value": 15,
-          "var": "mission_end_time"
-        },
         "triggerEnable": {
-          "target": [
-            "mission_end_timer",
-            "mission_restart"
-          ]
+          "target": "rocket_start"
         }
       },
       "else_actions": {}
@@ -1152,8 +1268,25 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_AGM_LOCK"
+        }
+      },
       "actions": {
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 1.0
+        },
         "playHint": [
           {
             "hintType": "standard",

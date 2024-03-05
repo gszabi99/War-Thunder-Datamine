@@ -180,7 +180,8 @@
         "armorThickness": 10.0
       },
       "turret_01_front_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "armorClass": "RHAHH_tank"
       },
       "turret_01_top_dm": {
         "armorThickness": 18.0
@@ -232,6 +233,10 @@
       },
       "ex_armor_07_dm": {
         "armorThickness": 15.0
+      },
+      "body_shield_dm": {
+        "armorThickness": 8.0,
+        "armorClass": "RHAHH_tank"
       }
     },
     "additional_armor": {
@@ -241,10 +246,6 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "body_shield_dm": {
-        "armorThickness": 20.0,
-        "genericArmorQuality": 1.05
-      },
       "turret_03_front_dm": {
         "armorThickness": 38.0
       },
@@ -1882,7 +1883,7 @@
           "lim1": [
             -180.0,
             -145.0,
-            -2.0,
+            -5.0,
             60.0
           ],
           "lim2": [
@@ -1906,7 +1907,7 @@
           "lim5": [
             145.0,
             180.0,
-            -2.0,
+            -5.0,
             60.0
           ]
         },
@@ -2287,9 +2288,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 23000.0,
+      "Empty": 21900.0,
       "Fuel": 1000.0,
-      "TakeOff": 24000.0,
+      "TakeOff": 22900.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -2336,11 +2337,11 @@
     },
     "mechanics": {
       "steerType": "clutch_braking",
-      "maxBrakeForce": 150000.0,
+      "maxBrakeForce": 180000.0,
       "driveGearRadius": 0.35,
       "mainGearRatio": 5.8,
       "sideGearRatio": 1.0,
-      "neutralGearRatio": 9.97,
+      "neutralGearRatio": 5.69,
       "gearRatios": {
         "ratio": [
           -2.65,
@@ -3458,10 +3459,10 @@
     }
   },
   "cockpit": {
-    "zoomOutFov": 31.5,
-    "zoomInFov": 28.5,
-    "sightFov": 13.75,
-    "sightName": "tsh_15",
+    "zoomOutFov": 12.3,
+    "zoomInFov": 6.7,
+    "sightFov": 6.0,
+    "sightName": "ptl_02_sight",
     "headPos": [
       0.0,
       4.0,
@@ -3745,12 +3746,19 @@
             ],
             "noiseFactor": 0.04
           },
-          "commanderViewIr": {
+          "commanderViewThermal": {
             "resolution": [
-              1600,
-              1200
+              800,
+              600
             ],
-            "lightMult": 9.0,
+            "noiseFactor": 0.04
+          },
+          "driverIr": {
+            "resolution": [
+              1200,
+              800
+            ],
+            "lightMult": 7.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2
           },
@@ -3760,15 +3768,6 @@
               1200
             ],
             "lightMult": 9.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2
           }
@@ -3924,7 +3923,7 @@
                 "lim1": [
                   -180.0,
                   -145.0,
-                  -2.0,
+                  -5.0,
                   60.0
                 ],
                 "lim2": [
@@ -3948,7 +3947,7 @@
                 "lim5": [
                   145.0,
                   180.0,
-                  -2.0,
+                  -5.0,
                   60.0
                 ]
               },
@@ -4193,7 +4192,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",

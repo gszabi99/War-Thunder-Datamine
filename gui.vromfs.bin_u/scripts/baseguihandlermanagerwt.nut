@@ -271,6 +271,7 @@ handlersManager.__update({
       let hasValueChangedInDb = updateExtWatched({
         fontGenId = font.fontGenId
         fontSizePx = font.getFontSizePx(screen_width(), screen_height())
+        fontSizeMultiplier = font.sizeMultiplier
       })
       if (hasValueChangedInDb)
         deferOnce(reloadDarg)

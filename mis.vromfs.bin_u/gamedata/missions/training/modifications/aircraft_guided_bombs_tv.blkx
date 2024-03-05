@@ -962,9 +962,55 @@
           "setStatus": "enable",
           "control": [
             "ID_GUIDED_BOMBS",
-            "ID_FIRE_SECONDARY"
+            "ID_FIRE_SECONDARY",
+            "ID_GUIDED_BOMBS_LOCK"
           ]
         },
+        "triggerEnable": {
+          "target": [
+            "activate_bomb",
+            "check_difficulty_msg"
+          ]
+        }
+      },
+      "else_actions": {}
+    },
+    "check_difficulty_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/activation_bomb",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "@fire_shortcut_id"
+        }
+      },
+      "else_actions": {
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/activation_lock",
@@ -977,13 +1023,12 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "item": "@fire_shortcut_id"
-        },
-        "triggerEnable": {
-          "target": "activate_bomb"
+          "item": [
+            "@fire_shortcut_id",
+            "ID_GUIDED_BOMBS_LOCK"
+          ]
         }
-      },
-      "else_actions": {}
+      }
     },
     "activate_bomb": {
       "is_enabled": false,
@@ -1005,25 +1050,22 @@
           },
           {
             "control": "ID_FIRE_SECONDARY"
+          },
+          {
+            "control": "ID_GUIDED_BOMBS_LOCK"
           }
         ]
       },
       "actions": {
-        "missionSetTimeSpeed": [
-          {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          },
-          {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        ],
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
         "wait": {
           "time": 1.0
         },
         "triggerEnable": {
-          "target": "change_view_info"
+          "target": "check_difficulty"
         }
       },
       "else_actions": {}
@@ -1199,6 +1241,123 @@
           "object_var_value": 0
         },
         "triggerEnable": {
+          "target": "check_aim_on_target"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_aim_on_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenCursorIn": {
+          "cursor": "crosshair",
+          "element": "curTarget",
+          "targetName": "target_tank01"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "check_difficulty"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_difficulty": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "activate_homing"
+        }
+      },
+      "else_actions": {
+        "triggerActivate": {
+          "target": "change_view_info",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
+    },
+    "activate_homing": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "wait": {
+          "time": 1.5
+        },
+        "playHint": [
+          {
+            "hintType": "standard",
+            "name": "",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "standard",
+            "name": "hints/aircraft_modifications/activation_lock",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_GUIDED_BOMBS_LOCK"
+          }
+        ],
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "triggerEnable": {
           "target": "change_view_info"
         }
       },
@@ -1218,10 +1377,8 @@
         }
       },
       "conditions": {
-        "playerWhenCursorIn": {
-          "cursor": "crosshair",
-          "element": "curTarget",
-          "targetName": "target_tank01"
+        "playerShortcutPressed": {
+          "control": "ID_GUIDED_BOMBS_LOCK"
         }
       },
       "actions": {

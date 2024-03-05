@@ -42,6 +42,12 @@
     "armor10": {
       "cannon1_dm": {
         "hp": 15.0
+      },
+      "cannon2_dm": {
+        "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
       }
     },
     "armor6": {
@@ -127,6 +133,9 @@
       },
       "cover1_dm": {
         "hp": 19.5
+      },
+      "cover2_dm": {
+        "hp": 19.5
       }
     },
     "dural40": {
@@ -166,6 +175,17 @@
       },
       "wingcontrol_r_dm": {
         "hp": 60.5
+      }
+    },
+    "steel": {
+      "gear_c_dm": {
+        "hp": 39.5
+      },
+      "gear_l_dm": {
+        "hp": 41.3
+      },
+      "gear_r_dm": {
+        "hp": 41.3
       }
     },
     "steel_cooling_sys": {
@@ -318,7 +338,16 @@
         "name": "cannon1_dm"
       },
       {
+        "name": "cannon2_dm"
+      },
+      {
+        "name": "cannon3_dm"
+      },
+      {
         "name": "cover1_dm"
+      },
+      {
+        "name": "cover2_dm"
       },
       {
         "name": "elevator0_dm",
@@ -768,6 +797,78 @@
             "wingcontrol_r_dm": 0.4
           }
         ]
+      },
+      {
+        "name": "gear_c_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "gear_l_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "gear_r_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
       },
       {
         "name": "oil1_dm",
@@ -1808,7 +1909,7 @@
     "Range": 1380.0
   },
   "Sound": {
-    "Engine": "engine05_rb_168_sprey_WEP",
+    "Engine": "engine05_snecma_turbomecha",
     "gun": "gun_default"
   },
   "cockpit": {
@@ -2161,6 +2262,10 @@
       {
         "name": "alpha_jet_e_matra_lr_f1",
         "blk": "gameData/FlightModels/weaponPresets/alpha_jet_e_matra_lr_f1.blk"
+      },
+      {
+        "name": "alpha_jet_e_cc_420",
+        "blk": "gameData/FlightModels/weaponPresets/alpha_jet_e_cc_420.blk"
       }
     ]
   },
@@ -2175,7 +2280,9 @@
         "pylon2",
         "pylon3",
         "pylon4",
-        "pylon_gunpod"
+        "pylon_gunpod",
+        "gunpod_cc_420_001",
+        "gunpod_cc_420_002"
       ]
     },
     "HideDmParts": {
@@ -2188,7 +2295,9 @@
         "cover5_dm",
         "armor1_dm",
         "armor2_dm",
-        "gun_pod_alpha_jet_e_dm"
+        "gun_pod_alpha_jet_e_dm",
+        "cannon2_dm",
+        "cannon3_dm"
       ]
     },
     "WeaponSlot": [
@@ -2510,6 +2619,31 @@
               "emitter": "matra_lr_f1_002",
               "external": true
             }
+          },
+          {
+            "iconType": "machine_gun",
+            "name": "wing_left_middle_cc420",
+            "reqModification": "fr_mirage_f1c_cc_420_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "gunpod_cc_420_001"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "cannon2_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
+              "emitter": "flare002",
+              "flash": "flare002",
+              "dm": "cannon2_dm",
+              "bullets": 180,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -2726,6 +2860,31 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/matra_lr_f1.blk",
               "emitter": "matra_lr_f1_003",
+              "external": true
+            }
+          },
+          {
+            "iconType": "machine_gun",
+            "name": "wing_right_middle_cc420",
+            "reqModification": "fr_mirage_f1c_cc_420_gunpod",
+            "ShowNodes": {
+              "node": [
+                "pylon3",
+                "gunpod_cc_420_002"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "cannon3_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gameData/Weapons/cannonDEFA553_gunpod.blk",
+              "emitter": "flare003",
+              "flash": "flare003",
+              "dm": "cannon3_dm",
+              "bullets": 180,
+              "spread": 1.5,
+              "traceOffset": 1,
               "external": true
             }
           }
@@ -3137,16 +3296,28 @@
     "new_cover": {
       "tier": 4
     },
-    "bk_27_air_targets": {},
-    "bk_27_ground_targets": {},
-    "bk_27_armor_targets": {},
-    "bk_27_stealth": {},
-    "bk_27_belt_pack": {
+    "aden_air_targets": {},
+    "aden_ground_targets": {},
+    "aden_stealth": {},
+    "aden_belt_pack": {
       "tier": 1
     },
-    "bk_27_new_gun": {
-      "reqModification": "bk_27_belt_pack",
+    "aden_new_gun": {
+      "reqModification": "aden_belt_pack",
       "tier": 3
+    },
+    "fr_mirage_f1c_cc_420_gunpod": {
+      "deactivationIsAllowed": false,
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "aden_gunpod_air_targets": {},
+    "aden_gunpod_ground_targets": {},
+    "aden_gunpod_stealth": {},
+    "aden_gunpod_belt_pack": {
+      "tier": 4,
+      "prevModification": "fr_mirage_f1c_cc_420_gunpod",
+      "reqModification": "fr_mirage_f1c_cc_420_gunpod"
     },
     "us_750_lb_m116a2": {
       "modClass": "weapon",
@@ -3198,16 +3369,16 @@
     "minSpeed": 0.0,
     "hasSafeExit": true,
     "wreck": [
-      "blister1",
-      "blister2"
+      "blister7",
+      "blister8"
     ],
     "seat": [
       "seat_01",
       "seat_02"
     ],
     "fxEmitter": [
-      "blister1",
-      "blister2"
+      "blister7",
+      "blister8"
     ],
     "fxType": "catapult_expl_ejection"
   },

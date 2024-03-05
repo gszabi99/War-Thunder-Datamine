@@ -66,6 +66,7 @@ enum DargWidgets {
   , CHANGE_LOG
   , DAMAGE_PANEL
   , HUD_TOUCH
+  , RESPAWN
 };
 
 enum AirParamsMain {

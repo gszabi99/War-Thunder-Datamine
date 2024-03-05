@@ -225,10 +225,7 @@
       "indicate": true
     },
     "irstHmdLock": {
-      "type": [
-        "pyramide",
-        "pyramide"
-      ],
+      "type": "pyramide",
       "azimuthLimits": [
         -30.0,
         30.0
@@ -908,6 +905,9 @@
           }
         },
         "setRadarAcmLockMode": {
+          "setScanPatternSet": {
+            "scanPatternSet": "radarAcmLock"
+          },
           "setAcmLockMode": {},
           "setTransiver": {
             "transiver": "mprf"
@@ -925,14 +925,14 @@
             "pos": 0.0,
             "width": 1800.0
           },
-          "setScanPatternSet": {
-            "scanPatternSet": "radarAcmLock"
-          },
           "setModeName": {
             "name": "auto ACM"
           }
         },
         "setIrstAcmLockMode": {
+          "setScanPatternSet": {
+            "scanPatternSet": "irstAcmLock"
+          },
           "setAcmLockMode": {},
           "setTransiver": {
             "transiver": "irst"
@@ -949,9 +949,6 @@
             "source": "constRange",
             "pos": 0.0,
             "width": 1800.0
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "irstAcmLock"
           },
           "setModeName": {
             "name": "IRST ACM"

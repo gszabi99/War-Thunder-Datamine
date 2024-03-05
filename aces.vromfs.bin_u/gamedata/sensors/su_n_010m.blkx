@@ -461,6 +461,9 @@
           }
         },
         "setRadarAcmLockMode": {
+          "setScanPatternSet": {
+            "scanPatternSet": "radarAcmLock"
+          },
           "setAcmLockMode": {},
           "setTransiver": {
             "transiver": "mprf"
@@ -478,14 +481,14 @@
             "pos": 0.0,
             "width": 1800.0
           },
-          "setScanPatternSet": {
-            "scanPatternSet": "radarAcmLock"
-          },
           "setModeName": {
             "name": "auto ACM"
           }
         },
         "setIrstAcmLockMode": {
+          "setScanPatternSet": {
+            "scanPatternSet": "irstAcmLock"
+          },
           "setAcmLockMode": {},
           "setTransiver": {
             "transiver": "irst"
@@ -502,9 +505,6 @@
             "source": "constRange",
             "pos": 0.0,
             "width": 1800.0
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "irstAcmLock"
           },
           "setModeName": {
             "name": "IRST ACM"
@@ -3088,8 +3088,6 @@
         -45.0,
         60.0
       ],
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0,
       "period": 1.8,
       "width": 10.0,
       "barHeight": 2.5,

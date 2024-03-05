@@ -32,7 +32,7 @@ let partnerUnlocksTimes = persist("partnerUnlocksTimes", @() {
 
   partnerUnlocksTimes.lastRequestTime = get_time_msec()
   let successCb = function(result) {
-    ::g_partner_unlocks.lastUpdateTime = get_time_msec()
+    partnerUnlocksTimes.lastUpdateTime = get_time_msec()
     if (!::g_partner_unlocks.applyNewPartnerUnlockData(result))
       return
 

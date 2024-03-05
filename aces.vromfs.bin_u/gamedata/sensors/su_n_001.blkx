@@ -109,7 +109,7 @@
       "barHeight": 3.0,
       "barsCount": 2,
       "rowMajor": false,
-      "centerElevation": 15.0,
+      "centerElevation": 20.0,
       "indicate": true
     },
     "radarHmdLock": {
@@ -217,18 +217,15 @@
         52.5
       ],
       "period": 0.3,
-      "width": 15.0,
+      "width": 37.5,
       "barHeight": 4.0,
       "barsCount": 1,
       "rowMajor": false,
-      "centerElevation": 1.0,
+      "centerElevation": 22.5,
       "indicate": true
     },
     "irstHmdLock": {
-      "type": [
-        "pyramide",
-        "pyramide"
-      ],
+      "type": "pyramide",
       "azimuthLimits": [
         -60.0,
         60.0
@@ -908,6 +905,9 @@
           }
         },
         "setRadarAcmLockMode": {
+          "setScanPatternSet": {
+            "scanPatternSet": "radarAcmLock"
+          },
           "setAcmLockMode": {},
           "setTransiver": {
             "transiver": "mprf"
@@ -925,14 +925,14 @@
             "pos": 0.0,
             "width": 1800.0
           },
-          "setScanPatternSet": {
-            "scanPatternSet": "radarAcmLock"
-          },
           "setModeName": {
             "name": "auto ACM"
           }
         },
         "setIrstAcmLockMode": {
+          "setScanPatternSet": {
+            "scanPatternSet": "irstAcmLock"
+          },
           "setAcmLockMode": {},
           "setTransiver": {
             "transiver": "irst"
@@ -949,9 +949,6 @@
             "source": "constRange",
             "pos": 0.0,
             "width": 1800.0
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "irstAcmLock"
           },
           "setModeName": {
             "name": "IRST ACM"

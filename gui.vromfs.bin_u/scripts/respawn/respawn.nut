@@ -86,6 +86,8 @@ let { gui_start_flight_menu } = require("%scripts/flightMenu/flightMenu.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
 let { collectOrdersToActivate, showActivateOrderButton, enableOrders
 } = require("%scripts/items/orders.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
 
@@ -130,6 +132,10 @@ let needSkipAvailableCrewToSelect = persist("needSkipAvailableCrewToSelect", @()
 
 gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   sceneBlkName = "%gui/respawn/respawn.blk"
+  widgetsList = [
+    { widgetId = DargWidgets.RESPAWN }
+  ]
+
   shouldBlurSceneBg = true
   shouldFadeSceneInVr = true
   shouldOpenCenteredToCameraInVr = true
@@ -390,6 +396,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   /*override*/ function onSceneActivate(show) {
+    updateExtWatched({isInRespawnWnd = show})
     this.setOrdersEnabled(show && this.isSpectate)
     this.updateSpectatorRotationForced(show)
     this.updateTacticalMapUnitType(show ? null : false)
@@ -1909,6 +1916,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   function setSpectatorMode(is_spectator, forceShowInfo = false) {
     if (this.isSpectate == is_spectator && !forceShowInfo)
       return
+
+    updateExtWatched({isInRespawnSpectatorMode = is_spectator})
 
     this.isSpectate = is_spectator
     this.showSpectatorInfo(is_spectator)
