@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_cur_circuit_name, is_online_availab
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 
+let { checkMatchingError } = require("%scripts/matching/api.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
@@ -90,7 +91,7 @@ function updateClustersList() {
     function(params) {
       isClustersFetching = false
 
-      if (::checkMatchingError(params, false)
+      if (checkMatchingError(params, false)
           && onClustersLoaded(params)) {
         fetchCounter = 0
         return

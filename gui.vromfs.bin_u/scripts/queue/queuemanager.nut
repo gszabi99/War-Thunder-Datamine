@@ -16,7 +16,7 @@ let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { get_time_msec } = require("dagor.time")
 let { rnd } = require("dagor.random")
-let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { checkMatchingError, matchingErrorString, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isEventForClan } = require("%scripts/events/eventInfo.nut")
@@ -320,8 +320,8 @@ let QueueManager = class {
         ::SessionLobby.setWaitForQueueRoom(true)
       }
       else {
-        if ((response?.error_id ?? ::matching.error_string(response.error)) not in hiddenMatchingError)
-          ::checkMatchingError(response, !silent)
+        if ((response?.error_id ?? matchingErrorString(response.error)) not in hiddenMatchingError)
+          checkMatchingError(response, !silent)
         this.afterLeaveQueues({})
 
         // This check is a workaround that fixes
@@ -383,8 +383,8 @@ let QueueManager = class {
         return
       }
 
-      if ((response?.error_id ?? ::matching.error_string(response.error)) not in hiddenMatchingError)
-        ::checkMatchingError(response)
+      if ((response?.error_id ?? matchingErrorString(response.error)) not in hiddenMatchingError)
+        checkMatchingError(response)
       this.removeQueue(queue)
     }, this)
   }

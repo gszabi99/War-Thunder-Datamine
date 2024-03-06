@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, select_save_device, get_auto_refill, get_char_extended_error, update_entitlements, is_save_device_selected, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
+from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, select_save_device, get_auto_refill, update_entitlements, is_save_device_selected, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
 from "app" import is_dev_version
@@ -15,6 +15,8 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { move_mouse_on_obj, isInMenu, handlersManager, loadHandler, is_in_loading_screen
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
+let { get_char_extended_error } = require("chard")
+let { EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS } = require("chardConst")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
@@ -578,12 +580,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       let handler = this
       local text = loc("charServer/updateError/" + result.tostring())
 
-      if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
-        && ("get_char_extended_error" in getroottable()))
-        if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
-          let notAllowedChars = get_char_extended_error()
-          text = format(text, notAllowedChars)
-        }
+      if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
+        let notAllowedChars = get_char_extended_error()
+        text = format(text, notAllowedChars)
+      }
 
       handler.msgBox("char_connecting_error", text,
       [

@@ -34,6 +34,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -745,6 +746,11 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!antiCheat.showMsgboxIfEacInactive(this.event) ||
         !showMsgboxIfSoundModsNotAllowed(this.event))
       return
+
+    if (hasMultiplayerLimitByAas.get()) {
+      showMultiplayerLimitByAasMsg()
+      return
+    }
 
     let diffCode = ::events.getEventDiffCode(this.event)
     let unitTypeMask = ::events.getEventUnitTypesMask(this.event)

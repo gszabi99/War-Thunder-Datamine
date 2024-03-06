@@ -9924,6 +9924,7 @@
         "sensorSpecificDetectOwnWeapon": false,
         "sensorAirborneMultipathEffect": false,
         "sensorGroundMultipathEffect": false,
+        "sensorCompensateGroundMultipathEffect": false,
         "sensorSideLobes": false
       },
       "medium": {
@@ -9934,7 +9935,8 @@
         "sensorTrueTwsTargetMatching": true,
         "sensorSpecificDetectOwnWeapon": false,
         "sensorAirborneMultipathEffect": true,
-        "sensorGroundMultipathEffect": false,
+        "sensorGroundMultipathEffect": true,
+        "sensorCompensateGroundMultipathEffect": true,
         "sensorSideLobes": true
       },
       "hard": {
@@ -9946,6 +9948,7 @@
         "sensorSpecificDetectOwnWeapon": true,
         "sensorAirborneMultipathEffect": true,
         "sensorGroundMultipathEffect": true,
+        "sensorCompensateGroundMultipathEffect": false,
         "sensorSideLobes": true
       }
     },
@@ -23587,6 +23590,43 @@
     "hard": {
       "enabled": false
     }
+  },
+  "sensorView": {
+    "playerColor": [
+      1.0,
+      1.0,
+      0.0
+    ],
+    "squadColor": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "friendlyColor": [
+      0.0,
+      0.0,
+      1.0
+    ],
+    "enemyColor": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "neutralColor": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "deadColor": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "rocketTrailColor": [
+      1.0,
+      0.6,
+      0.0
+    ]
   },
   "shipsShootingTracking": {
     "lifeTime": 2.0,

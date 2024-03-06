@@ -10,7 +10,7 @@
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
-  "ilsTornado": true,
+  "ilsKaiserVDO": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "gyroSight": [
@@ -2422,7 +2422,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_001",
               "external": true,
               "machLimit": 1.01
@@ -2437,7 +2437,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_001",
               "external": true,
               "machLimit": 1.01
@@ -2630,7 +2630,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_002",
               "external": true,
               "machLimit": 1.01
@@ -2645,7 +2645,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/gr_tcs_lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "alpha_jet_pylon_tsc1",
               "external": true,
               "machLimit": 1.01
@@ -2855,7 +2855,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_003",
               "external": true,
               "machLimit": 1.01
@@ -2870,7 +2870,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/gr_tcs_lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/gr_tcs_lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "alpha_jet_pylon_tsc2",
               "external": true,
               "machLimit": 1.01
@@ -2972,7 +2972,7 @@
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/lau_5003b_green_2_75_in_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_5003b_olive_2_75_in_ffar_mighty_mouse.blk",
               "emitter": "lau_51a_004",
               "external": true,
               "machLimit": 1.01
@@ -3240,31 +3240,42 @@
     "turnTime": 21.6518
   },
   "modifications": {
+    "f_4c_CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "f_4c_CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
     "new_compressor_jet": {
-      "tier": 1
+      "tier": 1,
+      "modClass": "lth"
     },
     "hydravlic_power": {
       "prevModification": "new_compressor_jet",
       "tier": 2,
+      "modClass": "lth",
       "effects": {
         "aileronBooster": 0.9,
         "elevatorBooster": 0.9
       }
     },
-    "cd_98": {
-      "prevModification": "hydravlic_power",
-      "tier": 3
-    },
     "hp_105_jet": {
-      "prevModification": "cd_98",
-      "tier": 4
-    },
-    "f_4c_CdMin_Fuse": {
-      "tier": 1
-    },
-    "f_4c_g_suit": {
-      "prevModification": "f_4c_CdMin_Fuse",
-      "tier": 3
+      "prevModification": "hydravlic_power",
+      "tier": 4,
+      "modClass": "lth"
     },
     "countermeasures_launcher_chaff_only": {},
     "countermeasures_launcher_flare_only": {},
@@ -3277,13 +3288,10 @@
       "group": "countermeasures",
       "tier": 1
     },
-    "structure_str": {
+    "f_4c_g_suit": {
       "prevModification": "countermeasures_belt_pack",
-      "tier": 2
-    },
-    "new_cover": {
-      "prevModification": "structure_str",
-      "tier": 4
+      "tier": 3,
+      "modClass": "armor"
     },
     "bk_27_air_targets": {},
     "bk_27_ground_targets": {},
@@ -3368,17 +3376,17 @@
     "emtr_break_wing1_l_from": [
       -0.752747,
       0.831199,
-      1.84418
+      2.44418
     ],
     "emtr_break_wing1_l_to": [
       -0.752747,
       0.831199,
-      2.30697
+      2.90697
     ],
     "emtr_break_wing2_l_from": [
       -0.752747,
       0.831199,
-      3.00117
+      3.30117
     ],
     "emtr_break_wing2_l_to": [
       -0.752747,
@@ -3398,17 +3406,17 @@
     "emtr_break_wing1_r_from": [
       -0.752747,
       0.831199,
-      -1.84418
+      -2.44418
     ],
     "emtr_break_wing1_r_to": [
       -0.752747,
       0.831199,
-      -2.30697
+      -2.90697
     ],
     "emtr_break_wing2_r_from": [
       -0.752747,
       0.831199,
-      -3.00117
+      -3.30117
     ],
     "emtr_break_wing2_r_to": [
       -0.752747,
@@ -3420,7 +3428,7 @@
       0.0,
       0.0
     ],
-    "finCut": true,
+    "finCut": false,
     "emtr_break_tail_from": [
       -3.66405,
       0.376984,

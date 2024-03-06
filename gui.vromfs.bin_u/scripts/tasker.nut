@@ -1,8 +1,9 @@
-from "%scripts/dagui_natives.nut" import get_char_extended_error, char_request_blk_from_server, set_char_cb, char_request_json_from_server, char_send_simple_action
+from "%scripts/dagui_natives.nut" import char_request_blk_from_server, set_char_cb, char_request_json_from_server, char_send_simple_action
 from "%scripts/dagui_library.nut" import *
 
 let { broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { charRequestJwtFromServer } = require("chard")
+let { charRequestJwtFromServer, get_char_extended_error } = require("chard")
+let { EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS } = require("chardConst")
 let { format } = require("string")
 let { eventbus_subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
@@ -196,9 +197,7 @@ eventbus_subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromSer
 // Why this function is in this module???
 ::getErrorText <- function getErrorText(result) {
   local text = loc($"charServer/updateError/{result.tostring()}")
-  if (("EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS" in getroottable())
-      && ("get_char_extended_error" in getroottable())
-      && result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
+  if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
     let notAllowedChars = get_char_extended_error()
     text = format(text, notAllowedChars)
   }

@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import is_online_available
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
+let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
@@ -75,7 +76,7 @@ function loadGameModesFromList(gm_list) {
   fetchGameModesInfo({ byId = gm_list, timeout = 60 },
     function (result) {
       fetchingInfo = false
-      if (!::checkMatchingError(result, false)) {
+      if (!checkMatchingError(result, false)) {
         queueGameModesForRequest.clear()
         return
       }
@@ -103,7 +104,7 @@ function fetchGameModes() {
     function (result) {
       fetching = false
       let canRetry = fetch_counter < MAX_FETCH_RETRIES
-      if (::checkMatchingError(result, false)) {
+      if (checkMatchingError(result, false)) {
         loadGameModesFromList(result?.modes ?? [])
         fetch_counter = 0
         return

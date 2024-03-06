@@ -10,7 +10,8 @@ let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
 let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
   getDiscountPath, getItemStatusTbl, getItemUpgradesStatus
 } = require("%scripts/weaponry/itemInfo.nut")
-let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem } = require("%scripts/weaponry/bulletsInfo.nut")
+let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWithoutTracer
+} = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("%scripts/weaponry/weaponryTooltips.nut")
@@ -157,7 +158,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       visualItem.type <- weaponsItem.bundle
   }
   res.nameText = visualItem?.customNameText ?? getModItemName(unit, visualItem, params?.limitedName ?? true)
-  if (item?.hasTracer == false || visualItem?.hasTracer == false)
+  if (isBulletsWithoutTracer(unit, visualItem))
     res.nameText = $"{loc("weapon/noTracer/icon")}{res.nameText}"
   let isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
   res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params.__merge({

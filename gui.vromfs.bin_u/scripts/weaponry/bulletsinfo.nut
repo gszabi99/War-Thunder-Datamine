@@ -9,7 +9,8 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { ceil, change_bit } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
-  getLastPrimaryWeapon, getPrimaryWeaponsList } = require("%scripts/weaponry/weaponryInfo.nut")
+  getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
 let { isModResearched, isModAvailableOrFree, getModificationByName,
   updateRelationModificationList, getModificationBulletsGroup
@@ -976,6 +977,18 @@ function isBulletsGroupActiveByMod(air, mod) {
   return isBulletGroupActive(air, groupIdx)
 }
 
+function isBulletsWithoutTracer(unit, item) {
+  if (item?.hasTracer == false)
+    return true
+
+  if (!isBullets(item))
+    return false
+
+  let bulletsSet = getBulletsSetData(unit, item.name)
+  let weaponName = getWeaponNameByBlkPath(bulletsSet.weaponBlkName)
+  return unit?.defaultBeltParam[weaponName].hasTracer == false
+}
+
 //to get exact same bullets list as in standart options
 function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvailable = false) {
   let checkPurchased = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
@@ -1065,6 +1078,7 @@ return {
   getActiveBulletsGroupInt
   isBulletGroupActive
   isBulletsGroupActiveByMod
+  isBulletsWithoutTracer
   getOptionsBulletsList
   isBullets
   isWeaponTierAvailable

@@ -356,11 +356,14 @@ let g_hud_display_timers = {
     ::g_time_bar.setDirectionForward(timebarObj)
     ::g_time_bar.setPeriod(timebarObj, debuffs_data.timeToLoadOne)
     ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.currentLoadTime)
+    let { rearmState = null } = debuffs_data
+    if (rearmState == null)
+      return
 
-    if (debuffs_data.rearmState == "pause") {
+    if (rearmState == "pause") {
       ::g_time_bar.pauseTimer(timebarObj)
     }
-    else if (debuffs_data.rearmState == "discharge") {
+    else if (rearmState == "discharge") {
       ::g_time_bar.setDirectionBackward(timebarObj)
     }
 

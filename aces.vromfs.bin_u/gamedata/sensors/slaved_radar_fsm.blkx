@@ -4,7 +4,9 @@
     "scan": {
       "event": "update",
       "actions": {
-        "scan": {}
+        "scan": {
+          "targetsOfInterestFirst": true
+        }
       }
     },
     "detect": {
@@ -18,13 +20,21 @@
           "source": "continuousScale",
           "width": 0.0
         },
-        "detectTarget": {}
+        "detectTarget": {
+          "targetsOfInterestFirst": true
+        }
       }
     },
     "addTarget": {
       "event": "targetDetected",
       "actions": {
-        "addTarget": {}
+        "addTarget": {
+          "targetsOfInterestFirst": true
+        },
+        "updateTargetOfInterest": {
+          "targetsOfInterestFirst": true,
+          "limit": 1000
+        }
       }
     }
   }

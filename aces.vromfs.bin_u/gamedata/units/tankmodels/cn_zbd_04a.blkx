@@ -84,7 +84,7 @@
         "armorThickness": 20.0
       },
       "superstructure_front_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 20.0
       },
       "body_front_dm": {
         "armorThickness": 18.0
@@ -147,7 +147,7 @@
         "armorThickness": 18.0
       },
       "turret_02_back_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 20.0
       },
       "turret_04_bottom_dm": {
         "armorThickness": 10.0
@@ -180,17 +180,17 @@
         "armorThickness": 10.0
       },
       "turret_01_front_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 15.0,
         "armorClass": "RHAHH_tank"
       },
       "turret_01_top_dm": {
         "armorThickness": 18.0
       },
       "turret_02_front_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 25.0
       },
       "turret_02_side_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 15.0
       },
       "turret_02_bottom_dm": {
         "armorThickness": 10.0
@@ -233,21 +233,29 @@
       },
       "ex_armor_07_dm": {
         "armorThickness": 15.0
-      },
-      "body_shield_dm": {
-        "armorThickness": 8.0,
-        "armorClass": "RHAHH_tank"
       }
     },
     "additional_armor": {
-      "armorClass": "hull_side_special_armor",
+      "armorClass": "RHAHH_tank",
       "hp": 10000.0,
-      "armorThickness": 50.0,
+      "armorThickness": 10.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
+      "body_shield_dm": {
+        "armorThickness": 10.0
+      }
+    },
+    "additional_special_armor": {
+      "armorClass": "hull_side_special_armor",
+      "hp": 10000.0,
+      "armorThickness": 30.0,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "hidableInViewer": true,
+      "genericArmorQuality": 0.6,
       "turret_03_front_dm": {
-        "armorThickness": 38.0
+        "armorThickness": 23.0
       },
       "ex_armor_body_01_dm": {},
       "ex_armor_body_02_dm": {},
@@ -2363,7 +2371,7 @@
         0.14
       ],
       "defaultGearRadius": 0.28,
-      "frontBackGearRadius": 0.2,
+      "frontBackGearRadius": 0.27,
       "topGearRadius": 0.15,
       "defaultDampeningForce": [
         180000.0,
@@ -3530,7 +3538,7 @@
   ],
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": "gunner1",
+      "weaponTrigger": "gunner0",
       "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
@@ -3544,7 +3552,7 @@
       }
     },
     "ammo2": {
-      "weaponTrigger": "gunner0",
+      "weaponTrigger": "gunner1",
       "removeLoadedAmmo": true,
       "fatalFire": true,
       "fatalExplosion": true,
@@ -3697,19 +3705,19 @@
           "ammo_turret_25_dm": {
             "count": 1
           },
-          "ammo_turret_26_dm": {
+          "ammo_body_l_01_dm": {
             "count": 1
           },
-          "ammo_turret_27_dm": {
+          "ammo_body_l_02_dm": {
             "count": 1
           },
-          "ammo_turret_28_dm": {
+          "ammo_body_l_03_dm": {
             "count": 1
           },
-          "ammo_turret_29_dm": {
+          "ammo_body_l_04_dm": {
             "count": 1
           },
-          "ammo_turret_30_dm": {
+          "ammo_body_l_05_dm": {
             "count": 1
           }
         }

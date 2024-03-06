@@ -28,6 +28,7 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
+let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
   if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())
@@ -521,9 +522,15 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onReady() {
     let event = SessionLobby.getRoomEvent()
-    if (event != null && (!antiCheat.showMsgboxIfEacInactive(event) ||
-                          !showMsgboxIfSoundModsNotAllowed(event)))
-      return
+    if (event != null) {
+      if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
+        return
+
+      if (hasMultiplayerLimitByAas.get()) {
+        showMultiplayerLimitByAasMsg()
+        return
+      }
+    }
 
     if (SessionLobby.tryJoinSession())
       return

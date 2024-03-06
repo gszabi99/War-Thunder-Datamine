@@ -21001,6 +21001,19 @@
           "minSpeechInterval": 5.0,
           "player": -1
         },
+        "missileFire": {
+          "event": "06_ship_activities/voice_message_officer_zrk_fire",
+          "playerRole": "commander",
+          "minSpeechInterval": 5.0,
+          "player": -1
+        },
+        "missileOut": {
+          "event": "06_ship_activities/voice_message_sailor_missile_out",
+          "playerRole": "sailor",
+          "minSpeechInterval": 5.0,
+          "delayTime": 1.0,
+          "player": -1
+        },
         "acousticReport": {
           "event": "07_environment/voice_message_officer_acoustic_report",
           "playerRole": "commander",
@@ -21831,7 +21844,69 @@
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 5.0
+        },
+        "prepareSupportPlane": {
+          "event": "06_ship_activities/voice_message_commander_support_plane_launch",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 5.0
+        },
+        "shootCommand": {
+          "event": "06_ship_activities/voice_message_commander_salvo",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 20.0
+        },
+        "shootCommandModern": {
+          "event": "06_ship_activities/voice_message_commander_fire",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 20.0
+        },
+        "loadBulletFrag": {
+          "event": "06_ship_activities/voice_message_officer_load_frag",
+          "playerRole": "commander",
+          "player": -1
+        },
+        "loadBulletHighExpl": {
+          "event": "06_ship_activities/voice_message_officer_load_he",
+          "playerRole": "commander",
+          "player": -1
+        },
+        "loadBulletAP": {
+          "event": "06_ship_activities/voice_message_officer_load_ap",
+          "playerRole": "commander",
+          "player": -1
+        },
+        "loadBulletSAP": {
+          "event": "06_ship_activities/voice_message_officer_load_sap",
+          "playerRole": "commander",
+          "player": -1
+        },
+        "loadBulletAA": {
+          "event": "06_ship_activities/voice_message_officer_load_aa",
+          "playerRole": "commander",
+          "player": -1
         }
+      },
+      "bulletTypeToEvent": {
+        "he_frag": "loadBulletFrag",
+        "he_frag_ball": "loadBulletFrag",
+        "he_frag_dist_fuse": "loadBulletAA",
+        "he_frag_radio_fuse": "loadBulletAA",
+        "he_frag_i": "loadBulletFrag",
+        "he_at": "loadBulletHighExpl",
+        "he_at_grenade": "loadBulletHighExpl",
+        "he_ball": "loadBulletHighExpl",
+        "he_dp": "loadBulletHighExpl",
+        "ap": "loadBulletAP",
+        "ap_i": "loadBulletAP",
+        "ap_i_t": "loadBulletAP",
+        "ap_ball": "loadBulletAP",
+        "apcr": "loadBulletAP",
+        "sap_he": "loadBulletSAP",
+        "sap_hei": "loadBulletSAP",
+        "he_frag_base_fuse_tank": "loadBulletSAP"
       },
       "distanceMetric": {
         "event": "07_environment/distance/metric/sailor/voice_message_sailor_<dist>m",

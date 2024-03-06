@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
-let { matchingApiFunc } = require("%scripts/matching/api.nut")
+let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
   USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES
 } = require("%scripts/options/optionsExtNames.nut")
@@ -15,6 +15,8 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { hasNightGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
 } = require("%scripts/matching/matchingGameModes.nut")
+let { markToShowMultiplayerLimitByAasMsg } = require("%scripts/user/antiAddictSystem.nut")
+let { EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS } = require("chardConst")
 
 ::queue_classes.Event <- class (::queue_classes.Base) {
   shouldQueueCustomMode = false
@@ -118,7 +120,7 @@ let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
     enqueueInSession(
       queryParams,
       function(response) {
-        if (::checkMatchingError(response, needShowError)) {
+        if (checkMatchingError(response, needShowError)) {
           if (this && this.shouldQueueCustomMode)
             this.switchCustomMode(this.shouldQueueCustomMode, true)
           successCallback(response)
@@ -149,7 +151,7 @@ let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
     matchingApiFunc(
       "match.leave_queue"
       function(response) {
-        if (::checkMatchingError(response, needShowError))
+        if (checkMatchingError(response, needShowError))
           successCallback(response)
         else
           errorCallback(response)
@@ -287,9 +289,14 @@ let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
   hasActualQueueData = @() !needActualizeQueueData.value
   function actualizeData() {
     let queue = this
-    actualizeQueueData(function(_jwtData) {
+    actualizeQueueData(function(res) {
       if (queue.state != queueStates.ACTUALIZE)
         return
+      if (res == EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS) {
+        ::queues.leaveAllQueuesSilent()
+        markToShowMultiplayerLimitByAasMsg()
+        return
+      }
       ::queues.joinQueueImpl(queue)
     })
   }

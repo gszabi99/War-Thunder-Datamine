@@ -215,7 +215,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -229,6 +229,9 @@
         }
       },
       "else_actions": {
+        "wait": {
+          "time": 0.5
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
@@ -248,7 +251,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -277,7 +280,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -310,7 +313,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -343,7 +346,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -394,7 +397,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {},
@@ -647,9 +650,91 @@
         },
         "triggerEnable": {
           "target": [
-            "check_start",
+            "check_radar_msg",
             "low_distance"
           ]
+        }
+      },
+      "else_actions": {}
+    },
+    "check_radar_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "isRadarMode": {
+          "object": "player",
+          "mode": "search"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "check_start"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_sarh/check_radar",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SENSOR_SWITCH"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SENSOR_SWITCH"
+        },
+        "triggerEnable": {
+          "target": "check_radar_activate"
+        }
+      }
+    },
+    "check_radar_activate": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "isRadarMode": {
+          "object": "player",
+          "mode": "search"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SENSOR_SWITCH"
+        },
+        "triggerEnable": {
+          "target": "check_start"
         }
       },
       "else_actions": {}

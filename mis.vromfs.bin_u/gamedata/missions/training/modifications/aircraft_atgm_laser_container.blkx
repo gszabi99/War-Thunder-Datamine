@@ -224,6 +224,9 @@
         }
       },
       "else_actions": {
+        "wait": {
+          "time": 0.5
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
@@ -464,8 +467,11 @@
           ]
         },
         "missionSetTimeSpeed": {
-          "speed": 0.0,
+          "speed": 1.0,
           "realtimeTriggers": true
+        },
+        "wait": {
+          "time": 0.1
         },
         "triggerEnable": {
           "target": "start_msg"
@@ -510,6 +516,10 @@
         },
         "wait": {
           "time": 0.5
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
         "triggerEnable": {
           "target": "start_msg1"

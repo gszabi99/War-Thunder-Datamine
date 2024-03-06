@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
+let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { get_time_msec } = require("dagor.time")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -115,7 +116,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   function requestListCb(p, hideFullRooms) {
     this.isInUpdate = false
 
-    let digest = ::checkMatchingError(p, false) ? getTblValue("digest", p) : null
+    let digest = checkMatchingError(p, false) ? getTblValue("digest", p) : null
     if (!digest)
       return
 

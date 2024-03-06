@@ -1141,7 +1141,8 @@
       "ex_armor_17_dm": {},
       "ex_armor_18_dm": {},
       "ex_armor_14_dm": {},
-      "ex_armor_15_dm": {}
+      "ex_armor_15_dm": {},
+      "ex_armor_16_dm": {}
     },
     "body_shields": {
       "armorClass": "tank_structural_steel",
@@ -1162,8 +1163,7 @@
       "ex_decor_r_01_dm": {},
       "ex_decor_l_02_dm": {},
       "ex_decor_r_02_dm": {},
-      "body_back_dm": {},
-      "ex_armor_16_dm": {}
+      "body_back_dm": {}
     },
     "turret": {
       "gun_mask_dm": {
@@ -1360,20 +1360,48 @@
         "armorThrough": 150.0
       },
       "cannon_breech_01_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": [
+          5.0,
+          150.0
+        ],
+        "armorThrough": [
+          5.0,
+          150.0
+        ],
+        "restrainDamage": 0.5
       },
       "cannon_breech_02_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": [
+          5.0,
+          150.0
+        ],
+        "armorThrough": [
+          5.0,
+          150.0
+        ],
+        "restrainDamage": 0.5
       },
       "cannon_breech_03_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": [
+          5.0,
+          150.0
+        ],
+        "armorThrough": [
+          5.0,
+          150.0
+        ],
+        "restrainDamage": 0.5
       },
       "cannon_breech_04_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": [
+          5.0,
+          150.0
+        ],
+        "armorThrough": [
+          5.0,
+          150.0
+        ],
+        "restrainDamage": 0.5
       },
       "cannon_breech_05_dm": {
         "armorThickness": 5.0,
@@ -3032,7 +3060,7 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
-        "bullets": 180,
+        "bullets": 210,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
@@ -3074,6 +3102,38 @@
             -7.0,
             80.0
           ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -140.0,
+            4.0,
+            80.0
+          ],
+          "lim2": [
+            -140.0,
+            -33.0,
+            -2.0,
+            80.0
+          ],
+          "lim3": [
+            -33.0,
+            33.0,
+            -7.0,
+            80.0
+          ],
+          "lim4": [
+            33.0,
+            140.0,
+            -2.0,
+            80.0
+          ],
+          "lim5": [
+            140.0,
+            180.0,
+            4.0,
+            80.0
+          ]
         }
       },
       {
@@ -3091,7 +3151,7 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
-        "bullets": 180,
+        "bullets": 210,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
@@ -3124,6 +3184,38 @@
             -7.0,
             80.0
           ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -140.0,
+            4.0,
+            80.0
+          ],
+          "lim2": [
+            -140.0,
+            -33.0,
+            -2.0,
+            80.0
+          ],
+          "lim3": [
+            -33.0,
+            33.0,
+            -7.0,
+            80.0
+          ],
+          "lim4": [
+            33.0,
+            140.0,
+            -2.0,
+            80.0
+          ],
+          "lim5": [
+            140.0,
+            180.0,
+            4.0,
+            80.0
+          ]
         }
       },
       {
@@ -3141,7 +3233,7 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
-        "bullets": 180,
+        "bullets": 210,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
@@ -3174,6 +3266,38 @@
             -7.0,
             80.0
           ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -140.0,
+            4.0,
+            80.0
+          ],
+          "lim2": [
+            -140.0,
+            -33.0,
+            -2.0,
+            80.0
+          ],
+          "lim3": [
+            -33.0,
+            33.0,
+            -7.0,
+            80.0
+          ],
+          "lim4": [
+            33.0,
+            140.0,
+            -2.0,
+            80.0
+          ],
+          "lim5": [
+            140.0,
+            180.0,
+            4.0,
+            80.0
+          ]
         }
       },
       {
@@ -3191,7 +3315,7 @@
         "breechDP": "cannon_breech_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
-        "bullets": 180,
+        "bullets": 210,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
@@ -3222,6 +3346,38 @@
           ],
           "pitch": [
             -7.0,
+            80.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -140.0,
+            4.0,
+            80.0
+          ],
+          "lim2": [
+            -140.0,
+            -33.0,
+            -2.0,
+            80.0
+          ],
+          "lim3": [
+            -33.0,
+            33.0,
+            -7.0,
+            80.0
+          ],
+          "lim4": [
+            33.0,
+            140.0,
+            -2.0,
+            80.0
+          ],
+          "lim5": [
+            140.0,
+            180.0,
+            4.0,
             80.0
           ]
         }
@@ -3255,7 +3411,40 @@
       "blk": "gameData/units/tankModels/weaponPresets/germ_flakpanzer_zerstorer_45_default.blk"
     }
   },
-  "ammoStowages": {},
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_01_dm": {
+          "count": 120
+        },
+        "ammo_body_02_dm": {
+          "count": 120
+        },
+        "ammo_body_03_dm": {
+          "count": 120
+        },
+        "ammo_body_04_dm": {
+          "count": 120
+        },
+        "ammo_body_05_dm": {
+          "count": 120
+        },
+        "ammo_body_06_dm": {
+          "count": 120
+        },
+        "ammo_turret_01_dm": {
+          "count": 120
+        }
+      }
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -3693,6 +3882,16 @@
     "sightFov": 20.0,
     "sightName": "default_tank_spg",
     "detectionHeight": 2.76
+  },
+  "dmgAngles": {
+    "hatch_06": [
+      7.0,
+      7.0
+    ],
+    "hatch_07": [
+      7.0,
+      7.0
+    ]
   },
   "ammo": {
     "combustionTime": 10.0,

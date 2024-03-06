@@ -1,12 +1,11 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-
 let { get_time_msec } = require("dagor.time")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
-let { matchingApiFunc } = require("%scripts/matching/api.nut")
+let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
 
 const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
 const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -89,7 +88,7 @@ local ClanSquadsList = class {
     this.isInUpdate = false
     this.clanId = requestClanId
 
-    let squads = ::checkMatchingError(p, false) ? (p?.squads) : null
+    let squads = checkMatchingError(p, false) ? (p?.squads) : null
     if (!squads)
       return
 

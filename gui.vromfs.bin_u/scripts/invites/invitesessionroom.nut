@@ -20,6 +20,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
+let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 let SessionRoom = class (BaseInvite) {
   //custom class params, not exist in base invite
@@ -166,9 +167,15 @@ let SessionRoom = class (BaseInvite) {
 
     let room = getMroomInfo(this.roomId).getFullRoomData()
     let event = room ? ::SessionLobby.getRoomEvent(room) : null
-    if (event != null && (!antiCheat.showMsgboxIfEacInactive(event) ||
-                          !showMsgboxIfSoundModsNotAllowed(event)))
-      return
+    if (event != null) {
+      if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
+        return
+
+      if (hasMultiplayerLimitByAas.get()) {
+        showMultiplayerLimitByAasMsg()
+        return
+      }
+    }
 
     let canJoin = ignoreCheckSquad
                     ||  ::g_squad_utils.canJoinFlightMsgBox(

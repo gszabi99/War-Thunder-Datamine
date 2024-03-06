@@ -15,7 +15,7 @@ let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItem
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
 } = require("%scripts/weaponry/itemInfo.nut")
 let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
-  getModificationInfo, getModificationName
+  getModificationInfo, getModificationName, isBulletsWithoutTracer
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
@@ -221,7 +221,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
       }, res)
 
   local name = "<color=@activeTextColor>" + getModItemName(unit, item, false) + "</color>"
-  if (item?.hasTracer == false) {
+  if (isBulletsWithoutTracer(unit, item)) {
     let noTracerText = loc("ui/parentheses/space", {
       text = $"{loc("weapon/noTracer/icon")} {loc("weapon/noTracer")}"
     })

@@ -290,7 +290,6 @@ return freeze({
   get_auto_refill = r["get_auto_refill"]
   get_axis_value = r["get_axis_value"]
   get_bomb_activation_auto_time = r["get_bomb_activation_auto_time"]
-  get_char_extended_error = r["get_char_extended_error"]
   get_commander_camera_in_views = r["get_commander_camera_in_views"]
   get_crew_count = r["get_crew_count"]
   get_crew_info = r["get_crew_info"]

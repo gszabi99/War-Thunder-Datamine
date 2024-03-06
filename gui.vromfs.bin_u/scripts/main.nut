@@ -142,7 +142,6 @@ foreach (fn in [
   "%scripts/options/countryFlagsPreset.nut"
 
   "%scripts/webRPC.nut"
-  "%scripts/matching/client.nut"
 
   "%scripts/wndLib/editBoxHandler.nut"
   "%scripts/wndLib/rightClickMenu.nut"

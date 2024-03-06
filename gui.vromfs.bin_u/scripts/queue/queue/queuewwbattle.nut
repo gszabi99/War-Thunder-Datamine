@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { request_matching } = require("%scripts/matching/api.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -12,7 +13,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
   }
 
   function join(successCallback, errorCallback) {
-    ::request_matching(
+    request_matching(
       "worldwar.join_battle",
       successCallback,
       errorCallback,
@@ -25,7 +26,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
   }
 
   static function leaveAll(successCallback, errorCallback, needShowError = false) {
-    ::request_matching(
+    request_matching(
       "worldwar.leave_battle",
       successCallback,
       errorCallback,

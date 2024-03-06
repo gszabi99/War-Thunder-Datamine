@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState
 import "%scripts/squads/squadApplications.nut" as squadApplications
 
+let { checkMatchingError, request_matching } = require("%scripts/matching/api.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -33,7 +34,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { lateBindGlobalModule } = require("%scripts/global_modules.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-
+let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -84,9 +85,9 @@ let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 let convertIdToInt = @(id) u.isString(id) ? id.tointeger() : id
 
 let requestSquadInfo = @(successCallback, errorCallback = null, requestOptions = null)
-  ::request_matching("msquad.get_info", successCallback, errorCallback, null, requestOptions)
+  request_matching("msquad.get_info", successCallback, errorCallback, null, requestOptions)
 
-let leaveSquadImpl = @(successCallback = null) ::request_matching("msquad.leave_squad", successCallback)
+let leaveSquadImpl = @(successCallback = null) request_matching("msquad.leave_squad", successCallback)
 
 
 let squadData = persist("squadData", @() {
@@ -303,9 +304,15 @@ g_squad_manager = {
 
     let isSetNoReady = (ready == false || (ready == null && g_squad_manager.isMeReady() == true))
     let event = ::events.getEvent(g_squad_manager.getLeaderGameModeId())
-    if (!isLeader && !isSetNoReady
-      && (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event)))
-      return
+    if (!isLeader && !isSetNoReady) {
+      if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
+        return
+
+      if (hasMultiplayerLimitByAas.get()) {
+        showMultiplayerLimitByAasMsg()
+        return
+      }
+    }
 
     if (::checkIsInQueue() && !isLeader && g_squad_manager.isInSquad() && isSetNoReady) {
       addPopup(null, loc("squad/cant_switch_off_readyness_in_queue"))
@@ -349,7 +356,7 @@ g_squad_manager = {
     if (!g_squad_manager.isSquadLeader())
       return
 
-    ::request_matching("msquad.set_squad_data", null, null, squadData)
+    request_matching("msquad.set_squad_data", null, null, squadData)
   }
 
   function setPsnSessionId(id = null) {
@@ -515,7 +522,7 @@ g_squad_manager = {
     memberData.online = true
     ::updateContact(memberData.getData())
 
-    ::request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.value, data })
+    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.value, data })
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -687,7 +694,7 @@ g_squad_manager = {
       return
 
     g_squad_manager.setState(squadState.JOINING)
-    ::request_matching("msquad.create_squad", @(_) g_squad_manager.requestSquadData(callback))
+    request_matching("msquad.create_squad", @(_) g_squad_manager.requestSquadData(callback))
   }
 
   function joinSquadChatRoom() {
@@ -732,7 +739,7 @@ g_squad_manager = {
       return
 
     g_squad_manager.setState(squadState.LEAVING)
-    ::request_matching("msquad.disband_squad")
+    request_matching("msquad.disband_squad")
   }
 
   function checkForSquad() {
@@ -741,7 +748,7 @@ g_squad_manager = {
 
     let callback = function(response) {
       if (response?.error_id != msquadErrorId.NOT_SQUAD_MEMBER)
-        if (!::checkMatchingError(response, false))
+        if (!checkMatchingError(response, false))
           return
 
       if ("squad" in response) {
@@ -802,7 +809,7 @@ g_squad_manager = {
       return
 
     g_squad_manager.setState(squadState.JOINING)
-    ::request_matching("msquad.join_player",
+    request_matching("msquad.join_player",
       @(_response) g_squad_manager.requestSquadData(),
       function(_response) {
         g_squad_manager.setState(squadState.NOT_IN_SQUAD)
@@ -846,7 +853,7 @@ g_squad_manager = {
       g_squad_manager.requestSquadData()
     }
 
-    ::request_matching("msquad.invite_player", callback, null, { userId = convertIdToInt(uid) })
+    request_matching("msquad.invite_player", callback, null, { userId = convertIdToInt(uid) })
   }
 
   function processDelayedInvitations() {
@@ -880,13 +887,13 @@ g_squad_manager = {
       return
 
     let fullCallback = @(_response) g_squad_manager.requestSquadData(@() callback?())
-    ::request_matching("msquad.revoke_invite", fullCallback, null, { userId = convertIdToInt(uid) })
+    request_matching("msquad.revoke_invite", fullCallback, null, { userId = convertIdToInt(uid) })
   }
 
   function membershipAplication(sid) {
     let callback = Callback(@(_response) squadApplications.addApplication(sid, sid), this)
     let cb = function() {
-      ::request_matching("msquad.request_membership",
+      request_matching("msquad.request_membership",
         callback,
         null, { squadId = sid }, null)
     }
@@ -900,7 +907,7 @@ g_squad_manager = {
 
   function revokeMembershipAplication(sid) {
     squadApplications.deleteApplication(sid)
-    ::request_matching("msquad.revoke_membership_request", null, null, { squadId = sid }, null)
+    request_matching("msquad.revoke_membership_request", null, null, { squadId = sid }, null)
   }
 
   function acceptMembershipAplication(uid) {
@@ -911,21 +918,21 @@ g_squad_manager = {
       return addPopup(null, loc("matching/SQUAD_FULL"))
 
     let callback = Callback(@(_response) g_squad_manager.addMember(uid.tostring()), this)
-    ::request_matching("msquad.accept_membership", callback, null, { userId = uid }, null)
+    request_matching("msquad.accept_membership", callback, null, { userId = uid }, null)
   }
 
   function denyAllAplication() {
     if (!g_squad_manager.isSquadLeader())
       return
 
-    ::request_matching("msquad.deny_all_membership_requests", null, null, null, null)
+    request_matching("msquad.deny_all_membership_requests", null, null, null, null)
   }
 
   function denyMembershipAplication(uid, callback = null) {
     if (g_squad_manager.isInSquad() && !g_squad_manager.isSquadLeader())
       return
 
-    ::request_matching("msquad.deny_membership", callback, null, { userId = uid }, null)
+    request_matching("msquad.deny_membership", callback, null, { userId = uid }, null)
   }
 
   function dismissFromSquad(uid) {
@@ -933,7 +940,7 @@ g_squad_manager = {
       return
 
     if (squadData.members?[uid])
-      ::request_matching("msquad.dismiss_member", null, null, { userId = convertIdToInt(uid) })
+      request_matching("msquad.dismiss_member", null, null, { userId = convertIdToInt(uid) })
   }
 
   function dismissFromSquadByName(name) {
@@ -990,7 +997,7 @@ g_squad_manager = {
     if (!g_squad_manager.canTransferLeadership(uid))
       return
 
-    ::request_matching("msquad.transfer_squad", null, null, { userId = convertIdToInt(uid) })
+    request_matching("msquad.transfer_squad", null, null, { userId = convertIdToInt(uid) })
     broadcastEvent(squadEvent.LEADERSHIP_TRANSFER, { uid = uid })
   }
 
@@ -1005,7 +1012,7 @@ g_squad_manager = {
       return
 
     g_squad_manager.setState(squadState.JOINING)
-    ::request_matching("msquad.accept_invite",
+    request_matching("msquad.accept_invite",
       function(_response) {
         g_squad_manager.requestSquadData()
       }.bindenv(this),
@@ -1018,7 +1025,7 @@ g_squad_manager = {
   }
 
   function rejectSquadInvite(sid) {
-    ::request_matching("msquad.reject_invite", null, null, { squadId = convertIdToInt(sid) })
+    request_matching("msquad.reject_invite", null, null, { squadId = convertIdToInt(sid) })
   }
 
   function requestMemberData(uid) {
@@ -1029,7 +1036,7 @@ g_squad_manager = {
     }
 
     let callback = @(response) g_squad_manager.requestMemberDataCallback(uid, response)
-    ::request_matching("msquad.get_member_data", callback, null, { userId = convertIdToInt(uid) })
+    request_matching("msquad.get_member_data", callback, null, { userId = convertIdToInt(uid) })
   }
 
   function requestMemberDataCallback(uid, response) {
@@ -1370,7 +1377,7 @@ g_squad_manager = {
 
   function cancelWwBattlePrepare() {
     g_squad_manager.startWWBattlePrepare() // cancel battle prepare if no args
-    ::request_matching("msquad.send_event", null, null, { eventName = "CancelBattlePrepare" })
+    request_matching("msquad.send_event", null, null, { eventName = "CancelBattlePrepare" })
   }
 
   onEventPresetsByGroupsChanged = @(_params) g_squad_manager.updateMyMemberData()

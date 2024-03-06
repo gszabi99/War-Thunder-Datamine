@@ -13,14 +13,10 @@ require HeroManager
 require WTCamera
 
 struct CanvasParams
-  allyColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
-  enemyColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   textColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
-  deadColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  backColor : E3DCOLOR = E3DCOLOR(0x00FFFFFF)
   fontId : int = -1
   fontSize : int = 20
-
-let whiteColor = E3DCOLOR(0xFFFFFFFF)
 
 let lod0DistSq = 20000. * 20000.
 let lod1DistSq = 30000. * 30000.
@@ -29,6 +25,7 @@ let maxDistSq = 50000. * 50000.
 [export]
 def setup_data(props : Properties&; var storage : CanvasParams&)
   storage.textColor = fade_color(props |> getColor("textColor", E3DCOLOR(0xFFFFFFFF)), 255)
+  storage.backColor = fade_color(props |> getColor("backColor", E3DCOLOR(0xFF000000)), 255)
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
 
@@ -100,11 +97,9 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
           height += radSpeedBox.width.y + padding
 
         screenPos -= float2(width * 0.5, height + ctx |> hdpx(30.))
-        var color = get_sensor_view_unit_color(unit)
+        let color = get_sensor_view_unit_color(unit)
         let baseColor = E3DCOLOR(Color4(color))
-        color *= 0.5
-        let e3dColor = E3DCOLOR(Color4(color))
-        ctx |> set_color(e3dColor)
+        ctx |> set_color(data.backColor)
         ctx |> render_rect(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, tc, tc, tc)
         ctx |> set_color(baseColor)
         ctx |> render_frame(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, ctx |> hdpx(1.8))
@@ -129,146 +124,143 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
           ctx |> goto_xy(screenPos.x + (width - distBox.width.x) * 0.5, screenPos.y)
           ctx |> draw_str_scaled(1.0, distStr, distStr |> length())
 
-    foreach_shells() <| $(var shell)
-      if hero != null && shell.ownerId == hero.id
-        if !get_sensor_view_filter(SensorViewFilterType SVF_WEAPON_HERO)
-          return
-      elif hero != null && shell.targetId == hero.id
-        if !get_sensor_view_filter(SensorViewFilterType SVF_WEAPON_ATTACK_HERO)
-          return
-      elif !get_sensor_view_filter(SensorViewFilterType SVF_WEAPON_OTHER)
+  foreach_shells() <| $(var shell)
+    if hero != null && shell.ownerId == hero.id
+      if !get_sensor_view_filter(SensorViewFilterType SVF_WEAPON_HERO)
         return
-
-      let distSq = length_sq(camera - shell.pos)
-      var screenPos = float2(0.)
-      if distSq > maxDistSq
+    elif hero != null && shell.targetId == hero.id
+      if !get_sensor_view_filter(SensorViewFilterType SVF_WEAPON_ATTACK_HERO)
         return
-      if world_to_screen(shell.pos, screenPos)
-        var width = 0.
-        var height = 0.
+    elif !get_sensor_view_filter(SensorViewFilterType SVF_WEAPON_OTHER)
+      return
 
-        let rktName = loc("weapons/{shell.name}/short")
-        let rktNameBox = get_str_bbox(rktName, rktName |> length(), fctx)
-        width = max(width, rktNameBox.width.x + padding * 2.)
-        height += rktNameBox.width.y + padding * 2.
+    let distSq = length_sq(camera - shell.pos)
+    var screenPos = float2(0.)
+    if distSq > maxDistSq
+      return
+    if world_to_screen(shell.pos, screenPos)
+      var width = 0.
+      var height = 0.
 
-        var speed = ""
-        var speedBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_SPEED) && distSq <= lod0DistSq
-          speed = get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, shell.speed, true, 1.)
-          speedBox = get_str_bbox(speed, speed |> length(), fctx)
-          width = max(width, speedBox.width.x + padding * 2.)
-          height += speedBox.width.y + padding
+      let rktName = loc("weapons/{shell.name}/short")
+      let rktNameBox = get_str_bbox(rktName, rktName |> length(), fctx)
+      width = max(width, rktNameBox.width.x + padding * 2.)
+      height += rktNameBox.width.y + padding * 2.
 
-        var mach = ""
-        var machBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_MACH) && distSq <= lod1DistSq
-          mach = "M: {format("%.2f", shell.mach)}"
-          machBox = get_str_bbox(mach, mach |> length(), fctx)
-          width = max(width, machBox.width.x + padding * 2.)
-          height += machBox.width.y + padding
+      var speed = ""
+      var speedBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_SPEED) && distSq <= lod0DistSq
+        speed = get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, shell.speed, true, 1.)
+        speedBox = get_str_bbox(speed, speed |> length(), fctx)
+        width = max(width, speedBox.width.x + padding * 2.)
+        height += speedBox.width.y + padding
 
-        var distStr = ""
-        var distBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_DIST) && distSq <= lod1DistSq
-          distStr = "{loc("distance")}: {get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, shell.dist, true, 0.1)}"
-          distBox = get_str_bbox(distStr, distStr |> length(), fctx)
-          width = max(width, distBox.width.x + padding * 2.)
-          height += distBox.width.y + padding
+      var mach = ""
+      var machBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_MACH) && distSq <= lod1DistSq
+        mach = "M: {format("%.2f", shell.mach)}"
+        machBox = get_str_bbox(mach, mach |> length(), fctx)
+        width = max(width, machBox.width.x + padding * 2.)
+        height += machBox.width.y + padding
 
-        var traveledStr = ""
-        var traveledBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_TRAVELED) && distSq <= lod0DistSq
-          traveledStr = "{loc("hud/traveled")}: {get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, shell.distTraveled, true, 0.1)}"
-          traveledBox = get_str_bbox(traveledStr, traveledStr |> length(), fctx)
-          width = max(width, traveledBox.width.x + padding * 2.)
-          height += traveledBox.width.y + padding
+      var distStr = ""
+      var distBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_DIST) && distSq <= lod1DistSq
+        distStr = "{loc("distance")}: {get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, shell.dist, true, 0.1)}"
+        distBox = get_str_bbox(distStr, distStr |> length(), fctx)
+        width = max(width, distBox.width.x + padding * 2.)
+        height += distBox.width.y + padding
 
-        var timeStr = ""
-        var timeBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_LIFETIME) && distSq <= lod0DistSq
-          timeStr = "{loc("hud/lifeTime")}: {format("%.1f", shell.lifeTime)} {loc("measureUnits/seconds")}"
-          timeBox = get_str_bbox(timeStr, timeStr |> length(), fctx)
-          width = max(width, timeBox.width.x + padding * 2.)
-          height += timeBox.width.y + padding
+      var traveledStr = ""
+      var traveledBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_TRAVELED) && distSq <= lod0DistSq
+        traveledStr = "{loc("hud/traveled")}: {get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, shell.distTraveled, true, 0.1)}"
+        traveledBox = get_str_bbox(traveledStr, traveledStr |> length(), fctx)
+        width = max(width, traveledBox.width.x + padding * 2.)
+        height += traveledBox.width.y + padding
 
-        var overloadStr = ""
-        var overloadBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_OVERLOAD) && distSq <= lod0DistSq
-          overloadStr = "{loc("hud/overload")}: {format("%.1f", shell.overload)} {loc("measureUnits/gForce")}"
-          overloadBox = get_str_bbox(overloadStr, overloadStr |> length(), fctx)
-          width = max(width, overloadBox.width.x + padding * 2.)
-          height += overloadBox.width.y + padding
+      var timeStr = ""
+      var timeBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_LIFETIME) && distSq <= lod0DistSq
+        timeStr = "{loc("hud/lifeTime")}: {format("%.1f", shell.lifeTime)} {loc("measureUnits/seconds")}"
+        timeBox = get_str_bbox(timeStr, timeStr |> length(), fctx)
+        width = max(width, timeBox.width.x + padding * 2.)
+        height += timeBox.width.y + padding
 
-        var aoaStr = ""
-        var aoaBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_AOA) && distSq <= lod0DistSq
-          aoaStr = "{loc("hud/aoa")}: {format("%.1f", shell.aoa)} {loc("measureUnits/deg")}"
-          aoaBox = get_str_bbox(aoaStr, aoaStr |> length(), fctx)
-          width = max(width, aoaBox.width.x + padding * 2.)
-          height += aoaBox.width.y + padding
+      var overloadStr = ""
+      var overloadBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_OVERLOAD) && distSq <= lod0DistSq
+        overloadStr = "{loc("hud/overload")}: {format("%.1f", shell.overload)} {loc("measureUnits/gForce")}"
+        overloadBox = get_str_bbox(overloadStr, overloadStr |> length(), fctx)
+        width = max(width, overloadBox.width.x + padding * 2.)
+        height += overloadBox.width.y + padding
 
-        var stateStr = ""
-        var stateBox = BBox2()
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.track >= 0
-          stateStr = "{loc("hud/guidanceState")}: {loc(shell.track == 0 ? "hud/search" : "hud/track")}"
-          stateBox = get_str_bbox(stateStr, stateStr |> length(), fctx)
-          width = max(width, stateBox.width.x + padding * 2.)
-          height += stateBox.width.y + padding
+      var aoaStr = ""
+      var aoaBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_AOA) && distSq <= lod0DistSq
+        aoaStr = "{loc("hud/aoa")}: {format("%.1f", shell.aoa)} {loc("measureUnits/deg")}"
+        aoaBox = get_str_bbox(aoaStr, aoaStr |> length(), fctx)
+        width = max(width, aoaBox.width.x + padding * 2.)
+        height += aoaBox.width.y + padding
 
-        let owner = get_unit(shell.ownerId)
-        var color = get_sensor_view_unit_color(owner)
-        let baseColor = E3DCOLOR(Color4(color))
-        color *= 0.5
-        //let e3dColor = E3DCOLOR(Color4(color))
+      var stateStr = ""
+      var stateBox = BBox2()
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.track >= 0
+        stateStr = "{loc("hud/guidanceState")}: {loc(shell.track == 0 ? "hud/search" : "hud/track")}"
+        stateBox = get_str_bbox(stateStr, stateStr |> length(), fctx)
+        width = max(width, stateBox.width.x + padding * 2.)
+        height += stateBox.width.y + padding
 
-        screenPos -= float2(width * 0.5, height + ctx |> hdpx(20.))
-        /*ctx |> set_color(e3dColor)
-        ctx |> render_rect(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, tc, tc, tc)*/
-        ctx |> set_color(baseColor)
-        ctx |> render_frame(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, ctx |> hdpx(1.8))
+      let owner = get_unit(shell.ownerId)
+      let color = get_sensor_view_unit_color(owner)
+      let baseColor = E3DCOLOR(Color4(color))
+      screenPos -= float2(width * 0.5, height + ctx |> hdpx(20.))
+      ctx |> set_color(data.backColor)
+      ctx |> render_rect(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, tc, tc, tc)
+      ctx |> set_color(baseColor)
+      ctx |> render_frame(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, ctx |> hdpx(1.8))
 
-        ctx |> set_color(data.textColor)
-        screenPos.y += rktNameBox.width.y + padding * 0.5
-        ctx |> goto_xy(screenPos.x + (width - rktNameBox.width.x) * 0.5, screenPos.y)
-        ctx |> draw_str_scaled(1.0, rktName, rktName |> length())
+      ctx |> set_color(data.textColor)
+      screenPos.y += rktNameBox.width.y + padding * 0.5
+      ctx |> goto_xy(screenPos.x + (width - rktNameBox.width.x) * 0.5, screenPos.y)
+      ctx |> draw_str_scaled(1.0, rktName, rktName |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_SPEED) && distSq <= lod0DistSq
-          screenPos.y += speedBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - speedBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, speed, speed |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_SPEED) && distSq <= lod0DistSq
+        screenPos.y += speedBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - speedBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, speed, speed |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_MACH) && distSq <= lod1DistSq
-          screenPos.y += machBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - machBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, mach, mach |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_MACH) && distSq <= lod1DistSq
+        screenPos.y += machBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - machBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, mach, mach |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_DIST) && distSq <= lod1DistSq
-          screenPos.y += distBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - distBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, distStr, distStr |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_DIST) && distSq <= lod1DistSq
+        screenPos.y += distBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - distBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, distStr, distStr |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_TRAVELED) && distSq <= lod0DistSq
-          screenPos.y += traveledBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - traveledBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, traveledStr, traveledStr |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_TRAVELED) && distSq <= lod0DistSq
+        screenPos.y += traveledBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - traveledBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, traveledStr, traveledStr |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_LIFETIME) && distSq <= lod0DistSq
-          screenPos.y += timeBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - timeBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, timeStr, timeStr |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_LIFETIME) && distSq <= lod0DistSq
+        screenPos.y += timeBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - timeBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, timeStr, timeStr |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_OVERLOAD) && distSq <= lod0DistSq
-          screenPos.y += overloadBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - overloadBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, overloadStr, overloadStr |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_OVERLOAD) && distSq <= lod0DistSq
+        screenPos.y += overloadBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - overloadBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, overloadStr, overloadStr |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_AOA) && distSq <= lod0DistSq
-          screenPos.y += aoaBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - aoaBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, aoaStr, aoaStr |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_AOA) && distSq <= lod0DistSq
+        screenPos.y += aoaBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - aoaBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, aoaStr, aoaStr |> length())
 
-        if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.track >= 0
-          screenPos.y += stateBox.width.y + padding
-          ctx |> goto_xy(screenPos.x + (width - stateBox.width.x) * 0.5, screenPos.y)
-          ctx |> draw_str_scaled(1.0, stateStr, stateStr |> length())
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.track >= 0
+        screenPos.y += stateBox.width.y + padding
+        ctx |> goto_xy(screenPos.x + (width - stateBox.width.x) * 0.5, screenPos.y)
+        ctx |> draw_str_scaled(1.0, stateStr, stateStr |> length())

@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
+let { request_matching } = require("%scripts/matching/api.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
@@ -166,7 +167,7 @@ function requestBattleRating(cb, recentUserData) {
   isUpdating = true
   lastRequestTimeMsec  = get_time_msec()
   let errorCB = @(...) isUpdating = false
-  ::request_matching("wtmm_static.calc_ranks", cb, errorCB, recentUserData, {
+  request_matching("wtmm_static.calc_ranks", cb, errorCB, recentUserData, {
     showError = false
   })
 }

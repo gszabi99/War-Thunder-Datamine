@@ -10,6 +10,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
 let { getEventEconomicName, checkEventFeaturePacks } = require("%scripts/events/eventInfo.nut")
+let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -94,6 +95,11 @@ function setSquadReadyFlag(event) {
     if (!antiCheat.showMsgboxIfEacInactive(this.event) ||
         !showMsgboxIfSoundModsNotAllowed(this.event))
       return this.remove()
+
+    if (hasMultiplayerLimitByAas.get()) {
+      showMultiplayerLimitByAasMsg()
+      return this.remove()
+    }
 
     let handler = this
     tryOpenCaptchaHandler(

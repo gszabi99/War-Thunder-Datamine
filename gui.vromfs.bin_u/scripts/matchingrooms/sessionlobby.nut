@@ -52,7 +52,7 @@ let { get_meta_mission_info_by_name, leave_mp_session, quit_to_debriefing,
 let { set_game_mode, get_game_mode, get_game_type, get_cur_game_mode_name } = require("mission")
 let { addRecentContacts } = require("%scripts/contacts/contactsManager.nut")
 let { notifyQueueLeave } = require("%scripts/matching/serviceNotifications/match.nut")
-let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { matchingApiFunc, matchingRpcSubscribe, checkMatchingError } = require("%scripts/matching/api.nut")
 let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPassword,
   roomStartSession, kickMember, setRoomAttributes, setMemberAttributes, requestLeaveRoom,
   requestJoinRoom, requestDestroyRoom, requestCreateRoom, isMyUserId
@@ -81,6 +81,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { showMsgboxIfEacInactive } = require("%scripts/penitentiary/antiCheat.nut")
 let { isMeBanned } = require("%scripts/penitentiary/penalties.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 /*
 SessionLobby API
@@ -358,6 +359,11 @@ function reconnect(roomId, gameModeName) {
   let event = ::events.getEvent(gameModeName)
   if (!showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
     return
+
+  if (event != null && hasMultiplayerLimitByAas.get()) {
+    showMultiplayerLimitByAasMsg()
+    return
+  }
 
   SessionLobby.joinRoom(roomId)
 }
@@ -1074,7 +1080,7 @@ SessionLobby = {
       let prevPass = SessionLobbyState.password
       roomSetPassword({ roomId = SessionLobbyState.roomId, password = v_password },
         function(p) {
-          if (!::checkMatchingError(p)) {
+          if (!checkMatchingError(p)) {
             SessionLobbyState.password = prevPass
             SessionLobby.checkDynamicSettings()
           }
@@ -1136,7 +1142,7 @@ SessionLobby = {
     this.switchStatus(lobbyStates.UPLOAD_CONTENT)
     setRoomAttributes({ roomId = SessionLobbyState.roomId, private = { userMission = blkData.result } },
                           function(p) {
-                            if (!::checkMatchingError(p)) {
+                            if (!checkMatchingError(p)) {
                               SessionLobby.returnStatusToRoom()
                               return
                             }
@@ -1384,7 +1390,7 @@ SessionLobby = {
         SessionLobbyState.isReady = ready
 
         //if we receive error on set ready, result is ready == false always.
-        if (!::checkMatchingError(p, !silent)) {
+        if (!checkMatchingError(p, !silent)) {
           SessionLobbyState.isReady = false
           needUpdateState = true
         }
@@ -1648,7 +1654,7 @@ SessionLobby = {
   }
 
   function afterRoomCreation(params) {
-    if (!::checkMatchingError(params))
+    if (!checkMatchingError(params))
       return this.switchStatus(lobbyStates.NOT_IN_ROOM)
 
     isMeSessionLobbyRoomOwner.set(true)
@@ -1804,7 +1810,7 @@ SessionLobby = {
       return
     }
 
-    if (!::checkMatchingError(params))
+    if (!checkMatchingError(params))
       return this.switchStatus(lobbyStates.NOT_IN_ROOM)
 
     SessionLobbyState.roomId = params.roomId
@@ -1858,7 +1864,7 @@ SessionLobby = {
     if (isMeSessionLobbyRoomOwner.get() && get_game_mode() == GM_DYNAMIC && !dynamicMissionPlayed()) {
       serializeDyncampaign(
         function(p) {
-          if (::checkMatchingError(p))
+          if (checkMatchingError(p))
             SessionLobby.checkAutoStart()
           else
             SessionLobby.destroyRoom();
@@ -1893,7 +1899,7 @@ SessionLobby = {
     }
 
     let params = { roomId = SessionLobbyState.roomId, userId = uid, password = SessionLobbyState.password }
-    invitePlayerToRoom(params, @(p) ::checkMatchingError(p, false))
+    invitePlayerToRoom(params, @(p) checkMatchingError(p, false))
   }
 
   function kickPlayer(member) {
@@ -1902,7 +1908,7 @@ SessionLobby = {
 
     foreach (_idx, m in SessionLobbyState.members)
       if (m.memberId == member.memberId)
-        kickMember({ roomId = SessionLobbyState.roomId, memberId = member.memberId }, function(p) { ::checkMatchingError(p) })
+        kickMember({ roomId = SessionLobbyState.roomId, memberId = member.memberId }, function(p) { checkMatchingError(p) })
   }
 
   function updateRoomAttributes(missionSettings) {
@@ -1913,7 +1919,7 @@ SessionLobby = {
   }
 
   function afterRoomUpdate(params) {
-    if (!::checkMatchingError(params, false))
+    if (!checkMatchingError(params, false))
       return this.destroyRoom()
 
     SessionLobbyState.roomUpdated = true
@@ -2025,7 +2031,7 @@ SessionLobby = {
         function(p) {
           if (!isInSessionRoom.get())
             return
-          if (!::checkMatchingError(p)) {
+          if (!checkMatchingError(p)) {
             if (!SessionLobby.haveLobby())
               SessionLobby.destroyRoom()
             else if (isInMenu())
@@ -2573,7 +2579,7 @@ SessionLobby = {
   function joinEventSession(needLeaveRoomOnError = false, params = null) {
     matchingApiFunc("mrooms.join_session",
       function(params_) {
-        if (!::checkMatchingError(params_) && needLeaveRoomOnError)
+        if (!checkMatchingError(params_) && needLeaveRoomOnError)
           this.leaveRoom()
       }.bindenv(this),
       params
@@ -2637,6 +2643,10 @@ function rpcJoinBattle(params) {
     return "EAC is not active"
   if (!showMsgboxIfSoundModsNotAllowed({ allowSoundMods = false }))
     return "sound mods not allowed"
+  if (hasMultiplayerLimitByAas.get()) {
+    showMultiplayerLimitByAasMsg()
+    return "multiplayer is limit by anti addict system"
+  }
 
   log("join to battle with id " + battleId)
   SessionLobby.joinBattle(battleId)

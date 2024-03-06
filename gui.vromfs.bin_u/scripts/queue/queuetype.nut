@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+
+let { request_matching } = require("%scripts/matching/api.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -86,7 +88,7 @@ enums.addTypesByGlobalName("g_queue_type",
 
       //FIX ME: why it work not by queueStats and queueInfo classes?
       updateInfo = function(successCallback, errorCallback, needAllQueues = false) {
-        ::request_matching(
+        request_matching(
           "worldwar.get_queue_info",
           function(response) {
             let queuesInfo = {}

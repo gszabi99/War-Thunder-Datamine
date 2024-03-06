@@ -165,6 +165,9 @@
         }
       },
       "else_actions": {
+        "wait": {
+          "time": 0.5
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
@@ -228,6 +231,10 @@
         "varSetString": {
           "value": "ID_FIRE_SECONDARY",
           "var": "fire_shortcut_id"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "is_secondary"
         }
       },
       "else_actions": {
@@ -301,6 +308,10 @@
         },
         "triggerDisable": {
           "target": "need_to_choose_bomb"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "is_secondary"
         }
       },
       "else_actions": {
@@ -397,10 +408,6 @@
             "ID_TOGGLE_LASER_DESIGNATOR"
           ]
         },
-        "missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": true
-        },
         "triggerEnable": {
           "target": "start_msg"
         }
@@ -444,6 +451,10 @@
         },
         "wait": {
           "time": 0.5
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
         "triggerEnable": {
           "target": "start_msg1"
@@ -1050,10 +1061,7 @@
         },
         "playerControls": {
           "setStatus": "enable",
-          "control": [
-            "ID_GUIDED_BOMBS",
-            "ID_FIRE_SECONDARY"
-          ]
+          "control": "ID_GUIDED_BOMBS_LOCK"
         },
         "playHint": {
           "hintType": "standard",
@@ -1067,15 +1075,51 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "item": "@fire_shortcut_id"
+          "item": [
+            "@fire_shortcut_id",
+            "ID_GUIDED_BOMBS_LOCK"
+          ]
         },
         "triggerEnable": {
-          "target": "activate_bomb"
+          "target": [
+            "activate_bomb_choose",
+            "activate_fire_button"
+          ]
+        }
+      }
+    },
+    "activate_bomb_choose": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
         }
       },
-      "else_actions": {}
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_secondary",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "activate_bomb_main"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "activate_bomb_secondary"
+        }
+      }
     },
-    "activate_bomb": {
+    "activate_bomb_main": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1094,21 +1138,52 @@
             "control": "ID_GUIDED_BOMBS"
           },
           {
-            "control": "ID_FIRE_SECONDARY"
+            "control": "ID_GUIDED_BOMBS_LOCK"
           }
         ]
       },
       "actions": {
-        "missionSetTimeSpeed": [
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "wait": {
+          "time": 1.0
+        },
+        "triggerEnable": {
+          "target": "change_view_info"
+        }
+      },
+      "else_actions": {}
+    },
+    "activate_bomb_secondary": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": [
           {
-            "speed": 1.0,
-            "realtimeTriggers": true
+            "control": "ID_FIRE_SECONDARY"
           },
           {
-            "speed": 0.0,
-            "realtimeTriggers": true
+            "control": "ID_GUIDED_BOMBS_LOCK"
           }
-        ],
+        ]
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
         "wait": {
           "time": 1.0
         },
@@ -1468,17 +1543,11 @@
           "speed": 1.0,
           "realtimeTriggers": true
         },
-        "playerControls": {
-          "setStatus": "enable",
-          "control": [
-            "ID_GUIDED_BOMBS",
-            "ID_FIRE_SECONDARY"
-          ]
-        },
         "triggerEnable": {
           "target": [
             "check_rocket",
-            "time_out_timer_rocket"
+            "time_out_timer_rocket",
+            "activate_fire_button"
           ]
         }
       },
@@ -2034,6 +2103,39 @@
       },
       "else_actions": {}
     },
+    "activate_fire_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_secondary",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_GUIDED_BOMBS"
+        }
+      },
+      "else_actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_FIRE_SECONDARY"
+        }
+      }
+    },
     "mission_restart": {
       "is_enabled": false,
       "comments": "",
@@ -2201,7 +2303,8 @@
     "mission_end_time": 0,
     "fire_shortcut_id": "ID_GUIDED_BOMBS",
     "is_skip_view": false,
-    "is_night_view": false
+    "is_night_view": false,
+    "is_secondary": false
   },
   "dialogs": {},
   "airfields": {},

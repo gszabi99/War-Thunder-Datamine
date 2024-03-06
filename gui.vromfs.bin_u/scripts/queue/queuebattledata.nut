@@ -58,7 +58,7 @@ function actualizeQueueData(cb = null) {
   function fullErrorCb(res) {
     isInRequestQueueData(false)
     lastResult(res)
-    cb?(successResultByCountry.value?[curCountry])
+    cb?(res)
   }
   let requestBlk = DataBlock()
   requestBlk.infoTypes = "battleStartInfo;clanInfo;penaltyInfo;playerInfo"

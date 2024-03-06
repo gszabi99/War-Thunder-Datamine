@@ -1,11 +1,14 @@
 from "%scripts/dagui_library.nut" import *
-let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
+
 let regexp2 = require("regexp2")
 let { resetTimeout } = require("dagor.workcycle")
 let { OPERATION_COMPLETE } = require("matching.errors")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { isMatchingOnline } = require("%scripts/matching/matchingOnline.nut")
+let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+
+let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
 
 const MAX_FETCH_RETRIES = 5
 const MAX_FETCH_DELAY_SEC = 60
@@ -26,8 +29,7 @@ function fetchClusterHosts() {
   isFetching = true
   logCH($"fetchClusterHosts (try {failedFetches})")
   let again = callee()
-  ::matching.rpc_call("hmanager.fetch_hosts_list",
-    { timeout = MAX_FETCH_DELAY_SEC },
+  matchingApiFunc("hmanager.fetch_hosts_list",
     function (result) {
       isFetching = false
 
@@ -46,7 +48,7 @@ function fetchClusterHosts() {
         failedFetches = 0
         resetTimeout(OUT_OF_RETRIES_DELAY_SEC, again)
       }
-    })
+    }, { timeout = MAX_FETCH_DELAY_SEC })
 }
 
 function tryFetchHosts() {
@@ -68,7 +70,7 @@ function tryApplyChangedHosts() {
 
 isInBattleState.subscribe(@(_) tryApplyChangedHosts())
 
-::matching.subscribe("hmanager.notify_hosts_list_changed", function(result) {
+matchingRpcSubscribe("hmanager.notify_hosts_list_changed", function(result) {
   logCH($"Changed hosts:", result)
   let hosts = result.filter(@(_, ip) reIP.match(ip))
   clusterHostsChangePending(hosts)

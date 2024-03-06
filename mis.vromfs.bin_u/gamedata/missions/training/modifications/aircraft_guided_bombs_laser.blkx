@@ -292,6 +292,10 @@
         "varSetString": {
           "value": "ID_FIRE_SECONDARY",
           "var": "fire_shortcut_id"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "is_secondary"
         }
       },
       "else_actions": {
@@ -365,6 +369,10 @@
         },
         "triggerDisable": {
           "target": "need_to_choose_bomb"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "is_secondary"
         }
       },
       "else_actions": {
@@ -1544,17 +1552,11 @@
           "speed": 1.0,
           "realtimeTriggers": true
         },
-        "playerControls": {
-          "setStatus": "enable",
-          "control": [
-            "ID_GUIDED_BOMBS",
-            "ID_FIRE_SECONDARY"
-          ]
-        },
         "triggerEnable": {
           "target": [
             "check_rocket",
-            "time_out_timer_rocket"
+            "time_out_timer_rocket",
+            "activate_fire_button"
           ]
         }
       },
@@ -2190,6 +2192,39 @@
       },
       "else_actions": {}
     },
+    "activate_fire_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_secondary",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_GUIDED_BOMBS"
+        }
+      },
+      "else_actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_FIRE_SECONDARY"
+        }
+      }
+    },
     "mission_restart": {
       "is_enabled": false,
       "comments": "",
@@ -2356,7 +2391,8 @@
   "variables": {
     "mission_end_time": 0,
     "fire_shortcut_id": "ID_GUIDED_BOMBS",
-    "is_skip_view": false
+    "is_skip_view": false,
+    "is_secondary": false
   },
   "dialogs": {},
   "airfields": {},

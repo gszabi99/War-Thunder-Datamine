@@ -140,7 +140,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -154,6 +154,9 @@
         }
       },
       "else_actions": {
+        "wait": {
+          "time": 0.5
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
@@ -173,7 +176,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -202,7 +205,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -235,7 +238,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.1
+          "time": 0.01
         }
       },
       "conditions": {
@@ -268,7 +271,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {
@@ -319,7 +322,7 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.01
         }
       },
       "conditions": {},
@@ -336,7 +339,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "item": "ID_AAM"
+          "item": "ID_AGM"
         },
         "missionSetTimeSpeed": {
           "speed": 0.0,
@@ -394,6 +397,9 @@
             "objects": "player"
           }
         ],
+        "wait": {
+          "time": 0.5
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true

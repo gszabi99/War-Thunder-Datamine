@@ -1,10 +1,11 @@
 from "%scripts/dagui_natives.nut" import send_error_log, script_net_assert, get_dyncampaign_b64blk, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
+
 let { INVALID_ROOM_ID } = require("matching.errors")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { format } = require("string")
-let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
+let { checkMatchingError, matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
@@ -386,7 +387,7 @@ function requestCreateRoom(params, cb) {
 
   matchingApiFunc("mrooms.create_room",
     function(resp) {
-      if (::checkMatchingError(resp, false))
+      if (checkMatchingError(resp, false))
         onRoomJoinCb(resp)
       cb(resp)
     },
@@ -400,7 +401,7 @@ function requestDestroyRoom(params, cb) {
 function requestJoinRoom(params, cb) {
   matchingApiFunc("mrooms.join_room",
     function(resp) {
-      if (::checkMatchingError(resp, false))
+      if (checkMatchingError(resp, false))
         onRoomJoinCb(resp)
       else {
         resp.roomId <- params?.roomId
@@ -456,7 +457,7 @@ function invitePlayerToRoom(params, cb) {
 function fetchRoomsList(params, cb) {
   matchingApiFunc("mrooms.fetch_rooms_digest2",
     function (resp) {
-      if (::checkMatchingError(resp, false)) {
+      if (checkMatchingError(resp, false)) {
         foreach (room in getTblValue("digest", resp, [])) {
           let hasPassword = room?.public.hasPassword
           if (hasPassword != null)
