@@ -2399,7 +2399,11 @@
           "page": {
             "type": "radar_b_round",
             "scale": 1.0,
-            "hideRadarBackground": true
+            "hideRadarBackground": true,
+            "offset": [
+              0.0,
+              -150.0
+            ]
           }
         },
         {
@@ -4322,6 +4326,10 @@
       },
       {
         "blk": "gameData/sensors/tv_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
         "node": "optic1_gun"
       }
     ]

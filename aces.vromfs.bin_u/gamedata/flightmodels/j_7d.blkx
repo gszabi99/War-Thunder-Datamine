@@ -2498,7 +2498,22 @@
         "apu_60m_r2",
         "s24_pylon_r1",
         "pylon_adp4_lm40_r550_2",
-        "ltc"
+        "ltc",
+        "airbrake_l1",
+        "airbrake_l8",
+        "airbrake_l7",
+        "airbrake_l3",
+        "airbrake_l2",
+        "airbrake_l6",
+        "aso_sps_141m"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank9_dm",
+        "tank10_dm",
+        "tank11_dm",
+        "tank12_dm"
       ]
     },
     "WeaponSlot": [
@@ -2508,7 +2523,14 @@
         "WeaponPreset": {
           "name": "gsh_23l_common",
           "ShowNodes": {
-            "node": "ltc"
+            "node": [
+              "airbrake_l1",
+              "airbrake_l8",
+              "airbrake_l7",
+              "airbrake_l3",
+              "airbrake_l2",
+              "ltc"
+            ]
           },
           "Weapon": [
             {
@@ -2661,6 +2683,28 @@
               "emitter": "china_gp_250_3",
               "bullets": 1,
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_490_slot1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_l1"
+            },
+            "ShowDmParts": {
+              "node": "tank11_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_left_wing_1.blk",
+              "emitter": "490l_drop_tank2",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "ptb_490_slot5"
             }
           }
         ]
@@ -2815,6 +2859,42 @@
             }
           }
         ]
+      },
+      {
+        "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_490_slot3",
+          "showInWeaponMenu": true,
+          "HideNodes": {
+            "node": [
+              "airbrake_l1",
+              "airbrake_l8",
+              "airbrake_l7",
+              "airbrake_l3",
+              "airbrake_l2"
+            ]
+          },
+          "ShowNodes": {
+            "node": [
+              "sps_141m_pylon",
+              "airbrake_l6"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "tank10_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_fuse.blk",
+            "emitter": "490l_drop_tank1",
+            "bullets": 1,
+            "external": true
+          }
+        }
       },
       {
         "index": 4,
@@ -3083,6 +3163,28 @@
               "emitter": "china_gp_250_4",
               "bullets": 1,
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_490_slot5",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_r1"
+            },
+            "ShowDmParts": {
+              "node": "tank12_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_right_wing_1.blk",
+              "emitter": "490l_drop_tank3",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "ptb_490_slot1"
             }
           }
         ]

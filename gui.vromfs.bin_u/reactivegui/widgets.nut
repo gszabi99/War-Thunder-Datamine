@@ -8,7 +8,6 @@ let shipHud = require("shipHud.nut")
 let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
 let shipExHud = require("shipExHud.nut")
 let tankExHud = require("tankExHud.nut")
-let shipObstacleRf = require("shipObstacleRangefinder.nut")
 let shipDeathTimer = require("shipDeathTimer.nut")
 let mkScoreboard = require("hud/scoreboard/mkScoreboard.nut")
 let aircraftHud = require("aircraftHud.nut")
@@ -57,9 +56,8 @@ let widgetsMap = {
   [DargWidgets.SHIP_OBSTACLE_RF] = function () {
     return {
       size = flex()
-      pos = [0, 0]
       halign = ALIGN_CENTER
-      children = [shipObstacleRf, shipDeathTimer]
+      children = shipDeathTimer
     }
   },
 

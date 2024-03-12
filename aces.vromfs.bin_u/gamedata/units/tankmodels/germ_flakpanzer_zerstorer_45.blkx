@@ -2654,7 +2654,7 @@
       "minRPM": 600.0
     },
     "mechanics": {
-      "maxBrakeForce": 80000.0,
+      "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.35,
       "mainGearRatio": 1.2,
       "sideGearRatio": 8.526,
@@ -3057,7 +3057,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
-        "breechDP": "cannon_breech_dm",
+        "breechDP": "cannon_breech_01_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
         "bullets": 210,
@@ -3082,7 +3082,7 @@
           "verDriveDm": "drive_turret_v_dm",
           "horDriveDm": "drive_turret_h_dm",
           "linkedAnimPart": {
-            "verNode": "bone_mount_camera",
+            "verNode": "bone_roll_01",
             "verLimits": [
               -180.0,
               180.0
@@ -3148,7 +3148,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_02_dm",
-        "breechDP": "cannon_breech_dm",
+        "breechDP": "cannon_breech_02_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
         "bullets": 210,
@@ -3230,7 +3230,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_03_dm",
-        "breechDP": "cannon_breech_dm",
+        "breechDP": "cannon_breech_03_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
         "bullets": 210,
@@ -3312,7 +3312,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_04_dm",
-        "breechDP": "cannon_breech_dm",
+        "breechDP": "cannon_breech_04_dm",
         "speedYaw": 60.0,
         "speedPitch": 20.0,
         "bullets": 210,
@@ -3383,9 +3383,6 @@
         }
       }
     ],
-    "animatedBones": {
-      "node": "bone_mount_camera"
-    },
     "hideNodes": {
       "node": [
         "ex_armor_l_01",
@@ -3403,6 +3400,9 @@
         "ex_armor_r_01_02",
         "ex_armor_r_01_03"
       ]
+    },
+    "animatedBones": {
+      "node": "bone_roll_01"
     }
   },
   "weapon_presets": {
@@ -3468,6 +3468,7 @@
       "effects": {
         "rcostAddParam": 0.98,
         "commonWeapons": {
+          "updateAnimBonesAlways": true,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -3484,7 +3485,7 @@
               "breechDP": "cannon_breech_dm",
               "speedYaw": 60.0,
               "speedPitch": 20.0,
-              "bullets": 180,
+              "bullets": 210,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
               "DelayAfterShoot": 2.0,
@@ -3505,30 +3506,17 @@
                 "gunnerDm": "gunner_dm",
                 "verDriveDm": "drive_turret_v_dm",
                 "horDriveDm": "drive_turret_h_dm",
-                "linkedAnimPart": [
-                  {
-                    "verNode": "bone_mount_camera",
-                    "verLimits": [
-                      -180.0,
-                      180.0
-                    ],
-                    "verOriginLimits": [
-                      -180.0,
-                      180.0
-                    ]
-                  },
-                  {
-                    "verNode": "bone_mount_camera_01",
-                    "verLimits": [
-                      -180.0,
-                      180.0
-                    ],
-                    "verOriginLimits": [
-                      -180.0,
-                      180.0
-                    ]
-                  }
-                ]
+                "linkedAnimPart": {
+                  "verNode": "bone_roll_01",
+                  "verLimits": [
+                    -180.0,
+                    180.0
+                  ],
+                  "verOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -3588,7 +3576,7 @@
               "breechDP": "cannon_breech_dm",
               "speedYaw": 60.0,
               "speedPitch": 20.0,
-              "bullets": 180,
+              "bullets": 210,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
               "DelayAfterShoot": 2.0,
@@ -3670,7 +3658,7 @@
               "breechDP": "cannon_breech_dm",
               "speedYaw": 60.0,
               "speedPitch": 20.0,
-              "bullets": 180,
+              "bullets": 210,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
               "DelayAfterShoot": 2.0,
@@ -3752,7 +3740,7 @@
               "breechDP": "cannon_breech_dm",
               "speedYaw": 60.0,
               "speedPitch": 20.0,
-              "bullets": 180,
+              "bullets": 210,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
               "DelayAfterShoot": 2.0,
@@ -3838,6 +3826,9 @@
               "ex_armor_l_02_03",
               "ex_armor_l_02_01"
             ]
+          },
+          "animatedBones": {
+            "node": "bone_roll_01"
           }
         },
         "collisionProps": {
@@ -3873,9 +3864,9 @@
       -7.0
     ],
     "headPosOnShooting": [
-      0.2,
-      3.4,
-      0.55
+      0.0,
+      3.5,
+      0.0
     ],
     "zoomOutFov": 40.0,
     "zoomInFov": 21.0,

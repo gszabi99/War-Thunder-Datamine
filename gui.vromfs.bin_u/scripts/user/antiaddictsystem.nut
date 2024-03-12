@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
+let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { get_charserver_time_sec } = require("chard")
 let { getExpireText } = require("%scripts/time.nut")
 let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
@@ -77,8 +77,8 @@ eventbus_subscribe("on_sign_out", function(_) {
   clearTimer(showMultiplayerAvailableMsg)
 })
 
-needShowAasMessageLimit.subscribe(@(v) v ? showMultiplayerLimitByAasMsg() : null)
-needShowAasMessageWarning.subscribe(@(v) v ? showAasWarningMsg() : null)
+needShowAasMessageLimit.subscribe(@(v) v ? deferOnce(showMultiplayerLimitByAasMsg) : null)
+needShowAasMessageWarning.subscribe(@(v) v ? deferOnce(showAasWarningMsg) : null)
 
 isInBattleState.subscribe(function(v) {
   if (v)

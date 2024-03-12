@@ -150,7 +150,7 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                               gm_engine_sound__is_inside : bool;
                               var gm_engine_sound__pos : float3&)
   let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  if unit == null
     return
   let gm = unit |> as_gm()
   if gm == null
@@ -168,6 +168,9 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
     gm_engine_sound__event.handle |> set_pos(gm_engine_sound__pos)
   gm_engine_sound__stop_event.handle |> set_pos(gm_engine_sound__pos)
   gm_engine_sound__start_event.handle |> set_pos(gm_engine_sound__pos)
+
+  if unit.isDelayed
+    return
 
   let swim = gm.swimEffectIntensity
   let rpm = abs(gm.engineRelativeRPM) * 100.f

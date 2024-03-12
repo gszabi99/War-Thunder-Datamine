@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { obstacleIsNear, distanceToObstacle } = require("shipState.nut")
+let { obstacleIsNear, distanceToObstacle, obstacleAngle } = require("shipState.nut")
 let { alert } = require("style/colors.nut").hud.damageModule
-let { abs } = require("%sqstd/math.nut")
+let { cos, sin, PI, abs } = require("%sqstd/math.nut")
 let { measureUnitsNames } = require("options/optionsMeasureUnits.nut")
 
 let showCollideWarning = Computed(@() distanceToObstacle.value < 0)
@@ -11,33 +11,39 @@ let textToShow = Computed(@() (showCollideWarning.value ? loc("hud_ship_collide_
        loc("hud_ship_depth_on_course_warning"))
 )
 
-local criticalDistance = 50.0
-local redGlowColor = Color(221, 17, 17, 50)
-local yellowGlowColor = Color(255, 176, 37, 250)
-local warningColor = Color(255, 176, 37)
+let criticalDistance = 50.0
+let redGlowColor = Color(221, 17, 17, 50)
+let yellowGlowColor = Color(255, 176, 37, 250)
+let warningColor = Color(255, 176, 37)
 
-let land_icon = Picture($"ui/gameuiskin#land_icon.svg:{hdpx(35)}:{hdpx(30)}:P")
-let deep_yelow_bg = Picture($"ui/gameuiskin#deep_yelow_bg.avif:{hdpx(200)}:{hdpx(80)}:P")
-let deep_red_bg = Picture($"ui/gameuiskin#deep_red_bg.avif:{hdpx(200)}:{hdpx(80)}:P")
-let bg_yelow_distance = Picture($"ui/gameuiskin#bg_yelow_distance.avif:{hdpx(50)}:{hdpx(25)}:P")
-let bg_red_distance = Picture($"ui/gameuiskin#bg_red_distance.avif:{hdpx(50)}:{hdpx(25)}:P")
+let obstacleMarkRadius = sh(20)
+
+let landIconWidth = hdpxi(35)
+let landIconHeight = hdpxi(30)
+let deepBgWidth = hdpxi(200)
+let deepBgHeight = hdpxi(80)
+let distanceBgWidth = hdpxi(50)
+let distanceBgHeight = hdpxi(25)
+
+let land_icon = Picture($"ui/gameuiskin#land_icon.svg:{landIconWidth}:{landIconHeight}:P")
+let deep_bg = Picture($"ui/gameuiskin#deep_bg.svg:{deepBgWidth}:{deepBgHeight}:P")
+let bg_distance = Picture($"ui/gameuiskin#bg_distance.svg:{distanceBgWidth}:{distanceBgHeight}:P")
 
 
-let obstacleDistance = @() {
-  watch = distanceToObstacle
+let obstacleDistance = {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  pos = [0, hdpx(65)]
   children = [
-    {
+     @() {
+      watch = distanceToObstacle
+      size = [distanceBgWidth, distanceBgHeight]
       rendObj = ROBJ_IMAGE
-      image = distanceToObstacle.value > criticalDistance
-              ? bg_yelow_distance
-              : bg_red_distance
-      size = [hdpx(50), hdpx(25)]
+      image = bg_distance
+      color = distanceToObstacle.value > criticalDistance ? warningColor : alert
+      transitions = [{ prop = AnimProp.color, duration = 0.3 }]
     }
     @() {
-      watch = measureUnitsNames
+      watch = [measureUnitsNames, distanceToObstacle]
       rendObj = ROBJ_TEXT
       font = Fonts.tiny_text
       fontFxColor = Color(250, 250, 250, 250)
@@ -53,46 +59,60 @@ let obstacleDirection = {
   valign = ALIGN_CENTER
   children = [
     @() {
-      watch = distanceToObstacle
+      watch = [distanceToObstacle, obstacleAngle]
+      size = [deepBgWidth, deepBgHeight]
       rendObj = ROBJ_IMAGE
-      image = distanceToObstacle.value > criticalDistance
-              ? deep_yelow_bg
-              : deep_red_bg
-      size = [hdpx(200), hdpx(80)]
+      image = deep_bg
+      color = distanceToObstacle.value > criticalDistance ? warningColor : alert
+      transitions = [{ prop = AnimProp.color, duration = 0.3 }]
+      transform = {
+        rotate = obstacleAngle.get()
+      }
     }
     {
+      size = [landIconWidth, landIconHeight]
       rendObj = ROBJ_IMAGE
       image = land_icon
-      size = [hdpx(35), hdpx(30)]
     }
   ]
 }
 
-return @() {
-  watch = [ obstacleIsNear, distanceToObstacle ]
-  size = SIZE_TO_CONTENT
+let obstacleDirectionMark = {
   halign = ALIGN_CENTER
-  isHidden = !obstacleIsNear.value
-  children = [
-    @() {
-      watch = textToShow
-      pos = [0, hdpx(170)]
-      rendObj = ROBJ_TEXT
-      font = Fonts.big_text
-      fontFxColor = distanceToObstacle.value > criticalDistance
-                    ? yellowGlowColor
-                    : redGlowColor
-      fontFxFactor = min(64, hdpx(64))
-      fontFx = FFT_GLOW
-      text = textToShow.value
-      color = distanceToObstacle.value > criticalDistance
-              ? warningColor
-              : alert
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  flow = FLOW_VERTICAL
+  gap = hdpx(-15) //!!!FIX ME negative gap because of margins in image
+  children = [ obstacleDirection, obstacleDistance]
+  transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = InOutQuad }]
+  behavior = Behaviors.RtPropUpdate
+  function update() {
+    let finalAngle = PI * (obstacleAngle.get() -90)/180.0
+    return {
+      transform = {
+        translate = [ obstacleMarkRadius * cos(finalAngle), obstacleMarkRadius * sin(finalAngle) ]
+      }
     }
-    {
-      pos = [0, hdpx(300)]
-      halign = ALIGN_CENTER
-      children = [ obstacleDirection, obstacleDistance]
-    }
-  ]
+  }
+}
+
+let obstacleWarningText = @() {
+  watch = [textToShow, distanceToObstacle]
+  pos = [0, hdpx(170)]
+  rendObj = ROBJ_TEXT
+  font = Fonts.big_text
+  fontFxColor = distanceToObstacle.value > criticalDistance ? yellowGlowColor : redGlowColor
+  fontFxFactor = min(64, hdpx(64))
+  fontFx = FFT_GLOW
+  text = textToShow.value
+  color = distanceToObstacle.value > criticalDistance ? warningColor : alert
+  transitions = [{ prop = AnimProp.color, duration = 0.3 }]
+}
+
+return @() {
+  watch = obstacleIsNear
+  size = flex()
+  halign = ALIGN_CENTER
+  children = !obstacleIsNear.get() ? null
+    : [obstacleWarningText, obstacleDirectionMark]
 }

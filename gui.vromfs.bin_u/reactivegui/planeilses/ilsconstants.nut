@@ -9,6 +9,7 @@ const metrToMile = 0.000621371
 const metrToNavMile = 0.000539957
 const feetToNavMile = 0.000164579
 let radToDeg = 180.0 / 3.14159
+let degToRad = 3.14159 / 180.0
 let baseLineWidth = floor(4 * LINE_WIDTH + 0.5)
 
 enum weaponTriggerName {
@@ -46,5 +47,6 @@ return {
   metrToNavMile
   radToDeg
   feetToNavMile,
-  weaponTriggerName
+  weaponTriggerName,
+  degToRad
 }

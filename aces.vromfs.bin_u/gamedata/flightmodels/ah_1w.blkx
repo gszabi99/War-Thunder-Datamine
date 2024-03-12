@@ -35,9 +35,6 @@
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2035,7 +2032,9 @@
               ]
             },
             {
-              "type": "rwr"
+              "type": "rwr",
+              "scale": 1.0,
+              "hideRwrBackground": true
             }
           ]
         },
@@ -2048,7 +2047,8 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.0
+            "scale": 1.0,
+            "hideRwrBackground": true
           }
         },
         {
@@ -3208,7 +3208,7 @@
     },
     "heli_counterMeasures": {
       "modClass": "armor",
-      "prevModification": "MAW_system_heli_false_thermal_targets",
+      "reqModification": "MAW_system_heli_false_thermal_targets",
       "turn_it_off": false,
       "invertEnableLogic": false,
       "tier": 2,
@@ -3224,6 +3224,27 @@
           "counterMeasure": {
             "blk": "gameData/counterMeasures/l_166.blk"
           }
+        },
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/ir_tracker.blk",
+              "node": "optic1_gun"
+            },
+            {
+              "blk": "gameData/sensors/us_an_apr_39.blk"
+            },
+            {
+              "blk": "gameData/sensors/us_an_aar_47.blk"
+            },
+            {
+              "blk": "gameData/sensors/us_flir.blk",
+              "node": "optic1_gun"
+            },
+            {
+              "blk": "gameData/sensors/us_an_avr-2.blk"
+            }
+          ]
         }
       }
     },

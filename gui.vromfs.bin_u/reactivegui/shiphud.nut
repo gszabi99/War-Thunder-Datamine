@@ -9,7 +9,7 @@ let fireControl = require("shipFireControl.nut")
 let { missionProgressHeight, isSpectatorMode } = require("%rGui/hudState.nut")
 let { radarComponent } = require("shipHudComponents.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
-
+let shipObstacleRf = require("shipObstacleRangefinder.nut")
 
 let shipHud = @() {
   watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
@@ -35,5 +35,6 @@ return {
     actionBarTopPanel
     fireControl
     radarComponent
+    shipObstacleRf
   ]
 }

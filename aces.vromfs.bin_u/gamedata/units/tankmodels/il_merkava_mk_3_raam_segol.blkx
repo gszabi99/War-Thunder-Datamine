@@ -104,7 +104,7 @@
         "createSecondaryShatters": false
       },
       "ex_armor_body_02_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 30.0
       },
       "turret_03_bottom_dm": {
         "armorThickness": 5.0,
@@ -122,6 +122,9 @@
       },
       "ex_armor_body_10_dm": {
         "armorThickness": 30.0
+      },
+      "turret_10_top_dm": {
+        "armorThickness": 25.0
       },
       "turret_04_back_dm": {
         "armorThickness": 5.0,
@@ -152,6 +155,11 @@
       "turret_05_side_dm": {
         "armorThickness": 20.0,
         "armorClass": "hull_side_special_armor",
+        "createSecondaryShatters": false
+      },
+      "ex_armor_body_03_dm": {
+        "armorThickness": 30.0,
+        "hidableInViewer": true,
         "createSecondaryShatters": false
       },
       "turret_07_front_dm": {
@@ -440,7 +448,7 @@
       "armorClass": "hull_side_special_armor",
       "hidableInXrayViewer": true,
       "turret_09_side_dm": {
-        "armorThickness": 50.0,
+        "armorThickness": 10.0,
         "hidableInViewer": true,
         "createSecondaryShatters": false
       },
@@ -497,13 +505,12 @@
         "armorThickness": 6.0
       },
       "ex_armor_turret_02_dm": {
-        "armorThickness": 6.0
+        "armorThickness": 10.0,
+        "armorClass": "RHA_tank_modern"
       },
       "ex_armor_body_04_dm": {},
       "ex_armor_body_05_dm": {},
-      "ex_armor_body_03_dm": {},
       "ex_armor_body_06_dm": {},
-      "turret_10_top_dm": {},
       "turret_10_side_dm": {
         "armorThickness": 5.0
       },
@@ -2280,7 +2287,18 @@
           "head": "bone_mg_aa_h_02",
           "gun": "bone_mg_aa_v_02",
           "gunnerDm": "commander_dm",
-          "hasNightVision": false
+          "hasNightVision": false,
+          "linkedAnimPart": {
+            "verNode": "bone_roll_01",
+            "verLimits": [
+              -50.0,
+              50.0
+            ],
+            "verOriginLimits": [
+              -50.0,
+              50.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -2642,6 +2660,360 @@
         "to": "wheel"
       }
     }
+  },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_29_01"
+          },
+          {
+            "nameTemplate": "bone_roll_29_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_30_01"
+          },
+          {
+            "nameTemplate": "bone_roll_30_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_31_01"
+          },
+          {
+            "nameTemplate": "bone_roll_31_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_32_01"
+          },
+          {
+            "nameTemplate": "bone_roll_32_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_33_01"
+          },
+          {
+            "nameTemplate": "bone_roll_33_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_34_01"
+          },
+          {
+            "nameTemplate": "bone_roll_34_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_35_01"
+          },
+          {
+            "nameTemplate": "bone_roll_35_02"
+          }
+        ]
+      }
+    ]
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -3854,7 +4226,18 @@
                 "head": "bone_mg_aa_h_02",
                 "gun": "bone_mg_aa_v_02",
                 "gunnerDm": "commander_dm",
-                "hasNightVision": false
+                "hasNightVision": false,
+                "linkedAnimPart": {
+                  "verNode": "bone_roll_01",
+                  "verLimits": [
+                    -50.0,
+                    50.0
+                  ],
+                  "verOriginLimits": [
+                    -50.0,
+                    50.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -4165,15 +4548,6 @@
             "ghosting": 0.75,
             "noiseFactor": 0.2
           },
-          "commanderIr": {
-            "resolution": [
-              1600,
-              1200
-            ],
-            "lightMult": 9.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
-          },
           "driverIr": {
             "resolution": [
               800,
@@ -4195,7 +4569,7 @@
       },
       "disableModEffects": {
         "hideNodes": {
-          "node": "ex_armor_body_02"
+          "node": "ex_armor_body_03"
         }
       }
     }

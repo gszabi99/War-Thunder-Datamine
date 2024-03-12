@@ -1848,8 +1848,6 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret",
           "linkedAnimPart": {
             "verNode": "bone_mg_gun_twin",
             "verLimits": [
@@ -1923,8 +1921,7 @@
         "turret": {
           "head": "bone_mg_twin",
           "gun": "bone_mg_twin",
-          "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "gunnerDm": "gunner_dm"
         },
         "limits": {
           "yaw": [
@@ -1947,24 +1944,22 @@
         "parkInDeadzone": false,
         "speedYaw": 90.0,
         "speedPitch": 90.0,
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -5.0,
-            10.0
-          ]
-        },
         "turret": {
-          "head": "bone_turret",
+          "head": "bone_commander_sight_h",
           "gun": "bone_commander_sight_v",
-          "optics": "commander_optics_round",
           "gunnerDm": "commander_dm",
           "verDriveDm": "commander_panoramic_sight_dm",
-          "horDriveDm": "commander_panoramic_sight_dm",
-          "rotatedTurret": "bone_turret"
+          "horDriveDm": "commander_panoramic_sight_dm"
+        },
+        "limits": {
+          "yaw": [
+            -30.0,
+            30.0
+          ],
+          "pitch": [
+            -14.0,
+            40.0
+          ]
         }
       }
     ]
@@ -2009,8 +2004,8 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 190.0,
-      "maxRPM": 4500.0,
+      "horsePowers": 195.0,
+      "maxRPM": 5000.0,
       "minRPM": 800.0,
       "rpmTau": 1.9
     },
@@ -2018,7 +2013,7 @@
       "maxBrakeForce": 30000.0,
       "driveGearRadius": 0.45,
       "mainGearRatio": 7.35,
-      "sideGearRatio": 1.05,
+      "sideGearRatio": 1.17,
       "tracked": false,
       "gearRatios": {
         "ratio": [
@@ -3159,7 +3154,6 @@
     }
   },
   "commanderView": {
-    "aimModeAvailable": true,
     "optics": "commander_optics_round",
     "zoomOutFov": 80.0,
     "zoomInFov": 7.37,
@@ -3207,28 +3201,17 @@
     },
     "airstrike": {},
     "improved_optics": {},
-    "30mm_hs_831_APHEI": {},
-    "30mm_hs_831_APHEI_ammo_pack": {
-      "tier": 1
-    },
+    "30mm_rarden_sap": {},
+    "30mm_rarden_he": {},
     "30mm_hs_831_APDS": {},
     "30mm_hs_831_APDS_ammo_pack": {
-      "tier": 4
+      "tier": 3
     },
     "night_vision_system": {
       "tier": 3,
       "effects": {
         "nightVision": {
           "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderIr": {
             "resolution": [
               800,
               600
@@ -3279,8 +3262,6 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret",
                 "linkedAnimPart": {
                   "verNode": "bone_mg_gun_twin",
                   "verLimits": [
@@ -3354,8 +3335,7 @@
               "turret": {
                 "head": "bone_mg_twin",
                 "gun": "bone_mg_twin",
-                "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "gunnerDm": "gunner_dm"
               },
               "limits": {
                 "yaw": [
@@ -3378,24 +3358,22 @@
               "parkInDeadzone": false,
               "speedYaw": 90.0,
               "speedPitch": 90.0,
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -5.0,
-                  10.0
-                ]
-              },
               "turret": {
-                "head": "bone_turret",
+                "head": "bone_commander_sight_h",
                 "gun": "bone_commander_sight_v",
-                "optics": "commander_optics_round",
                 "gunnerDm": "commander_dm",
                 "verDriveDm": "commander_panoramic_sight_dm",
-                "horDriveDm": "commander_panoramic_sight_dm",
-                "rotatedTurret": "bone_turret"
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -30.0,
+                  30.0
+                ],
+                "pitch": [
+                  -14.0,
+                  40.0
+                ]
               }
             },
             {

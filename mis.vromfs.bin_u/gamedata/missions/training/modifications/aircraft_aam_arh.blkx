@@ -499,7 +499,7 @@
             "objects": "target_air02"
           }
         ],
-        "__playerControls": {
+        "playerControls": {
           "setStatus": "enable",
           "control": [
             "AXIS_ELEVATOR",
@@ -820,6 +820,153 @@
       },
       "else_actions": {}
     },
+    "activate_menu": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_aam_arh/tws_menu",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+        },
+        "triggerEnable": {
+          "target": "activate_menu_tws"
+        }
+      },
+      "else_actions": {}
+    },
+    "activate_menu_tws": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 0.5
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/menu_choose_radar",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_VOICE_MESSAGE_1"
+        },
+        "triggerEnable": {
+          "target": "activate_spi2"
+        }
+      },
+      "else_actions": {}
+    },
+    "activate_spi2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_VOICE_MESSAGE_1"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/menu_choose_radar_switch",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_VOICE_MESSAGE_5"
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "triggerEnable": {
+          "target": "move_to_target_start"
+        }
+      },
+      "else_actions": {}
+    },
     "switch_sensor": {
       "is_enabled": false,
       "comments": "",
@@ -892,24 +1039,37 @@
         }
       },
       "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_SENSOR_MODE_SWITCH"
-        }
+        "playerShortcutPressed": [
+          {
+            "control": "ID_SENSOR_MODE_SWITCH"
+          },
+          {
+            "control": "ID_VOICE_MESSAGE_5"
+          }
+        ]
       },
       "actions": {
-        "playerControls": {
-          "setStatus": "disable",
-          "control": "ID_SENSOR_MODE_SWITCH"
-        },
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
         },
+        "wait": [
+          {
+            "time": 0.5
+          },
+          {
+            "time": 2.0
+          }
+        ],
+        "playerControls": {
+          "setStatus": "disable",
+          "control": [
+            "ID_SENSOR_MODE_SWITCH",
+            "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+          ]
+        },
         "hudElementSelectionShade": {
           "element": ""
-        },
-        "wait": {
-          "time": 2.0
         },
         "triggerEnable": {
           "target": "check_radar"

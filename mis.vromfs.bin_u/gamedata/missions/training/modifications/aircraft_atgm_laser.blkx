@@ -112,6 +112,10 @@
           {
             "object": "player",
             "speed": 600.0
+          },
+          {
+            "object": "target_tank02",
+            "isImmortal": true
           }
         ],
         "playerOptions": {
@@ -592,7 +596,7 @@
         "hudElementSelectionShade": {
           "object": "tank_target",
           "element": "curTarget",
-          "targetName": "target_tank01"
+          "targetName": "target_tank02"
         },
         "playHint": {
           "hintType": "standard",
@@ -831,7 +835,7 @@
         "hudElementSelectionShade": {
           "object": "tank_target",
           "element": "curTarget",
-          "targetName": "target_tank01"
+          "targetName": "target_tank02"
         },
         "missionSetTimeSpeed": [
           {
@@ -895,7 +899,7 @@
         "hudElementSelectionShade": {
           "object": "tank_target",
           "element": "curTarget",
-          "targetName": "target_tank01"
+          "targetName": "target_tank02"
         },
         "missionSetTimeSpeed": {
           "speed": 0.0,
@@ -1062,7 +1066,7 @@
           },
           {
             "element": "curTarget",
-            "targetName": "target_tank01"
+            "targetName": "target_tank02"
           }
         ],
         "wait": {
@@ -1802,6 +1806,66 @@
           "ai_skill": "NORMAL",
           "task": "FLY_WAYPOINT"
         }
+      },
+      "way": {}
+    },
+    "structures": {
+      "name": "target_tank02",
+      "tm": [
+        [
+          -0.793354,
+          0.0,
+          -0.608761
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.608761,
+          0.0,
+          -0.793354
+        ],
+        [
+          2177.63,
+          17.1238,
+          237.395
+        ]
+      ],
+      "unit_class": "tank_target_25_char",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "isDelayed": true,
+        "setStealth": true,
+        "targetAir": false,
+        "targetGnd": false
       },
       "way": {}
     }

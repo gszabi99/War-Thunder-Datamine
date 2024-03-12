@@ -3322,6 +3322,10 @@
       {
         "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic1_gun"
       }
     ]
   },
@@ -4343,6 +4347,28 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_left1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_2_holder"
+            },
+            "ShowDmParts": {
+              "node": "tank5_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_25_left_wing_1.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 8,
+              "preset": "ptb_right1"
             }
           }
         ]
@@ -6119,6 +6145,28 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_right1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_7_holder"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_25_right_wing_1.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_004",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_left1"
+            }
           }
         ]
       },
@@ -6551,6 +6599,9 @@
             },
             {
               "blk": "gameData/sensors/su_l_370_2.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }

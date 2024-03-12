@@ -2627,7 +2627,46 @@
             }
           }
         },
+        "tryDetectMprf": {
+          "stateFrom": "mprfTry",
+          "event": "update",
+          "actions": {
+            "setMprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "irstOkTryDetectMprf": {
+          "stateFrom": "irstOkMprfTry",
+          "event": "update",
+          "actions": {
+            "setMprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setIrstTrack": {}
+          }
+        },
+        "tryDetectIrst": {
+          "stateFrom": "irstTry",
+          "event": "update",
+          "actions": {
+            "setIrstTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setMprfTrack": {}
+          }
+        },
         "detect": {
+          "stateFrom": [
+            "mprf",
+            "irst"
+          ],
           "event": "update",
           "actions": {
             "detectTarget": {
@@ -2644,10 +2683,14 @@
           }
         },
         "startTrackMprf": {
-          "stateFrom": "mprfTry",
+          "stateFrom": [
+            "mprfTry",
+            "irstOkMprfTry"
+          ],
           "event": "targetDetected",
           "stateTo": "mprf",
           "actions": {
+            "setMprfTrack": {},
             "track": {},
             "setModeName": {
               "name": "PD track"
@@ -2657,10 +2700,9 @@
         "trackIrst": {
           "stateFrom": "irst",
           "event": "targetDetected",
-          "stateTo": "mprfTry",
+          "stateTo": "irstOkMprfTry",
           "actions": {
-            "track": {},
-            "setMprfTrack": {}
+            "track": {}
           }
         },
         "startTrackIrst": {
@@ -2668,6 +2710,7 @@
           "event": "targetDetected",
           "stateTo": "irst",
           "actions": {
+            "setIrstTrack": {},
             "track": {},
             "setModeName": {
               "name": "IRST track"
@@ -2682,8 +2725,15 @@
           "event": "targetNotDetected",
           "stateTo": "irstTry",
           "actions": {
-            "extrapolate": {},
-            "setIrstTrack": {}
+            "extrapolate": {}
+          }
+        },
+        "backToIrst": {
+          "stateFrom": "irstOkMprfTry",
+          "event": "targetNotDetected",
+          "stateTo": "irstTry",
+          "actions": {
+            "extrapolate": {}
           }
         },
         "irstToMprf": {
@@ -2691,8 +2741,7 @@
           "event": "targetNotDetected",
           "stateTo": "mprfTry",
           "actions": {
-            "extrapolate": {},
-            "setMprfTrack": {}
+            "extrapolate": {}
           }
         },
         "irstTryToMprf": {
@@ -2701,7 +2750,6 @@
           "stateTo": "mprfTry",
           "actions": {
             "extrapolate": {},
-            "setMprfTrack": {},
             "setModeName": {
               "name": "track memory"
             }

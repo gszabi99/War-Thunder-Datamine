@@ -239,6 +239,22 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     printFunc = function(_val, player) {
       return this.getVal(player).tostring()
     }
+    getTooltip = function(_val, player, defText) {
+      let rows = [
+        { id = "aiKills",         label = "multiplayer/air_kills_ai" }
+        { id = "aiGroundKills",   label = "multiplayer/ground_kills_ai" }
+        { id = "aiNavalKills",    label = "multiplayer/naval_kills_ai" }
+      ]
+      let res = []
+      foreach (row in rows) {
+        let rowVal = player?[row.id] ?? 0
+        if (rowVal)
+          res.append($"{loc(row.label)}{loc("ui/colon")}{rowVal}")
+      }
+      if (res.len() == 0)
+        return defText
+      return "\n".join(res, true)
+    }
   }
 
   ASSISTS = {

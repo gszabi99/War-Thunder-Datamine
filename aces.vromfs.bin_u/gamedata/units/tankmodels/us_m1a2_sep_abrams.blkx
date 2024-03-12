@@ -117,6 +117,12 @@
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
         "hidableInXrayViewer": true
+      },
+      "firewall_armor_04_dm": {
+        "armorThickness": 10.0,
+        "hp": 150.0,
+        "ignoreDeadWithSplash": true,
+        "hidableInXrayViewer": true
       }
     },
     "hull_turret_spaced_armor": {
@@ -207,7 +213,7 @@
         "armorThickness": 12.7
       },
       "superstructure_top_dm": {
-        "armorThickness": 31.75
+        "armorThickness": 20.0
       },
       "superstructure_back_dm": {
         "armorThickness": 31.75
@@ -647,6 +653,7 @@
       "armorThickness": 4.0,
       "createSecondaryShatters": false,
       "hidableInXrayViewer": true,
+      "ignoreSolidDimension": true,
       "ex_decor_l_06_dm": {},
       "ex_decor_l_07_dm": {},
       "ex_decor_l_08_dm": {},
@@ -1905,6 +1912,15 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "firewall_armor_03_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "firewall_armor_04_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "firewall_armor_04_dm"
           }
         }
       },
@@ -3877,15 +3893,6 @@
               600
             ],
             "noiseFactor": 0.04
-          },
-          "commanderIr": {
-            "resolution": [
-              1600,
-              1200
-            ],
-            "lightMult": 9.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
           }
         }
       }

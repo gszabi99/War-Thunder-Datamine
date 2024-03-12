@@ -85,7 +85,7 @@ def setup_cluster_insert(var unit : Unit?; cluster_id : int; var num_ammos : int
         *unit.visual |> dm_set_rel_hp(int(slot_part_id.globalId), 1.0f, false)
       // increase ammo in slot
       let count_before = v.ammo_slots__numAmmo[slot_id].x
-      v.ammo_slots__numAmmo[slot_id].x = min(num_ammos, v.ammo_slots__numAmmo[slot_id].y)
+      v.ammo_slots__numAmmo[slot_id].x = min(num_ammos + v.ammo_slots__numAmmo[slot_id].x, v.ammo_slots__numAmmo[slot_id].y)
       num_ammos -= v.ammo_slots__numAmmo[slot_id].x - count_before
 
     // enable dm parts, if they are disabled

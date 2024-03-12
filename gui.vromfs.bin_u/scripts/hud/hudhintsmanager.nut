@@ -20,6 +20,7 @@ let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTi
   getHintByShowEvent, g_hud_hints} = require("%scripts/hud/hudHints.nut")
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -42,6 +43,11 @@ function isHintDisabledByUnitTags(hint) {
 
 let activeHints = persist("activeHints", @() [])
 
+let shipFireControlPos = persist("shipFireControlPos", @() {
+  x = 0
+  y = 0
+})
+
 let g_hud_hints_manager = {
   nest = null
   scene = null
@@ -55,11 +61,6 @@ let g_hud_hints_manager = {
   hintIdx = 0 //used only for unique hint id
 
   lastShowedTimeDict = {} // key = uid, value = lastShowedTime
-
-  shipFireControlPos = {
-    x = 0
-    y = 0
-  }
 
   delayedShowTimers = {} // key = hint.name, value = timer
 
@@ -187,8 +188,6 @@ let g_hud_hints_manager = {
   }
 
   function updatePosHudHintBlock() {
-    if (!(this.nest?.isValid() ?? false))
-      return
     let hintBlockObj = this.nest.findObject("hintBlock")
     if (!(hintBlockObj?.isValid() ?? false))
       return
@@ -198,7 +197,7 @@ let g_hud_hints_manager = {
 
     local posY = "ph - h - @hudActionBarItemHeight"
     if (isShip) {
-      posY = $"{this.shipFireControlPos.y} - 1@bhHud - h"
+      posY = $"{shipFireControlPos.y} - 1@bhHud - h"
     } else if (isTank) {
       posY = "ph - h - @hudActionBarItemHeight - @tankGunsAmmoBlockHeight"
     }
@@ -590,11 +589,12 @@ let g_hud_hints_manager = {
 
 
   function onUpdateShipFireControlPanel(value) {
-    this.shipFireControlPos.x = value.pos[0]
-    this.shipFireControlPos.y = value.pos[1]
+    shipFireControlPos.__update({ x = value.pos[0], y = value.pos[1] })
+    if (!(this.nest?.isValid() ?? false))
+      return
     this.updatePosHudHintBlock()
+    handlersManager.updateWidgets() //update pos for SHIP_OBSTACLE_RF widget
   }
-
 }
 
 eventbus_subscribe("update_ship_fire_control_panel", @(value) g_hud_hints_manager.onUpdateShipFireControlPanel(value))

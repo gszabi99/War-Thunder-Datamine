@@ -189,9 +189,6 @@
       }
     },
     "steel_tank_s": {
-      "tank10_dm": {
-        "hp": 80.5
-      },
       "tank1_dm": {
         "hp": 42.8
       },
@@ -215,6 +212,9 @@
       },
       "tank8_dm": {
         "hp": 70.5
+      },
+      "tank9_dm": {
+        "hp": 80.5
       }
     }
   },
@@ -905,48 +905,6 @@
         "name": "tailcontrol_dm"
       },
       {
-        "name": "tank10_dm",
-        "onHit": [
-          {
-            "fire": 0.05,
-            "leak": 0.7
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.3,
-            "leak": 0.8
-          },
-          {
-            "damage": 50.0,
-            "fire": 0.9,
-            "leak": 0.9
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 25.0,
-            "leak": 35.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 30.0
-          }
-        ]
-      },
-      {
         "name": "tank1_dm",
         "onHit": [
           {
@@ -1234,6 +1192,48 @@
             "damage": 30.0,
             "fire": 15.0,
             "leak": 25.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
           },
           {
             "damage": 80.0,
@@ -2183,17 +2183,16 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
-  "commonWeapons": {
-    "Weapon": {
-      "slot": 0,
-      "preset": "gsh_23l_common"
-    }
-  },
+  "commonWeapons": {},
   "weapon_presets": {
     "preset": [
       {
         "name": "mig-21_pfm_default",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_pfm_default.blk"
+      },
+      {
+        "name": "mig-21_pfm_ptb",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_pfm_ptb_2x_r3s.blk"
       },
       {
         "name": "mig-21_pfm_2x_r3s",
@@ -2235,53 +2234,29 @@
         "apu_68um3_l",
         "s24_pylon_l",
         "apu_13mt_l",
+        "aso_sps_141m",
+        "sps_141m_pylon",
+        "flare2",
+        "gp_9",
         "pylon_r",
         "apu_13_r",
         "apu_60m_r",
         "apu_60m_r1",
         "apu_68um3_r",
         "s24_pylon_r",
-        "apu_13mt_r",
-        "aso_sps_141m",
-        "sps_141m_pylon",
-        "gp_9"
+        "apu_13mt_r"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "cannon1_dm",
+        "cover3_dm",
+        "tank9_dm"
       ]
     },
     "WeaponSlot": [
       {
-        "index": 0,
-        "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "name": "gsh_23l_common",
-          "HideNodes": {
-            "node": [
-              "flare2",
-              "sps_141m_pylon",
-              "aso_sps_141m"
-            ]
-          },
-          "ShowNodes": {
-            "node": "gp_9"
-          },
-          "Weapon": {
-            "trigger": "cannon",
-            "blk": "gameData/Weapons/cannonGSh_23L.blk",
-            "emitter": "flare1",
-            "flash": "flare1",
-            "dm": "cannon1_dm",
-            "bullets": 200,
-            "spread": 1.0,
-            "counterIndex": 1,
-            "gearLimit": [
-              0.0,
-              0.1
-            ],
-            "gearName": "gear_c"
-          }
-        }
-      },
-      {
-        "index": 2,
+        "index": 1,
         "tier": 7,
         "order": 2,
         "WeaponPreset": [
@@ -2388,7 +2363,59 @@
         ]
       },
       {
-        "index": 1,
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "name": "gsh_23l_common",
+            "ShowNodes": {
+              "node": "gp_9"
+            },
+            "ShowDmParts": {
+              "node": [
+                "cannon1_dm",
+                "cover3_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonGSh_23L.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 200,
+              "spread": 1.0,
+              "counterIndex": 1,
+              "gearLimit": [
+                0.0,
+                0.1
+              ],
+              "gearName": "gear_c"
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "sps_141m_pylon"
+            },
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21.blk",
+              "emitter": "490l_drop_tank1",
+              "bullets": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
         "tier": 5,
         "order": 1,
         "WeaponPreset": [

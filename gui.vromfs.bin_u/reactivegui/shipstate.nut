@@ -27,6 +27,7 @@ let shipState = {
 
   obstacleIsNear = Watched(false)
   distanceToObstacle = Watched(-1)
+  obstacleAngle = Watched(0)
   timeToDeath = Watched(-1)
 
   //DM:

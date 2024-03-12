@@ -809,7 +809,11 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   function getModalOptionsParam(optionItems, applyFunc) {
     return {
       options = optionItems
-      optionsConfig = { missionName = this.curMission?.id, gm = this.gm }
+      optionsConfig = {
+        missionName = this.curMission?.id
+        gm = this.gm
+        forbiddenDifficulty = this.missionBlk?.forbiddenDifficulty
+      }
       applyAtClose = false
       wndOptionsMode = ::get_options_mode(this.gm)
       owner = this

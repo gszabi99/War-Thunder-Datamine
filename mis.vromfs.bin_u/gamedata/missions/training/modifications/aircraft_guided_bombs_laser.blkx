@@ -15,6 +15,7 @@
       "level": "levels/avg_egypt_sinai.bin",
       "environment": "16",
       "weather": "clear",
+      "forbiddenDifficulty": "hardcore",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
@@ -132,7 +133,11 @@
               "ID_LOCK_TARGETING_AT_POINT",
               "ID_LOCK_TARGET",
               "ID_TOGGLE_LASER_DESIGNATOR",
-              "ID_LOCK_TARGETING"
+              "ID_LOCK_TARGETING",
+              "AXIS_TURRET_X",
+              "AXIS_TURRET_Y",
+              "ID_SHOW_MULTIFUNC_WHEEL_MENU",
+              "ID_GUIDED_BOMBS_LOCK"
             ]
           }
         ],
@@ -608,6 +613,48 @@
           "holdTime": 0.5
         },
         "triggerEnable": {
+          "target": "find_enemy"
+        }
+      },
+      "else_actions": {}
+    },
+    "find_enemy": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.3,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/find_target",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        },
+        "triggerEnable": {
           "target": "aim_starts"
         }
       },
@@ -626,20 +673,31 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "playerWhenCursorIn": {
+          "cursor": "crosshair",
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        }
+      },
       "actions": {
-        "missionSetTimeSpeed": [
-          {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          },
-          {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        ],
-        "wait": {
-          "time": 2.0
+        "__missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
+        "playerControls": {
+          "setStatus": "disable",
+          "control": [
+            "AXIS_MOUSE_AIM_Y",
+            "AXIS_ELEVATOR"
+          ]
+        },
+        "__wait": {
+          "time": 0.5
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
         },
         "hudElementSelectionShade": {
           "element": "curTarget",
@@ -650,6 +708,35 @@
         }
       },
       "else_actions": {}
+    },
+    "check_spi_button": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutBounded": {
+          "control": "ID_LOCK_TARGETING_AT_POINT"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "activate_spi1"
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "activate_menu"
+        }
+      }
     },
     "activate_spi1": {
       "is_enabled": false,
@@ -672,7 +759,7 @@
             "realtimeTriggers": true
           },
           {
-            "speed": 1.0,
+            "speed": 0.3,
             "realtimeTriggers": true
           }
         ],
@@ -702,6 +789,108 @@
       },
       "else_actions": {}
     },
+    "activate_menu": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/spi_menu1",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+        },
+        "triggerEnable": {
+          "target": "activate_menu_cockpit"
+        }
+      },
+      "else_actions": {}
+    },
+    "activate_menu_cockpit": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": [
+          {
+            "speed": 0.5,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 0.1
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/menu_choose_cockpit",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_VOICE_MESSAGE_6"
+        },
+        "__playerControls": {
+          "setStatus": "disable",
+          "control": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+        },
+        "triggerEnable": {
+          "target": "activate_spi2"
+        }
+      },
+      "else_actions": {}
+    },
     "activate_spi2": {
       "is_enabled": false,
       "comments": "",
@@ -717,17 +906,17 @@
       },
       "conditions": {
         "playerShortcutPressed": {
-          "control": "ID_CONTINUE"
+          "control": "ID_VOICE_MESSAGE_6"
         }
       },
       "actions": {
         "missionSetTimeSpeed": {
-          "speed": 0.2,
+          "speed": 0.0,
           "realtimeTriggers": true
         },
         "playHint": {
           "hintType": "standard",
-          "name": "hints/aircraft_modifications/spi2",
+          "name": "hints/aircraft_modifications/menu_choose_spi",
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,
@@ -736,12 +925,26 @@
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "item": "ID_LOCK_TARGETING_AT_POINT"
+          "object_var_value": 0
+        },
+        "__playerControls": {
+          "setStatus": "disable",
+          "control": "ID_VOICE_MESSAGE_6"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_VOICE_MESSAGE_2"
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "__missionSetTimeSpeed": {
+          "speed": 0.3,
+          "realtimeTriggers": false
         },
         "triggerEnable": {
           "target": [
-            "check_spi",
+            "check_spi_2",
             "time_out_timer_rocket"
           ]
         }
@@ -780,6 +983,15 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
+        "hudElementSelectionShade": [
+          {
+            "element": ""
+          },
+          {
+            "element": "curTarget",
+            "targetName": "target_tank02"
+          }
+        ],
         "triggerDisable": {
           "target": "time_out_timer_rocket"
         },
@@ -789,6 +1001,124 @@
         },
         "wait": {
           "time": 1.0
+        },
+        "triggerActivate": {
+          "target": "check_aim",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_spi_2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_VOICE_MESSAGE_2"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "hudElementSelectionShade": [
+          {
+            "element": ""
+          },
+          {
+            "element": "curTarget",
+            "targetName": "target_tank02"
+          }
+        ],
+        "triggerDisable": {
+          "target": "time_out_timer_rocket"
+        },
+        "missionSetTimeSpeed": {
+          "speed": 0.5,
+          "realtimeTriggers": true
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "triggerEnable": {
+          "target": "check_aim"
+        }
+      },
+      "else_actions": {}
+    },
+    "deactivate_menu": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "triggerDisable": {
+          "target": "time_out_timer_rocket"
+        },
+        "missionSetTimeSpeed": [
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          }
+        ],
+        "playerControls": [
+          {
+            "setStatus": "enable",
+            "control": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+          },
+          {
+            "setStatus": "disable",
+            "control": "ID_VOICE_MESSAGE_2"
+          }
+        ],
+        "playHint": {
+          "hintType": "standard",
+          "name": "Close menu",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
         },
         "triggerEnable": {
           "target": "check_aim"
@@ -811,6 +1141,16 @@
       },
       "conditions": {},
       "actions": {
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "control": "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_TOGGLE_VIEW"
+          }
+        ],
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
@@ -828,10 +1168,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "item": "ID_TOGGLE_VIEW"
-        },
-        "playerControls": {
-          "setStatus": "enable",
-          "control": "ID_TOGGLE_VIEW"
         },
         "triggerEnable": {
           "target": "aim_activate"
@@ -885,7 +1221,7 @@
           "setStatus": "disable",
           "control": "ID_TOGGLE_VIEW"
         },
-        "__hudElementSelectionShade": {
+        "hudElementSelectionShade": {
           "element": ""
         },
         "unitSetProperties": {
@@ -1051,7 +1387,12 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
       "actions": {
         "playHint": {
           "hintType": "standard",
@@ -1067,15 +1408,15 @@
           "object_var_value": 0,
           "item": "ID_GUIDED_BOMBS_LOCK"
         },
-        "playerControls": {
-          "setStatus": "enable",
-          "control": "ID_GUIDED_BOMBS_LOCK"
-        },
         "triggerEnable": {
           "target": "start_target"
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "triggerEnable": {
+          "target": "check_laser"
+        }
+      }
     },
     "start_target": {
       "is_enabled": false,
@@ -1092,7 +1433,7 @@
       },
       "conditions": {
         "playerShortcutPressed": {
-          "control": "ID_TOGGLE_LASER_DESIGNATOR"
+          "control": "ID_GUIDED_BOMBS_LOCK"
         }
       },
       "actions": {
@@ -1110,7 +1451,7 @@
           "time": 1.5
         },
         "triggerEnable": {
-          "target": "change_view_info"
+          "target": "check_laser"
         }
       },
       "else_actions": {}
@@ -1131,15 +1472,11 @@
       "conditions": {
         "playerWhenOptions": {
           "guiOptionBool": "USEROPT_ENABLE_LASER_DESIGNATOR_ON_LAUNCH"
-        },
-        "gameWhenDifficulty": {
-          "difficulty": "arcade",
-          "is": "notEqual"
         }
       },
       "actions": {
         "triggerEnable": {
-          "target": "change_view_info"
+          "target": "check_target"
         }
       },
       "else_actions": {
@@ -1195,7 +1532,7 @@
           "time": 1.5
         },
         "triggerEnable": {
-          "target": "change_view_info"
+          "target": "check_target"
         }
       },
       "else_actions": {}
@@ -1216,10 +1553,6 @@
       "conditions": {
         "playerWhenOptions": {
           "guiOptionBool": "USEROPT_AUTO_AIMLOCK_ON_SHOOT"
-        },
-        "gameWhenDifficulty": {
-          "difficulty": "arcade",
-          "is": "notEqual"
         }
       },
       "actions": {
@@ -1323,13 +1656,6 @@
           "object_var_value": 0,
           "item": "ID_GUIDED_BOMBS_LOCK"
         },
-        "playerControls": {
-          "setStatus": "enable",
-          "control": [
-            "ID_GUIDED_BOMBS_LOCK",
-            "ID_LOCK_TARGETING"
-          ]
-        },
         "triggerEnable": {
           "target": "check_rocket_start"
         }
@@ -1355,7 +1681,7 @@
         }
       },
       "actions": {
-        "playerControls": {
+        "__playerControls": {
           "setStatus": "disable",
           "control": "ID_GUIDED_BOMBS_LOCK"
         },
@@ -2599,7 +2925,7 @@
         ],
         [
           2988.96,
-          2915.88,
+          2821.33,
           -3373.63
         ]
       ],
@@ -2627,7 +2953,7 @@
           1.8002
         ],
         [
-          3364.78,
+          3406.21,
           1700.56,
           2398.84
         ]

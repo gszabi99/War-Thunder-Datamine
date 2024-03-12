@@ -3639,13 +3639,7 @@
         "events": {
           "initMission": {}
         },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "wide_spawn_enable",
-            "value": false,
-            "comparasion_func": "equal"
-          }
-        },
+        "conditions": {},
         "actions": {
           "comment": [
             {
@@ -3653,6 +3647,9 @@
             },
             {
               "value": "t2"
+            },
+            {
+              "value": ""
             },
             {
               "value": ""
@@ -3744,11 +3741,7 @@
             "target": "airfields_force_air_spawns_check"
           }
         },
-        "else_actions": {
-          "triggerDisable": {
-            "target": "create_airfields_names"
-          }
-        }
+        "else_actions": {}
       },
       "airfields_force_air_spawns_check": {
         "is_enabled": false,
@@ -3818,6 +3811,46 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_default_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t1_airfield_exist"
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_default_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_top"
+          }
+        }
+      },
+      "t1_airfields_spawn_default_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -3842,14 +3875,6 @@
               "ship": false,
               "boat": false
             }
-          },
-          "airfieldSetProperties": {
-            "object": "@t1_airfield_default_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t1_airfield_exist"
           },
           "triggerEnable": {
             "target": "t1_airfields_spawn_top"
@@ -3888,6 +3913,46 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_default_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t2_airfield_exist"
+          },
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_top"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_top"
+          }
+        }
+      },
+      "t2_airfields_spawn_default_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -3912,14 +3977,6 @@
               "ship": false,
               "boat": false
             }
-          },
-          "airfieldSetProperties": {
-            "object": "@t2_airfield_default_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t2_airfield_exist"
           },
           "triggerEnable": {
             "target": "t2_airfields_spawn_top"
@@ -3958,6 +4015,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_top_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t1_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t1_def_aaa_squad_top_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_top_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_high"
+          }
+        }
+      },
+      "t1_airfields_spawn_top_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -3983,32 +4091,13 @@
               "boat": false
             }
           },
-          "airfieldSetProperties": {
-            "object": "@t1_airfield_top_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t1_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t1_def_aaa_squad_top_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
-          },
           "triggerEnable": {
             "target": "t1_airfields_sub_spawn_high"
           }
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "t1_airfields_spawn_high"
+            "target": "t1_airfields_sub_spawn_high"
           }
         }
       },
@@ -4039,6 +4128,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_top_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t2_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t2_def_aaa_squad_top_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_top_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_high"
+          }
+        }
+      },
+      "t2_airfields_spawn_top_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -4064,32 +4204,13 @@
               "boat": false
             }
           },
-          "airfieldSetProperties": {
-            "object": "@t2_airfield_top_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t2_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t2_def_aaa_squad_top_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
-          },
           "triggerEnable": {
             "target": "t2_airfields_sub_spawn_high"
           }
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "t2_airfields_spawn_high"
+            "target": "t2_airfields_sub_spawn_high"
           }
         }
       },
@@ -4120,6 +4241,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_high_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t1_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t1_def_aaa_squad_high_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_high_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_mid"
+          }
+        }
+      },
+      "t1_airfields_spawn_high_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -4145,32 +4317,13 @@
               "boat": false
             }
           },
-          "airfieldSetProperties": {
-            "object": "@t1_airfield_high_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t1_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t1_def_aaa_squad_high_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
-          },
           "triggerEnable": {
             "target": "t1_airfields_sub_spawn_mid"
           }
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "t1_airfields_spawn_mid"
+            "target": "t1_airfields_sub_spawn_mid"
           }
         }
       },
@@ -4201,6 +4354,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_high_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t2_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t2_def_aaa_squad_high_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_high_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_mid"
+          }
+        }
+      },
+      "t2_airfields_spawn_high_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -4226,32 +4430,13 @@
               "boat": false
             }
           },
-          "airfieldSetProperties": {
-            "object": "@t2_airfield_high_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t2_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t2_def_aaa_squad_high_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
-          },
           "triggerEnable": {
             "target": "t2_airfields_sub_spawn_mid"
           }
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "t2_airfields_spawn_mid"
+            "target": "t2_airfields_sub_spawn_mid"
           }
         }
       },
@@ -4282,6 +4467,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_mid_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t1_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t1_def_aaa_squad_mid_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_mid_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_low"
+          }
+        }
+      },
+      "t1_airfields_spawn_mid_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -4307,32 +4543,13 @@
               "boat": false
             }
           },
-          "airfieldSetProperties": {
-            "object": "@t1_airfield_mid_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t1_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t1_def_aaa_squad_mid_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
-          },
           "triggerEnable": {
             "target": "t1_airfields_sub_spawn_low"
           }
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "t1_airfields_spawn_low"
+            "target": "t1_airfields_sub_spawn_low"
           }
         }
       },
@@ -4363,6 +4580,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_mid_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t2_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t2_def_aaa_squad_mid_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_mid_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_low"
+          }
+        }
+      },
+      "t2_airfields_spawn_mid_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -4388,32 +4656,13 @@
               "boat": false
             }
           },
-          "airfieldSetProperties": {
-            "object": "@t2_airfield_mid_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t2_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t2_def_aaa_squad_mid_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
-          },
           "triggerEnable": {
             "target": "t2_airfields_sub_spawn_low"
           }
         },
         "else_actions": {
           "triggerEnable": {
-            "target": "t2_airfields_spawn_low"
+            "target": "t2_airfields_sub_spawn_low"
           }
         }
       },
@@ -4444,6 +4693,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t1_airfield_low_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t1_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t1_def_aaa_squad_low_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t1_airfields_spawn_low_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t1_start_special_spawns"
+          }
+        }
+      },
+      "t1_airfields_spawn_low_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -4468,25 +4768,6 @@
               "ship": false,
               "boat": false
             }
-          },
-          "airfieldSetProperties": {
-            "object": "@t1_airfield_low_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t1_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t1_def_aaa_squad_low_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
           },
           "triggerEnable": {
             "target": "t1_start_special_spawns"
@@ -4525,6 +4806,57 @@
           "comment": {
             "value": "airfields exists"
           },
+          "airfieldSetProperties": {
+            "object": "@t2_airfield_low_name",
+            "enemySurrenderOnLanding": true
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "t2_airfield_exist"
+          },
+          "unitSetProperties": {
+            "object": "@t2_def_aaa_squad_low_name",
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "checkVisibilityTarget": true,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0,
+            "fireRandom": false,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25
+          },
+          "triggerEnable": {
+            "target": "t2_airfields_spawn_low_wide_check"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "t2_start_special_spawns"
+          }
+        }
+      },
+      "t2_airfields_spawn_low_wide_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "wide_spawn_enable",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "no wide spawn cretate spawn on airfield"
+          },
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
@@ -4549,25 +4881,6 @@
               "ship": false,
               "boat": false
             }
-          },
-          "airfieldSetProperties": {
-            "object": "@t2_airfield_low_name",
-            "enemySurrenderOnLanding": true
-          },
-          "varSetBool": {
-            "value": true,
-            "var": "t2_airfield_exist"
-          },
-          "unitSetProperties": {
-            "object": "@t2_def_aaa_squad_low_name",
-            "accuracy": 1.0,
-            "airAccuracy": 1.0,
-            "checkVisibilityTarget": true,
-            "effShootingRate": 1.0,
-            "airEffShootingRate": 1.0,
-            "fireRandom": false,
-            "targetChangeInterval": 5.0,
-            "targetChangeProb": 0.25
           },
           "triggerEnable": {
             "target": "t2_start_special_spawns"

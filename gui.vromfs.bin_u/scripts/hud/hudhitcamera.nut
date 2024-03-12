@@ -85,8 +85,7 @@ function getMinAliveCrewCount() {
 let getDamageStatusByHealth = @(health)
   health == 100 ? "none"
     : health >= 70  ? "minor"
-    : health >= 40  ? "moderate"
-    : health >= 10  ? "major"
+    : health >= 30  ? "moderate"
     : health > 0    ? "critical"
     : health == 0   ? "fatal"
     : "none"
@@ -250,9 +249,10 @@ function updateTitle() {
 
 function showRelativeCrewLoss() {
   let unitInfo = getTargetInfo(curUnitId, curUnitVersion, curUnitType, isKillingHitResult(hitResult))
-  let { crewLostRelative } = unitInfo
+  let { crewRelative, crewLostRelative } = unitInfo
 
-  if (!crewLostRelative || !(scene?.isValid() ?? false))
+  let hasCrewChange = crewLostRelative < -1 || crewRelative % 1 - crewLostRelative < 0
+  if (!crewLostRelative || !hasCrewChange || !(scene?.isValid() ?? false))
     return
 
   unitInfo.crewLostRelative = 0
@@ -260,7 +260,8 @@ function showRelativeCrewLoss() {
   let crewNestObj = scene.findObject("crew_relative_nest")
   crewNestObj._blink = "yes"
 
-  let lostTxt = format("%2.f%s", stdMath.round(crewLostRelative + 0.6), loc("measureUnits/percent"))
+
+  let lostTxt = format("%2.f%s", min(stdMath.round(crewLostRelative), -1), loc("measureUnits/percent"))
   let data = "".concat("hitCamLostCrewRelativeText { text:t='", lostTxt, "' }")
   get_cur_gui_scene().prependWithBlk(crewNestObj.findObject("crew_relative_lost"), data, this)
 }

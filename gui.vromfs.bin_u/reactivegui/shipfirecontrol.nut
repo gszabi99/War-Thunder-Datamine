@@ -322,6 +322,13 @@ let crosshairZeroMark = {
   ]
 }
 
+let crosshairZeroMarkMatch = {
+  children = [
+    drawArrow(sw(50), sh(50), 0, 1.6, highlightColor, false, highlightScale)
+    drawArrow(sw(50), sh(50), 0, 1.6, greenColorGrid)
+  ]
+}
+
 function drawForestallIndicator(
   forestallX,
   forestallY,
@@ -343,7 +350,7 @@ function drawForestallIndicator(
   let indicatorElements = [ ]
 
   if (showCentral) {
-    let centralArrow = isYawMatch ? drawArrow(sw(50), sh(50), 0, 1, greenColorGrid) : crosshairZeroMark
+    let centralArrow = isYawMatch ? crosshairZeroMarkMatch : crosshairZeroMark
     indicatorElements.append(centralArrow)
   }
   if (showMarker) {

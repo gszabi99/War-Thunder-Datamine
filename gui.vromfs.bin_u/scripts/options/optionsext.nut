@@ -2675,6 +2675,9 @@ let optionsMap = {
       if (!diff.isAvailable())
         continue
 
+      if (context?.forbiddenDifficulty.split(",").contains(diff.name))
+        continue
+
       descr.items.append(diff.getLocName())
       descr.values.append(diff.name)
       descr.diffCode.append(diff.diffCode)

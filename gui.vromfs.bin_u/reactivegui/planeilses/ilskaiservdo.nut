@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-let { IlsColor, IlsLineScale, TvvMark, RocketMode, CannonMode, BombCCIPMode,
+let { IlsColor, IlsLineScale, TvvMark, RocketMode, BombCCIPMode,
  DistToTarget, TargetPos, TargetPosValid, BombingMode } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
 let { Tangage, BarAltitude, Altitude, Speed, Roll, ClimbSpeed,
@@ -9,7 +9,6 @@ let { round, cos, sin, PI, floor } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { compassWrap } = require("ilsCompasses.nut")
 
-let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 function angleTxt(num, isLeft, invVPlace = 1, x = 0) {
   return @() {
     watch = IlsColor
@@ -237,11 +236,11 @@ let generateCompassMarkSU145 = function(num, _elemWidth, font) {
 let ccipDistF = Computed(@() cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
 let ccipDistM = Computed(@() (DistToTarget.value < 0 || DistToTarget.value >= 10000 ? -1 : DistToTarget.value * metrToMile * 10.0).tointeger())
 let gunAimMark = @() {
-  watch = [TargetPosValid, CCIPMode]
+  watch = TargetPosValid
   size = flex()
   children = TargetPosValid.value ?
     @() {
-      watch = [IlsColor, ccipDistF]
+      watch = IlsColor
       size = [pw(8), ph(8)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -253,10 +252,7 @@ let gunAimMark = @() {
         [VECTOR_LINE, -120, 0, -100, 0],
         [VECTOR_LINE, 120, 0, 100, 0],
         [VECTOR_LINE, 0, -120, 0, -100],
-        [VECTOR_LINE, 0, 120, 0, 100],
-        (DistToTarget.value < 10000 ? [VECTOR_SECTOR, 0, 0, 90, 90, -90, ccipDistF.value] : []),
-        (DistToTarget.value < 10000 ?
-         [VECTOR_LINE, 90 * cos(PI * ccipDistF.value / 180), 90 * sin(PI * ccipDistF.value / 180), 75 * cos(PI * ccipDistF.value / 180), 75 * sin(PI * ccipDistF.value / 180)] : [])
+        [VECTOR_LINE, 0, 120, 0, 100]
       ]
       children = [
         @() {
@@ -268,6 +264,19 @@ let gunAimMark = @() {
           fontSize = 30
           hplace = ALIGN_CENTER
           text = ccipDistM.value < 0 ? "" : string.format("%.1f", ccipDistM.value * 0.1)
+        }
+        @(){
+          watch = ccipDistF
+          size = flex()
+          rendObj = ROBJ_VECTOR_CANVAS
+          color = IlsColor.value
+          fillColor = Color(0, 0, 0, 0)
+          lineWidth = baseLineWidth * IlsLineScale.value
+          commands = [
+            (DistToTarget.value < 10000 ? [VECTOR_SECTOR, 0, 0, 90, 90, -90, ccipDistF.value] : []),
+            (DistToTarget.value < 10000 ?
+              [VECTOR_LINE, 90 * cos(PI * ccipDistF.value / 180), 90 * sin(PI * ccipDistF.value / 180), 75 * cos(PI * ccipDistF.value / 180), 75 * sin(PI * ccipDistF.value / 180)] : [])
+          ]
         }
       ]
       behavior = Behaviors.RtPropUpdate

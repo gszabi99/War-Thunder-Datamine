@@ -2258,9 +2258,15 @@
     "wingStrainLimitDown": 1.0
   },
   "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/su_spo-15.blk"
-    }
+    "sensor": [
+      {
+        "blk": "gameData/sensors/su_spo-15.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic2_gun"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {

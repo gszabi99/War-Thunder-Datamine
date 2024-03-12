@@ -1493,6 +1493,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       optionsConfig = {
         missionName = misInfo.name,
         gm = GM_TRAINING
+        forbiddenDifficulty = misInfo?.forbiddenDifficulty
       }
       applyAtClose = false
       wndOptionsMode = OPTIONS_MODE_TRAINING

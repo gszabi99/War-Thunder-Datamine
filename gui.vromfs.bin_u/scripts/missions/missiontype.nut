@@ -41,7 +41,7 @@ enumsAddTypes(g_mission_type, {
 
   A_AFD = {  // Air: Airfield Domination
     reMisName = regexp2(@"_AfD(n|to)?(_|$)")
-    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
+    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     helpBlkPath = "%gui/help/missionAirfieldCapture.blk"
     filterGroup = MISSION_GROUP.DOMINATION
@@ -49,8 +49,7 @@ enumsAddTypes(g_mission_type, {
 
   A_GS = {  // Air: Ground Strike
     reMisName = regexp2(@"_GS(n|to)?(_|$)")
-    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI
-                 | MISSION_OBJECTIVE.ZONE_BOMBING
+    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
     helpBlkPath = "%gui/help/missionGroundStrikeComplete.blk"
     filterGroup = MISSION_GROUP.GROUND_STRIKE
@@ -58,10 +57,17 @@ enumsAddTypes(g_mission_type, {
 
   A_BFD = {  // Air: Battlefront Domination
     reMisName = regexp2(@"_BfD(n|to)?(_|$)")
-    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND_AI | MISSION_OBJECTIVE.KILLS_NAVAL_AI
-                 | MISSION_OBJECTIVE.ZONE_BOMBING
+    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_BOMBING
     helpBlkPath = "%gui/help/missionGroundStrikeComplete.blk"
+    filterGroup = MISSION_GROUP.DOMINATION
+  }
+
+  A_ACONQ = {  // Air: Conquest
+    reMisName = regexp2(@"_aconq?(_|$)")
+    objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE | MISSION_OBJECTIVE.ZONE_BOMBING
+    objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE | MISSION_OBJECTIVE.ZONE_BOMBING
+    helpBlkPath = "%gui/help/missionAirfieldCapture.blk"
     filterGroup = MISSION_GROUP.DOMINATION
   }
 

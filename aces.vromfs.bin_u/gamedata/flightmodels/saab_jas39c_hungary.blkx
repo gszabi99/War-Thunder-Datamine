@@ -1,5 +1,5 @@
 {
-  "model": "saab_jas39c",
+  "model": "saab_jas39c_hungary",
   "fmFile": "fm/saab_jas39c.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
@@ -2409,6 +2409,10 @@
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic2_gun"
       }
     ]
   },
@@ -2791,10 +2795,12 @@
         "lavett_75_003",
         "lavett_74_003",
         "pylon_1",
+        "nato_pylon_1",
         "lavett_71_001",
         "u95_container",
         "lavett_74_002_bol_451",
         "pylon_2",
+        "nato_pylon_2",
         "lavett_71_002",
         "lavett_75_001",
         "lavett_74_001",
@@ -2805,12 +2811,14 @@
         "lavett_74_004_bol_451",
         "lavett_71_002",
         "pylon_3",
+        "nato_pylon_3",
         "lavett_71_004",
         "lavett_75_004",
         "lavett_74_004",
         "lavett_74_005",
         "lavett_74_005_bol_451",
         "pylon_4",
+        "nato_pylon_4",
         "pylon_5",
         "pylon_6",
         "pylon_lantirn",
@@ -2939,7 +2947,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_002",
-                "pylon_1"
+                "nato_pylon_1"
               ]
             },
             "Weapon": {
@@ -2958,7 +2966,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_002",
-                "pylon_1"
+                "nato_pylon_1"
               ]
             },
             "Weapon": {
@@ -2977,7 +2985,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_002_bol_451",
-                "pylon_1"
+                "nato_pylon_1"
               ]
             },
             "Weapon": {
@@ -2996,7 +3004,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_002_bol_451",
-                "pylon_1"
+                "nato_pylon_1"
               ]
             },
             "Weapon": [
@@ -3027,7 +3035,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_002_bol_451",
-                "pylon_1"
+                "nato_pylon_1"
               ]
             },
             "Weapon": [
@@ -3059,7 +3067,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_71_001",
-                "pylon_1"
+                "nato_pylon_1"
               ]
             },
             "Weapon": {
@@ -3077,7 +3085,7 @@
             "reqModification": "us_agm_65h",
             "ShowNodes": {
               "node": [
-                "pylon_1",
+                "nato_pylon_1",
                 "lavett_75_003"
               ]
             },
@@ -3087,7 +3095,8 @@
               "emitter": "rb_75_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3096,7 +3105,7 @@
             "reqModification": "us_agm_65g",
             "ShowNodes": {
               "node": [
-                "pylon_1",
+                "nato_pylon_1",
                 "lavett_75_003"
               ]
             },
@@ -3106,7 +3115,8 @@
               "emitter": "rb_75_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3114,7 +3124,7 @@
             "name": "gbu_12",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
-              "node": "pylon_1"
+              "node": "nato_pylon_1"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3135,7 +3145,7 @@
             "name": "gbu_16",
             "reqModification": "us_gbu_16",
             "ShowNodes": {
-              "node": "pylon_1"
+              "node": "nato_pylon_1"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3156,7 +3166,7 @@
             "name": "mk_82_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_1"
+              "node": "nato_pylon_1"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3173,7 +3183,7 @@
             "name": "mk_82_snakeye_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_1"
+              "node": "nato_pylon_1"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3190,7 +3200,7 @@
             "name": "mk_83",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
-              "node": "pylon_1"
+              "node": "nato_pylon_1"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3215,7 +3225,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_003",
-                "pylon_2"
+                "nato_pylon_2"
               ]
             },
             "Weapon": {
@@ -3234,7 +3244,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_003",
-                "pylon_2"
+                "nato_pylon_2"
               ]
             },
             "Weapon": {
@@ -3253,7 +3263,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_003_bol_451",
-                "pylon_2"
+                "nato_pylon_2"
               ]
             },
             "Weapon": {
@@ -3272,7 +3282,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_003_bol_451",
-                "pylon_2"
+                "nato_pylon_2"
               ]
             },
             "Weapon": [
@@ -3303,7 +3313,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_003_bol_451",
-                "pylon_2"
+                "nato_pylon_2"
               ]
             },
             "Weapon": [
@@ -3335,7 +3345,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_71_003",
-                "pylon_2"
+                "nato_pylon_2"
               ]
             },
             "Weapon": {
@@ -3353,7 +3363,7 @@
             "reqModification": "us_agm_65h",
             "ShowNodes": {
               "node": [
-                "pylon_2",
+                "nato_pylon_2",
                 "lavett_75_001"
               ]
             },
@@ -3363,7 +3373,8 @@
               "emitter": "rb_75_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3372,7 +3383,7 @@
             "reqModification": "us_agm_65g",
             "ShowNodes": {
               "node": [
-                "pylon_2",
+                "nato_pylon_2",
                 "lavett_75_001"
               ]
             },
@@ -3382,7 +3393,8 @@
               "emitter": "rb_75_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3390,7 +3402,7 @@
             "name": "gbu_12",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3411,7 +3423,7 @@
             "name": "gbu_16",
             "reqModification": "us_gbu_16",
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3432,7 +3444,7 @@
             "name": "gbu_10",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3453,7 +3465,7 @@
             "name": "gbu_24",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3474,7 +3486,7 @@
             "name": "mk_82_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3491,7 +3503,7 @@
             "name": "mk_82_snakeye_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3508,7 +3520,7 @@
             "name": "mk_83",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3524,7 +3536,7 @@
             "name": "ptb_1",
             "showInWeaponMenu": true,
             "ShowNodes": {
-              "node": "pylon_2"
+              "node": "nato_pylon_2"
             },
             "ShowDmParts": {
               "node": "tank5_dm"
@@ -3536,6 +3548,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "ptb_3"
             }
           }
         ]
@@ -3609,7 +3625,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_004",
-                "pylon_4"
+                "nato_pylon_3"
               ]
             },
             "Weapon": {
@@ -3628,7 +3644,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_004",
-                "pylon_4"
+                "nato_pylon_3"
               ]
             },
             "Weapon": {
@@ -3647,7 +3663,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_004_bol_451",
-                "pylon_4"
+                "nato_pylon_3"
               ]
             },
             "Weapon": {
@@ -3666,7 +3682,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_004_bol_451",
-                "pylon_4"
+                "nato_pylon_3"
               ]
             },
             "Weapon": [
@@ -3697,7 +3713,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_004_bol_451",
-                "pylon_4"
+                "nato_pylon_3"
               ]
             },
             "Weapon": [
@@ -3729,7 +3745,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_71_004",
-                "pylon_4"
+                "nato_pylon_3"
               ]
             },
             "Weapon": {
@@ -3747,7 +3763,7 @@
             "reqModification": "us_agm_65h",
             "ShowNodes": {
               "node": [
-                "pylon_4",
+                "nato_pylon_3",
                 "lavett_75_002"
               ]
             },
@@ -3757,7 +3773,8 @@
               "emitter": "rb_75_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3766,7 +3783,7 @@
             "reqModification": "us_agm_65g",
             "ShowNodes": {
               "node": [
-                "pylon_4",
+                "nato_pylon_3",
                 "lavett_75_002"
               ]
             },
@@ -3776,7 +3793,8 @@
               "emitter": "rb_75_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3784,7 +3802,7 @@
             "name": "gbu_12",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3805,7 +3823,7 @@
             "name": "gbu_16",
             "reqModification": "us_gbu_16",
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3826,7 +3844,7 @@
             "name": "gbu_10",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3847,7 +3865,7 @@
             "name": "gbu_24",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -3868,7 +3886,7 @@
             "name": "mk_82_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3885,7 +3903,7 @@
             "name": "mk_82_snakeye_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3902,7 +3920,7 @@
             "name": "mk_83",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -3918,7 +3936,7 @@
             "name": "ptb_3",
             "showInWeaponMenu": true,
             "ShowNodes": {
-              "node": "pylon_4"
+              "node": "nato_pylon_3"
             },
             "ShowDmParts": {
               "node": "tank6_dm"
@@ -3930,6 +3948,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_1"
             }
           }
         ]
@@ -3946,7 +3968,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_005",
-                "pylon_5"
+                "nato_pylon_4"
               ]
             },
             "Weapon": {
@@ -3965,7 +3987,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_005",
-                "pylon_5"
+                "nato_pylon_4"
               ]
             },
             "Weapon": {
@@ -3984,7 +4006,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_005_bol_451",
-                "pylon_5"
+                "nato_pylon_4"
               ]
             },
             "Weapon": {
@@ -4003,7 +4025,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_005_bol_451",
-                "pylon_5"
+                "nato_pylon_4"
               ]
             },
             "Weapon": [
@@ -4034,7 +4056,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_74_005_bol_451",
-                "pylon_5"
+                "nato_pylon_4"
               ]
             },
             "Weapon": [
@@ -4066,7 +4088,7 @@
             "ShowNodes": {
               "node": [
                 "lavett_71_002",
-                "pylon_5"
+                "nato_pylon_4"
               ]
             },
             "Weapon": {
@@ -4084,7 +4106,7 @@
             "reqModification": "us_agm_65h",
             "ShowNodes": {
               "node": [
-                "pylon_5",
+                "nato_pylon_4",
                 "lavett_75_004"
               ]
             },
@@ -4094,7 +4116,8 @@
               "emitter": "rb_75_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -4103,7 +4126,7 @@
             "reqModification": "us_agm_65g",
             "ShowNodes": {
               "node": [
-                "pylon_5",
+                "nato_pylon_4",
                 "lavett_75_004"
               ]
             },
@@ -4113,7 +4136,8 @@
               "emitter": "rb_75_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -4121,7 +4145,7 @@
             "name": "gbu_12",
             "reqModification": "us_gbu_12",
             "ShowNodes": {
-              "node": "pylon_5"
+              "node": "nato_pylon_4"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -4142,7 +4166,7 @@
             "name": "gbu_16",
             "reqModification": "us_gbu_16",
             "ShowNodes": {
-              "node": "pylon_5"
+              "node": "nato_pylon_4"
             },
             "Weapon": {
               "trigger": "guided bombs",
@@ -4163,7 +4187,7 @@
             "name": "mk_82_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_5"
+              "node": "nato_pylon_4"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -4180,7 +4204,7 @@
             "name": "mk_82_snakeye_x2",
             "reqModification": "us_500lb_mk82",
             "ShowNodes": {
-              "node": "pylon_5"
+              "node": "nato_pylon_4"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -4197,7 +4221,7 @@
             "name": "mk_83",
             "reqModification": "us_1000lb_mk83",
             "ShowNodes": {
-              "node": "pylon_5"
+              "node": "nato_pylon_4"
             },
             "Weapon": {
               "trigger": "bombs",
@@ -4408,13 +4432,6 @@
       "reqModification": "us_gbu_16",
       "tier": 4,
       "modClass": "weapon"
-    }
-  },
-  "default_skin": {
-    "name": "default",
-    "replace_tex": {
-      "from": "saab_jas39c_c*",
-      "to": "saab_jas39c_hungary_c*"
     }
   },
   "user_skin": {

@@ -2337,24 +2337,24 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "mig_21_smt_default",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_default.blk"
+        "name": "mig_21_bis_sau_default",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_default.blk"
       },
       {
-        "name": "mig_21_smt_default_2x_r13m",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_default_2x_r13m.blk"
+        "name": "mig_21_bis_sau_default_2x_r13m",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_default_2x_r13m.blk"
       },
       {
-        "name": "mig_21_smt_4x_r3s",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_r3s.blk"
+        "name": "mig_21_bis_sau_4x_r3s",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_4x_r3s.blk"
       },
       {
-        "name": "mig_21_smt_4x_r3r",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_r3r.blk"
+        "name": "mig_21_bis_sau_4x_r3r",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_4x_r3r.blk"
       },
       {
-        "name": "mig_21_bis_r13m_x4",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_r13m_x4.blk"
+        "name": "mig_21_bis_sau_r13m_x4",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_r13m_x4.blk"
       },
       {
         "name": "mig_21_bis_sau_4x_r60",
@@ -2365,16 +2365,16 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_6x_r60.blk"
       },
       {
-        "name": "mig_21_smt_4x_ub16",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_ub16.blk"
+        "name": "mig_21_bis_sau_4x_ub16",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_4x_ub16.blk"
       },
       {
-        "name": "mig_21_bis_2x_ub32",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_2x_ub32.blk"
+        "name": "mig_21_bis_sau_2x_ub32",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_2x_ub32.blk"
       },
       {
-        "name": "mig_21_smt_s24",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_s24.blk"
+        "name": "mig_21_bis_sau_s24",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_sau_s24.blk"
       },
       {
         "name": "mig_21_bis_8xofab100",
@@ -2436,7 +2436,16 @@
         "airbrake_l7",
         "airbrake_l3",
         "airbrake_l2",
-        "airbrake_l6"
+        "airbrake_l6",
+        "drop_tank_pylon1"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank9_dm",
+        "tank10_dm",
+        "tank11_dm",
+        "tank12_dm"
       ]
     },
     "WeaponSlot": [
@@ -2615,6 +2624,28 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b003",
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_490_slot1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_l1"
+            },
+            "ShowDmParts": {
+              "node": "tank11_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_left_wing_1.blk",
+              "emitter": "490l_drop_tank2",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "ptb_490_slot5"
             }
           }
         ]
@@ -2806,6 +2837,33 @@
       },
       {
         "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_490_slot3",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": [
+              "sps_141m_pylon",
+              "airbrake_l6"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "tank10_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_fuse.blk",
+            "emitter": "490l_drop_tank1",
+            "bullets": 1,
+            "external": true
+          }
+        }
+      },
+      {
+        "index": 4,
         "tier": 5,
         "order": 4,
         "WeaponPreset": [
@@ -2990,7 +3048,7 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 4,
         "order": 2,
         "WeaponPreset": [
@@ -3114,6 +3172,28 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b004",
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_490_slot5",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_r1"
+            },
+            "ShowDmParts": {
+              "node": "tank12_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_right_wing_1.blk",
+              "emitter": "490l_drop_tank3",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "ptb_490_slot1"
             }
           }
         ]

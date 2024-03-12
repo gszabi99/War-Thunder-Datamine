@@ -3679,6 +3679,28 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_left1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_2_holder"
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_25tm_silver_left_wing_1.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 9,
+              "preset": "ptb_right1"
+            }
           }
         ]
       },
@@ -5351,6 +5373,28 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_right1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_7_holder"
+            },
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_800l_su_25tm_silver_right_wing_1.blk",
+              "emitter": "su_800l_su_17_22_25_drop_tank_004",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_left1"
             }
           }
         ]

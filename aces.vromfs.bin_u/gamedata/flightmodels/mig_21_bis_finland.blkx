@@ -1,6 +1,6 @@
 {
   "model": "mig_21_bis_finland",
-  "fmFile": "fm/mig-21_bis.blk",
+  "fmFile": "fm/mig_21_bis_finland.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "gyroSight": true,
@@ -2164,40 +2164,40 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "mig_21_smt_default",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_default.blk"
+        "name": "mig_21_bis_finland_default",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_default.blk"
       },
       {
-        "name": "mig_21_smt_default_2x_r13m",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_default_2x_r13m.blk"
+        "name": "mig_21_bis_finland_default_2x_r13m",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_default_2x_r13m.blk"
       },
       {
-        "name": "mig_21_smt_4x_r3s",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_r3s.blk"
+        "name": "mig_21_bis_finland_default_2x_r3s",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_default_2x_r3s.blk"
       },
       {
-        "name": "mig_21_smt_4x_r3r",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_r3r.blk"
+        "name": "mig_21_bis_finland_4x_r3r",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_4x_r3r.blk"
       },
       {
-        "name": "mig_21_bis_r13m_x4",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_r13m_x4.blk"
+        "name": "mig_21_bis_finland_r13m_x4",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_r13m_x4.blk"
       },
       {
-        "name": "mig_21_smt_4x_r60m",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_4x_r60m.blk"
+        "name": "mig_21_bis_finland_4x_r60m",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_4x_r60m.blk"
       },
       {
-        "name": "mig_21_bis_6x_r60m",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_6x_r60m.blk"
+        "name": "mig_21_bis_finland_6x_r60m",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_6x_r60m.blk"
       },
       {
-        "name": "mig_21_smt_4x_ub16",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_smt_4x_ub16.blk"
+        "name": "mig_21_bis_finland_4x_ub16",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_4x_ub16.blk"
       },
       {
-        "name": "mig_21_bis_2x_ub32",
-        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_2x_ub32.blk"
+        "name": "mig_21_bis_finland_2x_ub32",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bis_finland_2x_ub32.blk"
       }
     ]
   },
@@ -2235,8 +2235,13 @@
         "apu_60m_r2",
         "s24_pylon_r1",
         "aso2i_l",
-        "aso2i_r"
+        "aso2i_r",
+        "drop_tank_pylon1",
+        "airbrake_l6"
       ]
+    },
+    "HideDmParts": {
+      "node": "tank9_dm"
     },
     "WeaponSlot": [
       {
@@ -2508,6 +2513,42 @@
       },
       {
         "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_800_slot3",
+          "showInWeaponMenu": true,
+          "HideNodes": {
+            "node": [
+              "airbrake_l1",
+              "airbrake_l2",
+              "airbrake_l3",
+              "airbrake_l7",
+              "airbrake_l8"
+            ]
+          },
+          "ShowNodes": {
+            "node": [
+              "drop_tank_pylon1",
+              "airbrake_l6"
+            ]
+          },
+          "ShowDmParts": {
+            "node": "tank9_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/su_800l_mig_21_silver_fuse.blk",
+            "emitter": "800l_drop_tank1",
+            "bullets": 1,
+            "external": true
+          }
+        }
+      },
+      {
+        "index": 4,
         "tier": 5,
         "order": 4,
         "WeaponPreset": [
@@ -2616,7 +2657,7 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 4,
         "order": 2,
         "WeaponPreset": [

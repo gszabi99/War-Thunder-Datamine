@@ -2357,6 +2357,10 @@
       {
         "name": "mig_21_mf_4x_ofab250_bombs",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_mf_4x_ofab250_bombs.blk"
+      },
+      {
+        "name": "mig_21_mf_ltc",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_mf_ltc.blk"
       }
     ]
   },
@@ -2393,53 +2397,35 @@
         "airbrake_l6"
       ]
     },
+    "HideDmParts": {
+      "node": [
+        "tank9_dm",
+        "tank10_dm",
+        "tank11_dm",
+        "tank12_dm"
+      ]
+    },
     "WeaponSlot": [
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "name": "gsh_23l_common",
-          "ShowNodes": {
-            "node": [
-              "aso_sps_141m",
-              "sps_141m_pylon",
-              "flare2",
-              "airbrake_l6"
-            ]
-          },
-          "Weapon": [
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 200,
-              "spread": 1.0,
-              "counterIndex": 1,
-              "gearLimit": [
-                0.0,
-                0.1
-              ],
-              "gearName": "gear_c"
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 32,
-              "external": true,
-              "separate": false
-            },
-            {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 32,
-              "external": true,
-              "separate": false
-            }
-          ]
+          "Weapon": {
+            "trigger": "cannon",
+            "blk": "gameData/Weapons/cannonGSh_23L.blk",
+            "emitter": "flare1",
+            "flash": "flare1",
+            "dm": "cannon1_dm",
+            "bullets": 200,
+            "spread": 1.0,
+            "counterIndex": 1,
+            "gearLimit": [
+              0.0,
+              0.1
+            ],
+            "gearName": "gear_c"
+          }
         }
       },
       {
@@ -2549,6 +2535,28 @@
               "emitter": "su_ofab250_l1",
               "bullets": 1,
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_490_slot1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_l1"
+            },
+            "ShowDmParts": {
+              "node": "tank11_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_left_wing_1.blk",
+              "emitter": "490l_drop_tank2",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "ptb_490_slot5"
             }
           }
         ]
@@ -2678,6 +2686,65 @@
       },
       {
         "index": 3,
+        "tier": 6,
+        "order": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "ptb",
+            "name": "ptb_490_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "sps_141m_pylon",
+                "airbrake_l6"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank10_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_fuse.blk",
+              "emitter": "490l_drop_tank1",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "ltc",
+            "name": "ltc_slot3",
+            "ShowNodes": {
+              "node": [
+                "aso_sps_141m",
+                "sps_141m_pylon",
+                "flare2",
+                "airbrake_l6"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 32,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 32,
+                "external": true,
+                "separate": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
         "tier": 5,
         "order": 4,
         "WeaponPreset": [
@@ -2800,7 +2867,7 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 4,
         "order": 2,
         "WeaponPreset": [
@@ -2906,6 +2973,28 @@
               "emitter": "su_ofab250_r1",
               "bullets": 1,
               "external": true
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_490_slot5",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_r1"
+            },
+            "ShowDmParts": {
+              "node": "tank12_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/su_490l_mig_21_right_wing_1.blk",
+              "emitter": "490l_drop_tank3",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "ptb_490_slot1"
             }
           }
         ]

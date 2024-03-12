@@ -94,6 +94,10 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
     this.startControlsWizard = ctId == "ct_own"
     this.goBack()
   }
+
+  function onControlTypeDblClick() {
+    this.onControlTypeApply()
+  }
 }
 
 ::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { //setGuiOptionsMode required

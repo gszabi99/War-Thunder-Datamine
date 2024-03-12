@@ -7,6 +7,7 @@ require RadarHud
 require strings
 require Mission
 require hud
+require app
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 
@@ -30,6 +31,8 @@ def setup_data(props : Properties&; var storage : CanvasParams&)
 
 [export]
 def draw_radar_indication(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
+  if get_app().isSensorViewMode
+    return
   targets_on_screen(ctx, data)
 
 def foreach_screen_targets(blk : block<(target : RadarScreenTarget const const#) : void>)

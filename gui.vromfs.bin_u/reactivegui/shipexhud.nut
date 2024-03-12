@@ -14,6 +14,7 @@ let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
   IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible } = require("shellState.nut")
 let voiceChat = require("chat/voiceChat.nut")
 let { safeAreaSizeHud } = require("style/screenState.nut")
+let shipObstacleRf = require("shipObstacleRangefinder.nut")
 
 let styleLine = {
   color = Color(255, 255, 255, 255)
@@ -273,5 +274,6 @@ return {
     fireControl
     sensorsHud
     aimHud
+    shipObstacleRf
   ]
 }

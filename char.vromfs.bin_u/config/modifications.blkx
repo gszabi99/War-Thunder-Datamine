@@ -5118,6 +5118,7 @@
     },
     "me-410_pylon_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "tier": 1,
       "modClass": "weapon",
       "group": "me-410_weapons"
@@ -11689,6 +11690,22 @@
       "deactivationIsAllowed": false,
       "modClass": "firepower"
     },
+    "30mm_rarden_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "30mm_HE",
+      "effects": {
+        "additiveBulletMod": "30mm_rarden_he"
+      }
+    },
+    "30mm_rarden_sap": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "30mm_AP",
+      "effects": {
+        "additiveBulletMod": "30mm_rarden_sap"
+      }
+    },
     "75mm_75_32_APCBC": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -14328,9 +14345,12 @@
     },
     "laser_warning_system": {
       "image": "#ui/gameuiskin#counterMeasures",
+      "animation": [
+        "video/unitModifications/ircm.ivf",
+        "video/unitModifications/laser_warning_system.ivf"
+      ],
       "tier": 3,
       "modClass": "firepower",
-      "animation": "video/unitModifications/laser_warning_system.ivf",
       "effects": {
         "rcostAddParam": 0.98,
         "sensors": {
@@ -14348,9 +14368,12 @@
     },
     "laser_rangefinder_lws": {
       "image": "#ui/gameuiskin#counterMeasures",
+      "animation": [
+        "video/unitModifications/ircm.ivf",
+        "video/unitModifications/laser_warning_system.ivf"
+      ],
       "tier": 2,
       "modClass": "firepower",
-      "animation": "video/unitModifications/laser_warning_system.ivf",
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
@@ -14410,9 +14433,12 @@
     },
     "laser_rangefinder_ircm_lws_t_90a": {
       "image": "#ui/gameuiskin#counterMeasures",
+      "animation": [
+        "video/unitModifications/ircm.ivf",
+        "video/unitModifications/laser_warning_system.ivf"
+      ],
       "tier": 2,
       "modClass": "firepower",
-      "animation": "video/unitModifications/laser_warning_system.ivf",
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
@@ -14920,100 +14946,120 @@
     },
     "bazooka_pylon": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_15bis_ish_c1of": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ar234_SC1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-17_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-17_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "is_100_50_gp": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "is_250_50_gp": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "is_360_50_gp": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "is_500_50_gp": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b17g_flak_vest": {
       "image": "#ui/gameuiskin#bulletproof_vest",
+      "animation": "video/unitModifications/heli_flak_jacket.ivf",
       "modClass": "armor"
     },
     "b-17_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "m10_pylon": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Hs-123_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Hs-123_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109E-3_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109E-3_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109F-4_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109F-4_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109F-4_SC500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109F-4_R1": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -15029,36 +15075,43 @@
     },
     "Bf-109G-10_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-10_R5": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-10_R6": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109_R4": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-2_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-2_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-2_R6": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -15074,659 +15127,791 @@
     },
     "Bf-109G-6_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-6_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-6_R5": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-6_R6": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-6_W": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109K-4_R5": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon"
     },
     "Bf-110C-4_8xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-110C-4_2xSC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-110C-4_SC50_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-110C-4_SC500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-110C-7_SC1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-110C-7_SC1000_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "blenheim_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190A-5_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190A-5_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190A-5_SC500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190A-5_R1": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190A-5_R6": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bf_110f-2_rz65": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "il_28sh_s24": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_17_s25": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "il_28sh_ub_16_57": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190D-12_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190D-12_8xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190D-12_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190D-12_SC250_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190D-12_SC500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190D-12_SC500_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190F-8_SC500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190F-8_SC500_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190F-8_SC1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190F-8_SC1000_4xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Fw-190F-8_R3": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fj_4b_agm_12b": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fj_4b_agm_12c": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "yak_38_x23m": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_17_x25": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_17_x29l": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_as_30l": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_as_30": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "gr_as_34": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/anti_ship_missile.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_27_x29t": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_25_x38ml": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_25_x38mt": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_21_x66": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "he-111_2x1000kg_250kg_pylon": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "he-111_2x1000kg_pylon": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "he-111h-2_8xSC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pvc_1006b_pylon": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "etc502_pylon": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "halker_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "halker_rc": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "type_r80_sura": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_rp3_mk12": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_matra_7": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "C5": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_7b_s3": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_21_ub16": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_21_ub32": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "yak_38_b8m1": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_s5_s8": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "j_7_hf5": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_q5_hf6": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hf18": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hf25": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hf25b": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hf27": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hf7a": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hf7d": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hj8": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hj8_c": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hj8_e": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_hj8_h": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it_al_25": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "C5M": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "C21": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "LaGG_dz-40": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "i_180_der_31": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "LaGG_ro-82": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_j29_75mm_m55": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_j29_145mm_m49a": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_j29_150mm_m51": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_j29_180mm_m49": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_aj37_120kg_m71": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_rb75": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_135mm_m70b": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_minb_m37a": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_minb_m61": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_minb_m40": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_minb_m41": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_minb_m50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_torp_m41": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_torp_t18b_1": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_40cm_1926": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fin_50kg": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fin_100kg": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_75kg": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_150kg": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ussr_fuel_b-95": {
       "image": "#ui/gameuiskin#oil",
-      "modClass": "lth"
+      "modClass": "lth",
+      "animation": "video/unitModifications/new_cover.ivf"
     },
     "ro_82_mod": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ros_132_mod": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ro_132_mod": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bb_su-2_der-19": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "il2_mdz_42": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-19": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-21_fab100": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-19_fab250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-19_fab500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-19_fab1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "t-18": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der4_47bmt": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-20": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-13p": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-19p": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-20p": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-20u": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "etc50_4_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "etc250_2_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "etc500_3_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "etc1000_1_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju-88_itc50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju-88_4xSC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju-88_2xSC500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju-88_etc1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "etc1800": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "etc2500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju_88_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju_88_SC500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju_88_SC1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ju_88_SC1800": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fx1400": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/fx1400.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "la-5fn_dz-40": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -15756,276 +15941,332 @@
     },
     "la-7_dz-40": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "LaGG_dz-40_r": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "LaGG_ro-82_r": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "me262_r1": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "me262_r1_2": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "me262_wgr21": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mosquitofb_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mosquitofb_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mosquitofb_rsc": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "p_40_fuel_100": {
       "image": "#ui/gameuiskin#oil",
-      "modClass": "lth"
+      "modClass": "lth",
+      "animation": "video/unitModifications/new_cover.ivf"
     },
     "fsbc_mk1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fmbc_mk1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "frc_mk2": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ar_rocket": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ctrc_mk3": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "flbc_mk1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fsbc_mk5": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sbc_mark25": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "100_octan_spitfire": {
       "image": "#ui/gameuiskin#oil",
+      "animation": "video/unitModifications/new_cover.ivf",
       "modClass": "lth"
     },
     "yak-1-7b_bi-42": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ussr_fuel_b-100": {
       "image": "#ui/gameuiskin#oil",
-      "modClass": "lth"
+      "modClass": "lth",
+      "animation": "video/unitModifications/new_cover.ivf"
     },
     "yak-7b_ro-82": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "a6m_9in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b17e_flak_vest": {
       "image": "#ui/gameuiskin#bulletproof_vest",
+      "animation": "video/unitModifications/heli_flak_jacket.ivf",
       "modClass": "armor"
     },
     "b-24_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-24_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-24_flak_vest": {
       "image": "#ui/gameuiskin#bulletproof_vest",
+      "animation": "video/unitModifications/heli_flak_jacket.ivf",
       "modClass": "armor"
     },
     "b-24_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b5n2_17-34in_mod45": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "improved_torpedo_mod": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b5n2_12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b5n2_14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "15in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "13in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "beaufighter_tsc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "beaufighter_rsc": {
       "image": "#ui/gameuiskin#rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "beaufort_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "beaufort_tbc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "f2a3_2x100lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mk41_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bmbc_mk1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "blbc_mk1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "frc_mk3": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "g50_2xSC50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "g4m_12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "g4m_17-34in_mod45": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "g4m_14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "h6k_12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "h6k_17-34in_mod45": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "h6k_14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "hs129_r2": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "hs129_bk37": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "hs129_bk37_bf110": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "il_28sh_upk23_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_guv_8700": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16038,25 +16279,30 @@
     },
     "yak_38_upk23_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "yak_38_vspu_36_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon"
     },
     "su_17_sppu_22_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_cc630_gun_pod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_mirage_f1c_cc_420_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16091,26 +16337,31 @@
     },
     "mk4_mod0_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gau_19": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uh_1c_xm18": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uh_1c_xm21": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1g_xm35": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16137,150 +16388,180 @@
     },
     "f4c_suu_23a": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_suu_16a": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "a_7d_gpu_5a": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gpu_2a": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fn_hmp400_lcc": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fn_hmp400": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_mgp": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fn_rmp_lc": {
       "image": "#ui/gameuiskin#rocket_gun",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fn_rmp": {
       "image": "#ui/gameuiskin#rocket_gun",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ffv_uni_pod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tiger_hmp400_lcc": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tiger_rmp_lc": {
       "image": "#ui/gameuiskin#rocket_gun",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki_7in_mod20": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki_10in_mod24": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki_12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "lancaster_m1_flyers_vest": {
       "image": "#ui/gameuiskin#bulletproof_vest",
+      "animation": "video/unitModifications/heli_flak_jacket.ivf",
       "modClass": "armor"
     },
     "lancaster_mk3_avro_mark_1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_12000lb_hc_mkI_n52_bomb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "lancaster_mk3_avro_mark_3": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "n1k_7in_mod20": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "n1k_12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "n1k_5in_mod15": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "n1k_14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pby5_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pby5_ltc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pby5_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fairey_tc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "halker_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "halker_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tbf_itc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16291,532 +16572,639 @@
     },
     "wirraway_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uc_type_mk_1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uc_type_mk_2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mg81gunpod_mod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon"
     },
     "mg15120gunpod_mod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon"
     },
     "mg15120gunpod_mod_bf110": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tu-2_pkd-2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_fab_250m_43": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_fab_500m_43": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_fab_1000m_43": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "wellington_tc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "wellington_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "wellington_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "wellington_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "wellington_2000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pe-2_dz-40": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bb_su-2_kd-2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki49_12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki49_14in_mod35_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki49_12in_mod35_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki49_14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bd-2-48": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "d-4-50": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "flbc_mk2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "er-2_ach-30b_der-19-20": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "er-2_kd-3-240": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fmbc_mk2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "wellington_m1_flyers_vest": {
       "image": "#ui/gameuiskin#bulletproof_vest",
+      "animation": "video/unitModifications/heli_flak_jacket.ivf",
       "modClass": "armor"
     },
     "s79a_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "s79a_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "s79a_tbc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sb-2_der-25": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sb-2_der-19": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ar-2_np-1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "he51_6xsd10": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "er-2_m-105_der-19-20": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pe-2_ro-132": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pe-3_dz-40": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "pe-3_ro-132": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "btd_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "an_mk1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "btd_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "btd_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "do217_2x1000kg_pylon": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "do217_250-500kg_pylon": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "do217_etc2000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-25_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-25_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-25_flak_vest": {
       "image": "#ui/gameuiskin#bulletproof_vest",
+      "animation": "video/unitModifications/heli_flak_jacket.ivf",
       "modClass": "armor"
     },
     "b-25_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "gloster_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_2x250lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_2x500lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "buccaneer_540lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_4x500lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_2x1000lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swift_2x1000lb_mc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_25lb_rocket_ap_mk1": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_25lb_rocket_ap_mk2": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_60lb_rocket_mk1": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "60lb_rocket_hvar_rp_3": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "gloster_src": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "gloster_rc": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "triplex_rp": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uncle_tom": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "red_angel": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "gloster_rc_mk2": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_m56d": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_m70d": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_m49_56": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "rb_05a": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_m57b": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "g5n_14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "g8n_14in_mod35": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "g8n_1500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki45_12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-13": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-15": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "btd_tc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_mk13": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109F_rz_65": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kd-2_bc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kd-3_bc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kd3_281": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kdz_250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kdz_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kd-4_bc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bd-4_bc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kd4_181": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bd-4_1500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "bd-4_3000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "frc_mk5": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki84_9in_mod23": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ki84_12in_mod27": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "i-185_der-25": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "i-185_ro-82": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "f-82_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "dgp-1_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "flbc_mk3": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "frc_mk7": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "frc_mk7_additional": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "spitfire_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "spitfire_sbc_additional": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "spitfire_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "spitfire_mbc_additional": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "spitfire_rc": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "kitsuka_14in_mod41": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16827,51 +17215,61 @@
     },
     "yak-1_bi-42": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "EEMBC_mark_1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "EELBC_mark_4": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-29_sbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-29_mbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "b-29_lbc": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "EEMBC_mark_2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "EELBC_mark_3": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "EERC_mark_1": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "EERC_mark_2": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -16882,81 +17280,97 @@
     },
     "Bf-109G-14_SC250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-14_R5": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "Bf-109G-14_R6": {
       "image": "#ui/gameuiskin#gunpods",
+      "animation": "video/unitModifications/gun_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "itc_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "itc_1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "gloster_rc_add": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "12in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "14in_mod30": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "der-21": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "blackburn_tc": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mb_175_lbt_130": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "itc250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "itc250_add": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "subc_mk1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "subc_mk3": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "subc_mk3_2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -18281,6 +18695,20 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "410mm_jp_no3_navy_apc": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "410mm_jp_no3_navy_apc_ammo_pack",
+      "group": "406mm_ap",
+      "effects": {
+        "additiveBulletMod": "410mm_jp_no3_navy_apc"
+      }
+    },
+    "410mm_jp_no3_navy_apc_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "410mm_jp_no5_navy_apc": {
       "image": "#ui/gameuiskin#tank_ammo",
       "reqModification": "410mm_jp_no5_navy_apc_ammo_pack",
@@ -18291,7 +18719,7 @@
     },
     "410mm_jp_no5_navy_apc_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo",
-      "tier": 1,
+      "tier": 4,
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
@@ -19433,6 +19861,7 @@
     },
     "Fw-190F-8_Pb2": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -19620,21 +20049,25 @@
     },
     "jp_rocket_type3_9kg": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_rocket_type3_13kg": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_rocket_type3_66kg": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_rocket_type3_84kg": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -19645,6 +20078,7 @@
     },
     "der_21": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -20641,36 +21075,43 @@
     },
     "it50_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it100_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it160_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it250_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it500_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it150_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it800_mod": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -20746,611 +21187,733 @@
     },
     "tiger_tel12": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "a_129_hl_19_70": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tr_fz207": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tr_fz49": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_f8u_ffar": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": true
     },
     "us_2_75_in_ffar_aero_6a": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_x6a": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_aero_7d": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_3a": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_32": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_lau_51": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_hydra_70_lau_68": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2_75_in_ffar_rl_7": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "f4c_zuni": {
       "image": "#ui/gameuiskin#pilon_block_rocket_large",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "f8u_zuni": {
       "image": "#ui/gameuiskin#pilon_block_rocket_large",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "t2_rl4_zuni": {
       "image": "#ui/gameuiskin#pilon_block_rocket_large",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_jlau_3a": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_rb24": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_rb24j": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swe_rb71": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9b": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9c": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9b_fgw_2": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9d": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9g": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9h": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9l": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9m": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_rb74": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "swd_rb74m": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_aim_sraam": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9e": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9j": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_9p": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_7d": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_7c": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_7e": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_7e2": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_7f": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_7m": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_54a": {
-      "image": "#ui/gameuiskin#air_to_air_longrange_missile",
+      "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_aim_54c": {
-      "image": "#ui/gameuiskin#air_to_air_longrange_missile",
+      "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it_aspide": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_skyflash": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_skyflash_temp": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_agm_65a": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_agm_65b": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_agm_65d": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_agm_65h": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_agm_65g": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_agm_62": {
       "image": "#ui/gameuiskin#optical_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_ts_250": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_ls_500j": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_ls_1000j": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_15v1": {
       "image": "#ui/gameuiskin#optical_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_8_15": {
       "image": "#ui/gameuiskin#optical_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_8": {
       "image": "#ui/gameuiskin#optical_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_10": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_10_gbu_24": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_16": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_24": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_gbu38_jdam": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_atlis2": {
       "image": "#ui/gameuiskin#night_vision_device",
+      "animation": "video/unitModifications/targeting_pod_color.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_k_pzs_01": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "invertEnableLogic": false
     },
     "cn_k_adc03a": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "invertEnableLogic": false
     },
     "uk_tiald": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_tiald_pod": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "it_pdlct_s_pod": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "gr_litening_pod": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_lantirn_pod": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_damocles_pod": {
       "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_mercury_pod": {
       "image": "#ui/gameuiskin#night_vision_device",
+      "animation": "video/unitModifications/targeting_pod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_bgl400": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_bgl1000": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_mk_13_18": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_gbu_12": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_pgm_500": {
       "image": "#ui/gameuiskin#optical_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_pgm_2000": {
       "image": "#ui/gameuiskin#optical_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_aj_168": {
       "image": "#ui/gameuiskin#agm_missile",
+      "animation": "video/unitModifications/missile_air_to_unit.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_fireflash": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "nord_aa_20": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sea_hawk_mk101": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_aam_shafrir": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_aam_shafrir_2": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "il_python_3": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_r_60": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_r_60_2": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_r_60m": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_23mf_r_60mk": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_23_r_23": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_23_r_23r": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_23_r_23t": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_23_r_24": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_23_r_24r": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_23_r_24t": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27r": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27er": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27t": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27et": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27et1": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27r1": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27er1": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_27t1": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_73": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_29_r_73e": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "yak_141_r_77": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "stinger_aam": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "aam_firestreak": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "aam_redtop": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_19_r3s": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_21_r3r": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_19_pl2": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "j_7_pl5b": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_pl5c": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "j_7_pl7": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_pl8": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_pl11": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_pf10": {
       "image": "#ui/gameuiskin#air_to_air_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air_midrange.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_aam3": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_19_r13m": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -21363,371 +21926,445 @@
     },
     "fr_50_dt": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_100_gp_standart": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_200_gp_standart": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_f222_s": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_f222_s5": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_f222_tgpu": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_t_10": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_type61": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_type116": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_type104a": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_type105": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "nord_as_20": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "nord_as_30": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_750lb_m117": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_t_10_150": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_sneb": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_jl_100r": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_jl_100r_36": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_lr_100_4": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_lau_5003b_a": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_lau_51": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_lr_f1": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_250kg_type_25c": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_mk_n1_540lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uk_mk_10_1000lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_400kg_type_21b": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_r_530": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_r_530e": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_r_530_f": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_r_530_d": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_r_511": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_r_550_magic_1": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_matra_r_550_magic_2": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_250lb_anm57": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_500lb_anm64a1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_250lb_mk81": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_500lb_mk82": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_750lb_m117a1": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_1000lb_mk83": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2000lb_mk84": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_3000lb_mk118": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_4000lb_anm56_box": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_500lb_m64": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_500lb_m82": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_500lb_m82_2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_1000lb_m83": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_1000lb_m83_2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_300lb_m_31": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_600lb_m_32": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_1000lb_anm_44": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2000lbs_anm34": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "jp_750lb_jm117": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "alkan_502_500lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "alkan_502_1000lb": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_500lb_m64_2": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_750lb_m117": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_1000lb_m65": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_blu27_b": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_mk_77": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "zb_500": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "zb_360": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_blu_1": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sws_400kg_febb_napalmbombe": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "flamm_250": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "flamm_500": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "brandbomb_m58": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "aerea_559g": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_mk78_mod0": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "il_m380l_mk2": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_460l_secan_63": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_750_lb_m116a2": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_1000_lb_mk_79_mod_0": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_500lb_mk77_mod4": {
       "image": "#ui/gameuiskin#napalm_fire_bomb",
+      "animation": "video/unitModifications/fire_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_2000lb_m66": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -22413,342 +23050,409 @@
     },
     "mi_24_s5_2": {
       "image": "#ui/gameuiskin#rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_s8": {
       "image": "#ui/gameuiskin#rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_s8_block": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_su_9M17M": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_8_su_9M14": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_su_9M114": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_su_9M114_2": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_su_9M114_4": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ka_9K121": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sa_heli_hot": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sa_heli_hot_2": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_ba_9": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_akd_9": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_akd_10": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "atgm_mokopa": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tiger_hot3": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tiger_atgw3": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "atgm_spike_x2": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "atgm_spike_x4": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tr_cirit_x2": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tr_cirit_x4": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_35_9M114_4": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_35_9M114_8": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_35_9M120_4": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ka_52_9m120_6": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_35_9M120_8": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_28nm_9M123": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_q5_type_250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_q5_type_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "q_5b_type130": {
       "image": "#ui/gameuiskin#pilon_block_rocket_large",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_17_ofab_100": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_fab_250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_24_fab_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_45_36_an_torpedo": {
       "image": "#ui/gameuiskin#pilon_torpedo",
+      "animation": "video/unitModifications/torpedo.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_fab_100": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_fab_250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_fab_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "su_fab_1000": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_27_kab_500": {
       "image": "#ui/gameuiskin#optical_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_27_kab_500l": {
       "image": "#ui/gameuiskin#laser_guided_bomb",
+      "animation": "video/unitModifications/guided_bomb_laser.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_4_fab_100": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "fr_50kg_type_61c": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_15_ish_fab_100": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_15_ish_fab_250": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mig_15_ish_fab_500": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "as_12_atgm": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_TOW": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_TOW_2": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_TOW2": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_TOW2_2": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_TOW_16": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_TOW_2_16": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_AGM_114_8": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "tr_umtas_x4": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_AGM_114_16": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_AIM_9": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "group": "mi-24_EVU",
       "requiresModelReload": true
     },
     "ah_1_AIM_9_LTC": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "group": "mi-24_EVU",
       "requiresModelReload": true
     },
     "ah_mk1_starstreak": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "stinger_heli_false_thermal_targets": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "group": "mi-24_EVU",
       "requiresModelReload": true
     },
     "mi_35_9M39": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "heli_atam_mistral": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "cn_ty_90": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uh_1d_lr68": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "heli_false_thermal_targets": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
     },
     "aircrafts_false_thermal_targets": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
     },
     "countermeasures_belt_pack": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
     },
     "countermeasures_belt_pack_unchecked": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -22782,34 +23486,40 @@
     },
     "mig_29_uv_5_08": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true
     },
     "swd_ltc_bol": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
     },
     "uk_ltc_bol": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "deactivationIsAllowed": false
     },
     "chaff_pods": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "f5_us_aim_9e": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
     },
     "f5_us_aim_9b": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
@@ -22900,6 +23610,7 @@
     },
     "MAW_system_heli_false_thermal_targets_large": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
@@ -22962,12 +23673,14 @@
     },
     "q_5b_ltc": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "q_5b_group"
     },
     "MAW_system_heli_false_thermal_targets": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
@@ -22985,51 +23698,61 @@
     },
     "AMASE_heli_false_thermal_targets": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "animation": "video/unitModifications/flare.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_m200_2": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_hydra_70": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "us_apkws": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "il_gatr": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1_m261_hydra_70": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "uh_1_xm159": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_AGM_22": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sa_ss11": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "rb_52": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -23091,21 +23814,25 @@
     },
     "heli_counterMeasures": {
       "image": "#ui/gameuiskin#counterMeasures",
+      "animation": "video/unitModifications/ircm.ivf",
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
     },
     "a_129_cbt_counterMeasures": {
       "image": "#ui/gameuiskin#counterMeasures",
+      "animation": "video/unitModifications/ircm.ivf",
       "modClass": "weapon"
     },
     "ka_29_2a42": {
       "image": "#ui/gameuiskin#weapon",
+      "animation": "video/unitModifications/gun_mod.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "ah_1z_heli_counterMeasures": {
       "image": "#ui/gameuiskin#counterMeasures",
+      "animation": "video/unitModifications/ircm.ivf",
       "modClass": "weapon",
       "requiresModelReload": true
     },
@@ -23366,11 +24093,13 @@
     },
     "mi_28_C13": {
       "image": "#ui/gameuiskin#pilon_block_rocket_large",
+      "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "mi_35_su_9M120": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
@@ -23714,31 +24443,37 @@
     },
     "8_cm_flz_rakete": {
       "image": "#ui/gameuiskin#pilon_rocket",
+      "animation": "video/unitModifications/rocket.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sws_200_kg_sprengbombe": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sws_400_kg_sprengbombe": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sws_450_kg_sprengbombe_68_70": {
       "image": "#ui/gameuiskin#pilon_bomb",
+      "animation": "video/unitModifications/bomb.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sws_flz_lwf_63_80": {
       "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
     "sws_flz_lwf_lb_82": {
       "image": "#ui/gameuiskin#atgm_heli_preset",
+      "animation": "video/unitModifications/missile_air_to_unit_tv.ivf",
       "modClass": "weapon",
       "deactivationIsAllowed": false
     }

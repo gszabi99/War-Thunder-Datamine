@@ -45,7 +45,6 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
     return
 
   let hero = get_watched_hero()
-  let tc = float2(0., 0.)
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
@@ -97,10 +96,10 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
           height += radSpeedBox.width.y + padding
 
         screenPos -= float2(width * 0.5, height + ctx |> hdpx(30.))
-        let color = get_sensor_view_unit_color(unit)
+        let color = get_sensor_view_unit_color(unit, true)
         let baseColor = E3DCOLOR(Color4(color))
         ctx |> set_color(data.backColor)
-        ctx |> render_rect(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, tc, tc, tc)
+        ctx |> render_box(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height)
         ctx |> set_color(baseColor)
         ctx |> render_frame(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, ctx |> hdpx(1.8))
 
@@ -205,18 +204,18 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
 
       var stateStr = ""
       var stateBox = BBox2()
-      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.track >= 0
-        stateStr = "{loc("hud/guidanceState")}: {loc(shell.track == 0 ? "hud/search" : "hud/track")}"
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.guidanceState != int(SensorViewGuidanceState SVGS_NO_GUID)
+        stateStr = "{loc("hud/guidanceState")}: {loc(shell.guidanceState == int(SensorViewGuidanceState SVGS_SEARCH) ? "hud/search" : "hud/track")}"
         stateBox = get_str_bbox(stateStr, stateStr |> length(), fctx)
         width = max(width, stateBox.width.x + padding * 2.)
         height += stateBox.width.y + padding
 
       let owner = get_unit(shell.ownerId)
-      let color = get_sensor_view_unit_color(owner)
+      let color = get_sensor_view_unit_color(owner, false)
       let baseColor = E3DCOLOR(Color4(color))
       screenPos -= float2(width * 0.5, height + ctx |> hdpx(20.))
       ctx |> set_color(data.backColor)
-      ctx |> render_rect(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, tc, tc, tc)
+      ctx |> render_box(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height)
       ctx |> set_color(baseColor)
       ctx |> render_frame(screenPos.x, screenPos.y, screenPos.x + width, screenPos.y + height, ctx |> hdpx(1.8))
 
@@ -260,7 +259,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
         ctx |> goto_xy(screenPos.x + (width - aoaBox.width.x) * 0.5, screenPos.y)
         ctx |> draw_str_scaled(1.0, aoaStr, aoaStr |> length())
 
-      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.track >= 0
+      if get_sensor_view_filter(SensorViewFilterType SVF_RKT_STATE) && shell.guidanceState != int(SensorViewGuidanceState SVGS_NO_GUID)
         screenPos.y += stateBox.width.y + padding
         ctx |> goto_xy(screenPos.x + (width - stateBox.width.x) * 0.5, screenPos.y)
         ctx |> draw_str_scaled(1.0, stateStr, stateStr |> length())

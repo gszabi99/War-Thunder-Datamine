@@ -1,6 +1,6 @@
 {
   "type": "rwr",
-  "name": "ARI 18228/10",
+  "name": "ARI 18223",
   "power": 250.0,
   "txAngle": [
     5.0,
@@ -20,39 +20,31 @@
   "band8": true,
   "band9": true,
   "detectTracking": true,
-  "mandatoryRecognition": true,
+  "detectLaunch": false,
+  "targetTracking": true,
+  "matchSector": 10.0,
+  "targetSuperResolution": false,
+  "trackedTargetsMax": 12,
   "targetRangeFinder": true,
   "targetRange": [
     5000.0,
     50000.0
   ],
+  "mandatoryRecognition": true,
+  "friendFoeId": true,
   "receivers": {
     "receiver": [
       {
-        "azimuth": -45.0,
+        "azimuth": 0.0,
         "elevation": 0.0,
-        "azimuthWidth": 100.0,
+        "azimuthWidth": 180.0,
         "elevationWidth": 90.0,
         "angleFinder": true
       },
       {
-        "azimuth": 45.0,
+        "azimuth": -180.0,
         "elevation": 0.0,
-        "azimuthWidth": 100.0,
-        "elevationWidth": 90.0,
-        "angleFinder": true
-      },
-      {
-        "azimuth": -135.0,
-        "elevation": 0.0,
-        "azimuthWidth": 100.0,
-        "elevationWidth": 90.0,
-        "angleFinder": true
-      },
-      {
-        "azimuth": 135.0,
-        "elevation": 0.0,
-        "azimuthWidth": 100.0,
+        "azimuthWidth": 180.0,
         "elevationWidth": 90.0,
         "angleFinder": true
       }
@@ -116,20 +108,7 @@
           "ARI.5820",
           "ARI.5857",
           "Marconi Type 226",
-          "ELTA EL/M-2001B",
-          "1RL34",
-          "Marconi S-400",
-          "MR-102-Baklan",
-          "MR-104-Rys",
-          "MR-105",
-          "4R-90-Yatagan",
-          "Yakor-M",
-          "Type-275",
-          "Type 903",
-          "AN-SPG-48",
-          "MK25-radar",
-          "WM-27",
-          "SGR-108"
+          "ELTA EL/M-2001B"
         ]
       },
       {
@@ -151,7 +130,7 @@
         ]
       },
       {
-        "name": "I+HPRF",
+        "name": "I+PD",
         "detectLaunch": true,
         "type": [
           "AN/APG-59",
@@ -161,14 +140,7 @@
           "marconi_ai_mk24",
           "marconi_ai_mk24z",
           "AI.24 Foxhunter Stage 2G",
-          "weapon"
-        ]
-      },
-      {
-        "name": "I+MPRF",
-        "block": true,
-        "detectLaunch": true,
-        "type": [
+          "weapon",
           "AN/APG-66",
           "AN/APG-66(V)1",
           "AN/APG-66(V)3",
@@ -178,6 +150,7 @@
           "AN/APG-68(V)9",
           "AN/APG-63",
           "AN/APG-65Q",
+          "AN/APG-67",
           "Thales RDY",
           "N001",
           "N019_S31",
@@ -190,7 +163,7 @@
         ]
       },
       {
-        "name": "I+MPRF+HPRF",
+        "name": "I+PD+PDI",
         "search": false,
         "track": false,
         "launch": true,
@@ -203,11 +176,12 @@
           "AN/APG-68(V)7",
           "AN/APG-68(V)9",
           "AN/APG-63",
-          "AN/APG-65Q"
+          "AN/APG-65Q",
+          "AN/APG-67"
         ]
       },
       {
-        "name": "I+MPRF+CW",
+        "name": "I+PD+CW",
         "search": false,
         "track": false,
         "launch": true,
@@ -255,71 +229,78 @@
         ]
       },
       {
-        "name": "I+TWS",
-        "search": false,
-        "track": true,
-        "launch": true,
+        "name": "S-125",
+        "detectLaunch": true,
+        "type": "4R-90-Yatagan"
+      },
+      {
+        "name": "2S6",
+        "detectLaunch": true,
         "type": [
+          "1RL114 TA",
+          "1RL114 TT"
+        ]
+      },
+      {
+        "name": "9K330",
+        "detectLaunch": true,
+        "group": [
+          "9K330 TA",
+          "9K330 TT"
+        ]
+      },
+      {
+        "name": "AAA",
+        "type": [
+          "Gepard TA",
+          "PGZ-09 TA",
+          "M-247 TA",
+          "1RL34",
+          "Marconi S-400",
+          "1RL33",
+          "1RL114 TT",
+          "Gepard TT",
+          "PGZ-09 TT"
+        ]
+      },
+      {
+        "name": "SAM",
+        "detectLaunch": true,
+        "type": [
+          "Roland TA",
+          "DR-VC-1A",
+          "Crotale TA",
+          "Rodeo-2",
+          "ADATS TA",
+          "ASRAD TA",
+          "TriAD TA",
+          "ADATS TA",
+          "ASRAD TA",
+          "TriAD TA",
+          "Roland TT",
+          "Crotale TT",
+          "9K330 TT"
+        ]
+      },
+      {
+        "name": "Naval",
+        "type": [
+          "Foot-N",
+          "Type 992Q",
+          "Type-275",
+          "MR-103-Bars",
+          "MR-123-176",
+          "MR-102-Baklan",
+          "MR-104-Rys",
+          "MR-105",
           "4R-90-Yatagan",
-          "1RL34"
-        ]
-      },
-      {
-        "name": "J+TWS",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "type": "1RL33"
-      }
-    ]
-  },
-  "targetsPresenceGroups": {
-    "targetsPresenceGroup": [
-      {
-        "text": "E-H",
-        "group": "E-H"
-      },
-      {
-        "text": "I",
-        "group": [
-          "I",
-          "I+TWS",
-          "I+HPRF",
-          "I+MPRF+CW",
-          "I+MPRF+HPRF",
-          "I+CW"
-        ]
-      },
-      {
-        "text": "J",
-        "group": [
-          "J",
-          "J+TWS",
-          "J+CW"
-        ]
-      },
-      {
-        "text": "hud/rwr_threat_pulse",
-        "group": [
-          "E-H",
-          "I",
-          "J"
-        ]
-      },
-      {
-        "text": "hud/rwr_threat_tws",
-        "group": [
-          "I+TWS",
-          "J+TWS"
-        ]
-      },
-      {
-        "text": "hud/rwr_threat_cw",
-        "group": [
-          "I+HPRF",
-          "I+MPRF+CW",
-          "I+CW",
-          "J+CW"
+          "Yakor-M",
+          "Type-275",
+          "Type 903",
+          "AN-SPG-48",
+          "MK25-radar",
+          "WM-27",
+          "SGR-108"
         ]
       }
     ]
@@ -327,26 +308,58 @@
   "targetsDirectionGroups": {
     "targetsDirectionGroup": [
       {
-        "text": "E-H",
+        "text": "E",
         "group": "E-H"
       },
       {
         "text": "I",
+        "group": "I"
+      },
+      {
+        "text": "ICW",
         "group": [
-          "I",
-          "I+TWS",
-          "I+HPRF",
-          "I+MPRF+CW",
-          "I+CW"
+          "I+CW",
+          "I+PD+CW"
+        ]
+      },
+      {
+        "text": "IPD",
+        "group": [
+          "I+PD",
+          "I+PD+PDI"
         ]
       },
       {
         "text": "J",
-        "group": [
-          "J",
-          "J+TWS",
-          "J+CW"
-        ]
+        "group": "J"
+      },
+      {
+        "text": "JCW",
+        "group": "J"
+      },
+      {
+        "text": "hud/rwr_threat_aaa",
+        "group": "AAA"
+      },
+      {
+        "text": "hud/rwr_threat_sam",
+        "group": "SAM"
+      },
+      {
+        "text": "hud/rwr_threat_naval",
+        "group": "Naval"
+      },
+      {
+        "text": "S125",
+        "group": "S-125"
+      },
+      {
+        "text": "2S6",
+        "group": "2S6"
+      },
+      {
+        "text": "9K3",
+        "group": "9K330"
       }
     ]
   }

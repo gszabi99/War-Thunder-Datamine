@@ -2541,6 +2541,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_agm65_x3.blk"
       },
       {
+        "name": "f_16c_block_50_agm65g",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_agm65g.blk"
+      },
+      {
         "name": "f_16c_block_50_mk82_ter",
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_mk82_ter.blk"
       },
@@ -2868,7 +2872,8 @@
               "emitter": "us_lau_117a_agm_65a_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -2882,6 +2887,26 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_88a_agm_65d_x_3.blk",
               "emitter": "lau_88a_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "us_lau_117a_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "us_lau_117a_agm_65a_001",
+              "bullets": 1,
               "external": true,
               "separate": true
             }
@@ -3545,7 +3570,8 @@
               "emitter": "us_lau_117a_agm_65a_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3559,6 +3585,26 @@
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau_88a_agm_65d_x_3.blk",
               "emitter": "lau_88a_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "us_lau_117a_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
+              "emitter": "us_lau_117a_agm_65a_002",
+              "bullets": 1,
               "external": true,
               "separate": true
             }
@@ -4017,6 +4063,12 @@
     },
     "us_agm_65d": {
       "prevModification": "us_2000lb_mk84",
+      "tier": 4,
+      "modClass": "weapon"
+    },
+    "us_agm_65g": {
+      "reqModification": "us_agm_65d",
+      "prevModification": "us_gbu_24",
       "tier": 4,
       "modClass": "weapon"
     },

@@ -2456,6 +2456,10 @@
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic2_gun"
       }
     ]
   },
@@ -2549,10 +2553,12 @@
         "lavett_75_003",
         "lavett_74_003",
         "pylon_1",
+        "nato_pylon_1",
         "lavett_71_001",
         "u95_container",
         "lavett_74_002_bol_451",
         "pylon_2",
+        "nato_pylon_2",
         "lavett_71_002",
         "lavett_75_001",
         "lavett_74_001",
@@ -2563,12 +2569,14 @@
         "lavett_74_004_bol_451",
         "lavett_71_002",
         "pylon_3",
+        "nato_pylon_3",
         "lavett_71_004",
         "lavett_75_004",
         "lavett_74_004",
         "lavett_74_005",
         "lavett_74_005_bol_451",
         "pylon_4",
+        "nato_pylon_4",
         "pylon_5",
         "pylon_6",
         "pylon_lantirn",
@@ -2857,7 +2865,8 @@
               "emitter": "rb_75_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3114,7 +3123,8 @@
               "emitter": "rb_75_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3268,6 +3278,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "ptb_3"
             }
           }
         ]
@@ -3489,7 +3503,8 @@
               "emitter": "rb_75_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -3643,6 +3658,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_1"
             }
           }
         ]
@@ -3807,7 +3826,8 @@
               "emitter": "rb_75_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {

@@ -1348,7 +1348,7 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "atgm_tandem_tank",
+      "bulletType": "atgm_tank",
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
       "fresnel": [
@@ -1356,7 +1356,7 @@
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
+      "shellAnimation": "video/shells_animations/atgm.ivf",
       "bulletName": "100mm_aps_03",
       "caliber": 0.1,
       "sound_path": "tanks/weapon_tanks/atgm",
@@ -1384,6 +1384,7 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "bulletName": "115mm_9m_117",
         "statType": "hydra",
         "caliber": 0.1,
         "length": 1.092,
@@ -1397,14 +1398,14 @@
         "timeFire": 6.0,
         "force": 674.0,
         "fireDelay": 1.5,
-        "timeLife": 26.0,
+        "timeLife": 17.6,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
         "startSpeed": 370.0,
         "endSpeed": 370.0,
         "maxDistance": 5000.0,
         "minDistance": 100.0,
-        "rangeMax": 5500.0,
+        "rangeMax": 4000.0,
         "visRotationFreqX": 25.0,
         "autoAimingMaxAngle": 1.0,
         "guidanceType": "saclos",
@@ -1419,7 +1420,7 @@
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "atgm_tandem_tank",
+        "bulletType": "atgm_tank",
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
         "fresnel": [
@@ -1427,7 +1428,7 @@
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
+        "shellAnimation": "video/shells_animations/atgm.ivf",
         "dragCx": 0.027,
         "selfDestructionFx": "hit_81_132mm_heat",
         "explosionEffect": "hit_81_132mm_heat",
@@ -1463,6 +1464,8 @@
           1000.0
         ],
         "hitPower": 260.0,
+        "fuseDelayDist": 0.05,
+        "explodeTreshold": 0.1,
         "price": 3000.0,
         "mesh": "9m117_rocket",
         "tracerTrailEmitter": [
@@ -1470,8 +1473,6 @@
           0.0,
           0.0
         ],
-        "fuseDelayDist": 0.4,
-        "explodeTreshold": 0.01,
         "guidance": {
           "launchAngleMax": 5.0,
           "controlConeFov": 15.0,
@@ -1868,6 +1869,16 @@
             7000.0
           ]
         },
+        "armorpower": {
+          "ArmorPower0m": [
+            5.0,
+            10.0
+          ],
+          "ArmorPower10000m": [
+            4.0,
+            10000.0
+          ]
+        },
         "damage": {
           "explosive": {
             "radius": 0.25,
@@ -1982,23 +1993,10 @@
           "breachConeAngle": 45.0
         },
         "cumulativeDamage": {
-          "armorPower": 750.0,
+          "armorPower": 600.0,
           "distance": 6.5,
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
-        },
-        "kineticDamage": {
-          "damageType": "tandemPrecharge"
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            50.0,
-            10.0
-          ],
-          "ArmorPower10000m": [
-            50.0,
-            10000.0
-          ]
         }
       }
     }
@@ -2050,6 +2048,7 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "bulletName": "115mm_9m_117",
         "statType": "hydra",
         "caliber": 0.1,
         "length": 1.092,
