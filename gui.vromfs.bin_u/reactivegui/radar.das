@@ -173,9 +173,7 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
 
   if get_radar_hud_is_b_scope_visible()
     let mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
-    var pos = get_radar_hud_is_c_scope_visible() ? rdata.pos - float2(0., rdata.size.y * 0.42) : rdata.pos
-    if data.enableByMfd
-      pos += get_radar_hud_mfd_radar_offset()
+    let pos = get_radar_hud_is_c_scope_visible() ? rdata.pos - float2(0., rdata.size.y * 0.42) : rdata.pos
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
     if mode == int(RadarViewMode B_SCOPE_ROUND)
       if azimuthRange > PI + 0.035
