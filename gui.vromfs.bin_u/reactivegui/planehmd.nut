@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
-let { setHeadMountedSystemPanelId } = require("hudState")
+let { setHeadMountedSystemPanelId = @(_) null } = require("hudState")
 
 let { HmdVisibleAAM, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorVisible } = require("%rGui/radarState.nut")
