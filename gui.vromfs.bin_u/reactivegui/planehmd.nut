@@ -1,11 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
+let { setHeadMountedSystemPanelId } = require("hudState")
 
 let { HmdVisibleAAM, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorVisible } = require("%rGui/radarState.nut")
 let { BlkFileName, HmdVisible, HmdBlockIls } = require("planeState/planeToolsState.nut")
-let { PNL_ID_HMD } = require("%rGui/globals/panelIds.nut")
+let { PNL_ID_HMD, PNL_ID_INVALID } = require("%rGui/globals/panelIds.nut")
 
 let hmdShelZoom = require("planeHmds/hmdShelZoom.nut")
 let hmdVtas = require("planeHmds/hmdVtas.nut")
@@ -93,8 +94,14 @@ let screenHmdLayout = @() {
 
 let planeHmdElement = {
   size = flex()
-  onAttach = @() gui_scene.addPanel(PNL_ID_HMD, isInVr ? vrHmdLayout : screenHmdLayout)
-  onDetach = @() gui_scene.removePanel(PNL_ID_HMD)
+  onAttach = function() {
+    setHeadMountedSystemPanelId(PNL_ID_HMD)
+    gui_scene.addPanel(PNL_ID_HMD, isInVr ? vrHmdLayout : screenHmdLayout)
+  }
+  onDetach = function() {
+    setHeadMountedSystemPanelId(PNL_ID_INVALID)
+    gui_scene.removePanel(PNL_ID_HMD)
+  }
 }
 
 let root = @() {
