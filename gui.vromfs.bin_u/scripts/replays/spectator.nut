@@ -11,7 +11,7 @@ let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isSensorViewMode, setSensorViewFilter, getSensorViewFilter,
   SVF_HERO, SVF_SQUAD, SVF_ALLY, SVF_ENEMY, SVF_GROUND, SVF_AIR, SVF_WEAPON_OTHER, SVF_WEAPON_HERO, SVF_WEAPON_ATTACK_HERO,
-  SVF_RKT_SPEED, SVF_RKT_LIFETIME, SVF_RKT_TRAVELED, SVF_RKT_OVERLOAD, SVF_RKT_AOA,
+  SVF_RKT_SPEED, SVF_RKT_LIFETIME, SVF_RKT_TRAVELED, SVF_RKT_OVERLOAD, SVF_RKT_AOA, SVF_DEAD,
   SVF_RKT_STATE, SVF_SENSOR_HERO, SVF_SENSOR_SQUAD, SVF_SENSOR_ALLY, SVF_SENSOR_ENEMY, SVF_SENSOR_TRACK, SVF_SENSOR_INTEREST
   /*MEASURE_UNIT_SPEED, MEASURE_UNIT_DIST, getSensorMeasures, setSensorMeasures*/
 } = require("camera_control")
@@ -130,6 +130,7 @@ let sensorFiltersTable = {
         {optName = "#sensorsFilters/enemyes", switchBox = { fid = SVF_ENEMY, makeValue = @()getSensorViewFilter(SVF_ENEMY) ? "yes" : "no"  } }
         {optName = "#ground_targets/name/short", switchBox = { fid = SVF_GROUND, makeValue = @()getSensorViewFilter(SVF_GROUND) ? "yes" : "no"  } }
         {optName = "#air_targets/name/short", switchBox = { fid = SVF_AIR, makeValue = @()getSensorViewFilter(SVF_AIR) ? "yes" : "no"  } }
+        {optName = "#sensorsFilters/dead", switchBox = { fid = SVF_DEAD, makeValue = @()getSensorViewFilter(SVF_DEAD) ? "yes" : "no"  } }
         {optName = "#sensorsFilters/allWeapons", switchBox = { fid = SVF_WEAPON_OTHER, makeValue = @()getSensorViewFilter(SVF_WEAPON_OTHER) ? "yes" : "no"  } }
         {optName = "#sensorsFilters/playerWeapons", switchBox = { fid = SVF_WEAPON_HERO, makeValue = @()getSensorViewFilter(SVF_WEAPON_HERO) ? "yes" : "no"  } }
         {optName = "#sensorsFilters/enemyWeapons", switchBox = { fid = SVF_WEAPON_ATTACK_HERO, makeValue = @()getSensorViewFilter(SVF_WEAPON_ATTACK_HERO) ? "yes" : "no"  } }

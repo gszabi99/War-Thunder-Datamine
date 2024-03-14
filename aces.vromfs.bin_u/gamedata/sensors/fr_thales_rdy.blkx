@@ -895,18 +895,6 @@
             "name": "PD HDN standby"
           }
         },
-        "setTwsStandbyMode": {
-          "setTwsStandbyModeCommon": {},
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfSearch"
-          },
-          "setModeName": {
-            "name": "TWS HDN standby"
-          }
-        },
         "setHprfVelocityStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setScanPatternSet": {
@@ -958,18 +946,6 @@
             "name": "PD HDN VS search"
           }
         },
-        "setTwsSearchMode": {
-          "setTwsSearchModeCommon": {},
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfSearch"
-          },
-          "setModeName": {
-            "name": "TWS HDN search"
-          }
-        },
         "setLprfSearchMode": {
           "setSearchModeCommon": {},
           "setTransiver": {
@@ -1019,6 +995,54 @@
           },
           "setModeName": {
             "name": "PD search"
+          }
+        },
+        "setMprfTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS standby"
+          }
+        },
+        "setMprfTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS search"
+          }
+        },
+        "setHprfTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS HDN standby"
+          }
+        },
+        "setHprfTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS HDN search"
           }
         },
         "setHmdStandbyMode": {
@@ -1921,8 +1945,56 @@
             ]
           }
         },
-        "mprfToHprf": {
+        "mprfToMprfTws": {
           "stateFrom": "mprf",
+          "command": "modeSwitch",
+          "stateTo": "mprfTws",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setMprfTwsStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setMprfTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setTwsBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetTws"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetTwsMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "mprfTwsToHprf": {
+          "stateFrom": "mprfTws",
           "command": "modeSwitch",
           "stateTo": "hprf",
           "actions": {
@@ -1931,11 +2003,6 @@
                 "fsm": "main",
                 "name": "setStandbyMode",
                 "actionTemplateName": "setHprfStandbyMode"
-              },
-              {
-                "fsm": "main",
-                "name": "resetSearchMode",
-                "actionTemplateName": "resetSearchMode"
               },
               {
                 "fsm": "main",
@@ -1951,8 +2018,17 @@
                 "fsm": "main",
                 "name": "designateTarget",
                 "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
               }
             ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
             "setFsmActive": [
               {
                 "fsm": "main",
@@ -1965,21 +2041,21 @@
             ]
           }
         },
-        "hprfToTws": {
+        "hprfToHprfTws": {
           "stateFrom": "hprf",
           "command": "modeSwitch",
-          "stateTo": "tws",
+          "stateTo": "hprfTws",
           "actions": {
             "setCustomActionTemplate": [
               {
                 "fsm": "main",
                 "name": "setStandbyMode",
-                "actionTemplateName": "setTwsStandbyMode"
+                "actionTemplateName": "setHprfTwsStandbyMode"
               },
               {
                 "fsm": "main",
                 "name": "setSearchMode",
-                "actionTemplateName": "setTwsSearchMode"
+                "actionTemplateName": "setHprfTwsSearchMode"
               },
               {
                 "fsm": "main",
@@ -2014,7 +2090,7 @@
           }
         },
         "twsToHprfVelocity": {
-          "stateFrom": "tws",
+          "stateFrom": "hprfTws",
           "command": "modeSwitch",
           "stateTo": "hprfVelocity",
           "actions": {

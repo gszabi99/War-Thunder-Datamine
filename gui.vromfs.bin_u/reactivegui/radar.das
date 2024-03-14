@@ -168,10 +168,14 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
   if !radarVisible && get_app().gameParams.collapsedIconForRadarTws
     return
 
+  if data.enableByMfd
+    mfd_radar_background(ctx, rdata)
 
   if get_radar_hud_is_b_scope_visible()
     let mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
-    let pos = get_radar_hud_is_c_scope_visible() ? rdata.pos - float2(0., rdata.size.y * 0.42) : rdata.pos
+    var pos = get_radar_hud_is_c_scope_visible() ? rdata.pos - float2(0., rdata.size.y * 0.42) : rdata.pos
+    if data.enableByMfd
+      pos += get_radar_hud_mfd_radar_offset()
     let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
     if mode == int(RadarViewMode B_SCOPE_ROUND)
       if azimuthRange > PI + 0.035
@@ -189,6 +193,12 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
     let pos = rdata.pos + float2(0., rdata.size.y * 0.58)
     c_scope(ctx, data, pos, size)
 
+def mfd_radar_background(var ctx : GuiContext&; rdata : ElemRenderData& const)
+  let scale = get_radar_hud_mfd_radar_scale() > 0. ? get_radar_hud_mfd_radar_scale() : 1.
+  let size = rdata.size / scale
+  let pos = float2(rdata.pos.x - (1. - scale) * 0.5 * size.x, rdata.pos.y - (1. - scale) * 0.5 * size.y)
+  ctx |> set_color(E3DCOLOR(Color4(float4(0., 0., 0., 1.))))
+  ctx |> render_box(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
 
 def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; pos : float2)
   let bottomOffset = b_scope_half_circle_markers(ctx, data, pos, rdata.size, data.fontSize/*hudFontHgt*/)
