@@ -519,9 +519,9 @@ function onEnemyDamageState(event) {
   if (curUnitType in (damageStatusTemplates)) {
     let { artilleryTotalCount  = 5, torpedoTotalCount = 5, artilleryHealth = 100, hasFire = false, engineHealth = 100,
       torpedoTubesHealth = 100, ruddersHealth = 100, hasBreach = false  } = event
-    let artilleryText = format("%d/%d", artilleryHealth*artilleryTotalCount/100, artilleryTotalCount)
+    let artilleryText = format("%d/%d", stdMath.round(artilleryHealth*artilleryTotalCount/100.), artilleryTotalCount)
     let torpedoText =
-      torpedoTotalCount != 0 ? format("%d/%d", torpedoTubesHealth*torpedoTotalCount/100, torpedoTotalCount) : ""
+      torpedoTotalCount != 0 ? format("%d/%d", stdMath.round(torpedoTubesHealth*torpedoTotalCount/100.), torpedoTotalCount) : ""
     setDamageStatus("artillery_health", artilleryHealth, artilleryText)
     setDamageStatus("fire_status", hasFire ? 1 : -1)
     setDamageStatus("engine_health", engineHealth, format("%d%%", engineHealth))
