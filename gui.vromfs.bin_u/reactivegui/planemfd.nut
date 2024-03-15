@@ -30,7 +30,8 @@ let planeMFD = @() {
         needDrawCentralIcon = !RwrBackHide.value,
         needDrawBackground = !RwrBackHide.value,
         fontSizeMult = 2.0,
-        needAdditionalLights = false
+        needAdditionalLights = false,
+        forMfd = true
       })
       : null),
     mfdCamera,

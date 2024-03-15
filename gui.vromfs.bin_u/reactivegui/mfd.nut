@@ -22,7 +22,8 @@ let mkTws = @() {
       needDrawCentralIcon = true,
       needDrawBackground = true,
       fontSizeMult = 2.0,
-      needAdditionalLights = false
+      needAdditionalLights = false,
+      forMfd = true
     })
 }
 

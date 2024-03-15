@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let math = require("math")
 let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargets, mlwsTargetsAgeMin, lwsTargetsTriggers, lwsTargets, rwrTargets, lwsTargetsAgeMin, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
 let rwrSetting = require("rwrSetting.nut")
-let { MlwsLwsForMfd, RwrForMfd, MfdFontScale } = require("airState.nut");
+let { MlwsLwsForMfd, MfdFontScale } = require("airState.nut");
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
@@ -369,7 +369,7 @@ let cmdsRwrTarget = [
   [VECTOR_SECTOR, -0, -0, 55, 45, -250, 250]
 ]
 
-function createRwrTarget(index, colorWatched, fontSizeMult) {
+function createRwrTarget(index, colorWatched, fontSizeMult, for_fmd) {
   let target = rwrTargets[index]
 
   if (!target.valid)
@@ -386,13 +386,13 @@ function createRwrTarget(index, colorWatched, fontSizeMult) {
   if (target.groupId != null)
     targetType = @()
       styleText.__merge({
-        watch = [colorWatched, RwrForMfd, MfdFontScale]
+        watch = [colorWatched, MfdFontScale]
         rendObj = ROBJ_TEXT
         pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = RwrForMfd.value ? fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : hudFontHgt) : hudFontHgt
+        fontSize = for_fmd ? (fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : 1.0) * hudFontHgt) : hudFontHgt
         text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
         color = isColorOrWhite(colorWatched.value)
       })
@@ -668,11 +668,11 @@ function rwrTargetsState(colorWatched) {
   }
 }
 
-let rwrTargetsComponent = function(colorWatched, fontSizeMult) {
+let rwrTargetsComponent = function(colorWatched, fontSizeMult, for_mfd) {
   return @() {
-    watch = [rwrTargetsTriggers, RwrForMfd]
+    watch = rwrTargetsTriggers
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched, fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched, fontSizeMult, for_mfd))
   }
 }
 
@@ -684,7 +684,7 @@ let rwrTargetsPresenceComponent = function(colorWatched) {
   }
 }
 
-function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights) {
+function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd) {
   return {
     size = flex()
     children = [
@@ -701,7 +701,7 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
           needAdditionalLights ? lwsTargetsState(colorWatched) : null
           lwsTargetsComponent(colorWatched, !needDrawCentralIcon)
           needAdditionalLights ? rwrTargetsState(colorWatched) : null
-          rwrTargetsComponent(colorWatched, fontSizeMult)
+          rwrTargetsComponent(colorWatched, fontSizeMult, forMfd)
           needAdditionalLights ? rwrTargetsPresenceComponent(colorWatched) : null
         ]
       }
@@ -709,14 +709,14 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
   }
 }
 
-let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0, needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0, needAdditionalLights = true) {
+let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0, needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0, needAdditionalLights = true, forMfd = false) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value
     pos = posWatched.value
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights)
+    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd)
   }
 })
 
