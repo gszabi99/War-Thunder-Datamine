@@ -33,6 +33,17 @@ let deathEasing = function(x) {
   return x < wait ? 0 : sin(PI * 0.5 * cvt(x, wait, 1, 0, 1))
 }
 
+let isShotResultVisible = Computed(@() fcsShotState.value.shotState != FCSShotState.SHOT_NONE && (IsTargetDataAvailable.value || IsTargetDead.value))
+
+function requestNewShotResult() {
+  fcsShotState({shotState = FCSShotState.SHOT_NONE shotDiscrepancy = 0 shotDirection = 0})
+}
+
+IsTargetDataAvailable.subscribe(function(_){
+  clearCurrentShotState()
+  requestNewShotResult()
+})
+
 function mkTargetShipComponent(size) {
   let compSize = [0.486 * size[0], 0.486 * size[1]]
   let compCenter = [0.5 * size[0], 0.286 * size[1]]
@@ -188,7 +199,7 @@ function mkShotResultComponent(size) {
   let center = [0.5 * size[0], 0.286 * size[1]]
   let pos = [center[0] - compSize[0] / 2, center[1] - compSize[1] / 2]
   return function(){
-    if(fcsShotState.value.shotState == FCSShotState.SHOT_NONE)
+    if(!isShotResultVisible.value)
       return {
         watch = fcsShotState
       }
@@ -228,12 +239,10 @@ function mkShotResultBulletsComponent(size) {
   let center = [0.5 * size[0], 0.286 * size[1]]
   let pos = [center[0] - compSize[0] / 2, center[1] - compSize[1] / 2]
   return @(){
-    watch = fcsShotState
+    watch = isShotResultVisible
     size = compSize
     pos
-    children = fcsShotState.value.shotState != FCSShotState.SHOT_NONE
-      ? mkShotResultBullets(compSize, fcsShotState.value.shotState)
-      : null
+    children = isShotResultVisible.value ? mkShotResultBullets(compSize, fcsShotState.value.shotState) : null
   }
 }
 
@@ -277,10 +286,6 @@ let shotResultFrame = {
   borderWidth = hdpx(1)
 }
 
-function requestNewShotResult() {
-  fcsShotState({shotState = FCSShotState.SHOT_NONE shotDiscrepancy = 0 shotDirection = 0})
-}
-
 function mkShotResultBack(fillColor) {
   return {
     rendObj = ROBJ_SOLID
@@ -315,14 +320,14 @@ function mkShotResultTextComponent(size) {
       : fcsShotState.value.shotState == FCSShotState.SHOT_HIT ? greenColor
       : redColor
     return {
-      watch = fcsShotState
+      watch = isShotResultVisible
       size = [compWidth, compHeight]
       pos
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = [
-        fcsShotState.value.shotState != FCSShotState.SHOT_NONE ? mkShotResultBack(fillColor) : null
-        fcsShotState.value.shotState != FCSShotState.SHOT_NONE ? shotResultText : null
+        isShotResultVisible.value ? mkShotResultBack(fillColor) : null
+        isShotResultVisible.value ? shotResultText : null
         shotResultFrame
       ]
     }

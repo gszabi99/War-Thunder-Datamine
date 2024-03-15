@@ -415,6 +415,9 @@
       "range3": 10000.0,
       "range4": 20000.0
     },
+    "gtm": {
+      "range1": 12000.0
+    },
     "acm": {
       "range1": 10000.0
     }
@@ -790,6 +793,24 @@
           "setSignal": {
             "signal": "GTMSearch"
           },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "gtm"
+          },
+          "setModeName": {
+            "name": "GTM standby"
+          }
+        },
+        "setGtmTwsStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTMSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "gtm"
+          },
           "setModeName": {
             "name": "GTM standby"
           }
@@ -850,8 +871,26 @@
           "setSignal": {
             "signal": "GTMSearch"
           },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "gtm"
+          },
           "setModeName": {
             "name": "GTM search"
+          }
+        },
+        "setGtmTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTMSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "gtm"
+          },
+          "setModeName": {
+            "name": "TWS GTM search"
           }
         },
         "setGtmBvrLockMode": {
@@ -880,6 +919,12 @@
           },
           "setModeName": {
             "name": "GTM acquisition"
+          }
+        },
+        "setGtmTwsBvrLockMode": {
+          "setGtmBvrLockMode": {},
+          "setModeName": {
+            "name": "TWS GTM acquisition"
           }
         },
         "resetGtmBvrLockMode": {
@@ -1503,8 +1548,66 @@
             ]
           }
         },
-        "gtmTwsToMprf": {
+        "gtmToGtmTws": {
           "stateFrom": "gtm",
+          "command": "modeSwitch",
+          "stateTo": "gtmTws",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setGtmTwsStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setGtmTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setGtmTwsBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetBvrLockMode",
+                "actionTemplateName": "resetGtmBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrTrackMode",
+                "actionTemplateName": "setGtmBvrTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetTwsMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "gtmTwsToMprf": {
+          "stateFrom": "gtmTws",
           "command": "modeSwitch",
           "stateTo": "mprf",
           "actions": {
