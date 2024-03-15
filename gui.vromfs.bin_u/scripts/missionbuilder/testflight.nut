@@ -31,7 +31,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getCurSlotbarUnit, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
-let { guiStartBuilder, guiStartFlight, guiStartCdOptions
+let { guiStartBuilder, guiStartFlight, guiStartCdOptions, setCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 
@@ -352,7 +352,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!misBlk)
       return assert(false, "Error: wrong testflight mission " + misName)
 
-    ::current_campaign_mission = misName
+    setCurrentCampaignMission(misName)
 
     this.saveAircraftOptions()
     setCurSkinToHangar(this.unit.name)

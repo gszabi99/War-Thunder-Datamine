@@ -40,7 +40,8 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdOptions, setIsRemoteMission
+let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdOptions, setIsRemoteMission,
+  getCurrentCampaignId, setCurrentCampaignId, setCurrentCampaignMission, getCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 
 ::current_campaign <- null
@@ -144,13 +145,13 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     else if (this.gm == GM_SKIRMISH)
       title = loc("mainmenu/btnSkirmish")
     else
-      title = loc("chapters/" + ::current_campaign_id)
+      title = loc($"chapters/{getCurrentCampaignId()}")
 
     this.initMissionsList(title)
   }
 
   function initMissionsList(title) {
-    let customChapterId = (this.gm == GM_DYNAMIC) ? ::current_campaign_id : missionsListCampaignId.value
+    let customChapterId = (this.gm == GM_DYNAMIC) ? getCurrentCampaignId() : missionsListCampaignId.value
     local customChapters = null
     if (!this.showAllCampaigns && (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION))
       customChapters = ::current_campaign
@@ -569,8 +570,8 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function setMission() {
     ::mission_settings.postfix = null
-    ::current_campaign_id = this.curMission.chapter
-    ::current_campaign_mission = this.curMission.id
+    setCurrentCampaignId(this.curMission.chapter)
+    setCurrentCampaignMission(this.curMission.id)
     if (this.gm == GM_DYNAMIC)
       ::mission_settings.currentMissionIdx <- this.curMissionIdx
 
@@ -736,9 +737,9 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function openMissionOptions(mission) {
-    let campaignName = ::current_campaign_id
+    let campaignName = getCurrentCampaignId()
 
-    this.missionName = ::current_campaign_mission
+    this.missionName = getCurrentCampaignMission()
 
     if (campaignName == null || this.missionName == null)
       return

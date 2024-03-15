@@ -28,6 +28,7 @@ let { get_current_mission_info } = require("blkGetters")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { getCurrentCampaignId, getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 
 ::mission_settings <- {
   name = null
@@ -265,8 +266,8 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     let gm = get_game_mode()
     setGuiOptionsMode(::get_options_mode(gm))
 
-    let campaignName = ::current_campaign_id
-    this.missionName = ::current_campaign_mission
+    let campaignName = getCurrentCampaignId()
+    this.missionName = getCurrentCampaignMission()
 
     if (campaignName == null || this.missionName == null)
       return

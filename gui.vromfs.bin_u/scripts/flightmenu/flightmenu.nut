@@ -32,16 +32,18 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
-let { guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
+let { guiStartCdOptions, getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { disableOrders } = require("%scripts/items/orders.nut")
 
 function gui_start_briefing_restart(_ = {}) {
   log("gui_start_briefing_restart")
-  let missionName = ::current_campaign_mission
+  let missionName = getCurrentCampaignMission()
   if (missionName != null) {
     let missionBlk = DataBlock()
     let gm = get_game_mode()
-    missionBlk.setFrom(get_meta_mission_info_by_gm_and_name(gm, ::current_campaign_mission))
+    let missionInfoBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
+    if (missionInfoBlk != null)
+      missionBlk.setFrom(missionInfoBlk)
     let briefingOptions = ::get_briefing_options(gm, get_game_type(), missionBlk)
     if (briefingOptions.len() == 0)
       return restartCurrentMission()

@@ -16,7 +16,7 @@ let { getUnlockRewardCostByName, isUnlockOpened } = require("%scripts/unlocks/un
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { get_pve_awards_blk } = require("blkGetters")
-let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
+let { guiStartFlight, setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { isDiffUnlocked, getReqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
 
 let checkTutorialsList = [ //idx in this array used for local profile option skipTutorialBitmaskId
@@ -320,7 +320,7 @@ function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null) {
         ["startTutorial", function() {
           mData.mission.setStr("difficulty", ::get_option(USEROPT_DIFFICULTY).values[diff])
           select_mission(mData.mission, true)
-          ::current_campaign_mission = mData.mission.name
+          setCurrentCampaignMission(mData.mission.name)
           saveTutorialToCheckReward(mData.mission)
           handlersManager.animatedSwitchScene(guiStartFlight)
         }],

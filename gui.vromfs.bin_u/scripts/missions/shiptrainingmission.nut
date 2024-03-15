@@ -13,7 +13,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getPvpRespawnsOnUnitType, isStatsLoaded } = require("%scripts/myStats.nut")
-let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
+let { guiStartFlight, setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
@@ -99,7 +99,7 @@ function startShipTrainingMission() {
   enable_bullets_modifications(::aircraft_for_weapons)
   ::enable_current_modifications(::aircraft_for_weapons)
 
-  ::current_campaign_mission = MIS_NAME
+  setCurrentCampaignMission(MIS_NAME)
   let misBlk = get_meta_mission_info_by_name(MIS_NAME)
   select_training_mission(misBlk)
   guiStartFlight()

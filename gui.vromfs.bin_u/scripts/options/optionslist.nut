@@ -19,6 +19,7 @@ let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission
 let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
+let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -55,7 +56,7 @@ let getMainOptions = function() {
     return overrideMainOptionsFn()
 
   let isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
-    (::current_campaign_mission == "tutorial01")
+    (getCurrentCampaignMission() == "tutorial01")
   let canChangeViewType = !isFirstTutorial && (getPlayerCurUnit()?.unitType.canChangeViewType ?? false)
 
   return {

@@ -38,6 +38,7 @@ let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { shopSmokeItems, isItemdefId } = require("%scripts/items/itemsManager.nut")
 let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
+let { isStringInteger } = require("%sqstd/string.nut")
 
 function setImageByUnlockType(config, unlockBlk) {
   let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
@@ -653,11 +654,15 @@ let getEmptyConditionsConfig = @() {
       res.image = item.getSmallIconName()
       res.desc = item.getDescription()
       res.rewardText = item.getName()
+      let numDecals = item.getContent().filter(@(c) c?.resourceType == "decal").len()
+      if (numDecals > 0)
+        res.descrImageSize <- $"{0.05 * numDecals}sh, 0.05sh"
     }
   }
 
   else if ( uType == UNLOCKABLE_INVENTORY) {
-    let item = isItemdefId(id) ? ::ItemsManager.getItemOrRecipeBundleById(to_integer_safe(id)) : null
+    let itemId = isStringInteger(id) ? id.tointeger() : id
+    let item = isItemdefId(itemId) ? ::ItemsManager.getItemOrRecipeBundleById(itemId) : null
     if (item) {
       res.title = getUnlockTypeText(uType, realId)
       res.name = item.getName()

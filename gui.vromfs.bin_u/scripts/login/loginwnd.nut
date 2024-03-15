@@ -18,7 +18,6 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
-let loginWndBlkPath = require("%scripts/login/loginWndBlkPath.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { getDistr } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
@@ -54,7 +53,7 @@ function setDbgGuestLoginIdPrefix(prefix) {
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
 gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
-  sceneBlkName = loginWndBlkPath.value
+  sceneBlkName = "%gui/loginBox.blk"
 
   check2StepAuthCode = false
   availableCircuitsBlockName = "multipleAvailableCircuits"

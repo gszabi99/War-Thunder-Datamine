@@ -559,7 +559,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSearchEditBoxFocus() {
-    if (!this.isValid())
+    if (!this.isContactsWindowActive())
       return
 
     let editBoxObj = this.scene.findObject("search_edit_box")

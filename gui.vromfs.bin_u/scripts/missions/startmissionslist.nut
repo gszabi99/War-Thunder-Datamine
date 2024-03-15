@@ -29,11 +29,20 @@ let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { even
 let missionsUtilsVar = persist("missionsUtilsVar", @() {
   matchSearchGm = -1
   isRemoteMissionVar = false
+  currentCampaignId = null
+  currentCampaignMission = null
 })
+
 let isRemoteMission = @() missionsUtilsVar.isRemoteMissionVar
 let setIsRemoteMission = @(v) missionsUtilsVar.isRemoteMissionVar = !!v
 let setMatchSearchGm = @(gm) missionsUtilsVar.matchSearchGm = gm
 let getMatchSearchGm = @() missionsUtilsVar.matchSearchGm
+
+let setCurrentCampaignId = @(id) missionsUtilsVar.currentCampaignId = id
+let getCurrentCampaignId = @() missionsUtilsVar.currentCampaignId
+
+let setCurrentCampaignMission = @(id) missionsUtilsVar.currentCampaignMission = id
+let getCurrentCampaignMission = @() missionsUtilsVar.currentCampaignMission
 
 function guiStartSessionList() {
   loadHandler(gui_handlers.SessionsList,
@@ -113,7 +122,7 @@ function guiStartMislist(isModal = false, setGameMode = null, addParams = {}) {
   params.canSwitchMisListType <- gm == GM_SKIRMISH
 
   let showAllCampaigns = gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION
-  ::current_campaign_id = showAllCampaigns ? null : get_game_mode_name(gm)
+  setCurrentCampaignId(showAllCampaigns ? null : get_game_mode_name(gm))
   params.showAllCampaigns <- showAllCampaigns
 
   if (!isModal) {
@@ -399,4 +408,8 @@ return {
   guiStartCdOptions
   setIsRemoteMission
   isRemoteMission
+  setCurrentCampaignId
+  getCurrentCampaignId
+  setCurrentCampaignMission
+  getCurrentCampaignMission
 }

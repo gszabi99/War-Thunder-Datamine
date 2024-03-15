@@ -36,6 +36,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { showBuyAndOpenChestWndWhenReceive } = require("%scripts/items/buyAndOpenChestWnd.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 
 let emptyBlk = DataBlock()
 
@@ -1083,7 +1084,7 @@ let ItemExternal = class (BaseItem) {
 
     broadcastEvent("BeforeStartCustomMission")
     ::custom_miss_flight = true
-    ::current_campaign_mission = this.itemDef.tags.canRunCustomMission
+    setCurrentCampaignMission(this.itemDef.tags.canRunCustomMission)
     select_training_mission(misBlk)
     return true
   }

@@ -10,7 +10,6 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
-let { mpLobbyBlkPath } = require("%scripts/matchingRooms/getMPLobbyBlkPath.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
@@ -47,7 +46,7 @@ let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scrip
 }
 
 gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
-  sceneBlkName = mpLobbyBlkPath.value
+  sceneBlkName = "%gui/mpLobby/mpLobby.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "multiplayer/lobby"
 

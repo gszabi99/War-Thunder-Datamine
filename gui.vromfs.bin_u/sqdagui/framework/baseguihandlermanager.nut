@@ -398,8 +398,6 @@ let handlersManager = {
       handler.onSceneActivate(show)
   }
 
-  getRootScreenBlkPath = @() "%gui/rootScreen.blk"
-
   //if guiScene == null, will be used current scene
   function clearScene(guiScene = null) {
     if (!guiScene)
@@ -413,7 +411,7 @@ let handlersManager = {
 
     this.beforeClearScene(guiScene)
 
-    guiScene.loadScene(this.getRootScreenBlkPath(), this)
+    guiScene.loadScene("%gui/rootScreen.blk", this)
 
     this.updateCssParams(guiScene)
     this.setGuiRootOptions(guiScene, false)

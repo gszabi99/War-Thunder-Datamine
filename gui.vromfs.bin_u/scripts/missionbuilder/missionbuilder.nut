@@ -23,6 +23,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -396,7 +397,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     missionBlk.setBool("isLimitedFuel", ::get_option(USEROPT_LIMITED_FUEL).value)
     missionBlk.setBool("isLimitedAmmo", ::get_option(USEROPT_LIMITED_AMMO).value)
 
-    ::current_campaign_mission = missionBlk.getStr("name", "")
+    setCurrentCampaignMission(missionBlk.getStr("name", ""))
     ::mission_settings.mission = missionBlk
     ::mission_settings.missionFull = fullMissionBlk
     select_mission_full(missionBlk, fullMissionBlk);

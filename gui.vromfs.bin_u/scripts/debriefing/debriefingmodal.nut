@@ -57,7 +57,7 @@ gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTabl
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
 let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions,
   guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF,
-  guiStartMpLobby
+  guiStartMpLobby, getCurrentCampaignId, getCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getTournamentRewardData } = require("%scripts/userLog/userlogUtils.nut")
 let { goToBattleAction,
@@ -2776,11 +2776,13 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     if (this.gm == GM_CAMPAIGN) {
       if (this.debriefingResult.isSucceed) {
-        log("VIDEO: campaign = " + ::current_campaign_id + "mission = " + ::current_campaign_mission)
-        if ((::current_campaign_mission == "jpn_guadalcanal_m4")
-            || (::current_campaign_mission == "us_guadalcanal_m4"))
+        let currentCampaignId = getCurrentCampaignId()
+        let currentCampaignMission = getCurrentCampaignMission()
+        log($"VIDEO: campaign = {currentCampaignId} mission = {currentCampaignMission}")
+        if ((currentCampaignMission == "jpn_guadalcanal_m4")
+            || (currentCampaignMission == "us_guadalcanal_m4"))
           needCheckForVictory(true)
-        ::select_next_avail_campaign_mission(::current_campaign_id, ::current_campaign_mission)
+        ::select_next_avail_campaign_mission(currentCampaignId, currentCampaignMission)
       }
       goDebriefingNextFunc = guiStartMenuCampaign
       return

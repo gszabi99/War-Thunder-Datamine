@@ -6,7 +6,6 @@ let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { eventbus_send } = require("eventbus")
 let { showHudTankMovementStates } = require("%scripts/hud/hudTankStates.nut")
-let { mpTankHudBlkPath } = require("%scripts/hud/hudBlkPath.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
@@ -14,7 +13,7 @@ let { g_hud_tank_debuffs } = require("%scripts/hud/hudTankDebuffs.nut")
 let { g_hud_crew_state } = require("%scripts/hud/hudCrewState.nut")
 
 let HudTank = class (gui_handlers.BaseUnitHud) {
-  sceneBlkName = mpTankHudBlkPath.value
+  sceneBlkName = "%gui/hud/hudTank.blk"
 
   function initScreen() {
     base.initScreen()

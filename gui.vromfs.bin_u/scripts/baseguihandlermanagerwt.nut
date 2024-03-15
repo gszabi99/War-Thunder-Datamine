@@ -18,7 +18,6 @@ let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let focusFrame = require("%scripts/viewUtils/focusFrameWT.nut")
 let { setSceneActive, reloadDargUiScript } = require("reactiveGuiCommand")
-let rootScreenBlkPathWatch = require("%scripts/baseGuiHandler/rootScreenBlkPathWatch.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { isPlatformSony, isPlatformXboxOne, targetPlatform } = require("%scripts/clientState/platform.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
@@ -463,10 +462,6 @@ handlersManager.__update({
     this.clearInvalidHandlers()
     this.updateLoadingFlag()
     broadcastEvent("FinishLoading")
-  }
-
-  function getRootScreenBlkPath() {
-    return rootScreenBlkPathWatch.value
   }
 
   function setGuiRootOptions(guiScene, forceUpdate = true) {

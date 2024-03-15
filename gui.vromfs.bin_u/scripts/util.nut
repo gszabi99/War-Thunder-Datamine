@@ -12,7 +12,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
@@ -49,14 +48,9 @@ let { measureType } = require("%scripts/measureType.nut")
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::fakeBullets_prefix <- "fake"
 
-::current_campaign_id <- null
-::current_campaign_mission <- null
 ::current_wait_screen <- null
 
 local gui_start_logout_scheduled = false
-
-registerPersistentData("util", getroottable(),
-  ["current_campaign_id", "current_campaign_mission"])
 
 dagui_propid_add_name_id("tooltipId")
 

@@ -64,7 +64,7 @@ let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete,
   getTimePlayedOnUnitType
 } = require("%scripts/myStats.nut")
-let { guiStartSessionList, setMatchSearchGm, guiStartFlight
+let { guiStartSessionList, setMatchSearchGm, guiStartFlight, setCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById,
   getCurrentGameMode, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount,
@@ -427,7 +427,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       if (name != "name")
         missionBlk[name] <- value
     select_mission(missionBlk, false)
-    ::current_campaign_mission = missionBlk.name
+    setCurrentCampaignMission(missionBlk.name)
     this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight) })
   }
 
