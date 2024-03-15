@@ -383,7 +383,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       local show = filterText == "" || data.text.indexof(filterText) != null
       if(show && data?.isHeader == true)
         parentId = data.id
-      if(data?.parentId == parentId)
+      if(parentId != "" && data?.parentId == parentId)
         show = true
       showObjById(data.id, show, this.scene)
     }

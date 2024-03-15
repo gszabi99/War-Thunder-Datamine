@@ -85,6 +85,12 @@
       "superstructure_front_dm": {
         "armorThickness": 20.0
       },
+      "turret_05_back_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_05_bottom_dm": {
+        "armorThickness": 10.0
+      },
       "body_front_dm": {
         "armorThickness": 18.0
       },
@@ -128,9 +134,6 @@
       },
       "turret_02_back_dm": {
         "armorThickness": 20.0
-      },
-      "turret_04_bottom_dm": {
-        "armorThickness": 10.0
       },
       "turret_06_front_dm": {
         "armorThickness": 30.0
@@ -179,7 +182,7 @@
         "armorThickness": 10.0
       },
       "turret_04_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 5.0
       },
       "turret_04_side_dm": {
         "armorThickness": 10.0
@@ -308,7 +311,8 @@
       "ex_decor_r_05_dm": {},
       "ex_decor_r_06_dm": {},
       "ex_decor_r_07_dm": {},
-      "turret_04_front_dm": {}
+      "turret_04_front_dm": {},
+      "turret_04_bottom_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -850,6 +854,26 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_03_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_04_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_04_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_05_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_05_dm",
             "xrayTextThickness": 5.0
           }
         }
@@ -1625,6 +1649,16 @@
         "tank_gunner",
         "commander"
       ]
+    }
+  },
+  "fuelTanks": {
+    "r1": {
+      "part": "fuel_tank_exterior_r_01_dm",
+      "external": true
+    },
+    "l1": {
+      "part": "fuel_tank_exterior_l_01_dm",
+      "external": true
     }
   },
   "MetaParts": {

@@ -451,7 +451,12 @@ def ammo_stowage_do_explosion(eid : EntityId; part_id : PartId; offender : Offen
     ammo_stowage_do_explosion_fatal(eid, -1, -1, part_id, offender, seed, is_full_expl) <| v
     return
 
-  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_EXPLODE) || get_ammo_cluster_type(remap.clusterId, v) == int(AmmoClusterType CHARGES)
+  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_EXPLODE)
+    return
+
+  // Hack! Charges don't have explosion, only fire
+  if get_ammo_cluster_type(remap.clusterId, v) == int(AmmoClusterType CHARGES)
+    ammo_stowage_do_fire(eid, part_id, offender) <| v
     return
 
   if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState EXPLOSION_FATAL)

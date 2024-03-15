@@ -885,6 +885,10 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateItemInfo()
   }
 
+  function onEventDiscountsDataUpdated(_params) {
+    this.fillPage()
+  }
+
   function onEventUpdateTrophiesVisibility(_) {
     if (this.curTab != itemsTab.SHOP)
       return
