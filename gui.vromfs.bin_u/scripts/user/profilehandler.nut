@@ -59,7 +59,8 @@ let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnl
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isUnlockVisible, getUnlockCost, getUnlockRewardText, canDoUnlock,
-  canOpenUnlockManually, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+  canOpenUnlockManually, isUnlockOpened, findUnusableUnitForManualUnlock, canClaimUnlockRewardForUnit
+} = require("%scripts/unlocks/unlocksModule.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav,
@@ -947,8 +948,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
       local markerSeenIds = markerUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
         || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
-      local manualSeenIds = manualUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
-        || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
+      local manualSeenIds = manualUnlockIds.filter(@(id) (chapterItem.rootItems.contains(id)
+        || chapterItem.groups.findindex(@(g) g.contains(id)) != null) && canClaimUnlockRewardForUnit(id))
 
       view.items.append({
         itemTag = "campaign_item"
@@ -967,8 +968,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           if (isAchievementPage && id == this.curAchievementGroupName)
             curIndex = view.items.len()
 
-          markerSeenIds = markerSeenIds.filter(@(unlock) groupItem.contains(unlock))
-          manualSeenIds = manualUnlockIds.filter(@(unlock) groupItem.contains(unlock))
+          markerSeenIds = markerSeenIds.filter(@(unlockId) groupItem.contains(unlockId))
+          manualSeenIds = manualUnlockIds.filter(@(unlockId) groupItem.contains(unlockId)
+            && canClaimUnlockRewardForUnit(unlockId))
 
           view.items.append({
             id = id
@@ -1324,6 +1326,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let unlockId = obj?.unlockId ?? ""
     if (unlockId == "")
       return
+
+    let unit = findUnusableUnitForManualUnlock(unlockId)
+    if (unit) {
+      this.msgBox("cantClaimReward", loc("msgbox/cantClaimManualUnlockPrize",
+        { unitname = getUnitName(unit) }), [["ok"]], "ok")
+      return
+    }
 
     let onSuccess = Callback(@() this.updateUnlockBlock(unlockId), this)
     openUnlockManually(unlockId, onSuccess)

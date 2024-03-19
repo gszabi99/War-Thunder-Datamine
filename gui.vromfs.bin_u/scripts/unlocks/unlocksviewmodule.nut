@@ -22,7 +22,7 @@ let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode
 } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened, canClaimUnlockReward,
-  isUnlockVisibleByTime, debugLogVisibleByTimeInfo
+  isUnlockVisibleByTime, debugLogVisibleByTimeInfo, canClaimUnlockRewardForUnit,
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecoratorById, getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
@@ -1070,7 +1070,7 @@ function getRewardText(unlockConfig, stageNum) {
 }
 
 function updateUnseenIcon(cfg, obj) {
-  let unseenCfg = cfg.manualOpen && canClaimUnlockReward(cfg.id)
+  let unseenCfg = cfg.manualOpen && canClaimUnlockReward(cfg.id) && canClaimUnlockRewardForUnit(cfg.id)
     ? makeConfigStr(SEEN.MANUAL_UNLOCKS, cfg.id)
     : ""
   obj.findObject("unseen_icon").setValue(unseenCfg)

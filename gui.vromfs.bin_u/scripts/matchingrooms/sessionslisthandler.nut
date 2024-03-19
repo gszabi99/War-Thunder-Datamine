@@ -51,7 +51,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     this.curPageRoomsList = []
     this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
 
-    this.isCoop = isGameModeCoop(getMatchSearchGm)
+    this.isCoop = isGameModeCoop(getMatchSearchGm())
     this.scene.findObject("sessions_update").setUserData(this)
 
     let head = this.scene.findObject("sessions_diff_header")
@@ -105,7 +105,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
         [USEROPT_SEARCH_GAMEMODE, "spinner"],
         [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
-    else if (getMatchSearchGm == GM_SKIRMISH)
+    else if (getMatchSearchGm() == GM_SKIRMISH)
       options = [
         [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]

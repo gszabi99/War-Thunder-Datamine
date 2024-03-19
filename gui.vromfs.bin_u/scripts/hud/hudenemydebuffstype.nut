@@ -207,7 +207,8 @@ enumsAddTypes(g_hud_enemy_debuffs, {
         return null
 
       let maxCrewLeftPercent = 1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / total
-      let percent = clamp(lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), 0, 1)
+      let minPercent = alive >= minCrewCount ? 0.01 : 0
+      let percent = clamp(lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), minPercent, 1)
       return {
         state = getStateByValue(alive, total, minCrewCount + 1, minCrewCount)
         label = measureType.PERCENT_FLOAT.getMeasureUnitsText(percent)

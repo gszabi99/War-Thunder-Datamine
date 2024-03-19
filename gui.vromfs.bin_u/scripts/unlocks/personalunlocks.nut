@@ -4,7 +4,7 @@ from "%scripts/mainConsts.nut" import SEEN
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible
+let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible, canClaimUnlockRewardForUnit
 } = require("%scripts/unlocks/unlocksModule.nut")
 let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
 
@@ -60,7 +60,9 @@ function invalidateCache() {
   manualUnlocksSeenList.onListChanged()
 }
 
-manualUnlocksSeenList.setListGetter(@() getManualUnlocks().map(@(u) u.id))
+manualUnlocksSeenList.setListGetter(@() getManualUnlocks()
+  .filter(@(u) canClaimUnlockRewardForUnit(u.id))
+  .map(@(u) u.id))
 
 addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(_p) invalidateCache()

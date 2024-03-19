@@ -40,7 +40,6 @@ function clearCache() {
 
 function showMultiplayerAvailableMsg() {
   showInfoMsgBox(loc("antiAddictSystem/multiplayerAvailable"), "anti_addict_system_multiplayer_available")
-  clearCache()
 }
 
 function showMultiplayerLimitByAasMsg() {
@@ -75,10 +74,22 @@ eventbus_subscribe("aasNotification", @(params) antiAddictSystemVariable.mutate(
 eventbus_subscribe("on_sign_out", function(_) {
   clearCache()
   clearTimer(showMultiplayerAvailableMsg)
+  clearTimer(clearCache)
 })
 
 needShowAasMessageLimit.subscribe(@(v) v ? deferOnce(showMultiplayerLimitByAasMsg) : null)
 needShowAasMessageWarning.subscribe(@(v) v ? deferOnce(showAasWarningMsg) : null)
+
+function onAntiAddictSystemVariableChange() {
+  let { nextCanPlayTs } = antiAddictSystemVariable.get()
+  let limitSec = nextCanPlayTs - get_charserver_time_sec()
+  if (limitSec > 0)
+    resetTimeout(limitSec, clearCache)
+  else
+    clearTimer(clearCache)
+}
+
+antiAddictSystemVariable.subscribe(@(_v) deferOnce(onAntiAddictSystemVariableChange))
 
 isInBattleState.subscribe(function(v) {
   if (v)
@@ -89,4 +100,5 @@ return {
   showMultiplayerLimitByAasMsg
   markToShowMultiplayerLimitByAasMsg
   hasMultiplayerLimitByAas
+  antiAddictSystemVariable
 }

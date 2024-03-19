@@ -519,7 +519,12 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
         item.diveDepth <- itemBlk?.diveDepth ?? 0
       }
 
-      if ([ WEAPON_TYPE.BOMBS, WEAPON_TYPE.GUIDED_BOMBS ].contains(currentTypeName) && weapon?.machLimit)
+      item.trigger <- weapon?.trigger
+
+      if (weapon?.machLimit && (currentTypeName == WEAPON_TYPE.BOMBS
+          || currentTypeName == WEAPON_TYPE.GUIDED_BOMBS
+          || weapon?.trigger == TRIGGER_TYPE.ROCKETS
+          || weapon?.trigger == TRIGGER_TYPE.ATGM))
         item.machLimit <- weapon.machLimit
 
       if ([ WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS].contains(currentTypeName)) {
@@ -727,9 +732,12 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
         measureType.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
   }
 
-  if (weapon?.machLimit)
-    res.append("".concat(loc("bombProperties/machLimit"), colon,
+  if (weapon?.machLimit) {
+    let machLimitDesc = (weapon?.trigger == TRIGGER_TYPE.ROCKETS || weapon?.trigger == TRIGGER_TYPE.ATGM)
+      ? loc("rocketProperties/machLimit") : loc("bombProperties/machLimit")
+    res.append("".concat(loc(machLimitDesc), colon,
       format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber"))))
+  }
 
   if (weapon.explosiveType != null) {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon

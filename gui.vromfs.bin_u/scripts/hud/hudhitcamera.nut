@@ -243,8 +243,11 @@ function updateTitle() {
   scene.result = style
   let isVisibleTitle = hitResult != DM_HIT_RESULT_NONE
   titleObj.show(isVisibleTitle)
-  if (isVisibleTitle)
+  if (isVisibleTitle) {
     titleObj.setValue(utf8ToUpper(loc($"hitcamera/result/{style}")))
+    setTimeout(TIME_TITLE_SHOW_SEC, updateTitle)
+    hitResult = DM_HIT_RESULT_NONE
+  }
 }
 
 function showRelativeCrewLoss() {
@@ -386,7 +389,7 @@ function onHitCameraEvent(mode, result, info) {
 
   let needFade   = mode == HIT_CAMERA_FADE_OUT
   let isStarted  = mode == HIT_CAMERA_START
-  isVisible      = isEnabled && (isStarted || needFade || mode == HIT_CAMERA_FADE_IN)
+  isVisible      = isEnabled && (isStarted || needFade || mode == HIT_CAMERA_FADE_IN || mode == HIT_CAMERA_START)
   stopFadeTimeS  = needFade ? (info?.stopFadeTime ?? -1) : -1
   hitResult      = result
   curUnitId      = info?.unitId ?? curUnitId

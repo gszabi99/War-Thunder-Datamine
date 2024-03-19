@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import wp_get_unlock_cost, has_entitlement, req_unlock, get_unlock_type, is_unlocked, wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
+from "%scripts/items/itemsConsts.nut" import itemType
 let { Cost } = require("%scripts/money.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
@@ -102,6 +103,36 @@ function canOpenUnlockManually(unlockBlk) {
     && !unlockBlk?.hidden
     && canClaimUnlockReward(unlockBlk.id)
 }
+
+function findUnusableUnitForManualUnlock(unlockId) {
+  let unlockBlk = getUnlockById(unlockId)
+  if (!unlockBlk)
+    return null
+
+  if (!unlockBlk?.userLogId)
+    return null
+
+  let item = ::ItemsManager.findItemById(unlockBlk.userLogId)
+  if (item?.iType != itemType.TROPHY)
+    return null
+
+  let content = item.getContent()
+  if (content.len() == 0)
+    return null
+
+  foreach (prize in content) {
+    if (("modification" not in prize) || ("forUnit" not in prize))
+      continue
+
+    let unit = getAircraftByName(prize.forUnit)
+    if (!unit || !unit.isUsable())
+      return unit
+  }
+
+  return null
+}
+
+let canClaimUnlockRewardForUnit = @(unlockId) findUnusableUnitForManualUnlock(unlockId) == null
 
 function checkDependingUnlocks(unlockBlk) {
   if (!unlockBlk || !unlockBlk?.hideUntilPrevUnlocked)
@@ -470,6 +501,8 @@ function isAnyAwardReceivedByModeType(modeType) {
 return {
   canDoUnlock
   canClaimUnlockReward
+  findUnusableUnitForManualUnlock
+  canClaimUnlockRewardForUnit
   canOpenUnlockManually
   isUnlockOpened
   isUnlockComplete
