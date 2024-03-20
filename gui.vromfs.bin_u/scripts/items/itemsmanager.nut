@@ -474,8 +474,8 @@ function isItemVisible(item, shopTab) {
   return shopTab == itemsTab.SHOP ? item.isCanBuy() && (!item.isDevItem || hasFeature("devItemShop"))
       && !item.isHiddenItem() && !item.isVisibleInWorkshopOnly() && !item.isHideInShop
     : shopTab == itemsTab.INVENTORY ? !item.isHiddenItem() && !item.isVisibleInWorkshopOnly()
-                                      && !item.shouldAutoConsume
-                                    : false
+      && (!item.shouldAutoConsume || item.canOpenForGold())
+    : false
 }
 
 // Returns a mask for items, showing only the available features.

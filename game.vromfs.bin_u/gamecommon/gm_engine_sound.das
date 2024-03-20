@@ -42,12 +42,16 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   let hero = get_controlled_hero()
   let is_hero = (hero != null) ? hero.eid == eid : false
 
-  let engineName = is_hero ? "EngineName" : "EngineNameAi"
   let modelSoundBlk = *evt.modelBlk |> datablock_get_block_by_name("sound")
   if modelSoundBlk == null
     addSubTemplate(eid, "disabled_update")
     return
 
+  var modifyEngineSound = false
+  if *modelSoundBlk |> datablock_param_exists("EngineNameModification", -1) && unit.modBlk != null
+    modifyEngineSound = *unit.modBlk |> datablock_block_exists("engine")
+
+  let engineName = is_hero ? modifyEngineSound ? "EngineNameModification" : "EngineName" : "EngineNameAi"
   let engineBlkName = modelSoundBlk |> datablock_getStr(engineName, "")
   using() <| $(var sndBlk : DataBlock)
     if datablock_load(sndBlk, "config/sound_studio.blk")
