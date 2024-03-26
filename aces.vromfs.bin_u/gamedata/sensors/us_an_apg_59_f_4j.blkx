@@ -1,6 +1,7 @@
 {
   "type": "radar",
   "name": "AN/APG-59",
+  "showMissileLaunchZone": true,
   "transivers": {
     "lprf": {
       "sideLobesAttenuation": -20.0,
@@ -543,43 +544,6 @@
             }
           ]
         },
-        "setAcmLockMode": {
-          "setEnabled": {
-            "value": true
-          },
-          "resetScanPhase": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "acmLock"
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "setFsmActive": {
-            "fsm": "acmLock",
-            "active": true
-          },
-          "setDistGatePos": {
-            "source": "constRange",
-            "pos": 9250.0,
-            "width": 18500.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "constRange",
-            "pos": 675.0,
-            "width": 1950.0
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
-          },
-          "setModeName": {
-            "name": "auto ACM"
-          }
-        },
         "resetAcmLockMode": {
           "setFsmActive": {
             "fsm": "acmLock",
@@ -663,6 +627,73 @@
             "name": "acquisition"
           }
         },
+        "setHprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfAcm"
+          },
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "setHprfAcmHmdLockModeName"
+          }
+        },
+        "setLprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "lprf"
+          },
+          "setSignal": {
+            "signal": "lprfTrack"
+          },
+          "doCustomActionTemplate": {
+            "fsm": "main",
+            "name": "setLprfAcmHmdLockModeName"
+          }
+        },
+        "resetHmdStandbyMode": {
+          "resetStandbyMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": false
+          }
+        },
+        "resetHmdLockMode": {
+          "resetAcmLockMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": false
+          }
+        },
+        "setHmdTrackMode": {
+          "setTrackMode": {},
+          "setScanPattern": {
+            "scanPattern": "hmdTrack"
+          }
+        },
+        "resetHmdTrackMode": {
+          "resetTrackMode": {}
+        },
+        "setHprfAcmLockModeName": {
+          "setModeName": {
+            "name": "PD HDN ACM"
+          }
+        },
+        "setLprfAcmLockModeName": {
+          "setModeName": {
+            "name": "ACM"
+          }
+        },
+        "setHprfHmdLockModeName": {
+          "setModeName": {
+            "name": "PD HMD"
+          }
+        },
+        "setLprfHmdLockModeName": {
+          "setModeName": {
+            "name": "HMD"
+          }
+        },
         "setHmdStandbyMode": {
           "setEnabled": {
             "value": false
@@ -690,16 +721,18 @@
             "fsm": "helmetDesignation",
             "active": true
           },
-          "setModeName": {
-            "name": "auto HMD"
-          }
-        },
-        "resetHmdStandbyMode": {
-          "resetStandbyMode": {},
-          "setFsmActive": {
-            "fsm": "helmetDesignation",
-            "active": false
-          }
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setHprfAcmHmdLockModeName",
+              "actionTemplateName": "setHprfHmdLockModeName"
+            },
+            {
+              "fsm": "main",
+              "name": "setLprfAcmHmdLockModeName",
+              "actionTemplateName": "setLprfHmdLockModeName"
+            }
+          ]
         },
         "setHmdLockMode": {
           "setEnabled": {
@@ -734,25 +767,64 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
           },
-          "setModeName": {
-            "name": "auto HMD"
-          }
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setHprfAcmHmdLockModeName",
+              "actionTemplateName": "setHprfHmdLockModeName"
+            },
+            {
+              "fsm": "main",
+              "name": "setLprfAcmHmdLockModeName",
+              "actionTemplateName": "setLprfHmdLockModeName"
+            }
+          ]
         },
-        "resetHmdLockMode": {
-          "resetAcmLockMode": {},
+        "setAcmLockMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "resetScanPhase": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "acmLock"
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
           "setFsmActive": {
-            "fsm": "helmetDesignation",
-            "active": false
-          }
-        },
-        "setHmdTrackMode": {
-          "setTrackMode": {},
-          "setScanPattern": {
-            "scanPattern": "hmdTrack"
-          }
-        },
-        "resetHmdTrackMode": {
-          "resetTrackMode": {}
+            "fsm": "acmLock",
+            "active": true
+          },
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 675.0,
+            "width": 1950.0
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acm"
+          },
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setHprfAcmHmdLockModeName",
+              "actionTemplateName": "setHprfAcmLockModeName"
+            },
+            {
+              "fsm": "main",
+              "name": "setLprfAcmHmdLockModeName",
+              "actionTemplateName": "setLprfAcmLockModeName"
+            }
+          ]
         }
       },
       "transitions": {
@@ -945,7 +1017,11 @@
                 "fsm": "main",
                 "name": "setAcmLockMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": true
+            }
           }
         },
         "acmLockToAcmTrack": {
@@ -979,7 +1055,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToAcmLock": {
@@ -1013,7 +1093,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToSearch": {
@@ -1030,7 +1114,11 @@
                 "fsm": "main",
                 "name": "setSearchMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "standbyToAcmLock": {
@@ -1047,7 +1135,11 @@
                 "fsm": "main",
                 "name": "setAcmLockMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": true
+            }
           }
         },
         "standbyToHmdStandby": {
@@ -1055,9 +1147,19 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": true
             }
           }
         },
@@ -1092,7 +1194,11 @@
                 "fsm": "main",
                 "name": "setSearchMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "hmdStandbyToHmdLock": {
@@ -1222,6 +1328,16 @@
               },
               {
                 "fsm": "main",
+                "name": "setPrimaryMode",
+                "actionTemplateName": "setLprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryMode",
+                "actionTemplateName": "setHprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
                 "name": "setBvrTrackMode",
                 "actionTemplateName": "setTrackMode"
               },
@@ -1301,6 +1417,16 @@
               },
               {
                 "fsm": "main",
+                "name": "setPrimaryMode",
+                "actionTemplateName": "setHprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryMode",
+                "actionTemplateName": "setLprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
@@ -1341,6 +1467,16 @@
                 "fsm": "main",
                 "name": "setBvrLockMode",
                 "actionTemplateName": "setLprfBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setPrimaryMode",
+                "actionTemplateName": "setLprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryMode",
+                "actionTemplateName": "setHprfAcmLockParams"
               },
               {
                 "fsm": "main",
@@ -1495,59 +1631,111 @@
         }
       }
     },
-    "acmLock": {
-      "stateInit": "lock",
-      "actionsTemplates": {
-        "setHprfLock": {
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfAcm"
-          }
-        },
-        "setLprfLock": {
-          "setTransiver": {
-            "transiver": "lprf"
-          },
-          "setSignal": {
-            "signal": "lprfTrack"
-          }
-        }
-      },
+    "acmLockModes": {
+      "stateInit": "init",
       "transitions": {
         "init": {
           "event": "fsmActivate",
+          "stateTo": "primary",
           "actions": {
-            "setHprfLock": {}
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryMode"
+            }
           }
         },
+        "primaryToPrimaryStandby": {
+          "stateFrom": "primary",
+          "event": "targetDetected",
+          "stateTo": "primaryStandby"
+        },
+        "secondaryToSecondaryStandby": {
+          "stateFrom": "secondary",
+          "event": "targetDetected",
+          "stateTo": "secondaryStandby"
+        },
+        "primaryStandbyToPrimary": {
+          "stateFrom": "primaryStandby",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "primary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryMode"
+            }
+          }
+        },
+        "secondaryStandbyToSecondary": {
+          "stateFrom": "secondaryStandby",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "secondary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSecondaryMode"
+            }
+          }
+        },
+        "primaryToSecondary": {
+          "stateFrom": "primary",
+          "command": "modeSwitch",
+          "stateTo": "secondary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSecondaryMode"
+            }
+          }
+        },
+        "secondaryToPrimary": {
+          "stateFrom": "secondary",
+          "command": "modeSwitch",
+          "stateTo": "primary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryMode"
+            }
+          }
+        },
+        "primaryAcmHmdSwitch": {
+          "stateFrom": "primary",
+          "command": "acmSwitch",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryMode"
+            }
+          }
+        },
+        "secondaryAcmHmdSwitch": {
+          "stateFrom": "secondary",
+          "command": "acmSwitch",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSecondaryMode"
+            }
+          }
+        }
+      }
+    },
+    "acmLock": {
+      "stateInit": "lock",
+      "transitions": {
         "scan": {
           "event": "update",
           "actions": {
-            "setHprfLock": {},
-            "scan": [
-              {},
-              {}
-            ],
-            "setLprfLock": {}
+            "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "setHprfLock": {},
-            "detectTarget": [
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              },
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              }
-            ],
-            "setLprfLock": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         }
       }

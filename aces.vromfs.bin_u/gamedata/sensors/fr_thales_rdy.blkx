@@ -742,14 +742,14 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
           },
-          "setModeName": {
-            "name": "auto ACM"
-          },
           "setTransiver": {
             "transiver": "mprf"
           },
           "setSignal": {
             "signal": "mprfTrack"
+          },
+          "setModeName": {
+            "name": "PD ACM"
           }
         },
         "resetAcmLockMode": {
@@ -970,6 +970,28 @@
             "name": "acquisition"
           }
         },
+        "setHprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfAcm"
+          },
+          "setModeName": {
+            "name": "PD HDN ACM"
+          }
+        },
+        "setLprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "lprf"
+          },
+          "setSignal": {
+            "signal": "lprfTrack"
+          },
+          "setModeName": {
+            "name": "ACM"
+          }
+        },
         "setMprfStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setScanPatternSet": {
@@ -1073,7 +1095,7 @@
             "active": true
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "resetHmdStandbyMode": {
@@ -1117,7 +1139,7 @@
             "scopeRangeSet": "acm"
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "resetHmdLockMode": {
@@ -1333,7 +1355,11 @@
                 "fsm": "main",
                 "name": "setAcmLockMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": true
+            }
           }
         },
         "acmLockToAcmTrack": {
@@ -1367,7 +1393,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToAcmLock": {
@@ -1401,7 +1431,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToSearch": {
@@ -1418,7 +1452,11 @@
                 "fsm": "main",
                 "name": "setSearchMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "standbyToAcmLock": {
@@ -1443,10 +1481,16 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
         "acmLockToHmdStandby": {
@@ -2222,6 +2266,9 @@
           }
         }
       }
+    },
+    "acmLockModes": {
+      "stateInit": "init"
     },
     "acmLock": {
       "stateInit": "lock",

@@ -646,14 +646,14 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
           },
-          "setModeName": {
-            "name": "auto ACM"
-          },
           "setTransiver": {
             "transiver": "mprf"
           },
           "setSignal": {
             "signal": "mprfTrack"
+          },
+          "setModeName": {
+            "name": "PD ACM"
           }
         },
         "resetAcmLockMode": {
@@ -920,7 +920,7 @@
             "active": true
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "resetHmdStandbyMode": {
@@ -964,7 +964,7 @@
             "scopeRangeSet": "acm"
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "resetHmdLockMode": {
@@ -1284,10 +1284,16 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
         "acmLockToHmdStandby": {

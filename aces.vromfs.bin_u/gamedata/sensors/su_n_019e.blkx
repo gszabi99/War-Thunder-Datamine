@@ -924,7 +924,7 @@
             "width": 1800.0
           },
           "setModeName": {
-            "name": "auto ACM"
+            "name": "PD ACM"
           }
         },
         "setIrstAcmLockMode": {
@@ -1162,9 +1162,6 @@
           ],
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
-          },
-          "setModeName": {
-            "name": "auto HMD"
           }
         },
         "resetHmdLockMode": {
@@ -1222,7 +1219,7 @@
             "width": 1800.0
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "setIrstHmdStandbyMode": {
@@ -1256,7 +1253,7 @@
             "width": 1800.0
           },
           "setModeName": {
-            "name": "auto HMD"
+            "name": "PD HMD"
           }
         },
         "setIrstHmdLockMode": {
@@ -1611,10 +1608,16 @@
           "command": "selectTarget",
           "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
         "acmLockToHmdStandby": {

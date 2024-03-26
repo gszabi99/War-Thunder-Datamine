@@ -1,6 +1,7 @@
 {
   "type": "radar",
   "name": "AN/APG-59",
+  "showMissileLaunchZone": true,
   "transivers": {
     "lprf": {
       "sideLobesAttenuation": -20.0,
@@ -545,9 +546,6 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "acm"
-          },
-          "setModeName": {
-            "name": "auto ACM"
           }
         },
         "resetAcmLockMode": {
@@ -631,6 +629,28 @@
           "setBvrLockMode": {},
           "setModeName": {
             "name": "acquisition"
+          }
+        },
+        "setHprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfAcm"
+          },
+          "setModeName": {
+            "name": "PD HDN ACM"
+          }
+        },
+        "setLprfAcmLockParams": {
+          "setTransiver": {
+            "transiver": "lprf"
+          },
+          "setSignal": {
+            "signal": "lprfTrack"
+          },
+          "setModeName": {
+            "name": "ACM"
           }
         }
       },
@@ -824,7 +844,11 @@
                 "fsm": "main",
                 "name": "setAcmLockMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": true
+            }
           }
         },
         "standbyToAcmLock": {
@@ -844,7 +868,11 @@
                 "fsm": "main",
                 "name": "setAcmLockMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": true
+            }
           }
         },
         "acmLockToAcmTrack": {
@@ -878,7 +906,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmLockToSearch": {
@@ -895,7 +927,11 @@
                 "fsm": "main",
                 "name": "setSearchMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToAcmLock": {
@@ -929,7 +965,11 @@
                 "fsm": "main",
                 "name": "setStandbyMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         },
         "acmTrackToSearch": {
@@ -946,7 +986,11 @@
                 "fsm": "main",
                 "name": "setSearchMode"
               }
-            ]
+            ],
+            "setFsmActive": {
+              "fsm": "acmLockModes",
+              "active": false
+            }
           }
         }
       }
@@ -1007,6 +1051,16 @@
               },
               {
                 "fsm": "main",
+                "name": "setPrimaryMode",
+                "actionTemplateName": "setLprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryMode",
+                "actionTemplateName": "setHprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
                 "name": "setBvrTrackMode",
                 "actionTemplateName": "setTrackMode"
               },
@@ -1056,6 +1110,16 @@
               },
               {
                 "fsm": "main",
+                "name": "setPrimaryMode",
+                "actionTemplateName": "setHprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryMode",
+                "actionTemplateName": "setLprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
@@ -1096,6 +1160,16 @@
                 "fsm": "main",
                 "name": "setBvrLockMode",
                 "actionTemplateName": "setLprfBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setPrimaryMode",
+                "actionTemplateName": "setLprfAcmLockParams"
+              },
+              {
+                "fsm": "main",
+                "name": "setSecondaryMode",
+                "actionTemplateName": "setHprfAcmLockParams"
               },
               {
                 "fsm": "main",
@@ -1250,59 +1324,91 @@
         }
       }
     },
-    "acmLock": {
-      "stateInit": "lock",
-      "actionsTemplates": {
-        "setHprfLock": {
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfAcm"
-          }
-        },
-        "setLprfLock": {
-          "setTransiver": {
-            "transiver": "lprf"
-          },
-          "setSignal": {
-            "signal": "lprfTrack"
-          }
-        }
-      },
+    "acmLockModes": {
+      "stateInit": "init",
       "transitions": {
         "init": {
           "event": "fsmActivate",
+          "stateTo": "primary",
           "actions": {
-            "setHprfLock": {}
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryMode"
+            }
           }
         },
+        "primaryToPrimaryStandby": {
+          "stateFrom": "primary",
+          "event": "targetDetected",
+          "stateTo": "primaryStandby"
+        },
+        "secondaryToSecondaryStandby": {
+          "stateFrom": "secondary",
+          "event": "targetDetected",
+          "stateTo": "secondaryStandby"
+        },
+        "primaryStandbyToPrimary": {
+          "stateFrom": "primaryStandby",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "primary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryMode"
+            }
+          }
+        },
+        "secondaryStandbyToSecondary": {
+          "stateFrom": "secondaryStandby",
+          "event": "targetsOfInterestCleanup",
+          "stateTo": "secondary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSecondaryMode"
+            }
+          }
+        },
+        "primaryToSecondary": {
+          "stateFrom": "primary",
+          "command": "modeSwitch",
+          "stateTo": "secondary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setSecondaryMode"
+            }
+          }
+        },
+        "secondaryToPrimary": {
+          "stateFrom": "secondary",
+          "command": "modeSwitch",
+          "stateTo": "primary",
+          "actions": {
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "setPrimaryMode"
+            }
+          }
+        }
+      }
+    },
+    "acmLock": {
+      "stateInit": "lock",
+      "transitions": {
         "scan": {
           "event": "update",
           "actions": {
-            "setHprfLock": {},
-            "scan": [
-              {},
-              {}
-            ],
-            "setLprfLock": {}
+            "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "setHprfLock": {},
-            "detectTarget": [
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              },
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              }
-            ],
-            "setLprfLock": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         }
       }
