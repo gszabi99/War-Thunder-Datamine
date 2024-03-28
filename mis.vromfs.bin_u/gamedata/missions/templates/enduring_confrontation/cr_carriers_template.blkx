@@ -32,7 +32,9 @@
         "enableAfterComplete": false
       },
       "events": {
-        "initMission": {}
+        "periodicEvent": {
+          "time": 1.0
+        }
       },
       "conditions": {
         "varCompareBool": [
@@ -415,12 +417,12 @@
             "resetFormation": true
           },
           "unitSetProperties": {
+            "targetChangeProf": 0.25,
+            "object": "@cr_t1_carrier_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "targetChangeProf": 0.25,
-            "object": "@cr_t1_carrier_name",
             "accuracy": 0.8,
             "effShootingRate": 0.8,
             "airEffShootingRate": 0.8,
@@ -535,12 +537,12 @@
             "resetFormation": true
           },
           "unitSetProperties": {
+            "targetChangeProf": 0.25,
+            "object": "@cr_t2_carrier_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "targetChangeProf": 0.25,
-            "object": "@cr_t2_carrier_name",
             "accuracy": 0.8,
             "effShootingRate": 0.8,
             "airEffShootingRate": 0.8,
@@ -681,7 +683,8 @@
           "varSetRandomInt": {
             "var": "cr_t1_carrier_random_idx",
             "from": 1,
-            "to_not_including": 5
+            "to_not_including": 5,
+            "var_to_not_including": "cr_t1_num_ways_count_plus_one"
           },
           "comment": [
             {
@@ -759,7 +762,8 @@
           "varSetRandomInt": {
             "var": "cr_t2_carrier_random_idx",
             "from": 1,
-            "to_not_including": 5
+            "to_not_including": 5,
+            "var_to_not_including": "cr_t2_num_ways_count_plus_one"
           },
           "comment": [
             {
@@ -1349,9 +1353,9 @@
           ],
           "moAddMissionObjective": {
             "target": "cr_t2_detect_carrier_quest",
+            "object_marking": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -1391,9 +1395,9 @@
           ],
           "moAddMissionObjective": {
             "target": "cr_t1_detect_carrier_quest",
+            "object_marking": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -1640,9 +1644,9 @@
           },
           "moAddMissionObjective": {
             "target": "cr_t1_destroy_carrier_quest",
+            "object_marking": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -1677,9 +1681,9 @@
           },
           "moAddMissionObjective": {
             "target": "cr_t2_destroy_carrier_quest",
+            "object_marking": 0,
             "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "object_marking": 0
+            "object_var_name": ""
           }
         },
         "else_actions": {
