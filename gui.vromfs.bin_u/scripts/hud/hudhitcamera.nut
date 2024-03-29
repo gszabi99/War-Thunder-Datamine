@@ -315,11 +315,11 @@ function updateCrewCount(unitInfo, data = null) {
   let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
   let maxCrewLeftPercent = (1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / unitInfo.crewTotalCount) * 100
   let newCrewRelative = clamp(stdMath.lerp(minCrewCount - 1, unitInfo.crewTotalCount, 0, maxCrewLeftPercent, crewCount), 0, 100)
-
-  let crewChangeRelative = unitInfo.crewRelative > 0 ? newCrewRelative - unitInfo.crewRelative : 0
+  let crewChangeRelative = unitInfo.crewRelative > 0 ? unitInfo.crewRelative - newCrewRelative : 0
   unitInfo.crewRelative = newCrewRelative
-  if (!(data?.updateDebuffsOnly ?? true) && crewChangeRelative < 0.0)
-    unitInfo.crewLostRelative += crewChangeRelative
+  let needShowDelta = crewCount > 0 && crewChangeRelative > 0.0 && (camInfo?.needShowCrewLoss ?? false)
+  if (needShowDelta)
+    unitInfo.crewLostRelative -= crewChangeRelative
 
   setTimeout(TIME_TO_SUM_RELATIVE_CREW_LOST, showRelativeCrewLoss)
 
