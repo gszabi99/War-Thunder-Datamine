@@ -170,7 +170,7 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
   if (isInArray(chapter, [null, ""])) {
     local webStoreUrl = getCurCircuitUrl("webstoreURL", loc("url/webstore", ""))
     if (steam_is_running() && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")))
-      webStoreUrl = format(loc("url/webstore/steam"), steam_get_my_id())
+      webStoreUrl = format(loc("url/webstore/steam"), steam_get_my_id().tostring())
 
     if (webStoreUrl != "")
       return openShopUrl(webStoreUrl)

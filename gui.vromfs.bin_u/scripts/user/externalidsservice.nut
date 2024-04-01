@@ -16,8 +16,11 @@ let updateExternalIDsTable = function(request) {
 
   let table = {}
 //STEAM
-  if (eIDtable?[EPL_STEAM]?.id && steam_is_running())
-    table.steamName <- steam_get_name_by_id(blk.externalIds[EPL_STEAM].id)
+  if (eIDtable?[EPL_STEAM]?.id && steam_is_running()) {
+    let steamIdInt = blk.externalIds[EPL_STEAM].id.tointeger()
+    table.steamName <- steam_get_name_by_id(steamIdInt)
+    table.steamId <- steamIdInt
+  }
 
 //PLAYSTATION NETWORK
   if (eIDtable?[EPL_PSN]?.id)
@@ -52,7 +55,7 @@ function getSelfExternalIds() {
 //STEAM
   let steamId = get_my_external_id(EPL_STEAM)
   if (steamId != null)
-    table.steamName <- steam_get_name_by_id(steamId)
+    table.steamName <- steam_get_name_by_id(steamId.tointeger())
 
 //PLAYSTATION NETWORK
   let psnId = get_my_external_id(EPL_PSN)
