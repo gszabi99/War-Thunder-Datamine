@@ -1,0 +1,49 @@
+{
+  "normalizationPreset": "heat",
+  "ricochetPreset": "napalm",
+  "groundRicochetPreset": "napalm",
+  "secondaryShattersPreset": "ap",
+  "stabilityThreshold": 0.5,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.3,
+  "stabilityReductionAfterPenetration": 0.15,
+  "bulletType": "incendiary_tank",
+  "explodeOnRendinst": true,
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.5
+    ],
+    "mod2": [
+      15.0,
+      0.7
+    ],
+    "mod3": [
+      30.0,
+      0.99
+    ]
+  },
+  "DamageParts": {
+    "body": {
+      "hp": 5.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onHit": {
+        "break_fuse": 1.0
+      },
+      "onKill": {
+        "destruction": 1.0
+      }
+    }
+  }
+}

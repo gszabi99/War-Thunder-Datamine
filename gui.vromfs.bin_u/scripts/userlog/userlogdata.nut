@@ -41,6 +41,7 @@ let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -256,7 +257,9 @@ local logNameByType = {
           mission = getMissionLocName(blk?.body, "locName")
         else
           mission = loc("missions/" + (blk?.body.mission ?? ""))
-        let nameLoc = "userlog/" + logTypeName + (blk?.body.win ? "/win" : "/lose")
+        let isMissionExtrLog = isMissionExtrByName(blk?.body.mission ?? "")
+        let nameLoc = isMissionExtrLog ? "userLog/session_result_extr"
+          : $"userlog/{logTypeName}{(blk?.body.win ? "/win" : "/lose")}"
         msg = format(loc(nameLoc), mission) //need more info in log, maybe title.
         markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
@@ -467,7 +470,7 @@ local logNameByType = {
 
         local button = null
         let wSet = workshop.getSetByItemId(item.id)
-        if (wSet)
+        if (wSet && wSet.isVisible())
           button = [{
             id = "workshop_button",
             text = loc("items/workshop"),

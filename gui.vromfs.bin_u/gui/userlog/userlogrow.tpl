@@ -3,7 +3,7 @@ selImg {
   tdiv {
     size:t='pw, 5.5*@sf/100.0<<#buttonName>>+ 1@blockInterval<</buttonName>>'
     <<#isUserLogBattles>>
-    tooltip:t=<<tooltip>>
+    tooltip:t="<<tooltip>>"
     <</isUserLogBattles>>
     tdiv {
       size:t='pw, 5.5*@sf/100.0'

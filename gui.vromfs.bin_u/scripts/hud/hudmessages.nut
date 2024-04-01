@@ -23,6 +23,7 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_REWARDS_MSG
 } = require("%scripts/options/optionsExtNames.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
+let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 let heightPID = dagui_propid_add_name_id("height")
 
@@ -673,7 +674,8 @@ enumsAddTypes(g_hud_messages, {
 
     onMessage = function (eventData) {
       if (!checkObj(this.nest)
-          || get_game_mode() == GM_TEST_FLIGHT)
+          || get_game_mode() == GM_TEST_FLIGHT
+          || isMissionExtr())
         return
 
       let oldResultIdx = getTblValue("resultIdx", this.stack, GO_NONE)

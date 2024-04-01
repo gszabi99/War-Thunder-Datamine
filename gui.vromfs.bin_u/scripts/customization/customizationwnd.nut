@@ -723,6 +723,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateFlagSlots() {
+    if (!this.access_Flags)
+      return
+
     let view = { isTooltipByHold = showConsoleButtons.value, buttons = [] }
     for (local i = 0; i < decoratorTypes.FLAGS.getMaxSlots(); i++) {
       let button = this.getViewButtonTable(i, decoratorTypes.FLAGS)

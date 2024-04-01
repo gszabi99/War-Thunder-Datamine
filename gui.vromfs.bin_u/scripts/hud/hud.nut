@@ -34,7 +34,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG,
   USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
-let maybeOfferControlsHelp = require("%scripts/hud/maybeOfferControlsHelp.nut")
+let { maybeOfferControlsHelp } = require("%scripts/hud/maybeOfferControlsHelp.nut")
 let { HudAir } = require("%scripts/hud/hudAir.nut")
 let { HudTank } = require("%scripts/hud/hudTank.nut")
 let { HudShip } = require("%scripts/hud/hudShip.nut")

@@ -411,52 +411,60 @@
                   }
                 }
               ],
-              "tdiv": {
-                "size": "pw, fh",
-                "padding-top": "1@dp",
-                "debrBlock": {
-                  "id": "my_stats_scroll_block",
-                  "size": "fw, ph",
-                  "flow": "vertical",
-                  "overflow-y": "auto",
-                  "scrollbarShortcuts": "yes",
-                  "css-hier-invalidate": "yes",
-                  "tdiv": {
-                    "width": "pw",
-                    "min-height": "ph",
-                    "margin": "0, 1@debrPad",
+              "tdiv": [
+                {
+                  "size": "pw, fh",
+                  "padding-top": "1@dp",
+                  "debrBlock": {
+                    "id": "my_stats_scroll_block",
+                    "size": "fw, ph",
                     "flow": "vertical",
-                    "table": {
-                      "id": "stat_table",
-                      "width": "pw",
-                      "baseRow": "rows16",
-                      "flow": "vertical",
-                      "total-input-transparent": "yes",
-                      "behavior": "PosNavigator",
-                      "navigatorShortcuts": "noSelect",
-                      "selfFocusBorder": "yes"
-                    },
+                    "overflow-y": "auto",
+                    "scrollbarShortcuts": "yes",
+                    "css-hier-invalidate": "yes",
                     "tdiv": {
-                      "id": "leaderbord_stats",
                       "width": "pw",
-                      "pos": "0, 1@debrPad",
-                      "position": "relative",
-                      "flow": "h-flow",
-                      "display": "hide"
-                    },
-                    "textareaNoTab": {
-                      "id": "stat_info_text",
-                      "width": "pw",
-                      "pos": "0, 3@debrPad",
-                      "position": "relative",
-                      "overlayTextColor": "",
-                      "text-align": "right",
-                      "text": "",
-                      "display": "hide"
+                      "min-height": "ph",
+                      "margin": "0, 1@debrPad",
+                      "flow": "vertical",
+                      "table": {
+                        "id": "stat_table",
+                        "width": "pw",
+                        "baseRow": "rows16",
+                        "flow": "vertical",
+                        "total-input-transparent": "yes",
+                        "behavior": "PosNavigator",
+                        "navigatorShortcuts": "noSelect",
+                        "selfFocusBorder": "yes"
+                      },
+                      "tdiv": {
+                        "id": "leaderbord_stats",
+                        "width": "pw",
+                        "pos": "0, 1@debrPad",
+                        "position": "relative",
+                        "flow": "h-flow",
+                        "display": "hide"
+                      },
+                      "textareaNoTab": {
+                        "id": "stat_info_text",
+                        "width": "pw",
+                        "pos": "0, 3@debrPad",
+                        "position": "relative",
+                        "overlayTextColor": "",
+                        "text-align": "right",
+                        "text": "",
+                        "display": "hide"
+                      }
                     }
                   }
+                },
+                {
+                  "id": "full_width_resources",
+                  "size": "pw, ph",
+                  "flow": "h-flow",
+                  "flow-align": "center"
                 }
-              }
+              ]
             }
           ]
         }

@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import is_online_available, is_app_active, set_char_cb, steam_is_overlay_active
+from "%scripts/dagui_natives.nut" import is_online_available, is_app_active, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "%scripts/airInfo.nut" import CheckFeatureLockAction
 
@@ -17,6 +17,7 @@ let { cutPrefix, toUpper } = require("%sqstd/string.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { steam_is_overlay_active } = require("steam")
 
 gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

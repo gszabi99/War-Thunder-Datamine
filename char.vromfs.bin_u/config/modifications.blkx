@@ -14480,6 +14480,9 @@
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },
             {
+              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+            },
+            {
               "blk": "gameData/sensors/su_tshu_1_11.blk",
               "turretWeaponIndex": 0
             }
@@ -14686,6 +14689,23 @@
         "rcostAddParam": 0.9595,
         "supportUnitClass": "structures/ussr_152mm_d1",
         "supportUnitTag": "artillery"
+      }
+    },
+    "md_loot_imager_1_gen": {
+      "image": "#ui/gameuiskin#oil",
+      "tier": 2,
+      "modClass": "firepower",
+      "effects": {
+        "lootImagerMaxDist": 500.0
+      }
+    },
+    "md_rage_scanner": {
+      "image": "#ui/gameuiskin#radar_warning_receiver",
+      "tier": 3,
+      "modClass": "firepower",
+      "effects": {
+        "rageScannerCooldown": 30.0,
+        "rageScannerActiveTime": 5.0
       }
     },
     "ki_43_1_otsu": {
@@ -22036,6 +22056,12 @@
       "deactivationIsAllowed": false
     },
     "uk_lau_51": {
+      "image": "#ui/gameuiskin#pilon_block_rocket",
+      "animation": "video/unitModifications/rocket_block.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "uk_lau_51_ffar": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
       "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",

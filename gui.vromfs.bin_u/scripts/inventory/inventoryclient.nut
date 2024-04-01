@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_cur_circuit_name, char_send_custom_action, steam_is_running, steam_get_my_id, steam_get_app_id
+from "%scripts/dagui_natives.nut" import get_cur_circuit_name, char_send_custom_action
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
 
@@ -9,7 +9,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let inventory = require("inventory")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format, split_by_chars } = require("string")
+let { split_by_chars } = require("string")
 let { get_time_msec } = require("dagor.time")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
@@ -23,6 +23,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_network_block } = require("blkGetters")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
+let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -296,9 +297,7 @@ let class InventoryClient {
       return null
 
     return "auto_login auto_local sso_service=any " + url + "?a=" + APP_ID +
-      (steam_is_running()
-        ? format("&app_id=%d&steam_id=%s", ::steam_get_app_id(), steam_get_my_id())
-        : "")
+      (steam_is_running() ? $"&app_id={steam_get_app_id()}&steam_id={steam_get_my_id()}" : "")
   }
 
   function getMarketplaceItemUrl(itemdefid, _itemid = null) {

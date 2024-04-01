@@ -41,6 +41,29 @@
             "display": "hide"
           },
           {
+            "id": "additionalUnitsNest",
+            "size": "1@slotbarWidthFull, 1.5@slotbarHeight",
+            "pos": "50%pw-50%w, 0",
+            "position": "relative",
+            "display": "hide",
+            "HorizontalListBox": {
+              "id": "additionalUnits",
+              "type": "transparent",
+              "pos": "50%pw-50%w, 0",
+              "position": "relative",
+              "height": "ph",
+              "noPadding": "yes",
+              "flow": "horizontal",
+              "overflow-x": "auto",
+              "clearOnFocusLost": "no",
+              "navigator": "posNavigator",
+              "navigatorShortcuts": "yes",
+              "on_select": "onSelectAdditionalUnit",
+              "css-hier-invalidate": "yes"
+            }
+          },
+          {
+            "id": "respawnOptListContainer",
             "height": "fh",
             "width": "@respawnOptListContainerWidth",
             "max-width": "(3@modCellWidth +1@scrollBarSize) + (0.12@scrn_tgt * 1@isWide) + (8*@sf/@pf_outdated +h)",

@@ -895,7 +895,16 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   obj = holderObj.findObject("aircraft-type")
   if (checkObj(obj)) {
     let fonticon = getUnitRoleIcon(air)
-    let typeText = getFullUnitRoleText(air)
+    local typeText = getFullUnitRoleText(air)
+    if (unitType == ES_UNIT_TYPE_TANK) {
+      let unitTags = get_unittags_blk()?[air.name] ?? {}
+      let lootCapacity = unitTags?.Shop.lootCapacity ?? 0
+      if (lootCapacity > 0) {
+        typeText = "".concat(typeText, loc("ui/parentheses/space", {
+          text = "".concat(loc("shop/lootCapacity"), loc("ui/colon"), lootCapacity)
+        }))
+      }
+    }
     obj.show(typeText != "")
     obj.setValue(colorize(getUnitClassColor(air), fonticon + " " + typeText))
   }

@@ -10,7 +10,7 @@ let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { register_command } = require("console")
-let { is_running } = require("steam")
+let { steam_is_running } = require("steam")
 let { request_review } = require("%xboxLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { get_charserver_time_sec } = require("chard")
@@ -99,7 +99,7 @@ function initConfig() {
 function setNeedShowRate(debriefingResult, myPlace) {
   //can be on any platform in future,
   //no need to specify platform in func name
-  if ((!isPlatformXboxOne && !is_running()) || debriefingResult == null)
+  if ((!isPlatformXboxOne && !steam_is_running()) || debriefingResult == null)
     return
 
   foreach (config in configSteamReviewWnd) {
@@ -221,7 +221,7 @@ function checkShowRateWnd() {
     return
   }
 
-  if (!is_running())
+  if (!steam_is_running())
     return
   if (cfg.hideSteamRateLanguagesArray.contains(getLanguageName()))
     return

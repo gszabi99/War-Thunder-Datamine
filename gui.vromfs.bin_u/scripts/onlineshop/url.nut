@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import send_error_log, use_embedded_browser, steam_is_running
+from "%scripts/dagui_natives.nut" import send_error_log, use_embedded_browser
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -15,6 +15,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { g_url_type } = require("%scripts/onlineShop/urlType.nut")
+let { steam_is_running } = require("steam")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"

@@ -1,5 +1,5 @@
 tdiv {
-  id:t='event_desc'
+  id:t='event_desc_nest'
   pos:t='0,0'
   position:t='relative'
   size:t='fw, ph'
@@ -34,6 +34,7 @@ tdiv {
   }
 
   div {
+    id:t='event_desc'
     size:t='pw, fh'
     overflow-y:t='auto'
     flow:t='vertical'
@@ -167,6 +168,7 @@ tdiv {
     rowSeparator {}
 
     tdiv {
+      id:t='bottom_event_desc'
       width:t='pw'
       min-height:t='1@eventTacticalMapSize + 3@leaderboardTrHeight + 0.02@sf + 1@buttonHeight'
       padding-top:t='2@blockInterval'
@@ -371,6 +373,13 @@ tdiv {
           }
         }
       }
+    }
+    tdiv {
+      id:t='bottom_event_custom_desc'
+      size:t='pw, fh'
+      padding-top:t='2@blockInterval'
+      overflow-y:t='auto'
+      scrollbarShortcuts:t='yes'
     }
   }
 }

@@ -5000,6 +5000,30 @@
     "jp_type_98_ke_ni": 125,
     "jp_type_98_ta_se": 125,
     "jp_type_99": 166,
+    "md_bosvark": 125,
+    "md_bosvark_recoiless_rifle": 125,
+    "md_bosvark_uparmor": 125,
+    "md_bosvark_uparmor_recoiless_rifle": 125,
+    "md_btr_80a": 125,
+    "md_btr_80a_projector": 125,
+    "md_btr_80a_uparmor": 125,
+    "md_btr_80a_uparmor_projector": 125,
+    "md_flarakrad": 125,
+    "md_flarakrad_uparmor": 125,
+    "md_m53_59": 125,
+    "md_m53_59_rocket": 125,
+    "md_m53_59_uparmor": 125,
+    "md_m53_59_uparmor_rocket": 125,
+    "md_tgdgb_m40_lv": 125,
+    "md_tgdgb_m40_lv_uparmor": 125,
+    "md_vickers_mk_11": 133,
+    "md_vickers_mk_11_rearmed": 133,
+    "md_vickers_mk_11_uparmor": 133,
+    "md_vickers_mk_11_uparmor_rearmed": 133,
+    "md_ystervark_spaa": 125,
+    "md_ystervark_spaa_flamer": 125,
+    "md_ystervark_spaa_uparmor": 125,
+    "md_ystervark_spaa_uparmor_flamer": 125,
     "sw_a_34_comet": 140,
     "sw_asrad_r": 125,
     "sw_bkan_1c": 166,
@@ -9479,11 +9503,11 @@
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_ricochet",
-      "pierceAngled": "kinetic_discard_sabot_penetration_angled",
-      "stopAngled": "kinetic_discard_sabot_non_penetration_angled"
+      "pierceAngled": "explosive_penetration_angled",
+      "stopAngled": "explosive_non_penetration_angled"
     },
     "smoke": {
-      "bullets": "smoke_tank, smoke_grenade_tank",
+      "bullets": "smoke_tank, smoke_grenade_tank, incendiary_tank",
       "pierce": "explosive_penetration",
       "stop": "explosive_non_penetration",
       "ricochet": "kinetic_ricochet",
@@ -10329,6 +10353,10 @@
       "gbufferModelName": "tank_shell_og9"
     },
     "smoke_tank": {
+      "modelName": "tank_bullet_he",
+      "gbufferModelName": "tank_shell_smoke"
+    },
+    "incendiary_tank": {
       "modelName": "tank_bullet_he",
       "gbufferModelName": "tank_shell_smoke"
     },

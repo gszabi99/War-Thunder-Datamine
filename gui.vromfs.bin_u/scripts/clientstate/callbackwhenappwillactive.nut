@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import is_app_active, periodic_task_register, periodic_task_unregister, steam_is_overlay_active
+from "%scripts/dagui_natives.nut" import is_app_active, periodic_task_register, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
+let { steam_is_overlay_active } = require("steam")
 
 const FREQUENCY_APP_STATE_UPDATE_SEC = 1
 local refreshActiveAppTask = -1

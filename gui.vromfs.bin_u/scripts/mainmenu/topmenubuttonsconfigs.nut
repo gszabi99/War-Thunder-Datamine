@@ -18,6 +18,7 @@ let { isPlatformSony, isPlatformPC, consoleRevision, targetPlatform
 let encyclopedia = require("%scripts/encyclopedia.nut")
 let { openChangelog } = require("%scripts/changelog/changeLogState.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
 } = require("%scripts/social/crossplay.nut")
@@ -237,7 +238,7 @@ let list = {
         checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))
     }
     isDelayed = false
-    link = "#url/tss"
+    link = @() "#url/tss"
     isLink = @() true
     isFeatured = @() true
     isHidden = @(...) !hasFeature("AllowExternalLink") || !hasFeature("Tournaments") || isMeNewbie()
@@ -255,7 +256,7 @@ let list = {
         })
       : openUrlByObj(obj, true)
     isDelayed = false
-    link = loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
+    link = @() loc("url/reportAnIssue", { platform = consoleRevision.len() > 0 ? $"{targetPlatform}_{consoleRevision}" : targetPlatform, version = get_game_version_str() })
     isLink = @() isPlatformPC
     isFeatured = @() true
     isHidden = @(...) !hasFeature("ReportAnIssue") || (!hasFeature("AllowExternalLink") && isPlatformPC) || !isInMenu()
@@ -272,7 +273,7 @@ let list = {
         })
       : openUrlByObj(obj)
     isDelayed = false
-    link = "#url/streamsAndReplays"
+    link = @() "#url/streamsAndReplays"
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) !hasFeature("ServerReplay") || (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
@@ -334,7 +335,7 @@ let list = {
   ONLINE_SHOP = {
     text = getEntStoreLocId
     onClickFunc = openEntStoreTopMenuFunc
-    link = ""
+    link = @()""
     isLink = @() !canUseIngameShop()
     isFeatured = @() !canUseIngameShop()
     image = getEntStoreIcon
@@ -345,7 +346,7 @@ let list = {
   MARKETPLACE = {
     text = @() "#mainmenu/marketplace"
     onClickFunc = @(_obj, _handler) goToMarketplace()
-    link = ""
+    link = @() ""
     isLink = @() true
     isFeatured = @() true
     image = @() "#ui/gameuiskin#gc.svg"
@@ -371,7 +372,7 @@ let list = {
     text = @() "#mainmenu/faq"
     onClickFunc = @(obj, _handler) openUrlByObj(obj)
     isDelayed = false
-    link = "#url/faq"
+    link = @() getCurCircuitUrl("faqURL", loc("url/faq"))
     isLink = @() true
     isFeatured = @() true
     isHidden = @(...) !hasFeature("AllowExternalLink") || !isInMenu()
@@ -382,12 +383,12 @@ let list = {
       ? openQrWindow({
           headerText = loc("mainmenu/support")
           qrCodesData = [
-            {url = loc("url/support")}
+            {url = getCurCircuitUrl("supportURL", loc("url/support"))}
           ]
         })
       : openUrlByObj(obj)
     isDelayed = false
-    link = "#url/support"
+    link = @() getCurCircuitUrl("supportURL", loc("url/support"))
     isLink = @() !hasFeature("ShowUrlQrCode")
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
@@ -397,7 +398,7 @@ let list = {
     text = @() "#mainmenu/wiki"
     onClickFunc = @(obj, _handler) openUrlByObj(obj)
     isDelayed = false
-    link = "#url/wiki"
+    link = @() "#url/wiki"
     isLink = @() true
     isFeatured = @() true
     isHidden = @(...) !hasFeature("AllowExternalLink") || !isInMenu()
@@ -408,7 +409,7 @@ let list = {
       ? openUrlByObj(obj)
       : openEulaWnd()
     isDelayed = false
-    link = "#url/eula"
+    link = @() "#url/eula"
     isLink = @() hasFeature("AllowExternalLink")
     isFeatured = true
     isHidden = @(...) !hasFeature("EulaInMenu") || !isInMenu()

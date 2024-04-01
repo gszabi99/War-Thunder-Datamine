@@ -1,6 +1,7 @@
 from "%sqDagui/daguiNativeApi.nut" import *
 
 let { isXInputDevice } = require("controls")
+let { steam_is_overlay_active } = require("steam")
 
 local gestureInProgress = false
 

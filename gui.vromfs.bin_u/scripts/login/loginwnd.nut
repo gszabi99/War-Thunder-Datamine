@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, webauth_start, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, steam_is_running, webauth_stop, enable_keyboard_locks_change_tracking, webauth_get_url, get_two_step_code_async2, set_network_circuit
+from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, webauth_start, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, webauth_stop, enable_keyboard_locks_change_tracking, webauth_get_url, get_two_step_code_async2, set_network_circuit
 
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
@@ -33,6 +33,8 @@ let { saveLocalSharedSettings, loadLocalSharedSettings
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { get_network_block } = require("blkGetters")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
+let { steam_is_running } = require("steam")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -142,7 +144,12 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       autoLoginObj.setValue(autoLogin)
     }
 
-    showObjById("links_block", !isPlatformShieldTv(), this.scene)
+    let isVisibleLinks = !isPlatformShieldTv()
+    let linksObj = showObjById("links_block", isVisibleLinks, this.scene)
+    if (isVisibleLinks && (linksObj?.isValid() ?? false)) {
+      linksObj.findObject("btn_faq_link").link = getCurCircuitUrl("faqURL", loc("url/faq"))
+      linksObj.findObject("btn_support_link").link = getCurCircuitUrl("supportURL", loc("url/support"))
+    }
 
     if ("dgs_get_argv" in getroottable()) {
       let s = dgs_get_argv("stoken")
@@ -522,7 +529,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
         return;
       ::error_message_box("yn1/connect_error", result, // auth error
       [
-        ["recovery", function() { openUrl(loc("url/recovery"), false, false, "login_wnd") }],
+        ["recovery", @() openUrl(getCurCircuitUrl("recoveryPasswordURL", loc("url/recovery")), false, false, "login_wnd")],
         ["exit", exitGame],
         ["tryAgain", Callback(this.onLoginErrorTryAgain, this)]
       ], "tryAgain", { cancel_fn = Callback(this.onLoginErrorTryAgain, this) })
@@ -596,11 +603,11 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     else
       urlLocId = "url/signUp"
 
-    openUrl(loc(urlLocId, { distr = getDistr() }), false, false, "login_wnd")
+    openUrl(getCurCircuitUrl("signUpURL", loc(urlLocId)).subst({ distr = getDistr() }), false, false, "login_wnd")
   }
 
   function onForgetPassword() {
-    openUrl(loc("url/recovery"), false, false, "login_wnd")
+    openUrl(getCurCircuitUrl("recoveryPasswordURL", loc("url/recovery")), false, false, "login_wnd")
   }
 
   function onChangeLogin(obj) {

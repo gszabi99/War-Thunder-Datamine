@@ -134,6 +134,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     fontIcon = "#icon/mpstats/score"
     tooltip = "multiplayer/score"
     relWidth = 25
+    missionObjective = ~MISSION_OBJECTIVE.WITHOUT_SCORE
 
     getTooltip = function(_val, player, _defText) {
       let res = []
@@ -261,6 +262,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     id = "assists"
     fontIcon = "#icon/mpstats/assists"
     tooltip = "multiplayer/assists"
+    missionObjective = MISSION_OBJECTIVE.KILLS_ANY | MISSION_OBJECTIVE.KILLS_ANY_AI
     isVisibleByGameType = @(gt) ::is_mode_with_teams(gt)
     getVal = function(player) {
       local res = 0

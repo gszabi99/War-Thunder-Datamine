@@ -1025,6 +1025,16 @@ enums.addTypes(g_hud_hints, {
     shouldBlink = true
   }
 
+  SAFELY_LEAVE_POSSIBLE_GM_HINT = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/safely_leave_possible_ground_model"
+    noKeyLocId = "hints/safely_leave_possible_ground_model_nokey"
+    shortcuts = "ID_BAILOUT"
+    showEvent = "hint:safely_leave_possible_ground_model:show"
+    hideEvent = "hint:safely_leave_possible_ground_model:hide"
+    shouldBlink = true
+  }
+
   ARTILLERY_MAP_HINT = {
     hintType = g_hud_hint_types.COMMON
     locId = "HUD/TXT_ARTILLERY_MAP"
@@ -2474,6 +2484,17 @@ enums.addTypes(g_hud_hints, {
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
+
+  RAGE_SCANNER_ACTIVE = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/rage_scanner_active"
+    showEvent = "hint:rage_scanner_active"
+    lifeTime = 5.0
+    totalCount=2
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()

@@ -34,6 +34,8 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 let { guiStartCdOptions, getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { disableOrders } = require("%scripts/items/orders.nut")
+let { get_current_mission_info_cached } = require("blkGetters")
+let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 function gui_start_briefing_restart(_ = {}) {
   log("gui_start_briefing_restart")
@@ -246,7 +248,11 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
       if (is_mplayer_host())
         text = loc("flightmenu/questionQuitMissionHost")
       else if (get_game_mode() == GM_DOMINATION) {
-        let unitsData = getCurMissionRules().getAvailableToSpawnUnitsData()
+        let misBlk = get_current_mission_info_cached()
+        local unitsData = getCurMissionRules().getAvailableToSpawnUnitsData()
+        if (isMissionExtr())
+          unitsData = unitsData.filter(@(ud) ud.unit.name not in misBlk?.editSlotbar[ud.unit.shopCountry])
+
         let unitsTexts = unitsData.map(function(ud) {
           local res = colorize("userlogColoredText", getUnitName(ud.unit))
           if (ud.comment.len())
@@ -256,7 +262,9 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
         if (unitsTexts.len())
           text = loc("flightmenu/haveAvailableCrews") + "\n" + ", ".join(unitsTexts, true) + "\n\n"
 
-        text += loc("flightmenu/questionQuitMissionInProgress")
+        text = "".concat(text, (misBlk?.gt_use_wp && misBlk?.gt_use_xp)
+          ? loc("flightmenu/questionQuitMissionInProgress")
+          : loc("flightmenu/questionQuitMission"))
       }
       else
         text = loc("flightmenu/questionQuitMission")

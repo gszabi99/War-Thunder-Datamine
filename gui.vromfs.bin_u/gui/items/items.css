@@ -61,6 +61,9 @@
 @const smallCraftTreeItemWidthWithMargin: 1@smallItemHeight + 1@smallCraftTreeItemInterval;
 
 @const craftTreeResourceWidth: (110@sf/@pf) \ 1;
+@const compactCraftTreeResourceWidth: (0.75@craftTreeResourceWidth) \ 1;
+@const smallCraftTreeResourceWidth: (0.5@craftTreeResourceWidth) \ 1;
+
 @const subsetComboBoxWidth: (0.4@sf) \ 1;
 
 @const workshoPreviewHeight: 770@sf/@pf $min 1@rh;
@@ -631,7 +634,7 @@ craftTreeScrollDiv[itemsSize = compact] > craftBranchBody > itemBlock > itemDiv 
 }
 
 craftTreeScrollDiv[itemsSize = compact] > craftBranchBody > itemBlock[hasComponent = yes] {
-  width:1@compactItemHeight + 1@craftTreeResourceWidth;
+  width:1@compactItemHeight + 1@compactCraftTreeResourceWidth;
 }
 
 craftTreeScrollDiv[itemsSize = small] > craftBranchBody > itemBlock {
@@ -640,7 +643,7 @@ craftTreeScrollDiv[itemsSize = small] > craftBranchBody > itemBlock {
 }
 
 craftTreeScrollDiv[itemsSize = small] > craftBranchBody > itemBlock[hasComponent = yes] {
-  width:1@smallItemHeight + 1@craftTreeResourceWidth;
+  width:1@smallItemHeight + 1@smallCraftTreeResourceWidth;
 }
 
 craftHeaderRow {

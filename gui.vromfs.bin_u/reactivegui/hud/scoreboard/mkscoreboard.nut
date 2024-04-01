@@ -11,6 +11,7 @@ let convoyHunting = require("convoyHunting.nut")
 let mkBattleMissionHud = require("battleMissionHud/mkBattleMissionHud.ui.nut")
 let { isInSpectatorMode, isInRespawnWnd } = require("%rGui/respawnWndState.nut")
 let { fontSizeMultiplier } = require("%rGui/style/fontsState.nut")
+let extraction = require("extraction.nut")
 
 let getNoRespTextSize = @() fpx(22)
 
@@ -25,7 +26,7 @@ let timerComponent = @() {
 
 let hasTimerComponent = Computed(@() timeLimitWarn.value > 0 && timeLeft.value < timeLimitWarn.value)
 
-let customHudNameToComp = { deathmatch, convoyHunting, po2OpMission }
+let customHudNameToComp = { deathmatch, convoyHunting, po2OpMission, extraction }
 
 function getScoreBoardChildren() {
   if ((gameType.value & GT_FOOTBALL) != 0)

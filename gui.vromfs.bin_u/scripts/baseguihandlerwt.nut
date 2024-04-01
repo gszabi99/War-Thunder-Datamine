@@ -23,6 +23,7 @@ let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
 let { get_time_msec } = require("dagor.time")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
@@ -670,9 +671,9 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     ::view_fullscreen_image(obj)
   }
 
-  function onFaq()             { openUrl(loc("url/faq")) }
+  function onFaq()             { openUrl(getCurCircuitUrl("faqURL", loc("url/faq"))) }
   function onForum()           { openUrl(loc("url/forum")) }
-  function onSupport()         { openUrl(loc("url/support")) }
+  function onSupport()         { openUrl(getCurCircuitUrl("supportURL", loc("url/support"))) }
   function onWiki()            { openUrl(loc("url/wiki")) }
 
   function unstickLastDropDown(newObj = null, forceMove = "no") {

@@ -640,3 +640,27 @@ shopFilter:disabled > slotsCountryText {
 shopFilter.slotsHeader:disabled > img {
   background-color: @countryLockedColor;
 }
+
+additionalUnit {
+  css-hier-invalidate:yes;
+  width: 288@sf/@pf;
+  height:1.5@slotbarHeight;
+  total-input-transparent:yes;
+  background-color:@transparent;
+}
+
+additionalUnit:hover {
+  background-color:@listboxHoverOptionColor;
+}
+
+additionalUnit[chosen=yes] {
+  background-color:@listboxSelOptionColor;
+}
+
+additionalUnit[isLocked = yes] {
+  enabled: no;
+}
+
+additionalUnit[isLocked = yes] img {
+  background-color: @shopItemLocked;
+}

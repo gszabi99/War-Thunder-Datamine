@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import steam_is_running
 from "%scripts/dagui_library.nut" import *
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let { launchEmailRegistration, canEmailRegistration
@@ -6,6 +5,7 @@ let { launchEmailRegistration, canEmailRegistration
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { steam_is_running } = require("steam")
 
 addPromoAction("email_registration", @(_handler, _params, _obj) launchEmailRegistration())
 

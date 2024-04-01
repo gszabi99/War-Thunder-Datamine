@@ -67,33 +67,41 @@ function getRecipesCraftTimeText(recipes) {
   return loc(recipes[0].getLocIdsList().craftTime, { time = " ".join(timeText) })
 }
 
+function getSortedRecipesToShow(recipes, maxRecipes, hasFakeRecipes) {
+  let isFullRecipesList = recipes.len() <= maxRecipes
+  local recipesToShow = recipes
+  if (!hasFakeRecipes)
+    recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
+  if (isFullRecipesList)
+    return recipesToShow
+
+  recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
+  if (recipesToShow.len() == maxRecipes)
+    return recipesToShow
+
+  if (recipesToShow.len() > maxRecipes)
+    return recipesToShow.slice(0, maxRecipes)
+
+  foreach (r in recipes)
+    if (!r.isUsable && !r.isRecipeLocked()) {
+      recipesToShow.append(r)
+      if (recipesToShow.len() == maxRecipes)
+        break
+    }
+  return recipesToShow
+}
+
+
 function getRequirements(recipes, componentItem, params, shouldReturnMarkup) {
   if (componentItem.showAllowableRecipesOnly())
     return ""
 
   let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
-  let isFullRecipesList = recipes.len() <= maxRecipes
+  let hasFakeRecipes = hasFakeRecipesInList(recipes)
+  let recipesToShow = getSortedRecipesToShow(recipes, maxRecipes, hasFakeRecipes)
 
   let isMultiRecipes = recipes.len() > 1
   local isMultiExtraItems = false
-  let hasFakeRecipes = hasFakeRecipesInList(recipes)
-
-  local recipesToShow = recipes
-  if (!hasFakeRecipes)
-    recipesToShow.sort(@(a, b) a.sortReqQuantityComponents <=> b.sortReqQuantityComponents)
-  if (!isFullRecipesList) {
-    recipesToShow = recipes.filter(@(r) r.isUsable && !r.isRecipeLocked())
-    if (recipesToShow.len() > maxRecipes)
-      recipesToShow = recipesToShow.slice(0, maxRecipes)
-    else if (recipesToShow.len() < maxRecipes)
-      foreach (r in recipes)
-        if (!r.isUsable && !r.isRecipeLocked()) {
-          recipesToShow.append(r)
-          if (recipesToShow.len() == maxRecipes)
-            break
-        }
-  }
-
   let needShowHeader = params?.needShowHeader ?? true
   local headerFirst = ""
   local headerNext = ""
@@ -136,6 +144,19 @@ let getRequirementsMarkup = @(recipes, componentItem, params)
 
 let getRequirementsText = @(recipes, componentItem, params)
   getRequirements(recipes, componentItem, params, false)
+
+function getRecipesComponents(recipes, componentItem, params) {
+  if (componentItem.showAllowableRecipesOnly())
+    return []
+
+  let maxRecipes = (params?.maxRecipes ?? componentItem.getMaxRecipesToShow()) || recipes.len()
+  let hasFakeRecipes = hasFakeRecipesInList(recipes)
+  let recipesToShow = getSortedRecipesToShow(recipes, maxRecipes, hasFakeRecipes)
+  let res = []
+  foreach (recipe in recipesToShow)
+    res.append(recipe.getItemsListForPrizesView(params))
+  return res
+}
 
 function saveMarkedRecipes(newMarkedRecipesUid) {
   if (!newMarkedRecipesUid.len())
@@ -831,4 +852,5 @@ return {
   saveMarkedRecipes
   tryUseRecipes
   tryUseRecipeSeveralTime
+  getRecipesComponents
 }

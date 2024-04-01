@@ -1,10 +1,8 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import has_entitlement, steam_is_running, get_entitlement_cost_gold
+from "%scripts/dagui_natives.nut" import has_entitlement, get_entitlement_cost_gold
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-
-
 let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -16,6 +14,7 @@ let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { measureType } = require("%scripts/measureType.nut")
+let { steam_is_running } = require("steam")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180

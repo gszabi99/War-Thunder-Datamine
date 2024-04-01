@@ -14,6 +14,7 @@ let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { measureType } = require("%scripts/measureType.nut")
+let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 
 let tab = "    "
 
@@ -142,6 +143,7 @@ function get_userlog_plain_text(logObj) {
   }
 
   local logName = ::getLogNameByType(logObj.type)
+  let isMissionExtrLog = isMissionExtrByName(logObj?.mission ?? "")
 
   let eventId = logObj?.eventId
   local mission = ::get_mission_name(logObj.mission, logObj)
@@ -156,8 +158,10 @@ function get_userlog_plain_text(logObj) {
     mission = loc(locName, eventId)
   }
 
-  local nameLoc = "".concat("userlog/", logName, "_plain")
-  if (logObj.type == EULT_SESSION_RESULT)
+  local nameLoc = isMissionExtrLog
+    ? "userLog/session_result_extr"
+    : "".concat("userlog/", logName, "_plain")
+  if (!isMissionExtrLog && logObj.type == EULT_SESSION_RESULT)
     nameLoc ="".concat(nameLoc, logObj.win ? "/win" : "/lose")
   res.name = format(loc(nameLoc), mission)
 
@@ -166,10 +170,10 @@ function get_userlog_plain_text(logObj) {
   local gold = getTblValue("goldEarned", logObj, 0) + getTblValue("baseTournamentGold", logObj, 0)
   let xp = getTblValue("xpEarned", logObj, 0)
   local earnedText = Cost(wp, gold, xp).toPlainText({ isWpAlwaysShown = true })
-  if (earnedText != "")
+  if (!isMissionExtrLog && earnedText != "")
     desc = "".concat(desc, "\n", loc("userlog/earned"), colon, earnedText)
 
-  if (logObj.type == EULT_SESSION_RESULT && ("activity" in logObj)) {
+  if (!isMissionExtrLog && (logObj.type == EULT_SESSION_RESULT) && ("activity" in logObj)) {
     let activity = measureType.PERCENT_FLOAT.getMeasureUnitsText(logObj.activity)
     desc = "".concat(desc, "\n", loc("debriefing/Activity"), colon, activity)
   }
@@ -339,8 +343,10 @@ function get_userlog_plain_text(logObj) {
   if (roomId > 0)
     desc = "".concat(desc, "\n\n", loc("options/session"), colon, intToHexString(roomId))
 
-  let total = Cost(wp, gold, xp, rp).toPlainText({ isWpAlwaysShown = true })
-  desc = "".concat(desc, "\n", loc("debriefing/total"), colon, total)
+  if (!isMissionExtrLog) {
+    let total = Cost(wp, gold, xp, rp).toPlainText({ isWpAlwaysShown = true })
+    desc = "".concat(desc, "\n", loc("debriefing/total"), colon, total)
+  }
 
   let ecSpawnScore = getTblValue("ecSpawnScore", logObj, 0)
   if (ecSpawnScore > 0)

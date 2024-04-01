@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import steam_get_app_id
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -8,6 +7,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { format } = require("string")
+let { steam_get_app_id } = require("steam")
 
 gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

@@ -141,6 +141,7 @@ tdiv {
       <<#isLocked>>
       isLocked:t='yes'
       <</isLocked>>
+      margin-right:t='@itemPadding'
     }
     <</icon2>>
     <<@previewImage>>
@@ -154,7 +155,8 @@ tdiv {
       max-width:t='p.p.p.p.w -1@dIco -1@itemPadding <<#icon2>>-1@dIco<</icon2>> <<#buttonsCount>>-2@sIco*<<buttonsCount>><</buttonsCount>>'
       <</widthByParentParent>>
       <</hasHorizontalFlow>>
-      pos:t='1@itemPadding, ph/2-h/2'; position:t='relative'
+      pos:t='0, ph/2-h/2'; position:t='relative'
+      <<#previewImage>>margin-left:t='@itemPadding'<</previewImage>>
       interactive:t='yes'
       font-bold:t='@fontSmall'
       text:t='<<title>>'

@@ -456,7 +456,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (config.own || config.partOwn)
       return "owned"
-    else if (!config.shopReq || !configReq.own)
+    else if (!config.shopReq || !(configReq.own || configReq.partOwn))
       return "locked"
     return ""
   }

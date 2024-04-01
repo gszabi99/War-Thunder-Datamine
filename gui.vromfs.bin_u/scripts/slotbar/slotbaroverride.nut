@@ -4,7 +4,7 @@ let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { getUrlOrFileMissionMetaInfo, isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
 let { isRequireUnlockForUnit } = require("%scripts/unit/unitInfo.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -65,6 +65,9 @@ function calcSlotbarOverrideByMissionName(missionName, event = null) {
     res.append(countryData)
     for (local i = 0; i < countryBlk.blockCount(); i++) {
       let crewBlk = countryBlk.getBlock(i)
+      if (crewBlk?.needToShowInEventWnd == false)
+        continue
+
       addCrewToCountryData(countryData, crewId--, res.len() - 1, crewBlk.getBlockName())
     }
   }
@@ -138,7 +141,12 @@ function getEventSlotbarHint(event, country) {
     @(c) isRequireUnlockForUnit(getAircraftByName(c.aircraft))
   ) != null
 
-  return hasNotUnlockedUnit ? loc("event/unlockAircrafts") : ""
+  if (!hasNotUnlockedUnit)
+    return ""
+
+  return isMissionExtrByName(event.name)
+    ? loc("event_extr/unlockUnits")
+    : loc("event/unlockAircrafts")
 }
 
 function selectCountryForCurrentOverrideSlotbar(country) {

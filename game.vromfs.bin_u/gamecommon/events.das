@@ -216,3 +216,17 @@ struct CmdEngineStealSound
 [cpp_event(unicast)]
 struct CmdEngineUnstealSound
 {}
+
+[event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventPickUpLoot
+  loot_type : int
+  count : int
+
+[cpp_event(unicast, with_scheme)]
+struct EventOnUnitDead
+  killer_eid : EntityId
+
+[cpp_event(broadcast, with_scheme)]
+struct EventRendInstDestroyed
+  pos : float3
+  riType : uint

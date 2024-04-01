@@ -164,6 +164,13 @@ enumsAddTypes(g_mission_type, {
     filterGroup = MISSION_GROUP.CAPTURE_THE_FLAG
   }
 
+  G_EXTR = {  // Ground: Extraction
+    reMisName = regexp2(@"_extr$")
+    objectives = MISSION_OBJECTIVE.WITHOUT_SCORE
+    filterGroup = MISSION_GROUP.BATTLE_ROYALE
+    helpBlkPath = "%gui/help/missionGroundExtraction.blk"
+  }
+
   N_DOM = {  // Naval: Domination
     reMisName = regexp2(@"_NDom(_|$)")
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_CAPTURE

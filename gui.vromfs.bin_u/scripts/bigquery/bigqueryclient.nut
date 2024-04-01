@@ -1,7 +1,7 @@
 #strict
 #allow-root-table
 //pseudo-module for native code
-from "%scripts/dagui_natives.nut" import epic_is_running, steam_is_running, save_common_local_settings, steam_get_my_id
+from "%scripts/dagui_natives.nut" import epic_is_running, save_common_local_settings
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 
@@ -14,6 +14,7 @@ let { getDistr             } = require("auth_wt")
 let { get_user_system_info } = require("sysinfo")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { get_settings_blk, get_common_local_settings_blk } = require("blkGetters")
+let { steam_is_running, steam_get_my_id } = require("steam")
 
 local bqStat = persist("bqStat", @() { sendStartOnce = false })
 
@@ -61,12 +62,13 @@ function add_user_info(table) {
   if (distr.len() > 0)
     table.distr <- distr
 
-  if (steam_is_running())
+  if (steam_is_running()) {
     table.steam <- true
 
-  let steamId = steam_get_my_id()
-  if (steamId.len() > 0)
-    table.steamId <- steamId
+    let steamId = steam_get_my_id()
+    if (steamId > 0)
+      table.steamId <- steamId
+  }
 
   if (epic_is_running())
     table.epic <- true

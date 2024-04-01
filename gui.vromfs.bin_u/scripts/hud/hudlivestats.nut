@@ -15,6 +15,7 @@ let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_game_mode, get_game_type, get_mission_time, get_mplayers_list, get_mplayer_by_id, get_local_mplayer
 } = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 enum LIVE_STATS_MODE {
   WATCH
@@ -388,6 +389,10 @@ let g_hud_live_stats = {
       return
     this.isMissionFinished = true
     this.missionResult = eventData?.resultNum ?? GO_NONE
+
+    if (isMissionExtr())
+      return
+
     this.show(true, LIVE_STATS_MODE.FINAL)
   }
 

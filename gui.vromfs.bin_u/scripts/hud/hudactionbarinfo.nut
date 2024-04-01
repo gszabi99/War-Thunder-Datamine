@@ -3,7 +3,9 @@ from "%scripts/dagui_library.nut" import *
 let { get_mission_time } = require("mission")
 let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON, EII_MISSION_SUPPORT_PLANE } = require("hudActionBarConst")
+let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON,
+  EII_MISSION_SUPPORT_PLANE, EII_GRENADE
+} = require("hudActionBarConst")
 let { get_mission_difficulty_int } = require("guiMission")
 
 local cachedUnitId = ""
@@ -56,7 +58,7 @@ function getActionItemModificationName(item, unit) {
   if (!unit)
     return null
   let itemType = item.type
-  if (itemType == EII_ROCKET )
+  if (itemType == EII_ROCKET || itemType == EII_GRENADE)
     return getBulletSetNameByBulletName(unit, item?.bulletName)
   if (itemType == EII_SELECT_SPECIAL_WEAPON)
     return getBulletSetNameByBulletName(unit, item?.bulletName)

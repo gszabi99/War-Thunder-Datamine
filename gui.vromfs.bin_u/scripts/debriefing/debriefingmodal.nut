@@ -52,9 +52,10 @@ let { setNeedShowRate } = require("%scripts/user/suggestionRateGame.nut")
 let { sourcesConfig } = require("%scripts/debriefing/rewardSources.nut")
 let { minValuesToShowRewardPremium, playerRankByCountries } = require("%scripts/ranks.nut")
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
-gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById
+  gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
+  updateDebriefingResultGiftItemsInfo
 } = require("%scripts/debriefing/debriefingFull.nut")
-let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { locCurrentMissionName, isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions,
   guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF,
   guiStartMpLobby, getCurrentCampaignId, getCurrentCampaignMission
@@ -406,6 +407,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.playersInfo = this.debriefingResult.playersInfo
     this.isMp = this.debriefingResult.isMp
     this.isReplay = this.debriefingResult.isReplay
+    this.isCurMissionExtr = isMissionExtrByName(this.debriefingResult?.roomEvent.name ?? "")
 
     if (disable_network()) //for correct work in disable_menu mode
       ::update_gamercards()
@@ -471,10 +473,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         }
       }
       else if (mpResult == STATS_RESULT_SUCCESS) {
-        resTitle = loc("MISSION_SUCCESS")
+        resTitle = this.isCurMissionExtr ? loc("MISSION_FINISHED") : loc("MISSION_SUCCESS")
         resTheme = DEBR_THEME.WIN
 
-        let victoryBonus = (this.isMp && isDebriefingResultFull()) ? this.getMissionBonus() : {}
+        let victoryBonus = (!this.isCurMissionExtr && this.isMp && isDebriefingResultFull())
+          ? this.getMissionBonus() : {}
         if ((victoryBonus?.textWp ?? "") != "" || (victoryBonus?.textRp ?? "") != "") {
           resReward.__update(victoryBonus)
           resReward.title = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"))
@@ -486,10 +489,10 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         saveLocalAccountSettings(LAST_WON_VERSION_SAVE_ID, currentMajorVersion)
       }
       else if (mpResult == STATS_RESULT_FAIL) {
-        resTitle = loc("MISSION_FAIL")
+        resTitle = this.isCurMissionExtr ? loc("MISSION_FINISHED") : loc("MISSION_FAIL")
         resTheme = DEBR_THEME.LOSE
 
-        let loseBonus = (this.isMp && isDebriefingResultFull()) ? this.getMissionBonus() : {}
+        let loseBonus = (!this.isCurMissionExtr && this.isMp && isDebriefingResultFull()) ? this.getMissionBonus() : {}
         if ((loseBonus?.textWp ?? "") != "" || (loseBonus?.textRp ?? "") != "") {
           resReward.__update(loseBonus)
           resReward.title = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"))
@@ -505,7 +508,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       }
     }
     else {
-      resTitle = loc(this.debriefingResult.isSucceed ? "MISSION_SUCCESS" : "MISSION_FAIL")
+      resTitle = this.isCurMissionExtr
+        ? loc("MISSION_FINISHED")
+        : loc(this.debriefingResult.isSucceed ? "MISSION_SUCCESS" : "MISSION_FAIL")
       resTheme = this.debriefingResult.isSucceed ? DEBR_THEME.WIN : DEBR_THEME.LOSE
     }
 
@@ -714,6 +719,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function reinitTotal() {
+    if (this.isCurMissionExtr)
+      return
+
     if (!this.is_show_my_stats())
       return
 
@@ -870,9 +878,47 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.fillPveRewardTrophyContent(trophyItemReceived, this.pveRewardInfo.isRewardReceivedEarlier)
   }
 
+  function hasGiftItem() {
+    if (!this.giftItems)
+      return false
+
+    foreach (itemData in this.giftItems) {
+      let item = ::ItemsManager.findItemById(itemData.item)
+      if (item)
+        return true
+    }
+
+    return false
+  }
+
   function handleGiftItems() {
     if (!this.giftItems || this.isAllGiftItemsKnown)
       return
+
+    if (this.isCurMissionExtr) {
+      let resourcesObj = this.scene.findObject("full_width_resources")
+      let view = { items = [] }
+      foreach (itemData in this.giftItems) {
+        let item = ::ItemsManager.findItemById(itemData.item)
+        if (!item)
+          continue
+
+        view.items.append(item.getViewData({
+          count = itemData.count
+          enableBackground = false
+          border = true
+          bigPicture = true
+          margin = "4@blockInterval"
+        }))
+      }
+
+      if (view.items.len() > 0) {
+        let markup = handyman.renderCached("%gui/items/item.tpl", view)
+        this.guiScene.replaceContentFromText(resourcesObj, markup, markup.len(), this)
+      }
+      return
+    }
+
     let obj = this.scene.findObject("inventory_gift_icon")
     let leftBlockHeight = this.scene.findObject("left_block").getSize()[1]
     let itemHeight = toPixels(this.guiScene, "1@itemHeight")
@@ -1133,6 +1179,26 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return false
   }
 
+  function updateMyStatObjects() {
+    this.showTab("my_stats")
+    this.skipAnim = this.skipAnim && debriefingSkipAllAtOnce
+    showObjectsByTable(this.scene, {
+      left_block              = this.is_show_left_block()
+      inventory_gift_block    = this.is_show_inventory_gift()
+      my_stats_awards_block   = this.is_show_awards_list()
+      right_block             = this.is_show_right_block()
+      battle_tasks_block      = this.is_show_battle_tasks_list()
+      researches_scroll_block = this.is_show_research_list()
+    })
+    if (this.isCurMissionExtr)
+      this.showCollectedResourcesTitle()
+    else
+      this.showMyPlaceInTable()
+
+    this.updateMyStatsTopBarArrangement()
+    this.handleGiftItems()
+  }
+
   function switchState() {
     if (this.state >= debrState.done)
       return
@@ -1158,7 +1224,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       this.loadWwCasualtiesHistory()
     }
     else if (this.state == debrState.showAwards) {
-      showObjById("btn_show_all", this.giftItems != null && this.giftItems.len() > VISIBLE_GIFT_NUMBER, this.scene)
+      if (!this.isCurMissionExtr)
+        showObjById("btn_show_all", this.giftItems != null && this.giftItems.len() > VISIBLE_GIFT_NUMBER, this.scene)
 
       if (!this.is_show_my_stats() || !this.is_show_awards_list())
         return this.switchState()
@@ -1171,19 +1238,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       if (!this.is_show_my_stats())
         return this.switchState()
 
-      this.showTab("my_stats")
-      this.skipAnim = this.skipAnim && debriefingSkipAllAtOnce
-      showObjectsByTable(this.scene, {
-        left_block              = this.is_show_left_block()
-        inventory_gift_block    = this.is_show_inventory_gift()
-        my_stats_awards_block   = this.is_show_awards_list()
-        right_block             = this.is_show_right_block()
-        battle_tasks_block      = this.is_show_battle_tasks_list()
-        researches_scroll_block = this.is_show_research_list()
-      })
-      this.showMyPlaceInTable()
-      this.updateMyStatsTopBarArrangement()
-      this.handleGiftItems()
+      this.updateMyStatObjects()
     }
     else if (this.state == debrState.showBonuses) {
       this.statsTimer = this.statsBonusDelay
@@ -2246,7 +2301,20 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return place
   }
 
+  function showCollectedResourcesTitle() {
+    let objTarget = this.scene.findObject("my_place_move_box")
+    objTarget.show(true)
+
+    this.scene.findObject("my_place_label").setValue(this.hasGiftItem()
+      ? loc("debriefing/collectedResources")
+      : loc("debriefing/noCollectedResources"))
+    this.scene.findObject("my_place_in_mptable").show(false)
+  }
+
   function showMyPlaceInTable() {
+    if (this.isCurMissionExtr)
+      return
+
     if (!this.is_show_my_stats())
       return
 
@@ -2631,7 +2699,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return !u.isEmpty(this.awardsList)
   }
   function is_show_inventory_gift() {
-    return this.giftItems != null
+    return !this.isCurMissionExtr && (this.giftItems != null)
   }
   function is_show_ww_casualties() {
     return this.needPlayersTbl && ::is_worldwar_enabled() && getCurMissionRules().isWorldWar
@@ -3185,7 +3253,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let itemDefId = this.giftItems?[0]?.item
     let wSet = workshop.getSetByItemId(itemDefId)
-    if (wSet)
+    if (wSet && wSet.isVisible())
       return {
         btnText = loc("items/workshop")
         action = @() wSet.needShowPreview() ? workshopPreview.open(wSet)
@@ -3220,6 +3288,16 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     base.onEventModalWndDestroy(p)
     if (this.state == debrState.done && this.isSceneActiveNoModals())
       ::checkNewNotificationUserlogs()
+  }
+
+  function onEventProfileUpdated(_p) {
+    if (this.giftItems != null)
+      return
+
+    updateDebriefingResultGiftItemsInfo()
+    this.giftItems = this.groupGiftsById(this.debriefingResult?.giftItemsInfo)
+    if (this.state >= debrState.showMyStats && this.is_show_my_stats())
+      this.updateMyStatObjects()
   }
 
   function getChatLog() {
@@ -3287,6 +3365,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   skipAnim = false
   isMp = false
   isReplay = false
+  isCurMissionExtr = false
   //haveCountryExp = true
 
   tabsList = [ "my_stats", "players_stats", "ww_casualties", "awards_list", "battle_tasks_list", "battle_log", "chat_history" ]

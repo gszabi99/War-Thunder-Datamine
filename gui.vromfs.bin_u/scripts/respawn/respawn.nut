@@ -14,7 +14,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { toPixels, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { get_time_msec } = require("dagor.time")
 let { get_gui_option } = require("guiOptions")
@@ -87,9 +87,12 @@ let { quitMission } = require("%scripts/hud/startHud.nut")
 let { collectOrdersToActivate, showActivateOrderButton, enableOrders
 } = require("%scripts/items/orders.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
+let { createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitUsed } = require("%scripts/respawn/additionalUnits.nut")
+
+
+let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 
 function getCrewSlotReadyMask() {
   if (!g_mis_loading_state.isCrewsListReceived())
@@ -216,6 +219,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   curSpawnScore = 0
   crewsSpawnScoreMask = 0 //mask of crews available by spawn score
 
+  curSpawnRageTokens = 0
+  crewsSpawnRageTokensMask = 0 //mask of crews available spawn by rage token
+
   // debug vars
   timeToAutoSelectAircraft = 0.0
   timeToAutoStart = 0.0
@@ -265,6 +271,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.recountStayOnRespScreen()
 
     this.updateSpawnScore(true)
+    this.updateSpawnRageTokens(true)
     this.updateLeftRespawns()
 
     let blk = get_game_params_blk()
@@ -323,6 +330,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateControlsAllowMask()
     this.updateVoiceChatWidget(!this.isRespawn)
     getContactsHandler()?.sceneShow(false)
+
+
+    if(this.missionRules instanceof AdditionalUnits)
+      this.scene.findObject("additionalUnitsNest").show(true)
   }
 
   function isModeWithFriendlyUnits(gt = null) {
@@ -449,8 +460,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function updateCurSpawnScoreText() {
     let scoreObj = this.scene.findObject("gc_spawn_score")
-    if (checkObj(scoreObj) && this.missionRules.isScoreRespawnEnabled)
-      scoreObj.setValue(::getCompoundedText("".concat(loc("multiplayer/spawnScore"), " "), this.curSpawnScore, "activeTextColor"))
+    if (!scoreObj?.isValid())
+      return
+    let scoreText = this.missionRules.isScoreRespawnEnabled ? $"{loc("multiplayer/spawnScore")} {colorize("activeTextColor", this.curSpawnScore)}"
+      : this.missionRules.isRageTokensRespawnEnabled ? $"{loc("multiplayer/rageTokens")} {colorize("activeTextColor", this.curSpawnRageTokens)}"
+      : ""
+
+    scoreObj.setValue(scoreText)
   }
 
   function updateSpawnScore(isOnInit = false) {
@@ -480,7 +496,41 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     local res = 0
     foreach (idx, crew in getCrewsListByCountry(get_local_player_country())) {
       let unit = getCrewUnit(crew)
-      if (unit && shop_get_spawn_score(unit.name, "", []) >= this.curSpawnScore)
+      if (unit && shop_get_spawn_score(unit.name, "", []) >= this.curSpawnScore
+          && this.missionRules.canRespawnOnUnitByRageTokens(unit))
+        res = res | (1 << idx)
+    }
+    return res
+  }
+
+  function updateSpawnRageTokens(isOnInit = false) {
+    if (!this.missionRules.isRageTokensRespawnEnabled ||
+      !g_mis_loading_state.isReadyToShowRespawn())
+      return
+
+    let newSpawnRageTokens = this.missionRules.getSpawnRageTokens()
+    if (!isOnInit && this.curSpawnRageTokens == newSpawnRageTokens)
+      return
+
+    this.curSpawnRageTokens = newSpawnRageTokens
+
+    let newSpawnRageTokensMask = this.calcCrewSpawnRageTokensMask()
+    if (this.crewsSpawnRageTokensMask != newSpawnRageTokensMask) {
+      this.crewsSpawnRageTokensMask = newSpawnRageTokensMask
+      if (!isOnInit && this.isRespawn)
+        return this.reinitScreen({})
+      else
+        this.updateAllCrewSlots()
+    }
+
+    this.updateCurSpawnScoreText()
+  }
+
+  function calcCrewSpawnRageTokensMask() {
+    local res = 0
+    foreach (idx, crew in getCrewsListByCountry(get_local_player_country())) {
+      let unit = getCrewUnit(crew)
+      if (unit && this.missionRules.getUnitSpawnRageTokens(unit) >= this.curSpawnRageTokens)
         res = res | (1 << idx)
     }
     return res
@@ -579,6 +629,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.scene.findObject("CA_div").show(this.haveSlotbar)
     this.updateSessionWpBalance()
+
+    if(this.missionRules instanceof AdditionalUnits)
+      this.clearAdditionalUnits()
 
     if (this.haveSlotbar) {
       let needWaitSlotbar = !g_mis_loading_state.isReadyToShowRespawn() && !this.isSpectator()
@@ -737,6 +790,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.slotReadyAtHostMask = getCrewSlotReadyMask()
     this.slotsCostSum = this.getSlotsSpawnCostSumNoWeapon()
   }
+
 
   //hack: to check slotready changed
   function checkCrewAccessChange() {
@@ -1030,7 +1084,24 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateLeftPanelBlock()
     this.updateSkinOptionTooltipId()
     this.universalSpareUidForRespawn = ""
+
+    if(this.missionRules instanceof AdditionalUnits && unit != null)
+      this.fillAdditionalUnits(unit.name)
   }
+
+  function fillAdditionalUnits(unitName) {
+    let units = createAdditionalUnitsViewData(unitName)
+    let data = handyman.renderCached("%gui/respawn/additionalUnit.tpl", { units })
+    let list = this.scene.findObject("additionalUnits")
+    this.guiScene.replaceContentFromText(list, data, data.len(), this)
+  }
+
+  function clearAdditionalUnits() {
+    let list = this.scene.findObject("additionalUnits")
+    this.guiScene.replaceContentFromText(list, "", 0, this)
+    this.scene.findObject("additionalUnitsNest").show(false)
+  }
+
 
   function preselectUnitWeapon(unit) {
     if (unit && this.isUnitRandom(unit)) {
@@ -1259,6 +1330,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       (this.curSpawnScore < shop_get_spawn_score(unit.name, this.getSelWeapon() ?? "", this.getSelBulletsList() ?? [])))
         return { text = loc("multiplayer/noSpawnScore"), id = "not_enought_score" }
 
+    if (this.isRespawn && !this.missionRules.canRespawnOnUnitByRageTokens(unit))
+      return { text = loc("multiplayer/noRageTokens"), id = "not_enought_score" }
+
     if (this.missionRules.isSpawnDelayEnabled && this.isRespawn) {
       let slotDelay = get_slot_delay(unit.name)
       if (slotDelay > 0) {
@@ -1368,11 +1442,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     let option = get_option(USEROPT_LOAD_FUEL_AMOUNT)
     let fuelAmount = option.values[value]
-
     let customOption = get_option(USEROPT_FUEL_AMOUNT_CUSTOM)
     let customObj = this.scene.findObject(customOption.id)
     customObj.setValue(fuelAmount)
-
     this.checkReady(obj)
 
     this.isInUpdateLoadFuelOptions = false
@@ -1387,14 +1459,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
 
     this.isInUpdateLoadFuelOptions = true
-
+    set_option(USEROPT_FUEL_AMOUNT_CUSTOM, newFuelAmount)
     let option = get_option(USEROPT_LOAD_FUEL_AMOUNT)
     let newValue = option.values.len() - 1
     set_option(USEROPT_LOAD_FUEL_AMOUNT, newValue)
 
     let fuelAmountObj = this.scene.findObject(option.id)
     fuelAmountObj.setValue(newValue)
-
     this.checkReady(obj)
     this.isInUpdateLoadFuelOptions = false
   }
@@ -1442,6 +1513,12 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           isAvailResp = isAvailResp && (curScore <= this.curSpawnScore)
           if (curScore > 0)
             costTextArr.append(loc("shop/spawnScore", { cost = curScore }))
+        }
+
+        let reqUnitSpawnRageTokens = unit != null ? this.missionRules.getUnitSpawnRageTokens(unit) : 0
+        if (reqUnitSpawnRageTokens > 0) {
+          isAvailResp = isAvailResp && reqUnitSpawnRageTokens <= this.curSpawnRageTokens
+          costTextArr.append(loc("shop/spawnScore", { cost = reqUnitSpawnRageTokens }))
         }
 
         if (this.leftRespawns > 0)
@@ -1646,6 +1723,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       this.updateSlotDelays()
 
     this.updateSpawnScore(false)
+    this.updateSpawnRageTokens(false)
 
     this.autostartTimer += dt;
 
@@ -1708,6 +1786,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       if (!isInArray(requestedWeapon, usedPlanes[this.lastSpawnUnitName]))
         usedPlanes[this.lastSpawnUnitName].append(requestedWeapon)
       this.lastRequestData = null
+
+      if(this.missionRules instanceof AdditionalUnits)
+        setUnitUsed(this.lastSpawnUnitName)
     }
     this.updateButtons()
     selectRespawnBase(-1)
@@ -1793,7 +1874,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       nameObj.setValue(getSlotUnitNameText(unit, params))
 
     if (!this.missionRules.isRespawnAvailable(unit))
-      slotObj.shopStat = "disabled"
+      slotObj.shopStat = this.missionRules instanceof AdditionalUnits ? "locked" : "disabled"
   }
 
   function updateAllCrewSlots() {
@@ -2285,6 +2366,29 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     })
   }
 
+  function getCurItemObj() {
+    let list = this.scene.findObject("additionalUnits")
+    let value = getObjValidIndex(list)
+    if (value < 0)
+      return null
+
+    return list.getChild(value)
+  }
+
+  function onSelectAdditionalUnit(_obj) {
+    let itemObj = this.getCurItemObj()
+    if(itemObj == null)
+      return
+
+    let newUnitName = itemObj.id
+    if(isLockedUnit(newUnitName))
+      return
+    updateUnitSelection(newUnitName)
+
+    this.getSlotbar().fullUpdate()
+    let slotsData = this.getSlotbar().getSlotsData(newUnitName)
+    this.getSlotbar().selectCrew(slotsData[0].crew.idInCountry)
+  }
 }
 
 ::cant_respawn_anymore <- function cant_respawn_anymore() { // called when no more respawn bases left
@@ -2343,6 +2447,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         || !getAvailableRespawnBases(air.tags).len()
         || !missionRules.getUnitLeftRespawns(air)
         || !missionRules.isUnitEnabledBySessionRank(air)
+        || !missionRules.canRespawnOnUnitByRageTokens(air)
         || air.disableFlyout)
       continue
 

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import disable_network, run_reactive_gui, steam_is_running, make_invalid_user_id, get_cur_circuit_name
+from "%scripts/dagui_natives.nut" import disable_network, run_reactive_gui, make_invalid_user_id, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "%scripts/mainConsts.nut" import COLOR_TAG
@@ -236,6 +236,7 @@ local isFullScriptsLoaded = false
     require("%scripts/gameModes/enablePsnActivitiesGameIntents.nut")
   }
 
+  let { steam_is_running } = require("steam")
   if (steam_is_running())
     require("%scripts/inventory/steamCheckNewItems.nut")
   // end of Independent Modules

@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import stat_get_value_respawns, ps4_is_ugc_enabled, disable_network, pause_game, run_reactive_gui, epic_is_running, get_player_user_id_str, set_show_attachables, fetch_devices_inited_once, steam_is_running, steam_process_dlc, set_host_cb, ps4_is_chat_enabled, get_num_real_devices, fetch_profile_inited_once, get_localization_blk_copy
+from "%scripts/dagui_natives.nut" import stat_get_value_respawns, ps4_is_ugc_enabled, disable_network, pause_game, run_reactive_gui, epic_is_running, get_player_user_id_str, set_show_attachables, fetch_devices_inited_once, set_host_cb, ps4_is_chat_enabled, get_num_real_devices, fetch_profile_inited_once, get_localization_blk_copy
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
@@ -42,7 +42,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
 let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
-let { is_running } = require("steam")
+let { steam_is_running } = require("steam")
+let { steam_process_dlc } = require("steam_wt")
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
@@ -198,7 +199,7 @@ function go_to_account_web_page(bqKey = "") {
         if (loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) < currentEulaVersion)
           saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
       } else {
-        if ((isPlatformSony || isPlatformXboxOne || is_running())
+        if ((isPlatformSony || isPlatformXboxOne || steam_is_running())
             && (agreedEulaVersion == 0 || localAgreedEulaVersion.value >= currentEulaVersion)) {
           setAgreedEulaVersion(currentEulaVersion)
           sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", "accept")

@@ -8,9 +8,11 @@ let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGu
 let { abs } = require("math")
 let { Point2 } = require("dagor.math")
 let { findChild, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getRecipesComponents } = require("%scripts/items/exchangeRecipes.nut")
 
 dagui_propid_add_name_id("itemId")
 
@@ -44,13 +46,13 @@ let sizeAndPosViewConfig = {
       }
   })
   horizontalArrow = kwarg(
-    function horizontalArrow(itemSizes, bodyIdx, arrowSizeX, arrowPosX, arrowPosY) {
+    function horizontalArrow(itemSizes, bodyIdx, arrowSizeX, arrowPosX, arrowPosY, resourcesWidth) {
       let { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
         headerBlockInterval, itemsOffsetByBodies, itemHeight } = itemSizes
       let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
       let cloumnsWidth = abs(columnConfig[arrowPosX - 1].columnPos
         - columnConfig[arrowPosX + arrowSizeX - 1].columnPos)
-      let w = cloumnsWidth - itemHeight - 2 * blockInterval
+      let w = cloumnsWidth - itemHeight - 2 * blockInterval - resourcesWidth
       let h = arrowWidth
       let isInLeftArrow = arrowSizeX < 0
       let posX = isInLeftArrow ? arrowPosX + arrowSizeX : arrowPosX
@@ -60,7 +62,7 @@ let sizeAndPosViewConfig = {
           partType = "horizontal"
           partSize = posFormatString.subst(w, h)
           partPos = posFormatString.subst(
-            itemInterval + itemHeight + columnConfig[posX - 1].columnPos + blockInterval,
+            itemInterval + itemHeight + columnConfig[posX - 1].columnPos + blockInterval + resourcesWidth,
             itemsOffsetByBodies[bodyIdx]
               + (arrowPosY - 1) * (itemBlockHeight)
               + 0.5 * itemHeight - 0.5 * h + headerBlockInterval)
@@ -123,6 +125,53 @@ let sizeAndPosViewConfig = {
           partSize = posFormatString.subst(arrowWidth, arrowWidth)
           partPos = posFormatString.subst(absoluteArrowPosX, absoluteArrowPosY - 0.5 * arrowWidth)
           partRotation = isInLeftArrow ? 90 : 180
+        },
+        {
+          partTag = "shopAngle"
+          partSize = posFormatString.subst(arrowWidth, arrowWidth)
+          partPos = posFormatString.subst(
+            columnConfig[arrowPosX - 1].columnPos + itemInterval
+              + (arrowOffsetOut + 0.5) * itemHeight - 0.5 * arrowWidth,
+            absoluteBeginLinePosY + beginLineHeight - 0.5 * arrowWidth)
+          partRotation = isInLeftArrow ? -90 : 0
+        }]
+      }
+  })
+  goesThroughItemPlaceArrow = kwarg(
+    function combineArrow(itemSizes, bodyIdx, arrowSizeX, arrowSizeY, arrowPosX, arrowPosY, isOutMultipleArrow) {
+      let { itemInterval, blockInterval, arrowWidth, itemBlockHeight,
+        headerBlockInterval, itemsOffsetByBodies, itemHeight } = itemSizes
+      let columnConfig = itemSizes.paramsPosColumnsByBodies[bodyIdx]
+      let isInLeftArrow = arrowSizeX < 0
+      let offsetOut = isOutMultipleArrow ? 0.2 : 0
+      let arrowOffsetOut = isInLeftArrow ? -offsetOut : offsetOut
+      let posX = isInLeftArrow ? arrowPosX + arrowSizeX : arrowPosX
+      let cloumnsWidth = abs(columnConfig[arrowPosX - 1].columnPos
+        - columnConfig[arrowPosX + arrowSizeX - 1].columnPos)
+
+      let beginLineHeight = arrowSizeY * itemBlockHeight -0.5 * itemHeight - blockInterval
+      let absoluteArrowPosX = itemInterval + itemHeight + columnConfig[posX - arrowSizeX].columnPos
+        - (0.5 - arrowOffsetOut) * itemHeight
+      let absoluteArrowPosY = itemsOffsetByBodies[bodyIdx] + arrowPosY * itemBlockHeight
+        + 0.5 * itemHeight - 0.5 * arrowWidth + headerBlockInterval
+      let absoluteBeginLinePosY = itemsOffsetByBodies[bodyIdx]
+        + (arrowPosY - arrowSizeY) * itemBlockHeight + itemHeight + headerBlockInterval + blockInterval
+      return {
+        arrowsParts = [{
+          partTag = "shopArrow"
+          partType = "horizontal"
+          partSize = posFormatString.subst(
+            cloumnsWidth - (0.5 + arrowOffsetOut) * itemHeight - blockInterval, arrowWidth)
+          partPos = posFormatString.subst(absoluteArrowPosX, absoluteArrowPosY)
+          partRotation = isInLeftArrow ? 180 : 0
+        },
+        {
+          partTag = "shopLine"
+          partSize = posFormatString.subst(beginLineHeight, arrowWidth)
+          partPos = posFormatString.subst(itemInterval + columnConfig[arrowPosX - 1].columnPos
+              + (arrowOffsetOut + 0.5) * itemHeight + 0.5 * arrowWidth,
+            absoluteBeginLinePosY)
+          partRotation = 90
         },
         {
           partTag = "shopAngle"
@@ -216,22 +265,20 @@ function getConfigByItemBlock(itemBlock, itemsList, workshopSet) {
   }
 }
 
-let getArrowView = kwarg(function getArrowView(arrow, itemSizes, isInMultipleArrow, isOutMultipleArrow) {
-  let arrowType = arrow.sizeX != 0 && arrow.sizeY != 0 ? "combineArrow"
-    : arrow.sizeX == 0 ? "verticalArrow"
-    : "horizontalArrow"
+function getArrowView(arrow, arrowType, itemSizes, isInMultipleArrow, resourcesWidth) {
   let arrowParam = {
-    itemSizes = itemSizes
+    itemSizes
     bodyIdx = arrow.bodyIdx
     arrowSizeX = arrow.sizeX
     arrowSizeY = arrow.sizeY
     arrowPosX = arrow.posX
     arrowPosY = arrow.posY
-    isInMultipleArrow = isInMultipleArrow
-    isOutMultipleArrow = isOutMultipleArrow
+    isInMultipleArrow
+    isOutMultipleArrow = arrow.isOutMultipleArrow
+    resourcesWidth
   }
   return sizeAndPosViewConfig[arrowType](arrowParam, KWARG_NON_STRICT)
-})
+}
 
 let viewItemsParams = {
   showAction = false,
@@ -342,15 +389,52 @@ let getRowsElementsView = kwarg(
 
           let arrows = itemBlock?.arrows.filter(@(a) !itemsList?[a.reqItemId].isHiddenItem()) ?? []
           let isInMultipleArrow = arrows.len() > 1
-          foreach (arrow in arrows)
+          foreach (arrow in arrows) {
+            local isGoesThroughItemPlace = false
+            let { sizeX, sizeY, posX, posY } = arrow
+            if (sizeX != 0 && sizeY != 0) {
+              isGoesThroughItemPlace = true
+              for (local i = 0; i <= sizeY-1; i++) {
+                let checkPosY = posY - i
+                if (rows?[checkPosY][posX - sizeX] != null) {
+                  isGoesThroughItemPlace = false
+                  break
+                }
+              }
+            }
+            let arrowType = isGoesThroughItemPlace ? "goesThroughItemPlaceArrow"
+              : arrow.sizeX != 0 && arrow.sizeY != 0 ? "combineArrow"
+              : arrow.sizeX == 0 ? "verticalArrow"
+              : "horizontalArrow"
+            local resourcesWidth = 0
+            if (arrowType == "horizontalArrow") {
+              foreach (reqItemBlock in rows?[posY-1][posX-1] ?? []) {
+                let { isHidden, isHiddenResource, item } = getConfigByItemBlock(reqItemBlock, itemsList, workshopSet)
+                if (!isHidden && !isHiddenResource && item != null) {
+                  let componentsByRecipes = getRecipesComponents(item.getMyRecipes(), item, {
+                    maxRecipes = 1
+                    needShowItemName = false
+                    needColoredText = false
+                    visibleResources = allowableResources.__merge(forcedAllowableResources)
+                    forcedVisibleResources = forcedAllowableResources
+                  })
+                  local textWithMaxChars = ""
+                  let components = componentsByRecipes?[0] ?? []
+                  if (components.len() > 1)
+                    foreach (component in components)
+                      if (textWithMaxChars.len() < component.commentText.len())
+                        textWithMaxChars = component.commentText
+                  if (textWithMaxChars != "") {
+                    let { resourceTextFont, resourceIconWidth, blockInterval } = itemSizes
+                    resourcesWidth = getStringWidthPx(textWithMaxChars, resourceTextFont) + resourceIconWidth + 2*blockInterval
+                  }
+                }
+              }
+            }
             shopArrows.append({ isDisabled = itemConfig.isDisabled }.__update(
-              getArrowView({
-                arrow = arrow
-                itemSizes = itemSizes
-                isInMultipleArrow = isInMultipleArrow
-                isOutMultipleArrow = arrow.isOutMultipleArrow
-              })
+              getArrowView(arrow, arrowType, itemSizes, isInMultipleArrow, resourcesWidth)
             ))
+          }
 
           let hasCurItem = itemConfig.item != null
           if (hasPrevItemInRow && hasCurItem) {
@@ -384,18 +468,24 @@ let sizePrefixNames = {
     itemPrefix = "i"
     intervalPrefix = "c"
     textInTextBlockSize = ""
+    resourceIconWidth = "1@dIco"
+    resourceTextFont = "fontNormal"
   },
   compact = {
     name = "compact"
     itemPrefix = "compactI"
     intervalPrefix = "compactC"
     textInTextBlockSize = "smallFont:t='yes'"
+    resourceIconWidth = "1@cIco"
+    resourceTextFont = "fontSmall"
   },
   small = {
     name = "small"
     itemPrefix = "smallI"
     intervalPrefix = "smallC"
     textInTextBlockSize = "smallFont:t='yes'"
+    resourceIconWidth = "1@sIco"
+    resourceTextFont = "fontSmall"
   }
 }
 
@@ -538,6 +628,7 @@ function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
 
 local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.MODAL
+  sceneBlkName     = null
   sceneTplName     = "%gui/items/craftTreeWnd.tpl"
   branches         = null
   workshopSet      = null
@@ -547,6 +638,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   itemsListObj     = null
   showItemOnInit   = null
   tutorialItem     = null
+  maxWindowWidth   = "1@maxWindowWidth"
 
   function getSceneTplView() {
     this.craftTree = this.workshopSet.getCraftTree()
@@ -578,14 +670,13 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
   function getItemSizes() {
     let bodiesConfig = this.craftTree.bodiesConfig
-    let resourceWidth = to_pixels("1@craftTreeResourceWidth")
-    let maxAllowedCrafTreeWidth = to_pixels("1@maxWindowWidth - 2@frameHeaderPad + 1@scrollBarSize")
+    let maxAllowedCrafTreeWidth = to_pixels($"{this.maxWindowWidth} - 2@frameHeaderPad + 1@scrollBarSize")
     let craftTreeWidthStringByBodies = bodiesConfig.map(@(bodyConfig)
       "".concat(
         "{itemsCountX}(1@{itemPrefix}temHeight + 1@{intervalPrefix}raftTreeItemInterval) + ".subst(bodyConfig),
-        "({branchesCount}+1)@{intervalPrefix}raftTreeItemInterval + {allColumnResourceWidth}".subst({
+        "({branchesCount}+1)@{intervalPrefix}raftTreeItemInterval + {allColumnResourceCount}@{intervalPrefix}raftTreeResourceWidth".subst({
           branchesCount = bodyConfig.branchesCount
-          allColumnResourceWidth = bodyConfig.columnWithResourcesCount * resourceWidth
+          allColumnResourceCount = bodyConfig.columnWithResourcesCount
         })
       )
     )
@@ -605,6 +696,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     let headerBlockInterval = to_pixels("1@headerAndCraftTreeBlockInterval")
     let buttonHeight = to_pixels("1@buttonHeight") + 2 * to_pixels("1@buttonMargin")
     let titleMargin = to_pixels("1@dp")
+    let resourceWidth =  to_pixels("1@{0}raftTreeResourceWidth)".subst(sizes.intervalPrefix))
     foreach (idx, rows in this.craftTree.treeRowsByBodies) {
       local visibleItemsCountY = null
       let lastFilled = {}
@@ -715,7 +807,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       return res
     })
 
-    return sizes.__update({
+    return sizes.__merge({
       itemHeight
       itemHeightFull = to_pixels("1@itemHeight")
       titleMargin
@@ -733,6 +825,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       visibleItemsCountYByBodies
       maxBodyWidth
       paramsPosColumnsByBodies
+      resourceIconWidth = to_pixels(sizes.resourceIconWidth)
     })
   }
 
@@ -1019,7 +1112,9 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     this.branches = this.craftTree.branches
     this.itemsList = this.workshopSet.getItemsListForCraftTree(this.craftTree)
     this.itemSizes = this.getItemSizes()
-    this.scene.findObject("wnd_title").setValue(loc(this.craftTree.headerlocId))
+    let wndTitleObj = this.scene.findObject("wnd_title")
+    if (wndTitleObj?.isValid())
+      wndTitleObj.setValue(loc(this.craftTree.headerlocId))
 
     local view = {
       itemsSize = this.itemSizes.name
@@ -1090,6 +1185,23 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.craftTreeWnd <- handlerClass
 
+class CustomCraftTree(gui_handlers.craftTreeWnd) {
+  wndType = handlerType.CUSTOM
+  sceneTplName = "%gui/items/craftTreeContent.tpl"
+
+  function updateHandlerData(params) {
+    let { workshopSet } = params
+    if (workshopSet == this.workshopSet)
+      return
+
+    this.workshopSet = workshopSet
+    this.updateCraftTree()
+  }
+}
+
+gui_handlers.CustomCraftTree <- CustomCraftTree
+
 return {
   open = @(craftTreeParams) handlersManager.loadHandler(handlerClass, craftTreeParams)
+  loadCustomCraftTree = @(craftTreeParams) handlersManager.loadHandler(CustomCraftTree, craftTreeParams)
 }

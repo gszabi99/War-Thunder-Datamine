@@ -102,7 +102,7 @@ function getUnitSlotPriceText(unit, params) {
   let { isLocalState = true, haveRespawnCost = false, haveSpawnDelay = false,
     curSlotIdInCountry = -1, slotDelayData = null, unlocked = true,
     sessionWpBalance = 0, weaponPrice = 0, totalSpawnScore = -1, overlayPrice = -1,
-    showAsTrophyContent = false, isReceivedPrizes = false, crew = null
+    showAsTrophyContent = false, isReceivedPrizes = false, crew = null, missionRules = null
   } = params
 
   local priceText = ""
@@ -110,7 +110,7 @@ function getUnitSlotPriceText(unit, params) {
       && (isSpareAircraftInSlot(curSlotIdInCountry) || isRespawnWithUniversalSpare(crew, unit)))
     priceText = $"{priceText}{loc("spare/spare/short")} "
 
-  if ((haveRespawnCost || haveSpawnDelay) && unlocked) {
+  if ((haveRespawnCost || haveSpawnDelay || missionRules?.isRageTokensRespawnEnabled) && unlocked) {
     let spawnDelay = slotDelayData != null
       ? slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime) / 1000).tointeger()
       : get_slot_delay(unit.name)
@@ -131,6 +131,14 @@ function getUnitSlotPriceText(unit, params) {
         if (reqUnitSpawnScore > totalSpawnScore)
           spawnScoreText = $"<color=@badTextColor>{reqUnitSpawnScore}</color>"
         txtList.append(loc("shop/spawnScore", { cost = spawnScoreText }))
+      }
+
+      let reqUnitSpawnRageTokens = missionRules?.getUnitSpawnRageTokens(unit) ?? 0
+      if (reqUnitSpawnRageTokens > 0) {
+        local spawnRageTokensText = reqUnitSpawnRageTokens
+        if (reqUnitSpawnRageTokens > missionRules.getSpawnRageTokens())
+          spawnRageTokensText = $"<color=@badTextColor>{reqUnitSpawnRageTokens}</color>"
+        txtList.append(loc("shop/rageTokens", { cost = spawnRageTokensText }))
       }
 
       if (txtList.len()) {

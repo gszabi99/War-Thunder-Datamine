@@ -21,6 +21,7 @@ let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -45,10 +46,21 @@ let { addPopup } = require("%scripts/popups/popups.nut")
   EULT_EXCHANGE_WARBONDS
 ]
 
+function isMissionExtrCheckFucn(userLog) {
+  if (userLog?.type != EULT_INVENTORY_ADD_ITEM || userLog?.roomId == null)
+    return true
+
+  return ::getUserLogsList({ show = [EULT_SESSION_RESULT] }).findvalue(function(battleLog) {
+    let isMissionExtrLog = isMissionExtrByName(battleLog?.mission ?? "")
+    return isMissionExtrLog && (battleLog?.roomId == userLog.roomId)
+  }) == null
+}
+
 ::userlog_pages <- [
   {
     id = "all"
     hide = ::hidden_userlogs
+    checkFunc = isMissionExtrCheckFucn
   }
   {
     id = "battle"
@@ -112,6 +124,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
             EULT_ACTIVATE_ITEM, EULT_REMOVE_ITEM, EULT_TICKETS_REMINDER,
             EULT_CONVERT_BLUEPRINTS, EULT_INVENTORY_ADD_ITEM, EULT_INVENTORY_FAIL_ITEM]
     unlocks = [UNLOCKABLE_TROPHY]
+    checkFunc = isMissionExtrCheckFucn
   }
   {
     id = "onlineShop"

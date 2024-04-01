@@ -18,12 +18,13 @@ let { deferOnce } = require("dagor.workcycle")
 let { parse_json } = require("json")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { isNewbieInited, isMeNewbie } = require("%scripts/myStats.nut")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
 const SAVE_SEEN_ID = "changelog/lastSeenVersionInfoNum"
 const SAVE_LOADED_ID = "changelog/lastLoadedVersionNum"
-const BASE_URL = "https://newsfeed.gap.gaijin.net/api/patchnotes/warthunder/"
+let BASE_URL = getCurCircuitUrl("patchnotesURL", "https://newsfeed.gap.gaijin.net/api/patchnotes/warthunder/")
 const PatchnoteIds = "PatchnoteIds"
 const PatchnoteReceived = "PatchnoteReceived"
 

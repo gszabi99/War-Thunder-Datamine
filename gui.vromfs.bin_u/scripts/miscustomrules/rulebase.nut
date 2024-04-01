@@ -15,18 +15,20 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team } = require("mission")
 let { get_mission_difficulty_int, get_respawns_left,
   get_current_mission_desc } = require("guiMission")
-let { get_current_mission_info_cached } = require("blkGetters")
+let { get_current_mission_info_cached, get_warpoints_blk  } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 
 let Base = class {
   missionParams = null
   isSpawnDelayEnabled = false
   isScoreRespawnEnabled = false
   isTeamScoreRespawnEnabled = false
+  isRageTokensRespawnEnabled = false
   isWarpointsRespawnEnabled = false
   hasRespawnCost = false
   needShowLockedSlots = true
@@ -52,6 +54,7 @@ let Base = class {
     this.isSpawnDelayEnabled = isVersus && getTblValue("useSpawnDelay", this.missionParams, false)
     this.isTeamScoreRespawnEnabled = isVersus && getTblValue("useTeamSpawnScore", this.missionParams, false)
     this.isScoreRespawnEnabled = this.isTeamScoreRespawnEnabled || (isVersus && getTblValue("useSpawnScore", this.missionParams, false))
+    this.isRageTokensRespawnEnabled = isMissionExtrByName(this.missionParams?.name ?? "")
     this.isWarpointsRespawnEnabled = isVersus && getTblValue("multiRespawn", this.missionParams, false)
     this.hasRespawnCost = this.isScoreRespawnEnabled || this.isWarpointsRespawnEnabled
     this.isWorldWar = isVersus && getTblValue("isWorldWar", this.missionParams, false)
@@ -267,6 +270,9 @@ let Base = class {
         else
           comment = loc("respawn/withCheaperWeapon")
       }
+
+      if (!this.canRespawnOnUnitByRageTokens(unit))
+        continue
 
       res.append({
         unit = unit
@@ -529,6 +535,11 @@ let Base = class {
   }
 
   isAllowSpareInMission = @() this.missionParams?.allowSpare ?? false
+
+  getSpawnRageTokens = @() this.isRageTokensRespawnEnabled ? get_local_mplayer()?.rageTokens ?? 0 : 0
+  getUnitSpawnRageTokens = @(unit) this.isRageTokensRespawnEnabled ? get_warpoints_blk()?.rageCost[unit.name] ?? 0 : 0
+  canRespawnOnUnitByRageTokens = @(unit) !this.isRageTokensRespawnEnabled
+    || this.getUnitSpawnRageTokens(unit) <= this.getSpawnRageTokens()
 }
 
 registerMissionRules("Base", Base)

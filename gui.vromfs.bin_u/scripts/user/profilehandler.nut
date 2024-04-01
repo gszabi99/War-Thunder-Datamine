@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, steam_is_running, is_app_active, steam_is_overlay_active
+from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, is_app_active
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
@@ -87,6 +87,8 @@ let { getStats } = require("%scripts/myStats.nut")
 let { findItemById, canGetDecoratorFromTrophy } = require("%scripts/items/itemsManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
+let { steam_is_running, steam_is_overlay_active } = require("steam")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -1680,7 +1682,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.msgBox("question_change_name", loc(textLocId),
       [
         ["ok", function() {
-          openUrl(loc("url/changeName"), false, false, "profile_page")
+          openUrl(getCurCircuitUrl("changeNameURL", loc("url/changeName")), false, false, "profile_page")
           afterOkFunc()
         }],
         ["cancel", function() { }]

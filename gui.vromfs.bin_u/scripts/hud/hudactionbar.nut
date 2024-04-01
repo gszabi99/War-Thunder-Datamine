@@ -20,7 +20,8 @@ let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificatio
   getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_GUIDANCE_MODE, EII_SELECT_SPECIAL_WEAPON
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN,
+  EII_GUIDANCE_MODE, EII_SELECT_SPECIAL_WEAPON, EII_GRENADE
 } = require("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
@@ -59,12 +60,13 @@ function activateShortcutActionBarAction(action) {
 function needFullUpdate(item, prevItem, hudUnitType) {
   return item.id != prevItem.id
     || (item.type != prevItem.type
-       && g_hud_action_bar_type.getByActionItem(item).getShortcut(item, hudUnitType)
-         != g_hud_action_bar_type.getByActionItem(prevItem).getShortcut(prevItem, hudUnitType))
+        && g_hud_action_bar_type.getByActionItem(item).getShortcut(item, hudUnitType)
+          != g_hud_action_bar_type.getByActionItem(prevItem).getShortcut(prevItem, hudUnitType))
     || (item?.isStreakEx && item.count < 0 && prevItem.count >= 0)
     || ((item.type == EII_BULLET || item.type == EII_FORCED_GUN)
-       && item?.modificationName != prevItem?.modificationName)
-    || ((item.type == EII_ROCKET) && item?.bulletName != prevItem?.bulletName)
+        && item?.modificationName != prevItem?.modificationName)
+    || ((item.type == EII_ROCKET || item.type == EII_GRENADE)
+        && item?.bulletName != prevItem?.bulletName)
     || ((item.type == EII_SELECT_SPECIAL_WEAPON) && item?.bulletName != prevItem?.bulletName)
 }
 

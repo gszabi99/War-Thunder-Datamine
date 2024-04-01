@@ -123,7 +123,13 @@ def get_battle_state(radius_air_sq : float;
       let radiusSq = (unitType == int(UnitType UT_Airplane)) ? radius_air_sq : radius_ground_sq
       if (length_sq(unitPos - heroPos) < radiusSq)
         numEnemies++
-  if (numEnemies > max_num_enemies)
+
+  var maxRage = false
+  ecs::query() <| $ [es(REQUIRE=controlledHero)] (loot_carrier__rage : int)
+    if loot_carrier__rage >= 5
+      maxRage = true
+
+  if (numEnemies > max_num_enemies || maxRage)
     return BattleState ACTION
   return BattleState CALM
 
@@ -287,13 +293,13 @@ def music_es(info : ParallelUpdateFrameDelayed;
   elif gameState == GameState MISSION
     var heroRank = -1
     var heroUnitType = -1
-    ecs::query() <| $ [es(REQUIRE=controlledHero)] (uid : int; unitType : int)
+    ecs::query() <| $ [es(REQUIRE=controlledHero)] (uid : int; unitType : int; loot_carrier__capacity : int const?)
       heroUnitType = unitType
       let hero = get_unit(uid)
       if hero != null && !hero.isDelayed && hero.props != null
         heroRank = hero.props.unitRank
         let app = get_app()
-        if rank_is_top_tier(heroRank, heroUnitType) && app.isMultiplayerGame
+        if loot_carrier__capacity == null && rank_is_top_tier(heroRank, heroUnitType) && app.isMultiplayerGame
           music__curBattleState = int(BattleState TOP_TIER)
         else
           update_battle_state(music__battleRadiusAirSq, music__battleRadiusGroundSq, music__battleEnemiesThreshold, music__curBattleState, music__cooldownBattle, music__cooldownCalm, music__timerBattle, info.dt)

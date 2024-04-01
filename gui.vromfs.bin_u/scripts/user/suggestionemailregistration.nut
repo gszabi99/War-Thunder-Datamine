@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, xbox_link_email, steam_is_running, get_steam_link_token
+from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, xbox_link_email, get_steam_link_token
 from "%scripts/dagui_library.nut" import *
 
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -17,6 +17,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { steam_is_running } = require("steam")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 

@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import joystick_get_default, set_bind_mode, is_axis_digital, get_axis_index, is_app_active, steam_is_overlay_active
+from "%scripts/dagui_natives.nut" import joystick_get_default, set_bind_mode, is_axis_digital, get_axis_index, is_app_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -27,6 +27,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
   USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
+let { steam_is_overlay_active } = require("steam")
 
 ::aircraft_controls_wizard_config <- [
   { id = "helpers_mode"

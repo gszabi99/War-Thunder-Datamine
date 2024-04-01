@@ -32,6 +32,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 local debriefingResult = null
 local dynamicResult = -1
@@ -480,6 +481,7 @@ debriefingRows = [
     icon = ""
     hideTooltip = true
     hideUnitSessionTimeInTooltip = true
+    canShowForMissionExtr = true
   }
   { id = "Free"
     text = "debriefing/freeExp"
@@ -584,9 +586,11 @@ function calculateDebriefingTabularData(addVirtPremAcc = false) {
 function recountDebriefingResult() {
   let gm = get_game_mode()
   let gt = get_game_type()
+  let isCurMisionExtr = isMissionExtr()
 
   foreach (row in debriefingRows) {
-    row.show = row.isVisible(gm, gt, isDebriefingResultFull)
+    row.show = ((isCurMisionExtr && (row?.canShowForMissionExtr ?? false)) || !isCurMisionExtr)
+      && row.isVisible(gm, gt, isDebriefingResultFull)
     row.showInTooltips = row.show || row.isVisible(gm, gt, isDebriefingResultFull, true)
     if (!row.show && !row.showInTooltips)
       continue
@@ -947,6 +951,19 @@ function getDebriefingGiftItemsInfo(skipItemId = null) {
   return res.len() ? res : null
 }
 
+function updateDebriefingResultGiftItemsInfo() {
+  if (debriefingResult == null)
+    return
+
+  let { activity = 0, sessionTime = 0 } = debriefingResult?.exp
+  let pveRewardInfo = getPveRewardTrophyInfo(sessionTime, activity, debriefingResult?.isSucceed ?? false)
+  let giftItemsInfo = getDebriefingGiftItemsInfo(pveRewardInfo?.receivedTrophyName)
+  if (giftItemsInfo == null)
+    return
+
+  debriefingResult.giftItemsInfo <- giftItemsInfo
+}
+
 function gatherDebriefingResult() {
   let gm = get_game_mode()
   if (gm == GM_DYNAMIC)
@@ -1183,4 +1200,5 @@ return {
   getCountedResultId
   debriefingAddVirtualPremAcc
   getTableNameById
+  updateDebriefingResultGiftItemsInfo
 }

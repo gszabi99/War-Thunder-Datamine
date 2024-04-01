@@ -3130,7 +3130,6 @@ let optionsMap = {
     local isFuelFixed = false
     if (::cur_aircraft_name) {
       descr.prevValue = get_unit_option(::cur_aircraft_name, USEROPT_LOAD_FUEL_AMOUNT)
-
       if (fuelConsumptionPerHour > 0 && isInFlight()) {
         let fixedPercent = getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
         if (fixedPercent > 0) {
@@ -3194,7 +3193,9 @@ let optionsMap = {
     }
 
     descr.items.append(loc("options/customizable_quantity"))
-    descr.values.append((get_gui_option(USEROPT_FUEL_AMOUNT_CUSTOM) ?? (minFuelPercent * 1000000)).tointeger())
+    let custom_amount = get_unit_option(::aircraft_for_weapons, USEROPT_FUEL_AMOUNT_CUSTOM)
+    descr.values.append(custom_amount ?? (minFuelPercent * 1000000).tointeger())
+    descr.value = descr.values.findindex(@(v) v == descr.prevValue) ?? descr.value
   },
   [USEROPT_FUEL_AMOUNT_CUSTOM] = function(_optionId, descr, _context) {
     descr.id = "adjustable_fuel_quantity"
@@ -3204,8 +3205,7 @@ let optionsMap = {
     descr.step <- 1 * 10000
     descr.defValue <- 50 * 10000
     descr.optionCb = "onLoadFuelCustomChange"
-    descr.value = get_gui_option(USEROPT_LOAD_FUEL_AMOUNT)
-
+    descr.value = get_unit_option(::aircraft_for_weapons, USEROPT_FUEL_AMOUNT_CUSTOM)
     let { maxFuel, fuelConsumptionPerHour } = getFuelParams(::cur_aircraft_name)
 
     descr.getValueLocText = function(val) {
@@ -4186,6 +4186,9 @@ get_option = function(optionId, context=null) {
     : descr.optionCb
   descr.cb <- context?.containerCb ?? (descr.needCommonCallback ? optionCb : descr.optionCb)
 
+  if(descr.needShowValueText && descr.optionCb == null)
+    descr.optionCb = "updateOptionValueTextByObj"
+
   if (descr.controlType == optionControlType.SLIDER) {
     if (descr.value == null)
       descr.value = clamp(valueToSet || 0, descr?.min ?? 0, descr?.max ?? 1)
@@ -4399,9 +4402,13 @@ let optionsSetMap = {
   [USEROPT_LOAD_FUEL_AMOUNT] = function(value, descr, optionId) {
     set_gui_option(optionId, descr.values[value])
     if (::aircraft_for_weapons)
-     set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
+      set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
   },
-  [USEROPT_FUEL_AMOUNT_CUSTOM] = def_set_gui_option,
+  [USEROPT_FUEL_AMOUNT_CUSTOM] = function(value, _descr, optionId) {
+    set_gui_option(optionId, value)
+    if (::aircraft_for_weapons)
+      set_unit_option(::aircraft_for_weapons, optionId, value)
+  },
   [USEROPT_DEPTHCHARGE_ACTIVATION_TIME] = @(value, descr, _optionId) set_option_depthcharge_activation_time(descr.values[value]),
   [USEROPT_COUNTERMEASURES_PERIODS] = @(value, descr, _optionId) set_option_countermeasures_periods(descr.values[value]),
   [USEROPT_COUNTERMEASURES_SERIES_PERIODS] = @(value, descr, _optionId) set_option_countermeasures_series_periods(descr.values[value]),

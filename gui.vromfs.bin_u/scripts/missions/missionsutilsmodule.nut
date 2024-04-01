@@ -27,6 +27,8 @@ let MISSION_OBJECTIVE = {
   ZONE_BOMBING        = 0x0400
   ALIVE_TIME          = 0x0800
 
+  WITHOUT_SCORE       = 0x1000
+
   //masks
   NONE                = 0x0000
   ANY                 = 0xFFFF

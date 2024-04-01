@@ -47,6 +47,7 @@ let { cloneDefaultUnlockData } = require("%scripts/unlocks/unlocksModule.nut")
 let { getBonus } = require("%scripts/bonusModule.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getSkillCrewLevel, crewSkillPages } = require("%scripts/crew/crew.nut")
+let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 
 let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
@@ -170,6 +171,8 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     buttonName = null
     isUserLogBattles = logObj.type == EULT_SESSION_RESULT
   }
+
+  let isMissionExtrLog = isMissionExtrByName(logObj?.mission ?? "")
   local logName = ::getLogNameByType(logObj.type)
   local priceText = Cost(("wpCost" in logObj) ? logObj.wpCost : 0,
     ("goldCost" in logObj) ? logObj.goldCost : 0).tostring()
@@ -195,12 +198,13 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
       mission = loc(locName, eventId)
     }
 
-    local nameLoc = "userlog/" + logName
+    local nameLoc = isMissionExtrLog ? "userLog/session_result_extr" : $"userlog/{logName}"
     if (logObj.type == EULT_EARLY_SESSION_LEAVE)
       res.logImg = "#ui/gameuiskin#log_leave"
     else if (logObj.type == EULT_SESSION_RESULT) {
+      if (!isMissionExtrLog)
         nameLoc += logObj.win ? "/win" : "/lose"
-        res.logImg = $"#ui/gameuiskin#{logObj.win? "log_win" : "log_lose"}"
+      res.logImg = $"#ui/gameuiskin#{logObj.win? "log_win" : "log_lose"}"
     }
     res.name = format(loc(nameLoc), mission)
 
@@ -210,12 +214,12 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     local gold = getTblValue("goldEarned", logObj, 0) + getTblValue("baseTournamentGold", logObj, 0)
     let xp = getTblValue("xpEarned", logObj, 0)
     local earnedText = Cost(wp, gold, xp).toStringWithParams({ isWpAlwaysShown = true })
-    if (earnedText != "") {
+    if (!isMissionExtrLog && earnedText != "") {
       earnedText = loc("ui/colon") + $"<color=@activeTextColor>{earnedText}</color>"
       desc += ((desc != "") ? "\n" : "") + loc("userlog/earned") + earnedText
     }
 
-    if (logObj.type == EULT_SESSION_RESULT && ("activity" in logObj)) {
+    if (!isMissionExtrLog && (logObj.type == EULT_SESSION_RESULT) && ("activity" in logObj)) {
       let activity = measureType.PERCENT_FLOAT.getMeasureUnitsText(logObj.activity)
       desc += "\n" + loc("debriefing/Activity") + loc("ui/colon") + activity
     }
@@ -415,17 +419,20 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     if (roomId > 0)
       descBottom = "".concat(descBottom, "\n\n", loc("options/session"), colon, intToHexString(roomId))
 
-    res.tooltip = (logObj.type == EULT_SESSION_RESULT) ? loc("debriefing/total") : loc("userlog/interimResults");
-    local totalText = res.tooltip
-    totalText = "<color=@userlogColoredText>" + totalText + loc("ui/colon") + "</color>"
+    if (!isMissionExtrLog) {
+      res.tooltip = (logObj.type == EULT_SESSION_RESULT) ? loc("debriefing/total") : loc("userlog/interimResults");
+      local totalText = res.tooltip
+      totalText = "<color=@userlogColoredText>" + totalText + loc("ui/colon") + "</color>"
 
-    let total = Cost(wp, gold, xp, rp).toStringWithParams({ isWpAlwaysShown = true })
-    totalText += $"<color=@activeTextColor>{total}</color>"
+      let total = Cost(wp, gold, xp, rp).toStringWithParams({ isWpAlwaysShown = true })
+      totalText += $"<color=@activeTextColor>{total}</color>"
 
-    descBottom = "".concat(descBottom, "\n", totalText)
-    res.tooltip += loc("ui/colon") + $"<color=@activeTextColor>{total}</color>"
+      descBottom = "".concat(descBottom, "\n", totalText)
+      res.tooltip += loc("ui/colon") + $"<color=@activeTextColor>{total}</color>"
+    }
 
-    if (logObj.type == EULT_SESSION_RESULT || logObj.type == EULT_EARLY_SESSION_LEAVE) {
+    if (!isMissionExtrLog &&
+        (logObj.type == EULT_SESSION_RESULT || logObj.type == EULT_EARLY_SESSION_LEAVE)) {
       let ecSpawnScore = getTblValue("ecSpawnScore", logObj, 0)
       if (ecSpawnScore > 0)
       descBottom = "".concat(descBottom, "\n<color=@userlogColoredText>", loc("debriefing/total/ecSpawnScore"), loc("ui/colon"), "</color>",
@@ -1649,31 +1656,78 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     res.description <- "\n".join(descLines, true)
   }
 
-  if ((res?.description ?? "") != "") {
+  if (isMissionExtrLog || (res?.description ?? "") != "") {
     if (!("descriptionBlk" in res))
       res.descriptionBlk <- ""
 
-    let battleRewards = logObj.type == EULT_SESSION_RESULT ? getBattleRewards(logObj) : []
-    let hasAdditionalInfo = battleRewards.findvalue(@(r) r?.battleRewardTooltipId != null) != null
-    let blk = hasAdditionalInfo
-      ? handyman.renderCached("%gui/userLog/userLogBattleRewardsTable.tpl", {battleRewards})
-      : ""
+    if (!isMissionExtrLog) {
+      let battleRewards = logObj.type == EULT_SESSION_RESULT ? getBattleRewards(logObj) : []
+      let hasAdditionalInfo = battleRewards.findvalue(@(r) r?.battleRewardTooltipId != null) != null
+      let blk = hasAdditionalInfo
+        ? handyman.renderCached("%gui/userLog/userLogBattleRewardsTable.tpl", {battleRewards})
+        : ""
 
-    if (!hasAdditionalInfo && battleRewards.len() > 0) {
-      let rewardsStrs = battleRewards.map(function(r) {
-        let name = r.name
-        let rewards = ", ".join([r?.wp, r?.exp].filter(@(cost) cost != null && cost.toPlainText() != ""))
-        return $"{name}: {colorize("@activeTextColor", rewards)}"
-      })
-      let rewardsShortDescr = "\n".join(rewardsStrs)
-      res.description = "".concat(rewardsShortDescr, "\n\n", res.description)
+      if (!hasAdditionalInfo && battleRewards.len() > 0) {
+        let rewardsStrs = battleRewards.map(function(r) {
+          let name = r.name
+          let rewards = ", ".join([r?.wp, r?.exp].filter(@(cost) cost != null && cost.toPlainText() != ""))
+          return $"{name}: {colorize("@activeTextColor", rewards)}"
+        })
+        let rewardsShortDescr = "\n".join(rewardsStrs)
+        res.description = "".concat(rewardsShortDescr, "\n\n", res.description)
+      }
+
+      res.descriptionBlk = "".concat(res.descriptionBlk,
+        blk,
+        "textareaNoTab { id:t='description'; width:t='pw'; text:t='",
+        stripTags(res?.description ?? ""), "';}",
+      )
     }
 
-    res.descriptionBlk = "".concat(res.descriptionBlk,
-      blk,
-      "textareaNoTab { id:t='description'; width:t='pw'; text:t='",
-      stripTags(res.description), "';}",
-    )
+    if (isMissionExtrLog && logObj.type == EULT_SESSION_RESULT) {
+      let inventoryLogObjects = ::getUserLogsList({ show = [ EULT_INVENTORY_ADD_ITEM ] })
+        .filter(@(l) l.roomId == logObj.roomId)
+
+      let itemDefIdCountMap = {}
+      foreach (inventoryLogObj in inventoryLogObjects)
+        foreach (val in inventoryLogObj) {
+          if (type(val) != "table" || ("itemDefId" not in val))
+            continue
+
+          let quantity = val?.quantity ?? 1
+          if (itemDefIdCountMap?[val.itemDefId] == null)
+            itemDefIdCountMap[val.itemDefId] <- quantity
+          else
+            itemDefIdCountMap[val.itemDefId] += quantity
+        }
+
+      let view = { items = [] }
+      foreach (inventoryLogObj in inventoryLogObjects)
+        foreach (val in inventoryLogObj) {
+          if (type(val) != "table" || ("itemDefId" not in val))
+            continue
+
+          let item = findItemById(val.itemDefId)
+          if (!item)
+            continue
+
+          let count = itemDefIdCountMap?[val.itemDefId] ?? -1
+          if (count == -1)
+            continue
+
+          itemDefIdCountMap[val.itemDefId] = -1
+          view.items.append(item.getViewData({
+            count
+            enableBackground = false
+          }))
+        }
+
+      if (view.items.len() > 0) {
+        let markup = handyman.renderCached("%gui/items/item.tpl", view)
+        res.descriptionBlk = "".concat(res.descriptionBlk,
+          format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", markup))
+      }
+    }
 
     if ("compensation" in res) {
       let compensationBlk = handyman.renderCached("%gui/userLog/userLogCompensation.tpl", {compensation = res.compensation})

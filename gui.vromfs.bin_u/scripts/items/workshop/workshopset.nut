@@ -49,12 +49,14 @@ local WorkshopSet = class {
   hasSubsets  = false
   subsetsList = null
   curSubsetId   = null
+  needToShowInWorkshop = true
 
   constructor(blk) {
     this.id = blk.getBlockName() || ""
     this.reqFeature = blk?.reqFeature
     this.locId = blk?.locId || this.id
     this.hasSubsets = blk?.hasSubsets ?? false
+    this.needToShowInWorkshop =blk?.needToShowInWorkshop ?? true
 
     this.itemdefsSorted = []
     this.itemdefs = {}
@@ -104,7 +106,8 @@ local WorkshopSet = class {
   }
 
   isValid                   = @() this.id.len() > 0 && this.itemdefs.len() > 0
-  isVisible                 = @() !this.reqFeature || hasFeature(this.reqFeature) || this.isForcedDisplayByDate
+  isVisible                 = @() this.needToShowInWorkshop
+    && (!this.reqFeature || hasFeature(this.reqFeature) || this.isForcedDisplayByDate)
   isItemDefAlwaysVisible    = @(itemdef) itemdef in this.alwaysVisibleItemdefs
   getItemdefs               = @() this.itemdefsSorted
   getLocName                = @() loc(this.locId)

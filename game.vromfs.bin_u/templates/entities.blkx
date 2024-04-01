@@ -1176,7 +1176,8 @@
     "canChangeUnit": false,
     "missionUnitName": "",
     "_replicated": "uid",
-    "_tracked": "playerNo"
+    "_tracked": "playerNo",
+    "killerEid:eid": {}
   },
   "unit": {
     "_use": "simple_unit"
@@ -1845,8 +1846,45 @@
     "camera_fx__radius": 10.0,
     "camera_fx__is_cylindrical": false,
     "camera_fx__height": 0.0,
-    "camera_fx__res": "unknown",
+    "camera_fx__res": "misc_placeholder_cmps_fx",
+    "camera_fx__moveByWind": false,
     "camera_fx": {
+      "_tags": "render"
+    }
+  },
+  "area_fx": {
+    "_use": "replicating",
+    "_replicate": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "area_fx__radius": 20.0,
+    "area_fx__height": 5.0,
+    "area_fx__active_limit": 10,
+    "area_fx__spawn_timer_min": 1.0,
+    "area_fx__spawn_timer_max": 1.0,
+    "area_fx__res": "misc_placeholder_cmps_fx",
+    "area_fx__moveByWind": false,
+    "area_fx": {
       "_tags": "render"
     }
   },
@@ -2486,5 +2524,205 @@
     "modEids:list<eid>": {
       "_replicate": true
     }
+  },
+  "unit_showcase": {
+    "unit_showcase_mission_name": "",
+    "unit_showcase_eid:eid": {}
+  },
+  "loot": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "loot__count": -1,
+    "loot__resName": "",
+    "loot__countRange": [
+      1,
+      5
+    ],
+    "loot__radius": 1.0,
+    "loot__typeName": "",
+    "loot__type": -1,
+    "loot__itemId": 0,
+    "loot__model_res": {
+      "_tags": "render"
+    }
+  },
+  "scrap_metal_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_metal_scrap_b",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "scrap_metal_loot",
+    "loot__itemId": 2907201
+  },
+  "vehicle_parts_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_metal_parts_a",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "vehicle_parts_loot",
+    "loot__itemId": 2907202
+  },
+  "armor_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_armor_parts_a",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "armor_loot",
+    "loot__itemId": 2907203
+  },
+  "electronics_loot": {
+    "_use": "loot",
+    "loot__resName": "mt_loot_electronics_a",
+    "loot__countRange": [
+      5,
+      9
+    ],
+    "loot__typeName": "electronics_loot",
+    "loot__itemId": 2907204
+  },
+  "loot_carrier": {
+    "loot_carrier__capacity": 25,
+    "_tracked": "loot_carrier__loot_count",
+    "loot_carrier__rage": 0,
+    "loot_carrier__pickUpSfx": "ground/effects/pickup_md",
+    "loot_carrier__pickUpRageSfx": "ground/effects/level_up_md",
+    "loot_carrier__pickUpRageMaxSfx": "ground/effects/level_max_md",
+    "_replicated": [
+      "loot_carrier__loot_count",
+      "loot_carrier__loot_type",
+      "loot_carrier__rage"
+    ],
+    "loot_carrier__loot_type:list<i>": {},
+    "loot_carrier__loot_count:list<i>": {},
+    "loot_carrier__loot_itemId:list<i>": {}
+  },
+  "loot_creater": {
+    "loot_creater__scrapProb": 0.035,
+    "loot_creater__partsProb": 0.035,
+    "loot_creater__armorProb": 0.035,
+    "loot_creater__electronicsProb": 0.035,
+    "loot_carrier__riNames:list<t>": {
+      "n": [
+        "conex_box_a",
+        "conex_box_b",
+        "ammunition_box_piles_a",
+        "ammunition_box_piles_b",
+        "ammunition_box_piles_c",
+        "ammunition_box_piles_d",
+        "ammunition_box_piles_e",
+        "ammunition_box_piles_f",
+        "ammunition_box_wooden_sanded_a",
+        "ammunition_box_wooden_sanded_b",
+        "ammunition_box_wooden_sanded_c",
+        "ammunition_box_wooden_sanded_d",
+        "ammunition_box_wooden_sanded_e",
+        "ammunition_box_wooden_sanded_f",
+        "ammunition_box_wooden_sanded_g",
+        "ammunition_box_wooden_sanded_h",
+        "ammunition_box_wooden_sanded_i",
+        "ammunition_box_wooden_sanded_j",
+        "ammunition_box_wooden_sanded_k",
+        "ammunition_box_wooden_sanded_l",
+        "ammunition_box_wooden_sanded_m",
+        "ammunition_box_wooden_sanded_n",
+        "ammunition_box_wooden_sanded_o",
+        "ammunition_box_a_sanded",
+        "ammunition_box_b_sanded",
+        "ammunition_box_c_sanded",
+        "ammunition_box_d_sanded",
+        "ammunition_box_e_sanded",
+        "ammunition_box_f_sanded",
+        "air_cargo_a",
+        "air_cargo_b_ammunition_boxes_a",
+        "air_cargo_b_ammunition_boxes_b",
+        "air_cargo_c_bags_pile_a",
+        "air_cargo_d_pallet_cardboard_b",
+        "metal_barrels_pile_a_sanded",
+        "metal_barrels_pile_b_sanded",
+        "metal_barrels_pile_c_sanded",
+        "metal_barrels_pile_d_sanded",
+        "metal_barrels_pile_e_sanded",
+        "metal_barrel_a_sanded",
+        "metal_barrel_b_sanded",
+        "metal_barrel_c_sanded"
+      ]
+    },
+    "loot_carrier__riHandlers:list<u32>": {}
+  },
+  "loot_chance_mult_zone": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "loot_chance_mult__scrap": 1.0,
+    "loot_chance_mult__parts": 1.0,
+    "loot_chance_mult__armor": 1.0,
+    "loot_chance_mult__electronics": 1.0
+  },
+  "loot_carrier_capacity_20": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 20
+  },
+  "loot_carrier_capacity_40": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 40
+  },
+  "loot_carrier_capacity_50": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 50
+  },
+  "loot_carrier_capacity_80": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 80
+  },
+  "loot_carrier_capacity_100": {
+    "_use": "loot_carrier",
+    "loot_carrier__capacity": 100
   }
 }

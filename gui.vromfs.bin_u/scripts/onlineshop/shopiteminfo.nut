@@ -1,9 +1,9 @@
-from "%scripts/dagui_natives.nut" import steam_is_running
 from "%scripts/dagui_library.nut" import *
 
 let { parse_json } = require("json")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { getPlayerToken } = require("auth_wt")
+let { steam_is_running } = require("steam")
 
 let ONLINE_STORE_API_URL = "https://api.gaijinent.com/item_info.php"
 
