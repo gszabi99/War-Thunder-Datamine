@@ -101,7 +101,7 @@ ecs.register_es("loot_pick_uped_es",
         ])
 
       foreach(idx, t in types)
-        lootTypes[t].countW.set(counts[idx])
+        lootTypes[t].countW.set(counts?[idx] ?? 0)
       lootState.Capacity.set(comp.loot_carrier__capacity)
       lootState.Rage.set(rage)
       lootState.CurLoad.set(counts.reduce(@(total, c) total + c, 0))

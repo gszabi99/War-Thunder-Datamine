@@ -2387,6 +2387,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.getSlotbar().fullUpdate()
     let slotsData = this.getSlotbar().getSlotsData(newUnitName)
+    if (slotsData.len() == 0)
+      return
+
     this.getSlotbar().selectCrew(slotsData[0].crew.idInCountry)
   }
 }
