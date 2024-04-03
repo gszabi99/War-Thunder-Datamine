@@ -24829,7 +24829,7 @@
         "amount_warpoints": 0
       },
       "mode": {
-        "type": "killedPlayersScore",
+        "type": "killedGroundScore",
         "inRow": true,
         "num": 1005000,
         "condition": [
@@ -24847,7 +24847,9 @@
               "tank_event_in_random_battles_arcade",
               "tank_event_in_random_battles_historical",
               "tank_random_battles_simulation",
-              "tank_random_battles_simulation_1"
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
             ],
             "hideValue": "tank_random_battles_simulation_1",
             "locParamName": "conditions/missionType",
@@ -24860,6 +24862,10 @@
           {
             "type": "offenderType",
             "unitType": "typeStormovik"
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
           },
           {
             "type": "timeRange",
