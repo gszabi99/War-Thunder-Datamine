@@ -7,7 +7,9 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { generateQrBlocks } = require("%sqstd/qrCode.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getAuthenticatedUrlConfig, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
+let { requestAuthenticatedUrl, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
+let { eventbus_subscribe } = require("eventbus")
+
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
 local class qrWindow (BaseGuiHandler) {
@@ -23,7 +25,6 @@ local class qrWindow (BaseGuiHandler) {
   onEscapeCb = null
   needUrlWithQrRedirect = false
   needShowUrlLink = true
-  qrCodes = null
 
   getSceneTplView = @() {
     headerText = this.headerText
@@ -33,10 +34,12 @@ local class qrWindow (BaseGuiHandler) {
   }
 
   function initScreen() {
-    if ((this.qrCodes?.len() ?? 0) == 0) {
+    if ((this.qrCodesData?.len() ?? 0) == 0) {
       this.goBack()
       return
     }
+    this.updateAuthenticatedUrl()
+
     this.scene.findObject("wnd_update").setUserData(this)
 
     if (!is_mouse_last_time_used()) {
@@ -47,26 +50,23 @@ local class qrWindow (BaseGuiHandler) {
   }
 
   function getQrCodeView() {
-    this.qrCodes = []
+    let qrCodes = []
     let isAllowExternalLink = hasFeature("AllowExternalLink")
     local max_size = 0
     this.qrSize = this.qrSize ?? to_pixels("0.5@sf")
 
-    foreach ( idx, qrData in this.qrCodesData ) {
-      let urlConfig = getAuthenticatedUrlConfig(qrData.url)
-      if (urlConfig == null || urlConfig.urlWithoutTags == "")
-        continue
-
-      let urlForQr = this.needUrlWithQrRedirect ? getUrlWithQrRedirect(urlConfig.url) : urlConfig.url
+    foreach (idx, qrData in this.qrCodesData) {
+      let { urlWithoutTags = null, urlToOpen = null, url } = qrData
+      let urlForQr = this.needUrlWithQrRedirect ? getUrlWithQrRedirect(urlToOpen ?? url) : urlToOpen ?? url
       let list = generateQrBlocks(urlForQr)
       let cellSize = (this.qrSize.tofloat() / (list.size + 8)).tointeger()
       let size = cellSize * (list.size + 8)
       if ( max_size < size ) {
         max_size = size
       }
-      this.qrCodes.append({
+      qrCodes.append({
         btnId = $"btnLink_{idx}"
-        urlWithoutTags = urlConfig.urlWithoutTags
+        urlWithoutTags = urlWithoutTags
         needShowUrlLink = this.needShowUrlLink
         isAllowExternalLink
         qrText = qrData?.text
@@ -82,11 +82,26 @@ local class qrWindow (BaseGuiHandler) {
         })
       })
     }
-    foreach ( qrData in this.qrCodes ) {
+    foreach (qrData in qrCodes) {
       qrData.qrSize = max_size
       qrData.padding = (max_size - qrData.listSize * qrData.cellSize)/2
     }
-    return this.qrCodes
+    return qrCodes
+  }
+
+  function updateAuthenticatedUrl() {
+    foreach (qrData in this.qrCodesData)
+      requestAuthenticatedUrl(qrData.url, "updateQrCodeUrlData")
+  }
+
+  function setUrlData(urlConfig) {
+    let { baseUrl, urlToOpen, urlWithoutTags } = urlConfig
+    let qrDataIdx = this.qrCodesData.findindex(@(v) v.url == baseUrl)
+    if (qrDataIdx == null)
+      return
+
+    this.qrCodesData[qrDataIdx].__update({urlToOpen, urlWithoutTags})
+    this.updateQrCode()
   }
 
   function updateQrCode() {
@@ -95,7 +110,7 @@ local class qrWindow (BaseGuiHandler) {
   }
 
   function onUpdate(_obj, _dt) {
-    this.updateQrCode()
+    this.updateAuthenticatedUrl()
   }
 
   function goBack() {
@@ -105,5 +120,13 @@ local class qrWindow (BaseGuiHandler) {
 }
 
 gui_handlers.qrWindow <- qrWindow
+
+eventbus_subscribe("updateQrCodeUrlData", function(urlConfig) {
+  let handler = handlersManager.findHandlerClassInScene(qrWindow)
+  if (handler == null)
+    return
+
+  handler.setUrlData(urlConfig)
+})
 
 return @(params) handlersManager.loadHandler(qrWindow, params)

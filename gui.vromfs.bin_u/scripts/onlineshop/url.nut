@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let { split_by_chars } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { shell_launch, get_authenticated_url_sso } = require("url")
+let { shell_launch } = require("url")
 let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
 let base64 = require("base64")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -13,9 +13,12 @@ let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let samsung = require("samsung")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { eventbus_subscribe } = require("eventbus")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { g_url_type } = require("%scripts/onlineShop/urlType.nut")
 let { steam_is_running } = require("steam")
+let { get_authenticated_url_sso } = require("auth_wt")
+let { json_to_string, parse_json } = require("json")
+let { defer } = require("dagor.workcycle")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -37,7 +40,32 @@ function getUrlWithQrRedirect(url) {
 
 let canAutoLogin = @() ::g_login.isAuthorized()
 
-function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
+eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
+  let { status, contextStr = "", url = null } = msg
+  let { baseUrl = "", notAuthUrl = "", urlTags = [], urlWithoutTags = "",
+    useExternalBrowser = true, shouldEncode = false, cbEventbusName = "" } = contextStr != "" ? parse_json(contextStr) : null
+  if (cbEventbusName == "") {
+    logerr("onAuthenticatedUrlResult missing cbEventbusName")
+    return
+  }
+
+  local urlToOpen = url
+  if (status == YU2_OK) {
+    if (shouldEncode)
+      urlToOpen = $"{url}&ret_enc=1" //This parameter is needed for coded complex links.
+  }
+  else {
+    urlToOpen = notAuthUrl
+    send_error_log($"Authorize url: failed to get authenticated url with error {status}",
+      false, AUTH_ERROR_LOG_COLLECTION)
+    if (urlToOpen == "")
+      return
+  }
+
+  eventbus_send(cbEventbusName, { baseUrl, urlToOpen, urlTags, urlWithoutTags, useExternalBrowser })
+})
+
+function requestAuthenticatedUrl(baseUrl, cbEventbusName, isAlreadyAuthenticated = false, useExternalBrowser = false) {
   if (baseUrl == null || baseUrl == "") {
     log("Error: tried to open an empty url")
     return null
@@ -57,30 +85,50 @@ function getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated = false) {
     url = urlType.applyCurLang(url)
 
   let shouldLogin = isInArray(URL_TAG_AUTO_LOGIN, urlTags)
-  if (!isAlreadyAuthenticated && shouldLogin && canAutoLogin()) {
-    let shouldEncode = !isInArray(URL_TAG_NO_ENCODING, urlTags)
-    local autoLoginUrl = url
-    if (shouldEncode)
-      autoLoginUrl = base64.encodeString(autoLoginUrl)
-
-    let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
-    let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
-    let authData = get_authenticated_url_sso(autoLoginUrl, ssoService)
-
-    if (authData.yuplayResult == YU2_OK)
-      url = authData.url + (shouldEncode ? "&ret_enc=1" : "") //This parameter is needed for coded complex links.
-    else
-      send_error_log("Authorize url: failed to get authenticated url with error " + authData.yuplayResult,
-        false, AUTH_ERROR_LOG_COLLECTION)
+  if (isAlreadyAuthenticated || !shouldLogin || !canAutoLogin()) {
+    eventbus_send(cbEventbusName, { baseUrl, urlToOpen = url, urlTags, urlWithoutTags, useExternalBrowser })
+    return
   }
 
-  return {
-    url
-    urlWithoutTags
-    urlTags
-    urlType
-  }
+  let shouldEncode = !isInArray(URL_TAG_NO_ENCODING, urlTags)
+  local autoLoginUrl = url
+  if (shouldEncode)
+    autoLoginUrl = base64.encodeString(autoLoginUrl)
+
+  let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
+  let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
+  get_authenticated_url_sso(autoLoginUrl, "", ssoService, "onAuthenticatedUrlResult",
+    json_to_string({ baseUrl, notAuthUrl = autoLoginUrl, urlTags, urlWithoutTags,
+      useExternalBrowser, cbEventbusName, shouldEncode }))
 }
+
+eventbus_subscribe("openUrlImpl", function(urlConfig) {
+  let { baseUrl, urlToOpen, urlTags, useExternalBrowser, urlWithoutTags } = urlConfig
+  let urlType = g_url_type.getByUrl(urlWithoutTags)
+
+  log($"[URL] Open url with urlType = {urlType.typeName}: {urlToOpen}")
+  log($"[URL] Base Url = {baseUrl}")
+  let hasFeat = urlType.isOnlineShop ? hasFeature("EmbeddedBrowserOnlineShop")
+    : hasFeature("EmbeddedBrowser")
+  if (!useExternalBrowser && ::use_embedded_browser() && !steam_is_running() && hasFeat) {
+    // Embedded browser
+    ::open_browser_modal(urlToOpen, urlTags, baseUrl)
+    broadcastEvent("BrowserOpened", { url = urlToOpen, external = false })
+    return
+  }
+
+  //shell_launch can be long sync function so call it delayed to avoid broke current call.
+  defer(function() {
+    // External browser
+    let response = shell_launch(urlToOpen)
+    if (response > 0) {
+      let errorText = ::get_yu2_error_text(response)
+      showInfoMsgBox(errorText, "errorMessageBox")
+      log($"shell_launch() have returned {response} for URL: {urlToOpen}")
+    }
+    broadcastEvent("BrowserOpened", { url = urlToOpen, external = true })
+  })
+})
 
 function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false) {
   if (!hasFeature("AllowExternalLink"))
@@ -89,44 +137,14 @@ function open(baseUrl, forceExternal = false, isAlreadyAuthenticated = false) {
   let guiScene = get_cur_gui_scene()
   if (guiScene.isInAct()) {
     let openImpl = callee()
-    guiScene.performDelayed({}, @() openImpl(baseUrl, forceExternal, isAlreadyAuthenticated))
+    defer(@() openImpl(baseUrl, forceExternal, isAlreadyAuthenticated))
     return
   }
 
   let browser = forceExternal ? "external" : "any"
   let authenticated = isAlreadyAuthenticated ? " authenticated" : ""
   log($"[URL] open {browser} browser for{authenticated} '{baseUrl}'")
-
-  let urlConfig = getAuthenticatedUrlConfig(baseUrl, isAlreadyAuthenticated)
-  if (urlConfig == null)
-    return
-
-  let url = urlConfig.url
-  let urlType = urlConfig.urlType
-
-  log("[URL] Open url with urlType = " + urlType.typeName + ": " + url)
-  log("[URL] Base Url = " + baseUrl)
-  let hasFeat = urlType.isOnlineShop
-                     ? hasFeature("EmbeddedBrowserOnlineShop")
-                     : hasFeature("EmbeddedBrowser")
-  if (!forceExternal && ::use_embedded_browser() && !steam_is_running() && hasFeat) {
-    // Embedded browser
-    ::open_browser_modal(url, urlConfig.urlTags, baseUrl)
-    broadcastEvent("BrowserOpened", { url = url, external = false })
-    return
-  }
-
-  //shell_launch can be long sync function so call it delayed to avoid broke current call.
-  get_gui_scene().performDelayed(getroottable(), function() {
-    // External browser
-    let response = shell_launch(url)
-    if (response > 0) {
-      let errorText = ::get_yu2_error_text(response)
-      showInfoMsgBox(errorText, "errorMessageBox")
-      log("shell_launch() have returned " + response + " for URL:" + url)
-    }
-    broadcastEvent("BrowserOpened", { url = url, external = true })
-  })
+  requestAuthenticatedUrl(baseUrl, "openUrlImpl", isAlreadyAuthenticated, forceExternal)
 }
 
 function openUrlByObj(obj, forceExternal = false, isAlreadyAuthenticated = false) {
@@ -197,6 +215,6 @@ return {
   openUrl
   openUrlByObj
   validateLink
-  getAuthenticatedUrlConfig
+  requestAuthenticatedUrl
   getUrlWithQrRedirect
 }
