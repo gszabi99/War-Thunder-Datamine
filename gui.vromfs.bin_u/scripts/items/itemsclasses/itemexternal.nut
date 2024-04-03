@@ -1105,9 +1105,17 @@ let ItemExternal = class (BaseItem) {
     if (!preset)
       return res
 
-    res.needMarkIcon <- true
-    res.markIcon <- loc(preset.markIconLocId)
-    res.markIconColor <- preset.color
+    if ("markIconLocId" in preset) {
+      res.needMarkIcon <- true
+      res.markIcon <- loc(preset.markIconLocId)
+      res.markIconColor <- preset.color
+    }
+    else if ("markIcon" in preset) {
+      res.needImageMarkIcon <- true
+      res.markIcon <- preset.markIcon
+      res.markIconColor <- preset.color
+    }
+
     if (preset?.showBorder ?? false)
       res.rarityColor <- preset.color
     return res

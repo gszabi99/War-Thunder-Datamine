@@ -1,13 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs;
 
-let { EventPickUpLoot, EventOnUnitDead  } = require("dasevents")
+let { EventPickUpLoot } = require("dasevents")
 let { showMessage, toastMessagesComp } = require("%rGui/hud/toastMessages.nut")
 let { timeLeft } = require("%rGui/missionState.nut")
 let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
 let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
 
 const FONT_COLOR_ACCENT = 0xFFDBA94A
 const FONT_COLOR_NEUTRAL = 0xFFFCFBE0
@@ -49,11 +48,6 @@ let lootState = {
   ArmorCnt = Watched(0)
   ElectricCnt = Watched(0)
   Rage
-}
-
-function clearState() {
-  foreach (w in lootState)
-    w.set(0)
 }
 
 enum LootType {
@@ -100,14 +94,17 @@ ecs.register_es("loot_pick_uped_es",
           { text = loc("mad_thunder_event/fury/plural", { num = rageDiff }) }
         ])
 
-      foreach(idx, t in types)
-        lootTypes[t].countW.set(counts?[idx] ?? 0)
+      foreach (t, cfg in lootTypes) {
+        let collectedTypeIdx = types.indexof(t)
+        if (collectedTypeIdx != null)
+          cfg.countW.set(counts?[collectedTypeIdx] ?? 0)
+        else
+          cfg.countW.set(0)
+      }
       lootState.Capacity.set(comp.loot_carrier__capacity)
       lootState.Rage.set(rage)
       lootState.CurLoad.set(counts.reduce(@(total, c) total + c, 0))
     },
-
-    [EventOnUnitDead] = clearState,
 
     [EventPickUpLoot] = function(e,_eid,_comp) {
       let msg = lootTypes?[e.loot_type]
@@ -409,7 +406,6 @@ let hud = {
 }
 
 isFuryProgressCompleted.subscribe(@(isCompleted) isCompleted && anim_start(SKULL_FURY_ANIM_TRIGGER))
-isInFlight.subscribe(@(v) v ? clearState() : null)
 
 return {
   halign = ALIGN_CENTER

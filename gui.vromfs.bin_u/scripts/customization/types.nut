@@ -179,6 +179,8 @@ enums.addTypes(decoratorTypes, {
     isAvailable = @(unit, checkUnitUsable = true) !!unit && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = @(id) isUnlockOpened(id) || id == get_default_ship_flag()
     isVisible = function(block, _decorator) {
+      if ("unlockId" not in block)
+        return false
       let unlock = getUnlockById(block.unlockId)
       if(unlock?.hideUntilUnlocked == true && !isUnlockOpened(block.unlockId))
         return false

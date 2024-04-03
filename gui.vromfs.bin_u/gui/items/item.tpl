@@ -323,6 +323,14 @@ itemDiv {
       <<^isAllBought>>display:t='hide'<</isAllBought>>
     }
     <</needAllBoughtIcon>>
+    <<#needImageMarkIcon>>
+    markImageIcon {
+      position:t='absolute'
+      background-color:t='<<markIconColor>>'
+      background-image:t='<<markIcon>>'
+      background-repeat:t='aspect-ratio'
+    }
+    <</needImageMarkIcon>>
     <<#needMarkIcon>>
     markIcon{
       position:t='absolute'

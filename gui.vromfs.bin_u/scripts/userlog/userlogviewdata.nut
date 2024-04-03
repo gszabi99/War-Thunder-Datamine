@@ -182,7 +182,9 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
   if (logObj.type == EULT_SESSION_START ||
       logObj.type == EULT_EARLY_SESSION_LEAVE ||
       logObj.type == EULT_SESSION_RESULT) {
-    if (("country" in logObj) && ::checkCountry(logObj.country, "userlog EULT_SESSION_"))
+    if (logObj?.container.countryFlag)
+      res.logImg2 = getCountryIcon(logObj.container.countryFlag)
+    else if (::checkCountry(logObj?.country, "userlog EULT_SESSION_"))
       res.logImg2 = getCountryIcon(logObj.country)
 
     let eventId = logObj?.eventId

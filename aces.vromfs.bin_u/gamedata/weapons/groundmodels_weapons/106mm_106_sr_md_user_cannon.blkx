@@ -42,34 +42,32 @@
   "notUseDefaultBulletInGui": true,
   "bullet": {
     "bulletCount": 25,
-    "mass": 7.95,
-    "explosiveType": "comp_a",
-    "explosiveMass": 3.5,
-    "rendinstDamageRadius": 5.0,
+    "mass": 7.96,
+    "explosiveType": "tnt",
+    "explosiveMass": 0.75,
     "caliber": 0.106,
-    "Cx": 0.45,
-    "speed": 498.348,
-    "maxDistance": 10000.0,
+    "speed": 502.92,
+    "Cx": 1.25,
+    "maxDistance": 2000.0,
     "normalizationPreset": "heat",
-    "ricochetPreset": "hesh",
-    "groundRicochetPreset": "hesh",
+    "ricochetPreset": "heat_fs",
+    "groundRicochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "hesh_tank",
-    "cumulativeSecondaryShattersPreset": "hesh",
-    "useEffectiveArmorThicknessForShatter": true,
+    "bulletType": "heat_grenade_tank",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "cumulativeByNormal": true,
-    "shellAnimation": "video/shells_animations/hesh.ivf",
+    "shellAnimation": "video/shells_animations/heat_fs.ivf",
     "bulletName": "106mm_m361a1_md",
-    "hitPowerMult": 20.0,
+    "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -78,14 +76,11 @@
       200.0,
       1000.0
     ],
-    "fuseOnWater": true,
-    "fuseOnWaterProbability": 1.0,
-    "ricochetTimeToLive": 0.085,
     "hitPower": 260.0,
-    "fuseDelayDist": 0.1,
-    "explodeTreshold": 4.0,
-    "selfDestructionFx": "explosion_air_selfexplosion_big",
-    "explosionEffect": "hit_106_132mm_metal_he",
+    "fuseDelayDist": 0.0,
+    "explodeTreshold": 0.01,
+    "selfDestructionFx": "hit_81_132mm_heat",
+    "explosionEffect": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_106_132mm_dirt_he",
     "ricochetEffect": "hit_106_132mm_metal_ap",
     "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -107,6 +102,24 @@
         30.0,
         0.99
       ]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": {
+          "break_fuse": 1.0
+        },
+        "onKill": {
+          "destruction": 1.0
+        }
+      }
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -135,18 +148,18 @@
     },
     "armorpower": {
       "ArmorPower0m": [
-        8.0,
+        1.0,
         10.0
       ],
       "ArmorPower10000m": [
-        5.0,
+        1.0,
         10000.0
       ]
     },
     "damage": {
       "explosive": {
         "radius": 0.15,
-        "offset": 0.2
+        "offset": 0.04
       },
       "shatter": {
         "useRealShatters": true,
@@ -243,12 +256,10 @@
       "breachConeAngle": 45.0
     },
     "cumulativeDamage": {
-      "armorPower": 152.0,
-      "distance": 0.152,
-      "damage": 400.0
-    },
-    "splashDamage": {
-      "squashArmorThickness": 152.0
+      "armorPower": 250.0,
+      "distance": 2.5,
+      "damage": 200.0,
+      "onHitChanceMultFire": 25.0
     },
     "visual": {
       "range_percent_of_ammo": [
@@ -256,7 +267,7 @@
         0.0
       ],
       "traceFreq": 1,
-      "tracer": "76mmRed",
+      "tracer": "30mmWhite",
       "trail": "black"
     },
     "collisions": {
@@ -324,10 +335,6 @@
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
       },
-      "wood": {
-        "fx": "hit_106_132mm_wood_he",
-        "ricochetFx": "hit_106_132mm_wood_ap"
-      },
       "steel": {
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
@@ -375,6 +382,10 @@
       "stone_snow": {
         "fx": "hit_106_132mm_snow_he",
         "ricochetFx": "hit_106_132mm_snow_ap"
+      },
+      "wood": {
+        "fx": "hit_81_132mm_heat",
+        "copyBulletTm": true
       }
     },
     "shatterCollisions": {
@@ -490,34 +501,32 @@
   "106mm_M361A1_HESH": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 7.95,
-      "explosiveType": "comp_a",
-      "explosiveMass": 3.5,
-      "rendinstDamageRadius": 5.0,
+      "mass": 7.96,
+      "explosiveType": "tnt",
+      "explosiveMass": 0.75,
       "caliber": 0.106,
-      "Cx": 0.45,
-      "speed": 498.348,
-      "maxDistance": 10000.0,
+      "speed": 502.92,
+      "Cx": 1.25,
+      "maxDistance": 2000.0,
       "normalizationPreset": "heat",
-      "ricochetPreset": "hesh",
-      "groundRicochetPreset": "hesh",
+      "ricochetPreset": "heat_fs",
+      "groundRicochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "hesh_tank",
-      "cumulativeSecondaryShattersPreset": "hesh",
-      "useEffectiveArmorThicknessForShatter": true,
+      "bulletType": "heat_grenade_tank",
+      "cumulativeSecondaryShattersPreset": "heat_fs",
+      "explodeOnRendinst": true,
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "cumulativeByNormal": true,
-      "shellAnimation": "video/shells_animations/hesh.ivf",
+      "shellAnimation": "video/shells_animations/heat_fs.ivf",
       "bulletName": "106mm_m361a1_md",
-      "hitPowerMult": 20.0,
+      "onHitChanceMultExplFuel": 0.3,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -526,14 +535,11 @@
         200.0,
         1000.0
       ],
-      "fuseOnWater": true,
-      "fuseOnWaterProbability": 1.0,
-      "ricochetTimeToLive": 0.085,
       "hitPower": 260.0,
-      "fuseDelayDist": 0.1,
-      "explodeTreshold": 4.0,
-      "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_106_132mm_metal_he",
+      "fuseDelayDist": 0.0,
+      "explodeTreshold": 0.01,
+      "selfDestructionFx": "hit_81_132mm_heat",
+      "explosionEffect": "hit_81_132mm_heat",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -555,6 +561,24 @@
           30.0,
           0.99
         ]
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "DamageEffects": {
+        "part": {
+          "name": "body",
+          "onHit": {
+            "break_fuse": 1.0
+          },
+          "onKill": {
+            "destruction": 1.0
+          }
+        }
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -583,18 +607,18 @@
       },
       "armorpower": {
         "ArmorPower0m": [
-          8.0,
+          1.0,
           10.0
         ],
         "ArmorPower10000m": [
-          5.0,
+          1.0,
           10000.0
         ]
       },
       "damage": {
         "explosive": {
           "radius": 0.15,
-          "offset": 0.2
+          "offset": 0.04
         },
         "shatter": {
           "useRealShatters": true,
@@ -691,12 +715,10 @@
         "breachConeAngle": 45.0
       },
       "cumulativeDamage": {
-        "armorPower": 152.0,
-        "distance": 0.152,
-        "damage": 400.0
-      },
-      "splashDamage": {
-        "squashArmorThickness": 152.0
+        "armorPower": 250.0,
+        "distance": 2.5,
+        "damage": 200.0,
+        "onHitChanceMultFire": 25.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -704,7 +726,7 @@
           0.0
         ],
         "traceFreq": 1,
-        "tracer": "76mmRed",
+        "tracer": "30mmWhite",
         "trail": "black"
       },
       "collisions": {
@@ -772,10 +794,6 @@
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
         },
-        "wood": {
-          "fx": "hit_106_132mm_wood_he",
-          "ricochetFx": "hit_106_132mm_wood_ap"
-        },
         "steel": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
@@ -823,6 +841,10 @@
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he",
           "ricochetFx": "hit_106_132mm_snow_ap"
+        },
+        "wood": {
+          "fx": "hit_81_132mm_heat",
+          "copyBulletTm": true
         }
       },
       "shatterCollisions": {

@@ -152,8 +152,9 @@ def on_unit_death_es(evt : EventOnUnitDead;
   let unit = get_unit(uid)
   if (unit == null || unit.myPlayer == null)
     return
-  if loot_carrier__rage > 0
-    *unit.myPlayer |> setRageTokens(unit.myPlayer.rageTokens + loot_carrier__rage)
+  let addCnt = unit.bailoutAtExitZone ? 1 : 0
+  if loot_carrier__rage + addCnt > 0
+    *unit.myPlayer |> setRageTokens(unit.myPlayer.rageTokens + max(loot_carrier__rage + addCnt, 0))
 
 [es(tag=server)]
 def lost_loot_after_death_es(evt : EventOnUnitDead;
@@ -166,15 +167,18 @@ def lost_loot_after_death_es(evt : EventOnUnitDead;
     return
   let player = unit.myPlayer
   for lType, cnt, itemId in loot_carrier__loot_type, loot_carrier__loot_count, loot_carrier__loot_itemId
-    if lType < 0 || lType >= length(lootType)
+    if lType < 0 || lType >= length(lootType) || cnt <= 0
       continue
     if !unit.bailoutAtExitZone
+      if player != null && !is_session_finalizing() && evt.killer_eid != INVALID_ENTITY_ID
+        let deadCnt = int(ceil(float(cnt) * 0.2))
+        inventory_add_item(player.userId, itemId, deadCnt)
       createEntity(lootType[lType]) <| $(init)
         init |> set("loot__count", cnt)
         var tm = unit.unitTm
         tm[3] = tm[3] + normalize(float3(rnd_float(-1., 1.), 0., rnd_float(-1., 1.))) * rnd_float(5., 10.)
         init |> set("transform", tm)
-    elif cnt > 0 && player != null && !is_session_finalizing()
+    elif player != null && !is_session_finalizing()
       inventory_add_item(player.userId, itemId, cnt)
   loot_carrier__loot_count |> clear()
   loot_carrier__loot_type |> clear()
@@ -265,11 +269,21 @@ def set_rage_item_award(evt : EventOnSessionEnd;
 [es(tag=server)]
 def set_rage_item_from_alive_unit_award(evt : EventOnSessionEnd;
                                         uid : int;
-                                        loot_carrier__rage : int)
-  if loot_carrier__rage <= 0
-    return
+                                        loot_carrier__rage : int;
+                                        var loot_carrier__loot_count : IntList&;
+                                        var loot_carrier__loot_type : IntList&;
+                                        var loot_carrier__loot_itemId : IntList&)
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed || !unit.isAlive || unit.myPlayer == null
     return
   let player = unit.myPlayer
-  inventory_add_item(player.userId, 2907200, loot_carrier__rage)
+  if loot_carrier__rage > 0
+    inventory_add_item(player.userId, 2907200, loot_carrier__rage)
+  for lType, cnt, itemId in loot_carrier__loot_type, loot_carrier__loot_count, loot_carrier__loot_itemId
+    if lType < 0 || lType >= length(lootType) || cnt <= 0
+      continue
+    let endCnt = int(ceil(float(cnt) * 0.2))
+    inventory_add_item(player.userId, itemId, endCnt)
+  loot_carrier__loot_count |> clear()
+  loot_carrier__loot_type |> clear()
+  loot_carrier__loot_itemId |> clear()
