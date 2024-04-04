@@ -680,6 +680,52 @@
       },
       "else_actions": {}
     },
+    "kill_areas": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionBattleArea": [
+          {
+            "air": false,
+            "ground": true,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": true,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": [
+              "t1_exit_zone_01_exclude",
+              "t1_exit_zone_02_exclude"
+            ],
+            "team": "B"
+          },
+          {
+            "air": false,
+            "ground": true,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": true,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": [
+              "t2_exit_zone_01_exclude",
+              "t2_exit_zone_02_exclude"
+            ],
+            "team": "A"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
     "check_time_left_for_exit": {
       "is_enabled": true,
       "comments": "",
@@ -737,6 +783,23 @@
             "air": false,
             "tank": true
           }
+        },
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": false,
+          "airMapArea": false,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": [
+            "t1_exit_zone_01_exclude",
+            "t1_exit_zone_02_exclude",
+            "t2_exit_zone_01_exclude",
+            "t2_exit_zone_02_exclude",
+            "battle_area"
+          ],
+          "team": "Both"
         },
         "triggerDisable": {
           "target": "check_time_left_for_exit"
@@ -14091,6 +14154,114 @@
           2373.48
         ]
       ],
+      "props": {}
+    },
+    "t1_exit_zone_01_exclude": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          163.052,
+          0.0,
+          -115.82
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          115.82,
+          0.0,
+          163.051
+        ],
+        [
+          2046.35,
+          35.3144,
+          3793.94
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_exit_zone_02_exclude": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          163.052,
+          0.0,
+          -115.82
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          115.82,
+          0.0,
+          163.051
+        ],
+        [
+          3681.43,
+          44.9061,
+          1045.61
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_exit_zone_01_exclude": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          163.052,
+          0.0,
+          -115.82
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          115.82,
+          0.0,
+          163.051
+        ],
+        [
+          2046.35,
+          35.3417,
+          244.785
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_exit_zone_02_exclude": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          203.814,
+          0.0,
+          -144.774
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          144.776,
+          0.0,
+          203.814
+        ],
+        [
+          574.897,
+          50.1465,
+          3310.72
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },
