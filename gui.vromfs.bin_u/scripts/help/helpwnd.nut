@@ -35,10 +35,11 @@ let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
-::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet) {
+::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet, missionType = null) {
   loadHandler(gui_handlers.helpWndModalHandler, {
-    isStartedFromMenu  = isStartedFromMenu
-    contentSet = contentSet
+    isStartedFromMenu
+    contentSet
+    missionType
   })
 }
 
@@ -70,6 +71,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   visibleTabs = []
 
   contentSet = HELP_CONTENT_SET.MISSION
+  missionType = null
   isStartedFromMenu = false
 
   preset = null
@@ -660,7 +662,9 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillMissionObjectivesTexts() {
-    let misHelpBlkPath = g_mission_type.getHelpPathForCurrentMission()
+    let misHelpBlkPath = (this.missionType?.helpBlkPath ?? "") != ""
+      ? this.missionType.helpBlkPath
+      : g_mission_type.getHelpPathForCurrentMission()
     if (misHelpBlkPath == null)
       return
 

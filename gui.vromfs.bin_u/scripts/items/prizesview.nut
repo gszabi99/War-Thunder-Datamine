@@ -8,7 +8,6 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { cutPostfix, utf8ToLower } = require("%sqstd/string.nut")
-let workshop = require("%scripts/items/workshop/workshop.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -33,6 +32,7 @@ let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
+let { getMarkingPresetsById, shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -653,7 +653,7 @@ let prizeViewConfig = {
       if (!item)
         name = id
       else {
-        if (workshop.shouldDisguiseItem(item)) {
+        if (shouldDisguiseItem(item)) {
           item = item.makeEmptyInventoryItem()
           item.setDisguise(true)
         }
@@ -1209,16 +1209,33 @@ let prizeViewConfig = {
   }
 }
 
+function getMarkingPreset(item) {
+  let markPresetName = item?.itemDef.tags.markingPreset
+  if (!markPresetName)
+    return null
+
+  let preset = getMarkingPresetsById(markPresetName)
+  if (!preset)
+    return null
+
+  if ("markIcon" not in preset)
+    return null
+
+  return preset
+}
+
 ::PrizesView.getViewDataItem <- function getViewDataItem(prize, showCount, params = null) {
-  let { showTooltip = true } = params
+  let { showTooltip = true, useMarkingPresetIconForResources = false } = params
   let primaryIcon = prize?.primaryIcon
   let buttons = this.getPrizeActionButtonsView(prize, params)
   let item = findItemById(prize?.item)
-  let itemIcon = (params?.isShowItemIconInsteadItemType ?? false) && item
-    ? item.getIconName()
+  let markingPreset = useMarkingPresetIconForResources ? getMarkingPreset(item) : null
+  let itemIcon = markingPreset ? markingPreset.markIcon
+    : ((params?.isShowItemIconInsteadItemType ?? false) && item) ? item.getIconName()
     : this.getPrizeTypeIcon(prize)
   return {
     icon  = primaryIcon ? primaryIcon : itemIcon
+    color = markingPreset?.color
     icon2 = primaryIcon ? itemIcon : null
     title = (params?.needShowItemName ?? true)
       ? this.getPrizeText(prize, !params?.isLocked, false, showCount, true)
@@ -1352,7 +1369,7 @@ let prizeViewConfig = {
   let itemId = prize?.item ?? params?.relatedItem
   if (itemId) {
     let item = findItemById(itemId)
-    if (!item || workshop.shouldDisguiseItem(item))
+    if (!item || shouldDisguiseItem(item))
       return view
     if (item.canPreview() && isInMenu()) {
       let gcb = globalCallbacks.ITEM_PREVIEW

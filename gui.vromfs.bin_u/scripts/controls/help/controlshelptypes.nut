@@ -95,7 +95,11 @@ let baseImageTankType = {
 
 enums.addTypes(result, {
   MISSION_OBJECTIVES = {
-    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.LOADING ]
+    showInSets = [
+      HELP_CONTENT_SET.MISSION,
+      HELP_CONTENT_SET.LOADING,
+      HELP_CONTENT_SET.MISSION_WINDOW
+    ]
     helpPattern = CONTROL_HELP_PATTERN.MISSION
 
     showByUnit = @(_unit, unitTag)
@@ -105,6 +109,10 @@ enums.addTypes(result, {
       ? g_mission_type.getHelpPathForCurrentMission() != null || g_mission_type.getControlHelpName() != null
       : false
 
+    needShow = @(contentSet) (contentSet == HELP_CONTENT_SET.MISSION_WINDOW)
+      || (this.showBySet(contentSet)
+        && this.specificCheck()
+        && this.checkFeature())
     pageFillfuncName = "fillMissionObjectivesTexts"
   }
   HOTAS4_COMMON = {

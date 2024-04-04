@@ -139,6 +139,18 @@ tdiv {
           }
         }
         Button_text {
+          id:t='help_btn'
+          pos:t='pw-w, 0'
+          position:t='relative'
+          text:t='#mission_objectives'
+          on_click:t='onHelp'
+          display:t='hide'
+          enable:t='no'
+          visualStyle:t="secondary"
+          buttonWink{}
+          ButtonImg{}
+        }
+        Button_text {
           id:t='rewards_list_btn'
           pos:t='pw-w, 0'
           position:t='relative'
@@ -164,7 +176,7 @@ tdiv {
         }
       }
     }
-    
+
     rowSeparator {}
 
     tdiv {
@@ -382,4 +394,10 @@ tdiv {
       scrollbarShortcuts:t='yes'
     }
   }
+}
+
+DummyButton {
+  behaviour:t='accesskey'
+  accessKey:t='F1'
+  on_click:t='onHelp'
 }

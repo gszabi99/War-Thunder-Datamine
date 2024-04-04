@@ -2,7 +2,9 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, EVENTS_SHORT_LB_VISIBLE_ROWS
+from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
+let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -218,6 +220,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     showObjById("players_list_btn", !!this.room, this.scene)
+    showObjById("help_btn", this.selectedEvent?.helpBlkPath != null, this.scene)
     this.updateCostText()
   }
 
@@ -536,6 +539,14 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onPlayersList() {
     gui_handlers.MRoomMembersWnd.open(this.room)
+  }
+
+  function onHelp() {
+    let misType = g_mission_type.getTypeByMissionName(this.selectedEvent.name)
+    if (misType == g_mission_type.UNKNOWN)
+      return
+
+    ::gui_modal_help(false, HELP_CONTENT_SET.MISSION_WINDOW, misType)
   }
 
   function hideEventLeaderboard(showWaitBox = true) {

@@ -67,7 +67,7 @@ function getCrewInfo(isInBattle) {
 }
 
 ::g_crews_list.invalidate <- function invalidate(needForceInvalidate = false) {
-  if (!needForceInvalidate && (isSlotbarOverrided()
+  if (!needForceInvalidate && ((isSlotbarOverrided() && !isInFlight())
       || isEqual(this.crewsList, getCrewInfo(isInBattleState.value))))
     return false
 

@@ -335,6 +335,7 @@ function generateTreeConfig(blk) {
     headerlocId = blk?.main_header ?? ""
     headerItemsTitle = blk?.headerItemsTitle
     openButtonLocId = blk?.openButtonLocId ?? ""
+    useMarkingPresetIconForResources = blk?.useMarkingPresetIconForResources ?? false
     allowableResourcesForCraftResult = getAllowableResources(allowableResources?[bodiesConfig.len()], "allowableResource")
     allowableItemsForCraftingTutorial = getAllowableResources(blk?.allowableItemsForCraftingTutorial, "item")
     craftTreeItemsIdArray = craftTreeItemsIdArray

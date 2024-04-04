@@ -292,7 +292,8 @@ let viewItemsParams = {
 }
 
 let getItemBlockView = kwarg(
-  function getItemBlockView(itemBlock, itemConfig, itemSizes, allowableResources, forcedAllowableResources) {
+  function getItemBlockView(itemBlock, itemConfig, itemSizes, allowableResources,
+      forcedAllowableResources, useMarkingPresetIconForResources) {
     local item = itemConfig.item
     if (item == null)
       return null
@@ -336,6 +337,7 @@ let getItemBlockView = kwarg(
             visibleResources = allowableResources.__merge(forcedAllowableResources)
             forcedVisibleResources = forcedAllowableResources
             isTooltipByHold = showConsoleButtons.value
+            useMarkingPresetIconForResources
           })
     }
 })
@@ -352,7 +354,7 @@ function hasTextBlockAt(textBlocks, x, y, workshopSet, itemsList) {
 let getRowsElementsView = kwarg(
   function getRowsElementsView(
     rows, itemSizes, itemsList, textBlocks, workshopSet,
-    allowableResources, forcedAllowableResources
+    allowableResources, forcedAllowableResources, useMarkingPresetIconForResources
   ) {
     let shopArrows = []
     let conectionsInRow = []
@@ -383,6 +385,7 @@ let getRowsElementsView = kwarg(
             allowableResources = allowableResources,
             forcedAllowableResources = forcedAllowableResources
             itemConfig = itemConfig
+            useMarkingPresetIconForResources
           })
           if (itemBlockView != null)
             itemBlocksArr.append(itemBlockView)
@@ -884,6 +887,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
         textBlocks = bodiesConfig[idx].textBlocks
         allowableResources = bodiesConfig[idx].allowableResources
         forcedAllowableResources = bodiesConfig[idx].forcedAllowableResources
+        useMarkingPresetIconForResources = this.craftTree.useMarkingPresetIconForResources
       })
       shopArrows.extend(connectingElements.shopArrows)
       conectionsInRow.extend(connectingElements.conectionsInRow)

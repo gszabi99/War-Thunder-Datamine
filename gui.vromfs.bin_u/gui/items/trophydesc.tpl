@@ -113,6 +113,9 @@ tdiv {
       position:t='relative'
       background-image:t='<<icon>>'
       background-repeat:t='aspect-ratio'
+      <<#color>>
+      style:t='background-color:<<color>>;'
+      <</color>>
       <<#isLocked>>
       isLocked:t='yes'
       <</isLocked>>
