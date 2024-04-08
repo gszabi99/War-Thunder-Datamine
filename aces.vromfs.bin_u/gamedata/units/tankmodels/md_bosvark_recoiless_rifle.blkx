@@ -2666,10 +2666,10 @@
       "dmPart": "driver_dm",
       "role": "driver",
       "substitute": [
-        "loader1",
         "commander",
         "loader",
         "loader2",
+        "loader1",
         "gunner"
       ]
     },
@@ -2677,23 +2677,25 @@
       "dmPart": "gunner_dm",
       "role": "tank_gunner",
       "substitute": [
-        "loader1",
         "commander",
         "loader",
-        "loader2"
+        "loader2",
+        "loader1"
+      ]
+    },
+    "loader1": {
+      "dmPart": "loader_01_dm",
+      "role": "loader",
+      "substitute": [
+        "commander",
+        "loader2",
+        "loader"
       ]
     },
     "loader": {
       "dmPart": "loader_dm",
       "role": "loader",
-      "substitute": [
-        "loader1",
-        "commander"
-      ]
-    },
-    "loader1": {
-      "dmPart": "loader_01_dm",
-      "role": "loader"
+      "substitute": "commander"
     },
     "loader2": {
       "dmPart": "loader_02_dm",
@@ -2939,7 +2941,7 @@
         "turret": {
           "head": "bone_turret_03",
           "gun": "bone_gun_03",
-          "gunnerDm": "gunner_dm",
+          "gunnerDm": "loader_01_dm",
           "verDriveDm": "drive_turret_v_dm",
           "horDriveDm": "drive_turret_h_dm",
           "rotatedTurret": "bone_turret_03",
