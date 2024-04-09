@@ -8,6 +8,7 @@ let { isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/c
 let { getCrewSkillValue } = require("%scripts/crew/crew.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCachedCrewId, getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 enum skillColumnOrder {
   TOTAL
@@ -171,7 +172,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     }
 
     getHeaderImage = function (params) {
-      return ::g_crew_spec_type.getTypeByCrewAndUnit(params.crew, params.unit).trainedIcon
+      return getSpecTypeByCrewAndUnit(params.crew, params.unit).trainedIcon
     }
   }
 

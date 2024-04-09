@@ -32,18 +32,34 @@ let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
 let { Cost } = require("%scripts/money.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isAllCrewsMinLevel, isAllCrewsHasBasicSpec, getCrewName, getCrewLevel,
-  getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, getCrewMaxDiscountByInfo,
-  getCrewDiscountsTooltipByInfo, isCrewMaxLevel, getCrewSkillPointsToMaxAllSkills,
-  buyAllCrewSkills, getCrewDiscountInfo, createCrewUnitSpecHandler, createCrewBuyPointsHandler,
-  getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages
+let { isAllCrewsMinLevel, getCrewName, getCrewLevel,
+  getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel,
+  getCrewSkillPointsToMaxAllSkills, buyAllCrewSkills, createCrewUnitSpecHandler,
+  createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages
 } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
+} = require("%scripts/crew/crewSpecType.nut")
+let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
+} = require("%scripts/crew/crewDiscount.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
     loadHandler(gui_handlers.CrewModalHandler, params)
   else
     showInfoMsgBox(loc("msgbox/notAvailbleYet"))
+}
+
+function isAllCrewsHasBasicSpec() {
+  let basicCrewSpecType = crewSpecTypes.BASIC
+  foreach (checkedCountrys in ::g_crews_list.get())
+    foreach (crew in checkedCountrys.crews)
+      foreach (unitName, _value in crew.trainedSpec) {
+        let crewUnitSpecType = getSpecTypeByCrewAndUnitName(crew, unitName)
+        if (crewUnitSpecType != basicCrewSpecType)
+          return false
+      }
+
+  return true
 }
 
 gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -392,13 +408,13 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let needShowUpgradeBlock = this.needShowUpgradeBlock()
     let upgradeBlock = showObjById("upgrade_qualification_block", needShowUpgradeBlock, this.scene)
 
-    let crewSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
+    let crewSpecType = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
     upgradeBlock.findObject("current_qualification").setValue( "".concat(loc("crew/trained"), $": {crewSpecType.getName()}"))
 
     let nextSpecType = crewSpecType.getNextType()
     let levels = nextSpecType.getCurAndReqLevel(this.crew, this.curUnit)
     let isShowExpUpgrade = crewSpecType.needShowExpUpgrade(this.crew, this.curUnit) && levels.reqLevel <= levels.curLevel
-    let isMaxQualification = nextSpecType == ::g_crew_spec_type.UNKNOWN
+    let isMaxQualification = nextSpecType == crewSpecTypes.UNKNOWN
 
     let progressBarDiv = showObjById("expProgressBar", isShowExpUpgrade && !isMaxQualification, upgradeBlock)
     let expTextObj = showObjById("expText", isShowExpUpgrade && !isMaxQualification, upgradeBlock)
@@ -410,7 +426,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let inactiveIcon = levels.reqLevel > levels.curLevel ? "_place" : ""
 
-    if (nextSpecType.code == ::g_crew_spec_type.EXPERT.code) {
+    if (nextSpecType.code == crewSpecTypes.EXPERT.code) {
       upgradeBlock.findObject("upgrade_button").visualStyle = ""
       upgradeBlock.findObject("upgrade_button_icon")["background-image"] = $"#ui/gameuiskin#spec_icon1{inactiveIcon}.svg"
     } else {
@@ -502,7 +518,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSpecIncreaseBtn() {
-    let crewSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
+    let crewSpecType = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
     let nextSpecType = crewSpecType.getNextType()
     upgradeUnitSpec(this.crew, this.curUnit, this.curCrewUnitType, nextSpecType)
   }
@@ -788,13 +804,13 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.curUnit == null)
       return false
 
-    let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(upgCrew, this.curUnit)
+    let curSpecType = getSpecTypeByCrewAndUnit(upgCrew, this.curUnit)
     let wpSpecCost = curSpecType.getUpgradeCostByCrewAndByUnit(upgCrew, this.curUnit)
     let reqLevel = curSpecType.getUpgradeReqCrewLevel(this.curUnit)
     let crewLevel = getCrewLevel(upgCrew, this.curUnit, this.curUnit.getCrewUnitType())
 
     return get_cur_warpoints() >= wpSpecCost.wp &&
-           curSpecType == ::g_crew_spec_type.BASIC &&
+           curSpecType == crewSpecTypes.BASIC &&
            crewLevel >= reqLevel
   }
 
@@ -835,10 +851,10 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUpgrCrewSpec1ConfirmTutorial() {
-    upgradeUnitSpec(this.crew, this.curUnit, null, ::g_crew_spec_type.EXPERT)
+    upgradeUnitSpec(this.crew, this.curUnit, null, crewSpecTypes.EXPERT)
 
     if (scene_msg_boxes_list.len() == 0) {
-      let curSpec = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.curUnit)
+      let curSpec = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
       let message = format("Error: Empty MessageBox List for userId = %s\ncountry = %s" +
                                "\nidInCountry = %s\nunitname = %s\nspecCode = %s",
                                userIdStr.value,

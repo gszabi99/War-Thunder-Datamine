@@ -75,6 +75,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCrewLevel, getCrewName } = require("%scripts/crew/crew.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -1629,7 +1630,7 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     let crewUnitType = air.getCrewUnitType()
     let crewLevel = getCrewLevel(crew, air, crewUnitType)
     let crewStatus = ::get_crew_status(crew, air)
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, air)
+    let specType = getSpecTypeByCrewAndUnit(crew, air)
     let crewSpecIcon = specType.trainedIcon
     let crewSpecName = specType.getName()
 

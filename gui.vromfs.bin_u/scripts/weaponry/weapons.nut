@@ -74,9 +74,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
-::header_len_per_cell <- 16
-::tooltip_display_delay <- 2
-::max_spare_amount <- 100
+const HEADER_LEN_PER_CELL = 16
 
 ::enable_modifications <- function enable_modifications(unitName, modNames, enable) {
   modNames = modNames?.filter(@(n) n != "")
@@ -830,7 +828,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       foreach (idx, column in columnsList) {
         column.needDivLine <- idx > 0
         headerWidth += column.width
-        if (column.name && utf8_strlen(column.name) > ::header_len_per_cell * column.width)
+        if (column.name && utf8_strlen(column.name) > HEADER_LEN_PER_CELL * column.width)
           column.isSmallFont <- true
       }
 

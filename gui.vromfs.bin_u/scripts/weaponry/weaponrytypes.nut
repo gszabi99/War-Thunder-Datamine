@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getByCurBundle } = require("%scripts/weaponry/itemInfo.nut")
+let { getByCurBundle, MAX_SPARE_AMOUNT } = require("%scripts/weaponry/itemInfo.nut")
 let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
@@ -158,7 +158,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
       wp_get_spare_cost_gold(unit.name)
     ) }
     getAmount = function(unit, ...) { return get_spare_aircrafts_count(unit.name) }
-    getMaxAmount = function(...) { return ::max_spare_amount }
+    getMaxAmount = function(...) { return MAX_SPARE_AMOUNT }
     canBuy = function(unit, item) { return ::isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
   }
 

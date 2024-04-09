@@ -36,6 +36,7 @@ let { getCurrentGameModeEdiff, isUnitAllowedForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getCrewLevel } = require("%scripts/crew/crew.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -291,7 +292,7 @@ function buildEmptySlot(id, _unit, params) {
     if (crew != null) {
       let crewLevelText = getCrewLevel(crew, forceCrewInfoUnit,
         forceCrewInfoUnit.getCrewUnitType()).tointeger().tostring()
-      let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, forceCrewInfoUnit).trainedIcon
+      let crewSpecIcon = getSpecTypeByCrewAndUnit(crew, forceCrewInfoUnit).trainedIcon
 
       let crewLevelInfoView = {
         hasExtraInfoBlock = true
@@ -576,7 +577,7 @@ function buildCommonUnitSlot(id, unit, params) {
   let crewLevelText = crew && unitForCrewInfo
     ? getCrewLevel(crew, unitForCrewInfo, unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
     : ""
-  let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
+  let crewSpecIcon = getSpecTypeByCrewAndUnit(crew, unitForCrewInfo).trainedIcon
 
   let itemButtonsView = {
     itemButtons = {

@@ -22,14 +22,31 @@ let { Cost } = require("%scripts/money.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { IPoint2 } = require("dagor.math")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { frnd } = require("dagor.random")
+let { PI, cos, sin } = require("%sqstd/math.nut")
+let { enableObjsByTable, activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
+const CHEST_SHOW_FINISHED_ANIM_TIMER_ID = "timer_finish_show_chest_animation"
 
 let buyAndOpenChestWndStyles = {
   newYear23 = {
     headerBackgroundImage = "!ui/images/chests_wnd/golden_new_year_image"
     chestNameBackgroundImage = "!ui/images/chests_wnd/golden_new_year_header"
+    headerBackgroundImageHeight = "512.0/2420w"
+    headerBackgroundImageMaxHeight = "0.43ph"
+    bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 2420.0*0.43sh/512)), sh"
+    timeExpiredTextParams = "pos:t='0.75pw, 0.4ph-0.5h'"
+  }
+  silverCommon = {
+    headerBackgroundImage = "!ui/images/chests_wnd/silver_common_image"
+    chestNameBackgroundImage = "!ui/images/chests_wnd/silver_common_header"
+    headerBackgroundImageHeight = "720.0/1920w"
+    headerBackgroundImageMaxHeight = "0.70ph"
+    bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 1920.0*0.70sh/720)), sh"
+    timeExpiredTextParams="pos:t='0.65pw, 0.42ph-0.5h'; overlayTextColor:t='active'"
+
   }
 }
 
@@ -122,10 +139,19 @@ let offerTypes = {
   }
   item = {
     function getTextView(prize) {
-      let item = ::ItemsManager.findItemById(prize.item)
+      local item = ::ItemsManager.findItemById(prize.item)
       if (item == null)
         return null
-      local firstTextConfig = { text = colorize("@activeTextColor", $"x{prize?.count ?? 1}") }
+
+      local count = prize?.count ?? 1
+      let contentItem = item.getContentItem()
+      if (contentItem) {
+        count = count * (item?.metaBlk?.count ?? 1)
+        item = contentItem
+      }
+
+      local firstTextConfig = null
+      local itemNameText = ""
       if (item.iType == itemType.BOOSTER) {
         let isWpBooster = item.wpRate > 0
         firstTextConfig = {
@@ -133,11 +159,16 @@ let offerTypes = {
           iconAfterText = isWpBooster ? "#ui/gameuiskin#item_type_warpoints.svg"
             : "#ui/gameuiskin#item_type_RP.svg"
         }
+        itemNameText = item.getTypeName()
+      } else {
+        itemNameText = item.getName()
+        firstTextConfig = count > 1 ? { text = colorize("@activeTextColor", $"x{count}") } : { text = " " }
       }
+
       return [
         firstTextConfig
         {
-          text = colorize("@activeTextColor", item.getTypeName())
+          text = colorize("@activeTextColor", itemNameText)
           textParams = "smallFont:t='yes'"
         }
       ]
@@ -285,8 +316,83 @@ let debugPrizes = [
   }
 ]
 
+let raysForPrizesProps = {
+  w = 28, h = 3, moveTime = 250, transpTime = 250, scaleTime = 125,
+  timeMult = 1, startDelay = 0, count = 16, rayDelay = 2,
+  startRadius = 0, stopRadius = 2, addingAngle = 0
+}
 
-function getPrizesView(prizes) {
+let chestShowRaysProps = {
+  w = 96, h = 8, moveTime = 250, transpTime = 250, scaleTime = 125,
+  timeMult = 1, startDelay = 0, count = 16, rayDelay = 32,
+  startRadius = 2, stopRadius = 0, addingAngle = 180
+}
+
+let chestShowRaysPropsSecond = {
+  w = 96, h = 8, moveTime = 250, transpTime = 250, scaleTime = 125,
+  timeMult = 1, startDelay = 16, count = 16, rayDelay = 32,
+  startRadius = 2, stopRadius = 0, addingAngle = 180
+}
+
+let chestOpenRaysProps = {
+  w = 96, h = 9, moveTime = 375, transpTime = 375, scaleTime = 125,
+  timeMult = 1, startDelay = 250, count = 16, rayDelay = 15,
+  startRadius = 0, stopRadius = 3, addingAngle = 0
+}
+
+let chestOpenRaysPropsSecond = {
+  w = 96, h = 9, moveTime = 375, transpTime = 375, scaleTime = 125,
+  timeMult = 1, startDelay = 290, count = 16, rayDelay = 15,
+  startRadius = 0, stopRadius = 3, addingAngle = 0
+}
+
+function addRaysInScreenCoords(props, raysArray) {
+  let pixelWidth = to_pixels($"{props.w}*@sf/@pf_outdated")
+  let pixelHeight = to_pixels($"{props.h}*@sf/@pf_outdated")
+  let swWidth = to_pixels("sw")
+  let swHeight = to_pixels("sh")
+  let widthInPercent = pixelWidth * 100.0 / swWidth
+  let heightInPercent = pixelHeight * 100.0 / swHeight
+  let timeMult = props.timeMult
+
+  let ySizePercent = pixelWidth * 100.0 / swHeight
+
+  let vx = 1
+  let vy = 0
+  local delay = props.startDelay
+
+  for (local i = 0; i < props.count; i++) {
+    let angle = frnd() * 360
+    let radAngle = angle/180*PI
+
+    let dirVector = [
+      (vx * cos(radAngle) - vy * sin(radAngle)) * widthInPercent,
+      (vy * cos(radAngle) + vx * sin(radAngle)) * ySizePercent
+    ]
+
+    let startX = props.startRadius != 0 ? dirVector[0] * props.startRadius : 0
+    let startY = props.startRadius != 0 ? dirVector[1] * props.startRadius : 0
+
+    let endX = props.stopRadius != 0 ? dirVector[0] * props.stopRadius : 0
+    let endY = props.stopRadius != 0 ? dirVector[1] * props.stopRadius : 0
+
+    raysArray.append(
+      { startX, startY, endX, endY, angle = angle + props.addingAngle,
+        wp = widthInPercent,
+        trDelay = (delay + props.scaleTime)*timeMult,
+        posDelay = (delay + props.scaleTime)*timeMult,
+        sizeTime = props.scaleTime * timeMult,
+        trTime = props.transpTime * timeMult,
+        posTime = props.moveTime * timeMult,
+        hp = heightInPercent,
+        delay = delay * timeMult
+      }
+    )
+    delay += props.rayDelay * timeMult
+  }
+}
+
+function getPrizesView(prizes, bgDelay = 0) {
   let res = []
   foreach (prize in prizes) {
     let offerType = ::trophyReward.getType(prize)
@@ -302,7 +408,14 @@ function getPrizesView(prizes) {
   }
   res.sort(@(a, b) a.sortIdx <=> b.sortIdx
     || a.additionalSortParam <=> b.additionalSortParam)
-  return { prizes = res.map(@(val, idx) val.__update({idx})) }
+
+  let rays = []
+  addRaysInScreenCoords(raysForPrizesProps, rays)
+
+  foreach (prize in res)
+    prize["rays"] <- rays
+
+  return { bgDelay,  prizes = res.map(@(val, idx) val.__update({idx})) }
 }
 
 function getStageViewData(stageData, currentProgress) {
@@ -337,14 +450,18 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   isInOpeningProcess = false
   userstatUnlockWatch = null
   curShowPrizeIdx = null
+  isChestShowAnimInProgress = false
+  lastRecivedPrizes = null
+  useAmount = 1
+  maxUseAmount = 1
+
+  cachedChestShowAnimData = null
+  cachedChestOpenAnimData = null
 
   function getSceneTplView() {
     return {
-      headerBackgroundImage = this.styleConfig.headerBackgroundImage
-      chestNameBackgroundImage = this.styleConfig.chestNameBackgroundImage
       chestName = this.chestItem.getName(false)
-      chestIcon = this.chestItem.getIcon()
-    }
+    }.__update(this.styleConfig)
   }
 
   function initScreen() {
@@ -356,6 +473,37 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       loc("trophy/chest_contents/all").replace(":", ""))
     this.initUsestatRewardsOnce()
     this.updateButtons()
+    this.updateMaxUseAmount()
+    this.updateUseAmountControls()
+    this.startChestShowAmim()
+  }
+
+  function startChestShowAmim() {
+    if (this.cachedChestShowAnimData == null) {
+      let rays = []
+      addRaysInScreenCoords(chestShowRaysProps, rays)
+      addRaysInScreenCoords(chestShowRaysPropsSecond, rays)
+      let timeMult = 1.0
+      this.cachedChestShowAnimData = handyman.renderCached("%gui/items/chestShowAnim.tpl", {timeMult, rays})
+    }
+
+    let chestShowNest = this.scene.findObject("chest_preview")
+    this.guiScene.replaceContentFromText( chestShowNest, this.cachedChestShowAnimData, this.cachedChestShowAnimData.len(), this)
+    chestShowNest.findObject("show_chest_anim_icon")["background-image"] = this.chestItem.getIconName()
+
+    this.isChestShowAnimInProgress = true
+    showObjById("chest_preview", true, this.scene)
+    clearTimer(CHEST_SHOW_FINISHED_ANIM_TIMER_ID)
+    let cb = Callback(@() this.onShowAnimFinished(), this)
+    setTimeout(2, @() cb(), CHEST_SHOW_FINISHED_ANIM_TIMER_ID)
+  }
+
+  function onShowAnimFinished() {
+    this.isChestShowAnimInProgress = false
+    if (this.lastRecivedPrizes != null) {
+      this.showReceivedPrizes(this.lastRecivedPrizes)
+      this.lastRecivedPrizes = null
+    }
   }
 
   function initUsestatRewardsOnce() {
@@ -368,6 +516,16 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       watch = this.userstatUnlockWatch
       updateFunc = Callback(@(obj, unlock) this.updateUsestatRewards(obj, unlock), this)
     }]))
+  }
+
+  getActionButtonAmountText = @() this.maxUseAmount > 1 ? $" x{this.useAmount}" : ""
+  getInventoryChest = @() ::ItemsManager.getInventoryItemById(this.chestItem.id)
+  getCanOpenChest = @()  (this.getInventoryChest()?.amount ?? 0) > 0
+
+  function updateMaxUseAmount() {
+    this.maxUseAmount = this.getCanOpenChest()
+      ? min(this.chestItem.getAllowToUseAmount(), this.getInventoryChest().amount)
+      : this.chestItem.getAllowToUseAmount()
   }
 
   function updateUsestatRewards(obj, unlock) {
@@ -389,6 +547,28 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(obj.findObject("rewards_list"), data, data.len(), this)
   }
 
+  function updateBuyButtonText() {
+    let buyText = $"{loc("item/buyAndConsume")}{this.getActionButtonAmountText()}"
+    let cost = this.useAmount == 1
+      ? this.chestItem.getCost()
+      : (Cost() + this.chestItem.getCost()).multiply(this.useAmount)
+    setDoubleTextToButton(this.scene, "btn_buy",
+      $"{buyText} ({cost.getUncoloredText()})", $"{buyText} ({cost.getTextAccordingToBalance()})")
+  }
+
+  function updateOpenButtonText() {
+    let openText = this.hasAlreadyOpened ? loc("item/consume/again") : loc("item/consume")
+    let amount = this.getActionButtonAmountText()
+    setDoubleTextToButton(this.scene, "btn_open", $"{openText}{amount}")
+  }
+
+  function updateActionButtonText() {
+    if (this.getCanOpenChest())
+      this.updateOpenButtonText()
+    else
+      this.updateBuyButtonText()
+  }
+
   function updateButtons() {
     let needShowWaitImage = this.needOpenChestWhenReceive || this.isInOpeningProcess
     showObjById("wait_image", needShowWaitImage, this.scene)
@@ -398,19 +578,10 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let inventoryChest = ::ItemsManager.getInventoryItemById(this.chestItem.id)
-    let canOpenChest = inventoryChest != null && inventoryChest.amount > 0
+    let canOpenChest = this.getCanOpenChest()
     showObjById("btn_buy", !canOpenChest, this.scene)
     showObjById("btn_open", canOpenChest, this.scene)
-    if (!canOpenChest) {
-      let buyText = loc("item/buyAndConsume")
-      let cost = this.chestItem.getCost()
-      setDoubleTextToButton(this.scene, "btn_buy",
-        $"{buyText} ({cost.getUncoloredText()})", $"{buyText} ({cost.getTextAccordingToBalance()})")
-    }
-    else
-      setDoubleTextToButton(this.scene, "btn_open",
-        this.hasAlreadyOpened ? loc("item/consume/again") : loc("item/consume"))
+    this.updateActionButtonText()
   }
 
   function updateTimeLeftText() {
@@ -431,6 +602,50 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     this.updateTimeLeftText()
   }
 
+  function onUseAmountIncrease() {
+    this.useAmount++
+    this.updateUseAmountControls()
+    this.updateActionButtonText()
+  }
+
+  function onUseAmountDecrease() {
+    this.useAmount--
+    this.updateUseAmountControls()
+    this.updateActionButtonText()
+  }
+
+  function onSetMaxUseAmount() {
+    this.useAmount = this.maxUseAmount
+    this.updateUseAmountControls()
+    this.updateActionButtonText()
+  }
+
+  function onUseAmountSliderChange(obj) {
+    this.useAmount = obj.getValue()
+    this.updateUseAmountControls()
+    this.updateActionButtonText()
+  }
+
+  function updateUseAmountControls() {
+    let isVisible = this.maxUseAmount > 1
+      && !this.needOpenChestWhenReceive && !this.isInOpeningProcess
+    showObjById("use_amount_controls", isVisible, this.scene)
+    if (!isVisible)
+      return
+
+    let activeBtnsTbl = {
+      use_amount_decrease_btn = this.useAmount > 1
+      use_amount_increase_btn = this.useAmount < this.maxUseAmount
+      use_amount_max_btn = this.useAmount < this.maxUseAmount
+    }
+    enableObjsByTable(this.scene, activeBtnsTbl)
+    activateObjsByTable(this.scene, activeBtnsTbl)
+
+    this.scene.findObject("use_amount_text").setValue($"{this.useAmount}")
+    this.scene.findObject("use_amount_slider").setValue(this.useAmount)
+    this.scene.findObject("use_amount_slider").max = this.maxUseAmount
+  }
+
   function onBuy() {
     let cb = Callback(function(res) {
       if (!(res?.success ?? false))
@@ -438,23 +653,30 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
       this.needOpenChestWhenReceive = true
       this.updateButtons()
+      this.updateUseAmountControls()
     }, this)
-    this.chestItem.buy(cb, null, { amount = 1 })
+    this.chestItem.buy(cb, null, { amount = this.useAmount, isFromChestWnd = true })
   }
 
   function onOpen() {
-    let inventoryChest = ::ItemsManager.getInventoryItemById(this.chestItem.id)
+    let inventoryChest = this.getInventoryChest()
     if (inventoryChest == null || inventoryChest.amount == 0 || !inventoryChest.canConsume()) {
       this.updateButtons()
       return
     }
 
-    this.hasAlreadyOpened = true
+    if (this.hasAlreadyOpened)
+      this.startChestShowAmim()
+
     this.needOpenChestWhenReceive = false
     this.isInOpeningProcess = true
-    this.showChestWithBlinkAnim()
     showObjById("prizes_list", false, this.scene)
-    inventoryChest.doMainAction(null, null, { shouldSkipMsgBox = true, showCollectRewardsWaitBox = false })
+    inventoryChest.doMainAction(null, null, {
+      shouldSkipMsgBox = true
+      showCollectRewardsWaitBox = false
+      reciepeExchangeAmount = this.useAmount
+      isFromChestWnd = true
+    })
   }
 
   function showChestWithBlinkAnim() {
@@ -472,22 +694,40 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     if (!(prizeObj?.isValid() ?? false)) {
       this.isInOpeningProcess = false
       this.updateButtons()
+      this.updateMaxUseAmount()
+      this.updateActionButtonText()
+      this.updateUseAmountControls()
       return
     }
-    prizeObj.findObject("prize_background")["transp-time"] = 150
-    prizeObj.findObject("prize_info")["transp-time"] = 800
+
+    prizeObj.findObject("prize_info")["transp-time"] = 300
+    showObjById("rays", true, prizeObj)
+    showObjById("blue_bg", true, prizeObj)
     this.guiScene.playSound("choose")
     let cb = Callback(@() this.startNextPrizeAnimation(), this)
-    setTimeout(0.8, @() cb(), NEXT_PRIZE_ANIM_TIMER_ID)
+    setTimeout(1, @() cb(), NEXT_PRIZE_ANIM_TIMER_ID)
   }
 
   function startOpening() {
+    this.hasAlreadyOpened = true
     clearTimer(CHEST_OPEN_FINISHED_ANIM_TIMER_ID)
-    let animObj = this.scene.findObject("open_chest_animation")
-    animObj.animation = "show"
     this.guiScene.playSound("chest_open")
+
+    showObjById("chest_preview", false, this.scene)
+    if (this.cachedChestOpenAnimData == null) {
+      let outRays = []
+      addRaysInScreenCoords(chestOpenRaysProps, outRays)
+      addRaysInScreenCoords(chestOpenRaysPropsSecond, outRays)
+      let timeMult = 1.0
+      this.cachedChestOpenAnimData = handyman.renderCached("%gui/items/chestOpenAnim.tpl", {timeMult, outRays})
+    }
+
+    let chestOutNest = this.scene.findObject("chest_out_anim")
+    this.guiScene.replaceContentFromText(chestOutNest, this.cachedChestOpenAnimData, this.cachedChestOpenAnimData.len(), this)
+    chestOutNest.findObject("open_chest_anim_icon")["background-image"] = this.chestItem.getIconName()
+
     let cb = Callback(@() this.onOpenAnimFinish(), this)
-    setTimeout(1.0, @() cb(), CHEST_OPEN_FINISHED_ANIM_TIMER_ID)
+    setTimeout(2, @() cb(), CHEST_OPEN_FINISHED_ANIM_TIMER_ID)
   }
 
   function onOpenAnimFinish() {
@@ -495,18 +735,22 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     if (this.curShowPrizeIdx != null) //already started
       return
-    showObjById("chest_preview", false, this.scene)
-    let animObj = this.scene.findObject("open_chest_animation")
-    animObj.animation = "hide"
+
     this.startNextPrizeAnimation()
   }
 
   function showReceivedPrizes(prizes) {
     this.isInOpeningProcess = true
-    this.showChestWithBlinkAnim()
-    let data = handyman.renderCached("%gui/items/buyAndOpenChestPrizes.tpl", getPrizesView(prizes))
+    if (this.isChestShowAnimInProgress) {
+      this.lastRecivedPrizes = prizes
+      this.updateButtons()
+      return
+    }
+
+    let data = handyman.renderCached("%gui/items/buyAndOpenChestPrizes.tpl", getPrizesView(prizes, 300 ))
     this.guiScene.replaceContentFromText(this.scene.findObject("prizes_list"), data, data.len(), this)
     showObjById("prizes_list", true, this.scene)
+    this.updateUseAmountControls()
     this.updateButtons()
     this.curShowPrizeIdx = null
     this.startOpening()
@@ -527,8 +771,10 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   function onEventInventoryUpdate(_p) {
     if (this.needOpenChestWhenReceive)
       this.onOpen()
-    else
+    else {
       this.updateButtons()
+      this.updateUseAmountControls()
+    }
   }
 }
 
@@ -542,7 +788,7 @@ function showBuyAndOpenChestWnd(chestItem) {
   if (styleConfig == null)
     return null
 
-  return loadHandler(BuyAndOpenChestHandler, { chestItem, styleConfig })
+  return loadHandler(BuyAndOpenChestHandler, { chestItem, styleConfig})
 }
 
 function showBuyAndOpenChestWndById(chestId) {
@@ -613,4 +859,5 @@ return {
   showBuyAndOpenChestWnd
   showBuyAndOpenChestWndById
   showBuyAndOpenChestWndWhenReceive
+  getBuyAndOpenChestWndStyle
 }

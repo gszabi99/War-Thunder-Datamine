@@ -10,10 +10,13 @@ let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 let getMfmHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
 let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
+let { register_command } = require("console")
 
 local isDebugMode = false
-
-::debug_multifunc_menu <- @(enable) isDebugMode = enable
+register_command(function() {
+  isDebugMode = !isDebugMode
+  console_print($"MFM DBG is: {isDebugMode ? "on" : "off"}")
+}, "debug.switch_mfm_debug")
 
 function isEnabledByUnit(config, c, unitId) {
   if (c == null)

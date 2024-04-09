@@ -5,12 +5,11 @@ let { isPlayerFromXboxOne, isPlayerFromPS4, isPlatformSony
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 let { getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed
 } = require("%scripts/chat/chatStates.nut")
-let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let psnSocial = require("sony.social")
-let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids } = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids, cacheContactByName
+} = require("%scripts/contacts/contactsManager.nut")
 let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
@@ -18,15 +17,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 
-let contactsByName = persist("contactsByName", @() {})
-
-eventbus_subscribe("playerProfileDialogClosed", function(r) {
-  if (r?.result.wasCanceled)
-    return
-  updateContacts(true)
-})
-
-::Contact <- class {
+class Contact {
   name = ""
   uid = ""
   uidInt64 = null
@@ -72,8 +63,6 @@ eventbus_subscribe("playerProfileDialogClosed", function(r) {
     }, this)
   }
 
-  static getByName = @(name) contactsByName?[name]
-
   function update(contactData) {
     let isChangedName = ("name" in contactData) && contactData.name != this.name
     foreach (key, val in contactData)
@@ -86,7 +75,7 @@ eventbus_subscribe("playerProfileDialogClosed", function(r) {
 
     this.refreshClanTagsTable()
     if (this.name.len())
-      contactsByName[this.name] <- this
+      cacheContactByName(this)
 
     if (this.afterSuccessUpdateFunc) {
       this.afterSuccessUpdateFunc()
@@ -297,3 +286,5 @@ eventbus_subscribe("playerProfileDialogClosed", function(r) {
   isInBlockGroup = @() this.isInGroup(EPL_BLOCKLIST)
   setContactServiceGroup = @(grp_name) this.contactServiceGroup = grp_name
 }
+
+return Contact

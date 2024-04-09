@@ -11,22 +11,22 @@ root {
     flow:t='vertical'
     img { //top content
       width:t='pw'
-      height:t='512.0/2420w'
-      max-height:t='0.43ph'
+      height:t='<<headerBackgroundImageHeight>>'
+      max-height:t='<<headerBackgroundImageMaxHeight>>'
       background-image:t='<<headerBackgroundImage>>'
       background-repeat:t='aspect-ratio'
 
       tdiv{
         position:t='absolute'
         pos:t='pw -w/2, 0'
-        size:t='3((sw - 1@swOrRwInVr) $max (sw - 2420.0*0.43sh/512)), sh'
+        size:t='<<bgCornersShadowSize>>'
         background-image:t='!ui/gameuiskin#debriefing_bg_grad@@ss'
         bgcolor:t='#111823'
       }
       tdiv{
         position:t='absolute'
         pos:t='-w/2, 0'
-        size:t='3((sw - 1@swOrRwInVr) $max (sw - 2420.0*0.43sh/512)), sh'
+        size:t='<<bgCornersShadowSize>>'
         background-image:t='!ui/gameuiskin#debriefing_bg_grad@@ss'
         bgcolor:t='#111823'
       }
@@ -60,50 +60,34 @@ root {
         }
         textareaNoTab {
           id:t='time_expired_value'
-          pos:t='0.75pw, 0.4ph-0.5h'
           position:t='absolute'
           mediumFont:t="yes"
           overlayTextColor:t='gray'
           css-hier-invalidate:t='yes'
+
+          <<@timeExpiredTextParams>>
         }
       }
 
       tdiv {
         id:t='chest_preview'
-        size:t='h, 0.7ph'
+        size:t='0.7ph, 0.7ph'
         pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
         position:t='absolute'
-
-        img {
-          id:t='chest_background_blink_anim'
-          size:t='1.5pw, w'
-          pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
-          position:t='absolute'
-          background-svg-size:t='1.5pw, w'
-          background-image:t='!#ui/gameuiskin#circle_gradient_white.avif'
-          wink:t='no'
-          display:t='hide'
-        }
-
-        <<@chestIcon>>
-
-        tdiv {
-          id:t='open_chest_animation'
-          pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
-          size:t='1@chestRewardWidth, 1@chestRewardHeight'
-          position:t='absolute'
-          overflow:t='visible'
-          behaviour:t='Timer'
-
-          include "%gui/items/chestOpenAnim.blk"
-        }
       }
-      
+
       tdiv {
         id:t='prizes_list'
         pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
         position:t='absolute'
         display:t='hide'
+      }
+
+      tdiv {
+        id:t='chest_out_anim'
+        size:t='0.7ph, 0.7ph'
+        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
+        position:t='absolute'
       }
     }
 
@@ -130,6 +114,60 @@ root {
           background-image:t='#ui/gameuiskin#chat_icon_attention.avif'
         }
       }
+
+      tdiv {
+          id:t='use_amount_controls'
+          halign:t='center'
+          margin-top:t='6@blockInterval'
+          margin-left:t='7@sf/@pf'
+          flow:t='horizontal'
+
+          Button_text {
+            id:t='use_amount_decrease_btn'
+            square:t='yes';
+            text:t = '-'
+            on_click:t='onUseAmountDecrease'
+            inactiveColor:t='yes'
+            margin-right:t='1@blockInterval'
+          }
+
+          slider {
+            id:t='use_amount_slider'
+            pos:t='0, 50%ph-50%h'
+            position:t='relative'
+            margin:t='0.5@sliderThumbWidth + 1@blockInterval, 0'
+            min:t='1'
+            style:t='width:180@sf/@pf'
+            on_change_value:t='onUseAmountSliderChange'
+
+            focus_border {}
+            sliderButton {}
+          }
+
+          textareaNoTab {
+            id:t='use_amount_text'
+            valign:t='center'
+            margin-right:t='1@blockInterval'
+            min-width:t='26@sf/@pf'
+          }
+
+          Button_text {
+            id:t='use_amount_increase_btn'
+            square:t='yes';
+            text:t ='+'
+            on_click:t='onUseAmountIncrease'
+            inactiveColor:t='yes'
+
+          }
+
+          Button_text {
+            id:t='use_amount_max_btn'
+            text:t = '#profile/maximumExp'
+            on_click:t = 'onSetMaxUseAmount'
+            inactiveColor:t='yes'
+            sliderButtonText:t='yes'
+          }
+        }
 
       tdiv {
         size:t='389@sf/@pf, 78@sf/@pf'
@@ -215,6 +253,7 @@ root {
 
         Button_text {
           id:t='reward_btn'
+          display:t='hide'
           pos:t='pw/2-w/2, 0'
           position:t='relative'
           text:t = '#items/getReward'

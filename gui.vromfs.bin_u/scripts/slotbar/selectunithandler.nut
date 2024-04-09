@@ -31,6 +31,7 @@ let { getCurrentGameMode, getCurrentGameModeEdiff
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 function isUnitInCustomList(unit, params) {
   if (!unit)
@@ -200,8 +201,8 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function fillLegendData() {
     this.legendData.clear()
-    foreach (specType in ::g_crew_spec_type.types)
-      if (specType != ::g_crew_spec_type.UNKNOWN)
+    foreach (specType in crewSpecTypes.types)
+      if (specType != crewSpecTypes.UNKNOWN)
         this.addLegendData(specType.specName, specType.trainedIcon, "".concat(loc("crew/trained"), loc("ui/colon"), specType.getName()))
     this.addLegendData("warningIcon", "#ui/gameuiskin#new_icon.svg", "#mainmenu/selectCrew/haveMoreQualified/tooltip")
   }
@@ -562,8 +563,8 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     if (!isTrained)
       unitItemParams.overlayPrice <- unit.trainCost
 
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, unit)
-    if (specType != ::g_crew_spec_type.UNKNOWN)
+    let specType = getSpecTypeByCrewAndUnit(this.crew, unit)
+    if (specType != crewSpecTypes.UNKNOWN)
       unitItemParams.specType <- specType
 
     let id = unit.name

@@ -3,7 +3,9 @@ from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
+let { blkFromPath } = require("%sqstd/datablock.nut")
+let { find_in_array, isDataBlock } = require("%sqStdLibs/helpers/u.nut")
+let string = require("%sqstd/string.nut")
 let { get_last_skin, set_last_skin } = require("unitCustomization")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -24,15 +26,27 @@ let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
 
+function getMissionLevelPath(unit) {
+  let misBlk = isInFlight()
+    ? get_current_mission_info_cached()
+    : get_meta_mission_info_by_name(unit.testFlight)
+  return misBlk?.level
+}
+
+function getTechnicsSkins(levelPath) {
+  let levelBlk = blkFromPath($"{string.slice(levelPath, 0, -3)}blk")
+  let technicsSkins = levelBlk?.technicsSkins
+  return isDataBlock(technicsSkins)
+    ? technicsSkins % "groundSkin"
+    : []
+}
+
 function getBestSkinsList(unitName, isLockedAllowed) {
   let unit = getAircraftByName(unitName)
   if (!unit)
     return [DEFAULT_SKIN_NAME]
 
-  let misBlk = isInFlight()
-    ? get_current_mission_info_cached()
-    : get_meta_mission_info_by_name(unit.testFlight)
-  let level = misBlk?.level
+  let level = getMissionLevelPath(unit)
   if (!level)
     return [DEFAULT_SKIN_NAME]
 
@@ -52,8 +66,8 @@ function getBestSkinsList(unitName, isLockedAllowed) {
 }
 
 // return default skin if no skin matches location
-function getAutoSkin(unitName, isLockedAllowed = false) {
-  local list = getBestSkinsList(unitName, isLockedAllowed)
+function getAutoSkin(unitName) {
+  local list = getBestSkinsList(unitName, false)
     .filter(@(s) !isSkinBanned($"{unitName}/{s}"))
   if (list.len() == 0)
     return DEFAULT_SKIN_NAME
@@ -68,6 +82,18 @@ function getAutoSkin(unitName, isLockedAllowed = false) {
 
   if (couponSkins.len() > 0)
     list = couponSkins
+
+  let levelPath = getMissionLevelPath(getAircraftByName(unitName))
+  let technicsSkins = getTechnicsSkins(levelPath)
+
+  foreach (skin in technicsSkins) {
+    let locationTypeBit = skinLocations.getLocationTypeId(skin)
+    foreach (unitSkin in list) {
+      let skinLocationsMask = skinLocations.getSkinLocationsMask(unitSkin, unitName, decoratorTypes.SKINS)
+      if ((skinLocationsMask & locationTypeBit) != 0)
+        return unitSkin
+    }
+  }
 
   return list[list.len() - 1 - (::SessionLobby.getRoomId() % list.len())]
 }

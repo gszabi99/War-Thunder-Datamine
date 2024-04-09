@@ -232,6 +232,7 @@ local class WeaponsPurchaseProcess {
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
       ::update_gamercards()
       broadcastEvent("ModificationPurchased", { unit = unit })
+      broadcastEvent("AllModificationsPurchased", { unit = unit })
       ::updateAirAfterSwitchMod(unit, "")
 
       afterSuccessfullPurchaseCb?()

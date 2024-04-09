@@ -1,14 +1,12 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
 let { crewSkillPages } = require("%scripts/crew/crew.nut")
 let { get_skills_blk } = require("blkGetters")
 let { cacheCrewData, getCachedCrewData } = require("%scripts/crew/crewShortCache.nut")
-
+let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
 ::g_skill_parameters_request_type <- {
   types = []
@@ -96,7 +94,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
           values[valueMemberName][valueSkillName] <- value
         }
       }
-      values.specialization <- ::g_crew_spec_type.BASIC.code
+      values.specialization <- crewSpecTypes.BASIC.code
       return values
     }
   }
@@ -104,7 +102,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
   CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP = {
     getValues = function () {
       return {
-        specialization = ::g_crew_spec_type.BASIC.code
+        specialization = crewSpecTypes.BASIC.code
 
         // This skill is same as leadership but related to aircraft unit type.
         gunner = { members = getMaxSkillValue("gunner", "members") }
@@ -148,7 +146,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
           values[valueMemberName][valueSkillName] <- value
         }
       }
-      let maxSpecType = ::g_crew_spec_type.types.top().code
+      let maxSpecType = crewSpecTypes.types.top().code
       values.specialization <- maxSpecType
       return values
     }

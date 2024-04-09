@@ -7,10 +7,11 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewLevel, getMaxCrewLevel } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
 let stepsSpecForFindBestCrew = [
-  ::g_crew_spec_type.ACE.code,
-  ::g_crew_spec_type.EXPERT.code,
+  crewSpecTypes.ACE.code,
+  crewSpecTypes.EXPERT.code,
   null
 ]
 

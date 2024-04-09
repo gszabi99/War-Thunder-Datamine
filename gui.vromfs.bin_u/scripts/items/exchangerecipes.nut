@@ -24,7 +24,7 @@ let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophy
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { floor } = require("math")
-let { showBuyAndOpenChestWnd } = require("%scripts/items/buyAndOpenChestWnd.nut")
+let { showBuyAndOpenChestWnd, getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -260,16 +260,23 @@ function showConfirmExchangeMsg(recipe, componentItem, params, quantity = 1, rec
 }
 
 function tryUseRecipes(recipes, componentItem, params = {}) {
+  let {reciepeExchangeAmount = 1} = params
+
   let recipe = recipes.findvalue(@(r) r.isUsable) ?? recipes.findvalue(@(r) r.isDisassemble)
   if (showUseErrorMsgIfNeed(recipe, componentItem, recipes) || recipe == null)
     return false
 
-  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
-    recipe.doExchange(componentItem, 1, params)
+  if (getBuyAndOpenChestWndStyle(componentItem) && !params?.isFromChestWnd) {
+    showBuyAndOpenChestWnd(componentItem)
     return true
   }
 
-  showConfirmExchangeMsg(recipe, componentItem, params, 1, recipes)
+  if (params?.shouldSkipMsgBox || recipe.shouldSkipMsgBox) {
+    recipe.doExchange(componentItem, reciepeExchangeAmount, params)
+    return true
+  }
+
+  showConfirmExchangeMsg(recipe, componentItem, params, reciepeExchangeAmount, recipes)
   return true
 }
 

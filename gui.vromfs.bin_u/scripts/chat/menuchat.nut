@@ -46,6 +46,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -614,7 +615,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (this.curRoom)
       foreach (idx, user in this.curRoom.users) {
         if (user.uid == null && (g_squad_manager.isInMySquad(user.name, false) || ::is_in_my_clan(user.name)))
-          user.uid = ::Contact.getByName(user.name)?.uid
+          user.uid = getContactByName(user.name)?.uid
 
         let contact = (user.uid != null) ? ::getContact(user.uid) : null
         this.updateUserPresence(listObj, idx, contact)
@@ -2205,7 +2206,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       }
       else {
         name = link.slice(3)
-        contact = ::Contact.getByName(name)
+        contact = getContactByName(name)
       }
       if (lclick)
         this.addNickToEdit(name, sceneData.scene)

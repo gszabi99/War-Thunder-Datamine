@@ -16,6 +16,7 @@ let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
+let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -395,7 +396,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     foreach (user in room.users) {
-      let contact = ::Contact.getByName(user.name)
+      let contact = getContactByName(user.name)
       if (contact)
         this.onlineUsersTable[contact.uid.tointeger()] <- true
     }
@@ -405,7 +406,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!("nick" in params) || !("presence" in params))
       return
 
-    let contact = ::Contact.getByName(params.nick)
+    let contact = getContactByName(params.nick)
     if (!contact)
       return
 

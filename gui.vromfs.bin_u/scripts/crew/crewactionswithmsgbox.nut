@@ -9,6 +9,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -76,8 +77,8 @@ function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = 
   if (!unit.isUsable())
     return showInfoMsgBox(loc("weaponry/unit_not_bought"))
 
-  let curSpecType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
-  if (curSpecType == ::g_crew_spec_type.UNKNOWN) {
+  let curSpecType = getSpecTypeByCrewAndUnit(crew, unit)
+  if (curSpecType == crewSpecTypes.UNKNOWN) {
     trainCrewUnitWithoutSwitchCurrUnit(crew, unit)
     return
   }

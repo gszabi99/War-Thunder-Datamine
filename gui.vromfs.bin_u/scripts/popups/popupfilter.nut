@@ -33,16 +33,21 @@ local popupFilter = class (gui_handlers.BaseGuiHandlerWT) {
   popupAlign           = null
 
   function getSceneTplView() {
-    local maxTextWidth = 0
     this.btnTitle = this.btnTitle ?? loc("tournaments/filters")
     let k = showConsoleButtons.value ? 2 : 1
     this.btnWidth = to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
       + getStringWidthPx($"{this.btnTitle} {loc("ui/parentheses", {text = " +99"})}", "nav_button_font")
 
-    foreach (fType in this.filterTypes)
-      foreach (cb in fType.checkbox)
+    let maxTextWidths = {}
+    foreach (fType in this.filterTypes) {
+      local maxTextWidth = 0
+      foreach (cb in fType.checkbox) {
         if (cb?.text)
           maxTextWidth = max(maxTextWidth, getStringWidthPx(cb.text, "fontMedium"))
+        let typeName = cb.id.split("_")[0]
+        maxTextWidths[typeName] <- maxTextWidth
+      }
+    }
 
     let columns = this.filterTypes.map(function(fType, idx) {
       let { checkbox } = fType
@@ -51,18 +56,21 @@ local popupFilter = class (gui_handlers.BaseGuiHandlerWT) {
 
       let isResetShow = checkbox.findindex(@(c) c.value) != null
       let typeName = checkbox[checkbox.len() - 1].id.split("_")[0]
+      let hasIcon = checkbox[checkbox.len() - 1]?.image != null
       let params = $"pos:t='0, 1@popupFilterRowHeight-h'; type:t='rightSideCb'; typeName:t={typeName}"
       return fType.__merge({
         typeName
         isResetShow
         typeIdx = idx
-        textWidth = maxTextWidth
+        textWidth = maxTextWidths[typeName]
+        hasIcon
         checkbox = checkbox.map(function(cb) {
           return cb.__merge({
             typeName
             funcName = "onCheckBoxChange"
             specialParams = params
-            textWidth = maxTextWidth
+            textWidth = maxTextWidths[typeName]
+            hasMinWidth = true
           })
         })
       })

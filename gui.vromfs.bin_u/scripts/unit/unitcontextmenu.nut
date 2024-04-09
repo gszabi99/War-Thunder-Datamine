@@ -40,7 +40,7 @@ let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.n
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
-let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crew.nut")
+let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,

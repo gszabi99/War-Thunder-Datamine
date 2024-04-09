@@ -83,8 +83,15 @@ shopItem {
   }
 
   <<#isElite>>
-  eliteIcon {}
+    isElite:t='yes'
   <</isElite>>
+
+  <<^isElite>>
+    isElite:t='no'
+  <</isElite>>
+
+  eliteIcon {}
+
 
   <<#isRecentlyReleased>>
   recentlyReleasedIcon {}

@@ -5,7 +5,6 @@ from "%scripts/dagui_library.nut" import *
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { format } = require("string")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let stdMath = require("%sqstd/math.nut")
@@ -13,7 +12,7 @@ let { ceil } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let DataBlock = require("DataBlock")
-let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
+let { get_skills_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 
@@ -47,49 +46,6 @@ function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
 }
 
 let getCrew = @(countryId, idInCountry) ::g_crews_list.get()?[countryId].crews[idInCountry]
-
-function isAllCrewsHasBasicSpec() {
-  let basicCrewSpecType = ::g_crew_spec_type.BASIC
-  foreach (checkedCountrys in ::g_crews_list.get())
-    foreach (crew in checkedCountrys.crews)
-      foreach (unitName, _value in crew.trainedSpec) {
-        let crewUnitSpecType = ::g_crew_spec_type.getTypeByCrewAndUnitName(crew, unitName)
-        if (crewUnitSpecType != basicCrewSpecType)
-          return false
-      }
-
-  return true
-}
-
-function getCrewDiscountInfo(countryId = -1, idInCountry = -1) {
-  if (countryId < 0 || idInCountry < 0)
-    return {}
-
-  let countrySlot = getTblValue(countryId, ::g_crews_list.get(), {})
-  let crewSlot = "crews" in countrySlot && idInCountry in countrySlot.crews ? countrySlot.crews[idInCountry] : {}
-
-  let country = countrySlot.country
-  let unitNames = getTblValue("trained", crewSlot, [])
-
-  let packNames = []
-  eachBlock(get_warpoints_blk()?.crewSkillPointsCost, @(_, n) packNames.append(n))
-
-  let result = {}
-  result.buyPoints <- ::getDiscountByPath(["skills", country, packNames], get_price_blk())
-  foreach (t in ::g_crew_spec_type.types)
-    if (t.hasPrevType())
-      result[t.specName] <- t.getDiscountValueByUnitNames(unitNames)
-  return result
-}
-
-function getCrewMaxDiscountByInfo(discountInfo, includeBuyPoints = true) {
-  local maxDiscount = 0
-  foreach (name, discount in discountInfo)
-    if (name != "buyPoints" || includeBuyPoints)
-      maxDiscount = max(maxDiscount, discount)
-
-  return maxDiscount
-}
 
 function createCrewBuyPointsHandler(crew) {
   return handlersManager.loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
@@ -241,38 +197,6 @@ function isAllCrewsMinLevel() {
           return false
 
   return true
-}
-
-function getCrewDiscountsTooltipByInfo(discountInfo, showBuyPoints = true) {
-  let maxDiscount = getCrewMaxDiscountByInfo(discountInfo, showBuyPoints).tostring()
-
-  local numPositiveDiscounts = 0
-  local positiveDiscountCrewSpecType = null
-  foreach (t in ::g_crew_spec_type.types)
-    if (t.hasPrevType() && discountInfo[t.specName] > 0) {
-      ++numPositiveDiscounts
-      positiveDiscountCrewSpecType = t
-    }
-
-  if (numPositiveDiscounts == 0) {
-    if (showBuyPoints && discountInfo.buyPoints > 0)
-      return format(loc("discount/buyPoints/tooltip"), maxDiscount)
-    else
-      return ""
-  }
-
-  if (numPositiveDiscounts == 1)
-    return positiveDiscountCrewSpecType.getDiscountTooltipByValue(maxDiscount)
-
-  let table = {}
-  foreach (t in ::g_crew_spec_type.types)
-    if (t.hasPrevType())
-      table[t.getNameLocId()] <- discountInfo[t.specName]
-
-  if (showBuyPoints)
-    table["mainmenu/btnBuySkillPoints"] <- discountInfo.buyPoints
-
-  return ::g_discount.generateDiscountInfo(table, format(loc("discount/specialization/tooltip"), maxDiscount)).discountTooltip
 }
 
 //crewUnitType == -1 - all unitTypes
@@ -642,9 +566,6 @@ return {
   crewSkillPages
   unitCrewTrainReq
   maxCrewLevel
-  isAllCrewsHasBasicSpec
-  getCrewDiscountInfo
-  getCrewMaxDiscountByInfo
   createCrewBuyPointsHandler
   getCrewButtonRow
   createCrewUnitSpecHandler
@@ -663,7 +584,6 @@ return {
   getMinCrewLevel
   getMaxCrewLevel
   isAllCrewsMinLevel
-  getCrewDiscountsTooltipByInfo
   isCrewMaxLevel
   getCrewLevel
   getCrewTotalSteps

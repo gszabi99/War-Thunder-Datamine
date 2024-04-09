@@ -1,3 +1,32 @@
+tdiv {
+  pos:t='pw/2 - w/2, ph/2 - h/2'
+  width:t='0'
+  height:t='0'
+  position:t='absolute'
+  background-image:t='!#ui/images/chests/prizes_bg'
+  background-color:t='#FFFFFF'
+  re-type:t='9rect'
+  background-position:t='86, 0, 86, 0'
+  background-repeat:t='expand'
+  color-factor:t="0"
+  behaviour:t='basicSize'
+  width-base:t='0'
+  height-base:t='140'
+  width-end:t='110'
+  height-end:t='140'
+  size-func:t='linear'
+  size-scale:t='parent'
+  size-time:t='300'
+  size-delay:t='<<bgDelay>>'
+
+  behaviour:t='basicTransparency'
+  transp-base:t='0'
+  transp-func:t='linear'
+  transp-end:t='125'
+  transp-time:t='150'
+  transp-delay:t='<<bgDelay>>'
+}
+
 <<#prizes>>
 tdiv {
   id:t='prize_<<idx>>'
@@ -10,17 +39,9 @@ tdiv {
     transp-base:t='0'
     transp-end:t='255'
     transp-func:t='cube'
-    transp-time:t='0'
+    transp-time:t='200'
+    transp-delay:t='800'
     _blink:t='no'
-
-    img {
-      size:t='2@itemWidth, 2@itemHeight'
-      pos:t='0.5p.p.w - 0.5w, 0.5@itemHeight - 0.5h'
-      position:t='absolute'
-      background-svg-size:t='2@itemWidth, 2@itemHeight'
-      background-image:t='!#ui/gameuiskin#circle_gradient_white.avif'
-      color-factor:t='0'
-    }
 
     <<#customImageData>>
     layeredIconContainer {
@@ -41,6 +62,28 @@ tdiv {
   }
 
   tdiv {
+    id:t='blue_bg'
+    position:t='absolute'
+    pos:t='pw/2, 0.5@itemHeight'
+    size:t='0,0'
+    display:t='hide'
+
+    tdiv {
+      size:t='1.5@itemWidth, 1.5@itemHeight'
+      pos:t='-w/2, -h/2'
+      position:t='absolute'
+      background-image:t='!#ui/images/chests/chest_bg_cloud'
+      background-color:t='#FFFFFFFF'
+      color-factor:t="0"
+      behaviour:t='basicTransparency'
+      transp-base:t='0'
+      transp-func:t='linear'
+      transp-end:t='255'
+      transp-time:t='125'
+    }
+  }
+
+  tdiv {
     id:t='prize_info'
     flow:t='vertical'
 
@@ -49,6 +92,7 @@ tdiv {
     transp-end:t='255'
     transp-func:t='cube'
     transp-time:t='0'
+    transp-delay:t='100'
     _blink:t='no'
 
     <<#customImageData>>
@@ -102,6 +146,16 @@ tdiv {
       }
       <</textBlock>>
     }
+  }
+  tdiv {
+    id:t='rays'
+    position:t='absolute'
+    pos:t='pw/2, 0.5@itemHeight'
+    size:t='0,0'
+    display:t='hide'
+    <<#rays>>
+      include "%gui/items/chestOpenFxRay.tpl"
+    <</rays>>
   }
 }
 <</prizes>>

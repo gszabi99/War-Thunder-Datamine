@@ -21,6 +21,8 @@ let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 
+const MAX_SPARE_AMOUNT = 100
+
 function getItemAmount(unit, item) {
   return ::g_weaponry_types.getUpgradeTypeByItem(item).getAmount(unit, item)
 }
@@ -140,7 +142,7 @@ function getItemStatusTbl(unit, item) {
   }
   else if (item.type == weaponsItem.spare) {
     res.equipped = res.amount > 0
-    res.maxAmount = ::max_spare_amount
+    res.maxAmount = MAX_SPARE_AMOUNT
     res.showMaxAmount = false
     res.canBuyMore = res.amount < res.maxAmount
     res.unlocked = isOwn
@@ -306,6 +308,7 @@ function getAllModsCost(unit, open = false) {
 }
 
 return {
+  MAX_SPARE_AMOUNT
   getItemAmount         = getItemAmount
   isResearchableItem    = isResearchableItem
   canBeResearched       = canBeResearched

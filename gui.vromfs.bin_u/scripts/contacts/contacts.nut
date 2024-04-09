@@ -14,13 +14,14 @@ let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isEqual } = u
-let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups
+let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups, getContactByName
 } = require("%scripts/contacts/contactsManager.nut")
 let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
+let Contact = require("%scripts/contacts/contact.nut")
 
 ::g_contacts <- {
   findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
@@ -95,7 +96,7 @@ foreach (fn in [
 }
 
 ::find_contact_by_name_and_do <- function find_contact_by_name_and_do(playerName, func) { //return taskId if delayed.
-  let contact = ::Contact.getByName(playerName)
+  let contact = getContactByName(playerName)
   if (contact && contact?.uid != "") {
     func(contact)
     return null
@@ -133,7 +134,7 @@ foreach (fn in [
 
   if (!(uid in contactsPlayers)) {
     if (nick != null) {
-      let contact = ::Contact({ name = nick, uid = uid })
+      let contact = Contact({ name = nick, uid = uid })
       contactsPlayers[uid] <- contact
       if (uid in ::missed_contacts_data)
         contact.update(::missed_contacts_data.$rawdelete(uid))
@@ -162,7 +163,7 @@ foreach (fn in [
 }
 
 ::updateContact <- function updateContact(config) {
-  let configIsContact = u.isInstance(config) && config instanceof ::Contact
+  let configIsContact = u.isInstance(config) && config instanceof Contact
   if (u.isInstance(config) && !configIsContact) { //Contact no need update by instances because foreach use function as so constructor
     script_net_assert_once("strange config for contact update", "strange config for contact update")
     return null

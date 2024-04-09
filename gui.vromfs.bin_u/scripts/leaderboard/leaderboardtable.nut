@@ -9,6 +9,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let time = require("%scripts/time.nut")
 let stdMath = require("%sqstd/math.nut")
+let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 
 gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -108,7 +109,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let needAddClanTag = row?.needAddClanTag ?? false
     let clanTag = row?.clanTag ?? ""
     let rowName = row?.name ?? ""
-    let playerName = getCustomNick(::Contact.getByName(rowName))
+    let playerName = getCustomNick(getContactByName(rowName))
       ?? (this.isClanLb ? rowName : getPlayerName(rowName))
     let rowData = [
       {

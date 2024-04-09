@@ -69,7 +69,11 @@ function loadSkinMasksOnce() {
 
   for (local i = 0; i < skinsBlk.blockCount(); i++) {
     let blk = skinsBlk.getBlock(i)
-    skinsMask[blk.getBlockName()] <- getLocationMaskByNamesArray(blk % "camoType")
+    let blockName = blk.getBlockName()
+    if (blockName == "camo_type_visible" || blockName == "camo_type_icons")
+      continue
+
+    skinsMask[blockName] <- getLocationMaskByNamesArray(blk % "camoType")
   }
   camoTypesVisibleList = []
   if (skinsBlk?.camo_type_visible)
@@ -149,10 +153,10 @@ function getIconTypeByMask(mask) {
 }
 
 return {
+  getLocationTypeId
   getSkinLocationsMask = getSkinLocationsMask
   getSkinLocationsMaskBySkinId = getSkinLocationsMaskBySkinId
   getMaskByLevel = getMaskByLevel
-  getLocationMaskByNamesArray = getLocationMaskByNamesArray
   getBestSkinsList = getBestSkinsList
   getLocationsLoc = getLocationsLoc
   getIconTypeByMask = getIconTypeByMask

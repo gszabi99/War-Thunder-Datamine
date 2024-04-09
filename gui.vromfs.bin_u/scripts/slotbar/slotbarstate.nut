@@ -16,6 +16,7 @@ let { loadLocalByAccount, saveLocalByAccount
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 let selectedCrews = persist("selectedCrews", @() [])
 
@@ -248,11 +249,11 @@ function getBestTrainedCrewIdxForUnit(unit, mustBeEmpty, compareToCrew = null) {
 
   if (compareToCrew) {
     maxSpecCrewIdx = getTblValue("idInCountry", compareToCrew, maxSpecCrewIdx)
-    maxSpecCode = ::g_crew_spec_type.getTypeByCrewAndUnit(compareToCrew, unit).code
+    maxSpecCode = getSpecTypeByCrewAndUnit(compareToCrew, unit).code
   }
 
   foreach (idx, crew in crews) {
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
+    let specType = getSpecTypeByCrewAndUnit(crew, unit)
     if (specType.code > maxSpecCode && (!mustBeEmpty || isCrewSlotEmpty(crew))) {
       maxSpecCrewIdx = idx
       maxSpecCode = specType.code

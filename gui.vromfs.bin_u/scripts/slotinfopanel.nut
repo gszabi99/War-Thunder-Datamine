@@ -30,9 +30,11 @@ let { getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { getCrewUnit, getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo, isCrewMaxLevel,
-  getCrewLevel, getCrewName, getCrew
+let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew
 } = require("%scripts/crew/crew.nut")
+let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
+} = require("%scripts/crew/crewDiscount.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -373,7 +375,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
     let crewUnitType = unit.getCrewUnitType()
     let country  = getUnitCountry(unit)
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crewData, unit)
+    let specType = getSpecTypeByCrewAndUnit(crewData, unit)
     let isMaxLevel = isCrewMaxLevel(crewData, unit, country, crewUnitType)
     local crewLevelText = getCrewLevel(crewData, unit, crewUnitType)
     if (isMaxLevel)

@@ -47,6 +47,7 @@ let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice
 let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
+let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -1221,7 +1222,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
       obj = slot.obj.findObject("crew_spec")
       if (checkObj(obj)) {
-        let crewSpecIcon = ::g_crew_spec_type.getTypeByCrewAndUnit(slot.crew, slot.unit).trainedIcon
+        let crewSpecIcon = getSpecTypeByCrewAndUnit(slot.crew, slot.unit).trainedIcon
         obj["background-image"] = crewSpecIcon
       }
     }
@@ -1275,6 +1276,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (obj && obj.getValue() != params.value)
       obj.setValue(params.value)
   }
+
+  onEventAllModificationsPurchased = @(params) this.getSlotsData(params.unit.name)
+    .map(@(slot) slot.obj)
+    .filter(@(obj) obj?.isValid())
+    .each(@(obj) obj.isElite = "yes")
 
   function updateSlotRowView(countryData, tblObj) {
     if (!countryData)

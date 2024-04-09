@@ -495,7 +495,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         let loseBonus = (!this.isCurMissionExtr && this.isMp && isDebriefingResultFull()) ? this.getMissionBonus() : {}
         if ((loseBonus?.textWp ?? "") != "" || (loseBonus?.textRp ?? "") != "") {
           resReward.__update(loseBonus)
-          resReward.title = "".concat(loc("debriefing/MissionWinReward"), loc("ui/colon"))
+          resReward.title = "".concat(loc("debriefing/MissionLoseReward"), loc("ui/colon"))
         }
       }
       else if (mpResult == STATS_RESULT_ABORTED_BY_KICK) {

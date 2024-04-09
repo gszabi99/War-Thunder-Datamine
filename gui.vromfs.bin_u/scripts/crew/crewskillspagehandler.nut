@@ -17,6 +17,7 @@ let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep,
   getSkillCrewLevel, getSkillMaxCrewLevel, createCrewBuyPointsHandler, crewSkillStepToValue,
   getCrewLevel, getCrewTotalSteps, getCrewSkillValue
 } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -68,8 +69,8 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let view = { rows = rows, needAddRow = row == null }
     if (this.unit != null) {
-      view.buySpecTooltipId1 <- ::g_crew_spec_type.EXPERT.getBtnBuyTooltipId(this.crew, this.unit)
-      view.buySpecTooltipId2 <- ::g_crew_spec_type.ACE.getBtnBuyTooltipId(this.crew, this.unit)
+      view.buySpecTooltipId1 <- crewSpecTypes.EXPERT.getBtnBuyTooltipId(this.crew, this.unit)
+      view.buySpecTooltipId2 <- crewSpecTypes.ACE.getBtnBuyTooltipId(this.crew, this.unit)
     }
 
     let data = handyman.renderCached(this.sceneTplName, view)
@@ -105,7 +106,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   function getItemsBonuses(page) {
     let bonuses = []
     local curGunnersMul = 1.0
-    let specType = ::g_crew_spec_type.getTypeByCrewAndUnit(this.crew, this.unit)
+    let specType = getSpecTypeByCrewAndUnit(this.crew, this.unit)
     let curSpecMul = specType.getMulValue()
     if (page.id == "gunner") {
       let airGunners = getTblValue("gunnersCount", this.unit, 0)
@@ -291,11 +292,11 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSpecIncrease1() {
-    this.onSpecIncrease(::g_crew_spec_type.EXPERT)
+    this.onSpecIncrease(crewSpecTypes.EXPERT)
   }
 
   function onSpecIncrease2() {
-    this.onSpecIncrease(::g_crew_spec_type.ACE)
+    this.onSpecIncrease(crewSpecTypes.ACE)
   }
 
   function onSkillRowTooltipOpen(obj) {
@@ -366,8 +367,8 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       incCost = getCrewSpTextIfNotZero(getNextCrewSkillStepCost(item, item.newValue))
 
       btnSpec = [
-        this.getRowSpecButtonConfig(::g_crew_spec_type.EXPERT, level, bonusData),
-        this.getRowSpecButtonConfig(::g_crew_spec_type.ACE, level, bonusData)
+        this.getRowSpecButtonConfig(crewSpecTypes.EXPERT, level, bonusData),
+        this.getRowSpecButtonConfig(crewSpecTypes.ACE, level, bonusData)
       ]
     }
   }
@@ -378,7 +379,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     if (bonusData && bonusData.haveSpec)
       icon = specType.getIcon(curSpecCode, crewLvl, this.unit)
 
-    let isExpertSpecType = specType == ::g_crew_spec_type.EXPERT
+    let isExpertSpecType = specType == crewSpecTypes.EXPERT
     let isEnabled = icon != "" && curSpecCode < specType.code
     let barsCount = isExpertSpecType ? 3 : 2
     return {

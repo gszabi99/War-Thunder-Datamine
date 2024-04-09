@@ -13,6 +13,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getCrewSkillPoints, getMaxAvailbleCrewStepValue, crewSkillValueToStep, getSkillMaxCrewLevel,
   getCrewTotalSteps, getSkillCrewLevel, getCrewMaxSkillValue, getCrew, getCrewSkillValue
 } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes, getCrewSpecTypeByCode, getSpecTypeByCrewAndUnit
+} = require("%scripts/crew/crewSpecType.nut")
 
 function getSkillCategoryName(skillCategory) {
   return loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
@@ -92,10 +94,10 @@ addTooltipTypes({
       if (!unit)
         return ""
 
-      local specType = ::g_crew_spec_type.getTypeByCode(getTblValue("specTypeCode", params, -1))
-      if (specType == ::g_crew_spec_type.UNKNOWN)
-        specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit)
-      if (specType == ::g_crew_spec_type.UNKNOWN)
+      local specType = getCrewSpecTypeByCode(getTblValue("specTypeCode", params, -1))
+      if (specType == crewSpecTypes.UNKNOWN)
+        specType = getSpecTypeByCrewAndUnit(crew, unit)
+      if (specType == crewSpecTypes.UNKNOWN)
         return ""
 
       return specType.getTooltipContent(crew, unit)
@@ -112,10 +114,10 @@ addTooltipTypes({
       if (!unit)
         return ""
 
-      local specType = ::g_crew_spec_type.getTypeByCode(getTblValue("specTypeCode", params, -1))
-      if (specType == ::g_crew_spec_type.UNKNOWN)
-        specType = ::g_crew_spec_type.getTypeByCrewAndUnit(crew, unit).getNextType()
-      if (specType == ::g_crew_spec_type.UNKNOWN)
+      local specType = getCrewSpecTypeByCode(getTblValue("specTypeCode", params, -1))
+      if (specType == crewSpecTypes.UNKNOWN)
+        specType = getSpecTypeByCrewAndUnit(crew, unit).getNextType()
+      if (specType == crewSpecTypes.UNKNOWN)
         return ""
 
       return specType.getBtnBuyTooltipContent(crew, unit)

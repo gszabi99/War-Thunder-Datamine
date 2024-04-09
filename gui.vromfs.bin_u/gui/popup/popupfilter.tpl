@@ -55,7 +55,7 @@ popup_menu {
       top:t='1@blockInterval'
       position:t='relative'
       typeName:t='<<typeName>>'
-      width:t='<<textWidth>>+1@cIco+1@checkboxSize'
+      width:t='<<textWidth>>+1@checkboxSize<<#hasIcon>>+1@cIco<</hasIcon>>'
       visualStyle:t='borderNoBgr'
       on_click:t='onResetFilters'
       text:t='#mainmenu/btnReset'

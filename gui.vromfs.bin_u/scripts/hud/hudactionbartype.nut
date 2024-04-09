@@ -961,6 +961,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     _title = loc("hotkeys/ID_SENSOR_SWITCH_TANK")
     isForWheelMenu = @() false
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SENSOR_SWITCH_TANK"
+    getTooltipText = @(actionItem = null) this.getTitle(actionItem)
   }
 
   STEALTH = {

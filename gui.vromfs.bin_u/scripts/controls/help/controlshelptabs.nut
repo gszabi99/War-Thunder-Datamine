@@ -124,7 +124,7 @@ function getPrefferableType(contentSet) {
       return helpType
   }
 
-  return helpTypes.IMAGE_AIRCRAFT
+  return helpTypes.IMAGE_AIRCRAFT_NORMAL
 }
 
 return {

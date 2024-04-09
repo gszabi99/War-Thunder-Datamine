@@ -31,6 +31,7 @@ let xboxApprovedUids = hardPersistWatched("xboxApprovedUids", {})
 let xboxBlockedUids = hardPersistWatched("xboxBlockedUids", {})
 
 let contactsGroups = persist("contactsGroups", @() [])
+let contactsByName = persist("contactsByName", @() {})
 let contactsPlayers = persist("contactsPlayers", @() {})
 /*
   "12345" = {  //uid
@@ -72,11 +73,14 @@ let additionalConsolesContacts = //TO DO: save wt groups to watched and use comp
     }
   : {}
 
+let cacheContactByName = @(contact) contactsByName[contact.name] <- contact
+let getContactByName = @(name) contactsByName?[name]
+
 function verifyContact(params) {
   let name = params?.playerName
   local newContact = ::getContact(params?.uid, name, params?.clanTag)
   if (!newContact && name)
-    newContact = ::Contact.getByName(name)
+    newContact = getContactByName(name)
 
   return newContact
 }
@@ -299,4 +303,6 @@ return {
   contactsGroups
   contactsPlayers
   contactsByGroups
+  cacheContactByName
+  getContactByName
 }

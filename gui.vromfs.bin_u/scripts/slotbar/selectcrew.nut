@@ -22,6 +22,7 @@ let { getCrewsListByCountry, isUnitInSlotbar, getBestTrainedCrewIdxForUnit, getF
 } = require("%scripts/slotbar/slotbarState.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCrewSpecTypeByCode, getTrainedCrewSpecCode } = require("%scripts/crew/crewSpecType.nut")
 
 function getObjPosInSafeArea(obj) {
   let pos = obj.getPosRC()
@@ -365,7 +366,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillLegendData() {
     let legendData = []
     foreach (_idx, crew in getCrewsListByCountry(this.country)) {
-      let specType = ::g_crew_spec_type.getTypeByCode(::g_crew_spec_type.getTrainedSpecCode(crew, this.unit))
+      let specType = getCrewSpecTypeByCode(getTrainedCrewSpecCode(crew, this.unit))
       this.addLegendData(legendData, specType)
     }
 

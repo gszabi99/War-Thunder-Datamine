@@ -6,6 +6,7 @@ let stdMath = require("%sqstd/math.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
+let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 
 function getStandartTooltip(lbDataType, value) {
   let shortText = lbDataType.getShortTextByValue(value)
@@ -172,7 +173,7 @@ enums.addTypes(lbDataType, {
 
   NICK = {
     function getFullTextByValue(value, _allowNegative = false) {
-      let contact = ::Contact.getByName(value)
+      let contact = getContactByName(value)
       return getCustomNick(contact) ?? getPlayerName(value.tostring())
     }
   }

@@ -20,7 +20,7 @@ let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact
+let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact, getContactByName
 } = require("%scripts/contacts/contactsManager.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
@@ -1252,7 +1252,7 @@ function getSeasonName(blk) {
     }
 
   if (isInArray(nick, clanActiveUsers)) {
-    let contact = ::Contact.getByName(nick)
+    let contact = getContactByName(nick)
     if (!(contact?.forceOffline ?? false))
       return contactPresence.ONLINE
   }

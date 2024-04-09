@@ -6,7 +6,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { check_communications_privilege, check_crossnetwork_communications_permission } = require("%scripts/xbox/permissions.nut")
-
+let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 
 function getXboxChatEnableStatus() {
   if (!is_platform_xbox || !::g_login.isLoggedIn())
@@ -40,7 +40,7 @@ function isCrossNetworkMessageAllowed(playerName) {
 }
 
 function isChatEnableWithPlayer(playerName) { //when you have contact, you can use direct contact.canInteract
-  let contact = ::Contact.getByName(playerName)
+  let contact = getContactByName(playerName)
   if (contact)
     return contact.canChat()
 

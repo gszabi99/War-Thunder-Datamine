@@ -205,18 +205,18 @@ function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
     ?? weaponMulBlk?["Common"][paramName]
 }
 
-function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocketMass, totalNapalmBombMass, atgmParams, maxRocketMass) {
+function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmParams) {
   local weaponMul = 1.0
-  if (totalBombRocketMass > 0) {
+  if (massParams.totalBombRocketMass > 0) {
     let bombRocketWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "BombRocketWeapon")
     if (bombRocketWeaponBlk?.mass != null) {
-      weaponMul = interpolateArray((bombRocketWeaponBlk % "mass"), totalBombRocketMass)
+      weaponMul = interpolateArray((bombRocketWeaponBlk % "mass"), massParams.totalBombRocketMass)
     }
   }
-  if (totalNapalmBombMass > 0) {
+  if (massParams.totalNapalmBombMass > 0) {
     let napalmBombWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "NapalmBombWeapon")
     if (napalmBombWeaponBlk?.mass != null) {
-      weaponMul = math.max(weaponMul, interpolateArray((napalmBombWeaponBlk % "mass"), totalNapalmBombMass))
+      weaponMul = math.max(weaponMul, interpolateArray((napalmBombWeaponBlk % "mass"), massParams.totalNapalmBombMass))
     }
   }
   if (atgmParams.visibilityTypeArr.len() > 0) {
@@ -238,10 +238,17 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocketMass
       }
     }
   }
-  if (maxRocketMass > 0) {
+  if (massParams.maxRocketMass > 0) {
     let largeRocketMass = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMass")
     let largeRocketMul = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMul")
-    if (largeRocketMass != null && largeRocketMul != null && maxRocketMass >= largeRocketMass) {
+    if (largeRocketMass != null && largeRocketMul != null && massParams.maxRocketMass >= largeRocketMass) {
+      weaponMul = math.max(weaponMul, largeRocketMul)
+    }
+  }
+  if (massParams.maxRocketTntMass > 0) {
+    let largeRocketTntMass = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketTntMass")
+    let largeRocketMul = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMul")
+    if (largeRocketTntMass != null && largeRocketMul != null && massParams.maxRocketTntMass >= largeRocketTntMass) {
       weaponMul = math.max(weaponMul, largeRocketMul)
     }
   }
@@ -250,10 +257,8 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, totalBombRocketMass
 
 function getCustomWeaponPresetParams(unitname, weaponTable) {
   let resTable = {
-    totalBombRocketMass = 0
-    totalNapalmBombMass = 0
+    massParams = { totalBombRocketMass = 0, totalNapalmBombMass = 0, maxRocketMass = 0, maxRocketTntMass = 0 }
     atgmParams = { visibilityTypeArr = [], maxDistance = 0, hasProximityFuse = false }
-    maxRocketMass = 0
   }
 
   let weaponsBlk = get_wpcost_blk()?[unitname].weapons
@@ -263,13 +268,17 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
   foreach (weaponName, count in weaponTable) {
     let totalBombRocketMass = weaponsBlk?[weaponName].totalBombRocketMass ?? 0
     let totalNapalmBombMass = weaponsBlk?[weaponName].totalNapalmBombMass ?? 0
+    let maxRocketMass = weaponsBlk?[weaponName].maxRocketMass ?? 0
+    let maxRocketTntMass = weaponsBlk?[weaponName].maxRocketTntMass ?? 0
     let atgmVisibilityType = weaponsBlk?[weaponName].atgmVisibilityType ?? ""
     let atgmMaxDistance = weaponsBlk?[weaponName].atgmMaxDistance ?? 0
     let atgmHasProximityFuse = weaponsBlk?[weaponName].atgmHasProximityFuse ?? false
-    let maxRocketMass = weaponsBlk?[weaponName].maxRocketMass ?? 0
 
-    resTable.totalBombRocketMass += (totalBombRocketMass * count)
-    resTable.totalNapalmBombMass += (totalNapalmBombMass * count)
+    resTable.massParams.totalBombRocketMass += (totalBombRocketMass * count)
+    resTable.massParams.totalNapalmBombMass += (totalNapalmBombMass * count)
+    resTable.massParams.maxRocketMass = math.max(maxRocketMass, resTable.massParams.maxRocketMass)
+    resTable.massParams.maxRocketTntMass = math.max(maxRocketTntMass, resTable.massParams.maxRocketTntMass)
+
     if (atgmVisibilityType != "" && resTable.atgmParams.visibilityTypeArr.indexof(atgmVisibilityType) == null) {
       resTable.atgmParams.visibilityTypeArr.append(atgmVisibilityType)
     }
@@ -277,7 +286,6 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
     if (atgmHasProximityFuse) {
       resTable.atgmParams.hasProximityFuse = true
     }
-    resTable.maxRocketMass = math.max(maxRocketMass, resTable.maxRocketMass)
   }
 
   return resTable
@@ -302,15 +310,18 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
     if (weaponBlk != null) {
       let weaponMulBlk = get_warpoints_blk()?.respawn_points.WeaponMul
       if (weaponMulBlk != null) {
-        let totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
-        let totalNapalmBombMass = weaponBlk?.totalNapalmBombMass ?? 0
+        let massParams = {
+          totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
+          totalNapalmBombMass = weaponBlk?.totalNapalmBombMass ?? 0
+          maxRocketMass = weaponBlk?.maxRocketMass ?? 0
+          maxRocketTntMass = weaponBlk?.maxRocketTntMass ?? 0
+        }
         let atgmParams = {
           visibilityTypeArr = (weaponBlk % "atgmVisibilityType") ?? [],
           maxDistance = weaponBlk?.atgmMaxDistance ?? 0,
           hasProximityFuse = weaponBlk?.atgmHasProximityFuse ?? false
         }
-        let maxRocketMass = weaponBlk?.maxRocketMass ?? 0
-        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, totalBombRocketMass, totalNapalmBombMass, atgmParams, maxRocketMass)
+        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, massParams, atgmParams)
       }
     }
     else if (presetTbl?.presetWeapons != null && presetTbl.presetWeapons.len() > 0) {
@@ -318,10 +329,8 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
       weaponMul = getSpawnScoreWeaponMulByParams(
         unitname,
         unitClass,
-        customWeaponPresetParams.totalBombRocketMass,
-        customWeaponPresetParams.totalNapalmBombMass,
-        customWeaponPresetParams.atgmParams,
-        customWeaponPresetParams.maxRocketMass
+        customWeaponPresetParams.massParams,
+        customWeaponPresetParams.atgmParams
       )
     }
   }

@@ -2,8 +2,11 @@
 CheckBox {
   id:t='<<id>>'
   <<#textWidth>>
-  width:t='<<textWidth>>+1@cIco+1@checkboxSize'
+  width:t='<<textWidth>>+1@checkboxSize<<#image>>+1@cIco<</image>>'
   <</textWidth>>
+  <<#hasMinWidth>>
+  min-width:t='1@buttonWidth'
+  <</hasMinWidth>>
   pos:t='0, 0'
   position:t='relative'
   value:t='<<#value>>yes<</value>><<^value>>no<</value>>'

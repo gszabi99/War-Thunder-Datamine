@@ -542,6 +542,9 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp() {
+    if (this.selectedEvent?.helpBlkPath == null)
+      return
+
     let misType = g_mission_type.getTypeByMissionName(this.selectedEvent.name)
     if (misType == g_mission_type.UNKNOWN)
       return
