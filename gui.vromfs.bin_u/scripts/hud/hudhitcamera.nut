@@ -2,7 +2,6 @@ from "%scripts/dagui_natives.nut" import get_option_xray_kill
 from "%scripts/dagui_library.nut" import *
 from "hitCamera" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { get_mission_time } = require("mission")
 let { g_hud_enemy_debuffs } = require("%scripts/hud/hudEnemyDebuffsType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
@@ -17,7 +16,6 @@ let { get_mission_difficulty_int } = require("guiMission")
 let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 let { isInFlight } = require("gameplayBinding")
 let { format } =  require("string")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let stdMath = require("%sqstd/math.nut")
 
 const TIME_TITLE_SHOW_SEC = 3
@@ -59,7 +57,6 @@ let importantEventKeys = ["partEvent", "ammoEvent"]
 
 let debuffsListsByUnitType = {}
 let trackedPartNamesByUnitType = {}
-let fireIndicators = {}
 
 local scene     = null
 local titleObj  = null
@@ -152,7 +149,7 @@ function reset() {
   curUnitVersion = -1
   curUnitType = ES_UNIT_TYPE_INVALID
   canShowCritAnimation = false
-  fireIndicators.clear()
+
   camInfo.clear()
   unitsInfo.clear()
 }
@@ -442,70 +439,10 @@ function onHitCameraEvent(mode, result, info) {
   update()
 }
 
-
-function addFireIndicator(fireData) {
-  let iconBlk = handyman.renderCached("%gui/hud/hitCamIndicator.tpl",
-    {
-      posX = fireData.screenPosX, posY = fireData.screenPosY,
-      icon = "#ui/gameuiskin#fire_indicator.avif",
-      outlineIcon = "#ui/gameuiskin#fire_indicator_outline.avif",
-      icWidth = "0.5@enemyDmgStatusWidth", icHeight = "0.5@enemyDmgStatusWidth",
-      id = $"fire_{fireData.partId}"
-    }
-  )
-
-  let camRenderObj = scene.findObject("indicators_nest")
-  scene.getScene().appendWithBlk(camRenderObj, iconBlk, null)
-  let indicator = scene.findObject($"fire_{fireData.partId}")
-  fireIndicators[$"{fireData.partId}"] <- {data = fireData, obj = indicator, waitRemove = false}
-}
-
-function removeFireIndicator(fireName) {
-  let fire = fireIndicators[fireName]
-  if (fire.obj.isValid())
-    scene.getScene().destroyElement(fire.obj)
-  fireIndicators.$rawdelete(fireName)
-}
-
-function removeAllFireIndicators() {
-  foreach (fire in fireIndicators) {
-    scene.getScene().destroyElement(fire.obj)
-  }
-  fireIndicators.clear()
-}
-
 function onHitCameraUpdateFiresEvent(fireArr) {
-  if (scene == null || !scene.isValid())
+  if ((fireArr?.len() ?? 0) == 0)
     return
-
-  if ((fireArr?.len() ?? 0) == 0) {
-    if (fireIndicators.len() != 0)
-      removeAllFireIndicators()
-    return
-  }
-
-  foreach (fire in fireIndicators)
-    fire.waitRemove = true
-
-  foreach (fireData in fireArr) {
-    let fireName = $"{fireData.partId}"
-    if (!fireIndicators?[fireName]) {
-      addFireIndicator(fireData)
-    } else {
-      let fire = fireIndicators[fireName]
-      if (!fire.obj.isValid()) {
-        fireIndicators.$rawdelete(fireName)
-        continue
-      }
-      fire.waitRemove = false
-      if (!u.isEqual(fireData, fire.data))
-        fire.obj.pos = $"{fireData.screenPosX}, {fireData.screenPosY}"
-    }
-  }
-
-  foreach (fireName, fire in fireIndicators)
-    if (fire.waitRemove)
-      removeFireIndicator(fireName)
+  // Something or other
 }
 
 function onEnemyPartDamage(data) {
