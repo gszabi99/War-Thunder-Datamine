@@ -71,7 +71,7 @@ let aircraftVectorImageCommands = (function() {
 }())
 
 
-function centeredAircraftIcon(colorWatched) {
+function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
 
   let aircraftIcon = @() styleLineBackground.__merge({
     watch = colorWatched
@@ -81,7 +81,7 @@ function centeredAircraftIcon(colorWatched) {
     color = colorWatched.value
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    size = [pw(33), ph(33)]
+    size = [pw(33 * centralCircleSizeMult), ph(33 * centralCircleSizeMult)]
     pos = [0, 0]
     opacity = RADAR_LINES_OPACITY
     commands = aircraftVectorImageCommands
@@ -99,7 +99,7 @@ function centeredAircraftIcon(colorWatched) {
         watch = [targetsCommonOpacity, colorWatched]
         lineWidth = hdpx(LINE_WIDTH)
         commands = [
-          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.25, indicatorRadius * 0.25]
+          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.25 * centralCircleSizeMult, indicatorRadius * 0.25 * centralCircleSizeMult]
         ]
       }),
       aircraftIcon
@@ -684,13 +684,14 @@ let rwrTargetsPresenceComponent = function(colorWatched) {
   }
 }
 
-function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd) {
+function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon,
+    needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult) {
   return {
     size = flex()
     children = [
       twsBackground(colorWatched, !needDrawCentralIcon),
       needDrawBackground ? rwrBackground(colorWatched, scale) : null,
-      needDrawCentralIcon ? centeredAircraftIcon(colorWatched) : null,
+      needDrawCentralIcon ? centeredAircraftIcon(colorWatched, centralCircleSizeMult) : null,
       {
         size = [pw(relativCircleRadius * ratio * scale), ph(relativCircleRadius * scale)]
         vplace = ALIGN_CENTER
@@ -709,14 +710,17 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
   }
 }
 
-let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0, needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0, needAdditionalLights = true, forMfd = false) {
+let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSize = 0, scale = 1.0,
+    needDrawCentralIcon = true, needDrawBackground = true, fontSizeMult = 1.0,
+    needAdditionalLights = true, forMfd = false, centralCircleSizeMult = 1.0) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value
     pos = posWatched.value
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0, needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd)
+    children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0,
+      needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult)
   }
 })
 

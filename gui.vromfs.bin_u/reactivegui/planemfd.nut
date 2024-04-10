@@ -25,13 +25,14 @@ let planeMFD = @() {
         colorWatched = MfdRadarColor,
         posWatched = twsPosComputed,
         sizeWatched = twsSizeComputed,
-        relativCircleSize = 36,
+        relativCircleSize = 54,
         scale = RwrScale.value,
         needDrawCentralIcon = !RwrBackHide.value,
         needDrawBackground = !RwrBackHide.value,
-        fontSizeMult = 2.0,
+        fontSizeMult = 1.8,
         needAdditionalLights = false,
         forMfd = true
+        centralCircleSizeMult = 0.7
       })
       : null),
     mfdCamera,
