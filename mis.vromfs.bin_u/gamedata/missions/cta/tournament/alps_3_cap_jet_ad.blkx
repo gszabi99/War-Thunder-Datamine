@@ -1,0 +1,4471 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "Redteam1",
+        "Redteam02",
+        "Redteam03",
+        "Redteam04",
+        "Blueteam12",
+        "Blueteam11",
+        "Blueteam10",
+        "Blueteam09",
+        "Blueteam27",
+        "Blueteam26",
+        "Blueteam25",
+        "Blueteam24",
+        "Blueteam42",
+        "Blueteam41",
+        "Blueteam40",
+        "Blueteam39",
+        "Blueteam61",
+        "Blueteam60",
+        "Blueteam59",
+        "Blueteam58",
+        "Blueteam68",
+        "Blueteam67",
+        "Blueteam66",
+        "Blueteam57",
+        "Blueteam76",
+        "Blueteam75",
+        "Blueteam74",
+        "Blueteam73",
+        "Blueteam84",
+        "Blueteam83",
+        "Blueteam82",
+        "Blueteam81"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "Blueteam1",
+        "Blueteam02",
+        "Blueteam03",
+        "Blueteam04",
+        "Blueteam08",
+        "Blueteam15",
+        "Blueteam14",
+        "Blueteam13",
+        "Blueteam23",
+        "Blueteam30",
+        "Blueteam29",
+        "Blueteam28",
+        "Blueteam38",
+        "Blueteam45",
+        "Blueteam44",
+        "Blueteam43",
+        "Blueteam65",
+        "Blueteam64",
+        "Blueteam63",
+        "Blueteam62",
+        "Blueteam72",
+        "Blueteam71",
+        "Blueteam70",
+        "Blueteam69",
+        "Blueteam80",
+        "Blueteam79",
+        "Blueteam78",
+        "Blueteam77",
+        "Blueteam56",
+        "Blueteam87",
+        "Blueteam86",
+        "Blueteam85"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/avg_snow_alps.bin",
+      "environment": "Day",
+      "weather": "clear",
+      "timeLimit": 10,
+      "locName": "missions/jets_AD;location/avg_snow_alps",
+      "locDesc": "missions/jets_AD/desc",
+      "gt_mp_tickets": true,
+      "gt_mp_capture": true,
+      "isLimitedFuel": true,
+      "isLimitedAmmo": true,
+      "scoreLimit": 10000,
+      "deathPenaltyMul": 0.5,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 15.0
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "Maincap": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 0.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "maincap03",
+          "iconIndex": 0,
+          "playAirfieldSound": true,
+          "canCaptureInAir": true,
+          "onlyPlayersCanCapture": true,
+          "zoneType": "capture",
+          "showBorderOnMap": false,
+          "zoneDefenders": {},
+          "tags": {},
+          "capture_tags": {
+            "air": true,
+            "helicopter": false,
+            "tank": false,
+            "ship": false
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Airfield1": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "RedAirfield",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": true,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "radius": -1.0,
+          "target": "redAF1",
+          "team": "A",
+          "object": "redAF1",
+          "tags": {
+            "air": true,
+            "type_bomber": true,
+            "type_fighter": true,
+            "type_assault": true,
+            "type_interceptor": true,
+            "type_aa_fighter": true,
+            "type_light_bomber": true,
+            "type_frontline_bomber": true,
+            "type_longrange_bomber": true,
+            "type_hydroplane": true,
+            "carrier_take_off": true,
+            "airfield_take_off": true,
+            "helicopter": false,
+            "tank": false,
+            "ship": false,
+            "boat": false
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Airfield2": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": {
+          "loc_name": "BlueAirfield",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": true,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "radius": -1.0,
+          "target": "BlueAF1",
+          "team": "B",
+          "object": "BlueAF1",
+          "tags": {
+            "air": true,
+            "type_bomber": true,
+            "type_fighter": true,
+            "type_assault": true,
+            "type_interceptor": true,
+            "type_aa_fighter": true,
+            "type_light_bomber": true,
+            "type_frontline_bomber": true,
+            "type_longrange_bomber": true,
+            "type_hydroplane": true,
+            "carrier_take_off": true,
+            "airfield_take_off": true,
+            "helicopter": false,
+            "tank": false,
+            "ship": false
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Maincap2": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 0.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "maincap1",
+          "iconIndex": 1,
+          "playAirfieldSound": true,
+          "canCaptureInAir": true,
+          "onlyPlayersCanCapture": true,
+          "zoneType": "capture",
+          "showBorderOnMap": false,
+          "zoneDefenders": {},
+          "tags": {},
+          "capture_tags": {
+            "air": true,
+            "helicopter": false,
+            "tank": false,
+            "ship": false
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Maincap3": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 0.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "maincap02",
+          "iconIndex": 2,
+          "playAirfieldSound": true,
+          "canCaptureInAir": true,
+          "onlyPlayersCanCapture": true,
+          "zoneType": "capture",
+          "showBorderOnMap": false,
+          "zoneDefenders": {},
+          "tags": {},
+          "capture_tags": {
+            "air": true,
+            "helicopter": false,
+            "tank": false,
+            "ship": false
+          }
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "redAF1",
+        "tm": [
+          [
+            0.972482,
+            0.0,
+            -0.232978
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.232978,
+            0.0,
+            0.972482
+          ],
+          [
+            20700.0,
+            200.0,
+            -4400.0
+          ]
+        ],
+        "unit_class": "dynaf_bulge_winter_3line_2k",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "BlueAF1",
+        "tm": [
+          [
+            -0.973812,
+            0.0,
+            0.227359
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.227359,
+            0.0,
+            -0.973812
+          ],
+          [
+            -13400.0,
+            600.0,
+            13600.0
+          ]
+        ],
+        "unit_class": "dynaf_bulge_winter_2line_2k",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ],
+    "armada": [
+      {
+        "name": "Redteam1",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8950.03,
+            -717.286,
+            -39697.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Redteam02",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8852.49,
+            -717.286,
+            -39675.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Redteam03",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8754.95,
+            -717.286,
+            -39653.1
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Redteam04",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8657.4,
+            -717.286,
+            -39631.1
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam1",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8928.0,
+            -717.286,
+            -39794.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam02",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8830.45,
+            -717.286,
+            -39772.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam03",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8732.91,
+            -717.286,
+            -39750.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam04",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8635.37,
+            -717.286,
+            -39728.6
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam09",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9308.47,
+            -717.286,
+            -39777.9
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam10",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9210.92,
+            -717.286,
+            -39755.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam11",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9113.38,
+            -717.286,
+            -39733.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam12",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9015.84,
+            -717.286,
+            -39711.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam13",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9286.44,
+            -717.286,
+            -39875.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam14",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9188.89,
+            -717.286,
+            -39853.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam15",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9091.35,
+            -717.286,
+            -39831.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam08",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8993.81,
+            -717.286,
+            -39809.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam24",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9272.71,
+            -717.286,
+            -39939.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam25",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9175.17,
+            -717.286,
+            -39917.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam26",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9077.62,
+            -717.286,
+            -39895.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam27",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8980.08,
+            -717.286,
+            -39873.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam28",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9250.68,
+            -717.286,
+            -40036.9
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam29",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9153.13,
+            -717.286,
+            -40014.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam30",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9055.59,
+            -717.286,
+            -39992.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam23",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8958.05,
+            -717.286,
+            -39970.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam39",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9237.41,
+            -708.102,
+            -40095.6
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam40",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9139.87,
+            -708.102,
+            -40073.6
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam41",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9042.32,
+            -708.102,
+            -40051.6
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam42",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8944.78,
+            -708.102,
+            -40029.6
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam43",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9215.38,
+            -708.102,
+            -40193.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam44",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9117.83,
+            -708.102,
+            -40171.1
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam45",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9020.29,
+            -708.102,
+            -40149.1
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam38",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8922.75,
+            -708.102,
+            -40127.1
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam57",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9454.23,
+            -717.286,
+            -39143.9
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam58",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9095.77,
+            -717.286,
+            -39063.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam59",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8998.23,
+            -717.286,
+            -39041.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam60",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8900.69,
+            -717.286,
+            -39019.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam61",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8803.14,
+            -717.286,
+            -38997.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam62",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9073.74,
+            -717.286,
+            -39160.9
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam63",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8976.19,
+            -717.286,
+            -39138.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam64",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8878.65,
+            -717.286,
+            -39116.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam65",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -8781.11,
+            -717.286,
+            -39094.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam66",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9356.69,
+            -717.286,
+            -39121.9
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam67",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9259.14,
+            -717.286,
+            -39099.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam68",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9161.6,
+            -717.286,
+            -39077.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam69",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9432.2,
+            -717.286,
+            -39241.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam70",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9334.65,
+            -717.286,
+            -39219.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam71",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9237.11,
+            -717.286,
+            -39197.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam72",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9139.57,
+            -717.286,
+            -39175.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam73",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9418.45,
+            -717.286,
+            -39305.6
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam74",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9320.91,
+            -717.286,
+            -39283.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam75",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9223.36,
+            -717.286,
+            -39261.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam76",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9125.82,
+            -717.286,
+            -39239.4
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam77",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9396.42,
+            -717.286,
+            -39403.0
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam78",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9298.87,
+            -717.286,
+            -39381.0
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam79",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9201.33,
+            -717.286,
+            -39359.0
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam80",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9103.79,
+            -717.286,
+            -39336.9
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam81",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9383.15,
+            -708.102,
+            -39461.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam82",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9285.61,
+            -708.102,
+            -39439.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam83",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9188.07,
+            -708.102,
+            -39417.8
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam84",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9090.52,
+            -708.102,
+            -39395.6
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam85",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9361.12,
+            -708.102,
+            -39559.3
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam86",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9263.58,
+            -708.102,
+            -39537.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam87",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9166.03,
+            -708.102,
+            -39515.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "Blueteam56",
+        "tm": [
+          [
+            0.220329,
+            0.0,
+            -0.975426
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.975426,
+            0.0,
+            0.220329
+          ],
+          [
+            -9068.49,
+            -708.102,
+            -39493.2
+          ]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "maincap1": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1959.83,
+          0.0,
+          -398.834
+        ],
+        [
+          0.0,
+          3000.0,
+          0.0
+        ],
+        [
+          398.834,
+          0.0,
+          -1959.83
+        ],
+        [
+          2600.0,
+          0.0,
+          2400.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "maincap02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1959.83,
+          0.0,
+          -398.834
+        ],
+        [
+          0.0,
+          3000.0,
+          0.0
+        ],
+        [
+          398.834,
+          0.0,
+          -1959.83
+        ],
+        [
+          4000.0,
+          -700.0,
+          15500.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "maincap03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -1959.83,
+          0.0,
+          -398.834
+        ],
+        [
+          0.0,
+          3000.0,
+          0.0
+        ],
+        [
+          398.834,
+          0.0,
+          -1959.83
+        ],
+        [
+          4500.0,
+          0.0,
+          -11700.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}
