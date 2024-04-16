@@ -285,6 +285,30 @@
       "hidden": true
     },
     {
+      "id": "2024_poll_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 1,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 50
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          }
+        ]
+      }
+    },
+    {
       "id": "2020_06_target_discounts_usa_hidden_condition",
       "type": "challenge",
       "hidden": true,
