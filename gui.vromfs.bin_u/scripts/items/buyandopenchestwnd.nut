@@ -46,7 +46,7 @@ let buyAndOpenChestWndStyles = {
     headerBackgroundImageMaxHeight = "0.70ph"
     bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 1920.0*0.70sh/720)), sh"
     timeExpiredTextParams="pos:t='0.65pw, 0.42ph-0.5h'; overlayTextColor:t='active'"
-
+    chestNameTextParams="font-ht:t='40@sf/@pf'"
   }
 }
 
@@ -87,6 +87,8 @@ let offerTypes = {
       return "".concat("width:t='1.5@itemWidth'; ",
         LayersIcon.getCustomSizeIconData(image, "1.5@itemWidth, 0.5w"))
     }
+
+    getPrizeTooltipId = @(prize) getTooltipType("UNIT").getTooltipId(prize.unit)
   }
   multiAwardsOnWorthGold = {
     function getTextView(prize) {
@@ -173,6 +175,8 @@ let offerTypes = {
         }
       ]
     }
+
+    getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item))
   }
   warpoints = {
     function getTextView(prize) {
@@ -399,6 +403,7 @@ function getPrizesView(prizes, bgDelay = 0) {
     let customImageData = offerTypes?[offerType].getImage(prize)
     res.append({
       customImageData
+      prizeTooltipId =  offerTypes?[offerType].getPrizeTooltipId(prize)
       layeredImage = customImageData != null ? null
        : ::trophyReward.getImageByConfig(prize, true, "")
       textBlock = offerTypes?[offerType].getTextView(prize)
@@ -451,6 +456,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   userstatUnlockWatch = null
   curShowPrizeIdx = null
   isChestShowAnimInProgress = false
+  isAnimationsInProgress = false
   lastRecivedPrizes = null
   useAmount = 1
   maxUseAmount = 1
@@ -521,6 +527,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   getActionButtonAmountText = @() this.maxUseAmount > 1 ? $" x{this.useAmount}" : ""
   getInventoryChest = @() ::ItemsManager.getInventoryItemById(this.chestItem.id)
   getCanOpenChest = @()  (this.getInventoryChest()?.amount ?? 0) > 0
+  getPrizeObjByIdx = @(idx) this.scene.findObject($"prize_{idx}")
 
   function updateMaxUseAmount() {
     this.maxUseAmount = this.getCanOpenChest()
@@ -572,7 +579,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   function updateButtons() {
     let needShowWaitImage = this.needOpenChestWhenReceive || this.isInOpeningProcess
     showObjById("wait_image", needShowWaitImage, this.scene)
-    if (needShowWaitImage) {
+    if (needShowWaitImage || this.isAnimationsInProgress) {
       showObjById("btn_buy", false, this.scene)
       showObjById("btn_open", false, this.scene)
       return
@@ -628,7 +635,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function updateUseAmountControls() {
     let isVisible = this.maxUseAmount > 1
-      && !this.needOpenChestWhenReceive && !this.isInOpeningProcess
+      && !this.needOpenChestWhenReceive && !this.isInOpeningProcess && !this.isAnimationsInProgress
     showObjById("use_amount_controls", isVisible, this.scene)
     if (!isVisible)
       return
@@ -690,9 +697,10 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     clearTimer(NEXT_PRIZE_ANIM_TIMER_ID)
     this.curShowPrizeIdx = (this.curShowPrizeIdx ?? -1) + 1
-    let prizeObj = this.scene.findObject($"prize_{this.curShowPrizeIdx}")
+    let prizeObj = this.getPrizeObjByIdx(this.curShowPrizeIdx)
     if (!(prizeObj?.isValid() ?? false)) {
-      this.isInOpeningProcess = false
+      this.isAnimationsInProgress = false
+      showObjById("skip_anim", false, this.scene)
       this.updateButtons()
       this.updateMaxUseAmount()
       this.updateActionButtonText()
@@ -739,8 +747,36 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     this.startNextPrizeAnimation()
   }
 
+  function onSkipAnimations() {
+    clearTimer(NEXT_PRIZE_ANIM_TIMER_ID)
+    clearTimer(CHEST_OPEN_FINISHED_ANIM_TIMER_ID)
+    clearTimer(CHEST_SHOW_FINISHED_ANIM_TIMER_ID)
+
+    this.onShowAnimFinished()
+
+    local curPrizeIdx = 0
+    local curPrizeObj = this.getPrizeObjByIdx(curPrizeIdx)
+    while (curPrizeObj?.isValid()) {
+      curPrizeObj.findObject("prize_info")["transp-time"] = 1
+      showObjById("rays", true, curPrizeObj)
+      showObjById("blue_bg", true, curPrizeObj)
+      curPrizeIdx++
+      curPrizeObj = this.getPrizeObjByIdx(curPrizeIdx)
+    }
+    this.curShowPrizeIdx = curPrizeIdx
+    this.isAnimationsInProgress = false
+
+    this.updateButtons()
+    this.updateUseAmountControls()
+    this.updateMaxUseAmount()
+
+    showObjById("skip_anim", false, this.scene)
+  }
+
   function showReceivedPrizes(prizes) {
-    this.isInOpeningProcess = true
+    this.isInOpeningProcess = false
+    this.isAnimationsInProgress = true
+    showObjById("skip_anim", true, this.scene)
     if (this.isChestShowAnimInProgress) {
       this.lastRecivedPrizes = prizes
       this.updateButtons()

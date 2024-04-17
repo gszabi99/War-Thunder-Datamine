@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+//from "%scripts/teams.nut" import g_team
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { parse_json } = require("json")
@@ -32,7 +33,7 @@ let { parse_json } = require("json")
 ****        [systemMsg.COLOR_ID] = COLOR_TAG.TEAM_BLUE,
 ****      }
 ****      otherTeam = {
-****        [systemMsg.LOC_ID] = ::g_team.B.shortNameLocId,
+****        [systemMsg.LOC_ID] = g_team.B.shortNameLocId,
 ****        [systemMsg.COLOR_ID] = COLOR_TAG.TEAM_RED,
 ****      }
 ****      chosenTeamCount = 5
@@ -179,8 +180,8 @@ getroottable().dbgExample <- function(textObjId = "menu_chat_text")
     {
       [systemMsg.LOC_ID] = "multiplayer/enemyTeamTooLowMembers",
       [systemMsg.COLOR_ID] = COLOR_TAG.ACTIVE,
-      chosenTeam = systemMsg.makeColoredValue(COLOR_TAG.TEAM_BLUE, ::g_team.A.getShortName())
-      otherTeam = systemMsg.makeColoredValue(COLOR_TAG.TEAM_RED, ::g_team.B.getShortName())
+      chosenTeam = systemMsg.makeColoredValue(COLOR_TAG.TEAM_BLUE, g_team.A.getShortName())
+      otherTeam = systemMsg.makeColoredValue(COLOR_TAG.TEAM_RED, g_team.B.getShortName())
       chosenTeamCount = 5
       otherTeamCount =  3
       reqOtherteamCount = 4
@@ -192,11 +193,11 @@ getroottable().dbgExample <- function(textObjId = "menu_chat_text")
       [systemMsg.LOC_ID] = "multiplayer/enemyTeamTooLowMembers",
       [systemMsg.COLOR_ID] = COLOR_TAG.ACTIVE,
       chosenTeam = {
-        [systemMsg.LOC_ID] = ::g_team.A.shortNameLocId,
+        [systemMsg.LOC_ID] = g_team.A.shortNameLocId,
         [systemMsg.COLOR_ID] = COLOR_TAG.TEAM_BLUE,
       }
       otherTeam = {
-        [systemMsg.LOC_ID] = ::g_team.B.shortNameLocId,
+        [systemMsg.LOC_ID] = g_team.B.shortNameLocId,
         [systemMsg.COLOR_ID] = COLOR_TAG.TEAM_RED,
       }
       chosenTeamCount = 5

@@ -240,16 +240,15 @@ let isEventUnit = @(unit) unit.event != null
       { unitName = unitName, cost = unitPrice }),
     unitCost)
 
-  local additionalCheckBox = null
-
-  scene_msg_box("need_money", null, msgText,
-                  [["yes", function() { ::impl_buyUnit(unit) } ],
-                   ["no", function() {} ]],
-                  "yes", { cancel_fn = function() {}, data_below_text = additionalCheckBox })
+  scene_msg_box("need_money", null, msgText, [
+    ["no", @() null],
+    ["order_and_choose_crew/later", @() ::impl_buyUnit(unit, false)],
+    ["order_and_choose_crew", @() ::impl_buyUnit(unit)],
+  ], "order_and_choose_crew", { cancel_fn = @() null })
   return true
 }
 
-::impl_buyUnit <- function impl_buyUnit(unit) {
+::impl_buyUnit <- function impl_buyUnit(unit, needSelectCrew = true) {
   if (!unit)
     return false
   if (unit.isBought())
@@ -276,7 +275,7 @@ let isEventUnit = @(unit) unit.event != null
   let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase"), null, null)
   addBgTaskCb(taskId, function() {
     destroyMsgBox(progressBox)
-    broadcastEvent("UnitBought", { unitName = unit.name })
+    broadcastEvent("UnitBought", { unitName = unit.name, needSelectCrew })
   })
   return true
 }
@@ -758,7 +757,7 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   progressObj.setValue(value)
 }
 
-::fillAirInfoTimers <- function fillAirInfoTimers(holderObj, air, needShopInfo) {
+function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage = false) {
   SecondsUpdater(holderObj, function(obj, _params) {
     local isActive = false
 
@@ -821,14 +820,14 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       lockObj.findObject("time").setValue(time.secondsToString(unlockTime))
     isActive = isActive || needShowUnlockTime
 
-    let needShowPromUnitInfo = needShopInfo && fillPromUnitInfo(holderObj, air)
+    let needShowPromUnitInfo = needShopInfo && fillPromUnitInfo(holderObj, air, needShowExpiredMessage)
     isActive = isActive || needShowPromUnitInfo
 
     return !isActive
   })
 }
 
-::showAirInfo <- function showAirInfo(air, show, holderObj = null, handler = null, params = null) {
+function showAirInfo(air, show, holderObj = null, handler = null, params = null) {
   handler = handler || handlersManager.getActiveRootHandler()
   if (!checkObj(holderObj)) {
     if (holderObj != null)
@@ -857,7 +856,7 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   holderObj.unitRarity = getUnitRarity(air)
 
   let { showLocalState = true, needCrewModificators = false, needShopInfo = false, needCrewInfo = false,
-    rentTimeHours = -1, isReceivedPrizes = false, researchExpInvest = 0, numSpares = 0 } = params
+    rentTimeHours = -1, isReceivedPrizes = false, researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false } = params
   let warbondId = params?.wbId
   let getEdiffFunc = handler?.getCurrentEdiff
   let ediff = getEdiffFunc ? getEdiffFunc.call(handler) : getCurrentGameModeEdiff()
@@ -1006,20 +1005,22 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   if (showLocalState && (canResearch || (!isOwn && !special && !gift))) {
     let prevUnitObj = holderObj.findObject("aircraft-prevUnit_bonus_tr")
     let prevUnit = ::getPrevUnit(air)
-    if (checkObj(prevUnitObj) && prevUnit) {
-      prevUnitObj.show(true)
-      let tdNameObj = prevUnitObj.findObject("aircraft-prevUnit")
-      if (checkObj(tdNameObj))
-        tdNameObj.setValue(format(loc("shop/prevUnitEfficiencyResearch"), getUnitName(prevUnit, true)))
-      let tdValueObj = prevUnitObj.findObject("aircraft-prevUnit_bonus")
-      if (checkObj(tdValueObj)) {
-        let param_name = "prevAirExpMulMode"
-        let curVal = rBlk?[param_name + diffCode.tostring()] ?? 1
+    if(checkObj(prevUnitObj)) {
+      prevUnitObj.show(prevUnit != null)
+      if (prevUnit) {
+        let tdNameObj = prevUnitObj.findObject("aircraft-prevUnit")
+        if (checkObj(tdNameObj))
+          tdNameObj.setValue(format(loc("shop/prevUnitEfficiencyResearch"), getUnitName(prevUnit, true)))
+        let tdValueObj = prevUnitObj.findObject("aircraft-prevUnit_bonus")
+        if (checkObj(tdValueObj)) {
+          let param_name = "prevAirExpMulMode"
+          let curVal = rBlk?[param_name + diffCode.tostring()] ?? 1
 
-        if (curVal != 1)
-          tdValueObj.setValue(format("<color=@userlogColoredText>%s%%</color>", (curVal * 100).tostring()))
-        else
-          prevUnitObj.show(false)
+          if (curVal != 1)
+            tdValueObj.setValue(format("<color=@userlogColoredText>%s%%</color>", (curVal * 100).tostring()))
+          else
+            prevUnitObj.show(false)
+        }
       }
     }
   }
@@ -1379,6 +1380,8 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
       if (f.obj == null)
         continue
 
+      f.obj.show(f.multiplier != 0)
+
       if (f.multiplier == 0)
         continue
 
@@ -1412,8 +1415,8 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     if (timedAwardHintTextObj?.isValid() && hasTimedAward) {
       let hintText = colorize("fadedTextColor", loc("shop/timed_award_hint", { note_symbol = showReferenceText ? "**" : "*" }))
       timedAwardHintTextObj.setValue(hintText)
-      timedAwardHintTextObj.show(true)
     }
+    timedAwardHintTextObj?.show(hasTimedAward)
   }
 
   if (holderObj.findObject("aircraft-spare-tr")) {
@@ -1605,6 +1608,10 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   let showPriceText = rentTimeHours == -1 && showLocalState && !::isUnitBought(air)
     && ::isUnitResearched(air) && !::canBuyUnitOnline(air) && canBuyUnit(air)
   let priceObj = showObjById("aircraft_price", showPriceText, holderObj)
+
+  if(checkObj(priceObj))
+    priceObj.findObject("aircraft_price_text_block").show(false)
+
   if (showPriceText && checkObj(priceObj) && ::g_discount.getUnitDiscountByName(air.name) > 0) {
     placePriceTextToButton(holderObj, "aircraft_price",
       colorize("userlogColoredText", loc("events/air_can_buy")), ::getUnitCost(air), 0, ::getUnitRealCost(air))
@@ -1666,19 +1673,24 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
 
   if (needShopInfo && !isRented) {
     let reason = ::getCantBuyUnitReason(air, true)
-    let addTextObj = showObjById("aircraft-cant_buy_info", !showShortestUnitInfo, holderObj)
-    if (checkObj(addTextObj) && !u.isEmpty(reason)) {
+    let addTextObj = showObjById("aircraft-cant_buy_info", !showShortestUnitInfo && reason != "", holderObj)
+    let unitNest = holderObj.findObject("prev_unit_nest")
+    if (checkObj(addTextObj) && reason != "") {
       addTextObj.setValue(colorize("redMenuButtonColor", reason))
-
-      let unitNest = showObjById("prev_unit_nest", !showShortestUnitInfo, holderObj)
-      if (checkObj(unitNest) && (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
-        is_era_available(air.shopCountry, air?.rank ?? -1, unitType)) {
-        let prevUnit = ::getPrevUnit(air)
-        let unitBlk = buildUnitSlot(prevUnit.name, prevUnit)
-        holderObj.getScene().replaceContentFromText(unitNest, unitBlk, unitBlk.len(), handler)
-        fillUnitSlotTimers(unitNest.findObject(prevUnit.name), prevUnit)
+      if(checkObj(unitNest)) {
+        let isPrevUnitShow = (!::isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
+          is_era_available(air.shopCountry, air?.rank ?? -1, unitType)
+        unitNest.show(isPrevUnitShow)
+        if (isPrevUnitShow) {
+          let prevUnit = ::getPrevUnit(air)
+          let unitBlk = buildUnitSlot(prevUnit.name, prevUnit)
+          holderObj.getScene().replaceContentFromText(unitNest, unitBlk, unitBlk.len(), handler)
+          fillUnitSlotTimers(unitNest.findObject(prevUnit.name), prevUnit)
+        }
       }
     }
+    else
+      unitNest?.show(false)
   }
 
   if (has_entitlement("AccessTest") && needShopInfo && holderObj.findObject("aircraft-surviveRating")) {
@@ -1721,8 +1733,11 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
   let weaponsInfoText = getWeaponInfoText(air,
     { weaponPreset = showLocalState ? -1 : 0, ediff = ediff, isLocalState = showLocalState })
   obj = showObjById("weaponsInfo", !showShortestUnitInfo, holderObj)
-  if (obj)
+  if (obj) {
     obj.setValue(weaponsInfoText)
+    if(params?.parentWidth == true)
+      obj["max-width"] = "pw"
+  }
 
   let massPerSecValue = getUnitMassPerSecValue(air, showLocalState)
   if (massPerSecValue != 0) {
@@ -1769,8 +1784,10 @@ function fillAirCharProgress(progressObj, vMin, vMax, cur) {
     obj.show(false)
 
   if (showLocalState)
-    ::fillAirInfoTimers(holderObj, air, needShopInfo)
+    fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage)
 }
+
+::showAirInfo <- showAirInfo
 
 local __types_for_coutries = null //for avoid recalculations
 ::get_unit_types_in_countries <- function get_unit_types_in_countries() {
@@ -1864,4 +1881,5 @@ function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
 return {
   CheckFeatureLockAction
   hasUnitAtRank
+  showAirInfo
 }

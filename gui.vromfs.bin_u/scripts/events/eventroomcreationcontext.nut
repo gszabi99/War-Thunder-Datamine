@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { g_team } = require("%scripts/teams.nut")
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -82,7 +83,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (this.isAllowCountriesSetsOnly)
       this._optionsConfig.countriesSetList = ::events.getAllCountriesSets(this.mGameMode)
     else
-      foreach (team in ::g_team.getTeams())
+      foreach (team in g_team.getTeams())
         this._optionsConfig.countries[team.name] <- this.mGameMode?[team.name].countries
 
     return this._optionsConfig
@@ -116,7 +117,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   function isCountryAvailable(country) {
-    foreach (team in ::g_team.getTeams())
+    foreach (team in g_team.getTeams())
       if (isInArray(country, this.getCurCountries(team)))
         return true
     return false
@@ -126,7 +127,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     local res = 0
     let country = profileCountrySq.value
     let ediff = ::events.getEDiffByEvent(this.mGameMode)
-    foreach (team in ::g_team.getTeams()) {
+    foreach (team in g_team.getTeams()) {
       if (!isInArray(country, this.getCurCountries(team)))
        continue
 
@@ -270,9 +271,9 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (optionId == USEROPT_RANK)
       this.setCurBrRange(controlValue)
     else if (optionId == USEROPT_BIT_COUNTRIES_TEAM_A || optionId == USEROPT_BIT_COUNTRIES_TEAM_B)
-      this.setCurCountries(::g_team.getTeamByCountriesOption(optionId), optionValue)
+      this.setCurCountries(g_team.getTeamByCountriesOption(optionId), optionValue)
     else if (optionId == USEROPT_COUNTRIES_SET)
-      foreach (team in [::g_team.A, ::g_team.B])
+      foreach (team in [g_team.A, g_team.B])
         this.setCurCountriesArray(team, optionValue)
     else
       return
@@ -286,7 +287,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       ranks = [1, ::max_country_rank] //matching do nt allow to create session before ranks is set
     }
 
-    foreach (team in ::g_team.getTeams())
+    foreach (team in g_team.getTeams())
       res[team.name] <- {
          countries = this.getCurCountries(team)
       }

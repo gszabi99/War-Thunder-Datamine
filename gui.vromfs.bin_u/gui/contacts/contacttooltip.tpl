@@ -7,7 +7,7 @@ tdiv {
     img {
       size:t='1@profileIconFullSize, 1@profileIconFullSize'
       background-svg-size:t='1@profileIconFullSize, 1@profileIconFullSize'
-      background-image:t='#ui/images/avatars/<<icon>>'
+      background-image:t='<<icon>>'
     }
     tdiv {
       min-width:t='pw'
@@ -35,6 +35,12 @@ tdiv {
           halign:t='center'
           text:t='<<name>>'
           smallFont:t='yes'
+        }
+        textAreaCentered {
+          position:t='relative'
+          halign:t='center'
+          text:t='<<wtName>>'
+          tinyFont:t='yes'
         }
         textAreaCentered {
           position:t='relative'

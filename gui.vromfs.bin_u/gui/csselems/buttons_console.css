@@ -84,6 +84,9 @@
 
 @const buttonImgSvgHeight: 100@dp;
 
+@const trashButtonHeight: 28@sf/@pf;
+@const trashButtonHeight: 1@cIco;
+
 ButtonImg
 {
   re-type:9rect;
@@ -1985,6 +1988,14 @@ Button_text[enableOn=hoverOrSelect] {
   enable:yes;
 }
 
+Button_text[enableOn=select] {
+  enable:no;
+}
+
+[selected=yes] Button_text[enableOn=select] {
+  enable:yes;
+}
+
 expandable Button_text[enableOn=hoverOrSelect] {
   enable:no;
 }
@@ -2409,6 +2420,13 @@ Button_text.image[pc_style=no][btnName][_isButtonWithText=yes][showButtonImageOn
   padding-left: h + 1@buttonTextPadding;
 }
 
+Button_text.image[visualStyle=purchase]:disabled > img,
+Button_text.image[visualStyle=purchase]:hover > img,
+Button_text.image[visualStyle=secondary]:disabled > img,
+Button_text.image[visualStyle=secondary]:hover > img {
+  background-color: @buttonFontColor;
+}
+
 Button_text.squadWidgetMember {
   width:@dIco + @sIco + 3@buttonImgPadding + 2@dp;
   min-width:h;
@@ -2685,4 +2703,33 @@ Button_text[hasWarningText=yes] {
 
 Button_text[hasWarningText=yes]:hover {
   color:@red;
+}
+
+Button_text[type=trashBin] {
+  width:1@trashButtonHeight;
+  min-width:1@trashButtonHeight;
+  height:1@trashButtonHeight;
+  visualStyle:noFrame;
+  background-color:@transparent;
+  border:no;
+  margin:2@blockInterval, 0, 0, 0;
+  padding-left:0;
+  padding-right:0;
+}
+
+[show_console_buttons=yes] Button_text[type=trashBin] {
+  width:2@trashButtonHeight + 1@blockInterval;
+}
+
+Button_text[type=trashBin] > img {
+  size:1@trashButtonHeight, 1@trashButtonHeight;
+  background-svg-size:1@trashButtonHeight, 1@trashButtonHeight;
+}
+
+[show_console_buttons=yes] Button_text[type=trashBin] > img {
+  margin-left:1@trashButtonHeight + 1@blockInterval;
+}
+
+Button_text[type=trashBin]:hover {
+  background-color:@buttonCloseColorHover;
 }

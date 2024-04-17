@@ -13,6 +13,7 @@ from "%scripts/options/optionsConsts.nut" import TANK_ALT_CROSSHAIR_ADD_NEW
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/mainConsts.nut" import SEEN
 
+let { g_team } = require("%scripts/teams.nut")
 let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { getLocalLanguage } = require("language")
@@ -124,6 +125,9 @@ let { getCurrentGameMode, getCurrentShopDifficulty
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+
+let { isWishlistEnabledForFriends = @() false, isWishlistCommentsEnabledForFriends = @() false,
+  enableShowWishlistForFriends = @(_) null, enableShowWishlistCommentsForFriends = @(_) null } = require("chard")
 
 const BOMB_ASSAULT_FUSE_TIME_OPT_VALUE = -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -686,9 +690,9 @@ function useropt_content_allowed_preset_arcade(optionId, descr, _context) {
 }
 
 function useropt_bit_countries_team_a(optionId, descr, context) {
-  let team = optionId == USEROPT_BIT_COUNTRIES_TEAM_A ? ::g_team.A : ::g_team.B
+  let team = optionId == USEROPT_BIT_COUNTRIES_TEAM_A ? g_team.A : g_team.B
   descr.id = "countries_team_" + team.id
-  descr.sideTag <- team == ::g_team.A ? "country_allies" : "country_axis"
+  descr.sideTag <- team == g_team.A ? "country_allies" : "country_axis"
   descr.controlType = optionControlType.BIT_LIST
   descr.controlName <- "multiselect"
   descr.optionCb = "onInstantOptionApply"
@@ -3906,6 +3910,22 @@ let optionsMap = {
     descr.defaultValue = true
     descr.defVal <- descr.defaultValue
   },
+  [USEROPT_ALLOW_SHOW_WISHLIST] = function(_optionId, descr, _context) {
+    descr.id = "allow_show_wishlist"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = isWishlistEnabledForFriends()
+    descr.defaultValue = true
+    descr.defVal <- descr.defaultValue
+  },
+  [USEROPT_ALLOW_SHOW_WISHLIST_COMMENTS] = function(_optionId, descr, _context) {
+    descr.id = "allow_show_wishlist_comments"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = isWishlistCommentsEnabledForFriends()
+    descr.defaultValue = true
+    descr.defVal <- descr.defaultValue
+  },
   [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS] = function(_optionId, descr, _context) {
     descr.id = "allow_added_to_leaderboards"
     descr.controlType = optionControlType.CHECKBOX
@@ -5034,6 +5054,8 @@ let optionsSetMap = {
   [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS] = def_set_gui_option,
   [USEROPT_SHOW_SOCIAL_NOTIFICATIONS] = def_set_gui_option,
   [USEROPT_ALLOW_ADDED_TO_CONTACTS] = @(value, _descr, _optionId) setAbilityToBeAddedToContacts(value),
+  [USEROPT_ALLOW_SHOW_WISHLIST] = @(value, _descr, _optionId) enableShowWishlistForFriends(value),
+  [USEROPT_ALLOW_SHOW_WISHLIST_COMMENTS] = @(value, _descr, _optionId) enableShowWishlistCommentsForFriends(value),
   [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS] = function(value, _descr, _optionId) {
     set_allow_to_be_added_to_lb(value)
     save_online_single_job(SAVE_ONLINE_JOB_DIGIT)

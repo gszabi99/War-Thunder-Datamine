@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_race_winners_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
+from "%scripts/teams.nut" import g_team
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { get_pve_trophy_name } = require("%appGlobals/ranks_common_shared.nut")
@@ -1101,8 +1102,8 @@ function gatherDebriefingResult() {
 
   let missionRules = getCurMissionRules()
   debriefingResult.overrideCountryIconByTeam <- {
-    [::g_team.A.code] = missionRules.getOverrideCountryIconByTeam(::g_team.A.code),
-    [::g_team.B.code] = missionRules.getOverrideCountryIconByTeam(::g_team.B.code)
+    [g_team.A.code] = missionRules.getOverrideCountryIconByTeam(g_team.A.code),
+    [g_team.B.code] = missionRules.getOverrideCountryIconByTeam(g_team.B.code)
   }
   updateDebriefingExpInvestmentData()
   calculateDebriefingTabularData(false)

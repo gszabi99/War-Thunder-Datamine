@@ -36,6 +36,7 @@ let { addTask, charCallback, restoreCharCallback } = require("%scripts/tasker.nu
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
+let { steamContactsGroup } = require("%scripts/contacts/contactsManager.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -626,13 +627,13 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onContactTooltipOpen(obj) {
-    let uid = obj?.uid
-    local canShow = false
+    let { uid = "", steamId = "" } = obj
     local contact = null
-    if (uid) {
+    if (uid != "")
       contact = ::getContact(uid)
-      canShow = this.canShowContactTooltip(contact)
-    }
+    else if (steamId != "")
+      contact = steamContactsGroup.get()?[steamId.tointeger()]
+    let canShow = this.canShowContactTooltip(contact)
     obj["class"] = canShow ? "" : "empty"
 
     if (canShow)

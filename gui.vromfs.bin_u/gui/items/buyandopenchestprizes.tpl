@@ -3,13 +3,15 @@ tdiv {
   width:t='0'
   height:t='0'
   position:t='absolute'
-  background-image:t='!#ui/images/chests/prizes_bg'
+  background-image:t='!#ui/images/chests/prizes_bg.avif'
   background-color:t='#FFFFFF'
   re-type:t='9rect'
-  background-position:t='86, 0, 86, 0'
+  background-position:t='86@sf/@pf, 0, 86@sf/@pf, 0'
+  background-svg-size:t='246@sf/@pf, 160@sf/@pf'
   background-repeat:t='expand'
   color-factor:t="0"
   behaviour:t='basicSize'
+  min-width:t='192@sf/@pf'
   width-base:t='0'
   height-base:t='140'
   width-end:t='110'
@@ -94,6 +96,16 @@ tdiv {
     transp-time:t='0'
     transp-delay:t='100'
     _blink:t='no'
+
+    <<#prizeTooltipId>>
+    title:t='$tooltipObj'
+    tooltipObj  {
+      tooltipId:t='<<prizeTooltipId>>'
+      display:t='hide'
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+    }
+    <</prizeTooltipId>>
 
     <<#customImageData>>
     tdiv {

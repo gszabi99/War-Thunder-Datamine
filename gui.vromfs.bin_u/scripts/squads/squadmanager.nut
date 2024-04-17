@@ -34,7 +34,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { lateBindGlobalModule } = require("%scripts/global_modules.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
+let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -302,37 +302,36 @@ g_squad_manager = {
     if (isLeader && ready != true)
       return
 
-    let isSetNoReady = (ready == false || (ready == null && g_squad_manager.isMeReady() == true))
-    let event = ::events.getEvent(g_squad_manager.getLeaderGameModeId())
-    if (!isLeader && !isSetNoReady) {
-      if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
-        return
-
-      if (hasMultiplayerLimitByAas.get()) {
-        showMultiplayerLimitByAasMsg()
-        return
-      }
-    }
-
+    let isMeReady = g_squad_manager.isMeReady()
+    if (ready != null && isMeReady == ready)
+      return
+    let isSetNoReady = (ready == false || (ready == null && isMeReady))
     if (::checkIsInQueue() && !isLeader && g_squad_manager.isInSquad() && isSetNoReady) {
       addPopup(null, loc("squad/cant_switch_off_readyness_in_queue"))
       return
     }
 
-    if (ready == null)
-      smData.meReady = !g_squad_manager.isMeReady()
-    else if (g_squad_manager.isMeReady() != ready)
-      smData.meReady = ready
-    else
+    function cb() {
+      smData.meReady = ready == null ? !isMeReady : ready
+      if (!smData.meReady)
+        smData.isMyCrewsReady = false
+
+      if (needUpdateMemberData)
+        g_squad_manager.updateMyMemberDataAfterActualizeJwt()
+
+      broadcastEvent(squadEvent.SET_READY)
+    }
+
+    let event = ::events.getEvent(g_squad_manager.getLeaderGameModeId())
+    if (!isLeader && !isSetNoReady) {
+      if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
+        return
+
+      checkShowMultiplayerAasWarningMsg(cb)
       return
+    }
 
-    if (!smData.meReady)
-      smData.isMyCrewsReady = false
-
-    if (needUpdateMemberData)
-      g_squad_manager.updateMyMemberDataAfterActualizeJwt()
-
-    broadcastEvent(squadEvent.SET_READY)
+    cb()
   }
 
   function setCrewsReadyFlag(ready = null, needUpdateMemberData = true) {

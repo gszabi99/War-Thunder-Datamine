@@ -35,10 +35,13 @@ class Contact {
   gameStatus = null
   gameConfig = null
   inGameEx = null
+  isSteamOnline = false
 
   psnId = ""
   xboxId = ""
-  steamName = ""
+  steamName = null
+  steamId = null
+  steamAvatar = null
 
   pilotIcon = "cardicon_bot"
 
@@ -64,14 +67,15 @@ class Contact {
   }
 
   function update(contactData) {
-    let isChangedName = ("name" in contactData) && contactData.name != this.name
+    let isChangedName = (("name" in contactData) && contactData.name != this.name)
+      || (("steamName" in contactData) && contactData.steamName != this.steamName)
     foreach (key, val in contactData)
       if (key in this)
         this[key] = val
 
     this.uidInt64 = this.uid != "" ? this.uid.tointeger() : null
     if (isChangedName)
-      this.lowerName = utf8ToLower(this.name)
+      this.lowerName = utf8ToLower(this.steamName ?? this.name)
 
     this.refreshClanTagsTable()
     if (this.name.len())
@@ -208,7 +212,7 @@ class Contact {
     return isPlayerFromXboxOne(this.name) && this.xboxId == ""
   }
 
-  getName = @() getPlayerName(this.name)
+  getName = @() this.steamName ?? getPlayerName(this.name)
 
   function needCheckForceOffline() {
     if (this.isForceOfflineChecked

@@ -41,6 +41,9 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
+let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
+let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
+let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -64,6 +67,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     local disabled    = false
     local icon       = ""
     local isLink = false
+    local isWarning = false
     local iconRotation = 0
     local isObjective = false
 
@@ -333,6 +337,21 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
           }, null, "isCanModifyCrew")
       }
     }
+    else if (action == "add_to_wishlist") {
+      let isListFull = isWishlistFull()
+      actionText = loc("mainmenu/add_to_wishlist")
+      isWarning = isListFull
+      icon       = "#ui/gameuiskin#add_to_wishlist.svg"
+      showAction = hasFeature("Wishlist") && !hasInWishlist(unit.name) && !unit.isBought()
+      actionFunc = @() isListFull ? showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
+        : addToWishlist(unit)
+    }
+    else if (action == "go_to_wishlist") {
+      actionText = loc("mainmenu/go_to_wishlist")
+      icon       = "#ui/gameuiskin#go_to_wishlist.svg"
+      showAction = hasFeature("Wishlist") && hasInWishlist(unit.name) && !unit.isBought()
+      actionFunc = @() openWishlist({ unitName = unit.name })
+    }
 
     actions.append({
       actionName   = action
@@ -346,6 +365,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       isLink
       isObjective
       iconRotation
+      isWarning
     })
   }
 

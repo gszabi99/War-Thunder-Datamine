@@ -37,6 +37,7 @@ let { setContactsHandlerClass } = require("%scripts/contacts/contactsHandlerStat
 let { move_mouse_on_child, move_mouse_on_child_by_value, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -370,7 +371,9 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       if (isNotFullListVisible && ((visibleContactsCount - 1) == fIdx)) {
         obj.findObject("contactName").setValue(loc("mainmenu/showMore"))
         obj.findObject("contactPresence").setValue("")
-        obj.findObject("tooltip").uid = ""
+        let tooltipObj = obj.findObject("tooltip")
+        tooltipObj.uid = ""
+        tooltipObj.steamId = ""
         let imgObj = obj.findObject("statusImg")
         imgObj["background-image"] = ""
         imgObj["background-color"] = ""
@@ -386,14 +389,24 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       contactPresenceObj.setValue(f.getPresenceText())
       contactPresenceObj["color-factor"] = f.presence.iconTransparency
 
-      obj.findObject("tooltip").uid = f.uid
+      let tooltipObj = obj.findObject("tooltip")
+      tooltipObj.uid = f.uid
+      tooltipObj.steamId = (f.steamId ?? "").tostring()
       if (selUid == f.uid)
         sel = fIdx
 
       let imgObj = obj.findObject("statusImg")
       imgObj["background-image"] = f.presence.getIcon()
       imgObj["background-color"] = f.presence.getIconColor()
-      obj.findObject("pilotIconImg").setValue(f.pilotIcon)
+      let { steamAvatar } = f
+      if (steamAvatar != null) {
+        let pilotIconObj = obj.findObject("pilotIconImg")
+        pilotIconObj.hasImageWithFullPath = "yes"
+        pilotIconObj.setValue(steamAvatar)
+      }
+      else
+        obj.findObject("pilotIconImg").setValue(f.pilotIcon)
+
       if (hasHoverButtons)
         this.updateContactButtonsVisibility(f, obj.findObject("contact_buttons_holder"))
     }
@@ -421,7 +434,11 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.checkScene())
       return
 
-    contact_buttons_holder.hasContactButtons = "yes"
+    let isWtContact = contact.uid != ""
+    contact_buttons_holder.hasContactButtons = isWtContact ? "yes" : "no"
+    if (!isWtContact)
+      return
+
     let isFriend = contact ? contact.isInFriendGroup() : false
     let isBlock = contact ? contact.isInBlockGroup() : false
     let isMe = contact ? contact.isMe() : false
@@ -439,6 +456,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
     showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
     showObjById("btn_friendRemove", isFriend, contact_buttons_holder)
+    showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist"), contact_buttons_holder)
     showObjById("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_message", this.owner
@@ -1001,6 +1019,11 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onFriendRemove(obj) {
     this.updateCurPlayer(obj)
     removeContact(this.curPlayer, EPL_FRIENDLIST)
+  }
+
+  function onWishlistShow(obj) {
+    this.updateCurPlayer(obj)
+    tryOpenFriendWishlist(this.curPlayer.uid)
   }
 
   function onBlacklistAdd(obj) {

@@ -3,6 +3,7 @@ from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { g_team } = require("%scripts/teams.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -34,7 +35,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
+let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -305,7 +306,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       startText = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
     else if (roomMGM && !::events.isEventSymmetricTeams(roomMGM) && availTeams.len() == 1)
       startText = loc("events/join_event_by_team",
-        { team = ::g_team.getTeamByCode(availTeams[0]).getShortName() })
+        { team = g_team.getTeamByCode(availTeams[0]).getShortName() })
     else
       startText = loc("events/join_event")
 
@@ -503,7 +504,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         name = isSeparateCustomRoomsList ? "customRooms"
           : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
         if (!isCustomMode || !isSeparateCustomRoomsList)
-          itemView[$"{::g_team.getTeamByCode(side).name}Countries"] <- {
+          itemView[$"{g_team.getTeamByCode(side).name}Countries"] <- {
             country = this.getFlagsArrayByCountriesArray(countries)
         }
       }
@@ -747,18 +748,13 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         !showMsgboxIfSoundModsNotAllowed(this.event))
       return
 
-    if (hasMultiplayerLimitByAas.get()) {
-      showMultiplayerLimitByAasMsg()
-      return
-    }
-
     let diffCode = ::events.getEventDiffCode(this.event)
     let unitTypeMask = ::events.getEventUnitTypesMask(this.event)
     let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask) == 1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return
 
-    ::events.openCreateRoomWnd(this.event)
+    checkShowMultiplayerAasWarningMsg(Callback(@() ::events.openCreateRoomWnd(this.event), this))
   }
 
   function onItemDblClick() {

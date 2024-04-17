@@ -278,6 +278,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   CaptchaAllowed = false
   DevShopMode = false
   CustomNicks = false
+  Wishlist = false
 })
 
 let override = Watched({})

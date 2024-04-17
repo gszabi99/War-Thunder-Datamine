@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 
+let { g_team } = require("%scripts/teams.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -512,8 +513,8 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         this.createKillsTbl(tblObj1, tbl, { showAircrafts = this.showAircrafts })
       }
       else {
-        let tbl1 = this.getMplayersList(::g_team.A.code)
-        let tbl2 = this.getMplayersList(::g_team.B.code)
+        let tbl1 = this.getMplayersList(g_team.A.code)
+        let tbl2 = this.getMplayersList(g_team.B.code)
         let showEnemyAircrafts = this.isShowEnemyAirs()
         let tblConfig1 = { tbl = tbl2, team = Team.A, showAircrafts = this.showAircrafts, invert = true }
         let tblConfig2 = { tbl = tbl1, team = Team.B, showAircrafts = showEnemyAircrafts }

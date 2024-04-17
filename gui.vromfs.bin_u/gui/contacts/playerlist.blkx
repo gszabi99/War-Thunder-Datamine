@@ -75,6 +75,18 @@
         }
       },
       {
+        "id": "btn_wishlistShow",
+        "tooltip": "#mainmenu/go_to_wishlist",
+        "on_click": "onWishlistShow",
+        "class": "image",
+        "imgSize": "small",
+        "showConsoleImage": "no",
+        "input-transparent": "yes",
+        "img": {
+          "background-image": "#ui/gameuiskin#go_to_wishlist.svg"
+        }
+      },
+      {
         "id": "btn_blacklistAdd",
         "tooltip": "#contacts/blacklist/add",
         "on_click": "onBlacklistAdd",
@@ -159,6 +171,7 @@
   "tooltipObj": {
     "id": "tooltip",
     "uid": "",
+    "steamId": "",
     "on_tooltip_open": "onContactTooltipOpen",
     "on_tooltip_close": "onTooltipObjClose",
     "display": "hide"

@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
+from "%scripts/queue/queueType.nut" import g_queue_type
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -13,7 +14,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   id = 0
   name = ""
   typeBit = QUEUE_TYPE_BIT.UNKNOWN //FIX ME: should to rename this also
-  queueType = ::g_queue_type.UNKNOWN
+  queueType = g_queue_type.UNKNOWN
   state = queueStates.NOT_IN_QUEUE
 
   params = null //params = { clusters = array of strings, mode = string, country = string, team = int}

@@ -44,6 +44,9 @@ actionListItem {
         color-factor:t='0'
       }
     <</isLink>>
+    <<#isWarning>>
+      isWarning:t='yes';
+    <</isWarning>>
     <<#isObjective>>
       isObjective:t='yes'
     <</isObjective>>

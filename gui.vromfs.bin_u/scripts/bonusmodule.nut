@@ -46,6 +46,13 @@ function showCurBonus(obj, value, tooltipLocName = "", isDiscount = true, fullUp
   if (!checkObj(obj))
     return
 
+  if (value <= 0) {
+    obj.show(false)
+    return
+  }
+
+  obj.show(true)
+
   local text = ""
 
   if ((isDiscount && value > 0) || (!isDiscount && value != 1)) {

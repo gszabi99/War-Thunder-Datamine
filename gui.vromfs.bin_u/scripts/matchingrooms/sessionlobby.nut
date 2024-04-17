@@ -5,6 +5,7 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/options/optionsConsts.nut" import misCountries
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
 
+let { g_team } = require("%scripts/teams.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
@@ -81,7 +82,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { showMsgboxIfEacInactive } = require("%scripts/penitentiary/antiCheat.nut")
 let { isMeBanned } = require("%scripts/penitentiary/penalties.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
+let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 
 /*
 SessionLobby API
@@ -360,8 +361,8 @@ function reconnect(roomId, gameModeName) {
   if (!showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
     return
 
-  if (event != null && hasMultiplayerLimitByAas.get()) {
-    showMultiplayerLimitByAasMsg()
+  if (event != null) {
+    checkShowMultiplayerAasWarningMsg(@() SessionLobby.joinRoom(roomId))
     return
   }
 
@@ -1956,7 +1957,7 @@ SessionLobby = {
     let roomMembers = this.getRoomMembers(room)
     if (room && !roomMembers.len()) {
       let teamsCount = room?.session.teams
-      foreach (team in ::g_team.getTeams()) {
+      foreach (team in g_team.getTeams()) {
         let count = teamsCount?[team.id].players ?? 0
         res[team.code] = count
         res.total += count
@@ -2488,7 +2489,7 @@ SessionLobby = {
     let mGameMode = getModeById(mGameModeId)
     if (isCustomGameModeAllowed && room && mGameMode && ::events.isCustomGameMode(mGameMode)) {
       let customGameMode = clone mGameMode
-      foreach (team in ::g_team.getTeams())
+      foreach (team in g_team.getTeams())
         customGameMode[team.name] <- this.getTeamData(team.code, room)
       customGameMode.isSymmetric <- false
       room[CUSTOM_GAMEMODE_KEY] <- customGameMode
@@ -2643,13 +2644,11 @@ function rpcJoinBattle(params) {
     return "EAC is not active"
   if (!showMsgboxIfSoundModsNotAllowed({ allowSoundMods = false }))
     return "sound mods not allowed"
-  if (hasMultiplayerLimitByAas.get()) {
-    showMultiplayerLimitByAasMsg()
-    return "multiplayer is limit by anti addict system"
-  }
 
-  log("join to battle with id " + battleId)
-  SessionLobby.joinBattle(battleId)
+  checkShowMultiplayerAasWarningMsg(function() {
+    log($"join to battle with id {battleId}")
+    SessionLobby.joinBattle(battleId)
+  })
   return "ok"
 }
 

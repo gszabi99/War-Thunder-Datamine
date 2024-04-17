@@ -10,7 +10,7 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
 let { getEventEconomicName, checkEventFeaturePacks } = require("%scripts/events/eventInfo.nut")
-let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
+let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -92,19 +92,10 @@ function setSquadReadyFlag(event) {
       return this.remove()
     }
 
-    if (!antiCheat.showMsgboxIfEacInactive(this.event) ||
-        !showMsgboxIfSoundModsNotAllowed(this.event))
-      return this.remove()
-
-    if (hasMultiplayerLimitByAas.get()) {
-      showMultiplayerLimitByAasMsg()
-      return this.remove()
-    }
-
     let handler = this
     tryOpenCaptchaHandler(
       @() ::queues.checkAndStart(
-        Callback(handler.joinStep2_external, handler),
+        Callback(handler.joinStep2_multiplayer_restriction, handler),
         Callback(handler.remove, handler),
         "isCanNewflight",
         { isSilentLeaveQueue = !!handler.room }
@@ -112,8 +103,19 @@ function setSquadReadyFlag(event) {
       @() handler.remove())
   }
 
-  function joinStep2_external() {
-    this.processStepName = "joinStep2_external"
+  function joinStep2_multiplayer_restriction() {
+    this.processStepName = "joinStep2_multiplayer_restriction"
+    if (!antiCheat.showMsgboxIfEacInactive(this.event) ||
+        !showMsgboxIfSoundModsNotAllowed(this.event))
+      return this.remove()
+
+
+    checkShowMultiplayerAasWarningMsg(Callback(this.joinStep3_external, this),
+      Callback(this.remove, this))
+  }
+
+  function joinStep3_external() {
+    this.processStepName = "joinStep3_external"
     if (::events.getEventDiffCode(this.event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return this.remove()
@@ -134,15 +136,15 @@ function setSquadReadyFlag(event) {
       return this.remove()
 
     if (!::is_loaded_model_high_quality()) {
-      ::check_package_and_ask_download("pkg_main", null, this.joinStep3_internal, this, "event", this.remove)
+      ::check_package_and_ask_download("pkg_main", null, this.joinStep4_internal, this, "event", this.remove)
       return
     }
 
-    this.joinStep3_internal()
+    this.joinStep4_internal()
   }
 
-  function joinStep3_internal() {
-    this.processStepName = "joinStep3_internal"
+  function joinStep4_internal() {
+    this.processStepName = "joinStep4_internal"
     let mGameMode = ::events.getMGameMode(this.event, this.room)
     if (::events.isEventTanksCompatible(this.event.name) && !::check_tanks_available())
       return this.remove()
@@ -159,38 +161,35 @@ function setSquadReadyFlag(event) {
     if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return this.remove()
 
-    this.joinStep4_cantJoinReason()
+    this.joinStep5_cantJoinReason()
   }
 
-  function joinStep4_cantJoinReason() {
-    this.processStepName = "joinStep4_cantJoinReason"
-    let reasonData = ::events.getCantJoinReasonData(this.event, this.room,
-                          { continueFunc = function() { if (this) this.joinStep5_repairInfo() }.bindenv(this)
-                            isFullText = true
-                          })
+  function joinStep5_cantJoinReason() {
+    this.processStepName = "joinStep5_cantJoinReason"
+    let reasonData = ::events.getCantJoinReasonData(this.event, this.room, { isFullText = true })
     if (reasonData.checkStatus)
-      return this.joinStep5_repairInfo()
+      return this.joinStep6_repairInfo()
 
     reasonData.actionFunc(reasonData)
     this.remove()
   }
 
-  function joinStep5_repairInfo() {
-    this.processStepName = "joinStep5_repairInfo"
+  function joinStep6_repairInfo() {
+    this.processStepName = "joinStep6_repairInfo"
     let repairInfo = ::events.getCountryRepairInfo(this.event, this.room, profileCountrySq.value)
-    ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep6_membersForQueue, false, this.remove)
+    ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep7_membersForQueue, false, this.remove)
   }
 
-  function joinStep6_membersForQueue() {
-    this.processStepName = "joinStep6_membersForQueue"
+  function joinStep7_membersForQueue() {
+    this.processStepName = "joinStep7_membersForQueue"
     ::events.checkMembersForQueue(this.event, this.room,
-      Callback(@(membersData) this.joinStep7_joinQueue(membersData), this),
+      Callback(@(membersData) this.joinStep8_joinQueue(membersData), this),
       Callback(this.remove, this)
     )
   }
 
-  function joinStep7_joinQueue(membersData = null) {
-    this.processStepName = "joinStep7_joinQueue"
+  function joinStep8_joinQueue(membersData = null) {
+    this.processStepName = "joinStep8_joinQueue"
     //join room
     if (this.room)
       ::SessionLobby.joinRoom(this.room.roomId)

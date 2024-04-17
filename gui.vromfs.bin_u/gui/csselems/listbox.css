@@ -641,6 +641,26 @@ shopFilter.slotsHeader:disabled > img {
   background-color: @countryLockedColor;
 }
 
+wishedItem {
+  css-hier-invalidate:yes;
+  size:pw, 176@sf/@pf;
+  total-input-transparent:yes;
+  background-color:#191c23;
+  border-color:#54656d;
+  border-offset:1@sf/@pf;
+  border:no;
+}
+
+wishedItem:hover {
+  background-color:#191c23;
+  border:yes;
+}
+
+wishedItem[selected=yes] {
+  background-color:#3e494f;
+  border:yes;
+}
+
 additionalUnit {
   css-hier-invalidate:yes;
   width: 288@sf/@pf;

@@ -6,7 +6,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut") //circular dependency
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getByCurBundle, MAX_SPARE_AMOUNT } = require("%scripts/weaponry/itemInfo.nut")
 let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")

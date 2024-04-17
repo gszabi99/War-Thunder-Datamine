@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import is_hint_enabled, get_hint_seen_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
+from "%scripts/viewUtils/hints.nut" import g_hints, g_hint_tag
 
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -51,7 +52,7 @@ g_hud_hints = {
 }
 
 g_hud_hints._buildMarkup <- function _buildMarkup(eventData, hintObjId) {
-  return ::g_hints.buildHintMarkup(this.buildText(eventData), this.getHintMarkupParams(eventData, hintObjId))
+  return g_hints.buildHintMarkup(this.buildText(eventData), this.getHintMarkupParams(eventData, hintObjId))
 }
 
 g_hud_hints._getHintMarkupParams <- function _getHintMarkupParams(eventData, hintObjId) {
@@ -104,7 +105,7 @@ g_hud_hints._buildText <- function _buildText(data) {
   if (shortcuts == null) {
     local res = loc(this.getLocId(data), this.getLocParams(data))
     if (this.image)
-      res = ::g_hint_tag.IMAGE.makeFullTag({ image = this.image }) + res
+      res = g_hint_tag.IMAGE.makeFullTag({ image = this.image }) + res
     return res
   }
 
@@ -204,7 +205,7 @@ g_hud_hints._wrapShortsCutIdWithTags <- function _wrapShortsCutIdWithTags(shortN
     if (result.len())
       result += separator
 
-    result += ::g_hints.hintTags[0] + shortcutName + ::g_hints.hintTags[1]
+    result += g_hints.hintTags[0] + shortcutName + g_hints.hintTags[1]
   }
   return result
 }
@@ -221,8 +222,7 @@ g_hud_hints._getHintStyle <- function _getHintStyle() {
 let isStandardMissionHint = @(hintTypeName)
   hintTypeName != MISSION_HINT_TYPE.TUTORIAL && hintTypeName != MISSION_HINT_TYPE.BOTTOM
 
-local genMissionHint = @(hintType, checkHintTypeNameFunc)
-{
+let genMissionHint = @(hintType, checkHintTypeNameFunc) {
   hintType = hintType
   showEvent = "hint:missionHint:set"
   hideEvent = "hint:missionHint:remove"
@@ -274,7 +274,7 @@ local genMissionHint = @(hintType, checkHintTypeNameFunc)
     }
     if (!this.getShortcuts(hintData))
       return res
-    return "".concat(::g_hint_tag.TIMER.makeFullTag(), " ", res)
+    return "".concat(g_hint_tag.TIMER.makeFullTag(), " ", res)
   }
 
   getHintMarkupParams = function(eventData, hintObjId) {
@@ -554,7 +554,7 @@ enums.addTypes(g_hud_hints, {
     selfRemove = true
     isVerticalAlignText = true
     function buildText(data) {
-      local res = $"{g_hud_hints._buildText.call(this, data)} {::g_hint_tag.TIMER.makeFullTag()}"
+      local res = $"{g_hud_hints._buildText.call(this, data)} {g_hint_tag.TIMER.makeFullTag()}"
       let leaveKill = data?.leaveKill ?? false
       if (leaveKill)
         res = $"{res}\n{loc(this.nearestOffenderLocId)}"
@@ -1095,7 +1095,7 @@ enums.addTypes(g_hud_hints, {
     hideEvent = "hint:event_start_time:hide"
     getShortcuts = @(eventData) eventData?.shortcut
 
-    makeSmallImageStr = @(image, color = null, sizeStyle = null) ::g_hint_tag.IMAGE.makeFullTag({
+    makeSmallImageStr = @(image, color = null, sizeStyle = null) g_hint_tag.IMAGE.makeFullTag({
       image = image
       color = color
       sizeStyle = sizeStyle
@@ -1890,9 +1890,7 @@ enums.addTypes(g_hud_hints, {
     selfRemove = true
     isVerticalAlignText = true
     buildText = function (data) {
-      local res = g_hud_hints._buildText.call(this, data)
-      res += " " + ::g_hint_tag.TIMER.makeFullTag()
-      return res
+      return " ".concat(g_hud_hints._buildText.call(this, data), g_hint_tag.TIMER.makeFullTag())
     }
   }
 

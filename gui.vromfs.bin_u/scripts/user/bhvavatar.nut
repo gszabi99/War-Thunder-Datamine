@@ -15,6 +15,7 @@ let class BhvAvatar {
   eventMask    = EV_ON_CMD
   valuePID     = dagui_propid_add_name_id("value")
   isFullPID    = dagui_propid_add_name_id("isFull")
+  hasImageWithFullPathPID = dagui_propid_add_name_id("hasImageWithFullPath")
 
   function onAttach(obj) {
     this.setIsFull(obj, obj?.isFull == "yes")
@@ -63,7 +64,10 @@ let class BhvAvatar {
   function updateView(obj) {
     let image = obj?.value ?? ""
     let hasImage = image != ""
-    obj.set_prop_latent("background-image", hasImage ? getIconPath(image) : "")
+    let iconPath = !hasImage ? ""
+      : obj?.hasImageWithFullPath == "yes" ? image
+      : getIconPath(image)
+    obj.set_prop_latent("background-image", hasImage ? iconPath : "")
     obj.set_prop_latent("background-color", hasImage ? "#FFFFFFFF" : "#00000000")
     if (!hasImage)
       return

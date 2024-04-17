@@ -3,6 +3,7 @@ from "%scripts/dagui_natives.nut" import clan_get_role_name, get_name_by_unlock_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 
+let { g_team } = require("%scripts/teams.nut")
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -476,7 +477,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     if ("spectator" in logObj) {
       res.logImg = "#ui/gameuiskin#player_spectator.svg"
       nameLocPostfix = " " + loc("multiplayer/team_won") + loc("ui/colon")
-        + (win ? ::g_team.A.getNameInPVE() : ::g_team.B.getNameInPVE())
+        + (win ? g_team.A.getNameInPVE() : g_team.B.getNameInPVE())
     }
     else {
       res.logImg = $"#ui/gameuiskin#{win? "log_win" : "log_lose"}"

@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/viewUtils/hints.nut" import g_hints
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { ceil } = require("math")
@@ -26,7 +27,7 @@ let BhvHelpFrame = class {
     obj.setIntProp(this.isUpdateInProgressPID, 1)
 
     if (obj?.value) {
-      let markup = ::g_hints.buildHintMarkup(loc(obj.value), {})
+      let markup = g_hints.buildHintMarkup(loc(obj.value), {})
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
     }
 

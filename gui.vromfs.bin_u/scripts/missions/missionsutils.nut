@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, get_game_mode_name, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
+let { g_team } = require("%scripts/teams.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -206,7 +207,7 @@ function cacheCampaignNames() {
 function locCurrentMissionName(needComment = true) {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(get_player_army_for_hud()).id
+  let teamId = g_team.getTeamByCode(get_player_army_for_hud()).id
   let locNameByTeamParamName = $"locNameTeam{teamId}"
   local ret = ""
 
@@ -231,7 +232,7 @@ function locCurrentMissionName(needComment = true) {
 ::loc_current_mission_desc <- function loc_current_mission_desc() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let teamId = ::g_team.getTeamByCode(get_player_army_for_hud()).id
+  let teamId = g_team.getTeamByCode(get_player_army_for_hud()).id
   let locDecsByTeamParamName = $"locDescTeam{teamId}"
 
   local locDesc = ""

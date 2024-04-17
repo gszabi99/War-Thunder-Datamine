@@ -610,9 +610,15 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitBought(params) {
-    let unitName = getTblValue("unitName", params)
+    if (!this.isValid())
+      return
+
+    let { unitName = null, needSelectCrew = true } = params
     if (!unitName || this.unit?.name != unitName)
       return
+
+    if (!needSelectCrew)
+      this.updateUnitList(getEsUnitType(this.getAvailableUnitForConversion() ?? this.unit))
 
     let handler = this
     let config = {

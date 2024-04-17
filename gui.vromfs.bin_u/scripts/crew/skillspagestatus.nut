@@ -1,26 +1,27 @@
 from "%scripts/dagui_library.nut" import *
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let {enumsAddTypes} = require("%sqStdLibs/helpers/enums.nut")
 let { getCrewTotalSteps, getCrewSkillNewValue, crewSkillValueToStep, getMaxAvailbleCrewStepValue
 } = require("%scripts/crew/crew.nut")
 
-::g_skills_page_status <-
-{
+let g_skills_page_status = {
   types = []
+
+  template = {
+    priority = 0
+    minSteps = 0
+    minSkillsRel = 0 //relative value of skills on this page from all skills available on page.
+    style = ""
+    icon = "#ui/gameuiskin#new_crew_skill_points.svg"
+    color = "white"
+    show = true
+    wink = false
+  }
+
 }
 
-::g_skills_page_status.template <- {
-  priority = 0
-  minSteps = 0
-  minSkillsRel = 0 //relative value of skills on this page from all skills available on page.
-  style = ""
-  icon = "#ui/gameuiskin#new_crew_skill_points.svg"
-  color = "white"
-  show = true
-  wink = false
-}
 
-enums.addTypesByGlobalName("g_skills_page_status", {
+enumsAddTypes(g_skills_page_status, {
   NONE = {
     show = false
   }
@@ -58,8 +59,8 @@ enums.addTypesByGlobalName("g_skills_page_status", {
   */
 })
 
-::g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
-  local res = ::g_skills_page_status.NONE
+g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
+  local res = g_skills_page_status.NONE
   let items = getTblValue("items", page)
   if (!items || !items.len())
     return res
@@ -100,3 +101,7 @@ enums.addTypesByGlobalName("g_skills_page_status", {
   }
   return res
 }
+
+return freeze({
+  g_skills_page_status
+})

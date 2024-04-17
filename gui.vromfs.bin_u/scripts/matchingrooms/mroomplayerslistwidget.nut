@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
+from "%scripts/teams.nut" import g_team
 
 /*
  API:
@@ -36,7 +37,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   onTablesHoverChange = null
 
   playersInTeamTables = null
-  focusedTeam = ::g_team.ANY
+  focusedTeam = g_team.ANY
   isTablesInUpdate = false
 
   static TEAM_TBL_PREFIX = "players_table_"
@@ -126,7 +127,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(objTbl))
       return
 
-    let teamList = team == ::g_team.ANY ? playersList
+    let teamList = team == g_team.ANY ? playersList
       : playersList.filter(@(p) p.team.tointeger() == team.code)
     ::set_mp_table(objTbl, teamList, {handler = this})
     ::update_team_css_label(objTbl)
@@ -147,7 +148,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateFocusedTeamByObj(obj) {
-    this.focusedTeam = getTblValue(::getObjIdByPrefix(obj, this.TEAM_TBL_PREFIX), ::g_team, this.focusedTeam)
+    this.focusedTeam = getTblValue(::getObjIdByPrefix(obj, this.TEAM_TBL_PREFIX), g_team, this.focusedTeam)
   }
 
   function onTableClick(obj) {

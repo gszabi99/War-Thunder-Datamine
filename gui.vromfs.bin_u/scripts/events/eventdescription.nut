@@ -5,6 +5,7 @@ from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, EVENTS_SHORT_LB_VISIB
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
+let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -106,7 +107,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         let isEventFreeForAll = ::events.isEventFreeForAll(roomMGM)
         titleObj.show(! ::events.isEventSymmetricTeams(roomMGM) || isEventFreeForAll)
         titleObj.setValue(isEventFreeForAll ? loc("events/ffa")
-          : ::g_team.getTeamByCode(team).getName())
+          : g_team.getTeamByCode(team).getName())
       }
 
       let teamData = ::events.getTeamDataWithRoom(roomMGM, team, this.room)
@@ -253,7 +254,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return ""
     }
 
-    let otherTeam = ::g_team.getTeamByCode(team).opponentTeamCode
+    let otherTeam = g_team.getTeamByCode(team).opponentTeamCode
     let countTblReady = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData, true)
     local countText = countTblReady[team]
     if (countTblReady[team] >= ::events.getTeamSize(teamData)

@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
+from "%scripts/queue/queueType.nut" import g_queue_type
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -68,7 +69,7 @@ let QueueManager = class {
   }
 
   function createQueue(params, needModifyParamsByType = false) {
-    let queueType = ::g_queue_type.getQueueTypeByParams(params)
+    let queueType = g_queue_type.getQueueTypeByParams(params)
 
     if (needModifyParamsByType)
       params = queueType.prepareQueueParams(params)

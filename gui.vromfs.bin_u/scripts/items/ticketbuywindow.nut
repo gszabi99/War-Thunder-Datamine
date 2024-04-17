@@ -8,7 +8,6 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
-  afterBuyFunc = null
   event = null
   tickets = null
   activeTicket = null

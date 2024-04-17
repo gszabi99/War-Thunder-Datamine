@@ -114,6 +114,7 @@ enumsAddTypes(g_top_menu_right_side_sections, [
         buttonsList.LINE_SEPARATOR
         buttonsList.PREMIUM
         buttonsList.WARPOINTS
+        buttonsList.WISHLIST
         buttonsList.INVENTORY
         buttonsList.ITEMS_SHOP
         buttonsList.WORKSHOP

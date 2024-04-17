@@ -130,7 +130,6 @@ foreach (fn in [
   "%scripts/controls/input/inputBase.nut"
   "%scripts/controls/input/nullInput.nut"
   "%scripts/controls/shortcutType.nut"
-  "%scripts/viewUtils/hintTags.nut"
   "%scripts/viewUtils/hints.nut"
   "%scripts/viewUtils/bhvHint.nut"
 
@@ -236,9 +235,7 @@ local isFullScriptsLoaded = false
     require("%scripts/gameModes/enablePsnActivitiesGameIntents.nut")
   }
 
-  let { steam_is_running } = require("steam")
-  if (steam_is_running())
-    require("%scripts/inventory/steamCheckNewItems.nut")
+  require("%scripts/contacts/steamContactManager.nut")
   // end of Independent Modules
 
   require("%scripts/utils/systemMsg.nut").registerColors(colorTagToColors)

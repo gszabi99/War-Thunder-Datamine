@@ -28,6 +28,7 @@ let { guiStartChangeRoleWnd } = require("%scripts/clans/clanChangeRoleModal.nut"
 let { guiStartClanActivityWnd } = require("%scripts/clans/clanActivityModal.nut")
 let { openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 
 //-----------------------------
 // params keys:
@@ -198,6 +199,11 @@ let getActions = function(contact, params) {
       text = loc("worldwar/inviteToOperation")
       show = ::is_worldwar_enabled() && ::g_world_war.isWwOperationInviteEnable()
       action = @() ::g_world_war.inviteToWwOperation(contact.uid)
+    }
+    {
+      text = loc("mainmenu/go_to_wishlist")
+      show = !isMe && isFriend && hasFeature("Wishlist")
+      action = @() tryOpenFriendWishlist(contact.uid)
     }
   )
 //---- </Common> ------------------

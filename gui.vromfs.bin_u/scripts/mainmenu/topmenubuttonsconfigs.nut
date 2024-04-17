@@ -48,6 +48,7 @@ let { guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBen
 } = require("%scripts/missions/startMissionsList.nut")
 let { guiStartCredits } = require("%scripts/credits.nut")
 let { guiStartReplays } = require("%scripts/replays/replayScreen.nut")
+let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 
 let list = {
   SKIRMISH = {
@@ -302,6 +303,12 @@ let list = {
     needDiscountIcon = true
     isHidden = @(...) !hasFeature("SpendGold") || !isInMenu()
   }
+  WISHLIST = {
+    text = @() "#mainmenu/wishlist"
+    onClickFunc = @(...) openWishlist()
+    image = @() "#ui/gameuiskin#open_wishlist.svg"
+    isHidden = @(...) !hasFeature("Wishlist") || !isInMenu()
+  }
   INVENTORY = {
     text = @() "#items/inventory"
     onClickFunc = @(...) gui_start_inventory()
@@ -409,7 +416,7 @@ let list = {
       ? openUrlByObj(obj)
       : openEulaWnd()
     isDelayed = false
-    link = @() "#url/eula"
+    link = @() getCurCircuitUrl("eulaURL", loc("url/eula"))
     isLink = @() hasFeature("AllowExternalLink")
     isFeatured = true
     isHidden = @(...) !hasFeature("EulaInMenu") || !isInMenu()

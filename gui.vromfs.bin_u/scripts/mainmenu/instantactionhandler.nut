@@ -72,7 +72,6 @@ let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGame
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
-let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -514,11 +513,6 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let event = getGameModeEvent(curGameMode)
     if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
       return
-
-    if (hasMultiplayerLimitByAas.get()) {
-      showMultiplayerLimitByAasMsg()
-      return
-    }
 
     if (!this.isCrossPlayEventAvailable(event)) {
       checkAndShowCrossplayWarning(@() showInfoMsgBox(loc("xbox/actionNotAvailableCrossNetworkPlay")))

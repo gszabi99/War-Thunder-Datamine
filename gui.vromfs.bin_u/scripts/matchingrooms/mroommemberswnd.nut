@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 
+let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -56,7 +57,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.setFullRoomInfo()
-    this.teams = ::g_team.getTeams()
+    this.teams = g_team.getTeams()
 
     this.playersListWidgetWeak = gui_handlers.MRoomPlayersListWidget.create({
       scene = this.scene.findObject("players_list")

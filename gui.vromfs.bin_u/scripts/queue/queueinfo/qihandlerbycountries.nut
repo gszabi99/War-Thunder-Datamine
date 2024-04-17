@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -54,7 +55,7 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
       isCentered = true
       countriesSets = sortedSets.map(function(cSet) {
         let res = {}
-        let teams = ::g_team.getTeams()
+        let teams = g_team.getTeams()
         foreach (idx, team in teams)
           if (idx in cSet.countries) {
             res[team.name] <- {

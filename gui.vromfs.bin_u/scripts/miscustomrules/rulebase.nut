@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { g_team } = require("%scripts/teams.nut")
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
 let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -335,7 +336,7 @@ let Base = class {
   }
 
   function getEnemyTeamDataBlk(keyName = "teams") {
-    let opponentTeamCode = ::g_team.getTeamByCode(get_mp_local_team()).opponentTeamCode
+    let opponentTeamCode = g_team.getTeamByCode(get_mp_local_team()).opponentTeamCode
     if (opponentTeamCode == Team.none || opponentTeamCode == Team.Any)
       return null
 

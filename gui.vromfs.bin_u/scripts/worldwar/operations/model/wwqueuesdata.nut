@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/queue/queueType.nut" import g_queue_type
 
 let { get_time_msec } = require("dagor.time")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
@@ -9,7 +10,7 @@ const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
 const WW_QUEUES_DATA_TIME_OUT = 10000 //ms
 
 
-local WwQueuesData = class {
+let WwQueuesData = class {
   data = {}
   lastUpdateTimeMsec = -WW_QUEUES_DATA_TIME_OUT
   lastRequestTimeMsec = -1
@@ -59,7 +60,7 @@ local WwQueuesData = class {
     let cb = Callback(this.requestDataCb, this)
     let errorCb = Callback(this.requestError, this)
 
-    ::queues.updateQueueInfoByType(::g_queue_type.WW_BATTLE, cb, errorCb, true)
+    ::queues.updateQueueInfoByType(g_queue_type.WW_BATTLE, cb, errorCb, true)
     return true
   }
 

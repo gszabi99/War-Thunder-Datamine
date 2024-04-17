@@ -57,6 +57,8 @@ root {
           bigBoldFont:t='yes'
           overlayTextColor:t='active'
           text-align:t='center'
+
+          <<@chestNameTextParams>>
         }
         textareaNoTab {
           id:t='time_expired_value'
@@ -174,6 +176,16 @@ root {
         pos:t='0.5pw - 0.5w, 0'
         position:t='relative'
         margin-top:t='20@sf/@pf'
+
+        Button_text {
+          id:t='skip_anim'
+          display:t='hide'
+          halign:t='center'
+          valign:t='center'
+          text:t = '#msgbox/btn_skip'
+          on_click:t='onSkipAnimations'
+          btnName:t='B'
+        }
 
         Button_text{
           id:t='btn_buy'

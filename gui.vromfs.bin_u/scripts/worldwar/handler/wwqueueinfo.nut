@@ -1,5 +1,6 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/queue/queueType.nut" import g_queue_type
 
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -37,7 +38,7 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!currentBattleQueue)
       return
 
-    ::queues.updateQueueInfoByType(::g_queue_type.WW_BATTLE,
+    ::queues.updateQueueInfoByType(g_queue_type.WW_BATTLE,
       function(queueInfo) {
         broadcastEvent("QueueInfoRecived", { queue_info = queueInfo })
       })

@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
+let { g_team } = require("%scripts/teams.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -193,7 +194,7 @@ let set_in_battle_time_to_kick_show_alert = @(v) in_battle_time_to_kick_show_ale
 //!!!FIX Rebuild global functions below to local
 
 ::get_local_team_for_mpstats <- function get_local_team_for_mpstats(team = null) {
-  return (team ?? get_mp_local_team()) != ::g_team.B.code ? ::g_team.A.code : ::g_team.B.code
+  return (team ?? get_mp_local_team()) != g_team.B.code ? g_team.A.code : g_team.B.code
 }
 
 
@@ -412,7 +413,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
     return
   let teamCode = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.getTeam()
     : (customPlayerTeam ?? ::get_local_team_for_mpstats())
-  nestObj.playerTeam = ::g_team.getTeamByCode(teamCode).cssLabel
+  nestObj.playerTeam = g_team.getTeamByCode(teamCode).cssLabel
 }
 
 

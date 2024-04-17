@@ -6,19 +6,19 @@ let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { isNewbieEventId } = require("%scripts/myStats.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
 enum qTypeCheckOrder {
   COMMON
   ANY_EVENT
   UNKNOWN
 }
 
-::g_queue_type <- {
+let g_queue_type = {
   types = []
 }
 
-::g_queue_type.template <- {
+g_queue_type.template <- {
   typeName = "" //filled automatically by typeName
   bit = QUEUE_TYPE_BIT.UNKNOWN
   checkOrder = qTypeCheckOrder.COMMON
@@ -43,7 +43,7 @@ enum qTypeCheckOrder {
   isParamsCorresponds = @(_params) true
 }
 
-enums.addTypesByGlobalName("g_queue_type",
+enumsAddTypes(g_queue_type,
   {
     UNKNOWN = {
       checkOrder = qTypeCheckOrder.UNKNOWN
@@ -111,9 +111,9 @@ enums.addTypesByGlobalName("g_queue_type",
   "typeName"
 )
 
-::g_queue_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
+g_queue_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
 
-::g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params) {
+g_queue_type.getQueueTypeByParams <- function getQueueTypeByParams(params) {
   if (!params)
     return this.UNKNOWN
   foreach (qType in this.types)
@@ -121,3 +121,5 @@ enums.addTypesByGlobalName("g_queue_type",
       return qType
   return this.UNKNOWN
 }
+
+return freeze({g_queue_type})

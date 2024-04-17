@@ -110,7 +110,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   shopData = null
   slotbarActions = [
-    "research", "researchCrossPromo", "find_in_market", "buy", "take", "sec_weapons", "weapons",
+    "research", "researchCrossPromo", "find_in_market", "buy", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
     "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
   ]
   shopResearchMode = false
@@ -1659,7 +1659,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitBought(params) {
-    let unitName = getTblValue("unitName", params)
+    let { unitName = null, needSelectCrew = true } = params
     let unit = unitName ? getAircraftByName(unitName) : null
     if (!unit)
       return
@@ -1676,7 +1676,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return
 
-    if (!::checkIsInQueue() && !this.shopResearchMode)
+    if (needSelectCrew && !::checkIsInQueue() && !this.shopResearchMode)
       takeUnitInSlotbar(unit, {
         unitObj = this.getAirObj(unit.name)
         cellClass = "shopClone"

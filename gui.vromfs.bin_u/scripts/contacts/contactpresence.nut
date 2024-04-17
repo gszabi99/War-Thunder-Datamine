@@ -1,10 +1,14 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadMemberState
 
 let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
 
 enum PRESENCE_SORT {
   UNKNOWN
   OFFLINE
+  STEAM_ONLINE
   ONLINE
   IN_QUEUE
   IN_GAME
@@ -83,8 +87,51 @@ addTypes(contactPresence, {
     iconName = "squad_leader"
     textColor = "@userlogColoredText"
   }
+
+  STEAM_ONLINE = {
+    sortOrder = PRESENCE_SORT.STEAM_ONLINE
+    iconName = "player_online"
+    iconColor = "contactOfflineColor"
+  }
 }, @() this.presenceName = this.typeName.tolower(), "typeName")
+
+function updateContactPresence(contact) {
+  let { uid } = contact
+  local presence = contactPresence.UNKNOWN
+  if (contact.online)
+    presence = contactPresence.ONLINE
+  else if (!contact.unknown)
+    presence = contactPresence.OFFLINE
+
+  let squadStatus = g_squad_manager.getPlayerStatusInMySquad(uid)
+  if (squadStatus == squadMemberState.NOT_IN_SQUAD) {
+    if (contact.forceOffline)
+      presence = contactPresence.OFFLINE
+    else if (contact.online && contact.gameStatus) {
+      if (contact.gameStatus == "in_queue")
+        presence = contactPresence.IN_QUEUE
+      else
+        presence = contactPresence.IN_GAME
+    }
+    else if (!contact.online && contact.isSteamOnline)
+      presence = contactPresence.STEAM_ONLINE
+  }
+  else if (squadStatus == squadMemberState.SQUAD_LEADER)
+    presence = contactPresence.SQUAD_LEADER
+  else if (squadStatus == squadMemberState.SQUAD_MEMBER_READY)
+    presence = contactPresence.SQUAD_READY
+  else if (squadStatus == squadMemberState.SQUAD_MEMBER_OFFLINE)
+    presence = contactPresence.SQUAD_OFFLINE
+  else
+    presence = contactPresence.SQUAD_NOT_READY
+
+  contact.presence = presence
+
+  if (squadStatus != squadMemberState.NOT_IN_SQUAD || ::is_in_my_clan(null, uid))
+    ::chatUpdatePresence(contact)
+}
 
 return {
   contactPresence
+  updateContactPresence
 }

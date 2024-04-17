@@ -6,6 +6,7 @@ from "%scripts/events/eventsConsts.nut" import EVENTS_SHORT_LB_VISIBLE_ROWS, Uni
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN
 
+let { g_team } = require("%scripts/teams.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -1013,7 +1014,7 @@ let Events = class {
   }
 
   function getTeamName(teamCode) {
-    return ::g_team.getTeamByCode(teamCode).name
+    return g_team.getTeamByCode(teamCode).name
   }
 
   function isEventXboxOnlyAllowed(event) {
@@ -1576,7 +1577,7 @@ let Events = class {
       langConfig.extend(singleLangConfig)
     else
       foreach (teamCode, teamLangConfig in langConfigByTeam) {
-        langConfig.append({ [systemMsg.LOC_ID] = "events/" + ::g_team.getTeamByCode(teamCode).name })
+        langConfig.append({ [systemMsg.LOC_ID] = "events/" + g_team.getTeamByCode(teamCode).name })
         langConfig.extend(teamLangConfig)
       }
 
@@ -2230,11 +2231,7 @@ let Events = class {
       event = event // Used to backtrack event in actionFunc.
       room = room
       checkXboxOverlayMessage = false
-    }
-    if (params != null) {
-      foreach (paramKey, paramValue in params)
-        data[paramKey] <- paramValue
-    }
+    }.__update(params ?? {})
 
     let { isFullText = false, isCreationCheck = false } = params
     let mGameMode = events.getMGameMode(event, room)
@@ -2299,10 +2296,7 @@ let Events = class {
     else if (this.eventRequiresTicket(event) && this.getEventActiveTicket(event) == null) {
       data.activeJoinButton = true
       data.reasonText = loc("ticketBuyWindow/mainText")
-      data.actionFunc = function (reasonData) {
-        let continueFunc = reasonData?.continueFunc
-        events.checkAndBuyTicket(event, continueFunc)
-      }
+      data.actionFunc = @(_reasonData) events.checkAndBuyTicket(event)
     }
     else if (this.getEventActiveTicket(event) != null && !this.getEventActiveTicket(event).getTicketTournamentData(getEventEconomicName(event)).canJoinTournament) {
       data.reasonText = loc("events/wait_for_sessions_to_finish/main")
@@ -2318,7 +2312,7 @@ let Events = class {
       let myTeam = this.getAvailableTeams(mGameMode, room)[0]
       data.reasonText = loc("multiplayer/chosenTeamIsFull",
         {
-          chosenTeam = colorize("teamBlueColor", ::g_team.getTeamByCode(myTeam).getShortName())
+          chosenTeam = colorize("teamBlueColor", g_team.getTeamByCode(myTeam).getShortName())
         })
     }
     else if (!this.isAllowedByRoomBalance(mGameMode, room)) {
@@ -2327,8 +2321,8 @@ let Events = class {
       let otherTeam = u.search(this.getSidesList(mGameMode), @(t) t != myTeam)
       let membersCount = g_squad_manager.getOnlineMembersCount()
       let locParams = {
-        chosenTeam = colorize("teamBlueColor", ::g_team.getTeamByCode(myTeam).getShortName())
-        otherTeam =  colorize("teamRedColor", ::g_team.getTeamByCode(otherTeam).getShortName())
+        chosenTeam = colorize("teamBlueColor", g_team.getTeamByCode(myTeam).getShortName())
+        otherTeam =  colorize("teamRedColor", g_team.getTeamByCode(otherTeam).getShortName())
         chosenTeamCount = teamsCnt[myTeam]
         otherTeamCount =  teamsCnt[otherTeam]
         reqOtherteamCount = teamsCnt[myTeam] - getMaxLobbyDisbalance(mGameMode) + membersCount
@@ -2511,12 +2505,12 @@ let Events = class {
     return this.getEventTickets(event).len() != 0
   }
 
-  function checkAndBuyTicket(event, afterBuyFunc = null) {
+  function checkAndBuyTicket(event) {
     if (!this.eventRequiresTicket(event))
-      return ::call_for_handler(null, afterBuyFunc)
+      return
     let ticket = this.getEventActiveTicket(event)
     if (ticket != null)
-      return ::call_for_handler(null, afterBuyFunc)
+      return
     let purchasableTickets = this.getEventTickets(event, true)
     if (purchasableTickets.len() == 0) {
       let locParams = {
@@ -2524,16 +2518,10 @@ let Events = class {
       }
       let message = loc("msgbox/need_ticket/no_tickets", locParams)
       showInfoMsgBox(message, "no_tickets")
+      return
     }
     // Player has to purchase one of available tickets via special window.
-    else {
-      let windowParams = {
-        afterBuyFunc = afterBuyFunc,
-        event = event
-        tickets = purchasableTickets
-      }
-      loadHandler(gui_handlers.TicketBuyWindow, windowParams)
-    }
+    loadHandler(gui_handlers.TicketBuyWindow, { event, tickets = purchasableTickets })
   }
 
   /**

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
+let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let avatars = require("%scripts/user/avatars.nut")
@@ -27,7 +28,7 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
-let { showMultiplayerLimitByAasMsg, hasMultiplayerLimitByAas } = require("%scripts/user/antiAddictSystem.nut")
+let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
   if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())
@@ -106,9 +107,9 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initTeams() {
-    this.tableTeams = [::g_team.ANY]
+    this.tableTeams = [g_team.ANY]
     if (isInSessionLobbyEventRoom.get()) {
-      this.tableTeams = [::g_team.A, ::g_team.B]
+      this.tableTeams = [g_team.A, g_team.B]
       this.isInfoByTeams = true
     }
   }
@@ -301,13 +302,13 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     if (myTeam != Team.A && myTeam != Team.B)
       return ""
 
-    let otherTeam = ::g_team.getTeamByCode(myTeam).opponentTeamCode
+    let otherTeam = g_team.getTeamByCode(myTeam).opponentTeamCode
     if (countTbl[myTeam] - maxDisbalance < countTbl[otherTeam])
       return ""
 
     let params = {
-      chosenTeam = colorize("teamBlueColor", ::g_team.getTeamByCode(myTeam).getShortName())
-      otherTeam =  colorize("teamRedColor", ::g_team.getTeamByCode(otherTeam).getShortName())
+      chosenTeam = colorize("teamBlueColor", g_team.getTeamByCode(myTeam).getShortName())
+      otherTeam =  colorize("teamRedColor", g_team.getTeamByCode(otherTeam).getShortName())
       chosenTeamCount = countTbl[myTeam]
       otherTeamCount =  countTbl[otherTeam]
       reqOtherteamCount = countTbl[myTeam] - maxDisbalance + 1
@@ -519,18 +520,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     ], "no", { cancel_fn = function() {} })
   }
 
-  function onReady() {
-    let event = SessionLobby.getRoomEvent()
-    if (event != null) {
-      if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
-        return
-
-      if (hasMultiplayerLimitByAas.get()) {
-        showMultiplayerLimitByAasMsg()
-        return
-      }
-    }
-
+  function onReadyImpl() {
     if (SessionLobby.tryJoinSession())
       return
 
@@ -551,6 +541,18 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.msgBox("ask_start_session", msg, buttons, defButton, { cancel_fn = function() {} })
+  }
+
+  function onReady() {
+    let event = SessionLobby.getRoomEvent()
+    if (event != null) {
+      if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
+        return
+
+      checkShowMultiplayerAasWarningMsg(Callback(this.onReadyImpl, this))
+      return
+    }
+    this.onReadyImpl()
   }
 
   function onCustomChatCancel() {

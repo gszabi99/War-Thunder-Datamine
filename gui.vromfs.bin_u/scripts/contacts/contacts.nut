@@ -19,7 +19,7 @@ let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups, getContactByName
 let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
+let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let Contact = require("%scripts/contacts/contact.nut")
 
@@ -182,37 +182,7 @@ foreach (fn in [
     contact.update(config)
   }
 
-  //update presence
-  local presence = contactPresence.UNKNOWN
-  if (contact.online)
-    presence = contactPresence.ONLINE
-  else if (!contact.unknown)
-    presence = contactPresence.OFFLINE
-
-  let squadStatus = g_squad_manager.getPlayerStatusInMySquad(uid)
-  if (squadStatus == squadMemberState.NOT_IN_SQUAD) {
-    if (contact.forceOffline)
-      presence = contactPresence.OFFLINE
-    else if (contact.online && contact.gameStatus) {
-      if (contact.gameStatus == "in_queue")
-        presence = contactPresence.IN_QUEUE
-      else
-        presence = contactPresence.IN_GAME
-    }
-  }
-  else if (squadStatus == squadMemberState.SQUAD_LEADER)
-    presence = contactPresence.SQUAD_LEADER
-  else if (squadStatus == squadMemberState.SQUAD_MEMBER_READY)
-    presence = contactPresence.SQUAD_READY
-  else if (squadStatus == squadMemberState.SQUAD_MEMBER_OFFLINE)
-    presence = contactPresence.SQUAD_OFFLINE
-  else
-    presence = contactPresence.SQUAD_NOT_READY
-
-  contact.presence = presence
-
-  if (squadStatus != squadMemberState.NOT_IN_SQUAD || ::is_in_my_clan(null, uid))
-    ::chatUpdatePresence(contact)
+  updateContactPresence(contact)
 
   return contact
 }
@@ -256,9 +226,11 @@ foreach (fn in [
   let view = {
     name = fullName
     presenceText = colorize(contact.presence.getIconColor(), contact.getPresenceText())
-    icon = contact.pilotIcon
+    icon = contact.steamAvatar ?? $"#ui/images/avatars/{contact.pilotIcon}"
     hasUnitList = false
-    title = title
+    title
+    wtName = contact.steamName == null || contact.name == "" ? ""
+      : loc("war_thunder_nickname", { name = getPlayerName(contact.name) })
   }
 
   let squadStatus = g_squad_manager.getPlayerStatusInMySquad(contact.uid)

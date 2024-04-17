@@ -33,6 +33,7 @@ popup_menu {
   div {
     size:t='pw, fh'
     flow:t='vertical'
+    overflow-y:t='auto'
     <<@contentData>>
   }
 }

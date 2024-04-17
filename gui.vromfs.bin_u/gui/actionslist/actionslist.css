@@ -92,6 +92,10 @@ popup_actions_list > itemsList > button > text[isLink="yes"] > underline {
   bgcolor: @linkTextColor;
 }
 
+popup_actions_list > itemsList > actionListItem > text[isWarning="yes"] {
+  color: @redMenuButtonColor;
+}
+
 popup_actions_list > itemsList > actionListItem > warning_icon,
 popup_actions_list > itemsList > button > warning_icon {
   size:1@cIco, 1@cIco;
@@ -127,6 +131,10 @@ popup_actions_list > itemsList > actionListItem:hover > text {
 
 popup_actions_list > itemsList > actionListItem:hover > text[isObjective="yes"] {
   color: @warningTextColorHovered;
+}
+
+popup_actions_list > itemsList > actionListItem:hover > text[isWarning="yes"] {
+  color: @redMenuButtonColorHover;
 }
 
 popup_actions_list > itemsList > button:hover > text[isLink="yes"] {

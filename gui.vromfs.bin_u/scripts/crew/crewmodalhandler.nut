@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_cur_warpoints, shop_upgrade_crew
 from "%scripts/dagui_library.nut" import *
+from "%scripts/crew/skillsPageStatus.nut" import g_skills_page_status
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -379,7 +380,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("crew_points_advice_block").show(isSkills)
     if (!isSkills)
       return
-    let statusType = ::g_skills_page_status.getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
+    let statusType = g_skills_page_status.getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
     this.scene.findObject("crew_points_advice").show(statusType.show)
     this.scene.findObject("crew_points_advice_text")["crewStatus"] = statusType.style
   }
@@ -544,7 +545,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!obj?.isValid())
         continue
 
-      let statusType = ::g_skills_page_status.getPageStatus(
+      let statusType = g_skills_page_status.getPageStatus(
         this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
       obj["background-image"] = statusType.icon
       obj["background-color"] = this.guiScene.getConstantValue(statusType.color) || ""
