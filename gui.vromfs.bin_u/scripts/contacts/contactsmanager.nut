@@ -22,6 +22,12 @@ const EPLX_STEAM = "s"
 
 let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]
 
+let contactsGroupWithoutMaxCount = {
+  [EPLX_STEAM] = true,
+  [EPLX_PS4_FRIENDS] = true,
+  [EPLX_CLAN] = true,
+}
+
 local isDisableContactsBroadcastEvents = false
 
 let steamContactsGroup = mkWatched(persist, "steamContactsGroup", null)
@@ -325,4 +331,5 @@ return {
   getContactByName
   findContactBySteamId
   steamContactsGroup
+  contactsGroupWithoutMaxCount
 }

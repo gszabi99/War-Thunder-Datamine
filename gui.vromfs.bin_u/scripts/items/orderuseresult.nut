@@ -2,11 +2,28 @@ from "%scripts/dagui_library.nut" import *
 
 let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 
-let g_order_use_result_cache = {
-  byCode = {}
+local orderUseResult = null
+
+orderUseResult = {
+  types = []
+  cache = {
+    byCode = {}
+  }
+  template = {
+    // Creates text message to show in order
+    // activation window, order tooltip, etc.
+    function createResultMessage(addErrorHeader) {
+      if (this == orderUseResult.OK)
+        return loc($"orderUseResult/result/{this.name}")
+
+      return addErrorHeader
+        ? "".concat(loc("orderUseResult/error"), "\n", loc($"orderUseResult/result/{this.name}"))
+        : loc($"orderUseResult/result/{this.name}")
+    }
+  }
 }
 
-let order_use_results = {
+enumsAddTypes(orderUseResult, {
   OK = {
     code = ORDER_USE_RESULT_OK
     name = "ok"
@@ -66,32 +83,14 @@ let order_use_results = {
     code = -2
     name = "restricted_mission"
   }
+})
+
+function getOrderUseResultByCode(useResultCode) {
+  return enumsGetCachedType("code", useResultCode, orderUseResult.cache.byCode,
+    orderUseResult, orderUseResult.UNKNOWN)
 }
 
-let g_order_use_result = {
-  types = []
-
-  function _createResultMessage(addErrorHeader) {
-    return (this == order_use_results.OK || !addErrorHeader)
-      ? loc($"orderUseResult/result/{this.name}")
-      : "".concat(loc("orderUseResult/error"), "\n", loc($"orderUseResult/result/{this.name}"))
-  }
-
-  function getOrderUseResultByCode(useResultCode) {
-    return enumsGetCachedType("code", useResultCode, g_order_use_result_cache.byCode,
-      this, this.UNKNOWN)
-  }
+return {
+  orderUseResult
+  getOrderUseResultByCode
 }
-
-g_order_use_result.template <- {
-  /**
-   * Creates text message to show in order
-   * activation window, order tooltip, etc.
-   */
-  createResultMessage = g_order_use_result._createResultMessage
-}
-
-
-enumsAddTypes(g_order_use_result, order_use_results)
-
-return {g_order_use_result}

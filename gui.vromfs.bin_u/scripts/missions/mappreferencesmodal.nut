@@ -202,7 +202,8 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateBanListPartsVisibility() {
-    let isBanListFilled = this.getBanList().len() > 0
+    let isBanListFilled = this.counters.len() != 0
+      && this.counters.reduce(@(res, v) res + v.curCounter, 0) > 0
     showObjectsByTable(this.scene, {
       listTitle = isBanListFilled,
       btnReset  = isBanListFilled,

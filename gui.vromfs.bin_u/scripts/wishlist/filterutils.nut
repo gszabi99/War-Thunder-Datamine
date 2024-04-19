@@ -5,17 +5,18 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
-function getUnitBuyTypes(unit) {
+function getUnitBuyTypes(unit, isFriendWishList = false) {
   let res = []
   if(unit.isSquadronVehicle())
     res.append("squadron")
   if(isUnitSpecial(unit))
     res.append("premium")
-  if(::canBuyUnitOnline(unit))
+  if(isFriendWishList ? isAvailableBuyUnitOnline(unit) : ::canBuyUnitOnline(unit))
     res.append("shop")
-  if(::canBuyUnitOnMarketplace(unit))
+  if(isFriendWishList ? isAvailableBuyUnitOnMarketPlace(unit) : ::canBuyUnitOnMarketplace(unit))
     res.append("marketPlace")
 
 
@@ -47,8 +48,8 @@ function balanceEnough(unit) {
   }
 }
 
-function getUnitAvailabilityForBuyType(unit) {
-  let unitBuyTypes = getUnitBuyTypes(unit)
+function getUnitAvailabilityForBuyType(unit, isFriendWishList = false) {
+  let unitBuyTypes = getUnitBuyTypes(unit, isFriendWishList)
   let isShopVehicle = unitBuyTypes.contains("shop")
   let isStockVehicle = unitBuyTypes.contains("marketPlace")
   let isPremiumVehicle = unitBuyTypes.contains("premium")

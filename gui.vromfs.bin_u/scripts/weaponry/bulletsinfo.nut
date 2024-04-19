@@ -56,6 +56,9 @@ let BULLETS_LIST_PARAMS = {
 }
 
 const BULLETS_CALIBER_QUANTITY = 4
+
+let unitsPrimaryBulletsInfo = {}
+
 //
 
 
@@ -463,19 +466,24 @@ function findIdenticalWeapon(weapon, weaponList, modsList) {
 }
 
 function getBulletsInfoForPrimaryGuns(air) {
-  if (air.primaryBulletsInfo)
-    return air.primaryBulletsInfo
+  if (!air.unitType.canUseSeveralBulletsForGun)
+    return []
+
+  let primaryWeapon = getLastPrimaryWeapon(air)
+  let cachedWeapons = unitsPrimaryBulletsInfo?[air.name][primaryWeapon]
+  if (cachedWeapons != null)
+    return cachedWeapons
 
   let res = []
-  air.primaryBulletsInfo = res
-  if (!air.unitType.canUseSeveralBulletsForGun)
-    return res
+  if (unitsPrimaryBulletsInfo?[air.name] == null)
+    unitsPrimaryBulletsInfo[air.name] <- {}
+  unitsPrimaryBulletsInfo[air.name][primaryWeapon] <- res
 
   let airBlk = ::get_full_unit_blk(air.name)
   if (!airBlk)
     return res
 
-  let commonWeapons = getCommonWeapons(airBlk, "")
+  let commonWeapons = getCommonWeapons(airBlk, primaryWeapon)
   if (commonWeapons.len() == 0)
     return res
 

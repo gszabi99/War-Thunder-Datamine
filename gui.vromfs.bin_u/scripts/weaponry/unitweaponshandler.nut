@@ -73,7 +73,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.checkInitWidth()
     this.unit = newUnit
-    this.bulletsManager.setUnit(this.unit)
+    this.bulletsManager.setUnit(this.unit, forceUpdate)
 
     local columnsConfig = null
     let unitType = getEsUnitType(this.unit)
@@ -318,6 +318,9 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
     }
 
+    res.columns = res.columns.filter(@(v) v.len() > 0) //filter empty columns
+    totalColumns = res.columns.len()
+
     let maxColumns = (this.modsInRow / res.itemWidth) || 1
     if (gunsCount == 3 && maxColumns == 2) {
       let newColumns = [[], []]
@@ -327,7 +330,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           newColumns[0].append(column[0])
           newColumns[1].append(column[1])
         }
-        else if (singleItemIdx == -1) {
+        else if (singleItemIdx == -1 && column.len() != 0) {
           newColumns[0].append(column[0])
           newColumns[1].append(null)
           singleItemIdx = idx
@@ -481,6 +484,10 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventBulletsCountChanged(_p) {
     this.updateAllBulletCountSliders()
+  }
+
+  function onEventModificationChanged(_p) {
+    this.setUnit(this.unit, true)
   }
 
   function getSelectionItemParams() {

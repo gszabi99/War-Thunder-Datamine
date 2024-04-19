@@ -300,6 +300,7 @@ function getPrefTitle(curEvent) {
 
 addListenersWithoutEnv({
   EventsDataUpdated = @(_) mapsListByEvent.clear()
+  GameLocalizationChanged = @(_) mapsListByEvent.clear()
 })
 
 return {

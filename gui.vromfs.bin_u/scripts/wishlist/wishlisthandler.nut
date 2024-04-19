@@ -47,14 +47,13 @@ let unitButtonTypes = {
 }
 
 function getUnitButtonType(unit, friendUid) {
-  let buyTypes = getUnitBuyTypes(unit)
+  let isFriendWishList = friendUid != null
+  let buyTypes = getUnitBuyTypes(unit, isFriendWishList)
 
   if(!unit.isVisibleInShop())
     return unitButtonTypes.__merge({
       hasGoToVechicleButton = false
     })
-
-  let isFriendWishList = friendUid != null
 
   let hasConditionsButton = unit.isCrossPromo && !isFriendWishList
   if(hasConditionsButton)
@@ -92,8 +91,17 @@ function getUnitButtonType(unit, friendUid) {
   })
 }
 
+function isShowFriendWishlistUnit(unitName, friendUid) {
+  let buyTypes = getUnitBuyTypes(getAircraftByName(unitName), true)
+  let contact = ::getContact(friendUid.tostring())
+  let isHideGiftButton = contact == null || isXBoxPlayerName(contact.name) || isPS4PlayerName(contact.name)
+  let isShopVehicle = isIntersects(buyTypes, ["shop"])
+  return isShopVehicle && !isHideGiftButton && !is_console
+}
+
 function filterUnitsListFunc(item, nameFilter, fuid) {
   let unit = getAircraftByName(item.unit)
+  let isFriendWishlist = fuid != null
 
   //name
   let unitLocName = getUnitName(unit, false)
@@ -117,19 +125,18 @@ function filterUnitsListFunc(item, nameFilter, fuid) {
   if(ranks.len() > 0 && !ranks.contains(unit.rank))
     return false
 
+  if(isFriendWishlist)
+    return true
+
   //buyType
   let buyTypes = selectedFilters?.buyType ?? []
-  if(buyTypes.len() > 0 && !isIntersects(buyTypes, getUnitBuyTypes(unit)))
+  if(buyTypes.len() > 0 && !isIntersects(buyTypes, getUnitBuyTypes(unit, isFriendWishlist)))
     return false
 
   //availability
   let availability = selectedFilters?.availability ?? []
-  let unitAvailabilityType = getUnitAvailabilityForBuyType(unit)
+  let unitAvailabilityType = getUnitAvailabilityForBuyType(unit, isFriendWishlist)
   if(availability.len() > 0 && !isFullyIncluded(unitAvailabilityType, availability))
-    return false
-
-
-  if(fuid != null && !getUnitButtonType(unit, fuid).hasGiftButton)
     return false
 
   return true
@@ -182,6 +189,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
 
   applyFilterTimer = null
   unitNameFilter = ""
+  filteredUnits = null
 
   function initScreen() {
     this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
@@ -215,19 +223,24 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("item_info_separator").show(show)
     this.scene.findObject("vehicle_filter").show(!this.isEmptyList)
 
-    if(show) {
-      this.scene.findObject("wishlist_empty_text").show(false)
-      this.scene.findObject("filter_strong_text").show(false)
-    }
-    else
-      this.scene.findObject(this.isEmptyList ? "wishlist_empty_text" : "filter_strong_text").show(true)
-  }
+    let wishlistEmptyText = showObjById("wishlist_empty_text", !show, this.scene)
+
+    if(!show)
+      wishlistEmptyText.setValue(!this.isEmptyList ? loc("wishlist/filter/filterStrong")
+      : this.friendUid == null ? loc("wishlist/filter/emptyList")
+      : loc("wishlist/filter/noGifts"))
+   }
 
   function updateItemsList() {
-    this.itemsList = this.friendUid != null ? (this.friendUnits ?? []) : getWishList().units
+    let fuid = this.friendUid
+    this.itemsList = this.friendUid == null ? getWishList().units
+      : (this.friendUnits ?? []).filter(@(v) isShowFriendWishlistUnit(v.unit, fuid))
+
     this.isEmptyList = this.itemsList.len() == 0
-    let itemsCountObj = this.scene.findObject("items_count")
-    itemsCountObj.setValue($"{loc("mainmenu/itemsList")}{loc("ui/colon")} {this.itemsList.len()}")
+
+    let itemsCountNest= showObjById("items_count_nest", this.friendUid == null, this.scene)
+    if(this.friendUid == null)
+      itemsCountNest.findObject("items_count").setValue($"{loc("mainmenu/itemsList")}{loc("ui/colon")} {this.itemsList.len()}")
 
     if(this.isEmptyList) {
       this.showRightPanelAndNavBar(false)
@@ -243,16 +256,19 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
   function fillItemsList() {
     let nameFilter = this.unitNameFilter
     let fuid = this.friendUid
-    let units = this.itemsList
+    this.filteredUnits = this.itemsList
       .filter(@(unitData) filterUnitsListFunc(unitData, nameFilter, fuid))
+
+    let units = this.filteredUnits
       .map(@(unitData, idx) createUnitViewData(unitData, idx, fuid))
+
     let data = handyman.renderCached("%gui/wishlist/wishedUnit.tpl", { units })
     this.guiScene.replaceContentFromText(this.itemsListObj, data, data.len(), this)
 
     this.showRightPanelAndNavBar(units.len() > 0)
   }
 
-  unitIdxInList = @(unitName) this.itemsList.findindex(@(v) v.unit == unitName)
+  unitIdxInList = @(unitName) this.filteredUnits.findindex(@(v) v.unit == unitName)
   isUnitInList = @(unitName) this.unitIdxInList(unitName) != null
 
   function jumpToUnit() {

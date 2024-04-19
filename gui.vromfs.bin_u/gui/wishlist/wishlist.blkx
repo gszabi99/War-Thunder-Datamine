@@ -98,26 +98,15 @@
         "id": "main_block",
         "size": "pw, fh",
         "margin-top": "20@sf/@pf",
-        "textareaNoTab": [
-          {
-            "id": "wishlist_empty_text",
-            "overlayTextColor": "active",
-            "normalFont": "yes",
-            "position": "absolute",
-            "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-            "text": "#wishlist/filter/emptyList",
-            "display": "hide"
-          },
-          {
-            "id": "filter_strong_text",
-            "overlayTextColor": "active",
-            "normalFont": "yes",
-            "position": "absolute",
-            "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-            "text": "#wishlist/filter/filterStrong",
-            "display": "hide"
-          }
-        ],
+        "textareaNoTab": {
+          "id": "wishlist_empty_text",
+          "overlayTextColor": "active",
+          "normalFont": "yes",
+          "position": "absolute",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "text": "",
+          "display": "hide"
+        },
         "tdiv": [
           {
             "flow": "vertical",
@@ -127,6 +116,7 @@
               "margin-bottom": "1@blockInterval",
               "tdiv": [
                 {
+                  "id": "items_count_nest",
                   "flow": "horizontal",
                   "valign": "center",
                   "activeText": {

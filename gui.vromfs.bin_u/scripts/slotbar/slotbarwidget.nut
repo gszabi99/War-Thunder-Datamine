@@ -1279,7 +1279,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   onEventAllModificationsPurchased = @(params) this.getSlotsData(params.unit.name)
     .map(@(slot) slot.obj)
-    .filter(@(obj) obj?.isValid())
+    .filter(@(obj) obj?.isValid() && ::isUnitElite(params.unit))
     .each(@(obj) obj.isElite = "yes")
 
   function updateSlotRowView(countryData, tblObj) {

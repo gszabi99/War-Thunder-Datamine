@@ -5,7 +5,7 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/items/itemsConsts.nut" import itemType, itemsTab
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { g_order_use_result } = require("%scripts/items/orderUseResult.nut")
+let { orderUseResult, getOrderUseResultByCode } = require("%scripts/items/orderUseResult.nut")
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let { HUD_MSG_OBJECTIVE } = require("hudMessages")
 let { get_mplayer_by_id, get_game_type, get_local_mplayer, get_mp_local_team } = require("mission")
@@ -441,14 +441,14 @@ function getActiveOrderObjective() {
 }
 
 function onOrderAccepted(useResultCode, isSilent = false) {
-  let useResult = g_order_use_result.getOrderUseResultByCode(useResultCode)
+  let useResult = getOrderUseResultByCode(useResultCode)
   debugPrint($"orders: onOrderAccepted: Activation complete. Result: {useResult}")
 
   if (!isSilent)
     scene_msg_box("order_use_result", null, useResult.createResultMessage(true),
       [["ok", @() broadcastEvent("OrderUseResultMsgBoxClosed")]], "ok")
 
-  if (useResult == g_order_use_result.OK) {
+  if (useResult == orderUseResult.OK) {
     if (activatingLocalOrderId == null) {
       debugTableData(::g_orders)
       assert(false,
@@ -496,7 +496,7 @@ function activateOrder(orderItem, onComplete = null, isSilent = false) {
     use_order_request(orderItem.uids[0])
   }
   else
-    onOrderAccepted(g_order_use_result.RESTRICTED_MISSION.code, isSilent)
+    onOrderAccepted(orderUseResult.RESTRICTED_MISSION.code, isSilent)
 }
 
 // Activates order, which soon expire.
@@ -513,7 +513,7 @@ function activateSoonExpiredOrder() {
         && (order.expiredTimeSec - get_time_msec() * 0.001) <= AUTO_ACTIVATE_TIME) {
       activateOrder(order,
         function(p) {
-          if (p.useResult == g_order_use_result.OK)
+          if (p.useResult == orderUseResult.OK)
             ordersToActivate.remove(i)
         }, true)
         break
@@ -687,7 +687,7 @@ function getWarningText(selectedOrderItem = null) {
   }
 
   if (!checkCurrentMission(selectedOrderItem))
-    return g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
+    return orderUseResult.RESTRICTED_MISSION.createResultMessage(false)
 
   return ""
 }

@@ -131,7 +131,6 @@ local Unit = class {
    bulGroups = -1
    bulModsGroups = -1
    bulletsSets = null //{}
-   primaryBulletsInfo = null //[] or null
    shopReq = true //used in shop, but look like shop can get it from other sources than from unit.
    researchType = null
    marketplaceItemdefId = null

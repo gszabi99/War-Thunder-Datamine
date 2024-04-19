@@ -50,10 +50,10 @@ enum bulletsAmountState {
     return this.unit
   }
 
-  function setUnit(v_unit) {
+  function setUnit(v_unit, forceUpdate = false) {
     if (type(v_unit) == "string")
       v_unit = getAircraftByName(v_unit)
-    if (this.unit == v_unit)
+    if (this.unit == v_unit && !forceUpdate)
       return
 
     this.unit = v_unit

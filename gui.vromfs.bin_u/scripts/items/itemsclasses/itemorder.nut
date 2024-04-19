@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { g_order_award_mode } = require("%scripts/items/orderAwardMode.nut")
-let { g_order_use_result } = require("%scripts/items/orderUseResult.nut")
+let { orderUseResult } = require("%scripts/items/orderUseResult.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -181,7 +181,7 @@ let Order = class (BaseItem) {
   function getDescription() {
     let textParts = []
     if (!::g_orders.checkCurrentMission(this)) {
-      let warningText = g_order_use_result.RESTRICTED_MISSION.createResultMessage(false)
+      let warningText = orderUseResult.RESTRICTED_MISSION.createResultMessage(false)
       textParts.append($"{colorize("redMenuButtonColor", warningText)}\n")
     }
     textParts.append(this.getLongDescription())

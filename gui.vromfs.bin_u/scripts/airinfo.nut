@@ -34,16 +34,12 @@ let { isModResearched, getModificationByName
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
 let { boosterEffectType, getActiveBoostersArray,
   getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
 let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let DataBlock = require("DataBlock")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { getUnitFileName } = require("vehicleModel")
 let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
 let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skins.nut")
@@ -56,8 +52,7 @@ let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPre
 let {
   getEsUnitType, isUnitsEraUnlocked, getUnitName, getUnitCountry,
   isUnitDefault, isUnitGift, getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, canResearchUnit, isRequireUnlockForUnit, canBuyUnit
-} = require("%scripts/unit/unitInfo.nut")
+  isUnitGroup, canResearchUnit, isRequireUnlockForUnit, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
@@ -67,7 +62,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrewById, getCrewByAir, isUnitInSlotbar, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { getBestItemSpecialOfferByUnit, findItemById } = require("%scripts/items/itemsManager.nut")
+let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { hideBonus } = require("%scripts/bonusModule.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
@@ -76,6 +71,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCrewLevel, getCrewName } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -118,30 +114,12 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 }
 // TODO: Move all global fns to unit/unitInfo.nut
 
-let isEventUnit = @(unit) unit.event != null
-
 ::canBuyUnitOnline <- function canBuyUnitOnline(unit) {
-  let canBuy = !::isUnitBought(unit)
-    && isUnitGift(unit)
-    && !isEventUnit(unit)
-    && unit.isVisibleInShop()
-    && !::canBuyUnitOnMarketplace(unit)
-    && !unit.isCrossPromo
-
-  if (isPlatformPC || !canBuy)
-    return canBuy
-
-  return null != unit.getEntitlements().findvalue(function(id) {
-    let bundleId = getBundleId(id)
-    return bundleId != "" && getShopItem(bundleId) != null
-  })
+  return !::isUnitBought(unit) && isAvailableBuyUnitOnline(unit)
 }
 
 ::canBuyUnitOnMarketplace <- function canBuyUnitOnMarketplace(unit) {
-  return unit.marketplaceItemdefId != null
-    && !::isUnitBought(unit)
-    && isMarketplaceEnabled()
-    && (findItemById(unit.marketplaceItemdefId)?.hasLink() ?? false)
+  return !::isUnitBought(unit) && isAvailableBuyUnitOnMarketPlace(unit)
 }
 
 ::isUnitInResearch <- function isUnitInResearch(unit) {
@@ -1024,6 +1002,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       }
     }
   }
+  else
+    showObjById("aircraft-prevUnit_bonus_tr", false, holderObj)
 
   let rpObj = holderObj.findObject("aircraft-require_rp_tr")
   if (checkObj(rpObj)) {

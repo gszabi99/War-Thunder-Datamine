@@ -24,7 +24,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { is_chat_message_empty } = require("chat")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { EPLX_SEARCH, contactsWndSizes, contactsGroups, contactsByGroups
+let { EPLX_SEARCH, contactsWndSizes, contactsGroups, contactsByGroups, contactsGroupWithoutMaxCount
 } = require("%scripts/contacts/contactsManager.nut")
 let { searchContactsResults, searchContacts, addContact, removeContact
 } = require("%scripts/contacts/contactsState.nut")
@@ -288,10 +288,12 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.createMultiElementsByObject(gObj, "%gui/contacts/playerList.blk", "contactItem", count, this)
   }
 
-  getContactsTotalText = @(gName) loc("contacts/total", {
-    contactsCount = this.contactsArrByGroups[gName].len(),
-    contactsCountMax = EPL_MAX_PLAYERS_IN_LIST
-  })
+  function getContactsTotalText(gName) {
+    let contactsCount = this.contactsArrByGroups[gName].len()
+    let contactsCountText = gName in contactsGroupWithoutMaxCount ? contactsCount
+      : $"{contactsCount}/{EPL_MAX_PLAYERS_IN_LIST}"
+    return loc("contacts/totalCount", { contactsCount = contactsCountText })
+  }
 
   function getFilteredPlayerListData(gName) {
     local playerList = this.contactsArrByGroups?[gName]
@@ -399,13 +401,9 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       imgObj["background-image"] = f.presence.getIcon()
       imgObj["background-color"] = f.presence.getIconColor()
       let { steamAvatar } = f
-      if (steamAvatar != null) {
-        let pilotIconObj = obj.findObject("pilotIconImg")
-        pilotIconObj.hasImageWithFullPath = "yes"
-        pilotIconObj.setValue(steamAvatar)
-      }
-      else
-        obj.findObject("pilotIconImg").setValue(f.pilotIcon)
+      let pilotIconObj = obj.findObject("pilotIconImg")
+      pilotIconObj.hasImageWithFullPath = steamAvatar != null ? "yes" : "no"
+      pilotIconObj.setValue(steamAvatar ?? f.pilotIcon)
 
       if (hasHoverButtons)
         this.updateContactButtonsVisibility(f, obj.findObject("contact_buttons_holder"))
