@@ -29,7 +29,7 @@ let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 let { get_skins_for_unit } = require("unitCustomization")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { get_charserver_time_sec } = require("chard")
-let { shopIsModificationEnabled } = require("chardResearch")
+let { isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
   get_modifications_blk } = require("blkGetters")
@@ -476,7 +476,7 @@ local Unit = class {
       contentPreview.showUnitSkin(this.name)
   }
 
-  isDepthChargeAvailable = @() this.hasDepthCharge || shopIsModificationEnabled(this.name, "ship_depth_charge")
+  isDepthChargeAvailable = @() this.hasDepthCharge || isModificationEnabled(this.name, "ship_depth_charge")
 
   function getNVDSights(modName) {
     if (!this.isTank())

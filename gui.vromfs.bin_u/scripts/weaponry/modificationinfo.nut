@@ -1,12 +1,12 @@
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost_gold, shop_get_module_research_status, wp_get_modification_cost, get_modifications_overdrive
 from "%scripts/dagui_library.nut" import *
 let { get_modifications_blk } = require("blkGetters")
-
-let { AMMO,
-        getAmmoAmount,
-        getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
-
-let { shopIsModificationAvailable, shopIsModificationPurchased } = require("chardResearch")
+let { AMMO, getAmmoAmount, getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
+let { shopIsModificationAvailable, shopIsModificationPurchased, shopIsModificationEnabled
+} = require("chardResearch")
+let { get_gui_option } = require("guiOptions")
+let { get_game_mode } = require("mission")
+let { USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !shopIsModificationPurchased(unit.name, req)) == null
@@ -152,6 +152,14 @@ function updateRelationModificationList(unit, modifName) {
   }
 }
 
+function isModificationEnabled(unitName, modName) {
+  if (shopIsModificationEnabled(unitName, modName))
+    return true
+
+  let gm = get_game_mode()
+  return (gm == GM_TEST_FLIGHT || gm == GM_BUILDER) && !get_gui_option(USEROPT_MODIFICATIONS)
+}
+
 return {
   canBuyMod
   isModMounted
@@ -161,6 +169,7 @@ return {
   canResearchMod
   findAnyNotResearchedMod
   isModAvailableOrFree
+  isModificationEnabled
   isWeaponModsPurchasedOrFree
   isModUpgradeable
   hasActiveOverdrive

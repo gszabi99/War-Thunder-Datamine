@@ -4,7 +4,7 @@ let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { RESET_ID } = require("%scripts/popups/popupFilter.nut")
+let { RESET_ID } = require("%scripts/popups/popupFilterWidget.nut")
 
 let filterTypes = {}
 let buyTypes = [
@@ -139,7 +139,6 @@ function applyFilterChange(objId, tName, value) {
   let selectedArr = filterTypes[tName].selectedArr
   let referenceArr = filterTypes[tName].referenceArr
   let isReset = objId == RESET_ID
-
   foreach (idx, inst in referenceArr) {
     if (!isReset && inst.id != objId)
       continue

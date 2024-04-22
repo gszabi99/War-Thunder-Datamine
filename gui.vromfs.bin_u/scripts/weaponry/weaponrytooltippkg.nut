@@ -21,11 +21,10 @@ let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc } = requir
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
   addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
-let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
+let { isModResearched, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = require("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -283,7 +282,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         foreach (upgrade in arr) {
           if (upgrade == null)
             continue
-          addDesc += "\n" + (shopIsModificationEnabled(unit.name, upgrade)
+          addDesc += "\n" + (isModificationEnabled(unit.name, upgrade)
             ? "<color=@goodTextColor>"
             : "<color=@commonTextColor>")
               + getModificationName(unit, upgrade) + "</color>"

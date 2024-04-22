@@ -38,6 +38,7 @@ let { move_mouse_on_child, move_mouse_on_child_by_value, isInMenu } = require("%
 let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
+let { is_console } = require("%sqstd/platform.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -454,7 +455,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
     showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
     showObjById("btn_friendRemove", isFriend, contact_buttons_holder)
-    showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist"), contact_buttons_holder)
+    showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist") && !is_console, contact_buttons_holder)
     showObjById("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_message", this.owner

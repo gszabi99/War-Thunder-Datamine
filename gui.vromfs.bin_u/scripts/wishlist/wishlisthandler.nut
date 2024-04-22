@@ -16,7 +16,7 @@ let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPre
 let { getUnitName, getUnitCountry, getEsUnitType, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { getUnitTooltipImage, getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
-let { openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/wishlist/wishlistFilter.nut")
@@ -35,6 +35,8 @@ let { is_console, isXBoxPlayerName, isPS4PlayerName } = require("%scripts/client
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
+let { steam_is_running } = require("steam")
+let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 
 let unitButtonTypes = {
   hasMarketPlaceButton = false
@@ -196,10 +198,12 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.itemsListObj = this.scene.findObject("items_list")
     this.unitInfoObj = this.scene.findObject("item_info_nest")
 
+    let isFriendWishList = this.friendUid != null
+
     openPopupFilter({
       scene = this.scene.findObject("filter_nest")
       onChangeFn = this.onFilterChange.bindenv(this)
-      filterTypes = getFiltersView(this.friendUid != null)
+      filterTypesFn = @() getFiltersView(isFriendWishList)
       popupAlign = "bottom-center"
     })
 
@@ -423,6 +427,13 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onGiftBuy(obj) {
+    if(steam_is_running()) {
+      let url = $"<url={loc("url/steamBindingEmailInfoUrl")}>{loc("mainmenu/steamBindinEmail")}</url>"
+      let msg = canEmailRegistration() ? loc("mainmenu/noSteamGift") : "".concat(loc("mainmenu/noSteamGiftBindEmail"), url)
+      scene_msg_box("wishlist_steam", null, msg, [["ok", @() null]], null)
+      return
+    }
+
     let unitName = obj?.unit ?? this.getCurItemObj()?.id
     if(unitName == null || this.friendUid == null)
       return

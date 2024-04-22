@@ -29,6 +29,7 @@ let { guiStartClanActivityWnd } = require("%scripts/clans/clanActivityModal.nut"
 let { openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
+let { is_console } = require("%sqstd/platform.nut")
 
 //-----------------------------
 // params keys:
@@ -202,7 +203,7 @@ let getActions = function(contact, params) {
     }
     {
       text = loc("mainmenu/go_to_wishlist")
-      show = !isMe && isFriend && hasFeature("Wishlist")
+      show = !isMe && isFriend && hasFeature("Wishlist") && !is_console
       action = @() tryOpenFriendWishlist(contact.uid)
     }
   )

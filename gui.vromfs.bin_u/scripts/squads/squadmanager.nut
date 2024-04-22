@@ -306,7 +306,11 @@ g_squad_manager = {
     if (ready != null && isMeReady == ready)
       return
     let isSetNoReady = (ready == false || (ready == null && isMeReady))
-    if (::checkIsInQueue() && !isLeader && g_squad_manager.isInSquad() && isSetNoReady) {
+    let isInSquad = g_squad_manager.isInSquad()
+    if (!isSetNoReady && !isInSquad)
+      return
+
+    if (::checkIsInQueue() && !isLeader && isInSquad && isSetNoReady) {
       addPopup(null, loc("squad/cant_switch_off_readyness_in_queue"))
       return
     }

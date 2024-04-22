@@ -509,15 +509,17 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!option)
       return
 
-    if (option.value != obj.getValue()) {
-      this.guiScene.performDelayed(this, function() {
-        set_option(option.type, obj.getValue())
-        this.updateOption(option.type)
-      })
-    }
+    if (option.value == obj.getValue())
+      return
 
-    enable_bullets_modifications(this.unit.name)
-    ::enable_current_modifications(this.unit.name)
+    this.guiScene.performDelayed(this, function() {
+      set_option(option.type, obj.getValue())
+      this.updateOption(option.type)
+      enable_bullets_modifications(this.unit.name)
+      ::enable_current_modifications(this.unit.name)
+      broadcastEvent("UnitWeaponChanged", { unitName = this.unit.name })
+      broadcastEvent("ModificationChanged")
+    })
   }
 
   function onMyWeaponOptionUpdate(obj) {
