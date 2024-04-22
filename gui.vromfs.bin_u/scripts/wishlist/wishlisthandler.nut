@@ -429,7 +429,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
   function onGiftBuy(obj) {
     if(steam_is_running()) {
       let url = $"<url={loc("url/steamBindingEmailInfoUrl")}>{loc("mainmenu/steamBindinEmail")}</url>"
-      let msg = canEmailRegistration() ? loc("mainmenu/noSteamGift") : "".concat(loc("mainmenu/noSteamGiftBindEmail"), url)
+      let msg = !canEmailRegistration() ? loc("mainmenu/noSteamGift") : "".concat(loc("mainmenu/noSteamGiftBindEmail"), url)
       scene_msg_box("wishlist_steam", null, msg, [["ok", @() null]], null)
       return
     }
