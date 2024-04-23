@@ -1922,6 +1922,11 @@
       "blk": "gameData/units/tankModels/weaponPresets/ussr_2s25_default.blk"
     }
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+    }
+  },
   "VehiclePhys": {
     "Mass": {
       "Empty": 17200.0,
@@ -1979,7 +1984,7 @@
     },
     "mechanics": {
       "steerType": "clutch_braking",
-      "maxBrakeForce": 200000.0,
+      "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.47,
       "mainGearRatio": 1.244,
       "sideGearRatio": 6.25,
@@ -3096,7 +3101,62 @@
       "image": "#ui/gameuiskin#tank_reinforcement_ussr"
     },
     "modern_tank_laser_rangefinder": {
-      "tier": 2
+      "tier": 2,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            }
+          ]
+        }
+      }
     },
     "airstrike": {},
     "improved_optics": {},

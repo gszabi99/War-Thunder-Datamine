@@ -2523,8 +2523,11 @@
       },
       {
         "name": "su_22m3_rocket_r60",
-        "blk": "gameData/FlightModels/weaponPresets/su_22m3_rocket_r60.blk",
-        "reqModification": "mi_24_r_60"
+        "blk": "gameData/FlightModels/weaponPresets/su_22m3_rocket_r60.blk"
+      },
+      {
+        "name": "su_22m3_rocket_r60m",
+        "blk": "gameData/FlightModels/weaponPresets/su_22m3_rocket_r60m.blk"
       },
       {
         "name": "su_22m3_rocket_s3k",
@@ -3048,24 +3051,45 @@
       {
         "index": 2,
         "tier": 9,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "wing_left_single_r_60",
-          "ShowNodes": {
-            "node": [
-              "pylon_10",
-              "apu_60m_001"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "wing_left_single_r_60",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "apu_60m_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60_default.blk",
+              "emitter": "apu_60m_r_60_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/su_r_60_default.blk",
-            "emitter": "apu_60m_r_60_001",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "wing_left_single_r_60m",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "apu_60m_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+              "emitter": "apu_60m_r_60_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 3,
@@ -3191,7 +3215,7 @@
             }
           },
           {
-            "iconType": "missile_type_b_air_to_air_group",
+            "iconType": "missile_air_to_air_group",
             "name": "wing_middle_left_rocket_r_60_x2",
             "reqModification": "mi_24_r_60",
             "ShowNodes": {
@@ -3203,6 +3227,24 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/p_62_2_l_r_60_x2.blk",
+              "emitter": "apu_60m_2_l",
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_group",
+            "name": "wing_middle_left_rocket_r_60m_x2",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": [
+                "pylon_6",
+                "apu_60m_2_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/p_62_2_l_r_60m_x2.blk",
               "emitter": "apu_60m_2_l",
               "separate": true,
               "external": true
@@ -3863,7 +3905,7 @@
             }
           },
           {
-            "iconType": "missile_type_b_air_to_air_group",
+            "iconType": "missile_air_to_air_group",
             "name": "wing_middle_right_rocket_r_60_x2",
             "reqModification": "mi_24_r_60",
             "ShowNodes": {
@@ -3875,6 +3917,24 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/p_62_2_r_r_60_x2.blk",
+              "emitter": "apu_60m_2_r",
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_group",
+            "name": "wing_middle_right_rocket_r_60m_x2",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": [
+                "pylon_5",
+                "apu_60m_2_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/p_62_2_l_r_60m_x2.blk",
               "emitter": "apu_60m_2_r",
               "separate": true,
               "external": true
@@ -3947,24 +4007,45 @@
       {
         "index": 7,
         "tier": 3,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "wing_right_single_r_60",
-          "ShowNodes": {
-            "node": [
-              "pylon_9",
-              "apu_60m_002"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air",
+            "name": "wing_right_single_r_60",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "apu_60m_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60_default.blk",
+              "emitter": "apu_60m_r_60_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/su_r_60_default.blk",
-            "emitter": "apu_60m_r_60_002",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "wing_right_single_r_60m",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "apu_60m_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+              "emitter": "apu_60m_r_60_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 8,
@@ -4443,8 +4524,13 @@
       "prevModification": "countermeasures_belt_pack",
       "tier": 2
     },
+    "mi_24_r_60m": {
+      "modClass": "weapon",
+      "reqModification": "mi_24_r_60",
+      "tier": 3
+    },
     "air_extinguisher": {
-      "prevModification": "mi_24_r_60",
+      "prevModification": "mi_24_r_60m",
       "tier": 4,
       "modClass": "weapon",
       "invertEnableLogic": false

@@ -1038,7 +1038,6 @@
     "createSecondaryShatters": false,
     "crew_compartments": {
       "fireParamsPreset": "ship_compartment_battleship",
-      "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "genericDamageMult": 0.15,
@@ -1064,7 +1063,6 @@
       }
     },
     "control_compartments": {
-      "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "genericDamageMult": 0.2,
@@ -1087,7 +1085,7 @@
       "fireParamsPreset": "ship_ammo_fire_total",
       "armorThrough": 500.0,
       "armorThickness": 2.2,
-      "fireProtectionHp": 15.0,
+      "fireProtectionHp": 10.0,
       "ammunition_storage_shells_01_dm": {
         "hp": 2000.0
       },
@@ -1106,7 +1104,7 @@
       "fireParamsPreset": "ship_ammo_fire_total",
       "armorThrough": 500.0,
       "armorThickness": 2.2,
-      "fireProtectionHp": 15.0,
+      "fireProtectionHp": 10.0,
       "ammunition_storage_charges_01_dm": {
         "hp": 3600.0
       },
@@ -1124,7 +1122,7 @@
       "armorClass": "ship_structural_steel",
       "fireParamsPreset": "ship_ammo_fire_aux",
       "armorThickness": 2.2,
-      "fireProtectionHp": 15.0,
+      "fireProtectionHp": 5.0,
       "armorThrough": 300.0,
       "ammunition_storage_aux_01_dm": {
         "hp": 1000.0
@@ -1164,22 +1162,10 @@
     },
     "elevators": {
       "armorClass": "ship_structural_steel",
-      "fireParamsPreset": "ship_barbettes",
       "genericDamageMult": 0.5,
       "armorThickness": 2.2,
-      "fireProtectionHp": 11.0,
-      "elevator_01_dm": {
-        "hp": 1906.0
-      },
-      "elevator_02_dm": {
-        "hp": 1906.0
-      },
-      "elevator_03_dm": {
-        "hp": 1906.0
-      },
-      "elevator_04_dm": {
-        "hp": 1906.0
-      },
+      "fireProtectionHp": 5.0,
+      "armorThrough": 350.0,
       "elevator_05_dm": {
         "hp": 1500.0
       },
@@ -1194,6 +1180,22 @@
       },
       "elevator_09_dm": {
         "hp": 1500.0
+      },
+      "elevator_01_dm": {
+        "fireParamsPreset": "ship_barbettes",
+        "hp": 1906.0
+      },
+      "elevator_02_dm": {
+        "fireParamsPreset": "ship_barbettes",
+        "hp": 1906.0
+      },
+      "elevator_03_dm": {
+        "fireParamsPreset": "ship_barbettes",
+        "hp": 1906.0
+      },
+      "elevator_04_dm": {
+        "fireParamsPreset": "ship_barbettes",
+        "hp": 1906.0
       }
     },
     "turrets_main_caliber": {
@@ -1282,7 +1284,6 @@
       }
     },
     "turrets_aa_caliber": {
-      "fireParamsPreset": "ship_aux_turrets",
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "fireDamageMult": 2.0,
@@ -1417,7 +1418,6 @@
     },
     "torpedoes": {
       "armorClass": "ship_structural_steel",
-      "fireParamsPreset": "ship_torpedo_fire",
       "armorThickness": 2.0,
       "torpedo_01_dm": {
         "hp": 350.0
@@ -1698,8 +1698,6 @@
       }
     },
     "superstructures": {
-      "stopChanceOnDeadPart": 0.7,
-      "fireParamsPreset": "ship_superstructure",
       "armorClass": "ship_structural_steel",
       "armorThickness": 16.0,
       "genericDamageMult": 0.5,
@@ -1720,7 +1718,6 @@
       }
     },
     "hull_construction": {
-      "stopChanceOnDeadPart": 0.3,
       "armorClass": "ship_structural_steel",
       "armorThickness": 25.4,
       "fireDamageMult": 0.1,
@@ -1730,7 +1727,6 @@
       }
     },
     "bulkheads": {
-      "stopChanceOnDeadPart": 0.7,
       "armorClass": "ship_structural_steel",
       "armorThickness": 25.4,
       "fireDamageMult": 0.1,
@@ -2339,7 +2335,6 @@
     },
     "turret_armor": {
       "fireProtectionHp": 120.0,
-      "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_RGA",
       "armorThickness": 15.0,
       "turret_01_front_dm": {
@@ -2457,11 +2452,90 @@
         "armorClass": "ship_RHA",
         "armorThickness": 101.6,
         "hp": 10000.0
+      },
+      "turret_09_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_10_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_11_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_12_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_13_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_14_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_15_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_16_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_17_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_18_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_19_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_20_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_21_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_22_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_23_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_24_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_25_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_26_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_27_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
+      },
+      "turret_28_side_dm": {
+        "armorThickness": 38.1,
+        "hp": 10000.0
       }
     },
     "hull_armor": {
       "fireProtectionHp": 120.0,
-      "stopChanceOnDeadPart": 1.0,
       "armorClass": "ship_structural_steel",
       "armorThickness": 56.4,
       "fireDamageMult": 0.1,
@@ -2599,7 +2673,7 @@
     "coal_bunkers": {
       "armorThickness": 3.0,
       "armorClass": "ships_coal_bunker",
-      "stopChanceOnDeadPart": 0.0,
+      "stopChanceOnDeadPart": 0.05,
       "variableThickness": true,
       "kineticProtectionEquivalentPerMeter": 27.3,
       "hidableInXrayViewer": true,
