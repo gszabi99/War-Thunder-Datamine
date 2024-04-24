@@ -455,7 +455,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
     showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
     showObjById("btn_friendRemove", isFriend, contact_buttons_holder)
-    showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist") && !is_console, contact_buttons_holder)
+    showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist") && !is_console && isInMenu(), contact_buttons_holder)
     showObjById("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_message", this.owner

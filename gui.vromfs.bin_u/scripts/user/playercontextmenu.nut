@@ -203,7 +203,7 @@ let getActions = function(contact, params) {
     }
     {
       text = loc("mainmenu/go_to_wishlist")
-      show = !isMe && isFriend && hasFeature("Wishlist") && !is_console
+      show = !isMe && isFriend && hasFeature("Wishlist") && !is_console && isInMenu()
       action = @() tryOpenFriendWishlist(contact.uid)
     }
   )
