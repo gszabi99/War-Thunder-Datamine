@@ -25,6 +25,7 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { frnd } = require("dagor.random")
 let { PI, cos, sin } = require("%sqstd/math.nut")
 let { enableObjsByTable, activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
@@ -398,6 +399,11 @@ function addRaysInScreenCoords(props, raysArray) {
 
 function getPrizesView(prizes, bgDelay = 0) {
   let res = []
+
+  let count = prizes.len()
+  let chestItemWidth = min(to_pixels("0.99@rw") / count, to_pixels("1@itemWidth"))
+  let margin = (to_pixels("1@rw") - count * chestItemWidth) / (2 * count)
+
   foreach (prize in prizes) {
     let offerType = ::trophyReward.getType(prize)
     let customImageData = offerTypes?[offerType].getImage(prize)
@@ -409,6 +415,8 @@ function getPrizesView(prizes, bgDelay = 0) {
       textBlock = offerTypes?[offerType].getTextView(prize)
       sortIdx = sortIdxPrizesByType?[offerType] ?? 0
       additionalSortParam = prize?[offerType] ?? ""
+      margin = clamp(margin, 0, to_pixels("4@blockInterval"))
+      chestItemWidth
     })
   }
   res.sort(@(a, b) a.sortIdx <=> b.sortIdx
@@ -654,6 +662,10 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBuy() {
+    let itemsCost = Cost(this.chestItem.getCost().wp * this.useAmount)
+    if(!checkBalanceMsgBox(itemsCost))
+      return
+
     let cb = Callback(function(res) {
       if (!(res?.success ?? false))
         return
@@ -783,7 +795,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let data = handyman.renderCached("%gui/items/buyAndOpenChestPrizes.tpl", getPrizesView(prizes, 300 ))
+    let data = handyman.renderCached("%gui/items/buyAndOpenChestPrizes.tpl", getPrizesView(prizes, 300))
     this.guiScene.replaceContentFromText(this.scene.findObject("prizes_list"), data, data.len(), this)
     showObjById("prizes_list", true, this.scene)
     this.updateUseAmountControls()

@@ -35,6 +35,67 @@ root {
         width:t='1@rw'
         pos:t='0.5pw-0.5w, 1@bh'
         position:t='absolute'
+        tdiv {
+          position:t='absolute'
+          pos:t='pw-w-1@buttonCloseHeight, 0'
+
+          Button_text {
+            id:t='gc_warpoints'
+            visualStyle:t='noFrame'
+            tooltip:t='#mainmenu/warpoints'
+            showBonusPersonal:t=''
+            showBonusCommon:t=''
+            _on_click:t='onOnlineShopLions'
+
+            img {
+              isFirstLeft:t='yes'
+              size:t='@cIco, @cIco'
+              background-image:t='#ui/gameuiskin#shop_warpoints.svg'
+              background-svg-size:t='@cIco, @cIco'
+            }
+
+            btnText {
+              id:t='gc_balance'
+              min-width:t='0.05@sf'
+              pos:t='1@blockInterval, 50%ph-50%h'
+              position:t='relative'
+              text-align:t='left'
+            }
+
+            BonusCorner {bonusType:t='personal'}
+            BonusCorner {bonusType:t='common'}
+            chapterSeparator {
+              position:t='absolute'
+              pos:t='pw, 0'
+            }
+          }
+
+          Button_text {
+            id:t='gc_eagles'
+            visualStyle:t='noFrame'
+            tooltip:t='#mainmenu/gold'
+            _on_click:t='onOnlineShopEagles'
+
+            img {
+              isFirstLeft:t='yes'
+              size:t='@cIco, @cIco'
+              background-image:t='#ui/gameuiskin#shop_warpoints_premium.svg'
+              background-svg-size:t='@cIco, @cIco'
+            }
+
+            btnText {
+              id:t='gc_gold'
+              min-width:t='0.05@sf'
+              pos:t='1@blockInterval, 50%ph-50%h'
+              position:t='relative'
+              text-align:t='left'
+            }
+            chapterSeparator {
+              position:t='absolute'
+              pos:t='pw, 0'
+            }
+          }
+        }
         Button_close {
           id:t='btn_close'
           on_click:t=goBack
@@ -278,6 +339,7 @@ root {
       }
     }
   }
+  gamercard_div {}
 }
 
 timer {

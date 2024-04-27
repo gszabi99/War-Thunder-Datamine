@@ -32,8 +32,7 @@ tdiv {
 <<#prizes>>
 tdiv {
   id:t='prize_<<idx>>'
-  margin:t='4@blockInterval, 0'
-
+  margin:t='<<margin>>, 0'
   tdiv {
     id:t='prize_background'
     size:t='pw, ph'
@@ -47,7 +46,7 @@ tdiv {
 
     <<#customImageData>>
     layeredIconContainer {
-      height:t='1@itemHeight'
+      height:t='<<chestItemWidth>>'
       position:t='absolute'
       effectType:t='blackOutline'
       <<@customImageData>>
@@ -55,7 +54,7 @@ tdiv {
     <</customImageData>>
     <<^customImageData>>
     layeredIconContainer {
-      size:t='1@itemWidth, 1@itemHeight'
+      size:t='<<chestItemWidth>>, <<chestItemWidth>>'
       position:t='absolute'
       effectType:t='blackOutline'
       <<@layeredImage>>
@@ -66,12 +65,12 @@ tdiv {
   tdiv {
     id:t='blue_bg'
     position:t='absolute'
-    pos:t='pw/2, 0.5@itemHeight'
+    pos:t='pw/2, 0.5*<<chestItemWidth>>'
     size:t='0,0'
     display:t='hide'
 
     tdiv {
-      size:t='1.5@itemWidth, 1.5@itemHeight'
+      size:t='1.5*<<chestItemWidth>>, 1.5*<<chestItemWidth>>'
       pos:t='-w/2, -h/2'
       position:t='absolute'
       background-image:t='!#ui/images/chests/chest_bg_cloud'
@@ -109,13 +108,13 @@ tdiv {
 
     <<#customImageData>>
     tdiv {
-      height:t='1@itemHeight'
+      height:t='<<chestItemWidth>>'
       <<@customImageData>>
     }
     <</customImageData>>
     <<^customImageData>>
     tdiv {
-      size:t='1@itemWidth, 1@itemHeight'
+      size:t='<<chestItemWidth>>, <<chestItemWidth>>'
       <<@layeredImage>>
     }
     <</customImageData>>
@@ -162,7 +161,7 @@ tdiv {
   tdiv {
     id:t='rays'
     position:t='absolute'
-    pos:t='pw/2, 0.5@itemHeight'
+    pos:t='pw/2, 0.5*<<chestItemWidth>>'
     size:t='0,0'
     display:t='hide'
     <<#rays>>
