@@ -17,7 +17,7 @@ let { startswith }=require("string")
 
 const MAX_FETCH_RETRIES = 5
 
-const MAX_GAME_MODES_FOR_REQUEST_INFO = 100
+const MAX_GAME_MODES_FOR_REQUEST_INFO = 50
 
 const NIGHT_GAME_MODE_TAG_PREFIX = "regular_with_night_"
 
