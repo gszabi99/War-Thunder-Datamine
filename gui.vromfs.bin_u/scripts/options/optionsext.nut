@@ -125,6 +125,7 @@ let { getCurrentGameMode, getCurrentShopDifficulty
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { complaintCategories } = require("%scripts/penitentiary/tribunal.nut")
 
 let { isWishlistEnabledForFriends = @() false, isWishlistCommentsEnabledForFriends = @() false,
   enableShowWishlistForFriends = @(_) null, enableShowWishlistCommentsForFriends = @(_) null } = require("chard")
@@ -1969,7 +1970,7 @@ let optionsMap = {
   },
   [USEROPT_COMPLAINT_CATEGORY] = function(_optionId, descr, _context) {
     descr.id = "complaint_category"
-    descr.values = ["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "SPAM", "OTHER"]
+    descr.values = complaintCategories
     descr.items = []
     for (local i = 0; i < descr.values.len(); i++)
       descr.items.append("#charServer/ban/reason/" + descr.values[i])

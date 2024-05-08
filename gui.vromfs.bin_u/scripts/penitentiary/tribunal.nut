@@ -6,6 +6,8 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { get_game_settings_blk } = require("blkGetters")
 
+let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "SPAM", "OTHER"])
+
 ::tribunal <- {
   maxComplaintCount = 10
   minComplaintCount = 5
@@ -59,7 +61,7 @@ let { get_game_settings_blk } = require("blkGetters")
     let reasonsList = []
     local complaintsCount = 0
     foreach (reason, count in complaintsToMe) {
-      if (!count)
+      if (!count || !complaintCategories.contains(reason))
         continue
 
       complaintsCount += count
@@ -81,4 +83,8 @@ let { get_game_settings_blk } = require("blkGetters")
 
     showInfoMsgBox(text, "tribunal_msg_box")
   }
+}
+
+return {
+  complaintCategories
 }
