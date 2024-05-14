@@ -39,7 +39,7 @@ let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
 let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { isInMenu, loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { gui_start_itemsShop, gui_start_inventory, gui_start_items_list
 } = require("%scripts/items/startItemsShop.nut")
@@ -49,9 +49,6 @@ let { guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBen
 let { guiStartCredits } = require("%scripts/credits.nut")
 let { guiStartReplays } = require("%scripts/replays/replayScreen.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
-
-let isInResearchMode = @()
-  handlersManager.findHandlerClassInScene(gui_handlers.ShopCheckResearch)?.shopResearchMode == true
 
 let list = {
   SKIRMISH = {
@@ -188,7 +185,7 @@ let list = {
   CHANGE_LOG = {
     text = @() "#mainmenu/btnChangelog"
     onClickFunc = @(...) openChangelog()
-    isHidden = @(...) !hasFeature("Changelog") || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !hasFeature("Changelog") || !isInMenu()
   }
   EXIT = {
     text = @() "#mainmenu/btnExit"
@@ -290,33 +287,33 @@ let list = {
       : showInfoMsgBox(loc("msgbox/notAvailbleGoldPurchase"))
     image = @() "#ui/gameuiskin#shop_warpoints_premium.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu()
   }
   PREMIUM = {
     text = @() "#charServer/chapter/premium"
     onClickFunc = @(_obj, handler) handler.startOnlineShop("premium")
     image = @() "#ui/gameuiskin#sub_premiumaccount.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("EnablePremiumPurchase") || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !hasFeature("EnablePremiumPurchase") || !isInMenu()
   }
   WARPOINTS = {
     text = @() "#charServer/chapter/warpoints"
-    onClickFunc = @(_obj, handler) handler.startOnlineShop("warpoints") || isInResearchMode()
+    onClickFunc = @(_obj, handler) handler.startOnlineShop("warpoints")
     image = @() "#ui/gameuiskin#shop_warpoints.svg"
     needDiscountIcon = true
-    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !hasFeature("SpendGold") || !isInMenu()
   }
   WISHLIST = {
     text = @() "#mainmenu/wishlist"
     onClickFunc = @(...) openWishlist()
     image = @() "#ui/gameuiskin#open_wishlist.svg"
-    isHidden = @(...) !hasFeature("Wishlist") || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !hasFeature("Wishlist") || !isInMenu()
   }
   INVENTORY = {
     text = @() "#items/inventory"
     onClickFunc = @(...) gui_start_inventory()
     image = @() "#ui/gameuiskin#inventory_icon.svg"
-    isHidden = @(...) !::ItemsManager.isItemsManagerEnabled() || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !::ItemsManager.isItemsManagerEnabled() || !isInMenu()
     unseenIcon = @() SEEN.INVENTORY
   }
   ITEMS_SHOP = {
@@ -324,7 +321,7 @@ let list = {
     onClickFunc = @(...) gui_start_itemsShop()
     image = @() "#ui/gameuiskin#store_icon.svg"
     isHidden = @(...) !::ItemsManager.isItemsManagerEnabled() || !isInMenu()
-      || !hasFeature("ItemsShopInTopMenu") || isInResearchMode()
+      || !hasFeature("ItemsShopInTopMenu")
     unseenIcon = @() SEEN.ITEMS_SHOP
   }
   WORKSHOP = {
@@ -332,7 +329,7 @@ let list = {
     onClickFunc = @(...) gui_start_items_list(itemsTab.WORKSHOP)
     image = @() "#ui/gameuiskin#btn_modifications.svg"
     isHidden = @(...) !::ItemsManager.isItemsManagerEnabled() || !isInMenu()
-      || !workshop.isAvailable() || isInResearchMode()
+      || !workshop.isAvailable()
     unseenIcon = @() SEEN.WORKSHOP
   }
   WARBONDS_SHOP = {
@@ -341,7 +338,7 @@ let list = {
     image = @() "#ui/gameuiskin#wb.svg"
     isHidden = @(...) !isBattleTasksAvailable()
       || !::g_warbonds.isShopAvailable()
-      || !isInMenu() || isInResearchMode()
+      || !isInMenu()
     unseenIcon = @() SEEN.WARBONDS_SHOP
   }
   ONLINE_SHOP = {
@@ -352,7 +349,7 @@ let list = {
     isFeatured = @() !canUseIngameShop()
     image = getEntStoreIcon
     needDiscountIcon = needEntStoreDiscountIcon
-    isHidden = @(...) isEntStoreTopMenuItemHidden() || isInResearchMode()
+    isHidden = @(...) isEntStoreTopMenuItemHidden()
     unseenIcon = getEntStoreUnseenIcon
   }
   MARKETPLACE = {
@@ -362,13 +359,13 @@ let list = {
     isLink = @() true
     isFeatured = @() true
     image = @() "#ui/gameuiskin#gc.svg"
-    isHidden = @(...) !isMarketplaceEnabled() || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !isMarketplaceEnabled() || !isInMenu()
   }
   COLLECTIONS = {
     text = @() "#mainmenu/btnCollections"
     onClickFunc = @(...) openCollectionsWnd()
     image = @() "#ui/gameuiskin#collection.svg"
-    isHidden = @(...) !hasAvailableCollections() || !isInMenu() || isInResearchMode()
+    isHidden = @(...) !hasAvailableCollections() || !isInMenu()
   }
   WINDOW_HELP = {
     text = @() "#flightmenu/btnControlsHelp"

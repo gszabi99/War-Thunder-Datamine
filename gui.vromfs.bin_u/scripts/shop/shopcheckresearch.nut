@@ -42,9 +42,14 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   showRankLockedMsgBoxOnce = false
 
   shopResearchMode = true
-  slotbarActions = [ "research", "buy", "take", "sec_weapons", "weapons", "info", "repair" ]
+  slotbarActions = [ "research", "buy", "take", "sec_weapons", "info", "repair" ]
 
-  function getSceneTplView() { return { hasMaxWindowSize = isSmallScreen } }
+  function getSceneTplView() {
+    return {
+      hasMaxWindowSize = isSmallScreen
+      hideGamercard = true
+    }
+  }
 
   function initScreen() {
     let unitName = getTblValue(::researchedUnitForCheck, this.researchBlock)

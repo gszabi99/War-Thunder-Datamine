@@ -121,6 +121,15 @@ function fetchContacts() {
   })
 }
 
+function requestContactsListAndDo(cb) {
+  function callback(res) {
+     updateContactsListFromContactsServer(res)
+     cb(res)
+  }
+  contactsClient.contacts_request_rpcjson("GetContacts",
+    { groups = [GAME_GROUP_NAME], satus = statusGroupsToRequest}, callback)
+}
+
 function execContactsCharAction(userId, charAction, successCb = null) {
   if (userId == ::INVALID_USER_ID) {
     logC($"trying to do {charAction} with invalid contact")
@@ -131,7 +140,13 @@ function execContactsCharAction(userId, charAction, successCb = null) {
       fetchContacts()
       successCb?()
     }
-    failure = @(err) showInfoMsgBox(loc(err), "exec_contacts_action_error")
+    function failure(err) {
+      if (err == "REQUEST_NOT_FOUND") { //Need update contacts list
+        requestContactsListAndDo(@(_) fetchContacts())
+        return
+      }
+      showInfoMsgBox(loc(err), "exec_contacts_action_error")
+    }
   })
 }
 
@@ -253,15 +268,6 @@ function addInvitesToFriend(inviters) {
 
   ::g_invites.addFriendsInvites(inviters)
   fetchContacts()
-}
-
-function requestContactsListAndDo(cb) {
-  function callback(res) {
-     updateContactsListFromContactsServer(res)
-     cb(res)
-  }
-  contactsClient.contacts_request_rpcjson("GetContacts",
-    { groups = [GAME_GROUP_NAME], satus = statusGroupsToRequest}, callback)
 }
 
 let removeContact = @(player, groupName)

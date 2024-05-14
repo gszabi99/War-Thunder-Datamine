@@ -179,14 +179,16 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitBought(params) {
-    if (getTblValue("unitName", params) != this.unit.name) {
+    let { unitName = null, needSelectCrew = false } = params
+    if (unitName != this.unit.name) {
       this.purchaseUnit()
       return
     }
 
     this.updateResearchedUnit()
     this.updateButtons()
-    this.trainCrew()
+    if (needSelectCrew)
+      this.trainCrew()
   }
 
   function getUnitPlaceObj() {

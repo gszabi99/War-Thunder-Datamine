@@ -1676,12 +1676,13 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return
 
-    if (needSelectCrew && !::checkIsInQueue() && !this.shopResearchMode)
+    if (needSelectCrew && !::checkIsInQueue())
       takeUnitInSlotbar(unit, {
         unitObj = this.getAirObj(unit.name)
         cellClass = "shopClone"
         isNewUnit = true
         getEdiffFunc = this.getCurrentEdiff.bindenv(this)
+        afterSuccessFunc = this.shopResearchMode ? Callback(@() this.selectRequiredUnit(), this) : null
       })
     else if (this.shopResearchMode)
       this.selectRequiredUnit()

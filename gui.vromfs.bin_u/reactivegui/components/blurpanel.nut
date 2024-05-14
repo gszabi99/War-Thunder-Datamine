@@ -13,4 +13,17 @@ let blurPanel = {
   }
 }
 
-return blurPanel
+let fullScreenBlurPanel = {
+  rendObj = !isInVr ? ROBJ_WORLD_BLUR_PANEL : null
+  size = flex()
+  children = {
+    rendObj = ROBJ_SOLID
+    size = flex()
+    color = 0xBF090F16
+  }
+}
+
+return {
+  blurPanel
+  fullScreenBlurPanel
+}

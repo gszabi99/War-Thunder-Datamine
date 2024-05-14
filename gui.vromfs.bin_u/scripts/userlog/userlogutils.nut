@@ -59,7 +59,24 @@ function getBattleRewardDetails(reward) {
     : toArray(reward?.event ?? reward?.unit ?? [])
 
   return rewards.filter(@(r) !!r?.expNoBonus || !!r?.wpNoBonus || !!r?.exp
-    || (r?.finishingType == "converting") || (r?.finishingType == "mission_end"))
+    || (r?.finishingType == "converting") || (r?.finishingType == "mission_end")
+    || r?.unit)
+}
+
+function getBattleRewardTable(containerValue) {
+  if (typeof(containerValue) == "table")
+    return containerValue
+
+  local rewardTbl = {}
+  if (typeof(containerValue) == "array") {
+    rewardTbl.event <- []
+    containerValue.each(@(nestedTbl) rewardTbl.event.extend(
+      (typeof(nestedTbl.event) == "table") ? [nestedTbl.event] : nestedTbl.event
+    ))
+    rewardTbl.event.sort(@(a, b) a.timeFromMissionStart <=> b.timeFromMissionStart)
+  }
+
+  return rewardTbl
 }
 
 return {
@@ -67,4 +84,5 @@ return {
   saveOnlineJob
   getTournamentRewardData
   getBattleRewardDetails
+  getBattleRewardTable
 }

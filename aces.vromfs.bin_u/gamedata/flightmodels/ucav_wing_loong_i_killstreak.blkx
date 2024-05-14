@@ -1575,44 +1575,131 @@
     }
   },
   "commonWeapons": {
-    "hasTargetingPod": true,
     "Weapon": {
-      "dummy": true,
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/dummy_weapon.blk",
-      "emitter": "optic1_gun",
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "speedYaw": 200.0,
-      "speedPitch": 200.0,
-      "parkInDeadzone": true,
-      "aimForOperatedShell": true,
-      "turret": {
-        "head": "optic1_turret",
-        "gun": "optic1_gun",
-        "mainTurret": true
-      },
-      "limits": {
-        "yaw": [
-          -180.0,
-          180.0
-        ],
-        "pitch": [
-          -90.0,
-          90.0
-        ]
-      }
+      "slot": 0,
+      "preset": "common"
     }
   },
   "weapon_presets": {
-    "preset": {
-      "name": "ucav_wing_loong_default",
-      "blk": "gameData/FlightModels/weaponPresets/ucav_wing_loong_akd_9.blk",
-      "tags": {
-        "free": true
+    "preset": [
+      {
+        "name": "ucav_wing_loong_default",
+        "blk": "gameData/FlightModels/weaponPresets/ucav_wing_loong_akd_9.blk",
+        "tags": {
+          "free": true
+        }
+      },
+      {
+        "name": "ucav_wing_loong_akd_10",
+        "blk": "gameData/FlightModels/weaponPresets/ucav_wing_loong_akd_10.blk"
       }
-    }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 1000.0,
+    "maxloadMassLeftConsoles": 1000.0,
+    "maxloadMassRightConsoles": 1000.0,
+    "maxDisbalance": 900.0,
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "common",
+          "hasTargetingPod": true,
+          "Weapon": {
+            "dummy": true,
+            "trigger": "gunner0",
+            "triggerGroup": "primary",
+            "blk": "gameData/Weapons/dummy_weapon.blk",
+            "emitter": "optic1_gun",
+            "defaultYaw": 0.0,
+            "defaultPitch": 0.0,
+            "speedYaw": 200.0,
+            "speedPitch": 200.0,
+            "parkInDeadzone": true,
+            "aimForOperatedShell": true,
+            "turret": {
+              "head": "optic1_turret",
+              "gun": "optic1_gun",
+              "mainTurret": true
+            },
+            "limits": {
+              "yaw": [
+                -180.0,
+                180.0
+              ],
+              "pitch": [
+                -90.0,
+                90.0
+              ]
+            }
+          }
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "akd_9",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/wing_loong_akd_9_default.blk",
+              "emitter": "akd_9_launcher_single_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "akd_10",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/wing_loong_akd_10.blk",
+              "emitter": "akd_9_launcher_single_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "akd_9",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/wing_loong_akd_9_default.blk",
+              "emitter": "akd_9_launcher_single_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "akd_10",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/wing_loong_akd_10.blk",
+              "emitter": "akd_9_launcher_single_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      }
+    ]
   },
   "sensors": {
     "sensor": [

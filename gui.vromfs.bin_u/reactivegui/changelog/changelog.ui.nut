@@ -14,7 +14,7 @@ let JB = require("%rGui/control/gui_buttons.nut")
 let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
 let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let focusBorder = require("%rGui/components/focusBorder.nut")
-let blurPanel = require("%rGui/components/blurPanel.nut")
+let { blurPanel } = require("%rGui/components/blurPanel.nut")
 let spinner = require("%rGui/components/spinner.nut")
 let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
 

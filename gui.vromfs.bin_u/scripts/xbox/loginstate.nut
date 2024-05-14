@@ -10,6 +10,8 @@ let store = require("%xboxLib/impl/store.nut")
 let presence = require("%xboxLib/impl/presence.nut")
 let crossnetwork = require("%xboxLib/impl/crossnetwork.nut")
 let relationships = require("%xboxLib/impl/relationships.nut")
+let {loading_is_in_progress} = require("loading")
+let { debounce } = require("%sqstd/timers.nut")
 
 
 function update_relationships(fire_events, callback) {
@@ -68,12 +70,22 @@ function login(callback) {
 }
 
 
+function callback_after_loading_finish(callback) {
+  let debounced = debounce(callback_after_loading_finish, 0.1)
+  if (loading_is_in_progress()) {
+    debounced(callback)
+  } else {
+    callback?()
+  }
+}
+
+
 function logout(callback) {
   logX("Logout")
   on_xbox_logout()
   do_logout(function() {
     logX("Logout from live completed")
-    callback?()
+    callback_after_loading_finish(callback)
   })
 }
 

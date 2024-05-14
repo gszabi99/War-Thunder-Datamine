@@ -10,11 +10,56 @@ let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlock
 let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { curLangShortName } = require("%scripts/langUtils/language.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { get_charserver_time_sec } = require("chard")
+let { getTimestampFromStringUtc } = require("%scripts/time.nut")
+let { resetTimeout } = require("dagor.workcycle")
 
 let allRegionalUnlocks = Computed(@() activeUnlocks.value
   .filter(@(u) u?.meta.langLimits != null))
 
+let unlockNameToEndTimestamp = Computed(@() allRegionalUnlocks.get()
+  .map(function(u) {
+    let mode = DataBlock()
+    mode.loadFromText(u.meta.hostUnlockMode, u.meta.hostUnlockMode.len())
+    let timeRangeCondition = (mode % "condition")
+      .extend(mode % "hostCondition")
+      .extend(mode % "visualCondition")
+      .findvalue(@(c) c?.type == "timeRange" || c?.type == "char_time_range")
+
+    if ("endDate" not in timeRangeCondition)
+      return -1
+
+    return getTimestampFromStringUtc(timeRangeCondition.endDate)
+  })
+  .filter(@(t) t != -1))
+
+function getClosestExpTime() {
+  let curTime = get_charserver_time_sec()
+  local closestExpTime = -1
+  foreach (timestamp in unlockNameToEndTimestamp.get()) {
+    if (timestamp <= curTime)
+      continue
+    if (closestExpTime == -1 || (timestamp < closestExpTime))
+      closestExpTime = timestamp
+  }
+  return closestExpTime
+}
+
+let closestExpirationTime = Watched(getClosestExpTime())
+
+function updateClosestExpirationTime(...) {
+  let closestExpTime = getClosestExpTime()
+  closestExpirationTime.set(closestExpTime)
+  if (closestExpTime != -1)
+    resetTimeout((closestExpTime - get_charserver_time_sec()), updateClosestExpirationTime)
+}
+
+unlockNameToEndTimestamp.subscribe(updateClosestExpirationTime)
+
 let regionalPromos = Computed(@() allRegionalUnlocks.value
+  .filter(@(u) (u.name not in unlockNameToEndTimestamp.get())
+    || ((closestExpirationTime.get() != -1)
+      && (closestExpirationTime.get() <= unlockNameToEndTimestamp.get()[u.name])))
   .filter(@(u) u.meta.langLimits.split(";").contains(curLangShortName.value))
   .filter(@(u) (userstatStats.value.stats?[u.table].stats[$"val_{u.name}_activation"] ?? 0) == 0)
   .map(@(u, id) u.meta.popup.__merge({ id })).values().sort(@(a, b) a.id <=> b.id))

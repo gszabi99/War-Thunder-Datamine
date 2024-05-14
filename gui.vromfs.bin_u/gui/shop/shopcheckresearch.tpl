@@ -26,11 +26,12 @@ root {
     padByLine:t='yes'
 
     include '%gui/shop/shopInclude.blk'
-
   }
 
+  <<^hideGamercard>>
   gamercard_div {
     include '%gui/gamercardTopPanel.blk'
     include '%gui/gamercardBottomPanel.blk'
   }
+  <</hideGamercard>>
 }

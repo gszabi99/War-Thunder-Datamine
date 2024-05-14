@@ -14,7 +14,7 @@ function getRecentItems() {
   items.sort(::ItemsManager.getItemsSortComparator(seenInventory))
   let resultItems = []
   foreach (item in items) {
-    if (item.isHiddenItem())
+    if (item.isHiddenItem() || item.shouldAutoConsume)
       continue
     resultItems.append(item)
     if (resultItems.len() == MAX_RECENT_ITEMS)

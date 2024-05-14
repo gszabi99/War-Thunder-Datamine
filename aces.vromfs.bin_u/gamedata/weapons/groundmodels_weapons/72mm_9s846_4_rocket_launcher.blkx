@@ -123,7 +123,6 @@
       "startSpeed": 30.0,
       "machMax": 1.7,
       "maxSpeed": 570.0,
-      "endSpeed": 1000.0,
       "maxDistance": 8000.0,
       "minDistance": 30.0,
       "rangeMax": 5200.0,
@@ -174,6 +173,7 @@
       "price": 3000.0,
       "amountPerTier": 2.0,
       "iconType": "missile_air_to_air_group",
+      "endSpeed": 590.0,
       "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
       "mesh": "9m39_rocket_deployed",
       "guidance": {
@@ -212,7 +212,6 @@
         "orientationAutopilot": {
           "timeOut": 0.0,
           "controlTime": 0.7,
-          "elevationAdd": 1.5,
           "elevationToHeadingMult": [
             10.0,
             10.0,
@@ -223,7 +222,8 @@
           "accelControlProp": 0.08,
           "accelControlIntg": 0.0,
           "accelControlIntgLim": 0.0,
-          "accelControlDiff": 0.00026
+          "accelControlDiff": 0.00026,
+          "elevationAdd": 5.0
         }
       },
       "stabilityRicochetModifier": {

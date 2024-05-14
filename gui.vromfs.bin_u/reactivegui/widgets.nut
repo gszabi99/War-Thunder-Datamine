@@ -17,6 +17,7 @@ let xrayIndicator = require("hud/xrayIndicator.nut")
 let changelog = require("changelog/changelog.ui.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
+let { fullScreenBlurPanel } = require("%rGui/components/blurPanel.nut")
 
 let widgetsMap = {
   [DargWidgets.HUD] = function() {
@@ -80,11 +81,7 @@ let widgetsMap = {
     children = [
       isInSpectatorMode.get()
         ? null
-        : {
-            size = flex()
-            rendObj = ROBJ_WORLD_BLUR
-            fillColor = 0xB2141A21
-          }
+        : fullScreenBlurPanel
       mkScoreboard()
     ]
   }

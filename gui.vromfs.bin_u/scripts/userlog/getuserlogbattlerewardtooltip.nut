@@ -8,7 +8,7 @@ let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getBattleRewardDetails } = require("%scripts/userLog/userlogUtils.nut")
+let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
 
 enum UnitControl {
   UNIT_CONTROL_BOT = 1
@@ -23,8 +23,6 @@ let unitControlToLocIdMap = {
 function getRewardFormulaConfig(values, isPlainText = false) {
   let { noBonus, premAcc, booster, premMod = 0, currencySign } = values
   let delimiter = isPlainText ? " " : ""
-  if (!noBonus)
-    return []
 
   if (premAcc + booster + premMod == 0)
     return [
@@ -78,7 +76,10 @@ let tableColumns = [
   {
     id = "activity"
     titleLocId = "currency/squadronActivity"
-    cellTransformFn = @(cellValue, _) { text = $"{cellValue}%"}
+    cellTransformFn = function(cellValue, _) {
+      let activity = cellValue != "" ? cellValue : 0
+      return { text = $"{activity}%"}
+    }
   }
   {
     id = "lifetime"
@@ -257,7 +258,7 @@ addTooltipTypes({
         return false
 
       let { logIdx, rewardId } = params
-      let foundReward = handler.logs.findvalue(@(l) l.idx == logIdx.tointeger())?.container[rewardId]
+      let foundReward = getBattleRewardTable(handler.logs.findvalue(@(l) l.idx == logIdx.tointeger())?.container[rewardId])
       if (foundReward == null)
         return false
       let view = getUserLogBattleRewardTooltip(getBattleRewardDetails(foundReward), rewardId)
