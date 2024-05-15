@@ -75,6 +75,7 @@ let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getResourceBuyFunc } = require("%scripts/customization/decoratorAcquire.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -2019,7 +2020,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onInfo() {
     if (hasFeature("WikiUnitInfo"))
-      openUrl(format(loc("url/wiki_objects"), this.unit.name), false, false, "customization_wnd")
+      openUrl(format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), this.unit.name), false, false, "customization_wnd")
     else
       showInfoMsgBox(colorize("activeTextColor", getUnitName(this.unit, false)) + "\n" + loc("profile/wiki_link"))
   }

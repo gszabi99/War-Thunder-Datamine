@@ -18,12 +18,13 @@ let { loadLocalByAccount, saveLocalByAccount
 let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { steam_is_running } = require("steam")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 
 function launchGuestEmailRegistration(stoken) {
   let language = getCurLangShortName()
-  let url = loc("url/pc_bind_url", { language, stoken })
+  let url = getCurCircuitOverride("guestBindURL", loc("url/pc_bind_url")).subst({ language, stoken })
   openUrl(url, false, false, "profile_page")
 }
 

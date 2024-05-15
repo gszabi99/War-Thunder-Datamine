@@ -34,6 +34,7 @@ let { getCurrentBattleTasks, isBattleTasksAvailable, setBattleTasksUpdateTimer
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let battlePassRewardTitleLocId = "battlePass/rewardsTitle"
 
@@ -569,7 +570,8 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    showObjById("btn_wiki_link", hasFeature("AllowExternalLink"), this.scene)
+    let wikiLinkBtn = showObjById("btn_wiki_link", hasFeature("AllowExternalLink"), this.scene)
+    wikiLinkBtn.link = getCurCircuitOverride("wikiBattlepassURL", loc("url/wiki_battlepass"))
   }
 }
 

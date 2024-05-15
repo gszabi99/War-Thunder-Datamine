@@ -15,6 +15,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { get_settings_blk } = require("blkGetters")
 let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { registerRespondent } = require("scriptRespondent")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let steamLanguages = freeze({
   English = "english"
@@ -116,8 +117,8 @@ function checkInitList() {
   let ttBlk = locBlk?.text_translation ?? DataBlock()
   let existingLangs = ttBlk % "lang"
 
-  let guiBlk = GUI.get()
-  let preset = guiBlk?.game_localization["default"] ?? DataBlock()
+  let gameLocalizationBlk = GUI.get()?.game_localization
+  let preset = getCurCircuitOverride("gameLocalization", gameLocalizationBlk?["default"] ?? DataBlock())
   for (local l = 0; l < preset.blockCount(); l++) {
     let lang = preset.getBlock(l)
     if (isInArray(lang.id, existingLangs))
@@ -125,14 +126,14 @@ function checkInitList() {
   }
 
   if (is_dev_version()) {
-    let blk = guiBlk?.game_localization ?? DataBlock()
-    for (local p = 0; p < blk.blockCount(); p++) {
-      let devPreset = blk.getBlock(p)
-      for (local l = 0; l < devPreset.blockCount(); l++) {
-        let lang = devPreset.getBlock(l)
-        _addLangOnce(lang.id, lang.icon, lang.chatId, lang.hasUnitSpeech, true)
+    if (gameLocalizationBlk != null)
+      for (local p = 0; p < gameLocalizationBlk.blockCount(); p++) {
+        let devPreset = gameLocalizationBlk.getBlock(p)
+        for (local l = 0; l < devPreset.blockCount(); l++) {
+          let lang = devPreset.getBlock(l)
+          _addLangOnce(lang.id, lang.icon, lang.chatId, lang.hasUnitSpeech, true)
+        }
       }
-    }
 
     foreach (langId in existingLangs)
       _addLangOnce(langId)

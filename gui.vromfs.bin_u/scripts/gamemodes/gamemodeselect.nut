@@ -32,6 +32,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameM
   getRequiredUnitTypes, getGameModeItemId, getGameModeEvent
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeStartFunction } = require("%scripts/gameModes/gameModeManagerView.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 dagui_propid_add_name_id("modeId")
 
@@ -583,7 +584,8 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventXboxMultiplayerPrivilegeUpdated(_p) { this.updateContent() }
 
   function updateButtons() {
-    showObjById("wiki_link", hasFeature("AllowExternalLink"), this.scene)
+    let wikiLinkBtn = showObjById("wiki_link", hasFeature("AllowExternalLink"), this.scene)
+    wikiLinkBtn.link = getCurCircuitOverride("wikiMatchmakerURL", loc("url/wiki_matchmaker"))
   }
 
   function setGameModesTimer() {

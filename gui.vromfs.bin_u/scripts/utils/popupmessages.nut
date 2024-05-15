@@ -18,6 +18,7 @@ let { loadLocalByAccount, saveLocalByAccount
 let { get_gui_regional_blk } = require("blkGetters")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -130,7 +131,8 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
   }
 
   foreach (key in ["name", "desc", "link", "linkText", "actionText"]) {
-    let text = getLocTextFromConfig(blk, key, "")
+    let keyPostfix = getCurCircuitOverride($"{key}ForPopupPostfix", "")
+    let text = keyPostfix != "" ? (blk?[$"{key}{keyPostfix}"] ?? "") :  getLocTextFromConfig(blk, key, "")
     if (text != "")
       popupTable[key] <- text.subst(localizedTbl)
   }

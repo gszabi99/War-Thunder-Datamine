@@ -44,6 +44,7 @@ let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/c
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -307,7 +308,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       isLink     = hasFeature("WikiUnitInfo")
       actionFunc = function () {
         if (hasFeature("WikiUnitInfo"))
-          openUrl(format(loc("url/wiki_objects"), unit.name), false, false, "unit_actions")
+          openUrl(format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), unit.name), false, false, "unit_actions")
         else
           showInfoMsgBox(colorize("activeTextColor", getUnitName(unit, false)) + "\n" + loc("profile/wiki_link"))
       }

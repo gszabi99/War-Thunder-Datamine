@@ -9,6 +9,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { guiStartSkirmish } = require("%scripts/missions/startMissionsList.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 let { setCurrentGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let fullRealModeOnBattleButtonClick = @(gameMode)
   guiStartModalEvents({ event = gameMode?.getEventId() ?? gameMode?.modeId })
@@ -20,7 +21,7 @@ let customActionsByGameModeId = {
   tss_featured_game_mode = {
     function startFunction(_gameMode) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
-        openUrl(loc("url/tss_all_tournaments"), false, false)
+        openUrl(getCurCircuitOverride("tssAllTournamentsURL", loc("url/tss_all_tournaments")), false, false)
       else if (!isMultiplayerPrivilegeAvailable.value)
         checkAndShowMultiplayerPrivilegeWarning()
       else if (!isShowGoldBalanceWarning())

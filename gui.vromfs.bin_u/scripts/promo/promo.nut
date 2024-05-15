@@ -26,6 +26,7 @@ let { loadLocalByAccount, saveLocalByAccount
 let { get_gui_regional_blk, get_game_settings_blk } = require("blkGetters")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const BUTTON_OUT_OF_DATE_DAYS = 15
 const DEFAULT_TIME_SWITCH_SEC = 10
@@ -544,7 +545,11 @@ let getViewText = @(view, defValue = null) getLocTextFromConfig(view, "text", de
 
 let getImage = @(view) getLocTextFromConfig(view, "image", "")
 
-let getPromoLinkText = @(view) getLocTextFromConfig(view, "link", "")
+function getPromoLinkText(view) {
+  let keyPostfix = getCurCircuitOverride("linkForPopupPostfix", "")
+  return keyPostfix != "" ? (view?[$"link{keyPostfix}"] ?? "")
+    : getLocTextFromConfig(view, "link", "")
+}
 
 let getPromoLinkBtnText = @(view) getLocTextFromConfig(view, "linkText", "")
 
@@ -703,7 +708,6 @@ return {
   checkPromoBlockReqEntitlement
   checkPromoBlockReqFeature
   isPromoLinkVisible
-  getPromoLinkText
   getPromoLinkBtnText
   getPromoCollapsedIcon
   getPromoCollapsedText

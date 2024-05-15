@@ -45,6 +45,8 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
+let { getCurCircuitOverride, isPixelStorm } = require("%appGlobals/curCircuitOverride.nut")
+let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -1034,6 +1036,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let sheet = this.getCurSheet()
     let showStatBar = this.infoReady && sheet == "Statistics"
     let showProfBar = this.infoReady && !showStatBar
+    let isVisibleAchievementsUrlBtn = showProfBar && hasFeature("AchievementsUrl") && hasFeature("AllowExternalLink")
 
     showObjectsByTable(this.scene, {
       paginator_place = showStatBar && (this.airStatsList != null) && (this.airStatsList.len() > this.statsPerPage)
@@ -1044,9 +1047,11 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       btn_moderatorBan = showProfBar && ::is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
       btn_friendChangeNick = hasFeature("CustomNicks") && showProfBar && !isMe
-      btn_achievements_url = showProfBar && hasFeature("AchievementsUrl")
-        && hasFeature("AllowExternalLink")
+      btn_achievements_url = isVisibleAchievementsUrlBtn
     })
+
+    if (isPixelStorm() && isVisibleAchievementsUrlBtn)
+      setDoubleTextToButton(this.scene, "btn_achievements_url", loc("mainmenu/comparePixelAchievements"))
   }
 
   function onBlacklistBan() {
@@ -1120,7 +1125,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenAchievementsUrl() {
-    openUrl(loc("url/achievements",
+    openUrl(getCurCircuitOverride("achievementsURL", loc("url/achievements")).subst(
         { appId = APP_ID, name = encode_uri_component(this.player.name) }),
       false, false, "profile_page")
   }

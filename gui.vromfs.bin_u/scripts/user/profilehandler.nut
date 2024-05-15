@@ -45,7 +45,8 @@ let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let seenList = require("%scripts/seen/seenList.nut")
-let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { placePriceTextToButton, warningIfGold, setDoubleTextToButton
+} = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
@@ -87,7 +88,7 @@ let { getStats } = require("%scripts/myStats.nut")
 let { findItemById, canGetDecoratorFromTrophy } = require("%scripts/items/itemsManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
+let { getCurCircuitOverride, isPixelStorm } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
@@ -434,6 +435,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.scene.findObject("btn_EmailRegistration").tooltip = needShowGuestEmailRegistration()
         ? loc("mainmenu/guestEmailRegistration/desc")
         : emailRegistrationTooltip
+
+    if (buttonsList.btn_codeApp)
+      setDoubleTextToButton(this.scene, "btn_codeApp",
+        loc("mainmenu/2step/getPass", { passName = getCurCircuitOverride("passName", "Gaijin Pass") }))
+    if (isPixelStorm() && buttonsList.btn_achievements_url)
+      setDoubleTextToButton(this.scene, "btn_achievements_url", loc("mainmenu/showPixelAchievements"))
 
     this.updateDecalButtons(this.getCurDecal())
   }
@@ -1198,7 +1205,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onCodeAppClick(_obj) {
-    openUrl(loc("url/2step/codeApp"))
+    openUrl(getCurCircuitOverride("twoStepCodeAppURL", loc("url/2step/codeApp")))
   }
 
   function onGroupCollapse(obj) {
@@ -1682,7 +1689,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.msgBox("question_change_name", loc(textLocId),
       [
         ["ok", function() {
-          openUrl(getCurCircuitUrl("changeNameURL", loc("url/changeName")), false, false, "profile_page")
+          openUrl(getCurCircuitOverride("changeNameURL", loc("url/changeName")), false, false, "profile_page")
           afterOkFunc()
         }],
         ["cancel", function() { }]
@@ -1827,7 +1834,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onOpenAchievementsUrl() {
-    openUrl(loc("url/achievements",
+    openUrl(getCurCircuitOverride("achievementsURL", loc("url/achievements")).subst(
         { appId = APP_ID, name = getProfileInfo().name }),
       false, false, "profile_page")
   }

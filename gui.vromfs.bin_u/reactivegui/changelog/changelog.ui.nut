@@ -16,7 +16,7 @@ let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 let focusBorder = require("%rGui/components/focusBorder.nut")
 let { blurPanel } = require("%rGui/components/blurPanel.nut")
 let spinner = require("%rGui/components/spinner.nut")
-let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let tabStyle = {
   fillColor = {
@@ -122,7 +122,7 @@ let missedPatchnoteText = formatText([loc("NoUpdateInfo", "Oops... No informatio
 
 let seeMoreUrl = {
   t = "url"
-  url = getCurCircuitUrl("newsURL", loc("url/news"))
+  url = getCurCircuitOverride("newsURL", loc("url/news"))
   v = loc("visitGameSite", "See game website for more details")
   margin = [fpx(50), 0, 0, 0]
 }

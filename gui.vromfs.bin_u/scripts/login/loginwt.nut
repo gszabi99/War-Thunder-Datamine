@@ -7,12 +7,10 @@ from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let statsd = require("statsd")
 let DataBlock = require("DataBlock")
-let { get_authenticated_url_sso } = require("url")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
@@ -53,6 +51,7 @@ let { isMeNewbie } = require("%scripts/myStats.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -79,8 +78,9 @@ eventbus_subscribe("gui_start_startscreen", gui_start_startscreen)
 eventbus_subscribe("gui_start_after_scripts_reload", gui_start_after_scripts_reload)
 
 function go_to_account_web_page(bqKey = "") {
-  let urlBase = format("https://store.gaijin.net/user.php?skin_lang=%s", getCurLangShortName())
-  openUrl(get_authenticated_url_sso(urlBase, "any").url, false, true, bqKey)
+  let urlBase = getCurCircuitOverride("accountWebPage",
+    $"auto_login https://store.gaijin.net/user.php?skin_lang={getCurLangShortName()}")
+  openUrl(urlBase, false, false, bqKey)
 }
 
 ::g_login.loadLoginHandler <- function loadLoginHandler() {

@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { setChardToken } = require("chard")
-let { getPlayerToken } = require("auth_wt")
+let { getPlayerTokenGlobal = null, getPlayerToken } = require("auth_wt")
 let contacts = require("contacts")
 let { get_time_msec } = require("dagor.time")
 let { resetTimeout } = require("dagor.workcycle")
@@ -49,7 +49,7 @@ function loginContacts() {
   logC("Login request")
   request("cln_cs_login",
     {
-      headers = { token = getPlayerToken(), appid = APP_ID },
+      headers = { token = (getPlayerTokenGlobal ?? getPlayerToken)(), appid = APP_ID },
       data = { game = CONTACTS_GAME_ID }
     })
 }

@@ -14,11 +14,15 @@ let exitGame = require("%scripts/utils/exitGame.nut")
 let { get_charserver_time_sec } = require("chard")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 local authDataByTypes = {
-  mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/two_step_email" }
-  ga = { text = "#mainmenu/2step/confirmGA", img = "#ui/images/two_step_phone_ga" }
-  gp = { text = "#mainmenu/2step/confirmGP", img = "#ui/images/two_step_phone_gp" }
+  mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/{prefix}two_step_email" } // warning disable: -forgot-subst
+  ga = { text = "#mainmenu/2step/confirmGA", img = "#ui/images/{prefix}two_step_phone_ga" }  // warning disable: -forgot-subst
+  gp = {
+    getText = @() loc("mainmenu/2step/confirmPass", { passName = getCurCircuitOverride("passName", "Gaijin Pass") })
+    img = "#ui/images/{prefix}two_step_phone_gp" // warning disable: -forgot-subst
+  }
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
 
@@ -36,12 +40,16 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
       : isExt2StepAllowed && isHasGaijinPass2StepTypeSync() ? authDataByTypes.gp
       : authDataByTypes.unknown
 
+    let prefix = getCurCircuitOverride("passImgPrefix", "")
     return {
-      verStatusText = data.text
-      authTypeImg = data.img
+      verStatusText = data?.getText() ?? data.text
+      authTypeImg = data.img.subst({ prefix })
+      backgroundImg = $"#ui/images/{prefix}two_step_form_bg"
       isShowRestoreLink = isExt2StepAllowed
       isRememberDevice = getObjValue(this.loginScene, "loginbox_code_remember_this_device", false)
       timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", this.guiScene)
+      signInTroublesURL = getCurCircuitOverride("signInTroublesURL", "#url/2step/signInTroubles")
+      restoreProfileURL = getCurCircuitOverride("restoreProfileURL", "#url/2step/restoreProfile")
     }
   }
 

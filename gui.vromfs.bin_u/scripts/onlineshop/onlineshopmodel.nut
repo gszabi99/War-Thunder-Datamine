@@ -13,7 +13,7 @@ let { openIngameStore } = require("%scripts/onlineShop/entitlementsShop.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { getCurCircuitUrl } = require("%appGlobals/urlCustom.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
@@ -168,7 +168,7 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
     return
 
   if (isInArray(chapter, [null, ""])) {
-    local webStoreUrl = getCurCircuitUrl("webstoreURL", loc("url/webstore", ""))
+    local webStoreUrl = getCurCircuitOverride("webstoreURL", loc("url/webstore", ""))
     if (steam_is_running() && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")))
       webStoreUrl = format(loc("url/webstore/steam"), steam_get_my_id().tostring())
 

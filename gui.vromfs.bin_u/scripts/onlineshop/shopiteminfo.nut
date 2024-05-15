@@ -4,8 +4,9 @@ let { parse_json } = require("json")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { getPlayerToken } = require("auth_wt")
 let { steam_is_running } = require("steam")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
-let ONLINE_STORE_API_URL = "https://api.gaijinent.com/item_info.php"
+let ONLINE_STORE_API_URL = getCurCircuitOverride("onlineStoreApiURL", "https://api.gaijinent.com/item_info.php")
 
 function createGuidsRequestParams(guids) {
   local res = guids.reduce(@(r, guid) $"{r}guids[]={guid}&", "")

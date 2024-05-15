@@ -27,6 +27,7 @@ let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
 let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
+let { isPixelStorm } = require("%appGlobals/curCircuitOverride.nut")
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -34,7 +35,8 @@ let payMethodsCfg = [
   { id = YU2_PAY_PAYPAL,      name = "paypal" }
   { id = YU2_PAY_WEBMONEY,    name = "webmoney" }
   { id = YU2_PAY_AMAZON,      name = "amazon" }
-  { id = YU2_PAY_GJN,         name = "gjncoins" }
+  { id = YU2_PAY_GJN,         name = "gjncoins", isVisible = @() !isPixelStorm() }
+  { id = YU2_PAY_GJN,         name = "pixel_coins", isVisible = @() isPixelStorm() }
 ]
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
@@ -353,12 +355,12 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let items = []
     local selItem = null
     foreach (method in payMethodsCfg)
-      if (payMethods & method.id) {
+      if ((payMethods & method.id) && (method?.isVisible() ?? true)) {
         let payMethodId = method.id
-        let name = "yuNetwork/payMethod/" + method.name
+        let name = $"yuNetwork/payMethod/{method.name}"
         items.append({
           name = name
-          icon = "!#ui/gameuiskin/payment_" + method.name + ".svg"
+          icon = $"!#ui/gameuiskin/payment_{method.name}.svg"
           callback = Callback(@() this.onYuplayPurchase(itemId, payMethodId, name), this)
         })
         selItem = selItem || name

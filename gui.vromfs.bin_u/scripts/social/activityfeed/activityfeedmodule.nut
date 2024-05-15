@@ -6,6 +6,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 subscriptions.addListenersWithoutEnv({
   UnitBought = function(p) {
@@ -25,7 +26,7 @@ subscriptions.addListenersWithoutEnv({
       unitName = $"{unit.name}_shop"
       rank = get_roman_numeral(unit?.rank ?? -1)
       country = getUnitCountry(unit)
-      link = format(loc("url/wiki_objects"), unit.name)
+      link = format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), unit.name)
     }
 
     let receiver = isPlatformSony ? bit_activity.PS4_ACTIVITY_FEED : bit_activity.NONE

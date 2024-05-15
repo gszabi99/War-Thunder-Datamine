@@ -14,6 +14,7 @@ let { getUnitTypeTextByUnit, getUnitName, getUnitCountry } = require("%scripts/u
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 function guiStartModTierResearched(config) {
   foreach (param, value in config) {
@@ -122,7 +123,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
         unitName = this.unit.name + "_shop"
         rank = get_roman_numeral(this.unit?.rank ?? -1)
         country = getUnitCountry(this.unit)
-        link = format(loc("url/wiki_objects"), this.unit.name)
+        link = format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), this.unit.name)
       }
     }
   }
