@@ -20,6 +20,8 @@ let unitControlToLocIdMap = {
   [UnitControl.UNIT_CONTROL_AI] = "targetIsPlayer/includeAI"
 }
 
+let validateEmptyCellValueInt = @(v) v == "" ? 0 : v
+
 function getRewardFormulaConfig(values, isPlainText = false) {
   let { noBonus, premAcc, booster, premMod = 0, currencySign } = values
   let delimiter = isPlainText ? " " : ""
@@ -65,7 +67,7 @@ let tableColumns = [
   {
     id = "timeFromMissionStart"
     titleLocId = "icon/timer"
-    cellTransformFn = @(cellValue, _reward) { text = secondsToString(cellValue, false, false) }
+    cellTransformFn = @(cellValue, _reward) { text = secondsToString(validateEmptyCellValueInt(cellValue), false, false) }
   }
   {
     id = "unit"
@@ -76,15 +78,12 @@ let tableColumns = [
   {
     id = "activity"
     titleLocId = "currency/squadronActivity"
-    cellTransformFn = function(cellValue, _) {
-      let activity = cellValue != "" ? cellValue : 0
-      return { text = $"{activity}%"}
-    }
+    cellTransformFn = @(cellValue, _) { text = $"{validateEmptyCellValueInt(cellValue)}%"}
   }
   {
     id = "lifetime"
     titleLocId = "icon/hourglass"
-    cellTransformFn = @(cellValue, _) { text = secondsToString(cellValue, false, false)}
+    cellTransformFn = @(cellValue, _) { text = secondsToString(validateEmptyCellValueInt(cellValue), false, false)}
   }
   {
     id = "offenderUnit"
@@ -121,7 +120,7 @@ let tableColumns = [
   {
     id = "timeToReward"
     titleLocId = "icon/hourglass"
-    cellTransformFn = @(cellValue, _reward) { text = secondsToString(cellValue, false, false) }
+    cellTransformFn = @(cellValue, _reward) { text = secondsToString(validateEmptyCellValueInt(cellValue), false, false) }
   }
   {
     id = "scoreToReward"
@@ -131,7 +130,7 @@ let tableColumns = [
   {
     id = "capturePartPercent"
     titleLocId = "icon/mpstats/captureZone"
-    cellTransformFn = @(cellValue, _) { text = $"{cellValue}%"}
+    cellTransformFn = @(cellValue, _) { text = $"{validateEmptyCellValueInt(cellValue)}%"}
   }
   {
     id = "explTNT"
@@ -153,7 +152,7 @@ let tableColumns = [
     titleLocId = "expSkillBonusLevel"
     cellTransformFn = function (cellValue, _reward) {
       return {
-          text = get_roman_numeral(cellValue)
+          text = get_roman_numeral(validateEmptyCellValueInt(cellValue))
           isAlignCenter = true
       }
     }

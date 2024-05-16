@@ -73,7 +73,7 @@ function getBattleRewardTable(containerValue) {
     containerValue.each(@(nestedTbl) rewardTbl.event.extend(
       (typeof(nestedTbl.event) == "table") ? [nestedTbl.event] : nestedTbl.event
     ))
-    rewardTbl.event.sort(@(a, b) a.timeFromMissionStart <=> b.timeFromMissionStart)
+    rewardTbl.event.sort(@(a, b) (a?.timeFromMissionStart ?? 0) <=> (b?.timeFromMissionStart ?? 0))
   }
 
   return rewardTbl

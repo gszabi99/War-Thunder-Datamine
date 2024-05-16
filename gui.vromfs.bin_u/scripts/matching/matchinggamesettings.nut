@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { OPERATION_COMPLETE } = require("matching.errors")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { resetTimeout } = require("dagor.workcycle")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 
 let logGM = log_with_prefix("[Matching_Game_Setting] ")
@@ -20,7 +20,6 @@ function fetchMatchingGameSetting() {
 
   isFetching = true
   logGM($"fetchMatchingGameSetting (try {failedFetches})")
-  clearTimer(fetchMatchingGameSetting)
   let again = callee()
   matchingApiFunc("wtmm_static.fetch_game_settings",
     function (result) {
@@ -33,7 +32,7 @@ function fetchMatchingGameSetting() {
       }
 
       if (++failedFetches <= MAX_FETCH_RETRIES)
-        setTimeout(0.1, again)
+        resetTimeout(0.1, again)
     },
     { timeout = 60 })
 }
