@@ -3831,6 +3831,52 @@
       }
     },
     {
+      "id": "2024_05_22_fr_naval_academy_decal",
+      "locDescId": "2024_05_22_fr_naval_academy_decal/desc",
+      "userLogId": "2024_05_22_fr_naval_academy_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "sailor_day_france",
+      "costGold": 199,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_france"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ],
+            "inSession": true
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-05-22 11:00:00",
+            "endDate": "2024-05-24 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2024_05_17_us_arm_forces_day_decal",
       "locDescId": "2024_05_17_us_arm_forces_day_decal/desc",
       "userLogId": "2024_05_17_us_arm_forces_day_decal",
@@ -3839,6 +3885,7 @@
       "chapter": "holidays",
       "group": "us_armed_forces_day",
       "costGold": 199,
+      "hidden": true,
       "manualOpen": true,
       "mode": {
         "type": "missionsPlayedScore",
