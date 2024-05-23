@@ -2713,5 +2713,97 @@
   "loot_carrier_capacity_100": {
     "_use": "loot_carrier",
     "loot_carrier__capacity": 100
+  },
+  "dafx_rain": {
+    "_singleton": true,
+    "_group": {
+      "_track": true,
+      "far_rain__density": 10.0,
+      "far_rain__speed": 1.0,
+      "far_rain__width": 1.0,
+      "far_rain__length": 1.0,
+      "far_rain__alpha": 1.0,
+      "far_rain__maxDensity": 10.0,
+      "far_rain__effectTemplates:array": {
+        "template": [
+          "camera_rain_light_effect",
+          "camera_rain_drop_splashes_effect"
+        ]
+      }
+    },
+    "rain_tag:tag": {}
+  },
+  "camera_bound_rain_effect_template": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        20.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "camera_effect__distance": 0.0,
+      "effect__name": "",
+      "is_ground_effect": false
+    },
+    "effect": {
+      "_tags": "render"
+    },
+    "rain_effect_tag:tag": {}
+  },
+  "camera_rain_light_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
+      "effect__name": "camera_rain_light_cmps_fx"
+    }
+  },
+  "camera_rain_heavy_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "camera_effect__distance": 3.0,
+      "effect__name": "camera_rain_heavy_cmps_fx"
+    }
+  },
+  "camera_rain_drop_splashes_effect": {
+    "_use": "camera_bound_rain_effect_template",
+    "_group": {
+      "_tags": "render",
+      "effect__name": "camera_rain_drops_cmps_fx",
+      "is_ground_effect": true
+    }
   }
 }
