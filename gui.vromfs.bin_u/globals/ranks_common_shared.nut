@@ -204,7 +204,7 @@ function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
     ?? weaponMulBlk?["Common"][paramName]
 }
 
-function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmParams) {
+function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmParams, aamParams) {
   local weaponMul = 1.0
   if (massParams.totalBombRocketMass > 0) {
     let bombRocketWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "BombRocketWeapon")
@@ -237,6 +237,12 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
       }
     }
   }
+  if (aamParams.guidanceTypeArr.len() > 0) {
+    let aamGuidanceTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AamGuidanceTypeMul")
+    foreach (aamGuidanceType in aamParams.guidanceTypeArr) {
+      weaponMul = math.max(weaponMul, aamGuidanceTypeMulBlk?[aamGuidanceType] ?? 0.0)
+    }
+  }
   if (massParams.maxRocketTntMass > 0) {
     let largeRocketTntMass = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketTntMass")
     let largeRocketMul = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "largeRocketMul")
@@ -251,6 +257,7 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
   let resTable = {
     massParams = { totalBombRocketMass = 0, totalNapalmBombMass = 0, maxRocketTntMass = 0 }
     atgmParams = { visibilityTypeArr = [], maxDistance = 0, hasProximityFuse = false }
+    aamParams = { guidanceTypeArr = [] }
   }
 
   let weaponsBlk = get_wpcost_blk()?[unitname].weapons
@@ -264,6 +271,7 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
     let atgmVisibilityType = weaponsBlk?[weaponName].atgmVisibilityType ?? ""
     let atgmMaxDistance = weaponsBlk?[weaponName].atgmMaxDistance ?? 0
     let atgmHasProximityFuse = weaponsBlk?[weaponName].atgmHasProximityFuse ?? false
+    let aamGuidanceType = weaponsBlk?[weaponName].aamGuidanceType ?? ""
 
     resTable.massParams.totalBombRocketMass += (totalBombRocketMass * count)
     resTable.massParams.totalNapalmBombMass += (totalNapalmBombMass * count)
@@ -275,6 +283,10 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
     resTable.atgmParams.maxDistance = math.max(atgmMaxDistance, resTable.atgmParams.maxDistance)
     if (atgmHasProximityFuse) {
       resTable.atgmParams.hasProximityFuse = true
+    }
+
+    if (aamGuidanceType != "" && resTable.aamParams.guidanceTypeArr.indexof(aamGuidanceType) == null) {
+      resTable.aamParams.guidanceTypeArr.append(aamGuidanceType)
     }
   }
 
@@ -310,7 +322,10 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
           maxDistance = weaponBlk?.atgmMaxDistance ?? 0,
           hasProximityFuse = weaponBlk?.atgmHasProximityFuse ?? false
         }
-        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, massParams, atgmParams)
+        let aamParams = {
+          guidanceTypeArr = (weaponBlk % "aamGuidanceType") ?? []
+        }
+        weaponMul = getSpawnScoreWeaponMulByParams(unitname, unitClass, massParams, atgmParams, aamParams)
       }
     }
     else if (presetTbl?.presetWeapons != null && presetTbl.presetWeapons.len() > 0) {
@@ -319,7 +334,8 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
         unitname,
         unitClass,
         customWeaponPresetParams.massParams,
-        customWeaponPresetParams.atgmParams
+        customWeaponPresetParams.atgmParams,
+        customWeaponPresetParams.aamParams
       )
     }
   }
