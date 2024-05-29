@@ -3,7 +3,7 @@ from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_ai
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
-let { get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
+let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -56,7 +56,7 @@ let {
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
-let { calcBattleRatingFromRank, CAN_USE_EDIFF, isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
+let { calcBattleRatingFromRank, isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -680,8 +680,21 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return 0
 }
 
-::get_battle_type_by_unit <- function get_battle_type_by_unit(unit) {
-  return (getEsUnitType(unit) == ES_UNIT_TYPE_TANK) ? BATTLE_TYPES.TANK : BATTLE_TYPES.AIR
+function getBattleTypeByUnit(unit) {
+  let esUnitType = getEsUnitType(unit)
+  if (esUnitType == ES_UNIT_TYPE_TANK)
+    return BATTLE_TYPES.TANK
+  if (esUnitType == ES_UNIT_TYPE_SHIP || esUnitType == ES_UNIT_TYPE_BOAT)
+    return BATTLE_TYPES.SHIP
+  return BATTLE_TYPES.AIR
+}
+
+function getFontIconByBattleType(battleType) {
+  if (battleType == BATTLE_TYPES.TANK)
+    return loc("icon/unittype/tank")
+  if (battleType == BATTLE_TYPES.SHIP)
+    return loc("icon/unittype/ship")
+  return loc("icon/unittype/aircraft")
 }
 
 ::getCharacteristicActualValue <- function getCharacteristicActualValue(air, characteristicName, prepareTextFunc, modeName, showLocalState = true) {
@@ -966,6 +979,26 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (showBr) {
     brObj.findObject("aircraft-battle_rating-header").setValue($"{loc("shop/battle_rating")}{loc("ui/colon")}")
     brObj.findObject("aircraft-battle_rating-value").setValue(format("%.1f", air.getBattleRating(ediff)))
+  }
+  let battleRatingByBattleTypeTable = {}
+  foreach (battleTypeIter in BATTLE_TYPES) {
+    let battleRatingByBattleType = air.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
+    let isShipHardcore = (battleTypeIter == 2) && (difficulty == g_difficulty.SIMULATOR) // does not exist
+    if (battleRatingByBattleType != battleRating && !isShipHardcore) {
+      battleRatingByBattleTypeTable[battleTypeIter] <- battleRatingByBattleType
+    }
+  }
+  let hasBattleRatingByTypes = battleRatingByBattleTypeTable.len() > 0
+  let brByTypeObj = showObjById("aircraft-battle_rating-value_by_battle_types", hasBattleRatingByTypes, brObj)
+  if (hasBattleRatingByTypes) {
+    local battleRatingByBattleTypesStrArr = []
+    battleRatingByBattleTypeTable.each(@(bRating, bType) battleRatingByBattleTypesStrArr.append(
+      $"{getFontIconByBattleType(bType)} {format("%.1f", bRating)}")
+    )
+    let battleRatingByBattleTypesStr = loc("ui/parentheses/space",
+      { text = loc("ui/vertical_bar").join(battleRatingByBattleTypesStrArr, true)}
+    )
+    brByTypeObj.setValue(battleRatingByBattleTypesStr)
   }
 
   let meetObj = holderObj.findObject("aircraft-chance_to_met_tr")
@@ -1747,8 +1780,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   obj = showObjById("current_game_mode_footnote_text", !showShortestUnitInfo, holderObj)
   if (checkObj(obj)) {
     let battleType = get_battle_type_by_ediff(ediff)
-    let fonticon = !CAN_USE_EDIFF ? "" :
-      loc(battleType == BATTLE_TYPES.AIR ? "icon/unittype/aircraft" : "icon/unittype/tank")
+    let fonticon = getFontIconByBattleType(battleType)
     let diffName = nbsp.join([ fonticon, difficulty.getLocName() ], true)
 
     let unitStateId = !showLocalState ? "reference"
@@ -1862,4 +1894,6 @@ return {
   CheckFeatureLockAction
   hasUnitAtRank
   showAirInfo
+  getBattleTypeByUnit
+  getFontIconByBattleType
 }

@@ -22,6 +22,8 @@ let { addTask } = require("%scripts/tasker.nut")
 let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let Contact = require("%scripts/contacts/contact.nut")
+let { get_battle_type_by_ediff } = require("%scripts/difficulty.nut")
+let { getFontIconByBattleType } = require("%scripts/airInfo.nut")
 
 ::g_contacts <- {
   findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
@@ -240,8 +242,7 @@ foreach (fn in [
       let memberDataAirs = memberData?.crewAirs[memberData.country] ?? []
       let gameModeId = g_squad_manager.getLeaderGameModeId()
       let event = ::events.getEvent(gameModeId)
-      let difficulty = ::events.getEventDifficulty(event)
-      let ediff = difficulty.getEdiff()
+      let ediff = ::events.getEDiffByEvent(event)
       view.unitList <- []
       view.hasUnitList = memberDataAirs.len() != 0
 
@@ -268,8 +269,13 @@ foreach (fn in [
             })
           }
         }
-        if (memberDataAirs.len() != 0)
-          view.hint <- $"{loc("shop/all_info_relevant_to_current_game_mode")}: {difficulty.getLocName()}"
+        if (memberDataAirs.len() != 0) {
+          let battleType = get_battle_type_by_ediff(ediff)
+          let fonticon = getFontIconByBattleType(battleType)
+          let difficulty = ::events.getEventDifficulty(event)
+          let diffName = nbsp.join([ fonticon, difficulty.getLocName() ], true)
+          view.hint <- $"{loc("shop/all_info_relevant_to_current_game_mode")}: {diffName}"
+        }
       }
     }
   }

@@ -1,6 +1,6 @@
 enum BATTLE_TYPES {
   AIR      = 0,
   TANK     = 1,
-  UNKNOWN
+  SHIP     = 2,
 }
 return { BATTLE_TYPES }

@@ -24,6 +24,7 @@ let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -446,7 +447,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1) {
-      let battleType = ::get_battle_type_by_unit(showedUnit.value)
+      let battleType = getBattleTypeByUnit(showedUnit.value)
       return difficulty.getEdiff(battleType)
     }
     return getCurrentGameModeEdiff()

@@ -49,13 +49,22 @@ let g_difficulty = {
     hasRespawns = false
     isAvailable = function(_gm = null) { return true }
     getEdiff = function(battleType = BATTLE_TYPES.AIR) {
-      return this.diffCode == -1 ? -1 :
-        this.diffCode + (battleType == BATTLE_TYPES.TANK ? EDIFF_SHIFT : 0)
+      if (this.diffCode == -1)
+        return -1
+
+      let ediffShiftMul = battleType == BATTLE_TYPES.TANK ? 1
+        : battleType == BATTLE_TYPES.SHIP ? 2
+        : 0
+      return this.diffCode + EDIFF_SHIFT * ediffShiftMul
     }
     getEdiffByUnitMask = function(unitTypesMask = 0) {
-      let isAvailableTanks = (unitTypesMask & (1 << ES_UNIT_TYPE_TANK)) != 0
-      return this.diffCode == -1 ? -1 :
-        this.diffCode + (isAvailableTanks ? EDIFF_SHIFT : 0)
+      if (this.diffCode == -1)
+        return -1
+
+      let ediffShiftMul = ((unitTypesMask & (1 << ES_UNIT_TYPE_TANK)) != 0) ? 1
+        : ((unitTypesMask & (1 << ES_UNIT_TYPE_SHIP)) != 0 || (unitTypesMask & (1 << ES_UNIT_TYPE_BOAT)) != 0) ? 2
+        : 0
+      return this.diffCode + EDIFF_SHIFT * ediffShiftMul
     }
     needCheckTutorial = false
   }
@@ -189,7 +198,11 @@ g_difficulty.types.sort(function(a, b) {
 
 
 function get_battle_type_by_ediff(ediff) {
-  return ediff < EDIFF_SHIFT ? BATTLE_TYPES.AIR : BATTLE_TYPES.TANK
+  if (ediff >= EDIFF_SHIFT * 2)
+    return BATTLE_TYPES.SHIP
+  if (ediff >= EDIFF_SHIFT)
+    return BATTLE_TYPES.TANK
+  return BATTLE_TYPES.AIR
 }
 
 function get_difficulty_by_ediff(ediff) {

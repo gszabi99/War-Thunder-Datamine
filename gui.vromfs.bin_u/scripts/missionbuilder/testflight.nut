@@ -34,6 +34,7 @@ let { getCurSlotbarUnit, isUnitInSlotbar } = require("%scripts/slotbar/slotbarSt
 let { guiStartBuilder, guiStartFlight, guiStartCdOptions, setCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 
@@ -465,7 +466,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()) :
       g_difficulty.getDifficultyByName(diffValue)
     if (difficulty.diffCode != -1) {
-      let battleType = ::get_battle_type_by_unit(this.unit)
+      let battleType = getBattleTypeByUnit(this.unit)
       return difficulty.getEdiff(battleType)
     }
     return getCurrentGameModeEdiff()

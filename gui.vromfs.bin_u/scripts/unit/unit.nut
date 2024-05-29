@@ -36,7 +36,7 @@ let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { isUnitSpecial, CAN_USE_EDIFF, EDIFF_SHIFT, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
+let { isUnitSpecial, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let MOD_TIERS_COUNT = 4
@@ -350,8 +350,6 @@ local Unit = class {
   }
 
   function getBattleRating(ediff) {
-    if (!CAN_USE_EDIFF)
-      ediff = ediff % EDIFF_SHIFT
     let mrank = this.getEconomicRank(ediff)
     return calcBattleRatingFromRank(mrank)
   }
