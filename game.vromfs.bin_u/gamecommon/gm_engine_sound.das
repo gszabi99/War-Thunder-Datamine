@@ -19,7 +19,6 @@ require app
 def gm_engine_sound_init_es(evt : CmdInitComponent;
                             eid : EntityId;
                             uid : int;
-                            playerNo : int;
                             var gm_engine_sound__pos_offset : float3&;
                             var gm_engine_sound__load_smooth : float&;
                             var gm_engine_sound__event_name : das_string&;
@@ -40,7 +39,9 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   if !gm.needLoadSounds
     addSubTemplate(eid, "disabled_update")
     return
-  let is_hero = playerNo == get_local_player_no()
+  let hero = get_controlled_hero()
+  let is_hero = (hero != null) ? hero.eid == eid : false
+
   let modelSoundBlk = *evt.modelBlk |> datablock_get_block_by_name("sound")
   if modelSoundBlk == null
     addSubTemplate(eid, "disabled_update")
@@ -97,7 +98,6 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
         gm_engine_sound__stop_event_name := path + "/" + eventStop
 
       let can_patch_engines_for_enemies = sndBlk |> datablock_getBool("canPatchEnginesForEnemies", false)
-      let hero = get_controlled_hero()
       let is_enemy = !is_hero && unit.isTank && hero != null && hero.army != unit.army && can_patch_engines_for_enemies
       if is_enemy
         gm_engine_sound__event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
