@@ -2720,6 +2720,10 @@
         "blk": "gameData/FlightModels/weaponPresets/super_etendard_97_tba_multi_dart_100_ab.blk"
       },
       {
+        "name": "super_etendard_97_as30l",
+        "blk": "gameData/FlightModels/weaponPresets/super_etendard_97_as30l.blk"
+      },
+      {
         "name": "super_etendard_97_gbu_12",
         "blk": "gameData/FlightModels/weaponPresets/super_etendard_97_gbu_12.blk"
       },
@@ -3271,6 +3275,26 @@
               "slot": 4,
               "preset": "atlis2"
             }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "as_30l",
+            "reqModification": "fr_as_30l",
+            "ShowNodes": {
+              "node": "pylon_rocket_as30_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_as30l.blk",
+              "emitter": "rocket1_as30",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "atlis2"
+            }
           }
         ]
       },
@@ -3793,6 +3817,26 @@
               "slot": 4,
               "preset": "atlis2"
             }
+          },
+          {
+            "iconType": "missile_air_to_uni",
+            "name": "as_30l",
+            "reqModification": "fr_as_30l",
+            "ShowNodes": {
+              "node": "pylon_rocket_as30_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_as30l.blk",
+              "emitter": "rocket2_as30",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "atlis2"
+            }
           }
         ]
       },
@@ -4236,6 +4280,11 @@
       "modClass": "weapon",
       "reqModification": "fr_matra_sneb"
     },
+    "fr_matra_r_550_magic_1": {
+      "prevModification": "fr_lr_100_4",
+      "tier": 4,
+      "modClass": "weapon"
+    },
     "fr_250kg_type_25c": {
       "modClass": "weapon",
       "tier": 2
@@ -4254,9 +4303,10 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "fr_matra_r_550_magic_1": {
+    "fr_as_30l": {
       "tier": 4,
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "reqModification": "us_gbu_12"
     }
   },
   "parachutes": {
