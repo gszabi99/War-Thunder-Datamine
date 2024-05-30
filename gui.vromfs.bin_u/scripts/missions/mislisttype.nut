@@ -19,6 +19,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { toUpper } = require("%sqstd/string.nut")
 let { isMissionComplete, getCombineLocNameMission, is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -267,15 +268,19 @@ g_mislist_type.template <- {
   getCurMission = function() { return null }
   getMissionNameText = g_mislist_type._getMissionNameText
 
-  infoLinkLocId = ""
+  getInfoLink = @() ""
   infoLinkTextLocId = ""
   infoLinkTooltipLocId = ""
   getInfoLinkData = function() {
-    if (isPlatformSony || isPlatformXboxOne || !this.infoLinkLocId.len())
+    if (isPlatformSony || isPlatformXboxOne)
+      return null
+
+    let infoLink = this.getInfoLink()
+    if (infoLink == "")
       return null
 
     return {
-      link = loc(this.infoLinkLocId)
+      link = infoLink
       text = loc(this.infoLinkTextLocId)
       tooltip = loc(this.infoLinkTooltipLocId, "")
     }
@@ -307,7 +312,7 @@ enumsAddTypes(g_mislist_type, {
     tabsOrder = mislistTabsOrder.UGM
     canRefreshList = true
     getTabName = function() { return loc("mainmenu/btnUserMission") }
-    infoLinkLocId = "url/live/user_missions"
+    getInfoLink = @() getCurCircuitOverride("liveUserMissionsUrl", loc("url/live/user_missions"))
     infoLinkTextLocId = "missions/user_missions/getOnline"
     infoLinkTooltipLocId = "missions/user_missions/about"
 
@@ -333,7 +338,7 @@ enumsAddTypes(g_mislist_type, {
     tabsOrder = mislistTabsOrder.URL
     canAddToList = true
     getTabName = function() { return loc("urlMissions/header") }
-    infoLinkLocId = "url/live/user_missions"
+    getInfoLink = @() getCurCircuitOverride("liveUserMissionsUrl", loc("url/live/user_missions"))
     infoLinkTextLocId = "missions/user_missions/getOnline"
     infoLinkTooltipLocId = "missions/user_missions/about"
 

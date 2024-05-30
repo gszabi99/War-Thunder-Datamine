@@ -4,6 +4,7 @@ let { format } = require("string")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let errCodeToStringMap = {
   [YU2_TIMEOUT] = "80130182",
@@ -90,7 +91,7 @@ function get_error_data(header, error_code) {
 
   if (!isPlatformXboxOne) {
     errData.text = "".concat(errData.text, "\n\n", (isPlatformSony ? "" : ("".concat(loc("msgbox/error_link_format_game"), loc("ui/colon")))))
-    let link = "".concat(loc("url/knowledgebase"), errData.errCode)
+    let link = "".concat(getCurCircuitOverride("knowledgebaseUrl", loc("url/knowledgebase")), errData.errCode)
     let linkText = isPlatformSony ? loc("msgbox/error_link_format_game") : link
     errData.text = "".concat(errData.text, $"<url={link}>{linkText}</url>")
   }

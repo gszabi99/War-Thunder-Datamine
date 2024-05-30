@@ -919,6 +919,9 @@ let Events = class {
   }
 
   function getEDiffByEvent(event) {
+    if (event == null)
+      return this.getEventDifficulty(event).getEdiff()
+
     if (!("ediff" in event)) {
       let difficulty = this.getEventDifficulty(event)
       event.ediff <- difficulty.getEdiffByUnitMask(this.getEventUnitTypesMask(event))

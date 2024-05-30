@@ -65,6 +65,7 @@ let { getLocaliazedPS4ControlName, getLocalizedControlName
 let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
 let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 ::preset_changed <- false
 
@@ -1562,7 +1563,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     ::gui_modal_controlsWizard()
   }
 
-  onControlsWorkshop = @() openUrl(loc("url/workshop/controls"), true, false, "internal_browser")
+  onControlsWorkshop = @() openUrl(
+    getCurCircuitOverride("liveControlsUrl", loc("url/workshop/controls")),
+    true, false, "internal_browser")
 
   function saveShortcutsAndAxes() {
     this.doApplyJoystick()

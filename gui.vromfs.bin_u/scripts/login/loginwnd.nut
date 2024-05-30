@@ -35,9 +35,11 @@ let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization } 
 let { get_network_block } = require("blkGetters")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running } = require("steam")
+let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
+const MIGRATION_URL = "migration.warthunder.com"
 
 let validateNickRegexp = regexp2(@"[^_0-9a-zA-Z]")
 
@@ -53,6 +55,15 @@ function setDbgGuestLoginIdPrefix(prefix) {
   console_print(getGuestLoginId())
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
+
+function isShowMessageAboutProfileMoved() {
+  if (isPixClient() || !havePlayerTag("pix_wt"))
+    return false
+  scene_msg_box("errorMessageBox", get_gui_scene(),
+    "\n".concat(loc("msgbox/error_login_migrated_player_profile"), $"<url={MIGRATION_URL}>{MIGRATION_URL}</url>"),
+    [["exit", exitGame], ["tryAgain", @() null]], "tryAgain", { cancel_fn = @() null })
+  return true
+}
 
 gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBox.blk"
@@ -377,6 +388,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function continueLogin(no_dump_login) {
+    if (isShowMessageAboutProfileMoved())
+      return
+
     if (isPixClient())
       convertPixelJwtToAuthJwt("ConvertPixJwt")
     else

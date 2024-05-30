@@ -11,6 +11,7 @@ let { isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
 let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 function updateDecoratorDescription(obj, handler, decoratorType, decorator, params = {}) {
   local config = null
@@ -53,7 +54,9 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
 
   let desc = [decorator.getDesc()]
   if (config?.isRevenueShare ?? false)
-    desc.append(colorize("advertTextColor", loc("content/revenue_share")))
+    desc.append(colorize("advertTextColor", loc("content/revenue_share").subst({
+      liveWarThunderUrl = getCurCircuitOverride("liveWarThunderUrl", "live.warthunder.com")
+    })))
 
   local typeDesc = decorator.getTypeDesc()
   typeDesc = (desc.len() > 1 || desc[0].len() > 0) ? $"\n{typeDesc}" : typeDesc
