@@ -319,8 +319,8 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
           v.ammo_stowage__timeAmmoFire = -1.0f
           sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=false /* fatal explosion will set it */]])
           ammo_stowage_send_explosion_fatal(eid, ammo_left, grnd(), false) <| v
-        else
-          sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=true]])
+      else
+        sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=true]])
 
   // reset FATAL_FIRE and FATAL_EXPLOSION flags every tick, but only if unit is alive:
   // - if unit is alive, these flags prevent doing fatal fire/explosion several times in one tick
