@@ -20,6 +20,7 @@ const MAX_FETCH_RETRIES = 5
 const MAX_GAME_MODES_FOR_REQUEST_INFO = 50
 
 const NIGHT_GAME_MODE_TAG_PREFIX = "regular_with_night_"
+const SMALL_TEAMS_GAME_MODE_TAG_PREFIX = "small_teams_"
 
 let gameModes = {} // game-mode unique id -> mode info
 local queueGameModesForRequest = []
@@ -207,17 +208,23 @@ function getGameModeIdsByEconomicName(economicName) {
   return res
 }
 
-function getGameModeIdsByEconomicNameWithoutNight(economicName) {
+function getGameModeIdsByEconomicNameWithoutTags(economicName, tagsToEcxlude) {
   let res = []
   foreach (id, gm in gameModes) {
     if (getEventEconomicName(gm) != economicName)
       continue
 
     let tag = gm?.tag ?? ""
-    if (!startswith(tag, NIGHT_GAME_MODE_TAG_PREFIX))
-      res.append(id)
+    tagsToEcxlude.each(@(t) !startswith(tag, t) ? res.append(id) : null)
   }
   return res
+}
+
+function getGameModeWithTagContains(tag) {
+  foreach (gm in gameModes)
+    if (gm?.tag != null && gm.tag.contains(tag))
+      return gm
+  return null
 }
 
 function getModeById(gameModeId) {
@@ -243,5 +250,8 @@ return {
   getModeById
   getGameModesByEconomicName
   getGameModeIdsByEconomicName
-  getGameModeIdsByEconomicNameWithoutNight
+  getGameModeIdsByEconomicNameWithoutTags
+  getGameModeWithTagContains
+  NIGHT_GAME_MODE_TAG_PREFIX
+  SMALL_TEAMS_GAME_MODE_TAG_PREFIX
 }

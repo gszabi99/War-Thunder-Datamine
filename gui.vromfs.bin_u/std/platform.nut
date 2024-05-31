@@ -1,6 +1,7 @@
 let {dgs_get_settings, DBGLEVEL, get_arg_value_by_name} = require("dagor.system")
 let platform = require("platform")
 let {get_platform_string_id, get_console_model, get_console_model_revision} = platform
+let { is_running_on_steam_deck = @() false } = require_optional("steam")
 
 let systemPlatformId = get_platform_string_id()
 let settingsPlaformId = dgs_get_settings().getStr("platform", systemPlatformId)
@@ -26,6 +27,7 @@ let isPS5 = platformId == "ps5"
 let isSony = is_sony
 
 let isPC = is_pc
+let is_steam_deck = is_running_on_steam_deck()
 
 let aliases = {
   pc = is_pc
@@ -53,6 +55,7 @@ return {
   consoleRevision
   platformAlias
   is_pc
+  is_steam_deck
   is_windows = oneOf("win32", "win64")
   is_win32 = oneOf("win32")
   is_win64 = oneOf("win64")

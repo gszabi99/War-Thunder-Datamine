@@ -10,7 +10,7 @@ let { getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
 let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep,
   getCrewButtonRow, getCrewSkillCost, getNextCrewSkillStepValue, getMaxAvailbleCrewStepValue,

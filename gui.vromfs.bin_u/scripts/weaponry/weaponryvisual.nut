@@ -283,7 +283,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let bulletsManager = params?.selectBulletsByManager
   let bulGroup = bulletsManager?.canChangeBulletsCount() ?
     bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
-  let hideBullets = bulGroup == null
+  let hideBullets = bulGroup == null || bulGroup.gunInfo.isBulletBelt
   res.hideBulletsChoiceBlock = hideBullets
   if (!hideBullets) {
     let guns = bulGroup.guns

@@ -18,6 +18,7 @@ let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { get_pve_awards_blk } = require("blkGetters")
 let { guiStartFlight, setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { isDiffUnlocked, getReqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 let checkTutorialsList = [ //idx in this array used for local profile option skipTutorialBitmaskId
   {
@@ -135,7 +136,7 @@ function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
 
   let slot = misDataBlk?.slot
   if (slot != null) {
-    let isReceiveSlot = ::g_crews_list.get().findindex(@(c) c.crews.len() < slot) == null
+    let isReceiveSlot = getCrewsList().findindex(@(c) c.crews.len() < slot) == null
     if (isReceiveSlot || !isMissionComplete) {
       res.isComplete = isReceiveSlot
       if (showFullReward || !isReceiveSlot) {

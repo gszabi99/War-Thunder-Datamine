@@ -2984,7 +2984,7 @@
     "hit_bg_simple": "hit_bg_no_pen_red",
     "hit_bg_laser_tank": "hit_bg_laser_tank.avif:240:240:K",
     "hit_bg_laser_helicopter": "hit_bg_laser_helicopter.svg:200:200:K",
-    "bg_threat": "hit_bg_laser_tank.avif:240:240:K",
+    "bg_threat": "hit_bg_threat_tank.avif:240:240:K",
     "minAngle": 3.0,
     "relativeRadius": 0.33,
     "scale": 0.45,
@@ -3819,7 +3819,9 @@
     "anti_air_target": "btn_autodetect_on",
     "extinguisher_activate": "extinguisher_button",
     "actions": {
-      "current_weapon_group": {},
+      "current_weapon_group": {
+        "shortcutIdx": 52
+      },
       "switch_bullet_type": [
         {
           "shortcutIdx": 0,
@@ -4660,6 +4662,29 @@
     "defaultForestallSectorAngle": 1.5,
     "lineWidth": 2.0,
     "lineMiddleAlpha": 120
+  },
+  "rocketSight": {
+    "color": [
+      10,
+      10,
+      255,
+      50
+    ],
+    "selectedColor": [
+      20,
+      255,
+      20,
+      50
+    ],
+    "coneAlpha": 50,
+    "defaultSpreadHorAngle": 3.0,
+    "defaultSpreadVertAngle": 2.0,
+    "startEndInterval": [
+      0.15,
+      0.95
+    ],
+    "coneRingsCount": 64,
+    "coneSegmentsCount": 64
   },
   "catapultSight": {
     "angle": 10.0,

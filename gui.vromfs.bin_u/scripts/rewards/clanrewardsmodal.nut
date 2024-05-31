@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
@@ -120,7 +120,7 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let taskId = char_send_custom_action("cln_set_clan_best_rewards",
       EATT_SIMPLE_OK,
       DataBlock(),
-      json_to_string({ clanId = this.clanId, bestRewards = this.getBestRewardsConfig() }, false),
+      object_to_json_string({ clanId = this.clanId, bestRewards = this.getBestRewardsConfig() }, false),
       -1)
     addTask(taskId, { showProgressBox = false })
     sync_handler_simulate_signal("clan_info_reload")

@@ -11,14 +11,45 @@ let skipedParameters = {
   blockedCooldown = true
 }
 
+function secondActionIsEqual(abInfoA, abInfoB) {
+  if (abInfoA == null || abInfoB == null)
+    return false
+
+  let aLen = abInfoB.len()
+  let bLen = abInfoA.len()
+  if (aLen != bLen)
+    return false
+  for (local i = 0; i < aLen; i++) {
+    let a = abInfoA[i]
+    let b = abInfoB[i]
+    if (type(a) != type(b))
+      return false
+    if (type(a) != "table")
+      return a == b
+
+    foreach (k, v in a)
+      if ((k not in skipedParameters) && v != b?[k])
+        return false
+  }
+  return true
+}
+
 function actionIsEqual(a, b) {
   if (type(a) != type(b))
     return false
   if (type(a) != "table")
     return a == b
-  foreach (k, v in a)
+
+  foreach (k, v in a) {
+    if (k == "additionalBulletInfo") {
+      if (!secondActionIsEqual(v, b?[k]))
+        return false
+      continue
+    }
+
     if ((k not in skipedParameters) && v != b?[k])
       return false
+  }
   return true
 }
 

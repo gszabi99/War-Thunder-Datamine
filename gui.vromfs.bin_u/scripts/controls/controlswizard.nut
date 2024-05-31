@@ -106,6 +106,8 @@ let { steam_is_overlay_active } = require("steam")
     "ID_AGM_LOCK"
     "ID_GUIDED_BOMBS_LOCK"
     "ID_FLARES"
+    "ID_COUNTERMEASURES_FLARES"
+    "ID_COUNTERMEASURES_CHAFF"
     "ID_FUEL_TANKS"
     "ID_AIR_DROP"
     "ID_SENSOR_SWITCH"

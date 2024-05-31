@@ -20,7 +20,7 @@ function getCrewUnlockTime(crew) {
     log($"crew.lockedTillSec {lockTime}")
     log($"get_charserver_time_sec() {get_charserver_time_sec()}")
     if (!isCrewUnlockErrorShowed)
-      debugTableData(::g_crews_list.get())
+      debugTableData(::g_crews_list.getCrewsList())
     assert(isCrewUnlockErrorShowed, "Too big locked crew wait time")
     isCrewUnlockErrorShowed = true
   }

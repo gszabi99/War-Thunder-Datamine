@@ -19,7 +19,7 @@ function getMyCrewUnitsState(country = null) {
     rank = 0
   }
 
-  foreach (c in ::g_crews_list.get()) {
+  foreach (c in ::g_crews_list.getCrewsList()) {
     if (!("crews" in c))
       continue
 
@@ -42,7 +42,7 @@ function getMyCrewUnitsState(country = null) {
 
 function getBrokenUnits() {
   let brokenUnits = {}
-  foreach (c in ::g_crews_list.get()) {
+  foreach (c in ::g_crews_list.getCrewsList()) {
     if (!("crews" in c))
       continue
     foreach (crew in c.crews)

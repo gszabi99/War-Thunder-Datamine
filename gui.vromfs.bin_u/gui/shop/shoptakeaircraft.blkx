@@ -30,37 +30,54 @@
       "top": "50%ph-50%h",
       "position": "root",
       "flow": "vertical",
+      "tdiv": [
+        {
+          "id": "set_air_dnd_title",
+          "position": "relative",
+          "left": "50%pw-50%w",
+          "top": "-36@sf/@pf",
+          "height": "40@sf/@pf",
+          "textarea": {
+            "id": "set_air_dnd_title_text",
+            "class": "active",
+            "text": ""
+          }
+        },
+        {
+          "pos": "50%pw-50%w, @itemsIntervalBig",
+          "position": "relative",
+          "padding-left": "0.5*@scrn_tgt/100.0",
+          "tdiv": {
+            "id": "set_unit_btns",
+            "Button_text": [
+              {
+                "id": "btn_set_cancel",
+                "text": "#mainmenu/btnCancel",
+                "btnName": "B",
+                "_on_click": "onTakeCancel",
+                "ButtonImg": {}
+              },
+              {
+                "id": "btn_set_air",
+                "text": "#mainmenu/btnApply",
+                "hideText": "yes",
+                "btnName": "X",
+                "_on_click": "onApply",
+                "ButtonImg": {},
+                "textarea": {
+                  "id": "btn_set_air_text",
+                  "class": "buttonText",
+                  "text": "#mainmenu/btnApply"
+                }
+              }
+            ]
+          }
+        }
+      ],
       "slotbarNest": {
         "id": "take-aircraft-slotbar",
         "pos": "50%pw-50%w, 0",
         "position": "relative"
-      },
-      "tdiv": {
-        "pos": "50%pw-50%w, @itemsIntervalBig",
-        "position": "relative",
-        "padding-left": "0.5*@scrn_tgt/100.0",
-        "Button_text": [
-          {
-            "id": "btn_set_cancel",
-            "text": "#mainmenu/btnCancel",
-            "btnName": "B",
-            "_on_click": "onTakeCancel",
-            "ButtonImg": {}
-          },
-          {
-            "id": "btn_set_air",
-            "text": "#mainmenu/btnApply",
-            "hideText": "yes",
-            "btnName": "X",
-            "_on_click": "onApply",
-            "ButtonImg": {},
-            "textarea": {
-              "id": "btn_set_air_text",
-              "class": "buttonText",
-              "text": "#mainmenu/btnApply"
-            }
-          }
-        ]
       }
     },
     "frame": {

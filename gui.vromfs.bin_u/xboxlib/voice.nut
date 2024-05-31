@@ -12,7 +12,7 @@ function _add_voice_chat_member(uid, is_friend) {
 
 function _remove_voice_chat_member(uid) {
   if (uid in voiceChatMembers) {
-    delete voiceChatMembers[uid]
+    voiceChatMembers.$rawdelete(uid)
   }
 }
 
@@ -29,6 +29,7 @@ function _update_voice_chat_members_mute(results) {
 
 
 function subscribe_to_state_update(callback) {
+  voice.install_status_update_handler()
   eventbus_subscribe(voice.status_update_event_name, function(result) {
     let results = result.results ?? []
     _update_voice_chat_members_mute(results)

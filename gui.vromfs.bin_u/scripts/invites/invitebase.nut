@@ -4,7 +4,7 @@ let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
+let { checkChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
 } = require("%scripts/options/optionsExtNames.nut")
@@ -40,6 +40,8 @@ let BaseInvite = class {
 
   needShowPopup = true
 
+  canChatWithPlayer = false
+
   constructor(params) {
     this.uid = this.getUidByParams(params)
     this.updateParams(params, true)
@@ -57,9 +59,12 @@ let BaseInvite = class {
     this.inviterUid = params?.inviterUid ?? this.inviterUid
     this.needShowPopup = params?.needShowPopup ?? true
 
-    this.updateCustomParams(params, initial)
-
-    this.showInvitePopup() //we are show popup on repeat the same invite.
+    local thisCapture = this
+    checkChatEnableWithPlayer(this.inviterName, function(canChat) {
+      thisCapture.canChatWithPlayer = canChat
+      thisCapture.updateCustomParams(params, initial)
+      thisCapture.showInvitePopup() //we are show popup on repeat the same invite.
+    })
   }
 
   function afterScriptsReload(inviteBeforeReload) {
@@ -228,8 +233,7 @@ let BaseInvite = class {
   }
 
   function isAvailableByChatRestriction() {
-    return isChatEnableWithPlayer(this.inviterName)
-      && isCrossNetworkMessageAllowed(this.inviterName)
+    return this.canChatWithPlayer && isCrossNetworkMessageAllowed(this.inviterName)
   }
 }
 

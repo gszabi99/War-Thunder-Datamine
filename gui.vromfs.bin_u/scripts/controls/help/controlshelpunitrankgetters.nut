@@ -3,13 +3,14 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 function getMatchedUnitRankForHelp(unitMatchFn) {
   let curUnit = getPlayerCurUnit()
   if (unitMatchFn(curUnit))
     return curUnit.rank
 
-  let curCountrySlotbarMatchedUnits = (::g_crews_list.get()
+  let curCountrySlotbarMatchedUnits = (getCrewsList()
     .findvalue(@(crew) crew.country == profileCountrySq.get())?.crews ?? [])
     .map(@(crew) getCrewUnit(crew))
     .filter(@(unit) unit != null && unitMatchFn(unit))

@@ -255,6 +255,15 @@
       },
       "tank5_dm": {
         "hp": 87.4
+      },
+      "tank6_dm": {
+        "hp": 120.5
+      },
+      "tank7_dm": {
+        "hp": 120.5
+      },
+      "tank8_dm": {
+        "hp": 120.5
       }
     }
   },
@@ -1146,6 +1155,129 @@
       },
       {
         "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank8_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -2282,7 +2414,7 @@
             {
               "type": "radar",
               "scale": 0.95,
-              "hideRadarBackground": true
+              "hideBackground": true
             },
             {
               "type": "rwr",
@@ -2291,7 +2423,7 @@
             },
             {
               "type": "map",
-              "hideRadarBackground": true
+              "hideBackground": true
             },
             {
               "type": "ils_on_camera"
@@ -2333,12 +2465,12 @@
             },
             {
               "type": "map",
-              "hideRadarBackground": true
+              "hideBackground": true
             },
             {
               "type": "radar",
               "scale": 0.95,
-              "hideRadarBackground": true
+              "hideBackground": true
             }
           ]
         },
@@ -2382,8 +2514,8 @@
   "gunnerOpticFps": {
     "Target": {
       "pos": [
-        -0.8,
-        -1.2,
+        0.3,
+        -0.2,
         -0.5
       ],
       "head": "optic1_turret",
@@ -2560,7 +2692,16 @@
         "aku_58_fin3_b002",
         "aku_58_fin4_b002",
         "aku_58_fin5_b002",
-        "aku_58_fin6_b002"
+        "aku_58_fin6_b002",
+        "1140l_drop_tank_pylon_001",
+        "1140l_drop_tank_pylon_002"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank6_dm",
+        "tank7_dm",
+        "tank8_dm"
       ]
     },
     "WeaponSlot": [
@@ -3016,6 +3157,24 @@
               "slot": 5,
               "preset": "k_adc03a"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "1140l_drop_tank_pylon_002"
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/cn_1400l_fyx1400_drop_tank_1.blk",
+              "emitter": "1140l_drop_tank_002",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -3249,6 +3408,30 @@
             "blk": "gameData/Weapons/equipment/cn_k_adc03a_targeting_pod.blk",
             "emitter": "flare1",
             "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 6,
+        "tier": 6,
+        "order": 10,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "iconType": "ptb",
+          "name": "ptb_slot6",
+          "showInWeaponMenu": true,
+          "ShowNodes": {
+            "node": "1140l_drop_tank_pylon_001"
+          },
+          "ShowDmParts": {
+            "node": "tank6_dm"
+          },
+          "Weapon": {
+            "trigger": "fuel tanks",
+            "blk": "gameData/Weapons/drop_tank/cn_1400l_fyx1400_drop_tank_3.blk",
+            "emitter": "1140l_drop_tank_001",
+            "bullets": 1,
+            "external": true
           }
         }
       },
@@ -3640,6 +3823,24 @@
             "DependentWeaponPreset": {
               "slot": 5,
               "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot8",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "1140l_drop_tank_pylon_003"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/cn_1400l_fyx1400_drop_tank_2.blk",
+              "emitter": "1140l_drop_tank_003",
+              "bullets": 1,
+              "external": true
             }
           }
         ]

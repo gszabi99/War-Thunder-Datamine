@@ -277,6 +277,28 @@
             "setStandbyMode": {}
           }
         },
+        "unparkRadar": {
+          "stateFrom": "parked",
+          "event": "enable",
+          "stateTo": "standby"
+        },
+        "parkRadar": {
+          "stateFrom": "standby",
+          "event": "disable",
+          "stateTo": "parked"
+        },
+        "disableFromRadarTrack": {
+          "stateFrom": "track",
+          "event": "disable",
+          "stateTo": "parked",
+          "actions": {
+            "setStandbyMode": {},
+            "setFsmActive": {
+              "fsm": "track",
+              "active": false
+            }
+          }
+        },
         "checkLockType0": {
           "stateFrom": "standby",
           "command": "designateTarget",

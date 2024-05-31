@@ -23,6 +23,8 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarState.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 /*
   getStats() - Returns stats or null if stats have not been received yet. Requests stats update when needed.
@@ -235,7 +237,7 @@ function calculateMaxUnitsUsedRanks() {
   let loadedBlk = loadLocalByAccount("tutor/newbieBattles/unitsRank", DataBlock())
   foreach (unitType in unitTypes.types)
     if (unitType.isAvailable()
-        && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < ::max_country_rank) {
+        && (loadedBlk?[unitType.esUnitType.tostring()] ?? 0) < MAX_COUNTRY_RANK) {
       needRecalculate = true
       break
     }
@@ -245,7 +247,7 @@ function calculateMaxUnitsUsedRanks() {
 
   let saveBlk = DataBlock()
   saveBlk.setFrom(loadedBlk)
-  let countryCrewsList = ::g_crews_list.get()
+  let countryCrewsList = getCrewsList()
   foreach (countryCrews in countryCrewsList)
     foreach (crew in getTblValue("crews", countryCrews, [])) {
       let unit = getCrewUnit(crew)

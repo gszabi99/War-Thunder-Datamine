@@ -6,6 +6,8 @@ let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
+let { isUnitGift } = require("%scripts/unit/unitInfo.nut")
 
 elemModelType.addTypes({
   REMAINING_TIME_UNIT = {
@@ -85,6 +87,47 @@ elemViewType.addTypes({
         }
       }
       obj.show(false)
+    }
+  }
+
+  SHOP_RANK_REMAINING_TIME_UNIT = {
+    model = elemModelType.REMAINING_TIME_UNIT
+
+    function updateView(obj, _params) {
+      local count = 0
+      let units = promoteUnits.get()
+      if (units.len() == 0) {
+        obj.show(false)
+        return
+      }
+
+      let countryId = obj?.countryId ?? ""
+      let armyId = obj?.armyId ?? ""
+      let rank = to_integer_safe(obj?.rank) ?? -1
+      let needCollectPremiumUnits = (obj?.isForPremium ?? "no") == "yes"
+      local unitsNames = ""
+      foreach (promUnit in units) {
+        if (promUnit.unit.shopCountry != countryId
+            || promUnit.unit.unitType.armyId != armyId
+            || promUnit.unit.rank != rank)
+          continue
+
+        if (needCollectPremiumUnits != (isUnitSpecial(promUnit.unit)
+            || isUnitGift(promUnit.unit)
+            || promUnit.unit?.isSquadronVehicle?()))
+          continue
+
+        unitsNames = unitsNames == ""
+          ? "".concat(loc("mainmenu/promoteUnit"), "\n\r", promUnit.unit.name)
+          : $"{unitsNames}, {promUnit.unit.name}"
+
+        count++
+      }
+      obj.show(count > 0)
+      if (count > 0) {
+        obj.findObject("count_text")?.setValue($"×{count}")
+        obj.tooltip = unitsNames
+      }
     }
   }
 

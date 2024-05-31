@@ -12,17 +12,12 @@
     "statType": "hydra",
     "caliber": 0.1778,
     "length": 3.66,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "CxK": 1.6,
+    "CxK": 1.4,
     "wingAreaMult": 1.3,
-    "finsAoaHor": 0.3817,
-    "finsAoaVer": 0.3817,
+    "finsAoaHor": 0.369392,
+    "finsAoaVer": 0.369392,
     "finsLatAccel": 46.8191,
-    "distFromCmToStab": 0.12,
+    "distFromCmToStab": 0.25,
     "mass": 147.87,
     "massEnd": 131.75,
     "massEnd1": 101.33,
@@ -39,7 +34,7 @@
     "maxDistance": 80000.0,
     "minDistance": 30.0,
     "rangeMax": 80000.0,
-    "loadFactorMax": 40.0,
+    "loadFactorMax": 35.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
     "effectOffset": [
@@ -49,7 +44,7 @@
     ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -101,8 +96,8 @@
     "amountPerTier": 1.0,
     "iconType": "missile_type_b_air_to_air_midrange",
     "arcadeProp": {
-      "finsAoaHor": 0.4,
-      "finsAoaVer": 0.4
+      "finsAoaHor": 0.35,
+      "finsAoaVer": 0.35
     },
     "guidance": {
       "inertialNavigation": true,
@@ -117,8 +112,7 @@
       "breakLockMaxTime": 100.0,
       "inertialGuidance": {
         "inertialNavigationDriftSpeed": 2.0,
-        "datalink": true,
-        "reconnectDatalink": true
+        "datalink": true
       },
       "radarSeeker": {
         "band": 8,
@@ -196,10 +190,10 @@
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 40.0,
-        "accelControlProp": 0.0016,
-        "accelControlIntg": 0.0251,
-        "accelControlDiff": 0.0006,
+        "reqAccelMax": 35.0,
+        "accelControlProp": 0.0086,
+        "accelControlIntg": 0.0221,
+        "accelControlDiff": 0.00025,
         "accelControlIntgLim": 1.0
       },
       "table0": {

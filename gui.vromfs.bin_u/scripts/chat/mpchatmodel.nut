@@ -1,12 +1,11 @@
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { isChatEnabled, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { isChatEnabled, checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
 let { eventbus_send } = require("eventbus")
 let { set_chat_handler, CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { get_mission_time, get_mplayers_list } = require("mission")
+let { get_mission_time, get_mplayer_by_name } = require("mission")
 let { get_charserver_time_sec } = require("chard")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
@@ -63,43 +62,40 @@ local mpChatModel = {
 
 
   function onIncomingMessage(sender, msg, _enemy, mode, automatic) {
-    if ((!isChatEnabled()
-         || mode == CHAT_MODE_PRIVATE
-         || !isChatEnableWithPlayer(sender))
-        && !automatic) {
-      return false
-    }
+    local thisCapture = this
+    checkChatEnableWithPlayer(sender, function(canChat) {
+      if ((!isChatEnabled() || mode == CHAT_MODE_PRIVATE || !canChat) && !automatic)
+        return
 
-    let player = u.search(get_mplayers_list(GET_MPLAYERS_LIST, true), @(p) p.name == sender)
+      let player = get_mplayer_by_name(sender)
 
-    let message = {
-      userColor = ""
-      msgColor = ""
-      clanTag = ""
-      uid = player?.userId.tointeger()
-      sender = sender
-      text = msg
-      isMyself = sender == userName.value || getRealName(sender) == userName.value
-      isBlocked = ::isPlayerNickInContacts(sender, EPL_BLOCKLIST)
-      isAutomatic = automatic
-      mode = mode
-      time = get_mission_time()
-      sTime = get_charserver_time_sec()
+      let message = {
+        userColor = ""
+        msgColor = ""
+        clanTag = ""
+        uid = player?.userId.tointeger()
+        sender = sender
+        text = msg
+        isMyself = sender == userName.value || getRealName(sender) == userName.value
+        isBlocked = ::isPlayerNickInContacts(sender, EPL_BLOCKLIST)
+        isAutomatic = automatic
+        mode = mode
+        time = get_mission_time()
+        sTime = get_charserver_time_sec()
+        team = player?.team ?? MP_TEAM_NEUTRAL
+      }
 
-      team = player ? player.team : 0
-    }
+      if (mpChatState.log.len() > thisCapture.maxLogSize) {
+        mpChatState.log.remove(0)
+      }
+      mpChatState.log.append(message)
 
-    if (mpChatState.log.len() > this.maxLogSize) {
-      mpChatState.log.remove(0)
-    }
-    mpChatState.log.append(message)
-
-    broadcastEvent("MpChatLogUpdated")
-    eventbus_send("mpChatPushMessage", message.__merge({
-      fullName = sender == "" ? ""
-        : ::g_contacts.getPlayerFullName(getPlayerName(sender), message.clanTag)
-    }))
-    return true
+      broadcastEvent("MpChatLogUpdated")
+      eventbus_send("mpChatPushMessage", message.__merge({
+        fullName = sender == "" ? ""
+          : ::g_contacts.getPlayerFullName(getPlayerName(sender), message.clanTag)
+      }))
+    })
   }
 
 

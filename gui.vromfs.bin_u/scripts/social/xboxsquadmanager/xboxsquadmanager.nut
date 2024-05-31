@@ -5,7 +5,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%scripts/xbox/mpa.nut")
+let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%xboxLib/mpa.nut")
 let { is_any_user_active } = require("%xboxLib/impl/user.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
@@ -26,7 +26,7 @@ function sendInvitation(xuid) {
     return
   }
   let squadId = getCurSquadId()
-  send_invitations(squadId, [xuid.tointeger()], function(success) {
+  send_invitations(squadId, [xuid.tointeger()], true, function(success) {
     logX($"Invitation sent: {success}, squadId {squadId}, xuid {xuid.tointeger()}")
   })
 }
@@ -43,7 +43,7 @@ function updateActivity() {
   let haveUser = is_any_user_active()
   let shouldSetActivity = g_squad_manager.isSquadLeader() || !g_squad_manager.isInSquad()
   if (shouldSetActivity && haveUser) {
-    set_activity(squadId, JoinRestriction.InviteOnly, maxPlayers, curPlayers, squadId, function(success) {
+    set_activity(squadId, JoinRestriction.InviteOnly, maxPlayers, curPlayers, squadId, true, function(success) {
       logX($"Set activity succeeded: {success}",
         $"squadId {squadId}, restriction {JoinRestriction.InviteOnly}, maxPlayers {maxPlayers}, curPlayers {curPlayers}")
     })

@@ -30,6 +30,9 @@ function _setCrewMemberState(crewIconObj, newStateData) {
     crewIconObj.state = "dead"
     crewIconObj.tooltip = loc(this.tooltip)
   }
+  else if (newStateData.state == "dmg") {
+    crewIconObj.state = "dmg"
+  }
   else {
     crewIconObj.state = "none"
   }
@@ -98,6 +101,7 @@ enums.addTypes(g_hud_crew_member, {
       let text = newStateData.current.tostring()
       local textObj = iconObj.findObject("crew_count_text")
       textObj.setValue(text)
+      iconObj.findObject("crew_regenerating_icon").show(newStateData.regenerating)
       textObj.overlayTextColor = newStateData.current <= MIN_CREW_COUNT_FOR_WARNING
         && newStateData.total > MIN_CREW_COUNT_FOR_WARNING ? "bad" : ""
     }

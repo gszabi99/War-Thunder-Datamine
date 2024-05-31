@@ -1996,12 +1996,16 @@
     "gun": "gun_default"
   },
   "cockpit": {
+    "mfdTextureSize": [
+      2048,
+      1024
+    ],
     "targetingPodFov": [
       12.0,
       0.75
     ],
-    "sightInFov": 1.0,
-    "sightOutFov": 4.0,
+    "sightInFov": 0.75,
+    "sightOutFov": 12.0,
     "headPos": [
       4.0,
       0.54,
@@ -2266,7 +2270,7 @@
           ],
           "page": {
             "type": "map",
-            "hideRadarBackground": true
+            "hideBackground": true
           }
         },
         {
@@ -2374,7 +2378,7 @@
           "page": {
             "type": "radar",
             "scale": 0.85,
-            "hideRadarBackground": true
+            "hideBackground": true
           }
         },
         {
@@ -2709,6 +2713,10 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000_5f_matra_super_530d.blk"
       },
       {
+        "name": "mirage_2000_5f_6x_mica_em",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000_5f_6x_mica_em.blk"
+      },
+      {
         "name": "mirage_2000_5f_matra_super_250_samp_type_25",
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000_5f_matra_super_250_samp_type_25.blk"
       },
@@ -2802,7 +2810,11 @@
         "pylon_mica_001",
         "pylon_mica_002",
         "pylon_mica_004",
-        "pylon_mica_006"
+        "pylon_mica_006",
+        "pylon_mica_001_lift",
+        "pylon_mica_002_lift",
+        "pylon_mica_003_lift",
+        "pylon_mica_004_lift"
       ]
     },
     "HideDmParts": {
@@ -3067,6 +3079,22 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2_default.blk",
               "emitter": "rocket_r550_magic_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em",
+            "reqModification": "fr_mica_em",
+            "ShowNodes": {
+              "node": "pylon_mica_005"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_005",
               "bullets": 1
             }
           },
@@ -3388,6 +3416,22 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em",
+            "reqModification": "fr_mica_em",
+            "ShowNodes": {
+              "node": "pylon_mica_003"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_003",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "bomb_250",
             "reqModification": "fr_250kg_type_25c",
@@ -3461,6 +3505,22 @@
         "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em",
+            "reqModification": "fr_mica_em",
+            "ShowNodes": {
+              "node": "pylon_mica_001"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_001",
+              "bullets": 1
+            }
+          },
           {
             "iconType": "bombs_middle",
             "name": "bomb_250",
@@ -3794,7 +3854,7 @@
           {
             "iconType": "guided_bomb_special_laser",
             "name": "us_gbu_24",
-            "reqModification": "us_gbu_24",
+            "reqModification": "fr_bgl1000",
             "ShowNodes": {
               "node": "pylon_central"
             },
@@ -3948,6 +4008,22 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em",
+            "reqModification": "fr_mica_em",
+            "ShowNodes": {
+              "node": "pylon_mica_002"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_002",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "bomb_250",
             "reqModification": "fr_250kg_type_25c",
@@ -4045,6 +4121,22 @@
         "order": 6,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em",
+            "reqModification": "fr_mica_em",
+            "ShowNodes": {
+              "node": "pylon_mica_004"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_004",
+              "bullets": 1
+            }
+          },
           {
             "iconType": "bombs_middle",
             "name": "bomb_250",
@@ -4363,6 +4455,22 @@
             }
           },
           {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em",
+            "reqModification": "fr_mica_em",
+            "ShowNodes": {
+              "node": "pylon_mica_006"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_006",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "nar_ap_small",
             "name": "lr_f4",
             "reqModification": "fr_jl_100r",
@@ -4676,24 +4784,6 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "fr_matra_r_530_f": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
-    "fr_matra_r_530_d": {
-      "reqModification": "fr_matra_r_530_f",
-      "tier": 2,
-      "modClass": "weapon"
-    },
-    "fr_cc630_gun_pod": {
-      "prevModification": "fr_matra_r_530_d",
-      "tier": 3
-    },
-    "fr_matra_r_550_magic_2": {
-      "tier": 4,
-      "modClass": "weapon",
-      "prevModification": "fr_cc630_gun_pod"
-    },
     "fr_damocles_pod": {
       "modClass": "weapon",
       "tier": 1
@@ -4729,11 +4819,29 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "us_gbu_24": {
-      "prevModification": "fr_as_30l",
-      "reqModification": "fr_bgl1000",
+    "fr_matra_r_550_magic_2": {
+      "tier": 4,
       "modClass": "weapon",
-      "tier": 4
+      "prevModification": "fr_pgm_2000"
+    },
+    "fr_matra_r_530_f": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "fr_matra_r_530_d": {
+      "reqModification": "fr_matra_r_530_f",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "fr_cc630_gun_pod": {
+      "prevModification": "fr_matra_r_530_d",
+      "tier": 3
+    },
+    "fr_mica_em": {
+      "prevModification": "fr_cc630_gun_pod",
+      "reqModification": "fr_matra_r_550_magic_2",
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "user_skin": {

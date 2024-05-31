@@ -252,13 +252,13 @@ def loot_chance_mult_zone_init(evt : Event)
                                  var loot_chance_mult__armor : float&;
                                  var loot_chance_mult__electronics : float&)
         if loot_type == 1
-          loot_chance_mult__scrap = get_app().gameParams.lootZoneChanceMult
+          loot_chance_mult__scrap = get_game_params().lootZoneChanceMult
         elif loot_type == 2
-          loot_chance_mult__parts = get_app().gameParams.lootZoneChanceMult
+          loot_chance_mult__parts = get_game_params().lootZoneChanceMult
         elif loot_type == 3
-          loot_chance_mult__armor = get_app().gameParams.lootZoneChanceMult
+          loot_chance_mult__armor = get_game_params().lootZoneChanceMult
         elif loot_type == 4
-          loot_chance_mult__electronics = get_app().gameParams.lootZoneChanceMult
+          loot_chance_mult__electronics = get_game_params().lootZoneChanceMult
 
 [es(tag=server)]
 def set_rage_item_award(evt : EventOnSessionEnd;

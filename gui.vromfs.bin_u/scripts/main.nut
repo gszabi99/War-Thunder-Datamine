@@ -45,7 +45,7 @@ require("%globalScripts/version.nut")
 require("%scripts/compatibility.nut")
 require("%scripts/clientState/errorHandling.nut")
 
-let { get_local_unixtime } = require("dagor.time")
+let { ref_time_ticks } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
 
 ::INVALID_USER_ID <- make_invalid_user_id()
@@ -70,7 +70,7 @@ registerPersistentData("MainGlobals", getroottable(),
     "showConsoleButtons.value"
   ])
 
-set_rnd_seed(get_local_unixtime())
+set_rnd_seed(ref_time_ticks())
 
 //------- vvv files before login vvv ----------
 

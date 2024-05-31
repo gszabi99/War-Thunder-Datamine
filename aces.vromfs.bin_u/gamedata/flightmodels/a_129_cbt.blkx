@@ -10,6 +10,8 @@
   "haveCCRPForRocket": false,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "hmdAH64": true,
+  "hasHelmetDesignator": true,
   "gearSinkRangeLR": 0.253,
   "gearSinkRangeC": 0.152,
   "tpsCameraTargetOffsetAtZoom": [
@@ -1183,7 +1185,6 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
       1.0,
       0.6,
@@ -1210,22 +1211,76 @@
     "sightInFov": 6.14,
     "sightOutFov": 24.74,
     "sightFov": 5.5,
+    "hmdEnabledByDefault": true,
+    "staticAimPitch": -50.5,
     "devices": {
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
+        0.0,
+        1.0
+      ],
+      "throttle_1": [
+        0.0,
+        1.0
+      ],
+      "throttle_2": [
+        0.0,
+        1.0
+      ],
+      "pedals": [
+        -1.0,
+        1.0
+      ],
+      "pedals1": [
+        -1.0,
+        1.0
+      ],
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "g_meter": [
+        -2.0,
+        5.0
+      ],
+      "g_meter_min": [
+        -2.0,
+        5.0
+      ],
+      "g_meter_max": [
+        -2.0,
+        5.0
+      ],
       "speed": [
         0.0,
-        257.222
+        128.611
       ],
-      "bank": [
-        -8.0,
-        8.0
+      "aviahorizon_pitch": [
+        -60.0,
+        60.0
       ],
-      "turn": [
-        -0.23562,
-        0.23562
+      "aviahorizon_roll": [
+        -180.0,
+        180.0
       ],
-      "vario": [
-        -30.0,
-        30.0
+      "aviahorizon_pitch1": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll1": [
+        -180.0,
+        180.0
       ],
       "altitude_10k": [
         0.0,
@@ -1237,132 +1292,32 @@
       ],
       "altitude_min": [
         0.0,
+        100.0
+      ],
+      "altitude_min1": [
+        0.0,
         1000.0
+      ],
+      "radio_altitude": [
+        0.0,
+        2500.0
       ],
       "altitude_koef": 3.28,
-      "aviahorizon_pitch": [
-        -60.0,
+      "vario": [
+        -20.31,
+        20.31
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
         60.0
       ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "compass": [
+      "clock_sec": [
         0.0,
-        360.0
-      ],
-      "fuel": [
-        0.0,
-        1277.625
-      ],
-      "rpm": [
-        0.0,
-        4500.0
-      ],
-      "rpm1": [
-        0.0,
-        4500.0
-      ],
-      "rpm2": [
-        0.0,
-        4500.0
-      ],
-      "rpm3": [
-        0.0,
-        4500.0
-      ],
-      "rpm_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm_min": [
-        0.0,
-        1000.0
-      ],
-      "water_temperature": [
-        0.0,
-        1000.0
-      ],
-      "manifold_pressure": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure1": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure2": [
-        0.334,
-        2.507
-      ],
-      "manifold_pressure3": [
-        0.334,
-        2.507
-      ],
-      "head_temperature": [
-        0.0,
-        300.0
-      ],
-      "head_temperature1": [
-        0.0,
-        300.0
-      ],
-      "head_temperature2": [
-        0.0,
-        300.0
-      ],
-      "head_temperature3": [
-        0.0,
-        300.0
-      ],
-      "oil_temperature": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature1": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature2": [
-        -50.0,
-        150.0
-      ],
-      "oil_temperature3": [
-        -50.0,
-        150.0
-      ],
-      "fuel_pressure": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure1": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure3": [
-        0.0,
-        15.0
-      ],
-      "oil_pressure": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure1": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure2": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure3": [
-        0.0,
-        150.0
+        60.0
       ]
     },
     "multifunctionDisplays": {
@@ -1375,12 +1330,18 @@
         ],
         "page": [
           {
+            "type": "thermal",
+            "turretIdx": 0
+          },
+          {
             "type": "target_tracking",
             "turretIdx": 0
           },
           {
-            "type": "thermal",
-            "turretIdx": 0
+            "type": "rwr"
+          },
+          {
+            "type": "map"
           },
           {
             "type": "devices",
@@ -1663,9 +1624,6 @@
                 }
               }
             ]
-          },
-          {
-            "type": "map"
           }
         ]
       }
@@ -1697,7 +1655,7 @@
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/us_an_apr_39.blk"
+        "blk": "gameData/sensors/it_elt_156.blk"
       },
       {
         "blk": "gameData/sensors/us_flir.blk",
@@ -2960,7 +2918,7 @@
     ],
     "finCut": false,
     "emtr_break_fin_from": [
-      -6.93885,
+      -6.03885,
       -0.219626,
       0.0182934
     ],

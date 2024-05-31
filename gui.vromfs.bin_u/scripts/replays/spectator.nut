@@ -199,7 +199,7 @@ let sensorFiltersTable = {
   ]
 }
 
-::Spectator <- class (gui_handlers.BaseGuiHandlerWT) {
+let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   scene  = null
   sceneBlkName = "%gui/spectator.blk"
   wndType      = handlerType.CUSTOM
@@ -1551,8 +1551,10 @@ let sensorFiltersTable = {
   }
 }
 
+gui_handlers.Spectator <- Spectator
+
 ::spectator_debug_mode <- function spectator_debug_mode() {
-  let handler = is_dev_version() && handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = is_dev_version() && handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
   if (!handler)
     return null
   handler.debugMode = !handler.debugMode
@@ -1574,13 +1576,13 @@ let sensorFiltersTable = {
 
 function on_player_requested_artillery(data) { // called from client
   let { userId } = data
-  let handler = handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
   if (handler)
     handler.onPlayerRequestedArtillery(userId)
 }
 
 function on_spectator_tactical_map_request() { // called from client
-  let handler = handlersManager.findHandlerClassInScene(::Spectator)
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
   if (handler)
     handler.onMapClick()
 }

@@ -25,16 +25,15 @@
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
   "bullet": {
-    "bulletCount": 30,
     "mass": 0.4,
-    "explosiveType": "hmx",
-    "explosiveMass": 0.03,
     "caliber": 0.03,
     "speed": 670.56,
     "maxDistance": 7000.0,
+    "explosiveType": "hmx",
+    "explosiveMass": 0.03,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat",
-    "groundRicochetPreset": "heat",
+    "groundRicochetPreset": "he_small_caliber_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.1,
     "stabilityCaliberToArmorThreshold": 100.0,
@@ -49,20 +48,19 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/he_dp.ivf",
-    "hitPowerMult": 10.0,
-    "effectiveDistance": 2500.0,
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
     "ricochetTimeToLive": 0.085,
     "explodeTreshold": 0.1,
+    "hitPowerMult": 10.0,
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "explosionEffect": "hit_28_38mm_metal_he",
     "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -80,6 +78,12 @@
         20.0,
         1.0
       ]
+    },
+    "cumulativeDamage": {
+      "armorPower": 38.0,
+      "distance": 5.5,
+      "damage": 50.0,
+      "onHitChanceMultFire": 10.0
     },
     "hitpower": {
       "HitPower0m": [
@@ -103,21 +107,8 @@
         7000.0
       ]
     },
-    "armorpower": {
-      "ArmorPower0m": [
-        5.0,
-        10.0
-      ],
-      "ArmorPower7000m": [
-        5.0,
-        7000.0
-      ]
-    },
-    "cumulativeDamage": {
-      "armorPower": 38.0,
-      "distance": 5.5,
-      "damage": 50.0,
-      "onHitChanceMultFire": 10.0
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "collisions": {
       "default": {
@@ -236,9 +227,6 @@
         "fx": "hit_28_38mm_snow_he",
         "ricochetFx": "hit_28_38mm_snow_ap"
       }
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
     },
     "visual": {
       "range_percent_of_ammo": [

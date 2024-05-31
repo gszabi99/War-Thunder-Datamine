@@ -51,6 +51,7 @@ function show_profile_card(xuid, callback) {
 
 
 function register_for_user_change_event(callback) {
+  user.install_user_change_event_handler()
   eventbus_subscribe(user.user_change_event_name, function(result) {
     callback?(result?.event)
   })

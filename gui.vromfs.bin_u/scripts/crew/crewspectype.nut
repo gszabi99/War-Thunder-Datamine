@@ -11,7 +11,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, unitCrewTrainReq, crewSkillPages
+let { getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, unitCrewTrainReq,
+  crewSkillPages, loadCrewSkillsOnce
 } = require("%scripts/crew/crew.nut")
 
 local crewSpecTypes = null
@@ -124,7 +125,7 @@ crewSpecTypes = {
     }
 
     function getFullBonusesText(crewUnitType, prevSpecTypeCode = -1) {
-      ::load_crew_skills_once()
+      loadCrewSkillsOnce()
 
       if (prevSpecTypeCode < 0)
         prevSpecTypeCode = this.code - 1
@@ -153,7 +154,7 @@ crewSpecTypes = {
     }
 
     function _getReqCrewLevelByCode(unit, upgradeFromCode) {
-      ::load_crew_skills_once()
+      loadCrewSkillsOnce()
       let crewUnitType = unit?.getCrewUnitType?() ?? CUT_INVALID
       let reqTbl = unitCrewTrainReq?[crewUnitType]
       let ranksTbl = getTblValue(upgradeFromCode, reqTbl)

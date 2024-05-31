@@ -31,6 +31,7 @@ let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.n
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { getRankByExp } = require("%scripts/ranks.nut")
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -312,7 +313,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
         local prestigeImg = "";
         local rankTxt = ""
         if (!isEmpty && ("exp" in table[i]) && ("prestige" in table[i])) {
-          rankTxt = ::get_rank_by_exp(table[i].exp).tostring()
+          rankTxt = getRankByExp(table[i].exp).tostring()
           prestigeImg = $"#ui/gameuiskin#prestige{table[i].prestige}"
         }
         let rankItem = format("activeText { id:t='rank-text'; text:t='%s'; margin-right:t='%%s' } ", rankTxt)

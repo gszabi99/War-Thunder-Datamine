@@ -2476,6 +2476,18 @@
         "blk": "gameData/FlightModels/weaponPresets/p-51d-20_rockets.blk"
       },
       {
+        "name": "p-51d-20_100lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/p-51d-20_100lb_bombs.blk"
+      },
+      {
+        "name": "p-51d-20_250lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/p-51d-20_250lb_bombs.blk"
+      },
+      {
+        "name": "p-51d-20_500lb_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/p-51d-20_500lb_bombs.blk"
+      },
+      {
         "name": "p-51d-20_bombs",
         "blk": "gameData/FlightModels/weaponPresets/p-51d-20_bombs.blk"
       }
@@ -2704,6 +2716,53 @@
             }
           },
           {
+            "iconType": "bombs_small",
+            "name": "100lb",
+            "reqModification": "fsbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/us_100lb_anm30.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lb",
+            "reqModification": "fsbc_mk5",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lb",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
             "iconType": "bombs_special",
             "name": "1000lb",
             "reqModification": "flbc_mk1",
@@ -2781,6 +2840,53 @@
               "blk": "gameData/Weapons/rocketGuns/uk_hvar.blk",
               "emitter": "rocket4",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "100lb",
+            "reqModification": "fsbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/us_100lb_anm30.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lb",
+            "reqModification": "fsbc_mk5",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "separate": true,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lb",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true
             }
           },
           {
@@ -2971,9 +3077,24 @@
       "modClass": "weapon",
       "reqModification": "bazooka_pylon"
     },
+    "fsbc_mk1": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "fsbc_mk5": {
+      "tier": 2,
+      "modClass": "weapon",
+      "reqModification": "fsbc_mk1"
+    },
+    "fmbc_mk1": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fsbc_mk5"
+    },
     "flbc_mk1": {
       "tier": 4,
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "reqModification": "fmbc_mk1"
     }
   },
   "cutting": {

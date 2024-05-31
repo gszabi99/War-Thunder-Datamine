@@ -55,7 +55,7 @@ let {
   isUnitGroup, canResearchUnit, isRequireUnlockForUnit, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
-let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { calcBattleRatingFromRank, isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -69,9 +69,13 @@ let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getCrewLevel, getCrewName } = require("%scripts/crew/crew.nut")
+let { getCrewLevel, getCrewName, getCrewStatus } = require("%scripts/crew/crew.nut")
+let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength
+} = require("%scripts/airLimits.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -662,10 +666,10 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
     return -1
 
   let unitRank = unit?.rank ?? -1
-  if (unitRank == ::max_country_rank)
-    return ::max_country_rank
+  if (unitRank == MAX_COUNTRY_RANK)
+    return MAX_COUNTRY_RANK
   let result = unitRank + ::getHighestRankDiffNoPenalty()
-  return result <= ::max_country_rank ? result : ::max_country_rank
+  return result <= MAX_COUNTRY_RANK ? result : MAX_COUNTRY_RANK
 }
 
 ::getHighestRankDiffNoPenalty <- function getHighestRankDiffNoPenalty(inverse = false) {
@@ -674,7 +678,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
                       ? "expMulWithTierDiffMinus"
                       : "expMulWithTierDiff"
 
-  for (local rankDif = 0; rankDif < ::max_country_rank; rankDif++)
+  for (local rankDif = 0; rankDif < MAX_COUNTRY_RANK; rankDif++)
     if (ranksBlk[paramPrefix + rankDif] < 0.8)
       return rankDif - 1
   return 0
@@ -1123,28 +1127,32 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let cardHelicopterClimbParameter = hasFeature("CardHelicopterClimbParameter")
 
   let showCharacteristics = {
-    ["aircraft-turnTurretTime-tr"]        = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-angleVerticalGuidance-tr"] = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-shotFreq-tr"]              = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-reloadTime-tr"]            = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-weaponPresets-tr"]         = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-massPerSec-tr"]            = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-armorThicknessHull-tr"]    = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-armorThicknessTurret-tr"]  = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-armorPiercing-tr"]         = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-armorPiercingDist-tr"]     = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-mass-tr"]                  = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-horsePowers-tr"]           = [ ES_UNIT_TYPE_TANK ],
-    ["aircraft-maxSpeed-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK,
-                                              ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-maxDepth-tr"]              = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ],
-    ["aircraft-speedAlt-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-altitude-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
-    ["aircraft-turnTime-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-climbSpeed-tr"]            = cardHelicopterClimbParameter ? [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ] : [ ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-airfieldLen-tr"]           = [ ES_UNIT_TYPE_AIRCRAFT ],
-    ["aircraft-wingLoading-tr"]           = cardAirplaneWingLoadingParameter ? [ ES_UNIT_TYPE_AIRCRAFT ] : [],
-    ["aircraft-visibilityFactor-tr"]      = [ ES_UNIT_TYPE_TANK ]
+    ["aircraft-turnTurretTime-tr"]           = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-angleVerticalGuidance-tr"]    = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-shotFreq-tr"]                 = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-reloadTime-tr"]               = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-weaponPresets-tr"]            = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-massPerSec-tr"]               = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-armorThicknessHull-tr"]       = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-armorThicknessTurret-tr"]     = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-armorPiercing-tr"]            = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-armorPiercingDist-tr"]        = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-mass-tr"]                     = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-horsePowers-tr"]              = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-maxSpeed-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK,
+                                                 ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-maxDepth-tr"]                 = [ ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP ],
+    ["aircraft-speedAlt-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-altitude-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ],
+    ["aircraft-turnTime-tr"]                 = [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-climbSpeed-tr"]               = cardHelicopterClimbParameter ? [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ] : [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-airfieldLen-tr"]              = [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-wingLoading-tr"]              = cardAirplaneWingLoadingParameter ? [ ES_UNIT_TYPE_AIRCRAFT ] : [],
+    ["aircraft-visibilityFactor-tr"]         = [ ES_UNIT_TYPE_TANK ],
+    ["aircraft-wingPlaneStrengthVne-tr"]     = [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-wingPlaneStrengthMne-tr"]     = [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-gearDestructionIndSpeed-tr"]  = [ ES_UNIT_TYPE_AIRCRAFT ],
+    ["aircraft-flapsDestructionIndSpeed-tr"] = [ ES_UNIT_TYPE_AIRCRAFT ],
   }
 
   foreach (rowId, showForTypes in showCharacteristics) {
@@ -1170,6 +1178,55 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   }
   else
     thrustToWeightRatioObject.show(false)
+
+  if (unitType == ES_UNIT_TYPE_AIRCRAFT) {
+    let wingPlaneStrengthVneObj = holderObj.findObject("aircraft-wingPlaneStrengthVne-tr")
+    if (wingPlaneStrengthVneObj?.isValid() ?? false) {
+      let wingPlaneStrengthMneObj = holderObj.findObject("aircraft-wingPlaneStrengthMne-tr")
+      let wingPlaneStrength = getWingPlaneStrength(air)
+      let hasWingPlaneStrength = wingPlaneStrength != null
+      if (hasWingPlaneStrength) {
+        if (wingPlaneStrength.len() == 1) {
+          let { vne, mne } = wingPlaneStrength[0]
+          let planeStrengthVne = measureType.SPEED.getMeasureUnitsText(vne / 3.6)
+          holderObj.findObject("aircraft-wingPlaneStrengthVne").setValue(planeStrengthVne)
+          holderObj.findObject("aircraft-wingPlaneStrengthMne").setValue(format("%.2g", mne))
+        }
+        else {
+          let vneMin = measureType.SPEED.getMeasureUnitsText(wingPlaneStrength[0].vne / 3.6, false)
+          let vneMax = measureType.SPEED.getMeasureUnitsText(wingPlaneStrength[1].vne / 3.6)
+          holderObj.findObject("aircraft-wingPlaneStrengthVne").setValue($"{vneMin}/{vneMax}")
+          let mneMin = wingPlaneStrength[0].mne
+          let mneMax = wingPlaneStrength[1].mne
+          holderObj.findObject("aircraft-wingPlaneStrengthMne").setValue($"{format("%.2g", mneMin)}/{format("%.2g", mneMax)}")
+        }
+      }
+      wingPlaneStrengthVneObj.show(hasWingPlaneStrength)
+      wingPlaneStrengthMneObj.show(hasWingPlaneStrength)
+    }
+
+    let gearDestructionIndSpeedObj = holderObj.findObject("aircraft-gearDestructionIndSpeed-tr")
+    if (gearDestructionIndSpeedObj?.isValid() ?? false) {
+      let gearDestructionIndSpeed = getGearDestructionIndSpeed(air)
+      let hasGearDestructionIndSpeed = gearDestructionIndSpeed != -1
+      if (hasGearDestructionIndSpeed) {
+        let destructionSpeed = measureType.SPEED.getMeasureUnitsText(gearDestructionIndSpeed / 3.6)
+        holderObj.findObject("aircraft-gearDestructionIndSpeed").setValue(destructionSpeed)
+      }
+      gearDestructionIndSpeedObj.show(hasGearDestructionIndSpeed)
+    }
+
+    let flapsDestructionIndSpeedObj = holderObj.findObject("aircraft-flapsDestructionIndSpeed-tr")
+    if (flapsDestructionIndSpeedObj?.isValid() ?? false) {
+      let flapsDestructionIndSpeed = getFlapsDestructionIndSpeed(air)
+      let hasFlapsDestructionIndSpeed = flapsDestructionIndSpeed != -1
+      if (hasFlapsDestructionIndSpeed) {
+        let destructionSpeed = measureType.SPEED.getMeasureUnitsText(flapsDestructionIndSpeed / 3.6)
+        holderObj.findObject("aircraft-flapsDestructionIndSpeed").setValue(destructionSpeed)
+      }
+      flapsDestructionIndSpeedObj.show(hasFlapsDestructionIndSpeed)
+    }
+  }
 
   let modificators = (showLocalState || needCrewModificators) ? "modificators" : "modificatorsBase"
   if (air.isTank() && air[modificators]) {
@@ -1614,7 +1671,9 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
     if (isUnitDefault(air))
       addInfoTextsList.append(loc("shop/reserve/info"))
-    if (::canBuyUnitOnMarketplace(air))
+    if (hasUnitCoupon(air.name))
+      addInfoTextsList.append(colorize("userlogColoredText", loc("shop/object/can_get_from_coupon")))
+    else if (::canBuyUnitOnMarketplace(air))
       addInfoTextsList.append(colorize("userlogColoredText", loc("shop/giftAir/coupon/info")))
   }
 
@@ -1649,7 +1708,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (needCrewInfo && crew) {
     let crewUnitType = air.getCrewUnitType()
     let crewLevel = getCrewLevel(crew, air, crewUnitType)
-    let crewStatus = ::get_crew_status(crew, air)
+    let crewStatus = getCrewStatus(crew, air)
     let specType = getSpecTypeByCrewAndUnit(crew, air)
     let crewSpecIcon = specType.trainedIcon
     let crewSpecName = specType.getName()
@@ -1785,10 +1844,14 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
     let unitStateId = !showLocalState ? "reference"
       : crew ? "current_crew"
-      : "current"
-    let unitState = loc($"shop/showing_unit_state/{unitStateId}")
+      : air.isUsable() ? "current"
+      : ""
+    let unitState = (unitStateId != "") ? loc($"shop/showing_unit_state/{unitStateId}") : ""
 
-    obj.setValue(loc("shop/all_info_relevant_to_current_game_mode") + loc("ui/colon") + diffName + "\n" + unitState)
+    let currentGameModeFootnoteText = "".concat(
+      loc("shop/all_info_relevant_to_current_game_mode"), loc("ui/colon"), diffName,
+      (unitState != "") ? $"\n{unitState}" : "")
+    obj.setValue(currentGameModeFootnoteText)
   }
 
   obj = holderObj.findObject("unit_rent_time")

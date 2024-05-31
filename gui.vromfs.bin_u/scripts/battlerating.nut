@@ -41,6 +41,8 @@ function calcSquadMrank(brData) {
   return maxBR
 }
 
+let getRecentSquadMrank = @() calcSquadMrank(recentBRData.value)
+
 function calcSquadBattleRating(brData) {
   let mrank = calcSquadMrank(brData)
   // mrank < 0  means empty received data and no BR string needed in game mode header
@@ -240,4 +242,5 @@ return {
   recentBrGameModeId
   recentBR
   getBRDataByMrankDiff
+  getRecentSquadMrank
 }

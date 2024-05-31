@@ -30,7 +30,7 @@ function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
 
 function unsubscribe(pushContextId) {
   unsubscribeFromContext(pushContextId)
-  activeSubscriptions.mutate(@(v) delete v[pushContextId])
+  activeSubscriptions.mutate(@(v) v.$rawdelete(pushContextId))
 }
 
 

@@ -3,6 +3,9 @@
   "holderId": "uninited",
   "tooltipId": "",
   "inactive": "yes",
+  "interactive": "yes",
+  "shortcut-on-hover": "yes",
+  "isShopCell": "yes",
   "shopItem": {
     "id": "uninited",
     "behavior": "Timer",
@@ -17,6 +20,10 @@
     "isElite": "no",
     "isRecentlyReleased": "no",
     "refuseOpenHoverMenu": "yes",
+    "css-hier-invalidate": "yes",
+    "on_drag_start": "onUnitCellDragStart",
+    "on_drag_drop": "onUnitCellDrop",
+    "dragParent": "yes",
     "on_hover": "::gcb.delayedTooltipHover",
     "on_unhover": "::gcb.delayedTooltipHover",
     "tooltip-float": "horizontal",
@@ -35,12 +42,13 @@
       "topLine": {},
       "bottomShade": {}
     },
-    "itemWinkBlock": {
+    "slotWinkHighlight": {
       "buttonWink": {
         "_transp-timer": "0"
       }
     },
-    "hoverHighlight": {},
+    "slotHoverHighlight": {},
+    "slotBottomGradientLine": {},
     "shopAirImg": {
       "id": "unitImage",
       "foreground-image": ""

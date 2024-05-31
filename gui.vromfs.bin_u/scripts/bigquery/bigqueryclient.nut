@@ -6,10 +6,10 @@ from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 
 let ww_leaderboard = require("ww_leaderboard")
-let { get_local_unixtime   } = require("dagor.time")
-let { rnd                  } = require("dagor.random")
+let { get_local_unixtime, ref_time_ticks } = require("dagor.time")
+let { rnd, get_rnd_seed, set_rnd_seed }    = require("dagor.random")
 let { format               } = require("string")
-let { json_to_string       } = require("json")
+let { object_to_json_string} = require("json")
 let { getDistr             } = require("auth_wt")
 let { get_user_system_info } = require("sysinfo")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -81,7 +81,7 @@ function add_user_info(table) {
 function bq_client_no_auth(event, uniqueId, table) {
   add_user_info(table)
 
-  let params = json_to_string(table, false)
+  let params = object_to_json_string(table, false)
   let request =
   {
     action = "noa_bigquery_client_noauth"
@@ -101,6 +101,16 @@ function bq_client_no_auth(event, uniqueId, table) {
 }
 
 
+function generate_unique_id() {
+  // period of one second is not enough for random-seed, let's increase it
+  let seed = get_rnd_seed()
+  set_rnd_seed(ref_time_ticks())
+  let uniqueId = format("%.8X%.8X", get_local_unixtime(), rnd() * rnd())
+  set_rnd_seed(seed)
+  return uniqueId
+}
+
+
 function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
   if (bqStat.sendStartOnce)
     return
@@ -108,7 +118,7 @@ function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
   local blk = get_common_local_settings_blk()
 
   if ("uniqueId" not in blk || type(blk.uniqueId) != "string" || blk.uniqueId.len() < 16) {
-    blk.uniqueId <- format("%.8X%.8X", get_local_unixtime(), rnd() * rnd())
+    blk.uniqueId <- generate_unique_id()
     assert(blk.uniqueId.len() == 16)
   }
 
@@ -138,7 +148,7 @@ function bqSendLoginState(table) {
     table.auto <- true
 
   add_user_info(table)
-  let params = json_to_string(table)
+  let params = object_to_json_string(table)
 
   sendBqEvent("CLIENT_LOGIN_2", "login_state", table)
   log($"BQ CLIENT login_state {params}")

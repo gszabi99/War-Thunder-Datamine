@@ -47,6 +47,7 @@
   "groundArmorCaliberThreshold": 0.075,
   "shatterProbeDist": 0.1,
   "minArmorOverlap": 0.3,
+  "defaultExplosionOffset": 0.05,
   "defaultCaliberToArmorForGuiPenetrationTable": 1.25,
   "secondaryShattersCountLimitForTest": 30,
   "simpleCriticalDamageTester": true,
@@ -75,6 +76,10 @@
   "drowningCheckHeightMultiplier": 0.6,
   "bombingZoneArmorClass": "bombing_zone",
   "enableEventsConvert": false,
+  "ammoStowageDetonatePortion": [
+    0.1,
+    0.3
+  ],
   "genericDamageType": "generic",
   "collisionDamageType": "collision",
   "drowningDamageType": "drowning",
@@ -183,6 +188,7 @@
   "enableUnderwaterBombExplosionScale": false,
   "caliberForDamageAfterWaterRicochet": 0.0127,
   "defaultFuseOnWaterProbability": 0.5,
+  "shipDestroyedBridgeSteeringMult": 0.1,
   "useSyncBulletTrace": true,
   "useSyncRocketTrace": true,
   "useSyncTorpedoTrace": true,
@@ -440,6 +446,8 @@
     "voxelBoxResolution": 80,
     "minVoxelSize": 0.02,
     "minObstacleSize": 0.02,
+    "thicknessMapEnabled": true,
+    "pushOutCenter": true,
     "squashArmorAnglesScale": {
       "p0": [
         0.0,
@@ -1133,32 +1141,27 @@
       }
     },
     "apcr": {
-      "ricochetProbability0deg": [
-        0.0,
-        1.0
-      ],
-      "ricochetProbability10deg": [
-        [
-          14.0,
+      "t0": {
+        "caliberToArmor": 0.5,
+        "ricochetProbability0deg": [
+          0.0,
           1.0
         ],
-        [
-          15.0,
-          0.05
+        "ricochetProbability10deg": [
+          [
+            14.0,
+            1.0
+          ],
+          [
+            15.0,
+            0.05
+          ]
+        ],
+        "ricochetProbability20deg": [
+          16.0,
+          0.0
         ]
-      ],
-      "ricochetProbability20deg": [
-        16.0,
-        0.0
-      ],
-      "ricochetProbability60deg": [
-        60.0,
-        0.0
-      ],
-      "ricochetProbability90deg": [
-        90.0,
-        0.0
-      ],
+      },
       "t1": {
         "caliberToArmor": 1.0,
         "ricochetProbability0deg": [
@@ -1175,10 +1178,6 @@
         ],
         "ricochetProbability24deg": [
           24.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
           0.0
         ]
       }
@@ -1470,6 +1469,239 @@
           0.0
         ]
       }
+    },
+    "ap_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability25deg": [
+          25.0,
+          1.0
+        ],
+        "ricochetProbability30deg": [
+          30.0,
+          0.5
+        ],
+        "ricochetProbability40deg": [
+          40.0,
+          0.3
+        ],
+        "ricochetProbability41deg": [
+          41.0,
+          0.005
+        ],
+        "ricochetProbability43deg": [
+          43.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apbc_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability19deg": [
+          19.0,
+          1.0
+        ],
+        "ricochetProbability23deg": [
+          23.0,
+          0.9
+        ],
+        "ricochetProbability28deg": [
+          28.0,
+          0.37
+        ],
+        "ricochetProbability30deg": [
+          30.0,
+          0.35
+        ],
+        "ricochetProbability40deg": [
+          40.0,
+          0.05
+        ],
+        "ricochetProbability41deg": [
+          41.0,
+          0.005
+        ],
+        "ricochetProbability42deg": [
+          42.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apcr_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          18.0,
+          1.0
+        ],
+        "ricochetProbability22deg": [
+          20.0,
+          0.5
+        ],
+        "ricochetProbability24deg": [
+          24.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apds_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          10.0,
+          1.0
+        ],
+        "ricochetProbability22deg": [
+          14.0,
+          0.1
+        ],
+        "ricochetProbability24deg": [
+          15.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "apds_fs_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability18deg": [
+          10.0,
+          1.0
+        ],
+        "ricochetProbability22deg": [
+          13.0,
+          0.5
+        ],
+        "ricochetProbability24deg": [
+          14.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "he_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability09deg": [
+          9.0,
+          1.0
+        ],
+        "ricochetProbability10deg": [
+          10.0,
+          0.5
+        ],
+        "ricochetProbability11deg": [
+          11.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "bomb_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability09deg": [
+          9.0,
+          1.0
+        ],
+        "ricochetProbability10deg": [
+          10.0,
+          0.5
+        ],
+        "ricochetProbability11deg": [
+          11.0,
+          0.0
+        ],
+        "ricochetProbability90deg": [
+          90.0,
+          0.0
+        ]
+      }
+    },
+    "hesh_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          1.0
+        ],
+        "ricochetProbability09deg": [
+          10.0,
+          1.0
+        ],
+        "ricochetProbability10deg": [
+          15.0,
+          0.2
+        ],
+        "ricochetProbability11deg": [
+          17.0,
+          0.0
+        ]
+      }
+    },
+    "he_small_caliber_ground": {
+      "t1": {
+        "caliberToArmor": 1.0,
+        "ricochetProbability0deg": [
+          0.0,
+          0.0
+        ],
+        "ricochetProbability01deg": [
+          1.0,
+          0.0
+        ]
+      }
     }
   },
   "angleAndSpeedToRicochetProbabilityInWater": {
@@ -1634,415 +1866,6 @@
           0.0
         ]
       ]
-    }
-  },
-  "groundRicochetPreset": {
-    "default": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability25deg": [
-          25.0,
-          1.0
-        ],
-        "ricochetProbability30deg": [
-          30.0,
-          0.6
-        ],
-        "ricochetProbability40deg": [
-          40.0,
-          0.35
-        ],
-        "ricochetProbability41deg": [
-          41.0,
-          0.005
-        ],
-        "ricochetProbability43deg": [
-          43.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "defaultExt": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability25deg": [
-          25.0,
-          1.0
-        ],
-        "ricochetProbability30deg": [
-          30.0,
-          0.6
-        ],
-        "ricochetProbability40deg": [
-          40.0,
-          0.35
-        ],
-        "ricochetProbability41deg": [
-          41.0,
-          0.005
-        ],
-        "ricochetProbability43deg": [
-          43.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "ap": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability25deg": [
-          25.0,
-          1.0
-        ],
-        "ricochetProbability30deg": [
-          30.0,
-          0.5
-        ],
-        "ricochetProbability40deg": [
-          40.0,
-          0.3
-        ],
-        "ricochetProbability41deg": [
-          41.0,
-          0.005
-        ],
-        "ricochetProbability43deg": [
-          43.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "apbc": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability19deg": [
-          19.0,
-          1.0
-        ],
-        "ricochetProbability23deg": [
-          23.0,
-          0.9
-        ],
-        "ricochetProbability28deg": [
-          28.0,
-          0.37
-        ],
-        "ricochetProbability30deg": [
-          30.0,
-          0.35
-        ],
-        "ricochetProbability40deg": [
-          40.0,
-          0.05
-        ],
-        "ricochetProbability41deg": [
-          41.0,
-          0.005
-        ],
-        "ricochetProbability42deg": [
-          42.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "apcr": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability18deg": [
-          18.0,
-          1.0
-        ],
-        "ricochetProbability22deg": [
-          20.0,
-          0.5
-        ],
-        "ricochetProbability24deg": [
-          24.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "apds": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability18deg": [
-          10.0,
-          1.0
-        ],
-        "ricochetProbability22deg": [
-          14.0,
-          0.1
-        ],
-        "ricochetProbability24deg": [
-          15.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "apds_fs": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability18deg": [
-          10.0,
-          1.0
-        ],
-        "ricochetProbability22deg": [
-          13.0,
-          0.5
-        ],
-        "ricochetProbability24deg": [
-          14.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "apds_fs_full_body_steel": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability18deg": [
-          12.0,
-          1.0
-        ],
-        "ricochetProbability22deg": [
-          14.0,
-          0.5
-        ],
-        "ricochetProbability24deg": [
-          18.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "apds_fs_long": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability9deg": [
-          9.0,
-          1.0
-        ],
-        "ricochetProbability10deg": [
-          10.0,
-          0.5
-        ],
-        "ricochetProbability12deg": [
-          12.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "heat": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability09deg": [
-          17.0,
-          1.0
-        ],
-        "ricochetProbability18deg": [
-          19.0,
-          0.9
-        ],
-        "ricochetProbability20deg": [
-          22.0,
-          0.4
-        ],
-        "ricochetProbability25deg": [
-          28.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "heat_fs": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability09deg": [
-          13.0,
-          1.0
-        ],
-        "ricochetProbability18deg": [
-          18.0,
-          0.5
-        ],
-        "ricochetProbability20deg": [
-          20.0,
-          0.25
-        ],
-        "ricochetProbability25deg": [
-          25.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "atgm": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability8deg": [
-          8.0,
-          0.5
-        ],
-        "ricochetProbability10deg": [
-          10.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "he": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability09deg": [
-          9.0,
-          1.0
-        ],
-        "ricochetProbability10deg": [
-          10.0,
-          0.5
-        ],
-        "ricochetProbability11deg": [
-          11.0,
-          0.0
-        ],
-        "ricochetProbability90deg": [
-          90.0,
-          0.0
-        ]
-      }
-    },
-    "hesh": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability09deg": [
-          10.0,
-          1.0
-        ],
-        "ricochetProbability10deg": [
-          15.0,
-          0.2
-        ],
-        "ricochetProbability11deg": [
-          17.0,
-          0.0
-        ]
-      }
-    },
-    "napalm": {
-      "t1": {
-        "caliberToArmor": 1.0,
-        "ricochetProbability0deg": [
-          0.0,
-          1.0
-        ],
-        "ricochetProbability01deg": [
-          1.0,
-          0.0
-        ],
-        "ricochetProbability02deg": [
-          2.0,
-          0.0
-        ]
-      }
     }
   },
   "secondaryShatters": {
@@ -3535,6 +3358,94 @@
         }
       }
     },
+    "heavy_heat_warhead": {
+      "residualArmorPenetrationToShatterCountMult": [
+        20.0,
+        300.0,
+        0.2,
+        1.0
+      ],
+      "residualArmorPenetrationToShatterPenetrationMult": [
+        20.0,
+        300.0,
+        0.5,
+        1.0
+      ],
+      "residualArmorPenetrationToShatterDamageMult": [
+        20.0,
+        300.0,
+        0.5,
+        1.0
+      ],
+      "caliberToArmorToShatterCountMult": [
+        0.5,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "section0": {
+        "angles": [
+          0.0,
+          15.0
+        ],
+        "shatter": {
+          "distance": 5.0,
+          "size": 0.01,
+          "count": 20,
+          "penetration": [
+            35.0,
+            30.0
+          ],
+          "damage": [
+            200.0,
+            150.0
+          ],
+          "aggregateDamage": false,
+          "onHitChanceMultFire": 5.0
+        }
+      },
+      "section1": {
+        "angles": [
+          0.0,
+          45.0
+        ],
+        "shatter": {
+          "distance": 5.0,
+          "size": 0.01,
+          "count": 60,
+          "penetration": [
+            20.0,
+            17.0
+          ],
+          "damage": [
+            100.0,
+            70.0
+          ],
+          "aggregateDamage": false,
+          "onHitChanceMultFire": 5.0
+        }
+      },
+      "section2": {
+        "angles": [
+          0.0,
+          70.0
+        ],
+        "shatter": {
+          "distance": 1.5,
+          "size": 0.01,
+          "count": 100,
+          "penetration": [
+            7.0,
+            5.0
+          ],
+          "damage": [
+            50.0,
+            30.0
+          ],
+          "onHitChanceMultFire": 1.0
+        }
+      }
+    },
     "hesh": {
       "byNormal": true,
       "residualArmorPenetrationToShatterCountMult": [
@@ -4401,6 +4312,31 @@
       "completely": true,
       "partRepairHp": 1.0,
       "hpForRepair": 0.7
+    },
+    "fire_control_system_dm": {
+      "speed": 1.0,
+      "completely": true,
+      "modRequired": false
+    },
+    "electronic_equipment_dm": {
+      "speed": 1.0,
+      "completely": true,
+      "modRequired": false
+    },
+    "autoloader_dm": {
+      "speed": 1.2,
+      "completely": true,
+      "modRequired": false
+    },
+    "power_system_dm": {
+      "speed": 0.8,
+      "completely": true,
+      "modRequired": false
+    },
+    "driver_controls_dm": {
+      "speed": 1.3,
+      "completely": true,
+      "modRequired": false
     }
   },
   "leftTrackNodes": {
@@ -4423,6 +4359,9 @@
   },
   "healingCrew": {
     "partRepairHp": 1.0,
+    "delayToAutoHealing": 10.0,
+    "nonPenaltyCrewHealthThreshold": 0.5,
+    "autoHealingSpeed": 0.025,
     "gunner_dm": {
       "speed": 2.0,
       "completely": true
@@ -4470,51 +4409,51 @@
   },
   "maxRepairTime": {
     "default": 233,
-    "cn_bt_5": 125,
+    "cn_bt_5": 134,
     "cn_cm11": 140,
-    "cn_cm_25": 125,
-    "cn_gmc_cckw_353_m45_quad": 125,
-    "cn_hj_9": 125,
+    "cn_cm_25": 134,
+    "cn_gmc_cckw_353_m45_quad": 134,
+    "cn_hj_9": 134,
     "cn_is_2_1943": 140,
     "cn_is_2_1943_no402": 140,
     "cn_is_2_1944": 140,
     "cn_isu_122": 140,
     "cn_isu_152": 166,
-    "cn_lvt_4_zis_2": 125,
+    "cn_lvt_4_zis_2": 134,
     "cn_m10": 140,
-    "cn_m113a1_tow": 125,
-    "cn_m18_hellcat": 125,
-    "cn_m24_chaffee": 125,
+    "cn_m113a1_tow": 134,
+    "cn_m18_hellcat": 134,
+    "cn_m24_chaffee": 134,
     "cn_m36": 140,
-    "cn_m3a3_stuart": 125,
-    "cn_m3a3_stuart_1st_ptg": 125,
-    "cn_m41_a3_walker_bulldog": 125,
-    "cn_m42_duster": 125,
+    "cn_m3a3_stuart": 134,
+    "cn_m3a3_stuart_1st_ptg": 134,
+    "cn_m41_a3_walker_bulldog": 134,
+    "cn_m42_duster": 134,
     "cn_m48a1_patton_III": 140,
     "cn_m4a1_76w_sherman": 140,
     "cn_m4a4_sherman": 140,
     "cn_m4a4_sherman_1st_ptg": 140,
-    "cn_m5a1_stuart": 125,
+    "cn_m5a1_stuart": 134,
     "cn_m60a3_tts": 140,
-    "cn_m8_greyhound": 125,
-    "cn_m8_scott": 125,
-    "cn_m_41d": 125,
+    "cn_m8_greyhound": 134,
+    "cn_m8_scott": 134,
+    "cn_m_41d": 134,
     "cn_mbt2000": 140,
     "cn_object_122tm": 140,
-    "cn_object_211": 125,
-    "cn_pgz_04a": 125,
+    "cn_object_211": 134,
+    "cn_pgz_04a": 134,
     "cn_pgz_09": 140,
     "cn_plz_83": 166,
-    "cn_plz_83_130": 133,
-    "cn_pt_76": 125,
-    "cn_ptl_02": 133,
-    "cn_ptz_89": 133,
+    "cn_plz_83_130": 134,
+    "cn_pt_76": 134,
+    "cn_ptl_02": 134,
+    "cn_ptz_89": 134,
     "cn_qn506": 140,
-    "cn_sdkfz_222_early": 125,
+    "cn_sdkfz_222_early": 134,
     "cn_su_100_1945": 140,
-    "cn_su_76m_1943": 125,
-    "cn_t_26_1940": 125,
-    "cn_t_26_no531": 125,
+    "cn_su_76m_1943": 134,
+    "cn_t_26_1940": 134,
+    "cn_t_26_no531": 134,
     "cn_t_34_1942": 140,
     "cn_t_34_85_d_5t": 140,
     "cn_t_34_85_zis_53_no215": 140,
@@ -4523,25 +4462,26 @@
     "cn_type_58": 140,
     "cn_type_59": 140,
     "cn_type_59d": 140,
-    "cn_type_62": 125,
-    "cn_type_63_I": 125,
-    "cn_type_64": 125,
+    "cn_type_62": 134,
+    "cn_type_63_I": 134,
+    "cn_type_64": 134,
     "cn_type_65_aa": 140,
     "cn_type_69": 140,
     "cn_type_69_2a": 140,
     "cn_type_69_2g": 140,
-    "cn_type_86": 125,
-    "cn_type_95_ha_go": 125,
-    "cn_type_97_chi_ha": 125,
-    "cn_type_97_kai": 125,
+    "cn_type_86": 134,
+    "cn_type_95_ha_go": 134,
+    "cn_type_97_chi_ha": 134,
+    "cn_type_97_kai": 134,
     "cn_vt_4b": 140,
-    "cn_wma_301": 133,
+    "cn_wma_301": 134,
     "cn_wz_1001": 140,
-    "cn_wz_305": 125,
-    "cn_zbd_04a": 133,
-    "cn_zsd63_pg87": 125,
-    "cn_ztl_11": 133,
-    "cn_zts_63_1980": 125,
+    "cn_wz_305": 134,
+    "cn_zbd_04a": 134,
+    "cn_zsd63_pg87": 134,
+    "cn_zsl_92": 134,
+    "cn_ztl_11": 134,
+    "cn_zts_63_1980": 134,
     "cn_ztz_59a": 140,
     "cn_ztz_88a": 140,
     "cn_ztz_88b": 140,
@@ -4552,22 +4492,22 @@
     "cn_ztz_99": 140,
     "cn_ztz_99_w": 140,
     "cn_ztz_99a": 140,
-    "fr_amc_34": 125,
-    "fr_amc_35": 125,
-    "fr_amd_35": 125,
-    "fr_amd_35_sa35": 125,
-    "fr_aml_90": 125,
-    "fr_amr_35_zt3": 125,
-    "fr_amx_10m_acra": 133,
-    "fr_amx_10p": 125,
-    "fr_amx_10rc": 133,
-    "fr_amx_13_75": 125,
-    "fr_amx_13_75_ss11": 125,
-    "fr_amx_13_90": 125,
-    "fr_amx_13_chaffee": 125,
-    "fr_amx_13_dca_40": 125,
-    "fr_amx_13_fl_11": 125,
-    "fr_amx_13_hot": 125,
+    "fr_amc_34": 134,
+    "fr_amc_35": 134,
+    "fr_amd_35": 134,
+    "fr_amd_35_sa35": 134,
+    "fr_aml_90": 134,
+    "fr_amr_35_zt3": 134,
+    "fr_amx_10m_acra": 134,
+    "fr_amx_10p": 134,
+    "fr_amx_10rc": 134,
+    "fr_amx_13_75": 134,
+    "fr_amx_13_75_ss11": 134,
+    "fr_amx_13_90": 134,
+    "fr_amx_13_chaffee": 134,
+    "fr_amx_13_dca_40": 134,
+    "fr_amx_13_fl_11": 134,
+    "fr_amx_13_hot": 134,
     "fr_amx_30": 140,
     "fr_amx_30_1972": 140,
     "fr_amx_30_ACRA": 140,
@@ -4585,80 +4525,81 @@
     "fr_amx_50_foch": 140,
     "fr_amx_50_surbaisse": 140,
     "fr_amx_50_surblinde": 140,
-    "fr_amx_elc_bis": 125,
+    "fr_amx_elc_bis": 134,
     "fr_amx_m4": 140,
-    "fr_amx_vtt_dca": 125,
+    "fr_amx_vtt_dca": 134,
     "fr_arl_44": 140,
     "fr_arl_44_acl1": 140,
     "fr_b1_bis": 140,
     "fr_b1_ter": 140,
-    "fr_bat_chat_25t": 125,
-    "fr_cckw_353_bofors": 125,
+    "fr_bat_chat_25t": 134,
+    "fr_cckw_353_bofors": 134,
     "fr_char_2c": 166,
     "fr_char_2c_bis": 166,
-    "fr_citroen_kegresse_p4t": 125,
-    "fr_crotale_ng": 125,
-    "fr_crusader_mk_2": 125,
-    "fr_fcm_36": 125,
-    "fr_hotchkiss_h35": 125,
-    "fr_hotchkiss_h39": 125,
-    "fr_hotchkiss_h39_cambronne": 125,
+    "fr_citroen_kegresse_p4t": 134,
+    "fr_crotale_ng": 134,
+    "fr_crusader_mk_2": 134,
+    "fr_fcm_36": 134,
+    "fr_hotchkiss_h35": 134,
+    "fr_hotchkiss_h39": 134,
+    "fr_hotchkiss_h39_cambronne": 134,
     "fr_leclerc_azur": 140,
     "fr_leclerc_s1": 140,
     "fr_leclerc_s2": 140,
     "fr_leclerc_sxxi": 140,
     "fr_lorraine_100": 140,
     "fr_lorraine_155": 166,
-    "fr_lorraine_37l": 125,
+    "fr_lorraine_37l": 134,
     "fr_lorraine_40t": 140,
-    "fr_lvt_bofors": 125,
+    "fr_lvt_bofors": 134,
     "fr_m10": 140,
     "fr_m26_pershing": 140,
     "fr_m36b2_cefeo": 140,
-    "fr_m3a3_stuart": 125,
+    "fr_m3a3_stuart": 134,
     "fr_m4a1_sherman": 140,
     "fr_m4a1_sherman_fl_10": 140,
     "fr_m4a3_105_sherman": 140,
     "fr_m4a3e2_sherman_jumbo": 140,
     "fr_m4a4_cn_75_50": 140,
     "fr_m4a4_sherman": 140,
-    "fr_mars_15": 125,
-    "fr_panhard_ebr_1951": 125,
-    "fr_panhard_ebr_1954": 125,
-    "fr_panhard_ebr_1963": 125,
+    "fr_mars_15": 134,
+    "fr_panhard_ebr_1951": 134,
+    "fr_panhard_ebr_1954": 134,
+    "fr_panhard_ebr_1963": 134,
     "fr_pzkpfw_V_panther_dauphine": 140,
     "fr_renault_d2": 140,
-    "fr_renault_r39": 125,
-    "fr_sk105_a2": 133,
+    "fr_renault_r39": 134,
+    "fr_sk105_a2": 134,
     "fr_somua_s35": 140,
     "fr_somua_sau40": 140,
     "fr_somua_sm": 140,
-    "fr_tpk_641_vpc": 125,
-    "fr_vab_santal": 125,
-    "fr_vbci2_mct30": 125,
-    "fr_vcac_mephisto": 125,
-    "germ_amd_35_kwk": 125,
-    "germ_at_gun_flak36": 125,
-    "germ_at_gun_pak36": 125,
-    "germ_at_gun_pak38": 125,
-    "germ_at_gun_pak40": 125,
+    "fr_tpk_641_vpc": 134,
+    "fr_vab_santal": 134,
+    "fr_vbci2_mct30": 134,
+    "fr_vcac_mephisto": 134,
+    "fr_vextra_105": 134,
+    "germ_amd_35_kwk": 134,
+    "germ_at_gun_flak36": 134,
+    "germ_at_gun_pak36": 134,
+    "germ_at_gun_pak38": 134,
+    "germ_at_gun_pak40": 134,
     "germ_begleitpanzer_57": 140,
-    "germ_bmp_1_ddr": 125,
+    "germ_bmp_1_ddr": 134,
     "germ_erprobungstrager_3_achs_turm": 140,
-    "germ_flakpanzer_38t_Gepard": 125,
+    "germ_flakpanzer_38t_Gepard": 134,
     "germ_flakpanzer_IV_Kugelblitz": 140,
     "germ_flakpanzer_IV_Ostwind": 140,
     "germ_flakpanzer_IV_Ostwind_2": 140,
     "germ_flakpanzer_IV_Wirbelwind": 140,
-    "germ_flakpanzer_I_ausf_A": 125,
+    "germ_flakpanzer_I_ausf_A": 134,
     "germ_flakpanzer_V_Coelian": 140,
     "germ_flakpanzer_zerstorer_45": 140,
     "germ_flakpz_1a2_Gepard": 140,
     "germ_flakpz_I_Gepard": 140,
     "germ_flarakpz_1": 140,
-    "germ_flarakrad": 125,
+    "germ_flarakrad": 134,
     "germ_infanterie_kampfpanzer_churchill": 140,
-    "germ_jgdpz_38t": 125,
+    "germ_jgdpz_38t": 134,
     "germ_jgdpz_IV_L48": 140,
     "germ_kanonenjagdpanzer": 140,
     "germ_kpz_70": 166,
@@ -4666,12 +4607,13 @@
     "germ_kv_1B_finland": 140,
     "germ_kv_1_kwk_40": 140,
     "germ_kv_2_754r": 166,
-    "germ_le_kpz_m41": 125,
-    "germ_leichter_ladungstrager_303a": 125,
+    "germ_le_kpz_m41": 134,
+    "germ_leichter_ladungstrager_303a": 134,
     "germ_leopard_1a5": 140,
     "germ_leopard_2_pt14": 140,
     "germ_leopard_2a4": 140,
     "germ_leopard_2a4_pzbtl_123": 140,
+    "germ_leopard_2a4m_can": 140,
     "germ_leopard_2a5": 140,
     "germ_leopard_2a5_pso": 140,
     "germ_leopard_2a5_yt_cup_2019": 140,
@@ -4692,30 +4634,30 @@
     "germ_mkpz_m48a2c": 140,
     "germ_mkpz_m48a2ga2": 140,
     "germ_mkpz_super_m48": 140,
-    "germ_nbfz_VI": 125,
+    "germ_nbfz_VI": 134,
     "germ_panther_II": 140,
     "germ_panther_II_tutorial": 140,
     "germ_panzerbefelhswagen_IV_ausf_J": 140,
     "germ_panzerbefelhswagen_VI_P": 140,
     "germ_panzerbefelhswagen_jagdpanther": 140,
-    "germ_panzerjager_1": 125,
+    "germ_panzerjager_1": 134,
     "germ_panzerjager_nashorn": 140,
     "germ_panzerjager_panther": 140,
     "germ_panzerjager_tiger": 140,
     "germ_panzerjager_tiger_P_elefant": 140,
     "germ_panzerjager_tiger_P_ferdinand": 140,
-    "germ_panzerwerfer_42": 125,
+    "germ_panzerwerfer_42": 134,
     "germ_pz_IV_L70": 140,
     "germ_pz_IV_L70_A": 140,
-    "germ_pzkpfw_35t": 125,
-    "germ_pzkpfw_35t_romania_mare": 125,
-    "germ_pzkpfw_38t_Aufklarungspanzer": 125,
-    "germ_pzkpfw_38t_Marder_III": 125,
-    "germ_pzkpfw_38t_Marder_III_ausf_H": 125,
-    "germ_pzkpfw_38t_ausf_A": 125,
-    "germ_pzkpfw_38t_ausf_F": 125,
-    "germ_pzkpfw_38t_na": 125,
-    "germ_pzkpfw_III_ausf_B": 125,
+    "germ_pzkpfw_35t": 134,
+    "germ_pzkpfw_35t_romania_mare": 134,
+    "germ_pzkpfw_38t_Aufklarungspanzer": 134,
+    "germ_pzkpfw_38t_Marder_III": 134,
+    "germ_pzkpfw_38t_Marder_III_ausf_H": 134,
+    "germ_pzkpfw_38t_ausf_A": 134,
+    "germ_pzkpfw_38t_ausf_F": 134,
+    "germ_pzkpfw_38t_na": 134,
+    "germ_pzkpfw_III_ausf_B": 134,
     "germ_pzkpfw_III_ausf_E": 140,
     "germ_pzkpfw_III_ausf_F": 140,
     "germ_pzkpfw_III_ausf_J": 140,
@@ -4724,12 +4666,12 @@
     "germ_pzkpfw_III_ausf_L": 140,
     "germ_pzkpfw_III_ausf_M": 140,
     "germ_pzkpfw_III_ausf_N": 140,
-    "germ_pzkpfw_II_ausf_C": 125,
-    "germ_pzkpfw_II_ausf_C_DAK": 125,
-    "germ_pzkpfw_II_ausf_C_td": 125,
-    "germ_pzkpfw_II_ausf_F": 125,
-    "germ_pzkpfw_II_ausf_H": 125,
-    "germ_pzkpfw_IV_ausf_C": 125,
+    "germ_pzkpfw_II_ausf_C": 134,
+    "germ_pzkpfw_II_ausf_C_DAK": 134,
+    "germ_pzkpfw_II_ausf_C_td": 134,
+    "germ_pzkpfw_II_ausf_F": 134,
+    "germ_pzkpfw_II_ausf_H": 134,
+    "germ_pzkpfw_IV_ausf_C": 134,
     "germ_pzkpfw_IV_ausf_E": 140,
     "germ_pzkpfw_IV_ausf_F": 140,
     "germ_pzkpfw_IV_ausf_F2": 140,
@@ -4753,27 +4695,27 @@
     "germ_pzkpfw_e_100": 140,
     "germ_pzsfl_IVa_dickermax": 140,
     "germ_pzsflk40_sturer_emil": 140,
-    "germ_radpanzer_90": 133,
+    "germ_radpanzer_90": 134,
     "germ_raketenjagdpanzer_2": 140,
     "germ_raketenjagdpanzer_2_hot": 140,
     "germ_ru251": 140,
     "germ_schutzenpanzer_puma": 140,
-    "germ_sdkfz_221_s_pz_b_41": 125,
-    "germ_sdkfz_222": 125,
-    "germ_sdkfz_234_1": 125,
-    "germ_sdkfz_234_2": 125,
-    "germ_sdkfz_234_2_td": 125,
-    "germ_sdkfz_234_3": 125,
-    "germ_sdkfz_234_4": 125,
-    "germ_sdkfz_251_10": 125,
-    "germ_sdkfz_251_21": 125,
-    "germ_sdkfz_251_22": 125,
-    "germ_sdkfz_251_9": 125,
-    "germ_sdkfz_6_2_flak36": 125,
-    "germ_sdkfz_9_flak37": 125,
-    "germ_sk105_a2": 133,
+    "germ_sdkfz_221_s_pz_b_41": 134,
+    "germ_sdkfz_222": 134,
+    "germ_sdkfz_234_1": 134,
+    "germ_sdkfz_234_2": 134,
+    "germ_sdkfz_234_2_td": 134,
+    "germ_sdkfz_234_3": 134,
+    "germ_sdkfz_234_4": 134,
+    "germ_sdkfz_251_10": 134,
+    "germ_sdkfz_251_21": 134,
+    "germ_sdkfz_251_22": 134,
+    "germ_sdkfz_251_9": 134,
+    "germ_sdkfz_6_2_flak36": 134,
+    "germ_sdkfz_9_flak37": 134,
+    "germ_sk105_a2": 134,
     "germ_spz_12_3": 140,
-    "germ_spz_oerlikon_raketenautomat": 125,
+    "germ_spz_oerlikon_raketenautomat": 134,
     "germ_stug_III_ausf_A": 140,
     "germ_stug_III_ausf_F": 140,
     "germ_stug_III_ausf_G": 140,
@@ -4783,33 +4725,33 @@
     "germ_sturmpanzer_II": 166,
     "germ_sturmpanzer_IV_brummbar": 166,
     "germ_t_34_747": 140,
-    "germ_th_800_bismark": 133,
+    "germ_th_800_bismark": 134,
     "germ_thyssen_henschel_tam": 140,
     "germ_thyssen_henschel_tam_2c": 140,
     "germ_thyssen_henschel_tam_2ip": 140,
     "germ_truck_sdkfz_6_2_tent": 411,
-    "germ_vilkas": 125,
+    "germ_vilkas": 134,
     "germ_vk_3002m": 140,
     "germ_vsw_flak_41": 140,
     "germ_vt_1_2": 140,
-    "germ_waffentrager_krupp_steyr": 125,
-    "germ_wiesel_1_mk20": 125,
-    "germ_wiesel_1_tow": 125,
-    "germ_wiesel_2_adwc": 125,
-    "il_aml_90": 125,
-    "il_amx_13_75": 125,
+    "germ_waffentrager_krupp_steyr": 134,
+    "germ_wiesel_1_mk20": 134,
+    "germ_wiesel_1_tow": 134,
+    "germ_wiesel_2_adwc": 134,
+    "il_aml_90": 134,
+    "il_amx_13_75": 134,
     "il_centurion_mk_5_shot": 140,
     "il_centurion_shot_kal_alef": 140,
     "il_centurion_shot_kal_d": 140,
     "il_centurion_shot_kal_gimel": 140,
     "il_m109": 166,
     "il_m109a1": 166,
-    "il_m113a1_tow": 125,
-    "il_m163_vulcan": 125,
+    "il_m113a1_tow": 134,
+    "il_m163_vulcan": 134,
     "il_m48a1_patton_III": 140,
     "il_m_51": 140,
     "il_m_51_w": 140,
-    "il_machbet": 125,
+    "il_machbet": 134,
     "il_magach_2": 140,
     "il_magach_3": 140,
     "il_magach_3_idf": 140,
@@ -4833,51 +4775,53 @@
     "il_merkava_mk_4_lic": 140,
     "il_merkava_mk_4b": 140,
     "il_merkava_mk_4m": 140,
-    "il_mim_72_chaparral": 125,
-    "il_ss_11_halftrack": 125,
-    "il_tcm_20": 125,
+    "il_mim_72_chaparral": 134,
+    "il_namer_rcws_30": 140,
+    "il_ss_11_halftrack": 134,
+    "il_tcm_20": 134,
     "il_tiran_4": 140,
     "il_tiran_4_sh": 140,
-    "il_zsu_23_4": 125,
-    "il_zsu_57_2": 125,
+    "il_zsu_23_4": 134,
+    "il_zsu_57_2": 134,
     "it_2s1": 140,
-    "it_39m_csaba": 125,
+    "it_39m_csaba": 134,
     "it_40_43m_zrinyi_2": 140,
-    "it_40m_turan_1": 125,
-    "it_41m_turan_2": 125,
-    "it_43m_turan_3": 125,
+    "it_40m_turan_1": 134,
+    "it_41m_turan_2": 134,
+    "it_43m_turan_3": 134,
     "it_44m_zrinyi_1": 140,
-    "it_ab_41": 125,
-    "it_ab_43": 125,
+    "it_ab_41": 134,
+    "it_ab_43": 134,
     "it_ariete_amv_pt1": 140,
-    "it_as_42_47": 125,
-    "it_as_42_metropolitana": 125,
-    "it_aubl_74_60_70m": 125,
-    "it_b1_centauro": 133,
-    "it_b1_centauro_romor": 133,
-    "it_breda_52_autocannone": 125,
-    "it_btr_80a_hungary": 125,
-    "it_c13_t90": 125,
+    "it_as_42_47": 134,
+    "it_as_42_metropolitana": 134,
+    "it_aubl_74_60_70m": 134,
+    "it_b1_centauro": 134,
+    "it_b1_centauro_romor": 134,
+    "it_breda_52_autocannone": 134,
+    "it_btr_80a_hungary": 134,
+    "it_c13_t90": 134,
     "it_c1_ariete": 140,
     "it_c1_ariete_preserie": 140,
     "it_c1_ariete_pso": 140,
-    "it_centauro_mgs_120": 133,
-    "it_centauro_rgo_120": 133,
-    "it_dardo_vcc": 125,
-    "it_fiat_6614_106sr": 133,
-    "it_fiat_6616_cockerill": 125,
-    "it_fiat_cm52": 125,
-    "it_freccia": 125,
-    "it_kf_41": 125,
-    "it_l3_cc": 125,
-    "it_l6": 125,
-    "it_l6_leone": 125,
-    "it_lancia3ro_100": 125,
+    "it_centauro_mgs_120": 134,
+    "it_centauro_rgo_120": 134,
+    "it_dardo_vcc": 134,
+    "it_fiat_6614_106sr": 134,
+    "it_fiat_6616_cockerill": 134,
+    "it_fiat_cm52": 134,
+    "it_freccia": 134,
+    "it_kf_41": 134,
+    "it_l3_cc": 134,
+    "it_l6": 134,
+    "it_l6_leone": 134,
+    "it_lancia3ro_100": 134,
     "it_leopard_1a5": 140,
     "it_leopard_2a4": 140,
+    "it_leopard_2a7_hungary": 140,
     "it_leopard_bofors": 140,
     "it_m109g": 166,
-    "it_m113a1_tow": 125,
+    "it_m113a1_tow": 134,
     "it_m11_39": 140,
     "it_m13_40_serie_1": 140,
     "it_m13_40_serie_2": 140,
@@ -4886,30 +4830,30 @@
     "it_m14_41_47_40": 140,
     "it_m15_42": 140,
     "it_m15_42_contraereo": 140,
-    "it_m18_hellcat": 125,
-    "it_m24_chaffee": 125,
+    "it_m18_hellcat": 134,
+    "it_m24_chaffee": 134,
     "it_m26_ariete": 140,
     "it_m26a1_pershing": 140,
     "it_m36b1": 140,
-    "it_m3a3_stuart": 125,
+    "it_m3a3_stuart": 134,
     "it_m47_105": 140,
     "it_m4a4_sherman": 140,
     "it_m60a1_ariete": 140,
     "it_of_40_mk_1": 140,
     "it_of_40_mk_2a": 140,
     "it_of_40_mtca": 140,
-    "it_oto_r3_106sr": 133,
-    "it_oto_r3_t20_fa": 125,
-    "it_otobreda_sidam_25": 125,
-    "it_otobreda_sidam_25_mistral": 125,
+    "it_oto_r3_106sr": 134,
+    "it_oto_r3_t20_fa": 134,
+    "it_otobreda_sidam_25": 134,
+    "it_otobreda_sidam_25_mistral": 134,
     "it_otomatic": 140,
     "it_p_26_40": 140,
     "it_p_40": 140,
     "it_pzkpfw_III_ausf_N": 140,
     "it_pzkpfw_IV_ausf_G": 140,
     "it_pzkpfw_VI_ausf_e_tiger": 140,
-    "it_sahariano": 125,
-    "it_semovente_breda_501": 125,
+    "it_sahariano": 134,
+    "it_semovente_breda_501": 134,
     "it_semovente_l40": 140,
     "it_semovente_m41_75_18": 140,
     "it_semovente_m41_75_32": 140,
@@ -4924,155 +4868,133 @@
     "it_sherman_vc_firefly": 140,
     "it_stug_III_ausf_G": 140,
     "it_t_72m1": 140,
-    "it_toldi_II_a": 125,
-    "it_vbc_pt2": 125,
-    "it_vcc_80_hitfist_30": 125,
-    "it_vcc_80_hitfist_60": 125,
-    "it_vrcc_centauro": 133,
-    "it_zsu_23_4": 125,
-    "it_zsu_57_2": 125,
-    "jp_halftrack_m16": 125,
-    "jp_hiro_sha": 133,
-    "jp_m19": 125,
-    "jp_m24_chaffee": 125,
+    "it_toldi_II_a": 134,
+    "it_vbc_pt2": 134,
+    "it_vcc_80_hitfist_30": 134,
+    "it_vcc_80_hitfist_60": 134,
+    "it_vrcc_centauro": 134,
+    "it_zsu_23_4": 134,
+    "it_zsu_57_2": 134,
+    "jp_halftrack_m16": 134,
+    "jp_hiro_sha": 134,
+    "jp_m19": 134,
+    "jp_m24_chaffee": 134,
     "jp_m36b2_jgsdf": 140,
-    "jp_m41_walker_bulldog": 125,
-    "jp_m42_duster": 125,
+    "jp_m41_walker_bulldog": 134,
+    "jp_m42_duster": 134,
     "jp_m47_patton_II": 140,
     "jp_m4a3e8_76w_sherman": 140,
-    "jp_navy_120mm_spg": 133,
+    "jp_navy_120mm_spg": 134,
     "jp_pzkpfw_VI_ausf_e_tiger": 140,
     "jp_st_a1": 140,
     "jp_st_a2": 140,
     "jp_st_a3": 140,
     "jp_st_b1": 140,
-    "jp_sub_i_ii_20mm": 125,
+    "jp_sub_i_ii_20mm": 134,
     "jp_tkx_prot": 140,
-    "jp_truck_type_94_isuzu": 125,
+    "jp_truck_type_94_isuzu": 134,
     "jp_type_10": 140,
     "jp_type_10_prototype": 140,
-    "jp_type_16": 133,
-    "jp_type_16_mcv_prot": 133,
-    "jp_type_16_mod": 133,
+    "jp_type_16": 134,
+    "jp_type_16_mcv_prot": 134,
+    "jp_type_16_mod": 134,
     "jp_type_1_chi_he": 140,
     "jp_type_1_chi_he_5th_regiment": 140,
     "jp_type_2_ho_i": 140,
-    "jp_type_2_ka_mi": 125,
+    "jp_type_2_ka_mi": 134,
     "jp_type_3_chi_nu": 140,
     "jp_type_3_chi_nu_75cm_type_5": 140,
-    "jp_type_3_ho_ni_I": 125,
-    "jp_type_3_ho_ni_III": 125,
-    "jp_type_3_ka_chi": 125,
+    "jp_type_3_ho_ni_I": 134,
+    "jp_type_3_ho_ni_III": 134,
+    "jp_type_3_ka_chi": 134,
     "jp_type_4_chi_to": 140,
     "jp_type_4_chi_to_late": 140,
     "jp_type_4_ho_ro": 166,
     "jp_type_5_chi_ri": 140,
     "jp_type_5_ho_ri_production": 140,
     "jp_type_5_ho_ri_prototype": 140,
-    "jp_type_5_na_to": 125,
-    "jp_type_60_atm": 125,
-    "jp_type_60_sprg": 133,
+    "jp_type_5_na_to": 134,
+    "jp_type_60_atm": 134,
+    "jp_type_60_sprg": 134,
     "jp_type_61": 140,
     "jp_type_74": 140,
     "jp_type_74_c": 140,
     "jp_type_74_f": 140,
     "jp_type_74_mod_g_kai": 140,
     "jp_type_75": 166,
-    "jp_type_75_mlrs": 125,
-    "jp_type_81_tansam": 125,
+    "jp_type_75_mlrs": 134,
+    "jp_type_81_tansam": 134,
     "jp_type_87": 140,
-    "jp_type_87_rcv": 125,
-    "jp_type_87_rcv_prot": 125,
-    "jp_type_89": 125,
-    "jp_type_89b_i_go_otsu": 125,
+    "jp_type_87_rcv": 134,
+    "jp_type_87_rcv_prot": 134,
+    "jp_type_89": 134,
+    "jp_type_89b_i_go_otsu": 134,
     "jp_type_90": 140,
     "jp_type_90b": 140,
     "jp_type_90b_camo": 140,
-    "jp_type_93": 125,
-    "jp_type_94": 125,
-    "jp_type_95_ha_go": 125,
-    "jp_type_95_ha_go_commander": 125,
-    "jp_type_95_heavy": 125,
-    "jp_type_95_so_ki": 125,
-    "jp_type_97_chi_ha": 125,
-    "jp_type_97_chi_ha_12cm": 133,
-    "jp_type_97_kai": 125,
-    "jp_type_97_kai_td": 125,
-    "jp_type_98_ke_ni": 125,
-    "jp_type_98_ta_se": 125,
+    "jp_type_93": 134,
+    "jp_type_94": 134,
+    "jp_type_95_ha_go": 134,
+    "jp_type_95_ha_go_commander": 134,
+    "jp_type_95_heavy": 134,
+    "jp_type_95_so_ki": 134,
+    "jp_type_97_chi_ha": 134,
+    "jp_type_97_chi_ha_12cm": 134,
+    "jp_type_97_kai": 134,
+    "jp_type_97_kai_td": 134,
+    "jp_type_98_ke_ni": 134,
+    "jp_type_98_ta_se": 134,
     "jp_type_99": 166,
-    "md_bosvark": 125,
-    "md_bosvark_recoiless_rifle": 125,
-    "md_bosvark_uparmor": 125,
-    "md_bosvark_uparmor_recoiless_rifle": 125,
-    "md_btr_80a": 125,
-    "md_btr_80a_projector": 125,
-    "md_btr_80a_uparmor": 125,
-    "md_btr_80a_uparmor_projector": 125,
-    "md_flarakrad": 125,
-    "md_flarakrad_uparmor": 125,
-    "md_m53_59": 125,
-    "md_m53_59_rocket": 125,
-    "md_m53_59_uparmor": 125,
-    "md_m53_59_uparmor_rocket": 125,
-    "md_tgdgb_m40_lv": 125,
-    "md_tgdgb_m40_lv_uparmor": 125,
-    "md_vickers_mk_11": 133,
-    "md_vickers_mk_11_rearmed": 133,
-    "md_vickers_mk_11_uparmor": 133,
-    "md_vickers_mk_11_uparmor_rearmed": 133,
-    "md_ystervark_spaa": 125,
-    "md_ystervark_spaa_flamer": 125,
-    "md_ystervark_spaa_uparmor": 125,
-    "md_ystervark_spaa_uparmor_flamer": 125,
     "sw_a_34_comet": 140,
-    "sw_asrad_r": 125,
+    "sw_asrad_r": 134,
     "sw_bkan_1c": 166,
-    "sw_bt_42": 133,
+    "sw_bt_42": 134,
     "sw_charioteer_mk_7": 140,
-    "sw_crotale_ng": 125,
-    "sw_cv_90105_tml": 133,
-    "sw_cv_90120": 133,
-    "sw_cv_9030_fin": 125,
-    "sw_ikv_103": 133,
-    "sw_ikv_72": 125,
-    "sw_ikv_73": 125,
-    "sw_ikv_91": 125,
-    "sw_ikv_91_105": 133,
+    "sw_crotale_ng": 134,
+    "sw_cv_90105_tml": 134,
+    "sw_cv_90120": 134,
+    "sw_cv_9030_fin": 134,
+    "sw_cv_9035_dk": 134,
+    "sw_ikv_103": 134,
+    "sw_ikv_72": 134,
+    "sw_ikv_73": 134,
+    "sw_ikv_91": 134,
+    "sw_ikv_91_105": 134,
     "sw_itpsv_90": 140,
     "sw_k9_vidar": 166,
     "sw_kungstiger": 140,
-    "sw_l_62_anti_II": 125,
-    "sw_lago_1": 125,
-    "sw_landsverk_ush_405": 125,
+    "sw_l_62_anti_II": 134,
+    "sw_lago_1": 134,
+    "sw_landsverk_ush_204_gk": 134,
+    "sw_landsverk_ush_405": 134,
     "sw_leopard_1a5no": 140,
     "sw_leopard_2a4_fin": 140,
     "sw_leopard_2a6nl": 140,
-    "sw_lvkv_42": 125,
-    "sw_lvkv_90c": 125,
-    "sw_lvrbv_701": 125,
-    "sw_patria_amv_ctcv_105": 133,
-    "sw_pbil_m40": 125,
-    "sw_pbv_301": 125,
-    "sw_pbv_302_bill": 125,
+    "sw_lvkv_42": 134,
+    "sw_lvkv_90c": 134,
+    "sw_lvrbv_701": 134,
+    "sw_patria_amv_ctcv_105": 134,
+    "sw_pbil_m40": 134,
+    "sw_pbv_301": 134,
+    "sw_pbv_302_bill": 134,
     "sw_pbv_501": 200,
-    "sw_pt_76b": 125,
-    "sw_pvkv_II": 125,
-    "sw_pvkv_III": 125,
-    "sw_pvkv_iv": 125,
-    "sw_pvkv_m43_1946": 125,
-    "sw_pvkv_m43_1963": 125,
-    "sw_pvlvv_fm42": 125,
-    "sw_pvrbv_551": 125,
+    "sw_pt_76b": 134,
+    "sw_pvkv_II": 134,
+    "sw_pvkv_III": 134,
+    "sw_pvkv_iv": 134,
+    "sw_pvkv_m43_1946": 134,
+    "sw_pvkv_m43_1963": 134,
+    "sw_pvlvv_fm42": 134,
+    "sw_pvrbv_551": 134,
     "sw_pzkpfw_IV_ausf_J": 140,
     "sw_sav_fm48": 140,
-    "sw_sav_m43_1944": 125,
-    "sw_sav_m43_1946": 133,
+    "sw_sav_m43_1944": 134,
+    "sw_sav_m43_1946": 134,
     "sw_sherman_3_4": 140,
     "sw_stormpjas_fm43_44": 166,
-    "sw_strf_9056": 125,
-    "sw_strf_90b": 125,
-    "sw_strf_90c": 125,
+    "sw_strf_9056": 134,
+    "sw_strf_90b": 134,
+    "sw_strf_90c": 134,
     "sw_strv121b_christian2": 140,
     "sw_strv_101": 140,
     "sw_strv_103_0": 140,
@@ -5084,18 +5006,18 @@
     "sw_strv_122": 140,
     "sw_strv_122b_plss": 140,
     "sw_strv_122b_plus": 140,
-    "sw_strv_74": 125,
+    "sw_strv_74": 134,
     "sw_strv_81": 140,
     "sw_strv_81_rb52": 140,
-    "sw_strv_m31": 125,
-    "sw_strv_m38": 125,
-    "sw_strv_m39": 125,
-    "sw_strv_m39_td": 125,
-    "sw_strv_m40l": 125,
-    "sw_strv_m41_s1": 125,
-    "sw_strv_m41_s2": 125,
-    "sw_strv_m42_delat_torn": 125,
-    "sw_strv_m42_eh": 125,
+    "sw_strv_m31": 134,
+    "sw_strv_m38": 134,
+    "sw_strv_m39": 134,
+    "sw_strv_m39_td": 134,
+    "sw_strv_m40l": 134,
+    "sw_strv_m41_s1": 134,
+    "sw_strv_m41_s2": 134,
+    "sw_strv_m42_delat_torn": 134,
+    "sw_strv_m42_eh": 134,
     "sw_t_28": 140,
     "sw_t_34_1941": 140,
     "sw_t_34_85_zis_53": 140,
@@ -5103,16 +5025,16 @@
     "sw_t_55m": 140,
     "sw_t_72m1": 140,
     "sw_t_80u": 140,
-    "sw_tgdgb_m40_lv": 125,
-    "sw_udes_33": 125,
+    "sw_tgdgb_m40_lv": 134,
+    "sw_udes_33": 134,
     "sw_veak_40": 140,
-    "sw_vickers_mk_e_37": 125,
-    "sw_vickers_mk_e_45": 125,
-    "sw_zsu_57_2": 125,
+    "sw_vickers_mk_e_37": 134,
+    "sw_vickers_mk_e_45": 134,
+    "sw_zsu_57_2": 134,
     "uk_17_pdr_m10_achilles": 140,
     "uk_17_pdr_m10_achilles_norfolk_yeomanry": 140,
     "uk_3_inch_gun_carrier": 140,
-    "uk_a17_mk_1_tetrarch": 125,
+    "uk_a17_mk_1_tetrarch": 134,
     "uk_a1e1_independent": 140,
     "uk_a27m_cromwell_1": 140,
     "uk_a27m_cromwell_5": 140,
@@ -5121,10 +5043,10 @@
     "uk_a30_sp_avenger": 140,
     "uk_a39_tortoise": 140,
     "uk_a_12_mk_2_matilda_2": 140,
-    "uk_a_13_mk1": 125,
-    "uk_a_13_mk1_3rd_rtr": 125,
-    "uk_a_13_mk2": 125,
-    "uk_a_13_mk2_1939": 125,
+    "uk_a_13_mk1": 134,
+    "uk_a_13_mk1_3rd_rtr": 134,
+    "uk_a_13_mk2": 134,
+    "uk_a_13_mk2_1939": 134,
     "uk_a_22_mk_1_churchill_1941": 140,
     "uk_a_22b_mk_3_churchill_1942": 140,
     "uk_a_22f_mk_7_churchill_1944": 140,
@@ -5135,13 +5057,13 @@
     "uk_a_43_black_prince": 140,
     "uk_ac1_sentinel": 140,
     "uk_ac4_thunderbolt": 140,
-    "uk_adats_m113a3": 125,
-    "uk_alecto_mk_1": 125,
-    "uk_armored_car_aec_mk_2": 125,
-    "uk_armored_car_mk_2_aa": 125,
+    "uk_adats_m113a3": 134,
+    "uk_alecto_mk_1": 134,
+    "uk_armored_car_aec_mk_2": 134,
+    "uk_armored_car_mk_2_aa": 134,
     "uk_at_gun_qf17pounder": 538,
     "uk_at_gun_qf6pounder": 538,
-    "uk_bosvark": 125,
+    "uk_bosvark": 134,
     "uk_centurion_action_x": 140,
     "uk_centurion_mk_1": 140,
     "uk_centurion_mk_10": 140,
@@ -5167,97 +5089,99 @@
     "uk_chieftain_mk_10": 140,
     "uk_chieftain_mk_3": 140,
     "uk_chieftain_mk_5": 140,
+    "uk_churchill_avre": 140,
     "uk_churchill_na75": 140,
-    "uk_concept3_ngac": 125,
+    "uk_concept3_ngac": 134,
     "uk_conqueror_mk_2": 140,
-    "uk_crusader_aa_mk_1": 125,
-    "uk_crusader_aa_mk_2": 125,
-    "uk_crusader_aa_mk_2_tutorial": 125,
-    "uk_crusader_mk_2": 125,
-    "uk_crusader_mk_2_the_saint": 125,
-    "uk_crusader_mk_3": 125,
-    "uk_daimler_mk_2": 125,
-    "uk_eland_90_mk_7": 125,
-    "uk_falcon": 125,
-    "uk_fv102_striker": 125,
+    "uk_crusader_aa_mk_1": 134,
+    "uk_crusader_aa_mk_2": 134,
+    "uk_crusader_aa_mk_2_tutorial": 134,
+    "uk_crusader_mk_2": 134,
+    "uk_crusader_mk_2_the_saint": 134,
+    "uk_crusader_mk_3": 134,
+    "uk_daimler_mk_2": 134,
+    "uk_desert_warrior": 134,
+    "uk_eland_90_mk_7": 134,
+    "uk_falcon": 134,
+    "uk_fv102_striker": 134,
     "uk_fv221_caernarvon": 140,
     "uk_fv4004_conway": 140,
     "uk_fv4005": 166,
     "uk_fv4202": 140,
-    "uk_fv438_swingfire": 125,
-    "uk_fv510_isv": 125,
-    "uk_fv721_fox": 125,
+    "uk_fv438_swingfire": 134,
+    "uk_fv510_isv": 134,
+    "uk_fv721_fox": 134,
     "uk_g6_spg": 166,
     "uk_khalid": 140,
     "uk_m109a1": 166,
-    "uk_m3_stuart": 125,
-    "uk_m3a1_stuart": 125,
-    "uk_marmon_herrington_mk_6_2pdr": 125,
-    "uk_marmon_herrington_mk_6_6pdr": 125,
+    "uk_m3_stuart": 134,
+    "uk_m3a1_stuart": 134,
+    "uk_marmon_herrington_mk_6_2pdr": 134,
+    "uk_marmon_herrington_mk_6_6pdr": 134,
     "uk_matilda_hedgehog": 140,
     "uk_mk1_grant": 140,
     "uk_olifant_mk_1a": 140,
     "uk_olifant_mk_2": 140,
     "uk_ram_90mm_aa": 140,
-    "uk_ratel_20": 125,
-    "uk_ratel_90": 125,
-    "uk_ratel_zt3": 125,
-    "uk_rooikat_105_td": 133,
-    "uk_rooikat_76": 125,
-    "uk_rooikat_mttd": 133,
-    "uk_rooikat_za_35": 125,
-    "uk_sarc_mk4_a": 125,
+    "uk_ratel_20": 134,
+    "uk_ratel_90": 134,
+    "uk_ratel_zt3": 134,
+    "uk_rooikat_105_td": 134,
+    "uk_rooikat_76": 134,
+    "uk_rooikat_mttd": 134,
+    "uk_rooikat_za_35": 134,
+    "uk_sarc_mk4_a": 134,
     "uk_sherman_II": 140,
     "uk_sherman_ic_firefly": 140,
     "uk_sherman_vc_firefly": 140,
     "uk_skink_aa": 140,
     "uk_sp_17_pdr_valentine": 140,
-    "uk_stormer_hvm": 125,
-    "uk_t17e2": 125,
+    "uk_stormer_hvm": 134,
+    "uk_t17e2": 134,
     "uk_t_90s_bheeshma": 140,
     "uk_tog_2": 140,
-    "uk_truck_us6_studebaker_board": 125,
-    "uk_truck_us6_studebaker_tent": 125,
+    "uk_truck_us6_studebaker_board": 134,
+    "uk_truck_us6_studebaker_tent": 134,
     "uk_ttd": 140,
     "uk_valentine_mk_1": 140,
     "uk_valentine_mk_11": 140,
     "uk_valentine_mk_9": 140,
-    "uk_vfm_5": 133,
+    "uk_vfm_5": 134,
     "uk_vickers_mbt_mk_1": 140,
     "uk_vickers_mbt_mk_3": 140,
     "uk_vickers_mk7": 140,
-    "uk_vickers_mk_11": 133,
-    "uk_vickers_mk_6_aa_mk_1": 125,
+    "uk_vickers_mk_11": 134,
+    "uk_vickers_mk_6_aa_mk_1": 134,
     "uk_vijayanta": 140,
-    "uk_ystervark_spaa": 125,
-    "us_adats_bradley": 125,
-    "us_ags_teledyne": 133,
-    "us_amx_13_75": 125,
-    "us_amx_13_90": 125,
+    "uk_ystervark_spaa": 134,
+    "us_adats_bradley": 134,
+    "us_ags_teledyne": 134,
+    "us_amx_13_75": 134,
+    "us_amx_13_90": 134,
     "us_at_gun_m1": 538,
     "us_ccvl": 140,
-    "us_halftrack_m13": 125,
-    "us_halftrack_m15": 125,
-    "us_halftrack_m16": 125,
-    "us_halftrack_m3_75mm_gmc": 125,
-    "us_hstv_l": 125,
-    "us_lav_ad": 125,
-    "us_losat_ccv": 133,
-    "us_lvt_4_zis_2": 125,
-    "us_lvt_a_1": 125,
-    "us_lvt_a_1_trb": 125,
-    "us_lvt_a_4": 125,
+    "us_halftrack_m13": 134,
+    "us_halftrack_m15": 134,
+    "us_halftrack_m16": 134,
+    "us_halftrack_m3_75mm_gmc": 134,
+    "us_hstv_l": 134,
+    "us_lav_ad": 134,
+    "us_losat_ccv": 134,
+    "us_lvt_4_zis_2": 134,
+    "us_lvt_a_1": 134,
+    "us_lvt_a_1_trb": 134,
+    "us_lvt_a_4": 134,
     "us_m10": 140,
     "us_m103": 140,
     "us_m109a1": 166,
-    "us_m1128_mgs": 133,
-    "us_m1128_wolfpack": 133,
-    "us_m163_vulcan": 125,
-    "us_m18_hellcat": 125,
-    "us_m18_hellcat_black_cat": 125,
+    "us_m1128_mgs": 134,
+    "us_m1128_wolfpack": 134,
+    "us_m163_vulcan": 134,
+    "us_m18_hellcat": 134,
+    "us_m18_hellcat_black_cat": 134,
     "us_m18_hellcat_black_cat_race": 6666,
-    "us_m18_super_hellcat": 125,
-    "us_m19": 125,
+    "us_m18_super_hellcat": 134,
+    "us_m19": 134,
     "us_m1_abrams": 140,
     "us_m1_abrams_kvt": 140,
     "us_m1_ip_abrams": 140,
@@ -5269,28 +5193,28 @@
     "us_m1a2_abrams": 140,
     "us_m1a2_sep2_abrams": 140,
     "us_m1a2_sep_abrams": 140,
-    "us_m22_locust": 125,
+    "us_m22_locust": 134,
     "us_m247": 140,
-    "us_m24_chaffee": 125,
-    "us_m24_chaffee_tl": 125,
+    "us_m24_chaffee": 134,
+    "us_m24_chaffee_tl": 134,
     "us_m26_pershing": 140,
     "us_m26_pershing_tutorial": 140,
     "us_m26_t99": 140,
     "us_m26e1_pershing": 140,
-    "us_m2_medium": 125,
-    "us_m2a2": 125,
-    "us_m2a4": 125,
-    "us_m2a4_1st_armor_div": 125,
+    "us_m2_medium": 134,
+    "us_m2a2": 134,
+    "us_m2a4": 134,
+    "us_m2a4_1st_armor_div": 134,
     "us_m36": 140,
     "us_m36b2": 140,
-    "us_m3_bradley": 125,
+    "us_m3_bradley": 134,
     "us_m3_lee": 140,
-    "us_m3_stuart": 125,
-    "us_m3a1_stuart": 125,
-    "us_m3a1_stuart_usmc": 125,
-    "us_m3a3_bradley": 125,
-    "us_m41_walker_bulldog": 125,
-    "us_m42_duster": 125,
+    "us_m3_stuart": 134,
+    "us_m3a1_stuart": 134,
+    "us_m3a1_stuart_usmc": 134,
+    "us_m3a3_bradley": 134,
+    "us_m41_walker_bulldog": 134,
+    "us_m42_duster": 134,
     "us_m46_patton": 140,
     "us_m46_patton_73_armor_bat": 140,
     "us_m47_patton_II": 140,
@@ -5311,14 +5235,14 @@
     "us_m4a3e2_sherman_jumbo_cobra_king": 140,
     "us_m4a3e8_76w_sherman": 140,
     "us_m4a5_ram_2": 140,
-    "us_m50_ontos": 133,
+    "us_m50_ontos": 134,
     "us_m551": 166,
-    "us_m551_76": 125,
+    "us_m551_76": 134,
     "us_m551_football": 10000,
-    "us_m56_scorpion": 125,
-    "us_m5a1_stuart": 125,
-    "us_m5a1_stuart_canadian_5st_arm": 125,
-    "us_m5a1_stuart_td": 125,
+    "us_m56_scorpion": 134,
+    "us_m5a1_stuart": 134,
+    "us_m5a1_stuart_canadian_5st_arm": 134,
+    "us_m5a1_stuart_td": 134,
     "us_m60": 140,
     "us_m60_120s": 140,
     "us_m60a1": 140,
@@ -5329,25 +5253,25 @@
     "us_m6a1": 140,
     "us_m6a2e1": 140,
     "us_m728": 166,
-    "us_m8_greyhound": 125,
-    "us_m8_scott": 125,
-    "us_m8a1": 125,
-    "us_m901_itv": 125,
+    "us_m8_greyhound": 134,
+    "us_m8_scott": 134,
+    "us_m8a1": 134,
+    "us_m901_itv": 134,
     "us_magach_3": 140,
     "us_mbt_70": 166,
     "us_merkava_mk_1": 140,
     "us_merkava_mk_2b_late": 140,
     "us_merkava_mk_3d": 140,
-    "us_mim_72_chaparral": 125,
+    "us_mim_72_chaparral": 134,
     "us_mk1_grant": 140,
-    "us_t114": 133,
+    "us_t114": 134,
     "us_t14": 140,
-    "us_t18_e2": 125,
+    "us_t18_e2": 134,
     "us_t1e1": 140,
     "us_t20": 140,
     "us_t25": 140,
     "us_t26e4_superpershing": 140,
-    "us_t26e5": 125,
+    "us_t26e5": 134,
     "us_t28": 140,
     "us_t29": 140,
     "us_t30": 166,
@@ -5355,49 +5279,50 @@
     "us_t32e1": 140,
     "us_t34": 140,
     "us_t54e1": 140,
-    "us_t54e2": 133,
-    "us_t55e1": 125,
-    "us_t92": 125,
+    "us_t54e2": 134,
+    "us_t55e1": 134,
+    "us_t92": 134,
     "us_t95": 140,
     "us_t95e1": 140,
-    "us_truck_us6_studebaker_tent": 125,
+    "us_truck_us6_studebaker_tent": 134,
     "us_xm1_chrysler": 140,
     "us_xm1_gm": 140,
-    "us_xm_8": 133,
+    "us_xm_8": 134,
+    "us_xm_800t": 134,
     "us_xm_803": 166,
-    "us_xm_975_roland": 125,
+    "us_xm_975_roland": 134,
     "ussr_2s1": 140,
-    "ussr_2s25": 133,
-    "ussr_2s25m": 133,
-    "ussr_2s38": 125,
+    "ussr_2s25": 134,
+    "ussr_2s25m": 134,
+    "ussr_2s38": 134,
     "ussr_2s3m": 166,
-    "ussr_9a35_m2": 125,
-    "ussr_9p149": 125,
+    "ussr_9a35_m2": 134,
+    "ussr_9p149": 134,
     "ussr_9p157": 140,
     "ussr_a_12_mk_2_matilda_2A_F96": 140,
-    "ussr_asu_57": 125,
-    "ussr_asu_85": 125,
+    "ussr_asu_57": 134,
+    "ussr_asu_85": 134,
     "ussr_at_gun_53k": 538,
-    "ussr_ba_11": 125,
-    "ussr_bm_13n": 125,
-    "ussr_bm_31_12": 125,
-    "ussr_bm_8_24": 125,
-    "ussr_bmd_4": 133,
-    "ussr_bmp_1": 125,
-    "ussr_bmp_2": 125,
-    "ussr_bmp_2m": 125,
-    "ussr_bmp_3": 133,
-    "ussr_bt_5": 125,
-    "ussr_bt_7_1937": 125,
-    "ussr_bt_7_1937_td": 125,
-    "ussr_bt_7_m": 125,
-    "ussr_bt_7a_f32": 125,
-    "ussr_btr_152a": 125,
-    "ussr_btr_152d": 125,
-    "ussr_btr_80a": 125,
-    "ussr_btr_zd": 125,
-    "ussr_gaz_4m": 125,
-    "ussr_gaz_dshk": 125,
+    "ussr_ba_11": 134,
+    "ussr_bm_13n": 134,
+    "ussr_bm_31_12": 134,
+    "ussr_bm_8_24": 134,
+    "ussr_bmd_4": 134,
+    "ussr_bmp_1": 134,
+    "ussr_bmp_2": 134,
+    "ussr_bmp_2m": 134,
+    "ussr_bmp_3": 134,
+    "ussr_bt_5": 134,
+    "ussr_bt_7_1937": 134,
+    "ussr_bt_7_1937_td": 134,
+    "ussr_bt_7_m": 134,
+    "ussr_bt_7a_f32": 134,
+    "ussr_btr_152a": 134,
+    "ussr_btr_152d": 134,
+    "ussr_btr_80a": 134,
+    "ussr_btr_zd": 134,
+    "ussr_gaz_4m": 134,
+    "ussr_gaz_dshk": 134,
     "ussr_gaz_mm_72k": 102,
     "ussr_is_1": 140,
     "ussr_is_2_1943": 140,
@@ -5424,7 +5349,7 @@
     "ussr_kv_85": 140,
     "ussr_m3c": 140,
     "ussr_m4a2_76w_sherman": 140,
-    "ussr_m53_59": 125,
+    "ussr_m53_59": 134,
     "ussr_m551_football": 10000,
     "ussr_object_120": 166,
     "ussr_object_248": 140,
@@ -5432,39 +5357,39 @@
     "ussr_object_279": 140,
     "ussr_object_292": 166,
     "ussr_object_435": 140,
-    "ussr_object_685": 133,
+    "ussr_object_685": 134,
     "ussr_object_775": 140,
-    "ussr_object_906": 125,
-    "ussr_pantsyr_s1": 125,
-    "ussr_pt_76_57": 125,
-    "ussr_pt_76b": 125,
+    "ussr_object_906": 134,
+    "ussr_pantsyr_s1": 134,
+    "ussr_pt_76_57": 134,
+    "ussr_pt_76b": 134,
     "ussr_pzkpfw_III_ausf_J_L42": 140,
     "ussr_pzkpfw_V": 140,
-    "ussr_rbt_5": 125,
+    "ussr_rbt_5": 134,
     "ussr_smk": 140,
     "ussr_su_100Y": 140,
     "ussr_su_100_1945": 140,
-    "ussr_su_100p": 133,
+    "ussr_su_100p": 134,
     "ussr_su_122": 140,
     "ussr_su_122P": 140,
     "ussr_su_122_54": 140,
     "ussr_su_152": 166,
-    "ussr_su_57": 125,
-    "ussr_su_57b": 125,
-    "ussr_su_5_1": 125,
-    "ussr_su_76d": 125,
-    "ussr_su_76m_1943": 125,
-    "ussr_su_76m_5st_kav_corps": 125,
+    "ussr_su_57": 134,
+    "ussr_su_57b": 134,
+    "ussr_su_5_1": 134,
+    "ussr_su_76d": 134,
+    "ussr_su_76m_1943": 134,
+    "ussr_su_76m_5st_kav_corps": 134,
     "ussr_su_85_1943": 140,
-    "ussr_su_85a": 125,
+    "ussr_su_85a": 134,
     "ussr_su_85m": 140,
     "ussr_t_10a": 140,
     "ussr_t_10m": 140,
-    "ussr_t_126sp": 125,
-    "ussr_t_26E": 125,
-    "ussr_t_26_1940": 125,
-    "ussr_t_26_1940_1st_GvTBr": 125,
-    "ussr_t_26_4": 125,
+    "ussr_t_126sp": 134,
+    "ussr_t_26E": 134,
+    "ussr_t_26_1940": 134,
+    "ussr_t_26_1940_1st_GvTBr": 134,
+    "ussr_t_26_4": 134,
     "ussr_t_28": 140,
     "ussr_t_28E": 140,
     "ussr_t_28_1938": 140,
@@ -5485,20 +5410,20 @@
     "ussr_t_44": 140,
     "ussr_t_44_100": 140,
     "ussr_t_44_122": 140,
-    "ussr_t_50": 125,
-    "ussr_t_50_for_tutorial": 125,
+    "ussr_t_50": 134,
+    "ussr_t_50_for_tutorial": 134,
     "ussr_t_54_1947": 140,
     "ussr_t_54_1949": 140,
     "ussr_t_54_1951": 140,
     "ussr_t_55_am": 140,
     "ussr_t_55_amd_1": 140,
     "ussr_t_55a": 140,
-    "ussr_t_60_1941": 125,
+    "ussr_t_60_1941": 134,
     "ussr_t_62": 140,
     "ussr_t_62m1": 140,
     "ussr_t_64_b_1984": 140,
     "ussr_t_64a_1971": 140,
-    "ussr_t_70_1942": 125,
+    "ussr_t_70_1942": 134,
     "ussr_t_72a": 140,
     "ussr_t_72av_turms": 140,
     "ussr_t_72b": 140,
@@ -5506,37 +5431,39 @@
     "ussr_t_72b3_2017_race": 140,
     "ussr_t_72b_1989": 140,
     "ussr_t_72m2_moderna": 140,
-    "ussr_t_80": 125,
+    "ussr_t_80": 134,
     "ussr_t_80b": 140,
     "ussr_t_80bvm": 140,
     "ussr_t_80u": 140,
     "ussr_t_80u_race": 140,
     "ussr_t_80u_yt_cup_2019": 140,
     "ussr_t_80ud": 140,
+    "ussr_t_80ue1": 140,
     "ussr_t_80uk": 140,
     "ussr_t_80um2": 140,
     "ussr_t_90a": 140,
     "ussr_t_90m_2020": 140,
     "ussr_to_55": 140,
-    "ussr_truck_gaz_aaa": 125,
-    "ussr_type_62": 125,
+    "ussr_truck_gaz_aaa": 134,
+    "ussr_type_62": 134,
     "ussr_type_65_aa": 140,
     "ussr_valentine_mk_9": 140,
-    "ussr_zis_12_94KM_1945": 125,
-    "ussr_zis_30": 125,
-    "ussr_zis_43": 125,
-    "ussr_zprk_2s6": 125,
-    "ussr_zsu_23_4": 125,
-    "ussr_zsu_23_4m4": 125,
-    "ussr_zsu_29k": 125,
-    "ussr_zsu_37": 125,
-    "ussr_zsu_37_2": 125,
-    "ussr_zsu_57_2": 125,
-    "ussr_zut_37": 125,
+    "ussr_zis_12_94KM_1945": 134,
+    "ussr_zis_30": 134,
+    "ussr_zis_43": 134,
+    "ussr_zprk_2s6": 134,
+    "ussr_zsu_23_4": 134,
+    "ussr_zsu_23_4m4": 134,
+    "ussr_zsu_29k": 134,
+    "ussr_zsu_37": 134,
+    "ussr_zsu_37_2": 134,
+    "ussr_zsu_57_2": 134,
+    "ussr_zut_37": 134,
     "fr_battleship_bretagne_class_bretagne": 140,
     "fr_battleship_bretagne_class_lorraine": 140,
     "fr_battleship_courbet_class_courbet": 140,
     "fr_battleship_courbet_class_paris": 140,
+    "fr_cruiser_chateaurenault_class_guichen": 82,
     "fr_cruiser_dugauy_class_dugauy_trouin": 82,
     "fr_cruiser_dugauy_class_primaguet": 101,
     "fr_cruiser_emile_bertin": 82,
@@ -5547,6 +5474,7 @@
     "fr_destroyer_aigle_class_milan": 71,
     "fr_destroyer_aigle_class_vautour": 71,
     "fr_destroyer_bourrasque_class_bourrasque": 75,
+    "fr_destroyer_bourrasque_class_tornade": 75,
     "fr_destroyer_desaix_class_kleber": 89,
     "fr_destroyer_hunt_3series": 89,
     "fr_destroyer_jaguar_class_chacal": 71,
@@ -5597,6 +5525,7 @@
     "germ_frigate_koln_lubeck": 59,
     "germ_kanonenboot_k2": 89,
     "germ_km5": 18,
+    "germ_kondor2_class": 46,
     "germ_ls4_class": 18,
     "germ_ls_class": 18,
     "germ_minelayer_drache": 53,
@@ -5625,6 +5554,7 @@
     "germ_vs8_hydrofoil": 56,
     "ijn_lcvp": 0,
     "it_a1_vosper": 58,
+    "it_alano_9851": 46,
     "it_albatros_class_f543": 65,
     "it_battleship_andrea_doria": 118,
     "it_battleship_caio_duilio": 173,
@@ -5686,6 +5616,7 @@
     "jp_cruiser_agano": 97,
     "jp_cruiser_aoba": 102,
     "jp_cruiser_furutaka": 94,
+    "jp_cruiser_haguro": 102,
     "jp_cruiser_isuzu": 82,
     "jp_cruiser_kako": 117,
     "jp_cruiser_kuma": 83,
@@ -5744,6 +5675,7 @@
     "uk_battlecruiser_glorious": 140,
     "uk_battlecruiser_hood": 154,
     "uk_battlecruiser_invincible": 140,
+    "uk_battlecruiser_queen_mary": 140,
     "uk_battlecruiser_renown": 139,
     "uk_battleship_colossus": 128,
     "uk_battleship_dreadnought": 120,
@@ -5871,6 +5803,7 @@
     "us_elco_80ft_pt_boat_mod01": 58,
     "us_elco_80ft_pt_boat_mod02": 58,
     "us_elco_80ft_pt_boat_thunderbolt": 58,
+    "us_flagstaff_pgh1": 46,
     "us_frigate_dealey": 71,
     "us_frigate_tacoma": 71,
     "us_higgins_78ft_pt625": 44,
@@ -5947,6 +5880,7 @@
     "ussr_mpk_201k": 41,
     "ussr_mpk_201m": 41,
     "ussr_mpk_204": 58,
+    "ussr_mpk_pr11451": 41,
     "ussr_mpk_pr12412": 41,
     "ussr_mpk_pr12412p": 41,
     "ussr_mpk_pr1331m": 58,

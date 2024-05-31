@@ -3,7 +3,11 @@ from "%rGui/globals/ui_library.nut" import *
 let math = require("math")
 let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargets, mlwsTargetsAgeMin, lwsTargetsTriggers, lwsTargets, rwrTargets, lwsTargetsAgeMin, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
 let rwrSetting = require("rwrSetting.nut")
-let { MlwsLwsForMfd, MfdFontScale } = require("airState.nut");
+let { MlwsLwsForMfd, MfdFontScale, RwrForMfd } = require("airState.nut");
+let { MfdRadarColor } = require("radarState.nut")
+let DataBlock = require("DataBlock")
+let { IPoint3 } = require("dagor.math")
+let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
@@ -26,6 +30,51 @@ let styleLineBackground = {
   fillColor = Color(0, 0, 0, 0)
   lineWidth = hdpx(LINE_WIDTH + 1.5)
 }
+
+let mfdRwrSettings = Computed(function() {
+  let res = {
+    textColor = MfdRadarColor.get()
+    backgroundColor = Color(0, 0, 0, 255)
+    lineColor = MfdRadarColor.get()
+    hidePlane = false
+    circleCnt = -1
+    angleMarkStep = 30.0
+  }
+
+  if (BlkFileName.value == "")
+    return res
+  let blk = DataBlock()
+  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
+  if (!blk.tryLoad(fileName))
+    return res
+  let cockpitBlk = blk.getBlockByName("cockpit")
+  if (!cockpitBlk)
+    return res
+  let mfdBlk = cockpitBlk.getBlockByName("multifunctionDisplays")
+  if (!mfdBlk)
+    return res
+  for (local i = 0; i < mfdBlk.blockCount(); ++i) {
+    let displayBlk = mfdBlk.getBlock(i)
+    for (local j = 0; j < displayBlk.blockCount(); ++j) {
+      let pageBlk = displayBlk.getBlock(j)
+      let typeStr = pageBlk.getStr("type", "")
+      if (typeStr != "rwr")
+        continue
+      let textC = pageBlk.getIPoint3("textColor", IPoint3(-1, -1, -1))
+      let lineC = pageBlk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
+      let backC = pageBlk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
+      return {
+        textColor = textC.x < 0 ? MfdRadarColor.get() : Color(textC.x, textC.y, textC.z, 255)
+        lineColor = lineC.x < 0 ? MfdRadarColor.get() : Color(lineC.x, lineC.y, lineC.z, 255)
+        backgroundColor = Color(backC.x, backC.y, backC.z, 255)
+        hidePlane = pageBlk.getBool("hidePlaneSymbol", false)
+        circleCnt = pageBlk.getInt("circleCnt", -1)
+        angleMarkStep = pageBlk.getReal("angleMarkStep", 30)
+      }
+    }
+  }
+  return res
+})
 
 let targetsCommonOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * min(RwrSignalHoldTimeInv.value, MlwsLwsSignalHoldTimeInv.value), 1.0)))
 
@@ -110,8 +159,14 @@ function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
 let targetsOpacityMult = Computed(@() math.floor((math.sin(CurrentTime.value * 10.0) + 0.5)))
 let targetsOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
 
-let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTank = false) function() {
-
+let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTank = false, circleCnt = -1) function() {
+  local circles = [[VECTOR_ELLIPSE, 50, 50, indicatorRadius * scale, indicatorRadius * scale]]
+  if (circleCnt > 1) {
+    let step = indicatorRadius / circleCnt
+    for (local i = 1; i < circleCnt; ++i) {
+      circles.append([VECTOR_ELLIPSE, 50, 50, step * i * scale, step * i * scale])
+    }
+  }
   return styleLineBackground.__merge({
     watch = [targetsOpacity, colorWatched]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -120,25 +175,22 @@ let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTan
     color = colorWatched.value
     opacity = !isForTank ? 1.0 : targetsOpacity.value
     size = flex()
-    commands =
-      [
-        [VECTOR_ELLIPSE, 50, 50, indicatorRadius * scale, indicatorRadius * scale]
-      ]
+    commands = circles
   })
 }
 
-function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false) {
-  const angleGrad = 30.0
-  let angle = math.PI * angleGrad / 180.0
-  let dashCount = 360.0 / angleGrad
-  let innerMarkRadius = indicatorRadius * scale - azimuthMarkLength
+function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false, angleStep = 30, circles = -1) {
+  let angle = math.PI * angleStep / 180.0
+  let dashCount = 360.0 / angleStep
+  let circleCnt = max(circles, 1)
+  let step = indicatorRadius / circleCnt * scale
 
-  let azimuthMarksCommands = array(dashCount).map(@(_, i) [
+  let azimuthMarksCommands = array(dashCount * circleCnt).map(@(_, i) [
     VECTOR_LINE,
-    50 + math.cos(i * angle) * innerMarkRadius,
-    50 + math.sin(i * angle) * innerMarkRadius,
-    50 + math.cos(i * angle) * indicatorRadius * scale,
-    50 + math.sin(i * angle) * indicatorRadius * scale
+    50 + math.cos(i * angle) * (step * (i / dashCount + 1).tointeger() - azimuthMarkLength),
+    50 + math.sin(i * angle) * (step * (i / dashCount + 1).tointeger() - azimuthMarkLength),
+    50 + math.cos(i * angle) * step * (i / dashCount + 1).tointeger(),
+    50 + math.sin(i * angle) * step * (i / dashCount + 1).tointeger(),
   ])
 
   return @() styleLineBackground.__merge({
@@ -163,25 +215,25 @@ let twsBackground = @(colorWatched, isForTank = false) function() {
   return res.__update({
     size = flex()
     children = [
-      createCircle(colorWatched, true, 1, isForTank),
+      createCircle(colorWatched, true, 1, isForTank, -1),
       createAzimuthMark(colorWatched, 1, isForTank)
     ]
   })
 }
 
-let rwrBackground = @(colorWatched, scale) function() {
+let rwrBackground = @(colorWatched, scale, forMfd) function() {
 
   let res = { watch = [IsRwrHudVisible, IsMlwsLwsHudVisible] }
 
-  if (!IsRwrHudVisible.value)
+  if (!IsRwrHudVisible.value && !RwrForMfd.value)
     return res
 
   return res.__update({
     size = [pw(75), ph(75)]
     pos = [pw(12), ph(12)]
     children = [
-      createCircle(colorWatched, !IsMlwsLwsHudVisible.value, scale)
-      createAzimuthMark(colorWatched, scale)
+      createCircle(colorWatched, !IsMlwsLwsHudVisible.value, scale, false, forMfd ? mfdRwrSettings.get().circleCnt : -1)
+      createAzimuthMark(colorWatched, scale, false, forMfd ? mfdRwrSettings.get().angleMarkStep : 30.0, forMfd ? mfdRwrSettings.get().circleCnt : -1)
     ]
   })
 }
@@ -358,18 +410,18 @@ function createLwsTarget(index, colorWatched, isForTank = false) {
   }
 }
 
-let rwrTargetTransform = {
-  pivot = [0.0, 0.0]
-  rotate = 45.0 //toward center
-}
-
 let cmdsRwrTarget = [
   [VECTOR_SECTOR, -0, -0, 35, 25, -230, 230],
   [VECTOR_SECTOR, -0, -0, 45, 35, -240, 240],
   [VECTOR_SECTOR, -0, -0, 55, 45, -250, 250]
 ]
 
-function createRwrTarget(index, colorWatched, fontSizeMult, for_fmd) {
+let rwrTargetTransform = {
+  pivot = [0.0, 0.0]
+  rotate = 45.0
+}
+
+function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
   let target = rwrTargets[index]
 
   if (!target.valid)
@@ -392,9 +444,9 @@ function createRwrTarget(index, colorWatched, fontSizeMult, for_fmd) {
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = for_fmd ? (fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : 1.0) * hudFontHgt) : hudFontHgt
+        fontSize = forMfd ? (fontSizeMult * (MfdFontScale.value > 0.0 ? MfdFontScale.value : 1.0) * hudFontHgt) : hudFontHgt
         text = target.groupId >= 0 && target.groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[target.groupId].text : "?"
-        color = isColorOrWhite(colorWatched.value)
+        color = forMfd ? mfdRwrSettings.get().textColor : isColorOrWhite(colorWatched.value)
       })
   else
     targetComponent = @() {
@@ -480,7 +532,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, for_fmd) {
         size = flex()
         transform = {
           pivot = [0.0, 0.0]
-          rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
+          rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45.0
         }
         children = [
           trackLine,
@@ -668,11 +720,11 @@ function rwrTargetsState(colorWatched) {
   }
 }
 
-let rwrTargetsComponent = function(colorWatched, fontSizeMult, for_mfd) {
+let rwrTargetsComponent = function(colorWatched, fontSizeMult, forMfd) {
   return @() {
     watch = rwrTargetsTriggers
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched, fontSizeMult, for_mfd))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, colorWatched, fontSizeMult, forMfd))
   }
 }
 
@@ -686,24 +738,25 @@ let rwrTargetsPresenceComponent = function(colorWatched) {
 
 function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon,
     needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult) {
+  let lineColor = forMfd ? Watched(mfdRwrSettings.get().lineColor) : colorWatched
   return {
     size = flex()
     children = [
       twsBackground(colorWatched, !needDrawCentralIcon),
-      needDrawBackground ? rwrBackground(colorWatched, scale) : null,
-      needDrawCentralIcon ? centeredAircraftIcon(colorWatched, centralCircleSizeMult) : null,
+      needDrawBackground ? rwrBackground(lineColor, scale, forMfd) : null,
+      needDrawCentralIcon && (!forMfd || !mfdRwrSettings.get().hidePlane) ? centeredAircraftIcon(colorWatched, centralCircleSizeMult) : null,
       {
-        size = [pw(relativCircleRadius * ratio * scale), ph(relativCircleRadius * scale)]
+        size = [pw(relativCircleRadius * scale * ratio), ph(relativCircleRadius * scale)]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         children = [
-          needAdditionalLights ? mlwsTargetsState(colorWatched) : null
-          mlwsTargetsComponent(colorWatched)
-          needAdditionalLights ? lwsTargetsState(colorWatched) : null
-          lwsTargetsComponent(colorWatched, !needDrawCentralIcon)
-          needAdditionalLights ? rwrTargetsState(colorWatched) : null
-          rwrTargetsComponent(colorWatched, fontSizeMult, forMfd)
-          needAdditionalLights ? rwrTargetsPresenceComponent(colorWatched) : null
+          needAdditionalLights ? mlwsTargetsState(lineColor) : null
+          mlwsTargetsComponent(lineColor)
+          needAdditionalLights ? lwsTargetsState(lineColor) : null
+          lwsTargetsComponent(lineColor, !needDrawCentralIcon)
+          needAdditionalLights ? rwrTargetsState(lineColor) : null
+          rwrTargetsComponent(lineColor, fontSizeMult, forMfd)
+          needAdditionalLights ? rwrTargetsPresenceComponent(lineColor) : null
         ]
       }
     ]
@@ -720,8 +773,11 @@ let tws = kwarg(function(colorWatched, posWatched, sizeWatched, relativCircleSiz
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = scope(colorWatched, relativCircleSize, scale, sizeWatched.value[0] > 0.0 ? sizeWatched.value[1] / sizeWatched.value[0] : 1.0,
-      needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult)
+     needDrawCentralIcon, needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult)
   }
 })
 
-return tws
+return {
+  tws
+  mfdRwrSettings
+}

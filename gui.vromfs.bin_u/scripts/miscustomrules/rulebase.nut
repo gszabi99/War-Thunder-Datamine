@@ -23,6 +23,7 @@ let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomSta
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 let Base = class {
   missionParams = null
@@ -172,7 +173,7 @@ let Base = class {
   function isAnyUnitHaveRespawnBases() {
     let country = get_local_player_country()
 
-    let crewsInfo = ::g_crews_list.get()
+    let crewsInfo = getCrewsList()
     foreach (crew in crewsInfo)
       if (crew.country == country)
         foreach (slot in crew.crews) {

@@ -31,6 +31,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 local options = {
   types = []
@@ -252,7 +253,7 @@ options.addTypes({
       let unitType = options.UNITTYPE.value
       let country = options.COUNTRY.value
       this.values = []
-      for (local rank = 1; rank <= ::max_country_rank; rank++)
+      for (local rank = 1; rank <= MAX_COUNTRY_RANK; rank++)
         if (hasUnitAtRank(rank, unitType, country, true, false))
           this.values.append(rank)
       this.items = this.values.map(@(r) {

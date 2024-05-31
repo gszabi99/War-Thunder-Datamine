@@ -7,6 +7,9 @@ require RadarHud
 require strings
 require app
 require hud
+require FlightModelWrap
+require HeroManager
+require Unit
 
 let modeNames = [[string
   "hud/standby";
@@ -123,6 +126,8 @@ let angularGateBeamWidthMin = 0.0348
 let distanceGateWidthRelMin = 0.05
 let distanceGateWidthMult = 1.
 let iffDistRelMult = 0.5
+let attackDistRelMult = 1.0
+let attackHeightRel = 0.02
 let angularGateWidthMultSquare = 4.
 
 struct CanvasParams
@@ -133,9 +138,28 @@ struct CanvasParams
   hideBack : bool = false
   overrideMode : int = -1
   enableByMfd : bool = false
+  lineWidth : float = 1.
+  lineColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  modeColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  verAngleColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  horAngleColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  scaleColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  targetColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  hideBeam : bool = false
+  hideLaunchZone : bool = false
+  hideScale : bool = false
+  hideHorAngle : bool = false
+  hideVerAngle : bool = false
+  targetFormType : int = 0
+  hasAviaHorizont : bool = false
+  backgroundColor : E3DCOLOR = E3DCOLOR(0xFF000000)
+  beamShape : int = 0
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
+
+def deg_to_rad(rad : float)
+  return rad * PI / 180.
 
 def calc_angular_gate_width_polar(distance_rel : float; azimuth_half_width)
   if azimuth_half_width > 0.17
@@ -159,17 +183,33 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.hideBack = props |> getBool("hideBackground", false)
   storage.enableByMfd = props |> getBool("enableByMfd", false)
   storage.overrideMode = props |> getInt("mode", -1)
+  storage.lineWidth = props |> getFloat("lineWidth", 1.)
+  storage.lineColor = props |> getColor("lineColor", storage.color)
+  storage.modeColor = props |> getColor("modeColor", storage.color)
+  storage.verAngleColor = props |> getColor("verAngleColor", storage.color)
+  storage.horAngleColor = props |> getColor("horAngleColor", storage.color)
+  storage.scaleColor = props |> getColor("scaleColor", storage.color)
+  storage.targetColor = props |> getColor("targetColor", storage.color)
+  storage.hideBeam = props |> getBool("hideBeam", false)
+  storage.hideLaunchZone = props |> getBool("hideLaunchZone", false)
+  storage.hideScale = props |> getBool("hideScale", false)
+  storage.hideHorAngle = props |> getBool("hideHorAngle", false)
+  storage.hideVerAngle = props |> getBool("hideVerAngle", false)
+  storage.targetFormType = props |> getInt("targetFormType", 0)
+  storage.hasAviaHorizont = props |> getBool("hasAviaHorizont", false)
+  storage.backgroundColor = props |> getColor("backgroundColor", E3DCOLOR(0xFF000000))
+  storage.beamShape = props |> getInt("beamShape", 0)
 
 [export]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if data.enableByMfd ? !get_radar_hud_mfd_radar_enabled() : !get_radar_hud_visible()
     return
   let radarVisible = get_radar_hud_is_visible() || get_radar_hud_is_visible2()
-  if !radarVisible && get_app().gameParams.collapsedIconForRadarTws
+  if !radarVisible && get_game_params().collapsedIconForRadarTws
     return
 
   if data.enableByMfd
-    mfd_radar_background(ctx, rdata)
+    mfd_radar_background(ctx, rdata, data)
 
   if get_radar_hud_is_b_scope_visible()
     let mode = data.overrideMode >= 0 ? data.overrideMode : int(get_radar_hud_view_mode())
@@ -193,16 +233,17 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
     let pos = rdata.pos + float2(0., rdata.size.y * 0.58)
     c_scope(ctx, data, pos, size)
 
-def mfd_radar_background(var ctx : GuiContext&; rdata : ElemRenderData& const)
+def mfd_radar_background(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   let scale = get_radar_hud_mfd_radar_scale() > 0. ? get_radar_hud_mfd_radar_scale() : 1.
   let size = rdata.size / scale
   let pos = float2(rdata.pos.x - (1. - scale) * 0.5 * size.x, rdata.pos.y - (1. - scale) * 0.5 * size.y)
-  ctx |> set_color(E3DCOLOR(Color4(float4(0., 0., 0., 1.))))
+  ctx |> set_color(data.backgroundColor)
   ctx |> render_box(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
 
 def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; pos : float2)
   let bottomOffset = b_scope_half_circle_markers(ctx, data, pos, rdata.size, data.fontSize/*hudFontHgt*/)
   let gridPos = pos - float2(0., bottomOffset)
+
   b_scope_half_top_markers(ctx, data, gridPos, rdata.size, data.fontSize/*hudFontHgt*/)
   if !data.hideBack
     b_scope_half_background(ctx, data, gridPos, rdata.size)
@@ -215,25 +256,26 @@ def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
 
   let reflectionPos = gridPos + float2(0., rdata.size.y * 0.5)
   render_ground_reflection(ctx, rdata.size, reflectionPos, is_color_or_white(data.color), int2(16, 8), false)
-  if get_radar_hud_is_visible()
+  if get_radar_hud_is_visible() && !data.hideBeam
     if get_radar_hud_is_emitting()
       let dist = get_radar_hud_distance()
       let halfVal = get_radar_hud_azimuth_half_width()
       let isSectorView = dist == 1. && halfVal > 0.
-      b_scope_azimuth(ctx, data, origin, rdata.size, isSectorView, get_radar_hud_azimuth(), halfVal, dist, 1.2)
+      b_scope_azimuth(ctx, data, origin, rdata.size, isSectorView, get_radar_hud_azimuth(), halfVal, dist, 1.2 * data.lineWidth)
       b_scope_elevation(ctx, data, gridPos, rdata.size, get_radar_hud_elevation_min(), get_radar_hud_elevation_max(), get_radar_hud_elevation(), get_radar_hud_azimuth_min(),
        get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
 
-  if get_radar_hud_is_visible2()
+  if get_radar_hud_is_visible2() && !data.hideBeam
     if get_radar_hud_is_emitting2()
       let dist = get_radar_hud_distance2()
       let halfVal = get_radar_hud_azimuth_half_width2()
       let isSectorView = dist == 1. && halfVal > 0.
-      b_scope_azimuth(ctx, data, origin, rdata.size, isSectorView, get_radar_hud_azimuth2(), halfVal, dist, 1.2)
+      b_scope_azimuth(ctx, data, origin, rdata.size, isSectorView, get_radar_hud_azimuth2(), halfVal, dist, 1.2 * data.lineWidth)
       b_scope_elevation(ctx, data, gridPos, rdata.size, get_radar_hud_elevation_min(), get_radar_hud_elevation_max(), get_radar_hud_elevation2(), get_radar_hud_azimuth_min(),
        get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
 
-  b_scope_half_launch_range(ctx, data, gridPos, rdata.size)
+  if !data.hideLaunchZone
+    b_scope_half_launch_range(ctx, data, gridPos, rdata.size)
   polar_radar_targets(ctx, data, origin, rdata.size)
   b_scope_half_cue(ctx, data, gridPos, rdata.size)
 
@@ -245,13 +287,13 @@ def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : f
   let anglesInternal = float2(get_radar_hud_scan_azimuth_min() - PI * 0.5, get_radar_hud_scan_azimuth_max() - PI * 0.5)
   let origin = float2(center.x, rb.y)
 
-  let color = is_color_or_white(data.color)
+  let color = is_color_or_white(data.lineColor)
 
-  ctx |> render_sector_aa(origin, radius, anglesExternal, 1., data.color, areaBackgroundColor)
+  ctx |> render_sector_aa(origin, radius, anglesExternal, data.lineWidth, data.lineColor, areaBackgroundColor)
   let lcoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesExternal.x), sin(anglesExternal.x)) * radius]])
-  ctx |> render_line_aa(lcoord, false, 1., float2(0, 0), data.color)
+  ctx |> render_line_aa(lcoord, false, data.lineWidth, float2(0, 0), data.lineColor)
   let rcoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesExternal.y), sin(anglesExternal.y)) * radius]])
-  ctx |> render_line_aa(rcoord, false, 1., float2(0, 0), data.color)
+  ctx |> render_line_aa(rcoord, false, data.lineWidth, float2(0, 0), data.lineColor)
 
   let anglesInternalGrid = anglesInternal.y > anglesInternal.x ? anglesInternal : anglesExternal
   let distMinRel = max(0., get_radar_hud_distance_min() / max(get_radar_hud_distance_max(), 1.0))
@@ -260,21 +302,21 @@ def b_scope_half_background(var ctx : GuiContext&; data : CanvasParams&; pos : f
     var dist = 12.5
     while dist < 37.5 + 1.0
       if dist > distanceMinR
-        ctx |> render_sector_aa(origin, dist * 0.01 * size, anglesInternalGrid, 0., color, E3DCOLOR(0u))
+        ctx |> render_sector_aa(origin, dist * 0.01 * size, anglesInternalGrid, data.lineWidth, color, E3DCOLOR(0u))
       dist += 12.5
-    ctx |> render_sector_aa(origin, size * distMinRel * 0.5, anglesInternalGrid, 0., color, E3DCOLOR(0u))
+    ctx |> render_sector_aa(origin, size * distMinRel * 0.5, anglesInternalGrid, data.lineWidth, color, E3DCOLOR(0u))
 
   let angleStep = PI * 15.0 / 180.0
   for i in range(int(anglesInternalGrid.x / angleStep), int(anglesInternalGrid.y / angleStep))
     let angle = float(i) * angleStep
     let coord <- to_array_move([[float2[2] origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5 * distMinRel;
      origin + float2(cos(angle) * size.x, sin(angle) * size.y) * 0.5]])
-    ctx |> render_line_aa(coord, false, 1.2, float2(0, 0), color)
+    ctx |> render_line_aa(coord, false, 1.2 * data.lineWidth, float2(0, 0), color)
 
   let rscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.y) * size.x, sin(anglesInternal.y) * size.y) * 0.5]])
-  ctx |> render_line_aa(rscoord, false, 2.4, float2(0, 0), color)
+  ctx |> render_line_aa(rscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
   let lscoord <- to_array_move([[float2[2] origin; origin + float2(cos(anglesInternal.x) * size.x, sin(anglesInternal.x) * size.y) * 0.5]])
-  ctx |> render_line_aa(lscoord, false, 2.4, float2(0, 0), color)
+  ctx |> render_line_aa(lscoord, false, 2.4 * data.lineWidth, float2(0, 0), color)
 
 def b_scope_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; half_width : float; value : float)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
@@ -291,14 +333,14 @@ def b_scope_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   let angle = get_radar_hud_azimuth_min() + azimuthRange * value - PI * 0.5
 
   if is_sector_view
-    var color = float4(Color4(is_color_or_white(data.color)))
+    var color = float4(Color4(is_color_or_white(data.lineColor)))
     color *= 0.4
     let radius = float2(size.x * 0.5, size.y * 0.5)
     ctx |> render_sector_aa(pos, radius, float2(angle - half_width, angle + half_width), 1., E3DCOLOR(Color4(color)), E3DCOLOR(Color4(color)))
   else
     let len = min(dist >= 0. ? dist : 1., 1.)
     let coord <- to_array_move([[float2[2] pos; pos + float2(cos(angle), sin(angle)) * size.x * 0.5 * len]])
-    let color = is_color_or_white(data.color)
+    let color = is_color_or_white(data.targetColor)
     if dist >= 0.
       ctx |> render_line_dashed(pos, coord[1], ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(line_width), color)
     else
@@ -321,8 +363,8 @@ def b_scope_half_top_markers(var ctx : GuiContext&; data : CanvasParams&; pos : 
   ctx |> goto_xy(center.x - strBox.width.x, center.y - 5.)
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(font_size);
-  ctx |> set_color(data.color)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+  ctx |> set_color(data.modeColor)
+  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.modeColor), get_font_fx_factor(data.modeColor, ctx))
   ctx |> draw_str_scaled(1.0, modeName, modeName |> length())
 
   let name2Id = get_radar_hud_mode_name2_id()
@@ -353,27 +395,27 @@ def b_scope_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : float2;
   let markLenShort = 0.04
   let cosa = cos(azimuth_min)
   let sina = sin(azimuth_min)
-  var color = float4(Color4(is_color_or_white(data.color)))
+  var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.42
 
   let e3dColor = E3DCOLOR(Color4(color))
   ctx |> set_color(e3dColor)
   ctx |> draw_line(origin.x + elevationMin * sina * sz.x, origin.y - elevationMin * cosa * sz.y,
-   origin.x + (elevationMin * sina - markLen * cosa) * sz.x, origin.y - (elevationMin * cosa + markLen * sina) * sz.y, ctx |> hdpx(4.))
+   origin.x + (elevationMin * sina - markLen * cosa) * sz.x, origin.y - (elevationMin * cosa + markLen * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
   ctx |> draw_line(origin.x + 0.5 * sina * sz.x, origin.y - 0.5 * cosa * sz.y,
-   origin.x + (0.5 * sina - markLenShort * cosa) * sz.x, origin.y - (0.5 * cosa + markLenShort * sina) * sz.y, ctx |> hdpx(4.))
+   origin.x + (0.5 * sina - markLenShort * cosa) * sz.x, origin.y - (0.5 * cosa + markLenShort * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
   ctx |> draw_line(origin.x + elevationMax * sina * sz.x, origin.y - elevationMax * cosa * sz.y,
-   origin.x + (elevationMax * sina - markLen * cosa) * sz.x, origin.y - (elevationMax * cosa + markLen * sina) * sz.y, ctx |> hdpx(4.))
+   origin.x + (elevationMax * sina - markLen * cosa) * sz.x, origin.y - (elevationMax * cosa + markLen * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
   ctx |> draw_line(origin.x + elevation * sina * sz.x, origin.y - elevation * cosa * sz.y,
-   origin.x + (elevation * sina - markLenShort * cosa) * sz.x, origin.y - (elevation * cosa + markLenShort * sina) * sz.y, ctx |> hdpx(4.))
+   origin.x + (elevation * sina - markLenShort * cosa) * sz.x, origin.y - (elevation * cosa + markLenShort * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
 
   if elev_scan_max > elev_scan_min
     let elevationScanMin = elev_scan_min * elevMaxInv * elevMaxScreenRelSize + 0.5
     let elevationScanMax = elev_scan_max * elevMaxInv * elevMaxScreenRelSize + 0.5
     ctx |> draw_line(origin.x + elevationScanMin * sina * sz.x, origin.y - elevationScanMin * cosa * sz.y,
-     origin.x + (elevationScanMin * sina - markLen * cosa) * sz.x, origin.y - (elevationScanMin * cosa + markLen * sina) * sz.y, ctx |> hdpx(4.))
+     origin.x + (elevationScanMin * sina - markLen * cosa) * sz.x, origin.y - (elevationScanMin * cosa + markLen * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
     ctx |> draw_line(origin.x + elevationScanMax * sina * sz.x, origin.y - elevationScanMax * cosa * sz.y,
-     origin.x + (elevationScanMax * sina - markLen * cosa) * sz.x, origin.y - (elevationScanMax * cosa + markLen * sina) * sz.y, ctx |> hdpx(4.))
+     origin.x + (elevationScanMax * sina - markLen * cosa) * sz.x, origin.y - (elevationScanMax * cosa + markLen * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
 
 def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : void>)
   get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
@@ -384,6 +426,16 @@ def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
   get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
     for t in targets
       invoke(blk, t)
+
+def for_own_weapon_with_target(own_weapon_index : int; own_weapon_target_index : int; blk : block<(ownWeapon : RadarTarget const const#; ownWeaponTarget : RadarTarget const const#) : void>)
+  get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
+    if (own_weapon_index < targets |> length() && own_weapon_target_index < targets |> length())
+      invoke(blk, targets[own_weapon_index], targets[own_weapon_target_index])
+
+def foreach_own_weapon_links(blk : block<(ownWeaponLink : OwnWeaponLink const const#) : void>)
+  get_radar_hud_own_weapon_links() <| $(ownWeaponLinks : array<OwnWeaponLink> const#)
+    for l in ownWeaponLinks
+      invoke(blk, l)
 
 def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
@@ -396,55 +448,102 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
       distanceRel = target.distanceRel
       radialWidthRel = max(target.distanceWidthRel, 0.05)
 
-    var color = float4(Color4(is_color_or_white(data.color)))
-    let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
-    color *= (1. - target.ageRel) * signalRel
-    let e3dColor = E3DCOLOR(Color4(color))
     var angle = -PI * 0.5
     var angularWidth = azimuthRange
     if get_radar_hud_has_azimuth_scale()
       angle = get_radar_hud_azimuth_min() + azimuthRange * target.azimuthRel - PI * 0.5
       angularWidth = azimuthRange * target.azimuthWidthRel
-    let angleLeft = angle - 0.5 * angularWidth
-    let angleRight = angle + 0.5 * angularWidth
-    if target.isSelected && get_radar_hud_has_azimuth_scale()
-      let sina = sin(angle)
-      let cosa = cos(angle)
-      let pos = origin + float2(cosa * distanceRel * radius.x, sina * distanceRel * radius.y)
-      if target.losSpeed < 30000.
-        ctx |> render_ellipse_aa(pos, radius * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
-        let losPos = origin + float2((cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002) * radius.x,
-         (sina * distanceRel + (sina * target.losSpeed - cosa * target.losHorSpeed) * 0.0002) * radius.y)
-        ctx |> set_color(e3dColor)
-        ctx |> draw_line(pos, losPos, ctx |> hdpx(2.))
+
+    let sina = sin(angle)
+    let cosa = cos(angle)
+    let pos = origin + float2(cosa * distanceRel * radius.x, sina * distanceRel * radius.y)
+
+    var color = float4(Color4(is_color_or_white(data.targetColor)))
+    let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
+    color *= (1. - target.ageRel) * signalRel
+    let e3dColor = E3DCOLOR(Color4(color))
+
+    if target.targetType == int(RadarTargetType TYPE_TARGET)
+      let angleLeft = max(angle - 0.5 * angularWidth, get_radar_hud_azimuth_min() - PI * 0.5)
+      let angleRight = min(angle + 0.5 * angularWidth, get_radar_hud_azimuth_max() - PI * 0.5)
+      if target.isSelected && get_radar_hud_has_azimuth_scale()
+        if target.losSpeed < 30000.
+          ctx |> render_ellipse_aa(pos, radius * 0.04, ctx |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)
+          let losPos = origin + float2((cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002) * radius.x,
+           (sina * distanceRel + (sina * target.losSpeed - cosa * target.losHorSpeed) * 0.0002) * radius.y)
+          ctx |> set_color(e3dColor)
+          ctx |> draw_line(pos, losPos, ctx |> hdpx(2. * data.lineWidth))
+        else
+          ctx |> render_ellipse_aa(pos, radius * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
       else
-        ctx |> render_ellipse_aa(pos, radius * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
-    else
-      ctx |> render_sector_aa(origin, radius * distanceRel, float2(angleLeft, angleRight), 100. * radialWidthRel, e3dColor, transparentColor)
+        ctx |> render_sector_aa(origin, radius * distanceRel, float2(angleLeft, angleRight), 100. * radialWidthRel, e3dColor, transparentColor)
 
-    if target.isDetected
-      let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
-      let angularGateWidthMult = calc_angular_gate_width_polar(distanceRel, azimuthHalfWidth)
-      let angularGateWidth = angularGateWidthMult * 2. * max(azimuthHalfWidth, angularGateBeamWidthMin)
-      var angleGateLeft = angle - 0.5 * angularGateWidth
-      var angleGateRight = angle + 0.5 * angularGateWidth
-      if azimuthRange < PI
-        angleGateLeft = max(angleGateLeft, get_radar_hud_azimuth_min() - PI * 0.5)
-        angleGateRight = min(angleGateRight, get_radar_hud_azimuth_max() - PI * 0.5)
-      let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
-      let radiusInner = distanceRel - distanceGateHalfWidthRel
-      let radiusOuter = distanceRel + distanceGateHalfWidthRel
-      let lcoord <- to_array_move([[float2[2] origin + float2(cos(angleGateLeft) * radiusInner * radius.x, sin(angleGateLeft) * radiusInner * radius.y);
-        origin + float2(cos(angleGateLeft) * radiusOuter * radius.x, sin(angleGateLeft) * radiusOuter * radius.y)]])
-      ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
-      let rcoord <- to_array_move([[float2[2] origin + float2(cos(angleGateRight) * radiusInner * radius.x, sin(angleGateRight) * radiusInner * radius.y);
-        origin + float2(cos(angleGateRight) * radiusOuter * radius.x, sin(angleGateRight) * radiusOuter * radius.y)]])
-      ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
+      if target.isDetected
+        let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
+        let angularGateWidthMult = calc_angular_gate_width_polar(distanceRel, azimuthHalfWidth)
+        let angularGateWidth = angularGateWidthMult * 2. * max(azimuthHalfWidth, angularGateBeamWidthMin)
+        var angleGateLeft = angle - 0.5 * angularGateWidth
+        var angleGateRight = angle + 0.5 * angularGateWidth
+        if azimuthRange < PI
+          angleGateLeft = max(angleGateLeft, get_radar_hud_azimuth_min() - PI * 0.5)
+          angleGateRight = min(angleGateRight, get_radar_hud_azimuth_max() - PI * 0.5)
+        let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
+        let radiusInner = distanceRel - distanceGateHalfWidthRel
+        let radiusOuter = distanceRel + distanceGateHalfWidthRel
+        let lcoord <- to_array_move([[float2[2] origin + float2(cos(angleGateLeft) * radiusInner * radius.x, sin(angleGateLeft) * radiusInner * radius.y);
+          origin + float2(cos(angleGateLeft) * radiusOuter * radius.x, sin(angleGateLeft) * radiusOuter * radius.y)]])
+        ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+        let rcoord <- to_array_move([[float2[2] origin + float2(cos(angleGateRight) * radiusInner * radius.x, sin(angleGateRight) * radiusInner * radius.y);
+          origin + float2(cos(angleGateRight) * radiusOuter * radius.x, sin(angleGateRight) * radiusOuter * radius.y)]])
+        ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
 
-    if !target.isEnemy
-      let iffDistReal = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
-      ctx |> render_sector_aa(origin, radius * iffDistReal, float2(angleLeft, angleRight), ctx |> hdpx(3.), e3dColor, transparentColor)
-      //animation targetSelectedAnim ???
+      if !target.isEnemy
+        let iffDistReal = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
+        ctx |> render_sector_aa(origin, radius * iffDistReal, float2(angleLeft, angleRight), ctx |> hdpx(3. * data.lineWidth), e3dColor, transparentColor)
+        //animation targetSelectedAnim ???
+
+      if target.isAttacked
+        let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + attackDistRelMult) * radialWidthRel
+        let coord <- to_array_move([[float2[2] origin + radius * attackMarkDistRel * float2(cos(angle), sin(angle));
+         origin + (radius * (attackMarkDistRel + attackHeightRel)) * float2(cos(angle), sin(angle))]])
+        ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+
+    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON)
+      if get_radar_hud_has_azimuth_scale()
+        ctx |> render_ellipse_aa(pos, radius * 0.01, ctx |> hdpx(2.), e3dColor, transparentColor)
+        if target.losSpeed < 30000.
+          let losPos = origin + float2((cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002) * radius.x,
+           (sina * distanceRel + (sina * target.losSpeed - cosa * target.losHorSpeed) * 0.0002) * radius.y)
+          ctx |> set_color(e3dColor)
+          ctx |> draw_line(pos, losPos, ctx |> hdpx(2.))
+
+    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET)
+      if get_radar_hud_has_azimuth_scale()
+        ctx |> render_ellipse_aa(pos, radius * 0.06, ctx |> hdpx(2.), e3dColor, transparentColor)
+
+    if get_radar_hud_has_azimuth_scale() && get_radar_hud_has_distance_scale()
+      foreach_own_weapon_links() <| $(var ownWeaponLink)
+        for_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
+          let ownWeaponAngle = get_radar_hud_azimuth_min() + azimuthRange * ownWeapon.azimuthRel - PI * 0.5
+          let ownWeaponSina = sin(ownWeaponAngle)
+          let ownWeaponCosa = cos(ownWeaponAngle)
+          let ownWeaponPos = origin + float2(ownWeaponCosa * ownWeapon.distanceRel * radius.x, ownWeaponSina * ownWeapon.distanceRel * radius.y)
+
+          let ownWeaponTargetAngle = get_radar_hud_azimuth_min() + azimuthRange * ownWeaponTarget.azimuthRel - PI * 0.5
+          let ownWeaponTargetSina = sin(ownWeaponTargetAngle)
+          let ownWeaponTargetCosa = cos(ownWeaponTargetAngle)
+          let ownWeaponTargetPos = origin + float2(ownWeaponTargetCosa * ownWeaponTarget.distanceRel * radius.x, ownWeaponTargetSina * ownWeaponTarget.distanceRel * radius.y)
+
+          ctx |> set_color(e3dColor)
+          if ownWeaponLink.lockDistanceToDistance < 1.0
+            let inertialDistanceRel = 1.0 - ownWeaponLink.lockDistanceToDistance
+            let direction = float2(ownWeaponTargetPos[0] - ownWeaponPos[0], ownWeaponTargetPos[1] - ownWeaponPos[1])
+            let lockPos = float2(ownWeaponPos[0] + direction[0] * inertialDistanceRel, ownWeaponPos[1] + direction[1] * inertialDistanceRel)
+            ctx |> draw_line(ownWeaponPos, lockPos, ctx |> hdpx(2.))
+            ctx |> render_line_dashed(lockPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
+          else
+            ctx |> render_line_dashed(ownWeaponPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
+
 
 def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)
   if !get_radar_hud_is_visible() && !get_radar_hud_is_visible2()
@@ -460,10 +559,10 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
 
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(font_size)
-  ctx |> set_color(data.color)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
 
-  if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
+  if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min() && !data.hideHorAngle
+    ctx |> set_color(data.horAngleColor)
+    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
     let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
     let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
     let deg = loc("measureUnits/deg")
@@ -473,7 +572,9 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
     ctx |> draw_str_scaled(1.0, text, text |> length())
     offset = rb.y * 0.02 + strBox.width.y
 
-  if get_radar_hud_has_distance_scale()
+  if get_radar_hud_has_distance_scale() && !data.hideScale
+    ctx |> set_color(data.scaleColor)
+    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, ctx))
     let valText = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
      get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
     let text = valText + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
@@ -481,7 +582,9 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
     ctx |> goto_xy(rb.x - strBox.width.x, rb.y - offset + strBox.width.y)
     ctx |> draw_str_scaled(1.0, text, text |> length())
 
-  if get_radar_hud_has_azimuth_scale()
+  if get_radar_hud_has_azimuth_scale() && !data.hideVerAngle
+    ctx |> set_color(data.verAngleColor)
+    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, ctx))
     let textMin = format("%.f", rad_to_deg(get_radar_hud_elevation_min())) + loc("measureUnits/deg")
     let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
     let azimuthMin = get_radar_hud_azimuth_min()
@@ -508,18 +611,18 @@ def b_scope_half_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos :
   let center = (pos + rb) * 0.5
   let origin = float2(center.x, rb.y)
   let angles = float2(get_radar_hud_azimuth_min() - PI * 0.5, get_radar_hud_azimuth_max() - PI * 0.5)
-  var color = float4(Color4(is_color_or_white(data.color)))
+  var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.42
   let e3dColor = E3DCOLOR(Color4(color))
   let distMin = get_radar_hud_aam_launch_zone_dist_min()
   if distMin <= 1.
-    ctx |> render_sector_aa(origin, size * 0.5 * distMin, angles, ctx |> hdpx(4.), e3dColor, transparentColor)
+    ctx |> render_sector_aa(origin, size * 0.5 * distMin, angles, ctx |> hdpx(4. * data.lineWidth), e3dColor, transparentColor)
   let distMax = get_radar_hud_aam_launch_zone_dist_max()
   if distMax <= 1.
-    ctx |> render_sector_aa(origin, size * 0.5 * distMax, angles, ctx |> hdpx(4.), e3dColor, transparentColor)
+    ctx |> render_sector_aa(origin, size * 0.5 * distMax, angles, ctx |> hdpx(4. * data.lineWidth), e3dColor, transparentColor)
   let dgftMax = get_radar_hud_aam_launch_zone_dist_dgft_max()
   if dgftMax > 0. && dgftMax <= 1.
-    ctx |> render_sector_aa(origin, size * 0.5 * dgftMax, angles, ctx |> hdpx(4.), e3dColor, transparentColor)
+    ctx |> render_sector_aa(origin, size * 0.5 * dgftMax, angles, ctx |> hdpx(4. * data.lineWidth), e3dColor, transparentColor)
 
 def noise_signal(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; val : float)
   let quadSize = float2(size.x, size.y * 0.16)
@@ -580,13 +683,13 @@ def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let radiusMin = (distRel - halfDistGateWidthRel) * 0.5
   let radiusMax = (distRel + halfDistGateWidthRel) * 0.5
 
-  let color = is_color_or_white(data.color) //remove color_is_white if use is_color on scope_sector
+  let color = is_color_or_white(data.lineColor) //remove color_is_white if use is_color on scope_sector
   let lcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMin) * size.x,-radiusMin * cos(cueAzimuthMin) * size.y);
    origin + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y); ]])
-  ctx |> render_line_aa(lcoord, false, 2., float2(0, 0), color)
+  ctx |> render_line_aa(lcoord, false, 2. * data.lineWidth, float2(0, 0), color)
   let rcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMax) * size.x,-radiusMin * cos(cueAzimuthMax) * size.y);
    origin + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y); ]])
-  ctx |> render_line_aa(rcoord, false, 2., float2(0, 0), color)
+  ctx |> render_line_aa(rcoord, false, 2. * data.lineWidth, float2(0, 0), color)
 
 def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; position : float2)
   let size = get_radar_hud_has_azimuth_scale() ? rdata.size : float2(rdata.size.x * 0.2, rdata.size.y)
@@ -599,21 +702,24 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   b_scope_square_azimuth(ctx, data, pos, sz, true, get_radar_hud_turret_azimuth(), -1., -1.)
   render_ground_reflection(ctx, sz, pos, is_color_or_white(data.color), int2(20, 10), true)
   if get_radar_hud_is_visible()
-    if get_radar_hud_is_emitting()
+    if get_radar_hud_is_emitting() && !data.hideBeam
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
     b_scope_square_elevation(ctx, data, pos, sz, get_radar_hud_elevation(), get_radar_hud_elevation_min(), get_radar_hud_elevation_max(),
      get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
   if get_radar_hud_is_visible2()
-    if get_radar_hud_is_emitting2()
+    if get_radar_hud_is_emitting2() && !data.hideBeam
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth2(), get_radar_hud_distance2(), get_radar_hud_azimuth_half_width2())
     b_scope_square_elevation(ctx, data, pos, sz, get_radar_hud_elevation2(), get_radar_hud_elevation_min(), get_radar_hud_elevation_max(),
      get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
 
-  if get_radar_hud_aam_launch_zone_visible() && get_radar_hud_has_azimuth_scale()
+  if get_radar_hud_aam_launch_zone_visible() && get_radar_hud_has_azimuth_scale() && !data.hideLaunchZone
     b_scope_square_launch_range(ctx, data, pos, sz)
   square_radar_targets(ctx, data, pos, sz)
   b_scope_square_cue(ctx, data, pos, sz)
-  b_scope_square_inner_labels(ctx, data, pos, sz, data.fontSize)
+  if !data.hideHorAngle
+    b_scope_square_inner_labels(ctx, data, pos, sz, data.fontSize)
+  if data.hasAviaHorizont
+    b_scope_square_aviahorizont(ctx, data, pos, sz)
 
 def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)
   var fctx : StdGuiFontContext
@@ -623,15 +729,15 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   var vertOffset2 = 0.
   var bottomOffset = 0.
 
-  let azRanText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
+  let azRanText = !data.hideHorAngle ? format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg") : ""
   let strBoxAz = get_str_bbox(azRanText, azRanText |> length(), fctx)
-  if get_radar_hud_has_azimuth_scale()
+  if get_radar_hud_has_azimuth_scale() && !data.hideHorAngle
     horOffset += strBoxAz.width.x
 
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(font_size)
-  ctx |> set_color(data.color)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+  ctx |> set_color(data.modeColor)
+  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.modeColor), get_font_fx_factor(data.modeColor, ctx))
 
   let nameId = get_radar_hud_mode_name_id()
   let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
@@ -659,6 +765,8 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
 
   if get_radar_hud_has_azimuth_scale()
     if get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
+      ctx |> set_color(data.horAngleColor)
+      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
       let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
       let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
       let deg = loc("measureUnits/deg")
@@ -668,7 +776,9 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
       ctx |> draw_str_scaled(1.0, text, text |> length())
       vertOffset2 += strBoxScan.width.y
 
-  if get_radar_hud_has_distance_scale()
+  if get_radar_hud_has_distance_scale() && !data.hideScale
+    ctx |> set_color(data.scaleColor)
+    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, ctx))
 
     let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
      get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
@@ -690,20 +800,31 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   let sz = float2(size.x - horOffset, size.y - vertOffset - bottomOffset)
 
   if get_radar_hud_has_azimuth_scale()
-    ctx |> goto_xy(pos.x, pos.y + strBoxAz.width.y + vertOffset + ctx |> hdpx(4.))
-    ctx |> draw_str_scaled(1.0, azRanText, azRanText |> length())
+    if !data.hideHorAngle
+      ctx |> set_color(data.horAngleColor)
+      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
+      ctx |> goto_xy(pos.x, pos.y + strBoxAz.width.y + vertOffset + ctx |> hdpx(4.))
+      ctx |> draw_str_scaled(1.0, azRanText, azRanText |> length())
 
-    let elvMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + loc("measureUnits/deg")
-    let strBoxElMax = get_str_bbox(elvMaxText, elvMaxText |> length(), fctx)
-    ctx |> goto_xy(pos.x + horOffset - strBoxElMax.width.x,
-     pos.y + vertOffset + (-get_radar_hud_elevation_max() * elevMaxInv * elevMaxScreenRelSize + 0.5) * sz.y + strBoxElMax.width.y)
-    ctx |> draw_str_scaled(1.0, elvMaxText, elvMaxText |> length())
+    if !data.hideVerAngle
+      ctx |> set_color(data.verAngleColor)
+      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.verAngleColor), get_font_fx_factor(data.verAngleColor, ctx))
 
-    let elvMinText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + loc("measureUnits/deg")
-    let strBoxElMin = get_str_bbox(elvMinText, elvMinText |> length(), fctx)
-    ctx |> goto_xy(pos.x + horOffset - strBoxElMin.width.x,
-     pos.y + vertOffset + (-get_radar_hud_elevation_min() * elevMaxInv * elevMaxScreenRelSize + 0.5) * sz.y + strBoxElMin.width.y)
-    ctx |> draw_str_scaled(1.0, elvMinText, elvMinText |> length())
+      let elvMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + loc("measureUnits/deg")
+      let strBoxElMax = get_str_bbox(elvMaxText, elvMaxText |> length(), fctx)
+
+      let elvMinText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + loc("measureUnits/deg")
+      let strBoxElMin = get_str_bbox(elvMinText, elvMinText |> length(), fctx)
+
+      horOffset = max(horOffset, max(strBoxElMax.width.x, strBoxElMin.width.x))
+
+      ctx |> goto_xy(pos.x + horOffset - strBoxElMax.width.x,
+      pos.y + vertOffset + (-get_radar_hud_elevation_max() * elevMaxInv * elevMaxScreenRelSize + 0.5) * sz.y + strBoxElMax.width.y)
+      ctx |> draw_str_scaled(1.0, elvMaxText, elvMaxText |> length())
+
+      ctx |> goto_xy(pos.x + horOffset - strBoxElMin.width.x,
+      pos.y + vertOffset + (-get_radar_hud_elevation_min() * elevMaxInv * elevMaxScreenRelSize + 0.5) * sz.y + strBoxElMin.width.y)
+      ctx |> draw_str_scaled(1.0, elvMinText, elvMinText |> length())
 
   return float3(horOffset, vertOffset, bottomOffset)
 
@@ -712,7 +833,7 @@ def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos
   get_font_context(fctx, data.fontId, 0, 0, font_size)
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(font_size)
-  let color = is_color_or_white(data.color)
+  let color = is_color_or_white(data.horAngleColor)
   ctx |> set_color(color)
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(color), get_font_fx_factor(color, ctx))
 
@@ -737,14 +858,14 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   ctx |> render_rect(pos.x, pos.y, rb.x, rb.y, tc, tc, tc)
   //not repeat component 'frame' from darg, i am cant see him in game (useless)
 
-  var color = float4(Color4(is_color_or_white(data.color)))
+  var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.7
   let e3dColor = E3DCOLOR(Color4(color))
   ctx |> set_color(e3dColor)
   if scanAzimuthMinRelW <= 1. && scanAzimuthMinRelW >= 0.
-    ctx |> draw_line(pos.x + scanAzimuthMinRelW * size.x, pos.y, pos.x + scanAzimuthMinRelW * size.x, pos.y + size.y, ctx |> hdpx(1.6))
+    ctx |> draw_line(pos.x + scanAzimuthMinRelW * size.x, pos.y, pos.x + scanAzimuthMinRelW * size.x, pos.y + size.y, ctx |> hdpx(1.6 * data.lineWidth))
   if scanAzimuthMaxRelW <= 1. && scanAzimuthMaxRelW >= 0.
-    ctx |> draw_line(pos.x + scanAzimuthMaxRelW * size.x, pos.y, pos.x + scanAzimuthMaxRelW * size.x, pos.y + size.y, ctx |> hdpx(1.6))
+    ctx |> draw_line(pos.x + scanAzimuthMaxRelW * size.x, pos.y, pos.x + scanAzimuthMaxRelW * size.x, pos.y + size.y, ctx |> hdpx(1.6 * data.lineWidth))
 
   var scanAzimuthMinRel = 0.
   var scanAzimuthMaxRel = 1.
@@ -757,16 +878,16 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   if get_radar_hud_has_distance_scale()
     var rang = 0.25
     while rang < distanceMinY + 0.01
-      ctx |> draw_line(pos.x + scanAzimuthMinRel * size.x, pos.y + rang * size.y, pos.x + scanAzimuthMaxRel * size.x, pos.y + rang * size.y, ctx |> hdpx(1.2))
+      ctx |> draw_line(pos.x + scanAzimuthMinRel * size.x, pos.y + rang * size.y, pos.x + scanAzimuthMaxRel * size.x, pos.y + rang * size.y, ctx |> hdpx(1.2 * data.lineWidth))
       rang = rang + 0.25
     if distanceMinY % 0.25 != 0.0
-      ctx |> draw_line(pos.x + scanAzimuthMinRel * size.x, pos.y + distanceMinY * size.y, pos.x + scanAzimuthMaxRel * size.x, pos.y + distanceMinY * size.y, ctx |> hdpx(1.2))
+      ctx |> draw_line(pos.x + scanAzimuthMinRel * size.x, pos.y + distanceMinY * size.y, pos.x + scanAzimuthMaxRel * size.x, pos.y + distanceMinY * size.y, ctx |> hdpx(1.2 * data.lineWidth))
 
   if get_radar_hud_has_azimuth_scale()
     let azimuthRelStep = PI / 12. * azimuthRangeInv
     var azRel = scanAzimuthMaxRel
     while azRel > scanAzimuthMinRel
-      ctx |> draw_line(pos.x + azRel * size.x, pos.y, pos.x + azRel * size.x, pos.y + distanceMinY * size.y, ctx |> hdpx(1.2))
+      ctx |> draw_line(pos.x + azRel * size.x, pos.y, pos.x + azRel * size.x, pos.y + distanceMinY * size.y, ctx |> hdpx(1.2 * data.lineWidth))
       azRel -= azimuthRelStep
 
 def b_scope_square_target_sector(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
@@ -798,17 +919,22 @@ def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : fl
     let e3dColor = E3DCOLOR(Color4(color))
     ctx |> set_color(e3dColor)
     let tc = float2(0., 0.)
-    ctx |> render_rect(pos.x + (val - halfAzimuthWidth) * size.x, pos.y,
-     pos.x + (val + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
+    if data.beamShape == 1
+      ctx |> set_color(data.lineColor)
+      ctx |> draw_line(pos.x + (val - 0.02) * size.x, pos.y + size.y * 0.97, pos.x + (val + 0.02) * size.x, pos.y + size.y * 0.97, ctx |> hdpx(data.lineWidth * 5.))
+      ctx |> draw_line(pos.x + val * size.x, pos.y + size.y * 0.97, pos.x + val * size.x, pos.y + size.y, ctx |> hdpx(data.lineWidth * 5.))
+    else
+      ctx |> render_rect(pos.x + (val - halfAzimuthWidth) * size.x, pos.y,
+       pos.x + (val + halfAzimuthWidth) * size.x, pos.y + size.y, tc, tc, tc)
   else
-    let color = is_color_or_white(data.color)
+    let color = is_color_or_white(data.lineColor)
     ctx |> set_color(color)
     if for_tank_only
       ctx |> draw_line(pos.x + val * size.x, pos.y, pos.x + val * size.x, pos.y + size.y, ctx |> hdpx(1.6))
     else
       let p1 = float2(pos.x + val * size.x, pos.y + max(1. - dist, 0.) * size.y)
       let p2 = float2(pos.x + val * size.x, pos.y + size.y)
-      ctx |> render_line_dashed(p1, p2, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(1.6), color)
+      ctx |> render_line_dashed(p1, p2, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(1.6 * data.lineWidth), color)
 
 def b_scope_square_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; elev_rel : float;
                              elev_min : float; elev_max : float; elev_scan_min : float; elev_scan_max : float)
@@ -818,7 +944,7 @@ def b_scope_square_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : 
 
   let markLen = 0.05
   let markLenShort = 0.03
-  var color = float4(Color4(is_color_or_white(data.color)))
+  var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.42
   let e3dColor = E3DCOLOR(Color4(color))
 
@@ -840,7 +966,7 @@ def b_scope_square_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : 
     ctx |> render_line_aa(scanCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
 
 def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
-  var color = float4(Color4(is_color_or_white(data.color)))
+  var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.42
   let e3dColor = E3DCOLOR(Color4(color))
   ctx |> set_color(e3dColor)
@@ -848,26 +974,26 @@ def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos
   let dist = get_radar_hud_aam_launch_zone_dist()
   if dist <= 1.
     ctx |> draw_line(pos.x + 0.8 * size.x, pos.y + (1. - dist) * size.y,
-     pos.x + size.x, pos.y + (1. - dist) * size.y, ctx |> hdpx(4.))
+     pos.x + size.x, pos.y + (1. - dist) * size.y, ctx |> hdpx(4. * data.lineWidth))
   let distMin = get_radar_hud_aam_launch_zone_dist_min()
   if distMin <= 1.
     ctx |> draw_line(pos.x + 0.9 * size.x, pos.y + (1. - distMin) * size.y,
-     pos.x + size.x, pos.y + (1. - distMin) * size.y, ctx |> hdpx(4.))
+     pos.x + size.x, pos.y + (1. - distMin) * size.y, ctx |> hdpx(4. * data.lineWidth))
   let distMax = get_radar_hud_aam_launch_zone_dist_max()
   if distMax <= 1.
     ctx |> draw_line(pos.x + 0.9 * size.x, pos.y + (1. - get_radar_hud_aam_launch_zone_dist_max()) * size.y,
-     pos.x + size.x, pos.y + (1. - get_radar_hud_aam_launch_zone_dist_max()) * size.y, ctx |> hdpx(4.))
+     pos.x + size.x, pos.y + (1. - get_radar_hud_aam_launch_zone_dist_max()) * size.y, ctx |> hdpx(4. * data.lineWidth))
   let dgftDistMax = get_radar_hud_aam_launch_zone_dist_dgft_max()
   let dgftDistMin = get_radar_hud_aam_launch_zone_dist_dgft_min()
   if dgftDistMax <= 1.
     ctx |> draw_line(pos.x + 0.92 * size.x, pos.y + (1. - dgftDistMax) * size.y,
-     pos.x + 0.98 * size.x, pos.y + (1. - dgftDistMax) * size.y, ctx |> hdpx(4.))
+     pos.x + 0.98 * size.x, pos.y + (1. - dgftDistMax) * size.y, ctx |> hdpx(4. * data.lineWidth))
   if dgftDistMin <= 1.
     ctx |> draw_line(pos.x + 0.92 * size.x, pos.y + (1. - dgftDistMin) * size.y,
-     pos.x + 0.98 * size.x, pos.y + (1. - dgftDistMin) * size.y, ctx |> hdpx(4.))
+     pos.x + 0.98 * size.x, pos.y + (1. - dgftDistMin) * size.y, ctx |> hdpx(4. * data.lineWidth))
   if dgftDistMax <= 1. || dgftDistMin <= 1.
     ctx |> draw_line(pos.x + 0.92 * size.x, pos.y + (1. - dgftDistMin) * size.y,
-     pos.x + 0.92 * size.x, pos.y + (1. - min(dgftDistMax, 1.)) * size.y, ctx |> hdpx(4.))
+     pos.x + 0.92 * size.x, pos.y + (1. - min(dgftDistMax, 1.)) * size.y, ctx |> hdpx(4. * data.lineWidth))
 
 def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let hasAzimuthScale = get_radar_hud_has_azimuth_scale()
@@ -879,8 +1005,8 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
     if hasAzimuthScale
       angleRel = target.azimuthRel
       angularWidthRel = target.azimuthWidthRel
-    let angleLeft = angleRel - 0.5 * angularWidthRel
-    let angleRight = angleRel + 0.5 * angularWidthRel
+    let angleLeft = max(0., angleRel - 0.5 * angularWidthRel)
+    let angleRight = min(angleRel + 0.5 * angularWidthRel, 1.)
 
     var distanceRel = 0.9
     var radialWidthRel = 0.05
@@ -888,51 +1014,109 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
       distanceRel = target.distanceRel
       radialWidthRel = max(0.05, target.distanceWidthRel)
 
-    var color = float4(Color4(is_color_or_white(data.color)))
+    let p = float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y)
+
+    var color = float4(Color4(is_color_or_white(data.targetColor)))
     let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
     color *= (1. - target.ageRel) * signalRel
     let e3dColor = E3DCOLOR(Color4(color))
 
-    let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
-    let angularGateHalfWidthRel = angularGateWidthMultSquare * azimuthHalfWidth / azimuthRange
-    let angleGateLeftRel = angleRel - angularGateHalfWidthRel
-    let angleGateRightRel = angleRel + angularGateHalfWidthRel
+    if target.targetType == int(RadarTargetType TYPE_TARGET)
+      let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
+      let angularGateHalfWidthRel = angularGateWidthMultSquare * azimuthHalfWidth / azimuthRange
+      let angleGateLeftRel = angleRel - angularGateHalfWidthRel
+      let angleGateRightRel = angleRel + angularGateHalfWidthRel
 
-    let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
-    let distanceInner = distanceRel - distanceGateHalfWidthRel
-    let distanceOuter = distanceRel + distanceGateHalfWidthRel
+      let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
+      let distanceInner = distanceRel - distanceGateHalfWidthRel
+      let distanceOuter = distanceRel + distanceGateHalfWidthRel
 
-    if target.isDetected
-      let lcoord <- to_array_move([[float2[2] float2(pos.x + angleGateLeftRel * size.x, pos.y + (1.- distanceInner) * size.y);
-       float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
-      ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
-      let rcoord <- to_array_move([[float2[2] float2(pos.x + angleGateRightRel * size.x, pos.y + (1.- distanceInner) * size.y);
-       float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
-      ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
-    if !target.isEnemy
-      let iffMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
-      let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1.- iffMarkDistRel) * size.y);
-       float2(pos.x + angleRight * size.x, pos.y + (1. - iffMarkDistRel) * size.y)]])
-      ctx |> render_line_aa(coord, false, ctx |> hdpx(3.), float2(0, 0), e3dColor)
-    //animation
+      if target.isDetected
+        let lcoord <- to_array_move([[float2[2] float2(pos.x + angleGateLeftRel * size.x, pos.y + (1.- distanceInner) * size.y);
+         float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
+        ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+        let rcoord <- to_array_move([[float2[2] float2(pos.x + angleGateRightRel * size.x, pos.y + (1.- distanceInner) * size.y);
+         float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
+        ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+      if !target.isEnemy
+        let iffMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
+        let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1.- iffMarkDistRel) * size.y);
+         float2(pos.x + angleRight * size.x, pos.y + (1. - iffMarkDistRel) * size.y)]])
+        ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+      if target.isAttacked
+        let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + attackDistRelMult) * radialWidthRel
+        let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1.- attackMarkDistRel) * size.y);
+         float2(pos.x + angleRel * size.x, pos.y + (1. - attackMarkDistRel + attackHeightRel) * size.y)]])
+        ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+      //animation
 
-    if target.isSelected && hasAzimuthScale
-      let p = float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y)
-      ctx |> render_ellipse_aa(p, size * 0.02, ctx |> hdpx(2.), e3dColor, e3dColor)
-      if target.losSpeed < 3000.
-        let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1.- distanceRel) * size.y);
-         float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)]])
-        ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
-    else
-      let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1.- distanceRel) * size.y);
-       float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel) * size.y)]])
-      ctx |> render_line_aa(coord, false, ctx |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
+      if target.isSelected && hasAzimuthScale
+        if data.targetFormType == 0
+          ctx |> render_ellipse_aa(p, size * 0.02, ctx |> hdpx(2.), e3dColor, e3dColor)
+        elif data.targetFormType == 1 || data.targetFormType == 2
+          ctx |> render_ellipse_aa(p, size * 0.03, ctx |> hdpx(2.), e3dColor, transparentColor)
+          let sign = data.targetFormType == 1 ? 1. : -1.
+          let coord <- to_array_move([[float2[3]
+          float2(p.x - size.x * 0.02, p.y + size.y * 0.015 * sign);
+          float2(p.x, p.y - size.y * 0.03 * sign);
+          float2(p.x + size.x * 0.02, p.y + size.y * 0.015 * sign)]])
+          ctx |> render_line_aa(coord, true, 1., float2(0, 0), e3dColor)
+        if target.losSpeed < 3000.
+          let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1.- distanceRel) * size.y);
+           float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)]])
+          ctx |> render_line_aa(coord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), e3dColor)
+      else
+        let angleCenter = (angleRight + angleLeft) * 0.5
+        if data.targetFormType == 0
+          let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1.- distanceRel) * size.y);
+           float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel) * size.y)]])
+          ctx |> render_line_aa(coord, false, ctx |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
+        elif data.targetFormType == 1
+          let coord <- to_array_move([[float2[3]
+           float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel + 0.02) * size.y);
+           float2(pos.x + angleCenter * size.x, pos.y + (1. - distanceRel - 0.02) * size.y);
+           float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel + 0.02) * size.y)]])
+          ctx |> render_line_aa(coord, true, ctx |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
+        elif data.targetFormType == 2
+          let tc = float2(0., 0.)
+          let boxSize = 0.02 * size.x
+          ctx |> render_rect(pos.x + angleCenter * size.x - boxSize, pos.y + (1. - distanceRel) * size.y - boxSize,
+           pos.x + angleCenter * size.x + boxSize, pos.y + (1. - distanceRel) * size.y + boxSize, tc, tc, tc)
+
+    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON))
+      if hasAzimuthScale
+        ctx |> render_ellipse_aa(p, size * 0.005, ctx |> hdpx(2.), e3dColor, e3dColor)
+        if target.losSpeed < 3000.
+          let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1.- distanceRel) * size.y);
+           float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)]])
+          ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
+
+    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET))
+      if hasAzimuthScale
+        ctx |> render_ellipse_aa(p, size * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
+
+  if hasAzimuthScale && hasDistanceScale
+    let color = float4(Color4(is_color_or_white(data.targetColor)))
+    let e3dColor = E3DCOLOR(Color4(color))
+    foreach_own_weapon_links() <| $(var ownWeaponLink)
+      for_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
+        let ownWeaponPos = float2(pos.x + ownWeapon.azimuthRel * size.x, pos.y + (1. - ownWeapon.distanceRel) * size.y)
+        let ownWeaponTargetPos = float2(pos.x + ownWeaponTarget.azimuthRel * size.x, pos.y + (1. - ownWeaponTarget.distanceRel) * size.y)
+        if ownWeaponLink.lockDistanceToDistance < 1.0
+          let inertialDistanceRel = 1.0 - ownWeaponLink.lockDistanceToDistance
+          let direction = float2(ownWeaponTargetPos[0] - ownWeaponPos[0], ownWeaponTargetPos[1] - ownWeaponPos[1])
+          let lockPos = float2(ownWeaponPos[0] + direction[0] * inertialDistanceRel, ownWeaponPos[1] + direction[1] * inertialDistanceRel)
+          let coord <- to_array_move([[float2[2] ownWeaponPos; lockPos]])
+          ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
+          ctx |> render_line_dashed(lockPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
+        else
+          ctx |> render_line_dashed(ownWeaponPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
 
 def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()
     return
 
-  let color = is_color_or_white(data.color)//remove is_color_or_white if use is_color on target sector
+  let color = is_color_or_white(data.lineColor)//remove is_color_or_white if use is_color on target sector
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let cueAzimuthHwr = get_radar_hud_cue_azimuth_half_width_rel()
   let cueDistWidthRel =  get_radar_hud_cue_dist_width_rel()
@@ -940,10 +1124,10 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
           (1. - (0.5 * cueDistWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueDistWidthRel))) * size.y)
   let lcoord <- to_array_move([[float2[2] float2(cuePos.x- cueAzimuthHwr * size.x, cuePos.y- cueDistWidthRel * size.y * 0.5);
    float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
-  ctx |> render_line_aa(lcoord, false, ctx |> hdpx(2.), float2(0, 0), color)
+  ctx |> render_line_aa(lcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
   let rcoord <- to_array_move([[float2[2] float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y- cueDistWidthRel * size.y * 0.5);
    float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
-  ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2.), float2(0, 0), color)
+  ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
 
 def b_scope(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   let offsets = b_scope_labels(ctx, rdata, data)
@@ -1096,7 +1280,7 @@ def b_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size 
 
 def c_scope(var ctx : GuiContext&; data : CanvasParams&; position : float2; total_size : float2)
   let offsets = c_scope_markers(ctx, data, position, total_size)
-  let pos = position + float2(0., offsets.y)
+  let pos = position + offsets
   let size = total_size - offsets
   c_scope_background(ctx, data, pos, size)
   if get_radar_hud_is_visible() && get_radar_hud_is_emitting()
@@ -1123,7 +1307,7 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   let strBoxElMin = get_str_bbox(textElevMin, textElevMin |> length(), fctx)
   let textElev0 = "0{deg}"
   let strBoxEl0 = get_str_bbox(textElev0, textElev0 |> length(), fctx)
-  let rightOffset = max(strBoxElMax.width.x, max(strBoxElMin.width.x, strBoxEl0.width.x))
+  let leftOffset = max(strBoxElMax.width.x, max(strBoxElMin.width.x, strBoxEl0.width.x))
 
   if !get_radar_hud_is_b_scope_visible()
     var textScanRange = ""
@@ -1155,7 +1339,7 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     topOffset += strBoxMode2.width.y
 
     if textScanRange |> length() > 0
-      ctx |> goto_xy(pos.x, pos.y + topOffset)
+      ctx |> goto_xy(pos.x + leftOffset, pos.y + topOffset)
       ctx |> draw_str_scaled(1., textScanRange, textScanRange |> length())
 
     if textVel |> length() > 0
@@ -1163,22 +1347,22 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
       ctx |> goto_xy(pos.x + size.x - strBoxVel.width.x, pos.y + topOffset)
       ctx |> draw_str_scaled(1., textVel, textVel |> length())
 
-    ctx |> goto_xy(pos.x + (size.x - rightOffset) * 0.5, pos.y + topOffset)
+    ctx |> goto_xy(pos.x + (size.x - leftOffset) * 0.5, pos.y + topOffset)
     ctx |> draw_str_scaled(1., modeName, modeName |> length())
 
-    ctx |> goto_xy(pos.x + (size.x - rightOffset) * 0.5, pos.y + topOffset - strBoxMode.width.y)
+    ctx |> goto_xy(pos.x + (size.x - leftOffset) * 0.5, pos.y + topOffset - strBoxMode.width.y)
     ctx |> draw_str_scaled(1., modeName2, modeName2 |> length())
 
   topOffset += ctx |> hdpx(4.)
-  ctx |> goto_xy(pos.x + size.x - rightOffset, pos.y + topOffset + strBoxElMax.width.y)
+  ctx |> goto_xy(pos.x + leftOffset - strBoxElMax.width.x, pos.y + topOffset + strBoxElMax.width.y)
   ctx |> draw_str_scaled(1., textElevMax, textElevMax |> length())
-  ctx |> goto_xy(pos.x + size.x - rightOffset, pos.y + size.y)
+  ctx |> goto_xy(pos.x + leftOffset - strBoxElMin.width.x, pos.y + size.y)
   ctx |> draw_str_scaled(1., textElevMin, textElevMin |> length())
   let elRange = (1. + get_radar_hud_elevation_min() / (get_radar_hud_elevation_max() - get_radar_hud_elevation_min())) * (size.y - topOffset)
-  ctx |> goto_xy(pos.x + size.x - rightOffset, pos.y + topOffset + elRange + strBoxEl0.width.y * 0.5)
+  ctx |> goto_xy(pos.x + leftOffset - strBoxEl0.width.x, pos.y + topOffset + elRange + strBoxEl0.width.y * 0.5)
   ctx |> draw_str_scaled(1., textElev0, textElev0 |> length())
 
-  return float2(rightOffset + ctx |> hdpx(4.), topOffset)
+  return float2(leftOffset + ctx |> hdpx(4.), topOffset)
 
 def c_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   ctx |> set_color(areaBackgroundColor)
@@ -1343,3 +1527,28 @@ def c_scope_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos : floa
   let strBoxAzMax = get_str_bbox(azMaxText, azMaxText |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x - strBoxAzMax.width.x - ctx |> hdpx(4.), pos.y + strBoxAzMax.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMaxText, azMaxText |> length())
+
+def b_scope_square_aviahorizont(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  let hero = get_controlled_hero()
+  if hero == null || hero.isDelayed
+    return
+  let fmw = hero |> as_fmw()
+  if fmw == null
+    return
+
+  ctx |> setRotViewTm(pos.x + size.x * 0.5, pos.y + size.y * 0.5, deg_to_rad(fmw.roll), 0., false)
+
+  let linePtsLeft <- to_array_move([[float2[]
+    float2(pos.x + size.x * 0.2, pos.y + size.y * 0.52);
+    float2(pos.x + size.x * 0.2, pos.y + size.y * 0.5);
+    float2(pos.x + size.x * 0.45, pos.y + size.y * 0.5);
+  ]])
+
+  let linePtsRight <- to_array_move([[float2[]
+    float2(pos.x + size.x * 0.8, pos.y + size.y * 0.52);
+    float2(pos.x + size.x * 0.8, pos.y + size.y * 0.5);
+    float2(pos.x + size.x * 0.55, pos.y + size.y * 0.5);
+  ]])
+
+  ctx |> render_line_aa(linePtsLeft, false, 2.0 * data.lineWidth, float2(0., 0.), data.lineColor)
+  ctx |> render_line_aa(linePtsRight, false, 2.0 * data.lineWidth, float2(0., 0.), data.lineColor)

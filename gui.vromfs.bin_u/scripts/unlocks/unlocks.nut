@@ -33,12 +33,13 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { shopSmokeItems, isItemdefId } = require("%scripts/items/itemsManager.nut")
 let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
+let { getRankByExp } = require("%scripts/ranks.nut")
 
 function setImageByUnlockType(config, unlockBlk) {
   let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
@@ -231,8 +232,8 @@ let getEmptyConditionsConfig = @() {
     else if (isUnlockExist(id)) {
       let progress = isRegionalUnlock(id) ? getRegionalUnlockProgress(id) : getUnlockProgress(id)
       if (modeType == "char_player_exp") {
-        config.maxVal = ::get_rank_by_exp(progress.maxVal)
-        config.curVal = ::get_rank_by_exp(progress.curVal)
+        config.maxVal = getRankByExp(progress.maxVal)
+        config.curVal = getRankByExp(progress.curVal)
       }
       else {
         if (!isBattleTask(id)) {
@@ -266,7 +267,7 @@ let getEmptyConditionsConfig = @() {
   let haveBasicRewards = !blk?.aircraftPresentExtMoneyback
   foreach (stage in blk % "stage") {
     let sData = { val = config.type == "char_player_exp"
-                          ? ::get_rank_by_exp(stage.getInt("param", 1))
+                          ? getRankByExp(stage.getInt("param", 1))
                           : stage.getInt("param", 1)
                   }
     if (haveBasicRewards)

@@ -133,8 +133,8 @@
       ],
       "shellAnimation": "video/shells_animations/atgm.ivf",
       "dragCx": 0.027,
-      "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_106_132mm_metal_he",
+      "selfDestructionFx": "hit_81_132mm_heat",
+      "explosionEffect": "hit_81_132mm_heat",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -345,10 +345,6 @@
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
         },
-        "wood": {
-          "fx": "hit_106_132mm_wood_he",
-          "ricochetFx": "hit_106_132mm_wood_ap"
-        },
         "steel": {
           "fx": "hit_106_132mm_metal_he",
           "ricochetFx": "hit_106_132mm_metal_ap"
@@ -396,6 +392,10 @@
         "stone_snow": {
           "fx": "hit_106_132mm_snow_he",
           "ricochetFx": "hit_106_132mm_snow_ap"
+        },
+        "wood": {
+          "fx": "hit_81_132mm_heat",
+          "copyBulletTm": true
         }
       },
       "shatterCollisions": {
@@ -829,8 +829,8 @@
         ],
         "shellAnimation": "video/shells_animations/atgm.ivf",
         "dragCx": 0.027,
-        "selfDestructionFx": "explosion_air_selfexplosion_big",
-        "explosionEffect": "hit_106_132mm_metal_he",
+        "selfDestructionFx": "hit_81_132mm_heat",
+        "explosionEffect": "hit_81_132mm_heat",
         "groundCollisionEffect": "hit_106_132mm_dirt_he",
         "ricochetEffect": "hit_106_132mm_metal_ap",
         "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -1041,10 +1041,6 @@
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
           },
-          "wood": {
-            "fx": "hit_106_132mm_wood_he",
-            "ricochetFx": "hit_106_132mm_wood_ap"
-          },
           "steel": {
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
@@ -1092,6 +1088,10 @@
           "stone_snow": {
             "fx": "hit_106_132mm_snow_he",
             "ricochetFx": "hit_106_132mm_snow_ap"
+          },
+          "wood": {
+            "fx": "hit_81_132mm_heat",
+            "copyBulletTm": true
           }
         },
         "shatterCollisions": {
@@ -1526,8 +1526,8 @@
         ],
         "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
         "dragCx": 0.027,
-        "selfDestructionFx": "explosion_air_selfexplosion_big",
-        "explosionEffect": "hit_106_132mm_metal_he",
+        "selfDestructionFx": "hit_81_132mm_heat",
+        "explosionEffect": "hit_81_132mm_heat",
         "groundCollisionEffect": "hit_106_132mm_dirt_he",
         "ricochetEffect": "hit_106_132mm_metal_ap",
         "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -1738,10 +1738,6 @@
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
           },
-          "wood": {
-            "fx": "hit_106_132mm_wood_he",
-            "ricochetFx": "hit_106_132mm_wood_ap"
-          },
           "steel": {
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
@@ -1789,6 +1785,10 @@
           "stone_snow": {
             "fx": "hit_106_132mm_snow_he",
             "ricochetFx": "hit_106_132mm_snow_ap"
+          },
+          "wood": {
+            "fx": "hit_81_132mm_heat",
+            "copyBulletTm": true
           }
         },
         "shatterCollisions": {
@@ -2188,6 +2188,8 @@
         "length": 1.168,
         "CxK": 1.72,
         "wingAreaMult": 2.1,
+        "finsAoaHor": 0.15,
+        "finsAoaVer": 0.15,
         "distFromCmToStab": 0.025,
         "mass": 22.59,
         "massEnd": 19.39,
@@ -2201,6 +2203,9 @@
         "endSpeed": 309.0,
         "maxDistance": 3750.0,
         "minDistance": 30.0,
+        "rangeMax": 3750.0,
+        "guidanceType": "saclos",
+        "maxDeltaAngle": 0.03,
         "explosiveType": "lx14",
         "explosiveMass": 2.4,
         "normalizationPreset": "heat",
@@ -2221,8 +2226,8 @@
         ],
         "shellAnimation": "video/shells_animations/top_attack_atgm.ivf",
         "dragCx": 0.027,
-        "selfDestructionFx": "explosion_air_selfexplosion_big",
-        "explosionEffect": "hit_106_132mm_metal_he",
+        "selfDestructionFx": "hit_81_132mm_heat",
+        "explosionEffect": "hit_81_132mm_heat",
         "groundCollisionEffect": "hit_106_132mm_dirt_he",
         "ricochetEffect": "hit_106_132mm_metal_ap",
         "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -2265,22 +2270,32 @@
           0.0
         ],
         "irBeaconBand": 5,
-        "aimPosOffset": [
-          2.25,
-          0.0
-        ],
         "hasProximityFuse": true,
         "cumulativeDeviationAngle": 90.0,
-        "CyK": 6.0,
-        "CyMaxAoA": 2.8,
-        "operatedDist": 3750.0,
-        "operated": true,
-        "maxLateralAcceleration": 6.0,
-        "autoLeveling": true,
-        "autoAiming": true,
-        "aimCorrectionVelMin": 300.0,
-        "maxAxisValues": 0.5,
-        "maxDeltaAngle": 0.03,
+        "guidance": {
+          "controlConeFov": 10.0,
+          "breakLockMaxTime": 3.0,
+          "beaconBand": 5,
+          "losOffset": [
+            0.0,
+            2.25,
+            0.0
+          ],
+          "lineOfSightAutopilot": {
+            "timeOut": 0.0,
+            "crossDistToReqCrossVelMult": 3.0,
+            "reqCrossVelRationMax": 0.75,
+            "velDiffToReqAccelMult": 6.0,
+            "accelControl": {
+              "velFrameReference": true,
+              "reqAccelMax": 5.0,
+              "accelControlProp": 0.0286,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.0004,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -2430,10 +2445,6 @@
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
           },
-          "wood": {
-            "fx": "hit_106_132mm_wood_he",
-            "ricochetFx": "hit_106_132mm_wood_ap"
-          },
           "steel": {
             "fx": "hit_106_132mm_metal_he",
             "ricochetFx": "hit_106_132mm_metal_ap"
@@ -2481,6 +2492,10 @@
           "stone_snow": {
             "fx": "hit_106_132mm_snow_he",
             "ricochetFx": "hit_106_132mm_snow_ap"
+          },
+          "wood": {
+            "fx": "hit_81_132mm_heat",
+            "copyBulletTm": true
           }
         },
         "shatterCollisions": {

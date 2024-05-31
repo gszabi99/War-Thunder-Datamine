@@ -26,6 +26,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 ::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
@@ -74,7 +75,7 @@ let { getCrewUnit } = require("%scripts/crew/crew.nut")
       }
   }
   else
-    foreach (cc in ::g_crews_list.get())
+    foreach (cc in getCrewsList())
       if (isInArray(cc.country, countries)) {
         local have_repaired_in_country = false
         local have_unlocked_in_country = false

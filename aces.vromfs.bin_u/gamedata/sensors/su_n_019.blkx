@@ -34,7 +34,7 @@
       "rcs": 24000.0,
       "range": 22000.0,
       "range1": 5000.0,
-      "rangeMax": 30000.0,
+      "rangeMax": 60000.0,
       "visibilityType": "infraRed",
       "antenna": {
         "azimuth": {
@@ -232,7 +232,7 @@
       ],
       "elevationLimits": [
         -15.0,
-        15.0
+        30.0
       ],
       "period": 0.2,
       "width": 2.0,
@@ -1451,20 +1451,32 @@
           "stateFrom": "standby",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
           }
         },
         "updateSearchMode": {
           "stateFrom": "search",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "switchScanPattern": {

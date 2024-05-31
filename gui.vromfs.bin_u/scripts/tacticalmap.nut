@@ -32,7 +32,6 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
   gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     sceneBlkName = "%gui/tacticalMap.blk"
     shouldBlurSceneBg = true
-    shouldFadeSceneInVr = true
     shouldOpenCenteredToCameraInVr = true
     keepLoaded = true
     wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP |

@@ -3,6 +3,9 @@ let { hudFontHgt } = require("style/airHudStyle.nut")
 let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode } = require("radarState.nut")
 let dasRadarHud = load_das("%rGui/radar.das")
 let dasRadarIndication = load_das("%rGui/radarIndication.das")
+let DataBlock = require("DataBlock")
+let { IPoint3 } = require("dagor.math")
+let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 
 function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
   return @(){
@@ -19,9 +22,88 @@ function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
   }
 }
 
-let function radarMfd(pos_and_size, color_watched) {
-  return @(){
-    watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size]
+let targetFormTypes = {
+  "triangle" : 1,
+  "square" : 2
+}
+
+let beamShapes = {
+  "beam" : 0,
+  "caret" : 1
+}
+
+let radarSettings = Computed(function() {
+  let res = {
+    lineWidth = 1.0
+    lineColor = IPoint3(0, 255, 0)
+    modeColor = IPoint3(0, 255, 0)
+    verAngleColor = IPoint3(0, 255, 0)
+    horAngleColor = IPoint3(0, 255, 0)
+    scaleColor = IPoint3(0, 255, 0)
+    targetColor = IPoint3(0, 255, 0)
+    hideVerAngle = false
+    hideHorAngle = false
+    hideLaunchZone = false
+    hideScale = false
+    hideBeam = false
+    hasAviaHorizont = false
+    fontId = Fonts.hud
+    targetFormType = 0
+    backgroundColor = IPoint3(0, 0, 0)
+    beamShape = 0
+  }
+
+  if (BlkFileName.value == "")
+    return res
+  let blk = DataBlock()
+  let fileName = $"gameData/flightModels/{BlkFileName.value}.blk"
+  if (!blk.tryLoad(fileName))
+    return res
+  let cockpitBlk = blk.getBlockByName("cockpit")
+  if (!cockpitBlk)
+    return res
+  let mfdBlk = cockpitBlk.getBlockByName("multifunctionDisplays")
+  if (!mfdBlk)
+    return res
+  for (local i = 0; i < mfdBlk.blockCount(); ++i) {
+    let displayBlk = mfdBlk.getBlock(i)
+    for (local j = 0; j < displayBlk.blockCount(); ++j) {
+      let pageBlk = displayBlk.getBlock(j)
+      let typeStr = pageBlk.getStr("type", "")
+      if (typeStr != "radar" && typeStr != "radar_b_round")
+        continue
+      let targetType = pageBlk.getStr("targetForm", "")
+      let beamType = pageBlk.getStr("beamShape", "beam")
+      return {
+        lineWidth = pageBlk.getReal("lineWidth", 1.0)
+        lineColor = pageBlk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
+        modeColor = pageBlk.getIPoint3("modeColor", IPoint3(-1, -1, -1))
+        verAngleColor = pageBlk.getIPoint3("verAngleColor", IPoint3(-1, -1, -1))
+        horAngleColor = pageBlk.getIPoint3("horAngleColor", IPoint3(-1, -1, -1))
+        scaleColor = pageBlk.getIPoint3("scaleColor", IPoint3(-1, -1, -1))
+        targetColor = pageBlk.getIPoint3("targetColor", IPoint3(-1, -1, -1))
+        hideVerAngle = pageBlk.getBool("hideVerAngle", false)
+        hideHorAngle = pageBlk.getBool("hideHorAngle", false)
+        hideLaunchZone = pageBlk.getBool("hideLaunchZone", false)
+        hideScale = pageBlk.getBool("hideScale", false)
+        hideBeam = pageBlk.getBool("hideBeam", false)
+        hasAviaHorizont = pageBlk.getBool("hasAviaHorizont", false)
+        fontId = Fonts?[pageBlk.getStr("font", "hud")] ?? Fonts.hud
+        targetFormType = targetFormTypes?[targetType] ?? 0
+        backgroundColor = pageBlk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
+        beamShape = beamShapes?[beamType] ?? 0
+      }
+    }
+  }
+  return res
+})
+
+let radarMfd = @(pos_and_size, color_watched) function() {
+  let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
+   hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
+   backgroundColor, beamShape } = radarSettings.get()
+  return {
+    watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.value.w, pos_and_size.value.h]
     pos = [pos_and_size.value.x, pos_and_size.value.y]
     rendObj = ROBJ_DAS_CANVAS
@@ -29,11 +111,27 @@ let function radarMfd(pos_and_size, color_watched) {
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
     color = color_watched.value
-    font = Fonts.hud
+    font = fontId
     fontSize = (MfdRadarFontScale.value > 0 ? MfdRadarFontScale.value : pos_and_size.value.h / 512.0) * 30
     hideBackground = MfdRadarHideBkg.value
     enableByMfd = true
     mode = MfdViewMode.value
+    lineWidth
+    lineColor = lineColor.x < 0 ? color_watched.value : Color(lineColor.x, lineColor.y, lineColor.z, 255)
+    modeColor = modeColor.x < 0 ? color_watched.value : Color(modeColor.x, modeColor.y, modeColor.z, 255)
+    verAngleColor = verAngleColor.x < 0 ? color_watched.value : Color(verAngleColor.x, verAngleColor.y, verAngleColor.z, 255)
+    horAngleColor = horAngleColor.x < 0 ? color_watched.value : Color(horAngleColor.x, horAngleColor.y, horAngleColor.z, 255)
+    scaleColor = scaleColor.x < 0 ? color_watched.value : Color(scaleColor.x, scaleColor.y, scaleColor.z, 255)
+    targetColor = targetColor.x < 0 ? color_watched.value : Color(targetColor.x, targetColor.y, targetColor.z, 255)
+    hideBeam
+    hideLaunchZone
+    hideScale
+    hideHorAngle
+    hideVerAngle
+    hasAviaHorizont
+    targetFormType
+    backgroundColor = Color(backgroundColor.x, backgroundColor.y, backgroundColor.z, 255)
+    beamShape
   }
 }
 

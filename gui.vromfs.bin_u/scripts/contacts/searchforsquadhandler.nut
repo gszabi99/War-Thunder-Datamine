@@ -88,20 +88,30 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
     let isBlock = this.curPlayer ? this.curPlayer.isInBlockGroup() : false
     let isXBoxOnePlayer = isXBoxPlayerName(contactName)
     let canInteractCrossPlatform = isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
-    let canInvite = this.curPlayer ? this.curPlayer.canInvite() : true
 
-    let showSquadInvite = !showConsoleButtons.value
-      && hasFeature("SquadInviteIngame")
-      && !isBlock
-      && canInteractCrossConsole(contactName)
-      && canInteractCrossPlatform
-      && g_squad_manager.canInviteMember(this.curPlayer?.uid ?? "")
-      && g_squad_manager.canInviteMemberByPlatform(contactName)
-      && !g_squad_manager.isPlayerInvited(this.curPlayer?.uid ?? "", contactName)
-      && canInvite
-      && ::g_squad_utils.canSquad()
+    local thisCapture = this
+    local checkIfPlayerCanInvite = function(callback) {
+      if (thisCapture.curPlayer) {
+        thisCapture.curPlayer.checkCanInvite(callback)
+      } else {
+        callback?(true)
+      }
+    }
 
-    showObjById("btn_squadInvite_bottom", showSquadInvite, this.scene)
+    checkIfPlayerCanInvite(function(canInvite) {
+      let showSquadInvite = !showConsoleButtons.value
+        && hasFeature("SquadInviteIngame")
+        && !isBlock
+        && canInteractCrossConsole(contactName)
+        && canInteractCrossPlatform
+        && g_squad_manager.canInviteMember(thisCapture.curPlayer?.uid ?? "")
+        && g_squad_manager.canInviteMemberByPlatform(contactName)
+        && !g_squad_manager.isPlayerInvited(thisCapture.curPlayer?.uid ?? "", contactName)
+        && canInvite
+        && ::g_squad_utils.canSquad()
+
+      showObjById("btn_squadInvite_bottom", showSquadInvite, thisCapture.scene)
+    })
   }
 
   function onPlayerMsg(obj) {

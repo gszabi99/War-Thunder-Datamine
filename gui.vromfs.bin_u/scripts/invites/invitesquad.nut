@@ -119,8 +119,11 @@ let Squad = class (BaseInvite) {
   }
 
   function autorejectInvite() {
-    if (!::g_squad_utils.canSquad() || !this.leaderContact.canInvite())
-      this.reject()
+    local thisCapture = this
+    this.leaderContact.checkCanInvite(function(canInvite) {
+      if (!::g_squad_utils.canSquad() || !canInvite)
+        thisCapture.reject()
+    })
   }
 
   function checkAutoAcceptInvite() {

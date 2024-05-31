@@ -48,6 +48,11 @@
         "width": "fw",
         "tdiv": [
           {
+            "id": "vertSeparators",
+            "size": "pw,ph",
+            "position": "absolute"
+          },
+          {
             "id": "shop_useful_width",
             "pos": "0, 0",
             "position": "absolute",
@@ -62,20 +67,23 @@
           },
           {
             "id": "shop_items_pos_div",
-            "left": "(pw-w)/2",
-            "padding": "1@modBlockTierNumHeight, 0, 1@scrollBarSize, 0",
-            "top": "1@shop_h_extra_first",
+            "padding": "0, 0, 1@scrollBarSize, 0",
             "position": "relative",
+            "width": "pw",
             "tdiv": {
               "id": "shopTable_air_rows",
               "pos": "1@modBlockTierNumHeight, 0",
               "position": "absolute",
+              "width": "pw",
               "height": "ph",
               "flow": "vertical"
             },
             "shopTable": {
               "id": "shop_items_list",
-              "behavior": "posNavigator",
+              "width": "pw",
+              "behavior": "inContainersNavigator",
+              "flow": "vertical",
+              "deep": "2",
               "navigatorShortcuts": "SpaceA",
               "alwaysShowBorder": "yes",
               "moveY": "linear",
@@ -83,10 +91,7 @@
               "on_r_click": "onUnitRightClick",
               "on_activate": "onUnitActivate",
               "on_select": "onUnitSelect",
-              "on_dbl_click": "onUnitDblClick",
-              "on_pushed": "::gcb.delayedTooltipListPush",
-              "on_hold_start": "::gcb.delayedTooltipListHoldStart",
-              "on_hold_stop": "::gcb.delayedTooltipListHoldStop"
+              "on_dbl_click": "onUnitDblClick"
             }
           },
           {
@@ -96,13 +101,6 @@
             "size": "pw, ph",
             "total-input-transparent": "yes",
             "display": "hide"
-          },
-          {
-            "id": "tier_arrows_div",
-            "pos": "0, 1@shop_h_extra_first",
-            "position": "absolute",
-            "width": "1@modBlockTierNumHeight",
-            "height": "ph"
           }
         ]
       }

@@ -162,7 +162,7 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
   v.ship_cover_parts__innerPartsId |> clear()
   v.ship_cover_parts__innerPartsCriticalWater |> clear()
 
-  v.ship_cover_parts__disableDeadParts = *evt.modelBlk |> datablock_getBool("shipsDisableDeadCoverParts", get_app().gameParams.shipsDisableDeadCoverParts)
+  v.ship_cover_parts__disableDeadParts = *evt.modelBlk |> datablock_getBool("shipsDisableDeadCoverParts", get_game_params().shipsDisableDeadCoverParts)
 
   var loading_errors : array<string>
   *evt.modelBlk |> datablock_get_block("shipCover") <| $(blk)
@@ -251,12 +251,12 @@ def ship_copy_from_handle_es(evt : EventShipCopyFrom;
 
 
 [with_bundle(v)]
-def is_cover_part_dead(unit : Unit?; cover_id : int; v : tuple<ship_cover_parts__disableDeadParts : bool; ship_cover_parts__partId : PartIdList>) : bool
+def is_cover_part_dead_cover_id(unit : Unit?; cover_id : int; v : tuple<ship_cover_parts__disableDeadParts : bool; ship_cover_parts__partId : PartIdList>) : bool
   return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, v.ship_cover_parts__partId[cover_id])
 
 
 [with_bundle(v)]
-def is_cover_part_dead(unit : Unit?; part_id : PartId; v : tuple<ship_cover_parts__disableDeadParts : bool>) : bool
+def is_cover_part_dead_part_id(unit : Unit?; part_id : PartId; v : tuple<ship_cover_parts__disableDeadParts : bool>) : bool
   return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, part_id)
 
 
@@ -269,7 +269,7 @@ def has_any_repairable_breaches(unit : Unit?; v : tuple<
                                 >) : bool
   assume dmData = unit.dmData
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if amount_to_repair > 0.0f && !is_cover_part_dead(unit, cover_id) <| v
+    if amount_to_repair > 0.0f && !is_cover_part_dead_cover_id(unit, cover_id) <| v
       return true
   return false
 
@@ -299,9 +299,69 @@ def calc_time_to_repair_breaches(unit : Unit?; repair_speed_mult : float;
                                  >) : float
   var time = 0.0f
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if !is_cover_part_dead(unit, cover_id) <| v
+    if !is_cover_part_dead_cover_id(unit, cover_id) <| v
       time = max(time, amount_to_repair / repair_speed_mult)
   return time
+
+
+[with_bundle(v)]
+def calc_pump_mass_vel(unit : Unit?;
+                       v : tuple<
+                         ship__pumpsPartId : IntList;
+                         ship_cover_parts__water : Point4List;
+                         ship_damage_control__unwateringSpeedMult : float;
+                         ship__waterMassVelMult : float
+                       >) : float
+  let ship = as_ship(unit)
+  if ship == null
+    return 0.0f
+  assume unit_dm = *unit.visual
+  let ship_props = ship.shipProps
+
+  var num_cover_parts = 0
+  for water in v.ship_cover_parts__water
+    if water.x > 0.0f
+      num_cover_parts++
+
+  if num_cover_parts > 0
+    var pumps_total_rel_hp = 0.0f
+    var pumps_count = 0
+    for pump_part_id in v.ship__pumpsPartId
+      let partId = unit_dm |> dm_get_remap(pump_part_id)
+      if partId |> dm_part_id_valid()
+        pumps_count++
+        pumps_total_rel_hp += unit_dm |> dm_get_rel_hp(pump_part_id)
+
+    let pump_readiness = lerp(get_difficulty_config().shipBrokenPumpMaxWaterMassVelMult, 1.0, safediv(pumps_total_rel_hp, float(pumps_count)))
+    return (v.ship__waterMassVelMult * ship_props.breachWaterMassVel * v.ship_damage_control__unwateringSpeedMult *
+            pump_readiness / float(num_cover_parts))
+
+  return 0.0f
+
+
+[with_bundle(v)]
+def calc_time_to_unwater(unit : Unit?;
+                         v : tuple<
+                           ship_cover_parts__disableDeadParts : bool;
+                           ship__pumpsPartId : IntList;
+                           ship_cover_parts__water : Point4List;
+                           ship_cover_parts__partId : PartIdList;
+                           ship_damage_control__unwateringSpeedMult : float;
+                           ship__waterMassVelMult : float
+                         >) : float
+  let pump_water_mass_vel = abs(calc_pump_mass_vel(unit) <| v)
+
+  var res_time = 0.0f
+  var count_parts = 0
+  if pump_water_mass_vel > 0.0f
+    for water, part_id in v.ship_cover_parts__water, v.ship_cover_parts__partId
+      if water.x > 0.0f && !is_cover_part_dead_part_id(unit, part_id) <| v
+        res_time += water.x / pump_water_mass_vel
+        count_parts++
+    if count_parts > 0
+      res_time /= float(count_parts)
+
+  return res_time
 
 
 [es(no_order), with_bundle(v)]
@@ -335,7 +395,7 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
     v.ship__repairBreachesRemainingTime = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
 
     for breach_id, amount_to_repair, cover_id in v.ship_breaches__id, v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-      if is_cover_part_dead(unit, cover_id) <| v
+      if is_cover_part_dead_cover_id(unit, cover_id) <| v
         continue
       if amount_to_repair > 0.0f
         amount_to_repair -= repair_speed_mult * info.dt
@@ -419,6 +479,9 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
+  let ship = as_ship(unit)
+  if ship == null
+    return
 
   var cover_id = -1
   let part_id = evt.partId
@@ -430,7 +493,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
     return
 
   let box = (*unit).boundingBox
-  let ship_props = as_ship(unit).shipProps
+  let ship_props = ship.shipProps
   var pos = evt.localPos
   pos.x = clamp(pos.x, box.boxMin.x, box.boxMax.x);
   pos.y = clamp(pos.y, box.boxMin.y, box.boxMax.y);
@@ -506,66 +569,6 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
           offender = evt.offender
         ]])
       break
-
-
-[with_bundle(v)]
-def calc_pump_mass_vel(unit : Unit?;
-                       v : tuple<
-                         ship__pumpsPartId : IntList;
-                         ship_cover_parts__water : Point4List;
-                         ship_damage_control__unwateringSpeedMult : float;
-                         ship__waterMassVelMult : float
-                       >) : float
-  let ship = as_ship(unit)
-  if ship == null
-    return 0.0f
-  assume unit_dm = *unit.visual
-  let ship_props = ship.shipProps
-
-  var num_cover_parts = 0
-  for water in v.ship_cover_parts__water
-    if water.x > 0.0f
-      num_cover_parts++
-
-  if num_cover_parts > 0
-    var pumps_total_rel_hp = 0.0f
-    var pumps_count = 0
-    for pump_part_id in v.ship__pumpsPartId
-      let partId = unit_dm |> dm_get_remap(pump_part_id)
-      if partId |> dm_part_id_valid()
-        pumps_count++
-        pumps_total_rel_hp += unit_dm |> dm_get_rel_hp(pump_part_id)
-
-    let pump_readiness = lerp(get_difficulty_config().shipBrokenPumpMaxWaterMassVelMult, 1.0, safediv(pumps_total_rel_hp, float(pumps_count)))
-    return (v.ship__waterMassVelMult * ship_props.breachWaterMassVel * v.ship_damage_control__unwateringSpeedMult *
-            pump_readiness / float(num_cover_parts))
-
-  return 0.0f
-
-
-[with_bundle(v)]
-def calc_time_to_unwater(unit : Unit?;
-                         v : tuple<
-                           ship_cover_parts__disableDeadParts : bool;
-                           ship__pumpsPartId : IntList;
-                           ship_cover_parts__water : Point4List;
-                           ship_cover_parts__partId : PartIdList;
-                           ship_damage_control__unwateringSpeedMult : float;
-                           ship__waterMassVelMult : float
-                         >) : float
-  let pump_water_mass_vel = abs(calc_pump_mass_vel(unit) <| v)
-
-  var res_time = 0.0f
-  var count_parts = 0
-  if pump_water_mass_vel > 0.0f
-    for water, part_id in v.ship_cover_parts__water, v.ship_cover_parts__partId
-      if water.x > 0.0f && !is_cover_part_dead(unit, part_id) <| v
-        res_time += water.x / pump_water_mass_vel
-        count_parts++
-    if count_parts > 0
-      res_time /= float(count_parts)
-
-  return res_time
 
 
 [es(after=ship_repair_breaches_update_es), with_bundle(v)]
@@ -791,7 +794,7 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
       continue
 
     assume dmData = unit.dmData
-    let is_dead_cover = is_cover_part_dead(unit, part_id) <| v
+    let is_dead_cover = is_cover_part_dead_part_id(unit, part_id) <| v
 
     if is_dead_cover
       let maxWater = part_water.z

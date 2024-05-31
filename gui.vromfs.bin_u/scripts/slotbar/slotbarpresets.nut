@@ -28,6 +28,8 @@ let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
   getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
+} = require("%scripts/slotbar/crewsList.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -462,7 +464,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
     local countryIdx = -1
     local countryCrews = []
-    foreach (cIdx, tbl in ::g_crews_list.get())
+    foreach (cIdx, tbl in getCrewsList())
       if (tbl.country == countryId) {
         countryIdx = cIdx
         countryCrews = tbl.crews
@@ -517,12 +519,12 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
     this.isLoading = true // Blocking slotbar content and game mode id from overwritting during 'batchTrainCrew' call.
 
-    ::g_crews_list.suspendSlotbarUpdates()
+    suspendSlotbarUpdates()
     this.invalidateUnitsModificators(countryIdx)
     batchTrainCrew(tasksData, { showProgressBox = true },
       @() this.onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset),
       function (_taskResult = -1) {
-        ::g_crews_list.flushSlotbarUpdate()
+        flushSlotbarUpdate()
         this.onTrainCrewTasksFail()
       },
       ::slotbarPresets)
@@ -535,7 +537,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
     selectCrew(countryIdx, selCrewIdx, true)
     this.invalidateUnitsModificators(countryIdx)
-    ::g_crews_list.flushSlotbarUpdate()
+    flushSlotbarUpdate()
 
     // Game mode select is performed only
     // after successful slotbar vehicles change.
@@ -583,7 +585,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   }
 
   function invalidateUnitsModificators(countryIdx) {
-    let crews = ::g_crews_list.get()?[countryIdx]?.crews ?? []
+    let crews = getCrewsList()?[countryIdx]?.crews ?? []
     foreach (crew in crews) {
       let unit = getCrewUnit(crew)
       if (unit)
@@ -689,7 +691,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     let units = []
     let crews = []
     local selected = preset.selected
-    foreach (tbl in ::g_crews_list.get())
+    foreach (tbl in getCrewsList())
       if (tbl.country == countryId) {
         foreach (crew in tbl.crews)
           if (("aircraft" in crew)) {

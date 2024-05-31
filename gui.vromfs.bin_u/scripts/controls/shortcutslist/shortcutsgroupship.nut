@@ -181,6 +181,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_SHIP_SWITCH_TRIGGER_GROUP"
+    checkAssign = false
+  }
+  {
     id = "ID_SHIP_SELECT_TARGET_AI_PRIM"
     checkAssign = false
   }
@@ -220,6 +224,11 @@ return [
   }
   {
     id = "ID_SENSOR_SWITCH_SHIP"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_WEAPON_LOCK_SHIP"
     checkAssign = false
     needShowInHelp = true
   }

@@ -5,21 +5,21 @@
     "water": {
       "L_inv_white": 0.3
     },
-    "hdr": {
+    "adaptation": {
       "useAdaptation": true,
-      "adaptationTimeHighToNorm": 0.25,
-      "adaptationTimeNormToHigh": 0.65,
-      "adaptationMultiplier": 2.0,
-      "targetBrightnessUp": 1.005,
-      "targetBrightnessEffect": 0.0,
-      "perceptionLinear": 0.85,
-      "perceptionPower": 0.8,
-      "fake": {
-        "adaptationMax": 3.2,
-        "adaptationMin": 0.65,
-        "lumMin": 0.68,
-        "lumMax": 0.95
-      }
+      "lowPart": 0.0,
+      "highPart": 0.01,
+      "minExposure": 0.25,
+      "maxExposure": 2.5,
+      "autoExposureScale": 1.5,
+      "adaptDownSpeed": 8.0,
+      "adaptUpSpeed": 8.0,
+      "brightnessPerceptionLinear": 0.9,
+      "brightnessPerceptionPower": 0.9,
+      "minExposureMul": 1.0,
+      "maxExposureMul": 1.0,
+      "exposureFadeMul": 1.0,
+      "targetLuminanceComp": 0.25
     },
     "DemonPostFx": {
       "use": true,
@@ -35,7 +35,8 @@
       "hdrDarkThreshold": 1000.0,
       "hdrGlowPower": 0.3,
       "hdrGlowMul": 0.002,
-      "hdrStarPowerMul": 0.932
+      "hdrStarPowerMul": 0.932,
+      "volfogFade": 0.00005
     },
     "tonemapping": {
       "tonemapContrast": 1.19,

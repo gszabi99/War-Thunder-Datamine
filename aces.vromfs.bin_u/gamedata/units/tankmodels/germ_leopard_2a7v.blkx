@@ -838,11 +838,12 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
-        "hp": 150.0,
+        "armorThrough": 15.0
+      },
+      "driver_controls_dm": {
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -861,20 +862,52 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "radiator_dm": {
+      "drive_turret_v_03_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_03_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "radiator_dm": {
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_l_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_r_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radio_station_dm": {
-        "hp": 20.0,
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "electronic_equipment_dm": {
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_dm": {
+        "hp": 50.0,
         "armorThrough": 3.0
       }
     },
@@ -901,6 +934,10 @@
       },
       "cannon_breech_05_dm": {
         "armorThickness": 10.0
+      },
+      "autoloader_dm": {
+        "armorThickness": 5.0,
+        "armorThrough": 5.0
       }
     },
     "power_block": {
@@ -910,7 +947,8 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {}
+      "transmission_dm": {},
+      "power_system_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -1205,6 +1243,12 @@
     "ex_decor_r_02_dm": true,
     "ex_decor_l_01_dm": true,
     "ex_decor_l_02_dm": true
+  },
+  "xrayOverride": {
+    "drive_turret_h_01_dm": {
+      "overrideTitle": "power_electronics",
+      "hideDescription": true
+    }
   },
   "DamageEffects": {
     "part": [
@@ -1954,6 +1998,19 @@
             }
           }
         ]
+      },
+      {
+        "name": "drive_turret_h_01_dm",
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "drive_turret_h_dm",
+              "drive_turret_v_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -2838,7 +2895,7 @@
         -0.17,
         0.13
       ],
-      "defaultGearRadius": 0.315,
+      "defaultGearRadius": 0.335,
       "topGearRadius": 0.11,
       "frontBackGearRadius": 0.28,
       "defaultDampeningForce": [
@@ -3274,6 +3331,13 @@
       },
       {
         "name": "fuel_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "hydraulic_internal",
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3893,6 +3957,7 @@
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
               1200,

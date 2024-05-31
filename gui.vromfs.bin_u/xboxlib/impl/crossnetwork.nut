@@ -3,6 +3,7 @@ let {eventbus_subscribe, eventbus_subscribe_onehit} = require("eventbus")
 
 
 function register_state_change_callback(callback) {
+  cn.install_state_change_handler()
   eventbus_subscribe(cn.state_changed_event_name, function(result) {
     let success = result?.success
     callback?(success)

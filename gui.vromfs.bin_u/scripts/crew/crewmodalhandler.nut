@@ -26,7 +26,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { scene_msg_boxes_list } = require("%sqDagui/framework/msgBox.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
@@ -36,12 +36,15 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { isAllCrewsMinLevel, getCrewName, getCrewLevel,
   getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel,
   getCrewSkillPointsToMaxAllSkills, buyAllCrewSkills, createCrewUnitSpecHandler,
-  createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages
+  createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages,
+  loadCrewSkills
 } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
 } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
 } = require("%scripts/crew/crewDiscount.nut")
+let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
+} = require("%scripts/slotbar/crewsList.nut")
 
 ::gui_modal_crew <- function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
@@ -52,7 +55,7 @@ let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByIn
 
 function isAllCrewsHasBasicSpec() {
   let basicCrewSpecType = crewSpecTypes.BASIC
-  foreach (checkedCountrys in ::g_crews_list.get())
+  foreach (checkedCountrys in getCrewsList())
     foreach (crew in checkedCountrys.crews)
       foreach (unitName, _value in crew.trainedSpec) {
         let crewUnitSpecType = getSpecTypeByCrewAndUnitName(crew, unitName)
@@ -104,7 +107,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.crew)
       return this.goBack()
 
-    let country = ::g_crews_list.get()?[this.countryId].country
+    let country = getCrewsList()?[this.countryId].country
     if (country)
       switchProfileCountry(country)
 
@@ -171,7 +174,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     ::update_gamercards()
     if (reloadSkills)
-      ::load_crew_skills()
+      loadCrewSkills()
 
     this.scene.findObject("crew_name").setValue(getCrewName(this.crew))
 
@@ -214,7 +217,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurCountryName() {
-    return ::g_crews_list.get()[this.countryId].country
+    return getCrewsList()[this.countryId].country
   }
 
   function updateUnitTypeRadioButtons() {
@@ -679,17 +682,17 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           curHandler.afterApplyAction()
           curHandler.afterApplyAction = null
         }
-        ::g_crews_list.flushSlotbarUpdate()
+        flushSlotbarUpdate()
       },
       function(_err) {
         curHandler.isCrewUpgradeInProgress = false
-        ::g_crews_list.flushSlotbarUpdate()
+        flushSlotbarUpdate()
       }
     )
 
     if (isTaskCreated) {
       this.isCrewUpgradeInProgress = true
-      ::g_crews_list.suspendSlotbarUpdates()
+      suspendSlotbarUpdates()
     }
   }
 

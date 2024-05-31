@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import can_add_tank_alt_crosshair
 from "%scripts/dagui_library.nut" import *
 let { get_option_multiplier, set_option_multiplier,
   OPTION_AIM_TIME_NONLINEARITY_TANK, OPTION_AIM_ACCELERATION_DELAY_TANK,
@@ -12,6 +11,7 @@ let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
 let { USEROPT_AUTOMATIC_TRANSMISSION_TANK, USEROPT_INVERTY_TANK
 } = require("%scripts/options/optionsExtNames.nut")
+let { can_add_tank_alt_crosshair } = require("crosshair")
 
 return [
   {

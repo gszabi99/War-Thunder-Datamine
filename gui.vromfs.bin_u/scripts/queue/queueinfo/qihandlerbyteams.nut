@@ -5,6 +5,7 @@ from "%scripts/teamsConsts.nut" import Team
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   timerUpdateObjId = "queue_box"
@@ -147,7 +148,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
                     width = "0.4pw"
                  })
 
-    for (local i = 1; i <= ::max_country_rank; i++) {
+    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
       params.append({
         text = getTblValue(i.tostring(), queueStatData, 0).tostring()
         tdalign = "center"
@@ -158,7 +159,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
 
   function buildQueueStatsHeader() {
     let headerData = []
-    for (local i = 0; i <= ::max_country_rank; i++) {
+    for (local i = 0; i <= MAX_COUNTRY_RANK; i++) {
       headerData.append({
         text = get_roman_numeral(i)
         tdalign = "center"

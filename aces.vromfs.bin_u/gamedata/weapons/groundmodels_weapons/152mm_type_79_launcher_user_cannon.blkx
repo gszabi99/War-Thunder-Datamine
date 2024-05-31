@@ -89,6 +89,7 @@
       "damageType": "pressure"
     },
     "rocket": {
+      "bulletName": "type_79_atgm",
       "statType": "hydra",
       "caliber": 0.152,
       "length": 1.565,
@@ -766,6 +767,7 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "bulletName": "type_79_atgm",
         "statType": "hydra",
         "caliber": 0.152,
         "length": 1.565,
@@ -1404,7 +1406,7 @@
       "mass": 19.9,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap_rocket",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1444,25 +1446,21 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "bulletName": "type_79_asm",
         "statType": "hydra",
         "caliber": 0.152,
         "length": 1.565,
-        "WdK": [
-          0.1,
-          0.1,
-          0.1
-        ],
         "CxK": 1.9,
-        "CyK": 6.0,
-        "CyMaxAoA": 2.8,
-        "wingAreaMult": 1.7,
-        "distFromCmToStab": 0.025,
+        "wingAreaMult": 2.75,
+        "finsAoaHor": 0.15,
+        "finsAoaVer": 0.15,
+        "distFromCmToStab": 0.04,
         "mass": 19.9,
         "massEnd": 17.8,
         "massEnd1": 15.7,
-        "timeFire": 1.5,
+        "timeFire": 0.75,
         "timeFire1": 18.0,
-        "force": 1850.0,
+        "force": 3700.0,
         "force1": 250.0,
         "fireDelay": 0.14,
         "timeLife": 22.0,
@@ -1472,23 +1470,14 @@
         "endSpeed": 200.0,
         "maxDistance": 4000.0,
         "minDistance": 30.0,
-        "operatedDist": 4000.0,
-        "operated": true,
-        "maxLateralAcceleration": 6.0,
-        "autoLeveling": true,
-        "autoAiming": true,
-        "aimCorrectionVelMin": 300.0,
-        "aimPosOffset": [
-          1.0,
-          0.0
-        ],
-        "maxAxisValues": 0.5,
+        "rangeMax": 4000.0,
+        "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
         "explosiveType": "comp_b",
         "explosiveMass": 2.3,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_ground",
         "secondaryShattersPreset": "ap_rocket",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1543,6 +1532,28 @@
           0.0,
           0.0
         ],
+        "guidance": {
+          "controlConeFov": 10.0,
+          "losOffset": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "breakLockMaxTime": 3.0,
+          "lineOfSightAutopilot": {
+            "crossDistToReqCrossVelMult": 3.0,
+            "reqCrossVelRationMax": 0.75,
+            "velDiffToReqAccelMult": 6.0,
+            "accelControl": {
+              "velFrameReference": true,
+              "reqAccelMax": 9.0,
+              "accelControlProp": 0.0246,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.0005,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,

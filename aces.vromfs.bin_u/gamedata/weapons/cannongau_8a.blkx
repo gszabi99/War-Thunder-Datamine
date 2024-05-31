@@ -35,10 +35,9 @@
       "speed": 980.0,
       "Cx": 0.21268,
       "maxDistance": 3660.0,
-      "recoilMultiplier": 0.35,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apcr",
-      "groundRicochetPreset": "apcr",
+      "groundRicochetPreset": "apcr_ground",
       "secondaryShattersPreset": "ap_small_arms",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -52,11 +51,12 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
-      "onHitChanceMultFire": 2.5,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "recoilMultiplier": 0.35,
+      "onHitChanceMultFire": 2.5,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -111,15 +111,6 @@
           "demarreMassPow": 0.89,
           "demarreCaliberPow": 0.96
         }
-      },
-      "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
-        "traceFreq": 1,
-        "tracer": "30mmRed",
-        "trail": "noTrail"
       },
       "collisions": {
         "default": {
@@ -238,20 +229,28 @@
           "fx": "hit_28_38mm_snow_ap",
           "ricochetFx": "hit_28_38mm_snow_ap"
         }
+      },
+      "visual": {
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
+        "traceFreq": 1,
+        "tracer": "30mmRed",
+        "trail": "noTrail"
       }
     },
     {
       "mass": 0.378,
       "caliber": 0.03,
       "speed": 1020.0,
-      "explosiveType": "rdx",
-      "explosiveMass": 0.058,
       "maxDistance": 3660.0,
       "Cx": 0.21268,
-      "recoilMultiplier": 0.35,
+      "explosiveType": "rdx",
+      "explosiveMass": 0.058,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -266,22 +265,22 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-      "hitPowerMult": 1.0,
-      "onHitChanceMultFire": 2.5,
-      "effectiveDistance": 700.0,
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.2,
+      "recoilMultiplier": 0.35,
+      "hitPowerMult": 1.0,
+      "onHitChanceMultFire": 3.5,
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he_rapid",
       "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -405,14 +404,6 @@
       "shatterDamage": {
         "breachConeAngle": 45.0
       },
-      "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
-        "traceFreq": 1,
-        "tracer": "noColor"
-      },
       "collisions": {
         "default": {
           "fx": "hit_28_38mm_dirt_he_rapid",
@@ -530,6 +521,14 @@
           "fx": "hit_28_38mm_snow_he_rapid",
           "ricochetFx": "hit_28_38mm_snow_ap_rapid"
         }
+      },
+      "visual": {
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
+        "traceFreq": 1,
+        "tracer": "noColor"
       }
     },
     {
@@ -541,10 +540,9 @@
       "speed": 980.0,
       "Cx": 0.21268,
       "maxDistance": 3660.0,
-      "recoilMultiplier": 0.35,
       "normalizationPreset": "apcr",
       "ricochetPreset": "apcr",
-      "groundRicochetPreset": "apcr",
+      "groundRicochetPreset": "apcr_ground",
       "secondaryShattersPreset": "ap_small_arms",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -558,11 +556,12 @@
         2.0
       ],
       "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
-      "onHitChanceMultFire": 2.5,
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "recoilMultiplier": 0.35,
+      "onHitChanceMultFire": 2.5,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -617,15 +616,6 @@
           "demarreMassPow": 0.89,
           "demarreCaliberPow": 0.96
         }
-      },
-      "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
-        "traceFreq": 1,
-        "tracer": "30mmRed",
-        "trail": "noTrail"
       },
       "collisions": {
         "default": {
@@ -744,20 +734,28 @@
           "fx": "hit_28_38mm_snow_ap",
           "ricochetFx": "hit_28_38mm_snow_ap"
         }
+      },
+      "visual": {
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
+        "traceFreq": 1,
+        "tracer": "30mmRed",
+        "trail": "noTrail"
       }
     },
     {
       "mass": 0.378,
       "caliber": 0.03,
       "speed": 1020.0,
-      "explosiveType": "rdx",
-      "explosiveMass": 0.058,
       "maxDistance": 3660.0,
       "Cx": 0.21268,
-      "recoilMultiplier": 0.35,
+      "explosiveType": "rdx",
+      "explosiveMass": 0.058,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -772,22 +770,22 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-      "hitPowerMult": 1.0,
-      "onHitChanceMultFire": 2.5,
-      "effectiveDistance": 700.0,
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
       "explodeTreshold": 0.1,
       "fuseDelayDist": 0.2,
+      "recoilMultiplier": 0.35,
+      "hitPowerMult": 1.0,
+      "onHitChanceMultFire": 3.5,
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_28_38mm_metal_he_rapid",
       "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -911,14 +909,6 @@
       "shatterDamage": {
         "breachConeAngle": 45.0
       },
-      "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
-        "traceFreq": 1,
-        "tracer": "noColor"
-      },
       "collisions": {
         "default": {
           "fx": "hit_28_38mm_dirt_he_rapid",
@@ -1036,6 +1026,14 @@
           "fx": "hit_28_38mm_snow_he_rapid",
           "ricochetFx": "hit_28_38mm_snow_ap_rapid"
         }
+      },
+      "visual": {
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
+        "traceFreq": 1,
+        "tracer": "noColor"
       }
     }
   ],
@@ -1050,10 +1048,9 @@
         "speed": 980.0,
         "Cx": 0.21268,
         "maxDistance": 3660.0,
-        "recoilMultiplier": 0.35,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apcr",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apcr_ground",
         "secondaryShattersPreset": "ap_small_arms",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1067,11 +1064,12 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
-        "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
+        "onHitChanceMultFire": 2.5,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -1126,15 +1124,6 @@
             "demarreMassPow": 0.89,
             "demarreCaliberPow": 0.96
           }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "30mmRed",
-          "trail": "noTrail"
         },
         "collisions": {
           "default": {
@@ -1253,20 +1242,28 @@
             "fx": "hit_28_38mm_snow_ap",
             "ricochetFx": "hit_28_38mm_snow_ap"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "30mmRed",
+          "trail": "noTrail"
         }
       },
       {
         "mass": 0.378,
         "caliber": 0.03,
         "speed": 1020.0,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.058,
         "maxDistance": 3660.0,
         "Cx": 0.21268,
-        "recoilMultiplier": 0.35,
+        "explosiveType": "rdx",
+        "explosiveMass": 0.058,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1281,22 +1278,22 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-        "hitPowerMult": 1.0,
-        "onHitChanceMultFire": 2.5,
-        "effectiveDistance": 700.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.2,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.0,
+        "onHitChanceMultFire": 3.5,
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he_rapid",
         "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -1420,14 +1417,6 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
-        },
         "collisions": {
           "default": {
             "fx": "hit_28_38mm_dirt_he_rapid",
@@ -1545,6 +1534,14 @@
             "fx": "hit_28_38mm_snow_he_rapid",
             "ricochetFx": "hit_28_38mm_snow_ap_rapid"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       },
       {
@@ -1559,7 +1556,7 @@
         "recoilMultiplier": 0.35,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apcr",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apcr_ground",
         "secondaryShattersPreset": "ap_small_arms",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1573,11 +1570,11 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apcr_shell.ivf",
-        "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "onHitChanceMultFire": 2.5,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -1632,14 +1629,6 @@
             "demarreMassPow": 0.89,
             "demarreCaliberPow": 0.96
           }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
         },
         "collisions": {
           "default": {
@@ -1758,6 +1747,14 @@
             "fx": "hit_28_38mm_snow_ap",
             "ricochetFx": "hit_28_38mm_snow_ap"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       },
       {
@@ -1772,7 +1769,7 @@
         "recoilMultiplier": 0.35,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apcr",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apcr_ground",
         "secondaryShattersPreset": "ap_small_arms",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1786,11 +1783,11 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apcr_shell.ivf",
-        "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "onHitChanceMultFire": 2.5,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -1845,14 +1842,6 @@
             "demarreMassPow": 0.89,
             "demarreCaliberPow": 0.96
           }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
         },
         "collisions": {
           "default": {
@@ -1971,6 +1960,14 @@
             "fx": "hit_28_38mm_snow_ap",
             "ricochetFx": "hit_28_38mm_snow_ap"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       }
     ]
@@ -1986,10 +1983,9 @@
         "speed": 980.0,
         "Cx": 0.21268,
         "maxDistance": 3660.0,
-        "recoilMultiplier": 0.35,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apcr",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apcr_ground",
         "secondaryShattersPreset": "ap_small_arms",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2003,11 +1999,12 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apcr_t_shell.ivf",
-        "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.35,
+        "onHitChanceMultFire": 2.5,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -2062,15 +2059,6 @@
             "demarreMassPow": 0.89,
             "demarreCaliberPow": 0.96
           }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "30mmRed",
-          "trail": "noTrail"
         },
         "collisions": {
           "default": {
@@ -2189,20 +2177,28 @@
             "fx": "hit_28_38mm_snow_ap",
             "ricochetFx": "hit_28_38mm_snow_ap"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "30mmRed",
+          "trail": "noTrail"
         }
       },
       {
         "mass": 0.378,
         "caliber": 0.03,
         "speed": 1020.0,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.058,
         "maxDistance": 3660.0,
         "Cx": 0.21268,
-        "recoilMultiplier": 0.35,
+        "explosiveType": "rdx",
+        "explosiveMass": 0.058,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2217,22 +2213,22 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-        "hitPowerMult": 1.0,
-        "onHitChanceMultFire": 2.5,
-        "effectiveDistance": 700.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.2,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.0,
+        "onHitChanceMultFire": 3.5,
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he_rapid",
         "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -2356,14 +2352,6 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
-        },
         "collisions": {
           "default": {
             "fx": "hit_28_38mm_dirt_he_rapid",
@@ -2481,20 +2469,27 @@
             "fx": "hit_28_38mm_snow_he_rapid",
             "ricochetFx": "hit_28_38mm_snow_ap_rapid"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       },
       {
         "mass": 0.378,
         "caliber": 0.03,
         "speed": 1020.0,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.058,
         "maxDistance": 3660.0,
         "Cx": 0.21268,
-        "recoilMultiplier": 0.35,
+        "explosiveType": "rdx",
+        "explosiveMass": 0.058,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2509,22 +2504,22 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-        "hitPowerMult": 1.0,
-        "onHitChanceMultFire": 2.5,
-        "effectiveDistance": 700.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.2,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.0,
+        "onHitChanceMultFire": 3.5,
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he_rapid",
         "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -2648,14 +2643,6 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
-        },
         "collisions": {
           "default": {
             "fx": "hit_28_38mm_dirt_he_rapid",
@@ -2773,20 +2760,27 @@
             "fx": "hit_28_38mm_snow_he_rapid",
             "ricochetFx": "hit_28_38mm_snow_ap_rapid"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       },
       {
         "mass": 0.378,
         "caliber": 0.03,
         "speed": 1020.0,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.058,
         "maxDistance": 3660.0,
         "Cx": 0.21268,
-        "recoilMultiplier": 0.35,
+        "explosiveType": "rdx",
+        "explosiveMass": 0.058,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -2801,22 +2795,22 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-        "hitPowerMult": 1.0,
-        "onHitChanceMultFire": 2.5,
-        "effectiveDistance": 700.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.2,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.0,
+        "onHitChanceMultFire": 3.5,
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he_rapid",
         "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -2940,14 +2934,6 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
-        },
         "collisions": {
           "default": {
             "fx": "hit_28_38mm_dirt_he_rapid",
@@ -3065,6 +3051,14 @@
             "fx": "hit_28_38mm_snow_he_rapid",
             "ricochetFx": "hit_28_38mm_snow_ap_rapid"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       }
     ]
@@ -3083,7 +3077,7 @@
         "recoilMultiplier": 0.35,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apcr",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apcr_ground",
         "secondaryShattersPreset": "ap_small_arms",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3097,11 +3091,11 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apcr_shell.ivf",
-        "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "onHitChanceMultFire": 2.5,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -3156,14 +3150,6 @@
             "demarreMassPow": 0.89,
             "demarreCaliberPow": 0.96
           }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
         },
         "collisions": {
           "default": {
@@ -3282,20 +3268,27 @@
             "fx": "hit_28_38mm_snow_ap",
             "ricochetFx": "hit_28_38mm_snow_ap"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       },
       {
         "mass": 0.378,
         "caliber": 0.03,
         "speed": 1020.0,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.058,
         "maxDistance": 3660.0,
         "Cx": 0.21268,
-        "recoilMultiplier": 0.35,
+        "explosiveType": "rdx",
+        "explosiveMass": 0.058,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3310,22 +3303,22 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-        "hitPowerMult": 1.0,
-        "onHitChanceMultFire": 2.5,
-        "effectiveDistance": 700.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.2,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.0,
+        "onHitChanceMultFire": 3.5,
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he_rapid",
         "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -3449,14 +3442,6 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
-        },
         "collisions": {
           "default": {
             "fx": "hit_28_38mm_dirt_he_rapid",
@@ -3574,6 +3559,14 @@
             "fx": "hit_28_38mm_snow_he_rapid",
             "ricochetFx": "hit_28_38mm_snow_ap_rapid"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       },
       {
@@ -3588,7 +3581,7 @@
         "recoilMultiplier": 0.35,
         "normalizationPreset": "apcr",
         "ricochetPreset": "apcr",
-        "groundRicochetPreset": "apcr",
+        "groundRicochetPreset": "apcr_ground",
         "secondaryShattersPreset": "ap_small_arms",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3602,11 +3595,11 @@
           2.0
         ],
         "shellAnimation": "video/shells_animations/apcr_shell.ivf",
-        "onHitChanceMultFire": 2.5,
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "onHitChanceMultFire": 2.5,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -3661,14 +3654,6 @@
             "demarreMassPow": 0.89,
             "demarreCaliberPow": 0.96
           }
-        },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
         },
         "collisions": {
           "default": {
@@ -3787,20 +3772,27 @@
             "fx": "hit_28_38mm_snow_ap",
             "ricochetFx": "hit_28_38mm_snow_ap"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       },
       {
         "mass": 0.378,
         "caliber": 0.03,
         "speed": 1020.0,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.058,
         "maxDistance": 3660.0,
         "Cx": 0.21268,
-        "recoilMultiplier": 0.35,
+        "explosiveType": "rdx",
+        "explosiveMass": 0.058,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -3815,22 +3807,22 @@
         ],
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/he_i_shell.ivf",
-        "hitPowerMult": 1.0,
-        "onHitChanceMultFire": 2.5,
-        "effectiveDistance": 700.0,
-        "relativeVelHitShift": [
-          300.0,
-          1000.0
-        ],
-        "relativeVelArmorShift": [
-          200.0,
-          1000.0
-        ],
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
         "explodeTreshold": 0.1,
         "fuseDelayDist": 0.2,
+        "recoilMultiplier": 0.35,
+        "hitPowerMult": 1.0,
+        "onHitChanceMultFire": 3.5,
+        "relativeVelArmorShift": [
+          200.0,
+          1000.0
+        ],
+        "relativeVelHitShift": [
+          300.0,
+          1000.0
+        ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_28_38mm_metal_he_rapid",
         "groundCollisionEffect": "hit_28_38mm_dirt_he_rapid",
@@ -3954,14 +3946,6 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
-        "visual": {
-          "range_percent_of_ammo": [
-            100.0,
-            0.0
-          ],
-          "traceFreq": 1,
-          "tracer": "noColor"
-        },
         "collisions": {
           "default": {
             "fx": "hit_28_38mm_dirt_he_rapid",
@@ -4079,6 +4063,14 @@
             "fx": "hit_28_38mm_snow_he_rapid",
             "ricochetFx": "hit_28_38mm_snow_ap_rapid"
           }
+        },
+        "visual": {
+          "range_percent_of_ammo": [
+            100.0,
+            0.0
+          ],
+          "traceFreq": 1,
+          "tracer": "noColor"
         }
       }
     ]

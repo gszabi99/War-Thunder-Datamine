@@ -54,11 +54,11 @@
   "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_jac.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map_canard.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map_canard.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map_jac.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map_jac.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1954,6 +1954,13 @@
       }
     ]
   },
+  "default_skin": {
+    "name": "saab_jas39c_south_africa",
+    "replace_tex": {
+      "from": "saab_jas39c_c*",
+      "to": "saab_jas39c_south_africa_c*"
+    }
+  },
   "ikPilot": {
     "model": "pilot_sweden_late_char",
     "maxHeadHorAngle": 60.0,
@@ -2246,7 +2253,7 @@
             {
               "type": "radar",
               "scale": 0.7,
-              "hideRadarBackground": true
+              "hideBackground": true
             },
             {
               "type": "rwr",
@@ -2278,7 +2285,7 @@
             {
               "type": "radar",
               "scale": 0.7,
-              "hideRadarBackground": true
+              "hideBackground": true
             }
           ]
         },
@@ -2296,7 +2303,7 @@
             {
               "type": "radar",
               "scale": 0.7,
-              "hideRadarBackground": true
+              "hideBackground": true
             },
             {
               "type": "rwr",
@@ -2635,7 +2642,7 @@
       -3.52002
     ],
     "emtr_break_wing_tail": [
-      1.95921,
+      -1.95921,
       0.0,
       0.0
     ],
@@ -2734,8 +2741,12 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_south_africa_rockets_aim_9m_bol.blk"
       },
       {
-        "name": "saab_jas39c_south_africa_rockets_skyflash",
-        "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_south_africa_rockets_skyflash.blk"
+        "name": "saab_jas39c_south_africa_rockets_aim_120",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_south_africa_rockets_aim_120.blk"
+      },
+      {
+        "name": "saab_jas39c_south_africa_rockets_aim_120_bol",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_south_africa_rockets_aim_120_bol.blk"
       },
       {
         "name": "saab_jas39c_south_africa_bol",
@@ -2990,7 +3001,7 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare3",
               "bullets": 160,
               "external": true,
@@ -3061,9 +3072,9 @@
             ]
           },
           {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "skyflash",
-            "reqModification": "uk_skyflash",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120",
+            "reqModification": "us_aim_120a",
             "ShowNodes": {
               "node": [
                 "lavett_71_001",
@@ -3074,10 +3085,41 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
               "emitter": "rb74_002",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120_bol",
+            "ShowNodes": {
+              "node": [
+                "lavett_74_002_bol_451",
+                "nato_pylon_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "rb74_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni_large",
@@ -3268,7 +3310,7 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare5",
               "bullets": 160,
               "external": true,
@@ -3339,9 +3381,9 @@
             ]
           },
           {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "skyflash",
-            "reqModification": "uk_skyflash",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120",
+            "reqModification": "us_aim_120a",
             "ShowNodes": {
               "node": [
                 "lavett_71_003",
@@ -3352,10 +3394,41 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
               "emitter": "rb74_003",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120_bol",
+            "ShowNodes": {
+              "node": [
+                "lavett_74_003_bol_451",
+                "nato_pylon_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "rb74_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni_large",
@@ -3668,7 +3741,7 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare6",
               "bullets": 160,
               "external": true,
@@ -3739,9 +3812,9 @@
             ]
           },
           {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "skyflash",
-            "reqModification": "uk_skyflash",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120",
+            "reqModification": "us_aim_120a",
             "ShowNodes": {
               "node": [
                 "lavett_71_004",
@@ -3752,10 +3825,41 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
               "emitter": "rb74_004",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120_bol",
+            "ShowNodes": {
+              "node": [
+                "lavett_74_004_bol_451",
+                "nato_pylon_3"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare6",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "rb74_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni_large",
@@ -4011,7 +4115,7 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
               "emitter": "emtr_flare4",
               "bullets": 160,
               "external": true,
@@ -4082,12 +4186,12 @@
             ]
           },
           {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "skyflash",
-            "reqModification": "uk_skyflash",
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120",
+            "reqModification": "us_aim_120a",
             "ShowNodes": {
               "node": [
-                "lavett_71_002",
+                "lavett_75_004",
                 "nato_pylon_4"
               ]
             },
@@ -4095,10 +4199,41 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight.blk",
-              "emitter": "rb71_002",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "emitter": "rb74_005",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange_ltc_pod",
+            "name": "aim_120_bol",
+            "ShowNodes": {
+              "node": [
+                "lavett_74_005_bol_451",
+                "nato_pylon_4"
+              ]
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 12.0
+              },
+              {
+                "reqModification": "us_aim_120a",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "emitter": "rb74_005",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni_large",
@@ -4385,15 +4520,15 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "uk_skyflash": {
-      "tier": 2,
-      "modClass": "weapon",
-      "reqModification": "us_aim_9l"
-    },
     "us_aim_9m": {
       "tier": 3,
       "modClass": "weapon",
-      "reqModification": "uk_skyflash"
+      "reqModification": "us_aim_9l"
+    },
+    "us_aim_120a": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "us_aim_9m"
     },
     "us_500lb_mk82": {
       "modClass": "weapon",

@@ -1915,7 +1915,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_italy_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1992,7 +1992,7 @@
     ]
   },
   "ikGunner": {
-    "model": "pilot_italy_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2443,13 +2443,48 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
           "cameraFromTargetingPod": true,
           "page": [
+            {
+              "type": "radar",
+              "scale": 0.92,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                20,
+                90,
+                200
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                255,
+                255,
+                255
+              ],
+              "verAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "horAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "scaleColor": [
+                255,
+                255,
+                255
+              ],
+              "targetColor": [
+                255,
+                255,
+                255
+              ]
+            },
             {
               "type": "thermal",
               "turretIdx": 0
@@ -2457,11 +2492,6 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
-            },
-            {
-              "type": "radar",
-              "scale": 0.92,
-              "hideRadarBackground": true
             },
             {
               "type": "map"
@@ -2491,7 +2521,42 @@
             {
               "type": "radar",
               "scale": 0.92,
-              "hideRadarBackground": true
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                20,
+                90,
+                200
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                255,
+                255,
+                255
+              ],
+              "verAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "horAngleColor": [
+                255,
+                255,
+                255
+              ],
+              "scaleColor": [
+                255,
+                255,
+                255
+              ],
+              "targetColor": [
+                255,
+                255,
+                255
+              ]
             }
           ]
         },
@@ -2504,7 +2569,8 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.1
+            "scale": 1.15,
+            "hideBackground": true
           }
         },
         {
@@ -2582,6 +2648,23 @@
     ]
   },
   "gunnerOpticFps": {
+    "TV": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0
+    },
     "Target": {
       "pos": [
         1.0,
@@ -2598,25 +2681,7 @@
       ],
       "opticType": "targeting",
       "turretNo": 0,
-      "nvIndex": 2
-    },
-    "TV": {
-      "pos": [
-        2.6,
-        -0.15,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
-      ],
-      "opticType": "tv",
-      "turretNo": 0,
-      "nvIndex": 2
+      "nvIndex": 1
     }
   },
   "commonWeapons": {
@@ -2818,12 +2883,6 @@
         }
       }
     },
-    "air_extinguisher": {
-      "prevModification": "heli_night_vision_system",
-      "tier": 4,
-      "modClass": "armor",
-      "invertEnableLogic": false
-    },
     "us_500lb_mk82": {
       "modClass": "weapon",
       "tier": 1
@@ -2878,22 +2937,22 @@
       "prevModification": "M60_new_gun",
       "reqModification": "us_gbu_10"
     },
-    "us_aim_9p": {
+    "us_aim_9l": {
       "tier": 1,
       "modClass": "weapon"
     },
     "us_aim_7m": {
-      "reqModification": "us_aim_9p",
+      "reqModification": "us_aim_9l",
       "tier": 2,
       "modClass": "weapon"
     },
-    "us_aim_9l": {
+    "us_aim_9m": {
       "reqModification": "us_aim_7m",
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_aim_9m": {
-      "reqModification": "us_aim_9l",
+    "il_derby": {
+      "reqModification": "us_aim_9m",
       "tier": 4,
       "modClass": "weapon"
     }

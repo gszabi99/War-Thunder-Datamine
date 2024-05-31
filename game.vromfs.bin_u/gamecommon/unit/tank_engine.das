@@ -54,7 +54,7 @@ def tank_engine_updater_es(act : UpdateStageInfoAct;
 [es(tag=server)]
 def tank_engine_init_es(evt : CmdInitComponent;
                         uid : int;
-                        unit_fx : UnitFx;
+                        var unit_fx : UnitFx;
                         var tank_engine__overheatDelay : float&;
                         var tank_engine__overheatDamage : float&;
                         var tank_engine__overheatDamageType : int&;

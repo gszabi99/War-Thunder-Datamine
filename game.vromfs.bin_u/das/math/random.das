@@ -35,7 +35,7 @@ def choose_index_by_weight(list)
     rnd -= item.weight
     if rnd <= .0
       return idx
-  return length(list) - 1
+  return _::length(list) - 1
 
 def random_horz_matrix()
   let angle = gfrnd() * 2f * PI
@@ -49,7 +49,7 @@ def random_horz_matrix()
   return tm
 
 def shuffle(var list; up_to : int = -1)
-  let maxSize = length(list)
+  let maxSize = _::length(list)
   let size = up_to >= 0 ? min(up_to, maxSize) : maxSize
   for i in range(size)
     let idx = grnd() % (maxSize - i)

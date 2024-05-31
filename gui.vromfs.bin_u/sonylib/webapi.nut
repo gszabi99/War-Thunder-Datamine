@@ -1,6 +1,6 @@
 let DataBlock = require("DataBlock")
-let {json_to_string=null} = require_optional("json")
-let toJson = json_to_string ?? getroottable()?.save_to_json
+let {object_to_json_string=null} = require_optional("json")
+let toJson = object_to_json_string ?? getroottable()?.save_to_json
 
 assert(toJson!=null, "no json module found")
 
@@ -20,10 +20,6 @@ let nativeSend = nativeApi?.send ?? @(...) null
 let { dgs_get_settings } = require("dagor.system")
 let { get_platform_string_id } = require("platform")
 let platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
-
-let webApiMimeTypeBinary = "application/octet-stream"
-let webApiMimeTypeImage = "image/jpeg"
-let webApiMimeTypeJson = "application/json; encoding=utf-8"
 
 let webApiMethodGet = 0
 let webApiMethodPost = 1
@@ -64,21 +60,6 @@ function createRequest(api, method, path=null, params={}, data=null, forceBinary
   return request
 }
 
-function createPart(mimeType, name, data) {
-  let part = DataBlock()
-  part.reqHeaders = DataBlock()
-  part.reqHeaders["Content-Type"] = mimeType
-  part.reqHeaders["Content-Description"] = name
-  if (mimeType == webApiMimeTypeImage || mimeType == webApiMimeTypeBinary)
-    part.reqHeaders["Content-Disposition"] = "attachment"
-
-  if (mimeType == webApiMimeTypeImage)
-    part.filePath = data
-  else
-    part.data = (type(data) == "table") ? toJson(data) : data
-  return part
-}
-
 function makeIterable(request, pos, size) {
   // Some APIs accept either start (majority) or offset (friendlist), other param is ignored
   request.params.start = pos
@@ -92,48 +73,6 @@ function noOpCb(_response, _err) { /* NO OP */ }
 
 
 // ------------ Session actions
-let sessionApi = { group = "sdk:sessionInvitation", path = "/v1/sessions" }
-let session = {
-  function create(info, image, data) {
-    let parts = [createPart(webApiMimeTypeJson, "session-request", info)]
-    if (image != null && image.len() > 0)
-      parts.append(createPart(webApiMimeTypeImage, "session-image", image))
-    if (data != null && data.len() > 0)
-      parts.append(createPart(webApiMimeTypeBinary, "changeable-session-data", data))
-    return createRequest(sessionApi, webApiMethodPost, null, {}, parts)
-  }
-
-  function update(sessionId, sessionInfo) {
-    return createRequest(sessionApi, webApiMethodPut, sessionId, {}, sessionInfo)
-  }
-
-  function join(sessionId, index=0) {
-    return createRequest(sessionApi, webApiMethodPost, $"{sessionId}/members", {index=index})
-  }
-
-  function leave(sessionId) {
-    return createRequest(sessionApi, webApiMethodDelete, $"{sessionId}/members/me")
-  }
-
-  function data(sessionId) {
-    return createRequest(sessionApi, webApiMethodGet, $"{sessionId}/changeableSessionData")
-  }
-
-  function change(sessionId, changedata) {
-    return createRequest(sessionApi, webApiMethodPut, $"{sessionId}/changeableSessionData", {}, changedata, true)
-  }
-
-  function invite(sessionId, accounts, invitedata={}) {
-    if (type(accounts) == "string")
-      accounts = [accounts]
-    let parts = [createPart(webApiMimeTypeJson, "invitation-request", {to=accounts})]
-    if (invitedata != null && invitedata.len() > 0)
-      parts.append(createPart(webApiMimeTypeBinary, "invitation-data", invitedata))
-    return createRequest(sessionApi, webApiMethodPost, $"{sessionId}/invitations", {}, parts)
-  }
-}
-
-
 let sessionManagerApi = { group = "sessionManager", path = "/v1/playerSessions" }
 let sessionManager = {
   function create(data) {
@@ -400,7 +339,6 @@ return {
   abortAllPendingRequests = abortAllPendingRequests ?? @() null
   getPreferredVersion = getPreferredVersion
 
-  session
   sessionManager
   gameSessionManager
 

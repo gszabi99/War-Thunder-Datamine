@@ -4,7 +4,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { round } = require("math")
 let { set_rnd_seed } = require("dagor.random")
-let { get_time_msec, get_local_unixtime } = require("dagor.time")
+let { get_time_msec, ref_time_ticks } = require("dagor.time")
 let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { ExchangeRecipes, hasFakeRecipesInList, saveMarkedRecipes } = require("%scripts/items/exchangeRecipes.nut")
@@ -115,7 +115,7 @@ let ItemGenerator = class {
         this._exchangeRecipes = u.shuffle(this._exchangeRecipes)
         foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++
-        set_rnd_seed(get_local_unixtime())
+        set_rnd_seed(ref_time_ticks())
       }
 
       this._exchangeRecipesUpdateTime = get_time_msec()

@@ -10,7 +10,7 @@ let { APP_ID } = require("app")
 let { APP_ID_CUSTOM_LEADERBOARD
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let DataBlock = require("DataBlock")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
@@ -165,7 +165,7 @@ function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null, task
 
   let taskId = char_send_custom_action("cln_userstat_grant_rewards",
     EATT_JSON_REQUEST, blk,
-    json_to_string({ unlock = unlockName, stage }, false),
+    object_to_json_string({ unlock = unlockName, stage }, false),
     -1)
   addTask(taskId, taskOptions, resultCb, @(result) cbError?(result), TASK_CB_TYPE.REQUEST_DATA)
 }

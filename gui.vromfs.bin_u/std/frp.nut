@@ -1,5 +1,8 @@
 from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug, make_all_observables_immutable
 
+let isObservable = @(v) type(v)=="instance" && v instanceof Watched
+let isComputed = @(v) type(v)=="instance" && v instanceof Computed
+
 function watchedTable2TableOfWatched(state, fieldsList = null) {
   assert(state instanceof Watched, "state has to be Watched")
   let list = fieldsList ?? state.value
@@ -187,4 +190,6 @@ return {
   set_nested_observable_debug
   make_all_observables_immutable
   WatchedRo
+  isObservable
+  isComputed
 }

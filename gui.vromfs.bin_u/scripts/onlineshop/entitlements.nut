@@ -65,7 +65,22 @@ let premiumAccountDescriptionArr = [
     locId = "charServer/entitlement/PremiumAccount/desc/string_8"
     isBold = false
     color = "@highlightedTextColor"
-  }
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_10"
+    isBold = false
+    color = "@highlightedTextColor"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_11"
+    isBold = false
+    color = "@highlightedTextColor"
+  },
+  {
+    locId = "charServer/entitlement/PremiumAccount/desc/string_12"
+    isBold = false
+    color = "@highlightedTextColor"
+  },
 ]
 
 function getEntitlementConfig(name) {

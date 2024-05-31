@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_name, can_use_text_chat_with_target
+from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_name
 from "%scripts/dagui_library.nut" import *
 let { isPlayerFromXboxOne, isPlayerFromPS4, isPlatformSony
 } = require("%scripts/clientState/platform.nut")
@@ -16,6 +16,7 @@ let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
+let { can_we_text_user, CommunicationState } = require("%scripts/xbox/permissions.nut")
 
 class Contact {
   name = ""
@@ -233,24 +234,52 @@ class Contact {
       || this.name == userName.value
   }
 
-  function getInteractionStatus() {
-    if (!is_platform_xbox || this.isMe())
-      return XBOX_COMMUNICATIONS_ALLOWED
-
-    if (this.xboxId == "") {
-      let status = getXboxChatEnableStatus()
-      if (status == XBOX_COMMUNICATIONS_ONLY_FRIENDS && !this.isInFriendGroup())
-        return XBOX_COMMUNICATIONS_BLOCKED
-
-      return isChatEnabled() ? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
+  function checkInteractionStatus(callback) {
+    if (!is_platform_xbox || this.isMe()) {
+      callback?(CommunicationState.Allowed)
+      return
     }
 
-    if (this.interactionStatus == null)
-      this.interactionStatus = can_use_text_chat_with_target(this.xboxId, false)
-    return this.interactionStatus
+    if (this.xboxId == "") {
+      local result = CommunicationState.Blocked
+      let status = getXboxChatEnableStatus()
+      if (status == CommunicationState.FriendsOnly && !this.isInFriendGroup())
+        result = CommunicationState.Blocked
+      else
+        result = isChatEnabled() ? CommunicationState.Allowed : CommunicationState.Blocked
+      callback?(result)
+      return
+    }
+
+    if (this.interactionStatus == null) {
+      local thisCapture = this
+      can_we_text_user(this.xboxId.tointeger(), function(status) {
+        thisCapture.interactionStatus = status
+        callback?(thisCapture.interactionStatus)
+      })
+    }
+    else
+      callback?(this.interactionStatus)
   }
 
-  function canChat() {
+  function checkCanChat(callback) {
+    if (((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(this.name)) || this.isBlockedMe())) {
+      callback?(false)
+      return
+    }
+
+    if (!isCrossNetworkMessageAllowed(this.name)) {
+      callback?(false)
+      return
+    }
+
+    this.checkInteractionStatus(function(status) {
+      let result = status == CommunicationState.Allowed || (status == CommunicationState.FriendsOnly && this.isInFriendGroup())
+      callback?(result)
+    })
+  }
+
+  function canChat(comms_state) {
     if (((isMultiplayerPrivilegeAvailable.value && !isCrossNetworkMessageAllowed(this.name)) || this.isBlockedMe()))
       return false
 
@@ -258,20 +287,36 @@ class Contact {
       return false
     }
 
-    let intSt = this.getInteractionStatus()
-    return intSt == XBOX_COMMUNICATIONS_ALLOWED || (intSt == XBOX_COMMUNICATIONS_ONLY_FRIENDS && this.isInFriendGroup())
+    return comms_state == CommunicationState.Allowed || (comms_state == CommunicationState.FriendsOnly && this.isInFriendGroup())
   }
 
-  function canInvite() {
+  function checkCanInvite(callback) {
+    if ((!isMultiplayerPrivilegeAvailable.value || !isCrossNetworkMessageAllowed(this.name))) {
+      callback?(false)
+      return
+    }
+
+    this.checkInteractionStatus(function(status) {
+      let result = status == CommunicationState.Allowed || status == CommunicationState.Muted
+      callback?(result)
+    })
+  }
+
+  function canInvite(comms_state) {
     if ((!isMultiplayerPrivilegeAvailable.value || !isCrossNetworkMessageAllowed(this.name)))
       return false
 
-    let intSt = this.getInteractionStatus()
-    return intSt == XBOX_COMMUNICATIONS_ALLOWED || intSt == XBOX_COMMUNICATIONS_MUTED
+    return comms_state == CommunicationState.Allowed || comms_state == CommunicationState.Muted
   }
 
-  function isMuted() {
-    return this.getInteractionStatus() == XBOX_COMMUNICATIONS_MUTED
+  function checkIsMuted(callback) {
+    this.checkInteractionStatus(function(status) {
+      callback?(status == CommunicationState.Muted)
+    })
+  }
+
+  function isMuted(comms_state) {
+    return comms_state == CommunicationState.Muted
   }
 
   //For now it is for PSN only. For all will be later

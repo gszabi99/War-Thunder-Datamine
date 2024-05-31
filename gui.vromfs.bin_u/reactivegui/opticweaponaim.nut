@@ -36,7 +36,7 @@ let cornersLines = @(tSize, colorTracker) function() {
 // main agm/guidedBombs sight
 let opticWeaponAim = @(
   TrackerSize, TrackerX, TrackerY, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible,
-  color_watched, alert_color_watched
+  color_watched, alert_color_watched, show_tps_sight
 )
 function() {
   let aimTracker = @()
@@ -67,7 +67,7 @@ function() {
     let gsb = GuidanceLockStateBlinked.get()
 
     let isTrack = (gs == GuidanceLockResult.RESULT_TRACKING)
-    let hasSquare = (gs == GuidanceLockResult.RESULT_WARMING_UP || gs == GuidanceLockResult.RESULT_LOCKING)
+    let hasSquare = show_tps_sight && (gs == GuidanceLockResult.RESULT_WARMING_UP || gs == GuidanceLockResult.RESULT_LOCKING)
     let isSquareBlink = (gsb != gs && gsb == GuidanceLockResult.RESULT_INVALID)
 
     return {
@@ -82,7 +82,7 @@ function() {
       fillColor = Color(0, 0, 0, 0)
       lineWidth = hdpx(LINE_WIDTH * 0.25)
       commands = isTrack ? (trackingMark) : (hasSquare && !isSquareBlink ? squareMark : null)
-      children = !isTrack ? [cornersLines(tSize, colorTracker)] : null
+      children = (!isTrack && show_tps_sight) ? [cornersLines(tSize, colorTracker)] : null
     }
   }
 

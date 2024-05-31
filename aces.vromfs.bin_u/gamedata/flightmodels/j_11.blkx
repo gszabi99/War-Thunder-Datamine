@@ -2,10 +2,6 @@
   "model": "j_11",
   "fmFile": "fm/j_11.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
-  "standardExhaustFxType": [
-    "jet_exhaust",
-    "jet_exhaust_heavy"
-  ],
   "gearSinkRangeLR": 0.38,
   "gearSinkRangeC": 0.22,
   "haveCCIPForRocket": true,
@@ -45,6 +41,7 @@
   ],
   "type": "typeFighter",
   "advancedInstructor": true,
+  "standardExhaustFxType": "jet_exhaust_heavy",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust_heavy",
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
@@ -232,9 +229,6 @@
       },
       "tank5_dm": {
         "hp": 75.5
-      },
-      "tank6_dm": {
-        "hp": 44.5
       }
     }
   },
@@ -1095,43 +1089,6 @@
         ]
       },
       {
-        "name": "tank6_dm",
-        "onHit": [
-          {
-            "fire": 0.01,
-            "leak": 0.7
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 50.0,
-            "leak": 15.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 10.0
-          }
-        ]
-      },
-      {
         "name": "wing1_l_dm",
         "defaultEffectPart": "spar1_l_dm",
         "onHit": [
@@ -1729,7 +1686,7 @@
     ]
   },
   "ikPilot": {
-    "model": "su_pilot_late_char",
+    "model": "su_pilot_late_zsh_7ap_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2175,7 +2132,7 @@
             {
               "type": "radar",
               "scale": 0.95,
-              "hideRadarBackground": true
+              "hideBackground": true
             },
             {
               "type": "ils_duplicate"
@@ -5454,10 +5411,10 @@
     "name": "j_11",
     "replace_tex": [
       {
-        "from": "su_27_c*"
+        "from": "j_11_c*"
       },
       {
-        "from": "su_27_n*"
+        "from": "j_11_n*"
       }
     ]
   },

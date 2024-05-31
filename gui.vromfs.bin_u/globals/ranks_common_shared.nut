@@ -164,12 +164,12 @@ function calc_public_boost(bostersArray) {
   for (local i = 0; i < count; i++) {
     if (i < countOfK)
       res = res + k[i] * bostersArray[i]
-    else if (k[countOfK - 1] * bostersArray[i] > 0.01)
+    else if (k[countOfK - 1] * bostersArray[i] > 1.0)
       res = res + k[countOfK - 1] * bostersArray[i]
     else
-      res = res + 0.01
+      res = res + 1.0
   }
-
+  res = round_by_value(res, 1.0) // decimal percentages
   return res
 }
 

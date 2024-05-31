@@ -2603,7 +2603,7 @@
             },
             {
               "type": "map",
-              "hideRadarBackground": true
+              "hideBackground": true
             }
           ]
         },
@@ -2627,7 +2627,7 @@
             },
             {
               "type": "map",
-              "hideRadarBackground": true
+              "hideBackground": true
             }
           ]
         },
@@ -2756,6 +2756,9 @@
         "blk": "gameData/sensors/su_spo-15lm.blk"
       },
       {
+        "blk": "gameData/sensors/su_satellite_m2.blk"
+      },
+      {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",
         "node": "optic1_gun"
       }
@@ -2782,8 +2785,8 @@
     },
     "Laser": {
       "pos": [
-        -2.0,
-        1.1,
+        0.5,
+        0.15,
         0.0
       ],
       "head": "optic1_turret",
@@ -2879,8 +2882,8 @@
         "blk": "gameData/FlightModels/weaponPresets/su_25_558arz_kf_29l.blk"
       },
       {
-        "name": "su_25_558arz_kf_29t",
-        "blk": "gameData/FlightModels/weaponPresets/su_25_558arz_kf_29t.blk"
+        "name": "su_25_558arz_kf_29te",
+        "blk": "gameData/FlightModels/weaponPresets/su_25_558arz_kf_29te.blk"
       },
       {
         "name": "su_25_558arz_sppu_22",
@@ -4264,8 +4267,8 @@
           },
           {
             "iconType": "guided_bomb_red",
-            "name": "kh_29t",
-            "reqModification": "mig_27_x29t",
+            "name": "kh_29te",
+            "reqModification": "su_25_x29te",
             "ShowNodes": {
               "node": [
                 "pylon_4a",
@@ -4614,8 +4617,8 @@
           },
           {
             "iconType": "guided_bomb_red",
-            "name": "kh_29t",
-            "reqModification": "mig_27_x29t",
+            "name": "kh_29te",
+            "reqModification": "su_25_x29te",
             "ShowNodes": {
               "node": [
                 "aku_58_b002",
@@ -5865,7 +5868,7 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "mig_27_x29t": {
+    "su_25_x29te": {
       "modClass": "weapon",
       "reqModification": "su_17_x29l",
       "tier": 3

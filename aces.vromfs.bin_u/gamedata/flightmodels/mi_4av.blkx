@@ -644,51 +644,72 @@
       "maxHeadUpAngle": 10.0,
       "headNode": "Bip01 Head",
       "pelvisNode": "Bip01 Pelvis",
-      "pelvisTargetNode": "Bip01 Pelvis_",
-      "suffix": "1",
+      "pelvisTargetNode": "Bip01 Pelvis_1",
       "ikNode": [
         {
           "downNode": "Bip01 L Hand",
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
-          "targetNode": "throttle_lhand_",
+          "targetNode": "throttle_lhand_1",
           "flexionDir": [
-            0.0,
+            0.5,
             -1.0,
-            0.1
+            0.2
+          ],
+          "type": "leftHand",
+          "detachedNodeYpr": [
+            0.0,
+            -15.0,
+            -90.0
+          ],
+          "detachedNodeScale": [
+            1.0,
+            -1.0,
+            1.0
           ]
         },
         {
           "downNode": "Bip01 R Hand",
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
-          "targetNode": "stick_rhand_",
+          "targetNode": "stick_rhand_1",
           "flexionDir": [
-            0.0,
+            -0.3,
             -1.0,
-            -0.1
+            -0.5
+          ],
+          "type": "rightHand",
+          "detachedNodeYpr": [
+            0.0,
+            -15.0,
+            90.0
+          ],
+          "detachedNodeScale": [
+            1.0,
+            -1.0,
+            1.0
           ]
         },
         {
           "downNode": "Bip01 L Foot",
           "midNode": "Bip01 L Calf",
           "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_",
+          "targetNode": "pedal_lfoot_1",
           "flexionDir": [
             0.0,
             1.0,
-            -0.2
+            0.3
           ]
         },
         {
           "downNode": "Bip01 R Foot",
           "midNode": "Bip01 R Calf",
           "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_",
+          "targetNode": "pedal_rfoot_1",
           "flexionDir": [
             0.0,
             1.0,
-            0.2
+            -0.3
           ]
         }
       ]
@@ -801,60 +822,123 @@
     "turretTurnSfxName": "gun_turn_manual"
   },
   "cockpit": {
-    "textToShowInCockpit": "msg/textToShowInCockpit",
     "headPos": [
-      1.05,
-      1.74,
-      0.469
+      1.13,
+      1.731,
+      0.352
     ],
     "headPosOnShooting": [
-      1.05,
-      1.74,
-      0.469
+      1.13,
+      1.731,
+      0.352
     ],
     "lightPos": [
-      1.84948,
-      1.192163,
-      0.24924
+      1.791,
+      1.232,
+      0.211
     ],
     "lightColor": [
       2.1,
       0.08,
       0.0
     ],
-    "lightRadius": 0.2,
+    "lightRadius": 0.35,
     "lightPos1": [
-      1.848522,
-      1.22336,
-      -0.042559
+      1.791,
+      1.232,
+      -0.211
     ],
     "lightColor1": [
       2.1,
       0.08,
       0.0
     ],
-    "lightRadius1": 0.18,
+    "lightRadius1": 0.35,
     "zoomOutFov": 22.46,
     "zoomInFov": 22.46,
     "sightInFov": 7.37,
     "sightOutFov": -1.0,
     "sightFov": 5.5,
     "devices": {
-      "speed": [
+      "stick_ailerons": [
+        -1.0,
+        1.0
+      ],
+      "stick_elevator": [
+        -1.0,
+        1.0
+      ],
+      "stick_ailerons1": [
+        -1.0,
+        1.0
+      ],
+      "throttle": [
         0.0,
-        277.778
+        1.0
       ],
-      "bank": [
-        -8.0,
-        8.0
+      "pedals": [
+        -1.0,
+        1.0
       ],
-      "turn": [
-        -0.23562,
-        0.23562
+      "pedals1": [
+        -1.0,
+        1.0
       ],
-      "vario": [
-        -30.0,
-        30.0
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "pedals3": [
+        -1.0,
+        1.0
+      ],
+      "pedals4": [
+        -1.0,
+        1.0
+      ],
+      "pedals5": [
+        -1.0,
+        1.0
+      ],
+      "pedals6": [
+        -1.0,
+        1.0
+      ],
+      "pedals7": [
+        -1.0,
+        1.0
+      ],
+      "pedals8": [
+        -1.0,
+        1.0
+      ],
+      "pedals9": [
+        -1.0,
+        1.0
+      ],
+      "compass": [
+        0.0,
+        360.0
+      ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
+      "compass2": [
+        0.0,
+        360.0
+      ],
+      "clock_hour": [
+        0.0,
+        12.0
+      ],
+      "clock_min": [
+        0.0,
+        60.0
+      ],
+      "clock_sec": [
+        0.0,
+        60.0
       ],
       "altitude_hour": [
         0.0,
@@ -864,150 +948,96 @@
         0.0,
         1000.0
       ],
+      "radio_altitude": [
+        0.0,
+        1200.0
+      ],
       "altitude_koef": 1.0,
       "aviahorizon_pitch": [
+        [
+          -45.0,
+          45.0
+        ],
+        [
+          -45.0,
+          45.0
+        ]
+      ],
+      "aviahorizon_roll": [
+        [
+          -85.0,
+          85.0
+        ],
+        [
+          -85.0,
+          85.0
+        ]
+      ],
+      "bank": [
+        [
+          -8.0,
+          8.0
+        ],
+        [
+          -8.0,
+          8.0
+        ]
+      ],
+      "aviahorizon_pitch1": [
         -45.0,
         45.0
       ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
+      "aviahorizon_roll1": [
+        -85.0,
+        85.0
       ],
-      "compass": [
-        0.0,
-        360.0
+      "bank1": [
+        -8.0,
+        8.0
       ],
       "fuel": [
         0.0,
-        60.0
-      ],
-      "rpm_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm_min": [
-        0.0,
         1000.0
-      ],
-      "rpm1_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm1_min": [
-        0.0,
-        1000.0
-      ],
-      "rpm2_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm2_min": [
-        0.0,
-        1000.0
-      ],
-      "rpm3_hour": [
-        0.0,
-        10000.0
-      ],
-      "rpm3_min": [
-        0.0,
-        1000.0
-      ],
-      "manifold_pressure": [
-        0.395,
-        2.105
-      ],
-      "manifold_pressure1": [
-        0.395,
-        2.105
-      ],
-      "manifold_pressure2": [
-        0.395,
-        2.105
-      ],
-      "manifold_pressure3": [
-        0.395,
-        2.105
-      ],
-      "head_temperature": [
-        0.0,
-        350.0
-      ],
-      "head_temperature1": [
-        0.0,
-        350.0
-      ],
-      "head_temperature2": [
-        0.0,
-        350.0
-      ],
-      "head_temperature3": [
-        0.0,
-        350.0
-      ],
-      "water_temperature": [
-        0.0,
-        125.0
-      ],
-      "water_temperature1": [
-        0.0,
-        125.0
-      ],
-      "water_temperature2": [
-        0.0,
-        125.0
-      ],
-      "water_temperature3": [
-        0.0,
-        125.0
-      ],
-      "oil_temperature": [
-        0.0,
-        125.0
-      ],
-      "oil_temperature1": [
-        0.0,
-        125.0
-      ],
-      "oil_temperature2": [
-        0.0,
-        125.0
-      ],
-      "oil_temperature3": [
-        0.0,
-        125.0
       ],
       "fuel_pressure": [
         0.0,
-        15.0
-      ],
-      "fuel_pressure1": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure3": [
-        0.0,
-        15.0
+        3.0
       ],
       "oil_pressure": [
         0.0,
-        100.0
+        15.0
       ],
-      "oil_pressure1": [
+      "oil_temperature": [
         0.0,
-        100.0
+        150.0
       ],
-      "oil_pressure2": [
-        0.0,
-        100.0
+      "prop_pitch": [
+        -1.0,
+        1.0
       ],
-      "oil_pressure3": [
+      "speed": [
         0.0,
-        100.0
+        250.0
+      ],
+      "speed1": [
+        0.0,
+        250.0
+      ],
+      "vario": [
+        -10.0,
+        10.0
+      ],
+      "head_temperature": [
+        0.0,
+        300.0
+      ],
+      "rpm": [
+        0.0,
+        4000.0
+      ],
+      "manifold_pressure": [
+        0.35,
+        1.6
       ]
     },
     "parts_holes_dmg": {
@@ -1660,7 +1690,7 @@
   },
   "cutting": {
     "emtr_break_wing_tail": [
-      12.0647,
+      -12.0647,
       0.0,
       0.0
     ],

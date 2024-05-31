@@ -99,6 +99,8 @@
     38000.0
   ],
   "IgnoreErrors": true,
+  "ConvertAoa": true,
+  "ConvertAoaAI": true,
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": true,
@@ -269,7 +271,7 @@
       },
       "FlapsPolar0": {
         "Flaps": 0.0,
-        "OswaldsEfficiencyNumber": 0.74,
+        "OswaldsEfficiencyNumber": 0.61,
         "lineClCoeff": 0.045,
         "AfterCritParabAngle": 0.5,
         "AfterCritDeclineCoeff": 0.01,
@@ -298,11 +300,11 @@
         "MultMachMax4": 0.72,
         "MultLineCoeff4": -0.2,
         "MultLimit4": 0.25,
-        "MachCrit5": 0.6,
-        "MachMax5": 1.1,
-        "MultMachMax5": 1.1,
-        "MultLineCoeff5": -0.05,
-        "MultLimit5": 0.2,
+        "MachCrit5": 0.3,
+        "MachMax5": 0.9,
+        "MultMachMax5": 0.72,
+        "MultLineCoeff5": 0.02,
+        "MultLimit5": 1.2,
         "MachCrit6": 0.8,
         "MachMax6": 1.15,
         "MultMachMax6": 0.03,
@@ -317,22 +319,22 @@
         "ClToCmByMach0": [
           0.1,
           -0.0,
-          -0.08
+          -0.06
         ],
         "ClToCmByMach1": [
           0.3,
           -0.0,
-          -0.08
+          -0.04
         ],
         "ClToCmByMach2": [
           0.5,
           0.0,
-          -0.0
+          -0.005
         ],
         "ClToCmByMach3": [
-          0.9,
+          0.95,
           0.0,
-          -0.0
+          -0.002
         ],
         "Cl0": 0.07,
         "alphaCritHigh": 29.0,
@@ -343,7 +345,7 @@
       },
       "FlapsPolar1": {
         "Flaps": 1.0,
-        "OswaldsEfficiencyNumber": 0.68,
+        "OswaldsEfficiencyNumber": 0.59,
         "lineClCoeff": 0.045,
         "AfterCritParabAngle": 0.5,
         "AfterCritDeclineCoeff": 0.01,
@@ -372,11 +374,11 @@
         "MultMachMax4": 0.72,
         "MultLineCoeff4": -0.2,
         "MultLimit4": 0.25,
-        "MachCrit5": 0.6,
-        "MachMax5": 1.1,
-        "MultMachMax5": 1.1,
-        "MultLineCoeff5": -0.05,
-        "MultLimit5": 0.2,
+        "MachCrit5": 0.3,
+        "MachMax5": 0.9,
+        "MultMachMax5": 0.72,
+        "MultLineCoeff5": 0.02,
+        "MultLimit5": 1.2,
         "MachCrit6": 0.8,
         "MachMax6": 1.15,
         "MultMachMax6": 0.01,
@@ -391,22 +393,22 @@
         "ClToCmByMach0": [
           0.1,
           -0.0,
-          -0.08
+          -0.06
         ],
         "ClToCmByMach1": [
           0.3,
           -0.0,
-          -0.08
+          -0.04
         ],
         "ClToCmByMach2": [
           0.5,
           0.0,
-          -0.0
+          -0.005
         ],
         "ClToCmByMach3": [
-          0.9,
+          0.95,
           0.0,
-          -0.0
+          -0.002
         ],
         "Cl0": 0.07,
         "alphaCritHigh": 29.0,
@@ -508,7 +510,7 @@
         "Elevator": 0.01
       },
       "Polar": {
-        "OswaldsEfficiencyNumber": 0.025,
+        "OswaldsEfficiencyNumber": 0.5,
         "lineClCoeff": 0.042,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.007,
@@ -539,7 +541,7 @@
         "MultLimit4": 0.25,
         "MachCrit5": 0.85,
         "MachMax5": 1.1,
-        "MultMachMax5": 2.0,
+        "MultMachMax5": 1.1,
         "MultLineCoeff5": 0.1,
         "MultLimit5": 5.0,
         "MachCrit6": 0.0,
@@ -667,16 +669,16 @@
       ],
       "Sensitivity": 0.16,
       "SensitivityMultiplier0": [
-        0.4,
+        0.3,
         1.0
       ],
       "SensitivityMultiplier1": [
         0.7,
-        0.7
+        0.6
       ],
       "SensitivityMultiplier2": [
         0.9,
-        0.6
+        0.5
       ],
       "SensitivityMultiplier3": [
         1.0,
@@ -710,8 +712,8 @@
     },
     "Elevator": {
       "AnglesRoll": [
-        6.0,
-        6.0
+        5.0,
+        5.0
       ],
       "AnglesMultiplierRoll": [
         1.0,
@@ -736,19 +738,25 @@
       ],
       "AnglesMultiplierPitch2": [
         650.0,
-        0.6,
+        0.45,
         0.0,
         0.6
       ],
       "AnglesMultiplierPitch3": [
+        1200.0,
+        0.45,
+        -0.0,
+        0.7
+      ],
+      "AnglesMultiplierPitch4": [
         1400.0,
         0.5,
         -0.0,
         0.7
       ],
-      "AnglesMultiplierPitch4": [
+      "AnglesMultiplierPitch5": [
         2100.0,
-        0.4,
+        0.45,
         -0.0,
         0.8
       ],
@@ -840,7 +848,7 @@
         0.0,
         1.0
       ],
-      "Sensitivity": 0.35,
+      "Sensitivity": 0.27,
       "SensitivityMultiplier0": [
         0.4,
         0.6

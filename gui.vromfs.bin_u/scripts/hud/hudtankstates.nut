@@ -20,7 +20,7 @@ let tankStatesByObjId = {
     updateConfigs = [{
       watch = hudTankStates.getStabilizerObservable()
       isVisible = @(value) value != -1
-      updateObj = @(obj, value) obj.findObject("stabilizer").state = value == 0 ? "off" : "on"
+      updateObj = @(obj, value) obj.findObject("stabilizer").state = value == 2 ? "dmg" : value == 0 ? "off" : "on"
     }]
   }
   lws = {
@@ -28,7 +28,7 @@ let tankStatesByObjId = {
     updateConfigs = [{
       watch = hudTankStates.getLwsObservable()
       isVisible = @(value) value != -1
-      updateObj = @(obj, value) obj.findObject("lws").state = value == 0 ? "off" : "on"
+      updateObj = @(obj, value) obj.findObject("lws").state = value == 2 ? "dmg" : value == 0 ? "off" : "on"
     }]
   }
   ircm = {
@@ -96,10 +96,12 @@ let tankStatesByObjId = {
     objName = "first_stage_ammo"
     updateConfigs = [{
       watch = hudTankStates?.getFirstStageAmmo()
-      isVisible = @(value) value >= 0
+      isVisible = @(value) (value?.state ?? 0) > 0
       updateObj = function(obj, value) {
-        obj.state = value > 0 ? "" : "dead"
-        obj.findObject("state_value").setValue(value.tostring())
+        let amount = value?.amount ?? 0
+        obj.state = (value?.state ?? 0) == 2 ? "dmg"
+            : amount > 0 ? "" : "dead"
+        obj.findObject("state_value").setValue(amount.tostring())
       }
     }]
   }

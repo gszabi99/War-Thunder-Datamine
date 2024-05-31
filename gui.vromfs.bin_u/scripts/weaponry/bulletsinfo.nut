@@ -42,6 +42,7 @@ let BULLET_TYPE = {
 let DEFAULT_PRIMARY_BULLETS_INFO = {
   guns                      = 1
   total                     = 0 //cartridges total
+  isBulletBelt              = true
   cartridge                 = 1
   groupIndex                = -1
   forcedMaxBulletsInRespawn = false
@@ -226,7 +227,8 @@ function getBulletsSetData(air, modifName, noModList = null) {
     let bulletsModBlk = wBlk?[getModificationBulletsEffect(modifName)]
     let bulletsBlk = bulletsModBlk ? bulletsModBlk : wBlk
     local bulletsList = bulletsBlk % "bullet"
-    local weaponType = triggerList[index] == "countermeasures"
+    let weaponTrigger = triggerList[index]
+    local weaponType = weaponTrigger == "countermeasures"
       ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
     if (!bulletsList.len()) {
       bulletsList = bulletsBlk % "rocket"
@@ -260,6 +262,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
                   isBulletBelt = isBulletBelt
                   cartridge = wBlk?.bulletsCartridge ?? 0
                   weaponType = weaponType
+                  weaponTrigger = weaponTrigger
                   useDefaultBullet = !wBlk?.notUseDefaultBulletInGui,
                   weaponBlkName = wBlkName
                   maxToRespawn = mod?.maxToRespawn ?? 0
@@ -470,26 +473,36 @@ function getBulletsInfoForPrimaryGuns(air) {
     return []
 
   let primaryWeapon = getLastPrimaryWeapon(air)
-  let cachedWeapons = unitsPrimaryBulletsInfo?[air.name][primaryWeapon]
+  let presetWeapon = getLastWeapon(air.name)
+
+  let cachedWeapons = unitsPrimaryBulletsInfo?[air.name]?[primaryWeapon][presetWeapon]
   if (cachedWeapons != null)
     return cachedWeapons
 
   let res = []
   if (unitsPrimaryBulletsInfo?[air.name] == null)
     unitsPrimaryBulletsInfo[air.name] <- {}
-  unitsPrimaryBulletsInfo[air.name][primaryWeapon] <- res
+  if (unitsPrimaryBulletsInfo?[air.name][primaryWeapon] == null)
+    unitsPrimaryBulletsInfo[air.name][primaryWeapon] <- {}
+  unitsPrimaryBulletsInfo[air.name][primaryWeapon][presetWeapon] <- res
 
   let airBlk = ::get_full_unit_blk(air.name)
   if (!airBlk)
     return res
 
   let commonWeapons = getCommonWeapons(airBlk, primaryWeapon)
-  if (commonWeapons.len() == 0)
+  let secondaryWeapon = air.getWeapons().findvalue(@(w) w.name == presetWeapon)
+  let presetWeapons = getPresetWeapons(airBlk, secondaryWeapon)
+
+  local weapons = commonWeapons
+  weapons.extend(presetWeapons)
+
+  if (weapons.len() == 0)
     return res
 
   let modsList = getBulletsModListByGroups(air)
   let wpList = {} // name = amount
-  foreach (weapon in commonWeapons)
+  foreach (weapon in weapons)
     if (weapon?.blk && !weapon?.dummy) {
       let weapName = findIdenticalWeapon(weapon.blk, wpList, modsList)
       if (weapName) {
@@ -505,6 +518,7 @@ function getBulletsInfoForPrimaryGuns(air) {
         if (u.isEmpty(wBlk))
           continue
 
+        wpList[weapon.blk].isBulletBelt = wBlk?.isBulletBelt ?? true
         wpList[weapon.blk].cartridge = wBlk?.bulletsCartridge || 1
         wpList[weapon.blk].total = ceil(wpList[weapon.blk].total * 1.0 /
           wpList[weapon.blk].cartridge).tointeger()
@@ -862,20 +876,22 @@ function getActiveBulletsGroupIntForDuplicates(unit, params) {
       duplicates++
     }
     else {
-      let checkPurchased = params?.checkPurchased ?? true
-      let bullets = getBulletsList(unit.name, i, {
-        isOnlyBought = checkPurchased,
-        needCheckUnitPurchase = checkPurchased,
-        isForcedAvailable = params?.isForcedAvailable ?? false
-      })
-      lastIdxTotal = bullets.values.len()
+      let bInfo = getBulletsInfoForGun(unit, linkedIdx)
+      if (getTblValue("isBulletBelt", bInfo, true))
+        lastIdxTotal = 1
+      else {
+        let checkPurchased = params?.checkPurchased ?? true
+        let bullets = getBulletsList(unit.name, i, {
+          isOnlyBought = checkPurchased,
+          needCheckUnitPurchase = checkPurchased,
+          isForcedAvailable = params?.isForcedAvailable ?? false
+        })
+        lastIdxTotal = bullets.values.len()
+      }
       lastLinkedIdx = linkedIdx
       duplicates = 0
-
-      let bInfo = getBulletsInfoForGun(unit, linkedIdx)
       maxCatridges = getTblValue("total", bInfo, 0)
     }
-
     if (lastIdxTotal > duplicates && duplicates < maxCatridges)
       res = res | (1 << i)
   }
@@ -993,7 +1009,7 @@ function isBulletsWithoutTracer(unit, item) {
     return false
 
   let bulletsSet = getBulletsSetData(unit, item.name)
-  let weaponName = getWeaponNameByBlkPath(bulletsSet.weaponBlkName)
+  let weaponName = getWeaponNameByBlkPath(bulletsSet?.weaponBlkName ?? "")
   return unit?.defaultBeltParam[weaponName].hasTracer == false
 }
 
@@ -1067,6 +1083,50 @@ function getModifIconItem(unit, item) {
   return null
 }
 
+function getAmmoStowageConstraintsByTrigger(unit) {
+  let constraintsByTrigger = {}
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  if (!unitBlk?.ammoStowages || !(unitBlk.ammoStowages?.enablePerAmmoTypesAndConstraints ?? false))
+    return constraintsByTrigger
+  let stowagesBlk = unitBlk.ammoStowages
+  for (local iStowage = 0; iStowage < stowagesBlk.blockCount(); iStowage++) {
+    let stowageBlk = stowagesBlk.getBlock(iStowage)
+    foreach (triggerName in stowageBlk % "weaponTrigger") {
+      if (!(triggerName in constraintsByTrigger))
+        constraintsByTrigger[triggerName] <- {
+          total = 0,
+          explosive = 0
+        }
+      let constraints = constraintsByTrigger[triggerName]
+
+      foreach (clusterBlk in stowageBlk % "shells") {
+        for (local iSlot = 0; iSlot < clusterBlk.blockCount(); iSlot++) {
+          let slotBlk = clusterBlk.getBlock(iSlot)
+          if (!slotBlk)
+            continue
+          let numAmmo = slotBlk?.count ?? 0
+          constraints.total += numAmmo
+          if (slotBlk?.type != "inert")
+            constraints.explosive += numAmmo
+        }
+      }
+    }
+  }
+  return constraintsByTrigger
+}
+
+function getBulletsSetMaxAmmoWithConstraints(constraintsByTrigger, bulletsSet) {
+  if (!(bulletsSet?.weaponTrigger && bulletsSet.weaponTrigger in constraintsByTrigger))
+    return 0
+  let constraints = constraintsByTrigger[bulletsSet.weaponTrigger]
+  if (constraints.total == 0)
+    return 0
+  local ammo = constraints.total;
+  if (bulletsSet?.explosiveMass && bulletsSet.explosiveMass > 0)
+    ammo = min(constraints.explosive, ammo)
+  return ammo
+}
+
 return {
   BULLET_TYPE
   //
@@ -1099,4 +1159,6 @@ return {
   getModifIconItem
   getWeaponToFakeBulletMask
   updateSecondaryBullets
+  getAmmoStowageConstraintsByTrigger
+  getBulletsSetMaxAmmoWithConstraints
 }

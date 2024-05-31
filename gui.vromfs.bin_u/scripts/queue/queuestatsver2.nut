@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 ::queue_stats_versions.StatsVer2 <- class (::queue_stats_versions.Base) {
   neutralTeamId = get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
@@ -114,7 +115,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
   function gatherCountsTblByRanks(statsByCountries) {
     let res = {}
-    for (local i = 1; i <= ::max_country_rank; i++)
+    for (local i = 1; i <= MAX_COUNTRY_RANK; i++)
       res[i.tostring()] <- this.getCountByRank(statsByCountries, i)
     res.playersCount <- getTblValue(this.myRankInQueue.tostring(), res, 0)
     return res
@@ -126,7 +127,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
         foreach (country, countryStats in stats[teamName]) {
           if (!(country in dataByCountries)) {
             dataByCountries[country] <- {}
-            for (local i = 1; i <= ::max_country_rank; i++)
+            for (local i = 1; i <= MAX_COUNTRY_RANK; i++)
               dataByCountries[country][i.tostring()] <- 0
           }
           this.mergeCountryStats(dataByCountries[country], countryStats)

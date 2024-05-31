@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let lowLevelClient = require("contacts")
-let { getPlayerTokenGlobal = null, getPlayerToken } = require("auth_wt")
+let { getPlayerTokenGlobal } = require("auth_wt")
 let { APP_ID } = require("app")
 let { register_command } = require("console")
 let { rnd_int } = require("dagor.random")
@@ -35,7 +35,7 @@ local function contacts_request(action, data, callback, auth_token = null) {
     return
   }
 
-  auth_token = auth_token ?? (getPlayerTokenGlobal ?? getPlayerToken)()
+  auth_token = auth_token ?? getPlayerTokenGlobal()
   assert(auth_token != null, "No auth token provided for contacts request")
   let request = {
     headers = {token = auth_token, appid = APP_ID},
@@ -55,7 +55,7 @@ function contacts_request_rpcjson(action, data, callback, auth_token = null) {
     return
   }
 
-  auth_token = auth_token ?? (getPlayerTokenGlobal ?? getPlayerToken)()
+  auth_token = auth_token ?? getPlayerTokenGlobal()
   assert(auth_token != null, "No auth token provided for contacts request")
   let reqData = {
     method = action

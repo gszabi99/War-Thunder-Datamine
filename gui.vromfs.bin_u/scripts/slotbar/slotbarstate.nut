@@ -21,7 +21,7 @@ let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let selectedCrews = persist("selectedCrews", @() [])
 
 function getCrewsListByCountry(country) {
-  foreach (countryData in ::g_crews_list.get())
+  foreach (countryData in ::g_crews_list.getCrewsList())
     if (countryData.country == country)
       return countryData.crews
   return []
@@ -34,7 +34,7 @@ function isCountrySlotbarHasUnits(countryId) {
 function getAvailableCrewId(countryId) {
   local id = -1
   let curUnitId = getShowedUnitName()
-  foreach (idx, crew in (::g_crews_list.get()?[countryId].crews ?? [])) {
+  foreach (idx, crew in (::g_crews_list.getCrewsList()?[countryId].crews ?? [])) {
     if (("aircraft" not in crew) || crew.aircraft == "")
       continue
 
@@ -50,7 +50,7 @@ function getAvailableCrewId(countryId) {
 
 function selectAvailableCrew(countryId) {
   local isAnyUnitInSlotbar = false
-  if ((countryId in ::g_crews_list.get()) && (countryId in selectedCrews)) {
+  if ((countryId in ::g_crews_list.getCrewsList()) && (countryId in selectedCrews)) {
     local id = getAvailableCrewId(countryId)
     isAnyUnitInSlotbar = id >= 0
     selectedCrews[countryId] = max(0, id)
@@ -63,13 +63,13 @@ function saveSelectedCrews() {
     return
 
   let blk = DataBlock()
-  foreach (cIdx, country in ::g_crews_list.get())
+  foreach (cIdx, country in ::g_crews_list.getCrewsList())
     blk[country.country] = selectedCrews?[cIdx] ?? 0
   saveLocalByAccount("selected_crews", blk)
 }
 
 function getCrewById(id) {
-  foreach (_cId, cList in ::g_crews_list.get())
+  foreach (_cId, cList in ::g_crews_list.getCrewsList())
     if ("crews" in cList)
       foreach (_idx, crew in cList.crews)
        if (crew.id == id)
@@ -78,7 +78,7 @@ function getCrewById(id) {
 }
 
 function getCrewByAir(air) {
-  foreach (country in ::g_crews_list.get())
+  foreach (country in ::g_crews_list.getCrewsList())
     if (country.country == air.shopCountry)
       foreach (crew in country.crews)
         if (("aircraft" in crew) && crew.aircraft == air.name)
@@ -123,14 +123,14 @@ function getReserveAircraftName(paramsTable) {
 }
 
 function initSelectedCrews(forceReload = false) {
-  if (!forceReload && (!::g_crews_list.get().len() || selectedCrews.len() == ::g_crews_list.get().len()))
+  if (!forceReload && (!::g_crews_list.getCrewsList().len() || selectedCrews.len() == ::g_crews_list.getCrewsList().len()))
     return
 
   let selCrewsBlk = loadLocalByAccount("selected_crews", null)
   local needSave = false
 
-  selectedCrews.resize(::g_crews_list.get().len(), 0)
-  foreach (cIdx, country in ::g_crews_list.get()) {
+  selectedCrews.resize(::g_crews_list.getCrewsList().len(), 0)
+  foreach (cIdx, country in ::g_crews_list.getCrewsList()) {
     let crewIdx = selCrewsBlk?[country.country] ?? 0
     if ((country?.crews[crewIdx].aircraft ?? "") != "")
       selectedCrews[cIdx] = crewIdx
@@ -154,7 +154,7 @@ function initSelectedCrews(forceReload = false) {
 function getSelSlotsData() {
   initSelectedCrews()
   let data = { slots = {}, units = {} }
-  foreach (cIdx, country in ::g_crews_list.get()) {
+  foreach (cIdx, country in ::g_crews_list.getCrewsList()) {
     local unit = getCrewUnit(country.crews?[selectedCrews[cIdx]])
     if (unit == null && isCountrySlotbarHasUnits(country.country)) {
       selectAvailableCrew(cIdx)
@@ -182,7 +182,7 @@ function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = fa
 }
 
 function isCountryAllCrewsUnlockedInHangar(countryId) {
-  foreach (tbl in ::g_crews_list.get())
+  foreach (tbl in ::g_crews_list.getCrewsList())
     if (tbl.country == countryId)
       foreach (crew in tbl.crews)
         if (isCrewLockedByPrevBattle(crew))
@@ -192,7 +192,7 @@ function isCountryAllCrewsUnlockedInHangar(countryId) {
 
 function getSlotbarUnitTypes(country) {
   let res = []
-  foreach (countryData in ::g_crews_list.get())
+  foreach (countryData in ::g_crews_list.getCrewsList())
     if (countryData.country == country)
       foreach (crew in countryData.crews)
         if (("aircraft" in crew) && crew.aircraft != "") {
@@ -223,7 +223,7 @@ function selectCrew(countryId, idInCountry, airChanged = false) {
 
 function getSelAircraftByCountry(country) {
   initSelectedCrews()
-  foreach (cIdx, c in ::g_crews_list.get())
+  foreach (cIdx, c in ::g_crews_list.getCrewsList())
     if (c.country == country)
       return getCrewUnit(c.crews?[selectedCrews[cIdx]])
   return null
@@ -268,7 +268,7 @@ function getFirstEmptyCrewSlot(country = null) {
     country = profileCountrySq.value
 
   local crew = null
-  foreach (_idx, crewBlock in ::g_crews_list.get())
+  foreach (_idx, crewBlock in ::g_crews_list.getCrewsList())
     if (crewBlock.country == country) {
       crew = crewBlock.crews
       break

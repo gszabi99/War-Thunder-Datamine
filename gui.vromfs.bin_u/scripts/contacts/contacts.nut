@@ -24,6 +24,7 @@ let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let Contact = require("%scripts/contacts/contact.nut")
 let { get_battle_type_by_ediff } = require("%scripts/difficulty.nut")
 let { getFontIconByBattleType } = require("%scripts/airInfo.nut")
+let { getGameModeById, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 ::g_contacts <- {
   findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
@@ -240,8 +241,8 @@ foreach (fn in [
     let memberData = g_squad_manager.getMemberData(contact.uid)
     if (memberData) {
       let memberDataAirs = memberData?.crewAirs[memberData.country] ?? []
-      let gameModeId = g_squad_manager.getLeaderGameModeId()
-      let event = ::events.getEvent(gameModeId)
+      let gameMode = getGameModeById(g_squad_manager.getLeaderGameModeId())
+      let event = getGameModeEvent(gameMode)
       let ediff = ::events.getEDiffByEvent(event)
       view.unitList <- []
       view.hasUnitList = memberDataAirs.len() != 0

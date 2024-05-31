@@ -200,20 +200,20 @@
       }
     },
     "steel_tank_armor": {
+      "tank1_dm": {
+        "hp": 120.5
+      },
       "tank2_dm": {
         "hp": 110.1
+      },
+      "tank3_dm": {
+        "hp": 73.6
+      },
+      "tank4_dm": {
+        "hp": 39.5
       }
     },
     "steel_tank_m": {
-      "tank1_dm": {
-        "hp": 75.5
-      },
-      "tank3_dm": {
-        "hp": 74.5
-      },
-      "tank4_dm": {
-        "hp": 44.5
-      },
       "tank5_dm": {
         "hp": 75.5
       },
@@ -1058,26 +1058,30 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.01,
-            "leak": 0.7
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
           },
           {
             "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
+            "fire": 0.005,
+            "leak": 0.7
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.9,
+            "fire": 0.01,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           },
           {
             "damage": 50.0,
@@ -1136,26 +1140,30 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "fire": 0.01,
-            "leak": 0.7
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
           },
           {
             "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
+            "fire": 0.005,
+            "leak": 0.7
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.9,
+            "fire": 0.01,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           },
           {
             "damage": 50.0,
@@ -1173,26 +1181,30 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "fire": 0.01,
-            "leak": 0.7
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
           },
           {
             "damage": 20.0,
-            "fire": 0.6,
-            "leak": 0.8
+            "fire": 0.005,
+            "leak": 0.7
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.9,
+            "fire": 0.01,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
+            "fire": 0.01,
+            "leak": 9.99
           },
           {
             "damage": 50.0,
@@ -1989,9 +2001,9 @@
     ]
   },
   "volumetricAfterBurner": {
-    "maxHeight": 13.0,
-    "maxRadius": 0.46,
-    "relativeCylinderHeightMax": 0.2,
+    "maxHeight": 10.0,
+    "maxRadius": 0.445,
+    "relativeCylinderHeightMax": 0.3,
     "absorption": 3.0,
     "colorIntensityMax": 2.5,
     "colorOverHeightMult": 15.0,
@@ -2005,7 +2017,7 @@
     "rampTextureOffset": 0
   },
   "ikPilot": {
-    "model": "pilot_italy_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2417,9 +2429,9 @@
             0.5
           ],
           "monoDisplayColor": [
-            0.1,
-            0.25,
-            0.1
+            0.37,
+            0.5,
+            0.4
           ],
           "cameraFromShell": true,
           "page": [
@@ -2430,7 +2442,42 @@
             {
               "type": "radar",
               "scale": 0.9,
-              "hideRadarBackground": true
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ]
             },
             {
               "type": "ils_duplicate"

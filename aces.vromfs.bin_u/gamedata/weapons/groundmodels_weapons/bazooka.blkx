@@ -41,7 +41,7 @@
     "maxDeltaAngle": 0.3,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap_rocket",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -58,8 +58,8 @@
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/rocket_he.ivf",
     "dragCx": 0.027,
-    "selfDestructionFx": "explosion_air_selfexplosion_big",
-    "explosionEffect": "hit_106_132mm_metal_he",
+    "selfDestructionFx": "hit_81_132mm_heat",
+    "explosionEffect": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_106_132mm_dirt_he",
     "ricochetEffect": "hit_106_132mm_metal_ap",
     "waterCollisionEffect": "hit_106_132mm_water_he",
@@ -206,10 +206,6 @@
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
       },
-      "wood": {
-        "fx": "hit_106_132mm_wood_he",
-        "ricochetFx": "hit_106_132mm_wood_ap"
-      },
       "steel": {
         "fx": "hit_106_132mm_metal_he",
         "ricochetFx": "hit_106_132mm_metal_ap"
@@ -257,6 +253,10 @@
       "stone_snow": {
         "fx": "hit_106_132mm_snow_he",
         "ricochetFx": "hit_106_132mm_snow_ap"
+      },
+      "wood": {
+        "fx": "hit_81_132mm_heat",
+        "copyBulletTm": true
       }
     },
     "shatterCollisions": {

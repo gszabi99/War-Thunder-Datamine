@@ -17,7 +17,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { getProfileInfo, getCurExpTable } = require("%scripts/user/userInfoStats.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
@@ -68,23 +68,20 @@ let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
         }
       }
       else if (name == "exp") {
-        let expTable = ::get_cur_exp_table("", cfg)
+        let expTable = getCurExpTable(cfg)
         obj.setValue(expTable
           ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
           : "")
         obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
       }
       else if (name == "clanTag") {
-        let isVisible = hasFeature("Clans") && val != ""
-        showClanTag = isVisible
-        if (isVisible) {
-          let clanTagName = ::checkClanTagForDirtyWords(val.tostring())
-          let btnText = obj.findObject($"{prefix}{name}_name")
-          if (checkObj(btnText))
-            btnText.setValue(clanTagName)
-          else
-            obj.setValue(clanTagName)
-        }
+        showClanTag = hasFeature("Clans") && val != ""
+        let clanTagName = ::checkClanTagForDirtyWords(val.tostring())
+        let btnText = obj.findObject($"{prefix}{name}_name")
+        if (checkObj(btnText))
+          btnText.setValue(clanTagName)
+        else
+          obj.setValue(clanTagName)
       }
       else if (name == "gold") {
         let moneyInst = Cost(0, val)
@@ -370,20 +367,21 @@ let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
   if (!gchat_is_enabled() || !hasMenuChat.value)
     return
 
-  let haveNew = ::g_chat.haveNewMessages()
-  let tooltip = loc(haveNew ? "mainmenu/chat_new_messages" : "mainmenu/chat")
+  ::g_chat.countNewMessages(function(newMessagesCount) {
+    let haveNew = newMessagesCount > 0
+    let tooltip = loc(haveNew ? "mainmenu/chat_new_messages" : "mainmenu/chat")
 
-  let newMessagesCount = ::g_chat.getNewMessagesCount()
-  let newMessagesText = newMessagesCount ? newMessagesCount.tostring() : ""
+    let newMessagesText = newMessagesCount ? newMessagesCount.tostring() : ""
 
-  ::do_with_all_gamercards(function(scene) {
-    let objBtn = scene.findObject($"{prefix}chat_btn")
-    if (!checkObj(objBtn))
-      return
+    ::do_with_all_gamercards(function(scene) {
+      let objBtn = scene.findObject($"{prefix}chat_btn")
+      if (!checkObj(objBtn))
+        return
 
-    ::update_gc_button(objBtn, haveNew, tooltip)
-    let newCountChatObj = objBtn.findObject($"{prefix}new_chat_messages")
-    newCountChatObj.setValue(newMessagesText)
+      ::update_gc_button(objBtn, haveNew, tooltip)
+      let newCountChatObj = objBtn.findObject($"{prefix}new_chat_messages")
+      newCountChatObj.setValue(newMessagesText)
+    })
   })
 }
 

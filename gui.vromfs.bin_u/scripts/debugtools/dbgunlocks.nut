@@ -1,7 +1,7 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import dd_mkpath
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
+from "dagor.fs" import mkpath
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -102,7 +102,7 @@ function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = fa
     blk.desc = desc
     res[id] = blk
   }
-  dd_mkpath?(fullPath)
+  mkpath(fullPath)
   res.saveToTextFile(fullPath)
 }
 

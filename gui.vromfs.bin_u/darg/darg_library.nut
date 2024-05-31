@@ -1,5 +1,6 @@
 from "%sqstd/frp.nut" import *
 from "daRg" import *
+import "daRg.behaviors" as Behaviors
 
 let {tostring_r} = require("%sqstd/string.nut")
 let {min}  = require("math")
@@ -171,4 +172,5 @@ return {
   watchElemState
   isDargComponent
   fsh
+  Behaviors
 }

@@ -10,6 +10,23 @@
       text-align:t='center'
       position:t='absolute'
     }
+    <<#hasExpandBtn>>
+      shopCollapsedButton {
+        id:t='title_expand_btn'
+        position:t='absolute'
+        width:t='16@sf/@pf'
+        pos:t='0.9@modArrowWidth - w/2, (ph-h)/2'
+        isCollapsed:t='no'
+        isCollapseAllBtn:t='yes'
+        text:t=''
+        on_click:t = 'onExpandAllBtn'
+
+        img {
+          position:t='relative'
+          size:t='16@sf/@pf, w'
+        }
+      }
+    <</hasExpandBtn>>
   }
 <</plates>>
 
@@ -21,5 +38,4 @@
     background-color:t='@tableHeaderSeparatorColor'
   }
 <</separators>>
-
 

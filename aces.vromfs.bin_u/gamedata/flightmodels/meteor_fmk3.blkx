@@ -2136,42 +2136,42 @@
     "Weapon": [
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
         "emitter": "flare1",
         "flash": "flare1",
         "shell": "emtr_shellrejection1",
         "dm": "cannon1_dm",
-        "bullets": 190,
+        "bullets": 180,
         "light": true,
         "spread": 1.2
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
         "emitter": "flare2",
         "flash": "flare2",
         "dm": "cannon2_dm",
-        "bullets": 200,
+        "bullets": 180,
         "light": false,
         "spread": 1.4
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "dm": "cannon3_dm",
-        "bullets": 190,
+        "bullets": 180,
         "light": true,
         "spread": 1.6
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkV.blk",
+        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
         "emitter": "flare4",
         "flash": "flare4",
         "dm": "cannon4_dm",
-        "bullets": 200,
+        "bullets": 180,
         "light": true,
         "spread": 1.8
       }
@@ -2378,18 +2378,44 @@
     "turnTime": 20.0
   },
   "modifications": {
-    "cd_98": {},
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "cd_98": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "new_compressor_jet": {
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "hp_105_jet": {
+      "tier": 3,
+      "modClass": "lth",
+      "prevModification": "new_compressor_jet"
+    },
+    "g_suit": {
+      "tier": 3,
+      "modClass": "armor"
+    },
     "air_extinguisher": {
       "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
+      "modClass": "armor",
+      "invertEnableLogic": false,
+      "prevModification": "g_suit"
     },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {},
-    "g_suit": {},
-    "new_compressor_jet": {},
     "hispano_universal": {},
     "hispano_ground_targets": {},
     "hispano_air_targets": {},
@@ -2398,7 +2424,7 @@
     "hispano_belt_pack": {
       "tier": 1
     },
-    "hispano_mk5_new_gun": {
+    "hispano_mk_2_1943_new_gun": {
       "reqModification": "hispano_belt_pack",
       "tier": 3
     },

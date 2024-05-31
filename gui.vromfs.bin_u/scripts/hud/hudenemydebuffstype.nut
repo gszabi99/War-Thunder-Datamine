@@ -5,6 +5,7 @@ let { enumsGetCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nu
 let { lerp } = require("%sqstd/math.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { measureType } = require("%scripts/measureType.nut")
+let { format } =  require("string")
 
 enum PART_STATE {
   OFF      = "off"
@@ -82,6 +83,15 @@ let getStateByValue = function(cur, vMax, crit, vMin) {
        :              PART_STATE.HEALTHY
 }
 
+let getTurretDriveParts = function() {
+  local parts = ["drive_turret_h_dm", "drive_turret_v_dm"]
+  foreach (i in [1, 2, 3, 4, 5]) {
+    foreach (c in ['h', 'v'])
+      parts.append(format("drive_turret_%c_0%d_dm", c, i))
+  }
+  return parts
+}
+
 // ----------------------------------------------------------------------------------------------
 
 g_hud_enemy_debuffs.template <- {
@@ -118,7 +128,7 @@ enumsAddTypes(g_hud_enemy_debuffs, {
   TANK_DRIVE_TURRET = {
     unitTypesMask = unitTypes.TANK.bit
     parts    = [ "tank_drive_turret_h", "tank_drive_turret_v" ]
-    mainDm   = [ "drive_turret_h_dm", "drive_turret_h_01_dm", "drive_turret_v_dm", "drive_turret_v_01_dm" ]
+    mainDm   = getTurretDriveParts()
     getInfo  = @(_camInfo, unitInfo, partName = null, _dmgParams = null) {
       state = getStateByBrokenDmMain(unitInfo, partName, this.parts, this.mainDm)
       label = ""

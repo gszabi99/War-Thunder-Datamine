@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 //to allow to able temporary handle different stats versions at once
 //before new one completely applied to all circuits
 ::queue_stats_versions <- {}
@@ -97,7 +97,7 @@ const MULTICLUSTER_NAME = "multi"
   function getPlayersCountOfAllRanks(cluster = null) {
     local res = 0
     let teamQueueTable = this.getQueueTableByTeam("teamA", cluster)
-    for (local i = 1; i <= ::max_country_rank; i++)
+    for (local i = 1; i <= MAX_COUNTRY_RANK; i++)
       res += teamQueueTable?[i.tostring()] ?? 0
 
     return res

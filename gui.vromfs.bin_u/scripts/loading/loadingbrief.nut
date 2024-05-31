@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled, get_game_type_by_mode, map_to_location
+from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
@@ -16,7 +16,7 @@ let { loading_is_finished, loading_press_apply, briefing_finish, loading_play_vo
   loading_stop_voice, loading_stop_voice_but_named_events, loading_get_voice_len,
   loading_is_voice_playing, loading_play_music, loading_stop_music
 } = require("loading")
-let { get_game_mode, get_game_type } = require("mission")
+let { get_game_mode, get_game_type, get_game_type_by_mode } = require("mission")
 let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let changeStartMission = require("%scripts/missions/changeStartMission.nut")

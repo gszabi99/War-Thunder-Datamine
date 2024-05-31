@@ -25,8 +25,12 @@ massTransp {
       overflow-x:t='auto'
 
       slotbarTable {
+        <<#selectOnHover>>
+        on_mouse_leave:t='onSlotbarMouseLeave'
+        canSelectNone:t='yes'
+        <</selectOnHover>>
         id:t='airs_table_<<countryIdx>>'
-        pos:t='0, 1@slotbarInvisPad'
+        pos:t='0, @slotbarInvisPad-@slotbar_bottom_margin'
         position:t='relative'
         behaviour:t='<<#slotbarBehavior>><<slotbarBehavior>><</slotbarBehavior>><<^slotbarBehavior>>ActivateSelect<</slotbarBehavior>>'
         navigatorShortcuts:t='yes'
@@ -44,7 +48,7 @@ massTransp {
 
       tdiv {
         id:t='slotbarHint'
-        size:t='2.5@slot_width, @slot_height + 1@slotbar_pad_top + 1@slotbar_pad_bottom'
+        size:t='2.5@slot_width, @slotbarHeight'
         position:t='relative'
         pos:t='0, 1@slotbarInvisPad'
         padding:t='@slot_interval, 0'

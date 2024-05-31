@@ -3,6 +3,7 @@ let {eventbus_subscribe} = require("eventbus")
 
 
 function register_activation_callback(callback) {
+  app.install_activation_handler()
   eventbus_subscribe(app.activation_event_name, function(result) {
     let senderXuid = result?.sender_xuid
     let invitedXuid = result?.invited_xuid
@@ -20,6 +21,7 @@ function register_constrain_callback(callback) {
 
 
 function register_important_live_error_callback(callback) {
+  app.install_important_live_error_handler()
   eventbus_subscribe(app.important_live_error_event_name, function(err) {
     callback?(err)
   })

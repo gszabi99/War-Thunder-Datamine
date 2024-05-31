@@ -20,6 +20,7 @@ let { getClusterShortName, isClusterUnstable
 let { isEventForClan } = require("%scripts/events/eventInfo.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
@@ -389,7 +390,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
                     tdalign = "center"
                  })
 
-    for (local i = 1; i <= ::max_country_rank; i++) {
+    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
       params.append({
         text = getTblValue(i.tostring(), queueStatData, 0).tostring()
         tdalign = "center"
@@ -401,7 +402,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
   //!!FIX ME copypaste from events handler
   function buildQueueStatsHeader() {
     let headerData = []
-    for (local i = 0; i <= ::max_country_rank; i++) {
+    for (local i = 0; i <= MAX_COUNTRY_RANK; i++) {
       headerData.append({
         text = get_roman_numeral(i)
         tdalign = "center"

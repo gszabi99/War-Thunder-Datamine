@@ -1884,7 +1884,8 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 1.15,
+            "hideBackground": true
           }
         },
         {
@@ -1907,7 +1908,15 @@
             },
             {
               "type": "radar",
-              "scale": 1.2
+              "scale": 1.2,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "targetForm": "targetForm"
             }
           ]
         },
@@ -2060,7 +2069,10 @@
     "HideDmParts": {
       "node": [
         "cannon3_dm",
-        "cover2_dm"
+        "cover2_dm",
+        "tank3_dm",
+        "tank4_dm",
+        "tank5_dm"
       ]
     },
     "WeaponSlot": [
@@ -2431,6 +2443,31 @@
               "separate": true,
               "machLimit": 1.4
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "pylon_002",
+                "pylon_002_upor"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank3_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_150gal_early_drop_tank_1.blk",
+              "emitter": "us_150gal_early_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "ptb_slot5"
+            }
           }
         ]
       },
@@ -2588,6 +2625,27 @@
               ],
               "gearName": "gear_c"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot4",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank4_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_150gal_fuse_drop_tank.blk",
+              "emitter": "us_150gal_fuse_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -2727,6 +2785,31 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot5",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "pylon_004",
+                "pylon_004_upor"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank5_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_150gal_early_drop_tank_2.blk",
+              "emitter": "us_150gal_early_drop_tank_002",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_slot3"
             }
           }
         ]

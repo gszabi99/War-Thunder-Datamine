@@ -4286,30 +4286,20 @@
   "DamageEffects": {
     "ammunition_storage_shells": {
       "onKill": {
-        "fire": 0.4,
-        "expl": 0.6,
+        "expl": 1.0,
         "fHitCritical": false
       },
       "onHit": [
         {
           "damageType": "fire",
           "expl": 0.03,
-          "fire": 0.07,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
           "expl": 0.05,
-          "fire": 0.1,
           "damage": 74.0,
-          "fHitCritical": false
-        },
-        {
-          "damageType": "explosion",
-          "expl": 0.15,
-          "fire": 0.85,
-          "damage": 380.0,
           "fHitCritical": false
         }
       ]
@@ -4322,64 +4312,42 @@
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 0.15,
+          "fire": 0.05,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "fire": 0.2,
+          "fire": 0.08,
           "damage": 74.0,
-          "fHitCritical": false
-        },
-        {
-          "damageType": "explosion",
-          "fire": 0.67,
-          "damage": 380.0,
           "fHitCritical": false
         }
       ]
     },
     "ammunition_storage_aux": {
       "onKill": {
-        "fire": 0.14,
-        "expl": 0.76,
+        "fire": 0.49,
+        "expl": 0.51,
         "fHitCritical": false
       },
-      "onHit": [
-        {
-          "damageType": "fire",
-          "fire": 0.05,
-          "damage": 49.0,
-          "fHitCritical": false
-        },
-        {
-          "damageType": "shatter",
-          "fire": 0.05,
-          "damage": 32.0,
-          "fHitCritical": false
-        }
-      ]
+      "onHit": {
+        "damageType": "fire",
+        "fire": 0.15,
+        "damage": 79.0,
+        "fHitCritical": false
+      }
     },
     "ammunition_first_stage": {
       "onKill": {
         "fire": 1.0,
         "fHitCritical": false
       },
-      "onHit": [
-        {
-          "damageType": "fire",
-          "fire": 0.85,
-          "damage": 49.0,
-          "fHitCritical": false
-        },
-        {
-          "damageType": "explosion",
-          "expl": 0.89,
-          "damage": 400.0,
-          "fHitCritical": false
-        }
-      ]
+      "onHit": {
+        "damageType": "fire",
+        "fire": 0.1,
+        "damage": 50.0,
+        "fHitCritical": false
+      }
     },
     "ammunition_torpedoes": {
       "onKill": {
@@ -4390,7 +4358,7 @@
       "onHit": {
         "damageType": "fire",
         "expl": 0.07,
-        "damage": 49.0,
+        "damage": 60.0,
         "fHitCritical": false
       }
     },
@@ -4414,33 +4382,15 @@
           "transmission_01_dm",
           "transmission_02_dm",
           "transmission_03_dm",
-          "transmission_04_dm"
+          "transmission_04_dm",
+          "transmission_05_dm",
+          "transmission_06_dm"
         ],
         "onKill": {
-          "fire": 0.25,
-          "nothing": 0.26,
+          "fire": 0.15,
+          "nothing": 0.85,
           "fHitCritical": false
-        },
-        "onHit": [
-          {
-            "damageType": "explosion",
-            "fire": 0.05,
-            "damage": 300.0,
-            "fHitCritical": false
-          },
-          {
-            "damageType": "explosion",
-            "fire": 0.1,
-            "damage": 350.0,
-            "fHitCritical": false
-          },
-          {
-            "damageType": "explosion",
-            "fire": 0.15,
-            "damage": 400.0,
-            "fHitCritical": false
-          }
-        ]
+        }
       },
       {
         "name": [
@@ -4464,13 +4414,13 @@
           {
             "damageType": "shatter",
             "fire": 0.001,
-            "damage": 27.0,
+            "damage": 22.0,
             "fHitCritical": false
           },
           {
             "damageType": "explosion",
-            "fire": 0.1,
-            "damage": 350.0
+            "fire": 0.15,
+            "damage": 300.0
           }
         ]
       },
@@ -4481,34 +4431,10 @@
           "bridge_02_dm"
         ],
         "onKill": {
-          "fire": 0.15,
-          "nothing": 0.85,
+          "fire": 0.1,
+          "nothing": 0.9,
           "fHitCritical": false
         }
-      },
-      {
-        "name": [
-          "superstructure_dm",
-          "superstructure_back_dm",
-          "superstructure_front_dm",
-          "superstructure_bottom_dm",
-          "superstructure_side_dm",
-          "superstructure_top_dm"
-        ],
-        "onHit": [
-          {
-            "damageType": "explosion",
-            "fire": 0.1,
-            "damage": 300.0,
-            "fHitCritical": false
-          },
-          {
-            "damageType": "explosion",
-            "fire": 0.2,
-            "damage": 450.0,
-            "fHitCritical": false
-          }
-        ]
       },
       {
         "name": [
@@ -19096,6 +19022,13 @@
       "nameLocId": "flag_ussr_victory_01/name",
       "descLocId": "flag_ussr_victory_01/desc",
       "texture": "flag_ussr_victory_01_c*"
+    },
+    "flag_d_day_anniversary_01": {
+      "category": "other",
+      "unlockId": "flag_d_day_anniversary_01",
+      "nameLocId": "flag_d_day_anniversary_01/name",
+      "descLocId": "flag_d_day_anniversary_01/desc",
+      "texture": "flag_d_day_anniversary_01_c*"
     }
   }
 }

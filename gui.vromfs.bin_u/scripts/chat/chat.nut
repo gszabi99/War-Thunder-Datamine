@@ -551,18 +551,22 @@ g_chat.onEventInitConfigs <- function onEventInitConfigs(_p) {
   this.threadTitleLenMax = blk.chat?.threadTitleLenMax ?? this.threadTitleLenMax
 }
 
-g_chat.getNewMessagesCount <- function getNewMessagesCount() {
-  local result = 0
-
-  foreach (room in g_chat.rooms)
-    if (!room.hidden && !room.concealed())
-      result += room.newImportantMessagesCount
-
-  return result
-}
-
-g_chat.haveNewMessages <- function haveNewMessages() {
-  return this.getNewMessagesCount() > 0
+g_chat.countNewMessages <- function countNewMessages(callback) {
+  local newMessagesCount = 0
+  local countInternal = null
+  countInternal = function(rooms, idx) {
+    if (idx >= rooms.len()) {
+      callback?(newMessagesCount)
+    } else {
+      local room = rooms[idx]
+      room.concealed(function(isConcealed) {
+        if (!room.hidden && !isConcealed)
+          newMessagesCount += room.newImportantMessagesCount
+        countInternal(rooms, idx + 1)
+      })
+    }
+  }
+  countInternal(g_chat.rooms, 0)
 }
 
 g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig, isSeparationAllowed = true, needAssert = true) {

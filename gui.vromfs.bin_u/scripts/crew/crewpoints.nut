@@ -6,14 +6,10 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { ceil } = require("math")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-
-let getCrewSpText = @(sp) $"{decimalFormat(sp)}{loc("currency/skillPoints/sign/colored")}"
-
-let getCrewSpTextIfNotZero = @(sp) sp == 0 ? "" : getCrewSpText(sp)
+let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 
 ::g_crew_points <- {}
 
@@ -79,9 +75,4 @@ let getCrewSpTextIfNotZero = @(sp) sp == 0 ? "" : getCrewSpText(sp)
 
   let bestPack = packs.top() //while it only for developers it enough
   return array(ceil(skillPoints.tofloat() / bestPack.skills), bestPack)
-}
-
-return {
-  getCrewSpText
-  getCrewSpTextIfNotZero
 }

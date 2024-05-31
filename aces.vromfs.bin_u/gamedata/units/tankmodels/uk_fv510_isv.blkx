@@ -100,6 +100,12 @@
       "turret_04_top_dm": {
         "armorThickness": 38.4
       },
+      "turret_07_side_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_bottom_dm": {
+        "armorThickness": 10.0
+      },
       "turret_05_top_dm": {
         "armorThickness": 28.5
       },
@@ -139,6 +145,15 @@
         "armorThickness": 5.0,
         "armorClass": "RHA_tank_modern",
         "hidableInXrayViewer": true
+      },
+      "turret_07_back_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_07_bottom_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_07_front_dm": {
+        "armorThickness": 20.0
       }
     },
     "hull_composite_armor": {
@@ -194,9 +209,6 @@
       },
       "turret_back_dm": {
         "armorThickness": 12.7
-      },
-      "turret_06_back_dm": {
-        "armorThickness": 13.0
       },
       "turret_03_back_dm": {
         "armorThickness": 25.4
@@ -323,6 +335,14 @@
         "hp": 20.0
       }
     },
+    "body_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 300.0,
+      "armorThickness": 10.0,
+      "hidableInViewer": true,
+      "turret_06_bottom_dm": {},
+      "turret_06_back_dm": {}
+    },
     "body_shields": {
       "armorClass": "tank_structural_steel",
       "hp": 1000.0,
@@ -341,7 +361,9 @@
       "ex_armor_l_04_dm": {},
       "ex_armor_r_04_dm": {},
       "turret_01_bottom_dm": {},
-      "ex_decor_09_dm": {}
+      "ex_decor_09_dm": {},
+      "ex_armor_14_dm": {},
+      "ex_armor_15_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -436,11 +458,12 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
-        "hp": 150.0,
+        "armorThrough": 15.0
+      },
+      "driver_controls_dm": {
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -459,20 +482,52 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "radiator_dm": {
+      "drive_turret_v_03_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_03_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "radiator_dm": {
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_l_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_r_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radio_station_dm": {
-        "hp": 20.0,
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "electronic_equipment_dm": {
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_dm": {
+        "hp": 50.0,
         "armorThrough": 3.0
       }
     },
@@ -499,6 +554,10 @@
       },
       "cannon_breech_05_dm": {
         "armorThickness": 10.0
+      },
+      "autoloader_dm": {
+        "armorThickness": 5.0,
+        "armorThrough": 5.0
       }
     },
     "power_block": {
@@ -508,7 +567,8 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {}
+      "transmission_dm": {},
+      "power_system_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -646,27 +706,11 @@
       "ammo_body_53_dm": {},
       "ammo_body_54_dm": {},
       "ammo_body_55_dm": {},
-      "ammo_body_l_01_dm": {},
-      "ammo_body_l_02_dm": {},
-      "ammo_body_l_03_dm": {},
-      "ammo_body_l_04_dm": {},
-      "ammo_body_l_05_dm": {},
-      "ammo_body_l_06_dm": {},
-      "ammo_body_l_07_dm": {},
-      "ammo_body_l_08_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
       "ammo_body_r_04_dm": {},
-      "ammo_body_r_05_dm": {},
-      "ammo_body_r_06_dm": {},
-      "ammo_body_r_07_dm": {},
-      "ammo_body_r_08_dm": {},
-      "ammo_body_r_09_dm": {},
-      "ammo_body_r_10_dm": {},
-      "ammo_body_r_11_dm": {},
-      "ammo_body_r_12_dm": {},
-      "ammo_body_r_13_dm": {}
+      "ammo_body_r_05_dm": {}
     },
     "crew": {
       "armorClass": "steel_tankman",
@@ -1683,7 +1727,7 @@
         "speedYaw": 60.0,
         "speedPitch": 30.0,
         "fireConeAngle": 1.0,
-        "bullets": 249,
+        "bullets": 225,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -1764,7 +1808,7 @@
           1.0,
           15.0
         ],
-        "bullets": 2000,
+        "bullets": 2200,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 3.0,
         "accuracyAir": 0.0,
@@ -2060,9 +2104,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 23000.0,
+      "Empty": 25400.0,
       "Fuel": 500.0,
-      "TakeOff": 23500.0,
+      "TakeOff": 25900.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -2082,8 +2126,18 @@
     },
     "tracks": {
       "animationMultiplier": 0.6,
-      "height": 0.05,
-      "width": 0.35
+      "height": 0.08,
+      "width": 0.35,
+      "tracksTensionK": [
+        6.0,
+        10.0,
+        7.0
+      ],
+      "trackMesh": "uk_fv510_isv_phys_track_line",
+      "trackLen": 0.146,
+      "trackCount": 84,
+      "trackFadeTime": 1.1,
+      "trackStartOffset": 0.1
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2099,7 +2153,7 @@
       "maxBrakeForce": 115000.0,
       "driveGearRadius": 0.27,
       "mainGearRatio": 1.28,
-      "sideGearRatio": 2.85,
+      "sideGearRatio": 2.67,
       "neutralGearRatio": 10.0,
       "gearRatios": {
         "ratio": [
@@ -2127,7 +2181,7 @@
         0.14
       ],
       "defaultGearRadius": 0.3,
-      "frontBackGearRadius": 0.2,
+      "frontBackGearRadius": 0.25,
       "topGearRadius": 0.09,
       "defaultDampeningForce": [
         120000.0,
@@ -2565,6 +2619,13 @@
         }
       },
       {
+        "name": "hydraulic_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "big_bang",
         "lifetime": 10.0,
         "fx": [
@@ -2872,7 +2933,7 @@
               "speedYaw": 60.0,
               "speedPitch": 30.0,
               "fireConeAngle": 1.0,
-              "bullets": 249,
+              "bullets": 225,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
@@ -2953,7 +3014,7 @@
                 1.0,
                 15.0
               ],
-              "bullets": 2000,
+              "bullets": 2200,
               "ChainfireTime": 3.0,
               "DelayAfterShoot": 3.0,
               "accuracyAir": 0.0,
@@ -3177,6 +3238,7 @@
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
               1200,
@@ -3453,30 +3515,6 @@
           "count": 3
         },
         "ammo_body_r_05_dm": {
-          "count": 3
-        },
-        "ammo_body_r_06_dm": {
-          "count": 3
-        },
-        "ammo_body_r_07_dm": {
-          "count": 3
-        },
-        "ammo_body_r_08_dm": {
-          "count": 3
-        },
-        "ammo_body_r_09_dm": {
-          "count": 3
-        },
-        "ammo_body_r_10_dm": {
-          "count": 3
-        },
-        "ammo_body_r_11_dm": {
-          "count": 3
-        },
-        "ammo_body_r_12_dm": {
-          "count": 3
-        },
-        "ammo_body_r_13_dm": {
           "count": 3
         }
       }

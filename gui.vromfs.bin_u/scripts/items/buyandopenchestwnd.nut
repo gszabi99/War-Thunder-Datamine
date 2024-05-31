@@ -407,6 +407,7 @@ function getPrizesView(prizes, bgDelay = 0) {
   foreach (prize in prizes) {
     let offerType = ::trophyReward.getType(prize)
     let customImageData = offerTypes?[offerType].getImage(prize)
+    let item = ::ItemsManager.findItemById(prize?.item)
     res.append({
       customImageData
       prizeTooltipId =  offerTypes?[offerType].getPrizeTooltipId(prize)
@@ -417,6 +418,7 @@ function getPrizesView(prizes, bgDelay = 0) {
       additionalSortParam = prize?[offerType] ?? ""
       margin = clamp(margin, 0, to_pixels("4@blockInterval"))
       chestItemWidth
+      chestItemRarityColor = (item && item?.isRare()) ? item.getRarityColor() : "#45AACC"
     })
   }
   res.sort(@(a, b) a.sortIdx <=> b.sortIdx

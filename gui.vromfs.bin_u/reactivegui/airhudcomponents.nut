@@ -5,7 +5,7 @@ let { bw, bh, rw, rh } = require("style/screenState.nut")
 let { IsTwsActivated, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible } = require("twsState.nut")
 let { mkRadar } = require("radarComponent.nut")
 let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible, isCollapsedRadarInReplay } = require("radarState.nut")
-let tws = require("tws.nut")
+let { tws } = require("tws.nut")
 let { isPlayingReplay } = require("hudState.nut")
 
 

@@ -8,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fetchLbData,
@@ -79,7 +79,7 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
     openPopupFilter({
       scene = this.scene.findObject("filter_nest")
       onChangeFn = this.onFilterCbChange.bindenv(this)
-      filterTypes = this.getFiltersView()
+      filterTypesFn = this.getFiltersView.bindenv(this)
       popupAlign = "top-center"
       visualStyle = "tournament"
     })

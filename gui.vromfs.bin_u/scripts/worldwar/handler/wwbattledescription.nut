@@ -799,7 +799,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       let hasChangeInPreset = bestPresetData?.hasChangeInPreset ?? false
       btnAutoPreset.inactiveColor = hasChangeInPreset ? "no" : "yes"
       btnAutoPreset.hasUnseenIcon = hasChangeInPreset ? "yes" : "no"
-      showObjById("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset, this.scene)
+      showObjById("auto_preset_warning_icon", hasChangeInPreset, btnAutoPreset)
     }
   }
 

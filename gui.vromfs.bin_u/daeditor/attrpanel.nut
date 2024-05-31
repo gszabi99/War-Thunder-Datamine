@@ -510,7 +510,7 @@ function getOpenedCacheEntry(eid, cname, cpath) {
 }
 
 
-let addPropValueTypes = ["text" "real" "bool" "integer" "array" "object"]
+let addPropValueTypes = ["text" "real" "bool" "integer" "array" "object" "Point2" "Point3" "Point4"]
 
 const attrPanelAddObjectValueUID = "attr_panel_add_object_value"
 
@@ -535,6 +535,12 @@ function doAddObjectValue(eid, cname, cpath, value_name, value_type) {
       ccobj[value_name] = []
     else if (value_type == "object")
       ccobj[value_name] = {}
+    else if (value_type == "Point2")
+      ccobj[value_name] = Point2(0,0)
+    else if (value_type == "Point3")
+      ccobj[value_name] = Point3(0,0,0)
+    else if (value_type == "Point4")
+      ccobj[value_name] = Point4(0,0,0,0)
 
     obsolete_dbg_set_comp_val(eid, cname, object)
     entity_editor.save_component(eid, cname)
@@ -605,6 +611,12 @@ function doAddArrayValue(eid, cname, cpath, ckey, value_type) {
     value = []
   else if (value_type=="object")
     value = {}
+  else if (value_type == "Point2")
+    value = Point2(0,0)
+  else if (value_type == "Point3")
+    value = Point3(0,0,0)
+  else if (value_type == "Point4")
+    value = Point4(0,0,0,0)
 
   if (value==null) {
     infoBox($"Unsupported array value type: {value_type}")
@@ -1186,7 +1198,9 @@ function compPanel() {
 
     let templName = eid!=INVALID_ENTITY_ID ? removeSelectedByEditorTemplate(g_entity_mgr.getEntityTemplateName(eid) ?? "") : null
     let uiTemplName = eid!=INVALID_ENTITY_ID ? entity_editor.get_template_name_for_ui(eid) : null
-    let captionText = eid!=INVALID_ENTITY_ID ? "{0}{1}: {2}".subst(captionPrefix, eid, uiTemplName) :
+    local extraName = getEntityExtraName(eid)
+    extraName = (extraName != null) ? $" / {extraName}" : ""
+    let captionText = eid!=INVALID_ENTITY_ID ? "{0}{1}: {2}{3}".subst(captionPrefix, eid, uiTemplName, extraName) :
       selectedEntities.value.len() == 0 ? "No entity selected"
       : $"{selectedEntities.value.len()} entities selected"
 

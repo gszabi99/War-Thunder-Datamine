@@ -2613,8 +2613,8 @@
   "nightVision": {
     "sightTPodThermal": {
       "resolution": [
-        500,
-        300
+        1024,
+        768
       ],
       "noiseFactor": 0.05
     }
@@ -2673,6 +2673,10 @@
       {
         "name": "a_6e_tram_gbu_10",
         "blk": "gameData/FlightModels/weaponPresets/a_6e_tram_gbu_10.blk"
+      },
+      {
+        "name": "a_6e_tram_agm_123",
+        "blk": "gameData/FlightModels/weaponPresets/a_6e_tram_agm_123.blk"
       },
       {
         "name": "a_6e_tram_mk81",
@@ -2970,6 +2974,26 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_agm_123",
+            "reqModification": "us_agm_123",
+            "ShowNodes": {
+              "node": [
+                "pylon1_l",
+                "pylon1_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_123.blk",
               "emitter": "bomb_2000lb_001",
               "bullets": 1,
               "external": true,
@@ -3316,6 +3340,26 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "bomb_2000lb_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_agm_123",
+            "reqModification": "us_agm_123",
+            "ShowNodes": {
+              "node": [
+                "pylon_l",
+                "pylon_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_123.blk",
               "emitter": "bomb_2000lb_002",
               "bullets": 1,
               "external": true,
@@ -3887,6 +3931,26 @@
             }
           },
           {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_agm_123",
+            "reqModification": "us_agm_123",
+            "ShowNodes": {
+              "node": [
+                "pylon_r",
+                "pylon_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_123.blk",
+              "emitter": "bomb_2000lb_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_small_group_x5",
             "name": "mer_mk81_x5_right",
             "reqModification": "us_250lb_mk81",
@@ -4225,6 +4289,26 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "bomb_2000lb_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_agm_123",
+            "reqModification": "us_agm_123",
+            "ShowNodes": {
+              "node": [
+                "pylon1_r",
+                "pylon1_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_123.blk",
               "emitter": "bomb_2000lb_005",
               "bullets": 1,
               "external": true,
@@ -4643,7 +4727,7 @@
     "us_aim_9g": {
       "prevModification": "us_mk_77",
       "modClass": "weapon",
-      "tier": 3
+      "tier": 2
     },
     "us_aim_9l": {
       "reqModification": "us_aim_9g",
@@ -4662,7 +4746,7 @@
     "us_1000lb_mk83": {
       "reqModification": "us_500lb_mk82",
       "modClass": "weapon",
-      "tier": 4
+      "tier": 3
     },
     "us_2000lb_mk84": {
       "prevModification": "us_gbu_10",
@@ -4682,6 +4766,11 @@
     "us_gbu_10": {
       "reqModification": "us_gbu_16",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_agm_123": {
+      "reqModification": "us_gbu_10",
+      "tier": 4,
       "modClass": "weapon"
     },
     "mk4_mod0_gunpod": {

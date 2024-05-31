@@ -14,7 +14,9 @@ let { getBulletsSetData,
         getOptionsBulletsList,
         getBulletsGroupCount,
         getActiveBulletsGroupInt,
-        getBulletsInfoForPrimaryGuns } = require("%scripts/weaponry/bulletsInfo.nut")
+        getBulletsInfoForPrimaryGuns,
+        getAmmoStowageConstraintsByTrigger,
+        getBulletsSetMaxAmmoWithConstraints } = require("%scripts/weaponry/bulletsInfo.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_SKIP_LEFT_BULLETS_WARNING
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
@@ -164,6 +166,8 @@ enum bulletsAmountState {
         continue
       if (gInfo?.forcedMaxBulletsInRespawn ?? false) // Player can't change counts.
         continue
+      if (gInfo?.isBulletBelt ?? true)
+        continue
 
       local status = bulletsAmountState.READY
       let totalBullets = gInfo.total
@@ -305,6 +309,8 @@ enum bulletsAmountState {
     if (!this.unit)
       return
 
+    let ammoCounstraintsByTrigger = getAmmoStowageConstraintsByTrigger(this.unit)
+
     // Preparatory work of Bullet Groups creation
     let bulletDataByGroup = {}
     let bullGroupsCountersByGun = {}
@@ -314,15 +320,21 @@ enum bulletsAmountState {
     for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++) {
       let linkedIdx = getLinkedGunIdx(groupIndex, this.getGunTypesCount(),
         this.unit.unitType.bulletSetsQuantity)
+
       let bullets = getOptionsBulletsList(this.unit, groupIndex, false, this.isForcedAvailable)
       let selectedName = bullets.values?[bullets.value] ?? ""
       let bulletsSet = getBulletsSetData(this.unit, selectedName)
-      let maxToRespawn = bulletsSet?.maxToRespawn ?? 0
+      let constrainedTotalCount = getBulletsSetMaxAmmoWithConstraints(ammoCounstraintsByTrigger, bulletsSet)
+      local maxToRespawn = bulletsSet?.maxToRespawn ?? 0
+      if (maxToRespawn > 0 && constrainedTotalCount > 0)
+        maxToRespawn = min(constrainedTotalCount, maxToRespawn)
+
       //!!FIX ME: Needs to have a bit more reliable way to determine bullets type like by TRIGGER_TYPE for example
       let currBulletType = bulletsSet?.isBulletBelt ? "belt" : bulletsSet?.bullets[0].split("_")[0]
       bulletDataByGroup[groupIndex] <- {
         linkedIdx = linkedIdx
         maxToRespawn = maxToRespawn
+        constrainedTotalCount = constrainedTotalCount
       }
 
       if (!bullGroupsCountersByGun?[linkedIdx])
@@ -351,12 +363,13 @@ enum bulletsAmountState {
       let currCounters = bullGroupsCountersByGun[data.linkedIdx]
       let isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
         && currCounters.limitedGroupCount == currCounters.groupCount)
-      this.bulGroups.append(::BulletGroup(this.unit, groupIndex,
-        this.getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn), {
+      this.bulGroups.append(::BulletGroup(this.unit, groupIndex, this.getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn),
+        {
           isActive = stdMath.is_bit_set(this.groupsActiveMask, groupIndex)
           canChangeActivity = this.canChangeBulletsActivity()
           isForcedAvailable = this.isForcedAvailable
           maxToRespawn = data.maxToRespawn
+          constrainedTotalCount = data.constrainedTotalCount
         }))
     }
   }

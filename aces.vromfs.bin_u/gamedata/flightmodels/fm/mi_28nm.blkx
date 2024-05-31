@@ -163,9 +163,9 @@
     },
     "ModePreset3": {
       "Mode": "Separate",
-      "AileronsMode": "Vel",
-      "ElevatorMode": "Vel",
-      "RudderMode": "Rate",
+      "AileronsMode": "Pos",
+      "ElevatorMode": "Pos",
+      "RudderMode": "Heading",
       "ThrottleMode": "Climb",
       "PropulsorMode": "Manual",
       "VtolMode": "Manual",
@@ -2242,9 +2242,9 @@
       },
       "VelPID": {
         "Kp": 0.05,
-        "Ki": 0.02,
+        "Ki": 0.002,
         "Imax": 10.0,
-        "Kd": 0.001,
+        "Kd": 0.005,
         "dTau": 0.0208333,
         "Lim": [
           -0.2,
@@ -2413,8 +2413,8 @@
         ]
       },
       "RatePID": {
-        "Kp": 2.0,
-        "Ki": 1.8,
+        "Kp": 1.6,
+        "Ki": 1.4,
         "Imax": 10.0,
         "Kd": 0.105,
         "dTau": 0.0208333,
@@ -2424,8 +2424,8 @@
         ]
       },
       "AnglePID": {
-        "Kp": 10.0,
-        "Ki": 2.0,
+        "Kp": 4.0,
+        "Ki": 1.0,
         "Imax": 2.0,
         "Kd": 0.5,
         "dTau": 0.10208333,
@@ -2502,7 +2502,7 @@
         "Kd": 0.01,
         "dTau": 0.1,
         "Lim": [
-          0.25,
+          0.05,
           0.95
         ]
       },

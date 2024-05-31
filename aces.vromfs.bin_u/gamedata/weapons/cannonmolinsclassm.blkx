@@ -27,7 +27,7 @@
     "maxDistance": 2000.0,
     "normalizationPreset": "ap",
     "ricochetPreset": "ap",
-    "groundRicochetPreset": "ap",
+    "groundRicochetPreset": "ap_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -41,7 +41,6 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/ap_t_shell.ivf",
-    "onHitChanceMultFire": 3.0,
     "relativeVelHitShift": [
       [
         300.0,
@@ -52,10 +51,7 @@
         1000.0
       ]
     ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "onHitChanceMultFire": 3.5,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_59_80mm_metal_ap",
     "groundCollisionEffect": "hit_59_80mm_dirt_ap",
@@ -106,15 +102,6 @@
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
       }
-    },
-    "visual": {
-      "range_percent_of_ammo": [
-        100.0,
-        0.0
-      ],
-      "traceFreq": 1,
-      "tracer": "50mmRed",
-      "trail": "black"
     },
     "collisions": {
       "default": {
@@ -233,6 +220,15 @@
         "fx": "hit_59_80mm_snow_ap",
         "ricochetFx": "hit_59_80mm_snow_ap"
       }
+    },
+    "visual": {
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
+      "traceFreq": 1,
+      "tracer": "50mmRed",
+      "trail": "black"
     }
   },
   "gunSound": {

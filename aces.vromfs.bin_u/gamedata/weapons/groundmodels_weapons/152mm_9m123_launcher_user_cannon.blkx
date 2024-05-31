@@ -116,7 +116,10 @@
       "visRotationFreqX": 5.0,
       "operated": true,
       "maxLateralAcceleration": 10.0,
-      "autoAimingMaxAngle": 10.0,
+      "autoAimingMaxAngle": [
+        10.0,
+        1.0
+      ],
       "autoAimingMultiChannel": true,
       "autoLeveling": true,
       "autoAiming": true,
@@ -126,6 +129,8 @@
       "aimSensitivity": 10.0,
       "isBeamRider": true,
       "maxAxisValues": 0.75,
+      "guidanceType": "saclos",
+      "launchZoneDistance": 100.0,
       "maxDeltaAngle": 0.03,
       "explosiveType": "a_ix_2",
       "explosiveMass": 4.0,
@@ -190,6 +195,28 @@
         0.0,
         0.0
       ],
+      "guidance": {
+        "launchSector": 9.0,
+        "controlConeFov": 25.0,
+        "beamRider": true,
+        "opticAimForFirstMissileOnly": true,
+        "breakLockMaxTime": 3.0,
+        "lineOfSightAutopilot": {
+          "timeOut": 0.0,
+          "crossDistToReqCrossVelMult": 6.5,
+          "reqCrossVelRationMax": 0.75,
+          "velDiffToReqAccelMult": 3.5,
+          "accelControl": {
+            "velFrameReference": true,
+            "baseIndSpeed": 1800.0,
+            "reqAccelMax": 10.0,
+            "accelControlProp": 0.0456,
+            "accelControlIntg": 0.0,
+            "accelControlDiff": 0.0023,
+            "accelControlIntgLim": 0.0
+          }
+        }
+      },
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -773,7 +800,10 @@
         "visRotationFreqX": 5.0,
         "operated": true,
         "maxLateralAcceleration": 10.0,
-        "autoAimingMaxAngle": 10.0,
+        "autoAimingMaxAngle": [
+          10.0,
+          1.0
+        ],
         "autoAimingMultiChannel": true,
         "autoLeveling": true,
         "autoAiming": true,
@@ -783,6 +813,8 @@
         "aimSensitivity": 10.0,
         "isBeamRider": true,
         "maxAxisValues": 0.75,
+        "guidanceType": "saclos",
+        "launchZoneDistance": 100.0,
         "maxDeltaAngle": 0.03,
         "explosiveType": "a_ix_2",
         "explosiveMass": 4.0,
@@ -847,6 +879,28 @@
           0.0,
           0.0
         ],
+        "guidance": {
+          "launchSector": 9.0,
+          "controlConeFov": 25.0,
+          "beamRider": true,
+          "opticAimForFirstMissileOnly": true,
+          "breakLockMaxTime": 3.0,
+          "lineOfSightAutopilot": {
+            "timeOut": 0.0,
+            "crossDistToReqCrossVelMult": 6.5,
+            "reqCrossVelRationMax": 0.75,
+            "velDiffToReqAccelMult": 3.5,
+            "accelControl": {
+              "velFrameReference": true,
+              "baseIndSpeed": 1800.0,
+              "reqAccelMax": 10.0,
+              "accelControlProp": 0.0456,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.0023,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
@@ -1362,7 +1416,7 @@
       "mass": 46.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
-      "groundRicochetPreset": "he",
+      "groundRicochetPreset": "he_ground",
       "secondaryShattersPreset": "ap_rocket",
       "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -1429,24 +1483,15 @@
         "minDistance": 30.0,
         "operatedDist": 6000.0,
         "visRotationFreqX": 5.0,
-        "operated": true,
-        "maxLateralAcceleration": 10.0,
-        "autoAimingMaxAngle": 10.0,
-        "autoAimingMultiChannel": true,
-        "autoLeveling": true,
-        "autoAiming": true,
-        "autoAimTrackingSensitivity": 0.5,
-        "canAimBySensor": true,
-        "aimCorrectionVelMin": 600.0,
-        "aimSensitivity": 10.0,
-        "isBeamRider": true,
-        "maxAxisValues": 0.75,
+        "autoAimingMaxAngle": 1.0,
+        "guidanceType": "saclos",
+        "launchZoneDistance": 100.0,
         "maxDeltaAngle": 0.03,
         "explosiveType": "a_ix_2",
         "explosiveMass": 6.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
-        "groundRicochetPreset": "he",
+        "groundRicochetPreset": "he_ground",
         "secondaryShattersPreset": "ap_rocket",
         "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -1505,6 +1550,28 @@
           0.0,
           0.0
         ],
+        "guidance": {
+          "launchSector": 9.0,
+          "controlConeFov": 25.0,
+          "beamRider": true,
+          "opticAimForFirstMissileOnly": true,
+          "breakLockMaxTime": 3.0,
+          "lineOfSightAutopilot": {
+            "timeOut": 0.0,
+            "crossDistToReqCrossVelMult": 6.5,
+            "reqCrossVelRationMax": 0.75,
+            "velDiffToReqAccelMult": 3.5,
+            "accelControl": {
+              "velFrameReference": true,
+              "baseIndSpeed": 1800.0,
+              "reqAccelMax": 10.0,
+              "accelControlProp": 0.0456,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.0023,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,

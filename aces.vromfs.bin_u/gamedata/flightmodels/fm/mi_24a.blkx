@@ -149,6 +149,14 @@
       "RudderMode": "Rate",
       "ThrottleMode": "Manual",
       "allowOverrideByForcedStabilization": false
+    },
+    "ModePreset3": {
+      "Mode": "Separate",
+      "AileronsMode": "Vel",
+      "ElevatorMode": "Vel",
+      "RudderMode": "Rate",
+      "ThrottleMode": "Alt",
+      "allowOverrideByForcedStabilization": false
     }
   },
   "Areas": {
@@ -2153,7 +2161,8 @@
         "Kp": 0.07,
         "Ki": 0.02,
         "Imax": 2.0,
-        "Kd": 0.005,
+        "Kd": 0.1,
+        "RateMult": 0.2,
         "Lim": [
           -0.2,
           0.2
@@ -2329,7 +2338,7 @@
         "Kd": 0.0005,
         "Lim": [
           0.08,
-          0.9
+          0.95
         ]
       },
       "AltPID": {

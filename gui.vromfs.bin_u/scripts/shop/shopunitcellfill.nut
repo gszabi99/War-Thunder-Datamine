@@ -58,9 +58,9 @@ function updateSector1InObj(cell, id, angle) {
   return obj
 }
 
-function initCell(cell, initData) {
+function initCell(cell, initData, shiftY) {
   let { id, posX = 0, posY = 0, position = "relative" } = initData
-  cell.pos = $"{posX}w, {posY}h"
+  cell.pos = $"{posX}w, {posY - shiftY}h"
   cell.position = position
 
   let prevId = cell.holderId
@@ -135,6 +135,7 @@ function updateCardStatus(obj, _id, statusTbl) {
     obj.tooltipId = tooltipId
   setBool(showInObj(obj, "talisman", hasTalismanIcon), "incomplete", !isTalismanComplete)
   setBool(showInObj(obj, "inServiceMark", needInService), "mounted", isMounted)
+  setBool(obj, "actionOnDrag", needInService && !isMounted && !isGroup)
   showInObj(obj, "weaponStatusIcon", weaponsStatus != "").weaponsStatus = weaponsStatus
   showInObj(obj, "repairIcon", isBroken)
 

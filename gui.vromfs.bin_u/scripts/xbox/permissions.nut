@@ -1,20 +1,7 @@
 let logX = require("%sqstd/log.nut")().with_prefix("[PERMISSIONS] ")
 let {Privilege, State, retrieve_current_state, resolve_with_ui} = require("%xboxLib/impl/privileges.nut")
 let {communicationsPrivilege, crossnetworkPrivilege, textWithAnonUser} = require("%scripts/xbox/crossnetwork.nut")
-let {CommunicationState} = require("%xboxLib/impl/crossnetwork.nut")
-
-
-function crossnetwork_comms_to_int(state) {
-  if (state == CommunicationState.Allowed)
-    return XBOX_COMMUNICATIONS_ALLOWED
-  if (state == CommunicationState.Blocked)
-    return XBOX_COMMUNICATIONS_BLOCKED
-  if (state == CommunicationState.Muted)
-    return XBOX_COMMUNICATIONS_MUTED
-  if (state == CommunicationState.FriendsOnly)
-    return XBOX_COMMUNICATIONS_ONLY_FRIENDS
-  return -1;
-}
+let {CommunicationState, retrieve_text_chat_permissions} = require("%xboxLib/impl/crossnetwork.nut")
 
 
 function check_privilege_with_resolution(privilege, attempt_resolution, callback) {
@@ -42,8 +29,8 @@ function check_crossnetwork_play_privilege(try_resolve, callback) {
 
 function check_crossnetwork_communications_permission() {
   if (!(communicationsPrivilege.value && crossnetworkPrivilege.value))
-    return XBOX_COMMUNICATIONS_BLOCKED
-  return crossnetwork_comms_to_int(textWithAnonUser.value)
+    return CommunicationState.Blocked
+  return textWithAnonUser.value
 }
 
 
@@ -63,9 +50,18 @@ function check_communications_privilege(try_resolve, callback) {
 }
 
 
+function can_we_text_user(xuid, callback) {
+  retrieve_text_chat_permissions(xuid, function(_perm_success, perm_state) {
+    callback?(perm_state)
+  })
+}
+
+
 return {
+  CommunicationState
   check_crossnetwork_play_privilege
   check_multiplayer_sessions_privilege
   check_crossnetwork_communications_permission
   check_communications_privilege
+  can_we_text_user
 }

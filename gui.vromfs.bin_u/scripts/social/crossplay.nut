@@ -6,7 +6,7 @@ let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
-let { check_crossnetwork_communications_permission } = require("%scripts/xbox/permissions.nut")
+let { check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/xbox/permissions.nut")
 let { crossnetworkPrivilege } = require("%scripts/xbox/crossnetwork.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD
 } = require("%scripts/options/optionsExtNames.nut")
@@ -77,9 +77,9 @@ let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
   if (isPlatformXboxOne)
     crossNetworkChatStatus(check_crossnetwork_communications_permission())
   else if (isPlatformSony && hasFeature("PS4CrossNetwork") && ::g_login.isProfileReceived())
-    crossNetworkChatStatus(loadLocalAccountSettings(PS4_CROSSNETWORK_CHAT_OPT_ID, XBOX_COMMUNICATIONS_ALLOWED))
+    crossNetworkChatStatus(loadLocalAccountSettings(PS4_CROSSNETWORK_CHAT_OPT_ID, CommunicationState.Allowed))
   else
-    crossNetworkChatStatus(XBOX_COMMUNICATIONS_ALLOWED)
+    crossNetworkChatStatus(CommunicationState.Allowed)
 }
 
 let getCrossNetworkChatStatus = function() {
@@ -87,13 +87,13 @@ let getCrossNetworkChatStatus = function() {
   return crossNetworkChatStatus.value
 }
 
-let isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == XBOX_COMMUNICATIONS_ALLOWED
+let isCrossNetworkChatEnabled = @() getCrossNetworkChatStatus() == CommunicationState.Allowed
 
 let setCrossNetworkChatStatus = function(boolVal) {
   if (!isPlatformSony || !hasFeature("PS4CrossNetwork"))
     return
 
-  let val = boolVal ? XBOX_COMMUNICATIONS_ALLOWED : XBOX_COMMUNICATIONS_BLOCKED
+  let val = boolVal ? CommunicationState.Allowed : CommunicationState.Blocked
   resetCrossNetworkChatStatus()
   saveLocalAccountSettings(PS4_CROSSNETWORK_CHAT_OPT_ID, val)
   updateCrossNetworkChatStatus()

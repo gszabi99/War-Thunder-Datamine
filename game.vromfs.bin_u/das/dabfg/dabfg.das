@@ -5,6 +5,13 @@ require DagorDriver3D public
 require DagorShaders public
 
 
+struct NameSpaceRequest
+  nameSpaceId : NameSpaceNameId
+  nodeId : NodeNameId
+  registry : InternalRegistry?
+
+struct Registry : NameSpaceRequest {}
+
 struct NameSpace
   nameSpaceId : NameSpaceNameId
 
@@ -103,18 +110,27 @@ def fillSlot(var self : NameSpace; slot : NamedSlot; res_name_space : NameSpace;
   fill_slot(self.nameSpaceId, slot.name, res_name_space.nameSpaceId, res_name)
 
 
+def private get(var resources : idIndexedMapping`ResNameId`ResourceData&; res_id : ResNameId; cb : block<(var value : ResourceData) : void>) : void
+  cb |> invoke(resources |> get(res_id))
+
+
+def private get(var nodes : idIndexedMapping`NodeNameId`NodeData&; node_id : NodeNameId; cb : block<(var value : NodeData) : NodeHandle>) : NodeHandle
+  return <- cb |> invoke(nodes |> get(node_id))
+
+
 def registerNode(var self : NameSpace; name : string; var declaration_callback : lambda<(var reg : Registry) : lambda<void>>) : NodeHandle
-  var registerNodeName = $ <| (var registry : InternalRegistry &)
-    let nodeId = registry.knownNames |> addNameId`NodeNameId(self.nameSpaceId, name)
-    var registerNodeId = $ <| (var node_data : NodeData &)
-      getTracker() |> unregisterNode(nodeId, node_data.generation)
-      getTracker() |> registerNode(nodeId)
-      node_data |> registerNodeDeclaration(self.nameSpaceId, declaration_callback)
-      return <- register_external_node(nodeId, node_data.generation)
-
-    return <- registerNodeId |> invoke(registry.nodes |> get(nodeId))
-
-  return <- registerNodeName |> invoke(getRegistry())
+  var registry = getRegistry()
+  let nodeId = registry.knownNames |> addNameId`NodeNameId(self.nameSpaceId, name)
+  return <- registry.nodes |> get(nodeId) <| $(var node_data : NodeData&)
+    getTracker() |> unregisterNode(nodeId, node_data.generation)
+    getTracker() |> registerNode(nodeId)
+    node_data |> registerNodeDeclaration(self.nameSpaceId) <| @ [[ <- declaration_callback, =registry ]] ()
+      return <- declaration_callback |> invoke() <| [[Registry
+        nameSpaceId = self.nameSpaceId,
+        nodeId = nodeId,
+        registry = registry
+      ]]
+    return <- register_external_node(nodeId, node_data.generation)
 
 
 def root(var self : Registry) : NameSpaceRequest
@@ -177,10 +193,9 @@ def executionHas(var self : Registry; side_effect : SideEffect) : Registry
 def create(var self : Registry; name : string; history : History) : VirtualResourceCreationSemiRequest
   let nodeNsId = self.registry.knownNames |> getParent(self.nodeId)
   let nameId = self.registry.knownNames |> addNameId`ResNameId(nodeNsId, name)
-  var setHistory = $ <| (var res : ResourceData &)
+  self.registry.resources |> get(nameId) <| $(var res : ResourceData&)
     res.history = history;
 
-  invoke(setHistory, self.registry.resources |> get(nameId))
   self.registry.nodes[self.nodeId].createdResources |> insert(nameId)
   using() <| $(var req : ResourceRequest#)
     req.usage = [[ResourceUsage access=Access READ_WRITE]]
@@ -230,7 +245,7 @@ def history(var self : NameSpaceRequest; var name : string) : VirtualResourceSem
     req.usage = [[ResourceUsage access=Access READ_ONLY]]
     self.registry.nodes[self.nodeId].historyResourceReadRequests[nameId] := req
 
-  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=false]]]]
+  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=true]]]]
 
 
 def modify(var self : NameSpaceRequest; name : string) : VirtualResourceSemiRequest
@@ -263,16 +278,14 @@ def rename(var self : NameSpaceRequest; from : string; to : string; history : Hi
   using() <| $(var req : ResourceRequest#)
     req.usage = [[ResourceUsage access=Access READ_WRITE]]
     self.registry.nodes[self.nodeId].resourceRequests[fromResId] := req
-  var setHistory = $ <| (var res : ResourceData &)
+  self.registry.resources |> get(toResId) <| $(var res : ResourceData&)
     res.history = history
-
-  invoke(setHistory, self.registry.resources |> get(toResId))
 
   return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=fromResId, history=false]]]]
 
 
 def texture(var self : VirtualResourceCreationSemiRequest; info : Texture2dCreateInfo) : VirtualTextureRequest
-  var setTexture = $ <| (var res : ResourceData &)
+  self.registry.resources |> get(self.resUid.nameId) <| $(var res : ResourceData&)
     using() <| $(var desc : TextureResourceDescription#)
       desc.mipLevels = info.mipLevels
       desc.cFlags = info.creationFlags
@@ -287,7 +300,6 @@ def texture(var self : VirtualResourceCreationSemiRequest; info : Texture2dCreat
 
     res.resType = ResourceType Texture
 
-  setTexture |> invoke(self.registry.resources |> get(self.resUid.nameId))
   return <- [[VirtualTextureRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
 
 
@@ -296,18 +308,17 @@ def texture(var self : VirtualResourceSemiRequest) : VirtualTextureRequest
 
 
 def buffer(var self : VirtualResourceCreationSemiRequest; info : BufferCreateInfo) : VirtualBufferRequest
-  var setBuffer = $ <| (info_ : BufferCreateInfo; var res : ResourceData &)
+  self.registry.resources |> get(self.resUid.nameId) <| $(var res : ResourceData&)
     using() <| $(var desc : BufferResourceDescription#)
-      desc.elementCount = info_.elementCount
-      desc.elementSizeInBytes = info_.elementSize
-      desc.viewFormat = info_.format
-      desc.cFlags = info_.flags
+      desc.elementCount = info.elementCount
+      desc.elementSizeInBytes = info.elementSize
+      desc.viewFormat = info.format
+      desc.cFlags = info.flags
       desc.activation = ResourceActivationAction DISCARD_AS_UAV
       res |> setDescription(desc)
 
     res.resType = ResourceType Buffer
 
-  invoke(setBuffer, info, self.registry.resources |> get(self.resUid.nameId))
   return <- [[VirtualBufferRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
 
 
@@ -317,10 +328,9 @@ def buffer(var self : VirtualResourceSemiRequest) : VirtualBufferRequest
 
 def blob(var self : VirtualResourceSemiRequest) : VirtualResourceRequest
   assert(false, "Blobs are not implemented in daScript API")
-  var setBlob = $ <| (var res : ResourceData &)
+  self.registry.resources |> get(self.resUid.nameId) <| $(var res : ResourceData&)
     res.resType = ResourceType Blob
 
-  invoke(setBlob, self.registry.resources |> get(self.resUid.nameId))
   return <- [[VirtualResourceRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
 
 
@@ -357,18 +367,17 @@ def bindToShaderVar(var self : auto(TT); name : string = "") : TT
     svName = self.registry.knownNames |> getShortName(self.resUid.nameId)
 
   let svId = get_shader_variable_id(svName)
-  let setBinding = $ <| (var self_ : TT; sv_id : int; name_ : string; var bindings : BindingsMap &)
-    if !(bindings |> key_exists(sv_id))
-      using() <| $(var info : Binding#)
-        info.bindType = BindingType ShaderVar
-        info.resource = self_.resUid.nameId
-        info.history = self_.resUid.history
-        bindings[sv_id] := info
-    else
-      let selfName = self_.registry.knownNames |> getName(self_.nodeId)
-      error("Encountered duplicate shader var {name_} binding in {selfName} frame graph node! Ignoring one of the them!")
+  assume bindings = self.registry.nodes[self.nodeId].bindings
+  if !(bindings |> key_exists(svId))
+    using() <| $(var info : Binding#)
+      info.bindType = BindingType ShaderVar
+      info.resource = self.resUid.nameId
+      info.history = self.resUid.history
+      bindings[svId] := info
+  else
+    let selfName = self.registry.knownNames |> getName(self.nodeId)
+    error("Encountered duplicate shader var {name} binding in {selfName} frame graph node! Ignoring one of the them!")
 
-  invoke(setBinding, self, svId, name) <| self.registry.nodes[self.nodeId].bindings
   useAs(self, Usage SHADER_RESOURCE)
   return self
 
@@ -425,16 +434,12 @@ def setObjectBlock(var self : StateRequest; name : string) : StateRequest
 
 
 def allowWireFrame(var self : StateRequest) : StateRequest
-  assume maybeStateReqs = self.registry.nodes[self.nodeId].stateRequirements
-  verify(maybeStateReqs is some)
-  (maybeStateReqs as some).supportsWireframe = true
+  assume stateReqs = self.registry.nodes[self.nodeId].stateRequirements as some
+  stateReqs.supportsWireframe = true
   return self
 
 
 def allowVrs(var self : StateRequest; vrs : VrsRequirements) : StateRequest
-  assume maybeStateReqs = self.registry.nodes[self.nodeId].stateRequirements
-  verify(maybeStateReqs is some)
-
   if vrs.rateTexture is none
     // TODO: reset rate texture?
     return self
@@ -445,42 +450,35 @@ def allowVrs(var self : StateRequest; vrs : VrsRequirements) : StateRequest
     req.usage = [[ResourceUsage access=Access READ_ONLY, usageType=Usage VRS_RATE_TEXTURE, stage=Stage ALL_GRAPHICS]]
     self.registry.nodes[self.nodeId].resourceRequests[rateTexId] := req
 
-  let setVrsState = $ <| (var vrsState : VrsStateRequirements)
-    vrsState.rateX = vrs.rateX
-    vrsState.rateY = vrs.rateY
-    vrsState.rateTextureResId = rateTexId
-    vrsState.vertexCombiner = vrs.vertexCombiner
-    vrsState.pixelCombiner = vrs.pixelCombiner
+  assume stateReqs = self.registry.nodes[self.nodeId].stateRequirements as some
+  stateReqs.vrsState |> emplace_some
+  assume vrsState = stateReqs.vrsState as some
 
-  let passthrough = $ <| (var stateReqs : NodeStateRequirements)
-    stateReqs.vrsState |> emplace_some
-    setVrsState |> invoke(stateReqs.vrsState as some)
+  vrsState.rateX = vrs.rateX
+  vrsState.rateY = vrs.rateY
+  vrsState.rateTextureResId = rateTexId
+  vrsState.vertexCombiner = vrs.vertexCombiner
+  vrsState.pixelCombiner = vrs.pixelCombiner
 
-  passthrough |> invoke(maybeStateReqs as some)
   return self
 
 
 def enableOverride(var self : StateRequest; das_override : OverrideRenderState)
-  assume maybeStateReqs = self.registry.nodes[self.nodeId].stateRequirements
-  verify(maybeStateReqs is some)
+  assume stateReqs = self.registry.nodes[self.nodeId].stateRequirements as some
+  stateReqs.pipelineStateOverride |> emplace_some
+  assume final_override = stateReqs.pipelineStateOverride as some
 
-  let setVrsState = $ <| (var final_override : OverrideState)
-    final_override.bits = uint(das_override.bits)
-    final_override.zFunc = uint8(das_override.zFunc)
-    final_override.forcedSampleCount = das_override.forcedSampleCount
-    final_override.blendOp = uint8(das_override.blendOp)
-    final_override.blendOpA = uint8(das_override.blendOpA)
-    final_override.sblend = uint8(das_override.sblend)
-    final_override.dblend = uint8(das_override.dblend)
-    final_override.sblenda = uint8(das_override.sblenda)
-    final_override.dblenda = uint8(das_override.dblenda)
-    final_override.colorWr = uint(das_override.colorWr)
+  final_override.bits = uint(das_override.bits)
+  final_override.zFunc = uint8(das_override.zFunc)
+  final_override.forcedSampleCount = das_override.forcedSampleCount
+  final_override.blendOp = uint8(das_override.blendOp)
+  final_override.blendOpA = uint8(das_override.blendOpA)
+  final_override.sblend = uint8(das_override.sblend)
+  final_override.dblend = uint8(das_override.dblend)
+  final_override.sblenda = uint8(das_override.sblenda)
+  final_override.dblenda = uint8(das_override.dblenda)
+  final_override.colorWr = uint(das_override.colorWr)
 
-  let passthrough = $ <| (var stateReqs : NodeStateRequirements)
-    stateReqs.pipelineStateOverride |> emplace_some
-    setVrsState |> invoke(stateReqs.pipelineStateOverride as some)
-
-  passthrough |> invoke(maybeStateReqs as some)
   return self
 
 
@@ -523,22 +521,19 @@ def color(var self : VirtualPassRequest; names : string[]) : VirtualPassRequest
 
 
 def color(var self : VirtualPassRequest; attachments : array<VirtualAttachmentRequest>) : VirtualPassRequest
-  verify(self.registry.nodes[self.nodeId].renderingRequirements is some)
+  assume reqs = self.registry.nodes[self.nodeId].renderingRequirements as some
 
-  let setReqs = $ <| (var reqs : VirtualPassRequirements)
-    if reqs.colorAttachments |> length != 0
-      let selfName = self.registry.knownNames |> getName(self.nodeId)
-      error("Encountered duplicate color attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
-      reqs.colorAttachments |> clear()
+  if reqs.colorAttachments |> length != 0
+    let selfName = self.registry.knownNames |> getName(self.nodeId)
+    error("Encountered duplicate color attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
+    reqs.colorAttachments |> clear()
 
-    for attachment in attachments
-      let uid = self |> processAttachment(attachment, Access READ_WRITE)
-      verify(!uid.history)
-      self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
-        ResourceUsage access=Access READ_WRITE, stage=Stage POST_RASTER, usageType=Usage COLOR_ATTACHMENT]]
-      reqs.colorAttachments |> push([[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]])
-
-  setReqs |> invoke(self.registry.nodes[self.nodeId].renderingRequirements as some)
+  for attachment in attachments
+    let uid = self |> processAttachment(attachment, Access READ_WRITE)
+    verify(!uid.history)
+    self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
+      ResourceUsage access=Access READ_WRITE, stage=Stage POST_RASTER, usageType=Usage COLOR_ATTACHMENT]]
+    reqs.colorAttachments |> push([[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]])
 
   return self
 
@@ -549,23 +544,20 @@ def private depth(var self : VirtualPassRequest; name : string; usage_access : A
 
 
 def private depth(var self : VirtualPassRequest; attachment : VirtualAttachmentRequest; usage_access : Access; read_only : bool) : VirtualPassRequest
-  verify(self.registry.nodes[self.nodeId].renderingRequirements is some)
+  assume reqs = self.registry.nodes[self.nodeId].renderingRequirements as some
 
-  let setReqs = $ <| (var reqs : VirtualPassRequirements)
-    if reqs.depthAttachment.nameId != ResNameId Invalid
-      let selfName = self.registry.knownNames |> getName(self.nodeId)
-      error("Encountered duplicate depth attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
+  if reqs.depthAttachment.nameId != ResNameId Invalid
+    let selfName = self.registry.knownNames |> getName(self.nodeId)
+    error("Encountered duplicate depth attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
 
-    let uid = self |> processAttachment(attachment, usage_access)
-    verify(!uid.history)
-    self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
-      ResourceUsage access=read_only ? Access READ_ONLY : Access READ_WRITE,
-      stage=Stage POST_RASTER,
-      usageType=read_only ? Usage DEPTH_ATTACHMENT_AND_SHADER_RESOURCE : Usage DEPTH_ATTACHMENT]]
-    reqs.depthAttachment = [[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]]
-    reqs.depthReadOnly = read_only
-
-  setReqs |> invoke(self.registry.nodes[self.nodeId].renderingRequirements as some)
+  let uid = self |> processAttachment(attachment, usage_access)
+  verify(!uid.history)
+  self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
+    ResourceUsage access=read_only ? Access READ_ONLY : Access READ_WRITE,
+    stage=Stage POST_RASTER,
+    usageType=read_only ? Usage DEPTH_ATTACHMENT_AND_SHADER_RESOURCE : Usage DEPTH_ATTACHMENT]]
+  reqs.depthAttachment = [[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]]
+  reqs.depthReadOnly = read_only
 
   return self
 

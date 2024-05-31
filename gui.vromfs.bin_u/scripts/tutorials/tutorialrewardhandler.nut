@@ -22,6 +22,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
 let { isAnyAwardReceivedByModeType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
+let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
 
 register_command(
   function (misName) {
@@ -174,8 +175,8 @@ function tryOpenTutorialRewardHandler() {
       let firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData
       let hasSlotReward = firstCompletRewardData.slotReward != ""
       if (hasSlotReward) {
-        ::g_crews_list.invalidate()
-        ::reinitAllSlotbars()
+        invalidateCrewsList()
+        reinitAllSlotbars()
       }
 
       let reward = getMoneyFromDebriefingResult()

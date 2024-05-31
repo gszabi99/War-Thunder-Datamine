@@ -9,6 +9,7 @@ let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let DataBlock = require("DataBlock")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 let WarbondAward = class {
   id = ""
@@ -260,7 +261,7 @@ let WarbondAward = class {
   }
 
   function isAvailableByUnitsRank() {
-    if (this.reqMaxUnitRank <= 1 || this.reqMaxUnitRank > ::max_country_rank)
+    if (this.reqMaxUnitRank <= 1 || this.reqMaxUnitRank > MAX_COUNTRY_RANK)
       return true
 
     return this.reqMaxUnitRank <= get_max_unit_rank()

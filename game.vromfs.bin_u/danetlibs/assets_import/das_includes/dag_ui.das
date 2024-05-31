@@ -69,11 +69,15 @@ def asset_dependencies_tree(var asset : DagorAsset?; asset__manager : DagorAsset
     if texId != BAD_TEXTUREID
       imgui::SameLine()
       let imguiTexId = dag_tex_id_to_imgui(texId)
-      imgui::ImageButton(imguiTexId, float2(textureIconSize), float2(0), float2(1), 0, float4(1), float4(1))
+      imgui::PushStyleVar(ImGuiStyleVar FramePadding, float2(0));
+      imgui::ImageButton("{asset}_image", imguiTexId, float2(textureIconSize), float2(0), float2(1), float4(1), float4(1))
+      imgui::PopStyleVar();
 
       if imgui::IsItemHovered()
         imgui::BeginTooltip()
-        imgui::ImageButton(imguiTexId, float2(magnifiedTextureIconSize), float2(0), float2(1), 0, float4(1), float4(1))
+        imgui::PushStyleVar(ImGuiStyleVar FramePadding, float2(0));
+        imgui::ImageButton("{asset}_image_magnified", imguiTexId, float2(magnifiedTextureIconSize), float2(0), float2(1), float4(1), float4(1))
+        imgui::PopStyleVar();
         imgui::EndTooltip()
 
   if nodeOpened

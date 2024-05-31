@@ -1,8 +1,14 @@
+<<^noNeedNest>>
 actionBarItemDiv {
-  margin:t='1@hudActionBarItemOffset, 0'
-  padding:t='0.003@shHud'
+  <<#nestIndex>>
+    id:t='<<nestIndex>>_nest'
+  <</nestIndex>>
+  <<^nopadding>>
+    margin:t='1@hudActionBarItemOffset, 0'
+    padding:t='0.003@shHud'
+  <</nopadding>>
   css-hier-invalidate:t='yes';
-
+<</noNeedNest>>
   action_bar_item {
     id:t='<<id>>'
     size:t='pw, ph'
@@ -15,8 +21,12 @@ actionBarItemDiv {
 
     behaviour:t='button'
     behaviour:t='touchArea'
-    on_click:t='activateAction'
-
+    <<^onClick>>
+      on_click:t='activateAction'
+    <</onClick>>
+    <<#onClick>>
+      on_click:t='<<onClick>>'
+    <</onClick>>
     action_item_content {
       css-hier-invalidate:t='yes'
       size:t='pw, ph'
@@ -28,6 +38,20 @@ actionBarItemDiv {
         background-image:t='#ui/gameuiskin#circle_gradient_white'
         background-color:t='#FFFFFF'
         display:t='hide'
+      }
+      transpBlinkAnimation {
+        id:t='importantFire'
+        size:t='1.05pw, 1.05ph'
+        position:t='absolute'
+        pos:t='-0.025pw, -0.025ph'
+        input-transparent:t='yes'
+        background-color:t='#D77D00'
+        color-factor:t='0'
+        _transp-timer:t='1'
+        transp-func:t='doubleBlink'
+        transp-time:t='1000'
+        _blink:t='no'
+        blend-time:t='0'
       }
       <<#bullets>>
         <<@bullets>>
@@ -128,4 +152,6 @@ actionBarItemDiv {
     tooltip:t='<<tooltipText>>'
     <</tooltipId>>
   }
+<<^noNeedNest>>
 }
+<</noNeedNest>>

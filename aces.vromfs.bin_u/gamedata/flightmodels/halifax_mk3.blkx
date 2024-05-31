@@ -3284,39 +3284,35 @@
         "name": "halifax_mk3_15x500lbs_sap",
         "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_15x500lbs_sap.blk",
         "reqModification": "subc_mk1",
-        "weaponConfig": [
-          {
-            "presetType": "AIR_TO_SEA"
-          },
-          {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
-              "amountPerTier": 3.0,
-              "tier": [
-                {
-                  "idx": 4,
-                  "iconType": "bombs_middle_high_drag_group"
-                },
-                {
-                  "idx": 5,
-                  "iconType": "bombs_middle_high_drag_group"
-                },
-                {
-                  "idx": 6,
-                  "iconType": "bombs_middle_high_drag_group"
-                },
-                {
-                  "idx": 7,
-                  "iconType": "bombs_middle_high_drag_group"
-                },
-                {
-                  "idx": 8,
-                  "iconType": "bombs_middle_high_drag_group"
-                }
-              ]
-            }
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA",
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+            "amountPerTier": 3.0,
+            "tier": [
+              {
+                "idx": 4,
+                "iconType": "bombs_middle_high_drag_group"
+              },
+              {
+                "idx": 5,
+                "iconType": "bombs_middle_high_drag_group"
+              },
+              {
+                "idx": 6,
+                "iconType": "bombs_middle_high_drag_group"
+              },
+              {
+                "idx": 7,
+                "iconType": "bombs_middle_high_drag_group"
+              },
+              {
+                "idx": 8,
+                "iconType": "bombs_middle_high_drag_group"
+              }
+            ]
           }
-        ]
+        }
       },
       {
         "name": "halifax_mk3_6x500lbs_9x1000lbs",
@@ -3345,7 +3341,12 @@
         "blk": "gameData/FlightModels/weaponPresets/halifax_mk3_4x2000lbs_sap.blk",
         "reqModification": "wellington_2000",
         "weaponConfig": {
-          "presetType": "AIR_TO_SEA"
+          "presetType": "AIR_TO_SEA",
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/uk_2000lb_ap_mkI.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_heavy_high_drag"
+          }
         }
       }
     ]

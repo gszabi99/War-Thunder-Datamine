@@ -50,6 +50,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": [
               "t1_carrier_01",
               "t1_carrier_02"
@@ -84,6 +85,7 @@
             "resetStrictSpawnIndex": false,
             "forceCreate": false,
             "replaceAreas": false,
+            "ignoreTeamsOnReuse": false,
             "target": [
               "t2_carrier_01",
               "t2_carrier_02"
@@ -120,9 +122,9 @@
         "name": "t2_carrier_01",
         "tm": [
           [
-            0.930417,
+            0.999999,
             0.0,
-            0.366501
+            2.98023e-8
           ],
           [
             0.0,
@@ -130,14 +132,14 @@
             0.0
           ],
           [
-            -0.366501,
+            -2.98023e-8,
             0.0,
-            0.930417
+            0.999999
           ],
           [
             -14925.3,
             0.0,
-            21608.8
+            21538.5
           ]
         ],
         "unit_class": "uk_aircraftcarrier_ark_royal",
@@ -155,6 +157,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -194,15 +197,43 @@
               [
                 -12581.5,
                 0.0,
-                22585.7
+                21538.5
               ]
             ],
             "props": {
               "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_carrier_01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -12074.9,
+                0.0,
+                21538.5
+              ]
+            ],
+            "props": {
+              "speed": 0.0,
+              "moveType": "HALT"
             }
           }
         }
@@ -211,9 +242,9 @@
         "name": "t1_carrier_01",
         "tm": [
           [
-            -0.793353,
+            -1.0,
             0.0,
-            0.608762
+            -1.98418e-9
           ],
           [
             0.0,
@@ -221,14 +252,14 @@
             0.0
           ],
           [
-            -0.608762,
+            1.98418e-9,
             0.0,
-            -0.793353
+            -1.0
           ],
           [
             17215.8,
             0.0,
-            -15640.3
+            -15905.0
           ]
         ],
         "unit_class": "us_aircraftcarrier_forrestal",
@@ -246,6 +277,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -285,15 +317,14 @@
               [
                 13778.5,
                 0.0,
-                -12413.8
+                -15905.0
               ]
             ],
             "props": {
               "speed": 42.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "t1_carrier_01_wp_02": {
@@ -315,113 +346,14 @@
                 1.0
               ],
               [
-                16764.7,
+                13418.5,
                 0.0,
-                -8043.66
+                -15905.0
               ]
             ],
             "props": {
-              "speed": 50.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_carrier_01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                14299.8,
-                0.0,
-                -6503.65
-              ]
-            ],
-            "props": {
-              "speed": 50.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_carrier_01_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                9263.29,
-                0.0,
-                -14197.7
-              ]
-            ],
-            "props": {
-              "speed": 50.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_carrier_01_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11431.6,
-                0.0,
-                -15674.0
-              ]
-            ],
-            "props": {
-              "speed": 50.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "speed": 0.0,
+              "moveType": "HALT"
             }
           }
         }
@@ -465,6 +397,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -510,9 +443,9 @@
             "props": {
               "speed": 47.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_carrier_04_wp_02": {
@@ -542,9 +475,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_carrier_04_wp_03": {
@@ -574,9 +507,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_carrier_04_wp_04": {
@@ -606,9 +539,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t2_carrier_04_wp_05": {
@@ -638,9 +571,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -684,6 +617,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -728,9 +662,9 @@
             "props": {
               "speed": 42.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_carrier_04_wp_02": {
@@ -760,9 +694,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_carrier_04_wp_03": {
@@ -792,9 +726,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_carrier_04_wp_04": {
@@ -824,9 +758,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           },
           "t1_carrier_04_wp_05": {
@@ -856,9 +790,9 @@
             "props": {
               "speed": 50.0,
               "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
               "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
+              "canUsePathFinder": false
             }
           }
         }
@@ -890,11 +824,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_carrier_01",
             "t1_carrier_02"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -922,11 +856,11 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_carrier_01",
             "t2_carrier_02"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ]

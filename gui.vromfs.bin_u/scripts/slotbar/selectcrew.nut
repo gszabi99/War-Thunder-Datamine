@@ -55,6 +55,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   isNewUnit = false
 
   isSelectByGroups = false
+  dragAndDropMode = false
 
   function initScreen() {
     if (!this.unit || !this.unit.isUsable() || this.isHandlerUnitInSlotbar()
@@ -79,6 +80,11 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       tdClone.pos = tdPos[0] + ", " + tdPos[1]
       tdClone["class"] = this.cellClass
       tdClone.position = "root"
+      if (this.dragAndDropMode) {
+        let shopItemObj = tdClone.getChild()
+        shopItemObj.dragging = "yes"
+        shopItemObj.actionOnDrag = "no"
+      }
     } else {
       local icon = buildUnitSlot(this.unit.name, this.unit, {})
       this.guiScene.appendWithBlk(this.scene, icon, this)
@@ -96,13 +102,14 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let bDiv = tdClone.findObject("air_item_bottom_buttons")
-    if (checkObj(bDiv))
-      this.guiScene.destroyElement(bDiv)
-
-    let markerObj = tdClone.findObject("unlockMarker")
-    if (markerObj?.isValid())
-      this.guiScene.destroyElement(markerObj)
+    let objIdsToDestroy = ["air_item_bottom_buttons", "unlockMarker"]
+    if (this.dragAndDropMode)
+      objIdsToDestroy.append("inServiceMark")
+    objIdsToDestroy.each(function(id) {
+      let obj = tdClone.findObject(id)
+      if (obj?.isValid())
+        this.guiScene.destroyElement(obj)
+    }.bindenv(this))
 
     let crew = getCrewsListByCountry(this.country)?[this.takeCrewIdInCountry]
     this.createSlotbar(
@@ -117,14 +124,18 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
         unitForSpecType = this.unit,
         alwaysShowBorder = true
         hasExtraInfoBlock = true
+        hasExtraInfoBlockTop = true
         slotbarBehavior = "posNavigator"
         needFullSlotBlock = true
+        selectOnHover = this.dragAndDropMode
 
         applySlotSelectionOverride = @(_, __) this.onChangeUnit()
         onSlotDblClick = Callback(this.onApplyCrew, this)
         onSlotActivate = Callback(this.onApplyCrew, this)
       },
       "take-aircraft-slotbar")
+    if(this.dragAndDropMode)
+      this.guiScene.performDelayed(this, @() this.slotbarWeak.selectCrew(-1))
 
     this.onChangeUnit()
 
@@ -134,6 +145,11 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let textObj = this.scene.findObject("take-aircraft-text")
     textObj.setValue(this.messageText)
+
+    showObjectsByTable(this.scene, {
+      set_unit_btns = !this.dragAndDropMode
+      set_air_dnd_title = this.dragAndDropMode
+    })
 
     this.guiScene.setUpdatesEnabled(true, true)
 
@@ -252,16 +268,32 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeUnit() {
-    this.takeCrewIdInCountry = this.getCurCrew()?.idInCountry ?? get_crew_count(this.country)
-    this.updateButtons()
+    this.takeCrewIdInCountry = this.slotbarWeak.curSlotIdInCountry == -1
+      ? -1
+      : this.getCurCrew()?.idInCountry ?? get_crew_count(this.country)
+    this.updateSelectedCrewPriceText()
   }
 
-  function updateButtons() {
-    placePriceTextToButton(this.scene, "btn_set_air", loc("mainmenu/btnTakeAircraft"), this.getTakeAirCost())
+  onUnitCellDragStart = @(_obj) null
+
+  function onUnitCellDrop(_obj) {
+    this.guiScene.setCursor("normal", true)
+    if (this.takeCrewIdInCountry >= 0)
+      this.onApply()
+    this.goBack()
+  }
+
+  function updateSelectedCrewPriceText() {
+    if (!this.dragAndDropMode)
+      placePriceTextToButton(this.scene, "btn_set_air", loc("mainmenu/btnTakeAircraft"), this.getTakeAirCost())
+    else if (this.takeCrewIdInCountry == -1)
+      this.scene.findObject("set_air_dnd_title_text").setValue("")
+    else
+      placePriceTextToButton(this.scene, "set_air_dnd_title", loc("mainmenu/btnTakeAircraft"), this.getTakeAirCost())
   }
 
   function onEventOnlineShopPurchaseSuccessful(_p) {
-    this.updateButtons()
+    this.updateSelectedCrewPriceText()
   }
 
   function checkUseTutorial() {
@@ -346,7 +378,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   function onTakeCancel() {
     if (this.restrictCancel)
       return
-
+    this.guiScene.setCursor("normal", true)
     this.goBack()
   }
 

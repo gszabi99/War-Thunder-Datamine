@@ -48,7 +48,3 @@ popup_menu {
   <</columns>>
 
 }
-dummy {
-  btnName:t='Y'
-  on_click:t='goBack'
-}

@@ -136,6 +136,7 @@ struct EventOnPlayerModSpend
   userId : uint64
   modName : string
   count : int
+  unitName : string
 
 [event(broadcast)]
 struct MatchingRoomExtraParams
@@ -230,3 +231,6 @@ struct EventOnUnitDead
 struct EventRendInstDestroyed
   pos : float3
   riType : uint
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
+struct CmdActionInRespawn {}

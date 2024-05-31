@@ -154,7 +154,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     let country = get_profile_country()
     let availableUnits = getAvailableUnits(this.map, country)
     let wData = getWarningTextTbl(
-      availableUnits, getCurPreset().countryPresets?[country].units, true)
+      availableUnits, getCurPreset().countryPresets?[country].units ?? [], true)
     let isVisibleBtnAutoPreset = wData.needMsgBox
     let btnAutoPreset = showObjById("btn_auto_preset", isVisibleBtnAutoPreset, this.scene)
     if (isVisibleBtnAutoPreset) {

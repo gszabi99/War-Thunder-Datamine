@@ -6,6 +6,14 @@ let { fabs } = require("%sqstd/math.nut")
 let interopGet = require("interopGen.nut")
 
 
+let shellHitDamageEvents = {
+  hitEventsCount = 0
+  crewDamageEventCount = 0
+  partDestroyedEventCount = 0
+  armorPiercesEventCount = 0
+  armorBlockedEventCount = 0
+}
+
 let gunStatesFirstRow = []
 let gunStatesSecondRow = []
 
@@ -64,6 +72,7 @@ let shipState = {
   gunStatesSecondNumber = Watched(0)
   gunStatesFirstRow
   gunStatesSecondRow
+  shellHitDamageEvents
 }
 
 function isDiff(time1, time2) {
@@ -99,6 +108,14 @@ interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTim
         gunStatesSecondRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime,  gunProgress = gunProgress})
     }
   }
+}
+
+interop.updateShellHitDamageEventCounts <- function(hit, crew, part, pierce, blocked) {
+  shellHitDamageEvents.hitEventsCount = hit
+  shellHitDamageEvents.crewDamageEventCount = crew
+  shellHitDamageEvents.partDestroyedEventCount = part
+  shellHitDamageEvents.armorPiercesEventCount = pierce
+  shellHitDamageEvents.armorBlockedEventCount = blocked
 }
 
 

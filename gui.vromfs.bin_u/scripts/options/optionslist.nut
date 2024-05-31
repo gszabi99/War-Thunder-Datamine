@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import can_add_tank_alt_crosshair, is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode, get_user_alt_crosshairs
+from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
@@ -20,6 +20,7 @@ let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"

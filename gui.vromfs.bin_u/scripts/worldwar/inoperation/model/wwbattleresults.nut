@@ -288,7 +288,13 @@ let WwBattleResults = class {
     foreach (side in sidesOrder) {
       let teamName = teamBySide[side]
       let teamSide = side
-      let teamArmiesList = wwArmies.filter((@(army) army.side == teamSide))
+      let teamArmiesList = wwArmies
+        .filter((@(army) army.side == teamSide))
+        .reduce(function (res, v) {
+          res.append(v)
+          return res
+        }, [])
+
       teamArmiesList.sort(function (a, b) { return a.unitType - b.unitType })
 
       local teamCountry = ""

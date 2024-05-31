@@ -16,7 +16,7 @@ let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
 let { APP_ID } = require("app")
 let { encode_uri_component } = require("url")
 let DataBlock = require("DataBlock")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -228,6 +228,7 @@ function _validate(data, name) {
 let class InventoryClient {
   items = {}
   itemdefs = {}
+  itemsForRequest = {}
 
   lastUpdateTime = -1
   lastRequestTime = -1
@@ -316,7 +317,7 @@ let class InventoryClient {
     let itemdefid = item.itemdef
     let shouldUpdateItemdDefs = this.addItemDefIdToRequest(itemdefid)
     item.itemdefid <- itemdefid
-    item.itemdef = this.itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
+    item.itemdef = this.itemsForRequest?[itemdefid] ?? this.itemdefs[itemdefid] //fix me: why we use same field name for other purposes?
     this.items[item.itemid] <- item
     return shouldUpdateItemdDefs
   }
@@ -434,14 +435,21 @@ let class InventoryClient {
     let requestData = this.pendingItemDefRequest
     this.pendingItemDefRequest = null
 
-    if (requestData.shouldRefreshAll)
-      this.itemdefidsRequested.clear()
-
     let itemdefidsRequest = []
-    foreach (itemdefid, value in this.itemdefs) {
-      if (!requestData.shouldRefreshAll && (!u.isEmpty(value) || this.itemdefidsRequested?[itemdefid]))
-        continue
+    if (requestData.shouldRefreshAll) {
+      this.itemdefidsRequested.clear()
+      foreach (itemdefid, _value in this.itemdefs) {
+        if (this.itemdefidsRequested?[itemdefid])
+          continue
 
+        itemdefidsRequest.append(itemdefid)
+        this.itemdefidsRequested[itemdefid] <- true
+      }
+    }
+
+    foreach (itemdefid, _value in this.itemsForRequest) {
+      if (this.itemdefidsRequested?[itemdefid])
+        continue
       itemdefidsRequest.append(itemdefid)
       this.itemdefidsRequested[itemdefid] <- true
     }
@@ -499,10 +507,10 @@ let class InventoryClient {
   getItemCost          = @(itemdefid) prices.value?[itemdefid] ?? ::zero_money
 
   function addItemDefIdToRequest(itemdefid) {
-    if (itemdefid == null || itemdefid in this.itemdefs)
+    if (itemdefid == null || itemdefid in this.itemdefs || itemdefid in this.itemsForRequest)
       return false
 
-    this.itemdefs[itemdefid] <- {}
+    this.itemsForRequest[itemdefid] <- {}
     return true
   }
 
@@ -513,11 +521,13 @@ let class InventoryClient {
   }
 
   function addItemDef(itemdef) {
-    let originalItemDef = this.itemdefs?[itemdef.itemdefid] || {}
+    let originalItemDef = this.itemsForRequest?[itemdef.itemdefid] ?? this.itemdefs?[itemdef.itemdefid] ?? {}
     originalItemDef.clear()
     originalItemDef.__update(itemdef)
     originalItemDef.tags = this.getTagsItemDef(originalItemDef)
     this.itemdefs[itemdef.itemdefid] <- originalItemDef
+    if (itemdef.itemdefid in this.itemsForRequest)
+      this.itemsForRequest.$rawdelete(itemdef.itemdefid)
   }
 
   function getTagsItemDef(itemdef) {
@@ -648,7 +658,7 @@ let class InventoryClient {
     let taskId = char_send_custom_action("cln_inventory_exchange_items",
                                              EATT_JSON_REQUEST,
                                              DataBlock(),
-                                             json_to_string(json, false),
+                                             object_to_json_string(json, false),
                                              -1)
     addTask(taskId, { showProgressBox = true }, internalCb, null, TASK_CB_TYPE.REQUEST_DATA)
   }

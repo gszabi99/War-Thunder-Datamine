@@ -1924,12 +1924,16 @@
           ],
           "page": {
             "type": "radar_b_round",
-            "scale": 1.1,
+            "scale": 1.3,
             "radarColor": [
               27,
               115,
               255,
               255
+            ],
+            "offset": [
+              0,
+              -50
             ]
           }
         },
@@ -2027,10 +2031,6 @@
         "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk82.blk"
       },
       {
-        "name": "f-104g_bomb_mk82_snakeye",
-        "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk82_snakeye.blk"
-      },
-      {
         "name": "f-104g_bomb_m117",
         "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_m117.blk"
       },
@@ -2041,6 +2041,10 @@
       {
         "name": "f-104g_bomb_matra_25e",
         "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_matra_25e.blk"
+      },
+      {
+        "name": "f-104g_bomb_mk82_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk82_snakeye.blk"
       },
       {
         "name": "f-104g_bomb_blu_27",
@@ -2340,6 +2344,44 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk82_dlt",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_wing_001",
+                "pylon_wing_001_dop"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/uk_dlt_500lb_mk_82_ldgp_x2_left_wing.blk",
+              "emitter": "dlt_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk82_snakeye_dlt",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_wing_001",
+                "pylon_wing_001_dop"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/uk_dlt_500lb_mk_82_ldgp_snakeye_x2_left_wing.blk",
+              "emitter": "dlt_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -2872,6 +2914,44 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk82_dlt",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_wing_002",
+                "pylon_wing_002_dop"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/uk_dlt_500lb_mk_82_ldgp_x2_left_wing.blk",
+              "emitter": "dlt_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk82_snakeye_dlt",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": [
+                "pylon_wing_002",
+                "pylon_wing_002_dop"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/uk_dlt_500lb_mk_82_ldgp_snakeye_x2_left_wing.blk",
+              "emitter": "dlt_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {

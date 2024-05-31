@@ -32,9 +32,10 @@ let getClanActions = function(clanId) {
   ]
 }
 
-let getRequestActions = function(clanId, playerUid, playerName = "", handler = null) {
-  if (!playerUid)
-    return []
+let retrieveRequestActions = function(clanId, playerUid, playerName, handler, callback) {
+  if (!playerUid) {
+    callback?([])
+  }
 
   let myClanRights = ::g_clans.getMyClanRights()
   let isClanAdmin = clan_get_admin_editor_mode()
@@ -42,53 +43,55 @@ let getRequestActions = function(clanId, playerUid, playerName = "", handler = n
   let isBlock = ::isPlayerInContacts(playerUid, EPL_BLOCKLIST)
   let contact = ::getContact(playerUid, playerName)
   let name = contact?.name ?? playerName
-  let canChat = contact?.canChat() ?? isChatEnableWithPlayer(name)
-  let isProfileMuted = contact?.isMuted() ?? false
+  contact.checkInteractionStatus(function(comms_state) {
+    let canChat = contact?.canChat(comms_state) ?? isChatEnableWithPlayer(name, comms_state)
+    let isProfileMuted = contact?.isMuted(comms_state) ?? false
 
-  return [
-    {
-      text = loc("contacts/message")
-      isVisualDisabled = !canChat || isBlock || isProfileMuted
-      show = playerUid != userIdStr.value
-             && ps4_is_chat_enabled()
-             && !u.isEmpty(name)
-             && hasMenuChat.value
-      action = function() {
-        if (isBlock)
-          return playerContextMenu.showBlockedPlayerPopup(name)
+    callback?([
+      {
+        text = loc("contacts/message")
+        isVisualDisabled = !canChat || isBlock || isProfileMuted
+        show = playerUid != userIdStr.value
+               && ps4_is_chat_enabled()
+               && !u.isEmpty(name)
+               && hasMenuChat.value
+        action = function() {
+          if (isBlock)
+            return playerContextMenu.showBlockedPlayerPopup(name)
 
-        if (isProfileMuted) //There was no xbox message, so don't try to call overlay msg
-          return playerContextMenu.showXboxPlayerMuted(name)
+          if (isProfileMuted) //There was no xbox message, so don't try to call overlay msg
+            return playerContextMenu.showXboxPlayerMuted(name)
 
-        if (!canChat)
-          return playerContextMenu.notifyPlayerAboutRestriction(contact)
+          if (!canChat)
+            return playerContextMenu.notifyPlayerAboutRestriction(contact)
 
-        ::openChatPrivate(name, handler)
+          ::openChatPrivate(name, handler)
+        }
       }
-    }
-    {
-      text = loc("mainmenu/btnUserCard")
-      action = @() ::gui_modal_userCard({ uid = playerUid })
-    }
-    {
-      text = loc("clan/requestApprove")
-      show = isInArray("MEMBER_ADDING", myClanRights) || isClanAdmin
-      action = @() ::g_clans.approvePlayerRequest(playerUid, clanId)
-    }
-    {
-      text = loc("clan/requestReject")
-      show = isInArray("MEMBER_REJECT", myClanRights) || isClanAdmin
-      action = @() ::g_clans.rejectPlayerRequest(playerUid, clanId)
-    }
-    {
-      text = loc("clan/blacklistAdd")
-      show = isInArray("MEMBER_BLACKLIST", myClanRights) || isClanAdmin
-      action = @() ::g_clans.blacklistAction(playerUid, true, clanId)
-    }
-  ]
+      {
+        text = loc("mainmenu/btnUserCard")
+        action = @() ::gui_modal_userCard({ uid = playerUid })
+      }
+      {
+        text = loc("clan/requestApprove")
+        show = isInArray("MEMBER_ADDING", myClanRights) || isClanAdmin
+        action = @() ::g_clans.approvePlayerRequest(playerUid, clanId)
+      }
+      {
+        text = loc("clan/requestReject")
+        show = isInArray("MEMBER_REJECT", myClanRights) || isClanAdmin
+        action = @() ::g_clans.rejectPlayerRequest(playerUid, clanId)
+      }
+      {
+        text = loc("clan/blacklistAdd")
+        show = isInArray("MEMBER_BLACKLIST", myClanRights) || isClanAdmin
+        action = @() ::g_clans.blacklistAction(playerUid, true, clanId)
+      }
+    ])
+  })
 }
 
 return {
   getClanActions = getClanActions
-  getRequestActions = getRequestActions
+  retrieveRequestActions = retrieveRequestActions
 }

@@ -17,7 +17,7 @@ let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { floor, fabs } = require("math")
 let { rnd } = require("dagor.random")
-let { json_to_string } = require("json")
+let { object_to_json_string } = require("json")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
 let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
@@ -180,6 +180,8 @@ function on_lost_psn() {
         ]], "ok")
   }
 }
+
+eventbus_subscribe("PsnLoginStateChanged", @(p) p?.isSignedIn ? null : on_lost_psn())
 
 ::check_logout_scheduled <- function check_logout_scheduled() {
   if (gui_start_logout_scheduled) {
@@ -463,7 +465,7 @@ function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeCallb
   assert(isInArray(type(obj), [ "table", "array" ]),
     "Data type not suitable for save_to_json: " + type(obj))
 
-  return json_to_string(obj, false)
+  return object_to_json_string(obj, false)
 }
 
 ::roman_numerals <- ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",

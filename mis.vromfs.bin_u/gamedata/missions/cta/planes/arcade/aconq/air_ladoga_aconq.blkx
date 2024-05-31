@@ -1,0 +1,866 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/air_ladoga.bin",
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/_aconq;location/air_ladoga",
+      "locDesc": "missions/_aconq/main/desc;missions/_aconq/desc;",
+      "scoreLimit": 20500,
+      "timeLimit": 20,
+      "deathPenaltyMul": 0.4,
+      "postfix": "_aconq",
+      "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "allowEmptyTeams": false,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 20.0
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "briefing_aconq_t1_air_spawn_arcade",
+              "lookAt": "aconq_capture_area_02_arcade"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "briefing_aconq_t2_air_spawn_arcade",
+              "lookAt": "aconq_capture_area_02_arcade"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "aconq_weapon_area_t1_01_arcade"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "aconq_weapon_area_t1_02_arcade"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "aconq_weapon_area_t2_01_arcade"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "aconq_weapon_area_t2_02_arcade"
+            },
+            {
+              "icontype": "basezone_A",
+              "side": "neutral",
+              "target": "aconq_capture_area_01_arcade"
+            },
+            {
+              "icontype": "basezone_B",
+              "side": "neutral",
+              "target": "aconq_capture_area_02_arcade"
+            },
+            {
+              "icontype": "basezone_C",
+              "side": "neutral",
+              "target": "aconq_capture_area_03_arcade"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/planes/arcade/aconq/air_ladoga/spawn_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/arcade/aconq/air_ladoga/bdt_bases_destroy_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/arcade/aconq/air_ladoga/stc_static_units_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/arcade/aconq/air_ladoga/mu_movable_units_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/land_units_death_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/arcade/aconq/air_ladoga/aft_airfields_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "mission_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "barabashka_enabled"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "capture_zone_01_name": "",
+    "capture_zone_02_name": "",
+    "capture_zone_03_name": "",
+    "air_spawn_t1_name": "",
+    "air_spawn_t2_name": "",
+    "bomber_spawn_t1_name": "",
+    "bomber_spawn_t2_name": "",
+    "airfield_spawn_t1": "",
+    "airfield_spawn_t2": "",
+    "airfield_01_name": "",
+    "airfield_02_name": ""
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          0.636114,
+          0.0,
+          0.771595
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.771595,
+          0.0,
+          0.636114
+        ],
+        [
+          -9730.55,
+          1500.0,
+          -4226.27
+        ]
+      ],
+      "unit_class": "su_27",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
+    },
+    "squad": [
+      {
+        "name": "t1_land_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -13239.7,
+            185.057,
+            -12488.3
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_static_units_squad"
+        }
+      },
+      {
+        "name": "t2_land_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -11582.3,
+            185.057,
+            -142.408
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_static_units_squad"
+        }
+      },
+      {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -15336.9,
+            180.906,
+            -13054.7
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_land_squad",
+            "t1_movable_units_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -12314.1,
+            180.906,
+            563.12
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_land_squad",
+            "t2_movable_unit_tank_01"
+          ]
+        }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -25688.7,
+            84.85,
+            -5818.95
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t1_aaa_squad",
+            "t1_aaa_static_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -28465.0,
+            84.85,
+            -14068.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t2_aaa_squad",
+            "t2_aaa_static_squad"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "aconq_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          20000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          10000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          20000.0
+        ],
+        [
+          -3963.9,
+          -242.0,
+          -15194.7
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "briefing_aconq_t1_air_spawn_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.0000216231,
+          0.0,
+          500.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -500.0,
+          0.0,
+          -0.0000216231
+        ],
+        [
+          -3961.44,
+          1000.0,
+          -23187.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_aconq_t2_air_spawn_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.0000220883,
+          0.0,
+          -500.0
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          500.0,
+          0.0,
+          -0.0000220883
+        ],
+        [
+          -3961.44,
+          1000.0,
+          -7181.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "aconq_weapon_area_t1_01_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          0.00004069
+        ],
+        [
+          0.0,
+          1500.0,
+          0.0
+        ],
+        [
+          -0.00004069,
+          0.0,
+          2000.0
+        ],
+        [
+          -317.5,
+          656.35,
+          -12076.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "aconq_weapon_area_t1_02_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          0.00004069
+        ],
+        [
+          0.0,
+          1500.0,
+          0.0
+        ],
+        [
+          -0.00004069,
+          0.0,
+          2000.0
+        ],
+        [
+          -7190.8,
+          656.35,
+          -11972.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "aconq_weapon_area_t2_01_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          0.00004069
+        ],
+        [
+          0.0,
+          1500.0,
+          0.0
+        ],
+        [
+          -0.00004069,
+          0.0,
+          2000.0
+        ],
+        [
+          -7096.1,
+          656.35,
+          -17650.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "aconq_weapon_area_t2_02_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          0.00004069
+        ],
+        [
+          0.0,
+          1500.0,
+          0.0
+        ],
+        [
+          -0.00004069,
+          0.0,
+          2000.0
+        ],
+        [
+          -367.3,
+          656.35,
+          -18096.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "aconq_capture_area_01_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          550.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          350.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1750.0
+        ],
+        [
+          -9962.1,
+          680.538,
+          -15190.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "aconq_capture_area_02_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          0.00004069
+        ],
+        [
+          0.0,
+          1500.0,
+          0.0
+        ],
+        [
+          -0.00004069,
+          0.0,
+          2000.0
+        ],
+        [
+          -3963.9,
+          656.35,
+          -15194.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "aconq_capture_area_03_arcade": {
+      "type": "Point",
+      "tm": [
+        [
+          550.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          350.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1750.0
+        ],
+        [
+          2039.06,
+          640.088,
+          -15190.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

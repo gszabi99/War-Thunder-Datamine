@@ -37,6 +37,7 @@ let { setContactsHandlerClass } = require("%scripts/contacts/contactsHandlerStat
 let { move_mouse_on_child, move_mouse_on_child_by_value, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { CommunicationState } = require("%scripts/xbox/permissions.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 let { is_console } = require("%sqstd/platform.nut")
 
@@ -430,6 +431,17 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateContactButtonsVisibility(contact, contact_buttons_holder) {
+    if (contact) {
+      local capturedThis = this
+      contact.checkInteractionStatus(function(comms_state) {
+        capturedThis.updateContactButtonsVisibilityImpl(contact, comms_state, contact_buttons_holder)
+      })
+      return
+    }
+    this.updateContactButtonsVisibilityImpl(contact, CommunicationState.Allowed, contact_buttons_holder)
+  }
+
+  function updateContactButtonsVisibilityImpl(contact, comms_state, contact_buttons_holder) {
     if (!this.checkScene())
       return
 
@@ -445,12 +457,13 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let isPlayerFromXboxOne = platformModule.isPlayerFromXboxOne(contactName)
     let canBlock = !isPlayerFromXboxOne
-    let canChat = hasMenuChatPrivate.value && (contact ? contact.canChat() : true)
-    let canInvite = contact ? contact.canInvite() : true
     let canInteractCrossConsole = platformModule.canInteractCrossConsole(contactName)
     let canInteractCrossPlatform = crossplayModule.isCrossPlayEnabled()
                                      || platformModule.isPlayerFromPS4(contactName)
                                      || isPlayerFromXboxOne
+
+    let canChat = hasMenuChatPrivate.value && (contact ? contact.canChat(comms_state) : true)
+    let canInvite = contact ? contact.canInvite(comms_state) : true
 
     showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
     showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)

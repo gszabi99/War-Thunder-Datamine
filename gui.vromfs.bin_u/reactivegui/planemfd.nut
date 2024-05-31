@@ -3,13 +3,14 @@ from "%rGui/globals/ui_library.nut" import *
 let { MfdRadarColor, MfdRadarEnabled, radarPosSize } = require("radarState.nut")
 let { IsMfdEnabled, RwrScale, RwrBackHide, MfdRadarWithNavVis, MfdRadarNavPosSize,
     MfdVdiVisible, MfdVdiPosSize, DigitalDevicesVisible, DigDevicesPosSize } = require("planeState/planeToolsState.nut")
-let tws = require("tws.nut")
+let {tws, mfdRwrSettings} = require("tws.nut")
 let { RwrForMfd, RwrPosSize } = require("airState.nut")
 let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut")
 let mfdVdi = require("planeCockpit/mfdVdi.nut")
 let digitalDevices = require("planeCockpit/digitalDevices.nut")
 let mfdCamera = require("planeMfdCamera.nut")
 let { radarMfd } = require("%rGui/radar.nut")
+let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
   RwrPosSize.value[1] + 0.17 * RwrPosSize.value[3]])
@@ -20,6 +21,12 @@ let planeMFD = @() {
   size = flex()
   children = [
     (MfdRadarEnabled.value ? radarMfd(radarPosSize, MfdRadarColor) : null),
+    (RwrForMfd.get() ? {
+        rendObj = ROBJ_SOLID
+        pos = [RwrPosSize.value[0], RwrPosSize.value[1]]
+        size = [RwrPosSize.value[2], RwrPosSize.value[3]]
+        color = mfdRwrSettings.get().backgroundColor
+      } : null),
     (RwrForMfd.value
       ? tws({
         colorWatched = MfdRadarColor,
@@ -36,6 +43,7 @@ let planeMFD = @() {
       })
       : null),
     mfdCamera,
+    mfdCustomPages,
     (MfdRadarWithNavVis.value ? mfdRadarWithNav(MfdRadarNavPosSize[2], MfdRadarNavPosSize[3], MfdRadarNavPosSize[0], MfdRadarNavPosSize[1]) : null),
     (MfdVdiVisible.value ? mfdVdi(MfdVdiPosSize[2], MfdVdiPosSize[3], MfdVdiPosSize[0], MfdVdiPosSize[1]) : null),
     (DigitalDevicesVisible.value ? digitalDevices(DigDevicesPosSize[2], DigDevicesPosSize[3], DigDevicesPosSize[0], DigDevicesPosSize[1]) : null)

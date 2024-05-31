@@ -6,6 +6,7 @@ let { format } = require("string")
 let { fatal } = require("dagor.debug")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isUnitGift, isUnitGroup } = require("%scripts/unit/unitInfo.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 function getReqAirPosInArray(reqName, arr) {
   foreach (r, row in arr)
@@ -205,15 +206,15 @@ function getBranchesTbl(rangeData) {
 //returns an array of positions of each rank in page and each vertical section in page
 function calculateRanksAndSectionsPos(page) {
   let hasRankPosXY = page?.hasRankPosXY ?? false
-  let res = array(::max_country_rank + 1, 0)
-  let fakeRes = array(::max_country_rank + 1, 0)
+  let res = array(MAX_COUNTRY_RANK + 1, 0)
+  let fakeRes = array(MAX_COUNTRY_RANK + 1, 0)
 
   let sectionsPos = page.airList.len() ? [0, page.airList.len()] : [ 0 ]
   local foundPremium = false
   local maxColumns = 0
 
   for (local range = 0; range < page.airList.len(); range++) {
-    let rangeRanks = array(::max_country_rank + 1, 0)
+    let rangeRanks = array(MAX_COUNTRY_RANK + 1, 0)
     let branches = getBranchesTbl(page.airList[range])
 
     foreach (branch in branches) {

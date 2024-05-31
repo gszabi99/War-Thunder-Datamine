@@ -19,6 +19,7 @@ require app
 def gm_engine_sound_init_es(evt : CmdInitComponent;
                             eid : EntityId;
                             uid : int;
+                            playerNo : int;
                             var gm_engine_sound__pos_offset : float3&;
                             var gm_engine_sound__load_smooth : float&;
                             var gm_engine_sound__event_name : das_string&;
@@ -39,9 +40,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   if !gm.needLoadSounds
     addSubTemplate(eid, "disabled_update")
     return
-  let hero = get_controlled_hero()
-  let is_hero = (hero != null) ? hero.eid == eid : false
-
+  let is_hero = playerNo == get_local_player_no()
   let modelSoundBlk = *evt.modelBlk |> datablock_get_block_by_name("sound")
   if modelSoundBlk == null
     addSubTemplate(eid, "disabled_update")
@@ -74,10 +73,20 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
       let outsideBlk = *engineBlk |> datablock_get_block_by_name("outside")
       if outsideBlk != null
         let path = outsideBlk |> datablock_getStr("path", "")
-        let event = outsideBlk |> datablock_getStr("eventBack", "")
+        var event = outsideBlk |> datablock_getStr("eventBack", "")
+        if event == ""
+          event = outsideBlk |> datablock_getStr("eventBack_1", "")
         gm_engine_sound__event_name := path + "/" + event
+
+        if *outsideBlk |> datablock_param_exists("eventBack_2", -1)
+          let additionalEvent = outsideBlk |> datablock_getStr("eventBack_2", "")
+          addSubTemplate(eid, "gm_additional_engine_sound") <| $(var init : ComponentsInitializer)
+            set(init, "gm_additional_engine_sound__event_name", path + "/" + additionalEvent)
+            set(init, "gm_additional_engine_sound__pos_offset",  outsideBlk |> datablock_getPoint3("pos_2", float3(0, 0, 0)))
+
         gm_engine_sound__load_smooth = outsideBlk |> datablock_getReal("loadSmooth", 0.05)
-        gm_engine_sound__pos_offset = outsideBlk |> datablock_getPoint3("offsetPos", float3(0, 0, 0))
+        let offsetParamName = *outsideBlk |> datablock_param_exists("offsetPos", -1) ? "offsetPos" : "pos_1"
+        gm_engine_sound__pos_offset = outsideBlk |> datablock_getPoint3(offsetParamName, float3(0, 0, 0))
 
       let insideBlk = *engineBlk |> datablock_get_block_by_name("cockpit")
       if insideBlk != null
@@ -98,6 +107,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
         gm_engine_sound__stop_event_name := path + "/" + eventStop
 
       let can_patch_engines_for_enemies = sndBlk |> datablock_getBool("canPatchEnginesForEnemies", false)
+      let hero = get_controlled_hero()
       let is_enemy = !is_hero && unit.isTank && hero != null && hero.army != unit.army && can_patch_engines_for_enemies
       if is_enemy
         gm_engine_sound__event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
@@ -210,6 +220,7 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
     curEvent.handle |> set_var_optional("speed", speed)
     curEvent.handle |> set_var_optional("climb", climb)
     curEvent.handle |> set_var_optional("is_visible", visible)
+    curEvent.handle |> set_var_optional("building_density", gm.buildingDensity)
 
   if !is_playing(gm_engine_sound__event.handle) && is_valid_event(gm_engine_sound__event.handle)
     release(gm_engine_sound__event.handle)
@@ -306,3 +317,43 @@ def gm_engine_on_play_stop_es(evt : CmdEnginePlayStopSound;
 
   if !is_playing(curEvent.handle)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
+
+//---------------------------------------------------------------------------------------------------
+
+[es(tag=sound, REQUIRE_NOT = disabled)]
+def gm_additional_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
+                                       gm_additional_engine_sound__pos : float3;
+                                       gm_additional_engine_sound__event_name : das_string;
+                                       var gm_additional_engine_sound__event : SoundEvent&)
+  if !is_playing(gm_additional_engine_sound__event.handle)
+    gm_additional_engine_sound__event |> play(string(gm_additional_engine_sound__event_name), gm_additional_engine_sound__pos)
+
+[es(tag=sound, REQUIRE_NOT = disabled)]
+def gm_additional__on_steal_es(evt : CmdEngineStealSound;
+                               var gm_additional_engine_sound__event : SoundEvent&)
+  if is_playing(gm_additional_engine_sound__event.handle)
+    abandon(gm_additional_engine_sound__event.handle)
+
+
+[es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
+def gm_additional_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
+                                         uid : int;
+                                         gm_engine_sound__load : float;
+                                         var gm_additional_engine_sound__pos : float3&;
+                                         gm_additional_engine_sound__pos_offset : float3;
+                                         gm_additional_engine_sound__event : SoundEvent)
+  let unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
+  let gm = unit |> as_gm()
+  if gm == null
+    return
+
+  let rpm = abs(gm.engineRelativeRPM) * 100.f
+  gm_additional_engine_sound__pos = unit.unitTm * gm_additional_engine_sound__pos_offset
+  if is_playing(gm_additional_engine_sound__event.handle)
+    gm_additional_engine_sound__event.handle |> set_pos(gm_additional_engine_sound__pos)
+
+    gm_additional_engine_sound__event.handle |> set_var_optional("is_aero_on", rpm > 5. ? 1. : 0.)
+    gm_additional_engine_sound__event.handle |> set_var_optional("rpm", rpm)
+    gm_additional_engine_sound__event.handle |> set_var_optional("load", gm_engine_sound__load)

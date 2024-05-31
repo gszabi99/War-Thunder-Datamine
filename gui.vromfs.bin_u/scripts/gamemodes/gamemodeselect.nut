@@ -18,9 +18,10 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEventPVETrophyName, hasNightGameModes } = require("%scripts/events/eventInfo.nut")
+let { getEventPVETrophyName, hasNightGameModes, hasSmallTeamsGameModes } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
+let smallTeamsOptionsWnd = require("%scripts/events/smallTeamsOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
@@ -32,6 +33,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameM
   getRequiredUnitTypes, getGameModeItemId, getGameModeEvent
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeStartFunction } = require("%scripts/gameModes/gameModeManagerView.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 dagui_propid_add_name_id("modeId")
@@ -289,6 +291,12 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       this.gameModesWithTimer[id] <- this.mode.updateByTimeFunc
 
     let settingsButtons = []
+    if (hasSmallTeamsGameModes(event))
+      settingsButtons.append({
+        settingsButtonClick = "onSmallTeams"
+        settingsButtonTooltip = loc("game_mode_settings")
+        settingsButtonImg = "#ui/gameuiskin#slot_modifications.svg"
+      })
     if (hasNightGameModes(event))
       settingsButtons.append({
         settingsButtonClick = "onNightBattles"
@@ -299,7 +307,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       settingsButtons.append({
         settingsButtonClick = "onMapPreferences"
         settingsButtonTooltip = mapPreferencesParams.getPrefTitle(event)
-        settingsButtonImg = "#ui/gameuiskin#slot_modifications.svg"
+        settingsButtonImg = "#ui/gameuiskin#btn_like_dislike.svg"
       })
     if (!isLink && ::events.isEventNeedInfoButton(event))
       settingsButtons.append({
@@ -387,13 +395,13 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   function createGameModeCountriesView(gameMode) {
     let res = []
     local countries = gameMode.countries
-    if (!countries.len() || countries.len() >= ::g_crews_list.get().len())
+    if (!countries.len() || countries.len() >= getCrewsList().len())
       return res
 
     local needShowLocked = false
-    if (countries.len() >= 0.7 * ::g_crews_list.get().len()) {
+    if (countries.len() >= 0.7 * getCrewsList().len()) {
       let lockedCountries = []
-      foreach (countryData in ::g_crews_list.get()) {
+      foreach (countryData in getCrewsList()) {
         let country = countryData.country
         if (!isInArray(country, countries))
           lockedCountries.append(country)
@@ -617,4 +625,5 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onNightBattles = @(obj) nightBattlesOptionsWnd(obj?.modeId)
+  onSmallTeams = @(obj) smallTeamsOptionsWnd(obj?.modeId)
 }

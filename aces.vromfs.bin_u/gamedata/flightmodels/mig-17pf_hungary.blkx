@@ -2075,12 +2075,6 @@
       "node": "aero_14a_pylon"
     }
   },
-  "weapon_presets": {
-    "preset": {
-      "name": "mig_17p_lim_5p_default",
-      "blk": "gameData/FlightModels/weaponPresets/mig_17_default.blk"
-    }
-  },
   "sensors": {
     "sensor": [
       {
@@ -2309,42 +2303,6 @@
       }
     ]
   },
-  "modifications": {
-    "cd_98": {},
-    "air_extinguisher": {
-      "prevModification": "ns23_new_gun",
-      "tier": 4,
-      "modClass": "weapon",
-      "invertEnableLogic": false
-    },
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105_jet": {
-      "tier": 4
-    },
-    "g_suit": {
-      "prevModification": "cd_98"
-    },
-    "hydravlic_power": {
-      "effects": {
-        "aileronBooster": 0.9
-      }
-    },
-    "new_compressor_jet": {
-      "tier": 1
-    },
-    "ns23_armor_targets": {},
-    "ns23_air_targets": {},
-    "ns23_stealth": {},
-    "ns23_belt_pack": {
-      "tier": 1
-    },
-    "ns23_new_gun": {
-      "reqModification": "ns23_belt_pack",
-      "tier": 3
-    }
-  },
   "cutting": {
     "emtr_break_wing1_l_from": [
       0.200957,
@@ -2422,6 +2380,59 @@
       -0.00031653,
       4.09782e-8
     ]
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "mig_17pf_hungary_default",
+        "blk": "gameData/FlightModels/weaponPresets/mig_17pf_hungary_default.blk"
+      },
+      {
+        "name": "mig_17pf_hungary_2x_ofab_250",
+        "blk": "gameData/FlightModels/weaponPresets/mig_17pf_hungary_2x_ofab_250.blk",
+        "reqModification": "d-4-50"
+      }
+    ]
+  },
+  "modifications": {
+    "cd_98": {},
+    "air_extinguisher": {
+      "prevModification": "ns23_new_gun",
+      "tier": 4,
+      "modClass": "weapon",
+      "invertEnableLogic": false
+    },
+    "CdMin_Fuse": {},
+    "new_cover": {},
+    "structure_str": {},
+    "hp_105_jet": {
+      "tier": 4
+    },
+    "g_suit": {
+      "prevModification": "cd_98"
+    },
+    "hydravlic_power": {
+      "effects": {
+        "aileronBooster": 0.9
+      }
+    },
+    "new_compressor_jet": {
+      "tier": 1
+    },
+    "ns23_armor_targets": {},
+    "ns23_air_targets": {},
+    "ns23_stealth": {},
+    "ns23_belt_pack": {
+      "tier": 1
+    },
+    "ns23_new_gun": {
+      "reqModification": "ns23_belt_pack",
+      "tier": 3
+    },
+    "d-4-50": {
+      "modClass": "weapon",
+      "tier": 1
+    }
   },
   "default_skin": {
     "name": "default",

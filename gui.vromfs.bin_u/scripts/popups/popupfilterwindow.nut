@@ -90,13 +90,30 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
     let popupSize = popupObj.getSize()
     local posX = 0
     local posY = 0
-    if (this.popupAlign == "bottom-center") {
+
+    if (this.popupAlign == "top") {
+      posX = this.btnPosition[0]
+      posY = this.btnPosition[1] - popupSize[1] - to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "top-center") {
+      posX = this.btnPosition[0] + this.btnWidth / 2 - popupSize[0] / 2
+      posY = this.btnPosition[0] - popupSize[1] - to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "top-right") {
+      posX = this.btnPosition[0] + this.btnWidth - popupSize[0]
+      posY = this.btnPosition[1] - popupSize[1] - to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "bottom") {
+      posX = this.btnPosition[0]
+      posY = this.btnPosition[1] + this.btnHeight + to_pixels("1@blockInterval")
+    }
+    else if (this.popupAlign == "bottom-center") {
       posX = this.btnPosition[0] + this.btnWidth / 2 - popupSize[0] / 2
       posY = this.btnPosition[1] + this.btnHeight + to_pixels("1@blockInterval")
     }
-    else if (this.popupAlign == "top") {
-      posX = this.btnPosition[0]
-      posY = this.btnPosition[1] - popupSize[1] - to_pixels("1@blockInterval")
+    else if (this.popupAlign == "bottom-right") {
+      posX = this.btnPosition[0] + this.btnWidth - popupSize[0]
+      posY = this.btnPosition[1] + this.btnHeight + to_pixels("1@blockInterval")
     }
     popupObj["pos"] = $"{posX}, {posY}"
   }
@@ -137,6 +154,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
     this.onChangeFn(obj.id, obj.typeName, false)
     broadcastEvent("UpdateFiltersCount")
     this.updateButton()
+    this.updatePopupPosition()
   }
 
   function onCheckBoxChange(obj) {

@@ -63,7 +63,7 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
         visualStyle = this.visualStyle
         btnPosition = this.scene.findObject("filter_button").getPosRC()
         btnHeight = to_pixels("1@buttonHeight")
-        popupAlign = this.popupAlign
+        popupAlign = this.popupAlign ?? "bottom"
       })
     else
       this.popupFilterWnd.close()

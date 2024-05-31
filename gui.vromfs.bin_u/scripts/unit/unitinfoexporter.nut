@@ -14,6 +14,7 @@ let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 const ARMY_GROUP = "army"
 const COUNTRY_GROUP = "country"
@@ -278,7 +279,7 @@ let class UnitInfoExporter {
     fBlk[RANK_GROUP].header = loc("shop/age")
     fBlk[RANK_GROUP].texts = DataBlock()
 
-    for (local rank = 1; rank <= ::max_country_rank; rank++)
+    for (local rank = 1; rank <= MAX_COUNTRY_RANK; rank++)
       fBlk[RANK_GROUP]["texts"][rank.tostring()] = get_roman_numeral(rank)
   }
 

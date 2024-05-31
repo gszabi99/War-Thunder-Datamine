@@ -20,6 +20,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { CommunicationState } = require("%scripts/xbox/permissions.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -43,7 +44,7 @@ systemMsg.registerLocTags(locTags)
   getMemberStatusLocId = @(status) memberStatusLocId?[status] ?? "unknown"
   getMemberStatusLocTag = @(status) MEMBER_STATUS_LOC_TAG_PREFIX + (status in memberStatusLocId ? status : "")
 
-  canSquad = @() getXboxChatEnableStatus() == XBOX_COMMUNICATIONS_ALLOWED
+  canSquad = @() getXboxChatEnableStatus() == CommunicationState.Allowed
 
   getMembersFlyoutDataByUnitsGroups = @() g_squad_manager.getMembers().map(
     @(member) { crafts_info = member?.craftsInfoByUnitsGroups })

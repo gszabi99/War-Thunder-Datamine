@@ -29,6 +29,7 @@ let HorAccelX = Watched(0.0)
 let HorAccelY = Watched(0.0)
 let Nozzle0 = Watched(0)
 let OilTemp0 = Watched(0)
+let TurnRate = Watched(0.0)
 
 let planeState = {
   Speed,
@@ -57,7 +58,8 @@ let planeState = {
   HorAccelX,
   HorAccelY,
   Nozzle0,
-  OilTemp0
+  OilTemp0,
+  TurnRate
 }
 
 interopGen({

@@ -16,6 +16,7 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
@@ -109,7 +110,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     if (brRange) {
       let ediff = ::events.getEDiffByEvent(this.mGameMode)
       let unitMRank = unit.getEconomicRank(ediff)
-      if (unitMRank < getTblValue(0, brRange, 0) || getTblValue(1, brRange, ::max_country_rank) < unitMRank)
+      if (unitMRank < getTblValue(0, brRange, 0) || getTblValue(1, brRange, MAX_COUNTRY_RANK) < unitMRank)
         return false
     }
 
@@ -284,7 +285,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function getRoomCreateParams() {
     let res = {
-      ranks = [1, ::max_country_rank] //matching do nt allow to create session before ranks is set
+      ranks = [1, MAX_COUNTRY_RANK] //matching do nt allow to create session before ranks is set
     }
 
     foreach (team in g_team.getTeams())

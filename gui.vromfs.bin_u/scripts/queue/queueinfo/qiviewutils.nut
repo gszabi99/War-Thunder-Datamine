@@ -7,6 +7,7 @@ let time = require("%scripts/time.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 ::g_qi_view_utils <- {
   function getQueueInfo(queue, txt = null) {
@@ -58,7 +59,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
   if (needRankInfo) {
     headerColumns.insert(0, { text = "#sm_era" })
-    for (local rank = 1; rank <= ::max_country_rank; ++rank) {
+    for (local rank = 1; rank <= MAX_COUNTRY_RANK; ++rank) {
       let row = {
         rowParam = "queueTableRow"
         columns = [{ text = get_roman_numeral(rank) }]
@@ -96,7 +97,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
         continue
 
       let ranksQueueTable = countriesQueueTable?[countryName]
-      for (local rank = 1; rank <= ::max_country_rank; ++rank) {
+      for (local rank = 1; rank <= MAX_COUNTRY_RANK; ++rank) {
         let tdTextObj = nestObj.findObject(countryName + "_" + rank)
         if (!checkObj(tdTextObj))
           continue

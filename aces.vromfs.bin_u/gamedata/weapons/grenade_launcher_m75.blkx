@@ -26,9 +26,11 @@
     "caliber": 0.04,
     "speed": 244.0,
     "maxDistance": 2200.0,
+    "explosiveType": "rdx",
+    "explosiveMass": 0.038,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat",
-    "groundRicochetPreset": "heat",
+    "groundRicochetPreset": "he_small_caliber_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.1,
     "stabilityCaliberToArmorThreshold": 100.0,
@@ -43,29 +45,21 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/he_dp.ivf",
-    "explosiveType": "rdx",
-    "explosiveMass": 0.038,
-    "hitPowerMult": 1.0,
-    "effectiveDistance": 700.0,
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
-    "explodeTreshold": 0.1,
-    "explodeHitPower": 3.0,
-    "explodeArmorPower": 3.0,
-    "explodeRadius": [
-      0.058,
-      0.58
-    ],
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
     "ricochetTimeToLive": 0.085,
     "fuseDelayDist": 0.02,
+    "explodeTreshold": 0.1,
+    "hitPowerMult": 1.0,
+    "onHitChanceMultFire": 4.0,
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
     "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -87,6 +81,12 @@
         20.0,
         1.0
       ]
+    },
+    "cumulativeDamage": {
+      "armorPower": 50.8,
+      "distance": 6.0,
+      "damage": 80.0,
+      "onHitChanceMultFire": 15.0
     },
     "hitpower": {
       "HitPower10m": [
@@ -134,21 +134,6 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
-    },
-    "cumulativeDamage": {
-      "armorPower": 50.8,
-      "distance": 6.0,
-      "damage": 80.0,
-      "onHitChanceMultFire": 15.0
-    },
-    "visual": {
-      "range_percent_of_ammo": [
-        100.0,
-        0.0
-      ],
-      "traceFreq": 1,
-      "tracer": "noColor",
-      "trail": "smallTrail"
     },
     "collisions": {
       "default": {
@@ -376,6 +361,15 @@
       "armorNPHiCal": {
         "fx": "hit_8_11mm_metal_ap"
       }
+    },
+    "visual": {
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
+      "traceFreq": 1,
+      "tracer": "noColor",
+      "trail": "smallTrail"
     }
   },
   "gunSound": {

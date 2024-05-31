@@ -17,12 +17,14 @@ let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewar
 let { getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
-let { startShipTrainingMission, canStartShipTrainingMission } = require("%scripts/missions/shipTrainingMission.nut")
+let { startFleetTrainingMission, canStartFleetTrainingMission
+} = require("%scripts/missions/fleetTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { getCrewByAir, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -57,8 +59,8 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   }
 
   function onStart() {
-    if (canStartShipTrainingMission()) {
-      this.guiScene.performDelayed(this, @() this.goForward(startShipTrainingMission))
+    if (canStartFleetTrainingMission()) {
+      this.guiScene.performDelayed(this, @() this.goForward(startFleetTrainingMission))
       return
     }
     base.onStart()
@@ -208,8 +210,8 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       obj.show(unlockTime > 0)
       if (unlockTime <= 0) {
         if (wasShown) {
-          ::g_crews_list.invalidate()
-          obj.getScene().performDelayed(this, function() { ::reinitAllSlotbars() })
+          invalidateCrewsList()
+          obj.getScene().performDelayed(this, function() { reinitAllSlotbars() })
         }
         return true
       }

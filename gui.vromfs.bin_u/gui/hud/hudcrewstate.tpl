@@ -42,6 +42,15 @@ icon {
   pos:t='0, 0.64ph - h/2'
   background-image:t='#ui/gameuiskin#crew.svg'
 
+  img {
+    id:t='crew_regenerating_icon'
+    display:t='hide'
+    size:t='0.5ph, 0.5ph'
+    position:t='absolute';
+    pos:t='0.55pw, -0.5h'
+    background-image:t='#ui/gameuiskin#healing.svg'
+  }
+
   text {
     id:t='crew_count_text';
     position:t='absolute';

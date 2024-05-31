@@ -52,16 +52,20 @@
 @const shopInServiceImgBgColor: #ff232C35;
 @const shopInServiceImgBorderColor: #ff3b4a51;
 
+@const slotbarItemHoverColor:#FFFFFF;
+@const extraInfoBlockBorderColor:#404E57;
+@const extraInfoBlockBgColor:#2B3B45;
+
 @const shopItemPad: 4*@sf/@pf;
 @const rentIconSize: 26@sf/@pf\2*2;
 @const bottomButtonsDivTopOffset: 1@dp;
 @const extraInfoTopShade: 2@dp;
-@const extraInfoHeight: 1@sIco + 2@bottomButtonsDivTopOffset + 1@extraInfoTopShade;
 @const slotBorderSize: 1@dp;
-@const slotTopLineHeight: 2@dp;
+@const slotbarBottomLineHeight: 1@sf/@pf;
+@const slotTopLineHeight: 2@sf/@pf;
 @const unitTooltipTopLineHeight: 3@dp;
 @const unitTooltipTopLinePad: -1@dp; 
-@const slotBottomShadeHeight: 3@dp;
+@const slotBottomShadeHeight: 2@sf/@pf;
 @const slotGroupTagHeight: 4@dp;
 @const groupUnfoldMarkWidth: 29@sf/@pf \ 1;
 @const groupUnfoldMarkHeight: 20@sf/@pf \ 1;
@@ -99,7 +103,7 @@ unitCell {
 
 slotbarTable > unitCell, unitCell.slotbarClone,
 slotbarTable > unitItemContainer, unitItemContainer.slotbarClone {
-  size:@slot_width, @slot_height + 1@slotbar_pad_top + 1@slotbar_pad_bottom;
+  size:@slot_width, @slotbarHeight;
   padding:@slot_interval, @slotbar_pad_top, @slot_interval, @slotbar_pad_bottom;
   css-hier-invalidate:current;
 }
@@ -129,6 +133,16 @@ unitItemContainer.slotbarClone {
   total-input-transparent:yes;
 }
 
+shopItem[dragging='yes'] {
+  behavior:dragDropMover;
+  dragParent:yes;
+  title:"";
+}
+
+unitCell:hover > shopItem[actionOnDrag='yes'] {
+  behavior:dragStartListener;
+}
+
 shopItem {
   size:pw, ph;
   pos:0,50%ph-50%h;
@@ -137,6 +151,11 @@ shopItem {
   css-hier-invalidate:yes;
   overflow:visible;
   total-input-transparent:yes;
+}
+
+slotbarTable > unitCell > shopItem,
+slotbarTable > unitItemContainer > shopItem {
+  pos:0, ph/2-(h+2@slotExtraInfoHeight)/2;
 }
 
 [show_console_buttons=yes] shopItem {
@@ -186,7 +205,7 @@ shopItem[group=yes] > slotPlate > topLine {
   background-repeat:expand-svg;
   background-image:#ui/gameuiskin#item_group_line.svg;
   background-svg-size:45@dp, 6@dp;
-  background-position:42@dp, 0@dp, 2@dp, 0@dp;
+  background-position:42@dp, 0@dp, 2@dp,0@dp;
 }
 
 shopTable[isShopItemsWide=1] > unitCell > shopItem[group=yes] > slotPlate > topLine {
@@ -322,7 +341,6 @@ shopAirImg {
 }
 
 itemWinkBlock {
-  id:item_wink_block;
   behaviour:basicTransparency;
   display:hide;
   size:pw, ph;
@@ -345,19 +363,6 @@ shopItem > backImg {
   position:absolute;
   background-color:@white;
   input-transparent:yes;
-}
-
-slotbarCurAir {
-  pos:pw/2-w/2, -0.5@slotbar_top_shade;
-  size:1@slot_width - 2@slot_interval -2@dp, 1@slotbar_pad_top;
-  position:absolute;
-  background-color:@slotbarSelUnitBgColor;
-  display:hide;
-}
-
-unitCell[selected=yes] > slotbarCurAir,
-unitItemContainer[chosen=yes] > slotbarCurAir {
-  display:show;
 }
 
 bottomButtonsDiv {
@@ -435,7 +440,24 @@ shopItem[shopStat=canResearch][unitRarity=squadron] > slotPlate > middleBg > gro
   background-color:@slotSquadronWaitingBorderColor;
 }
 
-shopItem[shopStat=research] > itemWinkBlock{
+slotWinkHighlight {
+  behaviour:basicTransparency;
+  display:hide;
+  size:pw, ph-2@sf/@pf;
+  position:absolute;
+  input-transparent:yes;
+  background-image:#ui/gameuiskin#gradient_focus.svg;
+  background-repeat:expand;
+  background-color:@shopItemWinkColor;
+  background-svg-size:pw, ph;
+  transp-base:255;
+  transp-end:40;
+  transp-time:5000;
+  transp-func:sin;
+  transp-cycled:yes;
+}
+
+shopItem[shopStat=research] > slotWinkHighlight{
   display:show;
 }
 
@@ -547,10 +569,10 @@ shopItem[isBroken=yes] > slotPlate > middleBg > groupFrame {
   background-color:@slotBrokenBorderColor;
 }
 
-shopItem[isBroken=yes] itemWinkBlock {
- display: show;
- transp-time: 0;
- background-color:@shopItemWinkBroken;
+shopItem[isBroken=yes] slotWinkHighlight {
+  display: show;
+  transp-time: 0;
+  background-color:@shopItemWinkBroken;
 }
 
 shopItem[shopStat=locked] > slotPlate > topLine,
@@ -593,6 +615,73 @@ shopItem:hover > hoverHighlight{
   display: show;
 }
 
+slotHoverHighlight {
+  re-type:9rect;
+  position:absolute;
+  pos:0, 0;
+  size:pw, ph-2@sf/@pf;
+  foreground-image:#ui/gameuiskin#gradient_focus.svg;
+  foreground-repeat:expand;
+  foreground-color:@slotbarItemHoverColor;
+  foreground-svg-size:pw, ph;
+  display:hide;
+}
+
+slotTopGradientLine {
+  re-type:9rect;
+  position:absolute;
+  pos:0, 0;
+  size:pw, @slotTopLineHeight;
+  foreground-image:#ui/gameuiskin#gradient_double_line.svg;
+  foreground-repeat:expand;
+  foreground-color:@slotbarItemHoverColor;
+  foreground-svg-size:pw, @slotTopLineHeight;
+  display:hide;
+}
+
+slotBottomGradientLine {
+  re-type:9rect;
+  position:absolute;
+  pos:0, ph-h-2@sf/@pf;
+  size:pw, @slotbarBottomLineHeight;
+  foreground-image:#ui/gameuiskin#gradient_double_line.svg;
+  foreground-repeat:expand;
+  foreground-color:@slotbarItemHoverColor;
+  foreground-svg-size:pw, @slotbarBottomLineHeight;
+  display:hide;
+}
+
+unitCell > shopItem > slotPlate > topLine,
+unitItemContainer > shopItem > slotPlate > topLine {
+  size:pw, @slotTopLineHeight;
+}
+
+unitCell > shopItem[group=yes] > slotPlate > topLine {
+  size:pw, 7@sf/@pf;
+  pos:0, -4@sf/@pf;
+}
+
+unitCell[selected=yes] > shopItem > slotTopGradientLine,
+unitCell[selected=yes] > shopItem > slotBottomGradientLine,
+unitCell[selected=no] > shopItem:hover > slotBottomGradientLine,
+unitCell > shopItem:hover > slotHoverHighlight,
+unitItemContainer[chosen=yes] > shopItem > slotTopGradientLine,
+unitItemContainer[chosen=yes] > shopItem > slotBottomGradientLine,
+unitItemContainer[chosen=no] > shopItem:hover > slotBottomGradientLine,
+unitItemContainer > shopItem:hover > slotHoverHighlight {
+  display:show;
+}
+
+unitCell[isShopCell=yes] > shopItem > slotBottomGradientLine,
+unitCell[isShopCell=yes] > shopItem > slotTopGradientLine {
+  display:hide;
+}
+
+unitCell[isShopCell=yes] > shopItem:hover > slotBottomGradientLine,
+unitCell[isShopCell=yes] > shopItem:hover > slotBottomGradientLine {
+  display:show;
+}
+
 topline {
   width:pw-11*@sf/@pf_outdated;
   pos:pw-w-6*@sf/@pf_outdated, 25%ph-50%h+3*@sf/@pf_outdated;
@@ -628,7 +717,7 @@ shopItemText, shopItemPrice {
   re-type:textarea;
   behaviour:textArea;
   font:@shopItemFont;
-  color:@commonTextColor;
+  color:@activeTextColor;
   padding-right:-3*@sf/@pf_outdated;
 }
 
@@ -822,7 +911,6 @@ unitItemContainer[chosen=yes] topline > shopItemText,
   color:@redMenuButtonColor;
 }
 
-
 shopItemText[header=yes]  {
   color:@activeTextColor;
 }
@@ -927,23 +1015,117 @@ specIconBlock > shopTrainedImg, specIconBlock > warningIcon {
 
 extraInfoBlock {
   re-type:9rect;
-  size:pw, 1@extraInfoHeight;
-  pos:pw/2-w/2, ph - 1@extraInfoTopShade;
+  size:pw, @slotExtraInfoHeight;
+  pos:pw/2-w/2, ph+@sf/@pf;
   position:absolute;
-  background-color:@extraInfoBgColor;
-  background-position:0,0,0,1@dp;
-  foreground-color:@extraInfoBgColor;
-  foreground-position:1@dp,h-1@dp,1@dp,0;
+  background-color:@extraInfoBlockBgColor;
+  css-hier-invalidate:yes;
+  border:yes;
+  border-color:@extraInfoBlockBorderColor;
+  border-offset:@sf/@pf;
+}
+
+slotCrewHintContainer {
+  width:pw;
+  min-height:3@sf/@pf;
+  pos:pw/2-w/2, -h;
+  position:absolute;
+  order-popup:yes;
+  css-hier-invalidate:yes;
+  not-input-transparent:yes;
+  display:hide;
+}
+
+slotCrewHint {
+  width:pw;
+  pos:pw/2-w/2, -h+ph-3@sf/@pf;
+  min-height:6@sf/@pf;
+  padding:3@sf/@pf, 3@sf/@pf, 3@sf/@pf, ph;
+  position:absolute;
+  background-color:#1C2C36;
+  border:yes;
+  border-color:@extraInfoBlockBorderColor;
+  border-offset:1@sf/@pf;
+  flow:vertical;
+}
+
+slotCrewHintContainer > tdiv > slotHoverHighlight,
+slotCrewHintContainer > tdiv > slotBottomGradientLine {
+  display:show;
+}
+slotCrewHintContainer > tdiv > slotBottomGradientLine {
+  pos:0, ph-h;
+}
+
+slotCrewHintContainer:hover,
+extraInfoBlock:hover > slotCrewHintContainer {
+  display:show;
+}
+
+extraInfoBlockTop {
+  re-type:9rect;
+  size:pw, @slotExtraInfoHeight;
+  pos:pw/2-w/2, -h-3@sf/@pf;
+  position:absolute;
+  background-color:@extraInfoBlockBgColor;
+  css-hier-invalidate:yes;
+  border:yes;
+  border-color:@extraInfoBlockBorderColor;
+  border-offset:@sf/@pf;
+  flow:horizontal;
+}
+
+crewNumText {
+  re-type:text;
+  font:@fontSmall;
+  pos:pw/2-w/2, ph/2-h/2+0.5@sf/@pf;
+  position:relative;
+  color:@activeTextColor;
   css-hier-invalidate:yes;
 }
 
-crewInfoBlock {
+crewInfoNumBlock {
+  position:relative;
+  left:4@sf/@pf;
   height:ph;
-  padding-top: 1@extraInfoTopShade;
   css-hier-invalidate:yes;
 }
 
-crewInfoBlock > icon {
+crewInfoNumBlock > icon {
+  height:@tIco;
+  width:h;
+  pos:ph/2-h/2, ph/2-h/2;
+  position:relative;
+  background-color:@white;
+  background-image:#ui/gameuiskin#slot_crew.svg;
+  background-svg-size:@tIco, @tIco;
+  css-hier-invalidate:yes;
+}
+
+crewInfoNumBlock > crewNumText {
+  pos:0, ph/2-h/2;
+}
+
+crewInfoExpBlock {
+  position:relative;
+  right:4@sf/@pf;
+  height:ph;
+  css-hier-invalidate:yes;
+}
+
+crewInfoExpBlock > expAvailableIcon {
+  height:@sIco;
+  width:h;
+  position:relative;
+  pos:ph/2-h/2, ph/2-h/2;
+  background-image:#ui/gameuiskin#new_icon.svg;
+  background-color:@white;
+  background-svg-size:@sIco, @sIco;
+  input-transparent:yes;
+  display:hide;
+}
+
+crewInfoExpBlock > icon {
   height:@sIco;
   width:h;
   pos:ph/2-h/2, ph/2-h/2;
@@ -953,26 +1135,33 @@ crewInfoBlock > icon {
   css-hier-invalidate:yes;
 }
 
-crewInfoBlock > shopItemText {
+crewInfoExpBlock > shopItemText {
   pos:0, ph/2-h/2;
   position:relative;
   color:@commonTextColor;
   wink:no;
   css-hier-invalidate:yes;
 }
+
 text[crewStatus=show], textareaNoTab[crewStatus=show], textAreaCentered[crewStatus=show],
-shopItem[crewStatus=show] > extraInfoBlock > crewInfoBlock > shopItemText {
+shopItem[crewStatus=show] > extraInfoBlock > crewInfoExpBlock > shopItemText {
   color:@crewSkillsText_show;
 }
 text[crewStatus=ready], textareaNoTab[crewStatus=ready], textAreaCentered[crewStatus=ready],
-shopItem[crewStatus=ready] > extraInfoBlock > crewInfoBlock > shopItemText {
+shopItem[crewStatus=ready] > extraInfoBlock > crewInfoExpBlock > shopItemText {
   color:@crewSkillsText_ready;
 }
 text[crewStatus=full], textareaNoTab[crewStatus=full], textAreaCentered[crewStatus=full],
-shopItem[crewStatus=full] > extraInfoBlock > crewInfoBlock > shopItemText {
+shopItem[crewStatus=full] > extraInfoBlock > crewInfoExpBlock > shopItemText {
   color:@crewSkillsText_full;
   wink:yes;
 }
+
+shopItem[crewStatus=ready] > extraInfoBlock > crewInfoExpBlock > expAvailableIcon,
+shopItem[crewStatus=full] > extraInfoBlock > crewInfoExpBlock > expAvailableIcon {
+  display:show;
+}
+
 text[crewStatus=""], textareaNoTab[crewStatus=""], textAreaCentered[crewStatus=""] {
   color:@transparent;
 }
@@ -981,7 +1170,7 @@ text[crewStatus=""][crew_data=yes] {
   color:@commonTextColor;
 }
 
-crewInfoBlock > shopItemText[wink=no] {
+crewInfoExpBlock > shopItemText[wink=no] {
   color-factor:255;
 }
 
@@ -1060,15 +1249,6 @@ talismanIcon {
 }
 talismanIcon[incomplete=yes] {
   background-color:#808080;
-}
-
-spareCount {
-  re-type:text;
-  pos:pw-w-1@blockInterval, ph/2-h/2;
-  position:absolute;
-  font:@fontSmall;
-  color:#596a71;
-  css-hier-invalidate:yes;
 }
 
 classIcon {
@@ -1214,6 +1394,7 @@ shopLine {
   background-image:#ui/gameuiskin#line_lshaped.svg;
   background-repeat:expand-svg;
   background-position:2@dp;
+  background-svg-size:@modArrowWidth, @modArrowWidth;
   rotation-centre:0;
 }
 
@@ -1226,6 +1407,7 @@ shopAngle {
   background-image:#ui/gameuiskin#angle_lshaped.svg;
   background-repeat:expand-svg;
   background-position:2@dp;
+  background-svg-size:@modArrowWidth, @modArrowWidth;
 }
 
 shopAngle[isOutlineIcon=yes] {
@@ -1318,4 +1500,107 @@ slotsHeader > img {
   pos: 0.5(pw-w), 1@sf/@pf_outdated;
   position: relative;
   background-svg-size:@cIco, @cIco;
+}
+
+shopCollapsedButton {
+  re-type:text;
+  color:@commonTextColor;
+  font:@fontNormal;
+  behaviour:button;
+  snd_click:click;
+  shortcut-on-hover:yes;
+  shortcutActivate: "J:A | J:RT | Space";
+  re-type:9rect;
+  selected-border:none;
+  css-hier-invalidate:yes;
+  height:1@modBlockTierNumHeight;
+}
+
+shopCollapsedButton > img {
+  background-image:#ui/gameuiskin#shop_collapse_btn.svg;
+  background-repeat:expand;
+  background-color:@commonTextColor;
+  rotation:0;
+  top:11@sf/@pf;
+  left:pw + ph * 0.2;
+  background-svg-size:16@sf/@pf, 10@sf/@pf;
+}
+
+shopCollapsedButton[text=""] > img {
+  left:(pw-w)/2;
+}
+
+shopCollapsedButton:hover {
+  color:#FFFFFF;
+}
+
+shopCollapsedButton:hover > img {
+  background-color:#FFFFFF;
+}
+
+shopCollapsedButton[isRed=yes] {
+  color:#970307;
+}
+
+shopCollapsedButton[isRed=yes]:hover {
+  color:#CC0006;
+}
+
+shopCollapsedButton[isRed=yes] > img {
+  background-color:#970307;
+}
+
+shopCollapsedButton[isRed=yes]:hover > img {
+  background-color:#CC0006;
+}
+
+shopCollapsedButton[isCollapsed=yes] > img {
+  rotation:180;
+}
+
+[show_console_buttons=yes] shopCollapsedButton:hover {
+  needFocusBorder:yes;
+}
+
+shopCollapsedButton[isCollapseAllBtn=yes] > img {
+  background-image:#ui/gameuiskin#shop_collapse_all_btn.svg;
+  background-svg-size:16@sf/@pf, 16@sf/@pf;
+  top:(ph-h)/2;
+}
+
+[swap_ab=yes] shopCollapsedButton {
+  shortcutActivate:"J:B | J:RT | Space";
+}
+
+shopCollapsedIconText {
+  re-type:textarea;
+  behavior:textarea;
+  font:@fontSmall;
+  text-align:center;
+  color:#C8AB66;
+  padding:0, 0, 1@discountBoxPadding, 0;
+}
+
+shopCollapsedDiscountIcon {
+  re-type:text;
+  position:relative;
+  height:1@discountBoxHeight ;
+  font:tiny_text;
+  color:#e5e5e5;
+  text-shade:smooth:24;
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:#A0000000;
+  background-image:#ui/gameuiskin#simplified_discount_box.svg;
+  background-svg-size:w, 1@discountBoxHeight ;
+  background-position:2@sf/@pf, 2@sf/@pf, 2@sf/@pf, 2@sf/@pf;
+  background-repeat:expand-svg;
+  background-color:@discountBGColor;
+  padding:8@sf/@pf, 3@sf/@pf, 6@sf/@pf, 2@sf/@pf;
+  input-transparent:yes;
+  textShade:yes;
+}
+
+shopRankTable[isCollapsed="yes"] markerContainer{
+  display:hide;
 }

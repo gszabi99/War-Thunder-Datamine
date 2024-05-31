@@ -200,7 +200,7 @@ function validateGuiValue(id, value) {
     }
   }
   else if ( widgetType == "list" || widgetType == "tabs") {
-    if (desc.values.indexof(value) == null) {
+    if (desc.values.indexof(value) == null && (value not in desc?.hidden_values)) {
       logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is not in the allowed values list.")
       return desc.def
     }
@@ -966,6 +966,7 @@ mSettings = {
         desc.items.append((index <= sysTexQuality) ? localize("texQuality", item) : restrictedValueItem)
       desc.tooltipExtra <- colorize("badTextColor", "** " + loc("msgbox/graphicsOptionValueReduced/lowVideoMemory",
         { name = loc("options/texQuality"), value = restrictedValueName }))
+      desc.hidden_values <- {ultralow = "ultralow"}
     }
     values = [ "low", "medium", "high" ]
   }

@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -16,15 +12,19 @@
     "mission": {
       "level": "levels/honolulu.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "windDirection": [
         1.0,
         0.0,
         0.0
-      ]
+      ],
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "briefing": {
       "place_loc": "",
@@ -38,6 +38,7 @@
           "map": true,
           "minTime": 4,
           "picture": "",
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "player",
@@ -77,7 +78,7 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "waypoint00": {
+    "mission_start": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -90,30 +91,34 @@
       },
       "conditions": {},
       "actions": {
-        "missionMarkAsWaypoint": [
+        "comment": [
           {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint00"
+            "value": "initial id for current wapoint MINUS ONE"
           },
           {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint01"
+            "value": "initial id for next wapoint  MINUS ONE"
+          },
+          {
+            "value": "starting waypoint showing rotation"
+          }
+        ],
+        "varSetInt": [
+          {
+            "value": -1,
+            "var": "cur_waypoint_id"
+          },
+          {
+            "value": 0,
+            "var": "next_waypoint_id"
           }
         ],
         "triggerEnable": {
-          "target": "waypoint01"
+          "target": "waypoints_rotation"
         }
-      }
+      },
+      "else_actions": {}
     },
-    "waypoint01": {
+    "waypoints_rotation": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -123,2054 +128,234 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.01
+          "time": 0.0
         }
       },
       "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint00"
+        "varCompareBool": {
+          "var_value": "is_last_waypoint",
+          "value": false,
+          "comparasion_func": "equal"
         }
       },
       "actions": {
-        "missionMarkAsWaypoint": [
+        "comment": [
           {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint00"
+            "value": "last waypoint flag is off so normal logic usage"
           },
           {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint01"
+            "value": "increasing both ids variables by one"
           },
           {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint02"
+            "value": "creating areas names"
+          },
+          {
+            "value": "adding  actual indexes to names"
+          },
+          {
+            "value": "checking does such areas exists"
+          }
+        ],
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": [
+            "cur_waypoint_id",
+            "next_waypoint_id"
+          ]
+        },
+        "varSetString": {
+          "value": "waypoint",
+          "var": [
+            "cur_waypoint_name",
+            "next_waypoint_name"
+          ]
+        },
+        "varAddString": [
+          {
+            "value": "@cur_waypoint_id",
+            "digits": 2,
+            "var": "cur_waypoint_name"
+          },
+          {
+            "value": "@next_waypoint_id",
+            "digits": 2,
+            "var": "next_waypoint_name"
           }
         ],
         "triggerEnable": {
-          "target": "waypoint02"
+          "target": "waypoints_is_exist"
         }
-      }
-    },
-    "waypoint02": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
       },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint01"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint01"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint02"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint03"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint03"
-        }
-      }
-    },
-    "waypoint03": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint02"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint02"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint03"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint04"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint04"
-        }
-      }
-    },
-    "waypoint04": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint03"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint03"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint04"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint05"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint05"
-        }
-      }
-    },
-    "waypoint05": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint04"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint04"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint05"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint06"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint06"
-        }
-      }
-    },
-    "waypoint06": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint05"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint05"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint06"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint07"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint07"
-        }
-      }
-    },
-    "waypoint07": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint06"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint06"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint07"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint08"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint08"
-        }
-      }
-    },
-    "waypoint08": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint07"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint07"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint08"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint09"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint09"
-        }
-      }
-    },
-    "waypoint09": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint08"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint08"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint09"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint10"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint10"
-        }
-      }
-    },
-    "waypoint10": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint09"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint09"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint10"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint11"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint11"
-        }
-      }
-    },
-    "waypoint11": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint10"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint10"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint11"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint12"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint12"
-        }
-      }
-    },
-    "waypoint12": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint11"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint11"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint12"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint13"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint13"
-        }
-      }
-    },
-    "waypoint13": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint12"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint12"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint13"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint14"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint14"
-        }
-      }
-    },
-    "waypoint14": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint13"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint13"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint14"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint15"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint15"
-        }
-      }
-    },
-    "waypoint15": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint14"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint14"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint15"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint16"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint16"
-        }
-      }
-    },
-    "waypoint16": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint15"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint15"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint16"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint17"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint17"
-        }
-      }
-    },
-    "waypoint17": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint16"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint16"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint17"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint18"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint18"
-        }
-      }
-    },
-    "waypoint18": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint17"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint17"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint18"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint19"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint19"
-        }
-      }
-    },
-    "waypoint19": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint18"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint18"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint19"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint20"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint20"
-        }
-      }
-    },
-    "waypoint20": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint19"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint19"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint20"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint21"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint21"
-        }
-      }
-    },
-    "waypoint21": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint20"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint20"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint21"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint22"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint22"
-        }
-      }
-    },
-    "waypoint22": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint21"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint21"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint22"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint23"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint23"
-        }
-      }
-    },
-    "waypoint23": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint22"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint22"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint23"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint24"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint24"
-        }
-      }
-    },
-    "waypoint24": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint23"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint23"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint24"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint25"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint25"
-        }
-      }
-    },
-    "waypoint25": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint24"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint24"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint25"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint26"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint26"
-        }
-      }
-    },
-    "waypoint26": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint25"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint25"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint26"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint27"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint27"
-        }
-      }
-    },
-    "waypoint27": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint26"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint26"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint27"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint28"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint28"
-        }
-      }
-    },
-    "waypoint28": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint27"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint27"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint28"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint29"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint29"
-        }
-      }
-    },
-    "waypoint29": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint28"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint28"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint29"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint30"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint30"
-        }
-      }
-    },
-    "waypoint30": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint29"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint29"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint30"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint31"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint31"
-        }
-      }
-    },
-    "waypoint31": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint30"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint30"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint31"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint32"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint32"
-        }
-      }
-    },
-    "waypoint32": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint31"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint31"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint32"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint33"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint33"
-        }
-      }
-    },
-    "waypoint33": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint32"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint32"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint33"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint34"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint34"
-        }
-      }
-    },
-    "waypoint34": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint33"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint33"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint34"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint35"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint35"
-        }
-      }
-    },
-    "waypoint35": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint34"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint34"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint35"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint36"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint36"
-        }
-      }
-    },
-    "waypoint36": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint35"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint35"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint36"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint37"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint37"
-        }
-      }
-    },
-    "waypoint37": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint36"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint36"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint37"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint38"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint38"
-        }
-      }
-    },
-    "waypoint38": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint37"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint37"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint38"
-          },
-          {
-            "visible": true,
-            "primary": false,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint39"
-          }
-        ],
-        "triggerEnable": {
-          "target": "waypoint39"
-        }
-      }
-    },
-    "waypoint39": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint38"
-        }
-      },
-      "actions": {
-        "missionMarkAsWaypoint": [
-          {
-            "visible": false,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint38"
-          },
-          {
-            "visible": true,
-            "primary": true,
-            "scale": 0.4,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "target": "waypoint39"
-          }
-        ],
+      "else_actions": {
+        "comment": {
+          "value": "prev waypoint was the last one"
+        },
         "triggerEnable": {
           "target": "mission_completed"
         }
       }
+    },
+    "waypoints_is_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@cur_waypoint_name",
+            "type": "area"
+          },
+          {
+            "target": "@next_waypoint_name",
+            "type": "area"
+          }
+        ]
+      },
+      "actions": {
+        "comment": [
+          {
+            "value": "marks waypoints"
+          },
+          {
+            "value": "waiting for player reached cur waypoint"
+          }
+        ],
+        "missionMarkAsWaypoint": [
+          {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "@cur_waypoint_name"
+          },
+          {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "@next_waypoint_name"
+          }
+        ],
+        "triggerEnable": {
+          "target": "waypoints_cur_reached"
+        }
+      },
+      "else_actions": {
+        "comment": {
+          "value": "it's last waypoint, cause cur exist and next is not"
+        },
+        "triggerEnable": {
+          "target": "waypoints_is_last_check"
+        }
+      }
+    },
+    "waypoints_cur_reached": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 125.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "@cur_waypoint_name"
+        }
+      },
+      "actions": {
+        "comment": [
+          {
+            "value": "player is in waypoints area. need to hide current one"
+          },
+          {
+            "value": "showing next waypoint"
+          }
+        ],
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "scale": 0.4,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "target": "@cur_waypoint_name"
+        },
+        "triggerEnable": {
+          "target": "waypoints_rotation"
+        }
+      },
+      "else_actions": {}
+    },
+    "waypoints_is_last_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@cur_waypoint_name",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "comment": [
+          {
+            "value": "aye it's last waypoint"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "missionMarkAsWaypoint": {
+          "visible": true,
+          "primary": true,
+          "scale": 0.4,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "target": "@cur_waypoint_name"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "is_last_waypoint"
+        },
+        "triggerEnable": {
+          "target": "waypoints_cur_reached"
+        }
+      },
+      "else_actions": {}
     },
     "mission_completed": {
       "is_enabled": false,
@@ -2182,18 +367,14 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.01
+          "time": 1.0
         }
       },
-      "conditions": {
-        "playersWhenInArea": {
-          "math": "3D",
-          "players": "isAlive",
-          "check_players": "any",
-          "target": "waypoint39"
-        }
-      },
+      "conditions": {},
       "actions": {
+        "comment": {
+          "value": "lastwaypoint"
+        },
         "missionMarkAsWaypoint": {
           "visible": false,
           "primary": true,
@@ -2204,13 +385,17 @@
         },
         "moSetObjectiveStatus": {
           "target": "single_honolulu_m01_fly00",
-          "status": 2
+          "status": 2,
+          "object_marking": 0,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionCompleted": {
           "timer": false,
           "debriefingTimer": 2
         }
-      }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -2230,7 +415,13 @@
       "onFailed": {}
     }
   },
-  "variables": {},
+  "variables": {
+    "cur_waypoint_id": 0,
+    "next_waypoint_id": 0,
+    "cur_waypoint_name": "",
+    "next_waypoint_name": "",
+    "is_last_waypoint": false
+  },
   "dialogs": {},
   "airfields": {},
   "effects": {},
@@ -2255,13 +446,25 @@
         ],
         [
           -2435.95,
-          578.05,
+          428.79,
           350.9
         ]
       ],
+      "unit_class": "p-63a-5",
       "closed_waypoints": false,
-      "unit_class": "f6f-3",
-      "weapons": "f6f-5_default",
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "free_distance": 70.0,
@@ -2309,9 +512,21 @@
             -9286.67
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -2500,9 +715,21 @@
             -9741.91
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -2545,9 +772,21 @@
             -10289.7
           ]
         ],
-        "closed_waypoints": false,
         "unit_class": "fishboat4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 5,
@@ -2588,9 +827,9 @@
           100.0
         ],
         [
-          5912.01,
-          1106.52,
-          3726.34
+          5487.08,
+          1054.94,
+          3542.9
         ]
       ],
       "props": {}
@@ -2615,7 +854,7 @@
         ],
         [
           4747.87,
-          943.168,
+          960.05,
           3616.1
         ]
       ],
@@ -2640,9 +879,9 @@
           100.0
         ],
         [
-          4380.78,
-          903.896,
-          3386.43
+          4341.2,
+          934.867,
+          3418.45
         ]
       ],
       "props": {}
@@ -2666,9 +905,9 @@
           100.0
         ],
         [
-          3944.75,
-          895.387,
-          3474.15
+          3803.65,
+          1006.4,
+          3328.2
         ]
       ],
       "props": {}
@@ -2693,7 +932,7 @@
         ],
         [
           3434.41,
-          1019.16,
+          1038.06,
           3012.95
         ]
       ],
@@ -2720,7 +959,7 @@
         [
           3083.86,
           937.19,
-          2833.58
+          2814.35
         ]
       ],
       "props": {}
@@ -2744,9 +983,9 @@
           100.0
         ],
         [
-          2709.36,
-          894.607,
-          2734.77
+          2663.3,
+          923.45,
+          2761.5
         ]
       ],
       "props": {}
@@ -2770,9 +1009,9 @@
           100.0
         ],
         [
-          2319.22,
-          837.816,
-          2524.31
+          2158.0,
+          888.1,
+          2472.05
         ]
       ],
       "props": {}
@@ -2796,9 +1035,9 @@
           100.0
         ],
         [
-          1747.6,
-          811.55,
-          2126.55
+          1861.15,
+          886.1,
+          2156.95
         ]
       ],
       "props": {}
@@ -2823,7 +1062,7 @@
         ],
         [
           1782.45,
-          804.1,
+          808.998,
           1793.45
         ]
       ],
@@ -2848,9 +1087,9 @@
           100.0
         ],
         [
-          1423.7,
-          616.3,
-          1273.6
+          1438.24,
+          640.705,
+          1253.16
         ]
       ],
       "props": {}
@@ -2875,8 +1114,8 @@
         ],
         [
           972.45,
-          543.9,
-          1007.05
+          564.97,
+          995.643
         ]
       ],
       "props": {}
@@ -2900,9 +1139,9 @@
           100.0
         ],
         [
-          304.6,
-          474.55,
-          899.4
+          326.136,
+          498.098,
+          861.883
         ]
       ],
       "props": {}
@@ -2927,8 +1166,8 @@
         ],
         [
           -392.7,
-          378.95,
-          765.5
+          433.479,
+          776.857
         ]
       ],
       "props": {}
@@ -2953,8 +1192,8 @@
         ],
         [
           -1085.75,
-          284.2,
-          749.8
+          351.856,
+          721.893
         ]
       ],
       "props": {}
@@ -3005,7 +1244,7 @@
         ],
         [
           6194.15,
-          1173.7,
+          1209.93,
           3879.9
         ]
       ],
@@ -3031,7 +1270,7 @@
         ],
         [
           6477.45,
-          1251.45,
+          1212.3,
           4039.65
         ]
       ],
@@ -3057,7 +1296,7 @@
         ],
         [
           7122.6,
-          666.1,
+          917.85,
           4304.45
         ]
       ],
@@ -3083,7 +1322,7 @@
         ],
         [
           7396.55,
-          585.35,
+          651.819,
           4677.2
         ]
       ],
@@ -3109,7 +1348,7 @@
         ],
         [
           7574.1,
-          632.4,
+          653.266,
           5274.7
         ]
       ],
@@ -3135,7 +1374,7 @@
         ],
         [
           7904.8,
-          855.65,
+          889.064,
           5575.4
         ]
       ],
@@ -3160,9 +1399,9 @@
           100.0
         ],
         [
-          8335.85,
-          1061.3,
-          5413.65
+          8258.15,
+          1097.48,
+          5460.3
         ]
       ],
       "props": {}
@@ -3186,9 +1425,9 @@
           100.0
         ],
         [
-          8608.35,
-          741.521,
-          5703.9
+          8658.84,
+          882.8,
+          5590.6
         ]
       ],
       "props": {}
@@ -3213,7 +1452,7 @@
         ],
         [
           8897.45,
-          628.05,
+          663.1,
           5909.85
         ]
       ],
@@ -3239,7 +1478,7 @@
         ],
         [
           8895.05,
-          529.3,
+          596.881,
           6344.0
         ]
       ],
@@ -3265,7 +1504,7 @@
         ],
         [
           9099.45,
-          704.85,
+          759.851,
           6781.15
         ]
       ],
@@ -3291,7 +1530,7 @@
         ],
         [
           9176.05,
-          827.15,
+          877.2,
           7043.4
         ]
       ],
@@ -3316,9 +1555,9 @@
           100.0
         ],
         [
-          9168.4,
-          803.3,
-          7240.15
+          9212.58,
+          862.863,
+          7399.4
         ]
       ],
       "props": {}
@@ -3342,9 +1581,9 @@
           100.0
         ],
         [
-          9300.7,
-          865.0,
-          7498.65
+          9286.73,
+          1000.02,
+          7617.94
         ]
       ],
       "props": {}
@@ -3368,9 +1607,9 @@
           100.0
         ],
         [
-          9339.45,
-          1028.3,
-          7910.1
+          9347.15,
+          1073.9,
+          7888.8
         ]
       ],
       "props": {}
@@ -3394,9 +1633,9 @@
           100.0
         ],
         [
-          9691.3,
-          931.7,
-          7992.15
+          9465.2,
+          1070.35,
+          8191.65
         ]
       ],
       "props": {}
@@ -3420,9 +1659,9 @@
           100.0
         ],
         [
-          9873.7,
-          885.85,
-          8261.65
+          9761.7,
+          1008.77,
+          8425.75
         ]
       ],
       "props": {}
@@ -3446,9 +1685,9 @@
           100.0
         ],
         [
-          10139.8,
-          809.45,
-          8533.8
+          10112.0,
+          909.572,
+          8551.5
         ]
       ],
       "props": {}
@@ -3473,7 +1712,7 @@
         ],
         [
           10256.2,
-          650.3,
+          738.25,
           8787.45
         ]
       ],
@@ -3498,9 +1737,9 @@
           100.0
         ],
         [
-          10192.5,
-          377.45,
-          9021.85
+          10216.8,
+          368.1,
+          9256.25
         ]
       ],
       "props": {}
@@ -3525,7 +1764,7 @@
         ],
         [
           10370.7,
-          174.1,
+          203.142,
           9781.05
         ]
       ],
@@ -3635,5 +1874,22 @@
       ],
       "props": {}
     }
-  }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
 }

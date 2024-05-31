@@ -109,6 +109,7 @@ function checkEventFeaturePacks(event, isSilent = false) {
 let getCurGameModeMinMRankForNightBattles = @(event) event?.minMRankForNightBattles
 
 let hasNightGameModes = @(event) getCurGameModeMinMRankForNightBattles(event) != null
+let hasSmallTeamsGameModes = @(event) event?.minMRankForSmallTeamsBattles != null
 
 return {
   eventIdsForMainGameModeList
@@ -137,4 +138,5 @@ return {
   checkEventFeaturePacks
   hasNightGameModes
   getCurGameModeMinMRankForNightBattles
+  hasSmallTeamsGameModes
 }

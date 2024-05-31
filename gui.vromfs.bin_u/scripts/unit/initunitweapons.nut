@@ -79,6 +79,29 @@ function initCustomPresetParams(unit, weapon) {
   weapon.mass_per_sec <- massPerSecValue
 }
 
+function getWeaponImage(unitType, weaponBlk, costBlk) {
+  if (unitType == ES_UNIT_TYPE_TANK) {
+    return costBlk?.image_tank
+      ?? weaponBlk?.image_tank
+      ?? costBlk?.image
+      ?? weaponBlk?.image
+      ?? ""
+  }
+
+  if (unitType == ES_UNIT_TYPE_AIRCRAFT || unitType == ES_UNIT_TYPE_HELICOPTER) {
+    return costBlk?.image_aircraft
+      ?? weaponBlk?.image_aircraft
+      ?? costBlk?.image
+      ?? weaponBlk?.image
+      ?? ""
+  }
+
+  // unitType == ES_UNIT_TYPE_INVALID
+  return costBlk?.image
+    ?? weaponBlk?.image
+    ?? ""
+}
+
 function initWeaponry(weaponry, blk, esUnitType) {
   let weaponBlk = get_modifications_blk()?.modifications?[weaponry.name]
   weaponry.cost <- weaponry?.cost ?? 0
@@ -90,7 +113,7 @@ function initWeaponry(weaponry, blk, esUnitType) {
   }
   weaponry.tier <- (blk?.tier.tointeger() ?? 1) || 1
   weaponry.modClass <- blk?.modClass ?? weaponBlk?.modClass ?? ""
-  weaponry.image <- weaponry?.image ?? ::get_weapon_image(esUnitType, weaponBlk, blk)
+  weaponry.image <- weaponry?.image ?? getWeaponImage(esUnitType, weaponBlk, blk)
   weaponry.requiresModelReload <- weaponBlk?.requiresModelReload ?? false
   weaponry.isHidden <- blk?.isHidden ?? weaponBlk?.isHidden ?? false
   weaponry.weaponmask <- blk?.weaponmask ?? 0
@@ -230,4 +253,5 @@ return {
   initUnitModifications
   initUnitWeaponsContainers
   initUnitCustomPresetsWeapons
+  getWeaponImage
 }

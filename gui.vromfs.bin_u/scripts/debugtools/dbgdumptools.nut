@@ -6,6 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 // warning disable: -file:forbidden-function
 
+let { clearCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -348,11 +349,10 @@ function debug_dump_respawn_load(filename) {
       @(p) p.team == team || team == GET_MPLAYERS_LIST)
     get_mplayer_by_id = @(id) get_fake_mplayers_list().filter(@(p) p.id == id)?[0]
     get_local_mplayer = @() get_fake_mplayers_list().filter(@(p) p.isLocal)?[0]
-    request_aircraft_and_weapon = @(...) - 1
   }, false)
   curMissionRulesInvalidate()
   getCurMissionRules()
-  ::g_crews_list.crewsList = []
+  clearCrewsList()
   initListLabelsSquad()
   require("%scripts/chat/mpChatModel.nut")?.setLog(getroottable()?._fake_mpchat_log)
   eventbus_send("gui_start_respawn")

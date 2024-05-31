@@ -1313,21 +1313,31 @@
       -1
     ],
     "ammo_stowage__timeAmmoFire": -1.0,
+    "ammo_stowage__numAmmoFsForHud": 0,
     "ammo_stowage__ammoLost": 0,
     "ammo_stowage__combustionTime": 10.0,
     "ammo_stowage__detonateProb": 0.1,
-    "ammo_stowage__detonatePortion": [
+    "ammo_stowage__fatalDetonatePortion": [
       0.3,
       0.6
     ],
-    "ammo_stowage__detonateMinCaliber": 0.035,
+    "ammo_stowage__nonFatalDetonatePortion": [
+      1.0,
+      1.0
+    ],
     "ammo_stowage__fxEvAmmoFireId": -1,
     "ammo_stowage__ammoState:u32": {},
     "ammo_stowage__explosiveProperties": {},
     "ammo_stowage__splashProperties": {},
     "ammo_stowage__delayedOffender": {},
+    "ammo_stowage__ammoTypeRemap:list<ip4>": {},
+    "ammo_stowage__weaponsIds:list<i>": {},
+    "ammo_stowage__ammoTypeToMask:list<u32>": {},
     "ammo_stowage__partIdRemap:list<ip4>": {},
-    "ammo_stowage__triggerIdRemap:list<i>": {},
+    "ammo_stowage__weaponsRemap:list<i16>": {},
+    "ammo_per_type_data__state:list<u32>": {},
+    "ammo_per_type_data__numAmmoFs:list<i>": {},
+    "ammo_per_type_data__numAmmoFsSync:list<i>": {},
     "ammo_stowages__state:list<u32>": {},
     "ammo_stowages__bulletsCartridge:list<i>": {},
     "ammo_stowages__replenishmentStartEnd:list<p2>": {},
@@ -1336,25 +1346,26 @@
     "ammo_stowages__floodedAmmoReloadMult:list<r>": {},
     "ammo_stowages__clustersRange:list<ip2>": {},
     "ammo_stowages__weaponTriggersRange:list<ip2>": {},
+    "ammo_stowages__cachedAmmoHash:list<u32>": {},
     "ammo_stowage__weaponTriggers:list<i>": {},
     "ammo_clusters__typeAndStage:list<u16>": {},
-    "ammo_clusters__numAmmo:list<ip3>": {},
     "ammo_clusters__state:list<u32>": {},
     "ammo_clusters__fireEvtId:list<i>": {},
     "ammo_clusters__fireParamsId:list<i>": {},
     "ammo_clusters__explosionEvtId:list<i>": {},
     "ammo_clusters__damageEffectPresetId:list<i>": {},
     "ammo_clusters__reloadTimeMult:list<r>": {},
+    "ammo_clusters__ammoClassConstraints:list<u32>": {},
     "ammo_clusters__splashConstraints:list<p3>": {},
     "ammo_clusters__shatterConstraints:list<p3>": {},
-    "ammo_clusters__exterminatedAmmo:list<i>": {},
     "ammo_clusters__entityMunition:list<t>": {},
     "ammo_clusters__slotsRange:list<ip2>": {},
     "ammo_clusters__wreckageRange:list<ip2>": {},
-    "ammo_clusters__elevatorPartsRange:list<ip2>": {},
+    "ammo_clusters__relatedPartsRange:list<ip2>": {},
     "ammo_stowage__wreckageIds:list<i>": {},
-    "ammo_stowage__elevatorPartsIds": {},
+    "ammo_stowage__relatedPartsIds": {},
     "ammo_slots__state:list<u32>": {},
+    "ammo_slots__ammoMaskAndType:list<u32>": {},
     "ammo_slots__partId": {},
     "ammo_slots__numAmmo:list<ip2>": {},
     "ammo_slots__node": {}
@@ -2296,6 +2307,9 @@
     "active": false,
     "proj_trace_handle": -1
   },
+  "projectile_physics": {
+    "projectile_phys_obj": {}
+  },
   "bullet": {
     "_use": "projectile",
     "bullet_component": {}
@@ -2425,6 +2439,21 @@
     "gm_engine_sound__stop_event:SoundEvent": {},
     "gm_engine_sound__start_inside_event:SoundEvent": {},
     "gm_engine_sound__stop_inside_event:SoundEvent": {}
+  },
+  "gm_additional_engine_sound": {
+    "_tags": "sound",
+    "gm_additional_engine_sound__event_name": "",
+    "gm_additional_engine_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__pos_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__event:SoundEvent": {}
   },
   "asset_manager": {
     "_tags": "render",

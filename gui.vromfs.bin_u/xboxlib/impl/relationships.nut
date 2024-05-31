@@ -64,6 +64,7 @@ function retrieve_muted_people_list(callback) {
 
 function subscribe_to_relationships_change_events(callback) {
   let eventName = "relationships_changed"
+  rel.install_relationships_handler()
   eventbus_subscribe(eventName, function(res) {
     let list = res?.list
     let change_type = res?.type

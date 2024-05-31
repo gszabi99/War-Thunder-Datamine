@@ -11,7 +11,7 @@ let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nu
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
-let { hangar_protection_map_update, set_protection_analysis_editing,
+let { hangar_protection_map_update, hangar_crew_map_update, set_protection_analysis_editing,
   set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test } = require("hangarEventCommand")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
@@ -89,6 +89,8 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let isShowProtectionMapOptions = hasFeature("ProtectionMap") && this.unit.isTank()
     showObjById("btnProtectionMap", isShowProtectionMapOptions)
+    let isShowCrewMapOptions = hasFeature("CrewMap") && this.unit.isShip()
+    showObjById("btnCrewMap", isShowCrewMapOptions)
     let cbVerticalAngleObj = showObjById("checkboxVerticalAngle", isShowProtectionMapOptions)
     showObjById("rowSeparator", isShowProtectionMapOptions)
     if (isShowProtectionMapOptions) {
@@ -217,6 +219,20 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onProtectionMap = @() this.buildProtectionMap()
+
+  function buildCrewMap() {
+    let waitTextObj = this.scene.findObject("pa_wait_text")
+    let cbVerticalAngleObj = this.scene.findObject("checkboxVerticalAngle")
+    if (!waitTextObj?.isValid() || !cbVerticalAngleObj?.isValid())
+      return
+
+    cbVerticalAngleObj.enable = "no"
+    showObjById("pa_info_block", true)
+    hangar_crew_map_update()
+  }
+
+  onCrewMap = @() this.buildCrewMap()
+
   onConsiderVerticalAngle = function(obj) {
     let value = obj.getValue()
     saveLocalAccountSettings(CB_VERTICAL_ANGLE, value)

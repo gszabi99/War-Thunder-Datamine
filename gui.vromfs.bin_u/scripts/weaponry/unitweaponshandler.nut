@@ -265,14 +265,24 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       res.columns.append([this.getCellConfig(this.weaponItemId, ::g_weaponry_types.WEAPON.getHeader(this.unit), weaponsItem.weapon)])
 
     let groups = this.getBulletsGroups()
+    local activeGroupsId = []
+    foreach (gIdx, bulGroup in groups) {
+      if (!bulGroup.active || bulGroup.shouldHideBullet())
+        continue
+      activeGroupsId.append(gIdx)
+    }
     let offset = res.columns.len() < this.modsInRow ? res.columns.len() : 0
-    let totalColumns = min(offset + groups.len(), this.modsInRow)
+    let totalColumns = min(offset + activeGroupsId.len(), this.modsInRow)
     for (local i = res.columns.len(); i < totalColumns; i++)
       res.columns.append([])
 
-    foreach (gIdx, bulGroup in groups) {
-      let col = offset + (gIdx % (totalColumns - offset))
-      res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), bulGroup.getHeader(), weaponsItem.modification, gIdx))
+    local currHeader = null
+    foreach (idx, gIdx in activeGroupsId) {
+      let bulGroup = groups[gIdx]
+      let col = offset + (idx % (totalColumns - offset))
+      let header = bulGroup.getHeader()
+      res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), header != currHeader ? header : null, weaponsItem.modification, gIdx))
+      currHeader = header
     }
 
     return res
@@ -457,6 +467,8 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateBulletCountSlider(bulGroup, groupIdx) {
+    if (bulGroup.gunInfo?.isBulletBelt)
+      return
     let itemObj = this.scene.findObject(this.getBulletsItemId(groupIdx))
     if (checkObj(itemObj))
       updateItemBulletsSlider(itemObj, this.bulletsManager, bulGroup)

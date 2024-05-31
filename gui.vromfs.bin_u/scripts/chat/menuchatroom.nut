@@ -6,7 +6,7 @@ let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
-let { isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { endsWith, slice, cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
@@ -82,8 +82,7 @@ local function colorMyNameInText(msg) {
   return msg
 }
 
-function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
-    important = false, needCensore = false) {
+function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, important, needCensore, callback) {
   let text = ""
   local clanTag = ""
   local uid = null
@@ -91,6 +90,31 @@ function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySys
   local msgColor = ""
   local userColor = ""
   let msgSrc = msg
+
+  local createMessage = function() {
+    return {
+      fullName = ::g_contacts.getPlayerFullName(getPlayerName(from), clanTag)
+      from = from
+      uid = uid
+      clanTag = clanTag
+      userColor = userColor
+      isMeSender = messageType == MESSAGE_TYPE.MY
+      isSystemSender = messageType == MESSAGE_TYPE.SYSTEM
+
+      msgs = [msg]
+      msgsSrc = [msgSrc]
+      msgColor = msgColor
+
+      important = important
+      messageType = messageType
+
+      text = text
+
+      sTime = get_charserver_time_sec()
+
+      messageIndex = 0
+    }
+  }
 
   //from can be as string - Player nick, and as table - player contact.
   //after getting type, and acting accordingly, name must be string and mean name of player
@@ -126,6 +150,7 @@ function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySys
   }
   else {
     userColor = ::g_chat.getSenderColor(from, true, privateMsg)
+    messageType = myself ? MESSAGE_TYPE.MY : MESSAGE_TYPE.INCOMMING
 
     if (needCensore)
       msg = ::g_chat.filterMessageText(msg, myself)
@@ -136,52 +161,42 @@ function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySys
       msgColor = overlaySystemColor
     }
     else if (!myPrivate && ::isPlayerNickInContacts(from, EPL_BLOCKLIST)) {
-      if (privateMsg)
-        return null
+      if (privateMsg) {
+        callback?(null)
+        return
+      }
 
       userColor = blockedColor
       msgColor = blockedColor
       msg = ::g_chat.makeBlockedMsg(msg)
     }
-    else if (!myself && !myPrivate && !isChatEnableWithPlayer(from)) {
-      if (privateMsg)
-        return null
+    else if (!myself && !myPrivate) {
+      checkChatEnableWithPlayer(from, function(canChat) {
+        if (!canChat) {
+          if (privateMsg) {
+            callback?(null)
+            return
+          }
 
-      userColor = blockedColor
-      msgColor = blockedColor
-      msg = ::g_chat.makeXBoxRestrictedMsg(msg)
+          userColor = blockedColor
+          msgColor = blockedColor
+          msg = ::g_chat.makeXBoxRestrictedMsg(msg)
+          callback?(createMessage())
+        } else {
+          msg = colorMyNameInText(msg)
+          callback?(createMessage())
+        }
+      })
+      return
     }
     else
       msg = colorMyNameInText(msg)
-
-    messageType = myself ? MESSAGE_TYPE.MY : MESSAGE_TYPE.INCOMMING
   }
 
   if (msgColor != "")
     msg = colorize(msgColor, msg)
 
-  return {
-    fullName = ::g_contacts.getPlayerFullName(getPlayerName(from), clanTag)
-    from = from
-    uid = uid
-    clanTag = clanTag
-    userColor = userColor
-    isMeSender = messageType == MESSAGE_TYPE.MY
-    isSystemSender = messageType == MESSAGE_TYPE.SYSTEM
-
-    msgs = [msg]
-    msgsSrc = [msgSrc]
-    msgColor = msgColor
-
-    important = important
-    messageType = messageType
-
-    text = text
-
-    sTime = get_charserver_time_sec()
-
-    messageIndex = 0
-  }
+  callback?(createMessage())
 }
 
 function newRoom(id, customScene = null, ownerHandler = null) {
@@ -199,7 +214,7 @@ function newRoom(id, customScene = null, ownerHandler = null) {
 
     joined = true
     hidden = customScene != null
-    concealed = @() rType.isConcealed(id)
+    concealed = @(cb) rType.checkConcealed(id, cb)
 
     existOnlyInCustom = customScene != null
     isCustomScene = customScene != null

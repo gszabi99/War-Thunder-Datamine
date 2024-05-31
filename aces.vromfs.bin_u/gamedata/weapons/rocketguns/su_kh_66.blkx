@@ -12,16 +12,12 @@
     "statType": "hydra",
     "caliber": 0.275,
     "length": 3.631,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
     "CxK": 1.2,
-    "CyK": 5.0,
-    "CyMaxAoA": 1.8,
-    "wingAreaMult": 1.2,
-    "distFromCmToStab": 0.1,
+    "wingAreaMult": 1.25,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "finsLatAccel": 18.0,
+    "distFromCmToStab": 0.2,
     "mass": 278.0,
     "massEnd": 214.5,
     "timeFire": 4.9,
@@ -36,19 +32,7 @@
     "minDistance": 600.0,
     "operatedDist": 10000.0,
     "rangeMax": 10000.0,
-    "operated": true,
-    "operationTimer": 0.01,
-    "loadFactorMax": 2.0,
-    "maxLateralAcceleration": 6.0,
-    "autoAimingInArcade": true,
-    "autoAimingMaxAngle": 5.0,
-    "autoAimingMultiChannel": true,
-    "autoLeveling": false,
-    "autoAiming": true,
-    "autoAimingFirstPerson": false,
-    "aimCorrectionVelMin": 500.0,
-    "aimSensitivity": 15.0,
-    "maxAxisValues": 1.0,
+    "guidanceType": "saclos",
     "effectOffset": [
       -0.9,
       0.0,
@@ -56,7 +40,7 @@
     ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap_rocket",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -111,6 +95,29 @@
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
+    "arcadeProp": {
+      "finsAoaHor": 0.18,
+      "finsAoaVer": 0.18
+    },
+    "guidance": {
+      "aimFromBody": true,
+      "controlConeFov": 25.0,
+      "breakLockMaxTime": 5.0,
+      "lineOfSightAutopilot": {
+        "timeOut": 0.2,
+        "crossDistToReqCrossVelMult": 4.0,
+        "reqCrossVelRationMax": 0.75,
+        "velDiffToReqAccelMult": 5.5,
+        "accelControl": {
+          "reqAccelMax": 15.0,
+          "baseIndSpeed": 1800.0,
+          "accelControlProp": 0.0491,
+          "accelControlIntg": 0.0,
+          "accelControlDiff": 0.0019,
+          "accelControlIntgLim": 0.0
+        }
+      }
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },

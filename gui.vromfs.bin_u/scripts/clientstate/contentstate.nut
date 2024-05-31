@@ -1,9 +1,11 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import package_get_status, ps4_get_chunk_progress_percent, ps4_is_chunk_available
+from "%scripts/dagui_natives.nut" import ps4_get_chunk_progress_percent, ps4_is_chunk_available
 from "%scripts/dagui_library.nut" import *
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
+
+let { getContentPackStatus, ContentPackStatus } = require("contentpacks")
 
 let persistentData = {
   isConsoleClientFullOnStart = !platformModule.isPlatformXboxOne && !platformModule.isPlatformSony
@@ -63,7 +65,7 @@ else if (platformModule.isPlatformPS5) {
   isHistoricalCampaignDownloading = @() !ps4_is_chunk_available(PS5_CHUNK_HISTORICAL_CAMPAIGN)
 }
 else if (platformModule.isPlatformXboxOne) {
-  isConsoleClientFullyDownloaded = @() package_get_status("pkg_main") == PACKAGE_STATUS_OK
+  isConsoleClientFullyDownloaded = @() getContentPackStatus("pkg_main") == ContentPackStatus.OK
   getClientDownloadProgressText = @() isConsoleClientFullyDownloaded()
       ? (loc("download/finished") + "\n" + loc("msgbox/relogin_required"))
       : loc("download/inProgress")

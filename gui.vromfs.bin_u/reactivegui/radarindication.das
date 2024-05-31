@@ -31,7 +31,7 @@ def setup_data(props : Properties&; var storage : CanvasParams&)
 
 [export]
 def draw_radar_indication(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-  if get_app().isSensorViewMode
+  if get_app().isSensorViewMode || !get_radar_hud_visible()
     return
   targets_on_screen(ctx, data)
 

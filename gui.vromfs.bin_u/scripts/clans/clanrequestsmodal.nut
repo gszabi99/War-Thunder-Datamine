@@ -148,8 +148,9 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.curCandidate)
       return
 
-    let menu = clanContextMenu.getRequestActions(this.clanId, this.curCandidate.uid, this.curCandidate?.nick, this)
-    ::gui_right_click_menu(menu, this, position)
+    clanContextMenu.retrieveRequestActions(this.clanId, this.curCandidate.uid, this.curCandidate?.nick, this, function(menu) {
+      ::gui_right_click_menu(menu, this, position)
+    })
   }
 
   function onRequestApprove() {

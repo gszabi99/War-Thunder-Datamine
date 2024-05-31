@@ -30,6 +30,7 @@ let getModuleDefaultParams = @() {
   horAnglesX = Watched(0.0)
   horAnglesY = Watched(0.0)
   timeToReady = Watched(0.0)
+  shotCount = Watched(0.0)
 }
 function resizeActiveProtectionSystemModules(count) {
   let size = activeProtectionSystemModules.len()
@@ -76,8 +77,9 @@ interopGen({
   postfix = "Update"
 })
 
-interop.updateActiveProtectionSystem <- function (shotCountRemain, emitterPosX, emitterPosY, horAnglesX, horAnglesY, timeToReady, index) {
+interop.updateActiveProtectionSystem <- function (shotCount, shotCountRemain, emitterPosX, emitterPosY, horAnglesX, horAnglesY, timeToReady, index) {
   let module = activeProtectionSystemModules[index]
+  module.shotCount(shotCount)
   module.shotCountRemain(shotCountRemain)
   module.emitterPosX(floor(emitterPosX * 100) / 100)
   module.emitterPosY(floor(emitterPosY * 100) / 100)

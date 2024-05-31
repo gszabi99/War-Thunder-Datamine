@@ -2846,7 +2846,7 @@
           "page": [
             {
               "type": "radar",
-              "hideRadarBackground": true,
+              "hideBackground": true,
               "scale": 0.95
             },
             {
@@ -3071,13 +3071,13 @@
               "emitter": "emtr_flare5",
               "bullets": 160,
               "external": true,
-              "separate": true
+              "separate": true,
+              "mass": 25.0
             }
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol_slot1",
-            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
                 "pylon_bomb2",
@@ -3088,11 +3088,13 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod_aim9l.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 160,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "mass": 25.0,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -3101,7 +3103,8 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "order": 1
+                "order": 1,
+                "reqModification": "us_aim_9l"
               }
             ]
           },
@@ -3125,7 +3128,9 @@
                 "emitter": "emtr_flare5",
                 "bullets": 160,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "mass": 25.0,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -3134,7 +3139,8 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "order": 3
+                "order": 3,
+                "reqModification": "us_aim_9l"
               },
               {
                 "trigger": "aam",
@@ -3143,7 +3149,8 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "order": 5
+                "order": 5,
+                "reqModification": "us_aim_9l"
               }
             ]
           },
@@ -3340,6 +3347,10 @@
             "bullets": 1,
             "external": true,
             "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 2,
+            "preset": "ptb_1"
           }
         }
       },
@@ -3384,13 +3395,13 @@
               "emitter": "emtr_flare6",
               "bullets": 160,
               "external": true,
-              "separate": true
+              "separate": true,
+              "mass": 25.0
             }
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol_slot5",
-            "reqModification": "uk_ltc_bol",
             "ShowNodes": {
               "node": [
                 "pylon_bomb6",
@@ -3401,11 +3412,13 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet_bol_pod_aim9l.blk",
                 "emitter": "emtr_flare6",
                 "bullets": 160,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "mass": 25.0,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -3414,14 +3427,14 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "order": 2
+                "order": 2,
+                "reqModification": "us_aim_9l"
               }
             ]
           },
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod_group",
             "name": "aim_9l_x2_bol_slot5",
-            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": [
                 "pylon_bomb6",
@@ -3438,7 +3451,9 @@
                 "emitter": "emtr_flare6",
                 "bullets": 160,
                 "external": true,
-                "separate": true
+                "separate": true,
+                "mass": 25.0,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -3447,7 +3462,8 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "order": 4
+                "order": 4,
+                "reqModification": "us_aim_9l"
               },
               {
                 "trigger": "aam",
@@ -3456,7 +3472,8 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "order": 6
+                "order": 6,
+                "reqModification": "us_aim_9l"
               }
             ]
           },

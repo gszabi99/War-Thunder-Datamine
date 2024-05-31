@@ -12,7 +12,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
-let { abs, ceil, floor } = require("math")
+let { ceil, floor } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager
@@ -26,6 +26,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText
 } = require("shopUnitCellFill.nut")
+let { ShopLines } = require("shopLines.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
 let { findChildIndex, show_obj } = require("%sqDagui/daguiUtil.nut")
@@ -37,9 +38,8 @@ let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
 } = require("%scripts/shop/shopDifficulty.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
-let { buildDateStr } = require("%scripts/time.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { stripTags, cutPrefix } = require("%sqstd/string.nut")
+let { cutPrefix } = require("%sqstd/string.nut")
 let { getDestinationRPUnitType, charSendBlk } = require("chard")
 let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
@@ -47,7 +47,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
 let {
-  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, getUnitsNeedBuyToOpenNextInEra,
+  getEsUnitType, getUnitCountry, isUnitGift, getUnitsNeedBuyToOpenNextInEra,
   isUnitGroup, isGroupPart,canResearchUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
@@ -57,11 +57,15 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 local lastUnitType = null
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
+const LOCAL_RANK_COLLAPSED_STATE_ID = "savedCollapsedRankState" //For save state of ranks in shop table collapsed / not collapsed
+const CONTAINER_COLLAPSE_BTN_COUNT = 1
 
 /*
 shopData = [
@@ -99,6 +103,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   curCountry = null
   curPage = ""
   curUnitsList = null
+  unitsByRank = null
+  maxRank = 0
+  animData = {}
   curAirName = ""
   curPageGroups = null
   groupChooseObj = null
@@ -107,10 +114,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   availableFlushExp = 0
   brokenList = null
   _timer = 0.0
-
   shopData = null
   slotbarActions = [
-    "research", "researchCrossPromo", "find_in_market", "buy", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
+    "research", "researchCrossPromo", "find_in_market", "use_coupon", "buy", "take", "add_to_wishlist", "go_to_wishlist", "sec_weapons", "weapons",
     "showroom", "testflight", "crew", "goto_unlock", "info", "repair"
   ]
   shopResearchMode = false
@@ -120,15 +126,27 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   navBarObj = null
   navBarGroupObj = null
-
   searchBoxWeak = null
   selCellOnSearchQuit = null
 
   unitActionsListTimer = null
   hasSpendExpProcess = false
   actionsListOpenTime = 0
+  cachedTableObj = null
+  cachedUnitsStatusByRanks = null
+  cachedPremiumUnitsStatusByRanks = null
+  cachedPremiumSectionPos = 0
+  cachedRankCollapsedState = null
+  linesGenerator = null
+  extraWidth = 0
 
   function initScreen() {
+    this.linesGenerator = ShopLines()
+    let savedColalapsedData = loadLocalAccountSettings(LOCAL_RANK_COLLAPSED_STATE_ID)
+    this.cachedRankCollapsedState = DataBlock()
+    if (savedColalapsedData != null)
+      this.cachedRankCollapsedState.setFrom(savedColalapsedData)
+
     if (!this.curAirName.len()) {
       this.curCountry = profileCountrySq.value
       let unit = getAircraftByName(hangar_get_current_unit_name())
@@ -140,6 +158,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("shop_timer").setUserData(this)
     this.brokenList = []
     this.curUnitsList = []
+    this.animData = {}
+    this.unitsByRank = {}
 
     this.navBarObj = this.scene.findObject("nav-help")
 
@@ -150,6 +170,40 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillPagesListBox()
     this.initSearchBox()
     this.skipOpenGroup = false
+  }
+
+  function findTableCellData(handler) {
+    let tableObj = this.getTableObj()
+    let containersCount = tableObj.childrenCount()
+    local tableIndex = 0
+    local threeIndex = 0
+    for (local i = 0; i < containersCount; i++) {
+      let rankTable = this.getRankTable(tableObj, i)
+      if (rankTable == null)
+        return null
+      if (!rankTable.isVisible())
+        continue
+      let cellsContainer = rankTable.findObject("cells_container")
+      let cellsCount = cellsContainer.childrenCount()
+      for ( local n = 0; n < cellsCount; n++) {
+        let cellObj = cellsContainer.getChild(n)
+        if (!cellObj.isVisible())
+          break
+        let data = {cellObj, threeIndex, tableIndex = tableIndex + n, container = rankTable, containerIndex = i}
+        if (handler(data))
+          return data
+        threeIndex++
+      }
+      tableIndex += cellsCount + CONTAINER_COLLAPSE_BTN_COUNT
+    }
+    return null
+  }
+
+  function findTableIndexByHolderOrHover(holderId = null) {
+    let { tableIndex = -1 } = holderId == null
+      ? this.findTableCellData(@(data) data.cellObj.isHovered())
+      : this.findTableCellData(@(data) data.cellObj?.holderId == holderId)
+    return tableIndex
   }
 
   function isSceneActive() {
@@ -268,7 +322,89 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return res
   }
 
-  function initUnitCells(tableObj, cellsList) {
+  function initUnitCells(tableObj, totalWidth) {
+    let cellsByRanks = this.unitsByRank
+    let cellHeight = to_pixels("@shop_height")
+    let shInPixels = to_pixels("sh")
+
+    let cellHeightInPersent = 100.0 * cellHeight / shInPixels
+    this.animData = {ranksHeights = [], cellHeight = cellHeightInPersent}
+    let extraLeft = $"{this.extraWidth} + 1@modBlockTierNumHeight"
+
+    local tableIndex = 0
+    local maxCellY = 0
+    let ranksCount = cellsByRanks.len()-1
+    let armyRankCollapsedData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
+    for (local rank = 0; rank <= this.maxRank; rank++) {
+      if (!(rank in cellsByRanks))
+        continue
+      let rankCells = cellsByRanks[rank]
+      if (rankCells.len() == 0)
+        continue
+
+      let rankTable = this.getRankTable(tableObj, tableIndex) ?? this.createRankTable(tableObj, tableIndex)
+      let cellsContainer = rankTable.findObject("cells_container")
+      cellsContainer.size = $"{totalWidth}@shop_width, ph"
+      cellsContainer.pos = $"{extraLeft}, 0"
+
+      local count = cellsContainer.childrenCount()
+      let needCount = rankCells.len()
+      if (needCount > count)
+        this.guiScene.createMultiElementsByObject(cellsContainer, "%gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
+
+      count = max(count, needCount)
+      if (count != cellsContainer.childrenCount()) {
+        tableIndex += 1
+        continue //prevent crash on error, but anyway we will get assert in such case on update
+      }
+
+      let parentPosY = maxCellY > 0 ? maxCellY + 1 : 0
+      for (local i = 0; i < count; i++) {
+        let cellObj = cellsContainer.getChild(i)
+        if (i not in rankCells) {
+          cellObj.show(false)
+          cellObj.enable(false)
+        } else {
+          cellObj.show(true)
+          cellObj.enable(true)
+          let cellData = rankCells[i]
+          initCell(cellObj, cellData, parentPosY)
+          if (maxCellY < cellData.posY)
+            maxCellY = cellData?.posY
+        }
+      }
+
+      let height = $"{(maxCellY - parentPosY + 1) * cellHeightInPersent}"
+      this.animData.ranksHeights.append(height)
+
+      rankTable.show(true)
+      rankTable.enable(true)
+      rankTable.findObject("bottom_horizontal_line").show(rank == ranksCount)
+
+      let arrowsContainer = rankTable.findObject("arrows_container")
+      arrowsContainer.size = $"{totalWidth}@shop_width, ph"
+      arrowsContainer.pos = $"{extraLeft}, -{parentPosY}@shop_height"
+
+      let isCollapsed = armyRankCollapsedData?[$"{tableIndex}"] ?? false
+      let collapseParams = {needCollapse = isCollapsed,
+        isInstant = true, needForceUpdate = true,
+        containerIndex = tableIndex}
+
+      this.collapseCellsContainer(collapseParams, rankTable)
+      tableIndex += 1
+    }
+
+    while (true) {
+      let rankTable = this.getRankTable(tableObj, tableIndex)
+      if (rankTable == null)
+        break
+      rankTable.show(false)
+      rankTable.enable(false)
+      tableIndex++
+    }
+  }
+
+  function initUnitCellsGroup(tableObj, cellsList) {
     local count = tableObj.childrenCount()
     let needCount = cellsList.len()
     if (needCount > count)
@@ -285,7 +421,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         cellObj.enable(false)
       }
       else
-        initCell(cellObj, cellsList[i])
+        initCell(cellObj, cellsList[i], 0)
     }
   }
 
@@ -297,26 +433,73 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     })
   }
 
-  function updateUnitCell(cellObj, unit) {
-    let params = this.getUnitItemParams(unit)
-    updateCellStatus(cellObj, getStatusTbl(unit, params))
+  function updateUnitCell(cellObj, unit, params = null, statusTable = null) {
+    if (params == null)
+      params = this.getUnitItemParams(unit)
+    if (statusTable == null)
+      statusTable = getStatusTbl(unit, params)
+    updateCellStatus(cellObj, statusTable)
     updateCellTimedStatus(cellObj, @() getTimedStatusTbl(unit, params))
   }
 
+
   function updateCurUnitsList() {
-    let tableObj = this.scene.findObject("shop_items_list")
-    let total = tableObj.childrenCount()
-    foreach (idx, unit in this.curUnitsList)
-      if (idx < total)
-        this.updateUnitCell(tableObj.getChild(idx), unit)
-      else
-        script_net_assert_once("shop early update", "Try to update shop units before init")
+    let tableObj = this.getTableObj()
+    local index = 0
+    this.cachedUnitsStatusByRanks = {}
+    this.cachedPremiumUnitsStatusByRanks = {}
+    for (local rank = 0; rank <= this.maxRank; rank++) {
+      let units = this.unitsByRank?[rank]
+      if (units == null || units.len() == 0)
+        continue
+      let rankTable = this.getRankTable(tableObj, index)
+      index++
+      if (rankTable == null)
+        continue
+      let cellsContainer = rankTable.findObject("cells_container")
+      let childCount = cellsContainer.childrenCount()
+      foreach (idx, unit in units) {
+        if (idx < childCount) {
+          let params = this.getUnitItemParams(unit?.unitOrGroup)
+          let statusTable = getStatusTbl(unit?.unitOrGroup, params)
+          if (!unit.unitOrGroup?.isFakeUnit || unit.unitOrGroup?.rank == null){
+            let cachedStatuses = unit.posX >= this.cachedPremiumSectionPos
+              ? this.cachedPremiumUnitsStatusByRanks
+              : this.cachedUnitsStatusByRanks
+
+            if (!cachedStatuses?[unit.unitOrGroup.rank])
+              cachedStatuses[unit.unitOrGroup.rank] <- []
+            cachedStatuses[unit.unitOrGroup.rank].append(statusTable)
+          }
+          this.updateUnitCell(cellsContainer.getChild(idx), unit?.unitOrGroup, params, statusTable)
+        }
+        else
+          script_net_assert_once("shop early update", "Try to update shop units before init")
+      }
+    }
+  }
+
+  function getTableObj() {
+    if (!this.cachedTableObj || !this.cachedTableObj.isValid())
+      this.cachedTableObj = this.scene.findObject("shop_items_list")
+    return this.cachedTableObj
+  }
+
+  function createRankTable(ranksContainer, containerId) {
+    let view = {containerId, hasHorizontalSeparator = containerId > 0}
+    let rankTableBlk = handyman.renderCached("%gui/shop/treeCellsContainer.tpl", view)
+    this.guiScene.appendWithBlk(ranksContainer, rankTableBlk, this)
+    return ranksContainer.findObject($"rank_table_{containerId}")
+  }
+
+  function getRankTable(ranksContainer, rank) {
+    return ranksContainer.findObject($"rank_table_{rank}")
   }
 
   function fillAircraftsList(curName = "") {
     if (!checkObj(this.scene))
       return
-    let tableObj = this.scene.findObject("shop_items_list")
+    let tableObj = this.getTableObj()
     if (!checkObj(tableObj))
       return
 
@@ -329,7 +512,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let treeData = this.getCurTreeData()
     this.brokenList = []
 
-    this.fillBGLines(treeData)
     this.guiScene.setUpdatesEnabled(false, false);
 
     let cellsList = []
@@ -342,11 +524,39 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           cellsList.append({ unitOrGroup, id = unitOrGroup.name, posX = col, posY = row, position = "absolute" })
         }
 
-    tableObj.size = $"{maxCols+1}@shop_width, {treeData.tree.len()}@shop_height"
     tableObj.isShopItemsWide = to_pixels("@is_shop_items_wide")
-    this.initUnitCells(tableObj, cellsList)
+
+    this.unitsByRank = {}
+    this.unitsByRank[0] <- []
     this.curUnitsList = cellsList.map(@(c) c.unitOrGroup)
+    this.maxRank = 0
+    foreach (cell in cellsList) {
+      if (cell?.unitOrGroup.isFakeUnit) {
+        this.unitsByRank[0].append(cell)
+        continue
+      }
+      let cellRank = cell?.unitOrGroup?.rank ?? cell?.unitOrGroup[0].rank ?? 1
+      this.maxRank = this.maxRank < cellRank ? cellRank : this.maxRank
+      if (this.unitsByRank?[cellRank])
+        this.unitsByRank[cellRank].append(cell)
+      else
+        this.unitsByRank[cellRank] <- [cell]
+    }
+
+    let widthStr = isSmallScreen
+      ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
+      : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
+    let totalWidth = this.guiScene.calcString(widthStr, null)
+    let itemWidth = this.guiScene.calcString("@shop_width", null)
+    this.extraWidth = max(0, totalWidth - (itemWidth * treeData.sectionsPos[treeData.sectionsPos.len() - 1])) / 2
+
+    let containersWidth = treeData.sectionsPos[treeData.sectionsPos.len()-1] - treeData.sectionsPos[0]
+    this.cachedPremiumSectionPos = treeData.sectionsPos?[1] ?? treeData.sectionsPos[treeData.sectionsPos.len()-1]
+    this.initUnitCells(tableObj, containersWidth)
     this.updateCurUnitsList()
+    this.fillBGLines(treeData)
+    this.generateTierCollapsedIcons()
+    this.updateExpandAllBtnsState()
 
     local curIdx = -1
     foreach (idx, unit in this.curUnitsList) {
@@ -358,7 +568,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.guiScene.setUpdatesEnabled(true, true)
-    tableObj.setValue(curIdx)
+    let cellData = this.getCellDataByThreeIdx(curIdx)
+    if (cellData == null)
+      return
+    tableObj.setValue(cellData.tableIndex)
 
     this.updateButtons()
 
@@ -373,10 +586,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventDiscountsDataUpdated(_params = {}) {
     this.updateDiscountIconsOnTabs()
     this.updateCurUnitsList()
+    this.generateTierCollapsedIcons()
   }
 
   function onEventUnlockMarkersCacheInvalidate(_params = {}) {
     this.updateCurUnitsList()
+    this.generateTierCollapsedIcons()
   }
 
   function onEventPromoteUnitsChanged(_params = {}) {
@@ -460,178 +675,62 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return "locked"
     return ""
   }
-/*
-  function findAircraftPos(tree, airName)
-  {
-    for(local row = 0; row < tree.len(); row++)
-      for(local col = 0; col < tree[row].len() - 1; col++)
-        if (tree[row][col+1] && (tree[row][col+1].name == airName))
-          return [row, col]
-    return null
-  }
-*/
-
-  function createLine(r0, c0, r1, c1, status, lineConfig = {}) {
-    let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false } = lineConfig
-    let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
-    let isFakeUnitReq = reqAir?.isFakeUnit
-    let isMultipleArrow = arrowCount > 1
-    let isLineParallelFutureReqLine = isMultipleArrow
-      && !isFutureReqAir && air?.futureReqAir != null
-    let isLineShiftedToRight = hasNextFutureReqLine
-
-    local lines = ""
-    let arrowProps = $"shopStat:t='{status}'; isOutlineIcon:t={isFutureReqAir ? "yes" : "no"};"
-    let arrowFormat = "".concat("shopArrow { type:t='%s'; size:t='%s, %s';",
-      "pos:t='%s, %s'; rotation:t='%s';", arrowProps, " } ")
-    let lineFormat = "".concat("shopLine { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s';",
-      arrowProps, " } ")
-    let angleFormat = "".concat("shopAngle { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s';",
-      arrowProps, " } ")
-    local alarmTooltip = ""
-    if (isFutureReqAir && reqAir) {
-      let endReleaseDate = reqAir.getEndRecentlyReleasedTime()
-      if (endReleaseDate > 0) {
-        let hasReqAir = (air?.reqAir ?? "") != ""
-        let locId = air?.futureReqAirDesc ?? (hasReqAir ? "shop/futureReqAir/desc" : "shop/futureReqAir/desc/withoutReqAir")
-        alarmTooltip = stripTags(loc(locId, {
-          futureReqAir = getUnitName(air.futureReqAir)
-          curAir = getUnitName(air)
-          reqAir = hasReqAir ? getUnitName(air.reqAir) : ""
-          date = buildDateStr(endReleaseDate)
-        }))
-      }
-    }
-    let alarmIconFormat = "".concat("shopAlarmIcon { pos:t='%s, %s'; tooltip:t='",
-      alarmTooltip, "'; } ")
-    let pad1 = "1@lines_pad"
-    let pad2 = "1@lines_pad"
-    let interval1 = "1@lines_shop_interval"
-    let interval2 = "1@lines_shop_interval"
-
-    if (c0 == c1) { //vertical
-      let offset = isLineParallelFutureReqLine ? -0.1
-        : isLineShiftedToRight ? 0.1
-        : 0
-      let posX = $"{(c0 + 0.5 + offset)}@shop_width - 0.5@modArrowWidth"
-      let height = $"{pad1} + {pad2} + {(r1 - r0 - 1)}@shop_height"
-      let posY = $"{(r0 + 1)}@shop_height - {pad1}"
-      lines += format(arrowFormat, "vertical", "1@modArrowWidth", height,
-        posX, posY, "0")
-
-      if (isFutureReqAir)
-        lines = "".concat(lines,
-          format(alarmIconFormat, $"{posX} + 0.5@modArrowWidth - 0.5w",
-           $"{posY} + 0.5*({height}) - 0.5h"))
-    }
-    else if (r0 == r1) { //horizontal
-      let offset = isLineParallelFutureReqLine ? -0.1
-        : isLineShiftedToRight ? 0.1
-        : 0
-      let posX = $"{(c0 + 1)}@shop_width - {interval1}"
-      let width = $"{(c1 - c0 - 1)}@shop_width + {interval1} + {interval2}"
-      let posY = $"{(r0 + 0.5 + offset)}@shop_height - 0.5@modArrowWidth"
-      lines += format(arrowFormat, "horizontal", width, "1@modArrowWidth",
-        posX, posY, "0")
-
-      if (isFutureReqAir)
-        lines = "".concat(lines,
-          format(alarmIconFormat, $"{posX} + 0.5*({width}) - 0.5w",
-           $"{posY} + 0.5@modArrowWidth - 0.5h"))
-    }
-    else if (isFakeUnitReq) { //special line for fake unit. Line is go to unit plate on side
-      lines += format(lineFormat,
-                       pad1 + " + " + (r1 - r0 - 0.5) + "@shop_height", //height
-                       "1@modLineWidth", //width
-                       (c0 + 0.5) + "@shop_width" + ((c0 > c1) ? "- 0.5@modLineWidth" : "+ 0.5@modLineWidth"), //posX
-                       (r0 + 1) + "@shop_height - " + pad1 + ((c0 > c1) ? "+w" : ""), // posY
-                       (c0 > c1) ? "-90" : "90")
-      lines += format(arrowFormat,
-                       "horizontal",  //type
-                       (abs(c1 - c0) - 0.5) + "@shop_width + " + interval1, //width
-                       "1@modArrowWidth", //height
-                       (c1 > c0 ? (c0 + 0.5) : c0) + "@shop_width" + (c1 > c0 ? "" : (" - " + interval1)), //posX
-                       (r1 + 0.5) + "@shop_height - 0.5@modArrowWidth", // posY
-                       (c0 > c1) ? "180" : "0")
-      lines += format(angleFormat,
-                       "1@modAngleWidth", //width
-                       "1@modAngleWidth", //height
-                       (c0 + 0.5) + "@shop_width - 0.5@modAngleWidth", //posX
-                       (r1 + 0.5) + "@shop_height - 0.5@modAngleWidth", // posY
-                       (c0 > c1 ? "-90" : "0"))
-    }
-    else { //double
-      let lh = 0
-      let offset = isMultipleArrow ? 0.1 : 0
-      let arrowOffset = c0 > c1 ? -offset : offset
-
-      lines += format(lineFormat,
-                       pad1 + " + " + lh + "@shop_height", //height
-                       "1@modLineWidth", //width
-                       (c0 + 0.5 + arrowOffset) + "@shop_width" + ((c0 > c1) ? "-" : "+") + " 0.5@modLineWidth", //posX
-                       (r0 + 1) + "@shop_height - " + pad1 + ((c0 > c1) ? "+ w " : ""), // posY
-                       (c0 > c1) ? "-90" : "90")
-
-      lines += format(lineFormat,
-                      (abs(c1 - c0) - offset) + "@shop_width",
-                      "1@modLineWidth", //height
-                      (min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset)) + "@shop_width",
-                      (lh + r0 + 1) + "@shop_height - 0.5@modLineWidth",
-                      "0")
-      lines += format(angleFormat,
-                       "1@modAngleWidth", //width
-                       "1@modAngleWidth", //height
-                       (c0 + 0.5 + arrowOffset) + "@shop_width - 0.5@modAngleWidth", //posX
-                       (lh + r0 + 1) + "@shop_height - 0.5@modAngleWidth", // posY
-                       (c0 > c1 ? "-90" : "0"))
-      lines += format(arrowFormat,
-                      "vertical",
-                      "1@modArrowWidth",
-                      pad2 + " + " + (r1 - r0 - 1 - lh) + "@shop_height",
-                      (c1 + 0.5) + "@shop_width - 0.5@modArrowWidth",
-                      (lh + r0 + 1) + "@shop_height + 0.2@modArrowWidth",
-                      "0")
-      lines += format(angleFormat,
-                       "1@modAngleWidth", //width
-                       "1@modAngleWidth", //height
-                       (c1 + 0.5) + "@shop_width - 0.5@modAngleWidth",
-                       (lh + r0 + 1) + "@shop_height - 0.5@modAngleWidth",
-                       (c0 > c1 ? "90" : "180"))
-    }
-
-    return lines
-  }
 
   function fillBGLines(treeData) {
-    this.guiScene.setUpdatesEnabled(false, false)
     this.generateHeaders(treeData)
     this.generateBGPlates(treeData)
     this.generateTierArrows(treeData)
     this.generateAirAddictiveArrows(treeData)
-    this.guiScene.setUpdatesEnabled(true, true)
-
-    let contentWidth = this.scene.findObject("shopTable_air_rows").getSize()[0]
-    let containerWidth = this.scene.findObject("shop_useful_width").getSize()[0]
-    let pos = (contentWidth >= containerWidth) ? "0" : "(pw-w)/2"
-    this.scene.findObject("shop_items_pos_div").left = pos
   }
 
   function generateAirAddictiveArrows(treeData) {
-    let tblBgObj = this.scene.findObject("shopTable_air_rows")
-    local data = ""
+    this.linesGenerator.prepareGenerateLines()
+
+    let tableObj = this.getTableObj()
+
+    local containerIndex = 0
+    local rankTable = this.getRankTable(tableObj, containerIndex)
+    local arrowsContainer = null
+
+    local datasByRanks = {}
+    datasByRanks[0] <- []
+
     foreach (lc in treeData.lines) {
       this.fillAirReq(lc.air, lc.reqAir)
-      data += this.createLine(lc.line[0], lc.line[1], lc.line[2], lc.line[3], this.getLineStatus(lc), lc)
+      let startLineIndex = lc.reqAir?.isFakeUnit ? 0 : lc.reqAir.rank
+      let endLineIndex = lc.air?.isFakeUnit ? 0 : lc.air.rank
+
+      for ( local i = startLineIndex; i <= endLineIndex; i++) {
+        if (datasByRanks?[i] == null)
+          datasByRanks[i] <- [lc]
+        else
+          datasByRanks[i].append(lc)
+      }
     }
+
+    containerIndex = 0
+    for (local rank = 0; rank <= this.maxRank; rank++) {
+      let units = this.unitsByRank?[rank]
+      if (units == null || units.len() == 0)
+        continue
+      if (datasByRanks?[rank] != null) {
+        rankTable = this.getRankTable(tableObj, containerIndex)
+        arrowsContainer = rankTable.findObject("arrows_container")
+
+        let lineArr = datasByRanks[rank]
+        foreach (lc in lineArr)
+          this.linesGenerator.modifyOrAddLine(this, arrowsContainer, containerIndex, lc, this.getLineStatus(lc))
+      }
+      containerIndex++
+    }
+
+    this.linesGenerator.completeGenerateLines(this.guiScene)
 
     foreach (_row, rowArr in treeData.tree) //check groups even they dont have requirements
       for (local col = 0; col < rowArr.len(); col++)
         if (isUnitGroup(rowArr[col]))
           this.fillAirReq(rowArr[col])
 
-    this.guiScene.replaceContentFromText(tblBgObj, data, data.len(), this)
-
-    tblBgObj.width = treeData.tree[0].len() + "@shop_width"
   }
 
   function generateHeaders(treeData) {
@@ -642,27 +741,20 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let sectionsTotal = treeData.sectionsPos.len() - 1
-    let widthStr = isSmallScreen
-      ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
-      : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
-    let totalWidth = this.guiScene.calcString(widthStr, null)
-    let itemWidth = this.guiScene.calcString("@shop_width", null)
-
-    let extraWidth = "+" + max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
-    let extraLeft = extraWidth + "+1@modBlockTierNumHeight"
-    let extraRight = extraWidth + "+1@scrollBarSize - 2@frameHeaderPad"
+    let extraLeft = $" + {this.extraWidth} + 1@modBlockTierNumHeight"
+    let extraRight = $" + {this.extraWidth} + 1@scrollBarSize - 2@frameHeaderPad"
 
     for (local s = 0; s < sectionsTotal; s++) {
       let isLeft = s == 0
       let isRight = s == sectionsTotal - 1
 
-      let x = treeData.sectionsPos[s] + "@shop_width" + (isLeft ? "" : extraLeft)
-      let w = (treeData.sectionsPos[s + 1] - treeData.sectionsPos[s]) + "@shop_width" + (isLeft ? extraLeft : "") + (isRight ? extraRight : "")
+      let x = "".concat($"{treeData.sectionsPos[s]}@shop_width", isLeft ? "" : extraLeft)
+      let w = "".concat($"{treeData.sectionsPos[s + 1] - treeData.sectionsPos[s]}@shop_width", isLeft ? extraLeft : "", isRight ? extraRight : "")
 
       let isResearchable = getTblValue(s, treeData.sectionsResearchable)
       let title = isResearchable ? "#shop/section/researchable" : "#shop/section/premium"
 
-      view.plates.append({ title = title, x = x, w = w })
+      view.plates.append({ title = title, x = x, w = w, hasExpandBtn = s == 0 ? "yes" : null})
       if (!isLeft)
         view.separators.append({ x = x })
     }
@@ -672,13 +764,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function generateBGPlates(treeData) {
-    let tblBgObj = this.scene.findObject("shopTable_air_plates")
-    let view = {
-      plates = [],
-      vertSeparators = [],
-      horSeparators = [],
-    }
-
     local tiersTotal = treeData.ranksHeight.len() - 1
     for (local i = tiersTotal - 1; i >= 0; i--) {
       if (treeData.ranksHeight[i] != treeData.ranksHeight[tiersTotal])
@@ -687,67 +772,76 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let sectionsTotal = treeData.sectionsPos.len() - 1
+    let extraLeft = $"+ {this.extraWidth} + 1@modBlockTierNumHeight"
 
-    let widthStr = isSmallScreen
-      ? "1@maxWindowWidth -1@modBlockTierNumHeight -1@scrollBarSize"
-      : "1@slotbarWidthFull -1@modBlockTierNumHeight -1@scrollBarSize"
-    let totalWidth = this.guiScene.calcString(widthStr, null)
-    let itemWidth = this.guiScene.calcString("@shop_width", null)
+    let  tableObj = this.getTableObj()
+    local containerIndex = 0
+    local rankTable = this.getRankTable(tableObj, containerIndex)
+    while (rankTable != null) {
+      let containerBg = rankTable.findObject("backgrounds")
+      this.guiScene.replaceContentFromText(containerBg, "", 0, this)
+      containerIndex++
+      rankTable = this.getRankTable(tableObj, containerIndex)
+    }
 
-    let extraRight = "+" + max(0, totalWidth - (itemWidth * treeData.sectionsPos[sectionsTotal])) / 2
-    let extraLeft = extraRight + "+1@modBlockTierNumHeight"
-    let extraTop = "+1@shop_h_extra_first"
-    let extraBottom = "+1@shop_h_extra_last"
+    containerIndex = 0
+    let vertSeparators = this.scene.findObject("vertSeparators")
+    this.guiScene.replaceContentFromText(vertSeparators, "", 0, this)
+    for (local s = 1; s < sectionsTotal; s++) {
+      let x = $"{treeData.sectionsPos[s]}@shop_width {extraLeft}"
+      let vertLineData = handyman.renderCached("%gui/shop/shopVerticalSeparator.tpl", {x})
+      this.guiScene.appendWithBlk(vertSeparators, vertLineData, this)
+    }
 
+    let armyRankCollapsedData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
     for (local i = 0; i < tiersTotal; i++) {
-      let tierNum = (i + 1).tostring()
       let tierUnlocked = is_era_available(this.curCountry, i + 1, this.getCurPageEsUnitType())
       let fakeRowsCount = treeData.fakeRanksRowsCount[i + 1]
 
       let pY = treeData.ranksHeight[i] + fakeRowsCount
       let pH = treeData.ranksHeight[i + 1] - pY
+      if (pH == 0 && fakeRowsCount <= 0)
+        continue
 
-      let isTop = pY == 0
-      let isBottom = i == tiersTotal - 1
+      rankTable = this.getRankTable(tableObj, containerIndex)
+      let containerBg = rankTable.findObject("backgrounds")
+      let fadesContainer = rankTable.findObject("fades")
+      this.guiScene.replaceContentFromText(fadesContainer, "", 0, this)
+      let expandBtn = rankTable.findObject($"expandBtn_{containerIndex}")
+      let collapsedIcons = rankTable.findObject("collapsed_icons")
 
       for (local s = 0; s < sectionsTotal; s++) {
+        let pX = treeData.sectionsPos[s]
+        let pW = treeData.sectionsPos[s + 1] - pX
+        if (pW == 0)
+          continue
+
         let isLeft = s == 0
         let isRight = s == sectionsTotal - 1
         let isResearchable = getTblValue(s, treeData.sectionsResearchable)
         let tierType = tierUnlocked || !isResearchable ? "unlocked" : "locked"
-
-        let pX = treeData.sectionsPos[s]
-        let pW = treeData.sectionsPos[s + 1] - pX
-
         let x = "".concat($"{pX}@shop_width", isLeft ? "" : extraLeft)
-        let y = "".concat($"{pY}@shop_height", isTop ? "" : extraTop)
-        let w = "".concat($"{pW}@shop_width", isLeft ? extraLeft : "", isRight ? extraRight : "")
-        let h = "".concat($"{pH}@shop_height", isTop ? extraTop : "", isBottom ? extraBottom : "")
+        let w = "".concat($"{pW}@shop_width", isLeft ? extraLeft : "", isRight ? $" + {this.extraWidth}" : "")
 
-        if (fakeRowsCount > 0) {
-          let fakePY = treeData.ranksHeight[i]
-          let isFakeTop = fakePY == 0
-          let fakeRowY = "".concat($"{fakePY}@shop_height", isFakeTop ? "" : extraTop)
-          let fakeRowH = "".concat($"{fakeRowsCount}@shop_height", isFakeTop ? extraTop : "", isBottom ? extraBottom : "")
-
-          view.plates.append({ tierNum = tierNum, tierType = "unlocked", x = x, y = fakeRowY, w = w, h = fakeRowH })
-          if (!isLeft)
-            view.vertSeparators.append({ x = x, y = fakeRowY, h = fakeRowH, isTop = isFakeTop, isBottom = isBottom })
+        if (tierType == "locked") {
+          let bgData = "".concat( "tdiv { position:t='absolute' background-color:t='@shopFrameLockedColor' ",
+            $" pos:t='{x}, 0' size:t='{w}, ph'", "}")
+          this.guiScene.appendWithBlk(containerBg, bgData, this)
         }
 
-        if (pH == 0)
-          continue
+        let isCollapsed = armyRankCollapsedData?[$"{containerIndex}"] ?? false
+        let fade = handyman.renderCached("%gui/shop/shopFade.tpl", {posX = x, width = w,
+          colorFactor = isCollapsed ? 255 : 0, isRed = tierType == "locked"})
+        this.guiScene.appendWithBlk(fadesContainer, fade, this)
 
-        view.plates.append({ tierNum = tierNum, tierType = tierType, x = x, y = y, w = w, h = h })
-        if (!isLeft)
-          view.vertSeparators.append({ x = x, y = y, h = h, isTop = isTop, isBottom = isBottom })
-        if (!isTop)
-          view.horSeparators.append({ x = x, y = y, w = w, isLeft = isLeft })
+        if (isLeft)
+          expandBtn.isRed = tierType == "locked" ? "yes" : "no"
+        else if (s == sectionsTotal-1) {
+          collapsedIcons.width = $"{x}"
+        }
       }
+      containerIndex++
     }
-
-    local data = handyman.renderCached("%gui/shop/treeBgPlates.tpl", view)
-    this.guiScene.replaceContentFromText(tblBgObj, data, data.len(), this)
   }
 
   function getRankProgressTexts(rank, ranksBlk, isTreeReserchable) {
@@ -802,73 +896,108 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return { tooltipPlate = tooltipPlate, tooltipRank = tooltipRank, tooltipReqCounter = tooltipReqCounter, reqCounter = reqCounter }
   }
 
+
   function generateTierArrows(treeData) {
-    local data = ""
+    let tableObj = this.getTableObj()
     let blk = get_ranks_blk()
     let pageUnitsType = this.getCurPageEsUnitType()
 
     let isTreeReserchable = treeData.sectionsResearchable.contains(true)
+    let cellsByRanks = this.unitsByRank
 
-    for (local i = 1; i <= ::max_country_rank; i++) {
-      let curEraPos = treeData.ranksHeight[i]
-      let prevEraPos = treeData.ranksHeight[i - 1]
-      let curFakeRowRankCount = treeData.fakeRanksRowsCount[i]
-
-      if (curEraPos == prevEraPos || ((curEraPos - curFakeRowRankCount) == prevEraPos))
+    local containerIndex = 0
+    for (local rank = 0; rank <= this.maxRank; rank++) {
+      if (!(rank in cellsByRanks) || cellsByRanks[rank].len() == 0)
         continue
 
-      let prevFakeRowRankCount = treeData.fakeRanksRowsCount[i - 1]
-      let drawArrow = i > 1 && prevEraPos != (treeData.ranksHeight[i - 2] + prevFakeRowRankCount)
-      let isRankAvailable = !isTreeReserchable || is_era_available(this.curCountry, i, pageUnitsType)
+      local needDrawArrow = (rank > 0) && (rank < this.maxRank)
+      local needDrawTier = rank > 0
+      let rankTable = this.getRankTable(tableObj, containerIndex)
+      let container = rankTable.findObject("others")
+      let tierText = rankTable.findObject($"expandbtn_{containerIndex}")
+      containerIndex++
+
+      let arrow = container.findObject("shop_arrow")
+      arrow.show(needDrawArrow)
+      tierText.setValue(needDrawTier ? loc("shop/age/num", {num = get_roman_numeral(rank)}) : "")
+      if (!needDrawArrow && !needDrawTier)
+        continue
+
+      let modArrowPlate = container.findObject("mod_arrow_plate")
+      let isRankAvailable = !isTreeReserchable || is_era_available(this.curCountry, rank, pageUnitsType)
       let status =  isRankAvailable ?  "owned" : "locked"
+      let texts = this.getRankProgressTexts(rank+1, blk, isTreeReserchable)
 
-      let texts = this.getRankProgressTexts(i, blk, isTreeReserchable)
+      arrow.shopStat = status
+      tierText.isRed = isRankAvailable ? "no" : "yes"
 
-      local arrowData = ""
-      if (drawArrow) {
-        arrowData = format("shopArrow { type:t='vertical'; size:t='1@modArrowWidth, %s@shop_height - 1@modBlockTierNumHeight';" +
-                      "pos:t='0.5pw - 0.5w, %s@shop_height + 0.5@modBlockTierNumHeight';" +
-                      "shopStat:t='%s'; modArrowPlate{ text:t='%s'; tooltip:t='%s'}}",
-                    (treeData.ranksHeight[i - 1] - treeData.ranksHeight[i - 2] - prevFakeRowRankCount).tostring(),
-                    (treeData.ranksHeight[i - 2] + prevFakeRowRankCount).tostring(),
-                    status,
-                    texts.reqCounter,
-                    stripTags(texts.tooltipReqCounter)
-                    )
+      if (texts.reqCounter == "") {
+        modArrowPlate.show(false)
+        continue
       }
-      let modBlockFormat = "modBlockTierNum { class:t='vehicleRanks' status:t='%s'; pos:t='0, %s@shop_height - 0.5h'; text:t='%s'; tooltip:t='%s'}"
-
-      if (curFakeRowRankCount > 0)
-        data += format(modBlockFormat,
-                  "owner",
-                  prevEraPos.tostring(),
-                  "",
-                  "")
-
-      data += format(modBlockFormat,
-                  status,
-                  (prevEraPos + curFakeRowRankCount).tostring(),
-                  loc("shop/age/num", { num = get_roman_numeral(i) }),
-                  stripTags(texts.tooltipRank))
-
-      data += arrowData
-
-      let tierObj = this.scene.findObject("shop_tier_" + i.tostring())
-      if (checkObj(tierObj))
-        tierObj.tooltip = texts.tooltipPlate
+      modArrowPlate.show(true)
+      modArrowPlate.findObject("label")?.setValue(texts.reqCounter)
+      modArrowPlate.tooltip = texts.tooltipReqCounter
+      modArrowPlate.isRed = isRankAvailable ? "no" : "yes"
     }
-
-    let height = treeData.ranksHeight[treeData.ranksHeight.len() - 1] + "@shop_height"
-    let tierObj = this.scene.findObject("tier_arrows_div")
-    tierObj.height = height
-    this.guiScene.replaceContentFromText(tierObj, data, data.len(), this)
-
-    this.scene.findObject("shop_items_scroll_div").height = height + " + 1@shop_h_extra_first + 1@shop_h_extra_last"
   }
 
+
+  function calcRankCollapsedIconData(statuses, data) {
+    if (statuses == null || statuses.len() == 0)
+      return
+    let discounts = data.discounts
+    foreach (status in statuses) {
+      if ((status?.discount ?? 0) > 0) {
+        let len = discounts.len()
+        local discountAdded = false
+        for (local i = 0; i < len; i++)
+          if (discounts[i].discount == status.discount) {
+            discounts[i].count++
+            discounts[i].unitsNames = "".concat(discounts[i].unitsNames, "\n\r", status.nameText)
+            discountAdded = true
+            break
+          }
+        if (!discountAdded)
+          discounts.append({discount = status.discount, count = 1, unitsNames = $"{loc("discount/notification")} \n\r {status.nameText}"})
+      }
+      if (status.hasObjective) {
+        data.objectivesCount++
+        data.objectivesUnits = data.objectivesCount == 1
+          ? "".concat(loc("mainmenu/objectiveAvailable"), "\n\r", status.nameText)
+          : $"{data.objectivesUnits}, {status.nameText}"
+      }
+    }
+  }
+
+
+  function generateTierCollapsedIcons() {
+    let tableObj = this.getTableObj()
+    local index = 0
+    for (local rank = 0; rank <= this.maxRank; rank++) {
+      if (this.cachedUnitsStatusByRanks?[rank] == null)
+        continue
+      let rankTable = this.getRankTable(tableObj, index)
+      if (rankTable == null)
+        continue
+      index++
+      let icons = { discounts = [], objectivesCount = 0, objectivesUnits = "" }
+      this.calcRankCollapsedIconData(this.cachedUnitsStatusByRanks?[rank], icons)
+
+      let premIcons = { discounts = [], objectivesCount = 0, objectivesUnits = "" }
+      this.calcRankCollapsedIconData(this.cachedPremiumUnitsStatusByRanks?[rank], premIcons)
+
+      let viewData = {icons, premIcons, rank, armyId = this.curPage, country = this.curCountry}
+      let data = handyman.renderCached("%gui/shop/collapsedRankIcons.tpl", viewData)
+      let iconsContainer = rankTable.findObject("collapsed_icons")
+      this.guiScene.replaceContentFromText(iconsContainer, data, data.len(), this)
+    }
+  }
+
+
   function updateBoughtVehiclesCount() {
-    let bought = array(::max_country_rank + 1, 0)
-    let total = array(::max_country_rank + 1, 0)
+    let bought = array(MAX_COUNTRY_RANK + 1, 0)
+    let total = array(MAX_COUNTRY_RANK + 1, 0)
     let pageUnitsType = this.getCurPageEsUnitType()
 
     foreach (unit in getAllUnits())
@@ -933,7 +1062,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function findAirTableObjById(id) {
     if (checkObj(this.scene))
-      return this.scene.findObject("shop_items_list").findObject(id)
+      return this.getTableObj().findObject(id)
 
     return null
   }
@@ -952,11 +1081,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return cellObj
 
     return this.findAirTableObjById($"unitCell_{unitName}")
-  }
-
-  function getCellObjByValue(value) {
-    let tableObj = this.scene.findObject("shop_items_list")
-    return value < tableObj.childrenCount() ? tableObj.getChild(value) : null
   }
 
   function checkUnitItemAndUpdate(unit) {
@@ -1031,17 +1155,31 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return { unit = null, row = -1, col = -1, idx = -1 }
   }
 
+
+  function getCellDataByThreeIdx(threeIndex) {
+    return this.findTableCellData(@(data) data.threeIndex == threeIndex)
+  }
+
+  function getCellDataByTableIdx(tableIndex) {
+    return this.findTableCellData(@(data) data.tableIndex == tableIndex)
+  }
+
   getUnitByIdx = @(curIdx) this.findUnitInTree(@(_unit, idx) idx == curIdx)
 
   function getCurAircraft(checkGroups = true, returnDefaultUnitForGroups = false) {
     if (!checkObj(this.scene))
       return null
 
-    local tableObj = this.scene.findObject("shop_items_list")
+    local tableObj = this.getTableObj()
     let curIdx = tableObj.getValue()
     if (curIdx < 0)
       return null
-    let mainTblUnit = this.getUnitByIdx(curIdx).unit
+
+    let cellData = this.getCellDataByTableIdx(curIdx)
+    if (cellData == null)
+      return null
+
+    let mainTblUnit = this.getUnitByIdx(cellData.threeIndex).unit
     if (!isUnitGroup(mainTblUnit))
       return mainTblUnit
 
@@ -1232,11 +1370,11 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isClear)
       return this.highlightUnitsClear()
     let slots = this.highlightUnitsInTree(units.map(@(unit) unit.name))
-    let tableObj = this.scene.findObject("shop_items_list")
+    let tableObj = this.getTableObj()
     if (!checkObj(tableObj))
       return
     foreach (value in [ slots.valueLast, slots.valueFirst ]) {
-      let cellObj = value != null ? this.getCellObjByValue(value) : null
+      let cellObj = value != null ? this.getCellDataByThreeIdx(value)?.cellObj : null
       if (checkObj(cellObj))
         cellObj.scrollToView()
     }
@@ -1251,7 +1389,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let res = { valueFirst = null, valueLast = null }
     let highlightList = []
     let tree = this.getCurTreeData().tree
-    let tableObj = this.scene.findObject("shop_items_list")
+    let tableObj = this.getTableObj()
     local slotIdx = -1
     foreach (_row, rowArr in tree)
       foreach (_col, cell in rowArr) {
@@ -1267,8 +1405,18 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           continue
         res.valueFirst = res.valueFirst ?? slotIdx
         res.valueLast  = slotIdx
+
+        let cellData = this.getCellDataByThreeIdx(slotIdx)
+        if (cellData?.container) {
+          let collapseParams = {needCollapse = false, isInstant = true, containerIndex = cellData.containerIndex}
+          this.collapseCellsContainer(collapseParams, cellData.container)
+          this.saveRankCollapsedToData(this.curCountry, this.curPage, $"{cellData.containerIndex}", false)
+          this.saveAllRankCollapsedStates()
+          this.updateExpandAllBtnsState()
+        }
+
         let objData  = {
-          obj = this.getCellObjByValue(slotIdx)
+          obj = cellData?.cellObj
           id = $"high_{slotIdx}"
           onClick = "onHighlightedCellClick"
           isNoDelayOnClick = true
@@ -1290,11 +1438,16 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.highlightUnitsClear()
 
     if (this.selCellOnSearchQuit != null) {
-      let tableObj = this.scene.findObject("shop_items_list")
+      let tableObj = this.getTableObj()
       if (checkObj(tableObj)) {
+        let cellData = this.getCellDataByThreeIdx(this.selCellOnSearchQuit)
+        if (cellData == null)
+          return
         this.skipOpenGroup = true
-        tableObj.setValue(this.selCellOnSearchQuit)
-        move_mouse_on_child(tableObj, this.selCellOnSearchQuit)
+        tableObj.setValue(cellData.tableIndex)
+        let obj = cellData.cellObj
+        if (obj)
+          obj.setMouseCursorOnObject()
         this.skipOpenGroup = false
       }
       this.selCellOnSearchQuit = null
@@ -1332,16 +1485,25 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.openUnitActionsList(curAirObj, false, ignoreMenuHover)
   }
 
+
   function selectCell(obj) {
+    let tableObj = this.getTableObj()
     let holderId = obj?.holderId
-    let listObj = this.getCurListObj()
+
+    if (!this.groupChooseObj?.isValid()) {
+      let childIndex = this.findTableIndexByHolderOrHover(holderId)
+      if (childIndex >= 0 && tableObj.getValue() != childIndex)
+        tableObj.setValue(childIndex)
+      return
+    }
+
+    local listObj = this.groupChooseObj.findObject("airs_table")
     let idx = findChildIndex(listObj, holderId == null
       ? @(c) c.isHovered()
       : @(c) c?.holderId == holderId)
 
     if (idx < 0 || idx == listObj.getValue())
       return
-
     listObj.setValue(idx)
   }
 
@@ -1349,7 +1511,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.groupChooseObj?.isValid())
       return this.groupChooseObj.findObject("airs_table")
     else
-      return this.scene.findObject("shop_items_list")
+      return this.getTableObj()
   }
 
   function onUnitActivate(obj) {
@@ -1385,10 +1547,27 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.onAircraftClick(obj)
   }
 
+  getOnTakeUnitParams = @(unit, ovr = {}) {
+    unitObj = this.getAirObj(unit.name)
+    cellClass = "shopClone"
+    isNewUnit = false
+    getEdiffFunc = this.getCurrentEdiff.bindenv(this)
+  }.__update(ovr)
+
+  function onUnitCellDragStart(obj) {
+    let unit = getAircraftByName(obj?.id)
+    if (!unit)
+      return
+    this.guiScene.setCursor("drag-n-drop", true)
+    takeUnitInSlotbar(unit, this.getOnTakeUnitParams(unit, { dragAndDropMode = true }))
+  }
+
+  onUnitCellDrop = @() null
+
   function checkSelectAirGroup(item, selectUnitName = "") {
     if (this.skipOpenGroup || this.groupChooseObj || !item || !isUnitGroup(item))
       return
-    let silObj = this.scene.findObject("shop_items_list")
+    let silObj = this.getTableObj()
     if (!checkObj(silObj))
       return
     let grObj = silObj.findObject(item.name)
@@ -1472,7 +1651,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         local status = ::isUnitBought(prevGroupUnit) || ::isUnitBought(unit)
                        ? ""
                        : "locked"
-        lines += this.createLine(unitPosNum - 1, 0, unitPosNum, 0, status)
+        lines += this.linesGenerator.createLine("", unitPosNum - 1, 0, unitPosNum, 0, status)
       }
       prevGroupUnit = unit
       unitPosNum++
@@ -1509,7 +1688,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function fillUnitsInGroup(tblObj, unitList, selectUnitName = "") {
     let selected = unitList.findindex(@(unit) selectUnitName == unit.name) ?? tblObj.getValue()
-    this.initUnitCells(tblObj, unitList.map(@(unit) { id = unit.name, position = "relative" }))
+    this.initUnitCellsGroup(tblObj, unitList.map(@(unit) { id = unit.name, position = "relative" }))
     foreach (idx, unit in unitList)
       this.updateUnitCell(tblObj.getChild(idx), unit)
 
@@ -1538,7 +1717,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.groupChooseObj = null
     this.updateButtons()
     broadcastEvent("ModalWndDestroy")
-    move_mouse_on_child_by_value(this.scene.findObject("shop_items_list"))
+    move_mouse_on_child_by_value(this.getTableObj())
   }
 
   function destroyGroupChooseDelayed() {
@@ -1725,7 +1904,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.scene))
       return false
 
-    let tableObj = this.scene.findObject("shop_items_list")
+    let tableObj = this.getTableObj()
     if (!checkObj(tableObj))
       return false
 
@@ -1739,12 +1918,15 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (isUnitGroup(item)) {
           foreach (groupItemIdx, groupItem in item.airsGroup)
             if (groupItem.name == unitName) {
-              let obj = this.getCellObjByValue(idx)
+              let cellData = this.getCellDataByThreeIdx(idx)
+              if (cellData == null)
+                return false
+              let obj = cellData.cellObj
               if (!obj?.isValid())
                 return false
 
               obj.scrollToView()
-              tableObj.setValue(idx)
+              tableObj.setValue(cellData.tableIndex)
               obj.setMouseCursorOnObject()
               if (checkObj(this.groupChooseObj))
                 this.groupChooseObj.findObject("airs_table").setValue(groupItemIdx)
@@ -1752,12 +1934,13 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             }
         }
         else if (item.name == unitName) {
-          let obj = this.getCellObjByValue(idx)
+          let cellData = this.getCellDataByThreeIdx(idx)
+          let obj = cellData?.cellObj
           if (!obj?.isValid())
             return false
 
           obj.scrollToView()
-          tableObj.setValue(idx)
+          tableObj.setValue(cellData.tableIndex)
           obj.setMouseCursorOnObject()
           return true
         }
@@ -1801,12 +1984,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     slotActions.slotMainAction(unit, {
       onSpendExcessExp = Callback(this.onSpendExcessExp, this)
-      onTakeParams = {
-        unitObj = this.getAirObj(unit.name)
-        cellClass = "shopClone"
-        isNewUnit = false
-        getEdiffFunc = this.getCurrentEdiff.bindenv(this)
-      }
+      onTakeParams = this.getOnTakeUnitParams(unit)
       curEdiff = this.getCurrentEdiff()
       setResearchManually = this.setResearchManually
       availableFlushExp = this.availableFlushExp
@@ -2051,6 +2229,165 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.destroyGroupChoose()
   }
 
+  function onExpandBtnClick(obj) {
+    let containerIndex = obj.id.slice(10).tointeger() // slice expandbtn_
+    this.toggleCellsContainer(containerIndex)
+  }
+
+  function onExpandAllBtn(obj) {
+    let needCollapse = obj.isCollapsed == "no"
+    this.collapseAllCellsContainers(needCollapse)
+  }
+
+  function setExpandAllBtnState(needCollapse) {
+    let expandAllBtn = this.scene.findObject("title_expand_btn")
+    if (expandAllBtn) {
+      expandAllBtn.isCollapsed = needCollapse ? "yes" : "no"
+      expandAllBtn["tooltip"] = loc(needCollapse ? "mainmenu/btnExpandAll" : "mainmenu/btnCollapseAll")
+    }
+  }
+
+  function collapseAllCellsContainers(needCollapse) {
+    let tableObj = this.getTableObj()
+    local containerIndex = 0
+    local rankTable = this.getRankTable(tableObj, containerIndex)
+    while (rankTable != null) {
+      if (rankTable.isVisible() && (needCollapse != (rankTable.isCollapsed == "yes"))) {
+        let collapsParams = {needCollapse, isInstant = true, containerIndex}
+        this.collapseCellsContainer(collapsParams, rankTable)
+        this.saveRankCollapsedToData(this.curCountry, this.curPage, $"{containerIndex}", needCollapse)
+      }
+      containerIndex++
+      rankTable = this.getRankTable(tableObj, containerIndex)
+    }
+    this.setExpandAllBtnState(needCollapse)
+    this.saveAllRankCollapsedStates()
+  }
+
+
+  function toggleCellsContainer(containerIndex, table = null) {
+    local rankTable = table
+    if (rankTable == null) {
+      let tableObj = this.getTableObj()
+      rankTable = this.getRankTable(tableObj, containerIndex)
+    }
+    let needCollapse = rankTable.isCollapsed == "no"
+    this.collapseCellsContainer({needCollapse, isInstant = false, containerIndex}, rankTable)
+    this.saveRankCollapsedToData(this.curCountry, this.curPage, $"{containerIndex}", needCollapse)
+    this.saveAllRankCollapsedStates()
+    this.updateExpandAllBtnsState()
+  }
+
+
+  function collapseCellsContainer(params, table = null) {
+    let {needCollapse = false, isInstant = false,
+      containerIndex = -1, needForceUpdate = false} = params
+
+    local rankTable = table
+    if (rankTable == null) {
+      let tableObj = this.getTableObj()
+      rankTable = this.getRankTable(tableObj, containerIndex)
+    }
+
+    let isCollapsed = rankTable.isCollapsed == "yes"
+    if (!needForceUpdate && isCollapsed == needCollapse)
+      return
+
+    rankTable.isCollapsed = needCollapse ? "yes" : "no"
+    let expandBtn = rankTable.findObject($"expandbtn_{containerIndex}")
+    expandBtn["tooltip"] = loc(needCollapse ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+
+    let height = this.animData.ranksHeights[containerIndex]
+    let collapseHeight = floor(this.animData.cellHeight*0.75).tostring()
+
+    expandBtn.isCollapsed = needCollapse ? "yes" : "no"
+
+    rankTable["height-base"] = needCollapse ? height : collapseHeight
+    rankTable["height-end"] = needCollapse ? collapseHeight : height
+    rankTable.findObject("collapsed_icons").show(needCollapse ? true : false)
+
+    if (isInstant)
+      rankTable.height = $"{needCollapse ? collapseHeight : height }*sh/100.0"
+    else {
+      rankTable["_size-timer"] = 0
+      rankTable.setFloatProp(dagui_propid_add_name_id("_size-timer"), 0)
+    }
+
+    let cellsContainer = rankTable.findObject("cells_container")
+    let cellsCount = cellsContainer.childrenCount()
+    for (local i = 0; i < cellsCount; i++)
+      cellsContainer.getChild(i).interactive = needCollapse ? "no" : "yes"
+
+    let fadesContainer = rankTable.findObject("fades")
+    fadesContainer.show(needCollapse || !isInstant)
+
+    let arrowPlateCircle = rankTable.findObject("arrow_plate_circle")
+    arrowPlateCircle["height-base"] = needCollapse ? 100 : 0
+    arrowPlateCircle["height-end"] = needCollapse ? 0 : 100
+    if (isInstant)
+      arrowPlateCircle["height"] = needCollapse ? 0 : "pw"
+    else {
+      arrowPlateCircle["_size-timer"] = 0
+      arrowPlateCircle.setFloatProp(dagui_propid_add_name_id("_size-timer"), 0)
+    }
+
+    for (local i = 0; i < fadesContainer.childrenCount(); i++) {
+      let fadeObj = fadesContainer.getChild(i)
+      fadeObj["transp-base"] = needCollapse ? 0 : 255
+      fadeObj["transp-end"] = needCollapse ? 255 : 0
+      if (isInstant)
+        fadeObj["color-factor"] = $"{needCollapse ? 255 : 0 }"
+      else {
+        fadeObj["_transp-timer"] = 0
+        fadeObj.setFloatProp(dagui_propid_add_name_id("_transp-timer"), 0)
+      }
+    }
+
+    local alarmsIcons = this.linesGenerator.getAddedLinesByType(containerIndex, "alarmIcon_vertical")
+    let rankPos = rankTable.getPos()
+    let rankSize = rankTable.getPos()
+    foreach (data in alarmsIcons) {
+      let alarmIcon = data.obj
+      if (alarmIcon.getPos()[1] + alarmIcon.getSize()[1] > rankPos[1] + rankSize[1])
+        alarmIcon.show(!needCollapse)
+    }
+
+    let nextRanTable = this.getRankTable(this.getTableObj(), containerIndex + 1)
+    if (nextRanTable != null) {
+      alarmsIcons = this.linesGenerator.getAddedLinesByType(containerIndex + 1, "alarmIcon_vertical")
+      let nextRankPos = nextRanTable.getPos()
+      foreach (data in alarmsIcons) {
+        let alarmIcon = data.obj
+        if (!needCollapse || (alarmIcon.getPos()[1] < nextRankPos[1]))
+          alarmIcon.show(!needCollapse)
+      }
+    }
+  }
+
+
+  function updateExpandAllBtnsState() {
+    let tableObj = this.getTableObj()
+    let armyData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
+    local isAllCollapsed = true
+    local isAllExpanded = true
+    for (local i = 0; i < this.maxRank; i++) {
+      if (this.getRankTable(tableObj, i) == null)
+        break
+      let rankIsCollapsed = armyData?[$"{i}"] ?? false
+      isAllExpanded = isAllExpanded && !rankIsCollapsed
+      isAllCollapsed = isAllCollapsed && rankIsCollapsed
+    }
+    if (isAllCollapsed || isAllExpanded)
+      this.setExpandAllBtnState(isAllCollapsed)
+  }
+
+  function onRankAnimFinish(rankTable) {
+    if (rankTable.isCollapsed == "no") {
+      let fadesContainer = rankTable.findObject("fades")
+      fadesContainer.show(false)
+    }
+  }
+
   function onEventShopWndAnimation(p) {
     if (!(p?.isVisible ?? false))
       return
@@ -2065,6 +2402,36 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.doWhenActiveOnce("updateTreeDifficulty")
   }
+
+  function saveAllRankCollapsedStates() {
+    saveLocalAccountSettings(LOCAL_RANK_COLLAPSED_STATE_ID, this.cachedRankCollapsedState)
+  }
+
+  function getRanksCollapsedDataForArmy(country, army,) {
+    if (this.cachedRankCollapsedState?[country] == null)
+      return null
+    let countryData = this.cachedRankCollapsedState[country]
+    return countryData?[army]
+  }
+
+  function saveRankCollapsedToData(country, army, rank, isCollapsed) {
+    local armyData = this.getRanksCollapsedDataForArmy(country, army)
+    if (armyData == null) {
+      if (this.cachedRankCollapsedState?[country] == null)
+        this.cachedRankCollapsedState[country] <- DataBlock()
+      let countryData = this.cachedRankCollapsedState[country]
+
+      if (countryData?[army] == null)
+        countryData[army] <- DataBlock()
+      armyData = countryData[army]
+    }
+
+    if (armyData?[rank] == null)
+      armyData[rank] <- isCollapsed
+    else
+      armyData[rank] = isCollapsed
+  }
+
 
   function onUnitSelect() {}
   function selectRequiredUnit() {}

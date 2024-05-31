@@ -48,7 +48,7 @@ return {
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
       return hasFeature(countryShort + "AircraftsInFirstCountryChoice")
     }
-    canUseSeveralBulletsForGun = false
+    canUseSeveralBulletsForGun = true
     canChangeViewType = true
     modClassOrder = ["lth", "armor", "weapon"]
     canShowProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisAircraft")

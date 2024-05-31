@@ -240,6 +240,41 @@ modBlockHor[type=locked] > modArrow {
   background-color:@shopArrowLockedColor;
 }
 
+shopArrowPlate {
+  width:0.41@modCellHeight;
+  height:0.41@modCellHeight;
+  position:absolute;
+  background-repeat:expand;
+  background-image:#ui/gameuiskin#rounded_box_stroke_grey.svg;
+  background-color:#FFFFFF;
+  background-svg-size:64@dp, 64@dp;
+}
+shopArrowPlate[isRed="yes"]{
+  background-image:#ui/gameuiskin#rounded_box_stroke_red.svg;
+}
+shopArrowPlate[text=""]{
+  display:hide;
+}
+
+shopArrowPlate > img {
+  background-svg-size:64@dp, 64@dp;
+  background-repeat:expand;
+  background-color:#FFFFFF;
+  background-image:#ui/gameuiskin#rounded_box_grey.svg;
+}
+
+shopArrowPlate[isRed="yes"] > img {
+  background-image:#ui/gameuiskin#rounded_box_red.svg;
+}
+
+shopArrowPlate > img[isCircle="yes"] {
+  background-image:#ui/gameuiskin#circle_stroke_grey.svg;
+}
+
+shopArrowPlate[isRed="yes"] > img[isCircle="yes"] {
+  background-image:#ui/gameuiskin#circle_stroke_red.svg;
+}
+
 modArrowPlate{
   re-type:text;
   color:@commonTextColor;
@@ -304,20 +339,11 @@ modBlockTierNum{
   font:@fontNormal;
   text-align:center;
   height:1@modBlockTierNumHeight;
-  width:h;
-  position:absolute;
   background-image:#ui/gameuiskin#block_bg_rounded_flat@@vs;
   background-position:4;
   background-repeat:expand;
   background-color:@weaponryItem;
   css-hier-invalidate:yes;
-}
-
-modBlockTierNum.vehicleRanks {
-  text-align:left;
-  width:3h;
-  padding-left:0.35h;
-  background-color:@transparent;
 }
 
 modBlockTierNum > img {

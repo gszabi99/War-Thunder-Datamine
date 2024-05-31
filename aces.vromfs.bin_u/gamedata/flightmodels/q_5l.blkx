@@ -240,6 +240,15 @@
       },
       "tank4_dm": {
         "hp": 72.7
+      },
+      "tank5_dm": {
+        "hp": 120.5
+      },
+      "tank6_dm": {
+        "hp": 120.5
+      },
+      "tank7_dm": {
+        "hp": 120.5
       }
     }
   },
@@ -1137,6 +1146,129 @@
       },
       {
         "name": "tank4_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -2226,11 +2358,12 @@
           "page": [
             {
               "type": "thermal",
-              "turretIdx": 1
+              "turretIdx": 0,
+              "cameraFromTargetingPod": true
             },
             {
               "type": "target_tracking",
-              "turretIdx": 1
+              "turretIdx": 0
             },
             {
               "type": "map"
@@ -2349,7 +2482,17 @@
         "ch_kpzs_1_pod",
         "optic1_turret",
         "rocket_pylon2",
-        "rocket_pylon4"
+        "rocket_pylon4",
+        "1140l_drop_tank_pylon_001",
+        "1140l_drop_tank_pylon_002",
+        "1140l_drop_tank_pylon_003"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank5_dm",
+        "tank6_dm",
+        "tank7_dm"
       ]
     },
     "WeaponSlot": [
@@ -2364,35 +2507,7 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_turret",
-              "defaultYaw": 0.0,
-              "defaultPitch": 15.0,
-              "speedYaw": 200.0,
-              "speedPitch": 200.0,
-              "parkInDeadzone": true,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [
-                  -90.0,
-                  90.0
-                ],
-                "pitch": [
-                  -90.0,
-                  90.0
-                ]
-              }
-            },
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic2_turret",
+              "emitter": "optic2_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 200.0,
@@ -2400,8 +2515,8 @@
               "parkInDeadzone": true,
               "aimForOperatedShell": true,
               "turret": {
-                "head": "optic2_gun",
-                "gun": "optic2_turret",
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
                 "mainTurret": true
               },
               "limits": {
@@ -3012,7 +3127,7 @@
         38.0
       ],
       "opticType": "",
-      "turretNo": 1
+      "turretNo": 0
     },
     "Target": {
       "pos": [
@@ -3020,7 +3135,7 @@
         -0.3,
         0.0
       ],
-      "head": "optic1_gun",
+      "head": "optic2_gun",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -90.0,
@@ -3058,6 +3173,13 @@
   },
   "nightVision": {
     "sightTPodThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05
+    },
+    "sightThermal": {
       "resolution": [
         500,
         300

@@ -918,20 +918,32 @@
           "stateFrom": "standby",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
           }
         },
         "updateSearchMode": {
           "stateFrom": "search",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "switchScanPattern": {
@@ -1490,6 +1502,14 @@
             "signal": "hprfTrack"
           }
         },
+        "setLprfTrack": {
+          "setTransiver": {
+            "transiver": "lprf"
+          },
+          "setSignal": {
+            "signal": "lprfTrack"
+          }
+        },
         "track": {
           "updateActiveTargetOfInterest": {
             "dirFilter": {},
@@ -1579,6 +1599,42 @@
             "setMprfTrack": {}
           }
         },
+        "lprfOkTryDetectHprf": {
+          "stateFrom": "lprfOkHprfTry",
+          "event": "update",
+          "actions": {
+            "setHprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setLprfTrack": {}
+          }
+        },
+        "lprfOkTryDetectMprf": {
+          "stateFrom": "lprfOkMprfTry",
+          "event": "update",
+          "actions": {
+            "setMprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setLprfTrack": {}
+          }
+        },
+        "tryDetectLprf": {
+          "stateFrom": "lprfTry",
+          "event": "update",
+          "actions": {
+            "setLprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setMprfTrack": {}
+          }
+        },
         "detect": {
           "event": "update",
           "actions": {
@@ -1598,7 +1654,8 @@
         "startTrackMprf": {
           "stateFrom": [
             "mprfTry",
-            "hprfOkMprfTry"
+            "hprfOkMprfTry",
+            "lprfOkMprfTry"
           ],
           "event": "targetDetected",
           "stateTo": "mprf",
@@ -1610,27 +1667,19 @@
             }
           }
         },
-        "trackHprf": [
-          {
-            "stateFrom": "hprf",
-            "event": "targetDetected",
-            "stateTo": "hprfOkMprfTry",
-            "actions": {
-              "track": {}
-            }
-          },
-          {
-            "stateFrom": "hprf",
-            "event": "targetDetected",
-            "stateTo": "mprfTry",
-            "actions": {
-              "track": {},
-              "setMprfTrack": {}
-            }
+        "trackHprf": {
+          "stateFrom": "hprf",
+          "event": "targetDetected",
+          "stateTo": "hprfOkMprfTry",
+          "actions": {
+            "track": {}
           }
-        ],
+        },
         "startTrackHprf": {
-          "stateFrom": "hprfTry",
+          "stateFrom": [
+            "hprfTry",
+            "lprfOkHprfTry"
+          ],
           "event": "targetDetected",
           "stateTo": "hprf",
           "actions": {
@@ -1638,6 +1687,26 @@
             "track": {},
             "setModeName": {
               "name": "PD HDN track"
+            }
+          }
+        },
+        "trackLprf": {
+          "stateFrom": "lprf",
+          "event": "targetDetected",
+          "stateTo": "lprfOkHprfTry",
+          "actions": {
+            "track": {}
+          }
+        },
+        "startTrackLprf": {
+          "stateFrom": "lprfTry",
+          "event": "targetDetected",
+          "stateTo": "lprf",
+          "actions": {
+            "setLprfTrack": {},
+            "track": {},
+            "setModeName": {
+              "name": "track"
             }
           }
         },
@@ -1660,16 +1729,43 @@
             "extrapolate": {}
           }
         },
-        "hprfToMprf": {
-          "stateFrom": "hprf",
+        "hprfToLprfTry": {
+          "stateFrom": [
+            "hprf",
+            "hprfTry"
+          ],
+          "event": "targetNotDetected",
+          "stateTo": "lprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "lprfToMprfTry": {
+          "stateFrom": "lprfOkHprfTry",
+          "event": "targetNotDetected",
+          "stateTo": "lprfOkMprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "backToLprf": {
+          "stateFrom": "lprfOkMprfTry",
+          "event": "targetNotDetected",
+          "stateTo": "lprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "lprfToMprf": {
+          "stateFrom": "lprf",
           "event": "targetNotDetected",
           "stateTo": "mprfTry",
           "actions": {
             "extrapolate": {}
           }
         },
-        "hprfTryToMprf": {
-          "stateFrom": "hprfTry",
+        "lprfTryToMprf": {
+          "stateFrom": "lprfTry",
           "event": "targetNotDetected",
           "stateTo": "mprfTry",
           "actions": {

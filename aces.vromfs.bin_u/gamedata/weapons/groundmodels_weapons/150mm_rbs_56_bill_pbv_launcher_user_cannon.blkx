@@ -89,23 +89,20 @@
       "damageType": "pressure"
     },
     "rocket": {
+      "bulletName": "150mm_bill_2",
       "statType": "hydra",
       "caliber": 0.15,
       "length": 1.15,
-      "WdK": [
-        0.1,
-        0.1,
-        0.1
-      ],
       "CxK": 1.145,
-      "CyK": 6.0,
-      "CyMaxAoA": 2.8,
-      "wingAreaMult": 1.7,
-      "distFromCmToStab": 0.005,
+      "wingAreaMult": 2.75,
+      "finsAoaHor": 0.15,
+      "finsAoaVer": 0.15,
+      "distFromCmToStab": 0.04,
       "mass": 10.9,
       "massEnd": 9.8,
       "timeFire": 2.2,
       "force": 945.0,
+      "fireDelay": 0.14,
       "timeLife": 15.0,
       "thrustDeviation": 0.01,
       "useStartSpeed": true,
@@ -113,18 +110,8 @@
       "endSpeed": 250.0,
       "maxDistance": 2200.0,
       "minDistance": 30.0,
-      "operatedDist": 2200.0,
-      "operated": true,
-      "maxLateralAcceleration": 6.0,
-      "autoLeveling": true,
-      "autoAiming": true,
-      "aimCorrectionVelMin": 300.0,
-      "aimPosOffset": [
-        1.0,
-        0.0
-      ],
-      "irBeaconBand": 5,
-      "maxAxisValues": 0.5,
+      "rangeMax": 2200.0,
+      "guidanceType": "saclos",
       "maxDeltaAngle": 0.03,
       "explosiveType": "comp_b",
       "explosiveMass": 2.08,
@@ -191,6 +178,29 @@
         0.0,
         0.0
       ],
+      "guidance": {
+        "controlConeFov": 10.0,
+        "losOffset": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "beaconBand": 5,
+        "breakLockMaxTime": 3.0,
+        "lineOfSightAutopilot": {
+          "crossDistToReqCrossVelMult": 3.0,
+          "reqCrossVelRationMax": 0.75,
+          "velDiffToReqAccelMult": 6.0,
+          "accelControl": {
+            "velFrameReference": true,
+            "reqAccelMax": 15.0,
+            "accelControlProp": 0.0206,
+            "accelControlIntg": 0.0,
+            "accelControlDiff": 0.0002,
+            "accelControlIntgLim": 0.0
+          }
+        }
+      },
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
@@ -774,23 +784,20 @@
         "damageType": "pressure"
       },
       "rocket": {
+        "bulletName": "150mm_bill_2",
         "statType": "hydra",
         "caliber": 0.15,
         "length": 1.15,
-        "WdK": [
-          0.1,
-          0.1,
-          0.1
-        ],
         "CxK": 1.145,
-        "CyK": 6.0,
-        "CyMaxAoA": 2.8,
-        "wingAreaMult": 1.7,
-        "distFromCmToStab": 0.005,
+        "wingAreaMult": 2.75,
+        "finsAoaHor": 0.15,
+        "finsAoaVer": 0.15,
+        "distFromCmToStab": 0.04,
         "mass": 10.9,
         "massEnd": 9.8,
         "timeFire": 2.2,
         "force": 945.0,
+        "fireDelay": 0.14,
         "timeLife": 15.0,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
@@ -798,18 +805,8 @@
         "endSpeed": 250.0,
         "maxDistance": 2200.0,
         "minDistance": 30.0,
-        "operatedDist": 2200.0,
-        "operated": true,
-        "maxLateralAcceleration": 6.0,
-        "autoLeveling": true,
-        "autoAiming": true,
-        "aimCorrectionVelMin": 300.0,
-        "aimPosOffset": [
-          1.0,
-          0.0
-        ],
-        "irBeaconBand": 5,
-        "maxAxisValues": 0.5,
+        "rangeMax": 2200.0,
+        "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
         "explosiveType": "comp_b",
         "explosiveMass": 2.08,
@@ -876,6 +873,29 @@
           0.0,
           0.0
         ],
+        "guidance": {
+          "controlConeFov": 10.0,
+          "losOffset": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "beaconBand": 5,
+          "breakLockMaxTime": 3.0,
+          "lineOfSightAutopilot": {
+            "crossDistToReqCrossVelMult": 3.0,
+            "reqCrossVelRationMax": 0.75,
+            "velDiffToReqAccelMult": 6.0,
+            "accelControl": {
+              "velFrameReference": true,
+              "reqAccelMax": 15.0,
+              "accelControlProp": 0.0206,
+              "accelControlIntg": 0.0,
+              "accelControlDiff": 0.0002,
+              "accelControlIntgLim": 0.0
+            }
+          }
+        },
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,

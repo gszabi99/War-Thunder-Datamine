@@ -404,12 +404,27 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_IRCM_SWITCH_PLANE"
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_FLARES"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_COUNTERMEASURES_FLARES"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_COUNTERMEASURES_CHAFF"
     checkAssign = false
     needShowInHelp = true
   }

@@ -19,6 +19,8 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCrewsListByCountry, selectCrew } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost } = require("%scripts/crew/crew.nut")
+let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
+} = require("%scripts/slotbar/crewsList.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -93,7 +95,7 @@ let CrewTakeUnitProcess = class {
         local hasUnit = !!this.unit
         local hasAllowedUnit = !needCheckAllowed
         local hasRequiredUnit = !needCheckRequired
-        let crews = ::g_crews_list.get()?[this.crew.idCountry]?.crews
+        let crews = getCrewsList()?[this.crew.idCountry]?.crews
         if (crews)
           foreach (c in crews) {
             if (this.crew.id == c.id)
@@ -213,7 +215,7 @@ let CrewTakeUnitProcess = class {
     this.removeCb = Callback(this.remove, this)
     this.cost = this.getProcessCost(this.crew, this.unit, this.country)
 
-    ::g_crews_list.suspendSlotbarUpdates()
+    suspendSlotbarUpdates()
     this.nextStep()
 
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
@@ -295,7 +297,7 @@ let CrewTakeUnitProcess = class {
       }
     if (this.onFinish)
       this.onFinish(this.isSuccess)
-    ::g_crews_list.flushSlotbarUpdate()
+    flushSlotbarUpdate()
   }
 
   function nextStep() {
@@ -334,7 +336,7 @@ let CrewTakeUnitProcess = class {
       selectCrew(this.crew.idCountry, this.crew.idInCountry, true)
       setShowUnit(this.unit)
     }
-    ::g_crews_list.flushSlotbarUpdate()
+    flushSlotbarUpdate()
     broadcastEvent("CrewTakeUnit", { unit = this.unit, prevUnit = this.prevUnit })
     this.remove()
   }

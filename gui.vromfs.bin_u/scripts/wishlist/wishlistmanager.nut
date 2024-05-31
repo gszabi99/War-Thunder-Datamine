@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
-let { getWishList = @() { units = [] }, getMaxWishListSize = @() 100, charSendBlk } = require("chard")
+let { getWishList, getMaxWishListSize, charSendBlk } = require("chard")
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local wishlist = null

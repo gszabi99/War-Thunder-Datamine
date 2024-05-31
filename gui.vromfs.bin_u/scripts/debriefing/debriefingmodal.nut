@@ -50,7 +50,8 @@ let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nu
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { setNeedShowRate } = require("%scripts/user/suggestionRateGame.nut")
 let { sourcesConfig } = require("%scripts/debriefing/rewardSources.nut")
-let { minValuesToShowRewardPremium, playerRankByCountries } = require("%scripts/ranks.nut")
+let { minValuesToShowRewardPremium, MAX_COUNTRY_RANK
+} = require("%scripts/ranks.nut")
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
   gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
   updateDebriefingResultGiftItemsInfo
@@ -101,7 +102,7 @@ let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_gam
 } = require("blkGetters")
 let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { getPlayerRankByCountry, getPlayerExpByCountry
+let { getPlayerRankByCountry, getPlayerExpByCountry, playerRankByCountries
 } = require("%scripts/user/userInfoStats.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
@@ -126,6 +127,7 @@ let { autosaveReplay, guiModalNameAndSaveReplay } = require("%scripts/replays/re
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
+let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -1492,7 +1494,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     if (this.isInited) {
       let country = this.getDebriefingCountry()
-      if (country in playerRankByCountries && playerRankByCountries[country] >= ::max_country_rank) {
+      if (country in playerRankByCountries && playerRankByCountries[country] >= MAX_COUNTRY_RANK) {
         this.totalTarValues.exp = this.getStatValue(this.totalRow, "exp", "prem")
         dt = 1000 //force fast blend
       }
@@ -2984,7 +2986,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!goDebriefingNextFunc)
       goDebriefingNextFunc = gui_start_mainmenu
 
-    ::g_crews_list.invalidate()
+    invalidateCrewsList()
 
     if (this.isReplay)
       this.applyReturn()

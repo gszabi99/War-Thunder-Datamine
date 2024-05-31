@@ -22,7 +22,7 @@ let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let psnSocial = require("sony.social")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
 let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk,
@@ -47,6 +47,7 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getCurCircuitOverride, isPixelStorm } = require("%appGlobals/curCircuitOverride.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -623,7 +624,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     openPopupFilter({
       scene = nestObj
       onChangeFn = this.onFilterCbChange.bindenv(this)
-      filterTypes = this.getFiltersView()
+      filterTypesFn = this.getFiltersView.bindenv(this)
       popupAlign = "bottom-right"
     })
 
@@ -672,7 +673,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isOwnStats)
       this.rankStats = []
     this.allRanksStats = []
-    for (local i = 1; i <= ::max_country_rank; i++) {
+    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
       this.availableRanks[i] <- {
         id    = $"rank_{i}"
         idx   = i

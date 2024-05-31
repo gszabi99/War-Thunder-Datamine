@@ -289,7 +289,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
     if repair_system_scheduled_bot_repair_time >= 0.0f
       repair_system_scheduled_bot_repair_time += act.dt
       // if bot ready to start repair, start it
-      if repair_system_scheduled_bot_repair_time > get_app().gameParams.timeAfterHitForRepairTankBots
+      if repair_system_scheduled_bot_repair_time > get_game_params().timeAfterHitForRepairTankBots
         if is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
             false, true, false)
@@ -589,7 +589,7 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
     var delay = -1.0f
     if unit.isShip
       if can_stop_repair(repair_system_state, repair_system_remaining_repair_time)
-        delay = get_app().gameParams.shipCancelActionDelay
+        delay = get_game_params().shipCancelActionDelay
       else
         delay = 0.001f
     else

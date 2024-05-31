@@ -19,7 +19,7 @@ let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { weaponsPurchase, canBuyItem } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilter.nut")
+let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { appendOnce } = u
 let { MAX_PRESETS_NUM, CHAPTER_ORDER, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX,
   CUSTOM_PRESET_PREFIX, isCustomPreset, getDefaultCustomPresetParams
@@ -128,7 +128,7 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     openPopupFilter({
       scene = this.filterObj
       onChangeFn = this.onFilterCbChange.bindenv(this)
-      filterTypes = this.getFiltersView()
+      filterTypesFn = this.getFiltersView.bindenv(this)
       popupAlign = "top"
     })
 

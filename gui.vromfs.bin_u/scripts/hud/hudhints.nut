@@ -1646,6 +1646,14 @@ enums.addTypes(g_hud_hints, {
     priority = CATASTROPHIC_HINT_PRIORITY
   }
 
+  SHIP_NO_ROCKETS = {
+    hintType = g_hud_hint_types.MISSION_ACTION_HINTS
+    locId = "hints/ship_has_no_rockets"
+    showEvent = "hint:ship_no_rockets"
+    lifeTime = 5.0
+    priority = CATASTROPHIC_HINT_PRIORITY
+  }
+
   REQUEST_REPAIR_HELP_HINT = {
     hintType = g_hud_hint_types.REPAIR
     locId     = "hints/request_repair_help"
@@ -2493,6 +2501,26 @@ enums.addTypes(g_hud_hints, {
     isHideOnWatchedHeroChanged = true
   }
 
+  RANGEFINDER_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/rangefinder_damaged"
+    showEvent = "hint:rangefinder_damaged"
+    lifeTime = 5.0
+  }
+
+  NIGHT_VISION_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/night_vision_damaged"
+    showEvent = "hint:night_vision_damaged"
+    lifeTime = 5.0
+  }
+
+  AUTOLOADER_DAMAGED = {
+    hintType = g_hud_hint_types.COMMON
+    locId     = "hints/autoloader_damaged"
+    showEvent = "hint:autoloader_damaged"
+    lifeTime = 5.0
+  }
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()

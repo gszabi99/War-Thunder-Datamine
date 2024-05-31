@@ -32,6 +32,7 @@ let { getCurrentGameMode, getCurrentGameModeEdiff
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 function isUnitInCustomList(unit, params) {
   if (!unit)
@@ -143,7 +144,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   isSelectByGroups = false
 
   function initScreen() {
-    this.country = ::g_crews_list.get()[this.countryId].country
+    this.country = getCrewsList()[this.countryId].country
     this.curOptionsMasks = []
     this.filterOptionsList = this.getFilterOptionsList()
     this.optionsMaskByUnits = {}

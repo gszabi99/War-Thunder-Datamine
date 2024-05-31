@@ -120,17 +120,17 @@
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "t1_road_01_spawn_tank"
+              "target": "briefing_t1_road_01"
             },
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "t1_road_02_spawn_tank"
+              "target": "briefing_t1_road_02"
             },
             {
               "icontype": "tank",
               "side": "ally",
-              "target": "t1_road_03_spawn_tank"
+              "target": "briefing_t1_road_03"
             },
             {
               "icontype": "artillery",
@@ -150,12 +150,12 @@
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "t2_road_01_spawn_tank"
+              "target": "briefing_t2_road_01"
             },
             {
               "icontype": "tank",
               "side": "enemy",
-              "target": "t2_road_02_spawn_tank"
+              "target": "briefing_t2_road_02"
             },
             {
               "icontype": "fighter",
@@ -183,11 +183,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -197,11 +199,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -211,11 +215,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -225,11 +231,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -239,11 +247,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -253,11 +263,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -267,11 +279,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -281,11 +295,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -295,11 +311,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -309,11 +327,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -350,6 +370,14 @@
           {
             "value": false,
             "var": "wide_spawn_enable"
+          },
+          {
+            "value": false,
+            "var": "at_spawn_with_players"
+          },
+          {
+            "value": false,
+            "var": "assaults_air_spawn"
           }
         ],
         "varSetString": [
@@ -387,6 +415,12 @@
           },
           {
             "value": "wide spawns testing"
+          },
+          {
+            "value": "new AI assualts spawn system testing"
+          },
+          {
+            "value": "player assaults spawns in air"
           }
         ],
         "varSetReal": {
@@ -952,9 +986,9 @@
           1.0
         ],
         [
-          -8802.71,
+          -14286.4,
           20.2988,
-          -6368.27
+          -19797.3
         ]
       ],
       "objLayer": 0,
@@ -979,9 +1013,9 @@
           1.0
         ],
         [
-          17939.7,
+          15629.8,
           28.0234,
-          17861.8
+          11390.4
         ]
       ],
       "objLayer": 0,
@@ -1006,9 +1040,9 @@
           1.0
         ],
         [
-          12597.4,
-          24.6992,
-          9473.15
+          1105.55,
+          742.0,
+          1345.6
         ]
       ],
       "objLayer": 0,
@@ -1033,9 +1067,9 @@
           1.0
         ],
         [
-          5504.34,
-          19.4795,
-          7169.29
+          5851.95,
+          450.95,
+          -1474.4
         ]
       ],
       "objLayer": 0,
@@ -1060,9 +1094,144 @@
           1.0
         ],
         [
-          -2087.98,
-          17.9726,
-          5602.96
+          -6672.6,
+          406.1,
+          4847.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_road_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1210.95,
+          443.65,
+          6029.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_road_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5620.4,
+          443.648,
+          1360.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_road_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -8658.0,
+          274.8,
+          -1453.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_road_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -3538.85,
+          274.801,
+          -4237.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_road_03": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1730.2,
+          274.801,
+          -7042.4
         ]
       ],
       "objLayer": 0,

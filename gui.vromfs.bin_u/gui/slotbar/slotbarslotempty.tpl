@@ -5,8 +5,14 @@ position:t='<<position>>'
 pos:t='<<posX>>w, <<posY>>h'
 <</position>>
 
+<<#selectOnHover>>
+on_mouse_enter='onUnitSlotMouseEnter'
+<</selectOnHover>>
+
 <<#isSlotbarItem>>
 slotbarCurAir {}
+chosen:t='no'
+selected:t='no'
 <</isSlotbarItem>>
 
 shopItem {
@@ -23,38 +29,44 @@ shopItem {
     bottomShade {}
   }
 
+  <<#isSlotbarItem>>
+  slotHoverHighlight {}
+  <</isSlotbarItem>>
+
   focus_border {}
 
   <<#crewImage>>
   img {
     position:t='absolute'
+    pos:t='-@blockInterval, ph-h-@slotBottomShadeHeight'
     size:t='2.074ph, 1.037ph'
     background-svg-size:t='2.074ph, 1.037ph'
     background-repeat:t='aspect-ratio'
     background-image:t='<<crewImage>>'
+    background-align:t='left'
     <<#isCrewRecruit>>
     style:t='background-color:#808080'
-    pos:t='0.06ph, ph-h - 1@slotBottomShadeHeight'
-    <</isCrewRecruit>>
-    <<^isCrewRecruit>>
-    pos:t='0.15ph, ph-h - 1@slotBottomShadeHeight'
     <</isCrewRecruit>>
   }
+
+  <<#isSlotbarItem>>
+  slotBottomGradientLine {}
+  <</isSlotbarItem>>
 
   topline {
-    shopItemPrice {
-      text:t='<<shopItemPriceText>>'
-      header:t='yes'
-    }
-  }
-
-  bottomline {
     shopItemText {
       id:t='<<shopItemTextId>>'
       margin-right:t='0.008@sf'
       width:t='pw'
       text-align:t='right'
       text:t='<<shopItemTextValue>>'
+    }
+  }
+
+  bottomline {
+    shopItemPrice {
+      text:t='<<shopItemPriceText>>'
+      header:t='yes'
     }
   }
   <</crewImage>>

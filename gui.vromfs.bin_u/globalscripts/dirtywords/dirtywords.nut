@@ -1,3 +1,4 @@
+from "auth_wt" import getCountryCode
 from "%globalScripts/logs.nut" import *
 
 //
@@ -37,6 +38,7 @@ let toRegexpFunc = {
 
 // Collect language tables
 local function init(langSources) {
+  let myLocation = getCountryCode()
   foreach (varName, _val in dict) {
     dict[varName] = []
     let mkRegexp = toRegexpFunc?[varName] ?? toRegexpFunc.default
@@ -47,6 +49,8 @@ local function init(langSources) {
         if (tVSrc == "string")
           v = mkRegexp(vSrc)
         else if (tVSrc == "table") {
+          if (("region" in vSrc) && !vSrc.region.contains(myLocation))
+            continue
           v = clone vSrc
           if ("value" in v)
             v.value = mkRegexp(v.value)
@@ -210,8 +214,7 @@ local function prepareWord(word) {
 local function checkRegexps(word, regexps, accuse) {
   foreach (reg in regexps)
     if ((reg?.value ?? reg).match(word)) {
-      if (debugLogFunc)
-        debugLogFunc("DirtyWordsFilter: \"{0}\" matched pattern \"{1}\"".subst(word, (reg?.value ?? reg).pattern()))
+      debugLogFunc?($"DirtyWordsFilter: Word \"{word}\" matched pattern \"{(reg?.value ?? reg).pattern()}\"")
       return !accuse
     }
   return accuse
@@ -271,6 +274,7 @@ local function checkPhrase(text) {
     foreach (segment in (dictAsian.badsegments?[char] ?? [])) {
       if (!phrase.contains(segment))
         continue
+      debugLogFunc?($"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
 
       local utfPhrase = utf8(phrase)
       maskChars = maskChars ?? array(utfPhrase.charCount(), false)
@@ -293,6 +297,7 @@ local function checkPhrase(text) {
   //To match a whole combination of words
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
+      debugLogFunc?($"DirtyWordsFilter: Phrase matched pattern \"{pattern.pattern()}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
       lowerPhrase = phrase.tolower()
@@ -317,9 +322,25 @@ local function setDebugLogFunc(funcOrNull) {
   debugLogFunc = funcOrNull
 }
 
+// This func is for binding a text checking console command, like:
+// register_command(@(text) debugDirtyWordsFilter(text, console_print), "debug.dirty_words_filter")
+function debugDirtyWordsFilter(text, temporaryDebugLogFunc) {
+  let isPassing = isPhrasePassing(text)
+  local prevLogFunc = null
+  if (!isPassing) {
+    prevLogFunc = debugLogFunc
+    debugLogFunc = temporaryDebugLogFunc
+  }
+  let censoredResult = checkPhrase(text)
+  if (!isPassing)
+    debugLogFunc = prevLogFunc
+  temporaryDebugLogFunc("".concat(isPassing ? "(CLEAN)" : "(DIRTY)", " \"", censoredResult, "\""))
+}
+
 return {
   init
   checkPhrase
   isPhrasePassing
   setDebugLogFunc
+  debugDirtyWordsFilter
 }

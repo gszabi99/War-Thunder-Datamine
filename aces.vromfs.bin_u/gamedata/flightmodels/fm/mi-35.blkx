@@ -154,8 +154,8 @@
       "Mode": "Separate",
       "AileronsMode": "Vel",
       "ElevatorMode": "Vel",
-      "RudderMode": "Climb",
-      "ThrottleMode": "Manual",
+      "RudderMode": "Rate",
+      "ThrottleMode": "Alt",
       "allowOverrideByForcedStabilization": false
     }
   },
@@ -974,7 +974,7 @@
       "Power": 2200.0,
       "ThrustMax": {
         "Altitude_0": 0.0,
-        "Altitude_1": 3047.0,
+        "Altitude_1": 2200.0,
         "Altitude_2": 6095.0,
         "Altitude_3": 9143.0,
         "Altitude_4": 12000.0,
@@ -2161,7 +2161,8 @@
         "Kp": 0.07,
         "Ki": 0.02,
         "Imax": 2.0,
-        "Kd": 0.005,
+        "Kd": 0.1,
+        "RateMult": 0.2,
         "Lim": [
           -0.2,
           0.2

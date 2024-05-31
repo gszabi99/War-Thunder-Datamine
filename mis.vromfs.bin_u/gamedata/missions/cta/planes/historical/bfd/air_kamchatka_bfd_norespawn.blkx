@@ -275,7 +275,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/mu_movable_units_template.blk",
+        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/mu_movable_units_part.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -289,7 +289,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/stc_static_units_template.blk",
+        "file": "gameData/missions/cta/planes/historical/BfD/air_kamchatka/stc_static_units_part.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -343,6 +343,20 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "excludes": {}
+      },
+      {
+        "file": "gameData/missions/bridges/air_kamchatka_bridges.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
       }
     ]
   },
@@ -362,10 +376,20 @@
       },
       "conditions": {},
       "actions": {
-        "varSetBool": {
-          "value": false,
-          "var": "barabashka_enabled"
-        },
+        "varSetBool": [
+          {
+            "value": false,
+            "var": "barabashka_enabled"
+          },
+          {
+            "value": false,
+            "var": "at_spawn_with_players"
+          },
+          {
+            "value": false,
+            "var": "assaults_air_spawn"
+          }
+        ],
         "comment": [
           {
             "value": ""
@@ -375,6 +399,12 @@
           },
           {
             "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": "player assaults spawns in air"
           }
         ],
         "varSetReal": [
@@ -536,9 +566,9 @@
           0.153399
         ],
         [
-          0.041748,
+          -29250.4,
           2209.5,
-          188.132
+          5952.3
         ]
       ],
       "unit_class": "a5m4",
@@ -767,24 +797,24 @@
       "type": "Sphere",
       "tm": [
         [
-          -10964.4,
+          -3402.19,
           0.0,
-          -11652.6
+          1577.06
         ],
         [
           0.0,
-          16000.0,
+          3749.92,
           0.0
         ],
         [
-          6282.87,
+          -850.32,
           0.0,
-          -5911.79
+          -1834.4
         ],
         [
-          0.0,
+          -26092.9,
           1177.07,
-          0.0
+          1996.59
         ]
       ],
       "objLayer": 3,
@@ -809,9 +839,9 @@
           0.0941071
         ],
         [
-          8952.74,
-          1130.15,
-          -8387.76
+          -27476.6,
+          5576.93,
+          4838.17
         ]
       ],
       "objLayer": 3,
@@ -836,9 +866,9 @@
           -0.967708
         ],
         [
-          12801.6,
-          1130.15,
-          -12221.7
+          -23627.8,
+          5576.93,
+          1004.23
         ]
       ],
       "objLayer": 3,
@@ -863,9 +893,9 @@
           0.209618
         ],
         [
-          8649.14,
-          1130.15,
-          -15606.9
+          -27780.2,
+          5576.93,
+          -2380.97
         ]
       ],
       "objLayer": 3,
@@ -890,9 +920,9 @@
           0.999975
         ],
         [
-          2289.4,
-          1130.15,
-          -12180.4
+          -34140.0,
+          5576.93,
+          1045.53
         ]
       ],
       "objLayer": 3,
@@ -917,9 +947,9 @@
           1.0
         ],
         [
-          -9981.06,
-          0.0,
-          21423.6
+          -19129.4,
+          0.0175781,
+          14712.2
         ]
       ],
       "objLayer": 0,
@@ -944,9 +974,9 @@
           1.0
         ],
         [
-          -19802.8,
-          11.6191,
-          -4779.08
+          -28951.2,
+          11.6367,
+          -11490.5
         ]
       ],
       "objLayer": 0,
@@ -971,9 +1001,9 @@
           1.0
         ],
         [
-          -13848.0,
-          1.21875,
-          12643.3
+          -22996.4,
+          1.23633,
+          5931.89
         ]
       ],
       "objLayer": 0,
@@ -998,9 +1028,9 @@
           1.0
         ],
         [
-          -16537.0,
-          2.59375,
-          4100.37
+          -25685.4,
+          2.61133,
+          -2611.04
         ]
       ],
       "objLayer": 0,
@@ -1025,9 +1055,9 @@
           1.0
         ],
         [
-          -19846.9,
-          368.809,
-          17350.6
+          -28995.3,
+          368.827,
+          10639.2
         ]
       ],
       "objLayer": 0,
@@ -1052,9 +1082,9 @@
           1.0
         ],
         [
-          -8632.74,
-          15.4824,
-          12923.6
+          -17781.1,
+          15.5,
+          6212.19
         ]
       ],
       "objLayer": 0,
@@ -1079,9 +1109,9 @@
           1.0
         ],
         [
-          -23736.8,
-          54.043,
-          3292.36
+          -32885.2,
+          54.0606,
+          -3419.05
         ]
       ],
       "objLayer": 0,
@@ -1106,9 +1136,9 @@
           1.0
         ],
         [
-          -12658.4,
-          16.125,
-          889.421
+          -23423.6,
+          54.0713,
+          -7870.35
         ]
       ],
       "objLayer": 0,

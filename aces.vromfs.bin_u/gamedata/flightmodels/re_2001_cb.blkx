@@ -2202,60 +2202,10 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "mgun1_dm",
-        "bullets": 350,
-        "spread": 1.05,
-        "counterIndex": [
-          1,
-          2
-        ],
-        "breechInCockpit": true
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/weapons/gunBredaSAFAT127.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 350,
-        "spread": 1.05,
-        "counterIndex": [
-          4,
-          5
-        ],
-        "breechInCockpit": true
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBredaSAFAT77.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun3_dm",
-        "bullets": 600,
-        "spread": 1.2,
-        "traceOffset": 1,
-        "counterIndex": 7
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBredaSAFAT77.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection2",
-        "dm": "mgun4_dm",
-        "bullets": 600,
-        "spread": 1.2,
-        "traceOffset": 2,
-        "counterIndex": 8
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2264,19 +2214,223 @@
         "blk": "gameData/FlightModels/weaponPresets/re_2001_serie1_default.blk"
       },
       {
-        "name": "re_2001_250kg",
-        "blk": "gameData/FlightModels/weaponPresets/re_2001_250kg.blk",
-        "reqModification": "it250_mod"
+        "name": "re_2001_2x_50kg",
+        "blk": "gameData/FlightModels/weaponPresets/re_2001_2x_50kg.blk"
       },
       {
-        "name": "re_2001_250kg_2x50kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/re_2001_250kg_2x50kg_t.blk",
-        "reqModification": "it50_mod"
+        "name": "re_2001_2x_100kg",
+        "blk": "gameData/FlightModels/weaponPresets/re_2001_2x_100kg.blk"
       },
       {
-        "name": "re_2001_250kg_2x100kg_t",
-        "blk": "gameData/FlightModels/weaponPresets/re_2001_250kg_2x100kg_t.blk",
-        "reqModification": "it100_mod"
+        "name": "re_2001_cb_250kg",
+        "blk": "gameData/FlightModels/weaponPresets/re_2001_cb_250kg.blk"
+      },
+      {
+        "name": "re_2001_1x_630kg_ap",
+        "blk": "gameData/FlightModels/weaponPresets/re_2001_1x_630kg_ap.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 710.0,
+    "maxloadMassLeftConsoles": 355.0,
+    "maxloadMassRightConsoles": 355.0,
+    "maxDisbalance": 250.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb3",
+        "pylon_bomb2",
+        "pylon_bomb1",
+        "pylon_bomba1"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "mgun1_dm",
+              "bullets": 350,
+              "spread": 1.05,
+              "counterIndex": [
+                1,
+                2
+              ],
+              "breechInCockpit": true
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/weapons/gunBredaSAFAT127.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "mgun2_dm",
+              "bullets": 350,
+              "spread": 1.05,
+              "counterIndex": [
+                4,
+                5
+              ],
+              "breechInCockpit": true
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBredaSAFAT77.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection1",
+              "dm": "mgun3_dm",
+              "bullets": 600,
+              "spread": 1.2,
+              "traceOffset": 1,
+              "counterIndex": 7
+            },
+            {
+              "trigger": "machine gun",
+              "blk": "gameData/Weapons/gunBredaSAFAT77.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection2",
+              "dm": "mgun4_dm",
+              "bullets": 600,
+              "spread": 1.2,
+              "traceOffset": 2,
+              "counterIndex": 8
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "50kg",
+            "reqModification": "it50_mod",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "100kg",
+            "reqModification": "it100_mod",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_large",
+            "name": "250kg",
+            "reqModification": "it250_mod",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb1",
+                "pylon_bomba1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_250kg_gp.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "630kg",
+            "reqModification": "it630_ap_mod",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb1",
+                "pylon_bomba1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_630kg_ap.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "50kg",
+            "reqModification": "it50_mod",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_50kg_t.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "100kg",
+            "reqModification": "it100_mod",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          }
+        ]
       }
     ]
   },
@@ -2710,19 +2864,24 @@
       "reqModification": "safat12_belt_pack",
       "tier": 4
     },
-    "it250_mod": {
-      "modClass": "weapon",
-      "tier": 2
-    },
     "it50_mod": {
       "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "it250_mod"
+      "tier": 1
     },
     "it100_mod": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 2,
       "reqModification": "it50_mod"
+    },
+    "it250_mod": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "it100_mod"
+    },
+    "it630_ap_mod": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "it250_mod"
     }
   },
   "cutting": {

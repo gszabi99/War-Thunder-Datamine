@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_difficulty_name, package_request, package_get_status, has_entitlement, ps4_update_gui
+from "%scripts/dagui_natives.nut" import get_difficulty_name, has_entitlement, ps4_update_gui
 from "%scripts/dagui_library.nut" import *
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -18,6 +18,7 @@ let { stripTags } = require("%sqstd/string.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { langsById } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
+let { getContentPackStatus, requestContentPack, ContentPackStatus } = require("contentpacks")
 
 function get_pkg_loc_name(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
@@ -40,7 +41,7 @@ function check_members_pkg(pack) {
 function have_package(packName) {
   if (!contentStateModule.isConsoleClientFullyDownloaded())
     return false
-  return package_get_status(packName) == PACKAGE_STATUS_OK
+  return getContentPackStatus(packName) == ContentPackStatus.OK
 }
 
 function check_package_full(pack, silent = false) {
@@ -71,8 +72,8 @@ function check_diff_pkg(diff, silent = false) {
 function checkReqContentByName(ename, pack) {
   if (has_entitlement(ename) || hasFeature(ename)) {
     log($"[PACK] has entitlement {ename }, checking for pack {pack}");
-    let status = package_get_status(pack)
-    if (status == PACKAGE_STATUS_NOT_EXIST)
+    let status = getContentPackStatus(pack)
+    if (status == ContentPackStatus.MISSING)
       return pack
   }
   else
@@ -89,7 +90,7 @@ function checkReqContent(ename, blk) {
 
 function request_packages(packList) {
   foreach (pack in packList)
-    package_request(pack)
+    requestContentPack(pack)
 }
 
 function request_packages_and_restart(packList) {

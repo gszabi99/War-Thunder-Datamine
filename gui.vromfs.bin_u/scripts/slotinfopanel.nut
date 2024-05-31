@@ -23,14 +23,14 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getCrewSpText } = require("%scripts/crew/crewPoints.nut")
+let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew
+let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus
 } = require("%scripts/crew/crew.nut")
 let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
 } = require("%scripts/crew/crewDiscount.nut")
@@ -388,7 +388,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       crewLevelText  = crewLevelText
       needCurPoints = needCurPoints
       crewPoints = needCurPoints && getCrewSpText(getCrewPoints(crewData))
-      crewStatus = ::get_crew_status(crewData, unit)
+      crewStatus = getCrewStatus(crewData, unit)
       crewSpecializationLabel = loc("crew/trained") + loc("ui/colon")
       crewSpecializationIcon = specType.trainedIcon
       crewSpecialization = specType.getName()

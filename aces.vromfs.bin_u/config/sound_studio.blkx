@@ -218,19 +218,19 @@
           "async": true,
           "preload": false
         },
-        "tanks_effects_radio": {
-          "async": true,
-          "preload": false
-        },
-        "tanks_effects_radio.assets": {
-          "async": true,
-          "preload": false
-        },
         "tanks_effects": {
           "async": true,
           "preload": false
         },
         "tanks_effects.assets": {
+          "async": true,
+          "preload": false
+        },
+        "tanks_effects_radio": {
+          "async": true,
+          "preload": false
+        },
+        "tanks_effects_radio.assets": {
           "async": true,
           "preload": false
         },
@@ -488,35 +488,15 @@
         }
       },
       "crew_extended": {
-        "crew_dialogs_<type>_new": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "crew_dialogs_<type>_new.assets": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "_crew_dialogs_<type>_new_<lang>": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        },
-        "_crew_dialogs_<type>_new_<lang>.assets": {
-          "async": true,
-          "preload": false,
-          "optional": true
-        }
-      },
-      "crew": {
         "crew_dialogs_<type>": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "crew_dialogs_<type>.assets": {
           "async": true,
-          "preload": false
+          "preload": false,
+          "optional": true
         },
         "_crew_dialogs_<type>_<lang>": {
           "async": true,
@@ -595,6 +575,9 @@
       },
       "Norwegian": {
         "heavyVehicle": true
+      },
+      "Lithuania": {
+        "heavyVehicle": true
       }
     },
     "languageToLocale": {
@@ -626,7 +609,8 @@
       "USA": "en_us",
       "Norwegian": "nw",
       "Hindi": "hi",
-      "Argentine": "ar"
+      "Argentine": "ar",
+      "Lithuania": "lt"
     }
   },
   "budget": {
@@ -920,6 +904,8 @@
     "eventPartsExplosions": "parts_explosion",
     "eventWind": "plane_passby",
     "eventWindJet": "jet_plane_passby",
+    "eventWindHeliPiston": "heli_piston_passby",
+    "eventWindHeliTurbo": "heli_passby",
     "eventWreck": "wreck_explosion",
     "eventWreckCockpit": "wreck_explosion_cockpit",
     "eventPartsExplosion": "parts_explosion",
@@ -976,6 +962,7 @@
     "eventAirDefenceAlarm": "air_defence_alarm",
     "eventExplosion": "explosions",
     "eventPlaneSonicBoom": "plane_sonic_boom",
+    "eventRocketSonicBoom": "missile_sonic_boom",
     "eventTrigger": "weapon_trigger",
     "eventSurfaceReverb": "surface_reverb",
     "eventChasis": "chasis",
@@ -1019,6 +1006,7 @@
     "tinnitusDSPDuration": 5.0,
     "planeSonicBoomRadius": 3000.0,
     "planeSonicBoomEvAngle": 100.0,
+    "rocketSonicBoomEvAngle": 100.0,
     "passBySpeedRange": [
       300.0,
       5000.0
@@ -1175,6 +1163,25 @@
     "eventOverheatCockpit": "engine_overheat_cockpit",
     "eventOverheatStart": "engine_overheat_start",
     "eventEngineOverheat": "engine_overheat"
+  },
+  "rocketEffectsByThrust": {
+    "light": {
+      "thrust": 40000.0,
+      "start": "missile_light_start",
+      "startAi": "missile_light_start_ai",
+      "fly": "missile_light_fly"
+    },
+    "medium": {
+      "thrust": 80000.0,
+      "start": "missile_med_start",
+      "startAi": "missile_med_start_ai",
+      "fly": "missile_med_fly"
+    },
+    "heavy": {
+      "start": "missile_heavy_start",
+      "startAi": "missile_heavy_start_ai",
+      "fly": "missile_heavy_fly"
+    }
   },
   "cockpit_occlusion": {
     "directOcclusion": 1.0,
@@ -19870,7 +19877,7 @@
     "breachesCritThreshold": 4.5,
     "breachesSeriousThreshold": 3.5,
     "reportBulletTypeTimeThreshold": 4.0,
-    "shipCollisionWarningRadius": 150.0,
+    "shipCollisionWarningRadius": 100.0,
     "aircraftDetectionRadius": 2000.0,
     "detectionReportSideCooldown": 25.0,
     "detectionReportGlobalCooldown": 25.0,
@@ -19958,6 +19965,9 @@
         "heavyVehicle": true
       },
       "Argentine": {
+        "heavyVehicle": true
+      },
+      "Lithuania": {
         "heavyVehicle": true
       }
     },
@@ -21637,7 +21647,7 @@
         "depthChargePrepare": {
           "event": "06_ship_activities/voice_message_commander_ship_bombs_prepare",
           "playerRole": "commander",
-          "minSpeechInterval": 30.0,
+          "minSpeechInterval": 45.0,
           "player": -1
         },
         "minesPrepare": {
@@ -21649,13 +21659,25 @@
         "startSmoke": {
           "event": "06_ship_activities/voice_message_commander_ship_smokes",
           "playerRole": "commander",
-          "minSpeechInterval": 10.0,
+          "minSpeechInterval": 30.0,
           "player": -1
         },
         "torpedoesPrepare": {
           "event": "06_ship_activities/voice_message_commander_ship_torpedoes_prepare",
           "playerRole": "commander",
           "minSpeechInterval": 30.0,
+          "player": -1
+        },
+        "rbuPrepare": {
+          "event": "06_ship_activities/voice_message_commander_rbu_ready",
+          "playerRole": "commander",
+          "minSpeechInterval": 30.0,
+          "player": -1
+        },
+        "rbuFire": {
+          "event": "06_ship_activities/voice_message_commander_rbu_fire",
+          "playerRole": "commander",
+          "minSpeechInterval": 15.0,
           "player": -1
         },
         "torpedoAway": {
@@ -21669,6 +21691,18 @@
           "playerRole": "commander",
           "minSpeechInterval": 0.0,
           "player": -1
+        },
+        "onTarget": {
+          "event": "07_environment/voice_message_officer_on_target",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 15.0
+        },
+        "targetLost": {
+          "event": "07_environment/voice_message_officer_target_off",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 15.0
         },
         "radarReport": {
           "event": "07_environment/voice_message_officer_radar_report",
@@ -22171,7 +22205,7 @@
           "event": "08_state_ship/voice_message_sailor_cellars_fire",
           "playerRole": "sailor",
           "player": -1,
-          "minSpeechInterval": 10.0
+          "minSpeechInterval": 7.0
         },
         "commandPostFire": {
           "event": "08_state_ship/voice_message_sailor_command_post_fire",
@@ -22213,6 +22247,11 @@
         },
         "enemyDestroyed": {
           "event": "07_environment/voice_message_officer_target_destroyed",
+          "playerRole": "commander",
+          "player": -1
+        },
+        "enemyPlaneDestroyed": {
+          "event": "07_environment/voice_message_officer_air_target_destroyed",
           "playerRole": "commander",
           "player": -1
         },
@@ -22435,7 +22474,94 @@
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 120.0
+        },
+        "cellarHit": {
+          "event": "07_environment/voice_message_officer_cellar_hit",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 120.0
+        },
+        "underShoot": {
+          "event": "07_environment/voice_message_officer_shot_short",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "overShoot": {
+          "event": "07_environment/voice_message_officer_shot_over",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "supportPlaneLost": {
+          "event": "07_environment/voice_message_officer_supportPlane_lost",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "supportPlaneDown": {
+          "event": "07_environment/voice_message_officer_supportPlane_down",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "prepareSupportPlane": {
+          "event": "06_ship_activities/voice_message_commander_support_plane_launch",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "loadBulletFrag": {
+          "event": "06_ship_activities/voice_message_officer_load_frag",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "loadBulletHighExpl": {
+          "event": "06_ship_activities/voice_message_officer_load_he",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "loadBulletAP": {
+          "event": "06_ship_activities/voice_message_officer_load_ap",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "loadBulletSAP": {
+          "event": "06_ship_activities/voice_message_officer_load_sap",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
+        },
+        "loadBulletAA": {
+          "event": "06_ship_activities/voice_message_officer_load_aa",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 30.0
         }
+      },
+      "bulletTypeToEvent": {
+        "he_frag_tank": "loadBulletHighExpl",
+        "he_frag_i_tank": "loadBulletFrag",
+        "shrapnel_tank": "loadBulletFrag",
+        "apbc_tank": "loadBulletAP",
+        "apc_tank": "loadBulletAP",
+        "apcbc_tank": "loadBulletAP",
+        "aphe_tank": "loadBulletAP",
+        "aphebc_tank": "loadBulletAP",
+        "sap_tank": "loadBulletSAP",
+        "sapbc_flat_nose_tank": "loadBulletSAP",
+        "sapbc_tank": "loadBulletSAP",
+        "sapcbc_tank": "loadBulletSAP",
+        "special_common_tank": [
+          "loadBulletSAP",
+          "common_tank"
+        ],
+        "he_frag_base_fuse_tank": "loadBulletSAP",
+        "he_frag_dist_fuse": "loadBulletAA",
+        "he_frag_radio_fuse": "loadBulletAA"
       },
       "distanceMetric": {
         "event": "07_environment/distance/metric/sailor/voice_message_sailor_<dist>m",
@@ -22727,7 +22853,8 @@
     "country_israel": "Hebrew",
     "country_norway": "Norwegian",
     "country_india": "Hindi",
-    "country_argentina": "Argentine"
+    "country_argentina": "Argentine",
+    "country_lithuania": "Lithuania"
   },
   "radioNoise": {
     "path": "dialogs_crew_ground/background_noises",

@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import get_game_type_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 from "app" import is_dev_version
@@ -18,7 +17,7 @@ let { EII_EXTINGUISHER, EII_TOOLKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET,
   EII_REPAIR_BREACHES, EII_SUPPORT_PLANE_ORBITING, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION
 } = require("hudActionBarConst")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { get_game_mode } = require("mission")
+let { get_game_mode, get_game_type_by_mode } = require("mission")
 let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 let { isInFlight } = require("gameplayBinding")
 let generateSubmarineActionBars = require("%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut")

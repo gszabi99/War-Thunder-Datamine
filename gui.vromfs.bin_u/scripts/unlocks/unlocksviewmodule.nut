@@ -41,6 +41,7 @@ let { getTypeByUnlockedItemType, decoratorTypes, getTypeByResourceType
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { Cost } = require("%scripts/money.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
@@ -942,7 +943,7 @@ function getUnlockMultDesc(condition) {
   let mulRanks = []
   if (rankMultiplierTable.len() > 0) {
     local lastAddedRank = 0
-    for (local rank = 1; rank <= ::max_country_rank; rank++) {
+    for (local rank = 1; rank <= MAX_COUNTRY_RANK; rank++) {
       let curRankMul = rankMultiplierTable[rank]
       let nextRankMul = rankMultiplierTable?[rank + 1]
       if (!curRankMul || (nextRankMul && curRankMul == nextRankMul))

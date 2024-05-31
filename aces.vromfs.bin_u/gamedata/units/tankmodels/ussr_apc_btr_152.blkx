@@ -544,21 +544,22 @@
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 50.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {}
+      "transmission_dm": {},
+      "power_system_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
       "hp": 250.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "createSecondaryShatters": false,
-      "fireParamsPreset": "fuel_internal",
       "stopChanceOnDeadPart": 0.0,
+      "fireParamsPreset": "fuel_internal",
       "fuel_tank_dm": {},
       "fuel_tank_01_dm": {},
       "fuel_tank_02_dm": {},
@@ -580,16 +581,21 @@
       "armorClass": "tank_structural_steel",
       "hp": 250.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
+      "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
       "fuel_tank_exterior_r_02_dm": {},
       "fuel_tank_exterior_r_03_dm": {},
+      "fuel_tank_exterior_r_04_dm": {},
+      "fuel_tank_exterior_r_05_dm": {},
       "fuel_tank_exterior_l_01_dm": {},
       "fuel_tank_exterior_l_02_dm": {},
       "fuel_tank_exterior_l_03_dm": {},
+      "fuel_tank_exterior_l_04_dm": {},
+      "fuel_tank_exterior_l_05_dm": {},
       "fuel_tank_exterior_01_dm": {},
       "fuel_tank_exterior_02_dm": {},
       "fuel_tank_exterior_03_dm": {}
@@ -649,51 +655,45 @@
           "fuel_tank_l_02_dm",
           "fuel_tank_l_03_dm",
           "fuel_tank_l_04_dm",
-          "fuel_tank_l_05_dm",
-          "fuel_tank_exterior_r_01_dm",
-          "fuel_tank_exterior_r_02_dm",
-          "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_l_05_dm"
         ],
         "onHit": [
           {
             "damageType": "cumulative",
-            "expl": 0.1,
-            "fire": 0.2,
+            "expl": 1.0,
             "damage": 100.0,
             "fHitCritical": true
           },
           {
-            "damageType": "cumulative",
-            "expl": 0.2,
-            "fire": 0.3,
-            "damage": 250.0,
+            "damageType": "explosion",
+            "expl": 1.0,
+            "damage": 35.0,
             "fHitCritical": true
           },
           {
             "damageType": "explosion",
-            "expl": 0.125,
-            "fire": 0.225,
-            "damage": 25.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "explosion",
-            "expl": 0.25,
-            "fire": 0.35,
-            "damage": 50.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.1,
+            "expl": 0.7,
             "damage": 20.0,
             "fHitCritical": true
           },
           {
+            "damageType": "shatter",
+            "expl": 1.0,
+            "fire": 0.75,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "shatter",
+            "expl": 0.4,
+            "fire": 0.5,
+            "damage": 8.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "generic",
-            "fire": 0.25,
-            "damage": 70.0,
+            "fire": 1.0,
+            "damage": 100.0,
             "fHitCritical": true
           },
           {
@@ -705,7 +705,7 @@
           {
             "damageType": "generic",
             "fire": 0.7,
-            "expl": 0.1,
+            "expl": 0.2,
             "damage": 300.0,
             "fHitCritical": true
           },
@@ -718,20 +718,26 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.2,
-            "expl": 0.8,
+            "fire": 0.1,
+            "expl": 0.9,
             "damage": 600.0,
             "fHitCritical": true
           },
           {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 5.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "fire",
-            "fire": 0.2
+            "fire": 0.2,
+            "expl": 0.1
           }
         ],
         "onKill": {
           "fire": 0.5,
-          "expl": 0.3,
-          "nothing": 0.2,
+          "expl": 0.5,
           "fHitCritical": true
         }
       },
@@ -818,42 +824,6 @@
             "fire": 0.02
           }
         ]
-      },
-      {
-        "name": "wheel_r_drive_dm",
-        "onKill": {
-          "track_r_dm": 1.0
-        }
-      },
-      {
-        "name": "wheel_r_back_dm",
-        "onKill": {
-          "track_r_dm": 1.0
-        }
-      },
-      {
-        "name": "wheel_r_front_dm",
-        "onKill": {
-          "track_r_dm": 1.0
-        }
-      },
-      {
-        "name": "wheel_l_drive_dm",
-        "onKill": {
-          "track_l_dm": 1.0
-        }
-      },
-      {
-        "name": "wheel_l_back_dm",
-        "onKill": {
-          "track_l_dm": 1.0
-        }
-      },
-      {
-        "name": "wheel_l_front_dm",
-        "onKill": {
-          "track_l_dm": 1.0
-        }
       },
       {
         "name": [
@@ -1304,6 +1274,31 @@
             }
           }
         ]
+      },
+      {
+        "name": [
+          "wheel_l_drive_dm",
+          "wheel_r_drive_dm",
+          "wheel_r_back_dm",
+          "wheel_r_front_dm",
+          "wheel_l_back_dm",
+          "wheel_l_front_dm",
+          "wheel_l_01_dm",
+          "wheel_r_01_dm",
+          "wheel_l_02_dm",
+          "wheel_r_02_dm",
+          "wheel_l_03_dm",
+          "wheel_r_03_dm",
+          "wheel_l_04_dm",
+          "wheel_r_04_dm",
+          "wheel_l_05_dm",
+          "wheel_r_05_dm",
+          "wheel_l_06_dm",
+          "wheel_r_06_dm"
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
       }
     ]
   },
@@ -2104,6 +2099,13 @@
       },
       {
         "name": "fuel_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "hydraulic_internal",
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true

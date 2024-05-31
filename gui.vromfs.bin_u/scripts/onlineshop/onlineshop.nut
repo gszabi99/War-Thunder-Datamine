@@ -539,7 +539,12 @@ gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
           colorize("chapterUnlockedColor",
             $"{loc("subscription/activeTime")}{loc("ui/colon")}{time.getExpireText(expire)}"))
     }
+
     this.scene.findObject("item_desc_text").setValue(descText)
+    let imgHeight = this.scene.findObject("item_image")?.getSize()[1] ?? 0
+    let itemsListHeight = this.scene.findObject("items_list")?.getSize()[1] ?? 0
+    this.scene.findObject("item_desc_text_nest")["max-height"] = $"1@maxWindowHeight - 1@frameHeaderHeight - {imgHeight} - {itemsListHeight}"
+
   }
 
   function reinitScreen(params = {}) {

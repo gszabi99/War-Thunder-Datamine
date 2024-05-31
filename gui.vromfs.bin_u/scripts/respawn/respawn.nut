@@ -22,7 +22,7 @@ let { ceil } = require("math")
 let { format } = require("string")
 let { is_has_multiplayer } = require("multiplayer")
 let { get_current_mission_name, get_game_mode,
-  get_game_type, get_mplayers_list, get_local_mplayer, get_mp_local_team } = require("mission")
+  get_game_type, get_mplayer_by_id, get_local_mplayer, get_mp_local_team } = require("mission")
 let { fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
   setSelectedUnitInfo, getAvailableRespawnBases, getRespawnBaseTimeLeftById,
   selectRespawnBase, highlightRespawnBase, getRespawnBase, doRespawnPlayer,
@@ -90,7 +90,7 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
 let { createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitUsed } = require("%scripts/respawn/additionalUnits.nut")
-
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 
@@ -140,7 +140,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   ]
 
   shouldBlurSceneBg = true
-  shouldFadeSceneInVr = true
   shouldOpenCenteredToCameraInVr = true
   keepLoaded = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
@@ -693,6 +692,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       checkRespawnBases = true
       missionRules = this.missionRules
       hasExtraInfoBlock = true
+      hasExtraInfoBlockTop = true
+      showAdditionExtraInfo = true
+      hasCrewHint = false
       shouldSelectAvailableUnit = this.isRespawn
       customViewCountryData = { [playerCountry] = {
         icon = this.missionRules.getOverrideCountryIconByTeam(get_mp_local_team())
@@ -819,7 +821,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function getSlotsSpawnCostSumNoWeapon() {
     local res = 0
-    let crewsCountry = ::g_crews_list.get()?[this.getCurCrew()?.idCountry]
+    let crewsCountry = getCrewsList()?[this.getCurCrew()?.idCountry]
     if (!crewsCountry)
       return res
 
@@ -2008,9 +2010,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.shouldBlurSceneBg = !this.isSpectate ? needUseHangarDof() : false
     handlersManager.updateSceneBgBlur()
 
-    this.shouldFadeSceneInVr = !this.isSpectate
-    handlersManager.updateSceneVrParams()
-
     this.updateTacticalMapUnitType()
 
     if (is_spectator) {
@@ -2088,7 +2087,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let text = $"{name} {title}"
 
     let targetId = getSpectatorTargetId()
-    let player = get_mplayers_list(GET_MPLAYERS_LIST, true).findvalue(@(p) p.id == targetId)
+    let player = get_mplayer_by_id(targetId)
     let color = player != null ? ::get_mplayer_color(player) : "teamBlueColor"
 
     this.scene.findObject("spectator_name").setValue(colorize(color, text))

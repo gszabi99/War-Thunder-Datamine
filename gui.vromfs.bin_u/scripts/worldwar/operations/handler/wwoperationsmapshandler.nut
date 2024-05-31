@@ -872,6 +872,9 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.selMap)
       return
 
+    if(this.selMap.getUnitsGroupsByCountry() == null)
+      return
+
     wwVehicleSetModal.open({ map = this.selMap })
   }
 

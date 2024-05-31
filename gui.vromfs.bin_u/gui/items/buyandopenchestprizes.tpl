@@ -6,7 +6,7 @@ tdiv {
   background-image:t='!#ui/images/chests/prizes_bg.avif'
   background-color:t='#FFFFFF'
   re-type:t='9rect'
-  background-position:t='86@sf/@pf, 0, 86@sf/@pf, 0'
+  background-position:t='18, 25, 18, 50'
   background-svg-size:t='246@sf/@pf, 160@sf/@pf'
   background-repeat:t='expand'
   color-factor:t="0"
@@ -24,7 +24,7 @@ tdiv {
   behaviour:t='basicTransparency'
   transp-base:t='0'
   transp-func:t='linear'
-  transp-end:t='125'
+  transp-end:t='191'
   transp-time:t='150'
   transp-delay:t='<<bgDelay>>'
 }
@@ -73,13 +73,13 @@ tdiv {
       size:t='1.5*<<chestItemWidth>>, 1.5*<<chestItemWidth>>'
       pos:t='-w/2, -h/2'
       position:t='absolute'
-      background-image:t='!#ui/images/chests/chest_bg_cloud'
-      background-color:t='#FFFFFFFF'
+      background-image:t='!#ui/images/chests/chest_bg_cloud_white'
+      background-color:t='<<chestItemRarityColor>>'
       color-factor:t="0"
       behaviour:t='basicTransparency'
       transp-base:t='0'
       transp-func:t='linear'
-      transp-end:t='255'
+      transp-end:t='191'
       transp-time:t='125'
     }
   }

@@ -73,6 +73,7 @@ const MAX_VIEW_MODE_TUTOR_SHOWS = 2
 let extHintIconByPartType = {
   ammo_turret = "#ui/gameuiskin#icon_weapons_relocation_in_progress.svg"
   bridge = "#ui/gameuiskin#ship_crew_driver.svg"
+  engine = "#ui/gameuiskin#engine_state_indicator.svg"
   engine_room = "#ui/gameuiskin#engine_state_indicator.svg"
   shaft = "#ui/gameuiskin#ship_transmission_state_indicator.svg"
   transmission = "#ui/gameuiskin#ship_transmission_state_indicator.svg"
@@ -200,6 +201,28 @@ let descByPartId = {
 
 function distanceToStr(val) {
   return measureType.DISTANCE.getMeasureUnitsText(val)
+}
+
+function getRadarSensorType(sensorPropsBlk) {
+  local isRadar = false
+  local isIrst = false
+  local isTv = false
+  let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
+  for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
+    let transiverBlk = transiversBlk.getBlock(t)
+    let targetSignatureType = transiverBlk?.targetSignatureType ?? transiverBlk?.visibilityType
+    if (targetSignatureType == "infraRed")
+      isIrst = true
+    else if (targetSignatureType == "optic")
+      isTv = true
+    else
+      isRadar = true
+  }
+  return isRadar && isIrst ? "radar_irst"
+    : isRadar ? "radar"
+    : isIrst ? "irst"
+    : isTv ? "tv"
+    : "radar"
 }
 
 local dmViewer
@@ -787,6 +810,8 @@ dmViewer = {
       animation   = null
     }
 
+    let { overrideTitle = "", hideDescription = false } = this.unitBlk?.xrayOverride[params.name]
+
     let isHuman = nameId == "steel_tankman"
     if (isHuman || nameId == "")
       return res
@@ -795,12 +820,13 @@ dmViewer = {
     if (this.view_mode == DM_VIEWER_ARMOR)
       res.desc = this.getDescriptionInArmorMode(params)
     else if (this.view_mode == DM_VIEWER_XRAY) {
-      res.desc = this.getDescriptionInXrayMode(params)
+      if (!hideDescription)
+        res.desc = this.getDescriptionInXrayMode(params)
       res.animation = this.getDmPartAnimationSrc(params.name)
       res.__update(this.getExtendedHintInfo(params))
     }
 
-    res.title = this.getPartTitle(params, this.unit)
+    res.title = overrideTitle == "" ? this.getPartTitle(params, this.unit) : this.getPartNameLocText(overrideTitle)
 
     return res
   }
@@ -1232,7 +1258,7 @@ dmViewer = {
     let partName = params.name
     local weaponPartName = null
 
-    let desc = []
+    let desc = descByPartId?[partId].getDescriptionInXrayMode(params, this.unit, this.unitBlk) ?? []
 
     if (partId in tankPartsIds) {
       if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
@@ -1481,10 +1507,10 @@ dmViewer = {
     }
     else if (partId in shipAmmunitionPartsIds) {
       let isShipOrBoat = this.unit.isShipOrBoat()
+      let ammoSlotInfo = this.getAmmoStowageSlotInfo(partName)
       if (isShipOrBoat) {
-        let ammoQuantity = this.getAmmoQuantityByPartName(partName)
-        if (ammoQuantity > 1)
-          desc.append(loc("shop/ammo") + loc("ui/colon") + ammoQuantity)
+        if (ammoSlotInfo.count > 1)
+          desc.append(loc("shop/ammo") + loc("ui/colon") + ammoSlotInfo.count)
       }
       let stowageInfo = this.getAmmoStowageInfo(null, partName, isShipOrBoat)
       if (stowageInfo.isCharges)
@@ -1497,6 +1523,8 @@ dmViewer = {
       }
       if (stowageInfo.isAutoLoad)
         desc.append(loc("xray/ammo/mechanized_ammo_rack"))
+      if (ammoSlotInfo.isConstrainedInert)
+        desc.append(loc("xray/ammo/constrained_inert"))
     }
     else if (partId == "drive_turret_h" || partId == "drive_turret_v") {
       weaponPartName = ::stringReplace(partName, partId, "gun_barrel")
@@ -1553,30 +1581,8 @@ dmViewer = {
         let sensorPropsBlk = DataBlock()
         sensorPropsBlk.load(sensorFilePath)
         local sensorType = sensorPropsBlk.getStr("type", "")
-        if (sensorType == "radar") {
-          local isRadar = false
-          local isIrst = false
-          local isTv = false
-          let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
-          for (local t = 0; t < (transiversBlk?.blockCount() ?? 0); t++) {
-            let transiverBlk = transiversBlk.getBlock(t)
-            let targetSignatureType = transiverBlk?.targetSignatureType != null ? transiverBlk?.targetSignatureType : transiverBlk?.visibilityType
-            if (targetSignatureType == "infraRed")
-              isIrst = true
-            else if (targetSignatureType == "optic")
-              isTv = true
-            else
-              isRadar = true
-          }
-          if (isRadar && isIrst)
-            sensorType = "radar_irst"
-          else if (isRadar)
-            sensorType = "radar"
-          else if (isIrst)
-            sensorType = "irst"
-          else if (isTv)
-            sensorType = "tv"
-        }
+        if (sensorType == "radar")
+          sensorType = getRadarSensorType(sensorPropsBlk)
         else if (sensorType == "lds")
           continue
         desc.append("".concat(loc($"avionics_sensor_{sensorType}"), loc("ui/colon"),
@@ -1884,6 +1890,55 @@ dmViewer = {
           desc.append($"{loc("ui/bullet")}{loc("xray/fire_control/num_fire_directors", {n = numFireDirectors})}")
       }
     }
+    else if (partId == "autoloader" || partId == "driver_controls")
+      desc.append(loc($"armor_class/desc/{partId}"))
+    else if (partId == "power_system") {
+      let partsList = [loc("armor_class/fire_control_system"), loc("armor_class/gun_stabilizer"),
+        loc("armor_class/radar")]
+      desc.append(loc($"armor_class/desc/{partId}", { partsList = "\n".join(partsList, true) }))
+    }
+    else if (partId == "fire_control_system") {
+      let partsList = []
+      foreach (weapon in this.getUnitWeaponList()) {
+        if (weapon?.stabilizerDmPart == partName) {
+          partsList.append(loc("armor_class/gun_stabilizer"))
+          continue
+        }
+        if (weapon?.guidedWeaponControlsDmPart == partName)
+          partsList.append(loc("armor_class/guided_weapon_controls"))
+      }
+
+      let rangefinderDmPart = this.findAnyModEffectValue("rangefinderDmPart")
+      if (rangefinderDmPart == partName)
+        partsList.append(loc("modification/laser_rangefinder_lws"))
+
+      let nightVisionBlk = this.findAnyModEffectValue("nightVision")
+      if (nightVisionBlk?.nightVisionDmPart == partName)
+        partsList.append(loc("modification/night_vision_system"))
+
+      desc.append(loc($"armor_class/desc/{partId}", { partsList = "\n".join(partsList, true) }))
+    }
+    else if (partId == "electronic_equipment") {
+      let partsList = []
+      foreach (sensorBlk in this.getUnitSensorsList()) {
+        if ((sensorBlk % "dmPart").findindex(@(v) v == partName) == null)
+          continue
+
+        let sensorFilePath = sensorBlk.getStr("blk", "")
+        if (sensorFilePath == "")
+          continue
+        let sensorPropsBlk = DataBlock()
+        sensorPropsBlk.load(sensorFilePath)
+        local sensorType = sensorPropsBlk.getStr("type", "")
+        if (sensorType == "radar")
+          sensorType = getRadarSensorType(sensorPropsBlk)
+        else if (sensorType == "lds")
+          continue
+        partsList.append("".concat(loc($"avionics_sensor_{sensorType}"), loc("ui/colon"),
+          this.getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
+      }
+      desc.append(loc($"armor_class/desc/{partId}", { partsList = "\n".join(partsList, true) }))
+    }
 
     if (this.isDebugMode)
       desc.append("\n" + colorize("badTextColor", partName))
@@ -2081,17 +2136,26 @@ dmViewer = {
     return null
   }
 
-  function getAmmoQuantityByPartName(partName) {
+  function getAmmoStowageSlotInfo(partName) {
+    let res = {
+      count = 0,
+      isConstrainedInert = false
+    }
     let ammoStowages = this.unitBlk?.ammoStowages
     if (ammoStowages)
       for (local i = 0; i < ammoStowages.blockCount(); i++) {
         let blk = ammoStowages.getBlock(i)
         foreach (blockName in [ "shells", "charges" ])
-          foreach (shells in blk % blockName)
-            if (shells?[partName])
-              return shells[partName].count
+          foreach (shells in blk % blockName) {
+            let slotBlk = shells?[partName]
+            if (slotBlk) {
+              res.count = slotBlk.count
+              res.isConstrainedInert = slotBlk?.type == "inert";
+              return res
+            }
+          }
       }
-    return 0
+    return res
   }
 
   function getWeaponByXrayPartName(weaponPartName, linkedPartName = null) {

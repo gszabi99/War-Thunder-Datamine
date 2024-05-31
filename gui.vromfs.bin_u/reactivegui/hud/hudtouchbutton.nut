@@ -42,7 +42,7 @@ let touchButtonsConfigs = {
     id = ship_steering_rangeMax
     image = Picture("!ui/gameuiskin#accelerator_left")
     size = [bigTouchButtonSize, bigTouchButtonSize]
-    behavior = Behaviors.TouchScreenButton
+    behavior = WtBhv.TouchScreenButton
     onTouchBegin = @() setShortcutOn(ship_steering_rangeMax)
     onTouchEnd = @() setShortcutOff(ship_steering_rangeMax)
   },
@@ -50,7 +50,7 @@ let touchButtonsConfigs = {
     id = ship_steering_rangeMin
     image = Picture("!ui/gameuiskin#accelerator_right")
     size = [bigTouchButtonSize, bigTouchButtonSize]
-    behavior = Behaviors.TouchScreenButton
+    behavior = WtBhv.TouchScreenButton
     onTouchBegin = @() setShortcutOn(ship_steering_rangeMin)
     onTouchEnd = @() setShortcutOff(ship_steering_rangeMin)
   },

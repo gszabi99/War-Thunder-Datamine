@@ -6,17 +6,22 @@ let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
 let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP,
-  USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP, USEROPT_DISPLAY_MY_REAL_NICK,
+  USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES
 } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { hasNightGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getGameModeIdsByEconomicNameWithoutNight, getGameModeIdsByEconomicName
+let { hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getGameModeIdsByEconomicName, getGameModeIdsByEconomicNameWithoutTags,
+  NIGHT_GAME_MODE_TAG_PREFIX, SMALL_TEAMS_GAME_MODE_TAG_PREFIX
 } = require("%scripts/matching/matchingGameModes.nut")
 let { markToShowMultiplayerLimitByAasMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS } = require("chardConst")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let g_squad_manager = getGlobalModule("g_squad_manager")
+let { getRecentSquadMrank } = require("%scripts/battleRating.nut")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 ::queue_classes.Event <- class (::queue_classes.Base) {
   shouldQueueCustomMode = false
@@ -160,15 +165,29 @@ let { EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS } = require("chardConst")
     )
   }
 
+  getCurRank = @(event) g_squad_manager.isInSquad()
+    ? getRecentSquadMrank()
+    : getPlayerCurUnit().getEconomicRank(::events.getEDiffByEvent(event))
+
+  getExcludedGmsTags = @(event) {
+    [NIGHT_GAME_MODE_TAG_PREFIX] = hasNightGameModes(event)
+      && !::get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false),
+
+    [SMALL_TEAMS_GAME_MODE_TAG_PREFIX] = hasSmallTeamsGameModes(event)
+      && (!::get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, OPTIONS_MODE_GAMEPLAY, false)
+      || this.getCurRank(event) < event.minMRankForSmallTeamsBattles)
+  }.filter(@(v) v)
+   .keys()
+
   function getQueryParams(isForJoining, customMgm = null) {
     let qp = {}
     let event = ::events.getEvent(this.name)
     let eventName = getEventEconomicName(event)
+    let excludedTags = this.getExcludedGmsTags(event)
     let gameModesList = (event?.forceBatchRequest ?? false) ? getGameModeIdsByEconomicName(eventName)
-      : hasNightGameModes(event)
-          && !::get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false)
-        ? getGameModeIdsByEconomicNameWithoutNight(eventName)
+      : excludedTags.len() > 0 ? getGameModeIdsByEconomicNameWithoutTags(eventName, excludedTags)
       : []
+
     if (gameModesList.len() > 0)
       qp.game_modes_list <- gameModesList
     else if (customMgm)

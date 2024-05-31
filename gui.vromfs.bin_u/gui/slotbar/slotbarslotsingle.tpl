@@ -3,6 +3,10 @@ position:t='<<position>>'
 pos:t='<<posX>>w, <<posY>>h'
 <</position>>
 
+<<#selectOnHover>>
+on_mouse_enter:t='onUnitSlotMouseEnter'
+<</selectOnHover>>
+
 <<#isInTable>>
 id:t='<<slotId>>'
 
@@ -11,8 +15,8 @@ inactive:t='yes'
 <</slotInactive>>
 
 <<#isSlotbarItem>>
-slotbarCurAir {}
 chosen:t='no'
+selected:t='no'
 <</isSlotbarItem>>
 <</isInTable>>
 
@@ -38,6 +42,7 @@ shopItem {
   <<#refuseOpenHoverMenu>>refuseOpenHoverMenu:t='yes'<</refuseOpenHoverMenu>>
 
   <<@extraInfoBlock>>
+  <<@extraInfoBlockTop>>
 
   <<#showInService>>
   shopInServiceImg {
@@ -61,7 +66,7 @@ shopItem {
     }
   }
 
-  hoverHighlight {}
+  slotHoverHighlight {}
 
   shopStat:t='<<shopStatus>>'
   unitRarity:t='<<unitRarity>>'
@@ -92,6 +97,10 @@ shopItem {
 
   eliteIcon {}
 
+  <<#isSlotbarItem>>
+  slotTopGradientLine {}
+  slotBottomGradientLine {}
+  <</isSlotbarItem>>
 
   <<#isRecentlyReleased>>
   recentlyReleasedIcon {}

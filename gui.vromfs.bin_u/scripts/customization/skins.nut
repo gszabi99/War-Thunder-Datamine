@@ -17,11 +17,14 @@ let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { get_current_mission_info_cached  } = require("blkGetters")
+let { get_current_mission_info_cached, get_user_skins_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { isInFlight } = require("gameplayBinding")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
+let { USEROPT_USER_SKIN } = require("%scripts/options/optionsExtNames.nut")
+let { TANK_CAMO_ROTATION_SLIDER_FACTOR } = require("%scripts/customization/customizationConsts.nut")
+let { floor, round, abs } = require("%sqstd/math.nut")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -285,6 +288,67 @@ function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, showD
   return descr
 }
 
+let getCurUnitUserSkins = @() get_user_skins_blk()?[::cur_aircraft_name]
+
+function getCurUserSkin() {
+  let userSkins = getCurUnitUserSkins()
+  if (userSkins == null)
+    return null
+  let opt = ::get_option(USEROPT_USER_SKIN)
+  let curVal = opt.value
+  let curUserSkinName = opt.values?[curVal] ?? ""
+  return (userSkins % "skin").findvalue(@(s) s.name == curUserSkinName)
+}
+
+let getSkinConditionByPercent = @(val) 2 * val - 100
+function getUserSkinCondition() {
+  let { condition = null} = getCurUserSkin()
+  if (condition == null)
+    return null
+  return getSkinConditionByPercent(condition)
+}
+
+function getSkinRotationByDeg(deg) {
+  local estimatedVal = round(TANK_CAMO_ROTATION_SLIDER_FACTOR * abs(deg) * 100 / 180)
+  let calculatedDegrees = floor(((estimatedVal * 180) / 100) / TANK_CAMO_ROTATION_SLIDER_FACTOR)
+
+  if (calculatedDegrees < abs(deg))
+    estimatedVal += 1
+  else if (calculatedDegrees > abs(deg))
+    estimatedVal -= 1
+
+  return deg >= 0 ? estimatedVal : -estimatedVal
+}
+
+function getUserSkinRotation() {
+  let { rotation = null} = getCurUserSkin()
+  if (rotation == null)
+    return null
+  return getSkinRotationByDeg(rotation)
+}
+
+function getSkinScaleByRawPercent(val) {
+  let minTankCamoScale = 0.2
+  let maxTankCamoScale = 2
+  let scaleRange = 10
+
+  if (val < minTankCamoScale || val > maxTankCamoScale)
+    return 0
+  // сonvert percentage to a scale value ranging from -10 to +10
+  if (val > 1)
+    return ((val - 1.0) / (maxTankCamoScale - 1.0)) * scaleRange
+  if (val < 1)
+    return -(val - 1.0) / (minTankCamoScale - 1.0) * scaleRange
+  return 0
+}
+
+function getUserSkinScale() {
+  let { scale = null} = getCurUserSkin()
+  if (scale == null)
+    return null
+  return getSkinScaleByRawPercent(scale)
+}
+
 function applyPreviewSkin(unitName) {
   let unit = getAircraftByName(unitName)
   if (!unit)
@@ -328,4 +392,9 @@ return {
   isPreviewingLiveSkin
   previewedLiveSkinIds
   approversUnitToPreviewLiveResource
+  getCurUnitUserSkins
+  getCurUserSkin
+  getUserSkinCondition
+  getUserSkinRotation
+  getUserSkinScale
 }

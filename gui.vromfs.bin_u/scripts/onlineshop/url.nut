@@ -17,7 +17,7 @@ let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { g_url_type } = require("%scripts/onlineShop/urlType.nut")
 let { steam_is_running } = require("steam")
 let { get_authenticated_url_sso } = require("auth_wt")
-let { json_to_string, parse_json } = require("json")
+let { object_to_json_string, parse_json } = require("json")
 let { defer } = require("dagor.workcycle")
 
 const URL_TAGS_DELIMITER = " "
@@ -98,7 +98,7 @@ function requestAuthenticatedUrl(baseUrl, cbEventbusName, isAlreadyAuthenticated
   let ssoServiceTag = urlTags.filter(@(v) v.indexof(URL_TAG_SSO_SERVICE) == 0);
   let ssoService = ssoServiceTag.len() != 0 ? ssoServiceTag.pop().slice(URL_TAG_SSO_SERVICE.len()) : ""
   get_authenticated_url_sso(autoLoginUrl, "", ssoService, "onAuthenticatedUrlResult",
-    json_to_string({ baseUrl, notAuthUrl = autoLoginUrl, urlTags, urlWithoutTags,
+    object_to_json_string({ baseUrl, notAuthUrl = autoLoginUrl, urlTags, urlWithoutTags,
       useExternalBrowser, cbEventbusName, shouldEncode }))
 }
 

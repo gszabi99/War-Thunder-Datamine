@@ -79,7 +79,7 @@ let notifyPlayerAboutRestriction = function(contact) {
     showLiveCommunicationsRestrictionMsgBox()
 }
 
-let getActions = function(contact, params) {
+let retrieveActions = function(contact, params, comms_state, callback) {
   let uid = contact.uid
   let uidInt64 = contact.uidInt64
   let name = contact.name
@@ -91,9 +91,9 @@ let getActions = function(contact, params) {
   let isXBoxOnePlayer = platformModule.isPlayerFromXboxOne(name)
   let isPS4Player = platformModule.isPlayerFromPS4(name)
 
-  let canChat = contact.canChat()
-  let canInvite = contact.canInvite()
-  let isProfileMuted = contact.isMuted()
+  let canChat = contact.canChat(comms_state)
+  let canInvite = contact.canInvite(comms_state)
+  let isProfileMuted = contact.isMuted(comms_state)
   let canInteractCrossConsole = platformModule.canInteractCrossConsole(name)
   let canInteractCrossPlatform = isPS4Player || isXBoxOnePlayer || crossplayModule.isCrossPlayEnabled()
   let showCrossPlayIcon = canInteractCrossConsole && crossplayModule.needShowCrossPlayInfo() && (!isXBoxOnePlayer || !isPS4Player)
@@ -515,12 +515,15 @@ let getActions = function(contact, params) {
 
   let buttons = params?.extendButtons ?? []
   buttons.extend(actions)
-  return buttons
+  callback?(buttons)
 }
 
 function showMenuImpl(contact, handler, params) {
-  let menu = getActions(contact, params)
-  ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
+  contact.checkInteractionStatus(function(status) {
+    retrieveActions(contact, params, status, function(menu) {
+      ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
+    })
+  })
 }
 
 function showMenu(v_contact, handler, params = {}) {
@@ -559,7 +562,6 @@ function showSquadMemberMenu(obj) {
 }
 
 return {
-  getActions = getActions
   showMenu = showMenu
   showXboxPlayerMuted = showXboxPlayerMuted
   notifyPlayerAboutRestriction = notifyPlayerAboutRestriction

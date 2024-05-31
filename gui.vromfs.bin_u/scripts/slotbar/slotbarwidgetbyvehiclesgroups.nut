@@ -8,6 +8,7 @@ let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
 let { selectCrew } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 local handlerClass = class (gui_handlers.SlotbarWidget) {
   unitsGroupsByCountry = null
@@ -28,7 +29,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
   function gatherVisibleCrewsConfig(onlyForCountryIdx = null) {
     let res = []
     let country = this.getForcedCountry()
-    foreach (idx, coutryCrews in ::g_crews_list.get()) {
+    foreach (idx, coutryCrews in getCrewsList()) {
       if (onlyForCountryIdx != null && onlyForCountryIdx != idx)
         continue
 
@@ -85,7 +86,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
       return
     }
 
-    let crewList = ::g_crews_list.get()?[this.curSlotCountryId]
+    let crewList = getCrewsList()?[this.curSlotCountryId]
     let country = crewList?.country ?? ""
     let crew = crewList?.crews[this.curSlotIdInCountry]
       ?? this.getDefaultCrew(country, this.curSlotCountryId, this.curSlotIdInCountry)

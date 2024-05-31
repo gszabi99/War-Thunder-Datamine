@@ -58,6 +58,8 @@ let AimLockPitch = Watched(0.0)
 let ScreenFwdDirPos = [0, 0]
 let HmdTargetPos = [0, 0]
 let HmdTargetPosValid = Watched(false)
+let CustomPages = Watched({})
+let HmdGunTargeting = Watched(false)
 
 let planeState = {
   BlkFileName,
@@ -114,7 +116,9 @@ let planeState = {
   AimLockPitch,
   ScreenFwdDirPos,
   HmdTargetPos,
-  HmdTargetPosValid
+  HmdTargetPosValid,
+  CustomPages,
+  HmdGunTargeting
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

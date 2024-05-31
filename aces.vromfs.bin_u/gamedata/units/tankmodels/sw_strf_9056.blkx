@@ -462,11 +462,12 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
-        "hp": 150.0,
+        "armorThrough": 15.0
+      },
+      "driver_controls_dm": {
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -485,20 +486,52 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "radiator_dm": {
+      "drive_turret_v_03_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_03_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "radiator_dm": {
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_l_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_r_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radio_station_dm": {
-        "hp": 20.0,
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "electronic_equipment_dm": {
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_dm": {
+        "hp": 50.0,
         "armorThrough": 3.0
       }
     },
@@ -525,6 +558,10 @@
       },
       "cannon_breech_05_dm": {
         "armorThickness": 10.0
+      },
+      "autoloader_dm": {
+        "armorThickness": 5.0,
+        "armorThrough": 5.0
       }
     },
     "power_block": {
@@ -534,7 +571,8 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {}
+      "transmission_dm": {},
+      "power_system_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -1942,6 +1980,7 @@
         "maxSpeedForFire": 6.0,
         "battlePositionSpeed": 20.0,
         "lagStopForFireTime": 1.0,
+        "staticElevation": 0.9375,
         "barrelDP": "gun_barrel_01_dm",
         "brokenBarrelAllowShoot": false,
         "createGunEffects": true,
@@ -2103,7 +2142,17 @@
     "tracks": {
       "animationMultiplier": -0.68,
       "width": 0.533,
-      "height": 0.05
+      "height": 0.065,
+      "tracksTensionK": [
+        6.0,
+        10.0,
+        7.0
+      ],
+      "trackMesh": "se_strf_90c_phys_track_line",
+      "trackLen": 0.152,
+      "trackCount": 84,
+      "trackFadeTime": 1.1,
+      "trackStartOffset": 0.05
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2152,13 +2201,15 @@
       ],
       "defaultGearRadius": 0.3,
       "topGearRadius": 0.11,
-      "frontBackGearRadius": 0.25,
+      "frontBackGearRadius": 0.26,
       "defaultDampeningForce": [
-        150000.0,
-        150000.0
+        110000.0,
+        110000.0
       ],
       "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15
+      "dampeningCompressionRatio": 0.15,
+      "wheel_r_drive": 0.27,
+      "wheel_l_drive": 0.27
     }
   },
   "PhysSys": {
@@ -2583,6 +2634,13 @@
       },
       {
         "name": "fuel_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "hydraulic_internal",
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3376,6 +3434,7 @@
               "maxSpeedForFire": 6.0,
               "battlePositionSpeed": 20.0,
               "lagStopForFireTime": 1.0,
+              "staticElevation": 0.9375,
               "barrelDP": "gun_barrel_01_dm",
               "brokenBarrelAllowShoot": false,
               "createGunEffects": true,
@@ -3575,6 +3634,7 @@
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "effects": {
         "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
               800,

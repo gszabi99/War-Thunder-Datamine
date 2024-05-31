@@ -15,6 +15,7 @@ let { Point2 } = require("dagor.math")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 let missionModesList = [
   "missionsWon",
@@ -170,7 +171,7 @@ function getRankMultipliersTable(blk) {
   let mulTable = {}
   local hasAnyMulRank = false
   if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
-    for (local rank = 1; rank <= ::max_country_rank; rank++) {
+    for (local rank = 1; rank <= MAX_COUNTRY_RANK; rank++) {
       let curMul = blk?[$"mulRank{rank}"]
       mulTable[rank] <- curMul
       if (!hasAnyMulRank && curMul != 1.0)

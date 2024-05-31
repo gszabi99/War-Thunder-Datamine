@@ -18,6 +18,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
+let { ranksPersist, expPerRank, getRankByExp, getPrestigeByRank
+} = require("%scripts/ranks.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -186,8 +188,60 @@ let currentUserProfile = {
   ranks = {}
 }
 
-function calcRankProgress(profileData = null) {
-  let rankTbl = ::get_cur_exp_table("", profileData)
+function getPlayerRankByCountry(c = null, profileData = null) {
+  if (!profileData)
+    profileData = currentUserProfile
+  if (c == null || c == "")
+    return profileData.rank
+  if (c in profileData.ranks)
+    return profileData.ranks[c]
+  return 0
+}
+
+let playerRankByCountries = {}
+function updatePlayerRankByCountries() {
+  foreach (c in shopCountriesList)
+    playerRankByCountries[c] <- getPlayerRankByCountry(c)
+}
+
+function updatePlayerRankByCountry(country, rank) {
+  playerRankByCountries[country] <- rank
+}
+
+function getPlayerExpByCountry(c = null, profileData = null) {
+  if (!profileData)
+    profileData = currentUserProfile
+  if (c == null || c == "")
+    return profileData.exp
+  if (c in profileData.exp_by_country)
+    return profileData.exp_by_country[c]
+  return 0
+}
+
+function getCurExpTable(profileData) {
+  local res = null
+  let rank = getPlayerRankByCountry(null, profileData)
+  let maxRank = ranksPersist.max_player_rank
+
+  if (rank < maxRank) {
+    let expTbl = expPerRank
+    if (rank >= expTbl.len())
+      return res
+
+    let prev = (rank > 0) ? expTbl[rank - 1] : 0
+    let next = expTbl[rank]
+    let cur = getPlayerExpByCountry(null, profileData)
+    res = {
+      rank
+      exp     = cur - prev
+      rankExp = next - prev
+    }
+  }
+  return res
+}
+
+function calcRankProgress(profileData) {
+  let rankTbl = getCurExpTable(profileData)
   if (rankTbl)
     return (1000.0 * rankTbl.exp.tofloat() / rankTbl.rankExp.tofloat()).tointeger()
   return -1
@@ -344,10 +398,10 @@ function getPlayerStatsFromBlk(blk) {
   if (blk?.userid != null)
     player.uid <- blk.userid
 
-  player.rank = ::get_rank_by_exp(player.exp)
+  player.rank = getRankByExp(player.exp)
   player.rankProgress = calcRankProgress(player)
 
-  player.prestige = ::get_prestige_by_rank(player.rank)
+  player.prestige = getPrestigeByRank(player.rank)
 
   //unlocks
   eachBlock(blk?.unlocks, function(uBlk, unlock) {
@@ -379,7 +433,7 @@ function getPlayerStatsFromBlk(blk) {
   //aircrafts list
   eachBlock(blk?.aircrafts, @(_, airName) player.aircrafts.append(airName))
 
-  //same with ::g_crews_list.get()
+  //same with getCrewsList()
   eachBlock(blk?.slots, function(crewBlk, country) {
     let countryData = { country, crews = [] }
     eachParam(crewBlk, @(_, aircraft) countryData.crews.append({ aircraft }))
@@ -387,26 +441,6 @@ function getPlayerStatsFromBlk(blk) {
   })
 
   return player
-}
-
-function getPlayerRankByCountry(c = null, profileData = null) {
-  if (!profileData)
-    profileData = currentUserProfile
-  if (c == null || c == "")
-    return profileData.rank
-  if (c in profileData.ranks)
-    return profileData.ranks[c]
-  return 0
-}
-
-function getPlayerExpByCountry(c = null, profileData = null) {
-  if (!profileData)
-    profileData = currentUserProfile
-  if (c == null || c == "")
-    return profileData.exp
-  if (c in profileData.exp_by_country)
-    return profileData.exp_by_country[c]
-  return 0
 }
 
 function getCurSessionCountry() {
@@ -454,8 +488,8 @@ function getProfileInfo() {
 
   currentUserProfile.exp <- info.exp
   currentUserProfile.free_exp <- shop_get_free_exp()
-  currentUserProfile.rank <- ::get_rank_by_exp(currentUserProfile.exp)
-  currentUserProfile.prestige <- ::get_prestige_by_rank(currentUserProfile.rank)
+  currentUserProfile.rank <- getRankByExp(currentUserProfile.exp)
+  currentUserProfile.prestige <- getPrestigeByRank(currentUserProfile.rank)
   currentUserProfile.rankProgress <- calcRankProgress(currentUserProfile)
 
   return currentUserProfile
@@ -469,4 +503,8 @@ return {
   getProfileInfo
   getPlayerRankByCountry
   getPlayerExpByCountry
+  updatePlayerRankByCountry
+  updatePlayerRankByCountries
+  playerRankByCountries
+  getCurExpTable
 }

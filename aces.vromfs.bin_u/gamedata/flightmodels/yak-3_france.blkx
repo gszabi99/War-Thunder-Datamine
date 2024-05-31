@@ -3,6 +3,8 @@
   "fmFile": "fm/yak-3_france.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gearSinkRangeLR": 0.137,
+  "gearSinkRangeC": 0.061,
   "gyroSight": false,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -20,7 +22,7 @@
   "fightAiBehaviour": "fighter",
   "DamageParts": {
     "armor10": {
-      "armor3_dm": {
+      "armor2_dm": {
         "hp": 40.0
       },
       "cannon1_dm": {
@@ -47,11 +49,11 @@
     "c_dural3": {
       "aileron_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 15.1
+        "hp": 14.5
       },
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 15.1
+        "hp": 14.5
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
@@ -62,7 +64,7 @@
         "hp": 14.5
       },
       "flap_l_dm": {
-        "hp": 19.8
+        "hp": 19.7
       },
       "flap_r_dm": {
         "hp": 19.8
@@ -74,14 +76,14 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 46.2
+        "hp": 53.6
       },
       "fuse_dm": {
         "hp": 44.5
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
-        "hp": 88.4
+        "hp": 80.0
       }
     },
     "c_wood30": {
@@ -92,11 +94,11 @@
     "c_wood40": {
       "wing_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 80.5
+        "hp": 74.7
       },
       "wing_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 80.5
+        "hp": 74.7
       }
     },
     "c_wood50": {
@@ -132,33 +134,30 @@
       },
       "cover3_dm": {
         "hp": 19.5
-      },
-      "cover4_dm": {
-        "hp": 19.5
       }
     },
     "dural40": {
       "spar1_l_dm": {
-        "hp": 46.6
+        "hp": 32.7
       },
       "spar1_r_dm": {
-        "hp": 46.6
+        "hp": 32.6
       },
       "spar2_l_dm": {
-        "hp": 29.7
+        "hp": 28.5
       },
       "spar2_r_dm": {
-        "hp": 29.7
+        "hp": 28.5
       },
       "spar_l_dm": {
-        "hp": 60.5
+        "hp": 49.6
       },
       "spar_r_dm": {
-        "hp": 60.5
+        "hp": 49.6
       }
     },
     "glass64": {
-      "armor2_dm": {
+      "armor3_dm": {
         "hp": 100.0
       }
     },
@@ -167,10 +166,10 @@
         "hp": 60.5
       },
       "wingcontrol_l_dm": {
-        "hp": 52.4
+        "hp": 48.4
       },
       "wingcontrol_r_dm": {
-        "hp": 52.4
+        "hp": 48.4
       }
     },
     "steel": {
@@ -189,7 +188,7 @@
         "hp": 11.5
       },
       "oil2_dm": {
-        "hp": 17.5
+        "hp": 11.5
       },
       "water1_dm": {
         "hp": 17.5
@@ -203,7 +202,7 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 43.6
+        "hp": 39.5
       },
       "tank2_dm": {
         "hp": 39.5
@@ -317,9 +316,6 @@
       },
       {
         "name": "cover3_dm"
-      },
-      {
-        "name": "cover4_dm"
       },
       {
         "name": "elevator0_dm",
@@ -2002,8 +1998,8 @@
       {
         "trigger": "cannon",
         "blk": "gameData/Weapons/cannonShVAK.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
+        "emitter": "flare1",
+        "flash": "flare1",
         "shell": "emtr_shellrejection1",
         "dm": "cannon1_dm",
         "bullets": 120,
@@ -2012,8 +2008,8 @@
       {
         "trigger": "machine gun",
         "blk": "gameData/Weapons/gunUBS.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
+        "emitter": "flare2",
+        "flash": "flare2",
         "shell": "emtr_shellrejection1",
         "dm": "mgun1_dm",
         "bullets": 150,
@@ -2023,8 +2019,8 @@
       {
         "trigger": "machine gun",
         "blk": "gameData/Weapons/gunUBS.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
+        "emitter": "flare3",
+        "flash": "flare3",
         "dm": "mgun2_dm",
         "bullets": 150,
         "spread": 1.0
@@ -2300,30 +2296,30 @@
     "emtr_break_stab_l_from": [
       -4.37441,
       0.34084,
-      0.328078
+      0.628078
     ],
     "emtr_break_stab_l_to": [
       -4.37441,
       0.34084,
-      1.31231
+      1.01231
     ],
     "emtr_break_stab_r_from": [
       -4.37441,
       0.34084,
-      -0.32762
+      -0.62762
     ],
     "emtr_break_stab_r_to": [
       -4.37441,
       0.34084,
-      -1.31048
+      -1.01048
     ],
     "emtr_break_fin_from": [
-      -4.46783,
-      0.366778,
+      -4.16783,
+      0.966778,
       -2.93367e-8
     ],
     "emtr_break_fin_to": [
-      -4.46783,
+      -4.26783,
       1.21659,
       -2.93367e-8
     ]

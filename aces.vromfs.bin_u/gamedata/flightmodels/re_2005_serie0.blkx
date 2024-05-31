@@ -2141,6 +2141,13 @@
       {
         "name": "re_2005_500kg",
         "blk": "gameData/FlightModels/weaponPresets/re_2005_500kg.blk"
+      },
+      {
+        "name": "re_2005_2x160kg_ap",
+        "blk": "gameData/FlightModels/weaponPresets/re_2005_2x160kg_ap.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -2256,6 +2263,22 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "160kg",
+            "reqModification": "it100_mod",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2330,6 +2353,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/it_100kg_t.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "160kg",
+            "reqModification": "it100_mod",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/it_160kg_ap.blk",
               "emitter": "bomb2",
               "bullets": 1,
               "external": true,

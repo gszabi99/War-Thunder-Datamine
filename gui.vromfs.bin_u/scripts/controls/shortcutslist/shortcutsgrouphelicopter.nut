@@ -262,6 +262,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE_HELICOPTER"
+    checkAssign = false
+  }
+  {
     id = "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER"
     checkAssign = false
   }
@@ -322,6 +326,14 @@ return [
   }
   {
     id = "ID_FLARES_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_COUNTERMEASURE_FLARES_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_COUNTERMEASURE_CHAFF_HELICOPTER"
     checkAssign = false
   }
   {

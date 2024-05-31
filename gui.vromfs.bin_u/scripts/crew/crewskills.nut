@@ -3,7 +3,8 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_skills_blk } = require("blkGetters")
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { getCrewSkillValue, getCrewSkillItem, getSkillCrewLevel, getSkillMaxCrewLevel
+let { getCrewSkillValue, getCrewSkillItem, getSkillCrewLevel,
+  getSkillMaxCrewLevel, loadCrewSkillsOnce
 } = require("%scripts/crew/crew.nut")
 
 const DEFAULT_MAX_SKILL_LEVEL = 50
@@ -26,7 +27,7 @@ function createCategory(categoryName) {
 }
 
 function loadSkills() {
-  ::load_crew_skills_once()
+  loadCrewSkillsOnce()
   let skillsBlk = get_skills_blk()
   skillCategories.clear()
   skillCategoryByName.clear()

@@ -10,7 +10,7 @@ require dm
 require DmFire
 require WTDamageModel
 require WarShipModel
-require %dasGameLibs.ecs.soa_template
+require %game.utils.component_bundle_macro
 require %game.dm.fire_system_common
 require %game.dm.fire_system_events
 require %game.unit.extinguish_system_common
@@ -324,11 +324,20 @@ def extinguish_system_activate_handle_es(evt : EventExtinguishSystemSetActive;
       sendEvent(eid, [[EventExtinguishSystemNotifyCrewBusy busy=false]])
 
 
-[soa_es, es]
+def can_unit_be_extinguished_with_extinguisher(eid : EntityId)
+  var res = false
+  query(eid) <| $ [block_with_bundle(v), es] (v : tuple<
+                                                fire_data__startTime : FloatList;
+                                                fire_data__fireParamsId : IntList
+                                              >)
+    res = can_be_extinguished_with_extinguisher(v)
+  return res
+
+
+[es]
 def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSystemActivateExtinguisher;
                                                       eid : EntityId;
                                                       uid : int;
-                                                      fire_damage__isBurn : bool;
                                                       var extinguish_system_is_assisting : bool&;
                                                       extinguish_system_penalty_without_mod : bool;
                                                       extinguish_system_extinguisher_count : int;
@@ -341,7 +350,7 @@ def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSyste
                                                       var extinguish_system_crew_busy_time_end : float&;
                                                       extinguish_system_crew_busy_time : float;
                                                       var extinguish_system_require_net_sync : bool&;
-                                                      fd : FireData_SOA&)
+                                                      fire_damage__isBurn : bool)
   let is_assisting = evt.assisteeId != INVALID_ENTITY_ID
   let is_burning = fire_damage__isBurn
   if (is_burning && is_assisting) || (!is_burning && !is_assisting)
@@ -355,11 +364,7 @@ def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSyste
   let is_available = is_extinguisher_available(gm, extinguish_system_extinguisher_count, extinguish_system_extinguisher_count_max, extinguish_system_penalty_without_mod)
   let is_active = is_extinguisher_active(is_burning, is_assisting, extinguish_system_extinguish_time_end)
   if (is_available && !is_active && extinguish_system_next_extinguisher_time < 0.0)
-    if is_assisting
-      query(evt.assisteeId) <| $ [soa_blk, es] (fd : FireData_SOA&)
-        if !can_be_extinguished_with_extinguisher(fd)
-          sendEvent(eid, [[EventExtinguishSystemNotifyCantExtinguish]])
-    elif !can_be_extinguished_with_extinguisher(fd)
+    if !can_unit_be_extinguished_with_extinguisher(is_assisting ? evt.assisteeId : eid)
       sendEvent(eid, [[EventExtinguishSystemNotifyCantExtinguish]])
       return
 
@@ -383,7 +388,7 @@ def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSyste
     sendEvent(eid, [[EventExtinguishSystemOnExtinguisherActivate active=true]])
 
 
-[soa_es, es(tag=server)]
+[es(tag=server)]
 def extinguish_system_stop_burn_with_extinguisher_handle_es(evt : EventExtinguishSystemStopBurnWithExtinguisher;
                                                             eid : EntityId;
                                                             var extinguish_system_is_assisting : bool&;
@@ -397,33 +402,38 @@ def extinguish_system_stop_burn_with_extinguisher_handle_es(evt : EventExtinguis
   var all_extinguished = true
   var continue_extinguishing = false
   if evt.hasMod || with_penalty
-    query(evt.targetEid) <| $ [soa_blk, es] (var fd : FireData_SOA&)
+    query(evt.targetEid) <| $ [block_with_bundle(v), es] (var v : tuple<
+                                                            fire_data__fireParamsId : IntList;
+                                                            fire_data__startTime : FloatList;
+                                                            fire_data__radius : Point2List;
+                                                            fire_data__initiatorId : UInt32List
+                                                          >)
       if with_penalty
         var fireId = -1
         var maxSeverity : float = 0.0f
-        for id, data in iter_range(fd), fd
-          let fire_params = get_fire_params(data.fire_data__fireParamsId)
+        for id, fire_radius, start_time, fire_params_id in iter_range(v.fire_data__startTime), v.fire_data__radius, v.fire_data__startTime, v.fire_data__fireParamsId
+          let fire_params = get_fire_params(fire_params_id)
           if fire_params == null || fire_params.extinguisherEffective
-            if data.fire_data__startTime < 0.0f
+            if start_time < 0.0f
               continue
-            let severity = data.fire_data__radius.y
+            let severity = fire_radius.y
             if severity > maxSeverity
               fireId = id
               maxSeverity = severity
-        for id, data in iter_range(fd), fd
-          let fire_params = get_fire_params(data.fire_data__fireParamsId)
+        for id, start_time, fire_params_id in iter_range(v.fire_data__startTime), v.fire_data__startTime, v.fire_data__fireParamsId
+          let fire_params = get_fire_params(fire_params_id)
           if id == fireId
-            fire_system_stop_single_burn(eid, fd, id)
+            fire_system_stop_single_burn(eid, id, v)
             fire_system_require_net_sync = true
-          elif data.fire_data__startTime >= 0.0f
+          elif start_time >= 0.0f
             all_extinguished = false
             if fire_params == null || fire_params.extinguisherEffective
               continue_extinguishing = true
       else
-        for id, data in iter_range(fd), fd
-          let fire_params = get_fire_params(data.fire_data__fireParamsId)
+        for id, fire_params_id in iter_range(v.fire_data__startTime), v.fire_data__fireParamsId
+          let fire_params = get_fire_params(fire_params_id)
           if fire_params == null || fire_params.extinguisherEffective
-            fire_system_stop_single_burn(eid, fd, id)
+            fire_system_stop_single_burn(eid, id, v)
             fire_system_require_net_sync = true
           else
             all_extinguished = false
@@ -461,7 +471,7 @@ def extinguish_system_spend_extinguisher_es(evt : EventExtinguishSystemSpendExti
     extinguish_system_require_net_sync = true
 
 
-[soa_es, es(tag=server)]
+[es(tag=server), with_bundle(v)]
 def extinguish_system_extinguish_by_ally_handle_es(evt : EventExtinguishSystemExtinguishByAlly;
                                                    eid : EntityId;
                                                    uid : int;
@@ -474,7 +484,11 @@ def extinguish_system_extinguish_by_ally_handle_es(evt : EventExtinguishSystemEx
                                                    var extinguish_system_extinguish_time_end aka extinguish_system_extinguish_time_end_host : float&;
                                                    extinguish_system_next_extinguisher_time : float;
                                                    var extinguish_system_require_net_sync : bool&;
-                                                   fd : FireData_SOA&)
+                                                   v : tuple<
+
+                                                     fire_data__fireParamsId : IntList;
+                                                     fire_data__startTime : FloatList
+                                                   >)
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
@@ -485,7 +499,7 @@ def extinguish_system_extinguish_by_ally_handle_es(evt : EventExtinguishSystemEx
       !is_extinguisher_available(gm, extinguish_system_extinguisher_count, extinguish_system_extinguisher_count_max, extinguish_system_penalty_without_mod) &&
       !is_extinguisher_active(is_burning, extinguish_system_is_assisting, extinguish_system_extinguish_time_end) &&
       extinguish_system_next_extinguisher_time < 0.0)
-    if !can_be_extinguished_with_extinguisher(fd)
+    if !can_be_extinguished_with_extinguisher(v)
       return
 
     if unit == null

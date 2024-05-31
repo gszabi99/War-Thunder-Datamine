@@ -6,7 +6,6 @@ require DmFire
 require DagorMath
 require GeomNodeTree
 require AmmoStowage
-require %dasGameLibs.ecs.soa_template
 require %game.utils.utils_common
 require %game.utils.component_bundle_macro
 require %game.dm.dm_events
@@ -32,91 +31,92 @@ struct StartSingleBurnDesc
   initiatorId : uint
 
 
-[soa_template]
-struct FireData
-  fire_data__packedPartId : uint // TODO: soa_template macro does not support custom types, so store packed part ids
-  fire_data__nodeId : int
-  fire_data__fireParamsId : int
-  fire_data__offset : float3
-  fire_data__radius : float2
-  fire_data__initiatorId : uint
-  fire_data__startTime : float
-  fire_data__extinguishProgress : float
-  fire_data__underwaterTimer : float
-
-
-[soa_def]
-def check_is_burning(fd : FireData_SOA)
-  for data in fd
-    if data.fire_data__startTime > 0.0f
+[with_bundle(v)]
+def check_is_burning(v : tuple<fire_data__startTime : FloatList>) : bool
+  for start_time in v.fire_data__startTime
+    if start_time > 0.0f
       return true
   return false
 
-
-[soa_def]
-def can_be_extinguished_with_extinguisher(fd : FireData_SOA&)
-  for fire_data in fd
-    if fire_data.fire_data__startTime > 0.0f
-      let fire_params = get_fire_params(fire_data.fire_data__fireParamsId)
+[with_bundle(v)]
+def can_be_extinguished_with_extinguisher(v : tuple<
+                                            fire_data__startTime : FloatList;
+                                            fire_data__fireParamsId : IntList
+                                          >) : bool
+  for start_time, fire_params_id in v.fire_data__startTime, v.fire_data__fireParamsId
+    if start_time > 0.0f
+      let fire_params = get_fire_params(fire_params_id)
       if fire_params != null && fire_params.extinguisherEffective
         return true
   return false
 
 
-[soa_def]
-def fire_system_start_single_burn(eid : EntityId; desc : StartSingleBurnDesc; var fd : FireData_SOA&) : int
-  if length(fd) > 255
+[with_bundle(v)]
+def fire_system_start_single_burn(eid : EntityId; desc : StartSingleBurnDesc;
+                                  var v : tuple<
+                                    fire_data__packedPartId : UInt32List;
+                                    fire_data__nodeId : IntList;
+                                    fire_data__fireParamsId : IntList;
+                                    fire_data__offset : Point3List;
+                                    fire_data__radius : Point2List;
+                                    fire_data__initiatorId : UInt32List;
+                                    fire_data__startTime : FloatList;
+                                    fire_data__extinguishProgress : FloatList;
+                                    fire_data__underwaterTimer : FloatList
+                                  >) : int
+  if length(v.fire_data__packedPartId) > 255
     return -1
 
-  let fire_params = get_fire_params(desc.fireParamsId)
-  if fire_params == null
+  let fireParams = get_fire_params(desc.fireParamsId)
+  if fireParams == null
     return -1
 
   var idx = -1
-  if !fire_params.allowMultipleFires
-    for i, data in iter_range(fd), fd
-      if desc.nodeId != INVALID_GEOM_NODE_ID && data.fire_data__nodeId == desc.nodeId
+  if !fireParams.allowMultipleFires
+    for i, nodeId in iter_range(v.fire_data__packedPartId), v.fire_data__nodeId
+      if desc.nodeId != INVALID_GEOM_NODE_ID && nodeId == desc.nodeId
         idx = i
         break
 
   if idx == -1
-    idx = length(fd)
-    fd |> push() <| [[fire_system_common::FireData
-      fire_data__packedPartId = desc.partId.packed,
-      fire_data__nodeId = desc.nodeId,
-      fire_data__fireParamsId = desc.fireParamsId,
-      fire_data__offset = desc.offset,
-      fire_data__radius = float2(desc.radius, desc.finalRadius),
-      fire_data__initiatorId = -1u,
-      fire_data__startTime = -1.0f,
-      fire_data__extinguishProgress = 0.0f,
-      fire_data__underwaterTimer = -1.0f
-    ]]
+    idx = length(v.fire_data__packedPartId)
+    v.fire_data__packedPartId |> push(desc.partId.packed)
+    v.fire_data__nodeId |> push(desc.nodeId)
+    v.fire_data__fireParamsId |> push(desc.fireParamsId)
+    v.fire_data__offset |> push(desc.offset)
+    v.fire_data__radius |> push(float2(desc.radius, desc.finalRadius))
+    v.fire_data__initiatorId |> push(-1u)
+    v.fire_data__startTime |> push(-1.0f)
+    v.fire_data__extinguishProgress |> push(0.0f)
+    v.fire_data__underwaterTimer |> push(-1.0f)
 
-  if fd[idx].fire_data__startTime > 0.0f
+  if v.fire_data__startTime[idx] > 0.0f
     return -1
 
-  fd[idx].fire_data__startTime = float(desc.atTime)
-  fd[idx].fire_data__initiatorId = desc.initiatorId
-  fd[idx].fire_data__extinguishProgress = 0.0f
+  v.fire_data__startTime[idx] = float(desc.atTime)
+  v.fire_data__initiatorId[idx] = desc.initiatorId
+  v.fire_data__extinguishProgress[idx] = 0.0f
 
   sendEvent(eid, [[EventOnStartSingleBurn
     fireId = idx,
-    fireParamsId = fd[idx].fire_data__fireParamsId,
+    fireParamsId = v.fire_data__fireParamsId[idx],
     fireFxId = desc.fireFxId,
-    nodeId = fd[idx].fire_data__nodeId,
-    offset = fd[idx].fire_data__offset,
+    nodeId = v.fire_data__nodeId[idx],
+    offset = v.fire_data__offset[idx],
     dmgPos = desc.centerDmgPart
   ]])
   return idx
 
-
-[soa_def]
-def fire_system_stop_single_burn(eid : EntityId; var fd : FireData_SOA&; fire_id : int)
-  if fire_id >= 0 && fire_id < length(fd)
-    sendEvent(eid, [[EventOnStopSingleBurn fireId=fire_id, initiatorId=fd[fire_id].fire_data__initiatorId]])
-    fd[fire_id].fire_data__startTime = -1.0f;
-    fd[fire_id].fire_data__initiatorId = -1u;
+[with_bundle(v)]
+def fire_system_stop_single_burn(eid : EntityId; fire_id : int;
+                                 var v : tuple<
+                                   fire_data__initiatorId : UInt32List;
+                                   fire_data__startTime : FloatList
+                                 >)
+  if fire_id >= 0 && fire_id < length(v.fire_data__initiatorId)
+    sendEvent(eid, [[EventOnStopSingleBurn fireId=fire_id, initiatorId=v.fire_data__initiatorId[fire_id]]])
+    v.fire_data__startTime[fire_id] = -1.0f;
+    v.fire_data__initiatorId[fire_id] = -1u;
 
 
 def fire_system_calc_burn_radius(fire_params : FireParams; coll_node_sph : BSphere3; bounding_radius : float)
@@ -133,12 +133,17 @@ def fire_system_calc_burn_offset(fire_params : FireParams; coll_node_sph : BSphe
   else
     return coll_node_sph.c
 
-
-[soa_def]
-def fire_system_get_fire_sphere(fd : FireData_SOA; fire_id : int; at_time : float)
-  let fire_params = get_fire_params(fd[fire_id].fire_data__fireParamsId)
-  let radius = fd[fire_id].fire_data__radius
-  return BSphere3(fd[fire_id].fire_data__offset, cvt(at_time - fd[fire_id].fire_data__startTime,
+[with_bundle(v)]
+def fire_system_get_fire_sphere(fire_id : int; at_time : float;
+                                v : tuple<
+                                  fire_data__fireParamsId : IntList;
+                                  fire_data__offset : Point3List;
+                                  fire_data__radius : Point2List;
+                                  fire_data__startTime : FloatList
+                                >)
+  let fire_params = get_fire_params(v.fire_data__fireParamsId[fire_id])
+  let radius = v.fire_data__radius[fire_id]
+  return BSphere3(v.fire_data__offset[fire_id], cvt(at_time - v.fire_data__startTime[fire_id],
       fire_params.maxFireTime.x, fire_params.maxFireTime.y, radius.x, radius.y));
 
 

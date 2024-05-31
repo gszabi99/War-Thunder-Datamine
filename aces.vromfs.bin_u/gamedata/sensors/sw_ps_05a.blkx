@@ -3,6 +3,7 @@
   "name": "PS-05A",
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
+  "launchedMissilesPredictedPositionsMax": 6,
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
@@ -196,8 +197,7 @@
       "barHeight": 2.5,
       "barsCount": 4,
       "rowMajor": false,
-      "indicate": true,
-      "hmd": true
+      "indicate": true
     },
     "boresightLock": {
       "type": "cone",
@@ -212,24 +212,6 @@
       "period": 0.5,
       "width": 1.25,
       "indicate": true
-    },
-    "hmdLock": {
-      "type": "pyramide",
-      "azimuthLimits": [
-        -70.0,
-        70.0
-      ],
-      "elevationLimits": [
-        -60.0,
-        60.0
-      ],
-      "period": 0.2,
-      "width": 0.75,
-      "barHeight": 1.5,
-      "barsCount": 2,
-      "rowMajor": true,
-      "indicate": true,
-      "hmd": true
     },
     "bvrLockTws": {
       "type": "pyramide",
@@ -269,6 +251,35 @@
       "rowMajor": false,
       "indicate": true
     },
+    "track": {
+      "type": "no",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ]
+    },
+    "hmdLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "period": 0.2,
+      "width": 0.75,
+      "barHeight": 1.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "indicate": true,
+      "hmd": true
+    },
     "hmdTrack": {
       "type": "no",
       "azimuthLimits": [
@@ -280,17 +291,6 @@
         60.0
       ],
       "hmd": true
-    },
-    "track": {
-      "type": "no",
-      "azimuthLimits": [
-        -70.0,
-        70.0
-      ],
-      "elevationLimits": [
-        -60.0,
-        60.0
-      ]
     }
   },
   "signals": {
@@ -1131,20 +1131,32 @@
           "stateFrom": "standby",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
           }
         },
         "updateSearchMode": {
           "stateFrom": "search",
           "event": "fsmActivate",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "switchScanPattern": {
@@ -2161,36 +2173,6 @@
         }
       }
     },
-    "helmetDesignation": {
-      "stateInit": "helmetDesignation",
-      "actionsTemplates": {
-        "designateHelmetTargetDir": {
-          "designateHelmetTarget": {
-            "self": true
-          },
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
-          "setCenterElevation": {
-            "source": "targetDesignation"
-          }
-        }
-      },
-      "transitions": {
-        "activate": {
-          "event": "fsmActivate",
-          "actions": {
-            "designateHelmetTargetDir": {}
-          }
-        },
-        "updateDesignation": {
-          "event": "update",
-          "actions": {
-            "designateHelmetTargetDir": {}
-          }
-        }
-      }
-    },
     "illumination": {
       "stateInit": "init",
       "transitions": {
@@ -2228,6 +2210,36 @@
               "transiver": true,
               "pauseMax": 20.0
             }
+          }
+        }
+      }
+    },
+    "helmetDesignation": {
+      "stateInit": "helmetDesignation",
+      "actionsTemplates": {
+        "designateHelmetTargetDir": {
+          "designateHelmetTarget": {
+            "self": true
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          }
+        }
+      },
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "actions": {
+            "designateHelmetTargetDir": {}
+          }
+        },
+        "updateDesignation": {
+          "event": "update",
+          "actions": {
+            "designateHelmetTargetDir": {}
           }
         }
       }

@@ -6,6 +6,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { Point2 } = require("dagor.math")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 
 let ModificationBase = class (BaseItem) {
@@ -37,7 +38,7 @@ let ModificationBase = class (BaseItem) {
     let minRank = conditionsBlk?.minRank
     let maxRank = conditionsBlk?.maxRank
     if (this.shouldAlwaysShowRank || minRank || maxRank)
-      this.rankRange = Point2(minRank || 1, maxRank || ::max_country_rank)
+      this.rankRange = Point2(minRank || 1, maxRank || MAX_COUNTRY_RANK)
   }
 
   getDescriptionIntroArray = @() null

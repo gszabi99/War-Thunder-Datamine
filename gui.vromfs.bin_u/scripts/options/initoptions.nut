@@ -20,7 +20,7 @@ let { floor } = require("math")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
 let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
-let { update_aircraft_warpoints } = require("%scripts/ranks.nut")
+let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank } = require("%scripts/ranks.nut")
 let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
 
 let allUnits = getAllUnits()
@@ -107,7 +107,7 @@ local usageAmountCounted = false
 ::init_options_steps <- [
   init_all_units
   ::update_all_units
-  function() { return update_aircraft_warpoints(10) }
+  function() { return updateAircraftWarpoints(10) }
 
   function() {
     ::tribunal.init()
@@ -160,8 +160,8 @@ local usageAmountCounted = false
   }
 
   function() {
-    ::load_player_exp_table()
-    ::init_prestige_by_rank()
+    loadPlayerExpTable()
+    initPrestigeByRank()
   }
 
   init_postfx

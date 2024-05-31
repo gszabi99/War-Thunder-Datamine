@@ -73,6 +73,7 @@ let { isNewbieEventId } = require("%scripts/myStats.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -1304,7 +1305,7 @@ let Events = class {
       }
 
       if (("ranks" in rule)
-          && (unit.rank < (rule.ranks?.min ?? 0) || (rule.ranks?.max ?? ::max_country_rank) < unit.rank))
+          && (unit.rank < (rule.ranks?.min ?? 0) || (rule.ranks?.max ?? MAX_COUNTRY_RANK) < unit.rank))
         continue
 
       let unitType = this.getBaseUnitTypefromRule(rule, false)
@@ -2127,7 +2128,7 @@ let Events = class {
     }
     if ("ranks" in rule) {
       let minRank = max(1, rule.ranks?.min ?? 1)
-      let maxRank = rule.ranks?.max ?? ::max_country_rank
+      let maxRank = rule.ranks?.max ?? MAX_COUNTRY_RANK
       local rankText = get_roman_numeral(minRank)
                      + ((minRank != maxRank) ? " - " + get_roman_numeral(maxRank) : "")
       rankText = format(loc("events/rank"), rankText)

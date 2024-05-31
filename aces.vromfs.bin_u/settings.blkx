@@ -569,7 +569,8 @@
           "../develop/gameBase",
           "../develop/gameBase/pkg_dev",
           "../develop/gameBase/_pc",
-          "../develop/gameBase/lang_src"
+          "../develop/gameBase/lang_src",
+          "../prog/gameBase/content"
         ]
       },
       {
@@ -726,7 +727,8 @@
     "maxTexCount": 65535,
     "sRGBrw": true,
     "enableHmdSupport": true,
-    "allowDx10Fallback": true
+    "allowDx10Fallback": true,
+    "threadedWindow": true
   },
   "graphics": {
     "useHdr": true,
@@ -740,7 +742,13 @@
     "backgroundAptiveSharpenAdaptiveness": 16.0,
     "backgroundAptiveSharpenQuality": 12.0,
     "riGpuObjects": true,
-    "vrMipBias": -0.8
+    "vrMipBias": -0.8,
+    "useCellSBuffer": false,
+    "riUseStructuredBuffer": false
+  },
+  "cfdWind": {
+    "particleInfluenceThresholdMin": 1.0,
+    "particleInfluenceThresholdMax": 15.0
   },
   "ps4": {
     "garlic_size_mb": 2510,

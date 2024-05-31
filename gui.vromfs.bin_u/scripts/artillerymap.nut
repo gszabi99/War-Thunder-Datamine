@@ -37,7 +37,6 @@ enum POINTING_DEVICE {
 gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/artilleryMap.blk"
   shouldBlurSceneBg = true
-  shouldFadeSceneInVr = true
   shouldOpenCenteredToCameraInVr = true
   keepLoaded = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_ARTILLERY |

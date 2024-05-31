@@ -205,13 +205,24 @@
         "hp": 65.4
       },
       "tank2_dm": {
-        "hp": 116.3
+        "hp": 120.5
       },
       "tank3_dm": {
         "hp": 74.3
       },
       "tank4_dm": {
         "hp": 74.3
+      }
+    },
+    "steel_tank_s": {
+      "tank5_dm": {
+        "hp": 80.5
+      },
+      "tank6_dm": {
+        "hp": 78.2
+      },
+      "tank7_dm": {
+        "hp": 80.5
       }
     }
   },
@@ -1083,6 +1094,132 @@
             "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank5_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
           }
         ]
       },
@@ -2625,7 +2762,7 @@
           "page": {
             "type": "rwr",
             "scale": 1.15,
-            "hideRwrBackground": true
+            "hideBackground": true
           }
         },
         {
@@ -2971,7 +3108,10 @@
         "cannon5_dm",
         "cover2_dm",
         "cover3_dm",
-        "cover4_dm"
+        "cover4_dm",
+        "tank5_dm",
+        "tank6_dm",
+        "tank7_dm"
       ]
     },
     "WeaponSlot": [
@@ -3088,6 +3228,10 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/dra_lau_105a_aim_9l.blk",
               "emitter": "dra_lau105a_1"
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_slot3"
             }
           },
           {
@@ -3370,6 +3514,41 @@
               "separate": true,
               "machLimit": 1.4
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon_2",
+                "bomb_pylon_2_upor"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank5_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_150gal_early_f_20_drop_tank_1.blk",
+              "emitter": "us_150gal_early_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "ptb_slot5"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "us_aim9l_sidewinder_x2"
+              },
+              {
+                "slot": 6,
+                "preset": "us_aim9l_sidewinder_x2"
+              }
+            ]
           }
         ]
       },
@@ -3584,6 +3763,27 @@
               ],
               "gearName": "gear_c"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot4",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "pylon_003",
+                "pylon_003_upor"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_150gal_fuse_f_20_drop_tank.blk",
+              "emitter": "us_150gal_fuse_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -3724,6 +3924,41 @@
               "separate": true,
               "machLimit": 1.4
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot5",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon_3",
+                "bomb_pylon_3_upor"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_150gal_early_drop_tank_2.blk",
+              "emitter": "us_150gal_early_drop_tank_002",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_slot3"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 6,
+                "preset": "us_aim9l_sidewinder_x2"
+              },
+              {
+                "slot": 2,
+                "preset": "us_aim9l_sidewinder_x2"
+              }
+            ]
           }
         ]
       },
@@ -3749,6 +3984,10 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/dra_lau_105a_aim_9l.blk",
               "emitter": "dra_lau105a_2"
+            },
+            "BannedWeaponPreset": {
+              "slot": 5,
+              "preset": "ptb_slot5"
             }
           },
           {

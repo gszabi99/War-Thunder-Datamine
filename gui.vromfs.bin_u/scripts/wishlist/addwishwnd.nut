@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { getCurrentWishListSize, requestAddToWishlist } = require("%scripts/wishlist/wishlistManager.nut")
-let { getMaxWishListSize = @() 100, getMaxWishListCommentSize = @() 100 } = require("chard")
+let { getMaxWishListSize, getMaxWishListCommentSize } = require("chard")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")

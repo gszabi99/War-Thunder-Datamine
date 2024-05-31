@@ -21,7 +21,8 @@ let { unitClassType, getUnitClassTypeByExpClass } = require("%scripts/unit/unitC
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
-let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers
+let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers,
+  getWeaponImage
 } = require("%scripts/unit/initUnitWeapons.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
@@ -224,7 +225,7 @@ local Unit = class {
         name = "spare"
         type = ::g_weaponry_types.SPARE.type
         cost = uWpCost?.spare.value || 0
-        image = ::get_weapon_image(this.esUnitType, spareBlk, uWpCost?.spare)
+        image = getWeaponImage(this.esUnitType, spareBlk, uWpCost?.spare)
         animation = spareBlk && (spareBlk % "animationByUnit")
           .findvalue((@(anim) anim.unitType == this.esUnitType).bindenv(this))?.src
       }

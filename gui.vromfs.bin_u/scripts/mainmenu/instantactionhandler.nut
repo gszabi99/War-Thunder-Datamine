@@ -72,6 +72,7 @@ let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGame
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -382,7 +383,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let queue = this.getCurQueue()
     let slots = queue == null ? null : ::queues.getQueueSlots(queue)
     if (slots && (country in slots)) {
-      foreach (_cIdx, c in ::g_crews_list.get())
+      foreach (_cIdx, c in getCrewsList())
         if (c.country == country)
           return getCrewUnit(country.crews?[slots[country]])
       return null
@@ -887,7 +888,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     else
       countryToCheckArr.append(country)
 
-    foreach (countryCrews in ::g_crews_list.get()) {
+    foreach (countryCrews in getCrewsList()) {
       if (!isInArray(countryCrews.country, countryToCheckArr))
         continue
 

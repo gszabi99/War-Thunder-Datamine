@@ -111,7 +111,61 @@
       "place_loc": "",
       "date_loc": "",
       "objective_loc": "",
-      "music": "action_01"
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "briefing_t1_spawn",
+              "lookAt": "briefing_t2_spawn"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "briefing_t2_spawn",
+              "lookAt": "briefing_t1_spawn"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "briefing_t1_def_01"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "briefing_t1_def_02"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "briefing_t2_def_01"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "briefing_t2_def_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "briefing_t1_tank_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "briefing_t2_tank_01"
+            }
+          ]
+        }
+      }
     }
   },
   "imports": {
@@ -187,7 +241,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/planes/historical/BfD/air_southeastern_cliffs/mu_movable_units_template.blk",
+        "file": "gameData/missions/cta/planes/historical/BfD/air_southeastern_cliffs/mu_movable_units_part.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -201,7 +255,7 @@
         "excludes": {}
       },
       {
-        "file": "gameData/missions/cta/planes/historical/BfD/air_southeastern_cliffs/stc_static_units_template.blk",
+        "file": "gameData/missions/cta/planes/historical/BfD/air_southeastern_cliffs/stc_static_units_part.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -274,10 +328,20 @@
       },
       "conditions": {},
       "actions": {
-        "varSetBool": {
-          "value": false,
-          "var": "barabashka_enabled"
-        },
+        "varSetBool": [
+          {
+            "value": false,
+            "var": "barabashka_enabled"
+          },
+          {
+            "value": false,
+            "var": "at_spawn_with_players"
+          },
+          {
+            "value": false,
+            "var": "assaults_air_spawn"
+          }
+        ],
         "comment": [
           {
             "value": ""
@@ -287,6 +351,12 @@
           },
           {
             "value": ""
+          },
+          {
+            "value": "new AI assualts spawn system testing"
+          },
+          {
+            "value": "player assaults spawns in air"
           }
         ],
         "varSetReal": [
@@ -808,6 +878,222 @@
         ]
       ],
       "objLayer": 3,
+      "props": {}
+    },
+    "briefing_t1_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -8407.6,
+          614.8,
+          6848.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_spawn": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          8395.3,
+          614.801,
+          -7765.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_def_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2683.4,
+          368.55,
+          4594.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_def_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -4154.65,
+          368.551,
+          -2921.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_tank_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -3093.85,
+          368.551,
+          3237.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_def_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5425.2,
+          368.551,
+          2949.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_def_02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1021.05,
+          368.551,
+          -4984.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t2_tank_01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          3225.65,
+          368.551,
+          -2699.65
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },

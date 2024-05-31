@@ -2217,6 +2217,10 @@
       {
         "name": "mig-21_pfm_2x_ofab500_bombs",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_pfm_2x_ofab500_bombs.blk"
+      },
+      {
+        "name": "mig_21_pfm_zb_360",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_pfm_zb_360.blk"
       }
     ]
   },
@@ -2355,6 +2359,21 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab500_m54.blk",
+              "emitter": "su_fab500_m54_l",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "zb360",
+            "reqModification": "zb_360",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_360.blk",
               "emitter": "su_fab500_m54_l",
               "bullets": 1,
               "external": true
@@ -2514,6 +2533,21 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab500_m54.blk",
+              "emitter": "su_fab500_m54_r",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "zb360",
+            "reqModification": "zb_360",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_360.blk",
               "emitter": "su_fab500_m54_r",
               "bullets": 1,
               "external": true
@@ -2793,7 +2827,12 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
+    "zb_360": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "mi_24_fab_250": {
+      "prevModification": "zb_360",
       "modClass": "weapon",
       "tier": 2
     },

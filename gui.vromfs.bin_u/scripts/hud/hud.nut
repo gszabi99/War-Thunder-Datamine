@@ -251,7 +251,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (newHudType == HUD_TYPE.CUTSCENE)
       this.currentHud = handlersManager.loadHandler(HudCutscene, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SPECTATOR)
-      this.currentHud = handlersManager.loadHandler(::Spectator, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(gui_handlers.Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
       this.currentHud = handlersManager.loadHandler(HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.TANK)

@@ -24,6 +24,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -318,7 +319,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function createReserveTasksData(country, unitType, checkCurrentCrewAircrafts = true, ignoreSlotbarCheck = false) {
     let tasksData = []
     let usedUnits = []
-    foreach (c in ::g_crews_list.get()) {
+    foreach (c in getCrewsList()) {
       if (c.country != country)
         continue
       foreach (_idInCountry, crewBlock in c.crews) {
@@ -354,7 +355,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function createNewbiePresetsData() {
     let presetDataItems = []
     local selEsUnitType = ES_UNIT_TYPE_INVALID
-    foreach (crewData in ::g_crews_list.get()) {
+    foreach (crewData in getCrewsList()) {
       let country = crewData.country
       foreach (unitType in unitTypes.types) {
         if (!unitType.isAvailable()

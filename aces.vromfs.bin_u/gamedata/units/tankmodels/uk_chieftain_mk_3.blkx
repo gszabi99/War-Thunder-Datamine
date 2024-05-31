@@ -112,6 +112,9 @@
         "armorClass": "tank_structural_steel",
         "armorThickness": 30.0,
         "createSecondaryShatters": false
+      },
+      "turret_02_top_dm": {
+        "armorThickness": 6.35
       }
     },
     "hull_turret_cha": {
@@ -189,9 +192,6 @@
       "turret_03_top_dm": {
         "armorThickness": 130.0
       },
-      "turret_02_top_dm": {
-        "armorThickness": 50.8
-      },
       "turret_05_side_dm": {
         "armorThickness": 160.0
       },
@@ -199,7 +199,7 @@
         "armorThickness": 125.0
       },
       "turret_03_side_dm": {
-        "armorThickness": 93.0
+        "armorThickness": 20.0
       },
       "turret_back_dm": {
         "armorThickness": 30.0
@@ -218,7 +218,7 @@
         "armorThickness": 132.0
       },
       "turret_commander_dm": {
-        "armorThickness": 150.0
+        "armorThickness": 40.0
       },
       "turret_bottom_dm": {
         "armorThickness": 20.0
@@ -459,11 +459,12 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "drive_turret_v_dm": {
-        "hp": 150.0,
         "armorThrough": 15.0
       },
       "drive_turret_h_dm": {
-        "hp": 150.0,
+        "armorThrough": 15.0
+      },
+      "driver_controls_dm": {
         "armorThrough": 15.0
       },
       "drive_turret_v_01_dm": {
@@ -482,20 +483,52 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "radiator_dm": {
+      "drive_turret_v_03_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_03_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_04_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_v_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_05_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "radiator_dm": {
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_l_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radiator_r_dm": {
-        "hp": 40.0,
+        "hp": 50.0,
         "armorThrough": 5.0
       },
       "radio_station_dm": {
-        "hp": 20.0,
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "electronic_equipment_dm": {
+        "hp": 50.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_dm": {
+        "hp": 50.0,
         "armorThrough": 3.0
       }
     },
@@ -522,6 +555,10 @@
       },
       "cannon_breech_05_dm": {
         "armorThickness": 10.0
+      },
+      "autoloader_dm": {
+        "armorThickness": 5.0,
+        "armorThrough": 5.0
       }
     },
     "power_block": {
@@ -531,7 +568,8 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {}
+      "transmission_dm": {},
+      "power_system_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -1639,8 +1677,8 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
-        "speedYaw": 22.5,
-        "speedPitch": 4.5,
+        "speedYaw": 20.0,
+        "speedPitch": 5.0,
         "fireConeAngle": 1.0,
         "bullets": 53,
         "salvoAmount": 100.0,
@@ -2906,6 +2944,13 @@
         }
       },
       {
+        "name": "hydraulic_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "big_bang",
         "lifetime": 10.0,
         "fx": [
@@ -3181,8 +3226,8 @@
         "rcostAddParam": 0.99,
         "diggingAvailable": true,
         "diggingActivateTime": 3.0,
-        "diggingLevel": 0.25,
-        "digMaxSpeed": 7.0,
+        "diggingLevel": 0.35,
+        "digMaxSpeed": 15.0,
         "digMaxRevSpeed": -12.0,
         "hideNodes": {
           "node": [
@@ -3237,8 +3282,8 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
-              "speedYaw": 22.5,
-              "speedPitch": 4.5,
+              "speedYaw": 20.0,
+              "speedPitch": 5.0,
               "fireConeAngle": 1.0,
               "bullets": 53,
               "salvoAmount": 100.0,

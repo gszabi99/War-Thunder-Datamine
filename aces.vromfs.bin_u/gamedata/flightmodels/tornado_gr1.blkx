@@ -16,6 +16,7 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "ilsTornado": true,
+  "isBwOpticSight": true,
   "haveCCRPForGun": true,
   "hasOpticTurret": true,
   "havePointOfInterestDesignator": true,
@@ -2923,23 +2924,6 @@
     }
   },
   "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        0.5,
-        -0.2,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -38.0,
-        38.0,
-        -55.0,
-        38.0
-      ],
-      "opticType": "tv",
-      "turretNo": 0
-    },
     "Target": {
       "pos": [
         0.5,
@@ -2955,7 +2939,25 @@
         15.0
       ],
       "opticType": "targeting",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 2
+    },
+    "TV": {
+      "pos": [
+        0.5,
+        -0.2,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1
     }
   },
   "commonWeapons": {
@@ -3132,7 +3134,8 @@
             "emitter": "emtr_flare1",
             "bullets": 28,
             "external": true,
-            "separate": false
+            "separate": false,
+            "mass": 231.0
           }
         }
       },
@@ -4600,6 +4603,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_1"
             }
           }
         ]
@@ -4647,7 +4654,8 @@
             "emitter": "emtr_flare2",
             "bullets": 28,
             "external": true,
-            "separate": false
+            "separate": false,
+            "mass": 231.0
           }
         }
       }
@@ -4987,7 +4995,8 @@
               500,
               300
             ],
-            "noiseFactor": 0.05
+            "noiseFactor": 0.05,
+            "index": 2
           }
         }
       }

@@ -8,6 +8,7 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { isInFlight } = require("gameplayBinding")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
 
 enum MIS_LOAD { //bit enum
   //loading parts
@@ -21,8 +22,8 @@ enum MIS_LOAD { //bit enum
   //calls from c++ code.
 ::on_update_es_from_host <- function on_update_es_from_host() {
   log("on_update_es_from_host called")
-  ::g_crews_list.invalidate()
-  ::reinitAllSlotbars()
+  invalidateCrewsList()
+  reinitAllSlotbars()
   broadcastEvent("UpdateEsFromHost")
 }
 

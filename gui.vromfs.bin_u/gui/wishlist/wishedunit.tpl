@@ -186,21 +186,41 @@ wishedItem{
         unit:t=<<unitName>>
       }
       <</hasMarketPlaceButton>>
-      <<#hasConditionsButton>>
-        Button_text {
-          enableOn:t='select'
-          not-input-transparent:t='yes'
-          text:t='#sm_conditions'
-          on_click:t='onShowConditions'
-          showButtonImageOnConsole:t='no'
-          visualStyle:t='secondary'
-          skip-navigation:t='yes'
-          buttonWink{}
-          buttonGlance{}
-          ButtonImg {}
-          btnName:t='X'
-          unit:t=<<unitName>>
+      <<#hasUseCouponButton>>
+      Button_text {
+        enableOn:t='select'
+        not-input-transparent:t='yes'
+        text:t='#item/consume/coupon'
+        on_click:t='onUseCoupon'
+        showButtonImageOnConsole:t='no'
+        visualStyle:t='secondary'
+        skip-navigation:t='yes'
+        class:t='image'
+        noMargin:t='yes'
+        buttonWink{}
+        img{ background-image:t='#ui/gameuiskin#gc.svg' }
+        btnName:t='X'
+        ButtonImg {
+          showOnSelect:t='yes'
         }
+        unit:t=<<unitName>>
+      }
+      <</hasUseCouponButton>>
+      <<#hasConditionsButton>>
+      Button_text {
+        enableOn:t='select'
+        not-input-transparent:t='yes'
+        text:t='#sm_conditions'
+        on_click:t='onShowConditions'
+        showButtonImageOnConsole:t='no'
+        visualStyle:t='secondary'
+        skip-navigation:t='yes'
+        buttonWink{}
+        buttonGlance{}
+        ButtonImg {}
+        btnName:t='X'
+        unit:t=<<unitName>>
+      }
       <</hasConditionsButton>>
       <<#hasGiftButton>>
       Button_text {

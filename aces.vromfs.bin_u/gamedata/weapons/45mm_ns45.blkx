@@ -24,12 +24,12 @@
     "mass": 1.065,
     "caliber": 0.045,
     "speed": 780.0,
+    "maxDistance": 3500.0,
     "explosiveType": "a_ix_2",
     "explosiveMass": 0.052,
-    "maxDistance": 3500.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
-    "groundRicochetPreset": "he",
+    "groundRicochetPreset": "he_small_caliber_ground",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -44,8 +44,23 @@
     ],
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/he_frag_i_t_shell.ivf",
-    "hitPowerMult": 3.0,
-    "onHitChanceMultFire": 3.0,
+    "fuseOnWater": true,
+    "fuseOnWaterProbability": 1.0,
+    "ricochetTimeToLive": 0.085,
+    "fuseDelayDist": 0.3,
+    "explodeTreshold": 0.1,
+    "nearArmorPower": [
+      4.0,
+      150.0
+    ],
+    "midArmorPower": [
+      4.0,
+      600.0
+    ],
+    "farArmorPower": [
+      4.0,
+      1000.0
+    ],
     "nearHitPower": [
       1.0,
       50.0
@@ -66,27 +81,12 @@
       300.0,
       1000.0
     ],
-    "nearArmorPower": [
-      4.0,
-      150.0
-    ],
-    "midArmorPower": [
-      4.0,
-      600.0
-    ],
-    "farArmorPower": [
-      4.0,
-      1000.0
-    ],
+    "hitPowerMult": 3.0,
+    "onHitChanceMultFire": 4.6,
     "relativeVelArmorShift": [
       200.0,
       1000.0
     ],
-    "fuseOnWater": true,
-    "fuseOnWaterProbability": 1.0,
-    "ricochetTimeToLive": 0.085,
-    "fuseDelayDist": 0.3,
-    "explodeTreshold": 0.1,
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "explosionEffect": "hit_28_38mm_metal_he",
     "groundCollisionEffect": "hit_28_38mm_dirt_he",
@@ -155,15 +155,6 @@
     },
     "shatterDamage": {
       "breachConeAngle": 45.0
-    },
-    "visual": {
-      "range_percent_of_ammo": [
-        100.0,
-        0.0
-      ],
-      "traceFreq": 1,
-      "tracer": "37mmLightRed",
-      "trail": "black"
     },
     "collisions": {
       "default": {
@@ -282,6 +273,15 @@
         "fx": "hit_28_38mm_snow_he",
         "ricochetFx": "hit_28_38mm_snow_ap"
       }
+    },
+    "visual": {
+      "range_percent_of_ammo": [
+        100.0,
+        0.0
+      ],
+      "traceFreq": 1,
+      "tracer": "37mmLightRed",
+      "trail": "black"
     }
   },
   "gunSound": {

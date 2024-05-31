@@ -2334,10 +2334,10 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1410.0,
-    "maxloadMassLeftConsoles": 705.0,
-    "maxloadMassRightConsoles": 705.0,
-    "maxDisbalance": 580.0,
+    "maxloadMass": 1820.0,
+    "maxloadMassLeftConsoles": 910.0,
+    "maxloadMassRightConsoles": 910.0,
+    "maxDisbalance": 650.0,
     "HideNodes": {
       "node": [
         "aero_3b_001",
@@ -2612,6 +2612,25 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": [
+                "aero_65a_pylon_l",
+                "aero_15a_pylon2_lb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_1000lb_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "1000lbs",
             "reqModification": "flbc_mk2",
@@ -2669,6 +2688,25 @@
               "emitter": "aero_7_006",
               "external": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "fmbc_mk1",
+            "ShowNodes": {
+              "node": [
+                "aero_65a_pylon_r",
+                "aero_15a_pylon2_rb"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_1000lb_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -2891,7 +2929,68 @@
           "antenna",
           "wire_lc",
           "wire_rc",
-          "wire_c"
+          "wire_c",
+          "aerial_c"
+        ]
+      },
+      {
+        "dm": "spar_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar1_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar2_l_dm",
+        "dp": [
+          "wire_l",
+          "wire_lc",
+          "wires_l",
+          "wires_lc",
+          "aerial_l"
+        ]
+      },
+      {
+        "dm": "spar_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar1_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
+        ]
+      },
+      {
+        "dm": "spar2_r_dm",
+        "dp": [
+          "wire_r",
+          "wire_rc",
+          "wires_r",
+          "wires_rc",
+          "aerial_r"
         ]
       },
       {

@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile, get_time_till_decals_disabled, is_decals_disabled, hangar_get_attachable_tm, set_option_delayed_download_content, hangar_prem_vehicle_view_close, reload_user_skins
 from "%scripts/dagui_library.nut" import *
-from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR
+from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -51,7 +51,7 @@ let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getSkinId, getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin,
-  previewedLiveSkinIds, approversUnitToPreviewLiveResource, getSkinsOption
+  previewedLiveSkinIds, approversUnitToPreviewLiveResource, getSkinsOption, getCurUserSkin
 } = require("%scripts/customization/skins.nut")
 let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let { set_option, create_option_switchbox } = require("%scripts/options/optionsExt.nut")
@@ -76,6 +76,7 @@ let { getResourceBuyFunc } = require("%scripts/customization/decoratorAcquire.nu
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -572,20 +573,28 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let skinIndex = this.skinList?.values.indexof(this.previewSkinId) ?? 0
     let skinDecorator = this.skinList?.decorators[skinIndex]
-    let canScaleAndRotate = skinDecorator?.getCouponItemdefId() == null
+    let curUserSkin = getCurUserSkin()
 
     let have_premium = havePremium.value
+    let hasSkinCondition = curUserSkin?.condition != null
+    let canScale = curUserSkin?.scale == null && skinDecorator?.getCouponItemdefId() == null
+    let canRotate = curUserSkin?.rotation == null && skinDecorator?.getCouponItemdefId() == null
+    let canChangeCondition = have_premium && !hasSkinCondition
+
     local option = null
 
     option = ::get_option(USEROPT_TANK_SKIN_CONDITION)
     let tscId = option.id
     let tscTrObj = this.scene.findObject("tr_" + tscId)
     if (checkObj(tscTrObj)) {
-      tscTrObj.inactiveColor = have_premium ? "no" : "yes"
-      tscTrObj.tooltip = have_premium ? "" : loc("mainmenu/onlyWithPremium")
+      tscTrObj.inactiveColor = canChangeCondition ? "no" : "yes"
+      tscTrObj.tooltip = hasSkinCondition ?  loc("guiHints/not_available_on_this_camo")
+        : !have_premium ? loc("mainmenu/onlyWithPremium")
+        : ""
       let sliderObj = this.scene.findObject(tscId)
-      let value = have_premium ? option.value : option.defVal
+      let value = canChangeCondition ? option.value : option.defVal
       sliderObj.setValue(value)
+      sliderObj.enable(!hasSkinCondition)
       this.updateSkinConditionValue(value, sliderObj)
     }
 
@@ -593,11 +602,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tcsId = option.id
     let tcsTrObj = this.scene.findObject("tr_" + tcsId)
     if (checkObj(tcsTrObj)) {
-      tcsTrObj.tooltip = canScaleAndRotate ? "" : loc("guiHints/not_available_on_this_camo")
+      tcsTrObj.tooltip = canScale ? "" : loc("guiHints/not_available_on_this_camo")
       let sliderObj = this.scene.findObject(tcsId)
-      let value = canScaleAndRotate ? option.value : option.defVal
+      let value = canScale ? option.value : option.defVal
       sliderObj.setValue(value)
-      sliderObj.enable(canScaleAndRotate)
+      sliderObj.enable(canScale)
       this.onChangeTankCamoScale(sliderObj)
     }
 
@@ -605,11 +614,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tcrId = option.id
     let tcrTrObj = this.scene.findObject("tr_" + tcrId)
     if (checkObj(tcrTrObj)) {
-      tcrTrObj.tooltip = canScaleAndRotate ? "" : loc("guiHints/not_available_on_this_camo")
+      tcrTrObj.tooltip = canRotate ? "" : loc("guiHints/not_available_on_this_camo")
       let sliderObj = this.scene.findObject(tcrId)
-      let value = canScaleAndRotate ? option.value : option.defVal
+      let value = canRotate ? option.value : option.defVal
       sliderObj.setValue(value)
-      sliderObj.enable(canScaleAndRotate)
+      sliderObj.enable(canRotate)
       this.onChangeTankCamoRotation(sliderObj)
     }
   }
@@ -668,9 +677,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
     if (checkObj(textObj)) {
       let value = obj.getValue()
-      let visualValue = value * 180 / 100
+      let visualValue = (value * 180 / 100) / TANK_CAMO_ROTATION_SLIDER_FACTOR
       textObj.setValue((visualValue > 0 ? "+" : "") + visualValue.tostring())
-      set_tank_camo_rotation(value)
+      set_tank_camo_rotation(value / TANK_CAMO_ROTATION_SLIDER_FACTOR)
     }
   }
 
@@ -795,7 +804,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local canBuyOnline = ::canBuyUnitOnline(this.unit)
     let canBuyNotResearchedUnit = canBuyNotResearched(this.unit)
     let canBuyIngame = !canBuyOnline && (canBuyUnit(this.unit) || canBuyNotResearchedUnit)
-    let canFindUnitOnMarketplace = !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(this.unit)
+    let canUseCoupon = hasUnitCoupon(this.unit.name) && !this.unit.isBought()
+    let canFindUnitOnMarketplace = !canUseCoupon && !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(this.unit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0) {
       //Override for ingameShop.
@@ -817,6 +827,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), this.unit)
 
     showObjById("btn_marketplace_find_unit", canFindUnitOnMarketplace, this.scene)
+    showObjById("btn_use_coupon_unit", canUseCoupon, this.scene)
 
     local skinDecorator = null
     local skinCouponItemdefId = null
@@ -1412,6 +1423,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.onBtnBack()
   }
 
+  onEventInventoryUpdate = @(_obj) this.updateButtons()
+  onEventProfileUpdated = @(_obj) this.updateButtons()
+
   function onBtnBack() {
     if (this.currentState & decoratorEditState.NONE)
       return this.goBack()
@@ -1901,6 +1915,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     item.openLink()
   }
 
+  function onBtnUseCoupon(_obj) {
+    let coupon = getUnitCoupon(this.unit.name)
+    if(coupon != null)
+      coupon.consume(null, null)
+  }
 
   function onEventUnitRented(_params) {
     this.initMainParams()
@@ -2378,5 +2397,4 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (hintParam in hintsParams)
       updateHintPosition(this.scene, handler.scene, hintParam)
   }
-
 }

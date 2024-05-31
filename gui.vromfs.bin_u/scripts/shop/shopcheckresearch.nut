@@ -22,6 +22,7 @@ let {
   isUnitGroup, isGroupPart, canResearchUnit, canBuyUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk, get_discounts_blk, get_shop_blk } = require("blkGetters")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   wndType = handlerType.MODAL
@@ -89,10 +90,10 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   }
 
   function getMaxEraAvailableByCountry() {
-    for (local era = 1; era <= ::max_country_rank; era++)
+    for (local era = 1; era <= MAX_COUNTRY_RANK; era++)
       if (!is_era_available(this.unitCountry, era, this.unitType))
         return (era - 1)
-    return ::max_country_rank
+    return MAX_COUNTRY_RANK
   }
 
   function showRankRestrictionMsgBox() {
@@ -104,7 +105,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     let rank = this.getMaxEraAvailableByCountry()
     let nextRank = rank + 1
 
-    if (nextRank > ::max_country_rank)
+    if (nextRank > MAX_COUNTRY_RANK)
       return
 
     let unitLockedByFeature = this.getNotResearchedUnitByFeature()

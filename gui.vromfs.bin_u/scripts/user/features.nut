@@ -262,6 +262,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   BuyAllPresets = false
   enableFollowBulletCamera = disable_network()
   ProtectionMap = false
+  CrewMap = true
   OrderAutoActivate = false
   WeaponryCustomPresets = false
   BattleAutoStart = false

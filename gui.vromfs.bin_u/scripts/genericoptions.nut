@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import add_tank_alt_crosshair_template, update_volume_for_music, set_option_gamma
+from "%scripts/dagui_natives.nut" import update_volume_for_music, set_option_gamma
 from "%scripts/dagui_library.nut" import *
 from "soundOptions" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
@@ -33,6 +33,7 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
 } = require("%scripts/options/optionsExtNames.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
+let { add_tank_alt_crosshair_template } = require("crosshair")
 
 function get_country_by_team(team_index) {
   local countries = null

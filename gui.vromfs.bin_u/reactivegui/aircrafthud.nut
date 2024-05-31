@@ -174,7 +174,10 @@ function mkAgmAimIndicator(watchedColor, watchedAlertColor) {
     return {
       watch = AtgmTrackerVisible
       size = flex()
-      children = AtgmTrackerVisible.value ? [agmAim(watchedColor, watchedAlertColor)] : null
+      children = AtgmTrackerVisible.value ? [
+        agmAim(watchedColor, watchedAlertColor, false)
+        gbuAim(watchedColor, watchedAlertColor, false)
+      ] : null
     }
   }
 }

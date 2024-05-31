@@ -38,7 +38,7 @@ let optionItems = [[USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, "switchbox"]]
 
 let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
-  sceneTplName = "%gui/events/nightBattlesOptionsWnd.tpl"
+  sceneTplName = "%gui/events/gameModeOptionsWnd.tpl"
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY
 
   curEvent = null
@@ -57,6 +57,7 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
           calcBattleRatingFromRank(this.curEvent?.minMRankForNightBattles ?? MIN_MRANK_FOR_NIGHT_BATTLES))
       })
       optionsContainer = container.tbl
+      hasUnlocksList = true
     }
   }
 

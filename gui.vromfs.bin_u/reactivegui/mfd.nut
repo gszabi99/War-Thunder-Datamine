@@ -1,10 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { IndicatorsVisible, MfdColor, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("airState.nut")
-let tws = require("tws.nut")
+let { tws } = require("tws.nut")
 let mfdSightHud = require("planeMfdCamera.nut")
 let { MfdRadarColor, radarPosSize } = require("radarState.nut")
 let { radarMfd } = require("%rGui/radar.nut")
+let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
 
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
@@ -32,6 +33,7 @@ function Root() {
     mkTws
     radarMfd(radarPosSize, MfdRadarColor)
     mfdSightHud
+    mfdCustomPages
   ]
 
   return {

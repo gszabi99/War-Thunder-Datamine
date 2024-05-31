@@ -82,6 +82,9 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
         {
           hasResearchesBtn = true
           mainMenuSlotbar = true
+          hasCrewHint = true
+          hasExtraInfoBlock = true
+          hasExtraInfoBlockTop = true
           onCountryDblClick = function() {
             if (!topMenuShopActive.value)
               this.shopWndSwitch()

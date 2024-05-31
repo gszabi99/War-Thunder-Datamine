@@ -13,6 +13,7 @@ function set_presence(presence, callback) {
 
 
 function subscribe_to_presence_update_events(callback) {
+  pres.install_presence_update_callback()
   eventbus_subscribe(pres.presence_update_event_name, function(res) {
     let success = res?.success
     let presences = res?.presences
@@ -22,6 +23,7 @@ function subscribe_to_presence_update_events(callback) {
 
 
 function subscribe_to_device_change_events(callback) {
+  pres.install_device_change_callback()
   eventbus_subscribe(pres.device_change_event_name, function(res) {
     let xuid = res?.xuid
     let devType = res?.dev_type
@@ -32,6 +34,7 @@ function subscribe_to_device_change_events(callback) {
 
 
 function subscribe_to_title_change_events(callback) {
+  pres.install_title_change_callback()
   eventbus_subscribe(pres.title_change_event_name, function(res) {
     let xuid = res?.xuid
     let titleId = res?.title_id

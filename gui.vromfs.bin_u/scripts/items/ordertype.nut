@@ -7,8 +7,8 @@ let time = require("%scripts/time.nut")
 let { number_of_set_bits, round } = require("%sqstd/math.nut")
 let { getUnitClassTypesFromCodeMask, getUnitClassTypesByEsUnitType
 } = require("%scripts/unit/unitClassType.nut")
-let { get_mplayers_list, get_mp_local_team } = require("mission")
-let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { get_mplayer_by_userid, get_mp_local_team } = require("mission")
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let allEsUnitTypes = [
@@ -114,23 +114,11 @@ let orderTypes = {
     }
 
     function getObjectiveDecriptionRelativeTarget(typeParams, colorScheme, targetPlayer, emptyColorScheme) {
-      local statusDescriptionKeyPostfix = ""
-      let targetPlayerUserId = targetPlayer?.userId
-      if (targetPlayerUserId != null)
-        if (targetPlayerUserId == userIdStr.value)
-          statusDescriptionKeyPostfix = "/self"
-        else {
-          let myTeam = get_mp_local_team()
-          let myTeamPlayers = get_mplayers_list(myTeam, true)
-          statusDescriptionKeyPostfix = "/enemy"
-          foreach (_idx, teamMember in myTeamPlayers) {
-            if (getTblValue("userId", teamMember, null) == targetPlayerUserId) {
-              statusDescriptionKeyPostfix = "/ally"
-              break
-            }
-          }
-        }
-
+      let targetPlayerUserId = targetPlayer?.userId.tointeger()
+      let statusDescriptionKeyPostfix = targetPlayerUserId == null ? ""
+        : targetPlayerUserId == userIdInt64.get() ? "/self"
+        : get_mplayer_by_userid(targetPlayerUserId)?.team == get_mp_local_team() ? "/ally"
+        : "/enemy"
       return this.getObjectiveDescriptionByKey(typeParams, colorScheme,
         $"items/order/type/%s/statusDescription{statusDescriptionKeyPostfix}", emptyColorScheme)
     }

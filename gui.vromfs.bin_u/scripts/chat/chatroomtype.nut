@@ -7,7 +7,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isCrossNetworkMessageAllowed, isChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
+let { isCrossNetworkMessageAllowed, checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan,
   hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
@@ -81,7 +81,7 @@ g_chat_room_type.template <- {
   fillChatHeader = function(_obj, _roomData) {}
   updateChatHeader = function(_obj, _roomData) {}
   isAllowed = @() true
-  isConcealed = @(_roomId) false
+  checkConcealed = @(_roomId, cb) cb?(false)
   isVisible = @() false
 
   needCountAsImportant = false
@@ -125,7 +125,16 @@ enumsAddTypes(g_chat_room_type, {
       return ""
     }
 
-    isConcealed = @(roomId) !isCrossNetworkMessageAllowed(roomId) || !isChatEnableWithPlayer(roomId)
+    checkConcealed = function(roomId, callback) {
+      if (!isCrossNetworkMessageAllowed(roomId)) {
+        callback?(true);
+        return
+      }
+      checkChatEnableWithPlayer(roomId, function(is_enabled) {
+        callback?(!is_enabled)
+      })
+    }
+
     isVisible = @() hasMenuChatPrivate.value
   }
 
@@ -268,7 +277,7 @@ enumsAddTypes(g_chat_room_type, {
         ud.onSceneShow()
     }
 
-    isConcealed = @(roomId) ::g_chat.getThreadInfo(roomId)?.isConcealed() ?? false
+    checkConcealed = @(roomId, cb) cb?(::g_chat.getThreadInfo(roomId)?.isConcealed() ?? false)
     isVisible = @() hasMenuGeneralChats.value
   }
 

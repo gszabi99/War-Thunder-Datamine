@@ -6,7 +6,7 @@ from "app" import is_dev_version
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { eventbus_send } = require("eventbus")
-let { isRanksAllowed } = require("%scripts/ranks.nut")
+let { isRanksAllowed } = require("%scripts/ranksAllowed.nut")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -673,7 +673,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onFaq()             { openUrl(getCurCircuitOverride("faqURL", loc("url/faq"))) }
-  function onForum()           { openUrl(loc("url/forum")) }
   function onSupport()         { openUrl(getCurCircuitOverride("supportURL", loc("url/support"))) }
   function onWiki()            { openUrl(getCurCircuitOverride("wikiURL", loc("url/wiki"))) }
 
