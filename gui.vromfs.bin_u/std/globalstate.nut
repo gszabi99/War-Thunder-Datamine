@@ -13,7 +13,7 @@ from "dagor.time" import get_time_msec
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!eventbus event app.shutdown is required!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-let { Watched } = require("frp")
+let { Watched } = require("frp.nut")
 const EVT_NEW_DATA = "GLOBAL_PERMANENT_STATE.newDataAvailable"
 let registered = {}
 

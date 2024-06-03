@@ -43,6 +43,8 @@
   "fireFx": "ground_model_fire",
   "destroysRendInstances": true,
   "destroysTrees": true,
+  "waterBreakerAnimVar": "xm_800t_water_action",
+  "waterBreakerToggleTime": 4.0,
   "type": "typeLightTank",
   "DamageParts": {
     "formatVersion": 2,
@@ -80,7 +82,7 @@
         "armorThickness": 19.0
       },
       "turret_01_bottom_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 25.4
       },
       "turret_02_bottom_dm": {
         "armorThickness": 25.4
@@ -98,35 +100,33 @@
         "armorThickness": 19.0
       },
       "turret_03_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 60.0,
+        "armorClass": "glass60"
       },
       "turret_04_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 12.7
       },
       "turret_05_back_dm": {
         "armorThickness": 10.0
       },
       "turret_03_side_dm": {
-        "armorThickness": 10.0
-      },
-      "turret_05_bottom_dm": {
-        "armorThickness": 10.0
-      },
-      "turret_05_front_dm": {
-        "armorThickness": 10.0
-      },
-      "turret_05_side_dm": {
-        "armorThickness": 10.0
-      },
-      "turret_06_back_dm": {
-        "armorThickness": 10.0
-      },
-      "turret_04_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 12.7
       }
     },
-    "turret": {
+    "RHA_parts": {
       "armorClass": "RHA_tank",
+      "armorThickness": 6.35,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "hidableInViewer": true,
+      "turret_04_side_dm": {},
+      "turret_05_side_dm": {},
+      "turret_05_bottom_dm": {},
+      "turret_05_front_dm": {},
+      "turret_06_back_dm": {}
+    },
+    "turret": {
+      "armorClass": "aluminum_armor_7039",
       "turret_01_front_dm": {
         "armorThickness": 25.4
       },
@@ -164,7 +164,8 @@
     "mask": {
       "armorClass": "CHA_tank",
       "gun_mask_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 5.0,
+        "armorClass": "tank_structural_steel"
       },
       "gun_mask_01_dm": {
         "armorThickness": 15.0
@@ -279,8 +280,8 @@
     },
     "gun": {
       "armorClass": "tank_barrel",
-      "hp": 150.0,
-      "armorThickness": 30.0,
+      "hp": 100.0,
+      "armorThickness": 10.0,
       "gun_barrel_dm": {},
       "gun_barrel_01_dm": {
         "armorThrough": 10.0,
@@ -1731,6 +1732,26 @@
             -10.0,
             20.0
           ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -130.0,
+            -4.0,
+            20.0
+          ],
+          "lim2": [
+            -130.0,
+            115.0,
+            -10.0,
+            20.0
+          ],
+          "lim3": [
+            115.0,
+            180.0,
+            -4.0,
+            20.0
+          ]
         }
       },
       {
@@ -1742,7 +1763,7 @@
         "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_02_dm",
+        "barrelDP": "gun_barrel_01_dm",
         "parkInDeadzone": false,
         "speedYaw": 90.0,
         "speedPitch": 90.0,

@@ -12,7 +12,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
-let { ceil, floor } = require("math")
+let { ceil, floor, abs } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager
@@ -334,7 +334,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local tableIndex = 0
     local maxCellY = 0
     let ranksCount = cellsByRanks.len()-1
-    let armyRankCollapsedData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
     for (local rank = 0; rank <= this.maxRank; rank++) {
       if (!(rank in cellsByRanks))
         continue
@@ -385,12 +384,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       arrowsContainer.size = $"{totalWidth}@shop_width, ph"
       arrowsContainer.pos = $"{extraLeft}, -{parentPosY}@shop_height"
 
-      let isCollapsed = armyRankCollapsedData?[$"{tableIndex}"] ?? false
-      let collapseParams = {needCollapse = isCollapsed,
-        isInstant = true, needForceUpdate = true,
-        containerIndex = tableIndex}
-
-      this.collapseCellsContainer(collapseParams, rankTable)
       tableIndex += 1
     }
 
@@ -558,6 +551,19 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.generateTierCollapsedIcons()
     this.updateExpandAllBtnsState()
 
+    let armyRankCollapsedData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
+    for (local i = 0; i < this.maxRank; i++) {
+      let rankTable = this.getRankTable(tableObj, i)
+      if (rankTable == null || !rankTable.isVisible())
+        continue
+      let isCollapsed = armyRankCollapsedData?[$"{i}"] ?? false
+      let collapseParams = {needCollapse = isCollapsed,
+        isInstant = true, needForceUpdate = true,
+        containerIndex = i}
+
+      this.collapseCellsContainer(collapseParams, rankTable)
+    }
+
     local curIdx = -1
     foreach (idx, unit in this.curUnitsList) {
       let config = this.getItemStatusData(unit, curName)
@@ -701,10 +707,16 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let endLineIndex = lc.air?.isFakeUnit ? 0 : lc.air.rank
 
       for ( local i = startLineIndex; i <= endLineIndex; i++) {
+        let edge = abs(lc.line[0] - lc.line[2]) == 1
+          ? i > startLineIndex
+            ? "top"
+            : i < endLineIndex ? "bottom" : "no"
+          : "no"
+
         if (datasByRanks?[i] == null)
-          datasByRanks[i] <- [lc]
+          datasByRanks[i] <- [{lc, edge}]
         else
-          datasByRanks[i].append(lc)
+          datasByRanks[i].append({lc, edge})
       }
     }
 
@@ -718,8 +730,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         arrowsContainer = rankTable.findObject("arrows_container")
 
         let lineArr = datasByRanks[rank]
-        foreach (lc in lineArr)
-          this.linesGenerator.modifyOrAddLine(this, arrowsContainer, containerIndex, lc, this.getLineStatus(lc))
+        foreach (data in lineArr)
+          this.linesGenerator.modifyOrAddLine(this, arrowsContainer, containerIndex,
+            data.lc, this.getLineStatus(data.lc), data.edge)
       }
       containerIndex++
     }
@@ -2253,7 +2266,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local rankTable = this.getRankTable(tableObj, containerIndex)
     while (rankTable != null) {
       if (rankTable.isVisible() && (needCollapse != (rankTable.isCollapsed == "yes"))) {
-        let collapsParams = {needCollapse, isInstant = true, containerIndex}
+        let collapsParams = {needCollapse, isInstant = false, containerIndex}
         this.collapseCellsContainer(collapsParams, rankTable)
         this.saveRankCollapsedToData(this.curCountry, this.curPage, $"{containerIndex}", needCollapse)
       }
@@ -2344,21 +2357,18 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     local alarmsIcons = this.linesGenerator.getAddedLinesByType(containerIndex, "alarmIcon_vertical")
-    let rankPos = rankTable.getPos()
-    let rankSize = rankTable.getPos()
     foreach (data in alarmsIcons) {
       let alarmIcon = data.obj
-      if (alarmIcon.getPos()[1] + alarmIcon.getSize()[1] > rankPos[1] + rankSize[1])
+      if (alarmIcon.onEdge == "bottom")
         alarmIcon.show(!needCollapse)
     }
 
     let nextRanTable = this.getRankTable(this.getTableObj(), containerIndex + 1)
     if (nextRanTable != null) {
       alarmsIcons = this.linesGenerator.getAddedLinesByType(containerIndex + 1, "alarmIcon_vertical")
-      let nextRankPos = nextRanTable.getPos()
       foreach (data in alarmsIcons) {
         let alarmIcon = data.obj
-        if (!needCollapse || (alarmIcon.getPos()[1] < nextRankPos[1]))
+        if (alarmIcon.onEdge == "top")
           alarmIcon.show(!needCollapse)
       }
     }

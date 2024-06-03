@@ -18,6 +18,16 @@ extraInfoBlockTop {
         }
       }
       <</hasPriceText>>
+
+      <<#hasPriceText>>
+      <<#hasAdditionalRespawns>>
+      td {
+        width:t='@sf/@pf'
+        extraInfoVertSeparator {}
+      }
+      <</hasAdditionalRespawns>>
+      <</hasPriceText>>
+
       <<#hasAdditionalRespawns>>
       td {
         activeText {
@@ -25,6 +35,27 @@ extraInfoBlockTop {
         }
       }
       <</hasAdditionalRespawns>>
+
+      <<^hasAdditionalRespawns>>
+      <<#hasPriceText>>
+      <<#hasSpareCount>>
+      td {
+        width:t='@sf/@pf'
+        extraInfoVertSeparator {}
+      }
+      <</hasSpareCount>>
+      <</hasPriceText>>
+      <</hasAdditionalRespawns>>
+
+      <<#hasAdditionalRespawns>>
+      <<#hasSpareCount>>
+      td {
+        width:t='@sf/@pf'
+        extraInfoVertSeparator {}
+      }
+      <</hasSpareCount>>
+      <</hasAdditionalRespawns>>
+
       <<#hasSpareCount>>
       td {
         text {

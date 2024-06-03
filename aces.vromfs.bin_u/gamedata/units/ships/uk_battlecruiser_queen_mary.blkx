@@ -1794,6 +1794,10 @@
         "armorThickness": 127.0,
         "hp": 8500.0
       },
+      "armor_belt_l_12_dm": {
+        "armorThickness": 127.0,
+        "hp": 8500.0
+      },
       "armor_belt_l_19_dm": {
         "armorThickness": 127.0,
         "hp": 8500.0
@@ -1807,6 +1811,10 @@
         "hp": 8500.0
       },
       "armor_belt_r_10_dm": {
+        "armorThickness": 127.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_12_dm": {
         "armorThickness": 127.0,
         "hp": 8500.0
       },
@@ -1854,10 +1862,6 @@
         "armorThickness": 152.0,
         "hp": 8500.0
       },
-      "armor_belt_l_12_dm": {
-        "armorThickness": 228.6,
-        "hp": 8500.0
-      },
       "armor_belt_l_13_dm": {
         "armorThickness": 228.6,
         "hp": 8500.0
@@ -1879,10 +1883,6 @@
         "hp": 8500.0
       },
       "armor_belt_l_18_dm": {
-        "armorThickness": 228.6,
-        "hp": 8500.0
-      },
-      "armor_belt_r_12_dm": {
         "armorThickness": 228.6,
         "hp": 8500.0
       },
@@ -6163,7 +6163,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_01_dm": {
-          "count": 172
+          "count": 200
         }
       },
       "charges": {
@@ -6171,7 +6171,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_01_dm": {
-          "count": 172
+          "count": 200
         }
       }
     },
@@ -6266,7 +6266,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_02_dm": {
-          "count": 172
+          "count": 200
         }
       },
       "charges": {
@@ -6274,7 +6274,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_02_dm": {
-          "count": 172
+          "count": 200
         }
       }
     },
@@ -6369,7 +6369,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_03_dm": {
-          "count": 172
+          "count": 200
         }
       },
       "charges": {
@@ -6377,7 +6377,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_03_dm": {
-          "count": 172
+          "count": 200
         }
       }
     },
@@ -6472,7 +6472,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_04_dm": {
-          "count": 172
+          "count": 200
         }
       },
       "charges": {
@@ -6480,7 +6480,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_04_dm": {
-          "count": 172
+          "count": 200
         }
       }
     },
@@ -6558,13 +6558,13 @@
       "shells": [
         {
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_02_dm": {
+          "ammunition_storage_aux_01_dm": {
             "count": 200
           }
         },
         {
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_01_dm": {
+          "ammunition_storage_aux_02_dm": {
             "count": 1000
           }
         }
@@ -6642,13 +6642,13 @@
       "shells": [
         {
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_04_dm": {
+          "ammunition_storage_aux_03_dm": {
             "count": 200
           }
         },
         {
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_03_dm": {
+          "ammunition_storage_aux_04_dm": {
             "count": 1000
           }
         }
@@ -6794,23 +6794,23 @@
   },
   "breaches": {
     "repairSpeed": 30.0,
-    "waterMassVel": -100000.0,
-    "waterMassMult": 210.0,
+    "waterMassVel": 180000.0,
+    "waterMassMult": 330.0,
     "sizeToRepair": [
       0.01,
       5.0,
       25.0,
       600.0
     ],
-    "additionalWaterDeathThreshold": 70000000.0,
-    "additionalWaterShouldDiePercent": 0.29,
+    "additionalWaterDeathThreshold": 41000000.0,
+    "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 45.0,
     "maxHeelingAngle": 32.0,
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.1,
+    "sideCenterOfMassOffsetPercent": 0.085,
     "minCaliberToBreach": 0.18,
     "minExplRadiusToBreach": 0.3,
     "deadCoverCounterfloodingRel": 0.5,
@@ -6825,7 +6825,7 @@
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.3,
+        "weight": 0.15,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -6842,7 +6842,7 @@
       },
       {
         "part": "cover_03_dm",
-        "weight": 0.8,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -6882,7 +6882,7 @@
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.8,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -6903,7 +6903,7 @@
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.6,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -6924,12 +6924,12 @@
       },
       {
         "part": "cover_07_dm",
-        "weight": 0.66,
+        "weight": 0.5,
         "maxWaterAlive": 1.0
       },
       {
         "part": "cover_08_dm",
-        "weight": 0.55,
+        "weight": 0.25,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -6946,7 +6946,7 @@
       },
       {
         "part": "cover_09_dm",
-        "weight": 0.15,
+        "weight": 0.1,
         "maxWaterAlive": 1.0
       }
     ]

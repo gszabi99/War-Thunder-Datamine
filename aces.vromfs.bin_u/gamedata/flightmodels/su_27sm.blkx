@@ -2098,6 +2098,7 @@
           "page": [
             {
               "type": "radar",
+              "font": "ils31",
               "scale": 0.75,
               "fontScale": 0.5,
               "lineWidth": 0.5,
@@ -2113,36 +2114,31 @@
               ],
               "verAngleColor": [
                 0,
-                220,
+                255,
                 0
               ],
               "horAngleColor": [
                 0,
-                220,
+                255,
                 0
               ],
               "scaleColor": [
                 0,
-                220,
+                255,
                 0
               ],
               "targetColor": [
+                0,
                 255,
-                255,
-                20
+                0
               ],
-              "hideBeam": true,
+              "hideBeam": false,
+              "beamShape": "caret",
               "hideLaunchZone": false,
               "hideScale": false,
               "hideHorAngle": false,
               "hideVerAngle": false,
-              "hideBackground": false,
-              "radarColor": [
-                220,
-                220,
-                220,
-                255
-              ]
+              "hideBackground": true
             },
             {
               "type": "ils_on_camera"
@@ -2166,7 +2162,10 @@
           ],
           "page": [
             {
-              "type": "rwr"
+              "type": "rwr",
+              "circleCnt": 2,
+              "angleMarkStep": 30.0,
+              "hidePlaneSymbol": true
             },
             {
               "type": "devices",
@@ -2436,7 +2435,46 @@
             },
             {
               "type": "radar",
+              "font": "ils31",
               "scale": 0.75,
+              "fontScale": 0.5,
+              "lineWidth": 0.5,
+              "lineColor": [
+                0,
+                255,
+                0
+              ],
+              "modeColor": [
+                0,
+                220,
+                0
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                0
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                0
+              ],
+              "scaleColor": [
+                0,
+                255,
+                0
+              ],
+              "targetColor": [
+                0,
+                255,
+                0
+              ],
+              "hideBeam": false,
+              "beamShape": "caret",
+              "hideLaunchZone": false,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
               "hideBackground": true
             },
             {

@@ -121,7 +121,7 @@ let ShopLines = class {
   }
 
 
-  function createAlarmIcon(lineType, r0, c0, r1, c1, lineConfig = {}) {
+  function createAlarmIcon(lineType, r0, c0, r1, c1, lineConfig = {}, edge = "no") {
     let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false } = lineConfig
     let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
     let isMultipleArrow = arrowCount > 1
@@ -140,7 +140,7 @@ let ShopLines = class {
     this.lastLineIndex++
     let idString = $"id:t='line_{this.lastLineIndex}';"
     let alarmTooltip = this.getAlarmIconTooltip(lineConfig)
-    let alarmIconFormat = "".concat("shopAlarmIcon { %s pos:t='%s, %s'; tooltip:t='",
+    let alarmIconFormat = "".concat("shopAlarmIcon { %s pos:t='%s, %s'; onEdge:t='%s'; tooltip:t='",
         alarmTooltip, "'; } ")
 
     if (lineType == "alarmIcon_horizontal") {
@@ -148,14 +148,14 @@ let ShopLines = class {
       width = $"{(c1 - c0 - 1)}@shop_width + {interval1} + {interval2}"
       posY = $"{(r0 + 0.5 + offset)}@shop_height - 0.5@modArrowWidth"
       return format(alarmIconFormat, idString, $"{posX} + 0.5*({width}) - 0.5w",
-        $"{posY} + 0.5@modArrowWidth - 0.5h")
+        $"{posY} + 0.5@modArrowWidth - 0.5h", edge)
 
     } else if (lineType == "alarmIcon_vertical") {
       posX = $"{(c0 + 0.5 + offset)}@shop_width - 0.5@modArrowWidth"
       height = $"{pad1} + {pad2} + {(r1 - r0 - 1)}@shop_height"
       posY = $"{(r0 + 1)}@shop_height - {pad1}"
       return format(alarmIconFormat, idString, $"{posX} + 0.5@modArrowWidth - 0.5w",
-        $"{posY} + 0.5*({height}) - 0.5h")
+        $"{posY} + 0.5*({height}) - 0.5h", edge)
     }
     return null
   }
@@ -274,7 +274,7 @@ let ShopLines = class {
   }
 
 
-  function modifyLine(lineObj, r0, c0, r1, c1, lineType, lineConfig, status) {
+  function modifyLine(lineObj, r0, c0, r1, c1, lineType, lineConfig, status, edge = "no") {
     let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false } = lineConfig
     let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
     let isMultipleArrow = arrowCount > 1
@@ -312,20 +312,21 @@ let ShopLines = class {
       width = $"{(c1 - c0 - 1)}@shop_width + {interval1} + {interval2}"
       posY = $"{(r0 + 0.5 + offset)}@shop_height - 0.5@modArrowWidth"
       lineObj.pos = $"{posX} + 0.5*({width}) - 0.5w, {posY} + 0.5@modArrowWidth - 0.5h"
+      lineObj.onEdge = edge
 
     } else if (lineType == "alarmIcon_vertical") {
       posX = $"{(c0 + 0.5 + offset)}@shop_width - 0.5@modArrowWidth"
       height = $"{pad1} + {pad2} + {(r1 - r0 - 1)}@shop_height"
       posY = $"{(r0 + 1)}@shop_height - {pad1}"
       lineObj.pos = $"{posX} + 0.5@modArrowWidth - 0.5w, {posY} + 0.5*({height}) - 0.5h"
+      lineObj.onEdge = edge
     }
 
     lineObj.shopStat = status
     lineObj.show(true)
-    return
   }
 
-  function tryModifyLine(containerIndex, lineType, lc, status) {
+  function tryModifyLine(containerIndex, lineType, lc, status, edge = "no") {
     if (!allowToModifyed.contains(lineType))
       return false
 
@@ -334,7 +335,7 @@ let ShopLines = class {
     let avalibleCount = avalibleLines?.len() ?? 0
     if (avalibleCount > 0) {
       let lineData = avalibleLines?[avalibleCount-1]
-      this.modifyLine(lineData?.obj, lc.line[0], lc.line[1], lc.line[2], lc.line[3], lineType, lc, status)
+      this.modifyLine(lineData?.obj, lc.line[0], lc.line[1], lc.line[2], lc.line[3], lineType, lc, status, edge)
       avalibleLines?.remove(avalibleCount-1)
 
       local modifiedLines = this.getAddedLinesByType(containerIndex,lineType)
@@ -351,25 +352,25 @@ let ShopLines = class {
     this.addToLineData(containerIndex, lineType, lineObj)
   }
 
-  function addAlarmIcon(handler, arrowsContainer, lineType, containerIndex, lc) {
-    let alarmBlk = this.createAlarmIcon(lineType, lc.line[0], lc.line[1], lc.line[2], lc.line[3], lc)
+  function addAlarmIcon(handler, arrowsContainer, lineType, containerIndex, lc, edge = "no") {
+    let alarmBlk = this.createAlarmIcon(lineType, lc.line[0], lc.line[1], lc.line[2], lc.line[3], lc, edge)
     handler.guiScene.appendWithBlk(arrowsContainer, alarmBlk, this)
     let lineObj = arrowsContainer.findObject($"line_{this.lastLineIndex}")
     this.addToLineData(containerIndex, lineType, lineObj)
   }
 
-  function modifyOrAddLine(handler, arrowsContainer, containerIndex, lc, status) {
+  function modifyOrAddLine(handler, arrowsContainer, containerIndex, lc, status, edge = "no") {
     let { air = null, reqAir = null } = lc
 
     let lineType = getLineType(lc.line[0], lc.line[1], lc.line[2], lc.line[3], lc)
-    if (!this.tryModifyLine(containerIndex, lineType, lc, status))
+    if (!this.tryModifyLine(containerIndex, lineType, lc, status, edge))
       this.addLine(handler, arrowsContainer, lineType, containerIndex, lc, status)
 
     let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
     if (isFutureReqAir) {
       let alarmIconType = $"alarmIcon_{lineType}"
-      if (!this.tryModifyLine(containerIndex, alarmIconType, lc, status)) {
-        this.addAlarmIcon(handler, arrowsContainer, alarmIconType, containerIndex, lc)
+      if (!this.tryModifyLine(containerIndex, alarmIconType, lc, status, edge)) {
+        this.addAlarmIcon(handler, arrowsContainer, alarmIconType, containerIndex, lc, edge)
       }
     }
   }

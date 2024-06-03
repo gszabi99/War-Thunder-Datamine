@@ -1143,6 +1143,13 @@ crewInfoExpBlock > shopItemText {
   css-hier-invalidate:yes;
 }
 
+extraInfoVertSeparator {
+  background-color:@extraInfoBlockBorderColor;
+  size:@sf/@pf, ph-6@sf/@pf;
+  pos:0, ph/2-h/2;
+  position:absolute;
+}
+
 text[crewStatus=show], textareaNoTab[crewStatus=show], textAreaCentered[crewStatus=show],
 shopItem[crewStatus=show] > extraInfoBlock > crewInfoExpBlock > shopItemText {
   color:@crewSkillsText_show;

@@ -4,7 +4,7 @@ let isObservable = @(v) type(v)=="instance" && v instanceof Watched
 let isComputed = @(v) type(v)=="instance" && v instanceof Computed
 
 function watchedTable2TableOfWatched(state, fieldsList = null) {
-  assert(state instanceof Watched, "state has to be Watched")
+  assert(isObservable(state), "state has to be Watched")
   let list = fieldsList ?? state.value
   assert(type(list) == "table", "fieldsList should be provided as table")
   return list.map(@(_, key) Computed(@() state.value[key]))
