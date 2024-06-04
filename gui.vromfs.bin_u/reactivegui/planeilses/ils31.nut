@@ -577,9 +577,14 @@ let radar = @() {
         [VECTOR_LINE, 60, 0, 60, 100]
       ]
     }),
-    radarType,
-    radarReticle,
+    radarType
   ] : null
+}
+
+let radarReticlWrap = @(){
+  watch = IsRadarVisible
+  size = flex()
+  children = IsRadarVisible.get() ? radarReticle : null
 }
 
 function getRadarMode() {
@@ -916,7 +921,8 @@ function Ils31(width, height) {
       atgmGrid(width, height),
       (HasTargetTracker.value ? tvMode : null),
       laserMode,
-      bombingStabMark
+      bombingStabMark,
+      radarReticlWrap
     ]
   }
 }

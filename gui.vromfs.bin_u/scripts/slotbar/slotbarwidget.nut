@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, get_player_unit_name, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen
+from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, get_player_unit_name, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen, get_spare_aircrafts_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/mainConsts.nut" import SEEN
@@ -1287,6 +1287,18 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventUnitRepaired(params) {
     this.updateSlotsStatuses(this.getSlotsData(params?.unit.name))
   }
+
+  function updateSpareCount(unitName) {
+    let spareCountObj = this.getSlotsData(unitName)?[0].obj.findObject("spareCount")
+    if (!spareCountObj?.isValid())
+      return
+
+    let spareCount = get_spare_aircrafts_count(unitName)
+    spareCountObj.text = $"{spareCount}{loc("icon/spare")}"
+  }
+
+  onEventUniversalSpareActivated = @(p) this.updateSpareCount(p.unit.name)
+  onEventSparePurchased = @(p) this.updateSpareCount(p.unit.name)
 
   function onEventAutorefillChanged(params) {
     if (!("id" in params) || !("value" in params))

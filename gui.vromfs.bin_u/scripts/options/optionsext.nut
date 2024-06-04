@@ -2238,6 +2238,12 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
   },
+  [USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG] = function(_optionId, descr, _context) {
+    descr.id = "hud_show_death_reason_in_ship_killlog"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.defaultValue = true
+  },
   [USEROPT_HUD_VISIBLE_CHAT_PLACE] = function(_optionId, descr, _context) {
     descr.id = "hud_vis_part_chat_place"
     descr.controlType = optionControlType.CHECKBOX
@@ -4953,6 +4959,7 @@ let optionsSetMap = {
   [USEROPT_HUD_SHOW_NAMES_IN_KILLLOG] = set_useropt_landing_mode,
   [USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG] = def_set_gui_option,
   [USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG] = def_set_gui_option,
+  [USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG] = def_set_gui_option,
   [USEROPT_HUD_VISIBLE_CHAT_PLACE] = set_useropt_landing_mode,
   [USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES] = set_useropt_landing_mode,
   [USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES] = set_useropt_landing_mode,

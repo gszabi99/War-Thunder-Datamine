@@ -74,7 +74,7 @@ let emptyPlayerData = {
   isLocal = false
   isInHeroSquad = false
   squadId = INVALID_SQUAD_ID
-  userId = ""
+  userId = null
 }
 
 // This is a cache object.
@@ -955,12 +955,12 @@ function onChangeOrderVisibility(_obj, _dt) {
 }
 
 eventToHandlerMap.__update({
-  LobbyStatusChange = onEventLobbyStatusChange
-  OrderUpdated = onEventOrderUpdated
-  OrderVisibility = onChangeOrderVisibility
-  WatchedHeroSwitched = onEventWatchedHeroSwitched
-  ChangedCursorVisibility = onEventChangedCursorVisibility
-  ActiveOrderChanged = onEventActiveOrderChanged
+  onEventLobbyStatusChange
+  onEventOrderUpdated
+  onEventOrderVisibility = onChangeOrderVisibility
+  onEventWatchedHeroSwitched
+  onEventChangedCursorVisibility
+  onEventActiveOrderChanged
 })
 
 function enableOrders(statusObj) {

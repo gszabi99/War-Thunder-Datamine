@@ -31,6 +31,8 @@ local dictAsian = {
   badsegments     = null
 }
 
+local pendingDict = null
+
 let toRegexpFunc = {
   default = @(str) regexp2(str)
   badcombination = @(str) regexp2("".concat("(", "\\s".join(str.split(" ").filter(@(w) w != "")), ")"))
@@ -39,17 +41,20 @@ let toRegexpFunc = {
 // Collect language tables
 local function init(langSources) {
   let myLocation = getCountryCode()
+  let isMyLocationKnown = myLocation != "" // is true only after login
   foreach (varName, _val in dict) {
     dict[varName] = []
     let mkRegexp = toRegexpFunc?[varName] ?? toRegexpFunc.default
     foreach (source in langSources) {
       foreach (_i, vSrc in (source?[varName] ?? [])) {
         local v
+        local hasRegion = false
         let tVSrc = type(vSrc)
         if (tVSrc == "string")
           v = mkRegexp(vSrc)
         else if (tVSrc == "table") {
-          if (("region" in vSrc) && !vSrc.region.contains(myLocation))
+          hasRegion = "region" in vSrc
+          if (hasRegion && isMyLocationKnown && !vSrc.region.contains(myLocation))
             continue
           v = clone vSrc
           if ("value" in v)
@@ -59,7 +64,16 @@ local function init(langSources) {
          }
         else
           assert(false, "Wrong var type in DirtyWordsFilter config")
-        dict[varName].append(v)
+
+        let isPending = hasRegion && !isMyLocationKnown
+        if (!isPending)
+          dict[varName].append(v)
+        else {
+          pendingDict = pendingDict ?? {}
+          if (varName not in pendingDict)
+            pendingDict[varName] <- []
+          pendingDict[varName].append(v)
+        }
       }
     }
   }
@@ -82,6 +96,19 @@ local function init(langSources) {
 
   foreach (source in langSources)
     source.clear()
+}
+
+function continueInitAfterLogin() {
+  if (pendingDict == null)
+    return
+  let myLocation = getCountryCode()
+  if (myLocation == "")
+    return
+  foreach (varName, val in pendingDict)
+    foreach (v in val)
+      if (v.region.contains(myLocation))
+        dict[varName].append(v)
+  pendingDict = null
 }
 
 local alphabet = {
@@ -339,6 +366,7 @@ function debugDirtyWordsFilter(text, temporaryDebugLogFunc) {
 
 return {
   init
+  continueInitAfterLogin
   checkPhrase
   isPhrasePassing
   setDebugLogFunc

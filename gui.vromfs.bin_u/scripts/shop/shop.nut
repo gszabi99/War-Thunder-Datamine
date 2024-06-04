@@ -333,7 +333,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local tableIndex = 0
     local maxCellY = 0
-    let ranksCount = cellsByRanks.len()-1
     for (local rank = 0; rank <= this.maxRank; rank++) {
       if (!(rank in cellsByRanks))
         continue
@@ -378,7 +377,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       rankTable.show(true)
       rankTable.enable(true)
-      rankTable.findObject("bottom_horizontal_line").show(rank == ranksCount)
+      rankTable.findObject("bottom_horizontal_line").show(rank == this.maxRank)
 
       let arrowsContainer = rankTable.findObject("arrows_container")
       arrowsContainer.size = $"{totalWidth}@shop_width, ph"
@@ -455,14 +454,15 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (idx < childCount) {
           let params = this.getUnitItemParams(unit?.unitOrGroup)
           let statusTable = getStatusTbl(unit?.unitOrGroup, params)
-          if (!unit.unitOrGroup?.isFakeUnit || unit.unitOrGroup?.rank == null){
+          if (unit.unitOrGroup?.rank != null){
             let cachedStatuses = unit.posX >= this.cachedPremiumSectionPos
               ? this.cachedPremiumUnitsStatusByRanks
               : this.cachedUnitsStatusByRanks
 
-            if (!cachedStatuses?[unit.unitOrGroup.rank])
-              cachedStatuses[unit.unitOrGroup.rank] <- []
-            cachedStatuses[unit.unitOrGroup.rank].append(statusTable)
+            let rankNum = unit?.unitOrGroup?.isFakeUnit ? 0 : unit.unitOrGroup.rank
+            if (!cachedStatuses?[rankNum])
+              cachedStatuses[rankNum] <- []
+            cachedStatuses[rankNum].append(statusTable)
           }
           this.updateUnitCell(cellsContainer.getChild(idx), unit?.unitOrGroup, params, statusTable)
         }
@@ -504,9 +504,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let treeData = this.getCurTreeData()
     this.brokenList = []
-
-    this.guiScene.setUpdatesEnabled(false, false);
-
     let cellsList = []
     local maxCols = -1
     foreach (row, rowArr in treeData.tree)
@@ -542,14 +539,17 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let totalWidth = this.guiScene.calcString(widthStr, null)
     let itemWidth = this.guiScene.calcString("@shop_width", null)
     this.extraWidth = max(0, totalWidth - (itemWidth * treeData.sectionsPos[treeData.sectionsPos.len() - 1])) / 2
-
     let containersWidth = treeData.sectionsPos[treeData.sectionsPos.len()-1] - treeData.sectionsPos[0]
     this.cachedPremiumSectionPos = treeData.sectionsPos?[1] ?? treeData.sectionsPos[treeData.sectionsPos.len()-1]
+
+    this.guiScene.setUpdatesEnabled(false, false);
+
     this.initUnitCells(tableObj, containersWidth)
     this.updateCurUnitsList()
     this.fillBGLines(treeData)
     this.generateTierCollapsedIcons()
-    this.updateExpandAllBtnsState()
+
+    this.guiScene.setUpdatesEnabled(true, true)
 
     let armyRankCollapsedData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
     for (local i = 0; i < this.maxRank; i++) {
@@ -563,6 +563,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       this.collapseCellsContainer(collapseParams, rankTable)
     }
+    this.updateExpandAllBtnsState()
 
     local curIdx = -1
     foreach (idx, unit in this.curUnitsList) {
@@ -573,7 +574,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.brokenList.append(unit) //fix me: we can update it together with update units instead of fill all
     }
 
-    this.guiScene.setUpdatesEnabled(true, true)
     let cellData = this.getCellDataByThreeIdx(curIdx)
     if (cellData == null)
       return
@@ -967,18 +967,18 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         for (local i = 0; i < len; i++)
           if (discounts[i].discount == status.discount) {
             discounts[i].count++
-            discounts[i].unitsNames = "".concat(discounts[i].unitsNames, "\n\r", status.nameText)
+            discounts[i].unitsNames = "".concat(discounts[i].unitsNames, "\n* ", status.nameText)
             discountAdded = true
             break
           }
         if (!discountAdded)
-          discounts.append({discount = status.discount, count = 1, unitsNames = $"{loc("discount/notification")} \n\r {status.nameText}"})
+          discounts.append({discount = status.discount, count = 1, unitsNames = $"{loc("discount/notification")}\n* {status.nameText}"})
       }
-      if (status.hasObjective) {
+      if (status?.hasObjective) {
         data.objectivesCount++
         data.objectivesUnits = data.objectivesCount == 1
-          ? "".concat(loc("mainmenu/objectiveAvailable"), "\n\r", status.nameText)
-          : $"{data.objectivesUnits}, {status.nameText}"
+          ? "".concat(loc("mainmenu/objectiveAvailable"), "\n* ", status.nameText)
+          : $"{data.objectivesUnits}\n* {status.nameText}"
       }
     }
   }
@@ -2363,17 +2363,21 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         alarmIcon.show(!needCollapse)
     }
 
+    if (needCollapse || isInstant || needForceUpdate)
+      this.updateNextRankAlarmIcons(containerIndex, needCollapse)
+  }
+
+  function updateNextRankAlarmIcons(containerIndex, isCollapsed) {
     let nextRanTable = this.getRankTable(this.getTableObj(), containerIndex + 1)
     if (nextRanTable != null) {
-      alarmsIcons = this.linesGenerator.getAddedLinesByType(containerIndex + 1, "alarmIcon_vertical")
+      let alarmsIcons = this.linesGenerator.getAddedLinesByType(containerIndex + 1, "alarmIcon_vertical")
       foreach (data in alarmsIcons) {
         let alarmIcon = data.obj
         if (alarmIcon.onEdge == "top")
-          alarmIcon.show(!needCollapse)
+          alarmIcon.show(!isCollapsed)
       }
     }
   }
-
 
   function updateExpandAllBtnsState() {
     let tableObj = this.getTableObj()
@@ -2381,7 +2385,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local isAllCollapsed = true
     local isAllExpanded = true
     for (local i = 0; i < this.maxRank; i++) {
-      if (this.getRankTable(tableObj, i) == null)
+      let rankTable = this.getRankTable(tableObj, i)
+      if (rankTable == null || !rankTable.isVisible())
         break
       let rankIsCollapsed = armyData?[$"{i}"] ?? false
       isAllExpanded = isAllExpanded && !rankIsCollapsed
@@ -2392,9 +2397,11 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRankAnimFinish(rankTable) {
-    if (rankTable.isCollapsed == "no") {
+    let isCollapseAnim = rankTable.isCollapsed == "yes"
+    if (!isCollapseAnim) {
       let fadesContainer = rankTable.findObject("fades")
       fadesContainer.show(false)
+      this.updateNextRankAlarmIcons(to_integer_safe(rankTable.containerIndex), isCollapseAnim)
     }
   }
 

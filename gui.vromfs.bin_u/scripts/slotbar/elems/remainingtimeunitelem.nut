@@ -116,10 +116,10 @@ elemViewType.addTypes({
             || isUnitGift(promUnit.unit)
             || promUnit.unit?.isSquadronVehicle?()))
           continue
-
+        let unitName = loc($"{promUnit.unit.name}_shop")
         unitsNames = unitsNames == ""
-          ? "".concat(loc("mainmenu/promoteUnit"), "\n\r", promUnit.unit.name)
-          : $"{unitsNames}, {promUnit.unit.name}"
+          ? "".concat(loc("mainmenu/promoteUnit"), "\n* ", unitName)
+          : $"{unitsNames}\n* {unitName}"
 
         count++
       }

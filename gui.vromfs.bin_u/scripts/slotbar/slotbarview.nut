@@ -129,10 +129,11 @@ function getUnitSlotPriceText(unit, params) {
 
       let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
       if (reqUnitSpawnScore > 0 && totalSpawnScore > -1) {
-        local spawnScoreText = reqUnitSpawnScore
+        local spawnScoreText = loc("shop/spawnScore", { cost = reqUnitSpawnScore })
         if (reqUnitSpawnScore > totalSpawnScore)
-          spawnScoreText = $"<color=@badTextColor>{reqUnitSpawnScore}</color>"
-        txtList.append(loc("shop/spawnScore", { cost = spawnScoreText }))
+          txtList.append(colorize("badTextColor", spawnScoreText))
+        else
+          txtList.append(spawnScoreText)
       }
 
       let reqUnitSpawnRageTokens = missionRules?.getUnitSpawnRageTokens(unit) ?? 0
@@ -634,7 +635,7 @@ function buildCommonUnitSlot(id, unit, params) {
     crewSpecIcon = crewSpec.trainedIcon
     crewStatus = getCrewStatus(crew, unitForCrewInfo)
     hasCrewIdInfo = true
-    crewNum = $"{loc("ui/number_sign")}{crew.idInCountry + 1}"
+    crewNum = $"{crew.idInCountry + 1}"
     crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
     crewSpecializationLabel = hasUnit ? $"{loc("crew/trained")}{loc("ui/colon")}" : ""
     crewSpecializationIcon = hasUnit ? crewSpec.trainedIcon : ""
@@ -644,12 +645,21 @@ function buildCommonUnitSlot(id, unit, params) {
   } : {}
 
   let priceText = getUnitSlotPriceText(unit, params.__merge({crew}))
-  let additionalRespawns = (showAdditionExtraInfo && missionRules?.needLeftRespawnOnSlots == true)
-    ? $"{missionRules.getUnitLeftRespawns(unit)}/{missionRules.getUnitInitialRespawns(unit)}"
-    : ""
-  let hasAdditionalRespawns = additionalRespawns != "" && missionRules.getUnitInitialRespawns(unit) > 0
+
+  local additionalRespawns = ""
+  if (showAdditionExtraInfo && missionRules?.needLeftRespawnOnSlots == true) {
+    let unitTypeIcon = unit.unitType.fontIcon
+    let respawnsLeft = missionRules.getUnitLeftRespawns(unit)
+    let respawnsInitial = missionRules.getUnitInitialRespawns(unit)
+    if (respawnsInitial > 0)
+      additionalRespawns = $"{unitTypeIcon}{respawnsLeft}/{respawnsInitial}"
+    if (additionalRespawns != "" && respawnsLeft == 0)
+      additionalRespawns = colorize("badTextColor", additionalRespawns)
+  }
+
+  let hasAdditionalRespawns = additionalRespawns != ""
   let hasPriceText = showAdditionExtraInfo && priceText != ""
-  let hasSpareCount = !showAdditionExtraInfo || (!hasAdditionalRespawns && !hasPriceText)
+  let hasSpareCount = (spareCount > 0) && (!missionRules || missionRules.isAllowSpareInMission())
 
   let extraInfoTopView = {
     hasExtraInfoBlockTop
@@ -658,7 +668,7 @@ function buildCommonUnitSlot(id, unit, params) {
     additionalRespawns
     priceText
     hasSpareCount
-    spareCount = spareCount > 0 ? $"{spareCount}{loc("icon/spare")}" : loc("ui/minus")
+    spareCount = hasSpareCount ? $"{spareCount}{loc("icon/spare")}" : ""
   }
 
   if (specType) {

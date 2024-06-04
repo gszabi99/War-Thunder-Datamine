@@ -63,7 +63,7 @@ let UniversalSpare = class (BaseItemModClass) {
     let successCb = function() {
       if (extSuccessCb)
         extSuccessCb()
-      broadcastEvent("UniversalSpareActivated")
+      broadcastEvent("UniversalSpareActivated", { unit })
     }
 
     let blk = DataBlock()

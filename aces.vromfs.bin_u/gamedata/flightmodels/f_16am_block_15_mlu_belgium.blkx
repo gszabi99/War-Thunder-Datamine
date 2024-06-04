@@ -11,9 +11,38 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
+  "laserDesignator": true,
+  "needTpsNightVision": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "ilsElbit967": true,
+  "hmdF16c": true,
+  "hasHelmetDesignator": true,
+  "helmetDesignatorZone0": [
+    -40.0,
+    -50.0,
+    50.0
+  ],
+  "helmetDesignatorZone1": [
+    -20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone2": [
+    0.0,
+    -15.0,
+    50.0
+  ],
+  "helmetDesignatorZone3": [
+    20.0,
+    -30.0,
+    50.0
+  ],
+  "helmetDesignatorZone4": [
+    40.0,
+    -50.0,
+    50.0
+  ],
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
@@ -2015,10 +2044,21 @@
     }
   },
   "cockpit": {
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
+    "targetingPodFov": [
+      12.0,
+      3.2
+    ],
+    "sightInFov": 12.299,
+    "sightOutFov": 12.299,
     "sightFov": 1.0,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
+    "hmdEnabledByDefault": true,
     "headPos": [
       4.25,
       0.85,
@@ -2466,25 +2506,54 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_alr_56m.blk"
+        "blk": "gameData/sensors/bl_carapace.blk"
+      },
+      {
+        "blk": "gameData/sensors/tv_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic1_gun"
       }
     ]
   },
   "gunnerOpticFps": {
-    "pos": [
-      2.6,
-      -0.15,
-      0.0
-    ],
-    "head": "optic1_turret",
-    "crosshairPreset": "test_crosshair",
-    "angularLimits": [
-      -20.0,
-      20.0,
-      -20.0,
-      20.0
-    ],
-    "opticType": "tv"
+    "TV": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0
+    },
+    "Target": {
+      "pos": [
+        1.0,
+        -0.2,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -90.0,
+        90.0,
+        -155.0,
+        35.0
+      ],
+      "opticType": "targeting",
+      "turretNo": 0,
+      "nvIndex": 1
+    }
   },
   "commonWeapons": {
     "Weapon": {
@@ -2513,6 +2582,10 @@
       {
         "name": "f_16am_block_15_mlu_belgium_aim_9m",
         "blk": "gameData/FlightModels/weaponPresets/f_16am_block_15_mlu_belgium_aim_9m.blk"
+      },
+      {
+        "name": "f_16am_block_15_mlu_belgium_aim_7m",
+        "blk": "gameData/FlightModels/weaponPresets/f_16am_block_15_mlu_belgium_aim_7m.blk"
       },
       {
         "name": "f_16am_block_15_mlu_belgium_aim_120a",
@@ -2684,6 +2757,34 @@
               "turret": {
                 "head": "optic1_turret",
                 "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
                 "mainTurret": true
               },
               "limits": {

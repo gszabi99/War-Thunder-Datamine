@@ -2,7 +2,9 @@ from "modules" import on_module_unload
 from "nestdb" import ndbRead, ndbWrite, ndbDelete, ndbExists
 from "eventbus" import eventbus_send_foreign, eventbus_subscribe
 from "dagor.debug" import logerr
-from "json" import parse_json_from_zstd_stream, object_to_zstd_json
+// Disabled due to bug in zstd streaming decompression
+//from "json" import parse_json_from_zstd_stream, object_to_zstd_json
+from "json" import parse_json, object_to_json_string
 from "dagor.memtrace" import is_quirrel_object_larger_than, set_huge_alloc_threshold
 from "dagor.time" import get_time_msec
 
@@ -21,7 +23,7 @@ let registered = {}
 function readNewData(name){
   if (name in registered) {
     let {key, watched} = registered[name]
-    watched(ndbRead(key))
+    watched.set(ndbRead(key))
   }
 //  else
 //    println($"requested data for unknown subscriber '{name}'")
@@ -43,7 +45,7 @@ function globalWatched(name, ctor=null) {
   registered[name] <- {key, watched=res}
   function update(value) {
     ndbWrite(key, value)
-    res(value)
+    res.set(value)
     eventbus_send_foreign(EVT_NEW_DATA, name)
   }
   res.whiteListMutatorClosure(readNewData)
@@ -84,6 +86,7 @@ on_module_unload(function(is_closing) {
   else if (is_closing) {
     print("Scripts unloading for hard reload, writing PersistentOnReload data")
     foreach (key, val in persistOnHardReloadData) {
+      let prevAllocThreshold = set_huge_alloc_threshold(66560 << 10)
       try {
         local is_big_data = false
         local info = ""
@@ -101,10 +104,14 @@ on_module_unload(function(is_closing) {
 
         local data
         if (is_big_data) {
+          // Disabled due to bug in zstd streaming compression
+          /*
           let t0 = get_time_msec()
           data = object_to_zstd_json(val)
           let t1 = get_time_msec()
           println($"json for {key} zstd-compressed in {t1-t0} ms")
+          */
+          data = object_to_json_string(val, false)
         }
         else
           data = val
@@ -116,6 +123,7 @@ on_module_unload(function(is_closing) {
         println(e)
         logerr($"ERROR: on hard reload storage save: {key}")
       }
+      set_huge_alloc_threshold(prevAllocThreshold)
     }
   }
   else {
@@ -142,15 +150,19 @@ function hardPersistWatched(key, def=null, store_as_big_data = null) {
       ndbDelete(ndbKey)
   }
   else if (isInNdb) { //on hard reload
-    let stored = ndbRead(ndbKey)
     let prevAllocThreshold = set_huge_alloc_threshold(66560 << 10)
+    let stored = ndbRead(ndbKey)
     try {
       let {is_big_data=null, data=null} = stored
       if (is_big_data) {
+        // Disabled due to bug in zstd streaming decompression
+        /*
         let t0 = get_time_msec()
         val = parse_json_from_zstd_stream(data)
         let t1 = get_time_msec()
         println($"json for {key} zstd-decompressed in {t1-t0} ms")
+        */
+        val = parse_json(data)
 
         //let size0 = get_quirrel_object_size(val).size
         let t3 = get_time_msec()

@@ -313,9 +313,7 @@ shopAirImg {
 [shopStat=disabled] > shopAirImg{
   foreground-color:@shopItemDisabled;
 }
-:hover > shopAirImg {
-  foreground-color:@shopItemNotPurchasedHover;
-}
+
 [shopStat=locked] > shopAirImg{
   foreground-color:@shopUnitLocked;
 }
@@ -329,9 +327,6 @@ shopAirImg {
 }
 [isPkgDev=yes][shopStat=disabled] > shopAirImg{
   background-color:@shopItemDisabled;
-}
-[isPkgDev=yes]:hover > shopAirImg {
-  background-color:@shopItemNotPurchasedHover;
 }
 [isPkgDev=yes][shopStat=locked] > shopAirImg{
   background-color:@shopUnitLocked;
@@ -1533,9 +1528,15 @@ shopCollapsedButton > img {
   background-svg-size:16@sf/@pf, 10@sf/@pf;
 }
 
+shopCollapsedButton[text=""] {
+  padding-right:0;
+  width:16@sf/@pf;
+}
+
 shopCollapsedButton[text=""] > img {
   left:(pw-w)/2;
 }
+
 
 shopCollapsedButton:hover {
   color:#FFFFFF;
@@ -1608,6 +1609,7 @@ shopCollapsedDiscountIcon {
   textShade:yes;
 }
 
-shopRankTable[isCollapsed="yes"] markerContainer{
+shopRankTable[isCollapsed="yes"] remainingTimeUnitCellMarker,
+shopRankTable[isCollapsed="yes"] markerContainer {
   display:hide;
 }

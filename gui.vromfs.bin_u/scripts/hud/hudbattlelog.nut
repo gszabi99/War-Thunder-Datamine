@@ -15,9 +15,11 @@ let { eventbus_send } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
 let { get_mission_time, get_mplayer_by_id, get_local_mplayer } = require("mission")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
-  USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG
+  USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG,
+  USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG
 } = require("%scripts/options/optionsExtNames.nut")
 let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { isShipBattle } = require("%scripts/missions/missionType.nut")
 
 enum BATTLE_LOG_FILTER {
   HERO      = 0x0001
@@ -28,6 +30,18 @@ enum BATTLE_LOG_FILTER {
 
   SQUAD     = 0x0003
   ALL       = 0x001F
+}
+
+let iconByDeathReason = {
+  [DR_SHIP_CREW_DEATH] = "◙",
+  [DR_AMMO_EXPLOSION] = "◚",
+  [DR_AMMO_FIRE] = "◛",
+  [DR_SHIP_BURN] = "◜",
+  [DR_DROWN] = "◝",
+  [DR_SHIP_HULL_DESTRUCTION] = "◞",
+  [DR_SHIP_TORPEDO_HIT] = "◟",
+  [DR_SHIP_MINE_HIT] = "◠",
+  [DR_UNKNOWN] = "⋙",
 }
 
 function getActionColor(isKill, isLoss) {
@@ -371,6 +385,12 @@ let HudBattleLog = {
   }
 
   function getActionTextIconic(msg) {
+    let actionColor = (msg?.isKill ?? true) ? "userlogColoredText" : "silver"
+    if(isShipBattle() && ::get_gui_option_in_mode(USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)) {
+      let deathReasonIcon = iconByDeathReason?[msg?.deathReason ?? DR_UNKNOWN] ?? iconByDeathReason[DR_UNKNOWN]
+      return colorize(actionColor, deathReasonIcon)
+    }
+
     let msgAction = msg?.action ?? "kill"
     local iconId = msgAction
     if (msgAction == "kill")
@@ -378,7 +398,6 @@ let HudBattleLog = {
     if (msgAction == "kill" || msgAction == "crash")
       iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, true))
     let icon = loc($"icon/hud_msg_mp_dmg/{iconId}")
-    let actionColor = (msg?.isKill ?? true) ? "userlogColoredText" : "silver"
 
     let killerProjectileKey = msg?.killerProjectileName ?? ""
     if (killerProjectileKey == "")

@@ -111,31 +111,46 @@ function generate_unique_id() {
 }
 
 
-function bqSendStart() {  // NOTE: call after 'reset PlayerProfile' in log
-  if (bqStat.sendStartOnce)
-    return
-
+function bqSendNoAuth(event, start = false) {  // NOTE: call after 'reset PlayerProfile' in log
   local blk = get_common_local_settings_blk()
+  local save = false
 
   if ("uniqueId" not in blk || type(blk.uniqueId) != "string" || blk.uniqueId.len() < 16) {
     blk.uniqueId <- generate_unique_id()
     assert(blk.uniqueId.len() == 16)
+    save = true
   }
 
   if ("runCount" not in blk || type(blk.runCount) != "integer" || blk.runCount < 0) {
     blk.runCount <- 0;
+    save = true
   }
-  blk.runCount += 1
 
-  save_common_local_settings()
+  if (start)
+    blk.runCount += 1
+
+  if (start || save)
+    save_common_local_settings()
 
   local table = { "run" : blk.runCount }
   if (blk?.autologin == true)
     table.auto <- true
 
-  bq_client_no_auth("start", blk.uniqueId, table)
+  bq_client_no_auth(event, blk.uniqueId, table)
+}
 
+
+function bqSendNoAuthStart() {
+  if (bqStat.sendStartOnce)
+    return
+  bqSendNoAuth("start", true)
   bqStat.sendStartOnce = true
+}
+
+
+function bqSendNoAuthWeb(event) {
+  bqSendNoAuth(hasFeature("AllowExternalLink") ? $"web:{event}"
+                                               : $"web:{event}:disabled")
 }
 
 
@@ -156,6 +171,9 @@ function bqSendLoginState(table) {
 
 
 return {
-  bqSendStart,
+  bqSendNoAuth,
+  bqSendNoAuthStart,
+  bqSendNoAuthWeb,
+
   bqSendLoginState
 }

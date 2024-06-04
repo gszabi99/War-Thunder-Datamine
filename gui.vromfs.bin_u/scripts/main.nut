@@ -220,6 +220,7 @@ local isFullScriptsLoaded = false
   require("%scripts/slotbar/elems/remainingTimeUnitElem.nut")
   require("%scripts/bhvHangarControlTracking.nut")
   require("%scripts/hangar/hangarEvent.nut")
+  require("%scripts/dirtyWordsFilter.nut").continueInitAfterLogin()
 
   if (platform.isPlatformXboxOne)
     require("%scripts/global/xboxCallbacks.nut")

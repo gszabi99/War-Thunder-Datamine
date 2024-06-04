@@ -52,9 +52,9 @@ let planeHmd = @(width, height) function() {
 
 let pnlDistanceMeters = 100.0
 let pnlWidthPx = hdpx(1920)
-let pnlHeightPx = hdpx(1024)
+let pnlHeightPx = hdpx(1080)
 let pnlAspectRatio = pnlWidthPx / pnlHeightPx
-let pnlHeightMeters = 140.0
+let pnlHeightMeters = 80.0
 let pnlWidthMeters = pnlHeightMeters * pnlAspectRatio
 let vrHmdLayout = {
   worldAnchor   = PANEL_ANCHOR_HEAD
@@ -64,7 +64,7 @@ let vrHmdLayout = {
   canvasSize    = IPoint2(pnlWidthPx, pnlHeightPx)
 
   worldCanBePointedAt = false
-  worldBrightness = 1
+  worldBrightness = 200
   worldRenderFeatures = PANEL_RENDER_ALWAYS_ON_TOP
 
   size    = SIZE_TO_CONTENT

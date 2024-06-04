@@ -13,7 +13,7 @@ let string = require("string")
 let { HmdYaw, HmdPitch, AimLockYaw, AimLockPitch, AimLocked, ScreenFwdDirPos, TvvHMDMark,
  RocketMode, HmdTargetPosValid, HmdTargetPos, HmdGunTargeting } = require("%rGui/planeState/planeToolsState.nut")
 
-let baseColor = isInVr ? Color(0, 255, 0, 255) : Color(0, 255, 0, 10)
+let baseColor = isInVr ? Color(0, 255, 0, 30) : Color(0, 255, 0, 10)
 let baseLineWidth = floor(LINE_WIDTH + 0.5)
 let TrtModeForRpm = TrtMode[0]
 let isHoverMode = Computed(@() TrtModeForRpm.value == AirThrottleMode.CLIMB)

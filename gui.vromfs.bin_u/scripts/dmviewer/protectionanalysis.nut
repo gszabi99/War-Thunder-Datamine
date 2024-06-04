@@ -221,13 +221,6 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   onProtectionMap = @() this.buildProtectionMap()
 
   function buildCrewMap() {
-    let waitTextObj = this.scene.findObject("pa_wait_text")
-    let cbVerticalAngleObj = this.scene.findObject("checkboxVerticalAngle")
-    if (!waitTextObj?.isValid() || !cbVerticalAngleObj?.isValid())
-      return
-
-    cbVerticalAngleObj.enable = "no"
-    showObjById("pa_info_block", true)
     hangar_crew_map_update()
   }
 

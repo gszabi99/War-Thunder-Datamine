@@ -21,10 +21,10 @@ let planeMFD = @() {
   size = flex()
   children = [
     (MfdRadarEnabled.value ? radarMfd(radarPosSize, MfdRadarColor) : null),
-    (RwrForMfd.get() ? {
+    (RwrForMfd.get() && RwrScale.get() != 0.0 ? {
         rendObj = ROBJ_SOLID
-        pos = [RwrPosSize.value[0], RwrPosSize.value[1]]
-        size = [RwrPosSize.value[2], RwrPosSize.value[3]]
+        pos = [RwrPosSize.value[0] - (1.0-RwrScale.get()) * 0.5 * RwrPosSize.value[2] / RwrScale.get(), RwrPosSize.value[1] - (1.0-RwrScale.get()) * 0.5 * RwrPosSize.value[3] / RwrScale.get()]
+        size = [RwrPosSize.value[2] / RwrScale.get(), RwrPosSize.value[3] / RwrScale.get()]
         color = mfdRwrSettings.get().backgroundColor
       } : null),
     (RwrForMfd.value

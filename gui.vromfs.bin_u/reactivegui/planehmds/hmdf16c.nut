@@ -16,7 +16,7 @@ let { DistanceMax, AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDist
  AamLaunchZoneDist } = require("%rGui/radarState.nut")
 
 let baseLineWidth = floor(LINE_WIDTH + 0.5)
-let baseColor = isInVr ? Color(30, 255, 10, 255) : Color(30, 255, 10, 10)
+let baseColor = isInVr ? Color(30, 255, 10, 30) : Color(30, 255, 10, 10)
 
 let crosshair = {
   pos = [pw(50), ph(50)]

@@ -1,5 +1,6 @@
 shopRankTable {
   id:t='rank_table_<<containerId>>'
+  containerIndex:t='<<containerId>>'
   position:t='relative'
   width:t='pw'
   isCollapsed:t='no'
@@ -135,6 +136,19 @@ shopRankTable {
           text:t=''
         }
       }
+    }
+  }
+
+  shopTopUnitBonus {
+    id:t='top_units_bonus'
+    display:t='hide'
+
+    img {
+    }
+
+    topLine{
+      position:t='absolute'
+      size:t='pw, 1@slotTopLineHeight'
     }
   }
 

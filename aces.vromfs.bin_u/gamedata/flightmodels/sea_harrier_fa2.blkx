@@ -11,6 +11,7 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
+  "haveCCRPForGun": true,
   "is410SUM1Ils": true,
   "havePointOfInterestDesignator": true,
   "type": "typeFighter",
@@ -43,9 +44,6 @@
   ],
   "canTakeoffWithoutGear": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1899,6 +1897,7 @@
       3.0,
       0.3
     ],
+    "isDoubleBulletImpactLine": true,
     "mirror": true,
     "mirrorPos": [
       3.957,
@@ -2535,6 +2534,9 @@
           ],
           "page": [
             {
+              "type": "ils_duplicate"
+            },
+            {
               "type": "map"
             },
             {
@@ -2591,51 +2593,46 @@
             0.5,
             0.4
           ],
-          "page": [
-            {
-              "type": "radar",
-              "scale": 0.92,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "targetForm": "square",
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ]
-            },
-            {
-              "type": "map"
-            }
-          ]
+          "page": {
+            "type": "radar",
+            "scale": 0.92,
+            "hideBackground": true,
+            "hasAviaHorizont": true,
+            "hideBeam": false,
+            "beamShape": "caret",
+            "fontScale": 0.65,
+            "lineColor": [
+              0,
+              255,
+              7
+            ],
+            "targetForm": "square",
+            "modeColor": [
+              0,
+              255,
+              7
+            ],
+            "verAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "horAngleColor": [
+              0,
+              255,
+              7
+            ],
+            "scaleColor": [
+              0,
+              255,
+              7
+            ],
+            "targetColor": [
+              0,
+              255,
+              7
+            ]
+          }
         },
         {
           "textureArea": [
@@ -2674,30 +2671,6 @@
           }
         }
       ]
-    },
-    "digitalDevices": {
-      "MACH": {
-        "pos": [
-          0.5,
-          0.0
-        ],
-        "size": [
-          0.5,
-          0.25
-        ],
-        "color": [
-          0,
-          255,
-          0
-        ],
-        "fontSize": 120,
-        "value": "mach",
-        "format": "%.2f",
-        "padding": [
-          3.0,
-          15.0
-        ]
-      }
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -3194,6 +3167,9 @@
             "ShowNodes": {
               "node": "lau_106a_001"
             },
+            "HideNodes": {
+              "node": "fuse2"
+            },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
@@ -3292,6 +3268,9 @@
             "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": "lau_106a_002"
+            },
+            "HideNodes": {
+              "node": "fuse2"
             },
             "Weapon": {
               "trigger": "aam",

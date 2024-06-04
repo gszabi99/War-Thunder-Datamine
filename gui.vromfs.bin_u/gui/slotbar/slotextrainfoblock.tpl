@@ -60,7 +60,7 @@ extraInfoBlock {
         margin-bottom:t='4@sf/@pf'
 
         text {
-          text:t='#crew/usedSkills'
+          text:t='#crew/usedSkills/short'
           crew_data:t='yes'
         }
         activeText {
@@ -100,7 +100,7 @@ extraInfoBlock {
         smallFont:t='yes'
         margin-bottom:t='4@sf/@pf'
         text {
-          text:t='#crew/availablePoints'
+          text:t='#crew/availablePoints/short'
           crewStatus:t='<<crewStatus>>'
           crew_data:t='yes'
         }

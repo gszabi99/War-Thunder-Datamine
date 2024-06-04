@@ -21,6 +21,7 @@ g_mission_type.template <- {
   objectives   = MISSION_OBJECTIVE.KILLS_AIR_OR_TANK
   objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_GROUND | MISSION_OBJECTIVE.KILLS_TOTAL_AI
   helpBlkPath = ""
+  isShipMission = false
   filterGroup = MISSION_GROUP.OTHER
   getObjectives = function(misInfoBlk) {
     return getTblValue("isWorldWar", misInfoBlk) ? this.objectivesWw : this.objectives
@@ -177,6 +178,7 @@ enumsAddTypes(g_mission_type, {
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     filterGroup = MISSION_GROUP.DOMINATION
     helpBlkPath = "%gui/help/missionNavalDomination.blk"
+    isShipMission = true
   }
 
   N_BTTL = {  // Naval: Battle
@@ -185,6 +187,7 @@ enumsAddTypes(g_mission_type, {
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     filterGroup = MISSION_GROUP.BATTLE
     helpBlkPath = "%gui/help/missionNavalDomination.blk"
+    isShipMission = true
   }
 
   N_CONQ = {  // Naval: Conquest
@@ -193,6 +196,7 @@ enumsAddTypes(g_mission_type, {
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_TOTAL_AI | MISSION_OBJECTIVE.ZONE_CAPTURE
     filterGroup = MISSION_GROUP.CONQUEST
     helpBlkPath = "%gui/help/missionNavalDomination.blk"
+    isShipMission = true
   }
 
   N_ANNIVERSARY_EVENT = {  // todo remove after complition
@@ -201,6 +205,7 @@ enumsAddTypes(g_mission_type, {
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     filterGroup = MISSION_GROUP.CONVOY
     useControlsHelp = "IMAGE_SUBMARINE"
+    isShipMission = true
   }
 
   N_CNV = {  // Naval: Convoy
@@ -208,6 +213,7 @@ enumsAddTypes(g_mission_type, {
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     filterGroup = MISSION_GROUP.CONVOY
+    isShipMission = true
   }
 
   N_TDM = {  // Naval: Team Deathmatch
@@ -215,6 +221,7 @@ enumsAddTypes(g_mission_type, {
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.KILLS_NAVAL_AI
     filterGroup = MISSION_GROUP.DEATHMATCH
+    isShipMission = true
   }
 
   N_CTF = {  // Naval: Capture the Flag
@@ -222,6 +229,7 @@ enumsAddTypes(g_mission_type, {
     objectives = MISSION_OBJECTIVE.KILLS_NAVAL
     objectivesWw = MISSION_OBJECTIVE.KILLS_NAVAL
     filterGroup = MISSION_GROUP.CAPTURE_THE_FLAG
+    isShipMission = true
   }
 
   N_N2M = {  // Naval: Enduring Confrontation
@@ -229,6 +237,7 @@ enumsAddTypes(g_mission_type, {
     objectives = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_BOMBING
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_BOMBING
     filterGroup = MISSION_GROUP.CONFRONTATION
+    isShipMission = true
   }
 
   PVE_T = { // PvE co-op: Tank
@@ -295,4 +304,6 @@ function getMissionGroup(mission) {
   return g_mission_type.getTypeByMissionName(mission.id).filterGroup
 }
 
-return { g_mission_type, getMissionGroup, getMissionGroupName }
+let isShipBattle = @() g_mission_type.getCurrent()?.isShipMission
+
+return { g_mission_type, getMissionGroup, getMissionGroupName, isShipBattle }

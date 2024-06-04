@@ -27,7 +27,7 @@ let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { isNeedFirstCountryChoice, clearUnlockedCountries, checkUnlockedCountries,
   checkUnlockedCountriesByAirs, isFirstChoiceShown
 } = require("%scripts/firstChoice/firstChoice.nut")
-let { bqSendStart }    = require("%scripts/bigQuery/bigQueryClient.nut")
+let { bqSendNoAuthStart } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { get_meta_missions_info } = require("guiMission")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -58,7 +58,7 @@ let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null, shouldRestartPseudoThread = true})
 
 function gui_start_startscreen(_) {
-  bqSendStart()
+  bqSendNoAuthStart()
 
   log($"platformId is '{platformId }'")
   pause_game(false);

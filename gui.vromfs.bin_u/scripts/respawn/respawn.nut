@@ -15,7 +15,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toPixels, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { get_time_msec } = require("dagor.time")
 let { get_gui_option } = require("guiOptions")
 let { ceil } = require("math")
@@ -1486,7 +1485,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let infoTextsArr = []
     let costTextArr = []
     local shortCostText = "" //for slot battle button
-    local shortCostUncoloredText = ""
 
     if (this.isApplyPressed)
       this.applyText = loc("mainmenu/btnCancel")
@@ -1499,15 +1497,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       if (this.haveSlotbar) {
         if (crew != null && isRespawnWithUniversalSpare(crew, unit)) {
           shortCostText = loc("icon/universalSpare")
-          shortCostUncoloredText = loc("icon/spare")
           costTextArr.append(shortCostText)
-        }
-        let wpCost = this.getRespawnWpTotalCost()
-        if (wpCost > 0) {
-          let uncoloredCostText = Cost(wpCost).getUncoloredText()
-          shortCostText = $"{shortCostText} {uncoloredCostText}"
-          shortCostUncoloredText = $"{shortCostUncoloredText} {uncoloredCostText}"
-          costTextArr.append(uncoloredCostText)
         }
 
         if (this.missionRules.isScoreRespawnEnabled && unit) {
@@ -1539,17 +1529,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     //******************** combine final texts ********************************
 
-    local applyTextShort = this.applyText //for slot battle button
-    let comma = loc("ui/comma")
+    local battleBtnText = this.applyText //for slot battle button
 
     if (shortCostText.len()) {
       let shortToBattleText = loc("mainmenu/toBattle/short")
-      if (getStringWidthPx($"{shortToBattleText} {shortCostUncoloredText}", "fontNormalBold", this.guiScene)
-          < toPixels(this.guiScene, "1@slot_button_fullWidth"))
-        applyTextShort = $"{shortToBattleText} {shortCostText}"
-      else
-        applyTextShort = $"{shortToBattleText}<b> {shortCostText}</b>"
+      battleBtnText = $"{shortToBattleText} {shortCostText}"
     }
+
+    let comma = loc("ui/comma")
 
     let costText = comma.join(costTextArr, true)
     if (costText.len())
@@ -1569,7 +1556,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     }
 
     let slotObj = crew && getSlotObj(this.scene, crew.idCountry, crew.idInCountry)
-    let slotBtnObj = setColoredDoubleTextToButton(slotObj, "slotBtn_battle", applyTextShort)
+    let slotBtnObj = setColoredDoubleTextToButton(slotObj, "slotBtn_battle", battleBtnText)
     if (slotBtnObj) {
       slotBtnObj.isCancel = this.isApplyPressed ? "yes" : "no"
       slotBtnObj.inactiveColor = (isAvailResp && !isCrewDelayed) ? "no" : "yes"

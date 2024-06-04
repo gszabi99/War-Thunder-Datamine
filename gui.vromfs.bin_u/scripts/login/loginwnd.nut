@@ -36,6 +36,7 @@ let { get_network_block } = require("blkGetters")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running } = require("steam")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
+let { bqSendNoAuth, bqSendNoAuthWeb } = require("%scripts/bigQuery/bigQueryClient.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -524,6 +525,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     else if ( result == YU2_2STEP_AUTH) {
+      bqSendNoAuth("auth:2step")
       //error, received if user not logged, because he have 2step authorization activated
       this.check2StepAuthCode = true
       showObjById("loginbox_code_remember_this_device", true, this.scene)
@@ -542,11 +544,13 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     else if ( result == YU2_PSN_RESTRICTED) {
+      bqSendNoAuth("auth:psn_restricted")
       this.msgBox("psn_restricted", loc("yn1/login/PSN_RESTRICTED"),
          [["exit", exitGame ]], "exit")
     }
 
     else if ( result == YU2_WRONG_LOGIN || result == YU2_WRONG_PARAMETER) {
+      bqSendNoAuth(result == YU2_WRONG_LOGIN ? "auth:wrong_login" : "auth:wrong_param")
       if (this.was_using_stoken)
         return;
       ::error_message_box("yn1/connect_error", result, // auth error
@@ -558,6 +562,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     else if ( result == YU2_SSL_CACERT) {
+      bqSendNoAuth("auth:ssl_error")
       if (this.was_using_stoken)
         return;
       ::error_message_box("yn1/connect_error", result,
@@ -569,20 +574,24 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     else if ( result == YU2_DOI_INCOMPLETE) {
+      bqSendNoAuth("auth:verify_email")
       showInfoMsgBox(loc("yn1/login/DOI_INCOMPLETE"), "verification_email_to_complete")
     }
 
     else if ( result == YU2_NOT_FOUND) {
       if (!this.isGuestLogin) {
+        bqSendNoAuth("auth:not_found")
         this.showConnectionErrorMessageBox(result)
         return
       }
 
+      bqSendNoAuth("auth:not_found:guest")
       saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
       this.onGuestAuthorization()
     }
 
     else {
+      bqSendNoAuth($"auth:error:{result}")
       if (this.was_using_stoken)
         return
 
@@ -617,18 +626,24 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function onSignUp() {
-    local urlLocId
-    if (steam_is_running())
+    local urlLocId, platform = ""
+    if (steam_is_running()) {
+      platform = ":steam"
       urlLocId = "url/signUpSteam"
-    else if (isPlatformShieldTv())
+    }
+    else if (isPlatformShieldTv()) {
+      platform = ":shield_tv"
       urlLocId = "url/signUpShieldTV"
+    }
     else
       urlLocId = "url/signUp"
 
+    bqSendNoAuthWeb($"sign_up{platform}")
     openUrl(getCurCircuitOverride("signUpURL", loc(urlLocId)).subst({ distr = getDistr() }), false, false, "login_wnd")
   }
 
   function onForgetPassword() {
+    bqSendNoAuthWeb("forget_pass")
     openUrl(getCurCircuitOverride("recoveryPasswordURL", loc("url/recovery")), false, false, "login_wnd")
   }
 
@@ -679,11 +694,14 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
     log("Guest Login: check_login_pass")
+    bqSendNoAuth("guest:login")
     let result = check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
     this.proceedAuthorizationResult(result, "")
   }
 
   function onGuestAuthorization() {
+    bqSendNoAuth("guest")
+
     let guestLoginId = getGuestLoginId()
     if (guestLoginId == loadLocalSharedSettings(GUEST_LOGIN_SAVE_ID)) {
       this.guestProceedAuthorization(guestLoginId, "", true)
@@ -701,6 +719,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       owner = this
       function okFunc(nick) {
         if (!isPhrasePassing(nick)) {
+          bqSendNoAuth("guest:bad_nick")
           showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
           return
         }

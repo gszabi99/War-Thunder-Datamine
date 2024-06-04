@@ -4,7 +4,6 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gyroSight": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -23,6 +22,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
   "fightAiBehaviour": "fighter",
+  "paratrooper": "usa_irvin_i_24_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -199,22 +199,16 @@
         "hp": 68.4
       },
       "tank3_dm": {
-        "hp": 64.6
+        "hp": 75.1
       },
       "tank4_dm": {
-        "hp": 64.2
+        "hp": 75.1
       },
       "tank5_dm": {
         "hp": 60.2
       },
       "tank6_dm": {
         "hp": 59.8
-      },
-      "tank7_dm": {
-        "hp": 68.4
-      },
-      "tank8_dm": {
-        "hp": 68.4
       }
     }
   },
@@ -1207,90 +1201,6 @@
             "damage": 80.0,
             "fire": 50.0,
             "leak": 10.0
-          }
-        ]
-      },
-      {
-        "name": "tank7_dm",
-        "onHit": [
-          {
-            "fire": 0.05,
-            "leak": 0.7
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.3,
-            "leak": 0.8
-          },
-          {
-            "damage": 50.0,
-            "fire": 0.9,
-            "leak": 0.9
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 25.0,
-            "leak": 35.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 30.0
-          }
-        ]
-      },
-      {
-        "name": "tank8_dm",
-        "onHit": [
-          {
-            "fire": 0.05,
-            "leak": 0.7
-          },
-          {
-            "damage": 20.0,
-            "fire": 0.3,
-            "leak": 0.8
-          },
-          {
-            "damage": 50.0,
-            "fire": 0.9,
-            "leak": 0.9
-          },
-          {
-            "damage": 80.0,
-            "expl": 0.5,
-            "fire": 0.9,
-            "leak": 0.9
-          }
-        ],
-        "onKill": [
-          {
-            "fire": 10.0,
-            "leak": 10.0,
-            "nothing": 80.0
-          },
-          {
-            "damage": 50.0,
-            "fire": 25.0,
-            "leak": 35.0
-          },
-          {
-            "damage": 80.0,
-            "fire": 50.0,
-            "leak": 30.0
           }
         ]
       },
@@ -3667,6 +3577,28 @@
         "from": "hunter_f6_n*"
       }
     ]
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "hide": "blister2",
+    "seat": "seat_01",
+    "fxEmitter": "blister2",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

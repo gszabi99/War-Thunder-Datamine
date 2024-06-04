@@ -294,6 +294,7 @@
       "ex_armor_16_dm": {},
       "ex_armor_17_dm": {},
       "ex_armor_18_dm": {},
+      "ex_armor_26_dm": {},
       "ex_armor_r_01_dm": {
         "hidableInViewer": true
       },
@@ -476,7 +477,10 @@
       "ex_decor_09_dm": {},
       "ex_decor_10_dm": {},
       "ex_decor_11_dm": {},
-      "ex_decor_12_dm": {}
+      "ex_decor_12_dm": {},
+      "ex_decor_14_dm": {},
+      "ex_armor_body_r_01_dm": {},
+      "ex_armor_body_l_01_dm": {}
     },
     "body_shields": {
       "armorClass": "tank_structural_steel",
@@ -1092,12 +1096,7 @@
           },
           {
             "dmPart": "turret_02_front_dm",
-            "xrayTextThickness": 35.0
-          },
-          {
-            "dmPart": "turret_02_front_dm",
-            "xrayTextThickness": 15.0,
-            "xrayArmorClass": "spaced_armor_air"
+            "xrayTextThickness": 50.0
           },
           {
             "dmPart": "turret_03_front_dm",
@@ -2018,6 +2017,12 @@
         }
       },
       {
+        "name": "ex_era_hull_08_dm",
+        "onKill": {
+          "ex_armor_26_dm": 1.0
+        }
+      },
+      {
         "name": "ex_era_turret_06_dm",
         "onKill": {
           "ex_armor_r_04_dm": 1.0
@@ -2299,7 +2304,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_T_80U_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_T_80U_e1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "defaultYaw": 0.0,
@@ -2308,7 +2313,7 @@
         "breechDP": "cannon_breech_dm",
         "aimForOperatedShell": true,
         "autoLoader": true,
-        "speedYaw": 24.0,
+        "speedYaw": 40.0,
         "speedPitch": 4.4,
         "fireConeAngle": 1.0,
         "bullets": 45,
@@ -2643,28 +2648,30 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 1000.0,
-      "maxRPM": 2800.0,
-      "minRPM": 800.0,
-      "manufacturer": "hpz",
-      "model": "6td1"
+      "horsePowers": 1250.0,
+      "maxRPM": 3154.0,
+      "minRPM": 1500.0,
+      "model": "gtd_1250",
+      "type": "gasturbine"
     },
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 170000.0,
       "driveGearRadius": 0.292,
-      "mainGearRatio": 0.822,
+      "mainGearRatio": 0.795,
       "sideGearRatio": 6.25,
       "gearRatios": {
         "ratio": [
-          -14.3,
+          -6.36,
           0.0,
-          8.173,
-          4.4,
-          3.485,
-          2.787,
-          2.027,
-          1.467,
+          4.38,
+          3.5,
+          2.16,
+          1.86,
+          1.46,
+          1.3,
+          1.2,
+          1.1,
           1.0
         ]
       }
@@ -3802,7 +3809,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_T_80U_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/125mm_2A46_M1_T_80U_e1_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "defaultYaw": 0.0,
@@ -3811,7 +3818,7 @@
               "breechDP": "cannon_breech_dm",
               "aimForOperatedShell": true,
               "autoLoader": true,
-              "speedYaw": 24.0,
+              "speedYaw": 40.0,
               "speedPitch": 4.4,
               "fireConeAngle": 1.0,
               "bullets": 45,

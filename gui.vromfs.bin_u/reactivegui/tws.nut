@@ -9,6 +9,7 @@ let DataBlock = require("DataBlock")
 let { IPoint3 } = require("dagor.math")
 let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
+let { CompassValue } = require("compassState.nut")
 
 let backgroundColor = Color(0, 0, 0, 50)
 const RADAR_LINES_OPACITY = 0.42
@@ -39,6 +40,7 @@ let mfdRwrSettings = Computed(function() {
     hidePlane = false
     circleCnt = -1
     angleMarkStep = 30.0
+    hasCompass = false
   }
 
   if (BlkFileName.value == "")
@@ -70,6 +72,7 @@ let mfdRwrSettings = Computed(function() {
         hidePlane = pageBlk.getBool("hidePlaneSymbol", false)
         circleCnt = pageBlk.getInt("circleCnt", -1)
         angleMarkStep = pageBlk.getReal("angleMarkStep", 30)
+        hasCompass = pageBlk.getBool("hasCompass", false)
       }
     }
   }
@@ -230,7 +233,7 @@ let rwrBackground = @(colorWatched, scale, forMfd) function() {
 
   return res.__update({
     size = [pw(75), ph(75)]
-    pos = [pw(12), ph(12)]
+    pos = [pw(12.5), ph(12.5)]
     children = [
       createCircle(colorWatched, !IsMlwsLwsHudVisible.value, scale, false, forMfd ? mfdRwrSettings.get().circleCnt : -1)
       createAzimuthMark(colorWatched, scale, false, forMfd ? mfdRwrSettings.get().angleMarkStep : 30.0, forMfd ? mfdRwrSettings.get().circleCnt : -1)
@@ -736,6 +739,84 @@ let rwrTargetsPresenceComponent = function(colorWatched) {
   }
 }
 
+let compass = @(colorWatched, forMfd, scale, angleStep) function() {
+
+  let res = { watch = mfdRwrSettings }
+
+  if (!forMfd || !mfdRwrSettings.get().hasCompass)
+    return res
+
+  let angle = math.PI * angleStep / 180.0
+  let dashCount = 360.0 / angleStep
+
+  let commands = array(dashCount).map(@(_, i) [
+    VECTOR_LINE,
+    50 + math.cos(i * angle) * (indicatorRadius + azimuthMarkLength * 0.5),
+    50 + math.sin(i * angle) * (indicatorRadius + azimuthMarkLength * 0.5),
+    50 + math.cos(i * angle) * indicatorRadius,
+    50 + math.sin(i * angle) * indicatorRadius,
+  ])
+
+  return {
+    watch = [mfdRwrSettings, colorWatched]
+    size = [pw(75 * scale), ph(75 * scale)]
+    pos = [pw(50 - 75 * scale * 0.5), ph(50 - 75 * scale * 0.5)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = colorWatched.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = 2
+    commands
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        pos = [pw(48), ph(125)]
+        size = [pw(4), SIZE_TO_CONTENT]
+        color = mfdRwrSettings.get().textColor
+        font = Fonts.hud
+        fontSize = 20 * scale
+        text = "S"
+        halign = ALIGN_CENTER
+      }
+      {
+        rendObj = ROBJ_TEXT
+        pos = [pw(48), ph(-32)]
+        size = [pw(4), SIZE_TO_CONTENT]
+        color = mfdRwrSettings.get().textColor
+        font = Fonts.hud
+        fontSize = 20 * scale
+        text = "N"
+        halign = ALIGN_CENTER
+      }
+      {
+        rendObj = ROBJ_TEXT
+        pos = [pw(-30), ph(46)]
+        size = [SIZE_TO_CONTENT, ph(8)]
+        color = mfdRwrSettings.get().textColor
+        font = Fonts.hud
+        fontSize = 20 * scale
+        text = "W"
+        valign = ALIGN_CENTER
+      }
+      {
+        rendObj = ROBJ_TEXT
+        pos = [pw(125), ph(46)]
+        size = [SIZE_TO_CONTENT, ph(8)]
+        color = mfdRwrSettings.get().textColor
+        font = Fonts.hud
+        fontSize = 20 * scale
+        text = "E"
+        valign = ALIGN_CENTER
+      }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        rotate = CompassValue.value
+      }
+    }
+  }
+}
+
 function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon,
     needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult) {
   let lineColor = forMfd ? Watched(mfdRwrSettings.get().lineColor) : colorWatched
@@ -745,6 +826,7 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
       twsBackground(colorWatched, !needDrawCentralIcon),
       needDrawBackground ? rwrBackground(lineColor, scale, forMfd) : null,
       needDrawCentralIcon && (!forMfd || !mfdRwrSettings.get().hidePlane) ? centeredAircraftIcon(colorWatched, centralCircleSizeMult) : null,
+      compass(lineColor, forMfd, scale, mfdRwrSettings.get().angleMarkStep),
       {
         size = [pw(relativCircleRadius * scale * ratio), ph(relativCircleRadius * scale)]
         vplace = ALIGN_CENTER

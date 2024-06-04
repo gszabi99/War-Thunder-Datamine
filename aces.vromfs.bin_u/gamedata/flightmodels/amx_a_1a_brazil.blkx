@@ -15,9 +15,7 @@
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
   "ilsAmx": true,
-  "isBwOpticSight": true,
   "needTpsNightVision": true,
-  "hasOpticTurret": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -2330,7 +2328,11 @@
             {
               "type": "radar",
               "scale": 0.92,
-              "hideBackground": true
+              "hideBackground": true,
+              "offset": [
+                300,
+                0
+              ]
             },
             {
               "type": "ils_duplicate"
@@ -2492,8 +2494,7 @@
         800,
         600
       ],
-      "noiseFactor": 0.05,
-      "index": 1
+      "noiseFactor": 0.05
     }
   },
   "gunnerOpticFps": {
@@ -2512,8 +2513,7 @@
         15.0
       ],
       "opticType": "targeting",
-      "turretNo": 0,
-      "nvIndex": 1
+      "turretNo": 0
     }
   },
   "commonWeapons": {
@@ -3534,8 +3534,7 @@
               800,
               600
             ],
-            "noiseFactor": 0.05,
-            "index": 1
+            "noiseFactor": 0.05
           }
         }
       }
