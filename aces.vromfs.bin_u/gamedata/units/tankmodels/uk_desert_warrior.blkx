@@ -1762,7 +1762,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_M242_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/25mm_M242_desert_warrior_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingMesh": "auto_cannon_cartridge_case",
@@ -1783,7 +1783,7 @@
         "speedYaw": 60.0,
         "speedPitch": 60.0,
         "fireConeAngle": 1.0,
-        "bullets": 410,
+        "bullets": 400,
         "rearmCartridgeTime": 20.0,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
@@ -2997,6 +2997,53 @@
       }
     }
   ],
+  "ammoStowages": {
+    "ammo1": {
+      "removeLoadedAmmo": false,
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "replenishmentDelay": 4.0,
+      "replenishmentTime": 15.0,
+      "shells": {
+        "ammo_body_02_dm": {
+          "count": 100
+        },
+        "ammo_body_01_dm": {
+          "count": 100
+        },
+        "ammo_body_dm": {
+          "count": 200
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner2",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_body_r_01_dm": {
+            "count": 1
+          },
+          "ammo_body_l_01_dm": {
+            "count": 1
+          }
+        },
+        {
+          "ammo_body_l_02_dm": {
+            "count": 1
+          },
+          "ammo_body_r_02_dm": {
+            "count": 1
+          }
+        }
+      ]
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -3035,7 +3082,56 @@
     },
     "152mm_us_tow_2_ammo_pack": {
       "tier": 4
+    },
+    "night_vision_system": {
+      "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "tier": 2,
+      "effects": {
+        "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
+          "gunnerThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          },
+          "commanderViewIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
+    "tank_support_ucav": {
+      "effects": {
+        "allowSupportPlane": true
+      },
+      "disableModEffects": {
+        "allowSupportPlane": false
+      }
     }
+  },
+  "supportPlane": {
+    "supportPlaneClass": "ucav_recon_micro_flir",
+    "behTreeName": "recon_micro",
+    "planeStartSpeed": 80.0,
+    "count": 1
   },
   "additionalSight": {
     "fov": 12.0,

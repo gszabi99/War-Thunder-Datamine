@@ -23,6 +23,7 @@ let class DragDropMover {
     let y = my - offsetY
 
     draggingObj.pos = $"{x}, {y}"
+    obj.sendSceneEvent("move")
     return RETCODE_NOTHING
   }
 

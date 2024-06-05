@@ -41,6 +41,7 @@ extraInfoBlock {
 
   <<#hasCrewHint>>
   slotCrewHintContainer {
+    id:t='extra_info_block_crew_hint'
     slotCrewHint {
       activeText {
         id:t='crew_name'

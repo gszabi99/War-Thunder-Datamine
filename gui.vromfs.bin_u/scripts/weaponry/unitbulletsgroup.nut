@@ -12,6 +12,7 @@ let { AMMO,
         isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
+let { WEAPON_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
 
 ::BulletGroup <- class {
   unit = null
@@ -192,4 +193,11 @@ let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/opti
   function shouldHideBullet() {
     return this.gunInfo?.forcedMaxBulletsInRespawn ?? false
   }
+
+  canChangeBullet = @() this.bullets.values.len() > 1
+    && !this.isPairBulletsGroup()
+
+  isPairBulletsGroup = @() this.bullets.values.len() == 2
+    && this.bullets.weaponType == WEAPON_TYPE.COUNTERMEASURES
+    && !this.gunInfo.isBulletBelt
 }

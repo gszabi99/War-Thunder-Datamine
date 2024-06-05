@@ -53,7 +53,7 @@
     0.6,
     1.0
   ],
-  "bladeAnimVar": "t_80ud_dozer_blade_action",
+  "bladeAnimVar": "t_80ue1_dozer_blade_action",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,
@@ -230,10 +230,6 @@
         "armorThickness": 50.0,
         "variableThickness": true
       },
-      "turret_09_back_dm": {
-        "armorThickness": 30.0,
-        "createSecondaryShatters": false
-      },
       "turret_06_top_dm": {
         "armorThickness": 30.0,
         "armorClass": "RHA_tank_modern"
@@ -338,6 +334,12 @@
         "hidableInViewer": true
       },
       "ex_armor_r_07_dm": {
+        "hidableInViewer": true
+      },
+      "ex_armor_r_08_dm": {
+        "hidableInViewer": true
+      },
+      "ex_armor_r_09_dm": {
         "hidableInViewer": true
       },
       "ex_armor_11_dm": {
@@ -478,6 +480,7 @@
       "ex_decor_10_dm": {},
       "ex_decor_11_dm": {},
       "ex_decor_12_dm": {},
+      "ex_decor_13_dm": {},
       "ex_decor_14_dm": {},
       "ex_armor_body_r_01_dm": {},
       "ex_armor_body_l_01_dm": {}
@@ -489,6 +492,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
+      "turret_09_back_dm": {},
       "ex_armor_body_l_08_dm": {},
       "ex_armor_body_r_08_dm": {},
       "ex_armor_body_01_dm": {},
@@ -2568,7 +2572,7 @@
           }
         },
         "turret": {
-          "head": "bone_mg_aa_h_01",
+          "head": "bone_turret_01",
           "gun": "bone_commander_sight_v",
           "gunnerDm": "commander_dm",
           "verDriveDm": "commander_panoramic_sight_dm",
@@ -2606,9 +2610,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 44500.0,
+      "Empty": 45500.0,
       "Fuel": 1500.0,
-      "TakeOff": 46000.0,
+      "TakeOff": 47000.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -4073,7 +4077,7 @@
                 }
               },
               "turret": {
-                "head": "bone_mg_aa_h_01",
+                "head": "bone_turret_01",
                 "gun": "bone_commander_sight_v",
                 "gunnerDm": "commander_dm",
                 "verDriveDm": "commander_panoramic_sight_dm",
@@ -4155,18 +4159,18 @@
     },
     "night_vision_system": {
       "modClass": "protection",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 3,
       "turn_it_off": false,
       "effects": {
         "nightVision": {
-          "gunnerIr": {
+          "nightVisionDmPart": "fire_control_system_dm",
+          "gunnerThermal": {
             "resolution": [
-              1600,
-              1200
+              800,
+              600
             ],
-            "lightMult": 9.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
+            "noiseFactor": 0.04
           },
           "commanderViewIr": {
             "resolution": [

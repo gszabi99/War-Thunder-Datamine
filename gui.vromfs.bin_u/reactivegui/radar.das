@@ -511,14 +511,9 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
     elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON)
       if get_radar_hud_has_azimuth_scale()
         ctx |> render_ellipse_aa(pos, radius * 0.01, ctx |> hdpx(2.), e3dColor, transparentColor)
-        if target.losSpeed < 30000.
-          let losPos = origin + float2((cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002) * radius.x,
-           (sina * distanceRel + (sina * target.losSpeed - cosa * target.losHorSpeed) * 0.0002) * radius.y)
-          ctx |> set_color(e3dColor)
-          ctx |> draw_line(pos, losPos, ctx |> hdpx(2.))
 
     elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET)
-      if get_radar_hud_has_azimuth_scale()
+      if get_radar_hud_has_azimuth_scale() && !target.isAttacked
         ctx |> render_ellipse_aa(pos, radius * 0.06, ctx |> hdpx(2.), e3dColor, transparentColor)
 
     if get_radar_hud_has_azimuth_scale() && get_radar_hud_has_distance_scale()
@@ -536,13 +531,12 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
 
           ctx |> set_color(e3dColor)
           if ownWeaponLink.lockDistanceToDistance < 1.0
-            let inertialDistanceRel = 1.0 - ownWeaponLink.lockDistanceToDistance
             let direction = float2(ownWeaponTargetPos[0] - ownWeaponPos[0], ownWeaponTargetPos[1] - ownWeaponPos[1])
-            let lockPos = float2(ownWeaponPos[0] + direction[0] * inertialDistanceRel, ownWeaponPos[1] + direction[1] * inertialDistanceRel)
+            let lockPos = float2(ownWeaponPos[0] + direction[0] * ownWeaponLink.lockDistanceToDistance, ownWeaponPos[1] + direction[1] * ownWeaponLink.lockDistanceToDistance)
             ctx |> draw_line(ownWeaponPos, lockPos, ctx |> hdpx(2.))
             ctx |> render_line_dashed(lockPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
           else
-            ctx |> render_line_dashed(ownWeaponPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
+            ctx |> draw_line(ownWeaponPos, ownWeaponTargetPos, ctx |> hdpx(2.))
 
 
 def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)
@@ -1086,13 +1080,9 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
     elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON))
       if hasAzimuthScale
         ctx |> render_ellipse_aa(p, size * 0.005, ctx |> hdpx(2.), e3dColor, e3dColor)
-        if target.losSpeed < 3000.
-          let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1.- distanceRel) * size.y);
-           float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)]])
-          ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
 
     elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET))
-      if hasAzimuthScale
+      if hasAzimuthScale && !target.isAttacked
         ctx |> render_ellipse_aa(p, size * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
 
   if hasAzimuthScale && hasDistanceScale
@@ -1103,14 +1093,14 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
         let ownWeaponPos = float2(pos.x + ownWeapon.azimuthRel * size.x, pos.y + (1. - ownWeapon.distanceRel) * size.y)
         let ownWeaponTargetPos = float2(pos.x + ownWeaponTarget.azimuthRel * size.x, pos.y + (1. - ownWeaponTarget.distanceRel) * size.y)
         if ownWeaponLink.lockDistanceToDistance < 1.0
-          let inertialDistanceRel = 1.0 - ownWeaponLink.lockDistanceToDistance
           let direction = float2(ownWeaponTargetPos[0] - ownWeaponPos[0], ownWeaponTargetPos[1] - ownWeaponPos[1])
-          let lockPos = float2(ownWeaponPos[0] + direction[0] * inertialDistanceRel, ownWeaponPos[1] + direction[1] * inertialDistanceRel)
+          let lockPos = float2(ownWeaponPos[0] + direction[0] * ownWeaponLink.lockDistanceToDistance, ownWeaponPos[1] + direction[1] * ownWeaponLink.lockDistanceToDistance)
           let coord <- to_array_move([[float2[2] ownWeaponPos; lockPos]])
           ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
           ctx |> render_line_dashed(lockPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
         else
-          ctx |> render_line_dashed(ownWeaponPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
+          let coord <- to_array_move([[float2[2] ownWeaponPos; ownWeaponTargetPos]])
+          ctx |> render_line_aa(coord, false, ctx |> hdpx(2.), float2(0, 0), e3dColor)
 
 def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   if !get_radar_hud_cue_visible()

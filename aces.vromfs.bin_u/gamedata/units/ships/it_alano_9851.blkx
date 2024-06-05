@@ -38,6 +38,7 @@
   "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "shipsDisableDeadCoverParts": false,
   "canReloadNonGuns": true,
+  "supportsCombinedPriSecTriggers": true,
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -5015,17 +5016,14 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": [
-        "gunner0",
-        "gunner1"
-      ],
+      "weaponTrigger": "gunner1",
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
         "ammunition_storage_01_dm": {
-          "count": 6000
+          "count": 4000
         }
       }
     },
@@ -5043,6 +5041,7 @@
     },
     "ammo3": {
       "weaponTrigger": [
+        "gunner0",
         "gunner3",
         "gunner4",
         "gunner7",
@@ -5054,7 +5053,7 @@
         "fireEvent": "ammo_fire_3",
         "explosionEvent": "ammo_explosion_3",
         "ammunition_storage_02_dm": {
-          "count": 7600
+          "count": 9600
         }
       }
     },

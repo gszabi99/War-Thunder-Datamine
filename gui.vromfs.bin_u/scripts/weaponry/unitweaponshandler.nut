@@ -221,7 +221,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       itemWidth = itemWidth
       needSliderButtons = true
       wideItemWithSlider = itemWidth > 1
-    }
+    }.__update(this.showItemParams)
     foreach (idx, cell in cellsRow) {
       if (!cell)
         continue
@@ -265,14 +265,23 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       res.columns.append([this.getCellConfig(this.weaponItemId, ::g_weaponry_types.WEAPON.getHeader(this.unit), weaponsItem.weapon)])
 
     let groups = this.getBulletsGroups()
+    local hasPairBulletsGroup = false
     local activeGroupsId = []
     foreach (gIdx, bulGroup in groups) {
       if (!bulGroup.active || bulGroup.shouldHideBullet())
         continue
+      let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
+      if (isPairBulletsGroup && (bulGroup.bullets.value != 0))
+        continue
+      hasPairBulletsGroup = hasPairBulletsGroup || isPairBulletsGroup
       activeGroupsId.append(gIdx)
     }
-    let offset = res.columns.len() < this.modsInRow ? res.columns.len() : 0
-    let totalColumns = min(offset + activeGroupsId.len(), this.modsInRow)
+    if (hasPairBulletsGroup)
+      res.itemWidth = 1.5
+
+    let maxColumns = (this.modsInRow / res.itemWidth) || 1
+    let offset = res.columns.len() < maxColumns ? res.columns.len() : 0
+    let totalColumns = min(offset + activeGroupsId.len(), maxColumns)
     for (local i = res.columns.len(); i < totalColumns; i++)
       res.columns.append([])
 
@@ -284,7 +293,6 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), header != currHeader ? header : null, weaponsItem.modification, gIdx))
       currHeader = header
     }
-
     return res
   }
 
@@ -459,7 +467,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       this.showItemParams.visualDisabled <- !bulGroup.active
-      this.showItemParams.hasMenu <- this.canChangeWeaponry && bulGroup.bullets.values.len() > 1
+      this.showItemParams.hasMenu <- this.canChangeWeaponry && bulGroup.canChangeBullet()
       updateModItem(this.unit, bulGroup.getSelBullet(), itemObj, false, this, this.showItemParams)
     }
     this.showItemParams.visualDisabled <- false
@@ -534,7 +542,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (group.active) {
-      if (group.bullets.values.len() > 1)
+      if (group.canChangeBullet())
         this.bulletsManager.openChooseBulletsWnd(group.groupIndex, this.getSelectionItemParams(), obj)
     }
     else

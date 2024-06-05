@@ -112,6 +112,22 @@
       "ex_decor_r_02_dm": {
         "armorClass": "t_90_rubber_fabric_screens",
         "armorThickness": 8.0
+      },
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_03_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_04_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       }
     },
     "turret": {
@@ -173,34 +189,6 @@
       "optic_gun_dm": {
         "armorThickness": 10.0,
         "hp": 50.0
-      },
-      "optic_turret_01_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_02_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_03_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_04_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_05_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_06_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_07_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
       },
       "optic_body_01_dm": {
         "armorThickness": 3.0,
@@ -696,6 +684,50 @@
     "ex_armor_turret_r_02_dm": true,
     "ex_armor_turret_l_01_dm": true,
     "ex_armor_turret_l_02_dm": true
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_04_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_04_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      }
+    ]
   },
   "sound": {
     "EngineName": "engine_leo1",
@@ -1538,6 +1570,7 @@
         "jammedReloadTime": 15.0,
         "barrelDP": "gun_barrel_02_dm",
         "breechDP": "cannon_breech_02_dm",
+        "stabilizerDmPart": "fire_control_system_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
@@ -1690,6 +1723,7 @@
         "jammedReloadTime": 15.0,
         "barrelDP": "gun_barrel_01_dm",
         "breechDP": "cannon_breech_01_dm",
+        "stabilizerDmPart": "fire_control_system_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
@@ -1811,6 +1845,7 @@
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.1,
         "barrelDP": "gun_barrel_dm",
+        "breechDP": "fire_control_system_dm",
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1930,13 +1965,19 @@
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
-        "dmPart": "antenna_target_location_dm",
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ],
         "radarParkingAzimuth": 180.0
       },
       {
         "blk": "gameData/sensors/de_gepard_fr.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm"
+        "dmPart": [
+          "antenna_target_tagging_dm",
+          "electronic_equipment_dm"
+        ]
       }
     ]
   },
@@ -2771,13 +2812,19 @@
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
-              "dmPart": "antenna_target_location_dm",
+              "dmPart": [
+                "antenna_target_location_dm",
+                "electronic_equipment_dm"
+              ],
               "radarParkingAzimuth": 180.0
             },
             {
               "blk": "gameData/sensors/de_gepard_fr.blk",
               "turretIndex": 0,
-              "dmPart": "antenna_target_tagging_dm"
+              "dmPart": [
+                "antenna_target_tagging_dm",
+                "electronic_equipment_dm"
+              ]
             }
           ]
         }
@@ -2811,6 +2858,7 @@
               "jammedReloadTime": 15.0,
               "barrelDP": "gun_barrel_02_dm",
               "breechDP": "cannon_breech_02_dm",
+              "stabilizerDmPart": "fire_control_system_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
@@ -2963,6 +3011,7 @@
               "jammedReloadTime": 15.0,
               "barrelDP": "gun_barrel_01_dm",
               "breechDP": "cannon_breech_01_dm",
+              "stabilizerDmPart": "fire_control_system_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
@@ -3084,6 +3133,7 @@
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.1,
               "barrelDP": "gun_barrel_dm",
+              "breechDP": "fire_control_system_dm",
               "createGunEffects": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,

@@ -2108,7 +2108,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_italy_late_char",
+    "model": "pilot_japan_late_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2198,18 +2198,29 @@
     "nozzleAngleThreshold": 0.05
   },
   "cockpit": {
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "headPos": [
       5.945,
-      1.59,
+      1.615,
       0.0
     ],
     "headPosOnShooting": [
       6.045,
-      1.59,
+      1.615,
       0.0
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
+    "hmdEnabledByDefault": true,
     "sightInFov": 5.5,
     "sightOutFov": 5.5,
     "sightFov": 2.0,
@@ -2584,7 +2595,8 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 1.15,
+            "hidePlaneSymbol": true
           }
         },
         {

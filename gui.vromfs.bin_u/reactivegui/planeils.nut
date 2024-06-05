@@ -108,6 +108,7 @@ let ilsSetting = Computed(function() {
     isVDO = blk.getBool("ilsKaiserVDO", false)
     isKai24p = blk.getBool("ilsKai24p", false)
     isF20 = blk.getBool("ilsF20", false)
+    isChinaLang = blk.getBool("chinaLang", false)
   }
 })
 
@@ -119,7 +120,7 @@ let planeIls = @(width, height) function() {
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
-    isKai24p, isF20 } = ilsSetting.value
+    isKai24p, isF20, isChinaLang } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
@@ -154,7 +155,7 @@ let planeIls = @(width, height) function() {
       (isMig17pf ? mig17(width, height) : null),
       (isTcsfVe130 ? TCSFVE130(width, height) : null),
       (isSu145 ? SU145(width, height) : null),
-      (isIls31 ? Ils31(width, height) : null),
+      (isIls31 ? Ils31(width, height, isChinaLang) : null),
       (isMarconi ? MarconiAvionics(width, height) : null),
       (isTornado ? Tornado(width, height) : null),
       (isElbit ? Elbit(width, height) : null),

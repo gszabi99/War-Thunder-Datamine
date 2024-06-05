@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { MfdRadarColor, MfdRadarEnabled, radarPosSize } = require("radarState.nut")
 let { IsMfdEnabled, RwrScale, RwrBackHide, MfdRadarWithNavVis, MfdRadarNavPosSize,
-    MfdVdiVisible, MfdVdiPosSize, DigitalDevicesVisible, DigDevicesPosSize } = require("planeState/planeToolsState.nut")
+    MfdVdiVisible, MfdVdiPosSize, DigitalDevicesVisible, DigDevicesPosSize, MfdRwrColor } = require("planeState/planeToolsState.nut")
 let {tws, mfdRwrSettings} = require("tws.nut")
 let { RwrForMfd, RwrPosSize } = require("airState.nut")
 let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut")
@@ -29,7 +29,7 @@ let planeMFD = @() {
       } : null),
     (RwrForMfd.value
       ? tws({
-        colorWatched = MfdRadarColor,
+        colorWatched = MfdRwrColor,
         posWatched = twsPosComputed,
         sizeWatched = twsSizeComputed,
         relativCircleSize = 54,

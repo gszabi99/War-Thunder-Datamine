@@ -28,14 +28,15 @@ let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
-function getBulletsCountText(curVal, maxVal, unallocated, guns) {
+function getBulletsCountText(curVal, maxVal, unallocated, guns, forceValColor = null) {
   local restText = ""
   if (unallocated && curVal < maxVal)
     restText = colorize("userlogColoredText", format(" %s", loc("ui/parentheses",
       { text = format("+%d", guns * min(unallocated, maxVal - curVal)) })))
-  let valColor = (!curVal || maxVal == 0) ? "badTextColor"
-    : (curVal == maxVal) ? "goodTextColor"
-    : "activeTextColor"
+  let valColor = forceValColor
+    ?? ((!curVal || maxVal == 0) ? "badTextColor"
+      : (curVal == maxVal) ? "goodTextColor"
+      : "activeTextColor")
   let valText = colorize(valColor, guns * curVal)
   return format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
 }
@@ -68,6 +69,21 @@ function getItemImage(unit, item) {
   return ""
 }
 
+function getBulletImageConfig(unit, item) {
+  let bIcoItem = isBullets(item) ? item : getModifIconItem(unit, item)
+  if (bIcoItem == null)
+    return null
+
+  let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
+  if (!unit?.isTank() && bulletsSet == null) {
+    let unitName = unit.name // warning disable: -declared-never-used
+    let bulletsSetName = item.name // warning disable: -declared-never-used
+    debug_dump_stack()
+    logerr("No bullets in bullets set")
+  }
+  return { iconBulletName = bIcoItem.name, bulletImg = getBulletsIconView(bulletsSet) }
+}
+
 let getTooltipId = @(unitName, mod, params)
   mod.type == weaponsItem.weapon ? WEAPON.getTooltipId(unitName, mod.name, params)
     : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
@@ -97,6 +113,8 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     collapsable               = params?.collapsable ? "yes" : "no"
     modUpgradeIconValue       = null
     bulletImg                 = null
+    additionalWeaponryIcon    = null
+    additionalWeaponrName     = null
     tiers                     = null
     shortcutIcon              = params?.shortcutIcon
     isSelected                = params?.selected
@@ -135,6 +153,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     sliderGroupIdx            = ""
     invSliderMax              = ""
     invSliderValue            = ""
+    sliderProgressType        = "new"
     statusIconImg             = ""
     actionBtnCanShow          = ""
     actionBtnText             = ""
@@ -157,25 +176,23 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     if (!("type" in visualItem))
       visualItem.type <- weaponsItem.bundle
   }
-  res.nameText = visualItem?.customNameText ?? getModItemName(unit, visualItem, params?.limitedName ?? true)
+  let bulletsManager = params?.selectBulletsByManager
+  let bulGroup = bulletsManager?.canChangeBulletsCount() ?
+    bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
+  let isPairBulletsGroup = bulGroup?.isPairBulletsGroup() ?? false
+  if (isPairBulletsGroup) {
+    let bulletName = getBulletsSetData(unit, visualItem.name)?.bullets[0]
+    if (bulletName != null)
+      res.nameText = loc($"{bulletName}/name/short")
+  }
+  if (res.nameText == "")
+    res.nameText = visualItem?.customNameText ?? getModItemName(unit, visualItem, params?.limitedName ?? true)
   if (isBulletsWithoutTracer(unit, visualItem))
     res.nameText = $"{loc("weapon/noTracer/icon")}{res.nameText}"
   let isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
-  res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params.__merge({
-    hasPlayerInfo = (params?.hasPlayerInfo ?? true) && !isForceHidePlayerInfo
-  }))
-  let bIcoItem = isBullets(visualItem) ? visualItem : getModifIconItem(unit, visualItem)
-  if (bIcoItem) {
-    let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
-    if (!unit?.isTank() && bulletsSet == null) {
-      let unitName = unit.name // warning disable: -declared-never-used
-      let bulletsSetName = visualItem.name // warning disable: -declared-never-used
-      debug_dump_stack()
-      logerr("No bullets in bullets set")
-    }
-    res.iconBulletName = bIcoItem.name
-    res.bulletImg = getBulletsIconView(bulletsSet)
-  }
+  let bulletImageConfig = getBulletImageConfig(unit, visualItem)
+  if (bulletImageConfig != null)
+    res.__update(bulletImageConfig)
   res.itemImg = getItemImage(unit, visualItem)
   let statusTbl = getItemStatusTbl(unit, visualItem)
   let canBeDisabled = isCanBeDisabled(item)
@@ -280,27 +297,54 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   res.itemTextColor = res.isShowStatusImg ?
     "badTextColor" : res.hideWarningIcon ?
       "commonTextColor" : "warningTextColor"
-  let bulletsManager = params?.selectBulletsByManager
-  let bulGroup = bulletsManager?.canChangeBulletsCount() ?
-    bulletsManager.getBulletGroupBySelectedMod(visualItem) : null
   let hideBullets = bulGroup == null || bulGroup.gunInfo.isBulletBelt
   res.hideBulletsChoiceBlock = hideBullets
+  local pairModName = null
   if (!hideBullets) {
     let guns = bulGroup.guns
     let maxVal = bulGroup.maxBulletsCount
     let curVal = bulGroup.bulletsCount
     let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
-    res.bulletsCountText = getBulletsCountText(curVal, maxVal, unallocated, guns)
+    res.bulletsCountText = getBulletsCountText(curVal, maxVal, unallocated, guns,
+      isPairBulletsGroup ? "activeTextColor" : null)
     if (res.needSliderButtons) {
       res.decBulletsLimit = curVal != 0 ? "no" : "yes"
-      res.incBulletsLimit = (curVal != maxVal && unallocated != 0) ? "no" : "yes"
+      res.incBulletsLimit = curVal == maxVal
+        || (!isPairBulletsGroup && unallocated == 0) ? "yes" : "no"
     }
     res.sliderMax = maxVal.tostring()
     res.sliderValue = curVal
     res.sliderGroupIdx = bulGroup.groupIndex
     res.invSliderMax = maxVal.tostring()
     res.invSliderValue = curVal
+    let linkedBulGroup = !isPairBulletsGroup ? null
+      : bulletsManager.getLinkedBulletsGroup(bulGroup)
+    if (linkedBulGroup != null) {
+      res.sliderProgressType = "doubleProgress"
+      let pairVisualItem = linkedBulGroup.getSelBullet()
+      pairModName = pairVisualItem.name
+      let pairStatusTbl = getItemStatusTbl(unit, pairVisualItem)
+      let amountText = ::getAmountAndMaxAmountText(pairStatusTbl.amount,
+        pairStatusTbl.maxAmount, pairStatusTbl.showMaxAmount)
+      let amountTextColor = pairStatusTbl.amount < pairStatusTbl.amountWarningValue
+        ? "weaponWarning" : ""
+      let bulletName = getBulletsSetData(unit, pairVisualItem.name)?.bullets[0]
+      if (bulletName != null)
+        res.additionalWeaponrName = loc($"{bulletName}/name/short")
+      let additionalBulletImageConfig = getBulletImageConfig(unit, pairVisualItem)
+      if (additionalBulletImageConfig != null)
+        res.additionalWeaponryIcon = additionalBulletImageConfig.__update({
+          itemImg = ""
+          hideWarningIcon = true
+          amountText
+          amountTextColor
+        })
+    }
   }
+  res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params.__merge({
+    hasPlayerInfo = (params?.hasPlayerInfo ?? true) && !isForceHidePlayerInfo
+    pairModName
+  }))
   res.hideVisualHasMenu = !res.isBundle && !params?.hasMenu
   res.modUpgradeStatus = getItemUpgradesStatus(unit, visualItem)
   res.statusIconImg = getStatusIcon(unit, item)
@@ -462,6 +506,7 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
     let slidObj = holderObj.findObject("bulletsSlider")
     if (checkObj(slidObj)) {
       slidObj.max = viewParams.sliderMax
+      slidObj.type = viewParams.sliderProgressType
       slidObj.setValue(viewParams.sliderValue)
     }
     let invSlidObj = holderObj.findObject("invisBulletsSlider")
@@ -639,10 +684,12 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   let maxVal = bulGroup.maxBulletsCount
   let curVal = bulGroup.bulletsCount
   let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
+  let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
 
   let textObj = holderObj.findObject("bulletsCountText")
   if (checkObj(textObj))
-    textObj.setValue(getBulletsCountText(curVal, maxVal, unallocated, guns))
+    textObj.setValue(getBulletsCountText(curVal, maxVal, unallocated, guns,
+      isPairBulletsGroup ? "activeTextColor" : null))
 
   let btnDec = holderObj.findObject("buttonDec")
   if (checkObj(btnDec))
@@ -650,7 +697,8 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
 
   let btnIncr = holderObj.findObject("buttonInc")
   if (checkObj(btnIncr))
-    btnIncr.bulletsLimit = (curVal != maxVal && unallocated != 0) ? "no" : "yes"
+    btnIncr.bulletsLimit = curVal == maxVal
+      || (!isPairBulletsGroup && unallocated == 0) ? "yes" : "no"
 
   let slidObj = holderObj.findObject("bulletsSlider")
   if (checkObj(slidObj)) {

@@ -4,10 +4,9 @@ let math = require("math")
 let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargets, mlwsTargetsAgeMin, lwsTargetsTriggers, lwsTargets, rwrTargets, lwsTargetsAgeMin, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("twsState.nut")
 let rwrSetting = require("rwrSetting.nut")
 let { MlwsLwsForMfd, MfdFontScale, RwrForMfd } = require("airState.nut");
-let { MfdRadarColor } = require("radarState.nut")
 let DataBlock = require("DataBlock")
 let { IPoint3 } = require("dagor.math")
-let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
+let { BlkFileName, MfdRwrColor } = require("%rGui/planeState/planeToolsState.nut")
 let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("style/airHudStyle.nut")
 let { CompassValue } = require("compassState.nut")
 
@@ -34,9 +33,9 @@ let styleLineBackground = {
 
 let mfdRwrSettings = Computed(function() {
   let res = {
-    textColor = MfdRadarColor.get()
+    textColor = MfdRwrColor.get()
     backgroundColor = Color(0, 0, 0, 255)
-    lineColor = MfdRadarColor.get()
+    lineColor = MfdRwrColor.get()
     hidePlane = false
     circleCnt = -1
     angleMarkStep = 30.0
@@ -66,8 +65,8 @@ let mfdRwrSettings = Computed(function() {
       let lineC = pageBlk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
       let backC = pageBlk.getIPoint3("backgroundColor", IPoint3(0, 0, 0))
       return {
-        textColor = textC.x < 0 ? MfdRadarColor.get() : Color(textC.x, textC.y, textC.z, 255)
-        lineColor = lineC.x < 0 ? MfdRadarColor.get() : Color(lineC.x, lineC.y, lineC.z, 255)
+        textColor = textC.x < 0 ? MfdRwrColor.get() : Color(textC.x, textC.y, textC.z, 255)
+        lineColor = lineC.x < 0 ? MfdRwrColor.get() : Color(lineC.x, lineC.y, lineC.z, 255)
         backgroundColor = Color(backC.x, backC.y, backC.z, 255)
         hidePlane = pageBlk.getBool("hidePlaneSymbol", false)
         circleCnt = pageBlk.getInt("circleCnt", -1)

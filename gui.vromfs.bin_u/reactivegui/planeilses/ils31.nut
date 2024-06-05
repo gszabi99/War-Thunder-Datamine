@@ -444,15 +444,18 @@ let radarElevGrid = @() {
   ]
 }
 
-let radarType = @() {
-  watch = [Irst, IlsColor]
-  size = SIZE_TO_CONTENT
-  pos = [pw(18), ph(35.5)]
-  rendObj = ROBJ_TEXT
-  color = IlsColor.value
-  fontSize = 50
-  font = Fonts.ils31
-  text = Irst.value ? "ТП" : "РЛ"
+let radarType = @(is_cn) function() {
+  return {
+    watch = [Irst, IlsColor]
+    size = [pw(10), SIZE_TO_CONTENT]
+    pos = [pw(14), ph(35.5)]
+    rendObj = ROBJ_TEXT
+    color = IlsColor.value
+    fontSize = 50
+    font = Fonts.ils31
+    text = is_cn ? (Irst.value ? "光学" : "雷达") : (Irst.value ? "ТП" : "РЛ")
+    halign = ALIGN_RIGHT
+  }
 }
 
 let elevationMark = @() {
@@ -548,37 +551,39 @@ let radarReticle = @() {
   ] : null
 }
 
-let radar = @() {
-  watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode]
-  size = flex()
-  children = IsRadarVisible.value && !CCIPMode.value && !AirNoTargetCannonMode.value && !BombingMode.value ? [
-    ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarDistGrid : null),
-    ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarMaxDist : null),
-    (!Irst.value && !RadarTargetValid.value && !BVBMode.value ? radarElevGrid : null),
-    (!Irst.value && !RadarTargetValid.value && !BVBMode.value ? radarMaxElev : null),
-    (!BVBMode.value ? {
-      size = [pw(50), ph(40)]
-      pos = [pw(25), ph(30)]
-      children = [
-        targetsComponent(createTargetDist),
-        (!Irst.value ? ASPAzimuthMark : null),
-        (!Irst.value && !RadarTargetValid.value ? elevationMark : null)
-      ]
-    } :
-    @() {
-      watch = IlsColor
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [flex(), ph(60)]
-      pos = [0, ph(35)]
-      color = IlsColor.value
-      lineWidth = baseLineWidth * IlsLineScale.value
-      commands = [
-        [VECTOR_LINE, 40, 0, 40, 100],
-        [VECTOR_LINE, 60, 0, 60, 100]
-      ]
-    }),
-    radarType
-  ] : null
+let radar = @(is_cn) function() {
+  return {
+    watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode]
+    size = flex()
+    children = IsRadarVisible.value && !CCIPMode.value && !AirNoTargetCannonMode.value && !BombingMode.value ? [
+      ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarDistGrid : null),
+      ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarMaxDist : null),
+      (!Irst.value && !RadarTargetValid.value && !BVBMode.value ? radarElevGrid : null),
+      (!Irst.value && !RadarTargetValid.value && !BVBMode.value ? radarMaxElev : null),
+      (!BVBMode.value ? {
+        size = [pw(50), ph(40)]
+        pos = [pw(25), ph(30)]
+        children = [
+          targetsComponent(createTargetDist),
+          (!Irst.value ? ASPAzimuthMark : null),
+          (!Irst.value && !RadarTargetValid.value ? elevationMark : null)
+        ]
+      } :
+      @() {
+        watch = IlsColor
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = [flex(), ph(60)]
+        pos = [0, ph(35)]
+        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value
+        commands = [
+          [VECTOR_LINE, 40, 0, 40, 100],
+          [VECTOR_LINE, 60, 0, 60, 100]
+        ]
+      }),
+      radarType(is_cn)
+    ] : null
+  }
 }
 
 let radarReticlWrap = @(){
@@ -587,55 +592,61 @@ let radarReticlWrap = @(){
   children = IsRadarVisible.get() ? radarReticle : null
 }
 
-function getRadarMode() {
+function getRadarMode(is_cn) {
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
     if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track" || mode == "hud/IRST track")
-      return "АТК"
+      return is_cn ? "锁定" : "АТК"
     if (mode == "hud/ACM" || mode == "hud/LD ACM" || mode == "hud/PD ACM" || mode == "hud/PD VS ACM" || mode == "hud/MTI ACM" || mode == "hud/TWS ACM" ||  mode == "hud/IRST ACM")
-      return "БВБ"
+      return is_cn ? "近距离" : "БВБ"
     if (mode == "hud/GTM track" || mode == "hud/TWS GTM search" || mode == "hud/GTM search" || mode == "hud/GTM acquisition" || mode == "hud/TWS GTM acquisition")
-      return "ЗМЛ"
+      return is_cn ? "空对地" : "ЗМЛ"
   }
-  return "ДВБ"
+  return is_cn ? "超视距" : "ДВБ"
 }
 
 
-function getRadarSubMode() {
+function getRadarSubMode(is_cn) {
   if (AirCannonMode.value)
     return ""
   if (Irst.value || CCIPMode.value || BombingMode.value)
-    return "ОПТ"
+    return is_cn ? "光电" : "ОПТ"
   if (RadarModeNameId.value >= 0) {
     let mode = modeNames[RadarModeNameId.value]
     if (mode == "hud/track" || mode == "hud/PD track" || mode == "hud/MTI track" || mode == "hud/GTM track")
-      return "А"
+      return is_cn ? "" : "А"
     if (mode == "hud/TWS standby" || mode == "hud/TWS search" || mode == "hud/TWS HDN search")
-      return "СНП"
+      return is_cn ? "追踪" : "СНП"
   }
-  return "ОБЗ"
+  return is_cn ? "扫描中" : "ОБЗ"
 }
 
-let currentMode = @() {
-  watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode, AtgmMode, IlsColor, BombingMode]
-  size = SIZE_TO_CONTENT
-  pos = [pw(15), ph(72)]
-  rendObj = ROBJ_TEXT
-  color = IlsColor.value
-  fontSize = 50
-  font = Fonts.ils31
-  text = AirCannonMode.value ? "ВПУ" : (CCIPMode.value || AtgmMode.value || BombingMode.value ? "ЗМЛ" : (IsRadarVisible.value ? getRadarMode() : "ФИ0"))
+function currentMode(is_cn) {
+  return @(){
+    watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode, AtgmMode, IlsColor, BombingMode]
+    size = [pw(15), SIZE_TO_CONTENT]
+    pos = [pw(9), ph(72)]
+    rendObj = ROBJ_TEXT
+    color = IlsColor.value
+    halign = ALIGN_RIGHT
+    fontSize = 50
+    font = Fonts.ils31
+    text = AirCannonMode.value ? (is_cn ? "弹道" : "ВПУ") : (CCIPMode.value || AtgmMode.value || BombingMode.value ? (is_cn ? "空对地" : "ЗМЛ") : (IsRadarVisible.value ? getRadarMode(is_cn) : (is_cn ? "目视" : "ФИ0")))
+  }
 }
 
-let currentSubMode = @() {
-  watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode, IlsColor]
-  size = SIZE_TO_CONTENT
-  pos = [pw(15), ph(66)]
-  rendObj = ROBJ_TEXT
-  color = IlsColor.value
-  fontSize = 50
-  font = Fonts.ils31
-  text = getRadarSubMode()
+function currentSubMode(is_cn) {
+  return @(){
+    watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode, IlsColor]
+    size = [pw(15), SIZE_TO_CONTENT]
+    pos = [pw(9), ph(66)]
+    rendObj = ROBJ_TEXT
+    color = IlsColor.value
+    fontSize = 50
+    font = Fonts.ils31
+    text = getRadarSubMode(is_cn)
+    halign = ALIGN_RIGHT
+  }
 }
 
 let mkCcipReticle = @(ovr = {}) @() {
@@ -700,15 +711,17 @@ let ccip = @() {
   ] : []
 }
 
-let shellName = @() {
-  watch = [IlsColor, CurWeaponName, CannonMode, AirCannonMode]
-  size = SIZE_TO_CONTENT
-  rendObj = ROBJ_TEXT
-  pos = [pw(75), ph(72)]
-  color = IlsColor.value
-  fontSize = 35
-  font = Fonts.ils31
-  text = !CannonMode.value && !AirCannonMode.value ? loc(CurWeaponName.value) : ""
+function shellName(is_cn) {
+  return @() {
+    watch = [IlsColor, CurWeaponName, CannonMode, AirCannonMode]
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    pos = [pw(75), ph(72)]
+    color = IlsColor.value
+    fontSize = 35
+    font = Fonts.ils31
+    text = !CannonMode.value && !AirCannonMode.value ? (!is_cn ? loc(CurWeaponName.value) : (RocketMode.get() ? "航箭" : (BombCCIPMode.get() || BombingMode.get() ? "航弹" : loc(CurWeaponName.value)))) : ""
+  }
 }
 
 let aamReticle = @() {
@@ -796,47 +809,55 @@ function agmLaunchZone(width, height) {
   }
 }
 
-let tvMode = @(){
-  watch = IlsColor
-  size = SIZE_TO_CONTENT
-  pos = [pw(18), ph(55)]
-  rendObj = ROBJ_TEXT
-  color = IlsColor.value
-  fontSize = 50
-  font = Fonts.ils31
-  text = "ТВ"
-}
-
-let laserMode = @(){
-  watch = AimLockValid
-  size = flex()
-  children = AimLockValid.value ? @() {
+function tvMode(is_cn) {
+  return @(){
     watch = IlsColor
-    size = SIZE_TO_CONTENT
-    pos = [pw(18), ph(60)]
+    size = [pw(15) , SIZE_TO_CONTENT]
+    pos = [pw(10), ph(55)]
     rendObj = ROBJ_TEXT
     color = IlsColor.value
-    fontSize = 50
+    fontSize = is_cn ? 38 : 50
     font = Fonts.ils31
-    text = "ИД"
-  } : null
+    text = is_cn ? "吊舱瞄准" : "ТВ"
+    halign = ALIGN_RIGHT
+  }
 }
 
-let atgmLaunchPermitted = @() {
-  watch = [IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist]
-  size = flex()
-  children = IsInsideLaunchZoneYawPitch.value && IsInsideLaunchZoneDist.value ?
-    @() {
+let laserMode = @(is_cn) function() {
+  return {
+    watch = AimLockValid
+    size = flex()
+    children = AimLockValid.value ? @() {
       watch = IlsColor
-      size = flex()
+      size = [pw(20), SIZE_TO_CONTENT]
+      pos = [pw(3), ph(60)]
       rendObj = ROBJ_TEXT
-      pos = [pw(48), ph(85)]
       color = IlsColor.value
-      fontSize = 40
-      font = Fonts.hud
-      text = "ПР"
-    }
-  : null
+      fontSize = 50
+      font = Fonts.ils31
+      text = is_cn ? "激光照射" : "ИД"
+      halign = ALIGN_RIGHT
+    } : null
+  }
+}
+
+let atgmLaunchPermitted = @(is_cn) function() {
+  return {
+    watch = [IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist]
+    size = flex()
+    children = IsInsideLaunchZoneYawPitch.value && IsInsideLaunchZoneDist.value ?
+      @() {
+        watch = IlsColor
+        size = flex()
+        rendObj = ROBJ_TEXT
+        pos = [pw(48), ph(85)]
+        color = IlsColor.value
+        fontSize = 40
+        font = Fonts.hud
+        text = is_cn ? "允许攻击" : "ПР"
+      }
+    : null
+  }
 }
 
 let aimLockPosMark = @() {
@@ -904,23 +925,23 @@ let bombingStabMark = @(){
   } : null
 }
 
-function Ils31(width, height) {
+function Ils31(width, height, is_cn) {
   return {
     size = [width, height]
     children = [
       basicInfo(width, height),
-      radar,
-      ASPLaunchPermitted(true, 48, 85),
-      currentMode,
-      currentSubMode,
+      radar(is_cn),
+      ASPLaunchPermitted(!is_cn, 48, 85, is_cn),
+      currentMode(is_cn),
+      currentSubMode(is_cn),
       ccip,
-      shellName,
+      shellName(is_cn),
       aamReticle,
       impactLine,
       airGunCcrpMark,
       atgmGrid(width, height),
-      (HasTargetTracker.value ? tvMode : null),
-      laserMode,
+      (HasTargetTracker.value ? tvMode(is_cn) : null),
+      laserMode(is_cn),
       bombingStabMark,
       radarReticlWrap
     ]

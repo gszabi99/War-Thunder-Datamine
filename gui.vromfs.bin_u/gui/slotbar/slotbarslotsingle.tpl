@@ -156,7 +156,6 @@ shopItem {
     }
 
     shopItemPrice {
-      id:t='bottom_item_price_text'
       <<#isLongPriceText>>
       tinyFont:t='yes'
       <</isLongPriceText>>
@@ -233,4 +232,11 @@ shopItem {
   focus_border {}
 
   <<@bottomButton>>
+
+  <<#needDnD>>
+  on_drag_start:t='onUnitCellDragStart'
+  on_drag_drop:t='onUnitCellDrop'
+  on_move:t='onUnitCellMove'
+  dragParent:t='yes'
+  <</needDnD>>
 }

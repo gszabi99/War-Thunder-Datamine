@@ -115,7 +115,7 @@ let InContainersNavigator = class(posNavigator){
         return false
       hoveredObj = child
       hoveredIdx = i
-      return false
+      return true
     })
     return { hoveredObj, hoveredIdx }
   }

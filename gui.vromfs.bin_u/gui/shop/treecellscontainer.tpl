@@ -49,9 +49,6 @@ shopRankTable {
     height:t='ph-2'
     css-hier-invalidate:t='yes'
     pos:t='(pw-w)/2, 0'
-    on_pushed:t='::gcb.delayedTooltipListPush'
-    on_hold_start:t='::gcb.delayedTooltipListHoldStart'
-    on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
   }
 
   tdiv {

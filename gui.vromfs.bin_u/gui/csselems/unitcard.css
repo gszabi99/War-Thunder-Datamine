@@ -154,8 +154,9 @@ shopItem {
 }
 
 slotbarTable > unitCell > shopItem,
-slotbarTable > unitItemContainer > shopItem {
-  pos:0, ph/2-(h+2@slotExtraInfoHeight)/2;
+slotbarTable > unitItemContainer {
+  pos:0, 22@sf/@pf;
+  position: relative;
 }
 
 [show_console_buttons=yes] shopItem {
@@ -372,7 +373,7 @@ bottomButtonsDiv {
 
 slotbarTable bottomButtonsDiv,
 .slotbarClone > shopItem > bottomButtonsDiv {
-  top:ph + 1@bottomButtonsDivTopOffset;
+  top:ph-27@sf/@pf;
 }
 
 shopItem[shopStat=canBuy] > slotPlate > topLine,
@@ -1343,11 +1344,14 @@ shopItem Button_text.battle {
 
 unitCell > shopItem:hover Button_text.bottomAirItem,
 [showButtonsForSelectedChild=yes] unitItemContainer[selected=yes] > shopItem:hover Button_text.bottomAirItem,
-[show_console_buttons=yes] unitItemContainer[chosen=yes] > shopItem:hover Button_text.bottomAirItem,
-[show_console_buttons=no] unitItemContainer[chosen=yes] > shopItem Button_text.bottomAirItem,
 weapon_item_unit:hover Button_text.bottomAirItem,
 shopItem Button_text.bottomAirItem:hover,
 [chosen=yes] > shopItem Button_text.battle {
+  display:show;
+  enable:yes;
+}
+
+slotbarTable > unitItemContainer > shopItem:hover Button_text.bottomAirItem {
   display:show;
   enable:yes;
 }
@@ -1612,4 +1616,59 @@ shopCollapsedDiscountIcon {
 shopRankTable[isCollapsed="yes"] remainingTimeUnitCellMarker,
 shopRankTable[isCollapsed="yes"] markerContainer {
   display:hide;
+}
+
+slotbarTable > unitItemContainer:hover > shopItem {
+  behavior: dragStartListener;
+}
+
+unitItemContainer.slotbarClone > shopItem > extraInfoBlock,
+unitItemContainer.slotbarClone > shopItem > extraInfoBlockTop,
+unitItemContainer.slotbarClone > shopItem > bottomButtonsDiv {
+  display: hide;
+}
+
+unitItemContainer.slotbarCloneSource > shopItem {
+  refuseOpenHoverMenu: yes;
+  display: hide;
+}
+
+unitTrashBin {
+  position: absolute;
+  pos: pw/2 - w/2, sh - 1@slotbarOffset - 1@slotbarHeight - 1@slotbarTop - h - 42@sf/@pf;
+  input-transparent: yes;
+  css-hier-invalidate: yes;
+  border: yes;
+  border-color: #28FFFFFF;
+  background-color: #501A2328;
+  flow: vertical;
+  padding: 2@blockInterval;
+}
+
+unitTrashBin > img {
+  size: @trashBinIconSize, @trashBinIconSize;
+  background-svg-size: @trashBinIconSize, @trashBinIconSize;
+  halign: center;
+}
+
+unitTrashBin > textareaNoTab {
+  width: 0.8pw;
+  halign: center;
+  text-align: center;
+  smallFont: yes;
+}
+
+unitTrashBin[active=yes] {
+  border-color: #5AFFFFFF;
+  background-color: #5A1A2328;
+}
+
+unitTrashBin[active=yes] > img {
+  size: @trashBinBigIconSize, @trashBinBigIconSize;
+  background-svg-size: @trashBinBigIconSize, @trashBinBigIconSize;
+  valign: center;
+}
+
+unitTrashBin[active=yes] > textareaNoTab {
+  display: hide;
 }

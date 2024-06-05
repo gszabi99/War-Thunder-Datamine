@@ -11,6 +11,8 @@ bottomButtonsDiv {
     class:t='bottomAirItem'
     text:t='<<mainButtonText>>'
     on_click:t='<<mainButtonAction>>'
+    isSlotbar:t='yes'
+    crewIdInCountry:t='<<crewIdInCountry>>'
 
     <<#hasMainButtonIcon>>
     img {

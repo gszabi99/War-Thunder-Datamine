@@ -7,6 +7,8 @@ let { fillTooltip, addEventListenersTooltip } = require("genericTooltip.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { parse_json } = require("json")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
+let { InContainersNavigator } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -215,13 +217,9 @@ function onHover(obj) {
 }
 
 function getHoveredChild(listObj) {
-  let total = listObj.childrenCount()
-  for (local i = 0; i < total; i++) {
-    let child = listObj.getChild(i)
-    if (child?.isValid() && child.isHovered())
-      return child
-  }
-  return null
+  let isContainerBhv = listObj?.isContainerBhv
+  let bhv = isContainerBhv? InContainersNavigator : posNavigator
+  return bhv.getHoveredChild(listObj)?.hoveredObj
 }
 
 let mkListCb = @(func, emptyObjFunc = null) function(listObj, _params) {

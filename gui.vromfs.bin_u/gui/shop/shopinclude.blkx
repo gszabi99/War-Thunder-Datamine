@@ -82,6 +82,7 @@
               "id": "shop_items_list",
               "width": "pw",
               "behavior": "inContainersNavigator",
+              "isContainerBhv": "yes",
               "flow": "vertical",
               "deep": "2",
               "navigatorShortcuts": "SpaceA",
@@ -91,7 +92,10 @@
               "on_r_click": "onUnitRightClick",
               "on_activate": "onUnitActivate",
               "on_select": "onUnitSelect",
-              "on_dbl_click": "onUnitDblClick"
+              "on_dbl_click": "onUnitDblClick",
+              "on_pushed": "::gcb.delayedTooltipListPush",
+              "on_hold_start": "::gcb.delayedTooltipListHoldStart",
+              "on_hold_stop": "::gcb.delayedTooltipListHoldStop"
             }
           },
           {

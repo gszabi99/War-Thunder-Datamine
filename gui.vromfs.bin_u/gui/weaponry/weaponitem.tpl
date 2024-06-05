@@ -129,6 +129,19 @@ weaponry_item {
           }
         }
         <</wideItemWithSlider>>
+
+        <<#additionalWeaponrName>>
+        textareaNoTab {
+          id:t='additionalWeaponrName'
+          width:t='fw'
+          height:t='ph'
+          smallFont:t='yes'
+          pare-text:t='yes'
+          position:t='relative'
+          text-align:t='right'
+          text:t='<<additionalWeaponrName>>'
+        }
+        <</additionalWeaponrName>>
       }
       tdiv {
         id:t='bullets_amount_choice_block'
@@ -192,7 +205,12 @@ weaponry_item {
               width:t='pw'
               pos:t='50%pw-50%w, 50%ph-50%h'
               position:t="absolute"
+              <<#sliderProgressType>>
+              type:t='<<sliderProgressType>>'
+              <</sliderProgressType>>
+              <<^sliderProgressType>>
               type:t='new'
+              <</sliderProgressType>>
               value:t='<<sliderValue>>'
               max:t='<<sliderMax>>'
             }
@@ -308,6 +326,14 @@ weaponry_item {
         <</wideItemWithSlider>>
       }
     }
+
+    <<#additionalWeaponryIcon>>
+    tdiv {
+      id:t='modItem_additionalWeaponryIcon'
+      include "%gui/weaponry/weaponIcon.tpl"
+    }
+    <</additionalWeaponryIcon>>
+
     tdiv{
       id:t='modItem_visualHasMenu'
       size:t='19@sf/@pf, 10@sf/@pf'

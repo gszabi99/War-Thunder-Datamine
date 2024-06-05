@@ -479,6 +479,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
               item.guidanceType <- active ? "ARH" : "SARH"
               item.radarBand <- itemBlk.guidance.radarSeeker?.band ?? 8
               item.groundClutter <- itemBlk.guidance.radarSeeker?.groundClutter ?? true
+              item.sideLobesSensitivity <- itemBlk.guidance.radarSeeker?.receiver.antenna.sideLobesSensitivity ?? 0.0
               local dopplerSpeed = false
               if (itemBlk.guidance.radarSeeker?.dopplerSpeed != null)
                 dopplerSpeed = itemBlk.guidance.radarSeeker.dopplerSpeed?.presents ?? false
@@ -490,6 +491,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
             }
             else {
               item.groundClutter <- true
+              item.sideLobesSensitivity <- 0.0
               item.dopplerSpeed <- false
             }
             if (itemBlk.guidance?.inertialNavigation)
@@ -642,8 +644,10 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
     if (weapon?.radarBand)
       res.append("".concat(loc("missile/radarBand"), colon, loc($"radar_freq_band_{weapon.radarBand}")))
     if (weapon?.groundClutter != null && weapon?.dopplerSpeed != null)
-      if (!weapon.groundClutter || weapon.dopplerSpeed)
-        res.append("".concat(loc("missile/shootDown"), colon, !weapon?.groundClutter ? loc("missile/shootDown/allAspects") : loc("missile/shootDown/headOnAspect")))
+      if (!weapon.groundClutter || weapon.dopplerSpeed) {
+        let allAspects = !weapon?.groundClutter || (weapon?.sideLobesSensitivity != null && weapon.sideLobesSensitivity < -26.0)
+        res.append("".concat(loc("missile/shootDown"), colon, allAspects ? loc("missile/shootDown/allAspects") : loc("missile/shootDown/headOnAspect")))
+      }
     if (weapon?.seekerRangeRearAspect)
       res.append("".concat(loc("missile/seekerRange/rearAspect"), colon,
         measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRangeRearAspect)))

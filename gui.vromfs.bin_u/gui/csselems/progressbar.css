@@ -89,6 +89,12 @@ expProgress[type=old], crewSpecProgressBar[type=old] {
 expProgress[type=new], crewSpecProgressBar[type=new] {
   foreground-color:@cardProgressChangeColor;
 }
+
+expProgress[type=doubleProgress], crewSpecProgressBar[type=new] {
+  foreground-color:@cardProgressChangeColor;
+  background-color:@commonTextColor;
+}
+
 country_exp_div[isForSquadVehicle=yes] expProgress[type=new] {
   foreground-color:@cardProgressChangeSquadronColor;
 }

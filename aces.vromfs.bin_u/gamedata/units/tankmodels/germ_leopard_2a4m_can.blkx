@@ -77,7 +77,7 @@
         "armorThickness": 35.0
       },
       "turret_06_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 30.0
       },
       "turret_07_bottom_dm": {
         "armorThickness": 35.0,
@@ -471,6 +471,26 @@
         "hidableInViewer": true,
         "ex_decor_10_dm": {}
       }
+    },
+    "grille_armor": {
+      "armorClass": "grille_structural_steel",
+      "hp": 300.0,
+      "ex_armor_body_l_01_dm": {},
+      "ex_armor_body_l_02_dm": {},
+      "ex_armor_body_l_03_dm": {},
+      "ex_armor_body_r_01_dm": {},
+      "ex_armor_body_r_02_dm": {},
+      "ex_armor_turret_01_dm": {}
+    },
+    "grille_air": {
+      "hp": 300.0,
+      "armorClass": "grille_air",
+      "composite_armor_hull_07_dm": {},
+      "composite_armor_hull_08_dm": {},
+      "composite_armor_hull_09_dm": {},
+      "composite_armor_hull_10_dm": {},
+      "composite_armor_hull_11_dm": {},
+      "composite_armor_turret_10_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -1941,92 +1961,63 @@
     }
   },
   "xray_viewer_data": {
-    "armorArrayHullTop": {
-      "xrayDmPart": "composite_armor_hull_01_dm",
-      "armorArrayText": {
-        "layer": [
-          {
-            "dmPart": "superstructure_front_dm"
-          },
-          {
-            "dmPart": "body_front_dm",
-            "xrayTextThickness": [
-              280.0,
-              520.0
-            ]
-          },
-          {
-            "dmPart": "turret_04_bottom_dm"
-          }
-        ]
-      }
-    },
-    "armorArrayHullFront": [
+    "armorArrayHull": [
       {
-        "xrayDmPart": "composite_armor_hull_03_dm",
-        "titleLoc": "RHA_tank_modern",
+        "xrayDmPart": "composite_armor_hull_07_dm",
+        "titleLoc": "grille_air",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_hull_03_dm"
+            "dmPart": "composite_armor_hull_07_dm"
           }
         }
       },
       {
-        "xrayDmPart": "composite_armor_hull_04_dm",
-        "titleLoc": "RHA_tank_modern",
+        "xrayDmPart": "composite_armor_hull_08_dm",
+        "titleLoc": "grille_air",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_hull_04_dm"
+            "dmPart": "composite_armor_hull_08_dm"
           }
         }
       },
       {
-        "xrayDmPart": "composite_armor_hull_05_dm",
-        "titleLoc": "RHA_tank_modern",
+        "xrayDmPart": "composite_armor_hull_09_dm",
+        "titleLoc": "grille_air",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_hull_05_dm"
+            "dmPart": "composite_armor_hull_09_dm"
           }
         }
       },
       {
-        "xrayDmPart": "composite_armor_hull_06_dm",
-        "titleLoc": "RHA_tank_modern",
+        "xrayDmPart": "composite_armor_hull_10_dm",
+        "titleLoc": "grille_air",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_hull_06_dm"
+            "dmPart": "composite_armor_hull_10_dm"
           }
         }
       },
       {
-        "xrayDmPart": "composite_armor_turret_05_dm",
-        "titleLoc": "RHA_tank_modern",
+        "xrayDmPart": "composite_armor_hull_11_dm",
+        "titleLoc": "grille_air",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_05_dm"
-          }
-        }
-      },
-      {
-        "xrayDmPart": "firewall_armor_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "firewall_armor_01_dm"
-          }
-        }
-      },
-      {
-        "xrayDmPart": "firewall_armor_02_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "firewall_armor_02_dm"
+            "dmPart": "composite_armor_hull_11_dm"
           }
         }
       }
     ],
     "armorArrayTurret": [
+      {
+        "xrayDmPart": "composite_armor_turret_10_dm",
+        "titleLoc": "grille_air",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_turret_10_dm"
+          }
+        }
+      },
       {
         "xrayDmPart": "composite_armor_turret_01_dm",
         "armorArrayText": {
@@ -2143,6 +2134,91 @@
               "xrayTextThickness": 20.0
             }
           ]
+        }
+      }
+    ],
+    "armorArrayHullTop": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "armorArrayText": {
+        "layer": [
+          {
+            "dmPart": "superstructure_front_dm"
+          },
+          {
+            "dmPart": "body_front_dm",
+            "xrayTextThickness": [
+              280.0,
+              520.0
+            ]
+          },
+          {
+            "dmPart": "turret_04_bottom_dm"
+          }
+        ]
+      }
+    },
+    "armorArrayHullFront": [
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_04_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_04_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_05_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_05_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_06_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_06_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_turret_05_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_turret_05_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "firewall_armor_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "firewall_armor_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "firewall_armor_02_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "firewall_armor_02_dm"
+          }
         }
       }
     ]

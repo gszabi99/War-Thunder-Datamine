@@ -263,7 +263,7 @@ let targetsComponent = function(createTargetDistFunc) {
   }
 }
 
-function ASPLaunchPermitted(is_ru, l_pos, h_pos) {
+function ASPLaunchPermitted(is_ru, l_pos, h_pos, is_cn = false) {
   return @() {
     watch = GuidanceLockState
     size = flex()
@@ -276,7 +276,7 @@ function ASPLaunchPermitted(is_ru, l_pos, h_pos) {
         color = IlsColor.value
         fontSize = 40
         font = Fonts.hud
-        text = is_ru ? "ПР" : "INRNG"
+        text = is_ru ? "ПР" : (is_cn ? "允许攻击" : "INRNG")
       }
       : null)
   }

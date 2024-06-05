@@ -1625,13 +1625,54 @@
           "page": [
             {
               "type": "radar",
-              "scale": 0.95
+              "scale": 0.95,
+              "font": "ils28K",
+              "lineColor": [
+                255,
+                214,
+                45
+              ],
+              "modeColor": [
+                255,
+                214,
+                45
+              ],
+              "verAngleColor": [
+                255,
+                214,
+                45
+              ],
+              "horAngleColor": [
+                255,
+                214,
+                45
+              ],
+              "targetColor": [
+                255,
+                214,
+                45
+              ],
+              "scaleColor": [
+                255,
+                214,
+                45
+              ],
+              "hideBackground": true,
+              "hideBeam": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false
             },
             {
               "type": "map"
             },
             {
-              "type": "rwr"
+              "type": "rwr",
+              "circleCnt": 1,
+              "angleMarkStep": 30.0,
+              "hidePlaneSymbol": true,
+              "hasCompass": true,
+              "scale": 0.7
             },
             {
               "type": "devices",
@@ -1931,6 +1972,18 @@
           ],
           "page": [
             {
+              "type": "rwr",
+              "circleCnt": 1,
+              "angleMarkStep": 30.0,
+              "hidePlaneSymbol": true,
+              "hasCompass": true,
+              "scale": 0.7
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
               "type": "target_tracking",
               "turretIdx": 0
             },
@@ -2222,10 +2275,6 @@
                   ]
                 }
               }
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
             }
           ]
         },

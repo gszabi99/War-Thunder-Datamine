@@ -14,14 +14,15 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
 } = require("%scripts/weaponry/itemInfo.nut")
-let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
-  getModificationInfo, getModificationName, isBulletsWithoutTracer
+let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet,
+  getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
   addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
-let { isModResearched, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
+let { isModResearched, isModificationEnabled, getModificationByName
+} = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = require("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -303,6 +304,23 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     }
 
     addBulletsParamToDesc(res, unit, item)
+    let { pairModName = null } = params
+    if (pairModName != null) {
+      let pairMod = getModificationByName(unit, pairModName)
+      if (pairMod != null) {
+        name = ""
+        let pairBulletsParam = {}
+        addBulletsParamToDesc(pairBulletsParam, unit, pairMod)
+        res.bulletAnimations.extend(pairBulletsParam.bulletAnimations)
+        res.bulletActions.extend(pairBulletsParam.bulletActions )
+        res.hasBulletAnimation = res.hasBulletAnimation || pairBulletsParam.hasBulletAnimation
+        let set = getBulletsSetData(unit, pairModName)
+        if (set != null) {
+          let { annotation } = getBulletsNamesBySet(set)
+          desc = $"{desc}\n{annotation}"
+        }
+      }
+    }
   }
   else if (item.type == weaponsItem.spare) {
     desc = loc($"spare/{item.name}/desc")
@@ -428,6 +446,7 @@ let defaultWeaponTooltipParamKeys = [
   "isInHudActionBar"
   "diffExp"
   "weaponBlkPath"
+  "pairModName"
 ]
 function validateWeaponryTooltipParams(params) {
   if (params == null)

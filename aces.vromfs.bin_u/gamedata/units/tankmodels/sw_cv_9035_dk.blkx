@@ -3149,7 +3149,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3202,7 +3202,56 @@
           ]
         }
       }
+    },
+    "night_vision_system": {
+      "tier": 3,
+      "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "effects": {
+        "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
+          "gunnerThermal": {
+            "resolution": [
+              800,
+              600
+            ],
+            "noiseFactor": 0.04
+          },
+          "commanderViewThermal": {
+            "resolution": [
+              800,
+              600
+            ],
+            "noiseFactor": 0.04
+          },
+          "driverIr": {
+            "resolution": [
+              1200,
+              800
+            ],
+            "lightMult": 7.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
+    "tank_support_ucav": {
+      "tier": 4,
+      "rcostAddParam": 0.92,
+      "effects": {
+        "allowSupportPlane": true
+      },
+      "disableModEffects": {
+        "allowSupportPlane": false
+      }
     }
+  },
+  "supportPlane": {
+    "supportPlaneClass": "ucav_recon_micro",
+    "behTreeName": "recon_micro",
+    "planeStartSpeed": 80.0,
+    "count": 1
   },
   "default_skin": {
     "name": "default",

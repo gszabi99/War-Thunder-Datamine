@@ -10,6 +10,7 @@ extraInfoBlockTop {
       <<#hasPriceText>>
       td {
         textareaNoTab {
+          id:t='extraInfoPriceText'
           width:t='pw'
           overlayTextColor:t='active'
           smallFont:t='yes'
@@ -42,44 +43,46 @@ extraInfoBlockTop {
 
       <<^hasAdditionalRespawns>>
       <<#hasPriceText>>
-      <<#hasSpareCount>>
+      <<#hasSpareInfo>>
       td {
         width:t='@sf/@pf'
         extraInfoVertSeparator {}
       }
-      <</hasSpareCount>>
+      <</hasSpareInfo>>
       <</hasPriceText>>
       <</hasAdditionalRespawns>>
 
       <<#hasAdditionalRespawns>>
-      <<#hasSpareCount>>
+      <<#hasSpareInfo>>
       td {
         width:t='@sf/@pf'
         extraInfoVertSeparator {}
       }
-      <</hasSpareCount>>
+      <</hasSpareInfo>>
       <</hasAdditionalRespawns>>
 
-      <<#hasSpareCount>>
+      <<#hasSpareInfo>>
       td {
-        text {
+        textareaNoTab {
           id:t="spareCount"
+          width:t='pw'
+          smallFont:t='yes'
           text:t='<<spareCount>>'
-          style:t="color:#657c8a;"
+          text-align:t='center'
         }
       }
-      <</hasSpareCount>>
+      <</hasSpareInfo>>
 
       <<^hasAdditionalRespawns>>
       <<^hasPriceText>>
-      <<^hasSpareCount>>
+      <<^hasSpareInfo>>
       td {
         text {
           text:t='#ui/minus'
           style:t="color:#657c8a;"
         }
       }
-      <</hasSpareCount>>
+      <</hasSpareInfo>>
       <</hasPriceText>>
       <</hasAdditionalRespawns>>
     }

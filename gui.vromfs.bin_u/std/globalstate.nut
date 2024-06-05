@@ -136,10 +136,10 @@ on_module_unload(function(is_closing) {
   }
 })
 
-function hardPersistWatched(key, def=null, store_as_big_data = null) {
+function hardPersistWatched(key, def=null, big_immutable_data = null) {
   assert(key not in usedKeysForPersist, @() $"super persistent {key} already registered")
-  if (store_as_big_data != null)
-    _big_datas[key] <- store_as_big_data
+  if (big_immutable_data != null)
+    _big_datas[key] <- big_immutable_data
   let ndbKey = mkPersistOnHardReloadKey(key)
   usedKeysForPersist[key] <- null
   local val
@@ -165,12 +165,14 @@ function hardPersistWatched(key, def=null, store_as_big_data = null) {
         val = parse_json(data)
 
         //let size0 = get_quirrel_object_size(val).size
-        let t3 = get_time_msec()
-        shrink_object(val)
-        let t4 = get_time_msec()
-        //let size1 = get_quirrel_object_size(val).size
-        //print($">>> Shrinking {key} from {size0} to {size1} bytes, time = {t4-t3} ms")
-        print($">>> Shrinking {key}, time = {t4-t3} ms")
+        if (big_immutable_data) {
+          let t3 = get_time_msec()
+          shrink_object(val)
+          let t4 = get_time_msec()
+          //let size1 = get_quirrel_object_size(val).size
+          //print($">>> Shrinking {key} from {size0} to {size1} bytes, time = {t4-t3} ms")
+          print($">>> Shrinking {key}, time = {t4-t3} ms")
+        }
       }
       else
         val = data

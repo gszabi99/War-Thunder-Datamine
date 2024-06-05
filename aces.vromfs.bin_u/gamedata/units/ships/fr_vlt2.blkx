@@ -44,9 +44,6 @@
   "canReloadNonGuns": true,
   "perfectRangefinder": true,
   "supportsCombinedPriSecTriggers": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "spawn_count": {
     "numSpawnsPerBattleArcade": 3,
     "numSpawnsPerBattleHistorical": 3
@@ -2011,43 +2008,43 @@
           "lim1": [
             -180.0,
             -132.0,
-            32.0,
+            35.0,
             80.0
           ],
           "lim2": [
             -132.0,
             -70.0,
-            -1.0,
+            -3.0,
             80.0
           ],
           "lim3": [
             -70.0,
             -39.0,
-            -2.0,
+            -5.0,
             80.0
           ],
           "lim4": [
             -39.0,
             39.0,
-            -3.0,
+            -7.0,
             80.0
           ],
           "lim5": [
             39.0,
             70.0,
-            -2.0,
+            -5.0,
             80.0
           ],
           "lim6": [
             70.0,
             132.0,
-            -1.0,
+            -3.0,
             80.0
           ],
           "lim7": [
             132.0,
             180.0,
-            32.0,
+            35.0,
             80.0
           ]
         },
@@ -3401,12 +3398,7 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": [
-        "gunner0",
-        "gunner1",
-        "gunner2",
-        "gunner3"
-      ],
+      "weaponTrigger": "gunner0",
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
@@ -3564,10 +3556,51 @@
       }
     ]
   },
+  "skin": [
+    {
+      "name": "fr_camo_navy_ground",
+      "nameLocId": "skin/fr_camo_navy_ground",
+      "descLocId": "skin/fr_camo_navy_ground/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_navy_ground*"
+      }
+    },
+    {
+      "name": "fr_camo_multicolor_spots",
+      "nameLocId": "skin/fr_camo_multicolor_spots",
+      "descLocId": "skin/fr_camo_multicolor_spots/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_multicolor_spots*"
+      }
+    },
+    {
+      "name": "fr_camo_twocolors_lines",
+      "nameLocId": "skin/fr_camo_twocolors_lines",
+      "descLocId": "skin/fr_camo_twocolors_lines/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_twocolors_lines*"
+      }
+    }
+  ],
+  "default_skin": {
+    "name": "default",
+    "set_tex": {
+      "from": "vlt2_c*",
+      "to": "vlt2_skin_c*",
+      "param": "camo_skin_tex"
+    },
+    "replace_tex": {
+      "from": "camo_flatgullgrey*",
+      "to": "camo_greyblack_spots*"
+    }
+  },
   "defaultShipFlag": {
     "name": "default",
     "modelFlagTexture": "flag_c*",
-    "defaultShipFlag": "ship_flag_fr_01",
+    "defaultShipFlag": "ship_flag_france_01",
     "hangarFlagCam": [
       271.22,
       -12.56,

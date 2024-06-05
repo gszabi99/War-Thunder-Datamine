@@ -60,6 +60,7 @@ let HmdTargetPos = [0, 0]
 let HmdTargetPosValid = Watched(false)
 let CustomPages = Watched({})
 let HmdGunTargeting = Watched(false)
+let MfdRwrColor = Watched(Color(0, 255, 0, 240))
 
 let planeState = {
   BlkFileName,
@@ -118,7 +119,8 @@ let planeState = {
   HmdTargetPos,
   HmdTargetPosValid,
   CustomPages,
-  HmdGunTargeting
+  HmdGunTargeting,
+  MfdRwrColor
 }
 
 interop.updatePlaneIlsPosSize <- function(x, y, w, h) {

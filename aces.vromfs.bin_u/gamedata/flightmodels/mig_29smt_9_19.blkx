@@ -2175,6 +2175,13 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       5.415,
@@ -2862,6 +2869,12 @@
           ],
           "fontScale": 0.7,
           "cameraFromShell": true,
+          "type": "rwr",
+          "circleCnt": 1,
+          "angleMarkStep": 30.0,
+          "hidePlaneSymbol": true,
+          "hasCompass": true,
+          "scale": 0.8,
           "page": [
             {
               "type": "radar",
@@ -2870,8 +2883,11 @@
             },
             {
               "type": "rwr",
-              "scale": 0.8,
-              "relativCircleRadius": 2.0
+              "circleCnt": 1,
+              "angleMarkStep": 30.0,
+              "hidePlaneSymbol": true,
+              "hasCompass": true,
+              "scale": 0.8
             },
             {
               "type": "devices",
@@ -3161,8 +3177,11 @@
             },
             {
               "type": "rwr",
-              "scale": 0.8,
-              "relativCircleRadius": 2.0
+              "circleCnt": 1,
+              "angleMarkStep": 30.0,
+              "hidePlaneSymbol": true,
+              "hasCompass": true,
+              "scale": 0.8
             },
             {
               "type": "devices",
@@ -5924,7 +5943,7 @@
       "tier": 3
     },
     "mig_29_r_27er": {
-      "prevModification": "mig_29_r_73",
+      "reqModification": "mig_29_r_73",
       "modClass": "weapon",
       "tier": 4
     },

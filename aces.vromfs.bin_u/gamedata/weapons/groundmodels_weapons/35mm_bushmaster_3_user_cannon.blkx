@@ -1,6 +1,6 @@
 {
   "cannon": true,
-  "weaponType": -1,
+  "weaponType": 3,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -16,10 +16,13 @@
   "maxDeltaAngleVertical": 0.03,
   "shotFreq": 3.334,
   "shotFreqRndK": 0.02,
+  "reloadTime": 10.0,
   "traceFreq": 4,
   "bEnablePause": false,
-  "bullets": -1,
+  "bullets": 210,
   "bulletsCluster": 1,
+  "changeBulletTypeReloadTime": 1.0,
+  "bulletsCartridge": 35,
   "fxType": "muzzle_ground_40mm",
   "fxGroundDust": "",
   "fxGrassDust": "",
@@ -31,8 +34,8 @@
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
-  "sound": "40mm_kan",
-  "sound_inside": "40mm_kan_interior",
+  "sound": "35mm_bushmaster",
+  "sound_inside": "35mm_bushmaster_interior",
   "soundLoop": true,
   "sfxReloadBullet": "grd_begleitpanzer_reload",
   "isBulletBelt": false,
@@ -87,14 +90,14 @@
     "stabilityReductionAfterPenetration": 0.0,
     "stucking": 0.7,
     "stuckingAngle": 45.0,
-    "bulletType": "apds_tank",
+    "bulletType": "apds_autocannon",
     "slopeEffectPreset": "apds",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/apds.ivf",
+    "shellAnimation": "video/shells_animations/apds_belt.ivf",
     "bulletName": "35_228mm_apds_t",
     "breakingArmorThicknessEffective": true,
     "breakingArmorThickness": [
@@ -286,6 +289,7 @@
     }
   },
   "35mm_kda_APHEI": {
+    "bulletsCartridge": 35,
     "bullet": {
       "mass": 0.55,
       "explosiveType": "hexal",
@@ -303,7 +307,7 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.3,
-      "bulletType": "aphebc_tank",
+      "bulletType": "ap_i_t",
       "slopeEffectPreset": "ap",
       "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
       "bulletName": "35_228mm_aphe_i",
@@ -498,6 +502,7 @@
     }
   },
   "35mm_kda_HE": {
+    "bulletsCartridge": 35,
     "bullet": {
       "mass": 0.55,
       "explosiveType": "hexal",
@@ -514,7 +519,7 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "he_frag_tank",
+      "bulletType": "he_i_t",
       "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
@@ -738,14 +743,15 @@
     }
   },
   "35mm_kda_APFSDS": {
+    "bulletsCartridge": 35,
     "bullet": {
       "bulletCount": 25,
       "mass": 0.25,
       "caliber": 0.035,
-      "damageCaliber": 0.0085,
-      "ballisticCaliber": 0.0085,
+      "damageCaliber": 0.012,
+      "ballisticCaliber": 0.012,
       "speed": 1400.0,
-      "Cx": 0.3,
+      "Cx": 0.25221,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
@@ -842,7 +848,7 @@
       },
       "armorpower": {
         "ArmorPower0m": [
-          131.2,
+          131.3,
           10.0
         ],
         "ArmorPower100m": [
@@ -850,11 +856,11 @@
           100.0
         ],
         "ArmorPower500m": [
-          111.2,
+          124.1,
           500.0
         ],
         "ArmorPower1000m": [
-          117.4,
+          118.6,
           1000.0
         ],
         "ArmorPower1500m": [

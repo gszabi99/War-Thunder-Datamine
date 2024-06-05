@@ -2111,7 +2111,7 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1977_1991_char",
+    "model": "pilot_italy_late_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2201,6 +2201,10 @@
     "nozzleAngleThreshold": 0.05
   },
   "cockpit": {
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "headPos": [
       5.945,
       1.59,
@@ -2213,9 +2217,16 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.37,
+      0.37,
+      0.63,
+      0.63
+    ],
     "sightInFov": 5.5,
     "sightOutFov": 5.5,
     "sightFov": 2.0,
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       6.39,
@@ -2587,7 +2598,20 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 1.15,
+            "hidePlaneSymbol": true
+          }
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": {
+            "type": "custom",
+            "pageName": "f15cWpn"
           }
         },
         {

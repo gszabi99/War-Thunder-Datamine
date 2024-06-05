@@ -1,11 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IndicatorsVisible, MfdColor, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("airState.nut")
+let { IndicatorsVisible, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("airState.nut")
 let { tws } = require("tws.nut")
 let mfdSightHud = require("planeMfdCamera.nut")
 let { MfdRadarColor, radarPosSize } = require("radarState.nut")
 let { radarMfd } = require("%rGui/radar.nut")
 let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
+let { MfdRwrColor } = require("planeState/planeToolsState.nut")
 
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
@@ -16,7 +17,7 @@ let mkTws = @() {
   watch = [MlwsLwsForMfd, RwrForMfd]
   children = (!MlwsLwsForMfd.value && !RwrForMfd.value) ? null
     : tws({
-      colorWatched = MfdColor
+      colorWatched = MfdRwrColor
       posWatched = twsPosComputed,
       sizeWatched = twsSizeComputed,
       relativCircleSize = 36,

@@ -5435,44 +5435,6 @@
       }
     ]
   },
-  "skin": [
-    {
-      "name": "fr_camo_navy_ground",
-      "nameLocId": "skin/fr_camo_navy_ground",
-      "descLocId": "skin/fr_camo_navy_ground/desc",
-      "replace_tex": {
-        "from": "camo_flatgullgrey*",
-        "to": "fr_camo_navy_ground*"
-      }
-    },
-    {
-      "name": "fr_camo_bicolor_geometry",
-      "nameLocId": "skin/fr_camo_bicolor_geometry",
-      "descLocId": "skin/fr_camo_bicolor_geometry/desc",
-      "replace_tex": {
-        "from": "camo_flatgullgrey*",
-        "to": "fr_camo_bicolor_geometry*"
-      }
-    },
-    {
-      "name": "fr_camo_redblack_spots",
-      "nameLocId": "skin/fr_camo_redblack_spots",
-      "descLocId": "skin/fr_camo_redblack_spots/desc",
-      "replace_tex": {
-        "from": "camo_flatgullgrey*",
-        "to": "fr_camo_redblack_spots*"
-      }
-    },
-    {
-      "name": "fr_camo_blackblue_cubes",
-      "nameLocId": "skin/fr_camo_blackblue_cubes",
-      "descLocId": "skin/fr_camo_blackblue_cubes/desc",
-      "replace_tex": {
-        "from": "camo_flatgullgrey*",
-        "to": "fr_camo_blackblue_cubes*"
-      }
-    }
-  ],
   "defaultShipFlag": {
     "name": "default",
     "modelFlagTexture": "flag_c*",
@@ -5483,6 +5445,76 @@
       0.5
     ]
   },
+  "default_skin": {
+    "name": "default",
+    "set_tex": {
+      "from": "destroyer_bourrasque_class_bourrasque_c*",
+      "to": "destroyer_bourrasque_class_bourrasque_skin_c*",
+      "param": "camo_skin_tex"
+    },
+    "replace_tex": {
+      "from": "camo_flatgullgrey*",
+      "to": "camo_medium_bluegray*"
+    }
+  },
+  "skin": [
+    {
+      "name": "fr_camo_navy_ground",
+      "nameLocId": "skin/fr_camo_navy_ground",
+      "descLocId": "skin/fr_camo_navy_ground/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_navy_ground*"
+      },
+      "set_tex": {
+        "from": "destroyer_bourrasque_class_bourrasque_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "fr_camo_bicolor_geometry",
+      "nameLocId": "skin/fr_camo_bicolor_geometry",
+      "descLocId": "skin/fr_camo_bicolor_geometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_bicolor_geometry*"
+      },
+      "set_tex": {
+        "from": "destroyer_bourrasque_class_bourrasque_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "fr_camo_redblack_spots",
+      "nameLocId": "skin/fr_camo_redblack_spots",
+      "descLocId": "skin/fr_camo_redblack_spots/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_redblack_spots*"
+      },
+      "set_tex": {
+        "from": "destroyer_bourrasque_class_bourrasque_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    },
+    {
+      "name": "fr_camo_blackblue_cubes",
+      "nameLocId": "skin/fr_camo_blackblue_cubes",
+      "descLocId": "skin/fr_camo_blackblue_cubes/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_blackblue_cubes*"
+      },
+      "set_tex": {
+        "from": "destroyer_bourrasque_class_bourrasque_c*",
+        "to": "ccvl_noskin_body_c*",
+        "param": "camo_skin_tex"
+      }
+    }
+  ],
   "availableShipFlags": {
     "ship_flag_germany_01": {
       "category": "naval",

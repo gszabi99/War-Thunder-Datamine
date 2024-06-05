@@ -52,6 +52,8 @@ let { getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew, updateCrewSkillsA
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { isCrewListOverrided, getCrewsListVersion, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
+let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
+let { vacationBinOpen } = require("%scripts/vacation/vacationBin.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -1054,7 +1056,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       hObj.setValue(value)
   }
 
-  function onSlotChangeAircraft() {
+  function onSlotChangeAircraft(obj = null) {
+    let crewIdInCountry = obj?.crewIdInCountry.tointeger()
+    if (crewIdInCountry != null)
+      this.selectCrew(crewIdInCountry)
+
     let crew = this.getCurCrew()
     if (!crew)
       return
@@ -1400,6 +1406,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
           ? getUnitRequireUnlockShortText(crewData.unit)
           : null
         selectOnHover = this.selectOnHover
+        needDnD = true
       }
       airParams.__update(this.getCrewDataParams(crewData))
       let unitItem = buildUnitSlot(id, crewData.unit, airParams)
@@ -1496,4 +1503,15 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateSlotsStatuses(this.getSlotsData(null, -1, this.curSlotCountryId))
   }
+
+  function onUnitCellDragStart(obj) {
+    let unit = getAircraftByName(obj?.unit_name)
+    if (!unit)
+      return
+    removeAllGenericTooltip()
+    vacationBinOpen(obj)
+  }
+
+  onUnitCellDrop = @() null
+  onUnitCellMove = @() null
 }

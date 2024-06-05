@@ -608,6 +608,28 @@ function getNVDSightText(sight) {
   return colorize("goodTextColor", $"{crew}{loc("ui/colon")} {system}")
 }
 
+function getBulletsNamesBySet(set) {
+  //bullets description
+  let separator = loc("bullet_type_separator/name")
+  let usedLocs = []
+  let annArr = []
+  let txtArr = []
+  foreach (b in set.bullets) {
+    let part = b.indexof("@")
+    txtArr.append("".join(part == null ? [loc($"{b}/name/short")]
+      : [loc($"{b.slice(0, part)}/name/short"), loc($"{b.slice(part+1)}/name/short")]))
+    if (!isInArray(b, usedLocs)) {
+      annArr.append(part == null ? getBulletAnnotation(b)
+        : getBulletAnnotation(b.slice(0, part), b.slice(part + 1)))
+      usedLocs.append(b)
+    }
+  }
+  return {
+    setText = separator.join(txtArr)
+    annotation = "\n".join(annArr)
+  }
+}
+
 // Generate text description for air.modifications[modificationNo]
 local function getModificationInfo(air, modifName, isShortDesc = false,
   limitedName = false, obj = null, itemDescrRewriteFunc = null) {
@@ -729,23 +751,7 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
     }
   }
 
-  //bullets description
-  let separator = loc("bullet_type_separator/name")
-  let usedLocs = []
-  let annArr = []
-  let txtArr = []
-  foreach (b in set.bullets) {
-    let part = b.indexof("@")
-    txtArr.append("".join(part == null ? [loc($"{b}/name/short")]
-      : [loc($"{b.slice(0, part)}/name/short"), loc($"{b.slice(part+1)}/name/short")]))
-    if (!isInArray(b, usedLocs)) {
-      annArr.append(part == null ? getBulletAnnotation(b)
-        : getBulletAnnotation(b.slice(0, part), b.slice(part + 1)))
-      usedLocs.append(b)
-    }
-  }
-  let setText = separator.join(txtArr)
-  let annotation = "\n".join(annArr)
+  let { setText, annotation } = getBulletsNamesBySet(set)
 
   if (ammo_pack_len)
     res.desc = shortDescr + "\n"
@@ -1161,4 +1167,5 @@ return {
   updateSecondaryBullets
   getAmmoStowageConstraintsByTrigger
   getBulletsSetMaxAmmoWithConstraints
+  getBulletsNamesBySet
 }

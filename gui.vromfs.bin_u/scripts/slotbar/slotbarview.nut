@@ -27,8 +27,9 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
-let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare
+let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare,
 } = require("%scripts/respawn/respawnState.nut")
+let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewById, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
@@ -108,10 +109,6 @@ function getUnitSlotPriceText(unit, params) {
   } = params
 
   local priceText = ""
-  if (curSlotIdInCountry >= 0 && (crew != null && isCrewAvailableInSession(crew, unit))
-      && (isSpareAircraftInSlot(curSlotIdInCountry) || isRespawnWithUniversalSpare(crew, unit)))
-    priceText = $"{priceText}{loc("spare/spare/short")} "
-
   if ((haveRespawnCost || haveSpawnDelay || missionRules?.isRageTokensRespawnEnabled) && unlocked) {
     let spawnDelay = slotDelayData != null
       ? slotDelayData.slotDelay - ((get_time_msec() - slotDelayData.updateTime) / 1000).tointeger()
@@ -563,24 +560,6 @@ function buildCommonUnitSlot(id, unit, params) {
   }
 
   //
-  // Bottom button view
-  //
-
-  let mainButtonAction = showConsoleButtons.value ? "onOpenActionsList" : mainActionFunc
-  let mainButtonText = showConsoleButtons.value ? "" : mainActionText
-  let mainButtonIcon = showConsoleButtons.value ? "#ui/gameuiskin#slot_menu.svg" : mainActionIcon
-  let checkTexts = mainButtonAction.len() > 0 && (mainButtonText.len() > 0 || mainButtonIcon.len() > 0)
-  let checkButton = !isVehicleInResearch || hasFeature("SpendGold")
-  let bottomButtonView = {
-    holderId            = id
-    hasButton           = hasActions && checkTexts && checkButton
-    mainButtonText      = mainButtonText
-    mainButtonAction    = mainButtonAction
-    hasMainButtonIcon   = mainButtonIcon.len()
-    mainButtonIcon      = mainButtonIcon
-  }
-
-  //
   // Item buttons view
   //
 
@@ -606,6 +585,25 @@ function buildCommonUnitSlot(id, unit, params) {
   let crew = hasCrewInfo ? getCrewById(crewId) : null
   let unitForCrewInfo = forceCrewInfoUnit || unit
 
+  //
+  // Bottom button view
+  //
+
+  let mainButtonAction = showConsoleButtons.value ? "onOpenActionsList" : mainActionFunc
+  let mainButtonText = showConsoleButtons.value ? "" : mainActionText
+  let mainButtonIcon = showConsoleButtons.value ? "#ui/gameuiskin#slot_menu.svg" : mainActionIcon
+  let checkTexts = mainButtonAction.len() > 0 && (mainButtonText.len() > 0 || mainButtonIcon.len() > 0)
+  let checkButton = !isVehicleInResearch || hasFeature("SpendGold")
+  let bottomButtonView = {
+    holderId            = id
+    hasButton           = hasActions && checkTexts && checkButton
+    mainButtonText      = mainButtonText
+    mainButtonAction    = mainButtonAction
+    hasMainButtonIcon   = mainButtonIcon.len()
+    mainButtonIcon      = mainButtonIcon
+    crewIdInCountry     = crew?.idInCountry
+  }
+
   let crewLevelText = (crew && unitForCrewInfo)
     ? getCrewLevel(crew, unitForCrewInfo, unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
     : ""
@@ -623,7 +621,7 @@ function buildCommonUnitSlot(id, unit, params) {
   let hasUnit = !(crew?.isEmpty ?? false)
   let needCurPoints = (crew != null) && !isMaxLevel
 
-  let extraInfoView = (hasExtraInfoBlock && hasCrewInfo) ? {
+  let extraInfoViewBottom = (hasExtraInfoBlock && hasCrewInfo) ? {
     hasExtraInfoBlock
     hasCrewInfo
     hasUnit
@@ -659,7 +657,23 @@ function buildCommonUnitSlot(id, unit, params) {
 
   let hasAdditionalRespawns = additionalRespawns != ""
   let hasPriceText = showAdditionExtraInfo && priceText != ""
-  let hasSpareCount = (spareCount > 0) && (!missionRules || missionRules.isAllowSpareInMission())
+  let isSpareAllowedInMission = !missionRules || missionRules.isAllowSpareInMission()
+  let hasSpare = spareCount > 0
+  let hasUniversalSpare = getUniversalSparesForUnit(unit).len() > 0
+
+  local spareText = ""
+  if (!isInFlight())
+    spareText = hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
+  else if (!isSpareAllowedInMission)
+    spareText = ""
+  else if (crew && isRespawnWithUniversalSpare(crew, unit))
+    spareText = loc("icon/universalSpare")
+  else if (crew && isSpareAircraftInSlot(crew.idInCountry))
+    spareText = hasSpare ? $"{spareCount}{loc("icon/universalSpare")}" : loc("icon/universalSpare")
+  else if (!hasSpare && hasUniversalSpare)
+    spareText = loc("icon/spare")
+  else
+    spareText = hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
 
   let extraInfoTopView = {
     hasExtraInfoBlockTop
@@ -667,8 +681,8 @@ function buildCommonUnitSlot(id, unit, params) {
     hasAdditionalRespawns
     additionalRespawns
     priceText
-    hasSpareCount
-    spareCount = hasSpareCount ? $"{spareCount}{loc("icon/spare")}" : ""
+    hasSpareInfo = spareText != ""
+    spareCount = spareText
   }
 
   if (specType) {
@@ -750,7 +764,7 @@ function buildCommonUnitSlot(id, unit, params) {
     tooltipId           = getTooltipType("UNIT").getTooltipId(unit.name, tooltipParams)
     isTooltipByHold     = showConsoleButtons.value
     bottomButton        = handyman.renderCached("%gui/slotbar/slotbarItemBottomButton.tpl", bottomButtonView)
-    extraInfoBlock      = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", extraInfoView)
+    extraInfoBlock      = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", extraInfoViewBottom)
     extraInfoBlockTop   = handyman.renderCached("%gui/slotbar/slotExtraInfoBlockTop.tpl", extraInfoTopView)
     refuseOpenHoverMenu = !hasActions
   })

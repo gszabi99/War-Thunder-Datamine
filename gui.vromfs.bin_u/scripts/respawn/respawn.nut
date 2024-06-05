@@ -1851,7 +1851,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       slotDelayData = this.slotDelayDataByCrewIdx?[idInCountry]
     })
 
-    let priceTextObj = slotObj.findObject("bottom_item_price_text")
+    let priceTextObj = slotObj.findObject("extraInfoPriceText")
     if (checkObj(priceTextObj)) {
       let bottomText = getUnitSlotPriceText(unit, params)
       priceTextObj.tinyFont = isUnitPriceTextLong(bottomText) ? "yes" : "no"
