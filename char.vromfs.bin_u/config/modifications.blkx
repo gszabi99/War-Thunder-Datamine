@@ -20564,6 +20564,20 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "105mm_SAP": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "105mm_SAP_ammo_pack",
+      "group": "105mm_AP",
+      "effects": {
+        "additiveBulletMod": "105mm_SAP"
+      }
+    },
+    "105mm_SAP_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "100mm_ussr_ATGM": {
       "image": "#ui/gameuiskin#tank_ammo",
       "reqModification": "100mm_ussr_ATGM_ammo_pack",
@@ -21513,6 +21527,12 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "us_aim_9l_i": {
+      "image": "#ui/gameuiskin#air_to_air_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "us_aim_9m": {
       "image": "#ui/gameuiskin#air_to_air_missile",
       "animation": "video/unitModifications/missile_air_to_air.ivf",
@@ -21969,6 +21989,12 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "su_27sm_r_27r_r_27er": {
+      "image": "#ui/gameuiskin#air_to_air_type_c_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "mig_29_r_27er": {
       "image": "#ui/gameuiskin#air_to_air_type_c_midrange_missile",
       "animation": "video/unitModifications/missile_air_to_air.ivf",
@@ -21976,6 +22002,24 @@
       "deactivationIsAllowed": false
     },
     "mig_29_r_27t": {
+      "image": "#ui/gameuiskin#air_to_air_type_c_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "su_27sm_r_27t_r_27et": {
+      "image": "#ui/gameuiskin#air_to_air_type_c_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "su_r_27t1_r_27et1": {
+      "image": "#ui/gameuiskin#air_to_air_type_c_midrange_missile",
+      "animation": "video/unitModifications/missile_air_to_air.ivf",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "su_r_27r1_r_27er1": {
       "image": "#ui/gameuiskin#air_to_air_type_c_midrange_missile",
       "animation": "video/unitModifications/missile_air_to_air.ivf",
       "modClass": "weapon",
@@ -23750,6 +23794,7 @@
     "countermeasures_launcher_chaff_priority_unchecked": {
       "reqModification": "countermeasures_belt_pack_unchecked",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_chaff_priority"
       }
@@ -23757,6 +23802,7 @@
     "countermeasures_launcher_flare_priority_unchecked": {
       "reqModification": "countermeasures_belt_pack_unchecked",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_flare_priority"
       }
@@ -23764,6 +23810,7 @@
     "countermeasures_launcher_flare_only_unchecked": {
       "reqModification": "countermeasures_belt_pack_unchecked",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_flare_only"
       }
@@ -23771,6 +23818,7 @@
     "countermeasures_launcher_chaff_only_unchecked": {
       "reqModification": "countermeasures_belt_pack_unchecked",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_chaff_only"
       }
@@ -23778,6 +23826,7 @@
     "countermeasures_launcher_chaff_unchecked": {
       "reqModification": "countermeasures_belt_pack_unchecked",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "additiveBulletMod": "countermeasures_launcher_chaff"
       }
@@ -23825,6 +23874,7 @@
     "countermeasures_launcher_chaff_priority": {
       "reqModification": "countermeasures_belt_pack",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_chaff_priority"
       }
@@ -23832,6 +23882,7 @@
     "countermeasures_launcher_flare_priority": {
       "reqModification": "countermeasures_belt_pack",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_flare_priority"
       }
@@ -23839,6 +23890,7 @@
     "countermeasures_launcher_flare_only": {
       "reqModification": "countermeasures_belt_pack",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_flare_only"
       }
@@ -23846,6 +23898,7 @@
     "countermeasures_launcher_chaff_only": {
       "reqModification": "countermeasures_belt_pack",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_chaff_only"
       }
@@ -23853,6 +23906,7 @@
     "countermeasures_launcher_chaff": {
       "reqModification": "countermeasures_belt_pack",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "additiveBulletMod": "countermeasures_launcher_chaff"
       }
@@ -23860,6 +23914,7 @@
     "q5_countermeasures_launcher_chaff_priority": {
       "reqModification": "q_5b_ltc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_chaff_priority"
       }
@@ -23867,6 +23922,7 @@
     "q5_countermeasures_launcher_flare_priority": {
       "reqModification": "q_5b_ltc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_flare_priority"
       }
@@ -23874,6 +23930,7 @@
     "q5_countermeasures_launcher_flare_only": {
       "reqModification": "q_5b_ltc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_flare_only"
       }
@@ -23881,6 +23938,7 @@
     "q5_countermeasures_launcher_chaff_only": {
       "reqModification": "q_5b_ltc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "countermeasures_launcher_chaff_only"
       }
@@ -23888,6 +23946,7 @@
     "maw_countermeasures_launcher_chaff_priority": {
       "reqModification": "MAW_system_heli_false_thermal_targets",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_chaff_priority"
       }
@@ -23895,6 +23954,7 @@
     "maw_countermeasures_launcher_flare_priority": {
       "reqModification": "MAW_system_heli_false_thermal_targets",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_flare_priority"
       }
@@ -23902,6 +23962,7 @@
     "maw_countermeasures_launcher_flare_only": {
       "reqModification": "MAW_system_heli_false_thermal_targets",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_flare_only"
       }
@@ -23909,6 +23970,7 @@
     "maw_countermeasures_launcher_chaff_only": {
       "reqModification": "MAW_system_heli_false_thermal_targets",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_chaff_only"
       }
@@ -23923,6 +23985,7 @@
     "maw_countermeasures_launcher_chaff_priority_large": {
       "reqModification": "MAW_system_heli_false_thermal_targets_large",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_chaff_priority_large"
       }
@@ -23930,6 +23993,7 @@
     "maw_countermeasures_launcher_flare_priority_large": {
       "reqModification": "MAW_system_heli_false_thermal_targets_large",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_flare_priority_large"
       }
@@ -23937,6 +24001,7 @@
     "maw_countermeasures_launcher_flare_only_large": {
       "reqModification": "MAW_system_heli_false_thermal_targets_large",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_flare_only_large"
       }
@@ -23944,6 +24009,7 @@
     "maw_countermeasures_launcher_chaff_only_large": {
       "reqModification": "MAW_system_heli_false_thermal_targets_large",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "maw_countermeasures_launcher_chaff_only_large"
       }
@@ -23951,6 +24017,7 @@
     "fn_hmp400_lcc_countermeasures_launcher_chaff_priority": {
       "reqModification": "fn_hmp400_lcc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "fn_hmp400_lcc_countermeasures_launcher_chaff_priority"
       }
@@ -23958,6 +24025,7 @@
     "fn_hmp400_lcc_countermeasures_launcher_flare_priority": {
       "reqModification": "fn_hmp400_lcc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "fn_hmp400_lcc_countermeasures_launcher_flare_priority"
       }
@@ -23965,6 +24033,7 @@
     "fn_hmp400_lcc_countermeasures_launcher_flare_only": {
       "reqModification": "fn_hmp400_lcc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "fn_hmp400_lcc_countermeasures_launcher_flare_only"
       }
@@ -23972,6 +24041,7 @@
     "fn_hmp400_lcc_countermeasures_launcher_chaff_only": {
       "reqModification": "fn_hmp400_lcc",
       "group": "countermeasures",
+      "isReserve": true,
       "effects": {
         "bulletMod": "fn_hmp400_lcc_countermeasures_launcher_chaff_only"
       }

@@ -28,17 +28,21 @@ let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
-function getBulletsCountText(curVal, maxVal, unallocated, guns, forceValColor = null) {
+function getBulletsCountText(curVal, maxVal, unallocated, guns) {
   local restText = ""
   if (unallocated && curVal < maxVal)
     restText = colorize("userlogColoredText", format(" %s", loc("ui/parentheses",
       { text = format("+%d", guns * min(unallocated, maxVal - curVal)) })))
-  let valColor = forceValColor
-    ?? ((!curVal || maxVal == 0) ? "badTextColor"
-      : (curVal == maxVal) ? "goodTextColor"
-      : "activeTextColor")
+  let valColor = (!curVal || maxVal == 0) ? "badTextColor"
+    : (curVal == maxVal) ? "goodTextColor"
+    : "activeTextColor"
   let valText = colorize(valColor, guns * curVal)
   return format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
+}
+
+function getPairSliderBulletsCountText(curVal, maxVal, valueMultiplier) {
+  let valText = colorize("activeTextColor", valueMultiplier * curVal)
+  return $"{valText}/{(valueMultiplier * (maxVal - curVal)).tostring()}"
 }
 
 function getStatusIcon(unit, item) {
@@ -302,11 +306,13 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   local pairModName = null
   if (!hideBullets) {
     let guns = bulGroup.guns
+    let { cartridge } = bulGroup.gunInfo
     let maxVal = bulGroup.maxBulletsCount
     let curVal = bulGroup.bulletsCount
     let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
-    res.bulletsCountText = getBulletsCountText(curVal, maxVal, unallocated, guns,
-      isPairBulletsGroup ? "activeTextColor" : null)
+    res.bulletsCountText = isPairBulletsGroup
+      ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
+      : getBulletsCountText(curVal, maxVal, unallocated, guns)
     if (res.needSliderButtons) {
       res.decBulletsLimit = curVal != 0 ? "no" : "yes"
       res.incBulletsLimit = curVal == maxVal
@@ -681,6 +687,7 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
     return
 
   let guns = bulGroup.guns
+  let { cartridge = 1 } = bulGroup.gunInfo
   let maxVal = bulGroup.maxBulletsCount
   let curVal = bulGroup.bulletsCount
   let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
@@ -688,8 +695,9 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
 
   let textObj = holderObj.findObject("bulletsCountText")
   if (checkObj(textObj))
-    textObj.setValue(getBulletsCountText(curVal, maxVal, unallocated, guns,
-      isPairBulletsGroup ? "activeTextColor" : null))
+    textObj.setValue(isPairBulletsGroup
+      ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
+      : getBulletsCountText(curVal, maxVal, unallocated, guns))
 
   let btnDec = holderObj.findObject("buttonDec")
   if (checkObj(btnDec))

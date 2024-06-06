@@ -45,7 +45,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { getCurCircuitOverride, isPixelStorm } = require("%appGlobals/curCircuitOverride.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
@@ -1051,8 +1051,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       btn_achievements_url = isVisibleAchievementsUrlBtn
     })
 
-    if (isPixelStorm() && isVisibleAchievementsUrlBtn)
-      setDoubleTextToButton(this.scene, "btn_achievements_url", loc("mainmenu/comparePixelAchievements"))
+    if (isVisibleAchievementsUrlBtn)
+      setDoubleTextToButton(this.scene, "btn_achievements_url",
+        loc("mainmenu/compareAchievements", {
+          name = getCurCircuitOverride("operatorName", "Gaijin.Net") }))
   }
 
   function onBlacklistBan() {

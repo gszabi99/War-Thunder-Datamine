@@ -379,9 +379,14 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       rankTable.enable(true)
       rankTable.findObject("bottom_horizontal_line").show(rank == this.maxRank)
 
+      let containerSize = $"{totalWidth}@shop_width, ph"
+      let containerPos = $"{extraLeft}, -{parentPosY}@shop_height"
       let arrowsContainer = rankTable.findObject("arrows_container")
-      arrowsContainer.size = $"{totalWidth}@shop_width, ph"
-      arrowsContainer.pos = $"{extraLeft}, -{parentPosY}@shop_height"
+      arrowsContainer.size = containerSize
+      arrowsContainer.pos = containerPos
+      let alarmIconsContainer = rankTable.findObject("alarm_icons_container")
+      alarmIconsContainer.size = containerSize
+      alarmIconsContainer.pos = containerPos
 
       tableIndex += 1
     }
@@ -696,7 +701,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local containerIndex = 0
     local rankTable = this.getRankTable(tableObj, containerIndex)
-    local arrowsContainer = null
 
     local datasByRanks = {}
     datasByRanks[0] <- []
@@ -727,12 +731,13 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
       if (datasByRanks?[rank] != null) {
         rankTable = this.getRankTable(tableObj, containerIndex)
-        arrowsContainer = rankTable.findObject("arrows_container")
+        let arrowsContainer = rankTable.findObject("arrows_container")
+        let alarmIconsContainer = rankTable.findObject("alarm_icons_container")
 
         let lineArr = datasByRanks[rank]
         foreach (data in lineArr)
-          this.linesGenerator.modifyOrAddLine(this, arrowsContainer, containerIndex,
-            data.lc, this.getLineStatus(data.lc), data.edge)
+          this.linesGenerator.modifyOrAddLine(this, arrowsContainer, alarmIconsContainer,
+            containerIndex, data.lc, this.getLineStatus(data.lc), data.edge)
       }
       containerIndex++
     }

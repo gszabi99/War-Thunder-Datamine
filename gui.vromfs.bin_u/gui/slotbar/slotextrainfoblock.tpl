@@ -1,5 +1,3 @@
-crewStatus:t='<<crewStatus>>'
-
 <<#hasExtraInfoBlock>>
 extraInfoBlock {
   id:t='extra_info_block'
@@ -24,6 +22,7 @@ extraInfoBlock {
   <<#hasCrewInfo>>
   crewInfoExpBlock {
     expAvailableIcon {
+      crewStatus:t='<<crewStatus>>'
       margin-right:t='2@sf/@pf'
     }
     shopItemText {
@@ -102,14 +101,12 @@ extraInfoBlock {
         margin-bottom:t='4@sf/@pf'
         text {
           text:t='#crew/availablePoints/short'
-          crewStatus:t='<<crewStatus>>'
           crew_data:t='yes'
         }
         textareaNoTab {
           id:t='crew_cur_points'
           margin-left:t='@blockInterval'
           overlayTextColor:t='active'
-          crewStatus:t='<<crewStatus>>'
           text:t='<<crewPoints>>'
         }
       }

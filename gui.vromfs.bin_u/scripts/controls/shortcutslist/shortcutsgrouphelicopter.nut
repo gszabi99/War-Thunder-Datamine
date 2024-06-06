@@ -264,6 +264,7 @@ return [
   {
     id = "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE_HELICOPTER"
     checkAssign = false
+    showFunc = @() hasFeature("SeparateCountermeasures")
   }
   {
     id = "ID_TOGGLE_LASER_DESIGNATOR_HELICOPTER"
@@ -331,10 +332,12 @@ return [
   {
     id = "ID_COUNTERMEASURE_FLARES_HELICOPTER"
     checkAssign = false
+    showFunc = @() hasFeature("SeparateCountermeasures")
   }
   {
     id = "ID_COUNTERMEASURE_CHAFF_HELICOPTER"
     checkAssign = false
+    showFunc = @() hasFeature("SeparateCountermeasures")
   }
   {
     id = "ID_FLARES_SERIES_HELICOPTER"

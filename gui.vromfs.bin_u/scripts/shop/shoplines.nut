@@ -359,7 +359,8 @@ let ShopLines = class {
     this.addToLineData(containerIndex, lineType, lineObj)
   }
 
-  function modifyOrAddLine(handler, arrowsContainer, containerIndex, lc, status, edge = "no") {
+  function modifyOrAddLine(handler, arrowsContainer, alarmIconsContainer,
+      containerIndex, lc, status, edge = "no") {
     let { air = null, reqAir = null } = lc
 
     let lineType = getLineType(lc.line[0], lc.line[1], lc.line[2], lc.line[3], lc)
@@ -370,7 +371,7 @@ let ShopLines = class {
     if (isFutureReqAir) {
       let alarmIconType = $"alarmIcon_{lineType}"
       if (!this.tryModifyLine(containerIndex, alarmIconType, lc, status, edge)) {
-        this.addAlarmIcon(handler, arrowsContainer, alarmIconType, containerIndex, lc, edge)
+        this.addAlarmIcon(handler, alarmIconsContainer, alarmIconType, containerIndex, lc, edge)
       }
     }
   }

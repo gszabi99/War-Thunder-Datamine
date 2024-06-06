@@ -40,11 +40,11 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
       : isExt2StepAllowed && isHasGaijinPass2StepTypeSync() ? authDataByTypes.gp
       : authDataByTypes.unknown
 
-    let prefix = getCurCircuitOverride("passImgPrefix", "")
+    let prefix = getCurCircuitOverride("passImgPrefix", "#ui/images/")
     return {
       verStatusText = data?.getText() ?? data.text
       authTypeImg = data.img.subst({ prefix })
-      backgroundImg = $"#ui/images/{prefix}two_step_form_bg"
+      backgroundImg = $"{prefix}two_step_form_bg"
       isShowRestoreLink = isExt2StepAllowed
       isRememberDevice = getObjValue(this.loginScene, "loginbox_code_remember_this_device", false)
       timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", this.guiScene)

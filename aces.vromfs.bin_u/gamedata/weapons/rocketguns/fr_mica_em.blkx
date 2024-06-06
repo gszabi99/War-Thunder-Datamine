@@ -124,6 +124,12 @@
         "band": 8,
         "active": true,
         "sideLobesAttenuation": -30.0,
+        "multipathEffect": [
+          0.0,
+          1.0,
+          100.0,
+          0.0
+        ],
         "lockAngleMax": 55.0,
         "angleMax": 55.0,
         "rateMax": 60.0,
@@ -158,6 +164,19 @@
           "filterAlpha": 0.8,
           "filterBetta": 0.05,
           "dopplerSpeedGateSearchRange": 300.0
+        },
+        "distance": {
+          "presents": true,
+          "minValue": 300.0,
+          "maxValue": 150000.0,
+          "width": 300.0,
+          "signalWidthMin": 300.0,
+          "refWidth": 1200.0
+        },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05,
+          "distGateSearchRange": 5000.0
         }
       },
       "guidanceAutopilot": {

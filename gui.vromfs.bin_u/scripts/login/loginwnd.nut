@@ -19,7 +19,7 @@ let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { setGuiOptionsMode } = require("guiOptions")
-let { getDistr, convertPixelJwtToAuthJwt, isPixClient } = require("auth_wt")
+let { getDistr, convertExternalJwtToAuthJwt } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
@@ -57,8 +57,12 @@ function setDbgGuestLoginIdPrefix(prefix) {
 }
 register_command(setDbgGuestLoginIdPrefix, "debug.set_guest_login_id_prefix")
 
+function isExternalOperator() {
+  return getCurCircuitOverride("operatorName") != null
+}
+
 function isShowMessageAboutProfileMoved() {
-  if (isPixClient() || !havePlayerTag("pix_wt"))
+  if (isExternalOperator() || !havePlayerTag("pix_wt"))
     return false
   scene_msg_box("errorMessageBox", get_gui_scene(),
     "\n".concat(loc("msgbox/error_login_migrated_player_profile"), $"<url={MIGRATION_URL}>{MIGRATION_URL}</url>"),
@@ -392,8 +396,8 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     if (isShowMessageAboutProfileMoved())
       return
 
-    if (isPixClient())
-      convertPixelJwtToAuthJwt("ConvertPixJwt")
+    if (isExternalOperator())
+      convertExternalJwtToAuthJwt("ConvertExternalJwt")
     else
       this.finishLogin(no_dump_login)
   }
@@ -478,7 +482,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
     if (params.success) {
       let no_dump_login = getObjValue(this.scene, "loginbox_username", "")
-      if (!isPixClient())
+      if (!isExternalOperator())
         load_local_settings()
       this.continueLogin(no_dump_login);
     }
@@ -736,7 +740,7 @@ eventbus_subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
   loginWnd.proceedGetTwoStepCode(p)
 })
 
-eventbus_subscribe("ConvertPixJwt", function ContinuePixLogin(_) {
+eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(_) {
   let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
   if (loginWnd == null)
     return

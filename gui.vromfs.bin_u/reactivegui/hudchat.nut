@@ -245,6 +245,7 @@ let messageComponent = @(message) function() {
     font = fontsState.get("small")
     color = colors.hud.chatTextAllColor
     key = message
+    colorTable = teamColors.value
   }
 }
 

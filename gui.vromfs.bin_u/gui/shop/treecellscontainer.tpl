@@ -41,6 +41,13 @@ shopRankTable {
   }
 
   tdiv {
+    id:t='alarm_icons_container'
+    input-transparent:t="yes"
+    position:t='absolute'
+    pos:t='(pw-w)/2, 0'
+  }
+
+  tdiv {
     position:t='absolute'
     id:t='cells_container'
     total-input-transparent:t='yes'

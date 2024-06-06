@@ -12,6 +12,8 @@
   "startExhaustFxType": "jet_start_exhaust",
   "disableExhaustFxIfContrailIsActive": true,
   "ilsLCOSS": true,
+  "ilsHaveAVQ7CCIP": true,
+  "ilsHaveAVQ7CCRP": true,
   "havePointOfInterestDesignator": true,
   "gyroSight": false,
   "haveCCRPForGun": true,
@@ -2524,6 +2526,9 @@
       0.0
     ],
     "collimatorSize": 0.15,
+    "sightInFov": 1.5,
+    "sightOutFov": 6.5,
+    "sightFov": 1.0,
     "mirror": true,
     "mirrorPos": [
       5.85,
@@ -3002,6 +3007,10 @@
         "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_aim_9l.blk"
       },
       {
+        "name": "f_4f_kws_lv_aim_9l_i",
+        "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_aim_9l_i.blk"
+      },
+      {
         "name": "f_4f_kws_lv_aim_120a",
         "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_aim_120a.blk"
       },
@@ -3046,8 +3055,12 @@
         "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_rockets_zuni.blk"
       },
       {
-        "name": "f_4f_kws_lv_agm_65b",
-        "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_agm_65b.blk"
+        "name": "f_4f_kws_lv_agm_65d",
+        "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_agm_65d.blk"
+      },
+      {
+        "name": "f_4f_kws_lv_agm_65g",
+        "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_agm_65g.blk"
       }
     ]
   },
@@ -3513,8 +3526,8 @@
           },
           {
             "iconType": "missile_air_to_uni",
-            "name": "agm_65b_slot2",
-            "reqModification": "us_agm_65b",
+            "name": "agm_65d_slot2",
+            "reqModification": "us_agm_65d",
             "ShowNodes": {
               "node": [
                 "pylon_l_in",
@@ -3524,7 +3537,28 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65b.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65d.blk",
+              "emitter": "us_lau_117a_agm_65a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g_slot2",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_in",
+                "pylon_l_in_upor",
+                "us_lau_117a_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
               "emitter": "us_lau_117a_agm_65a_001",
               "bullets": 1,
               "external": true,
@@ -3563,6 +3597,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/lau_7a_aim9l.blk",
+              "emitter": "aero_3b_001",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "aim_9l_i_slot3",
+            "reqModification": "us_aim_9l_i",
+            "ShowNodes": {
+              "node": "pylon_l_in"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/lau_7a_aim9l_i.blk",
               "emitter": "aero_3b_001",
               "external": true,
               "separate": true
@@ -3863,6 +3912,21 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "aim_9l_i_slot9",
+            "reqModification": "us_aim_9l_i",
+            "ShowNodes": {
+              "node": "pylon_r_in"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/lau_7a_aim9l_i.blk",
+              "emitter": "aero_3b_002",
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -4004,8 +4068,8 @@
           },
           {
             "iconType": "missile_air_to_uni",
-            "name": "agm_65b_slot10",
-            "reqModification": "us_agm_65b",
+            "name": "agm_65d_slot10",
+            "reqModification": "us_agm_65d",
             "ShowNodes": {
               "node": [
                 "pylon_r_in",
@@ -4015,7 +4079,28 @@
             },
             "Weapon": {
               "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/us_agm_65b.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65d.blk",
+              "emitter": "us_lau_117a_agm_65a_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "agm_65g_slot10",
+            "reqModification": "us_agm_65g",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_in",
+                "pylon_r_in_upor",
+                "us_lau_117a_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/us_agm_65g.blk",
               "emitter": "us_lau_117a_agm_65a_002",
               "bullets": 1,
               "external": true,
@@ -4549,11 +4634,16 @@
     },
     "f4c_zuni": {
       "reqModification": "us_2_75_in_ffar_lau_3a",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "us_agm_65d": {
+      "prevModification": "f4c_zuni",
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_agm_65b": {
-      "reqModification": "f4c_zuni",
+    "us_agm_65g": {
+      "reqModification": "us_agm_65d",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -4561,9 +4651,13 @@
       "tier": 1,
       "modClass": "weapon"
     },
+    "us_aim_9l_i": {
+      "tier": 2,
+      "modClass": "weapon"
+    },
     "us_aim_120a": {
-      "reqModification": "us_aim_9l",
-      "tier": 3,
+      "reqModification": "us_aim_9l_i",
+      "tier": 4,
       "modClass": "weapon"
     }
   },

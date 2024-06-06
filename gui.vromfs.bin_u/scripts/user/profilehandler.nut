@@ -88,7 +88,7 @@ let { getStats } = require("%scripts/myStats.nut")
 let { findItemById, canGetDecoratorFromTrophy } = require("%scripts/items/itemsManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getCurCircuitOverride, isPixelStorm } = require("%appGlobals/curCircuitOverride.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
@@ -439,8 +439,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (buttonsList.btn_codeApp)
       setDoubleTextToButton(this.scene, "btn_codeApp",
         loc("mainmenu/2step/getPass", { passName = getCurCircuitOverride("passName", "Gaijin Pass") }))
-    if (isPixelStorm() && buttonsList.btn_achievements_url)
-      setDoubleTextToButton(this.scene, "btn_achievements_url", loc("mainmenu/showPixelAchievements"))
+    if (buttonsList.btn_achievements_url)
+      setDoubleTextToButton(this.scene, "btn_achievements_url",
+        loc("mainmenu/showAchievements", {
+          name = getCurCircuitOverride("operatorName", "Gaijin.Net") }))
 
     this.updateDecalButtons(this.getCurDecal())
   }

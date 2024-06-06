@@ -1020,7 +1020,7 @@
       "armorClass": "ship_RHA",
       "armorThickness": 15.0,
       "turret_01_front_dm": {
-        "armorThickness": 15.0,
+        "armorThickness": 20.0,
         "hp": 10000.0
       },
       "turret_01_side_dm": {
@@ -1028,7 +1028,7 @@
         "hp": 10000.0
       },
       "turret_07_front_dm": {
-        "armorThickness": 15.0,
+        "armorThickness": 20.0,
         "hp": 10000.0
       },
       "turret_07_side_dm": {
@@ -1036,7 +1036,7 @@
         "hp": 10000.0
       },
       "turret_08_front_dm": {
-        "armorThickness": 15.0,
+        "armorThickness": 20.0,
         "hp": 10000.0
       },
       "turret_08_side_dm": {
@@ -1238,12 +1238,9 @@
         "hp": 1800.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1800.0
+        "hp": 1400.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1498.0
-      },
-      "ammunition_storage_shells_04_dm": {
         "hp": 1400.0
       }
     },
@@ -1260,10 +1257,10 @@
       "fireProtectionHp": 5.0,
       "armorThrough": 200.0,
       "ammunition_storage_aux_01_dm": {
-        "hp": 987.0
+        "hp": 1100.0
       },
       "ammunition_storage_aux_02_dm": {
-        "hp": 900.0
+        "hp": 1100.0
       }
     },
     "ammo_first_stage": {
@@ -1439,7 +1436,7 @@
     "sailor5": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 9
+      "crew": 8
     },
     "sailor6": {
       "dmPart": "compartment_05_dm",
@@ -1489,12 +1486,12 @@
     "sailor15": {
       "dmPart": "ammunition_storage_aux_01_dm",
       "role": "sailor",
-      "crew": 6
+      "crew": 7
     },
     "sailor16": {
       "dmPart": "ammunition_storage_aux_02_dm",
       "role": "sailor",
-      "crew": 6
+      "crew": 7
     },
     "sailor17": {
       "dmPart": "ammunition_storage_shells_01_dm",
@@ -1502,12 +1499,12 @@
       "crew": 10
     },
     "sailor18": {
-      "dmPart": "ammunition_storage_shells_03_dm",
+      "dmPart": "ammunition_storage_shells_02_dm",
       "role": "sailor",
       "crew": 10
     },
     "sailor19": {
-      "dmPart": "ammunition_storage_shells_04_dm",
+      "dmPart": "ammunition_storage_shells_03_dm",
       "role": "sailor",
       "crew": 10
     },
@@ -1554,7 +1551,7 @@
     "sailor28": {
       "dmPart": "transmission_02_dm",
       "role": "sailor",
-      "crew": 22
+      "crew": 21
     },
     "sailor29": {
       "dmPart": "fire_control_room_01_dm",
@@ -2243,42 +2240,27 @@
         "dmPart": "antenna_target_location_02_dm"
       }
     ],
-    "fireDirecting": [
-      {
-        "dmPartMain": "fire_control_room_01_dm",
-        "dmPart": "fire_director_01_dm",
-        "measureAccuracy": 1.0,
-        "targetLockTime": 15.0,
-        "calcTime": 8.0,
-        "rotationSpeed": 6.0,
-        "shipIndicationOn": true,
-        "triggerGroupUse": {
-          "primary": true,
-          "secondary": true,
-          "machinegun": false
-        }
-      },
-      {
-        "dmPartMain": "fire_control_room_01_dm",
-        "dmPart": [
-          "fire_director_02_dm",
-          "fire_director_03_dm"
-        ],
-        "rotationSpeed": [
-          0.0,
-          20.0
-        ],
-        "measureAccuracy": 1.0,
-        "targetLockTime": 6.0,
-        "calcTime": 3.0,
-        "shipIndicationOn": true,
-        "triggerGroupUse": {
-          "primary": true,
-          "secondary": false,
-          "machinegun": false
-        }
+    "fireDirecting": {
+      "dmPartMain": "fire_control_room_01_dm",
+      "dmPart": [
+        "fire_director_01_dm",
+        "fire_director_02_dm",
+        "fire_director_03_dm"
+      ],
+      "rotationSpeed": [
+        0.0,
+        20.0
+      ],
+      "measureAccuracy": 1.0,
+      "targetLockTime": 6.0,
+      "calcTime": 3.0,
+      "shipIndicationOn": true,
+      "triggerGroupUse": {
+        "primary": true,
+        "secondary": false,
+        "machinegun": false
       }
-    ]
+    }
   },
   "radarAnimations": {
     "anim": [
@@ -2338,8 +2320,8 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
-        "speedPitch": 8.0,
+        "speedYaw": 12.0,
+        "speedPitch": 8.5,
         "bullets": 420,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -2430,8 +2412,8 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
-        "speedPitch": 8.0,
+        "speedYaw": 12.0,
+        "speedPitch": 8.5,
         "bullets": 420,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -2522,8 +2504,8 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
-        "speedPitch": 8.0,
+        "speedYaw": 12.0,
+        "speedPitch": 8.5,
         "bullets": 420,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -2614,8 +2596,8 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
-        "speedPitch": 8.0,
+        "speedYaw": 12.0,
+        "speedPitch": 8.5,
         "bullets": 420,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -2706,8 +2688,8 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
-        "speedPitch": 8.0,
+        "speedYaw": 12.0,
+        "speedPitch": 8.5,
         "bullets": 420,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -2798,8 +2780,8 @@
         "errMeasureVelDir": 3.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "speedYaw": 10.0,
-        "speedPitch": 8.0,
+        "speedYaw": 12.0,
+        "speedPitch": 8.5,
         "bullets": 420,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -3949,8 +3931,7 @@
             "fireDamageMult": 0.75,
             "ammunition_storage_shells_01_dm": {},
             "ammunition_storage_shells_02_dm": {},
-            "ammunition_storage_shells_03_dm": {},
-            "ammunition_storage_shells_04_dm": {}
+            "ammunition_storage_shells_03_dm": {}
           }
         }
       }
@@ -5136,7 +5117,7 @@
         "fireEvent": "ready_use_ammo_fire",
         "explosionEvent": "ready_use_ammo_explosion",
         "damageEffect": "ammunition_first_stage",
-        "ammunition_storage_shells_03_dm": {
+        "ammunition_storage_shells_02_dm": {
           "count": 840
         }
       }
@@ -5230,7 +5211,7 @@
         "fatalFire": true,
         "fatalExplosion": true,
         "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_04_dm": {
+        "ammunition_storage_shells_03_dm": {
           "count": 840
         }
       }
@@ -5487,16 +5468,8 @@
               "critWaterLevel": 0.75
             },
             {
-              "partNo": "ammunition_storage_shells_02_dm",
-              "critWaterLevel": 0.9
-            },
-            {
               "partNo": "ammunition_storage_aux_01_dm",
               "critWaterLevel": 0.75
-            },
-            {
-              "partNo": "ammunition_storage_aux_02_dm",
-              "critWaterLevel": 0.9
             },
             {
               "partNo": "fire_control_room_01_dm",
@@ -5568,11 +5541,15 @@
         "innerParts": {
           "part": [
             {
+              "partNo": "ammunition_storage_shells_02_dm",
+              "critWaterLevel": 0.9
+            },
+            {
               "partNo": "ammunition_storage_shells_03_dm",
               "critWaterLevel": 0.75
             },
             {
-              "partNo": "ammunition_storage_shells_04_dm",
+              "partNo": "ammunition_storage_aux_02_dm",
               "critWaterLevel": 0.9
             }
           ]

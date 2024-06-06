@@ -6690,7 +6690,10 @@
         "dmPartMain": "fire_control_room_01_dm",
         "dmPart": [
           "fire_director_03_dm",
-          "fire_director_06_dm"
+          "fire_director_04_dm",
+          "fire_director_05_dm",
+          "fire_director_10_dm",
+          "fire_director_11_dm"
         ],
         "measureAccuracy": 1.0,
         "targetLockTime": 15.0,
@@ -6699,7 +6702,7 @@
         "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": true,
-          "secondary": true,
+          "secondary": false,
           "machinegun": false
         }
       },
@@ -6708,14 +6711,10 @@
         "dmPart": [
           "fire_director_01_dm",
           "fire_director_02_dm",
-          "fire_director_03_dm",
-          "fire_director_04_dm",
-          "fire_director_05_dm",
+          "fire_director_06_dm",
           "fire_director_07_dm",
           "fire_director_08_dm",
           "fire_director_09_dm",
-          "fire_director_10_dm",
-          "fire_director_11_dm",
           "fire_director_12_dm",
           "fire_director_13_dm"
         ],
@@ -6794,6 +6793,7 @@
         "fire_director_10",
         "fire_director_11",
         "antenna_target_location_01",
+        "antenna_target_location_02",
         "antenna_target_location_03",
         "antenna_target_location_04",
         "antenna_target_location_05",
@@ -13981,7 +13981,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_01_dm": {
-          "count": 756
+          "count": 720
         }
       },
       "charges": {
@@ -13989,7 +13989,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_01_dm": {
-          "count": 756
+          "count": 720
         }
       }
     },
@@ -14089,7 +14089,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_02_dm": {
-          "count": 504
+          "count": 480
         }
       },
       "charges": {
@@ -14097,7 +14097,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_02_dm": {
-          "count": 504
+          "count": 480
         }
       }
     },
@@ -14280,12 +14280,12 @@
         "fireEvent": "ammo_aux_fire_3",
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_01_dm": {
-          "count": 60000
+          "count": 72000
         }
       }
     },
     "ammo5": {
-      "weaponTrigger": "gunner41",
+      "weaponTrigger": "gunner43",
       "entityMunition": "torpedo",
       "replenishmentDelay": 6.0,
       "replenishmentTime": 10.0,
@@ -14357,7 +14357,7 @@
       ]
     },
     "ammo6": {
-      "weaponTrigger": "gunner42",
+      "weaponTrigger": "gunner44",
       "entityMunition": "torpedo",
       "replenishmentDelay": 6.0,
       "replenishmentTime": 10.0,

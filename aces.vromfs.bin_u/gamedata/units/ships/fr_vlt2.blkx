@@ -287,9 +287,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        -0.2,
-        -0.2,
-        0.25
+        -0.8,
+        -0.9,
+        0.5
       ],
       "suffix": "3",
       "deadHeadAttitudeMin": -55.0,
@@ -301,9 +301,9 @@
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
           "flexionDir": [
-            0.2,
-            -1.0,
-            0.0
+            0.5,
+            -0.5,
+            0.3
           ]
         },
         {
@@ -312,9 +312,9 @@
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
           "flexionDir": [
-            -0.2,
-            -1.0,
-            0.0
+            -0.5,
+            -0.5,
+            0.3
           ]
         },
         {
@@ -350,9 +350,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        -0.2,
-        -0.2,
-        0.25
+        -0.8,
+        -0.9,
+        0.5
       ],
       "suffix": "4",
       "deadHeadAttitudeMin": -55.0,
@@ -364,9 +364,9 @@
           "upNode": "Bip01 L UpperArm",
           "targetNode": "lefthand_",
           "flexionDir": [
-            0.2,
-            -1.0,
-            0.0
+            0.5,
+            -0.5,
+            0.3
           ]
         },
         {
@@ -375,9 +375,9 @@
           "upNode": "Bip01 R UpperArm",
           "targetNode": "righthand_",
           "flexionDir": [
-            -0.2,
-            -1.0,
-            0.0
+            -0.5,
+            -0.5,
+            0.3
           ]
         },
         {
@@ -980,7 +980,10 @@
       "shatterDamageMult": 0.3,
       "armorClass": "ship_structural_steel",
       "armorThickness": 10.0,
-      "fireProtectionHp": 30.0
+      "fireProtectionHp": 30.0,
+      "steering_gear_01_dm": {
+        "hp": 250.0
+      }
     },
     "pumps": {
       "armorClass": "ship_structural_steel",
@@ -1783,11 +1786,11 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 34000.0,
+      "Empty": 60000.0,
       "momentOfInertia": [
-        8.0,
-        24.0,
-        16.0
+        12.0,
+        45.0,
+        31.0
       ],
       "CenterOfGravity": [
         -1.2,
@@ -1801,20 +1804,20 @@
     },
     "engines": {
       "maxSpeed": 22.9,
-      "maxReverseSpeed": 7.2,
+      "maxReverseSpeed": 7.5,
       "speedToTime": {
         "row": [
           [
             5.0,
-            2.3
-          ],
-          [
-            10.0,
             4.0
           ],
           [
+            10.0,
+            5.0
+          ],
+          [
             22.9,
-            8.5
+            11.1
           ]
         ]
       },
@@ -1829,7 +1832,7 @@
             2.8
           ],
           [
-            7.2,
+            7.5,
             6.0
           ]
         ]
@@ -1874,27 +1877,27 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 0.65,
+      "mulReaction": 0.75,
       "rudder": [
         {
           "pos": [
             -15.3,
-            0.26,
+            -0.5,
             1.0
           ],
-          "area": 0.8,
-          "deflection": 38.0,
-          "dmPart": "rudder_01_dm"
+          "area": 1.4,
+          "deflection": 36.0,
+          "dmPart": "steering_gear_01_dm"
         },
         {
           "pos": [
             -15.3,
-            0.26,
+            -0.5,
             -1.0
           ],
-          "area": 0.8,
-          "deflection": 38.0,
-          "dmPart": "rudder_02_dm"
+          "area": 1.4,
+          "deflection": 36.0,
+          "dmPart": "steering_gear_01_dm"
         }
       ],
       "hydrofoils": {
@@ -1906,13 +1909,13 @@
               18.0
             ],
             "pos": [
-              5.3,
-              -0.9,
+              6.3,
+              -1.3,
               -0.9
             ],
             "size": [
-              1.1,
-              1.35
+              2.1,
+              2.35
             ],
             "maxV": 55.0,
             "polar": {
@@ -1932,13 +1935,13 @@
               18.0
             ],
             "pos": [
-              5.3,
-              -0.9,
+              6.3,
+              -1.3,
               0.9
             ],
             "size": [
-              1.1,
-              1.35
+              2.1,
+              2.35
             ],
             "maxV": 55.0,
             "polar": {
@@ -2061,7 +2064,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk1_twin_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2179,6 +2182,7 @@
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
         "barrelDP": "auxiliary_caliber_gun_01_dm",
+        "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 2.0,
@@ -2210,11 +2214,11 @@
             "verNode": "bone_radius_foot_01",
             "verLimits": [
               0.0,
-              13.0
+              7.0
             ],
             "verOriginLimits": [
-              20.0,
-              70.0
+              0.0,
+              60.0
             ]
           }
         },
@@ -2267,65 +2271,81 @@
           ],
           "lim7": [
             -5.0,
-            14.0,
-            7.0,
+            31.0,
+            0.0,
             70.0
           ],
           "lim8": [
-            14.0,
-            31.0,
-            15.0,
-            70.0
-          ],
-          "lim9": [
             31.0,
             37.0,
             3.0,
             70.0
           ],
-          "lim10": [
+          "lim9": [
             37.0,
             44.0,
             -2.0,
             70.0
           ],
-          "lim11": [
+          "lim10": [
             44.0,
             57.0,
             0.0,
             70.0
           ],
-          "lim12": [
+          "lim11": [
             57.0,
             81.0,
             -6.0,
             70.0
           ],
-          "lim13": [
+          "lim12": [
             81.0,
             114.0,
             16.0,
             70.0
           ],
-          "lim14": [
+          "lim13": [
             114.0,
             149.0,
             -4.0,
             70.0
           ],
-          "lim15": [
+          "lim14": [
             149.0,
             157.0,
             -11.0,
             70.0
           ],
-          "lim16": [
+          "lim15": [
             157.0,
             180.0,
             4.0,
             70.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -5.0,
+              14.0
+            ],
+            "pitch": [
+              0.0,
+              7.0
+            ]
+          },
+          {
+            "yaw": [
+              14.0,
+              31.0
+            ],
+            "pitch": [
+              0.0,
+              15.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -2344,6 +2364,7 @@
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
         "barrelDP": "auxiliary_caliber_gun_02_dm",
+        "breechDP": "auxiliary_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 2.0,
@@ -2375,11 +2396,11 @@
             "verNode": "bone_radius_foot_02",
             "verLimits": [
               0.0,
-              13.0
+              7.0
             ],
             "verOriginLimits": [
-              20.0,
-              70.0
+              0.0,
+              60.0
             ]
           }
         },
@@ -2444,14 +2465,8 @@
           ],
           "lim9": [
             -31.0,
-            -14.0,
-            15.0,
-            70.0
-          ],
-          "lim10": [
-            -14.0,
             5.0,
-            7.0,
+            0.0,
             70.0
           ],
           "lim11": [
@@ -2491,6 +2506,28 @@
             70.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -14.0,
+              5.0
+            ],
+            "pitch": [
+              0.0,
+              7.0
+            ]
+          },
+          {
+            "yaw": [
+              -31.0,
+              -14.0
+            ],
+            "pitch": [
+              0.0,
+              15.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -3332,14 +3369,14 @@
     "headPos": [
       0.0,
       6.5,
-      -17.5
+      -22.5
     ],
     "headPosOnShooting": [
       3.1,
       5.4,
       0.7
     ],
-    "detectinHeigh": 4.67
+    "detectinHeigh": 8.67
   },
   "sound": {
     "EngineName": "engine_ctr01",

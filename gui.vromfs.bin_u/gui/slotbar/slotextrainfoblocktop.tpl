@@ -12,10 +12,11 @@ extraInfoBlockTop {
         textareaNoTab {
           id:t='extraInfoPriceText'
           width:t='pw'
-          overlayTextColor:t='active'
           smallFont:t='yes'
           text:t='<<priceText>>'
           text-align:t='center'
+          position:t='absolute'
+          pos:t='pw/2-w/2, ph/2-(h-@sf/@pf)/2'
         }
       }
       <</hasPriceText>>
@@ -33,10 +34,11 @@ extraInfoBlockTop {
       td {
         textareaNoTab {
           width:t='pw'
-          overlayTextColor:t='active'
           smallFont:t='yes'
           text:t='<<additionalRespawns>>'
           text-align:t='center'
+          position:t='absolute'
+          pos:t='pw/2-w/2, ph/2-(h-@sf/@pf)/2'
         }
       }
       <</hasAdditionalRespawns>>
@@ -69,6 +71,8 @@ extraInfoBlockTop {
           smallFont:t='yes'
           text:t='<<spareCount>>'
           text-align:t='center'
+          position:t='absolute'
+          pos:t='pw/2-w/2, ph/2-(h-@sf/@pf)/2'
         }
       }
       <</hasSpareInfo>>
@@ -79,7 +83,7 @@ extraInfoBlockTop {
       td {
         text {
           text:t='#ui/minus'
-          style:t="color:#657c8a;"
+          overlayTextColor:t='common'
         }
       }
       <</hasSpareInfo>>

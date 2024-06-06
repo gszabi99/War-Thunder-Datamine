@@ -39,8 +39,7 @@ let opticWeaponAim = @(
   color_watched, alert_color_watched, show_tps_sight
 )
 function() {
-  let aimTracker = @()
-  function() {
+  let aimTracker = @() function() {
     if (!TrackerVisible.value)
       return {
         watch = TrackerVisible

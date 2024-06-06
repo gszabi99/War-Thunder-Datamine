@@ -14,7 +14,7 @@ gui_handlers.reminderGPModal <- class (BaseGuiHandler) {
   function getSceneTplView() {
     let passName = getCurCircuitOverride("passName", "Gaijin Pass")
     return {
-      backgroundImg = $"#ui/images/{getCurCircuitOverride("passImgPrefix", "")}two_step_gp_banner_bg"
+      backgroundImg = $"{getCurCircuitOverride("passImgPrefix", "#ui/images/")}two_step_gp_banner_bg"
       passText = loc("mainmenu/2step/getPass", { passName })
       descText = loc("mainmenu/2step/getPass/reminder", { passName })
       whyNeedText = loc("mainmenu/2step/getPass/whyNeed", { passName })

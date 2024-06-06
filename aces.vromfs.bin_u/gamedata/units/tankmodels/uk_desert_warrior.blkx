@@ -386,7 +386,8 @@
       "turret_07_back_dm": {},
       "turret_07_bottom_dm": {},
       "turret_07_top_dm": {},
-      "turret_08_back_dm": {}
+      "turret_08_back_dm": {},
+      "turret_08_front_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -1780,10 +1781,10 @@
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
         "jammedReloadTime": 8.0,
-        "speedYaw": 60.0,
-        "speedPitch": 60.0,
+        "speedYaw": 40.0,
+        "speedPitch": 36.0,
         "fireConeAngle": 1.0,
-        "bullets": 400,
+        "bullets": 480,
         "rearmCartridgeTime": 20.0,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
@@ -1947,8 +1948,14 @@
         ],
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
-        "skipAxisEmitterCheck": true,
         "recoilMultiplier": 0.1,
+        "stopForFire": true,
+        "readyToFireVar": "m3a3_bradley_action",
+        "readyToFireTime": 2.5,
+        "maxSpeedForFire": 6.0,
+        "battlePositionSpeed": 25.0,
+        "lagStopForFireTime": 1.0,
+        "skipAxisEmitterCheck": true,
         "changeBulletTypeForSet": true,
         "staticElevation": 2.25,
         "maxAdditionalPitch": 0.0,
@@ -2950,6 +2957,13 @@
       "from": "uk_camo_very_dark_drab*"
     }
   },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "uk_camo_very_dark_drab*",
+      "to": "us_camo_modern_green*"
+    }
+  },
   "skin": [
     {
       "name": "uk_camo_standart_modern_light_stone",
@@ -2958,33 +2972,6 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "uk_camo_standart_modern_light_stone*"
-      }
-    },
-    {
-      "name": "uk_camo_standart_modern_bicolor",
-      "nameLocId": "skin/uk_camo_standart_modern_bicolor",
-      "descLocId": "skin/uk_camo_standart_modern_bicolor/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_standart_modern_bicolor*"
-      }
-    },
-    {
-      "name": "uk_camo_standart_modern_desert_bicolor",
-      "nameLocId": "skin/uk_camo_standart_modern_desert_bicolor",
-      "descLocId": "skin/uk_camo_standart_modern_desert_bicolor/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_standart_modern_desert_bicolor*"
-      }
-    },
-    {
-      "name": "uk_camo_winter_olive",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "uk_camo_very_dark_drab*",
-        "to": "us_camo_winter_olive*"
       }
     },
     {
@@ -3007,13 +2994,13 @@
       "replenishmentTime": 15.0,
       "shells": {
         "ammo_body_02_dm": {
-          "count": 100
+          "count": 120
         },
         "ammo_body_01_dm": {
-          "count": 100
+          "count": 120
         },
         "ammo_body_dm": {
-          "count": 200
+          "count": 240
         }
       }
     },
@@ -3092,18 +3079,18 @@
           "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05
-          },
-          "commanderViewIr": {
-            "resolution": [
               800,
               600
             ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
+            "noiseFactor": 0.04
+          },
+          "commanderViewIr": {
+            "resolution": [
+              1600,
+              1200
+            ],
+            "lightMult": 9.0,
+            "ghosting": 0.6,
             "noiseFactor": 0.2
           },
           "driverIr": {

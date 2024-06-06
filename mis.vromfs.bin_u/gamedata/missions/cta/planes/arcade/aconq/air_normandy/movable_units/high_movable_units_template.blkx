@@ -1,0 +1,3097 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/air_israel.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "movable_units_high_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "movable units"
+          },
+          {
+            "value": ""
+          }
+        ],
+        "unitSetProperties": {
+          "object": [
+            "t1_tanks_squad",
+            "t1_acars_squad",
+            "t1_trucks_squad",
+            "t2_tanks_squad",
+            "t2_acars_squad",
+            "t2_trucks_squad"
+          ],
+          "accuracy": 0.1,
+          "airAccuracy": 0.1
+        },
+        "__varSetString": {
+          "value": "high",
+          "var": "mu_name_suffix"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "tankModels": [
+      {
+        "name": "t1_tank_01",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7034.5,
+            278.591,
+            -5852.56
+          ]
+        ],
+        "unit_class": "uk_chieftain_mk_5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_acar_01",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7043.77,
+            375.515,
+            -6078.65
+          ]
+        ],
+        "unit_class": "uk_rooikat_mttd",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_truck_01",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7044.63,
+            370.68,
+            -6266.41
+          ]
+        ],
+        "unit_class": "us_apc_m113",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_tank_02",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7192.0,
+            278.591,
+            -5851.25
+          ]
+        ],
+        "unit_class": "uk_chieftain_mk_5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_tank_03",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7362.19,
+            278.591,
+            -5849.84
+          ]
+        ],
+        "unit_class": "uk_chieftain_mk_5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_acar_02",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7184.37,
+            375.515,
+            -6077.48
+          ]
+        ],
+        "unit_class": "uk_rooikat_mttd",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_acar_03",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7339.16,
+            375.515,
+            -6076.2
+          ]
+        ],
+        "unit_class": "uk_rooikat_mttd",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_truck_02",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7195.92,
+            370.68,
+            -6265.15
+          ]
+        ],
+        "unit_class": "us_apc_m113",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_truck_03",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            7352.82,
+            370.68,
+            -6263.85
+          ]
+        ],
+        "unit_class": "us_apc_m113",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_tank_01",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14290.4,
+            278.591,
+            -6029.09
+          ]
+        ],
+        "unit_class": "uk_chieftain_mk_5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_acar_01",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14281.1,
+            375.515,
+            -6255.18
+          ]
+        ],
+        "unit_class": "uk_rooikat_mttd",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_truck_01",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14280.2,
+            370.68,
+            -6442.94
+          ]
+        ],
+        "unit_class": "us_apc_m113",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_tank_02",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14132.9,
+            278.591,
+            -6027.79
+          ]
+        ],
+        "unit_class": "uk_chieftain_mk_5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_tank_03",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -13962.7,
+            278.591,
+            -6026.38
+          ]
+        ],
+        "unit_class": "uk_chieftain_mk_5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_acar_02",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14140.5,
+            375.515,
+            -6254.02
+          ]
+        ],
+        "unit_class": "uk_rooikat_mttd",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_acar_03",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -13985.7,
+            375.515,
+            -6252.74
+          ]
+        ],
+        "unit_class": "uk_rooikat_mttd",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_truck_02",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14128.9,
+            370.68,
+            -6441.69
+          ]
+        ],
+        "unit_class": "us_apc_m113",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_truck_03",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -13972.0,
+            370.68,
+            -6440.39
+          ]
+        ],
+        "unit_class": "us_apc_m113",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [
+            6.0,
+            6.0
+          ],
+          "formation_noise": [
+            0.3,
+            0.4
+          ],
+          "isDelayed": true
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t1_tanks_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            6873.41,
+            278.591,
+            -5853.89
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tank_01",
+            "t1_tank_02",
+            "t1_tank_03"
+          ]
+        }
+      },
+      {
+        "name": "t1_acars_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            6874.28,
+            375.515,
+            -6080.05
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_acar_01",
+            "t1_acar_02",
+            "t1_acar_03"
+          ]
+        }
+      },
+      {
+        "name": "t1_trucks_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            6885.13,
+            370.68,
+            -6267.73
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_truck_01",
+            "t1_truck_02",
+            "t1_truck_03"
+          ]
+        }
+      },
+      {
+        "name": "t1_movable_units_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            6392.99,
+            341.595,
+            -6071.23
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_tanks_squad",
+            "t1_acars_squad",
+            "t1_trucks_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_tanks_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14451.5,
+            278.591,
+            -6030.43
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tank_01",
+            "t2_tank_02",
+            "t2_tank_03"
+          ]
+        }
+      },
+      {
+        "name": "t2_acars_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14450.6,
+            375.515,
+            -6256.59
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_acar_01",
+            "t2_acar_02",
+            "t2_acar_03"
+          ]
+        }
+      },
+      {
+        "name": "t2_trucks_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14439.7,
+            370.68,
+            -6444.26
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_truck_01",
+            "t2_truck_02",
+            "t2_truck_03"
+          ]
+        }
+      },
+      {
+        "name": "t2_movable_units_squad",
+        "tm": [
+          [
+            -0.0082782,
+            0.0,
+            0.999966
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999966,
+            0.0,
+            -0.0082782
+          ],
+          [
+            -14931.9,
+            341.595,
+            -6247.77
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_tanks_squad",
+            "t2_acars_squad",
+            "t2_trucks_squad"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "high_units_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -107.617,
+          0.0,
+          12999.6
+        ],
+        [
+          0.0,
+          13000.0,
+          0.0
+        ],
+        [
+          -12999.6,
+          0.0,
+          -107.617
+        ],
+        [
+          -3296.19,
+          331.87,
+          -5700.62
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_road_01_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.93069,
+          0.0,
+          -0.365811
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.365811,
+          0.0,
+          -0.93069
+        ],
+        [
+          2654.77,
+          177.112,
+          -7811.94
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_02_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.901251,
+          0.0,
+          0.433299
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.433299,
+          0.0,
+          -0.901251
+        ],
+        [
+          2826.58,
+          277.741,
+          -6000.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_03_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.99204,
+          0.0,
+          -0.125933
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.125933,
+          0.0,
+          -0.99204
+        ],
+        [
+          2055.49,
+          277.697,
+          -2368.42
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_01_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          0.971852,
+          0.0,
+          0.235594
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.235594,
+          0.0,
+          0.971852
+        ],
+        [
+          -8158.33,
+          303.825,
+          -9478.77
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_02_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          0.973895,
+          0.0,
+          0.227001
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.227001,
+          0.0,
+          0.973895
+        ],
+        [
+          -8864.71,
+          300.231,
+          -6358.52
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_03_spawn_tank": {
+      "type": "Point",
+      "tm": [
+        [
+          0.99219,
+          0.0,
+          -0.124739
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.124739,
+          0.0,
+          0.99219
+        ],
+        [
+          -8638.94,
+          359.456,
+          -2209.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_01_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.93069,
+          0.0,
+          -0.365811
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.365811,
+          0.0,
+          -0.93069
+        ],
+        [
+          2764.7,
+          172.396,
+          -7767.06
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_02_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.901251,
+          0.0,
+          0.433299
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.433299,
+          0.0,
+          -0.901251
+        ],
+        [
+          2925.7,
+          277.763,
+          -6038.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_03_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.99204,
+          0.0,
+          -0.125933
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.125933,
+          0.0,
+          -0.99204
+        ],
+        [
+          2134.57,
+          277.721,
+          -2353.37
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_01_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          0.971852,
+          0.0,
+          0.235594
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.235594,
+          0.0,
+          0.971852
+        ],
+        [
+          -8203.42,
+          303.965,
+          -9489.93
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_02_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          0.973895,
+          0.0,
+          0.227001
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.227001,
+          0.0,
+          0.973895
+        ],
+        [
+          -8933.14,
+          300.231,
+          -6374.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_03_spawn_acar": {
+      "type": "Point",
+      "tm": [
+        [
+          0.99219,
+          0.0,
+          -0.124739
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.124739,
+          0.0,
+          0.99219
+        ],
+        [
+          -8701.74,
+          358.887,
+          -2205.61
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_03_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          0.99219,
+          0.0,
+          -0.124739
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.124739,
+          0.0,
+          0.99219
+        ],
+        [
+          -8798.54,
+          351.492,
+          -2191.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_02_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          0.973895,
+          0.0,
+          0.227001
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.227001,
+          0.0,
+          0.973895
+        ],
+        [
+          -9044.57,
+          300.231,
+          -6405.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_road_01_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          0.971852,
+          0.0,
+          0.235594
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.235594,
+          0.0,
+          0.971852
+        ],
+        [
+          -8270.77,
+          304.176,
+          -9506.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_01_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.93069,
+          0.0,
+          -0.365811
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.365811,
+          0.0,
+          -0.93069
+        ],
+        [
+          2913.08,
+          164.145,
+          -7703.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_02_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.901251,
+          0.0,
+          0.433299
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.433299,
+          0.0,
+          -0.901251
+        ],
+        [
+          3058.08,
+          277.791,
+          -6095.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_road_03_spawn_truck": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.99204,
+          0.0,
+          -0.125933
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.125933,
+          0.0,
+          -0.99204
+        ],
+        [
+          2237.86,
+          277.839,
+          -2339.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {
+    "t1_road_02": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2775.76,
+              280.087,
+              -5949.2
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t1_road_02_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1382.33,
+              333.026,
+              -5734.39
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_02_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -1454.17,
+              267.401,
+              -5730.2
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_02_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -2429.96,
+              276.812,
+              -5786.37
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_02_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -3039.49,
+              240.566,
+              -5681.76
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t1_road_03": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1929.74,
+              278.333,
+              -2374.69
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t1_road_03_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1667.32,
+              278.153,
+              -2289.76
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_03_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              225.416,
+              298.153,
+              -2207.8
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_03_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              180.587,
+              309.079,
+              -3254.24
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_03_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -1024.25,
+              280.005,
+              -3140.16
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_03_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -3254.37,
+              286.328,
+              -3431.19
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_03_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -3303.62,
+              293.255,
+              -4907.4
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t2_road_01": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8022.33,
+              299.216,
+              -9432.25
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t2_road_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7721.22,
+              301.257,
+              -8947.53
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -6202.97,
+              350.841,
+              -8545.53
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -5062.99,
+              257.187,
+              -8722.87
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -5026.14,
+              267.385,
+              -7704.43
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -4090.16,
+              258.655,
+              -7723.29
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -3579.6,
+              263.978,
+              -6692.19
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t2_road_02": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8791.55,
+              300.671,
+              -6348.41
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t2_road_02_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7742.05,
+              301.451,
+              -6048.79
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_02_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7027.06,
+              300.91,
+              -6060.42
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_02_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -5938.12,
+              302.092,
+              -6905.74
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_02_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -4466.37,
+              290.14,
+              -5735.16
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_02_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -3589.99,
+              248.252,
+              -5827.38
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t2_road_03": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8562.33,
+              361.672,
+              -2219.26
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t2_road_03_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8252.43,
+              330.713,
+              -2257.94
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_03_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7897.51,
+              304.144,
+              -1676.73
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_03_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -5771.52,
+              243.54,
+              -2953.9
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_03_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -5141.92,
+              238.707,
+              -3445.49
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_03_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -4477.52,
+              242.268,
+              -3894.43
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_03_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -4225.39,
+              234.154,
+              -3825.05
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t2_road_03_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -3630.8,
+              274.56,
+              -4560.73
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    },
+    "t1_road_01": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2555.62,
+              173.895,
+              -7842.01
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "GATHER_TO"
+          }
+        },
+        "t1_road_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              994.92,
+              221.917,
+              -7809.03
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -756.172,
+              183.479,
+              -9406.91
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -1016.11,
+              219.62,
+              -9265.09
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -1517.71,
+              263.942,
+              -7759.28
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -2506.51,
+              255.424,
+              -7737.17
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "USE_SPLINES"
+          }
+        },
+        "t1_road_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -3086.22,
+              225.33,
+              -6588.91
+            ]
+          ],
+          "props": {
+            "speed": 30.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        }
+      }
+    }
+  }
+}

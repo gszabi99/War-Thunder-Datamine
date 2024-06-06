@@ -373,7 +373,7 @@ bottomButtonsDiv {
 
 slotbarTable bottomButtonsDiv,
 .slotbarClone > shopItem > bottomButtonsDiv {
-  top:ph-27@sf/@pf;
+  top:ph-28@sf/@pf;
 }
 
 shopItem[shopStat=canBuy] > slotPlate > topLine,
@@ -1074,9 +1074,9 @@ extraInfoBlockTop {
 crewNumText {
   re-type:text;
   font:@fontSmall;
-  pos:pw/2-w/2, ph/2-h/2+0.5@sf/@pf;
+  pos:pw/2-w/2, ph/2-h/2;
   position:relative;
-  color:@activeTextColor;
+  color:@commonTextColor;
   css-hier-invalidate:yes;
 }
 
@@ -1092,7 +1092,7 @@ crewInfoNumBlock > icon {
   width:h;
   pos:ph/2-h/2, ph/2-h/2;
   position:relative;
-  background-color:@white;
+  background-color:@commonTextColor;
   background-image:#ui/gameuiskin#slot_crew.svg;
   background-svg-size:@tIco, @tIco;
   css-hier-invalidate:yes;
@@ -1148,7 +1148,7 @@ extraInfoVertSeparator {
 
 text[crewStatus=show], textareaNoTab[crewStatus=show], textAreaCentered[crewStatus=show],
 shopItem[crewStatus=show] > extraInfoBlock > crewInfoExpBlock > shopItemText {
-  color:@crewSkillsText_show;
+  color:@commonTextColor;
 }
 text[crewStatus=ready], textareaNoTab[crewStatus=ready], textAreaCentered[crewStatus=ready],
 shopItem[crewStatus=ready] > extraInfoBlock > crewInfoExpBlock > shopItemText {
@@ -1160,8 +1160,8 @@ shopItem[crewStatus=full] > extraInfoBlock > crewInfoExpBlock > shopItemText {
   wink:yes;
 }
 
-shopItem[crewStatus=ready] > extraInfoBlock > crewInfoExpBlock > expAvailableIcon,
-shopItem[crewStatus=full] > extraInfoBlock > crewInfoExpBlock > expAvailableIcon {
+shopItem > extraInfoBlock > crewInfoExpBlock > expAvailableIcon[crewStatus=ready],
+shopItem > extraInfoBlock > crewInfoExpBlock > expAvailableIcon[crewStatus=full] {
   display:show;
 }
 

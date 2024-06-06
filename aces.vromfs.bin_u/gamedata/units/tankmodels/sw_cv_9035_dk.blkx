@@ -117,7 +117,8 @@
         "armorThickness": 10.0
       },
       "turret_02_front_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "hidableInViewer": true
       },
       "turret_01_back_dm": {
         "armorThickness": 20.0
@@ -217,7 +218,8 @@
         "armorThickness": 6.0
       },
       "turret_05_back_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 20.0,
+        "hidableInViewer": true
       },
       "turret_05_bottom_dm": {
         "armorThickness": 20.0
@@ -1944,6 +1946,18 @@
         "blk": "gameData/Weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "hatchAnimVar": "hatch_toggle",
+        "linkShellCasingToGun": true,
+        "openHatchTime": 0.3,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
+          3.0,
+          0.0,
+          0.0
+        ],
+        "shellCasingExtractSound": "shell_eject_hatch",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -2189,7 +2203,8 @@
       "trackLen": 0.152,
       "trackCount": 84,
       "trackFadeTime": 1.1,
-      "trackStartOffset": 0.1
+      "trackStartOffset": 0.1,
+      "trackEmitSparks": false
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2946,6 +2961,18 @@
               "blk": "gameData/Weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "hatchAnimVar": "hatch_toggle",
+              "linkShellCasingToGun": true,
+              "openHatchTime": 0.3,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
+                3.0,
+                0.0,
+                0.0
+              ],
+              "shellCasingExtractSound": "shell_eject_hatch",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",

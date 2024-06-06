@@ -407,6 +407,7 @@ return [
     id = "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE"
     checkAssign = false
     needShowInHelp = true
+    showFunc = @() hasFeature("SeparateCountermeasures")
   }
   {
     id = "ID_IRCM_SWITCH_PLANE"
@@ -422,11 +423,13 @@ return [
     id = "ID_COUNTERMEASURES_FLARES"
     checkAssign = false
     needShowInHelp = true
+    showFunc = @() hasFeature("SeparateCountermeasures")
   }
   {
     id = "ID_COUNTERMEASURES_CHAFF"
     checkAssign = false
     needShowInHelp = true
+    showFunc = @() hasFeature("SeparateCountermeasures")
   }
   {
     id = "ID_TOGGLE_PERIODIC_FLARES"
