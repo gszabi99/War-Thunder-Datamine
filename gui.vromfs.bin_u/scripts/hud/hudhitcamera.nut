@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_option_xray_kill
 from "%scripts/dagui_library.nut" import *
 from "hitCamera" import *
+from "app" import is_dev_version
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_mission_time } = require("mission")
@@ -50,12 +51,16 @@ let debuffTemplates = {
   [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDebuffsShip.blk",
 }
 
-let damageStatusTemplates = {
+let damageStatusTemplates = is_dev_version() ? {
   [ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShip.blk",
   [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShip.blk",
+} : {
+  [ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShipLegacy.blk",
+  [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShipLegacy.blk",
 }
 
 let importantEventKeys = ["partEvent", "ammoEvent"]
+let criticalFireTypes = ["ship_barbettes", "ship_cruiser_barbettes", "ship_ammo_fire", "ship_ammo_fire_total", "ship_ammo_fire_aux"]
 
 let debuffsListsByUnitType = {}
 let trackedPartNamesByUnitType = {}
@@ -93,7 +98,7 @@ let getDamageStatusByHealth = @(health)
     : health == 0   ? "fatal"
     : "none"
 
-function setDamageStatus(statusObjId, health, text = null) {
+function setDamageStatusLegacy(statusObjId, health, text = null) {
   if (!damageStatusObj?.isValid())
     return
 
@@ -111,6 +116,31 @@ function setDamageStatus(statusObjId, health, text = null) {
     return
 
   labelObj.setValue(text)
+}
+
+function stopDamageStatusBlink(statusObjId) {
+  let obj = damageStatusObj?.isValid() ? damageStatusObj.findObject(statusObjId) : null
+  if (obj?.isValid())
+    obj._blink = "no"
+}
+
+function setDamageStatus(statusObjId, health, isCritical = true) {
+  if (!damageStatusObj?.isValid())
+    return
+
+  let obj = damageStatusObj.findObject(statusObjId)
+  if (!obj?.isValid())
+    return
+
+  let newStatus = health == 100 || health < 0 ? "none"
+    : isCritical ? "critical" : "moderate"
+
+  if (newStatus == obj.damage)
+    return
+
+  obj.damage = newStatus
+  obj._blink = "yes"
+  setTimeout(10, @() stopDamageStatusBlink(statusObjId))
 }
 
 function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
@@ -487,6 +517,7 @@ function onHitCameraUpdateFiresEvent(fireArr) {
   foreach (fire in fireIndicators)
     fire.waitRemove = true
 
+  local hasCriticalFire = false
   foreach (fireData in fireArr) {
     let fireName = $"{fireData.partId}"
     if (!fireIndicators?[fireName]) {
@@ -501,7 +532,10 @@ function onHitCameraUpdateFiresEvent(fireArr) {
       if (!u.isEqual(fireData, fire.data))
         fire.obj.pos = $"{fireData.screenPosX}, {fireData.screenPosY}"
     }
+    if (criticalFireTypes.contains(fireData.firePreset))
+      hasCriticalFire = true
   }
+  setDamageStatus("fire_status", 1, hasCriticalFire)
 
   foreach (fireName, fire in fireIndicators)
     if (fire.waitRemove)
@@ -575,6 +609,8 @@ function onHitCameraImportantEvents(data) {
     else
       unitInfoEvents.extend(events)
     unitInfo.importantEvents[key] <- unitInfoEvents
+    if (key == "ammoEvent")
+      setDamageStatus(events.damageType == 0 ? "ammo_fire_status" : "ammo_explosion_status", 1)
   }
 
   showCritAnimation()
@@ -583,17 +619,25 @@ function onHitCameraImportantEvents(data) {
 
 function onEnemyDamageState(event) {
   if (curUnitType in (damageStatusTemplates)) {
-    let { artilleryTotalCount  = 5, torpedoTotalCount = 5, artilleryHealth = 100, hasFire = false, engineHealth = 100,
-      torpedoTubesHealth = 100, ruddersHealth = 100, hasBreach = false  } = event
+    let { artilleryTotalCount = 5, torpedoTotalCount = 5, artilleryHealth = 100, auxiliaryHealth = 100, hasFire = false,
+    hasCriticalFire = false, engineHealth = 100, torpedoTubesHealth = 100, ruddersHealth = 100, hasBreach = false } = event
+    setDamageStatus("artillery_health", artilleryHealth)
+    setDamageStatus("auxiliary_health", auxiliaryHealth)
+    setDamageStatus("fire_status", hasFire ? 1 : -1, hasCriticalFire)
+    setDamageStatus("engine_health", engineHealth)
+    setDamageStatus("torpedo_tubes_health", torpedoTubesHealth)
+    setDamageStatus("rudders_health", ruddersHealth)
+    setDamageStatus("breach_status", hasBreach ? 1 : -1)
+
     let artilleryText = format("%d/%d", stdMath.round(artilleryHealth*artilleryTotalCount/100.), artilleryTotalCount)
     let torpedoText =
       torpedoTotalCount != 0 ? format("%d/%d", stdMath.round(torpedoTubesHealth*torpedoTotalCount/100.), torpedoTotalCount) : ""
-    setDamageStatus("artillery_health", artilleryHealth, artilleryText)
-    setDamageStatus("fire_status", hasFire ? 1 : -1)
-    setDamageStatus("engine_health", engineHealth, format("%d%%", engineHealth))
-    setDamageStatus("torpedo_tubes_health", torpedoTubesHealth, torpedoText)
-    setDamageStatus("rudders_health", ruddersHealth)
-    setDamageStatus("breach_status", hasBreach ? 1 : -1)
+    setDamageStatusLegacy("artillery_health_legacy", artilleryHealth, artilleryText)
+    setDamageStatusLegacy("fire_status_legacy", hasFire ? 1 : -1)
+    setDamageStatusLegacy("engine_health_legacy", engineHealth, format("%d%%", engineHealth))
+    setDamageStatusLegacy("torpedo_tubes_health_legacy", torpedoTubesHealth, torpedoText)
+    setDamageStatusLegacy("rudders_health_legacy", ruddersHealth)
+    setDamageStatusLegacy("breach_status_legacy", hasBreach ? 1 : -1)
   }
 
   let unitInfo = getTargetInfo(curUnitId, curUnitVersion,

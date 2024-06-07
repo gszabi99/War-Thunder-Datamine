@@ -615,7 +615,7 @@ slotHoverHighlight {
   re-type:9rect;
   position:absolute;
   pos:0, 0;
-  size:pw, ph-2@sf/@pf;
+  size:pw, ph-@sf/@pf;
   foreground-image:#ui/gameuiskin#gradient_focus.svg;
   foreground-repeat:expand;
   foreground-color:@slotbarItemHoverColor;
@@ -1045,6 +1045,10 @@ slotCrewHint {
   flow:vertical;
 }
 
+slotCrewHint[placement=under_slot] {
+  pos:pw/2-w/2, ph+@slotExtraInfoHeight;
+}
+
 slotCrewHintContainer > tdiv > slotHoverHighlight,
 slotCrewHintContainer > tdiv > slotBottomGradientLine {
   display:show;
@@ -1109,7 +1113,7 @@ crewInfoExpBlock {
   css-hier-invalidate:yes;
 }
 
-crewInfoExpBlock > expAvailableIcon {
+expAvailableIcon {
   height:@sIco;
   width:h;
   position:relative;
@@ -1160,8 +1164,8 @@ shopItem[crewStatus=full] > extraInfoBlock > crewInfoExpBlock > shopItemText {
   wink:yes;
 }
 
-shopItem > extraInfoBlock > crewInfoExpBlock > expAvailableIcon[crewStatus=ready],
-shopItem > extraInfoBlock > crewInfoExpBlock > expAvailableIcon[crewStatus=full] {
+expAvailableIcon[crewStatus=ready],
+expAvailableIcon[crewStatus=full] {
   display:show;
 }
 
@@ -1599,7 +1603,7 @@ shopCollapsedDiscountIcon {
   height:1@discountBoxHeight ;
   font:tiny_text;
   color:#e5e5e5;
-  text-shade:smooth:24;
+  text-shade:"smooth:24";
   text-shade-x:0;
   text-shade-y:0;
   text-shade-color:#A0000000;

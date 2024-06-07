@@ -20,6 +20,9 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
 } = require("%scripts/options/optionsExtNames.nut")
 let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isShipBattle } = require("%scripts/missions/missionType.nut")
+let { getOwnerUnitName } = require("hudActionBar")
+
+let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
 
 enum BATTLE_LOG_FILTER {
   HERO      = 0x0001
@@ -386,7 +389,8 @@ let HudBattleLog = {
 
   function getActionTextIconic(msg) {
     let actionColor = (msg?.isKill ?? true) ? "userlogColoredText" : "silver"
-    if(isShipBattle() && ::get_gui_option_in_mode(USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)) {
+    if((isShipBattle() || (getOwnerUnit()?.isShipOrBoat() ?? false))
+        && ::get_gui_option_in_mode(USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)) {
       let deathReasonIcon = iconByDeathReason?[msg?.deathReason ?? DR_UNKNOWN] ?? iconByDeathReason[DR_UNKNOWN]
       return colorize(actionColor, deathReasonIcon)
     }

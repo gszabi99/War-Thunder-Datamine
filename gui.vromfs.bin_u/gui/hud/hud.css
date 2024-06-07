@@ -508,9 +508,9 @@ multiplayerScore {
 
 
 @const enemyDmgStatusPanelWidth: 98%@hitCameraWidth;
-@const enemyDmgStatusPanelHeight: 10%@hitCameraWidth;
-@const enemyDmgStatusPanelMarginBottom: 5.2%@hitCameraWidth;
-@const enemyDmgStatusWidth: @enemyDmgStatusPanelWidth / 6;
+@const enemyDmgStatusPanelHeight: 12%@hitCameraWidth;
+@const enemyDmgStatusPanelMarginBottom: 1%@hitCameraWidth;
+@const enemyDmgStatusWidth: @enemyDmgStatusPanelWidth / 10.5;
 
 enemyDamageStatusPanel {
   width:@enemyDmgStatusPanelWidth;
@@ -525,6 +525,74 @@ enemyDamageStatus {
 }
 
 enemyDamageStatusBg {
+  size:85%ph, 85%ph;
+  position:absolute;
+  pos:50%(pw-w), 50%(ph-h);
+  background-image:#ui/gameuiskin#dm_ship_border_hexagon.svg;
+  background-svg-size:85%ph, 85%ph;
+  background-color:#FF4338;
+  color-factor:255;
+}
+
+enemyDamageStatus[shape=circle] {
+  margin-left:10%w;
+}
+
+enemyDamageStatus[_blink=yes] enemyDamageStatusBg {
+  behaviour:basicTransparency;
+  transp-base:0;
+  transp-end:255;
+  transp-func:square;
+  transp-time:500;
+  transp-cycled:yes;
+  transp-cycle-delay:500;
+}
+
+enemyDamageStatus[shape=circle] enemyDamageStatusBg {
+  background-image:#ui/gameuiskin#dm_ship_border_circle.svg;
+}
+
+enemyDamageStatusIcon {
+  size:80%ph, 80%ph;
+  position:absolute;
+  pos:50%(pw-w), 50%(ph-h);
+  background-svg-size:80%ph, 80%ph;
+  background-color:#ffffff;
+}
+
+enemyDamageStatus[damage=none] enemyDamageStatusBg {
+  display:hide;
+}
+
+enemyDamageStatus[damage=none] enemyDamageStatusIcon {
+  background-color:#55666666;
+}
+
+enemyDamageStatus[id=fire_status][damage=none] enemyDamageStatusIcon {
+  background-image:#ui/gameuiskin#dm_ship_fire.svg;
+  background-saturate: 0;
+}
+
+enemyDamageStatus[id=fire_status][damage=moderate] enemyDamageStatusIcon {
+  background-image:#ui/gameuiskin#dm_ship_fire.svg;
+}
+
+enemyDamageStatus[id=fire_status][damage=critical] enemyDamageStatusIcon {
+  background-image:#ui/gameuiskin#dm_ship_critical_fire.svg;
+}
+
+
+@const enemyDmgStatusPanelHeightLegacy: 10%@hitCameraWidth;
+@const enemyDmgStatusPanelMarginBottomLegacy: 5.2%@hitCameraWidth;
+@const enemyDmgStatusWidthLegacy: @enemyDmgStatusPanelWidth / 6;
+
+enemyDamageStatusLegacy {
+  size:@enemyDmgStatusWidthLegacy, @enemyDmgStatusPanelHeightLegacy;
+  margin-bottom:@enemyDmgStatusPanelMarginBottomLegacy;
+  css-hier-invalidate: yes;
+}
+
+enemyDamageStatusBgLegacy {
   size:ph, ph;
   position:absolute;
   pos:50%(pw-w), 0;
@@ -533,7 +601,7 @@ enemyDamageStatusBg {
   background-color:#AA000000;
 }
 
-enemyDamageStatusIcon {
+enemyDamageStatusIconLegacy {
   size:70%ph, 70%ph;
   position:absolute;
   pos:50%(pw-w), 50%(ph-h);
@@ -550,29 +618,30 @@ enemyDamageStatusTxt {
   color: @white;
 }
 
-enemyDamageStatus[damage=none] enemyDamageStatusBg {
+enemyDamageStatusLegacy[damage=none] enemyDamageStatusBgLegacy {
   background-color:#33000000;
 }
 
-enemyDamageStatus[damage=none] enemyDamageStatusIcon {
+enemyDamageStatusLegacy[damage=none] enemyDamageStatusIconLegacy {
   background-color:#728188;
 }
 
-enemyDamageStatus[damage=minor] enemyDamageStatusIcon {
+enemyDamageStatusLegacy[damage=minor] enemyDamageStatusIconLegacy {
   background-color:#E2AE00;
 }
 
-enemyDamageStatus[damage=moderate] enemyDamageStatusIcon {
+enemyDamageStatusLegacy[damage=moderate] enemyDamageStatusIconLegacy {
   background-color:@orange;
 }
 
-enemyDamageStatus[damage=critical] enemyDamageStatusIcon {
+enemyDamageStatusLegacy[damage=critical] enemyDamageStatusIconLegacy {
   background-color:#FF4338;
 }
 
-enemyDamageStatus[damage=fatal] enemyDamageStatusIcon {
+enemyDamageStatusLegacy[damage=fatal] enemyDamageStatusIconLegacy {
   background-color:@black;
 }
+
 
 hpProgressBar {
   behaviour:progress;

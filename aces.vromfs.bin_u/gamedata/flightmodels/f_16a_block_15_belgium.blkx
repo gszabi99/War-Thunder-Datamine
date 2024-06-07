@@ -8,6 +8,8 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForGun": true,
+  "isBwOpticSight": true,
+  "mfdCamTads": true,
   "ilsMarconiAvionics": true,
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -2278,46 +2280,52 @@
             0.5,
             0.4
           ],
-          "page": {
-            "type": "radar",
-            "scale": 0.92,
-            "hideBackground": true,
-            "hasAviaHorizont": true,
-            "hideBeam": false,
-            "beamShape": "caret",
-            "fontScale": 0.65,
-            "lineColor": [
-              0,
-              255,
-              7
-            ],
-            "targetForm": "square",
-            "modeColor": [
-              0,
-              255,
-              7
-            ],
-            "verAngleColor": [
-              0,
-              255,
-              7
-            ],
-            "horAngleColor": [
-              0,
-              255,
-              7
-            ],
-            "scaleColor": [
-              0,
-              255,
-              7
-            ],
-            "targetColor": [
-              0,
-              255,
-              7
-            ]
-          }
+          "page": [
+            {
+              "type": "radar",
+              "scale": 0.92,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ]
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
         },
         {
           "textureArea": [

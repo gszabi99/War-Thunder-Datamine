@@ -29,7 +29,6 @@ let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
 let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare,
 } = require("%scripts/respawn/respawnState.nut")
-let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewById, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
@@ -520,13 +519,13 @@ function buildCommonUnitSlot(id, unit, params) {
   let { isLocalState = true, showBR = hasFeature("GlobalShowBattleRating"),
     forceNotInResearch = false, shopResearchMode = false, hasActions = false,
     mainActionFunc = "", mainActionText = "", mainActionIcon = "", forceCrewInfoUnit = null,
-    crewId = -1, showWarningIcon = false, specType = null, tooltipParams = null,
+    crewId = -1, showWarningIcon = false, specType = null,
     missionRules = null, bottomLineText = null, isSlotbarItem = false, isInTable = true,
     showInService = false, hasExtraInfoBlock = false, hasExtraInfoBlockTop = false,
     toBattle = false, toBattleButtonAction = "onSlotBattle", hasCrewHint = false,
     showAdditionExtraInfo = false
   } = params
-  local { inactive = false, status = DEFAULT_STATUS } = params
+  local { inactive = false, status = DEFAULT_STATUS, tooltipParams = null } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
 
   let isOwn               = ::isUnitBought(unit)
@@ -621,26 +620,33 @@ function buildCommonUnitSlot(id, unit, params) {
   let hasUnit = !(crew?.isEmpty ?? false)
   let needCurPoints = (crew != null) && !isMaxLevel
 
-  let extraInfoViewBottom = (hasExtraInfoBlock && hasCrewInfo) ? {
-    hasExtraInfoBlock
-    hasCrewInfo
-    hasUnit
-    needCurPoints
-    hasActions
-    hasCrewHint
-    crewLevel = crewLevelText
-    crewLevelFull = crewLevelTextFull
-    crewSpecIcon = crewSpec.trainedIcon
-    crewStatus = getCrewStatus(crew, unitForCrewInfo)
-    hasCrewIdInfo = true
-    crewNum = $"{crew.idInCountry + 1}"
-    crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
-    crewSpecializationLabel = hasUnit ? $"{loc("crew/trained")}{loc("ui/colon")}" : ""
-    crewSpecializationIcon = hasUnit ? crewSpec.trainedIcon : ""
-    crewSpecialization = hasUnit ? crewSpec.getName() : ""
-    crewPoints = (hasUnit && needCurPoints) ? getCrewSpText(crew?.skillPoints ?? 0) : ""
-    crewId
-  } : {}
+  local extraInfoViewBottom = {}
+  if (hasExtraInfoBlock && hasCrewInfo) {
+    extraInfoViewBottom = {
+      hasExtraInfoBlock
+      hasCrewInfo
+      hasUnit
+      needCurPoints
+      hasActions
+      hasCrewHint
+      showAdditionExtraInfo
+      crewLevel = crewLevelText
+      crewLevelFull = crewLevelTextFull
+      crewSpecIcon = crewSpec.trainedIcon
+      crewStatus = getCrewStatus(crew, unitForCrewInfo)
+      hasCrewIdInfo = true
+      crewNum = $"{crew.idInCountry + 1}"
+      crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
+      crewSpecializationLabel = hasUnit ? $"{loc("crew/trained")}{loc("ui/colon")}" : ""
+      crewSpecializationIcon = hasUnit ? crewSpec.trainedIcon : ""
+      crewSpecialization = hasUnit ? crewSpec.getName() : ""
+      crewPoints = (hasUnit && needCurPoints) ? getCrewSpText(crew?.skillPoints ?? 0) : ""
+      crewId
+    }
+
+    tooltipParams = tooltipParams ?? {}
+    tooltipParams = tooltipParams.__merge({ needCrewInfo = false })
+  }
 
   let priceText = getUnitSlotPriceText(unit, params.__merge({crew}))
 
@@ -659,19 +665,16 @@ function buildCommonUnitSlot(id, unit, params) {
   let hasPriceText = showAdditionExtraInfo && priceText != ""
   let isSpareAllowedInMission = !missionRules || missionRules.isAllowSpareInMission()
   let hasSpare = spareCount > 0
-  let hasUniversalSpare = getUniversalSparesForUnit(unit).len() > 0
 
   local spareText = ""
   if (!isInFlight())
-    spareText = hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
+    spareText = hasSpare ? $"{spareCount}{loc("icon/spare")}" : loc("ui/minus")
   else if (!isSpareAllowedInMission)
     spareText = ""
   else if (crew && isRespawnWithUniversalSpare(crew, unit))
     spareText = loc("icon/universalSpare")
   else if (crew && isSpareAircraftInSlot(crew.idInCountry))
     spareText = hasSpare ? $"{spareCount}{loc("icon/universalSpare")}" : loc("icon/universalSpare")
-  else if (!hasSpare && hasUniversalSpare)
-    spareText = loc("icon/spare")
   else
     spareText = hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
 

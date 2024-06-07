@@ -153,6 +153,26 @@
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 70.0,
+      "period": 1.35,
+      "width": 7.5,
+      "barHeight": 3.2,
+      "barsCount": 6,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "tws": true
+    },
+    "twsMedium": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 70.0,
+      "pitchStabLimit": 70.0,
       "period": 1.8,
       "width": 15.0,
       "barHeight": 3.2,
@@ -161,7 +181,7 @@
       "preciseMinor": true,
       "tws": true
     },
-    "twsMedium": {
+    "twsWide": {
       "type": "pyramide",
       "azimuthLimits": [
         -60.0,
@@ -468,7 +488,8 @@
     },
     "tws": {
       "scanPattern1": "twsMedium",
-      "scanPattern2": "twsNarrow"
+      "scanPattern2": "twsWide",
+      "scanPattern3": "twsNarrow"
     },
     "acmLock": {
       "scanPattern1": "boresightLock",

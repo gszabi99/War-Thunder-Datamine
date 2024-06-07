@@ -33,7 +33,9 @@ let { updateModItem, createModItem, createModBundle, createModItemLayout
 } = require("%scripts/weaponry/weaponryVisual.nut")
 let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
-  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("%scripts/weaponry/bulletsInfo.nut")
+  getLastFakeBulletsIndex, isBulletsGroupActiveByMod, getBulletsInfoForPrimaryGuns,
+  isPairBulletsGroup
+} = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets,
   checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList,
   getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd
@@ -288,6 +290,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           ))
             this.premiumModsList.append(mod)
 
+    let gunsInfo = getBulletsInfoForPrimaryGuns(this.air)
     this.lastBullets = []
     this.bulletsByGroupIndex = {}
     for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(this.air); groupIndex++) {
@@ -295,6 +298,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         needCheckUnitPurchase = false, needOnlyAvailable = false
       })
       let curBulletsName = getSavedBullets(this.air.name, groupIndex)
+      if (isPairBulletsGroup(bulletsList, gunsInfo?[groupIndex]))
+        continue
       if (groupIndex < this.air.unitType.bulletSetsQuantity)
         this.lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)

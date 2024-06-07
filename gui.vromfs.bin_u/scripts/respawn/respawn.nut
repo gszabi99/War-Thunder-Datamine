@@ -638,10 +638,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           && (this.needRefreshSlotbarOnReinit || !this.slotbarWeak)) {
         this.slotbarInited = false
         this.beforeRefreshSlotbar()
-        this.createSlotbar(this.getSlotbarParams()
-          .__update({ slotbarHintText = getEventSlotbarHint(
-            ::SessionLobby.getRoomEvent(), get_local_player_country()) }),
-          "flight_menu_bgd")
+        this.createSlotbar(this.getSlotbarParams().__update({
+          slotbarHintText = getEventSlotbarHint(::SessionLobby.getRoomEvent(), get_local_player_country())
+          draggableSlots = false
+        }), "flight_menu_bgd")
         this.afterRefreshSlotbar()
         this.slotReadyAtHostMask = getCrewSlotReadyMask()
         this.slotbarInited = true
@@ -693,7 +693,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       hasExtraInfoBlock = true
       hasExtraInfoBlockTop = true
       showAdditionExtraInfo = true
-      hasCrewHint = false
+      hasCrewHint = true
       shouldSelectAvailableUnit = this.isRespawn
       customViewCountryData = { [playerCountry] = {
         icon = this.missionRules.getOverrideCountryIconByTeam(get_mp_local_team())

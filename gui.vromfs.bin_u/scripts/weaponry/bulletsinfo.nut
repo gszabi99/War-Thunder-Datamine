@@ -1133,6 +1133,11 @@ function getBulletsSetMaxAmmoWithConstraints(constraintsByTrigger, bulletsSet) {
   return ammo
 }
 
+//Can take both bullets at once, dividing the total number of bullets between them.
+let isPairBulletsGroup = @(bullets, gunInfo) bullets.values.len() == 2
+  && bullets.weaponType == WEAPON_TYPE.COUNTERMEASURES
+  && !(gunInfo?.isBulletBelt ?? true)
+
 return {
   BULLET_TYPE
   //
@@ -1168,4 +1173,5 @@ return {
   getAmmoStowageConstraintsByTrigger
   getBulletsSetMaxAmmoWithConstraints
   getBulletsNamesBySet
+  isPairBulletsGroup
 }

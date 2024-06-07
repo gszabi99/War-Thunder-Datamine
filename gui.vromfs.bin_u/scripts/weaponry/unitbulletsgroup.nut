@@ -5,14 +5,13 @@ let { format } = require("string")
 let { get_unit_option, set_unit_option, clearUnitOption } = require("guiOptions")
 let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { setUnitLastBullets,
+let { setUnitLastBullets, isPairBulletsGroup
         getOptionsBulletsList } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO,
         getAmmoAmount,
         isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
-let { WEAPON_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
 
 ::BulletGroup <- class {
   unit = null
@@ -197,7 +196,5 @@ let { WEAPON_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
   canChangeBullet = @() this.bullets.values.len() > 1
     && !this.isPairBulletsGroup()
 
-  isPairBulletsGroup = @() this.bullets.values.len() == 2
-    && this.bullets.weaponType == WEAPON_TYPE.COUNTERMEASURES
-    && !this.gunInfo.isBulletBelt
+  isPairBulletsGroup = @() isPairBulletsGroup(this.bullets, this.gunInfo)
 }

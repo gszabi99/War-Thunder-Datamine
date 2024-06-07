@@ -182,13 +182,25 @@
         "armorThickness": 25.4
       },
       "turret_06_front_dm": {
-        "armorThickness": 25.4
+        "armorThickness": 31.75
       },
       "turret_05_top_dm": {
-        "armorThickness": 25.4
+        "armorThickness": 20.0
       },
       "turret_08_top_dm": {
         "armorThickness": 19.05
+      },
+      "ex_armor_l_14_dm": {
+        "armorThickness": 25.4
+      },
+      "ex_armor_r_14_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_05_side_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_07_bottom_dm": {
+        "armorThickness": 25.4
       }
     },
     "mask": {
@@ -1559,6 +1571,7 @@
         "drive_turret_h_01_dm",
         "drive_turret_v_02_dm",
         "drive_turret_h_02_dm",
+        "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
         "ammo_body_04_dm",
@@ -1570,7 +1583,6 @@
         "ammo_body_10_dm",
         "ammo_body_11_dm",
         "ammo_body_12_dm",
-        "ammo_body_13_dm",
         "ammo_body_14_dm",
         "ammo_body_15_dm",
         "ammo_body_16_dm"
@@ -2624,15 +2636,12 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
-      "removeLoadedAmmo": false,
-      "replenishmentTime": 20.0,
-      "replenishmentDelay": 0.0,
       "shells": [
         {
+          "ammoLoadedInGun": true,
           "fatalFire": true,
           "fatalExplosion": true,
-          "firstStage": true,
-          "ammo_body_01_dm": {
+          "ammo_body_13_dm": {
             "count": 1
           }
         },
@@ -2642,10 +2651,6 @@
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
-          "reloadTimeMult": 1.0,
-          "ammo_body_13_dm": {
-            "count": 1
-          },
           "ammo_body_14_dm": {
             "count": 1
           },
@@ -2665,6 +2670,9 @@
             "count": 1
           },
           "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_01_dm": {
             "count": 1
           },
           "ammo_body_02_dm": {
@@ -2897,12 +2905,6 @@
           }
         }
       }
-    }
-  },
-  "user_skin": {
-    "name": "uk_a_22b_mk_3_churchill_1942",
-    "replace_tex": {
-      "from": "uk_camo_earth_yellow*"
     }
   },
   "default_skin": {

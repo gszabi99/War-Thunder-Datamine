@@ -1643,7 +1643,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "MetaParts": {
@@ -1835,35 +1838,33 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "coaxial",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
         "emitter": "bone_mg_twin",
-        "flash": "emtr_mg_flame_04",
+        "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
-        "parkInDeadzone": false,
-        "speedYaw": 90.0,
-        "speedPitch": 90.0,
+        "speedYaw": 40.0,
+        "speedPitch": 30.0,
         "bullets": 2000,
         "isBulletBelt": true,
-        "fireConeAngle": 5.0,
-        "ChainfireTime": 0.5,
-        "DelayAfterShoot": 2.0,
-        "accuracyAir": 1.5,
+        "fireConeAngle": 15.0,
+        "ChainfireTime": 3.0,
+        "DelayAfterShoot": 3.0,
+        "accuracyAir": 0.0,
         "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
         "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelFwdShift": 0.0,
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "forestallTime": 0.1,
         "turret": {
           "head": "bone_mg_twin",
           "gun": "bone_mg_twin",
-          "gunnerDm": "loader_dm",
+          "gunnerDm": "gunner_dm",
           "hasNightVision": false
         },
         "limits": {
@@ -3112,24 +3113,14 @@
     }
   },
   "commanderView": {
+    "aimModeAvailable": true,
     "optics": "commander_optics_square",
-    "zoomOutFov": 7.47,
-    "zoomInFov": 7.37,
+    "zoomOutFov": 37.5,
+    "zoomInFov": 9.21,
     "sightSize": [
-      0.146,
-      0.103
-    ],
-    "ircmProjector": {
-      "node": "bone_commander_sight_v",
-      "beamRadius": [
-        600.0,
-        50.0
-      ],
-      "power": [
-        0.02,
-        0.04
-      ]
-    }
+      0.74,
+      0.52
+    ]
   },
   "cockpit": {
     "zoomOutFov": 37.5,
@@ -3433,35 +3424,33 @@
             },
             {
               "trigger": "gunner2",
-              "triggerGroup": "machinegun",
+              "triggerGroup": "coaxial",
               "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
               "emitter": "bone_mg_twin",
-              "flash": "emtr_mg_flame_04",
+              "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_01_dm",
-              "parkInDeadzone": false,
-              "speedYaw": 90.0,
-              "speedPitch": 90.0,
+              "speedYaw": 40.0,
+              "speedPitch": 30.0,
               "bullets": 2000,
               "isBulletBelt": true,
-              "fireConeAngle": 5.0,
-              "ChainfireTime": 0.5,
-              "DelayAfterShoot": 2.0,
-              "accuracyAir": 1.5,
+              "fireConeAngle": 15.0,
+              "ChainfireTime": 3.0,
+              "DelayAfterShoot": 3.0,
+              "accuracyAir": 0.0,
               "accuracyGnd": 0.0,
               "errMeasureVel": 0.0,
               "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelFwdShift": 0.0,
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
               "errExplTime": 0.0,
-              "forestallTime": 0.1,
               "turret": {
                 "head": "bone_mg_twin",
                 "gun": "bone_mg_twin",
-                "gunnerDm": "loader_dm",
+                "gunnerDm": "gunner_dm",
                 "hasNightVision": false
               },
               "limits": {

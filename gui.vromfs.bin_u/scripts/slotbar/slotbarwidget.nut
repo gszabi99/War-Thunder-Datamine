@@ -110,6 +110,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   needPresetsPanel = null //bool
   countriesToShow = null
   selectOnHover = false  // selection of unit by hovering specific slot, needed for selection with drag n drop
+  draggableSlots = true
 
   //!!FIX ME: Better to remove parameters group below, and replace them by isUnitEnabled function
   mainMenuSlotbar = false //is slotbar in mainmenu
@@ -1238,18 +1239,26 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (slot in unitSlots) {
       slot.obj["crewStatus"] = getCrewStatus(slot.crew, slot.unit)
 
-      local obj = slot.obj.findObject("crew_level")
-      if (checkObj(obj)) {
+      let crewLevelObj = slot.obj.findObject("crew_level")
+      if (checkObj(crewLevelObj)) {
         let crewLevelText = slot.unit
           ? getCrewLevel(slot.crew, slot.unit, slot.unit.getCrewUnitType()).tointeger().tostring()
           : ""
-        obj.setValue(crewLevelText)
+        crewLevelObj.setValue(crewLevelText)
+
+        let crewLevelHintBlockObj = slot.obj.findObject("crew_level_hint_block")
+        if (crewLevelHintBlockObj?.isValid())
+          crewLevelHintBlockObj.setValue(crewLevelText)
       }
 
-      obj = slot.obj.findObject("crew_spec")
-      if (checkObj(obj)) {
+      let crewSpecObj = slot.obj.findObject("crew_spec")
+      if (checkObj(crewSpecObj)) {
         let crewSpecIcon = getSpecTypeByCrewAndUnit(slot.crew, slot.unit).trainedIcon
-        obj["background-image"] = crewSpecIcon
+        crewSpecObj["background-image"] = crewSpecIcon
+
+        let crewSpecHintBlockObj = slot.obj.findObject("crew_spec_hint_block")
+        if (crewSpecHintBlockObj?.isValid())
+          crewSpecHintBlockObj["background-image"] = crewSpecIcon
       }
     }
   }
@@ -1300,7 +1309,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let spareCount = get_spare_aircrafts_count(unitName)
-    spareCountObj.text = $"{spareCount}{loc("icon/spare")}"
+    spareCountObj.setValue($"{spareCount}{loc("icon/spare")}")
   }
 
   onEventUniversalSpareActivated = @(p) this.updateSpareCount(p.unit.name)
@@ -1406,7 +1415,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
           ? getUnitRequireUnlockShortText(crewData.unit)
           : null
         selectOnHover = this.selectOnHover
-        needDnD = true
+        needDnD = this.draggableSlots && !isCrewListOverrided.get()
       }
       airParams.__update(this.getCrewDataParams(crewData))
       let unitItem = buildUnitSlot(id, crewData.unit, airParams)
@@ -1509,6 +1518,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
     removeAllGenericTooltip()
+    if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) //close unit context menu
+      gui_handlers.ActionsList.removeActionsListFromObject(obj)
     vacationBinOpen(obj)
   }
 

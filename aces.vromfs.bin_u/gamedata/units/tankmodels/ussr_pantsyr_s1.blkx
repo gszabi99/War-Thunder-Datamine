@@ -267,7 +267,11 @@
       "gun_mask_01_dm": {},
       "gun_mask_02_dm": {},
       "gun_mask_03_dm": {},
-      "gun_mask_04_dm": {}
+      "gun_mask_04_dm": {},
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      }
     },
     "hull_decor": {
       "armorClass": "tank_structural_steel",
@@ -277,6 +281,7 @@
       "turret_07_top_dm": {},
       "ex_decor_turret_01_dm": {},
       "ex_armor_02_dm": {},
+      "turret_08_top_dm": {},
       "ex_armor_03_dm": {},
       "ex_armor_01_dm": {},
       "ex_decor_r_02_dm": {},
@@ -824,6 +829,21 @@
     "fuel_tank_exterior_l_01_dm": true,
     "ex_decor_04_dm": true
   },
+  "xray_viewer_data": [
+    {
+      "armorArrayHull": {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      }
+    },
+    {}
+  ],
   "DamageEffects": {
     "part": [
       {
@@ -1619,7 +1639,6 @@
       ]
     }
   },
-  "xray_viewer_data": {},
   "MetaParts": {
     "closed_fightning_compartment": {
       "part": [

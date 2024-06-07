@@ -299,7 +299,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (uid : int; unitType : int; loot_carrier__capacity : int const?)
       heroUnitType = unitType
       let hero = get_unit(uid)
-      if hero != null && !hero.isDelayed && hero.props != null
+      if hero != null && !hero.isDelayed && hero.props != null && !hero.isSupportPlane
         heroExist = true
         heroRank = hero.props.unitRank
         let app = get_app()

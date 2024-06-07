@@ -154,6 +154,9 @@ struct CanvasParams
   hasAviaHorizont : bool = false
   backgroundColor : E3DCOLOR = E3DCOLOR(0xFF000000)
   beamShape : int = 0
+  netRowCnt : int = 0
+  netColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  hideWeaponIndication : bool = false
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
@@ -199,6 +202,9 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.hasAviaHorizont = props |> getBool("hasAviaHorizont", false)
   storage.backgroundColor = props |> getColor("backgroundColor", E3DCOLOR(0xFF000000))
   storage.beamShape = props |> getInt("beamShape", 0)
+  storage.netRowCnt = props |> getInt("netRowCnt", 0)
+  storage.netColor = props |> getColor("netColor", storage.color)
+  storage.hideWeaponIndication = props |> getBool("hideWeaponIndication", false)
 
 [export]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -508,15 +514,15 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
          origin + (radius * (attackMarkDistRel + attackHeightRel)) * float2(cos(angle), sin(angle))]])
         ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
 
-    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON)
+    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON) && !data.hideWeaponIndication
       if get_radar_hud_has_azimuth_scale()
         ctx |> render_ellipse_aa(pos, radius * 0.01, ctx |> hdpx(2.), e3dColor, transparentColor)
 
-    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET)
+    elif target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET) && !data.hideWeaponIndication
       if get_radar_hud_has_azimuth_scale() && !target.isAttacked
         ctx |> render_ellipse_aa(pos, radius * 0.06, ctx |> hdpx(2.), e3dColor, transparentColor)
 
-    if get_radar_hud_has_azimuth_scale() && get_radar_hud_has_distance_scale()
+    if get_radar_hud_has_azimuth_scale() && get_radar_hud_has_distance_scale() && !data.hideWeaponIndication
       foreach_own_weapon_links() <| $(var ownWeaponLink)
         for_own_weapon_with_target(ownWeaponLink.ownWeaponIndex, ownWeaponLink.ownWeaponTargetIndex) <| $(var ownWeapon; ownWeaponTarget)
           let ownWeaponAngle = get_radar_hud_azimuth_min() + azimuthRange * ownWeapon.azimuthRel - PI * 0.5
@@ -714,6 +720,7 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
     b_scope_square_inner_labels(ctx, data, pos, sz, data.fontSize)
   if data.hasAviaHorizont
     b_scope_square_aviahorizont(ctx, data, pos, sz)
+  draw_additional_net(ctx, data, rdata.pos, rdata.size)
 
 def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)
   var fctx : StdGuiFontContext
@@ -1077,15 +1084,15 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
           ctx |> render_rect(pos.x + angleCenter * size.x - boxSize, pos.y + (1. - distanceRel) * size.y - boxSize,
            pos.x + angleCenter * size.x + boxSize, pos.y + (1. - distanceRel) * size.y + boxSize, tc, tc, tc)
 
-    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON))
+    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON) && !data.hideWeaponIndication)
       if hasAzimuthScale
         ctx |> render_ellipse_aa(p, size * 0.005, ctx |> hdpx(2.), e3dColor, e3dColor)
 
-    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET))
+    elif (target.targetType == int(RadarTargetType TYPE_OWN_WEAPON_TARGET) && !data.hideWeaponIndication)
       if hasAzimuthScale && !target.isAttacked
         ctx |> render_ellipse_aa(p, size * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
 
-  if hasAzimuthScale && hasDistanceScale
+  if hasAzimuthScale && hasDistanceScale && !data.hideWeaponIndication
     let color = float4(Color4(is_color_or_white(data.targetColor)))
     let e3dColor = E3DCOLOR(Color4(color))
     foreach_own_weapon_links() <| $(var ownWeaponLink)
@@ -1542,3 +1549,23 @@ def b_scope_square_aviahorizont(var ctx : GuiContext&; data : CanvasParams&; pos
 
   ctx |> render_line_aa(linePtsLeft, false, 2.0 * data.lineWidth, float2(0., 0.), data.lineColor)
   ctx |> render_line_aa(linePtsRight, false, 2.0 * data.lineWidth, float2(0., 0.), data.lineColor)
+
+  ctx |> resetViewTm()
+
+def draw_additional_net(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  if data.netRowCnt <= 0
+    return
+  ctx |> set_color(data.netColor)
+  ctx |> render_frame(pos.x, pos.y, pos.x + size.x, pos.y + size.y, ctx |> hdpx(1.8 * data.lineWidth))
+
+  for i in range(1, data.netRowCnt)
+    if data.netRowCnt % 2 == 0 && i == data.netRowCnt / 2
+      ctx |> draw_line(pos.x + float(i) / float(data.netRowCnt) * size.x, pos.y, pos.x + float(i) / float(data.netRowCnt) * size.x, pos.y + size.y * 0.4, 3. * data.lineWidth)
+      ctx |> draw_line(pos.x + float(i) / float(data.netRowCnt) * size.x, pos.y + size.y * 0.6, pos.x + float(i) / float(data.netRowCnt) * size.x, pos.y + size.y, 3. * data.lineWidth)
+    else
+      ctx |> draw_line(pos.x + float(i) / float(data.netRowCnt) * size.x, pos.y, pos.x + float(i) / float(data.netRowCnt) * size.x, pos.y + size.y, 3. * data.lineWidth)
+    if data.netRowCnt % 2 == 0 && i == data.netRowCnt / 2
+      ctx |> draw_line(pos.x, pos.y + float(i) / float(data.netRowCnt) * size.y, pos.x + size.x * 0.4, pos.y + float(i) / float(data.netRowCnt) * size.y, 3. * data.lineWidth)
+      ctx |> draw_line(pos.x + size.x * 0.6, pos.y + float(i) / float(data.netRowCnt) * size.y, pos.x + size.x, pos.y + float(i) / float(data.netRowCnt) * size.y, 3. * data.lineWidth)
+    else
+      ctx |> draw_line(pos.x, pos.y + float(i) / float(data.netRowCnt) * size.y, pos.x + size.x, pos.y + float(i) / float(data.netRowCnt) * size.y, 3. * data.lineWidth)

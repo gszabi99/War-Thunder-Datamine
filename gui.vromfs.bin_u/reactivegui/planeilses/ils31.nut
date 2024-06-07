@@ -886,7 +886,7 @@ let aimLockPosMark = @() {
   ] : null
 }
 
-function atgmGrid(width, height) {
+function atgmGrid(width, height, is_cn) {
   return @() {
     watch = [AtgmMode, IsRadarVisible]
     size = flex()
@@ -898,7 +898,7 @@ function atgmGrid(width, height) {
         children = AimLockValid.value ? mkCcipReticle({ update = @() { transform = { translate  = AimLockPos } }}) : null
       },
       agmLaunchZone(width, height),
-      atgmLaunchPermitted
+      atgmLaunchPermitted(is_cn)
     ] : [aimLockPosMark]
   }
 }
@@ -939,7 +939,7 @@ function Ils31(width, height, is_cn) {
       aamReticle,
       impactLine,
       airGunCcrpMark,
-      atgmGrid(width, height),
+      atgmGrid(width, height, is_cn),
       (HasTargetTracker.value ? tvMode(is_cn) : null),
       laserMode(is_cn),
       bombingStabMark,
