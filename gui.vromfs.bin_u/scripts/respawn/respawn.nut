@@ -1853,9 +1853,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     let priceTextObj = slotObj.findObject("extraInfoPriceText")
     if (checkObj(priceTextObj)) {
-      let bottomText = getUnitSlotPriceText(unit, params)
-      priceTextObj.tinyFont = isUnitPriceTextLong(bottomText) ? "yes" : "no"
-      priceTextObj.setValue(bottomText)
+      let priceText = getUnitSlotPriceText(unit, params)
+      let hasPriceText = priceText != ""
+      priceTextObj.show(hasPriceText)
+      if (hasPriceText) {
+        priceTextObj.tinyFont = isUnitPriceTextLong(priceText) ? "yes" : "no"
+        priceTextObj.setValue(priceText)
+      }
+      this.getSlotbar().updateTopExtraInfoBlock(slotObj)
     }
 
     let nameObj = slotObj.findObject($"{getSlotObjId(countryId, idInCountry)}_txt")

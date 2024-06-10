@@ -1,4 +1,5 @@
 let DataBlock = require("DataBlock")
+let {eventbus_subscribe_onehit, eventbus_subscribe, eventbus_unsubscribe} = require("eventbus")
 let {object_to_json_string=null} = require_optional("json")
 let toJson = object_to_json_string ?? getroottable()?.save_to_json
 
@@ -6,6 +7,7 @@ assert(toJson!=null, "no json module found")
 
 let nativeApi = require_optional("sony.webapi")
 let {abortAllPendingRequests= @() null,
+  getNewRequestId = @() 0,
   getPreferredVersion = @() 2,
   subscribeToBlocklistUpdates= @(...) null,
   subscribeToFriendsUpdates = @(...) null,
@@ -13,6 +15,9 @@ let {abortAllPendingRequests= @() null,
   unsubscribeFromBlocklistUpdates = @(...) null,
   unsubscribeFromFriendsUpdates = @(...) null,
   unsubscribeFromPresenceUpdates = @(...) null,
+  FRIENDS_CHANGE_EVENT_NAME = "",
+  BLOCKLIST_CHANGE_EVENT_NAME = "",
+  PRESENCE_CHANGE_EVENT_NAME = ""
   } = nativeApi
 
 let nativeSend = nativeApi?.send ?? @(...) null
@@ -286,21 +291,27 @@ let matches = {
 
 
 // ---------- Utility functions and wrappers
-function is_http_success(code) { return code >= 200 && code < 300 }
+function isHttpSuccess(code) { return code >= 200 && code < 300 }
 
-function send(action, onResponse=noOpCb) {
-  let cb = function(r) {
+function getNewRequestIdImpl() {
+  let reqId = getNewRequestId()
+  return $"sony_webapi_request_{reqId}"
+}
+
+function send(action, onResponse=null) {
+  let eventId = getNewRequestIdImpl()
+  eventbus_subscribe_onehit(eventId, function(r) {
     local err = r?.error
-    let httpErr = (!is_http_success(r?.httpStatus ?? 0)) ? (r?.httpStatus ?? 0) : null
+    let httpErr = (!isHttpSuccess(r?.httpStatus ?? 0)) ? (r?.httpStatus ?? 0) : null
     if (httpErr != null && err == null)
       err = { }
     if (err && err?.code == null)
       err.code <- httpErr ? httpErr : "undefined";
 
-    onResponse(r?.response, err)
-  }
+    onResponse?(r?.response, err)
+  })
 
-  nativeSend(action, cb)
+  nativeSend(action, eventId)
 }
 
 function fetch(action, onChunkReceived, chunkSize = 20) {
@@ -319,6 +330,36 @@ function fetch(action, onChunkReceived, chunkSize = 20) {
   }
 
   send(makeIterable(action, 0, chunkSize), onResponse);
+}
+
+function subscribeToFriendsUpdatesImpl(on_update) {
+  eventbus_subscribe(FRIENDS_CHANGE_EVENT_NAME, on_update)
+  subscribeToFriendsUpdates()
+}
+
+function subscribeToBlocklistUpdatesImpl(on_update) {
+  eventbus_subscribe(BLOCKLIST_CHANGE_EVENT_NAME, on_update)
+  subscribeToBlocklistUpdates()
+}
+
+function unsubscribeFromFriendsUpdatesImpl(on_update) {
+  unsubscribeFromFriendsUpdates()
+  eventbus_unsubscribe(FRIENDS_CHANGE_EVENT_NAME, on_update)
+}
+
+function unsubscribeFromBlocklistUpdatesImpl(on_update) {
+  unsubscribeFromBlocklistUpdates()
+  eventbus_unsubscribe(BLOCKLIST_CHANGE_EVENT_NAME, on_update)
+}
+
+function subscribeToPresenceUpdatesImpl(on_update) {
+  eventbus_subscribe(PRESENCE_CHANGE_EVENT_NAME, on_update)
+  subscribeToPresenceUpdates()
+}
+
+function unsubscribeFromPresenceUpdatesImpl(on_update) {
+  unsubscribeFromPresenceUpdates()
+  eventbus_unsubscribe(PRESENCE_CHANGE_EVENT_NAME, on_update)
 }
 
 
@@ -358,16 +399,16 @@ return {
   noOpCb
 
   subscribe = {
-    friendslist = subscribeToFriendsUpdates
-    blocklist = subscribeToBlocklistUpdates
+    friendslist = subscribeToFriendsUpdatesImpl
+    blocklist = subscribeToBlocklistUpdatesImpl
   }
   unsubscribe = {
-    friendslist = unsubscribeFromFriendsUpdates
-    blocklist = unsubscribeFromBlocklistUpdates
+    friendslist = unsubscribeFromFriendsUpdatesImpl
+    blocklist = unsubscribeFromBlocklistUpdatesImpl
   }
 
-  subscribeToPresenceUpdates
-  unsubscribeFromPresenceUpdates
+  subscribeToPresenceUpdates = subscribeToPresenceUpdatesImpl
+  unsubscribeFromPresenceUpdates = unsubscribeFromPresenceUpdatesImpl
 
   serviceLabel = platformId == "ps5"? 1 : 0
 }

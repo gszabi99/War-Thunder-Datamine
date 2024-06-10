@@ -60,6 +60,7 @@
 @const bigButtonWidth: 0.25*@sf\1;
 @const buttonHeight: @cIco + 2@buttonImgPadding;
 @const battleButtonHeight: 20*@sf/@pf_outdated + 3*@scrn_tgt/100.0;
+@const slotBattleButtonHeight: 3*@scrn_tgt/100.0;
 @const bigButtonHeight: 1@frameHeaderHeight - 2@frameHeaderPad;
 @const smallButtonHeight: 1@sIco + 2@smallButtonImgPadding;
 @const headerButtonHeight: 1@dIco + 2@buttonImgPadding;
@@ -420,7 +421,7 @@ Button_text.battle > pattern {
 shopItem Button_text.battle {
   pos:0, -h;
   position:absolute;
-  size:1@slot_button_fullWidth, 3*@scrn_tgt/100.0;
+  size:1@slot_button_fullWidth, 1@slotBattleButtonHeight;
   padding:1*@sf/@pf_outdated, 0;
   margin-bottom:1*@buttonMargin;
   not-input-transparent:yes; }
@@ -2158,6 +2159,14 @@ Button_text.bottomAirItem > img {
   size:ph, ph;
   position:absolute;
   pos:50%pw-50%w, 50%ph-50%h;
+}
+
+[show_console_buttons=yes] Button_text.bottomAirItem[isSlotbar=yes] > img {
+  pos:pw-w, 50%ph-50%h;
+}
+
+[show_console_buttons=yes] Button_text.bottomAirItem[isSlotbar=yes] > ButtonImg {
+  left:0;
 }
 
 Button_text.bottomAirItem > textareaNoTab {

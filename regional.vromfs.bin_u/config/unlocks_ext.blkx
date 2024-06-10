@@ -3877,6 +3877,53 @@
       }
     },
     {
+      "id": "2024_06_10_mas_15_decal",
+      "locDescId": "2024_06_10_mas_15_decal/desc",
+      "userLogId": "2024_06_10_mas_15_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "italian_navy_day",
+      "costGold": 199,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_italy"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ],
+            "inSession": true
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-06-10 11:00:00",
+            "endDate": "2024-06-13 07:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2024_06_06_d_day_anniversary_2024_decal",
       "locDescId": "2024_06_06_d_day_anniversary_2024_decal/desc",
       "userLogId": "2024_06_06_d_day_anniversary_2024_decal",
@@ -3886,6 +3933,7 @@
       "group": "80th_anniversary_of_normandy",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -3930,6 +3978,7 @@
       "chapter": "holidays",
       "group": "80th_anniversary_of_normandy",
       "costGold": 499,
+      "hidden": true,
       "manualOpen": true,
       "mode": {
         "type": "totalMissionScore",
@@ -10203,6 +10252,12 @@
           }
         ]
       }
+    },
+    {
+      "id": "title_falcon_slayer",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
     },
     {
       "id": "title_honour_and_glory",
@@ -66820,7 +66875,7 @@
           {
             "type": "timeRange",
             "beginDate": "2024-06-15 11:00:00",
-            "endDate": "2024-06-27 11:30:00"
+            "endDate": "2024-06-17 11:30:00"
           }
         ]
       }

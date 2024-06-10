@@ -40,6 +40,7 @@ let mfdRwrSettings = Computed(function() {
     circleCnt = -1
     angleMarkStep = 30.0
     hasCompass = false
+    digitalCompass = false
   }
 
   if (BlkFileName.value == "")
@@ -72,6 +73,7 @@ let mfdRwrSettings = Computed(function() {
         circleCnt = pageBlk.getInt("circleCnt", -1)
         angleMarkStep = pageBlk.getReal("angleMarkStep", 30)
         hasCompass = pageBlk.getBool("hasCompass", false)
+        digitalCompass = pageBlk.getBool("digitalCompass", false)
       }
     }
   }
@@ -756,16 +758,9 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
     50 + math.sin(i * angle) * indicatorRadius,
   ])
 
-  return {
-    watch = [mfdRwrSettings, colorWatched]
-    size = [pw(75 * scale), ph(75 * scale)]
-    pos = [pw(50 - 75 * scale * 0.5), ph(50 - 75 * scale * 0.5)]
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = colorWatched.get()
-    fillColor = Color(0, 0, 0, 0)
-    lineWidth = 2
-    commands
-    children = [
+  local azimuthMarks = []
+  if (!mfdRwrSettings.get().digitalCompass) {
+    azimuthMarks.append(
       {
         rendObj = ROBJ_TEXT
         pos = [pw(48), ph(125)]
@@ -806,7 +801,37 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
         text = "E"
         valign = ALIGN_CENTER
       }
-    ]
+    )
+  }
+  else {
+    for (local i = 0; i < dashCount; ++i) {
+      azimuthMarks.append({
+        rendObj = ROBJ_TEXT
+        pos = [pw(40), ph(-33)]
+        size = [pw(20), ph(100)]
+        color = mfdRwrSettings.get().textColor
+        font = Fonts.hud
+        fontSize = 20 * scale
+        text = (i * angleStep).tointeger()
+        halign = ALIGN_CENTER
+        transform = {
+          rotate = i * angleStep
+          pivot = [0.5, 0.5 + 0.33]
+        }
+      })
+    }
+  }
+
+  return {
+    watch = [mfdRwrSettings, colorWatched]
+    size = [pw(75 * scale), ph(75 * scale)]
+    pos = [pw(50 - 75 * scale * 0.5), ph(50 - 75 * scale * 0.5)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = colorWatched.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = 2
+    commands
+    children = azimuthMarks
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {

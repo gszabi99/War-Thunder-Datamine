@@ -7,7 +7,6 @@ Button_text {
   <<#hasExtraInfoBlockTop>>
   showAboveInfoBlock='yes'
   <</hasExtraInfoBlockTop>>
-  order-popup:t="yes" // fixme it's better to increase area
   text:t=''
   css-hier-invalidate:t='yes'
   on_click:t='<<toBattleButtonAction>>'

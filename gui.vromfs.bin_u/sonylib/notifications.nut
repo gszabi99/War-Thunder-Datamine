@@ -4,8 +4,9 @@ let {
   deletePushContext = stubFunc,
   subscribeWithContext = stubFunc,
   unsubscribeFromContext = stubFunc,
-  setNotificationDispatcher = stubFunc
+  GENERIC_PUSH_EVENT_NAME = ""
 } = require_optional("sony.webapi")
+let {eventbus_subscribe, eventbus_unsubscribe} = require("eventbus")
 let {Watched} = require("frp")
 let activeSubscriptions = persist("activeSubscriptions", @() Watched({}))
 
@@ -18,7 +19,7 @@ function dispatchPushNotification(notification) {
 
 function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
   if (!wasDispatcherSet) {
-    setNotificationDispatcher(dispatchPushNotification)
+    eventbus_subscribe(GENERIC_PUSH_EVENT_NAME, dispatchPushNotification)
     wasDispatcherSet = true
   }
 
@@ -31,6 +32,11 @@ function subscribe(service, pushContextId, dataType, extdDataKey, notify) {
 function unsubscribe(pushContextId) {
   unsubscribeFromContext(pushContextId)
   activeSubscriptions.mutate(@(v) v.$rawdelete(pushContextId))
+
+  if (activeSubscriptions.len() == 0) {
+    eventbus_unsubscribe(GENERIC_PUSH_EVENT_NAME, dispatchPushNotification)
+    wasDispatcherSet = false
+  }
 }
 
 

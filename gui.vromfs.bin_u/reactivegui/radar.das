@@ -719,7 +719,7 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   if !data.hideHorAngle
     b_scope_square_inner_labels(ctx, data, pos, sz, data.fontSize)
   if data.hasAviaHorizont
-    b_scope_square_aviahorizont(ctx, data, pos, sz)
+    b_scope_square_aviahorizont(ctx, data, data.netRowCnt <= 0 ? pos : rdata.pos, data.netRowCnt <= 0 ? sz : rdata.size)
   draw_additional_net(ctx, data, rdata.pos, rdata.size)
 
 def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)

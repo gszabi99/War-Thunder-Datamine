@@ -84,9 +84,7 @@ extraInfoBlock {
         }
         img {
           size:t='@sIco, @sIco'
-          pos:t='-6@sf/@pf, 0'
           position:t='relative'
-          margin-left:t='@blockInterval'
           margin-right:t='4@sf/@pf'
           background-image:t='<<crewSpecializationIcon>>'
           background-svg-size:t='@sIco, @sIco'

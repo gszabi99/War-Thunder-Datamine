@@ -194,22 +194,29 @@ function updateContacts(needIgnoreInitedFlag = false) {
   fetchContactsList()
 }
 
-function onPresenceUpdate(accountId) {
-  let userId = console2uid?[accountId.tostring()]
-  let contact = ::getContact(userId)
-  if (contact == null)
-    return
+function onPresenceUpdate(data) {
+  let accountId = data?.accountId
+  if (accountId) {
+    let userId = console2uid?[accountId.tostring()]
+    let contact = ::getContact(userId)
+    if (contact == null)
+      return
 
-  updatePresencesByList([{
-    userId
-    presences = { online = !contact.online }
-  }])
+    updatePresencesByList([{
+      userId
+      presences = { online = !contact.online }
+    }])
+  }
+}
+
+function onPushNotification(_) {
+  updateContacts(true)
 }
 
 function initHandlers() {
   updateContacts(true)
-  psn.subscribe.friendslist(@() updateContacts(true))
-  psn.subscribe.blocklist(@() updateContacts(true))
+  psn.subscribe.friendslist(onPushNotification)
+  psn.subscribe.blocklist(onPushNotification)
   psn.subscribeToPresenceUpdates(onPresenceUpdate)
 }
 
@@ -219,9 +226,9 @@ function disposeHandlers() {
   psnApprovedUids({})
   psnBlockedUids({})
 
-  psn.unsubscribe.friendslist()
-  psn.unsubscribe.blocklist()
-  psn.unsubscribeFromPresenceUpdates()
+  psn.unsubscribe.friendslist(onPushNotification)
+  psn.unsubscribe.blocklist(onPushNotification)
+  psn.unsubscribeFromPresenceUpdates(onPresenceUpdate)
   psn.abortAllPendingRequests()
 }
 

@@ -247,6 +247,22 @@ function getUnitSlotRankText(unit, crew = null, showBR = false, ediff = -1) {
 
 let isUnitPriceTextLong = @(text) utf8_strlen(removeTextareaTags(text)) > 13
 
+function getSpareCountText(spareCount, crew, unit, missionRules) {
+  let hasSpare = spareCount > 0
+  if (!isInFlight())
+    return hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
+  let isSpareAllowedInMission = missionRules == null || missionRules.isAllowSpareInMission()
+  if (!isSpareAllowedInMission)
+    return ""
+  if (crew && isRespawnWithUniversalSpare(crew, unit))
+    return loc("icon/universalSpare")
+  if (crew && isSpareAircraftInSlot(crew.idInCountry))
+    return hasSpare ? $"{spareCount}{loc("icon/universalSpare")}" : loc("icon/universalSpare")
+  if (hasSpare)
+    return $"{spareCount}{loc("icon/spare")}"
+  return ""
+}
+
 function buildFakeSlot(id, unit, params) {
   let { isLocalState = true, showBR = hasFeature("GlobalShowBattleRating") } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
@@ -579,7 +595,6 @@ function buildCommonUnitSlot(id, unit, params) {
     }
   }
 
-  let spareCount = isLocalState ? get_spare_aircrafts_count(unit.name) : 0
   let hasCrewInfo = crewId >= 0
   let crew = hasCrewInfo ? getCrewById(crewId) : null
   let unitForCrewInfo = forceCrewInfoUnit || unit
@@ -663,20 +678,9 @@ function buildCommonUnitSlot(id, unit, params) {
 
   let hasAdditionalRespawns = additionalRespawns != ""
   let hasPriceText = showAdditionExtraInfo && priceText != ""
-  let isSpareAllowedInMission = !missionRules || missionRules.isAllowSpareInMission()
-  let hasSpare = spareCount > 0
-
-  local spareText = ""
-  if (!isInFlight())
-    spareText = hasSpare ? $"{spareCount}{loc("icon/spare")}" : loc("ui/minus")
-  else if (!isSpareAllowedInMission)
-    spareText = ""
-  else if (crew && isRespawnWithUniversalSpare(crew, unit))
-    spareText = loc("icon/universalSpare")
-  else if (crew && isSpareAircraftInSlot(crew.idInCountry))
-    spareText = hasSpare ? $"{spareCount}{loc("icon/universalSpare")}" : loc("icon/universalSpare")
-  else
-    spareText = hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
+  let spareCount = isLocalState ? get_spare_aircrafts_count(unit.name) : 0
+  let spareText = getSpareCountText(spareCount, crew, unit, missionRules)
+  let hasSpareInfo = spareText != ""
 
   let extraInfoTopView = {
     hasExtraInfoBlockTop
@@ -684,8 +688,11 @@ function buildCommonUnitSlot(id, unit, params) {
     hasAdditionalRespawns
     additionalRespawns
     priceText
-    hasSpareInfo = spareText != ""
+    hasSpareInfo
     spareCount = spareText
+    hasPriceSeparator = hasPriceText && hasAdditionalRespawns
+    hasSpareSeparator = hasSpareInfo && (hasPriceText || hasAdditionalRespawns)
+    isMissingExtraInfo = !hasPriceText && !hasAdditionalRespawns && !hasSpareInfo
   }
 
   if (specType) {
@@ -1048,4 +1055,5 @@ return {
   getUnitSlotPriceText
   getUnitSlotRankText
   isUnitEnabledForSlotbar
+  getSpareCountText
 }

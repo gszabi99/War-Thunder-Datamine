@@ -2801,7 +2801,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 60,
               "external": true,
@@ -2809,7 +2809,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 60,
               "external": true,
@@ -3232,17 +3232,31 @@
           {
             "iconType": "ltc_maws",
             "name": "pids",
-            "reqModification": "MAW_system_heli_false_thermal_targets",
+            "reqModification": "PIDS_false_thermal_targets",
             "ShowNodes": {
               "node": "pylon_terma_mlu_pids_p_l"
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
               "emitter": "emtr_flare4",
               "bullets": 90,
               "external": true,
               "separate": false
+            },
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
             }
           },
           {
@@ -3263,14 +3277,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "bombs_heavy_middle_maws_ltc_pod",
@@ -3291,14 +3319,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "bombs_large_high_drag_maws_ltc_pod",
@@ -3319,14 +3361,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "bombs_middle_high_drag_maws_ltc_pod_group",
@@ -3346,14 +3402,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "guided_bomb_small_laser_maws_ltc_pod_group",
@@ -3373,17 +3443,31 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
             ],
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "lantirn_pod"
+            },
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
             }
           },
           {
@@ -3405,17 +3489,31 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
             ],
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "lantirn_pod"
+            },
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
             }
           },
           {
@@ -3436,14 +3534,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           }
         ]
       },
@@ -4166,17 +4278,31 @@
           {
             "iconType": "ltc_maws",
             "name": "pids",
-            "reqModification": "MAW_system_heli_false_thermal_targets",
+            "reqModification": "PIDS_false_thermal_targets",
             "ShowNodes": {
               "node": "pylon_terma_mlu_pids_p_r"
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
               "emitter": "emtr_flare5",
               "bullets": 90,
               "external": true,
               "separate": false
+            },
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
             }
           },
           {
@@ -4197,14 +4323,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "bombs_heavy_middle_maws_ltc_pod",
@@ -4225,14 +4365,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "bombs_large_high_drag_maws_ltc_pod",
@@ -4253,14 +4407,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "bombs_middle_high_drag_maws_ltc_pod_group",
@@ -4280,14 +4448,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           },
           {
             "iconType": "guided_bomb_small_laser_maws_ltc_pod_group",
@@ -4307,17 +4489,31 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
             ],
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "lantirn_pod"
+            },
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
             }
           },
           {
@@ -4339,17 +4535,31 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
             ],
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "lantirn_pod"
+            },
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
             }
           },
           {
@@ -4370,14 +4580,28 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_pids.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 90,
                 "external": true,
                 "separate": false,
-                "reqModification": "MAW_system_heli_false_thermal_targets"
+                "reqModification": "PIDS_false_thermal_targets"
               }
-            ]
+            ],
+            "sensors": {
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
+                  "dmPart": "radar_dm"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_alr_56m.blk"
+                },
+                {
+                  "blk": "gameData/sensors/us_an_aar_47.blk"
+                }
+              ]
+            }
           }
         ]
       },
@@ -4626,40 +4850,26 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "maw_countermeasures_launcher_chaff_only": {},
-    "maw_countermeasures_launcher_flare_only": {},
-    "maw_countermeasures_launcher_chaff_priority": {},
-    "maw_countermeasures_launcher_flare_priority": {},
-    "MAW_system_heli_false_thermal_targets": {
+    "countermeasures_launcher_chaff": {},
+    "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 1,
-      "effects": {
-        "sensors": {
-          "sensor": [
-            {
-              "blk": "gameData/sensors/us_an_apg_66_v_3.blk",
-              "dmPart": "radar_dm"
-            },
-            {
-              "blk": "gameData/sensors/us_an_alr_56m.blk"
-            },
-            {
-              "blk": "gameData/sensors/us_an_aar_47.blk"
-            }
-          ]
-        }
-      }
+      "tier": 1
     },
-    "f_4c_g_suit": {
-      "prevModification": "MAW_system_heli_false_thermal_targets",
+    "PIDS_false_thermal_targets": {
+      "prevModification": "countermeasures_belt_pack",
       "tier": 2,
       "modClass": "armor"
     },
-    "heli_night_vision_system": {
+    "f_4c_g_suit": {
+      "prevModification": "PIDS_false_thermal_targets",
       "tier": 3,
+      "modClass": "armor"
+    },
+    "heli_night_vision_system": {
+      "tier": 4,
       "modClass": "armor",
       "prevModification": "f_4c_g_suit",
       "effects": {

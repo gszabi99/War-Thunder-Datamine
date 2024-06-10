@@ -2405,6 +2405,7 @@
             "AN/APG-68(V)7",
             "AN/APG-68(V)9",
             "AN/APG-63",
+            "AN/APG-63(V)1",
             "AN/APG-65Q",
             "AN/APG-67",
             "AN/APG-76 / AN/ASX-1",
@@ -2606,9 +2607,7 @@
         -55.0,
         38.0
       ],
-      "opticType": "tv",
-      "turretNo": 0,
-      "name": "KH-29T"
+      "opticType": "tv"
     }
   },
   "commonWeapons": {
@@ -2622,6 +2621,18 @@
       {
         "name": "mig_21_bison_default",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_default.blk"
+      },
+      {
+        "name": "mig_21_bison_ub16",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_ub16.blk"
+      },
+      {
+        "name": "mig_21_bison_ub32",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_ub32.blk"
+      },
+      {
+        "name": "mig_21_bison_s24",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_s24.blk"
       },
       {
         "name": "mig_21_bison_b8m1",
@@ -2640,12 +2651,24 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_r_27t.blk"
       },
       {
+        "name": "mig_21_bison_ofab100",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_ofab100.blk"
+      },
+      {
         "name": "mig_21_bison_mk82",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_mk82.blk"
       },
       {
+        "name": "mig_21_bison_ofab250m_62t",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_ofab250m_62t.blk"
+      },
+      {
         "name": "mig_21_bison_mk83",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_mk83.blk"
+      },
+      {
+        "name": "mig_21_bison_ofab500m_62t",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_bison_ofab500m_62t.blk"
       },
       {
         "name": "mig_21_bison_kab_500kr",
@@ -2672,11 +2695,8 @@
         "apu_60m_r1",
         "aso_sps_141m",
         "sps_141m_pylon",
-        "airbrake_l1",
         "airbrake_l8",
         "airbrake_l7",
-        "airbrake_l3",
-        "airbrake_l2",
         "airbrake_l6",
         "drop_tank_pylon1",
         "aku_170_launcher_001",
@@ -2754,7 +2774,11 @@
         "aso2i_l",
         "aso2i_r",
         "no_ltc_1",
-        "no_ltc_2"
+        "no_ltc_2",
+        "s24_pylon_l",
+        "s24_pylon_l1",
+        "s24_pylon_r",
+        "s24_pylon_r1"
       ]
     },
     "HideDmParts": {
@@ -2860,6 +2884,38 @@
             }
           },
           {
+            "iconType": "rockets_he_large",
+            "name": "s24",
+            "reqModification": "il_28sh_s24",
+            "ShowNodes": {
+              "node": [
+                "pylon_l1",
+                "s24_pylon_l1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+              "emitter": "su_s_24_rocket_003",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_middle",
+            "name": "ub16",
+            "reqModification": "mig_21_ub16",
+            "ShowNodes": {
+              "node": "pylon_l1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
+              "emitter": "ub_57_16_b003",
+              "external": true
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "mk82",
             "reqModification": "us_500lb_mk82",
@@ -2869,6 +2925,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "us_500lb_mk_82_ldgp_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fab250",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_l1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_62.blk",
               "emitter": "us_500lb_mk_82_ldgp_001",
               "bullets": 1,
               "external": true,
@@ -2943,17 +3015,128 @@
             }
           },
           {
+            "iconType": "rockets_he_large",
+            "name": "s24",
+            "reqModification": "il_28sh_s24",
+            "ShowNodes": {
+              "node": [
+                "pylon_l",
+                "s24_pylon_l"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+              "emitter": "su_s_24_rocket_001",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_middle",
+            "name": "ub16",
+            "reqModification": "mig_21_ub16",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
+              "emitter": "ub_57_16_b001",
+              "external": true
+            }
+          },
+          {
             "iconType": "nar_ap_large",
+            "name": "ub32",
+            "reqModification": "mig_21_ub32",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
+              "emitter": "su_ub_32a_24_b001",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_large",
             "name": "b8m1",
             "reqModification": "yak_38_b8m1",
             "ShowNodes": {
-              "node": "pylon_l"
+              "node": [
+                "pylon_l",
+                "airbrake_l1"
+              ]
             },
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_001",
               "external": true
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x4",
+            "name": "fab100_x4",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mbd2_67u_su_ofab_100_120_x4.blk",
+              "emitter": "mbd2_67u_l",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fab250",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_62.blk",
+              "emitter": "su_ofab250_l",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "fab500",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_500m_62t.blk",
+              "emitter": "su_ofab250_l",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "zb500",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "su_ofab250_l",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -3026,7 +3209,9 @@
           "ShowNodes": {
             "node": [
               "drop_tank_pylon1",
-              "airbrake_l6"
+              "airbrake_l6",
+              "airbrake_l7",
+              "airbrake_l8"
             ]
           },
           "ShowDmParts": {
@@ -3085,7 +3270,53 @@
             }
           },
           {
+            "iconType": "rockets_he_large",
+            "name": "s24",
+            "reqModification": "il_28sh_s24",
+            "ShowNodes": {
+              "node": [
+                "pylon_r",
+                "s24_pylon_r"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+              "emitter": "su_s_24_rocket_002",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_middle",
+            "name": "ub16",
+            "reqModification": "mig_21_ub16",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
+              "emitter": "ub_57_16_b002",
+              "external": true
+            }
+          },
+          {
             "iconType": "nar_ap_large",
+            "name": "ub32",
+            "reqModification": "mig_21_ub32",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
+              "emitter": "su_ub_32a_24_b002",
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_large",
             "name": "b8m1",
             "reqModification": "yak_38_b8m1",
             "ShowNodes": {
@@ -3096,6 +3327,68 @@
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_002",
               "external": true
+            }
+          },
+          {
+            "iconType": "bombs_small_group_x4",
+            "name": "fab100_x4",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mbd2_67u_su_ofab_100_120_x4.blk",
+              "emitter": "mbd2_67u_r",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fab250",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_62.blk",
+              "emitter": "su_ofab250_r",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "fab500",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_500m_62t.blk",
+              "emitter": "su_fab500_m54_r",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "zb500",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "su_fab500_m54_r",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -3174,6 +3467,38 @@
             }
           },
           {
+            "iconType": "rockets_he_large",
+            "name": "s24",
+            "reqModification": "il_28sh_s24",
+            "ShowNodes": {
+              "node": [
+                "pylon_r1",
+                "s24_pylon_r1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/rocketGuns/su_s_24_rocket.blk",
+              "emitter": "su_s_24_rocket_004",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "nar_ap_middle",
+            "name": "ub16",
+            "reqModification": "mig_21_ub16",
+            "ShowNodes": {
+              "node": "pylon_r1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
+              "emitter": "ub_57_16_b004",
+              "external": true
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "mk82",
             "reqModification": "us_500lb_mk82",
@@ -3183,6 +3508,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "us_500lb_mk_82_ldgp_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "fab250",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": "pylon_r1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_250m_62.blk",
               "emitter": "us_500lb_mk_82_ldgp_004",
               "bullets": 1,
               "external": true,
@@ -3508,22 +3849,41 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "yak_38_b8m1": {
+    "us_500lb_mk82": {
       "modClass": "weapon",
       "tier": 1
-    },
-    "us_500lb_mk82": {
-      "reqModification": "yak_38_b8m1",
-      "modClass": "weapon",
-      "tier": 2
     },
     "us_1000lb_mk83": {
       "reqModification": "us_500lb_mk82",
       "modClass": "weapon",
+      "tier": 2
+    },
+    "mi_24_fab_500": {
+      "reqModification": "us_1000lb_mk83",
+      "modClass": "weapon",
       "tier": 3
     },
     "mig_27_kab_500": {
-      "reqModification": "us_1000lb_mk83",
+      "reqModification": "mi_24_fab_500",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "mig_21_ub16": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "mig_21_ub32": {
+      "reqModification": "mig_21_ub16",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "il_28sh_s24": {
+      "reqModification": "mig_21_ub32",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "yak_38_b8m1": {
+      "reqModification": "il_28sh_s24",
       "modClass": "weapon",
       "tier": 4
     }

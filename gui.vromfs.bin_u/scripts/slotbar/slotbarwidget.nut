@@ -41,7 +41,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { selectCountryForCurrentOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText,
-  isUnitEnabledForSlotbar
+  isUnitEnabledForSlotbar, getSpareCountText
 } = require("%scripts/slotbar/slotbarView.nut")
 let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
@@ -1304,12 +1304,36 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSpareCount(unitName) {
-    let spareCountObj = this.getSlotsData(unitName)?[0].obj.findObject("spareCount")
+    let slotData = this.getSlotsData(unitName)?[0]
+    if (slotData == null)
+      return
+    let { unit, crew, obj } = slotData
+    if (unit == null)
+      return
+    let spareCountObj = obj.findObject("spareCount")
     if (!spareCountObj?.isValid())
       return
 
-    let spareCount = get_spare_aircrafts_count(unitName)
-    spareCountObj.setValue($"{spareCount}{loc("icon/spare")}")
+    let spareCount = !isCrewListOverrided.get() ? get_spare_aircrafts_count(unit.name) : 0
+    let spareText = getSpareCountText(spareCount, crew, unit, this.missionRules)
+    let hasSpareInfo = spareText != ""
+    spareCountObj.show(hasSpareInfo)
+    if (hasSpareInfo)
+      spareCountObj.setValue(spareText)
+
+    this.updateTopExtraInfoBlock(obj)
+  }
+
+  function updateTopExtraInfoBlock(slotObj) {
+    this.guiScene.applyPendingChanges(false)
+    let isVisibleSpare = slotObj.findObject("spareCount").isVisible()
+    let isVisiblePrice = slotObj.findObject("extraInfoPriceText").isVisible()
+    let isVisibleAdditionalRespawns = slotObj.findObject("additionalRespawns").isVisible()
+    slotObj.findObject("priceSeparator").show(isVisiblePrice && isVisibleAdditionalRespawns)
+    slotObj.findObject("spareSeparator").show(isVisibleSpare
+      && (isVisiblePrice || isVisibleAdditionalRespawns))
+    slotObj.findObject("emptyExtraInfoText").show(
+      !isVisiblePrice && !isVisibleAdditionalRespawns && !isVisibleSpare)
   }
 
   onEventUniversalSpareActivated = @(p) this.updateSpareCount(p.unit.name)

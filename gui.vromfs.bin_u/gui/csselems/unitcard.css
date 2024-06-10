@@ -154,7 +154,7 @@ shopItem {
 }
 
 slotbarTable > unitCell > shopItem,
-slotbarTable > unitItemContainer {
+slotbarTable > unitItemContainer > shopItem {
   pos:0, 22@sf/@pf;
   position: relative;
 }
@@ -1022,7 +1022,7 @@ extraInfoBlock {
 }
 
 slotCrewHintContainer {
-  width:pw;
+  min-width:pw;
   min-height:3@sf/@pf;
   pos:pw/2-w/2, -h;
   position:absolute;
@@ -1033,7 +1033,7 @@ slotCrewHintContainer {
 }
 
 slotCrewHint {
-  width:pw;
+  min-width:pw;
   pos:pw/2-w/2, -h+ph-3@sf/@pf;
   min-height:6@sf/@pf;
   padding:3@sf/@pf, 3@sf/@pf, 3@sf/@pf, ph;
@@ -1147,7 +1147,7 @@ extraInfoVertSeparator {
   background-color:@extraInfoBlockBorderColor;
   size:@sf/@pf, ph-6@sf/@pf;
   pos:0, ph/2-h/2;
-  position:absolute;
+  position:relative;
 }
 
 text[crewStatus=show], textareaNoTab[crewStatus=show], textAreaCentered[crewStatus=show],

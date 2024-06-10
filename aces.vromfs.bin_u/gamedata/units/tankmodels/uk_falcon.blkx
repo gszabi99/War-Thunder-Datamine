@@ -579,7 +579,7 @@
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
-      "hp": 250.0,
+      "hp": 400.0,
       "armorThickness": 2.0,
       "armorThrough": 12.0,
       "fireProtectionHp": 15.0,
@@ -1057,6 +1057,13 @@
             "fHitCritical": true
           },
           {
+            "damageType": "cumulative",
+            "expl": 0.5,
+            "fire": 0.5,
+            "damage": 400.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "explosion",
             "expl": 0.125,
             "fire": 0.225,
@@ -1090,22 +1097,21 @@
           },
           {
             "damageType": "generic",
-            "fire": 0.7,
-            "expl": 0.1,
+            "fire": 0.5,
+            "expl": 0.5,
             "damage": 300.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
-            "fire": 0.5,
-            "expl": 0.5,
+            "fire": 0.3,
+            "expl": 0.7,
             "damage": 400.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
-            "fire": 0.2,
-            "expl": 0.8,
+            "expl": 1.0,
             "damage": 600.0,
             "fHitCritical": true
           },
@@ -1115,9 +1121,8 @@
           }
         ],
         "onKill": {
-          "fire": 0.5,
-          "expl": 0.3,
-          "nothing": 0.2,
+          "fire": 0.3,
+          "expl": 0.7,
           "fHitCritical": true
         }
       },
@@ -1984,17 +1989,20 @@
       "maxBrakeForce": 60024.0,
       "driveGearRadius": 0.34,
       "mainGearRatio": 1.95,
-      "sideGearRatio": 5.145,
+      "sideGearRatio": 4.98,
       "gearRatios": {
         "ratio": [
-          -6.04,
+          -6.62,
+          -13.24,
           0.0,
-          5.294,
-          3.81,
-          2.691,
-          1.936,
-          1.39,
-          1.0
+          8.32,
+          4.16,
+          3.25,
+          2.34,
+          1.9,
+          1.46,
+          1.25,
+          1.04
         ]
       }
     },
