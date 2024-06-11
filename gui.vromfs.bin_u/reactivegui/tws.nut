@@ -31,16 +31,23 @@ let styleLineBackground = {
   lineWidth = hdpx(LINE_WIDTH + 1.5)
 }
 
+enum centralMarkType {
+  plane
+  empty
+  cross
+  bigCross
+}
+
 let mfdRwrSettings = Computed(function() {
   let res = {
     textColor = MfdRwrColor.get()
     backgroundColor = Color(0, 0, 0, 255)
     lineColor = MfdRwrColor.get()
-    hidePlane = false
     circleCnt = -1
     angleMarkStep = 30.0
     hasCompass = false
     digitalCompass = false
+    centralMark = centralMarkType.plane
   }
 
   if (BlkFileName.value == "")
@@ -69,11 +76,11 @@ let mfdRwrSettings = Computed(function() {
         textColor = textC.x < 0 ? MfdRwrColor.get() : Color(textC.x, textC.y, textC.z, 255)
         lineColor = lineC.x < 0 ? MfdRwrColor.get() : Color(lineC.x, lineC.y, lineC.z, 255)
         backgroundColor = Color(backC.x, backC.y, backC.z, 255)
-        hidePlane = pageBlk.getBool("hidePlaneSymbol", false)
         circleCnt = pageBlk.getInt("circleCnt", -1)
         angleMarkStep = pageBlk.getReal("angleMarkStep", 30)
         hasCompass = pageBlk.getBool("hasCompass", false)
         digitalCompass = pageBlk.getBool("digitalCompass", false)
+        centralMark = centralMarkType?[pageBlk.getStr("centralMark", "plane")] ?? centralMarkType.plane
       }
     }
   }
@@ -841,15 +848,66 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
   }
 }
 
+function centralCross(colorWatched, centralCircleSizeMult) {
+  return @(){
+    watch = colorWatched
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = 2
+    fillColor = Color(0, 0, 0, 0)
+    color = colorWatched.value
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    size = [pw(20 * centralCircleSizeMult), ph(20 * centralCircleSizeMult)]
+    opacity = RADAR_LINES_OPACITY
+    commands = [
+      [VECTOR_LINE, 0, 50, 100, 50],
+      [VECTOR_LINE, 50, 0, 50, 100]
+    ]
+  }
+}
+
+function centralBigCross(colorWatched, _centralCircleSizeMult) {
+  return @(){
+    watch = colorWatched
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = 2
+    fillColor = Color(0, 0, 0, 0)
+    color = colorWatched.value
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    size = flex()
+    opacity = RADAR_LINES_OPACITY
+    commands = [
+      [VECTOR_LINE, 0, 50, 100, 50],
+      [VECTOR_LINE, 50, 0, 50, 100]
+    ]
+  }
+}
+
+function getCentralMark(forMfd, centralMark) {
+  if (!forMfd)
+    return centeredAircraftIcon
+  if (centralMark == centralMarkType.plane)
+    return centeredAircraftIcon
+  else if (centralMark == centralMarkType.empty)
+    return null
+  else if (centralMark == centralMarkType.cross)
+    return centralCross
+  else if (centralMark == centralMarkType.bigCross)
+    return centralBigCross
+  return centeredAircraftIcon
+}
+
 function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralIcon,
     needDrawBackground, fontSizeMult, needAdditionalLights, forMfd, centralCircleSizeMult) {
-  let lineColor = forMfd ? Watched(mfdRwrSettings.get().lineColor) : colorWatched
-  return {
+  let lineColor = forMfd ? Computed(@() mfdRwrSettings.get().lineColor) : colorWatched
+  return @(){
+    watch = mfdRwrSettings
     size = flex()
     children = [
       twsBackground(colorWatched, !needDrawCentralIcon),
       needDrawBackground ? rwrBackground(lineColor, scale, forMfd) : null,
-      needDrawCentralIcon && (!forMfd || !mfdRwrSettings.get().hidePlane) ? centeredAircraftIcon(colorWatched, centralCircleSizeMult) : null,
+      needDrawCentralIcon ? getCentralMark(forMfd, mfdRwrSettings.get().centralMark)?(colorWatched, centralCircleSizeMult) : null,
       compass(lineColor, forMfd, scale, mfdRwrSettings.get().angleMarkStep),
       {
         size = [pw(relativCircleRadius * scale * ratio), ph(relativCircleRadius * scale)]

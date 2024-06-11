@@ -130,6 +130,8 @@ let attackDistRelMult = 1.0
 let attackHeightRel = 0.02
 let angularGateWidthMultSquare = 4.
 
+let metrToThsFeet = 0.00328084
+
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   fontId : int = -1
@@ -157,6 +159,8 @@ struct CanvasParams
   netRowCnt : int = 0
   netColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   hideWeaponIndication : bool = false
+  showScanAzimuth : bool = false
+  cueHeights : bool = false
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
@@ -205,6 +209,8 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.netRowCnt = props |> getInt("netRowCnt", 0)
   storage.netColor = props |> getColor("netColor", storage.color)
   storage.hideWeaponIndication = props |> getBool("hideWeaponIndication", false)
+  storage.showScanAzimuth = props |> getBool("showScanAzimuth", false)
+  storage.cueHeights = props |> getBool("cueHeights", false)
 
 [export]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -696,8 +702,9 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   let offsets = b_scope_square_labels(ctx, data, position, size, data.fontSize)
   let pos = position + float2(offsets.x, offsets.y)
   let sz = size - float2(offsets.x, offsets.y + offsets.z)
-  if !data.hideBack
+  if !data.hideBack || data.showScanAzimuth
     b_scope_square_bkg(ctx, data, pos, sz)
+  if !data.hideBack
     b_scope_square_target_sector(ctx, data, pos, sz)
   b_scope_square_azimuth(ctx, data, pos, sz, true, get_radar_hud_turret_azimuth(), -1., -1.)
   render_ground_reflection(ctx, sz, pos, is_color_or_white(data.color), int2(20, 10), true)
@@ -867,6 +874,9 @@ def b_scope_square_bkg(var ctx : GuiContext&; data : CanvasParams&; pos : float2
     ctx |> draw_line(pos.x + scanAzimuthMinRelW * size.x, pos.y, pos.x + scanAzimuthMinRelW * size.x, pos.y + size.y, ctx |> hdpx(1.6 * data.lineWidth))
   if scanAzimuthMaxRelW <= 1. && scanAzimuthMaxRelW >= 0.
     ctx |> draw_line(pos.x + scanAzimuthMaxRelW * size.x, pos.y, pos.x + scanAzimuthMaxRelW * size.x, pos.y + size.y, ctx |> hdpx(1.6 * data.lineWidth))
+
+  if data.hideBack
+    return
 
   var scanAzimuthMinRel = 0.
   var scanAzimuthMaxRel = 1.
@@ -1125,6 +1135,29 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   let rcoord <- to_array_move([[float2[2] float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y- cueDistWidthRel * size.y * 0.5);
    float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
   ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
+
+  if data.cueHeights
+    let hero = get_controlled_hero()
+    if hero == null || hero.isDelayed
+      return
+    let scanElevationWidth = get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()
+    let ownAltitude = hero.pos.y
+    let distance = get_radar_hud_cue_distance() * get_radar_hud_distance_max() * 1000.
+    let hmin = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_min() - 0.5f * scanElevationWidth)) * metrToThsFeet
+    let hmax = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_max() + 0.5f * scanElevationWidth)) * metrToThsFeet
+
+    let hmaxText = format("%d", roundi(hmax))
+    let hminText = format("%d", roundi(hmin))
+    var fctx : StdGuiFontContext
+    get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
+    ctx |> set_font(data.fontId, 0, 0)
+    ctx |> set_font_ht(data.fontSize)
+
+    ctx |> goto_xy(cuePos.x + cueAzimuthHwr * size.x + 3., cuePos.y - cueDistWidthRel * size.y * 0.5)
+    ctx |> draw_str_scaled(1.0, hmaxText, hmaxText |> length())
+
+    ctx |> goto_xy(cuePos.x + cueAzimuthHwr * size.x + 3., cuePos.y + cueDistWidthRel * size.y * 0.5)
+    ctx |> draw_str_scaled(1.0, hminText, hminText |> length())
 
 def b_scope(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   let offsets = b_scope_labels(ctx, rdata, data)

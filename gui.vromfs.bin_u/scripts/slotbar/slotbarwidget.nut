@@ -41,7 +41,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { selectCountryForCurrentOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText,
-  isUnitEnabledForSlotbar, getSpareCountText
+  isUnitEnabledForSlotbar, getSpareCountText, calcUnitSlotMissionInfoTextsWidth
 } = require("%scripts/slotbar/slotbarView.nut")
 let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
@@ -1326,14 +1326,30 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateTopExtraInfoBlock(slotObj) {
     this.guiScene.applyPendingChanges(false)
-    let isVisibleSpare = slotObj.findObject("spareCount").isVisible()
-    let isVisiblePrice = slotObj.findObject("extraInfoPriceText").isVisible()
-    let isVisibleAdditionalRespawns = slotObj.findObject("additionalRespawns").isVisible()
-    slotObj.findObject("priceSeparator").show(isVisiblePrice && isVisibleAdditionalRespawns)
+    let priceObj = slotObj.findObject("extraInfoPriceText")
+    let isVisiblePrice = priceObj.isVisible()
+    let addHistoricalRespawnsNestObj = slotObj.findObject("additionalHistoricalRespawnsNest")
+    let addHistoricalRespawnsObj = addHistoricalRespawnsNestObj.findObject("additionalHistoricalRespawns")
+    let isVisibleAdditionalHisotircalRespawns = addHistoricalRespawnsNestObj.isVisible()
+    let addRespawnsObj = slotObj.findObject("additionalRespawns")
+    let isVisibleAdditionalRespawns = addRespawnsObj.isVisible()
+    let spareCountObj = slotObj.findObject("spareCount")
+    let isVisibleSpare = spareCountObj.isVisible()
+    if (isVisiblePrice) {
+      let { priceWidth, addHistoricalRespawnsWidth, addRespawnsWidth
+      } = calcUnitSlotMissionInfoTextsWidth(priceObj.getValue(), addHistoricalRespawnsObj.getValue(),
+        addRespawnsObj.getValue(), spareCountObj.getValue())
+      priceObj.width = priceWidth
+      addHistoricalRespawnsNestObj.width = addHistoricalRespawnsWidth
+      addRespawnsObj.width = addRespawnsWidth
+    }
+    slotObj.findObject("priceSeparator").show(isVisiblePrice && isVisibleAdditionalHisotircalRespawns)
+    slotObj.findObject("additionalRespawnsSeparator").show(isVisibleAdditionalRespawns
+      && (isVisiblePrice || isVisibleAdditionalHisotircalRespawns))
     slotObj.findObject("spareSeparator").show(isVisibleSpare
-      && (isVisiblePrice || isVisibleAdditionalRespawns))
+      && (isVisiblePrice || isVisibleAdditionalRespawns || isVisibleAdditionalHisotircalRespawns))
     slotObj.findObject("emptyExtraInfoText").show(
-      !isVisiblePrice && !isVisibleAdditionalRespawns && !isVisibleSpare)
+      !isVisiblePrice && !isVisibleAdditionalRespawns && !isVisibleSpare && !isVisibleAdditionalHisotircalRespawns)
   }
 
   onEventUniversalSpareActivated = @(p) this.updateSpareCount(p.unit.name)

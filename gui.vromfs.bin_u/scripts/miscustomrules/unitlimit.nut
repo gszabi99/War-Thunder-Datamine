@@ -92,9 +92,11 @@ let ActiveLimitByUnitExpClass = class (UnitLimitBase) {
 
 let UnitLimitByUnitType = class (UnitLimitBase) {
   function getText() {
-    let unitType = unitTypes[this.name]
+    let unitTypeName = this.name
+    let unitType = unitTypes[unitTypeName]
     let fontIcon = colorize("activeTextColor", unitType.fontIcon)
-    return fontIcon + unitType.getArmyLocName() + loc("ui/colon") + colorize("activeTextColor", this.getRespawnsLeftText())
+    let armyLocName = unitTypeName == "SHIP" ? loc("mainmenu/fleet") : unitType.getArmyLocName()
+    return $"{fontIcon}{armyLocName}{loc("ui/colon")}{colorize("activeTextColor", this.getRespawnsLeftText())}"
   }
 }
 

@@ -45,9 +45,6 @@
   "isStackRearm": true,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -2353,7 +2350,13 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "oneSided": true,
-      "fireProtectionHp": 10.0
+      "fireProtectionHp": 10.0,
+      "ammo_turret_01_dm": {
+        "hp": 582.0
+      },
+      "ammo_turret_02_dm": {
+        "hp": 626.0
+      }
     },
     "depth_charges": {
       "armorClass": "ship_structural_steel",
@@ -2657,6 +2660,9 @@
       "armorClass": "ship_structural_steel",
       "fireDamageMult": 1.5,
       "fireProtectionHp": 5.0,
+      "elevator_01_dm": {
+        "hp": 900.0
+      },
       "elevator_02_dm": {
         "hp": 900.0
       },
@@ -3489,7 +3495,7 @@
     },
     "fireDirecting": [
       {
-        "dmPartMain": "bridge_dm",
+        "dmPartMain": "fire_control_room_01_dm",
         "dmPart": "rangefinder_01_dm",
         "measureAccuracy": 0.85,
         "targetLockTime": 20.0,
@@ -3503,7 +3509,7 @@
         }
       },
       {
-        "dmPartMain": "bridge_dm",
+        "dmPartMain": "fire_control_room_01_dm",
         "dmPart": [
           "fire_director_01_dm",
           "fire_director_02_dm",

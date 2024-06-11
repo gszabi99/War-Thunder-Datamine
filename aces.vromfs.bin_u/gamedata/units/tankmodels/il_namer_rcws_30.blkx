@@ -122,6 +122,22 @@
       },
       "composite_armor_hull_02_dm": {
         "armorThickness": 20.0
+      },
+      "turret_14_back_dm": {
+        "armorThickness": 50.0,
+        "createSecondaryShatters": false
+      },
+      "superstructure_side_dm": {
+        "armorThickness": 50.0,
+        "createSecondaryShatters": false
+      },
+      "ex_armor_body_02_dm": {
+        "armorThickness": 50.0,
+        "createSecondaryShatters": false
+      },
+      "turret_15_top_dm": {
+        "armorThickness": 50.0,
+        "createSecondaryShatters": false
       }
     },
     "hull_external": {
@@ -224,6 +240,77 @@
       "ex_armor_r_04_dm": {},
       "ex_armor_r_05_dm": {}
     },
+    "hull_ufp_slera": {
+      "armorClass": "hull_side_special_armor",
+      "hidableInXrayViewer": true,
+      "hidableInViewer": false,
+      "createSecondaryShatters": false,
+      "armorThickness": 70.0,
+      "genericArmorQuality": 0.35,
+      "cumulativeArmorQuality": 2.35,
+      "ex_armor_body_01_dm": {},
+      "turret_02_front_dm": {},
+      "turret_09_back_dm": {},
+      "turret_09_bottom_dm": {},
+      "turret_09_side_dm": {},
+      "turret_09_top_dm": {},
+      "turret_09_front_dm": {},
+      "turret_10_back_dm": {},
+      "turret_10_bottom_dm": {},
+      "turret_10_side_dm": {},
+      "turret_10_top_dm": {},
+      "turret_11_front_dm": {},
+      "turret_12_back_dm": {},
+      "turret_12_bottom_dm": {},
+      "turret_12_side_dm": {},
+      "turret_12_top_dm": {},
+      "turret_04_top_dm": {},
+      "turret_05_bottom_dm": {},
+      "turret_05_front_dm": {},
+      "turret_05_side_dm": {},
+      "turret_10_front_dm": {},
+      "turret_11_back_dm": {},
+      "turret_11_bottom_dm": {},
+      "turret_11_side_dm": {},
+      "turret_11_top_dm": {},
+      "turret_12_front_dm": {},
+      "turret_13_back_dm": {},
+      "turret_13_bottom_dm": {},
+      "turret_13_front_dm": {},
+      "turret_13_side_dm": {},
+      "turret_16_back_dm": {}
+    },
+    "hull_ufp_nera": {
+      "armorClass": "leopard_2a5_turret_nera",
+      "cumulativeArmorQuality": 1.25,
+      "genericArmorQuality": 0.6,
+      "createSecondaryShatters": false,
+      "armorThickness": 50.0,
+      "ex_armor_body_04_dm": {},
+      "turret_06_back_dm": {},
+      "turret_06_front_dm": {},
+      "turret_06_side_dm": {},
+      "turret_06_top_dm": {},
+      "ex_armor_body_06_dm": {},
+      "turret_14_bottom_dm": {},
+      "turret_14_front_dm": {},
+      "turret_14_side_dm": {},
+      "turret_14_top_dm": {},
+      "ex_armor_body_03_dm": {},
+      "ex_armor_body_05_dm": {},
+      "turret_07_back_dm": {},
+      "turret_07_bottom_dm": {},
+      "turret_07_front_dm": {},
+      "turret_07_side_dm": {},
+      "turret_07_top_dm": {},
+      "turret_08_back_dm": {},
+      "turret_08_front_dm": {},
+      "turret_08_top_dm": {},
+      "turret_15_back_dm": {},
+      "turret_15_bottom_dm": {},
+      "turret_15_front_dm": {},
+      "turret_15_side_dm": {}
+    },
     "turret_net": {
       "armorClass": "tank_structural_steel",
       "hp": 100.0,
@@ -260,7 +347,8 @@
       "ex_armor_r_08_dm": {},
       "ex_armor_r_09_dm": {},
       "ex_armor_r_10_dm": {},
-      "ex_armor_01_dm": {}
+      "ex_armor_01_dm": {},
+      "turret_16_bottom_dm": {}
     },
     "body_side_rubber_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
@@ -840,6 +928,22 @@
           "layer": {
             "dmPart": "composite_armor_hull_04_dm"
           }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_05_dm",
+        "armorArrayText": {
+          "layer": [
+            {
+              "dmPart": "ex_armor_body_01_dm"
+            },
+            {
+              "dmPart": "superstructure_side_dm"
+            },
+            {
+              "dmPart": "ex_armor_body_04_dm"
+            }
+          ]
         }
       }
     ]

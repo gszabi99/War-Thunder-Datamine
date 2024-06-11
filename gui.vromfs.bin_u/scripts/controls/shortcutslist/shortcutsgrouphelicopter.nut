@@ -262,6 +262,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_BOMBS_AUTO_RELEASE_HELICOPTER"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE_HELICOPTER"
     checkAssign = false
     showFunc = @() hasFeature("SeparateCountermeasures")

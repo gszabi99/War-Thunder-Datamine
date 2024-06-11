@@ -1143,6 +1143,7 @@ dmViewer = {
     let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
     let hasSARH = this.findBlockByName(sensorPropsBlk, "setIllumination")
     let hasMG = this.findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
+    let datalinkChannelsNum = sensorPropsBlk.getInt("weaponTargetsMax", 0)
 
     local radarType = ""
     if (isRadar)
@@ -1244,6 +1245,8 @@ dmViewer = {
         desc.append("".concat(indent, loc("radar_sarh")))
       if (hasMG)
         desc.append("".concat(indent, loc("radar_mg")))
+      if (datalinkChannelsNum > 0)
+        desc.append("".concat(indent, loc("radar_dl_channels"), loc("ui/colon"), format("%d", datalinkChannelsNum)))
     }
   }
 

@@ -79,7 +79,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { openRespawnSpareWnd } = require("%scripts/respawn/respawnSpareWnd.nut")
 let { markUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getSlotUnitNameText,
-  isUnitPriceTextLong, getUnitSlotPriceText
+  getUnitSlotPriceText
 } = require("%scripts/slotbar/slotbarView.nut")
 let { gui_start_flight_menu } = require("%scripts/flightMenu/flightMenu.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
@@ -1856,10 +1856,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       let priceText = getUnitSlotPriceText(unit, params)
       let hasPriceText = priceText != ""
       priceTextObj.show(hasPriceText)
-      if (hasPriceText) {
-        priceTextObj.tinyFont = isUnitPriceTextLong(priceText) ? "yes" : "no"
+      if (hasPriceText)
         priceTextObj.setValue(priceText)
-      }
       this.getSlotbar().updateTopExtraInfoBlock(slotObj)
     }
 

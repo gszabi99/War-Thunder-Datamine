@@ -61,9 +61,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2760,9 +2757,9 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 7711.0,
-    "maxloadMassLeftConsoles": 3855.0,
-    "maxloadMassRightConsoles": 3855.0,
+    "maxloadMass": 11793.0,
+    "maxloadMassLeftConsoles": 5896.0,
+    "maxloadMassRightConsoles": 5896.0,
     "maxDisbalance": 1900.0,
     "HideNodes": {
       "node": [
@@ -2880,19 +2877,21 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 120,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 30
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 120,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 30
             }
           ]
         }
@@ -4692,10 +4691,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,

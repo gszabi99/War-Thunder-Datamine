@@ -16,9 +16,16 @@
   "gearSinkRangeLR": 0.253,
   "gearSinkRangeC": 0.152,
   "tpsCameraTargetOffsetAtZoom": [
-    80.0,
-    60.0,
-    0.0
+    [
+      80.0,
+      60.0,
+      0.0
+    ],
+    [
+      80.0,
+      60.0,
+      0.0
+    ]
   ],
   "type": "typeFighter",
   "paratrooper": "usa_para",
@@ -1322,29 +1329,69 @@
       ]
     },
     "multifunctionDisplays": {
-      "display": {
-        "textureArea": [
-          0.0,
-          0.5,
-          0.5,
-          1.0
-        ],
-        "page": [
-          {
-            "type": "thermal",
-            "turretIdx": 0
-          },
-          {
-            "type": "target_tracking",
-            "turretIdx": 0
-          },
-          {
-            "type": "custom",
-            "pageName": "ah64Flt"
-          },
-          {
-            "type": "map"
+      "display": [
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "rwr"
+            },
+            {
+              "type": "map"
+            },
+            {
+              "type": "custom",
+              "pageName": "ah64Flt"
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": {
+            "type": "digital_devices"
           }
+        }
+      ]
+    },
+    "digitalDevices": {
+      "TOTAL_FUEL": {
+        "pos": [
+          0.0,
+          0.5
+        ],
+        "size": [
+          1.0,
+          0.25
+        ],
+        "color": [
+          255,
+          0,
+          0
+        ],
+        "fontSize": 120,
+        "value": "total_fuel",
+        "format": "%d",
+        "padding": [
+          12.0,
+          85.0
         ]
       }
     },

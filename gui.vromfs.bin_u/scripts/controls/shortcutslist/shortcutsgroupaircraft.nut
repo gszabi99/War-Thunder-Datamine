@@ -404,6 +404,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_TOGGLE_BOMBS_AUTO_RELEASE"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE"
     checkAssign = false
     needShowInHelp = true

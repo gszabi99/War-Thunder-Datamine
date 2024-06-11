@@ -19,7 +19,7 @@
       "gt_mp_tickets": true,
       "gt_mp_capture": true,
       "openDiffLevels": false,
-      "scoreLimit": 17500,
+      "scoreLimit": 11666,
       "timeLimit": 30,
       "deathPenaltyMul": 0.5,
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
@@ -42,11 +42,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -56,11 +58,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -1396,12 +1400,19 @@
               "var": "t2_mp_tickets"
             }
           ],
-          "triggerEnable": {
-            "target": [
-              "battle_start",
-              "check_mission_defeat",
-              "check_mission_victory"
-            ]
+          "triggerEnable": [
+            {
+              "target": "battle_start"
+            },
+            {
+              "target": [
+                "check_mission_defeat",
+                "check_mission_victory"
+              ]
+            }
+          ],
+          "wait": {
+            "time": 1.0
           }
         },
         "else_actions": {}
@@ -1423,7 +1434,7 @@
             {
               "army": 0,
               "name_for_respawn_base": "",
-              "timeMultiplier": 1.5,
+              "timeMultiplier": 0.75,
               "disableZone": false,
               "target": "@zone_01_name",
               "canCaptureOnGround": true,
@@ -1443,7 +1454,7 @@
             {
               "army": 0,
               "name_for_respawn_base": "",
-              "timeMultiplier": 1.5,
+              "timeMultiplier": 0.75,
               "disableZone": false,
               "target": "@zone_02_name",
               "canCaptureOnGround": true,
@@ -1463,7 +1474,7 @@
             {
               "army": 0,
               "name_for_respawn_base": "",
-              "timeMultiplier": 1.5,
+              "timeMultiplier": 0.75,
               "disableZone": false,
               "target": "@zone_03_name",
               "canCaptureOnGround": true,
@@ -1848,6 +1859,28 @@
             {
               "name": "shipBot",
               "objects": [
+                "t1_ship_17",
+                "t1_ship_18",
+                "t1_ship_19",
+                "t1_ship_20",
+                "t1_ship_21",
+                "t1_ship_22",
+                "t1_ship_23",
+                "t1_ship_24",
+                "t1_ship_25",
+                "t1_ship_26",
+                "t1_ship_27",
+                "t1_ship_28",
+                "t1_ship_29",
+                "t1_ship_30",
+                "t1_ship_31",
+                "t1_ship_32"
+              ],
+              "loadType": "tree"
+            },
+            {
+              "name": "shipBot",
+              "objects": [
                 "t2_ship_01",
                 "t2_ship_02",
                 "t2_ship_03",
@@ -1864,6 +1897,28 @@
                 "t2_ship_14",
                 "t2_ship_15",
                 "t2_ship_16"
+              ],
+              "loadType": "tree"
+            },
+            {
+              "name": "shipBot",
+              "objects": [
+                "t2_ship_17",
+                "t2_ship_18",
+                "t2_ship_19",
+                "t2_ship_20",
+                "t2_ship_21",
+                "t2_ship_22",
+                "t2_ship_23",
+                "t2_ship_24",
+                "t2_ship_25",
+                "t2_ship_26",
+                "t2_ship_27",
+                "t2_ship_28",
+                "t2_ship_29",
+                "t2_ship_30",
+                "t2_ship_31",
+                "t2_ship_32"
               ],
               "loadType": "tree"
             }
@@ -2320,8 +2375,8 @@
     "zone_03_name": "",
     "battle_area_name": "",
     "str_temp": "",
-    "team_size": 8,
-    "team_size_half": 4,
+    "team_size": 32,
+    "team_size_half": 16,
     "is_hint_active": false,
     "mission_time": 0,
     "t1_mp_tickets": 0,
@@ -2899,6 +2954,1304 @@
           ]
         ],
         "unit_class": "us_elco_80ft_pt_boat_mod02",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_11",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -6048.85
+          ]
+        ],
+        "unit_class": "us_elco_80ft_pt_boat_mod01",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_12",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5936.8
+          ]
+        ],
+        "unit_class": "us_pt3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_13",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5824.75
+          ]
+        ],
+        "unit_class": "us_pt6",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_14",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5712.7
+          ]
+        ],
+        "unit_class": "jp_type5_escortboat",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_15",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5600.65
+          ]
+        ],
+        "unit_class": "jp_type_t1_1941",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_16",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -5488.6
+          ]
+        ],
+        "unit_class": "jp_t14_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_17",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1501.1,
+            0.0,
+            -9343.75
+          ]
+        ],
+        "unit_class": "us_pt6",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_18",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1501.1,
+            0.0,
+            -9343.75
+          ]
+        ],
+        "unit_class": "us_pt6",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_19",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1500.05,
+            0.0,
+            -9212.25
+          ]
+        ],
+        "unit_class": "uk_mtb_1series",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_20",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1499.15,
+            0.0,
+            -9077.55
+          ]
+        ],
+        "unit_class": "germ_rboot_r41",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_21",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1491.45,
+            0.0,
+            -8958.05
+          ]
+        ],
+        "unit_class": "germ_s38",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_22",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1496.7,
+            0.0,
+            -8823.6
+          ]
+        ],
+        "unit_class": "germ_ls4_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_23",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1488.85,
+            0.0,
+            -8707.05
+          ]
+        ],
+        "unit_class": "ussr_d3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_24",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1487.2,
+            0.0,
+            -8590.85
+          ]
+        ],
+        "unit_class": "ussr_mo_4",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_25",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1483.45,
+            0.0,
+            -8449.35
+          ]
+        ],
+        "unit_class": "ussr_g5_mtb",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_26",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -8323.4
+          ]
+        ],
+        "unit_class": "us_elco_80ft_pt_boat_mod02",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_27",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -8211.35
+          ]
+        ],
+        "unit_class": "us_elco_80ft_pt_boat_mod01",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_28",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -8099.3
+          ]
+        ],
+        "unit_class": "us_pt3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_29",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -7987.25
+          ]
+        ],
+        "unit_class": "us_pt6",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_30",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -7875.2
+          ]
+        ],
+        "unit_class": "jp_type5_escortboat",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_31",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -7763.15
+          ]
+        ],
+        "unit_class": "jp_type_t1_1941",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_ship_32",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1479.05,
+            0.0,
+            -7651.1
+          ]
+        ],
+        "unit_class": "jp_t14_class",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3524,360 +4877,6 @@
         "way": {}
       },
       {
-        "name": "t1_ship_11",
-        "tm": [
-          [
-            0.793353,
-            0.0,
-            0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.608761,
-            0.0,
-            0.793353
-          ],
-          [
-            1479.05,
-            0.0,
-            -6048.85
-          ]
-        ],
-        "unit_class": "us_elco_80ft_pt_boat_mod01",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_ship_12",
-        "tm": [
-          [
-            0.793353,
-            0.0,
-            0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.608761,
-            0.0,
-            0.793353
-          ],
-          [
-            1479.05,
-            0.0,
-            -5936.8
-          ]
-        ],
-        "unit_class": "us_pt3",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_ship_13",
-        "tm": [
-          [
-            0.793353,
-            0.0,
-            0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.608761,
-            0.0,
-            0.793353
-          ],
-          [
-            1479.05,
-            0.0,
-            -5824.75
-          ]
-        ],
-        "unit_class": "us_pt6",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_ship_14",
-        "tm": [
-          [
-            0.793353,
-            0.0,
-            0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.608761,
-            0.0,
-            0.793353
-          ],
-          [
-            1479.05,
-            0.0,
-            -5712.7
-          ]
-        ],
-        "unit_class": "jp_type5_escortboat",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_ship_15",
-        "tm": [
-          [
-            0.793353,
-            0.0,
-            0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.608761,
-            0.0,
-            0.793353
-          ],
-          [
-            1479.05,
-            0.0,
-            -5600.65
-          ]
-        ],
-        "unit_class": "jp_type_t1_1941",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {}
-      },
-      {
-        "name": "t1_ship_16",
-        "tm": [
-          [
-            0.793353,
-            0.0,
-            0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            -0.608761,
-            0.0,
-            0.793353
-          ],
-          [
-            1479.05,
-            0.0,
-            -5488.6
-          ]
-        ],
-        "unit_class": "jp_t14_class",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {}
-      },
-      {
         "name": "t2_ship_11",
         "tm": [
           [
@@ -4230,6 +5229,950 @@
           "isDelayed": true
         },
         "way": {}
+      },
+      {
+        "name": "t2_ship_17",
+        "tm": [
+          [
+            0.819152,
+            0.0,
+            -0.573576
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.573576,
+            0.0,
+            0.819152
+          ],
+          [
+            1527.15,
+            -0.000244141,
+            -9551.65
+          ]
+        ],
+        "unit_class": "germ_ls4_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": false
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_18",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1642.85,
+            0.0,
+            -9334.5
+          ]
+        ],
+        "unit_class": "us_pt6",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_19",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1647.8,
+            0.0,
+            -9207.05
+          ]
+        ],
+        "unit_class": "uk_mtb_1series",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_20",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1644.0,
+            0.0,
+            -9069.85
+          ]
+        ],
+        "unit_class": "germ_rboot_r41",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_21",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1636.4,
+            0.0,
+            -8951.0
+          ]
+        ],
+        "unit_class": "germ_s38",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_22",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1635.15,
+            0.0,
+            -8826.2
+          ]
+        ],
+        "unit_class": "germ_ls4_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_23",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1633.85,
+            0.0,
+            -8701.35
+          ]
+        ],
+        "unit_class": "ussr_d3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_24",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1623.8,
+            0.0,
+            -8566.4
+          ]
+        ],
+        "unit_class": "ussr_mo_4",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_25",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1619.4,
+            0.0,
+            -8444.3
+          ]
+        ],
+        "unit_class": "ussr_g5_mtb",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_26",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -8318.95
+          ]
+        ],
+        "unit_class": "us_elco_80ft_pt_boat_mod02",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_27",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -8210.15
+          ]
+        ],
+        "unit_class": "us_elco_80ft_pt_boat_mod01",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_28",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -8101.35
+          ]
+        ],
+        "unit_class": "us_pt3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_29",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -7992.55
+          ]
+        ],
+        "unit_class": "us_pt6",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_30",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -7883.75
+          ]
+        ],
+        "unit_class": "jp_type5_escortboat",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_31",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -7774.95
+          ]
+        ],
+        "unit_class": "jp_type_t1_1941",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_ship_32",
+        "tm": [
+          [
+            0.793353,
+            0.0,
+            0.608761
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.608761,
+            0.0,
+            0.793353
+          ],
+          [
+            1615.05,
+            0.0,
+            -7666.15
+          ]
+        ],
+        "unit_class": "jp_t14_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {}
       }
     ],
     "squad": [
@@ -4269,6 +6212,28 @@
             "t1_ship_08",
             "t1_ship_09",
             "t1_ship_10",
+            "t1_ship_11",
+            "t1_ship_12",
+            "t1_ship_13",
+            "t1_ship_14",
+            "t1_ship_15",
+            "t1_ship_16",
+            "t1_ship_17",
+            "t1_ship_18",
+            "t1_ship_19",
+            "t1_ship_20",
+            "t1_ship_21",
+            "t1_ship_22",
+            "t1_ship_23",
+            "t1_ship_24",
+            "t1_ship_25",
+            "t1_ship_26",
+            "t1_ship_27",
+            "t1_ship_28",
+            "t1_ship_29",
+            "t1_ship_30",
+            "t1_ship_31",
+            "t1_ship_32",
             "t2_ship_01",
             "t2_ship_02",
             "t2_ship_03",
@@ -4279,18 +6244,28 @@
             "t2_ship_08",
             "t2_ship_09",
             "t2_ship_10",
-            "t1_ship_11",
-            "t1_ship_12",
-            "t1_ship_13",
-            "t1_ship_14",
-            "t1_ship_15",
-            "t1_ship_16",
             "t2_ship_11",
             "t2_ship_12",
             "t2_ship_13",
             "t2_ship_14",
             "t2_ship_15",
-            "t2_ship_16"
+            "t2_ship_16",
+            "t2_ship_17",
+            "t2_ship_18",
+            "t2_ship_19",
+            "t2_ship_20",
+            "t2_ship_21",
+            "t2_ship_22",
+            "t2_ship_23",
+            "t2_ship_24",
+            "t2_ship_25",
+            "t2_ship_26",
+            "t2_ship_27",
+            "t2_ship_28",
+            "t2_ship_29",
+            "t2_ship_30",
+            "t2_ship_31",
+            "t2_ship_32"
           ],
           "object_marking": 0
         }
@@ -4336,7 +6311,23 @@
             "t1_ship_13",
             "t1_ship_14",
             "t1_ship_15",
-            "t1_ship_16"
+            "t1_ship_16",
+            "t1_ship_17",
+            "t1_ship_18",
+            "t1_ship_19",
+            "t1_ship_20",
+            "t1_ship_21",
+            "t1_ship_22",
+            "t1_ship_23",
+            "t1_ship_24",
+            "t1_ship_25",
+            "t1_ship_26",
+            "t1_ship_27",
+            "t1_ship_28",
+            "t1_ship_29",
+            "t1_ship_30",
+            "t1_ship_31",
+            "t1_ship_32"
           ],
           "object_marking": 0
         }
@@ -4382,7 +6373,23 @@
             "t2_ship_13",
             "t2_ship_14",
             "t2_ship_15",
-            "t2_ship_16"
+            "t2_ship_16",
+            "t2_ship_17",
+            "t2_ship_18",
+            "t2_ship_19",
+            "t2_ship_20",
+            "t2_ship_21",
+            "t2_ship_22",
+            "t2_ship_23",
+            "t2_ship_24",
+            "t2_ship_25",
+            "t2_ship_26",
+            "t2_ship_27",
+            "t2_ship_28",
+            "t2_ship_29",
+            "t2_ship_30",
+            "t2_ship_31",
+            "t2_ship_32"
           ],
           "object_marking": 0
         }
@@ -4420,7 +6427,15 @@
             "t1_ship_05",
             "t1_ship_06",
             "t1_ship_07",
-            "t1_ship_08"
+            "t1_ship_08",
+            "t1_ship_17",
+            "t1_ship_18",
+            "t1_ship_19",
+            "t1_ship_20",
+            "t1_ship_21",
+            "t1_ship_22",
+            "t1_ship_23",
+            "t1_ship_24"
           ]
         }
       },
@@ -4457,7 +6472,15 @@
             "t1_ship_13",
             "t1_ship_14",
             "t1_ship_15",
-            "t1_ship_16"
+            "t1_ship_16",
+            "t1_ship_25",
+            "t1_ship_26",
+            "t1_ship_27",
+            "t1_ship_28",
+            "t1_ship_29",
+            "t1_ship_30",
+            "t1_ship_31",
+            "t1_ship_32"
           ]
         }
       },
@@ -4494,7 +6517,15 @@
             "t2_ship_05",
             "t2_ship_06",
             "t2_ship_07",
-            "t2_ship_08"
+            "t2_ship_08",
+            "t2_ship_17",
+            "t2_ship_18",
+            "t2_ship_19",
+            "t2_ship_20",
+            "t2_ship_21",
+            "t2_ship_22",
+            "t2_ship_23",
+            "t2_ship_24"
           ]
         }
       },
@@ -4531,7 +6562,15 @@
             "t2_ship_13",
             "t2_ship_14",
             "t2_ship_15",
-            "t2_ship_16"
+            "t2_ship_16",
+            "t2_ship_25",
+            "t2_ship_26",
+            "t2_ship_27",
+            "t2_ship_28",
+            "t2_ship_29",
+            "t2_ship_30",
+            "t2_ship_31",
+            "t2_ship_32"
           ]
         }
       }
@@ -4577,7 +6616,23 @@
           "t2_shipspawn_bot_13",
           "t2_shipspawn_bot_14",
           "t2_shipspawn_bot_15",
-          "t2_shipspawn_bot_16"
+          "t2_shipspawn_bot_16",
+          "t2_shipspawn_bot_17",
+          "t2_shipspawn_bot_18",
+          "t2_shipspawn_bot_19",
+          "t2_shipspawn_bot_20",
+          "t2_shipspawn_bot_21",
+          "t2_shipspawn_bot_22",
+          "t2_shipspawn_bot_23",
+          "t2_shipspawn_bot_24",
+          "t2_shipspawn_bot_25",
+          "t2_shipspawn_bot_26",
+          "t2_shipspawn_bot_27",
+          "t2_shipspawn_bot_28",
+          "t2_shipspawn_bot_29",
+          "t2_shipspawn_bot_30",
+          "t2_shipspawn_bot_31",
+          "t2_shipspawn_bot_32"
         ]
       }
     }
@@ -5010,6 +7065,438 @@
           1468.35,
           0.0,
           -45.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_17": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1300.55,
+          0.00152588,
+          -631.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          2272.0,
+          0.0,
+          1258.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          527.35,
+          0.0,
+          -1945.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1268.2,
+          0.0000610352,
+          -469.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_21": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          -15.7,
+          0.000976562,
+          -1276.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_22": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1655.65,
+          0.000976562,
+          -1107.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_23": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1835.25,
+          -0.0000610352,
+          -1063.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_24": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1019.75,
+          0.000854492,
+          1972.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_25": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1105.6,
+          0.0,
+          -2000.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_26": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          772.7,
+          0.0,
+          -1518.35
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_27": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1265.1,
+          -0.00256348,
+          1959.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_28": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          2069.95,
+          0.00256348,
+          1566.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_29": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          46.9,
+          0.0,
+          -1740.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_30": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          353.25,
+          0.0,
+          -1678.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_31": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1363.45,
+          0.0,
+          -1041.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_shipspawn_bot_32": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          1468.35,
+          0.0,
+          -392.35
         ]
       ],
       "objLayer": 0,

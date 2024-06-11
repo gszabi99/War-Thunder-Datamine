@@ -54,6 +54,8 @@ let radarSettings = Computed(function() {
     netRowCnt = 0
     netColor = IPoint3(0, 255, 0)
     hideWeaponIndication = false
+    showScanAzimuth = false
+    cueHeights = false
   }
 
   if (BlkFileName.value == "")
@@ -98,6 +100,8 @@ let radarSettings = Computed(function() {
         netRowCnt = pageBlk.getInt("netRowCnt", 0)
         netColor = pageBlk.getIPoint3("netColor", IPoint3(-1, -1, -1))
         hideWeaponIndication = pageBlk.getBool("hideWeaponIndication", false)
+        showScanAzimuth = pageBlk.getBool("showScanAzimuth", false)
+        cueHeights = pageBlk.getBool("showCueHeights", false)
       }
     }
   }
@@ -107,7 +111,8 @@ let radarSettings = Computed(function() {
 let radarMfd = @(pos_and_size, color_watched) function() {
   let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
    hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
-   backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication } = radarSettings.get()
+   backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication, cueHeights,
+   showScanAzimuth } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.value.w, pos_and_size.value.h]
@@ -141,6 +146,8 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     netRowCnt
     netColor = netColor.x < 0 ? color_watched.value : Color(netColor.x, netColor.y, netColor.z, 255)
     hideWeaponIndication
+    showScanAzimuth
+    cueHeights
   }
 }
 

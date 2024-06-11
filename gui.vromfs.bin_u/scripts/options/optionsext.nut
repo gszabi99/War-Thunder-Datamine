@@ -2414,6 +2414,12 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.value = get_gui_option(optionId)
   },
+  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = function(optionId, descr, _context) {
+    descr.id = "activate_bombs_auto_release_on_spawn"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = get_gui_option(optionId)
+  },
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = function(optionId, descr, _context) {
     descr.id = "automatic_empty_containers_jettison"
     descr.controlType = optionControlType.CHECKBOX
@@ -4605,6 +4611,7 @@ let optionsSetMap = {
   [USEROPT_SAVE_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_ai_target_type(value ? 1 : 0),
   [USEROPT_DEFAULT_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_default_ai_target_type(value),
   [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN] = def_set_gui_option,
+  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = def_set_gui_option,
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = def_set_gui_option,
   [USEROPT_SHOW_INDICATORS_TYPE] = function(value, descr, _optionId) {
     local val = get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT | HUD_INDICATORS_CENTER | HUD_INDICATORS_ALL)

@@ -38,6 +38,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { getCrewLevel, getCrewStatus, isCrewMaxLevel } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -102,9 +103,9 @@ function getSlotUnitNameText(unit, params) {
 
 function getUnitSlotPriceText(unit, params) {
   let { isLocalState = true, haveRespawnCost = false, haveSpawnDelay = false,
-    curSlotIdInCountry = -1, slotDelayData = null, unlocked = true,
-    sessionWpBalance = 0, weaponPrice = 0, totalSpawnScore = -1, overlayPrice = -1,
-    showAsTrophyContent = false, isReceivedPrizes = false, crew = null, missionRules = null
+    slotDelayData = null, unlocked = true, sessionWpBalance = 0, weaponPrice = 0,
+    totalSpawnScore = -1, overlayPrice = -1, showAsTrophyContent = false,
+    isReceivedPrizes = false, crew = null, missionRules = null
   } = params
 
   local priceText = ""
@@ -149,14 +150,7 @@ function getUnitSlotPriceText(unit, params) {
     }
   }
 
-  if (isInFlight()) {
-    let maxSpawns = get_max_spawns_unit_count(unit.name)
-    if (curSlotIdInCountry >= 0 && maxSpawns > 1) {
-      let leftSpawns = maxSpawns - get_num_used_unit_spawns(curSlotIdInCountry)
-      priceText = $"{priceText}({leftSpawns}/{maxSpawns})"
-    }
-  }
-  else if (isLocalState && priceText == "") {
+  if (!isInFlight() && isLocalState && priceText == "") {
     priceText = overlayPrice >= 0 ? Cost(overlayPrice).getTextAccordingToBalance()
       : getUnitShopPriceText(unit)
 
@@ -164,7 +158,7 @@ function getUnitSlotPriceText(unit, params) {
       priceText = colorize("goodTextColor", loc("mainmenu/itemReceived"))
   }
 
-  return priceText
+  return priceText.replace(" ", nbsp)
 }
 
 function getUnitSlotResearchProgressText(unit, priceText = "") {
@@ -261,6 +255,44 @@ function getSpareCountText(spareCount, crew, unit, missionRules) {
   if (hasSpare)
     return $"{spareCount}{loc("icon/spare")}"
   return ""
+}
+
+function calcUnitSlotMissionInfoTextsWidth(priceText, addHistoricalRespawnsText,
+    addRespawnsText, spareText) {
+  let res = {
+    priceWidth = "fw"
+    addHistoricalRespawnsWidth = "fw"
+    addRespawnsWidth = "fw"
+  }
+  local countVisibleBlocks = 1
+    + (addHistoricalRespawnsText != "" ? 1 : 0)
+    + (addRespawnsText != "" ? 1 : 0)
+    + (spareText != "" ? 1 : 0)
+
+  if (countVisibleBlocks <= 2)
+    return res
+
+  let guiScene = get_cur_gui_scene()
+  let gapWidth = toPixels(guiScene, "1@sf/@pf")
+  local fullInfoWidth = toPixels(guiScene, "@slot_width") + gapWidth * countVisibleBlocks
+  let texts = [{ text = priceText, widthId = "priceWidth" },
+    { text = addHistoricalRespawnsText, widthId = "addHistoricalRespawnsWidth" },
+    { text = addRespawnsText, widthId = "addRespawnsWidth" }]
+  foreach (value in texts) {
+    let { text, widthId } = value
+    if (text == "")
+      continue
+    if (countVisibleBlocks == 1)
+      continue
+    let partWidth = (fullInfoWidth / countVisibleBlocks - 0.5).tointeger()
+    let textWidth = max(
+      getStringWidthPx(removeTextareaTags(text), "fontSmall", guiScene) + 2*gapWidth,
+      partWidth)
+    fullInfoWidth = fullInfoWidth - textWidth
+    countVisibleBlocks = countVisibleBlocks - 1
+    res[widthId] <- textWidth
+  }
+  return res
 }
 
 function buildFakeSlot(id, unit, params) {
@@ -667,7 +699,12 @@ function buildCommonUnitSlot(id, unit, params) {
 
   local additionalRespawns = ""
   if (showAdditionExtraInfo && missionRules?.needLeftRespawnOnSlots == true) {
-    let unitTypeIcon = unit.unitType.fontIcon
+    let unitTypeName = unit.unitType.typeName
+    local unitTypeIcon = unit.unitType.fontIcon
+    if (unitTypeName == "BOAT")
+      unitTypeIcon = unitTypes.SHIP.fontIcon
+    else if (unitTypeName == "HELICOPTER")
+      unitTypeIcon = unitTypes.AIRCRAFT.fontIcon
     let respawnsLeft = missionRules.getUnitLeftRespawns(unit)
     let respawnsInitial = missionRules.getUnitInitialRespawns(unit)
     if (respawnsInitial > 0)
@@ -676,6 +713,19 @@ function buildCommonUnitSlot(id, unit, params) {
       additionalRespawns = colorize("badTextColor", additionalRespawns)
   }
 
+  local additionalHistoricalRespawns = ""
+  if (crew && isInFlight()) {
+    let maxSpawns = get_max_spawns_unit_count(unit.name)
+    if (crew.idInCountry >= 0 && maxSpawns > 1) {
+      let numSpawns = get_num_used_unit_spawns(crew.idInCountry)
+      let leftSpawns = maxSpawns - numSpawns
+      additionalHistoricalRespawns = $"{leftSpawns}/{maxSpawns}"
+      if (leftSpawns == 0)
+        additionalHistoricalRespawns = colorize("badTextColor", additionalHistoricalRespawns)
+    }
+  }
+
+  let hasAdditionalHistoricalRespawns = additionalHistoricalRespawns != ""
   let hasAdditionalRespawns = additionalRespawns != ""
   let hasPriceText = showAdditionExtraInfo && priceText != ""
   let spareCount = isLocalState ? get_spare_aircrafts_count(unit.name) : 0
@@ -685,15 +735,28 @@ function buildCommonUnitSlot(id, unit, params) {
   let extraInfoTopView = {
     hasExtraInfoBlockTop
     hasPriceText
+    hasAdditionalHistoricalRespawns
+    additionalHistoricalRespawns
+    addHistoricalRespawnsWidth = "fw"
     hasAdditionalRespawns
     additionalRespawns
+    addRespawnsWidth = "fw"
+    unitClassIco = ::getUnitClassIco(unit.name)
     priceText
+    priceWidth = "fw"
     hasSpareInfo
     spareCount = spareText
-    hasPriceSeparator = hasPriceText && hasAdditionalRespawns
-    hasSpareSeparator = hasSpareInfo && (hasPriceText || hasAdditionalRespawns)
-    isMissingExtraInfo = !hasPriceText && !hasAdditionalRespawns && !hasSpareInfo
+    hasPriceSeparator = hasPriceText && hasAdditionalHistoricalRespawns
+    hasAdditionalRespawnsSeparator = hasAdditionalRespawns
+      && (hasPriceText || hasAdditionalHistoricalRespawns)
+    hasSpareSeparator = hasSpareInfo
+      && (hasPriceText || hasAdditionalRespawns || hasAdditionalHistoricalRespawns)
+    isMissingExtraInfo = !hasPriceText && !hasAdditionalRespawns && !hasSpareInfo && !hasAdditionalHistoricalRespawns
   }
+
+  if (hasPriceText)
+    extraInfoTopView.__update(
+      calcUnitSlotMissionInfoTextsWidth(priceText, additionalHistoricalRespawns, additionalRespawns, spareText))
 
   if (specType) {
     itemButtonsView.itemButtons.specTypeIcon <- specType.trainedIcon
@@ -1056,4 +1119,5 @@ return {
   getUnitSlotRankText
   isUnitEnabledForSlotbar
   getSpareCountText
+  calcUnitSlotMissionInfoTextsWidth
 }

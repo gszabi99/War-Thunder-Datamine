@@ -151,11 +151,11 @@
       ],
       "rollStabLimit": 70.0,
       "pitchStabLimit": 60.0,
-      "period": 0.43,
-      "width": 5.0,
+      "period": 0.34,
+      "width": 3.0,
       "barHeight": 2.0,
-      "barsCount": 3,
-      "rowMajor": false,
+      "barsCount": 4,
+      "rowMajor": true,
       "indicate": true
     },
     "boresightLock": {
@@ -189,6 +189,23 @@
       "barsCount": 4,
       "centerElevation": 25.0,
       "rowMajor": false,
+      "indicate": true
+    },
+    "ssLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "period": 1.3,
+      "width": 10.0,
+      "barHeight": 3.33,
+      "barsCount": 6,
+      "rowMajor": true,
       "indicate": true
     },
     "track": {
@@ -392,7 +409,8 @@
     },
     "acmLock": {
       "scanPattern1": "boresightLock",
-      "scanPattern2": "verticalLock"
+      "scanPattern2": "verticalLock",
+      "scanPattern3": "ssLock"
     }
   },
   "scopeRangeSets": {

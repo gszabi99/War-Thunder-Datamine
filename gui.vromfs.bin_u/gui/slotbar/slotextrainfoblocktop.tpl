@@ -3,12 +3,9 @@
 extraInfoBlockTop {
   tdiv {
     size:t='pw, ph'
-    smallFont:t='yes'
-    text-halign='center'
-    text-valign='center'
     textareaNoTab {
       id:t='extraInfoPriceText'
-      width:t='fw'
+      width:t='<<priceWidth>>'
       smallFont:t='yes'
       text:t='<<priceText>>'
       text-align:t='center'
@@ -32,9 +29,56 @@ extraInfoBlockTop {
       <</hasPriceSeparator>>
     }
 
+    tdiv {
+      id:t='additionalHistoricalRespawnsNest'
+      width:t='<<addHistoricalRespawnsWidth>>'
+      position:t='relative'
+      pos:t='0, ph/2-(h-@sf/@pf)/2'
+      css-hier-invalidate:t='yes'
+      <<#hasAdditionalHistoricalRespawns>>
+      display:t='show'
+      <</hasAdditionalHistoricalRespawns>>
+      <<^hasAdditionalHistoricalRespawns>>
+      display:t='hide'
+      <</hasAdditionalHistoricalRespawns>>
+      tdiv {
+        position:t='relative'
+        pos:t='pw/2-w/2, ph/2-h/2'
+        css-hier-invalidate:t='yes'
+        tdiv {
+          size:t="@cIco, @sIco"
+          pos:t='0, ph/2-h/2'
+          position:t='relative'
+          background-svg-size:t="@cIco, @sIco"
+          background-repeat:t="aspect-ratio"
+          background-image:t="<<unitClassIco>>"
+          background-color:t='@commonTextColor'
+          margin-right:t="2@sf/@pf"
+        }
+        textareaNoTab {
+          id:t='additionalHistoricalRespawns'
+          smallFont:t='yes'
+          text:t='<<additionalHistoricalRespawns>>'
+          text-align:t='center'
+          position:t='relative'
+          pos:t='0, ph/2-h/2'
+        }
+      }
+    }
+
+    extraInfoVertSeparator {
+      id:t='additionalRespawnsSeparator'
+      <<#hasAdditionalRespawnsSeparator>>
+      display:t='show'
+      <</hasAdditionalRespawnsSeparator>>
+      <<^hasAdditionalRespawnsSeparator>>
+      display:t='hide'
+      <</hasAdditionalRespawnsSeparator>>
+    }
+
     textareaNoTab {
       id:t='additionalRespawns'
-      width:t='fw'
+      width:t='<<addRespawnsWidth>>'
       smallFont:t='yes'
       text:t='<<additionalRespawns>>'
       text-align:t='center'

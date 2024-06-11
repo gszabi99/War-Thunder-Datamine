@@ -519,7 +519,7 @@ function getBulletsInfoForPrimaryGuns(air) {
           continue
 
         wpList[weapon.blk].isBulletBelt = wBlk?.isBulletBelt ?? true
-        wpList[weapon.blk].cartridge = wBlk?.bulletsCartridge || 1
+        wpList[weapon.blk].cartridge = (weapon?.bulletsCartridge ?? wBlk?.bulletsCartridge ?? 1) || 1
         wpList[weapon.blk].total = ceil(wpList[weapon.blk].total * 1.0 /
           wpList[weapon.blk].cartridge).tointeger()
 

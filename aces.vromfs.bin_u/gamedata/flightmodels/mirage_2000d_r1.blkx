@@ -2518,19 +2518,21 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 8,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 8
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 8,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 8
               }
             ]
           },
@@ -2570,7 +2572,7 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 24,
                 "external": true,
@@ -2579,11 +2581,12 @@
                   0.0,
                   0.0
                 ],
-                "ammoMechRange": false
+                "ammoMechRange": false,
+                "bulletsCartridge": 8
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 24,
                 "external": true,
@@ -2592,11 +2595,12 @@
                   0.0,
                   0.0
                 ],
-                "ammoMechRange": false
+                "ammoMechRange": false,
+                "bulletsCartridge": 8
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 8,
                 "external": true,
@@ -2605,27 +2609,56 @@
                   0.0,
                   0.0
                 ],
-                "ammoMechRange": false
+                "ammoMechRange": false,
+                "bulletsCartridge": 8
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 8,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 8
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare3",
-                "bullets": 132,
+                "bullets": 24,
                 "external": true,
                 "separate": false,
                 "brakeChuteRange": [
                   0.0,
                   0.0
-                ]
+                ],
+                "bulletsCartridge": 8
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 54,
+                "external": true,
+                "separate": false,
+                "brakeChuteRange": [
+                  0.0,
+                  0.0
+                ],
+                "bulletsCartridge": 18
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_chaff_large.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 54,
+                "external": true,
+                "separate": false,
+                "brakeChuteRange": [
+                  0.0,
+                  0.0
+                ],
+                "bulletsCartridge": 54
               }
             ]
           }
@@ -3744,11 +3777,8 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
-    "countermeasures_belt_pack": {
+    "maw_countermeasures_launcher_chaff": {},
+    "MAW_system_heli_false_thermal_targets_large": {
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
@@ -3760,11 +3790,32 @@
             "slot": 0,
             "preset": "ltc_common"
           }
+        },
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/fr_thomson-csf_rdi.blk",
+              "dmPart": "radar_dm"
+            },
+            {
+              "blk": "gameData/sensors/fr_serval_rwr.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/ir_tracker_tgp.blk",
+              "node": "optic1_gun"
+            },
+            {
+              "blk": "gameData/sensors/us_an_aar_47.blk"
+            }
+          ]
         }
       }
     },
     "f_4c_g_suit": {
-      "prevModification": "countermeasures_belt_pack",
+      "prevModification": "MAW_system_heli_false_thermal_targets_large",
       "tier": 2,
       "modClass": "armor"
     },

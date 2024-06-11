@@ -133,6 +133,7 @@ let getMainOptions = function() {
       [USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! isInFlight()],
       [USEROPT_GUNNER_FPS_CAMERA, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
+      [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN, "spinner"],
       [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON, "spinner"],
 
       ["options/header/helicopter"],
