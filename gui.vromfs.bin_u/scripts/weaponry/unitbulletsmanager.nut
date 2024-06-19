@@ -17,7 +17,7 @@ let { getBulletsSetData,
         getBulletsInfoForPrimaryGuns,
         getAmmoStowageConstraintsByTrigger,
         getBulletsSetMaxAmmoWithConstraints } = require("%scripts/weaponry/bulletsInfo.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_SKIP_LEFT_BULLETS_WARNING
+let { OPTIONS_MODE_TRAINING, USEROPT_SKIP_LEFT_BULLETS_WARNING, USEROPT_MODIFICATIONS
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -41,7 +41,6 @@ enum bulletsAmountState {
 
   constructor(v_unit, params = {}) {
     this.gunsInfo = []
-    this.checkPurchased = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
     this.isForcedAvailable = params?.isForcedAvailable ?? false
 
     this.setUnit(v_unit)
@@ -60,6 +59,8 @@ enum bulletsAmountState {
 
     this.unit = v_unit
     this.bulGroups = null
+    this.checkPurchased = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
+      || get_gui_option(USEROPT_MODIFICATIONS)
   }
 
   function getBulletsGroups() {

@@ -16,7 +16,7 @@ let { isModResearched, isModAvailableOrFree, getModificationByName,
   updateRelationModificationList, getModificationBulletsGroup
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
-let { getGuiOptionsMode, set_unit_option } = require("guiOptions")
+let { getGuiOptionsMode, set_unit_option, get_gui_option } = require("guiOptions")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -24,7 +24,7 @@ let { appendOnce } = u
 let DataBlock = require("DataBlock")
 let { set_last_bullets } = require("unitCustomization")
 let { startsWith, slice } = require("%sqstd/string.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0
+let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_MODIFICATIONS
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { get_ranks_blk, get_modifications_blk } = require("blkGetters")
@@ -1024,6 +1024,7 @@ function isBulletsWithoutTracer(unit, item) {
 //to get exact same bullets list as in standart options
 function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvailable = false) {
   let checkPurchased = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
+    || get_gui_option(USEROPT_MODIFICATIONS)
   let res = getBulletsList(air.name, groupIndex, {
     isOnlyBought = checkPurchased
     needCheckUnitPurchase = checkPurchased

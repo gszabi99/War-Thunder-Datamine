@@ -217,7 +217,10 @@ weaponry_item {
 
             sliderButton {
               type:t='various'
-              img{}
+              id:t='slider_button'
+              <<^needSliderButtons>>
+              display:t='hide'
+              <</needSliderButtons>>
             }
           }
 

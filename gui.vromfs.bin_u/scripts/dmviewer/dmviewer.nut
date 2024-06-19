@@ -1139,7 +1139,8 @@ dmViewer = {
         lookUp = true
     }
 
-    let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
+    let hasTws = this.findBlockByName(sensorPropsBlk, "tws")
+    let hasRam = this.findBlockByName(sensorPropsBlk, "ram")
     let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
     let hasSARH = this.findBlockByName(sensorPropsBlk, "setIllumination")
     let hasMG = this.findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
@@ -1231,6 +1232,8 @@ dmViewer = {
       desc.append("".concat(indent, loc("radar_iff")))
     if (isSearchRadar && hasTws)
       desc.append("".concat(indent, loc("radar_tws")))
+    if (isSearchRadar && hasRam)
+      desc.append("".concat(indent, loc("radar_ram")))
     if (isTrackRadar) {
       let hasBVR = this.findBlockByNameWithParamValue(sensorPropsBlk, "setDistGatePos", "source", "targetDesignation")
       if (hasBVR)

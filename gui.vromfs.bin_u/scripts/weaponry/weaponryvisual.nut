@@ -506,7 +506,8 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
     let textObj = holderObj.findObject("bulletsCountText")
     if (checkObj(textObj))
       textObj.setValue(viewParams.bulletsCountText)
-    if (viewParams.needSliderButtons) {
+    let { needSliderButtons } = viewParams
+    if (needSliderButtons) {
       let btnDec = holderObj.findObject("buttonDec")
       if (checkObj(btnDec))
         btnDec.bulletsLimit = viewParams.decBulletsLimit
@@ -516,6 +517,7 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
         btnIncr.bulletsLimit = viewParams.incBulletsLimit
     }
 
+    showObjById("slider_button", needSliderButtons, holderObj)
     let slidObj = holderObj.findObject("bulletsSlider")
     if (checkObj(slidObj)) {
       slidObj.max = viewParams.sliderMax
