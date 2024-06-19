@@ -53,6 +53,7 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
 
     for (local i = 0; i < itemsCount; i++) {
       let item = this.airsTableSource.getChild(i)
+      gui_handlers.ActionsList.removeActionsListFromObject(item)
 
       let idParts = item.id.split("td_slot_")[1].split("_").map(@(part) part.tointeger())
       let slotCountryId = idParts[0]

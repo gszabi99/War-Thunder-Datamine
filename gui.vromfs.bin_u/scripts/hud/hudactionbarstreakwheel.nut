@@ -94,7 +94,7 @@ let cfgMenuShip = [
     EII_SUPPORT_PLANE_3,
     EII_SUPPORT_PLANE_4,
     EII_GUIDANCE_MODE,
-    null,
+    EII_LOCK,
     null,
     null,
     null,
