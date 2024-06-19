@@ -47,6 +47,7 @@
   "radarCanLockTargetFromTPV": false,
   "type": "typeMediumTank",
   "rearmSmokeTimeOnField": 60.0,
+  "rearmTimeOnField": 120.0,
   "canReloadNonGuns": true,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
@@ -2009,7 +2010,7 @@
         "speedYaw": 25.0,
         "speedPitch": 25.0,
         "fireConeAngle": 1.0,
-        "bullets": 2,
+        "bullets": 4,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -3354,17 +3355,27 @@
       "weaponTrigger": "gunner1",
       "fatalFire": true,
       "fatalExplosion": true,
-      "shells": {
-        "ammoLoadedInGun": true,
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "ammo_turret_01_dm": {
-          "count": 1
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          }
         },
-        "ammo_turret_02_dm": {
-          "count": 1
+        {
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "modifications": {
@@ -3611,7 +3622,7 @@
               "speedYaw": 25.0,
               "speedPitch": 25.0,
               "fireConeAngle": 1.0,
-              "bullets": 2,
+              "bullets": 4,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
