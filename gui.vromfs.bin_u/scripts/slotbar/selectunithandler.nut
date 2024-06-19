@@ -164,10 +164,6 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     tdClone["class"] = "slotbarClone"
     this.curClonObj = tdClone
 
-    let hintObj = tdClone.findObject("extra_info_block_crew_hint")
-    if (hintObj?.isValid())
-      tdClone.getScene().destroyElement(hintObj)
-
     // When menu opens on switching to country, slots are invisible due to animation
     if ((tdClone?["color-factor"] ?? "255") != "255")
       setTranspRecursive(tdClone, 255)

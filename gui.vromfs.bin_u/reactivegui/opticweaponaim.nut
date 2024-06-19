@@ -66,7 +66,8 @@ function() {
     let gsb = GuidanceLockStateBlinked.get()
 
     let isTrack = (gs == GuidanceLockResult.RESULT_TRACKING)
-    let hasSquare = show_tps_sight && (gs == GuidanceLockResult.RESULT_WARMING_UP || gs == GuidanceLockResult.RESULT_LOCKING)
+    let hasSquare = show_tps_sight && (gs == GuidanceLockResult.RESULT_WARMING_UP || gs == GuidanceLockResult.RESULT_LOCKING
+      || gs == GuidanceLockResult.RESULT_LOCK_AFTER_LAUNCH)
     let isSquareBlink = (gsb != gs && gsb == GuidanceLockResult.RESULT_INVALID)
 
     return {

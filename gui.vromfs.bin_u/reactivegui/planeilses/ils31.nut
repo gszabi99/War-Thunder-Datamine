@@ -8,7 +8,8 @@ let { compassWrap, generateCompassMarkASP } = require("ilsCompasses.nut")
 let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine } = require("commonElements.nut")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, AamLaunchZoneDistDgftMax,
   IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
-  HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax } = require("%rGui/radarState.nut")
+  HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax, CueVisible,
+  CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel } = require("%rGui/radarState.nut")
 let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
 let { floor, ceil, round } = require("%sqstd/math.nut")
@@ -551,6 +552,35 @@ let radarReticle = @() {
   ] : null
 }
 
+let cue = @() {
+  watch = [CueAzimuthHalfWidthRel, CueDistWidthRel]
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = 2
+  color = IlsColor.get()
+  size = flex()
+  commands = [
+    [VECTOR_LINE, -100.0 * CueAzimuthHalfWidthRel.get(), -50.0 * CueDistWidthRel.get(), -100.0 * CueAzimuthHalfWidthRel.get(), 50.0 * CueDistWidthRel.get()],
+    [VECTOR_LINE,  100.0 * CueAzimuthHalfWidthRel.get(), -50.0 * CueDistWidthRel.get(),  100.0 * CueAzimuthHalfWidthRel.get(), 50.0 * CueDistWidthRel.get()],
+    [VECTOR_LINE, -100.0 * CueAzimuthHalfWidthRel.get(), -50.0 * CueDistWidthRel.get(), 100.0 * CueAzimuthHalfWidthRel.get(), -50.0 * CueDistWidthRel.get()],
+    [VECTOR_LINE, -100.0 * CueAzimuthHalfWidthRel.get(), 50.0 * CueDistWidthRel.get(), 100.0 * CueAzimuthHalfWidthRel.get(), 50.0 * CueDistWidthRel.get()]
+  ]
+}
+
+let cueIndicator = @(){
+  watch = CueVisible
+  size = [pw(50), ph(40)]
+  pos = [pw(25), ph(30)]
+  children = CueVisible.get() ? @(){
+    watch = [CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel]
+    pos = [
+      pw((CueAzimuth.get() * (TargetRadarAzimuthWidth.get() / AzimuthRange.get() - CueAzimuthHalfWidthRel.get()) + 0.5) * 100),
+      ph((1.0 - (0.5 * CueDistWidthRel.get() + CueDist.get() * TargetRadarDist.get() * (1.0 - CueDistWidthRel.get()))) * 100)
+    ]
+    size = flex()
+    children = cue
+  } : null
+}
+
 let radar = @(is_cn) function() {
   return {
     watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode]
@@ -581,7 +611,8 @@ let radar = @(is_cn) function() {
           [VECTOR_LINE, 60, 0, 60, 100]
         ]
       }),
-      radarType(is_cn)
+      radarType(is_cn),
+      cueIndicator
     ] : null
   }
 }

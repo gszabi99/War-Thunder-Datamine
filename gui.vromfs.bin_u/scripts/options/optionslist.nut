@@ -21,6 +21,7 @@ let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalizati
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
+let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -298,6 +299,7 @@ let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
   name = "sound"
   options = [
     [USEROPT_SOUND_ENABLE, "switchbox", is_platform_pc],
+    [USEROPT_CUSTOM_SOUND_MODS, "switchbox", is_platform_pc && hasCustomSoundMods()],
     [USEROPT_SOUND_DEVICE_OUT, "combobox", is_platform_pc && soundDevice.get_out_devices().len() > 0],
     [USEROPT_SOUND_SPEAKERS_MODE, "combobox", is_platform_pc],
     [USEROPT_VOICE_MESSAGE_VOICE, "spinner"],

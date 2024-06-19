@@ -261,7 +261,6 @@ fouldata =
       "^fujinoyamai",
       "^fupa",
       "^fxuxcxk",
-      "^fu$"
     ]
   },
   {

@@ -45,6 +45,10 @@ function getPairSliderBulletsCountText(curVal, maxVal, valueMultiplier) {
   return $"{valText}/{(valueMultiplier * (maxVal - curVal)).tostring()}"
 }
 
+function getFixedBulletsCountText(curVal, valueMultiplier) {
+  return colorize("activeTextColor", valueMultiplier * curVal)
+}
+
 function getStatusIcon(unit, item) {
   if (needShowUnseenNightBattlesForUnit(unit, item.name) || needShowUnseenModTutorialForUnitMod(unit, item))
     return "#ui/gameuiskin#new_icon.svg"
@@ -310,9 +314,12 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     let maxVal = bulGroup.maxBulletsCount
     let curVal = bulGroup.bulletsCount
     let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
-    res.bulletsCountText = isPairBulletsGroup
-      ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
-      : getBulletsCountText(curVal, maxVal, unallocated, guns)
+    let canChangePairBulletsCount = bulGroup.canChangePairBulletsCount()
+    res.bulletsCountText = !isPairBulletsGroup ? getBulletsCountText(curVal, maxVal, unallocated, guns)
+      : canChangePairBulletsCount ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
+      : getFixedBulletsCountText(curVal, guns * cartridge)
+    res.needSliderButtons = res.needSliderButtons
+      && (!isPairBulletsGroup || canChangePairBulletsCount)
     if (res.needSliderButtons) {
       res.decBulletsLimit = curVal != 0 ? "no" : "yes"
       res.incBulletsLimit = curVal == maxVal
@@ -323,7 +330,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.sliderGroupIdx = bulGroup.groupIndex
     res.invSliderMax = maxVal.tostring()
     res.invSliderValue = curVal
-    let linkedBulGroup = !isPairBulletsGroup ? null
+    let linkedBulGroup = !isPairBulletsGroup || !canChangePairBulletsCount ? null
       : bulletsManager.getLinkedBulletsGroup(bulGroup)
     if (linkedBulGroup != null) {
       res.sliderProgressType = "doubleProgress"
@@ -692,12 +699,13 @@ function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup) {
   let curVal = bulGroup.bulletsCount
   let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
   let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
+  let canChangePairBulletsCount = bulGroup.canChangePairBulletsCount()
 
   let textObj = holderObj.findObject("bulletsCountText")
   if (checkObj(textObj))
-    textObj.setValue(isPairBulletsGroup
-      ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
-      : getBulletsCountText(curVal, maxVal, unallocated, guns))
+    textObj.setValue(!isPairBulletsGroup ? getBulletsCountText(curVal, maxVal, unallocated, guns)
+      : canChangePairBulletsCount ? getPairSliderBulletsCountText(curVal, maxVal, guns * cartridge)
+      : getFixedBulletsCountText(curVal, guns * cartridge))
 
   let btnDec = holderObj.findObject("buttonDec")
   if (checkObj(btnDec))

@@ -19,12 +19,12 @@
     "distFromCmToStab": 0.03,
     "mass": 26.0,
     "massEnd": 23.2,
-    "massEnd1": 19.7,
+    "massEnd1": 19.2,
     "fireDelay": 0.1,
     "timeFire": 1.0,
-    "timeFire1": 9.0,
+    "timeFire1": 19.0,
     "force": 5880.0,
-    "force1": 525.0,
+    "force1": 445.0,
     "timeLife": 40.0,
     "thrustDeviation": 0.01,
     "useStartSpeed": true,
@@ -107,6 +107,10 @@
         8000.0
       ],
       "breakLockMaxTime": 5.0,
+      "timeTableCorrection": [
+        0.757,
+        0.838
+      ],
       "lineOfSightAutopilot": {
         "crossDistToReqCrossVelMult": 4.0,
         "reqCrossVelRationMax": 0.75,
@@ -120,6 +124,82 @@
           "accelControlDiff": 0.0005,
           "accelControlIntgLim": 0.0
         }
+      },
+      "table0": {
+        "altitude": 100.0,
+        "fighterMach": [
+          0.05,
+          0.2
+        ],
+        "targetMach": [
+          0.05,
+          0.05
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          294.229,
+          274.614,
+          266.721,
+          262.524
+        ],
+        "rangeMax": [
+          8000.0,
+          8000.0,
+          8000.0,
+          8000.0
+        ],
+        "rangeMaxAltDiff": [
+          50.0,
+          0.0
+        ],
+        "timeMax": [
+          35.1511,
+          34.2009,
+          34.0632,
+          33.8184
+        ],
+        "timeMaxAltDiff": [
+          50.0,
+          0.0273743
+        ]
+      },
+      "table1": {
+        "altitude": 2000.0,
+        "fighterMach": [
+          0.05,
+          0.2
+        ],
+        "targetMach": [
+          0.05,
+          0.05
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          313.671,
+          290.219,
+          282.352,
+          270.459
+        ],
+        "rangeMax": [
+          8000.0,
+          8000.0,
+          8000.0,
+          8000.0
+        ],
+        "rangeMaxAltDiff": [
+          1000.0,
+          0.0
+        ],
+        "timeMax": [
+          31.0178,
+          30.3473,
+          30.2473,
+          30.0689
+        ],
+        "timeMaxAltDiff": [
+          1000.0,
+          0.06283
+        ]
       }
     },
     "stabilityRicochetModifier": {

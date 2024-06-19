@@ -80,13 +80,14 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> render_line_aa(to_array_move([[float2[2] float2(lt.x, rb.y); float2(lt.x + 0.1 * targetOnScreenWidth, rb.y)]]), false, ctx |> hdpx(4.), float2(0, 0), data.color)
       ctx |> render_line_aa(to_array_move([[float2[2] float2(lt.x, rb.y); float2(lt.x, lt.y + 0.9 * targetOnScreenWidth)]]), false, ctx |> hdpx(4.), float2(0, 0), data.color)
 
-    let distText = get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, target.dist, true, 0.1)
-    let strBox = get_str_bbox(distText, distText |> length(), fctx)
-    ctx |> goto_xy(rb.x + ctx |> hdpx(5.), lt.y + strBox.width.y)
-    ctx |> set_font(data.fontId, 0, 0)
-    ctx |> set_font_ht(data.fontSize);
-    ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
-    ctx |> draw_str_scaled(1.0, distText, distText |> length())
+    if get_radar_hud_has_distance_scale()
+      let distText = get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, target.dist, true, 0.1)
+      let strBox = get_str_bbox(distText, distText |> length(), fctx)
+      ctx |> goto_xy(rb.x + ctx |> hdpx(5.), lt.y + strBox.width.y)
+      ctx |> set_font(data.fontId, 0, 0)
+      ctx |> set_font_ht(data.fontSize);
+      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+      ctx |> draw_str_scaled(1.0, distText, distText |> length())
 
     if /*targerAspectEnabled*/target.losSpeed < 3000.
       let pos = float2((lt.x + rb.x) * 0.5, rb.y + 0.75 * targetOnScreenWidth)

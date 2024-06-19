@@ -134,6 +134,11 @@ function isUnitWithSensorType(unit, sensorType) {
 let isUnitWithRadar = @(unit) isUnitWithSensorType(unit, "radar")
 let isUnitWithRwr = @(unit) isUnitWithSensorType(unit, "rwr")
 
+function getRomanNumeralRankByUnitName (unitName) {
+  let unit = unitName ? ::findUnitNoCase(unitName) : null
+  return unit ? get_roman_numeral(unit.rank) : null
+}
+
 return {
   bit_unit_status, canBuyUnit,
   getEsUnitType, getUnitTypeTextByUnit, isUnitsEraUnlocked, getUnitName,//next
@@ -142,4 +147,5 @@ return {
   isRequireUnlockForUnit,
   isUnitWithRadar,
   isUnitWithRwr
+  getRomanNumeralRankByUnitName
 }

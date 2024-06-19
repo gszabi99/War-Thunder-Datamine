@@ -5,6 +5,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 
 let class VacationBin (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -12,16 +13,26 @@ let class VacationBin (gui_handlers.BaseGuiHandlerWT) {
   shouldBlurSceneBgFn = needUseHangarDof
 
   trashBin = null
+  country = null
   draggedObj = null
   draggedObjParent = null
   crew = null
 
   function initScreen() {
+
+    let canSendToVacation = ::slotbarPresets.getCurrentPreset(this.country).units.len() > 1 || !hasDefaultUnitsInCountry(this.country)
+
     this.guiScene.setCursor("drag-n-drop", true)
     this.trashBin = this.scene.findObject("unitTrashBin")
 
+    this.trashBin["class"] = canSendToVacation ? "" : "disabled"
+
+    if(!canSendToVacation)
+      this.trashBin.findObject("trashBinText").setValue(loc("slotbar/noRemoveVehicle"))
+
     let draggedObjSize = this.draggedObj.getSize()
-    this.trashBin.size = ", ".join([1.2*draggedObjSize[0], 1.3*draggedObjSize[1]])
+    this.trashBin.size = ", ".join([1.2 * draggedObjSize[0],
+      draggedObjSize[1] * (canSendToVacation ? 1.3 : 1.45)])
 
     this.crew = getCrewById(this.draggedObj.crew_id.tointeger())
 
@@ -70,10 +81,11 @@ let class VacationBin (gui_handlers.BaseGuiHandlerWT) {
   onUnitCellDragStart = @ (_obj) null
   onSlotChangeAircraft = @ () null
   onOpenCrewWindow = @ (_obj) null
+  onSwapCrews = @ (_obj) null
 }
 
 gui_handlers.VacationBin <- VacationBin
 
 return {
-  vacationBinOpen = @(draggedObj) handlersManager.loadHandler(VacationBin, { draggedObj })
+  vacationBinOpen = @(draggedObj, country) handlersManager.loadHandler(VacationBin, { draggedObj, country })
 }

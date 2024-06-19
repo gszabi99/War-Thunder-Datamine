@@ -742,9 +742,6 @@ return freeze({
   was_video_seen = r["was_video_seen"]
   web_vromfs_is_file_prefetched = r["web_vromfs_is_file_prefetched"]
   web_vromfs_prefetch_file = r["web_vromfs_prefetch_file"]
-  webauth_get_url = r?["webauth_get_url"] ?? @(...) ""
-  webauth_start = r?["webauth_start"] ?? @(...) false
-  webauth_stop = r?["webauth_stop"] ?? @(...) null
   wp_get_cost = r["wp_get_cost"]
   wp_get_cost2 = r["wp_get_cost2"]
   wp_get_cost_gold = r["wp_get_cost_gold"]

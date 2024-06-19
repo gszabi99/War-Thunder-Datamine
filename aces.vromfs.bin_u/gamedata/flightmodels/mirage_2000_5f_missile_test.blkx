@@ -1999,16 +1999,17 @@
     "gun": "gun_default"
   },
   "cockpit": {
+    "targetingPodFov": [
+      18.0,
+      1.0
+    ],
+    "sightInFov": 1.0,
+    "sightOutFov": 18.0,
+    "sightFov": 1.0,
     "mfdTextureSize": [
       2048,
       1024
     ],
-    "targetingPodFov": [
-      12.0,
-      0.75
-    ],
-    "sightInFov": 0.75,
-    "sightOutFov": 12.0,
     "headPos": [
       4.0,
       0.54,
@@ -2290,19 +2291,30 @@
             0.5,
             0.5
           ],
+          "page": {
+            "type": "rwr",
+            "scale": 0.6,
+            "circleCnt": 1,
+            "centralMark": "cross"
+          }
+        },
+        {
+          "textureArea": [
+            0.25,
+            0.565,
+            0.5,
+            0.935
+          ],
+          "cameraFromTargetingPod": true,
           "page": [
-            {
-              "type": "rwr",
-              "scale": 1.0
-            },
             {
               "type": "devices",
               "aviahorizon_pitch": {
                 "texture": "su_mfd_ahorizon",
                 "arrowTex": "su_mfd_ahorizon_scale",
                 "position": [
-                  170.0,
-                  256.0
+                  256.0,
+                  180.0
                 ],
                 "backgroundTexCoord": [
                   0.11,
@@ -2317,8 +2329,8 @@
                   0.6
                 ],
                 "size": [
-                  260.0,
-                  340.0
+                  256.0,
+                  256.0
                 ],
                 "ranges": {
                   "limits": [
@@ -2332,8 +2344,8 @@
               "aviahorizon_roll": {
                 "texture": "su_mfd_ahorizon",
                 "position": [
-                  170.0,
-                  256.0
+                  256.0,
+                  180.0
                 ],
                 "arrowTexCoord": [
                   0.2,
@@ -2342,8 +2354,8 @@
                   1.0
                 ],
                 "size": [
-                  260.0,
-                  340.0
+                  256.0,
+                  256.0
                 ],
                 "notDrawBackground": true,
                 "ranges": {
@@ -2355,18 +2367,7 @@
                   ]
                 }
               }
-            }
-          ]
-        },
-        {
-          "textureArea": [
-            0.25,
-            0.565,
-            0.5,
-            0.935
-          ],
-          "cameraFromTargetingPod": true,
-          "page": [
+            },
             {
               "type": "thermal",
               "turretIdx": 0
@@ -2374,6 +2375,12 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
+            },
+            {
+              "type": "rwr",
+              "scale": 0.6,
+              "circleCnt": 1,
+              "centralMark": "cross"
             }
           ]
         },
@@ -2387,8 +2394,30 @@
           "fontScale": 0.6,
           "page": {
             "type": "radar",
-            "scale": 0.85,
-            "hideBackground": true
+            "font": "mirage_ils",
+            "scale": 0.75,
+            "hideBackground": true,
+            "hideBeam": false,
+            "beamShape": "caret",
+            "hasAviaHorizont": true,
+            "centerRadar": true,
+            "showScanAzimuth": true,
+            "showCueHeights": true,
+            "cueTopHeiColor": [
+              0,
+              255,
+              0
+            ],
+            "cueLowHeiColor": [
+              0,
+              255,
+              0
+            ],
+            "cueUndergroundColor": [
+              0,
+              255,
+              0
+            ]
           }
         },
         {
@@ -2845,8 +2874,9 @@
       "tier": 4,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff": {},
-    "countermeasures_belt_pack": {
+    "maw_countermeasures_launcher_chaff": {},
+    "maw_countermeasures_launcher_chaff_large": {},
+    "MAW_system_heli_false_thermal_targets_large": {
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
@@ -2858,11 +2888,32 @@
             "slot": 0,
             "preset": "defa_554_ltc"
           }
+        },
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/fr_thales_rdy.blk",
+              "dmPart": "radar_dm"
+            },
+            {
+              "blk": "gameData/sensors/tv_tracker_tgp.blk",
+              "node": "optic1_gun"
+            },
+            {
+              "blk": "gameData/sensors/fr_serval_rwr.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/fr_ddm2000.blk"
+            }
+          ]
         }
       }
     },
     "f_4c_g_suit": {
-      "prevModification": "countermeasures_belt_pack",
+      "prevModification": "MAW_system_heli_false_thermal_targets_large",
       "tier": 2,
       "modClass": "armor"
     },
@@ -3269,19 +3320,21 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 18,
+                "bullets": 8,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
-                "bullets": 18,
+                "bullets": 8,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               }
             ]
           },
@@ -3370,42 +3423,72 @@
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 18,
+                "bullets": 8,
                 "external": true,
-                "separate": true,
+                "separate": false,
                 "brakeChuteRange": [
                   0.0,
                   0.0
                 ],
-                "ammoMechRange": false
+                "ammoMechRange": false,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
-                "bullets": 18,
+                "bullets": 8,
                 "external": true,
-                "separate": true,
+                "separate": false,
                 "brakeChuteRange": [
                   0.0,
                   0.0
                 ],
-                "ammoMechRange": false
+                "ammoMechRange": false,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare3",
-                "bullets": 132,
+                "bullets": 48,
                 "external": true,
-                "separate": true,
+                "separate": false,
                 "brakeChuteRange": [
                   0.0,
                   0.0
                 ],
-                "ammoMechRange": false
+                "ammoMechRange": false,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 24,
+                "external": true,
+                "separate": false,
+                "brakeChuteRange": [
+                  0.0,
+                  0.0
+                ],
+                "ammoMechRange": false,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_chaff_large.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 48,
+                "external": true,
+                "separate": false,
+                "brakeChuteRange": [
+                  0.0,
+                  0.0
+                ],
+                "bulletsCartridge": 1
               }
             ]
           }

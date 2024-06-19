@@ -27,6 +27,7 @@ shopItem {
   behavior:t='Timer'
   timer_interval_msec:t='1000'
   unit_name:t='<<unitName>>'
+  proxyEventsParentTag:t='slotbarTable';
   <<#crewId>>crew_id:t='<<crewId>>'<</crewId>>
 
   <<^isInTable>>
@@ -205,6 +206,10 @@ shopItem {
         text:t='<<unitClassIcon>>'
         shopItemType:t='<<shopItemType>>'
       }
+    }
+    crewNumText {
+      text:t='<<crewNumWithTitle>>'
+      display:t='hide'
     }
   }
 

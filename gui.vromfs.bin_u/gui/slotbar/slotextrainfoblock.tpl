@@ -1,7 +1,7 @@
 <<#hasExtraInfoBlock>>
 extraInfoBlock {
   id:t='extra_info_block'
-
+  isEmptySlot:t='<<@isEmptySlot>>'
   <<#hasCrewIdInfo>>
   crewInfoNumBlock {
     icon {
@@ -41,9 +41,9 @@ extraInfoBlock {
   slotCrewHintContainer {
     id:t='extra_info_block_crew_hint'
     slotCrewHint {
-      <<#showAdditionExtraInfo>>
+      <<#showCrewHintUnderSlot>>
       placement:t='under_slot'
-      <</showAdditionExtraInfo>>
+      <</showCrewHintUnderSlot>>
 
       activeText {
         id:t='crew_name'
@@ -194,5 +194,15 @@ extraInfoBlock {
     }
   }
   <</hasCrewHint>>
+  <<#hasActions>>
+  Button_text {
+    visualStyle:t='common'
+    class:t='swapCrew'
+    display:t='hide'
+    on_click:t='onSwapCrews'
+    crewIdInCountry:t='<<crewIdInCountry>>'
+    img {}
+  }
+  <</hasActions>>
 }
 <</hasExtraInfoBlock>>

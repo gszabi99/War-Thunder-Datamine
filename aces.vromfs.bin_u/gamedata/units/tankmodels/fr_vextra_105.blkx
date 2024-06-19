@@ -196,7 +196,7 @@
         "armorThickness": 35.0
       },
       "turret_04_side_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 10.0
       },
       "superstructure_top_dm": {
         "armorThickness": 20.0
@@ -205,7 +205,7 @@
         "armorThickness": 20.0
       },
       "turret_03_back_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 10.0
       },
       "superstructure_front_dm": {
         "armorThickness": 35.0
@@ -245,14 +245,6 @@
         "armorThickness": 10.0,
         "armorClass": "tank_structural_steel"
       },
-      "ex_decor_l_07_dm": {
-        "armorThickness": 10.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "ex_decor_r_07_dm": {
-        "armorThickness": 10.0,
-        "armorClass": "tank_structural_steel"
-      },
       "ex_armor_l_02_dm": {
         "armorThickness": 10.0,
         "armorClass": "tank_structural_steel"
@@ -262,22 +254,13 @@
         "armorClass": "tank_structural_steel"
       },
       "turret_04_bottom_dm": {
-        "armorThickness": 10.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "composite_armor_hull_01_dm": {
-        "armorThickness": 20.0,
-        "hidableInXrayViewer": true
+        "armorThickness": 10.0
       },
       "composite_armor_hull_02_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
       },
       "composite_armor_hull_03_dm": {
-        "armorThickness": 5.0,
-        "hidableInXrayViewer": true
-      },
-      "composite_armor_hull_04_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
       }
@@ -547,12 +530,17 @@
         "armorThrough": 3.0
       },
       "electronic_equipment_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -591,8 +579,7 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {},
-      "power_system_dm": {}
+      "transmission_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -1205,6 +1192,12 @@
             "fHitCritical": true
           },
           {
+            "damageType": "cumulative",
+            "expl": 1.0,
+            "damage": 800.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "explosion",
             "expl": 0.125,
             "fire": 0.225,
@@ -1240,14 +1233,14 @@
             "damageType": "generic",
             "fire": 0.5,
             "expl": 0.5,
-            "damage": 300.0,
+            "damage": 250.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
             "fire": 0.3,
             "expl": 0.7,
-            "damage": 400.0,
+            "damage": 300.0,
             "fHitCritical": true
           },
           {
@@ -1262,8 +1255,7 @@
           }
         ],
         "onKill": {
-          "fire": 0.3,
-          "expl": 0.7,
+          "fire": 1.0,
           "fHitCritical": true
         }
       },
@@ -1620,6 +1612,72 @@
         "onKill": {
           "cut": 1.0
         }
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": "fire_control_system_dm"
+          }
+        }
+      },
+      {
+        "name": "ex_decor_l_06_dm",
+        "onKill": {
+          "ex_decor_l_12_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_decor_r_06_dm",
+        "onKill": {
+          "ex_decor_r_12_dm": 1.0
+        }
       }
     ]
   },
@@ -1695,15 +1753,6 @@
   "xray_viewer_data": {
     "armorArrayHull": [
       {
-        "xrayDmPart": "composite_armor_hull_01_dm",
-        "titleLoc": "aluminum_armor_AMS_4050A",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_01_dm"
-          }
-        }
-      },
-      {
         "xrayDmPart": "composite_armor_hull_02_dm",
         "titleLoc": "aluminum_armor_AMS_4050A",
         "armorArrayText": {
@@ -1718,15 +1767,6 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_03_dm"
-          }
-        }
-      },
-      {
-        "xrayDmPart": "composite_armor_hull_04_dm",
-        "titleLoc": "aluminum_armor_AMS_4050A",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_hull_04_dm"
           }
         }
       }
@@ -1753,6 +1793,10 @@
         "blk": "gameData/Weapons/groundModels_weapons/105mm_giat_105_g1_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -1994,26 +2038,30 @@
     "mechanics": {
       "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.6,
-      "mainGearRatio": 5.42,
-      "sideGearRatio": 0.905,
+      "mainGearRatio": 5.96,
+      "sideGearRatio": 1.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -2.75,
-          -3.8,
-          -5.5,
-          -10.5,
+          -5.13,
+          -7.41,
+          -10.26,
+          -14.82,
           0.0,
-          10.5,
-          5.5,
-          3.8,
-          2.75,
-          2.2,
-          1.833,
-          1.5,
-          1.375,
-          1.15,
-          1.0
+          16.56,
+          10.28,
+          8.28,
+          7.1,
+          5.14,
+          4.9,
+          3.55,
+          3.38,
+          2.45,
+          2.34,
+          1.69,
+          1.64,
+          1.17,
+          0.82
         ]
       }
     },
@@ -2035,11 +2083,23 @@
       "steeringDeflection": {
         "wheel_l_01": 30.0,
         "wheel_r_01": 30.0,
-        "wheel_l_02": 20.0,
-        "wheel_r_02": 20.0,
+        "wheel_l_02": 25.0,
+        "wheel_r_02": 25.0,
         "steeringTau": 1000000.0,
         "steeringSpd": 1.0,
         "steeringNeutralSpd": 3.0
+      },
+      "wheelsDamageWeight": {
+        "wheel_l_01": 0.05,
+        "wheel_r_01": 0.05,
+        "wheel_l_02": 0.05,
+        "wheel_r_02": 0.05,
+        "wheel_l_03": 0.05,
+        "wheel_r_03": 0.05,
+        "wheel_l_04": 0.05,
+        "wheel_r_04": 0.05,
+        "wheel_r_drive": 0.25,
+        "wheel_l_drive": 0.25
       },
       "driven": {
         "wheel_l_01": true,
@@ -2050,16 +2110,6 @@
         "wheel_r_03": true,
         "wheel_l_04": true,
         "wheel_r_04": true
-      },
-      "wheelsDamageWeight": {
-        "wheel_l_01": 0.3,
-        "wheel_r_01": 0.3,
-        "wheel_l_02": 0.3,
-        "wheel_r_02": 0.3,
-        "wheel_l_03": 0.3,
-        "wheel_r_03": 0.3,
-        "wheel_l_04": 0.3,
-        "wheel_r_04": 0.3
       }
     },
     "floats": {
@@ -2931,6 +2981,20 @@
         }
       },
       {
+        "name": "powersystem_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_exterior",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "big_bang",
         "lifetime": 10.0,
         "fx": [
@@ -3291,8 +3355,8 @@
             "turret_net",
             "gun_barrel_net",
             "ex_armor_01_net",
-            "ex_decor_l_06_net",
-            "ex_decor_r_06_net",
+            "ex_decor_l_12",
+            "ex_decor_r_12",
             "ex_decor_turret_01_net",
             "ex_decor_turret_02_net",
             "ex_lantern_l_net",
@@ -3327,7 +3391,60 @@
     "105mm_fr_F2_Smoke_ammo_pack": {},
     "105mm_fr_F2_APDSFS": {},
     "105mm_fr_F2_APDSFS_ammo_pack": {},
-    "modern_tank_laser_rangefinder": {},
+    "modern_tank_laser_rangefinder": {
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "rangefinderDmPart": "fire_control_system_dm",
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": {
+            "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+            "dmPart": "fire_control_system_dm"
+          }
+        }
+      }
+    },
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "modClass": "protection",
@@ -3339,6 +3456,10 @@
               "blk": "gameData/Weapons/groundModels_weapons/105mm_giat_105_g1_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame_01",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",

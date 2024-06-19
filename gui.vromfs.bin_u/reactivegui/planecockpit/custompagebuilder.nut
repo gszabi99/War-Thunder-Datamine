@@ -4,6 +4,7 @@ let { CustomPages } = require("%rGui/planeState/planeToolsState.nut")
 let ah64Flt = require("ah64FltPage.nut")
 let ah64Wpn = require("ah64WpnPage.nut")
 let f15cWpn = require("f15cWpnPage.nut")
+let su27Pod = require("mfdSu27Pod.nut")
 
 function yellow(pos, size) {
   return {
@@ -38,7 +39,8 @@ let pageByName = {
   blue,
   ah64Flt,
   ah64Wpn,
-  f15cWpn
+  f15cWpn,
+  su27Pod
 }
 
 function mfdCustomPages() {

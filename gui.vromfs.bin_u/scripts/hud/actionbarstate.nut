@@ -4,6 +4,7 @@ let { FRP_INITIAL } = require("frp")
 let { getActionBarItems } = require("hudActionBar")
 
 let actionBar = Watched([])
+let isVisualWeaponSelectorToggle = Watched(false)
 
 let skipedParameters = {
   aimReady = true
@@ -72,4 +73,5 @@ let updateActionBar = @() actionBar(getActionBarItems())
 return {
   updateActionBar
   actionBarItems
+  isVisualWeaponSelectorToggle
 }

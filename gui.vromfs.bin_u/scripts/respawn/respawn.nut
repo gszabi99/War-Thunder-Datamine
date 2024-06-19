@@ -79,7 +79,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { openRespawnSpareWnd } = require("%scripts/respawn/respawnSpareWnd.nut")
 let { markUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getSlotUnitNameText,
-  getUnitSlotPriceText
+  getUnitSlotPriceText, getUnitSlotPriceHintText
 } = require("%scripts/slotbar/slotbarView.nut")
 let { gui_start_flight_menu } = require("%scripts/flightMenu/flightMenu.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
@@ -693,6 +693,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       hasExtraInfoBlock = true
       hasExtraInfoBlockTop = true
       showAdditionExtraInfo = true
+      showCrewHintUnderSlot = true
       hasCrewHint = true
       shouldSelectAvailableUnit = this.isRespawn
       customViewCountryData = { [playerCountry] = {
@@ -1262,7 +1263,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       if (!modName)
         continue
 
-      let count = bulGroup.bulletsCount * bulGroup.guns
+      let count = bulGroup.bulletsCount
       if (bulGroup.canChangeBulletsCount() && bulGroup.bulletsCount <= 0)
         continue
 
@@ -1271,11 +1272,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       else
         res[$"bullets{bulletInd}"] <- ""
       res[$"bulletCount{bulletInd}"] <- count
+      res[$"bulletsWeapon{bulletInd}"] <- bulGroup.getWeaponName()
       bulletInd++;
     }
     while (bulletInd < BULLETS_SETS_QUANTITY) {
       res[$"bullets{bulletInd}"] <- ""
       res[$"bulletCount{bulletInd}"] <- 0
+      res[$"bulletsWeapon{bulletInd}"] <- ""
       bulletInd++;
     }
 
@@ -1284,6 +1287,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       for (local i = 0; i < BULLETS_SETS_QUANTITY; i++) {
         res[$"bullets{i}"] = editSlotbarBullets?[$"bullets{i}"] ?? ""
         res[$"bulletCount{i}"] = editSlotbarBullets?[$"bulletsCount{i}"] ?? 0
+        res[$"bulletsWeapon{i}"] <- editSlotbarBullets?[$"bulletsWeapon{i}"] ?? ""
       }
 
     let optionsParams = this.getOptionsParams()
@@ -1858,6 +1862,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       priceTextObj.show(hasPriceText)
       if (hasPriceText)
         priceTextObj.setValue(priceText)
+
+      let priceTextHintObj = showObjById("extraInfoPriceTextHint", hasPriceText, slotObj)
+      if (hasPriceText && priceTextHintObj?.isValid())
+        priceTextHintObj.setValue(getUnitSlotPriceHintText(unit, params))
+
       this.getSlotbar().updateTopExtraInfoBlock(slotObj)
     }
 
@@ -2454,6 +2463,23 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   log("has_available_slots false")
   return false
 }
+
+function respawnInfoUpdated(data) {
+  let { unitName = null } = data
+  if (unitName == null)
+    return
+  let respawn = handlersManager.findHandlerClassInScene(gui_handlers.RespawnHandler)
+  if (respawn == null)
+    return
+
+  let { crew = null } = respawn.getSlotbar()?.getSlotsData(unitName)[0]
+  if (crew == null)
+    return
+
+  respawn.updateCrewSlot(crew)
+}
+
+eventbus_subscribe("respawnInfoUpdated", respawnInfoUpdated)
 
 register_command(function() {
   needSkipAvailableCrewToSelect.value = !needSkipAvailableCrewToSelect.value

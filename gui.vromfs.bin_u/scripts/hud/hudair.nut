@@ -9,10 +9,13 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getOwnerUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
 let { get_game_type } = require("mission")
+let { HudAirWeaponSelector } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 
-let HudAir = class (gui_handlers.BaseUnitHud) {
+gui_handlers.HudAir <- class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudAir.blk"
+  airWeaponSelector = null
 
   function initScreen() {
     base.initScreen()
@@ -23,6 +26,16 @@ let HudAir = class (gui_handlers.BaseUnitHud) {
     this.updateDmgIndicatorSize()
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
+
+    if (hasFeature("AirVisualWeaponSelector")) {
+      let hudUnit = getPlayerCurUnit()
+      if (hudUnit != null && hudUnit.hasWeaponSlots) {
+        let weaponSelectorNest = this.scene.findObject("air_weapon_selector")
+        this.airWeaponSelector = isUnitHaveSecondaryWeapons(hudUnit)
+          ? HudAirWeaponSelector(hudUnit, weaponSelectorNest)
+          : null
+      }
+    }
 
     g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
       function(_ed) { this.updateDmgIndicatorSize() },
@@ -60,5 +73,5 @@ let HudAir = class (gui_handlers.BaseUnitHud) {
 }
 
 return {
-  HudAir
+  HudAir = gui_handlers.HudAir
 }

@@ -49,14 +49,13 @@ function getSeparatedControlLocId(text) {
 
 let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
 
-function getLocalizedControlName(preset, deviceId, buttonId) {
-  let text = preset.getButtonName(deviceId, buttonId)
-  if (deviceId != STD_KEYBOARD_DEVICE_ID) {
-    let locText = getLocaliazedPS4ControlName(text)
-    if (locText != "")
-      return locText
-  }
+function getLocalizedXinpControlName(text, deviceId) {
+  if (deviceId != STD_KEYBOARD_DEVICE_ID)
+    return getLocaliazedPS4ControlName(text)
+  return ""
+}
 
+function getLocTextControlName(text) {
   let locText = loc($"key/{text}", "")
   if (locText != "")
     return locText
@@ -64,9 +63,32 @@ function getLocalizedControlName(preset, deviceId, buttonId) {
   return getSeparatedControlLocId(text)
 }
 
+function getLocalizedControlName(preset, deviceId, buttonId) {
+  let text = preset.getButtonName(deviceId, buttonId)
+  let locText = getLocalizedXinpControlName(text, deviceId)
+  if (locText != "")
+    return locText
+
+  return getLocTextControlName(text)
+}
+
+function getShortLocalizedControlName(preset, deviceId, buttonId) {
+  let text = preset.getButtonName(deviceId, buttonId)
+  local locText = getLocalizedXinpControlName(text, deviceId)
+  if (locText != "")
+    return locText
+
+  locText = loc($"key/{text}/short", "")
+  if (locText != "")
+    return locText
+
+  return getLocTextControlName(text)
+}
+
 return {
   getLocalizedShortcutName
   getAxisTextOrAxisName
   getLocaliazedPS4ControlName
   getLocalizedControlName
+  getShortLocalizedControlName
 }

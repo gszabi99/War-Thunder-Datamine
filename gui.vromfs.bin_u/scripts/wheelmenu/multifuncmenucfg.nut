@@ -18,7 +18,7 @@ let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasC
   hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, hasCCIPSightMode, hasCCRPSightMode,
   hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision, hasHelmetDesignator,
   hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem,
-  getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasSecondaryWeapons, hasAiGunners, hasGunStabilizer,
+  getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasAiGunners, hasGunStabilizer,
   hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview,
   hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask,
   hasSpecialWeaponAdditionalSight, isGearsExtended, isMouseAimRollOverride
@@ -26,6 +26,7 @@ let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasC
 let { deferOnce } = require("dagor.workcycle")
 let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
+let { has_secondary_weapons } = require("weaponSelector")
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
 
@@ -345,17 +346,17 @@ let cfg = {
 
   ["weapon_selector"] = {
     title = "hotkeys/ID_WEAPON_SELECTOR_HEADER"
-    enable = @(_unitId) hasPrimaryWeapons() || hasSecondaryWeapons()
+    enable = @(_unitId) hasPrimaryWeapons() || has_secondary_weapons()
     items = [
       { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_PRIMARY", "ID_SWITCH_SHOOTING_CYCLE_PRIMARY_HELICOPTER" ],
           enable = @(_unitId) hasPrimaryWeapons() }
       { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ],
-          enable = @(_unitId) hasSecondaryWeapons() }
-      null
+          enable = @(_unitId) has_secondary_weapons() }
+      { shortcut = [ "ID_OPEN_VISUAL_WEAPON_SELECTOR" ], enable = @(_unitId) has_secondary_weapons() }
       { shortcut = [ "ID_JETTISON_SECONDARY", "ID_JETTISON_SECONDARY_HELICOPTER" ],
-          enable = @(_unitId) hasSecondaryWeapons() }
+          enable = @(_unitId) has_secondary_weapons() }
       { action = resizeSecondaryWeaponSeries, label  = loc("hotkeys/ID_RESIZE_SECONDARY_WEAPON_SERIES"),
-          enable = @(_unitId) hasSecondaryWeapons() }
+          enable = @(_unitId) has_secondary_weapons() }
       null
       { shortcut = [ "ID_EXIT_SHOOTING_CYCLE_MODE", "ID_EXIT_SHOOTING_CYCLE_MODE_HELICOPTER" ] }
       null
@@ -370,7 +371,8 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_MLWS_FLARES_SLAVING", "ID_TOGGLE_MLWS_FLARES_SLAVING_HELICOPTER" ],
           enable = @(_unitId) hasCountermeasureFlareGuns() && hasMissileLaunchWarningSystem() }
       null
-      null
+      { shortcut = [ "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE", "ID_SWITCH_SHOOTING_CYCLE_COUNTER_MEASURE_HELICOPTER" ],
+          enable = @(_unitId) hasCountermeasureFlareGuns() }
       null
       null
       null

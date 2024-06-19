@@ -2485,7 +2485,8 @@
         "rocket_pylon4",
         "1140l_drop_tank_pylon_001",
         "1140l_drop_tank_pylon_002",
-        "1140l_drop_tank_pylon_003"
+        "1140l_drop_tank_pylon_003",
+        "ltc_cap"
       ]
     },
     "HideDmParts": {
@@ -2551,6 +2552,15 @@
               "bullets": 120,
               "spread": 1.0,
               "counterIndex": 3
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 18,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": false
             }
           ]
         }
@@ -3398,6 +3408,14 @@
     },
     "new_compressor_jet": {
       "tier": 1
+    },
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_belt_pack": {
+      "modClass": "armor",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "tier": 1,
+      "group": "countermeasures"
     },
     "ns23_armor_targets": {},
     "ns23_air_targets": {},

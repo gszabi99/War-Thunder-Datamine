@@ -8,7 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
   closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality,
-  getPresetForMaxFPS, isGpuBenchmarkRunning } = require("gpuBenchmark")
+  getPresetForMaxFPS, isGpuBenchmarkRunning, getGpuName } = require("gpuBenchmark")
 let { setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate,
   localizaQualityPreset } = require("%scripts/options/systemOptions.nut")
 let { secondsToString } = require("%scripts/time.nut")
@@ -143,7 +143,13 @@ function checkShowGpuBenchmarkWnd() {
   if (!canShowGpuBenchmark())
     return
 
-  if (loadLocalAccountSettings("gpuBenchmark/seen", false))
+  local currentGpuName = getGpuName()
+  local lastSeenGpuName = loadLocalAccountSettings("gpuBenchmark/gpuName")
+
+  local gpuChanged = (currentGpuName != lastSeenGpuName)
+  if(gpuChanged)
+    saveLocalAccountSettings("gpuBenchmark/gpuName", currentGpuName)
+  else if (loadLocalAccountSettings("gpuBenchmark/seen", false))
     return
 
   handlersManager.loadHandler(GpuBenchmarkWnd)

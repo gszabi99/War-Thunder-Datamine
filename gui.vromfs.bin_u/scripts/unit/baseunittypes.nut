@@ -49,6 +49,7 @@ return {
       return hasFeature(countryShort + "AircraftsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
+    bulletSetsQuantity = BULLETS_SETS_QUANTITY
     canChangeViewType = true
     modClassOrder = ["lth", "armor", "weapon"]
     canShowProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisAircraft")
@@ -135,7 +136,8 @@ return {
     crewUnitType = CUT_AIRCRAFT
     isAvailable = @() true
     isAvailableForFirstChoice = @(_country = null) false
-    canUseSeveralBulletsForGun = false
+    canUseSeveralBulletsForGun = true
+    bulletSetsQuantity = BULLETS_SETS_QUANTITY
     canChangeViewType = true
     modClassOrder = ["lth", "armor", "weapon"]
     canShowProtectionAnalysis = @() hasFeature("DmViewerProtectionAnalysisAircraft")

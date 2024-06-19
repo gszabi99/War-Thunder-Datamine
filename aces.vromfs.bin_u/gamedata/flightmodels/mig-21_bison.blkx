@@ -14,6 +14,7 @@
   "hmdShelZoom": true,
   "jetEnginePowerFullScale": true,
   "havePointOfInterestDesignator": true,
+  "ilsHasRadarHud": true,
   "gearSinkRangeLR": 0.157,
   "gearSinkRangeC": 0.308,
   "standardExhaustFxType": "jet_exhaust",
@@ -2094,6 +2095,10 @@
     "gun": "gun_default"
   },
   "cockpit": {
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "headPos": [
       3.55,
       0.79,
@@ -2473,7 +2478,12 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.15
+            "scale": 1.05,
+            "circleCnt": 2,
+            "angleMarkStep": 30.0,
+            "centralMark": "bigCross",
+            "hasCompass": true,
+            "digitalCompass": true
           }
         },
         {
@@ -2495,9 +2505,8 @@
               "turretIdx": 0
             },
             {
-              "type": "radar",
-              "scale": 1.0,
-              "hideBackground": true
+              "type": "ils_duplicate",
+              "scale": 1.2
             }
           ]
         },
@@ -2602,6 +2611,7 @@
   },
   "gunnerOpticFps": {
     "TV": {
+      "name": "KH-29T",
       "pos": [
         2.9,
         -0.9,
@@ -2850,19 +2860,21 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 30,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -3812,10 +3824,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "tier": 1,

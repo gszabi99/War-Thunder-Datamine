@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, webauth_start, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, webauth_stop, enable_keyboard_locks_change_tracking, webauth_get_url, get_two_step_code_async2, set_network_circuit
+from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
 
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
@@ -37,6 +37,7 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running } = require("steam")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { bqSendNoAuth, bqSendNoAuthWeb } = require("%scripts/bigQuery/bigQueryClient.nut")
+let { webauth_start, webauth_stop, webauth_get_url, webauth_completion_event } = require("webauth")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -143,7 +144,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     this.setDisableSslCertBox(disableSSLCheck)
     let isSteamRunning = steam_is_running()
     let showSteamLogin = isSteamRunning
-    let showWebLogin = !isSteamRunning && webauth_start(this, this.onSsoAuthorizationComplete)
+    let showWebLogin = !isSteamRunning && webauth_start()
     showObjById("steam_login_action_button", showSteamLogin, this.scene)
     showObjById("sso_login_action_button", showWebLogin, this.scene)
     showObjById("btn_signUp_link", !showSteamLogin, this.scene)
@@ -746,4 +747,11 @@ eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(_) {
     return
   let no_dump_login = getObjValue(loginWnd.scene, "loginbox_username", "")
   loginWnd.finishLogin(no_dump_login)
+})
+
+eventbus_subscribe(webauth_completion_event, function ProceedWebAuth(p) {
+  let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
+  if (loginWnd == null)
+    return
+  loginWnd.onSsoAuthorizationComplete(p)
 })

@@ -206,6 +206,7 @@ enumsAddTypes(g_hud_enemy_debuffs, {
   SHIP_CREW = {
     unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     isUpdateByEnemyDamageState = true
+    needShowChange = true
     getInfo = function(camInfo, unitInfo, _partName = null, dmgParams = null) {
       let total = dmgParams?.crewTotalCount ?? camInfo?.crewTotal ?? 0
       if (!total)
@@ -221,6 +222,7 @@ enumsAddTypes(g_hud_enemy_debuffs, {
       let percent = clamp(lerp(minCrewCount - 1, total, 0, maxCrewLeftPercent, alive), minPercent, 1)
       return {
         state = getStateByValue(alive, total, minCrewCount + 1, minCrewCount)
+        value = percent * 100
         label = measureType.PERCENT_FLOAT.getMeasureUnitsText(percent)
       }
     }

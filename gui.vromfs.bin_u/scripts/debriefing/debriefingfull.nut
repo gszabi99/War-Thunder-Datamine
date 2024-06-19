@@ -13,7 +13,7 @@ let DataBlock = require("DataBlock")
 let { get_mp_session_id_str, is_mplayer_peer } = require("multiplayer")
 let mpChatModel = require("%scripts/chat/mpChatModel.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { NO_BONUS, PREV_UNIT_EFFICIENCY } = require("%scripts/debriefing/rewardSources.nut")
+let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -27,13 +27,14 @@ let { get_mission_difficulty_int, stat_get_benchmark,
   get_mission_restore_type, get_mp_tbl_teams, get_mission_status } = require("guiMission")
 let { dynamicApplyStatus } = require("dynamicMission")
 let { toUpper } = require("%sqstd/string.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 local debriefingResult = null
 local dynamicResult = -1
@@ -50,7 +51,22 @@ function countWholeRewardInTable(table, currency, specParam = null) {
   return reward
 }
 
+function getMissionRewardSources(rewardSources, skillBonusLevel, paramsOvr = {}) {
+  let { noBonusExpTotal = 0, premAccExpTotal = 0, boosterExpTotal = 0,
+    premModExpTotal = 0, expSkillBonus = 0 } = rewardSources
+    return getRewardSources({
+      noBonus = noBonusExpTotal
+      premAcc = premAccExpTotal
+      booster = boosterExpTotal
+      premMod = premModExpTotal
+      skillBonus = expSkillBonus
+      skillBonusLevel = skillBonusLevel ?? 0
+    }, { currencyImg = "#ui/gameuiskin#item_type_RP.svg" }.__merge(paramsOvr))
+}
+
 let getTableNameById = @(row) $"tbl{row.getRewardId()}"
+
+let cellNoValSymbol = loc("ui/mdash")
 
 let debriefingRowDefault = {
   id = ""
@@ -68,6 +84,7 @@ let debriefingRowDefault = {
   getValueFunc = null
   icon = "icon/summation" // Icon used as Value column header in tooltip
   getIcon = @() loc(this.icon, "")
+  fillTooltipFunc = null // function(debriefing, obj, handler)
   tooltipExtraRows = null //function(), array
   tooltipComment = null  //string function()
   tooltipRowBonuses = @(_unitId, _unitData) null
@@ -388,6 +405,116 @@ debriefingRows = [
     showByModes = function(gm) { return gm == GM_DOMINATION }
     showOnlyWhenFullResult = true
     isOverall = false
+
+    fillTooltipFunc = function(debriefing, obj, handler) {
+      if (debriefing.researchPointsUnits.len() == 0) {
+        obj["class"] = "empty"
+        return
+      }
+
+      let unitBonuses = debriefing.researchPointsUnits.map(function(unitBonus) {
+        let { noBonusExpTotal = 0, premAccExpTotal = 0, boosterExpTotal = 0,
+          premModExpTotal = 0, expSkillBonus = 0, invModuleExp = 0 } = unitBonus
+        let  total = noBonusExpTotal + premAccExpTotal + boosterExpTotal + premModExpTotal + expSkillBonus
+        return unitBonus.__merge({ overflow = total - invModuleExp })
+      })
+
+      local hasOverflow = false
+      foreach (r in unitBonuses) {
+        if (r.overflow > 0) {
+          hasOverflow = true
+          break
+        }
+      }
+
+      let columns = [
+        {titleLocId = "options/unit"}
+        {titleLocId = "debriefing/Mission"}
+        {titleLocId = "debriefing/researchedMod"}
+        {titleLocId = "debriefing/modResearch"}
+        hasOverflow ? {titleLocId = "debriefing/overflow"} : null
+      ].filter(@(col) col != null)
+
+      let rows = unitBonuses.map(function(unitBonus, idx) {
+        let { unit, overflow, invModuleExp = 0, invModuleName = null} = unitBonus
+
+        return {
+          isEven = idx % 2 == 0
+          cells = [
+            { cell = { text = loc($"{unit}_shop") }}
+            { cell =
+              {
+                sources = getMissionRewardSources(unitBonus, debriefingResult?.exp.expSkillBonusLevel, { regularFont = true })
+                hasFormula = true
+              }
+            }
+            { cell = { text = invModuleName ? loc($"modification/{invModuleName}") : cellNoValSymbol}}
+            { cell = {
+                text = invModuleExp || cellNoValSymbol
+                image = invModuleExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
+                cellType = "tdRight"
+              }
+            }
+            hasOverflow ? {
+              cell = {
+                text = overflow || cellNoValSymbol
+                image = overflow ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
+                cellType = "tdRight"
+              }
+            } : null
+          ].filter(@(cell) cell != null)
+        }
+      })
+
+      let markup = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", { columns, rows })
+      handler.guiScene.replaceContentFromText(obj, markup, markup.len(), handler)
+    }
+  }
+  {
+    id = "NewNationBonus"
+    rewardType = "exp"
+    text = "debriefing/nationResearchBonus"
+    rowProps =  { winAwardColor = "yes"}
+    hideUnitSessionTimeInTooltip = true
+    fillTooltipFunc = function(debriefing, obj, handler) {
+      let unitBonuses = debriefing.researchPointsUnits.filter(@(i) i?.newNationBonusExp != null)
+      let view = {
+        columns = [
+          {titleLocId = "options/unit"}
+          {titleLocId = "debriefing/basicRp"}
+          {titleLocId = "debriefing/researched_unit"}
+          {titleLocId = "multiplayer/unitRank"}
+          {titleLocId = "debriefing/total"}
+        ]
+        rows = unitBonuses.map(@(bonus, idx) {
+          isEven = idx % 2 == 0
+          cells = [
+            { cell = { text = loc($"{bonus.unit}_shop") }}
+            { cell = {
+                text =  bonus.noBonusExpTotal
+                image = { src = "#ui/gameuiskin#item_type_RP.svg" } }
+                cellType = "tdRight"
+            }
+            { cell = { text = bonus?.invUnitName ? loc($"{bonus.invUnitName}_shop") : cellNoValSymbol }}
+            { cell = {
+              text = bonus?.invUnitName ? getRomanNumeralRankByUnitName(bonus.invUnitName) : cellNoValSymbol }
+              cellType = "tdCenter"
+            }
+            { cell = {
+                cellType = "tdRight"
+                text =  "".concat(
+                  bonus.noBonusExpTotal, loc("ui/multiply"), bonus.newNationBonusPercent, loc("measureUnits/percent"),
+                  "=", bonus?.newNationBonusExp
+                )
+                image = { src = "#ui/gameuiskin#item_type_RP.svg" }
+              }
+            }]
+          })
+      }
+
+      let markup = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
+      handler.guiScene.replaceContentFromText(obj, markup, markup.len(), handler)
+    }
   }
   { id = "UnitTotal"
     text = "debriefing/total/unitsResearch"
@@ -396,28 +523,125 @@ debriefingRows = [
     rowProps =  { totalColor = "yes", totalRowStyle = "last" }
     showOnlyWhenFullResult = true
     isOverall = true
-    tooltipComment = function() { return loc("debriefing/EfficiencyReason") }
-    tooltipRowBonuses = function(unitId, unitData) {
-      let unitTypeName = getAircraftByName(unitId)?.unitType?.name ?? ""
-      let investUnit = getAircraftByName(debriefingResult?.exp?["investUnitName" + unitTypeName])
-      let prevUnit = ::getPrevUnit(investUnit)
-      if (unitId != prevUnit?.name)
-        return null
 
-      let noBonus = unitData?.expTotal ?? 0
-      let bonus = (unitData?.expInvestUnit ?? 0) - noBonus
-      if (noBonus <= 0 || bonus <= 0)
-        return null
-
-      let comment = colorize("fadedTextColor", loc("debriefing/bonusToNextUnit",
-        { unitName = colorize("userlogColoredText", getUnitName(investUnit)) }))
-
-      return {
-        sources = [
-          NO_BONUS.__merge({ text = Cost().setRp(noBonus).tostring() }),
-          PREV_UNIT_EFFICIENCY.__merge({ text = $"{Cost().setRp(bonus).tostring()}{comment}" })
-        ]
+    fillTooltipFunc = function(debriefing, obj, handler) {
+      if (debriefing.researchPointsUnits.len() == 0) {
+        obj["class"] = "empty"
+        return
       }
+
+      let unitBonuses = debriefing.researchPointsUnits.map(function(unitBonus) {
+        let { noBonusExpTotal = 0, premAccExpTotal = 0, boosterExpTotal = 0,
+          premModExpTotal = 0, expSkillBonus = 0, newNationBonusExp = 0,
+          childBonusExp = 0, rankDiffPenaltyExp = 0, invUnitExp = 0
+        } = unitBonus
+
+        let total = noBonusExpTotal + premAccExpTotal + boosterExpTotal + premModExpTotal + expSkillBonus
+        let overflow = total + newNationBonusExp + childBonusExp - rankDiffPenaltyExp - invUnitExp
+        return unitBonus.__merge({ total, overflow })
+      })
+
+      local hasOverflow = false
+      local hasLinkInResTreeFormula = false
+      local hasRankDiffFormuls = false
+      foreach (bonus in unitBonuses) {
+        if (bonus.overflow > 0)
+          hasOverflow = true
+        if ((bonus?.childBonusExp ?? 0) > 0)
+          hasLinkInResTreeFormula = true
+        if ((bonus?.rankDiffPenaltyExp ?? 0) > 0)
+          hasRankDiffFormuls = true
+      }
+
+      let hasNewNationBonus = debriefing.exp.expNewNationBonus > 0
+
+      let columns = [
+        {titleLocId = "options/unit", isFirstCol = true}
+        {titleLocId = "debriefing/Mission"}
+        hasNewNationBonus ? {titleLocId = "debriefing/newNationBonus"} : null
+        {titleLocId = "debriefing/researched_unit"}
+        hasLinkInResTreeFormula ? {titleLocId = "debriefing/linkInTree"} : null
+        hasRankDiffFormuls ? {titleLocId = "debriefing/ranksDifference"} : null
+        {titleLocId = "debriefing/total/unitsResearch"}
+        hasOverflow ? {titleLocId = "debriefing/overflow"} : null
+      ].filter(@(col) col != null)
+
+      let rows = unitBonuses.map(function(unitBonus, idx) {
+        let { newNationBonusExp = 0, childBonusPercent = 0, childBonusExp = 0,
+          rankDiffPenaltyExp = 0, rankDiffPenaltyPercent= 0, invUnitExp = 0, unit, invUnitName = null, total, overflow } = unitBonus
+
+        let linkInTheResearchTreeFormula = !childBonusExp ? cellNoValSymbol
+          : newNationBonusExp ? $"({total}+{newNationBonusExp}){loc("ui/multiply")}{childBonusPercent}%={childBonusExp}"
+          : $"{total}x{childBonusPercent}{loc("measureUnits/percent")}={childBonusExp}"
+
+        let unitRank = getRomanNumeralRankByUnitName(unit)
+        let invUnitRank = getRomanNumeralRankByUnitName(invUnitName) ?? cellNoValSymbol
+
+        let ranksDiffFormula = !rankDiffPenaltyExp ? cellNoValSymbol
+          : newNationBonusExp  ? $"-({total}+{newNationBonusExp}){loc("ui/multiply")}{rankDiffPenaltyPercent}{loc("measureUnits/percent")}[{unitRank}{loc("icon/arrowRight")}{invUnitRank}]=-{rankDiffPenaltyExp}"
+          : $"-{total}{loc("ui/multiply")}{rankDiffPenaltyPercent}{loc("measureUnits/percent")}[{unitRank}{loc("icon/arrowRight")}{invUnitRank}]=-{rankDiffPenaltyExp}"
+
+        return {
+          isEven = idx % 2 == 0
+          cells = [
+            // Unit
+            { cell = { text = loc($"{unit}_shop") }, isFirstCol = true}
+            // Mission Reward
+            { cell =
+              {
+                sources = getMissionRewardSources(unitBonus, debriefingResult?.exp.expSkillBonusLevel, {regularFont = true})
+                hasFormula = true
+              }
+            }
+            // New Nation Bonus
+            hasNewNationBonus ? { cell = {
+                text = newNationBonusExp
+                  ? newNationBonusExp
+                  : cellNoValSymbol
+                image = newNationBonusExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
+                cellType = "tdRight"
+              }
+            } : null
+            // Researched Unit
+            { cell = {
+                text = invUnitName ? loc($"{unitBonus?.invUnitName}_shop") : cellNoValSymbol
+              }
+            }
+            // Link in Tree
+            hasLinkInResTreeFormula ? { cell = {
+                text = linkInTheResearchTreeFormula
+                image = childBonusExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null }
+                cellType = "tdRight"
+            } : null
+            // Ranks Diff
+            hasRankDiffFormuls ? { cell = {
+                text = ranksDiffFormula
+                image = rankDiffPenaltyExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
+                cellType = "tdRight"
+              }
+            } : null
+            // Units Research
+            { cell = {
+                text = invUnitExp || cellNoValSymbol
+                image = invUnitExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
+                cellType = "tdRight"
+              }
+            }
+            // Overflow
+            hasOverflow ? {
+              cell = {
+                text = overflow || cellNoValSymbol
+                image = overflow ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
+                cellType = "tdRight"
+              }
+            } : null
+          ].filter(@(cell) cell != null)
+        }
+      })
+
+      let view = { columns, rows, compactColumns = true }
+      let markup = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
+      handler.guiScene.replaceContentFromText(obj, markup, markup.len(), handler)
     }
   }
   { id = "ecSpawnScore"
@@ -1099,6 +1323,12 @@ function gatherDebriefingResult() {
   debriefingResult.exp.expMission <- getTblValue("expMission", exp, 0) + getTblValue("expRace", exp, 0)
   debriefingResult.exp.wpMission <- getTblValue("wpMission", exp, 0) + getTblValue("wpRace", exp, 0)
   debriefingResult.exp.expSkillBonus <- getTblValue("expSkillBonusTotal", exp, 0)
+
+  let resPointsLogs = ::getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })?[0].container.researchPoints.unit ?? []
+  debriefingResult.researchPointsUnits <- u.isArray(resPointsLogs) ? resPointsLogs : [resPointsLogs]
+
+  debriefingResult.exp.expNewNationBonus <- debriefingResult.researchPointsUnits
+    .reduce(@(total, b) total + (b?.newNationBonusExp  ?? 0), 0)
 
   let missionRules = getCurMissionRules()
   debriefingResult.overrideCountryIconByTeam <- {

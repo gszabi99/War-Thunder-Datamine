@@ -79,6 +79,8 @@ let {
   set_gyro_sight_deflection,
   get_option_use_tws_hud_in_cockpit = @() true,
   set_option_use_tws_hud_in_cockpit = @(_value) null
+  get_activate_bombs_auto_release_on_spawn = @() true,
+  set_activate_bombs_auto_release_on_spawn = @(_value) null
 } = require("controlsOptions")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -131,6 +133,8 @@ let { complaintCategories } = require("%scripts/penitentiary/tribunal.nut")
 let { isWishlistEnabledForFriends, isWishlistCommentsEnabledForFriends,
   enableShowWishlistForFriends, enableShowWishlistCommentsForFriends } = require("chard")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { isEnabledCustomSoundMods, setCustomSoundMods
+} = require("%scripts/options/customSoundMods.nut")
 
 const BOMB_ASSAULT_FUSE_TIME_OPT_VALUE = -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -1610,6 +1614,13 @@ let optionsMap = {
       descr.needRestartClient = true
     descr.value = getSystemConfigOption("sound/fmod_sound_enable", true)
   },
+  [USEROPT_CUSTOM_SOUND_MODS] = function(_optionId, descr, _context) {
+    descr.id = "customSoundMods"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.needRestartClient = true
+    descr.value = isEnabledCustomSoundMods()
+  },
   [USEROPT_SOUND_SPEAKERS_MODE] = function(_optionId, descr, _context) {
     descr.id = "sound_speakers"
     descr.hint = loc("options/sound_speakers")
@@ -2414,11 +2425,11 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.value = get_gui_option(optionId)
   },
-  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = function(optionId, descr, _context) {
+  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = function(_optionId, descr, _context) {
     descr.id = "activate_bombs_auto_release_on_spawn"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = get_gui_option(optionId)
+    descr.value = get_activate_bombs_auto_release_on_spawn()
   },
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = function(optionId, descr, _context) {
     descr.id = "automatic_empty_containers_jettison"
@@ -4507,6 +4518,7 @@ let optionsSetMap = {
     set_mute_sound(value)
     setSystemConfigOption("sound/fmod_sound_enable", value)
   },
+  [USEROPT_CUSTOM_SOUND_MODS] = @(value, _descr, _optionId) setCustomSoundMods(value),
   [USEROPT_SOUND_SPEAKERS_MODE] = @(value, descr, _optionId) setSystemConfigOption("sound/speakerMode", descr.values[value]),
   [USEROPT_VOICE_MESSAGE_VOICE] = @(value, _descr, _optionId) set_option_voice_message_voice(value + 1),//1-based
   [USEROPT_HUD_COLOR] = @(value, _descr, _optionId) set_option_hud_color(value),
@@ -4611,7 +4623,7 @@ let optionsSetMap = {
   [USEROPT_SAVE_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_ai_target_type(value ? 1 : 0),
   [USEROPT_DEFAULT_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_default_ai_target_type(value),
   [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN] = def_set_gui_option,
-  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = def_set_gui_option,
+  [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN] = @(value, _descr, _optionId) set_activate_bombs_auto_release_on_spawn(value),
   [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON] = def_set_gui_option,
   [USEROPT_SHOW_INDICATORS_TYPE] = function(value, descr, _optionId) {
     local val = get_option_indicators_mode() & ~(HUD_INDICATORS_SELECT | HUD_INDICATORS_CENTER | HUD_INDICATORS_ALL)

@@ -332,31 +332,33 @@ function constraintBox(width, height) {
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = [width * 0.5 + (TurretYaw.value - 0.5) / (AgmLaunchZoneYawMax.value - 0.5) * height * 0.2,
-           height - (TurretPitch.value - AgmLaunchZonePitchMin.value) * height * 0.18]
+          translate = AgmLaunchZoneYawMax.value != 0.5 ?
+           [width * 0.5 + (TurretYaw.value - 0.5) / (AgmLaunchZoneYawMax.value - 0.5) * height * 0.2,
+            height - (TurretPitch.value - AgmLaunchZonePitchMin.value) * height * 0.18] :
+           [width * 0.5, height * (1.0 - TurretPitch.value * 0.18)]
         }
       }
     } : null
   }
 }
 
-function tads(width, height) {
+function tads(width, height, is_apache) {
   return {
     size = [width, height]
     children = [
-      compassWrap(width, height, generateCompassMark)
-      compassVal
-      fieldOfRegard(width, height)
-      losReticle
-      flir
-      speed
-      altitude
-      tadsLabel
-      distance
-      fxdLabel
-      selectedWeapon
-      weaponStatus
-      inhibit
+      compassWrap(width, height, generateCompassMark),
+      compassVal,
+      fieldOfRegard(width, height),
+      losReticle,
+      (is_apache ? flir : null),
+      speed,
+      altitude,
+      (is_apache ? tadsLabel : null),
+      distance,
+      (is_apache ? fxdLabel : null),
+      selectedWeapon,
+      weaponStatus,
+      inhibit,
       constraintBox(width, height)
     ]
   }

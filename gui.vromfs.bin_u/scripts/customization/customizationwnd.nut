@@ -77,6 +77,8 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
+let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
+let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -913,6 +915,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
           dmg_skin_div = hasFeature("DamagedSkinPreview") && !isInEditMode && !this.decorMenu?.isOpened
           dmg_skin_buttons_div = isDmgSkinPreviewMode && (this.unit.isAir() || this.unit.isHelicopter())
+
+          btn_add_to_wishlist = hasFeature("Wishlist") && !hasInWishlist(this.unit.name) && !this.unit.isBought()
     })
 
 
@@ -926,6 +930,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         textArr.append(loc("suggested_skin/find"))
       suggestedSkinObj.findObject("suggested_skin_info_text").setValue("\n".join(textArr))
     }
+
+    if(isWishlistFull())
+      this.scene.findObject("btn_add_to_wishlist")["status"] = "red"
+
 
     if (this.unitInfoPanelWeak?.isValid() ?? false)
       this.unitInfoPanelWeak.onSceneActivate(!isInEditMode && !this.decorMenu?.isOpened && !isDmgSkinPreviewMode)
@@ -2042,6 +2050,13 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       openUrl(format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), this.unit.name), false, false, "customization_wnd")
     else
       showInfoMsgBox(colorize("activeTextColor", getUnitName(this.unit, false)) + "\n" + loc("profile/wiki_link"))
+  }
+
+  function onAddToWishlist() {
+    if(isWishlistFull())
+      return showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
+
+    addToWishlist(this.unit)
   }
 
   function clearCurrentDecalSlotAndShow() {

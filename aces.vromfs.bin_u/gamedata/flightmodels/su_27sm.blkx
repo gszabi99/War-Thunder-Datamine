@@ -1755,8 +1755,8 @@
         ],
         "flexionDir": [
           0.0,
-          -1.0,
-          0.2
+          -0.5,
+          1.0
         ]
       },
       {
@@ -1820,8 +1820,8 @@
   },
   "cockpit": {
     "mfdTextureSize": [
-      1024,
-      1024
+      1500,
+      1500
     ],
     "headPos": [
       7.8,
@@ -2106,49 +2106,15 @@
             {
               "type": "radar",
               "font": "ils31",
-              "scale": 0.75,
-              "fontScale": 0.5,
-              "lineWidth": 0.5,
-              "lineColor": [
-                0,
-                255,
-                0
-              ],
-              "modeColor": [
-                0,
-                220,
-                0
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                0
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                0
-              ],
-              "scaleColor": [
-                0,
-                255,
-                0
-              ],
-              "targetColor": [
-                0,
-                255,
-                0
-              ],
-              "hideBeam": false,
-              "beamShape": "caret",
-              "hideLaunchZone": false,
-              "hideScale": false,
-              "hideHorAngle": false,
-              "hideVerAngle": false,
-              "hideBackground": true
+              "customRadar": "su27tactic",
+              "scale": 0.65
             },
             {
               "type": "ils_on_camera"
+            },
+            {
+              "type": "custom",
+              "pageName": "su27Pod"
             },
             {
               "type": "map",
@@ -2167,264 +2133,15 @@
             1.0,
             0.5
           ],
-          "page": [
-            {
-              "type": "rwr",
-              "scale": 0.95,
-              "circleCnt": 2,
-              "angleMarkStep": 30.0,
-              "centralMark": "bigCross",
-              "hasCompass": true,
-              "digitalCompass": true
-            },
-            {
-              "type": "devices",
-              "speed": {
-                "texture": "su_mfd_speed",
-                "position": [
-                  170.0,
-                  100.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.91,
-                  0.89
-                ],
-                "size": [
-                  160.0,
-                  110.0
-                ],
-                "color": [
-                  0,
-                  255,
-                  255,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      0.0,
-                      50.0,
-                      -0.5,
-                      -0.46
-                    ],
-                    [
-                      50.0,
-                      100.0,
-                      -0.46,
-                      -0.26
-                    ],
-                    [
-                      100.0,
-                      150.0,
-                      -0.26,
-                      0.0
-                    ],
-                    [
-                      150.0,
-                      250.0,
-                      0.0,
-                      0.5
-                    ],
-                    [
-                      250.0,
-                      450.0,
-                      0.5,
-                      1.38
-                    ]
-                  ]
-                }
-              },
-              "vario": {
-                "texture": "su_mfd_vario",
-                "position": [
-                  350.0,
-                  100.0
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "size": [
-                  160.0,
-                  110.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "ranges": {
-                  "limits": [
-                    [
-                      -20.0,
-                      -10.0,
-                      0.25,
-                      0.5
-                    ],
-                    [
-                      -10.0,
-                      10.0,
-                      0.5,
-                      1.5
-                    ],
-                    [
-                      10.0,
-                      20.0,
-                      1.5,
-                      1.75
-                    ]
-                  ]
-                }
-              },
-              "altitude_hour": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  260.0,
-                  420.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.47,
-                  0.92,
-                  0.86,
-                  1.0
-                ],
-                "size": [
-                  180.0,
-                  120.0
-                ],
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    10.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "altitude_min": {
-                "texture": "su_mfd_altitude",
-                "position": [
-                  260.0,
-                  420.0
-                ],
-                "backgroundTexCoord": [
-                  0.0,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.93,
-                  0.4,
-                  0.97
-                ],
-                "size": [
-                  150.0,
-                  192.0
-                ],
-                "color": [
-                  255,
-                  30,
-                  30,
-                  255
-                ],
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    0.0,
-                    1000.0,
-                    -0.5,
-                    1.5
-                  ]
-                }
-              },
-              "aviahorizon_pitch": {
-                "texture": "su_mfd_ahorizon",
-                "arrowTex": "su_mfd_ahorizon_scale",
-                "position": [
-                  260.0,
-                  250.0
-                ],
-                "backgroundTexCoord": [
-                  0.11,
-                  0.0,
-                  0.89,
-                  0.89
-                ],
-                "arrowTexCoord": [
-                  0.0,
-                  0.4,
-                  1.0,
-                  0.6
-                ],
-                "size": [
-                  220.0,
-                  180.0
-                ],
-                "ranges": {
-                  "limits": [
-                    -90.0,
-                    90.0,
-                    0.35,
-                    -0.35
-                  ]
-                }
-              },
-              "aviahorizon_roll": {
-                "texture": "su_mfd_ahorizon",
-                "position": [
-                  260.0,
-                  250.0
-                ],
-                "arrowTexCoord": [
-                  0.2,
-                  0.9,
-                  0.8,
-                  1.0
-                ],
-                "size": [
-                  220.0,
-                  180.0
-                ],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [
-                    -180.0,
-                    180.0,
-                    -1.0,
-                    1.0
-                  ]
-                }
-              }
-            }
-          ]
+          "page": {
+            "type": "rwr",
+            "scale": 0.95,
+            "circleCnt": 2,
+            "angleMarkStep": 30.0,
+            "centralMark": "bigCross",
+            "hasCompass": true,
+            "digitalCompass": true
+          }
         },
         {
           "textureArea": [
@@ -2436,6 +2153,10 @@
           "cameraFromShell": true,
           "page": [
             {
+              "type": "custom",
+              "pageName": "su27Pod"
+            },
+            {
               "type": "target_tracking",
               "turretIdx": 0
             },
@@ -2446,46 +2167,8 @@
             {
               "type": "radar",
               "font": "ils31",
-              "scale": 0.75,
-              "fontScale": 0.5,
-              "lineWidth": 0.5,
-              "lineColor": [
-                0,
-                255,
-                0
-              ],
-              "modeColor": [
-                0,
-                220,
-                0
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                0
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                0
-              ],
-              "scaleColor": [
-                0,
-                255,
-                0
-              ],
-              "targetColor": [
-                0,
-                255,
-                0
-              ],
-              "hideBeam": false,
-              "beamShape": "caret",
-              "hideLaunchZone": false,
-              "hideScale": false,
-              "hideHorAngle": false,
-              "hideVerAngle": false,
-              "hideBackground": true
+              "customRadar": "su27tactic",
+              "scale": 0.65
             },
             {
               "type": "ils_on_camera"
@@ -2978,7 +2661,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 96,
-              "bulletsCartridge": 3,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             }
@@ -6312,7 +5995,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "tier": 1,

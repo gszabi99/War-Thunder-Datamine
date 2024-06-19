@@ -4,6 +4,7 @@ let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { secondsToString } = require("%scripts/time.nut")
+let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let visibleRewards = [
   {
@@ -136,8 +137,8 @@ return function(logObj) {
         totalSkillBonus += bonus.exp
         battleRewardDetails.append({
           offenderUnit = bonus.unit
-          expSkillBonusLevel = bonus.bonusLevel
-          expSkillBonus = bonus.exp
+          bonusLevel = bonus.bonusLevel
+          exp = bonus.exp
         })
       }
 
@@ -152,6 +153,30 @@ return function(logObj) {
         wp = Cost(0)
       })
     }
+  }
+
+  let researchPointsUnits = logObj?.container.researchPoints.unit ?? []
+  let newNationUnitBonuses = (isArray(researchPointsUnits) ? researchPointsUnits : [researchPointsUnits])
+    .filter(@(unit) unit?.newNationBonusExp)
+    .map(@(unit) unit.__merge({
+      exp = null  // for hiding exp column in the plain text
+      invUnitRank = getRomanNumeralRankByUnitName(unit?.invUnitName) ?? loc("ui/hyphen")
+    }))
+
+  if (newNationUnitBonuses.len() > 0) {
+    let exp = newNationUnitBonuses
+      .reduce(@(total, unit) total + unit.newNationBonusExp, 0)
+    let battleRewardTooltipId = getTooltipType("USER_LOG_REWARD").getTooltipId(logObj.idx, "researchPoints")
+    rewards.append({
+      id = "nationResearchBonus"
+      name = loc("debriefing/nationResearchBonus")
+      battleRewardTooltipId
+      battleRewardDetails = newNationUnitBonuses
+      totalRewardExp = exp
+      exp = Cost().setRp(exp)
+      totalRewardWp = 0
+      wp = Cost(0)
+    })
   }
 
   let allRewardsWp = rewards.reduce(@(total, reward) total + reward.totalRewardWp, 0)

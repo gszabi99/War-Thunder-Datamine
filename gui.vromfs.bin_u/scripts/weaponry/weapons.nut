@@ -38,7 +38,8 @@ let { isBullets, getBulletsList, setUnitLastBullets,
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets,
   checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList,
-  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd
+  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd,
+  getLinkedGunIdx
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setDoubleTextToButton, placePriceTextToButton
@@ -298,11 +299,13 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         needCheckUnitPurchase = false, needOnlyAvailable = false
       })
       let curBulletsName = getSavedBullets(this.air.name, groupIndex)
-      if (isPairBulletsGroup(bulletsList, gunsInfo?[groupIndex]))
-        continue
       if (groupIndex < this.air.unitType.bulletSetsQuantity)
         this.lastBullets.append(curBulletsName)
       if (!bulletsList.values.len() || bulletsList.duplicate)
+        continue
+      let linkedGunIdx = getLinkedGunIdx(groupIndex, gunsInfo.len(),
+        this.air.unitType.bulletSetsQuantity)
+      if (isPairBulletsGroup(bulletsList, gunsInfo?[linkedGunIdx]))
         continue
       this.bulletsByGroupIndex[groupIndex] <- bulletsList
     }

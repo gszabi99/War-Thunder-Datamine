@@ -2887,7 +2887,8 @@
               0,
               255,
               0
-            ]
+            ],
+            "centerRadar": true
           }
         },
         {
@@ -3017,12 +3018,8 @@
         "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_suu_23a.blk"
       },
       {
-        "name": "f_4f_kws_lv_default_aim_9l",
-        "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_default_aim_9l.blk"
-      },
-      {
-        "name": "f_4f_kws_lv_aim_9l",
-        "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_aim_9l.blk"
+        "name": "f_4f_kws_lv_default_aim_9l_i",
+        "blk": "gameData/flightModels/weaponPresets/f_4f_kws_lv_default_aim_9l_i.blk"
       },
       {
         "name": "f_4f_kws_lv_aim_9l_i",
@@ -3192,33 +3189,37 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -3592,29 +3593,14 @@
         "order": 5,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_default_slot3",
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9l_i_default_slot3",
             "ShowNodes": {
               "node": "pylon_l_in"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/lau_7a_aim9l_left_wing_default.blk",
-              "emitter": "aero_3b_001",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_type_b_air_to_air_group",
-            "name": "aim_9l_slot3",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": "pylon_l_in"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/lau_7a_aim9l.blk",
+              "blk": "gameData/Weapons/containers/aero_3b_aim9l_i_left_wing_default.blk",
               "emitter": "aero_3b_001",
               "external": true,
               "separate": true
@@ -3629,7 +3615,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/lau_7a_aim9l_i.blk",
+              "blk": "gameData/Weapons/containers/aero_3b_aim9l_i.blk",
               "emitter": "aero_3b_001",
               "external": true,
               "separate": true
@@ -3904,28 +3890,13 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_default_slot9",
+            "name": "aim_9l_i_default_slot9",
             "ShowNodes": {
               "node": "pylon_r_in"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/lau_7a_aim9l_right_wing_default.blk",
-              "emitter": "aero_3b_002",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_type_b_air_to_air_group",
-            "name": "aim_9l_slot9",
-            "reqModification": "us_aim_9l",
-            "ShowNodes": {
-              "node": "pylon_r_in"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/lau_7a_aim9l.blk",
+              "blk": "gameData/Weapons/containers/aero_3b_aim9l_i_right_wing_default.blk",
               "emitter": "aero_3b_002",
               "external": true,
               "separate": true
@@ -3940,7 +3911,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/lau_7a_aim9l_i.blk",
+              "blk": "gameData/Weapons/containers/aero_3b_aim9l_i.blk",
               "emitter": "aero_3b_002",
               "external": true,
               "separate": true
@@ -4590,10 +4561,8 @@
       "prevModification": "structure_str",
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "tier": 1,
@@ -4663,10 +4632,6 @@
     "us_agm_65g": {
       "reqModification": "us_agm_65d",
       "tier": 4,
-      "modClass": "weapon"
-    },
-    "us_aim_9l": {
-      "tier": 1,
       "modClass": "weapon"
     },
     "us_aim_9l_i": {

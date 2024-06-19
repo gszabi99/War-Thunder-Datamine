@@ -59,6 +59,13 @@
     71,
     255
   ],
+  "bombSightBlockedOpacityMult": 0.5,
+  "bombSightBlockedTextOffsetRel": [
+    0.05,
+    -0.05
+  ],
+  "bombSightBlockedWarningEnabled": true,
+  "bombSightBlockedWarningDuration": 5.0,
   "helicopterWarningOverheatTimeToDie": 120.0,
   "helicopterWarningOverheatFrequency0": [
     60.0,
@@ -1892,11 +1899,6 @@
       225,
       255
     ],
-    "distanceSmallIndicators": 4500.0,
-    "distancePreSpecifiedTarget": 1500.0,
-    "distanceSpecifiedTarget": 1200.0,
-    "distanceFullySpecifiedTarget": 500.0,
-    "distanceShowTitle": 1000.0,
     "alphaNotLockedTarget": 0.75,
     "alphaLockedTarget": 0.95,
     "objectivesBlinkColor": [
@@ -2374,6 +2376,13 @@
       "distanceSpecifiedTarget": 5000.0,
       "distanceFullySpecifiedTarget": 1000.0,
       "distanceShowTitle": 500.0
+    },
+    "indicatorsForPlanes": {
+      "distanceSmallIndicators": 4500.0,
+      "distancePreSpecifiedTarget": 1500.0,
+      "distanceSpecifiedTarget": 1200.0,
+      "distanceFullySpecifiedTarget": 500.0,
+      "distanceShowTitle": 1000.0
     },
     "airfieldModulesColors": {
       "row": [
@@ -4667,24 +4676,48 @@
     "color": [
       10,
       10,
-      255,
-      50
+      10,
+      25
     ],
     "selectedColor": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "farthestColor": [
       20,
       255,
-      20,
-      50
+      110,
+      30
     ],
-    "coneAlpha": 50,
-    "defaultSpreadHorAngle": 3.0,
-    "defaultSpreadVertAngle": 2.0,
+    "failColor": [
+      10,
+      10,
+      255,
+      25
+    ],
+    "colorIntervals": [
+      300.0,
+      700.0
+    ],
+    "defaultSpreadHorAngle": 2.0,
+    "defaultSpreadVertAngle": 1.0,
     "startEndInterval": [
-      0.15,
-      0.95
+      0.5,
+      0.99
     ],
     "coneRingsCount": 64,
-    "coneSegmentsCount": 64
+    "coneSegmentsCount": 64,
+    "projectionAlpha": 90,
+    "heightOffset": 0.4,
+    "thicknessMinMax": [
+      300.0,
+      0.4,
+      1200.0,
+      5.0
+    ],
+    "relativenessCoef": 0.0
   },
   "catapultSight": {
     "angle": 10.0,

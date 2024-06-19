@@ -48,15 +48,25 @@ tdiv {
   }
   <<#currencyImg>>
   tdiv {
+    <<^currencyImgSize>>
     size:t='0.75@tIco, 1@tIco'
+    <</currencyImgSize>>
     pos:t='0, 0.5ph-0.5h-0.5'
     position:t='relative'
     img {
+      <<^currencyImgSize>>
       size:t='1@tIco, 1@tIco'
+      background-svg-size:t='1@tIco, 1@tIco'
+      <</currencyImgSize>>
+
+      <<#currencyImgSize>>
+      size:t='<<currencyImgSize>>'
+      background-svg-size:t='<<currencyImgSize>>'
+      <</currencyImgSize>>
+
       pos:t='pw/2-w/2, 0'
       position:t='relative'
       background-image:t='<<currencyImg>>'
-      background-svg-size:t='1@tIco, 1@tIco'
     }
   }
   <</currencyImg>>

@@ -62,6 +62,9 @@ let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/opti
     return this.gunInfo != null
   }
 
+  hasEnableSecondValue =@() this.bullets.items?[1].enabled ?? false
+  canChangePairBulletsCount = @() this.hasEnableSecondValue()
+
   function getGunIdx() {
     return getTblValue("gunIdx", this.gunInfo, 0)
   }
@@ -197,4 +200,9 @@ let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/opti
     && !this.isPairBulletsGroup()
 
   isPairBulletsGroup = @() isPairBulletsGroup(this.bullets, this.gunInfo)
+
+  function getWeaponName() {
+    let needSetWeaponName = this.unit.isAir() || this.unit.isHelicopter()
+    return needSetWeaponName ? this.gunInfo?.weapName ?? "" : ""
+  }
 }

@@ -12,17 +12,12 @@
     "statType": "hydra",
     "caliber": 0.165,
     "length": 3.1,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
     "CxK": 1.85,
     "wingAreaMult": 1.4,
-    "finsAoaHor": 0.4,
-    "finsAoaVer": 0.4,
-    "finsLatAccel": 45.0,
-    "distFromCmToStab": 0.12,
+    "finsAoaHor": 0.334603,
+    "finsAoaVer": 0.334603,
+    "finsLatAccel": 55.3663,
+    "distFromCmToStab": 0.135,
     "mass": 112.0,
     "massEnd": 88.3,
     "massEnd1": 70.1,
@@ -102,8 +97,8 @@
     "amountPerTier": 1.0,
     "iconType": "missile_type_b_air_to_air_midrange",
     "arcadeProp": {
-      "finsAoaHor": 0.4,
-      "finsAoaVer": 0.4
+      "finsAoaHor": 0.334603,
+      "finsAoaVer": 0.334603
     },
     "guidance": {
       "inertialNavigation": true,
@@ -127,7 +122,7 @@
         "multipathEffect": [
           0.0,
           1.0,
-          50.0,
+          60.0,
           0.0
         ],
         "lockAngleMax": 55.0,
@@ -181,49 +176,25 @@
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 25.0,
-        "loftTargetElevation": -15.0,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -5.0,
         "loftAngleToAccelMult": 2.5,
-        "loftTargetOmegaMax": 0.75,
+        "loftTargetOmegaMax": 2.5,
         "timeToGain0": [
-          0.3,
+          0.15,
           0.0
         ],
         "timeToGain1": [
-          0.31,
+          0.16,
           1.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 50.0,
-        "pid0": {
-          "time": 2.5,
-          "prop": 0.005,
-          "intg": 0.0,
-          "intgLim": 1.0,
-          "diff": 0.0005
-        },
-        "pid1": {
-          "time": 3.0,
-          "prop": 0.0035,
-          "intg": 0.0206,
-          "intgLim": 1.0,
-          "diff": 0.0005
-        },
-        "pid2": {
-          "time": 5.75,
-          "prop": 0.003,
-          "intg": 0.0206,
-          "intgLim": 1.0,
-          "diff": 0.0005
-        },
-        "pid3": {
-          "time": 6.5,
-          "prop": 0.002,
-          "intg": 0.0271,
-          "intgLim": 1.0,
-          "diff": 0.0004
-        }
+        "accelControlProp": 0.0036,
+        "accelControlIntg": 0.032,
+        "accelControlDiff": 0.00005,
+        "accelControlIntgLim": 1.0
       },
       "table0": {
         "altitude": 1000.0,

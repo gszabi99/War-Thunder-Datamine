@@ -1,6 +1,6 @@
 {
   "model": "mirage_3cj",
-  "fmFile": "fm/mirage_3c.blk",
+  "fmFile": "fm/mirage_3cj.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.186,
@@ -216,6 +216,12 @@
       },
       "tank6_dm": {
         "hp": 97.5
+      },
+      "tank7_dm": {
+        "hp": 120.5
+      },
+      "tank8_dm": {
+        "hp": 120.5
       }
     },
     "wood": {
@@ -1132,6 +1138,88 @@
       },
       {
         "name": "tank6_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank7_dm",
+        "onHit": [
+          {
+            "fire": 0.0001,
+            "leak": 0.3
+          },
+          {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 0.01,
+            "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank8_dm",
         "onHit": [
           {
             "fire": 0.0001,
@@ -2149,7 +2237,14 @@
         "pylon_crp18_jl100r_002",
         "pylon_ces3_bomb_001",
         "pylon_ces3_bomb_002",
-        "pylon_ces3_b"
+        "pylon_ces3_b",
+        "pylon_crp372_fuel_iaf"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank7_dm",
+        "tank8_dm"
       ]
     },
     "WeaponSlot": [
@@ -2328,6 +2423,24 @@
               "blk": "gameData/Weapons/rocketGuns/fr_r_530_matra_ir.blk",
               "emitter": "rocket_r530e",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_880",
+            "showInWeaponMenu": true,
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "ShowNodes": {
+              "node": "pylon_crp372_fuel_iaf"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/il_880l_rp825_drop_tank_mirage_3cj.blk",
+              "emitter": "880l_rp825_drop_tank",
+              "bullets": 1,
+              "external": true
             }
           }
         ]

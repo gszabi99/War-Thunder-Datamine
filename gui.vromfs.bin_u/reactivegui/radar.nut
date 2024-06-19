@@ -3,6 +3,7 @@ let { hudFontHgt } = require("style/airHudStyle.nut")
 let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode } = require("radarState.nut")
 let dasRadarHud = load_das("%rGui/radar.das")
 let dasRadarIndication = load_das("%rGui/radarIndication.das")
+let su27tactic = load_das("%rGui/planeCockpit/su27tactic.das")
 let DataBlock = require("DataBlock")
 let { IPoint3 } = require("dagor.math")
 let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
@@ -32,6 +33,10 @@ let beamShapes = {
   "caret" : 1
 }
 
+let customPages = {
+  su27tactic
+}
+
 let radarSettings = Computed(function() {
   let res = {
     lineWidth = 1.0
@@ -56,6 +61,11 @@ let radarSettings = Computed(function() {
     hideWeaponIndication = false
     showScanAzimuth = false
     cueHeights = false
+    script = dasRadarHud
+    centerRadar = false
+    cueTopHeiColor = IPoint3(0, 255, 0)
+    cueLowHeiColor = IPoint3(0, 255, 0)
+    cueUndergroundColor = IPoint3(0, 255, 0)
   }
 
   if (BlkFileName.value == "")
@@ -79,6 +89,7 @@ let radarSettings = Computed(function() {
         continue
       let targetType = pageBlk.getStr("targetForm", "")
       let beamType = pageBlk.getStr("beamShape", "beam")
+      let scriptType = pageBlk.getStr("customRadar", "")
       return {
         lineWidth = pageBlk.getReal("lineWidth", 1.0)
         lineColor = pageBlk.getIPoint3("lineColor", IPoint3(-1, -1, -1))
@@ -102,6 +113,11 @@ let radarSettings = Computed(function() {
         hideWeaponIndication = pageBlk.getBool("hideWeaponIndication", false)
         showScanAzimuth = pageBlk.getBool("showScanAzimuth", false)
         cueHeights = pageBlk.getBool("showCueHeights", false)
+        script = customPages?[scriptType] ?? dasRadarHud
+        centerRadar = pageBlk.getBool("centerRadar", false)
+        cueTopHeiColor = pageBlk.getIPoint3("cueTopHeiColor", IPoint3(-1, -1, -1))
+        cueLowHeiColor = pageBlk.getIPoint3("cueLowHeiColor", IPoint3(-1, -1, -1))
+        cueUndergroundColor = pageBlk.getIPoint3("cueUndergroundColor", IPoint3(-1, -1, -1))
       }
     }
   }
@@ -112,13 +128,13 @@ let radarMfd = @(pos_and_size, color_watched) function() {
   let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
    hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
    backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication, cueHeights,
-   showScanAzimuth } = radarSettings.get()
+   showScanAzimuth, script, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.value.w, pos_and_size.value.h]
     pos = [pos_and_size.value.x, pos_and_size.value.y]
     rendObj = ROBJ_DAS_CANVAS
-    script = dasRadarHud
+    script
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
     color = color_watched.value
@@ -148,6 +164,10 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     hideWeaponIndication
     showScanAzimuth
     cueHeights
+    centerRadar
+    cueTopHeiColor = cueTopHeiColor.x < 0 ? Color(modeColor.x, modeColor.y, modeColor.z, 255) : Color(cueTopHeiColor.x, cueTopHeiColor.y, cueTopHeiColor.z, 255)
+    cueLowHeiColor = cueLowHeiColor.x < 0 ? Color(modeColor.x, modeColor.y, modeColor.z, 255) : Color(cueLowHeiColor.x, cueLowHeiColor.y, cueLowHeiColor.z, 255)
+    cueUndergroundColor = cueUndergroundColor.x < 0 ? Color(modeColor.x, modeColor.y, modeColor.z, 255) : Color(cueUndergroundColor.x, cueUndergroundColor.y, cueUndergroundColor.z, 255)
   }
 }
 

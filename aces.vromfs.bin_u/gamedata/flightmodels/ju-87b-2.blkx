@@ -1768,6 +1768,78 @@
       }
     ]
   },
+  "ikGunner": {
+    "model": "pilot_german_char",
+    "maxHeadHorAngle": 60.0,
+    "maxHeadDownAngle": 60.0,
+    "maxHeadUpAngle": 10.0,
+    "headNode": "Bip01 Head",
+    "pelvisNode": "Bip01 Pelvis",
+    "pelvisTargetNode": "Bip01 Pelvis02",
+    "chestNodes": {
+      "leftShoulderNode": "Bip01 L UpperArm",
+      "rightShoulderNode": "Bip01 R UpperArm",
+      "neckNode": "Bip01 Neck",
+      "node": [
+        "Bip01 R Clavicle",
+        "Bip01 L Clavicle",
+        "Bip01 Spine 1",
+        "Bip01 Head",
+        "Bip01 HeadNub",
+        "Bip01 L UpperArm",
+        "Bip01 R UpperArm",
+        "Bip01 Neck"
+      ],
+      "leftHandTarget": "throttle_lhand_2",
+      "rightHandTarget": "stick_rhand_2"
+    },
+    "ikNode": [
+      {
+        "downNode": "Bip01 L Hand",
+        "midNode": "Bip01 L Forearm",
+        "upNode": "Bip01 L UpperArm",
+        "targetNode": "throttle_lhand_2",
+        "flexionDir": [
+          0.9,
+          -0.9,
+          0.3
+        ]
+      },
+      {
+        "downNode": "Bip01 R Hand",
+        "midNode": "Bip01 R Forearm",
+        "upNode": "Bip01 R UpperArm",
+        "targetNode": "stick_rhand_2",
+        "flexionDir": [
+          0.9,
+          -0.9,
+          -0.3
+        ]
+      },
+      {
+        "downNode": "Bip01 L Foot",
+        "midNode": "Bip01 L Calf",
+        "upNode": "Bip01 L Thigh",
+        "targetNode": "pedal_lfoot_2",
+        "flexionDir": [
+          0.0,
+          1.0,
+          -0.2
+        ]
+      },
+      {
+        "downNode": "Bip01 R Foot",
+        "midNode": "Bip01 R Calf",
+        "upNode": "Bip01 R Thigh",
+        "targetNode": "pedal_rfoot_2",
+        "flexionDir": [
+          0.0,
+          1.0,
+          0.2
+        ]
+      }
+    ]
+  },
   "ikPilot": {
     "model": "pilot_german_char",
     "maxHeadHorAngle": 60.0,
@@ -1827,9 +1899,9 @@
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
         "flexionDir": [
-          0.2,
+          0.0,
           1.0,
-          0.0
+          0.3
         ]
       },
       {
@@ -1838,81 +1910,9 @@
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
         "flexionDir": [
-          -0.2,
+          0.0,
           1.0,
-          0.0
-        ]
-      }
-    ]
-  },
-  "ikGunner": {
-    "model": "pilot_german_char",
-    "maxHeadHorAngle": 60.0,
-    "maxHeadDownAngle": 60.0,
-    "maxHeadUpAngle": 10.0,
-    "headNode": "Bip01 Head",
-    "pelvisNode": "Bip01 Pelvis",
-    "pelvisTargetNode": "Bip01 Pelvis02",
-    "chestNodes": {
-      "leftShoulderNode": "Bip01 L UpperArm",
-      "rightShoulderNode": "Bip01 R UpperArm",
-      "neckNode": "Bip01 Neck",
-      "node": [
-        "Bip01 R Clavicle",
-        "Bip01 L Clavicle",
-        "Bip01 Spine 1",
-        "Bip01 Head",
-        "Bip01 HeadNub",
-        "Bip01 L UpperArm",
-        "Bip01 R UpperArm",
-        "Bip01 Neck"
-      ],
-      "leftHandTarget": "throttle_lhand_2",
-      "rightHandTarget": "stick_rhand_2"
-    },
-    "ikNode": [
-      {
-        "downNode": "Bip01 L Hand",
-        "midNode": "Bip01 L Forearm",
-        "upNode": "Bip01 L UpperArm",
-        "targetNode": "throttle_lhand_2",
-        "flexionDir": [
-          0.0,
-          -0.9,
-          0.3
-        ]
-      },
-      {
-        "downNode": "Bip01 R Hand",
-        "midNode": "Bip01 R Forearm",
-        "upNode": "Bip01 R UpperArm",
-        "targetNode": "stick_rhand_2",
-        "flexionDir": [
-          0.0,
-          -0.9,
           -0.3
-        ]
-      },
-      {
-        "downNode": "Bip01 L Foot",
-        "midNode": "Bip01 L Calf",
-        "upNode": "Bip01 L Thigh",
-        "targetNode": "pedal_lfoot_2",
-        "flexionDir": [
-          0.0,
-          1.0,
-          -0.2
-        ]
-      },
-      {
-        "downNode": "Bip01 R Foot",
-        "midNode": "Bip01 R Calf",
-        "upNode": "Bip01 R Thigh",
-        "targetNode": "pedal_rfoot_2",
-        "flexionDir": [
-          0.0,
-          1.0,
-          0.2
         ]
       }
     ]
@@ -1935,27 +1935,15 @@
   },
   "cockpit": {
     "headPos": [
-      -0.52,
-      0.91,
-      -0.043
+      -0.628,
+      0.876,
+      -0.052
     ],
     "headPosOnShooting": [
-      -0.42,
-      0.91,
-      -0.043
+      -0.628,
+      0.876,
+      -0.052
     ],
-    "mirror": true,
-    "mirrorPos": [
-      -0.204,
-      0.994,
-      -0.176
-    ],
-    "mirrorNorm": [
-      -0.975,
-      -0.05,
-      0.2
-    ],
-    "mirrorNode": "blister3",
     "lightPos": [
       0.0,
       0.43,
@@ -1968,94 +1956,9 @@
     ],
     "lightRadius": 0.4,
     "devices": {
-      "stick_ailerons": [
-        -1.0,
-        1.0
-      ],
-      "stick_elevator": [
-        -1.0,
-        1.0
-      ],
-      "weapon1": [
-        0.0,
-        1.0
-      ],
-      "weapon3": [
-        0.0,
-        1.0
-      ],
-      "pedals1": [
-        -1.0,
-        1.0
-      ],
-      "pedals2": [
-        -1.0,
-        1.0
-      ],
-      "pedals3": [
-        -1.0,
-        1.0
-      ],
-      "pedals4": [
-        -1.0,
-        1.0
-      ],
-      "pedals5": [
-        -1.0,
-        1.0
-      ],
-      "pedals6": [
-        -1.0,
-        1.0
-      ],
-      "pedals7": [
-        -1.0,
-        1.0
-      ],
-      "pedals8": [
-        -1.0,
-        1.0
-      ],
-      "pedals9": [
-        -1.0,
-        1.0
-      ],
-      "pedals10": [
-        -1.0,
-        1.0
-      ],
-      "brakes": [
-        0.0,
-        1.0
-      ],
-      "throttle": [
-        0.0,
-        1.0
-      ],
-      "throttle_1": [
-        0.0,
-        1.0
-      ],
-      "prop_pitch": [
-        0.0,
-        1.0
-      ],
-      "mixture": [
-        0.0,
-        1.0
-      ],
-      "trimmer": [
-        -1.0,
-        1.0
-      ],
-      "flaps": [
-        0.0,
-        1.0
-      ],
-      "flaps_fixed": true,
       "speed": [
         0.0,
-        277.778
+        208.333
       ],
       "compass": [
         0.0,
@@ -2065,13 +1968,39 @@
         0.0,
         360.0
       ],
-      "vario": [
-        -10.0,
-        10.0
+      "pedals1": [
+        -1.0,
+        1.0
       ],
-      "altitude_10k": [
+      "pedals2": [
+        -1.0,
+        1.0
+      ],
+      "brakes": [
         0.0,
-        6000.0
+        1.0
+      ],
+      "stick_ailerons": [
+        -1.8,
+        1.8
+      ],
+      "stick_elevator": [
+        -1.7,
+        1.9
+      ],
+      "throttle": [
+        [
+          -1.0,
+          1.8
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "vario": [
+        -30.0,
+        30.0
       ],
       "altitude_hour": [
         0.0,
@@ -2107,8 +2036,8 @@
         1.8
       ],
       "rpm": [
-        0.0,
-        5000.0
+        600.0,
+        3600.0
       ],
       "oil_pressure": [
         0.0,
@@ -2116,7 +2045,7 @@
       ],
       "oil_temperature": [
         0.0,
-        160.0
+        140.0
       ],
       "water_temperature": [
         0.0,
@@ -2126,8 +2055,24 @@
         0.0,
         15.0
       ],
-      "fuel": [
+      "fuel1": [
         0.0,
+        200.0
+      ],
+      "prop_pitch": [
+        0.0,
+        1.0
+      ],
+      "weapon1": [
+        0.0,
+        1.0
+      ],
+      "aviahorizon_pitch": [
+        -60.0,
+        60.0
+      ],
+      "aviahorizon_roll": [
+        -180.0,
         180.0
       ],
       "ammo_counter1": [

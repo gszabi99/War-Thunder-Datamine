@@ -1,14 +1,29 @@
 tdiv {
   flow:t='vertical'
   table {
+    class:t='btlReward'
+
+    <<#compactColumns>>
+    compactColumns:t='yes'
+    <</compactColumns>>
+
+    <<^compactColumns>>
+    compactColumns:t='no'
+    <</compactColumns>>
+
     tr {
+      headerRow:t='yes'
+
       <<#columns>>
       td {
-        padding-left:t='4@blockInterval'
-        padding-right:t='4@blockInterval'
+        <<#compactColumns>><<^isFirstCol>>
+        cellSeparator {}
+        <</isFirstCol>><</compactColumns>>
 
         textareaNoTab {
           halign:t='center'
+          valign:t='center'
+          text-align:t='center'
           text:t='#<<titleLocId>>'
         }
       }
@@ -16,32 +31,61 @@ tdiv {
     }
     <<#rows>>
     tr {
+      headerRow:t='no'
+
       <<#isEven>>
       even:t='yes'
       <</isEven>>
 
       <<#cells>>
       td {
-        padding-left:t='4@blockInterval'
-        padding-right:t='4@blockInterval'
+        <<#compactColumns>><<^isFirstCol>>
+        cellSeparator {}
+        <</isFirstCol>><</compactColumns>>
         <<#cell>>
+        <<#cellType>>
+        cellType:t='<<cellType>>'
+        <</cellType>>
+        <<#hasFormula>>
+        cellType:t='tdRight'
+        <</hasFormula>>
+        <<#image>>
+        hasImage:t='yes'
+        <</image>>
+        <<^image>>
+        hasImage:t='no'
+        <</image>>
         <<#text>>
         activeText {
+          valign:t='center'
           <<#isAlignCenter>>
           halign:t='center'
           <</isAlignCenter>>
+          <<#parseTags>>
+          parseTags:t='yes'
+          <</parseTags>>
           text:t = '<<text>>'
         }
         <</text>>
 
+        <<#hasFormula>>
+        rewardFormula {
+          position:t='relative'
+          left:t='pw-w'
+          valign:t='center'
+
+          include "%gui/debriefing/rewardSources.tpl"
+        }
+        <</hasFormula>>
+
         <<#image>>
         tdiv {
-          size='pw, ph'
-          margin-left='1@sf/@pf'
+          height:t='ph'
+          margin-left:t='1@sf/@pf'
 
           img {
-            halign='center'
-            valign='center'
+            halign:t='center'
+            valign:t='center'
             background-image:t='<<src>>'
             <<#size>>
             size:t='<<size>>'
@@ -54,15 +98,6 @@ tdiv {
           }
         }
         <</image>>
-
-        <<#hasFormula>>
-        tdiv {
-          position:t='relative'
-          pos:t='pw-w, 0'
-
-          include "%gui/debriefing/rewardSources.tpl"
-        }
-        <</hasFormula>>
         <</cell>>
       }
       <</cells>>

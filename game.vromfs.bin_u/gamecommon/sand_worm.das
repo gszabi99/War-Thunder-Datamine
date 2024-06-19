@@ -150,8 +150,8 @@ def sand_worm_delayed_track(evt : Event;
         let unitPos = unit.pos
         set_camera_shake(sand_worm__cameraShake.x, unitPos, sand_worm__cameraShake.y)
         sand_worm__cameraShakeTimer = sand_worm__cameraShake.z
-  if sand_worm__delayed && is_playing(sand_worm__nearSoundEvent.handle)
-    abandon(sand_worm__nearSoundEvent.handle)
+  if sand_worm__delayed && is_playing(sand_worm__nearSoundEvent)
+    abandon(sand_worm__nearSoundEvent)
 
 [es(tag=gameClient)]
 def sand_worm_client_update_es(act : UpdateStageInfoAct;
@@ -166,8 +166,8 @@ def sand_worm_client_update_es(act : UpdateStageInfoAct;
       if unit != null
         let unitPos = unit.pos
         set_camera_shake(sand_worm__cameraShake.x, unitPos, sand_worm__cameraShake.y)
-  if sand_worm__curInactive > 0. && is_playing(sand_worm__nearSoundEvent.handle)
-    abandon(sand_worm__nearSoundEvent.handle)
+  if sand_worm__curInactive > 0. && is_playing(sand_worm__nearSoundEvent)
+    abandon(sand_worm__nearSoundEvent)
 
 [es(tag=gameClient, track=sand_worm__radius)]
 def sand_worm_near_effect_es(evt : Event;
@@ -188,12 +188,12 @@ def sand_worm_near_effect_es(evt : Event;
         shake = sand_worm__near_shake[i].yz
         break
     set_camera_shake(shake.x, unitPos3, shake.y)
-    if !is_playing(sand_worm__nearSoundEvent.handle)
+    if !is_playing(sand_worm__nearSoundEvent)
       sand_worm__nearSoundEvent |> play(sand_worm__nearSound)
-    set_var_optional(sand_worm__nearSoundEvent.handle, "radius", sand_worm__radius)
+    set_var_optional(sand_worm__nearSoundEvent, "radius", sand_worm__radius)
   else
-    if is_playing(sand_worm__nearSoundEvent.handle)
-      abandon(sand_worm__nearSoundEvent.handle)
+    if is_playing(sand_worm__nearSoundEvent)
+      abandon(sand_worm__nearSoundEvent)
 
 
 [es(tag=gameClient, no_order)]

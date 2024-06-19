@@ -9,8 +9,8 @@ let {
   IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning,
   RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
   NoLosToATGM, AlertColorHigh, HudColor, CurrentTime,
-  BombReleaseVisible, BombReleaseDirX, BombReleaseDirY, BombReleaseOpacity,
-  BombReleasePoints, BombReleaseRelativToTarget,
+  BombReleaseVisible, BombReleaseDirX, BombReleaseBlockedState, BombReleaseBlockedStates, BombReleaseDirY, BombReleaseOpacity,
+  BombReleasePoints, BombReleaseRelativToTarget, BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY
   RocketSightOpacity, RocketSightShadowOpacity,
   CanonSightLineWidthFactor, RocketSightLineWidthFactor, BombSightLineWidthFactor,
   CanonSightShadowLineWidthFactor, RocketSightShadowLineWidthFactor, BombSightShadowLineWidthFactor,
@@ -519,6 +519,13 @@ function laserPointComponent(colorWatch) {
   }
 }
 
+function getBombBlockedStateText(state) {
+  if (state == BombReleaseBlockedStates.notBlocked)
+    return ""
+
+  return state == BombReleaseBlockedStates.highSpeed ? loc("HUD/BOMB_SIGHT_HIGH_SPEED") : loc("HUD/BOMB_SIGHT_BOMB_BAY")
+}
+
 let bombSightComponent = @(width, height, crosshairColorWatch) function() {
   let res = { watch = [BombReleaseVisible, BombReleaseDirX, BombReleaseDirY, BombReleasePoints,
     BombReleaseRelativToTarget, AlertColorHigh, HudColor, BombReleaseOpacity, BombSightShadowOpacity,
@@ -560,11 +567,16 @@ let bombSightComponent = @(width, height, crosshairColorWatch) function() {
     commands
   })
 
+  let sightWarningText = @() styleText.__merge({
+    rendObj = ROBJ_TEXT
+    watch = [BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosX, BombReleaseBlockedState]
+    pos = [BombReleaseBlockedTextPosX.value, BombReleaseBlockedTextPosY.value]
+    text = getBombBlockedStateText(BombReleaseBlockedState.value)
+  })
+
   return res.__update({
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
     pos = [0, 0]
-    children = [shadowLines, lines]
+    children = [shadowLines, lines, sightWarningText]
   })
 }
 

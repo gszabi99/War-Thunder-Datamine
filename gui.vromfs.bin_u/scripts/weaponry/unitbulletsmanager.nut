@@ -99,7 +99,9 @@ enum bulletsAmountState {
     local unallocated = this.getUnallocatedBulletCount(bulGroup)
     let maxCount = isPairBulletsGroup ? bulGroup.maxBulletsCount
       : min(unallocated + count, bulGroup.maxBulletsCount)
-    newCount = clamp(newCount, 0, maxCount)
+    newCount = isPairBulletsGroup && !bulGroup.canChangePairBulletsCount()
+      ? maxCount
+      : clamp(newCount, 0, maxCount)
 
     if (count == newCount)
       return false
@@ -110,7 +112,7 @@ enum bulletsAmountState {
       unallocated = unallocated + count - newCount
       if (isPairBulletsGroup && unallocated != 0) {
         let linkedBulGroup = this.getLinkedBulletsGroup(bulGroup)
-        if (linkedBulGroup != null) {
+        if (linkedBulGroup != null && linkedBulGroup) {
           let linkedCount = linkedBulGroup.bulletsCount
           let newLinkedCount = clamp(linkedCount + unallocated, 0, maxCount)
           unallocated = unallocated + linkedCount - newLinkedCount
@@ -458,6 +460,13 @@ enum bulletsAmountState {
         continue
       }
 
+      let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
+      if (isPairBulletsGroup && !bulGroup.canChangePairBulletsCount()) {
+        bulGroup.setBulletsCount(gInfo.unallocated)
+        gInfo.unallocated = 0
+        continue
+      }
+
       let isSecondPairBulletsGroup = (gInfo.gunIdx in unallocatedPairBulGroup)
       if (gInfo.unallocated < bulGroup.bulletsCount || isSecondPairBulletsGroup) { //need set all count for pairs bullets
         bulGroup.setBulletsCount(gInfo.unallocated)
@@ -469,7 +478,6 @@ enum bulletsAmountState {
       if (isSecondPairBulletsGroup)
         continue
 
-      let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
       if (isPairBulletsGroup)
         unallocatedPairBulGroup[gInfo.gunIdx] <- true
     }

@@ -12,7 +12,6 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
-  "hasOpticTurret": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
   "ilsJ8HK": true,
@@ -2412,9 +2411,15 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
-              "type": "radar",
-              "scale": 0.95,
-              "hideBackground": true
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "ils_on_camera"
             },
             {
               "type": "rwr",
@@ -2426,15 +2431,33 @@
               "hideBackground": true
             },
             {
-              "type": "ils_on_camera"
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
+              "type": "radar",
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.9,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                0
+              ],
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
             }
           ]
         },
@@ -2445,18 +2468,36 @@
             1.0,
             1.0
           ],
-          "cameraFromTargetingPod": true,
+          "cameraFromShell": true,
           "page": [
             {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "ils_on_camera"
+              "type": "radar",
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.9,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                0
+              ],
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
             },
             {
               "type": "rwr",
@@ -2468,9 +2509,11 @@
               "hideBackground": true
             },
             {
-              "type": "radar",
-              "scale": 0.95,
-              "hideBackground": true
+              "type": "ils_on_camera"
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             }
           ]
         },
@@ -2512,24 +2555,6 @@
     }
   },
   "gunnerOpticFps": {
-    "Target": {
-      "pos": [
-        0.3,
-        -0.2,
-        -0.5
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -90.0,
-        90.0,
-        -155.0,
-        35.0
-      ],
-      "opticType": "targeting",
-      "turretNo": 0,
-      "nvIndex": 1
-    },
     "TV": {
       "pos": [
         1.2,
@@ -2545,8 +2570,26 @@
         30.0
       ],
       "opticType": "tv",
-      "turretNo": 1,
+      "turretNo": 0,
       "name": "KH-29T"
+    },
+    "Target": {
+      "pos": [
+        -6.3,
+        -0.7,
+        -0.7
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -90.0,
+        90.0,
+        -155.0,
+        35.0
+      ],
+      "opticType": "targeting",
+      "turretNo": 0,
+      "nvIndex": 1
     }
   },
   "nightVision": {
@@ -2716,35 +2759,6 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 200.0,
-              "speedPitch": 200.0,
-              "parkInDeadzone": true,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true,
-                "playerControllable": false
-              },
-              "limits": {
-                "yaw": [
-                  -90.0,
-                  90.0
-                ],
-                "pitch": [
-                  -90.0,
-                  90.0
-                ]
-              }
-            },
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
               "emitter": "optic2_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -2755,8 +2769,7 @@
               "turret": {
                 "head": "optic2_turret",
                 "gun": "optic2_gun",
-                "mainTurret": true,
-                "playerControllable": false
+                "mainTurret": true
               },
               "limits": {
                 "yaw": [
@@ -2785,7 +2798,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 42,
-              "bulletsCartridge": 14,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             },
@@ -2794,7 +2807,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 42,
-              "bulletsCartridge": 14,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             }
@@ -4276,7 +4289,7 @@
       "tier": 4,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,

@@ -635,7 +635,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 }
 
 addListenersWithoutEnv({
-  showOptionsWnd = @(_p) openOptionsWnd()
+  showOptionsWnd = @(p) openOptionsWnd(p?.group)
 })
 
 return {

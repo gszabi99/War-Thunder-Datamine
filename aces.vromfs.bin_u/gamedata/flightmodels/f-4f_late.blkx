@@ -2817,7 +2817,7 @@
           "page": {
             "type": "radar",
             "font": "usa_ils",
-            "fontScale": 0.7,
+            "fontScale": 0.65,
             "scale": 0.75,
             "lineColor": [
               0,
@@ -2840,7 +2840,8 @@
               0,
               255,
               0
-            ]
+            ],
+            "centerRadar": true
           }
         },
         {
@@ -3031,33 +3032,37 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -4413,10 +4418,8 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "tier": 1,

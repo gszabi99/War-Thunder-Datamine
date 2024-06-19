@@ -650,38 +650,38 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return false
 }
 
-::getMinBestLevelingRank <- function getMinBestLevelingRank(unit) {
+function getHighestRankDiffNoPenalty(inverse = false) {
+  let ranksBlk = get_ranks_blk()
+  let paramPrefix = inverse
+    ? "expPenaltyPercentForLowerRank"
+    : "expPenaltyPercentForHigherRank"
+
+  for (local rankDif = 0; rankDif < MAX_COUNTRY_RANK; rankDif++)
+    if (ranksBlk[$"{paramPrefix}{rankDif}"] > 20)
+      return rankDif - 1
+  return 0
+}
+
+function getMinBestLevelingRank(unit) {
   if (!unit)
     return -1
 
   let unitRank = unit?.rank ?? -1
   if (isUnitSpecial(unit) || unitRank == 1)
     return 1
-  let result = unitRank - ::getHighestRankDiffNoPenalty(true)
+  let result = unitRank - getHighestRankDiffNoPenalty(true)
   return result > 0 ? result : 1
 }
 
-::getMaxBestLevelingRank <- function getMaxBestLevelingRank(unit) {
+function getMaxBestLevelingRank(unit) {
   if (!unit)
     return -1
 
   let unitRank = unit?.rank ?? -1
   if (unitRank == MAX_COUNTRY_RANK)
     return MAX_COUNTRY_RANK
-  let result = unitRank + ::getHighestRankDiffNoPenalty()
+  let result = unitRank + getHighestRankDiffNoPenalty()
   return result <= MAX_COUNTRY_RANK ? result : MAX_COUNTRY_RANK
-}
-
-::getHighestRankDiffNoPenalty <- function getHighestRankDiffNoPenalty(inverse = false) {
-  let ranksBlk = get_ranks_blk()
-  let paramPrefix = inverse
-                      ? "expMulWithTierDiffMinus"
-                      : "expMulWithTierDiff"
-
-  for (local rankDif = 0; rankDif < MAX_COUNTRY_RANK; rankDif++)
-    if (ranksBlk[paramPrefix + rankDif] < 0.8)
-      return rankDif - 1
-  return 0
 }
 
 function getBattleTypeByUnit(unit) {
@@ -1028,11 +1028,11 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
           tdNameObj.setValue(format(loc("shop/prevUnitEfficiencyResearch"), getUnitName(prevUnit, true)))
         let tdValueObj = prevUnitObj.findObject("aircraft-prevUnit_bonus")
         if (checkObj(tdValueObj)) {
-          let param_name = "prevAirExpMulMode"
-          let curVal = rBlk?[param_name + diffCode.tostring()] ?? 1
+          let childParamName = $"expBonusPercentForChildForMode{diffCode}"
+          let childBonusPercent = rBlk?[childParamName] ?? 0
 
-          if (curVal != 1)
-            tdValueObj.setValue(format("<color=@userlogColoredText>%s%%</color>", (curVal * 100).tostring()))
+          if (childBonusPercent > 0)
+            tdValueObj.setValue(colorize("userlogColoredText", $"{childBonusPercent}%"))
           else
             prevUnitObj.show(false)
         }
@@ -1824,8 +1824,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
   obj = showObjById("aircraft-research-efficiency-tr", showRewardsInfo, holderObj)
   if (obj != null) {
-    let minAge = ::getMinBestLevelingRank(air)
-    let maxAge = ::getMaxBestLevelingRank(air)
+    let minAge = getMinBestLevelingRank(air)
+    let maxAge = getMaxBestLevelingRank(air)
     let rangeText = (minAge == maxAge) ? (get_roman_numeral(minAge) + nbsp + loc("shop/age")) :
         (get_roman_numeral(minAge) + nbsp + loc("ui/mdash") + nbsp + get_roman_numeral(maxAge) + nbsp + loc("mainmenu/ranks"))
     obj.findObject("aircraft-research-efficiency").setValue(rangeText)

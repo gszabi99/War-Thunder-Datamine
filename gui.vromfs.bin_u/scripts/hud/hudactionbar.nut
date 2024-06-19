@@ -38,6 +38,8 @@ let { loadLocalByAccount, saveLocalByAccount
 let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { guiStartWheelmenu, closeCurWheelmenu } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
+let { openHudAirWeaponSelector, isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
+let { getExtraActionItemsView } = require("%scripts/hud/hudActionBarExtraActions.nut")
 
 local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -209,7 +211,7 @@ let class ActionBar {
       isVisible = this.isVisible
       pos
       size
-      shortcutText = getCollapseShText().getText()
+      shortcutText = getCollapseShText().getTextShort()
     }
   }
 
@@ -237,12 +239,15 @@ let class ActionBar {
       return
 
     this.curActionBarUnitName = getActionBarUnitName()
+    let unit = this.getActionBarUnit()
     let view = {
       items = this.actionItems.map((@(a, nestIndex) this.buildItemView(a, nestIndex, true)).bindenv(this))
+      extraItems = getExtraActionItemsView(unit)
     }
 
     let partails = {
       items           = loadTemplateText("%gui/hud/actionBarItem.tpl")
+      extraItems      = loadTemplateText("%gui/hud/actionBarItem.tpl")
       textShortcut    = this.canControl ? loadTemplateText("%gui/hud/actionBarItemTextShortcut.tpl")    : ""
       gamepadShortcut = this.canControl ? loadTemplateText("%gui/hud/actionBarItemGamepadShortcut.tpl") : ""
     }
@@ -296,7 +301,7 @@ let class ActionBar {
 
       let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
       let scInput = shType.getFirstInput(shortcutId)
-      shortcutText = scInput.getText()
+      shortcutText = scInput.getTextShort()
       isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
       showShortcut = isXinput || shortcutText != ""
     }
@@ -619,7 +624,7 @@ let class ActionBar {
       return
 
     let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
-    this.isVisible = showActionBarOption && !g_hud_live_stats.isVisible()
+    this.isVisible = showActionBarOption && !g_hud_live_stats.isVisible() && !isVisualHudAirWeaponSelectorOpened()
     this.scene.show(this.isVisible)
     eventbus_send("setIsActionBarVisible", this.isVisible)
   }
@@ -732,7 +737,7 @@ let class ActionBar {
 
       let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(code)
       let scInput = shType.getFirstInput(code)
-      let shortcutText = scInput.getText()
+      let shortcutText = scInput.getTextShort()
       let isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
       shortcuts.append({shortcut = shortcutText, isXinput, mainShortcutId = code})
 
@@ -899,6 +904,7 @@ let class ActionBar {
     }
     guiStartWheelmenu(params)
   }
+
   function onTooltipObjClose(obj) {
     closeGenericTooltip(obj, this)
   }
@@ -906,6 +912,11 @@ let class ActionBar {
   function onGenericTooltipOpen(obj) {
     openGenericTooltip(obj, this)
   }
+
+  function onVisualSelectorClick(_obj) {
+    openHudAirWeaponSelector()
+  }
+
 }
 
 return {

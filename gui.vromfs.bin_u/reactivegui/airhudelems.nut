@@ -10,8 +10,8 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   IsMachineGunsEmpty, MachineGunsSelectedArray, MachineGunsCount, MachineGunsReloadTime, MachineGunsMode,
   CannonsAdditionalCount, CannonsAdditionalSeconds, CannonsAdditionalMode, CannonsAdditionalSelected, IsCanAdditionalEmpty,
   AgmCount, AgmSeconds, AgmTimeToHit, AgmTimeToWarning, AgmActualCount, AgmName, AgmSelected, IsAgmEmpty,
-  AamCount, AamSeconds, AamActualCount, AamName, AamSelected, IsAamEmpty,
-  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsMode, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
+  AamCount, AamSeconds, AamTimeToHit, AamActualCount, AamName, AamSelected, IsAamEmpty,
+  GuidedBombsCount, GuidedBombsSeconds, GuidedBombsTimeToHit, GuidedBombsMode, GuidedBombsActualCount, GuidedBombsName, GuidedBombsSelected, IsGuidedBmbEmpty,
   FlaresCount, FlaresSeconds, FlaresMode, IsFlrEmpty,
   ChaffsCount, ChaffsSeconds, ChaffsMode, IsChaffsEmpty,
   RocketsCount, RocketsSeconds, RocketsActualCount, RocketsSalvo, RocketsMode, RocketsName, RocketsSelected, IsRktEmpty, DetectAllyProgress, DetectAllyState,
@@ -47,8 +47,6 @@ let agmAimState = require("agmAimState.nut")
 let agmGuidanceLockState = agmAimState.GuidanceLockStateBlinked
 let agmGuidancePointIsTarget = agmAimState.PointIsTarget
 let guidedBombsAimState =  require("guidedBombsAimState.nut")
-let guidedBombsGuidanceLockState = guidedBombsAimState.GuidanceLockStateBlinked
-let guidedBombsGuidancePointIsTarget = guidedBombsAimState.PointIsTarget
 let compass = require("compass.nut")
 
 const NUM_VISIBLE_ENGINES_MAX = 6
@@ -200,7 +198,7 @@ let generateRpmTextFunction = function(trtMode, rpmValue) {
   return "".join(txts)
 }
 
-let generateAgmBulletsTextFunction = function(count, seconds, timeToHit, _timeToWarning, actualCount = 0) {
+let generateGuidedWeaponBulletsTextFunction = function(count, seconds, timeToHit, _timeToWarning, actualCount = 0) {
   local txts = []
   if (seconds >= 0) {
     txts = [string.format("%d:%02d", floor(seconds / 60), seconds % 60)]
@@ -638,7 +636,7 @@ let textParamsMapMain = {
   [AirParamsMain.AGM] = {
     titleComputed = Computed(@() AgmCount.value <= 0 ? loc("HUD/TXT_AGM_SHORT") :
       getAGCaption(agmGuidanceLockState.value, agmGuidancePointIsTarget.value))
-    valueComputed = Computed(@() generateAgmBulletsTextFunction(AgmCount.value, AgmSeconds.value,
+    valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(AgmCount.value, AgmSeconds.value,
        AgmTimeToHit.value, AgmTimeToWarning.value, AgmActualCount.value))
     selectedComputed = Computed(@() AgmSelected.value ? ">" : "")
     additionalComputed = Computed(@() loc(AgmName.value))
@@ -675,7 +673,8 @@ let textParamsMapMain = {
   },
   [AirParamsMain.AAM] = {
     titleComputed = Computed(@() AamCount.value <= 0 ? loc("HUD/TXT_AAM_SHORT") : getAACaption(aamGuidanceLockState.value))
-    valueComputed = Computed(@() generateBulletsTextFunction(AamCount.value, AamSeconds.value, 0, AamActualCount.value))
+    valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(AamCount.value, AamSeconds.value,
+      AamTimeToHit.value, 0, AamActualCount.value))
     selectedComputed = Computed(@() AamSelected.value ? ">" : "")
     additionalComputed = Computed(@() loc(AamName.value))
     alertStateCaptionComputed = Computed(@() (IsAamEmpty.value || aamGuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING) ?
@@ -684,8 +683,9 @@ let textParamsMapMain = {
   },
   [AirParamsMain.GUIDED_BOMBS] = {
     titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
-      getGBCaption(guidedBombsGuidanceLockState.value, guidedBombsGuidancePointIsTarget.value, GuidedBombsMode.value))
-    valueComputed = Computed(@() generateBulletsTextFunction(GuidedBombsCount.value, GuidedBombsSeconds.value, 0, GuidedBombsActualCount.value))
+      getGBCaption(guidedBombsAimState.GuidanceLockStateBlinked.value, guidedBombsAimState.PointIsTarget.value, GuidedBombsMode.value))
+    valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(GuidedBombsCount.value, GuidedBombsSeconds.value,
+      GuidedBombsTimeToHit.value, 0.0, GuidedBombsActualCount.value))
     selectedComputed = Computed(@() GuidedBombsSelected.value ? ">" : "")
     additionalComputed = Computed(@() loc(GuidedBombsName.value))
     alertStateCaptionComputed = Computed(@() IsGuidedBmbEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -694,7 +694,7 @@ let textParamsMapMain = {
   [AirParamsMain.FLARES] = {
     titleComputed = Computed(@() FlaresCount.value <= 0 ? loc("HUD/FLARES_SHORT") : getCountermeasuresCaption(true, FlaresMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(FlaresCount.value, FlaresSeconds.value))
-    selectedComputed = WatchedRo("")
+    selectedComputed = Computed(@() FlaresMode.value & CountermeasureMode.FLARE_COUNTERMEASURES ? "-" : "")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() IsFlrEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsFlrEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
@@ -702,7 +702,7 @@ let textParamsMapMain = {
   [AirParamsMain.CHAFFS] = {
     titleComputed = Computed(@() ChaffsCount.value <= 0 ? loc("HUD/CHAFFS_SHORT") : getCountermeasuresCaption(false, ChaffsMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(ChaffsCount.value, ChaffsSeconds.value))
-    selectedComputed = WatchedRo("")
+    selectedComputed = Computed(@() ChaffsMode.value & CountermeasureMode.CHAFF_COUNTERMEASURES ? "-" : "")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() IsChaffsEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsChaffsEmpty.value ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)

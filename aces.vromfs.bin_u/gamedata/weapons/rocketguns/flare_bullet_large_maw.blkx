@@ -1,0 +1,140 @@
+{
+  "bullet": {
+    "mass": 1.0,
+    "sound_path": "sounds/guns",
+    "sound_pathStudio": "aircraft/weapon",
+    "sound": "flare_launcher_outside",
+    "sound_inside": "flare_launcher_inside",
+    "isBulletBelt": false,
+    "bulletType": "flr",
+    "helicopterGroup": 2,
+    "reloadTime": 8.0,
+    "allowHumanReload": true,
+    "bulletName": "flare_launcher",
+    "tags": {
+      "antiTankRocket": true,
+      "antiShipRocket": true
+    },
+    "rocket": {
+      "caliber": 0.05,
+      "length": 0.2,
+      "WdK": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "CxK": 2.58,
+      "distFromCmToStab": 0.005,
+      "mass": 1.0,
+      "massEnd": 0.27,
+      "timeFire": 4.4,
+      "force": 0.1,
+      "timeLife": 4.5,
+      "thrustDeviation": 0.01,
+      "useStartSpeed": true,
+      "startSpeed": 70.0,
+      "endSpeed": 0.0,
+      "maxDistance": 1000.0,
+      "minDistance": 200.0,
+      "maxDeltaAngle": 25.0,
+      "maxDeltaAngleVertical": 5.0,
+      "normalizationPreset": "default",
+      "ricochetPreset": "default",
+      "groundRicochetPreset": "default",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "flare",
+      "dragCx": 0.0001,
+      "precision": 5,
+      "explosionEffect": "",
+      "fireEffect": "",
+      "smokeEffect": "flare_fire",
+      "hazeFx": "",
+      "pylonFx": "",
+      "waterExplosionEffect": "hit_39_58mm_water",
+      "smokeShell": false,
+      "smokeFx": "",
+      "smokeShellRad": 10.0,
+      "smokeActivateTime": 5.0,
+      "smokeTime": 20.0,
+      "spawnExplosionWreckage": false,
+      "spawnExplosionFx": false,
+      "explosionOffset": 0.05,
+      "hitPowerMult": 1.0,
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        400.0
+      ],
+      "farHitPower": [
+        0.1,
+        1000.0
+      ],
+      "endHitPower": [
+        0.01,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "nearArmorPower": [
+        3.0,
+        50.0
+      ],
+      "midArmorPower": [
+        2.0,
+        400.0
+      ],
+      "farArmorPower": [
+        0.2,
+        700.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
+      "distanceFuse": false,
+      "rendinstDamageRadius": 0.1,
+      "price": 300.0,
+      "amountPerTier": 30.0,
+      "iconType": "ltc",
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.05
+        ],
+        "mod2": [
+          20.0,
+          0.1
+        ],
+        "mod3": [
+          [
+            30.0,
+            0.2
+          ],
+          [
+            45.0,
+            0.3
+          ]
+        ]
+      },
+      "signature": {
+        "infraRed": {
+          "emissionProfile": [
+            0.4,
+            4.0,
+            4.4
+          ],
+          "emission2": 4.5
+        }
+      }
+    }
+  }
+}

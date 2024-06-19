@@ -15,6 +15,7 @@ let mfdCameraSetting = Computed(function() {
     isShkval = false
     isShkvalKa52 = false
     isTads = false
+    isTadsApache = false
     lineWidthScale = 1.0
     fontScale = 1.0
   }
@@ -28,6 +29,7 @@ let mfdCameraSetting = Computed(function() {
     isShkval = blk.getBool("mfdCamShkval", false)
     isShkvalKa52 = blk.getBool("mfdCamShkvalKa52", false)
     isTads = blk.getBool("mfdCamTads", false)
+    isTadsApache = blk.getBool("mfdCamTadsApache", false)
 
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
@@ -35,14 +37,15 @@ let mfdCameraSetting = Computed(function() {
 })
 
 let planeMfdCamera = @(width, height) function() {
-  let {isShkval, isShkvalKa52, isTads, lineWidthScale, fontScale} = mfdCameraSetting.value
+  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale} = mfdCameraSetting.value
   return {
     watch = mfdCameraSetting
     children = [
       (isShkval ? shkval(width, height, lineWidthScale, fontScale) :
       (isShkvalKa52 ? shkvalKa52(width, height) :
-      (isTads ? tads(width, height) :
-      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)))))
+      (isTads ? tads(width, height, false) :
+      (isTadsApache ? tads(width, height, true) :
+      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0))))))
     ]
   }
 }

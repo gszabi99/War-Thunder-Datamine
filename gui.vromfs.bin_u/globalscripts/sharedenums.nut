@@ -159,7 +159,9 @@ enum RadarViewMode {
 
 enum CountermeasureMode {
   PERIODIC_COUNTERMEASURE    = 1,
-  MLWS_SLAVED_COUNTERMEASURE = 2
+  MLWS_SLAVED_COUNTERMEASURE = 2,
+  FLARE_COUNTERMEASURES      = 4,
+  CHAFF_COUNTERMEASURES      = 8
 };
 
 enum WeaponMode {

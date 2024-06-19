@@ -2587,7 +2587,9 @@
                 255,
                 7
               ],
-              "hideWeaponIndication": true
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
             },
             {
               "type": "ils_duplicate"
@@ -2604,7 +2606,7 @@
           "page": {
             "type": "rwr",
             "scale": 1.15,
-            "hidePlaneSymbol": true
+            "centralMark": "cross"
           }
         },
         {
@@ -2703,8 +2705,8 @@
         "blk": "gameData/FlightModels/weaponPresets/f_15c_msip2_default.blk"
       },
       {
-        "name": "f_15c_msip2_aim_9l_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_15c_msip2_aim_9l_default.blk"
+        "name": "f_15c_msip2_aim_9m_default",
+        "blk": "gameData/FlightModels/weaponPresets/f_15c_msip2_aim_9m_default.blk"
       },
       {
         "name": "f_15c_msip2_aim_9l",
@@ -2882,7 +2884,7 @@
               "bullets": 120,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
@@ -2891,7 +2893,7 @@
               "bullets": 120,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2922,7 +2924,6 @@
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_slot1",
-            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -2931,7 +2932,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9_001",
               "bullets": 1,
               "external": true,
@@ -5182,7 +5183,6 @@
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9m_slot13",
-            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_2",
@@ -5191,7 +5191,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9_004",
               "bullets": 1,
               "external": true,

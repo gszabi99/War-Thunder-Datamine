@@ -25,6 +25,7 @@ let math = require("math")
 let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isUsedCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 
 class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -57,6 +58,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     this.reinitScreen()
 
     this.updateCustomLangInfo()
+    this.updateCustomSoundModsBtn()
   }
 
   function reinitScreen(_params = null) {
@@ -219,6 +221,11 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     infoObj.setValue(getLocalization("mainmenu/custom_lang_info"))
   }
 
+  function updateCustomSoundModsBtn() {
+    let isShowBtn = !topMenuShopActive.value && isUsedCustomSoundMods()
+    showObjById("custom_sound_mods", isShowBtn, this.scene)
+  }
+
   function shopWndSwitch(unitType = null) {
     if (!this.isValid())
       return
@@ -246,6 +253,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       this.shopWeak.updateSlotbarDifficulty()
 
     this.updateCustomLangInfo()
+    this.updateCustomSoundModsBtn()
     broadcastEvent("ShopWndSwitched")
   }
 

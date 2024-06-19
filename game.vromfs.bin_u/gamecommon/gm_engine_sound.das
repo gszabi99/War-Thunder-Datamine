@@ -135,18 +135,18 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
   gm_engine_sound__is_inside = unit.isCameraInCockpit
 
   if unit.isCameraInCockpit
-    if is_playing(gm_engine_sound__event.handle)
-      abandon(gm_engine_sound__event.handle)
-    if gm_engine_sound__should_play && !is_playing(gm_engine_sound__event_inside.handle)
+    if is_playing(gm_engine_sound__event)
+      abandon(gm_engine_sound__event)
+    if gm_engine_sound__should_play && !is_playing(gm_engine_sound__event_inside)
       gm_engine_sound__event_inside |> play(string(gm_engine_sound__event_inside_name))
   else
-    if is_playing(gm_engine_sound__event_inside.handle)
-      abandon(gm_engine_sound__event_inside.handle)
+    if is_playing(gm_engine_sound__event_inside)
+      abandon(gm_engine_sound__event_inside)
 
-  if !is_playing(gm_engine_sound__start_inside_event.handle)
-    abandon(gm_engine_sound__start_inside_event.handle)
-  if !is_playing(gm_engine_sound__stop_inside_event.handle)
-    abandon(gm_engine_sound__stop_inside_event.handle)
+  if !is_playing(gm_engine_sound__start_inside_event)
+    abandon(gm_engine_sound__start_inside_event)
+  if !is_playing(gm_engine_sound__stop_inside_event)
+    abandon(gm_engine_sound__stop_inside_event)
 
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
 def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
@@ -176,12 +176,12 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
   else
     gm_engine_sound__update_interval = 0.
 
-  gm_engine_sound__is_playing = is_playing(gm_engine_sound__event.handle) || is_playing(gm_engine_sound__event_inside.handle)
+  gm_engine_sound__is_playing = is_playing(gm_engine_sound__event) || is_playing(gm_engine_sound__event_inside)
   gm_engine_sound__pos = unit.unitTm * gm_engine_sound__pos_offset
   if gm_engine_sound__is_playing
-    gm_engine_sound__event.handle |> set_pos(gm_engine_sound__pos)
-  gm_engine_sound__stop_event.handle |> set_pos(gm_engine_sound__pos)
-  gm_engine_sound__start_event.handle |> set_pos(gm_engine_sound__pos)
+    gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
+  gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
+  gm_engine_sound__start_event |> set_pos(gm_engine_sound__pos)
 
   if unit.isDelayed
     return
@@ -212,23 +212,23 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
   let visible = gm.isVisibleFromHero ? 1. : 0.
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__event_inside : gm_engine_sound__event
   if gm_engine_sound__is_playing
-    curEvent.handle |> set_var_optional("rpm", rpm)
-    curEvent.handle |> set_var_optional("swim", swim)
-    curEvent.handle |> set_var_optional("broken", broken)
-    curEvent.handle |> set_var_optional("load", gm_engine_sound__load)
-    curEvent.handle |> set_var_optional("loadswitch", gm_engine_sound__loadswitch ? rawLoad : 0.)
-    curEvent.handle |> set_var_optional("speed", speed)
-    curEvent.handle |> set_var_optional("climb", climb)
-    curEvent.handle |> set_var_optional("is_visible", visible)
-    curEvent.handle |> set_var_optional("building_density", gm.buildingDensity)
+    curEvent |> set_var_optional("rpm", rpm)
+    curEvent |> set_var_optional("swim", swim)
+    curEvent |> set_var_optional("broken", broken)
+    curEvent |> set_var_optional("load", gm_engine_sound__load)
+    curEvent |> set_var_optional("loadswitch", gm_engine_sound__loadswitch ? rawLoad : 0.)
+    curEvent |> set_var_optional("speed", speed)
+    curEvent |> set_var_optional("climb", climb)
+    curEvent |> set_var_optional("is_visible", visible)
+    curEvent |> set_var_optional("building_density", gm.buildingDensity)
 
-  if !is_playing(gm_engine_sound__event.handle) && is_valid_event(gm_engine_sound__event.handle)
-    release(gm_engine_sound__event.handle)
+  if !is_playing(gm_engine_sound__event) && is_valid_event(gm_engine_sound__event)
+    release(gm_engine_sound__event)
 
-  if !is_playing(gm_engine_sound__start_event.handle) && is_valid_event(gm_engine_sound__start_event.handle)
-    abandon(gm_engine_sound__start_event.handle)
-  if !is_playing(gm_engine_sound__stop_event.handle) && is_valid_event(gm_engine_sound__stop_event.handle)
-    abandon(gm_engine_sound__stop_event.handle)
+  if !is_playing(gm_engine_sound__start_event) && is_valid_event(gm_engine_sound__start_event)
+    abandon(gm_engine_sound__start_event)
+  if !is_playing(gm_engine_sound__stop_event) && is_valid_event(gm_engine_sound__stop_event)
+    abandon(gm_engine_sound__stop_event)
 
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
@@ -242,7 +242,7 @@ def gm_engine_on_start_es(evt : CmdEngineStartSound;
                           var gm_engine_sound__event_inside : SoundEvent&)
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__event_inside : gm_engine_sound__event
   assume curEventName = gm_engine_sound__is_inside ? gm_engine_sound__event_inside_name : gm_engine_sound__event_name
-  if !is_playing(curEvent.handle)
+  if !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
   gm_engine_sound__should_play = true
 
@@ -252,18 +252,18 @@ def gm_engine_on_stop_es(evt : CmdEngineStopSound;
                          var gm_engine_sound__should_play : bool&;
                          var gm_engine_sound__event : SoundEvent&;
                          var gm_engine_sound__event_inside : SoundEvent&)
-  if is_playing(gm_engine_sound__event.handle)
-    abandon(gm_engine_sound__event.handle)
-  if is_playing(gm_engine_sound__event_inside.handle)
-    abandon(gm_engine_sound__event_inside.handle)
+  if is_playing(gm_engine_sound__event)
+    abandon(gm_engine_sound__event)
+  if is_playing(gm_engine_sound__event_inside)
+    abandon(gm_engine_sound__event_inside)
   gm_engine_sound__should_play = false
 
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_engine_on_steal_es(evt : CmdEngineStealSound;
                           var gm_engine_sound__event : SoundEvent&)
-  if is_playing(gm_engine_sound__event.handle)
-    abandon(gm_engine_sound__event.handle)
+  if is_playing(gm_engine_sound__event)
+    abandon(gm_engine_sound__event)
 
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
@@ -271,7 +271,7 @@ def gm_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
                             gm_engine_sound__pos : float3;
                             gm_engine_sound__event_name : das_string;
                             var gm_engine_sound__event : SoundEvent&)
-  if !is_playing(gm_engine_sound__event.handle)
+  if !is_playing(gm_engine_sound__event)
     gm_engine_sound__event |> play(string(gm_engine_sound__event_name), gm_engine_sound__pos)
 
 
@@ -285,15 +285,15 @@ def gm_engine_on_play_start_es(evt : CmdEnginePlayStartSound;
                                var gm_engine_sound__start_event : SoundEvent&;
                                var gm_engine_sound__start_inside_event : SoundEvent&;
                                var gm_engine_sound__stop_inside_event : SoundEvent&)
-  if is_playing(gm_engine_sound__stop_event.handle)
-    release(gm_engine_sound__stop_event.handle)
-  if is_playing(gm_engine_sound__stop_inside_event.handle)
-    release(gm_engine_sound__stop_inside_event.handle)
+  if is_playing(gm_engine_sound__stop_event)
+    release(gm_engine_sound__stop_event)
+  if is_playing(gm_engine_sound__stop_inside_event)
+    release(gm_engine_sound__stop_inside_event)
 
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__start_inside_event : gm_engine_sound__start_event
   assume curEventName = gm_engine_sound__is_inside ? gm_engine_sound__start_inside_name : gm_engine_sound__start_event_name
 
-  if !is_playing(curEvent.handle)
+  if !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
 
 
@@ -307,15 +307,15 @@ def gm_engine_on_play_stop_es(evt : CmdEnginePlayStopSound;
                               var gm_engine_sound__start_inside_event : SoundEvent&;
                               var gm_engine_sound__stop_event : SoundEvent&;
                               var gm_engine_sound__stop_inside_event : SoundEvent&)
-  if is_playing(gm_engine_sound__start_event.handle)
-    release(gm_engine_sound__start_event.handle)
-  if is_playing(gm_engine_sound__start_inside_event.handle)
-    release(gm_engine_sound__start_inside_event.handle)
+  if is_playing(gm_engine_sound__start_event)
+    release(gm_engine_sound__start_event)
+  if is_playing(gm_engine_sound__start_inside_event)
+    release(gm_engine_sound__start_inside_event)
 
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__stop_inside_event : gm_engine_sound__stop_event
   assume curEventName = gm_engine_sound__is_inside ? gm_engine_sound__stop_inside_name : gm_engine_sound__stop_event_name
 
-  if !is_playing(curEvent.handle)
+  if !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
 
 //---------------------------------------------------------------------------------------------------
@@ -325,14 +325,14 @@ def gm_additional_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
                                        gm_additional_engine_sound__pos : float3;
                                        gm_additional_engine_sound__event_name : das_string;
                                        var gm_additional_engine_sound__event : SoundEvent&)
-  if !is_playing(gm_additional_engine_sound__event.handle)
+  if !is_playing(gm_additional_engine_sound__event)
     gm_additional_engine_sound__event |> play(string(gm_additional_engine_sound__event_name), gm_additional_engine_sound__pos)
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_additional__on_steal_es(evt : CmdEngineStealSound;
                                var gm_additional_engine_sound__event : SoundEvent&)
-  if is_playing(gm_additional_engine_sound__event.handle)
-    abandon(gm_additional_engine_sound__event.handle)
+  if is_playing(gm_additional_engine_sound__event)
+    abandon(gm_additional_engine_sound__event)
 
 
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
@@ -351,9 +351,9 @@ def gm_additional_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
 
   let rpm = abs(gm.engineRelativeRPM) * 100.f
   gm_additional_engine_sound__pos = unit.unitTm * gm_additional_engine_sound__pos_offset
-  if is_playing(gm_additional_engine_sound__event.handle)
-    gm_additional_engine_sound__event.handle |> set_pos(gm_additional_engine_sound__pos)
+  if is_playing(gm_additional_engine_sound__event)
+    gm_additional_engine_sound__event |> set_pos(gm_additional_engine_sound__pos)
 
-    gm_additional_engine_sound__event.handle |> set_var_optional("is_aero_on", rpm > 5. ? 1. : 0.)
-    gm_additional_engine_sound__event.handle |> set_var_optional("rpm", rpm)
-    gm_additional_engine_sound__event.handle |> set_var_optional("load", gm_engine_sound__load)
+    gm_additional_engine_sound__event |> set_var_optional("is_aero_on", rpm > 5. ? 1. : 0.)
+    gm_additional_engine_sound__event |> set_var_optional("rpm", rpm)
+    gm_additional_engine_sound__event |> set_var_optional("load", gm_engine_sound__load)

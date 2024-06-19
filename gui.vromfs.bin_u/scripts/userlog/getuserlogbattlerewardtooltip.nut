@@ -3,12 +3,14 @@ let { floor } = require("math")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
-let { sourcesConfig } = require("%scripts/debriefing/rewardSources.nut")
+let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
+let { Cost } = require("%scripts/money.nut")
+let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
 
 enum UnitControl {
   UNIT_CONTROL_BOT = 1
@@ -22,46 +24,7 @@ let unitControlToLocIdMap = {
 
 let validateEmptyCellValueInt = @(v) v == "" ? 0 : v
 
-function getRewardFormulaConfig(values, isPlainText = false) {
-  let { noBonus, premAcc, booster, premMod = 0, currencySign } = values
-  let delimiter = isPlainText ? " " : ""
-
-  if (premAcc + booster + premMod == 0)
-    return [
-      {
-        text = $"{noBonus}{delimiter}{currencySign}"
-        regularFont = true
-        textColor = "@activeTextColor"
-      }
-    ]
-
-  return [
-    {
-      text = noBonus
-      regularFont = true
-    }
-    {
-      text = premAcc
-      prefix = "money/premiumText"
-      regularFont = true
-    }.__update(sourcesConfig.premAcc)
-    {
-      text = booster
-      prefix = "item/rateBooster"
-      regularFont = true
-    }.__update(sourcesConfig.booster)
-    {
-      text = premMod
-      prefix = "multiAward/type/premExpMul"
-      regularFont = true
-    }.__update(sourcesConfig.premMod)
-    {
-      text = $"{delimiter}={delimiter}{noBonus + premAcc + booster + premMod}{delimiter}{currencySign}"
-      regularFont = true
-      textColor = "@activeTextColor"
-    }
-  ].filter(@(c) !!c.text)
-}
+let cellNoValSymbol = loc("ui/mdash")
 
 let tableColumns = [
   {
@@ -150,17 +113,21 @@ let tableColumns = [
   {
     id = "bonusLevel"
     titleLocId = "expSkillBonusLevel"
-    cellTransformFn = function (cellValue, _reward) {
-      return {
-          text = get_roman_numeral(validateEmptyCellValueInt(cellValue))
-          isAlignCenter = true
-      }
+    cellTransformFn = @(cellValue, _reward) {
+      text = get_roman_numeral(validateEmptyCellValueInt(cellValue))
+      isAlignCenter = true
     }
   }
   {
     id = "exp"
     titleLocId = "experience/short"
-    cellTransformFn = @(cellValue, _reward) { text = cellValue.tostring()}
+    cellTransformFn = @(cellValue, reward) {
+      text = reward.isPlainText
+        ? $"{cellValue.tostring()} {loc("money/rpText")}"
+        : $"{cellValue.tostring()}{colorize("@currencyRpColor", loc("experience/short"))}"
+      cellType = "tdRight"
+      parseTags = true
+    }
   }
   {
     id = "unknown"
@@ -177,15 +144,58 @@ let tableColumns = [
     cellTransformFn = @(cellValue, _reward) { text = loc($"userlog/finishing_type/{cellValue}") }
   }
   {
+    id = "noBonusExpTotal"
+    titleLocId = "debriefing/basicRp"
+    cellTransformFn = @(cellValue, reward) {
+      text = reward.isPlainText
+        ? $"{cellValue.tostring()} {loc("money/rpText")}"
+        : $"{cellValue.tostring()}{colorize("@currencyRpColor", loc("experience/short"))}"
+      cellType = "tdRight"
+      parseTags = true
+    }
+  }
+  {
+    id = "invUnitName"
+    titleLocId = "debriefing/researched_unit"
+    cellTransformFn = @(cellValue, reward) {
+      text = (!cellValue || cellValue == "") ? cellNoValSymbol
+        : reward.isPlainText ? getClearUnitName(cellValue)
+        : loc($"{cellValue}_shop")
+    }
+  }
+  {
+    id = "invUnitRank"
+    titleLocId = "multiplayer/unitRank"
+    cellTransformFn = @(cellValue, _reward) {
+      text = cellValue
+      isAlignCenter = true
+    }
+  }
+  {
+    id = "newNationBonusExp"
+    titleLocId = "experience/short"
+    cellTransformFn = function(cellValue, reward) {
+      return {
+        cellType = "tdRight"
+        parseTags = true
+        text = "".concat(
+          reward.noBonusExpTotal, loc("ui/multiply"), reward.newNationBonusPercent, loc("measureUnits/percent"),
+          "=",
+          reward.isPlainText ? $"{cellValue} {loc("money/rpText")}" : Cost().setRp(cellValue)
+        )
+      }
+    }
+  }
+  {
     id = "earnedWp"
     titleLocId = "warpoints/short"
     cellTransformFn = @(_, reward) {
-      sources = getRewardFormulaConfig({
+      sources = getRewardSources({
         noBonus = reward?.wpNoBonus ?? 0
         premAcc = reward?.wpPremAcc ?? 0
         booster = reward?.wpBooster ?? 0
         currencySign = reward.isPlainText ? loc("money/wpText") : colorize("@currencyWpColor", loc("warpoints/short"))
-      }, reward.isPlainText)
+      }, { isPlainText = reward.isPlainText, regularFont = true })
       hasFormula = true
     }
   }
@@ -193,13 +203,13 @@ let tableColumns = [
     id = "earnedExp"
     titleLocId =  "experience/short"
     cellTransformFn = @(_, reward) {
-      sources = getRewardFormulaConfig({
+      sources = getRewardSources({
         noBonus = reward?.expNoBonus ?? 0
         premAcc = reward?.expPremAcc ?? 0
         booster = reward?.expBooster ?? 0
         premMod = reward?.expPremMod ?? 0
         currencySign = reward.isPlainText ? loc("money/rpText") : colorize("@currencyRpColor", loc("experience/short"))
-      }, reward.isPlainText)
+      }, { isPlainText = reward.isPlainText, regularFont = true })
       hasFormula = true
     }
   }
@@ -223,13 +233,22 @@ function getUserLogBattleRewardTooltip(rewardDetails, eventName, isPlainText = f
         earnedExp = null
         isPlainText
       })
-    if (eventName == "eventScoutKill")
-      row.__update({ unknown = !isPlainText ? !!reward?.unknown
-        : reward?.unknown ? loc("options/no")
-        : loc("options/yes") })
+      if (eventName == "eventScoutKill")
+        row.__update({ unknown = !isPlainText ? !!reward?.unknown
+          : reward?.unknown ? loc("options/no")
+          : loc("options/yes") })
 
-    return row
-  })
+      if (eventName == "researchPoints") {
+        if (!reward?.newNationBonusExp)
+          return null
+        row.__update({
+          exp = null  // for hiding exp column in the tooltip
+          invUnitRank = getRomanNumeralRankByUnitName(reward?.invUnitName) ?? cellNoValSymbol
+        })
+      }
+      return row
+    })
+    .filter(@(row) row)
   let visibleColumns = getVisibleTableColumns(tableRows)
 
   return {

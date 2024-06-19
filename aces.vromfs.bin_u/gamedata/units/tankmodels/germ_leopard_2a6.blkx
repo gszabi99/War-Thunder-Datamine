@@ -778,12 +778,16 @@
         "armorThrough": 3.0
       },
       "electronic_equipment_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -822,8 +826,7 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {},
-      "power_system_dm": {}
+      "transmission_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -1462,6 +1465,12 @@
             "fHitCritical": true
           },
           {
+            "damageType": "cumulative",
+            "expl": 1.0,
+            "damage": 800.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "explosion",
             "expl": 0.125,
             "fire": 0.15,
@@ -1498,14 +1507,14 @@
             "damageType": "generic",
             "fire": 0.4,
             "expl": 0.6,
-            "damage": 300.0,
+            "damage": 250.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
             "fire": 0.3,
             "expl": 0.7,
-            "damage": 400.0,
+            "damage": 300.0,
             "fHitCritical": true
           },
           {
@@ -1520,8 +1529,7 @@
           }
         ],
         "onKill": {
-          "fire": 0.4,
-          "expl": 0.6,
+          "fire": 1.0,
           "fHitCritical": true
         }
       },
@@ -2131,13 +2139,10 @@
   "MetaParts": {
     "closed_fightning_compartment": {
       "part": [
-        "driver_dm",
         "loader_dm",
         "gunner_dm",
         "commander_dm",
         "machine_gunner_dm",
-        "machine_gunner_01_dm",
-        "machine_gunner_02_dm",
         "gunner_01_dm",
         "gunner_02_dm",
         "loader_01_dm",
@@ -2146,65 +2151,46 @@
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
-        "drive_turret_h_01_dm",
+        "drive_turret_v_02_dm",
+        "drive_turret_h_02_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_control_compartment": {
+      "part": [
+        "driver_dm",
+        "drive_turret_v_dm",
+        "drive_turret_h_dm",
+        "drive_turret_v_01_dm",
         "drive_turret_v_02_dm",
         "drive_turret_h_02_dm",
-        "ammo_turret_dm",
-        "ammo_turret_01_dm",
-        "ammo_turret_02_dm",
-        "ammo_turret_03_dm",
-        "ammo_turret_04_dm",
-        "ammo_turret_05_dm",
-        "ammo_turret_06_dm",
-        "ammo_turret_07_dm",
-        "ammo_turret_08_dm",
-        "ammo_turret_09_dm",
-        "ammo_turret_10_dm",
-        "ammo_turret_11_dm",
-        "ammo_turret_12_dm",
-        "ammo_turret_13_dm",
-        "ammo_turret_14_dm",
-        "ammo_turret_15_dm",
-        "ammo_turret_16_dm",
-        "ammo_turret_17_dm",
-        "ammo_turret_18_dm",
-        "ammo_turret_19_dm",
-        "ammo_turret_20_dm",
-        "ammo_turret_21_dm",
-        "ammo_turret_22_dm",
-        "ammo_turret_23_dm",
-        "ammo_turret_24_dm",
-        "ammo_turret_25_dm",
-        "ammo_turret_26_dm",
-        "ammo_turret_27_dm",
-        "ammo_turret_28_dm",
-        "ammo_turret_29_dm",
-        "ammo_turret_30_dm",
-        "ammo_turret_31_dm",
-        "ammo_turret_32_dm",
-        "ammo_turret_33_dm",
-        "ammo_turret_34_dm",
-        "ammo_turret_35_dm",
-        "ammo_turret_36_dm",
-        "ammo_turret_37_dm",
-        "ammo_turret_38_dm",
-        "ammo_turret_39_dm",
-        "ammo_turret_40_dm",
-        "ammo_turret_41_dm",
-        "ammo_turret_42_dm",
-        "ammo_turret_43_dm",
-        "ammo_turret_44_dm",
-        "ammo_turret_45_dm",
-        "ammo_turret_46_dm",
-        "ammo_turret_47_dm",
-        "ammo_turret_48_dm",
-        "ammo_turret_49_dm",
-        "ammo_turret_50_dm",
-        "ammo_turret_51_dm",
-        "ammo_turret_52_dm",
-        "ammo_turret_53_dm",
-        "ammo_turret_54_dm",
-        "ammo_turret_55_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm",
         "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
@@ -3185,6 +3171,20 @@
       },
       {
         "name": "hydraulic_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_exterior",
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true

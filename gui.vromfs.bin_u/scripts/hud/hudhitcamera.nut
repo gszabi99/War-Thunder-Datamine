@@ -146,6 +146,9 @@ function setDamageStatus(statusObjId, health, isCritical = true) {
 function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
   let data = item.getInfo(camInfo, unitInfo, partName, dmgParams)
   let isShow = data != null
+  if (item?.needShowChange) {
+    unitInfo.crewRelativeCurr = stdMath.round(data?.value ?? unitInfo.crewRelativePrev)
+  }
 
   if (!(infoObj?.isValid() ?? false))
     return
@@ -201,8 +204,8 @@ function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
       crewCount = -1
       crewTotalCount = 0
       crewLostCount = 0
-      crewRelative = -1
-      crewLostRelative = 0
+      crewRelativePrev = -1
+      crewRelativeCurr = -1
       importantEvents = {}
     }
 
@@ -285,19 +288,21 @@ function updateTitle() {
 
 function showRelativeCrewLoss() {
   let unitInfo = getTargetInfo(curUnitId, curUnitVersion, curUnitType, isKillingHitResult(hitResult))
-  let { crewRelative, crewLostRelative } = unitInfo
-
-  let hasCrewChange = crewLostRelative < -1 || crewRelative % 1 - crewLostRelative < 0
-  if (!crewLostRelative || !hasCrewChange || !(scene?.isValid() ?? false))
+  let { crewRelativePrev, crewRelativeCurr } = unitInfo
+  if (crewRelativePrev <= 0) {
+    unitInfo.crewRelativePrev = crewRelativeCurr
+    return
+  }
+  let crewLostRelative = crewRelativeCurr - crewRelativePrev
+  if (!crewLostRelative || crewLostRelative > -1 || !(scene?.isValid() ?? false))
     return
 
-  unitInfo.crewLostRelative = 0
+  unitInfo.crewRelativePrev = crewRelativeCurr
 
   let crewNestObj = scene.findObject("crew_relative_nest")
   crewNestObj._blink = "yes"
 
-
-  let lostTxt = format("%2.f%s", min(stdMath.round(crewLostRelative), -1), loc("measureUnits/percent"))
+  let lostTxt = format("%2.f%s", crewLostRelative, loc("measureUnits/percent"))
   let data = "".concat("hitCamLostCrewRelativeText { text:t='", lostTxt, "' }")
   get_cur_gui_scene().prependWithBlk(crewNestObj.findObject("crew_relative_lost"), data, this)
 }
@@ -343,16 +348,6 @@ function updateCrewCount(unitInfo, data = null) {
   if (unitInfo.crewCount == -1)
     unitInfo.crewCount = crewCount
   let crewLostCount = crewCount - unitInfo.crewCount
-
-  let minCrewCount = data?.crewAliveMin ?? camInfo?.crewAliveMin ?? 0
-  let bestMinCrewCount = camInfo?.bestMinCrewCount ?? minCrewCount
-  let maxCrewLeftPercent = (1.0 + (bestMinCrewCount.tofloat() - minCrewCount) / unitInfo.crewTotalCount) * 100
-  let newCrewRelative = clamp(stdMath.lerp(minCrewCount - 1, unitInfo.crewTotalCount, 0, maxCrewLeftPercent, crewCount), 0, 100)
-  let crewChangeRelative = unitInfo.crewRelative > 0 ? unitInfo.crewRelative - newCrewRelative : 0
-  unitInfo.crewRelative = newCrewRelative
-  let needShowDelta = crewCount > 0 && crewChangeRelative > 0.0 && (camInfo?.needShowCrewLoss ?? false)
-  if (needShowDelta)
-    unitInfo.crewLostRelative -= crewChangeRelative
 
   setTimeout(TIME_TO_SUM_RELATIVE_CREW_LOST, showRelativeCrewLoss)
 
@@ -457,10 +452,15 @@ function onHitCameraEvent(mode, result, info) {
   }
 
   if (isVisible) {
-    let unitInfo = getTargetInfo(curUnitId, curUnitVersion,
+    local unitInfo = getTargetInfo(curUnitId, curUnitVersion,
       curUnitType, isKillingHitResult(hitResult))
-    foreach (item in (debuffsListsByUnitType?[curUnitType] ?? []))
+    foreach (item in (debuffsListsByUnitType?[curUnitType] ?? [])) {
       updateDebuffItem(item, unitInfo)
+
+      if (item?.needShowChange && (!isStarted || needFade)) {
+        unitInfo.crewRelativePrev = unitInfo.crewRelativeCurr
+      }
+    }
 
     if (unitInfo.isKilled)
       unitInfo.isKillProcessed = true
@@ -604,13 +604,18 @@ function onHitCameraImportantEvents(data) {
     if (events.len() == 0)
       continue
     let unitInfoEvents = unitInfo.importantEvents?[key] ?? []
-    if (type(events) == "table")
+    if (type(events) == "table") {
       unitInfoEvents.append(events)
-    else
+      if (key == "ammoEvent")
+        setDamageStatus(events.damageType == 0 ? "ammo_fire_status" : "ammo_explosion_status", 1)
+    } else {
       unitInfoEvents.extend(events)
+      if (key == "ammoEvent") {
+        foreach (event in events)
+          setDamageStatus(event.damageType == 0 ? "ammo_fire_status" : "ammo_explosion_status", 1)
+      }
+    }
     unitInfo.importantEvents[key] <- unitInfoEvents
-    if (key == "ammoEvent")
-      setDamageStatus(events.damageType == 0 ? "ammo_fire_status" : "ammo_explosion_status", 1)
   }
 
   showCritAnimation()

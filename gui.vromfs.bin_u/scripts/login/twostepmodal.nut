@@ -17,11 +17,11 @@ let { isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepT
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 local authDataByTypes = {
-  mail = { text = "#mainmenu/2step/confirmMail", img = "#ui/images/{prefix}two_step_email" } // warning disable: -forgot-subst
-  ga = { text = "#mainmenu/2step/confirmGA", img = "#ui/images/{prefix}two_step_phone_ga" }  // warning disable: -forgot-subst
+  mail = { text = "#mainmenu/2step/confirmMail", img = "{prefix}two_step_email" } // warning disable: -forgot-subst
+  ga = { text = "#mainmenu/2step/confirmGA", img = "{prefix}two_step_phone_ga" }  // warning disable: -forgot-subst
   gp = {
     getText = @() loc("mainmenu/2step/confirmPass", { passName = getCurCircuitOverride("passName", "Gaijin Pass") })
-    img = "#ui/images/{prefix}two_step_phone_gp" // warning disable: -forgot-subst
+    img = "{prefix}two_step_phone_gp" // warning disable: -forgot-subst
   }
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }

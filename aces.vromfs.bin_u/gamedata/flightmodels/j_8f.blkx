@@ -2261,6 +2261,10 @@
     ],
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "isDoubleBulletImpactLine": true,
     "hmdEnabledByDefault": true,
     "hmdBlockIlsArea": [
@@ -2520,11 +2524,21 @@
             0.5,
             0.5
           ],
-          "page": {
-            "type": "radar",
-            "scale": 0.95,
-            "hideBackground": true
-          }
+          "page": [
+            {
+              "type": "rwr",
+              "scale": 1.05,
+              "centralMark": "cross",
+              "circleCnt": 2,
+              "hasCompass": true,
+              "digitalCompass": true
+            },
+            {
+              "type": "radar",
+              "scale": 0.95,
+              "hideBackground": true
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2708,7 +2722,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 42,
-              "bulletsCartridge": 21,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
@@ -2717,7 +2731,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 42,
-              "bulletsCartridge": 21,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -3577,7 +3591,7 @@
       "tier": 4,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,

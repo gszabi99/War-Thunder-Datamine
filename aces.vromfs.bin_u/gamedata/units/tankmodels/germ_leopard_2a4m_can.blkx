@@ -134,11 +134,27 @@
       "turret_10_back_dm": {
         "armorThickness": 35.0
       },
-      "turret_11_side_dm": {
-        "armorThickness": 20.0,
-        "createSecondaryShatters": false,
-        "hidableInViewer": true
+      "turret_12_side_dm": {
+        "armorThickness": 35.0
+      },
+      "turret_12_back_dm": {
+        "armorThickness": 35.0
+      },
+      "turret_13_side_dm": {
+        "armorThickness": 20.0
       }
+    },
+    "additional_HSS_plates": {
+      "armorClass": "RHAHH_tank",
+      "createSecondaryShatters": false,
+      "hidableInViewer": true,
+      "armorThickness": 20.0,
+      "genericArmorQuality": 2.5,
+      "turret_11_back_dm": {},
+      "turret_11_side_dm": {},
+      "turret_12_front_dm": {},
+      "turret_12_top_dm": {},
+      "turret_09_front_dm": {}
     },
     "turret": {
       "armorClass": "RHA_tank_modern",
@@ -253,7 +269,7 @@
         "armorClass": "RHAHH_tank",
         "createSecondaryShatters": false
       },
-      "turret_09_top_dm": {
+      "turret_13_bottom_dm": {
         "armorThickness": 35.0,
         "armorClass": "RHA_tank_modern"
       },
@@ -262,14 +278,18 @@
         "armorClass": "RHAHH_tank",
         "createSecondaryShatters": false
       },
-      "turret_09_front_dm": {
-        "armorThickness": 250.0,
-        "armorEffectiveThicknessMax": 250.0,
-        "armorClass": "CHA_tank_modern"
+      "ex_armor_body_01_dm": {
+        "armorThickness": 20.0,
+        "armorEffectiveThicknessMax": 20.0,
+        "armorClass": "RHA_tank_modern",
+        "hidableInViewer": true
       },
-      "turret_09_back_dm": {
+      "turret_13_back_dm": {
         "armorThickness": 35.0,
         "armorClass": "RHA_tank_modern"
+      },
+      "turret_13_top_dm": {
+        "armorThickness": 40.0
       },
       "turret_09_bottom_dm": {
         "armorThickness": 35.0,
@@ -364,12 +384,12 @@
     "turret_screens_steel_elements": {
       "armorThickness": 10.0,
       "createSecondaryShatters": false,
+      "hidableInViewer": true,
       "turret_05_top_dm": {},
       "turret_07_side_dm": {},
       "gun_mask_04_dm": {},
       "turret_11_bottom_dm": {},
       "turret_08_back_dm": {},
-      "turret_11_front_dm": {},
       "turret_11_top_dm": {},
       "turret_07_bottom_dm": {}
     },
@@ -396,7 +416,13 @@
       "ex_armor_l_13_dm": {},
       "ex_armor_r_11_dm": {},
       "ex_armor_r_12_dm": {},
-      "ex_armor_r_13_dm": {}
+      "ex_armor_r_13_dm": {},
+      "turret_11_front_dm": {
+        "genericArmorQuality": 1.3,
+        "cumulativeArmorQuality": 1.9,
+        "explosionArmorQuality": 1.0,
+        "armorThickness": 45.0
+      }
     },
     "tank_structural_steel_elements": {
       "armorClass": "tank_structural_steel",
@@ -405,9 +431,6 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "ex_armor_turret_02_dm": {
-        "armorThickness": 5.0
-      },
-      "ex_armor_turret_03_dm": {
         "armorThickness": 5.0
       },
       "ex_decor_l_07_dm": {
@@ -557,7 +580,10 @@
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "cumulativeArmorQuality": 0.15,
-        "hp": 200.0
+        "hp": 200.0,
+        "ex_armor_turret_03_dm": {
+          "armorThickness": 10.0
+        }
       }
     },
     "gun": {
@@ -716,12 +742,16 @@
         "armorThrough": 3.0
       },
       "electronic_equipment_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -760,8 +790,7 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {},
-      "power_system_dm": {}
+      "transmission_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -1374,6 +1403,12 @@
             "fHitCritical": true
           },
           {
+            "damageType": "cumulative",
+            "expl": 1.0,
+            "damage": 800.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "explosion",
             "expl": 0.125,
             "fire": 0.15,
@@ -1410,14 +1445,14 @@
             "damageType": "generic",
             "fire": 0.4,
             "expl": 0.6,
-            "damage": 300.0,
+            "damage": 250.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
             "fire": 0.3,
             "expl": 0.7,
-            "damage": 400.0,
+            "damage": 300.0,
             "fHitCritical": true
           },
           {
@@ -1432,8 +1467,7 @@
           }
         ],
         "onKill": {
-          "fire": 0.4,
-          "expl": 0.6,
+          "fire": 1.0,
           "fHitCritical": true
         }
       },
@@ -1778,12 +1812,84 @@
             ]
           }
         }
+      },
+      {
+        "name": "ex_armor_l_01_dm",
+        "onKill": {
+          "ex_decor_l_14_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_l_02_dm",
+        "onKill": {
+          "ex_decor_l_15_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_l_03_dm",
+        "onKill": {
+          "ex_decor_l_16_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_l_04_dm",
+        "onKill": {
+          "ex_decor_l_17_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_l_05_dm",
+        "onKill": {
+          "ex_decor_l_18_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_l_06_dm",
+        "onKill": {
+          "ex_decor_l_19_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_r_06_dm",
+        "onKill": {
+          "ex_decor_r_14_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_r_05_dm",
+        "onKill": {
+          "ex_decor_r_19_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_r_04_dm",
+        "onKill": {
+          "ex_decor_r_18_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_r_03_dm",
+        "onKill": {
+          "ex_decor_r_17_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_r_02_dm",
+        "onKill": {
+          "ex_decor_r_16_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_armor_r_01_dm",
+        "onKill": {
+          "ex_decor_r_15_dm": 1.0
+        }
       }
     ]
   },
   "xrayOverride": {
     "drive_turret_h_01_dm": {
-      "overrideTitle": "hydraulic_pump",
+      "overrideTitle": "power_electronics",
       "hideDescription": true
     }
   },
@@ -1937,7 +2043,7 @@
               "dmPart": "composite_armor_turret_04_dm"
             },
             {
-              "dmPart": "turret_09_back_dm"
+              "dmPart": "turret_13_back_dm"
             }
           ]
         }
@@ -1954,7 +2060,7 @@
               "dmPart": "composite_armor_turret_04_dm"
             },
             {
-              "dmPart": "turret_09_top_dm"
+              "dmPart": "turret_13_bottom_dm"
             }
           ]
         }
@@ -2084,13 +2190,10 @@
   "MetaParts": {
     "closed_fightning_compartment": {
       "part": [
-        "driver_dm",
         "loader_dm",
         "gunner_dm",
         "commander_dm",
         "machine_gunner_dm",
-        "machine_gunner_01_dm",
-        "machine_gunner_02_dm",
         "gunner_01_dm",
         "gunner_02_dm",
         "loader_01_dm",
@@ -2099,65 +2202,46 @@
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
-        "drive_turret_h_01_dm",
+        "drive_turret_v_02_dm",
+        "drive_turret_h_02_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_control_compartment": {
+      "part": [
+        "driver_dm",
+        "drive_turret_v_dm",
+        "drive_turret_h_dm",
+        "drive_turret_v_01_dm",
         "drive_turret_v_02_dm",
         "drive_turret_h_02_dm",
-        "ammo_turret_dm",
-        "ammo_turret_01_dm",
-        "ammo_turret_02_dm",
-        "ammo_turret_03_dm",
-        "ammo_turret_04_dm",
-        "ammo_turret_05_dm",
-        "ammo_turret_06_dm",
-        "ammo_turret_07_dm",
-        "ammo_turret_08_dm",
-        "ammo_turret_09_dm",
-        "ammo_turret_10_dm",
-        "ammo_turret_11_dm",
-        "ammo_turret_12_dm",
-        "ammo_turret_13_dm",
-        "ammo_turret_14_dm",
-        "ammo_turret_15_dm",
-        "ammo_turret_16_dm",
-        "ammo_turret_17_dm",
-        "ammo_turret_18_dm",
-        "ammo_turret_19_dm",
-        "ammo_turret_20_dm",
-        "ammo_turret_21_dm",
-        "ammo_turret_22_dm",
-        "ammo_turret_23_dm",
-        "ammo_turret_24_dm",
-        "ammo_turret_25_dm",
-        "ammo_turret_26_dm",
-        "ammo_turret_27_dm",
-        "ammo_turret_28_dm",
-        "ammo_turret_29_dm",
-        "ammo_turret_30_dm",
-        "ammo_turret_31_dm",
-        "ammo_turret_32_dm",
-        "ammo_turret_33_dm",
-        "ammo_turret_34_dm",
-        "ammo_turret_35_dm",
-        "ammo_turret_36_dm",
-        "ammo_turret_37_dm",
-        "ammo_turret_38_dm",
-        "ammo_turret_39_dm",
-        "ammo_turret_40_dm",
-        "ammo_turret_41_dm",
-        "ammo_turret_42_dm",
-        "ammo_turret_43_dm",
-        "ammo_turret_44_dm",
-        "ammo_turret_45_dm",
-        "ammo_turret_46_dm",
-        "ammo_turret_47_dm",
-        "ammo_turret_48_dm",
-        "ammo_turret_49_dm",
-        "ammo_turret_50_dm",
-        "ammo_turret_51_dm",
-        "ammo_turret_52_dm",
-        "ammo_turret_53_dm",
-        "ammo_turret_54_dm",
-        "ammo_turret_55_dm",
+        "fuel_tank_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
+        "fuel_tank_05_dm",
+        "fuel_tank_r_01_dm",
+        "fuel_tank_r_02_dm",
+        "fuel_tank_r_03_dm",
+        "fuel_tank_r_04_dm",
+        "fuel_tank_r_05_dm",
+        "fuel_tank_l_01_dm",
+        "fuel_tank_l_02_dm",
+        "fuel_tank_l_03_dm",
+        "fuel_tank_l_04_dm",
+        "fuel_tank_l_05_dm",
         "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
@@ -3135,6 +3219,20 @@
         }
       },
       {
+        "name": "powersystem_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_exterior",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "big_bang",
         "lifetime": 10.0,
         "fx": [
@@ -3526,7 +3624,19 @@
             "ex_armor_l_13_net",
             "ex_armor_r_11_net",
             "ex_armor_r_12_net",
-            "ex_armor_r_13_net"
+            "ex_armor_r_13_net",
+            "ex_decor_l_14",
+            "ex_decor_l_15",
+            "ex_decor_l_16",
+            "ex_decor_l_17",
+            "ex_decor_l_18",
+            "ex_decor_l_19",
+            "ex_decor_r_14",
+            "ex_decor_r_15",
+            "ex_decor_r_16",
+            "ex_decor_r_17",
+            "ex_decor_r_18",
+            "ex_decor_r_19"
           ]
         }
       }
@@ -3546,7 +3656,19 @@
             "ex_decor_l_04",
             "ex_decor_r_04",
             "ex_decor_l_06",
-            "ex_decor_r_06"
+            "ex_decor_r_06",
+            "ex_armor_turret_01",
+            "ex_armor_body_l_01",
+            "ex_armor_body_l_02",
+            "ex_armor_body_l_03",
+            "ex_armor_body_r_01",
+            "ex_armor_body_r_02",
+            "composite_armor_hull_07",
+            "composite_armor_hull_08",
+            "composite_armor_hull_09",
+            "composite_armor_hull_10",
+            "composite_armor_hull_11",
+            "composite_armor_turret_10"
           ]
         }
       }
@@ -3560,7 +3682,7 @@
       },
       "disableModEffects": {
         "hideNodes": {
-          "node": "turret_11_side"
+          "node": "ex_armor_body_01"
         }
       }
     },

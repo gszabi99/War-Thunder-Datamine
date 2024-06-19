@@ -12,9 +12,7 @@
 
       <<#needTierArrow>>
       modArrow {
-        position:t='absolute'
         height:t='1@modCellHeight - 1@modBlockTierNumHeight'
-        width:t='h'
         pos:t='0.5pw-0.5w-1, -h'
         type:t='down'
         modArrowPlate{

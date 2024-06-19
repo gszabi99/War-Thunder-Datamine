@@ -556,12 +556,17 @@
         "armorThrough": 3.0
       },
       "electronic_equipment_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -600,8 +605,7 @@
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {},
-      "power_system_dm": {}
+      "transmission_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
@@ -749,6 +753,7 @@
       "ammo_body_l_03_dm": {},
       "ammo_body_l_04_dm": {},
       "ammo_body_r_05_dm": {},
+      "ammo_body_l_05_dm": {},
       "ammo_body_r_06_dm": {},
       "ammo_body_r_07_dm": {},
       "ammo_body_r_08_dm": {},
@@ -1191,6 +1196,12 @@
             "fHitCritical": true
           },
           {
+            "damageType": "cumulative",
+            "expl": 1.0,
+            "damage": 800.0,
+            "fHitCritical": true
+          },
+          {
             "damageType": "explosion",
             "expl": 0.125,
             "fire": 0.15,
@@ -1227,14 +1238,14 @@
             "damageType": "generic",
             "fire": 0.4,
             "expl": 0.6,
-            "damage": 300.0,
+            "damage": 250.0,
             "fHitCritical": true
           },
           {
             "damageType": "generic",
             "fire": 0.3,
             "expl": 0.7,
-            "damage": 400.0,
+            "damage": 300.0,
             "fHitCritical": true
           },
           {
@@ -1249,8 +1260,7 @@
           }
         ],
         "onKill": {
-          "fire": 0.4,
-          "expl": 0.6,
+          "fire": 1.0,
           "fHitCritical": true
         }
       },
@@ -1582,6 +1592,60 @@
             }
           }
         ]
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": "fire_control_system_dm"
+          }
+        }
       }
     ]
   },
@@ -1785,6 +1849,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "jammedReloadTime": 8.0,
         "speedYaw": 40.0,
         "speedPitch": 36.0,
@@ -1971,7 +2039,7 @@
         "speedYaw": 25.0,
         "speedPitch": 25.0,
         "fireConeAngle": 1.0,
-        "bullets": 4,
+        "bullets": 10,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2742,6 +2810,20 @@
         }
       },
       {
+        "name": "powersystem_internal",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "powersystem_exterior",
+        "fx": {
+          "name": "tank_ex_fuel_explosion",
+          "centerDmgPart": true
+        }
+      },
+      {
         "name": "big_bang",
         "lifetime": 10.0,
         "fx": [
@@ -3024,6 +3106,24 @@
           },
           "ammo_body_r_02_dm": {
             "count": 1
+          },
+          "ammo_body_l_05_dm": {
+            "count": 1
+          },
+          "ammo_body_l_04_dm": {
+            "count": 1
+          },
+          "ammo_body_l_03_dm": {
+            "count": 1
+          },
+          "ammo_body_r_03_dm": {
+            "count": 1
+          },
+          "ammo_body_r_04_dm": {
+            "count": 1
+          },
+          "ammo_body_r_05_dm": {
+            "count": 1
           }
         }
       ]
@@ -3051,7 +3151,59 @@
     "airstrike": {},
     "improved_optics": {},
     "modern_tank_laser_rangefinder": {
-      "tier": 2
+      "tier": 2,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "rangefinderDmPart": "fire_control_system_dm",
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": {
+            "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+            "dmPart": "fire_control_system_dm"
+          }
+        }
+      }
     },
     "25mm_M242_APDS": {},
     "25mm_M242_APDS_FS": {},

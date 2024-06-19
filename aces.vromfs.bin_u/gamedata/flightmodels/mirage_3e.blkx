@@ -2577,14 +2577,26 @@
           "ShowNodes": {
             "node": "fuse_flares"
           },
-          "Weapon": {
-            "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
-            "emitter": "emtr_flare1",
-            "bullets": 60,
-            "external": true,
-            "separate": true
-          }
+          "Weapon": [
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 15,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            }
+          ]
         }
       },
       {
@@ -3174,10 +3186,8 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,

@@ -2635,19 +2635,21 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 32,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 32,
                 "external": true,
-                "separate": false
+                "separate": false,
+                "bulletsCartridge": 1
               }
             ]
           },
@@ -3190,11 +3192,8 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
-    "countermeasures_launcher_chaff_only_unchecked": {},
-    "countermeasures_launcher_flare_only_unchecked": {},
-    "countermeasures_launcher_chaff_priority_unchecked": {},
-    "countermeasures_launcher_flare_priority_unchecked": {},
-    "countermeasures_belt_pack_unchecked": {
+    "countermeasures_launcher_chaff": {},
+    "countermeasures_belt_pack": {
       "modClass": "weapon",
       "tier": 1,
       "turn_it_off": false,
@@ -3202,7 +3201,7 @@
       "group": "mi-24_EVU"
     },
     "mi_24_fab_250": {
-      "prevModification": "countermeasures_belt_pack_unchecked",
+      "prevModification": "countermeasures_belt_pack",
       "modClass": "weapon",
       "tier": 2
     },

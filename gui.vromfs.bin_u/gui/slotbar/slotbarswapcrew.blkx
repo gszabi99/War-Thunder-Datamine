@@ -1,0 +1,49 @@
+{
+  "DummyButton": {
+    "size": "sw, sh",
+    "position": "root",
+    "btnName": "B",
+    "on_click": "goBack",
+    "blur": {},
+    "blur_foreground": {
+      "isRoot": "yes"
+    }
+  },
+  "tdiv": {
+    "id": "tablePlace",
+    "top": "sh - 1@slotbarOffset - h - 1@slotbar_pad_top - 1@slotbar_pad_bottom + 1@slotbarTop",
+    "position": "root",
+    "flow": "vertical",
+    "tdiv": {
+      "size": "pw, 1@slotbarHeight - @slotbar_pad_top - @slotbar_pad_bottom + @swapCrewsHeaderHeight + 3@blockInterval",
+      "background-color": "@frameDarkBackgroundColor",
+      "position": "absolute"
+    },
+    "textareaNoTab": {
+      "position": "relative",
+      "text": "#slotbar/swapCrew",
+      "margin": "1@blockInterval",
+      "height": "@swapCrewsHeaderHeight"
+    },
+    "slotsScrollDiv": {
+      "id": "swap_crews_scroll",
+      "width": "fw",
+      "max-width": "1@slotbarWidth",
+      "padding": "@slot_interval + 1@slotScrollButtonWidth, 0",
+      "overflow-x": "auto",
+      "swapCrew": "yes",
+      "css-hier-invalidate": "yes",
+      "slotbarTable": {
+        "id": "airs_table",
+        "behavior": "posNavigator",
+        "css-hier-invalidate": "yes",
+        "position": "relative",
+        "height": "2@slotbarHeight - 2@slotbar_pad_top - 2@slotbar_pad_bottom + 1@slotbarTop",
+        "on_select": "onSlotSelect",
+        "on_pushed": "::gcb.delayedTooltipListPush",
+        "on_hold_start": "::gcb.delayedTooltipListHoldStart",
+        "on_hold_stop": "::gcb.delayedTooltipListHoldStop"
+      }
+    }
+  }
+}

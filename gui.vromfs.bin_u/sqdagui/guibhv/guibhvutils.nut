@@ -47,7 +47,7 @@ function markObjShortcutOnHover(obj, isByHover) {
 }
 
 let centeringStrToArray = memoize(function(str) {
-  let list = str.split(",")
+  let list = str.split(", ")
   if (list.len() != 2)
     return [0.5, 0.5]
   return list.map(@(v) v.tofloat() * 0.01)

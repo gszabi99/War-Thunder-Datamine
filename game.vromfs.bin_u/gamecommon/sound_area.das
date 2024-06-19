@@ -101,12 +101,12 @@ def sound_area_update_es(act : UpdateStageInfoAct;
     let idx = get_grid_idx(float2(hero.pos.x, hero.pos.z), sound_area__bounds, sound_area__grid_stride, sound_area__grid_step)
     let isIn = idx >= 0 ? sound_area__bgrid[idx] : false
     if isIn && sound_area__event_name != ""
-      if !is_playing(sound_area__event.handle)
+      if !is_playing(sound_area__event)
         sound_area__event |> play(sound_area__event_name)
       let intensity = is_on_edge(sound_area__bgrid, sound_area__grid_stride, idx) ? 0.5 : 1.
-      sound_area__event.handle |> set_var("intensity", intensity)
+      sound_area__event |> set_var("intensity", intensity)
     else
-      sound_area__event.handle |> abandon()
+      sound_area__event |> abandon()
 
 def draw_debug_mark(pos : float3;
                     height : float;

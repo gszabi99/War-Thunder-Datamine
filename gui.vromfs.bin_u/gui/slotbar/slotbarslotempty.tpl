@@ -1,5 +1,4 @@
 id:t='<<slotId>>'
-
 <<#position>>
 position:t='<<position>>'
 pos:t='<<posX>>w, <<posY>>h'
@@ -10,10 +9,16 @@ on_mouse_enter='onUnitSlotMouseEnter'
 <</selectOnHover>>
 
 <<#isSlotbarItem>>
-slotbarCurAir {}
 chosen:t='no'
 selected:t='no'
 <</isSlotbarItem>>
+
+unhoverDiv {
+  size:t='pw, ph'
+  display:t='hide'
+  position:t='absolute'
+  not-input-transparent:t='yes'
+}
 
 shopItem {
   id:t='<<shopItemId>>'
@@ -67,6 +72,10 @@ shopItem {
     shopItemPrice {
       text:t='<<shopItemPriceText>>'
       header:t='yes'
+    }
+    crewNumText {
+      text:t='<<crewNumWithTitle>>'
+      display:t='hide'
     }
   }
   <</crewImage>>

@@ -175,3 +175,17 @@ craftTreeScrollDiv[itemsSize = small] > ScrollBar {
 craftTreeScrollDiv[itemsSize = compact] > ScrollBar {
   step:1@compactItemHeight + 1@smallCraftTreeBlockInterval;
 }
+
+slotsScrollDiv[swapCrew=yes] > ScrollBar {
+  smooth: 5;
+}
+
+slotsScrollDiv[swapCrew=yes] > ScrollBar > ScrollButtonUp {
+  pos: -0.75w, -2h;
+  background-rotation: 270;
+}
+
+slotsScrollDiv[swapCrew=yes] > ScrollBar > ScrollButtonDown {
+  pos: pw-0.25w, -2h;
+  background-rotation: 90;
+}

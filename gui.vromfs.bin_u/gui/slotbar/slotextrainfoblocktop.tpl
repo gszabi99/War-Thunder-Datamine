@@ -52,7 +52,7 @@ extraInfoBlockTop {
           background-svg-size:t="@cIco, @sIco"
           background-repeat:t="aspect-ratio"
           background-image:t="<<unitClassIco>>"
-          background-color:t='@commonTextColor'
+          background-color:t='<<unitClassIcoColor>>'
           margin-right:t="2@sf/@pf"
         }
         textareaNoTab {
@@ -133,5 +133,94 @@ extraInfoBlockTop {
       <</isMissingExtraInfo>>
     }
   }
+
+  <<^isMissingExtraInfo>>
+  <<#showAdditionExtraInfo>>
+  slotMissionHintContainer {
+    slotMissionHint {
+      textareaNoTab {
+        id:t="extraInfoPriceTextHint"
+        width:t='pw'
+        smallFont:t='yes'
+        text:t='<<priceHintText>>'
+        position:t='relative'
+        margin-bottom:t="3@sf/@pf"
+        <<#hasPriceText>>
+        display:t='show'
+        <</hasPriceText>>
+        <<^hasPriceText>>
+        display:t='hide'
+        <</hasPriceText>>
+      }
+
+      tdiv {
+        width:t='pw'
+        position:t='relative'
+        margin-bottom:t="3@sf/@pf"
+        <<#hasAdditionalHistoricalRespawns>>
+        display:t='show'
+        <</hasAdditionalHistoricalRespawns>>
+        <<^hasAdditionalHistoricalRespawns>>
+        display:t='hide'
+        <</hasAdditionalHistoricalRespawns>>
+        tdiv {
+          position:t='relative'
+          pos:t='0, ph/2-h/2'
+          width:t='pw'
+          tdiv {
+            size:t="@cIco, @sIco"
+            position:t='relative'
+            background-svg-size:t="@cIco, @sIco"
+            background-repeat:t="aspect-ratio"
+            background-image:t="<<unitClassIco>>"
+            background-color:t='@commonTextColor'
+            margin-right:t="2@sf/@pf"
+          }
+          textareaNoTab {
+            width:t='pw'
+            smallFont:t='yes'
+            text:t='<<additionalHistoricalRespawnsHintText>>'
+            position:t='relative'
+            pos:t='-@cIco, ph/2-h/2'
+            paragraph-indent:t="7@blockInterval"
+
+          }
+        }
+      }
+
+      textareaNoTab {
+        margin-bottom:t="3@sf/@pf"
+        width:t='pw'
+        smallFont:t='yes'
+        text:t='<<additionalRespawnsHintText>>'
+        position:t='relative'
+        <<#hasAdditionalRespawns>>
+        display:t='show'
+        <</hasAdditionalRespawns>>
+        <<^hasAdditionalRespawns>>
+        display:t='hide'
+        <</hasAdditionalRespawns>>
+      }
+
+      textareaNoTab {
+        margin-bottom:t="3@sf/@pf"
+        <<#hasSpareInfo>>
+        display:t='show'
+        <</hasSpareInfo>>
+        <<^hasSpareInfo>>
+        display:t='hide'
+        <</hasSpareInfo>>
+        width:t='pw'
+        smallFont:t='yes'
+        text:t='<<spareHintText>>'
+        position:t='relative'
+      }
+    }
+
+    slotHoverHighlight {}
+    slotBottomGradientLine {}
+  }
+  <</showAdditionExtraInfo>>
+  <</isMissingExtraInfo>>
 }
 <</hasExtraInfoBlockTop>>

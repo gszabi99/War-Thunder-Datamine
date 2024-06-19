@@ -78,6 +78,7 @@ enumsAddTypes(g_top_menu_left_side_sections, [
         buttonsList.CLANS
         buttonsList.REPLAY
         buttonsList.VIRAL_AQUISITION
+        buttonsList.WT_ASSISTANT
         buttonsList.TSS
         buttonsList.STREAMS_AND_REPLAYS
         buttonsList.REPORT_AN_ISSUE

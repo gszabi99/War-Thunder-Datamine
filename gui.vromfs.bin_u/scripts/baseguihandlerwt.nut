@@ -916,8 +916,11 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function onShowMapRenderFilters() {}
 
   function onCustomLangInfo() {
-   this.guiScene.performDelayed(this, @() broadcastEvent("showOptionsWnd"))
+    this.guiScene.performDelayed(this, @() broadcastEvent("showOptionsWnd"))
   }
+
+  onCustomSoundMods = @() this.guiScene.performDelayed(this,
+    @() broadcastEvent("showOptionsWnd", { group = "sound" }))
 }
 
 gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT

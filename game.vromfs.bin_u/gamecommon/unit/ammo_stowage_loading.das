@@ -188,7 +188,6 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
     ammo_clusters__explosionEvtId = *get_unit_fx(unit) |> getEventIdByName("ammo_explosion");
   ammo_clusters__damageEffectPresetId = dm_read_overrided_preset(unit.visual.damageEffects, blk, "damageEffect", -1, unit.visual.dmData);
 
-  let is_auto_load_cluster = get_flag(ammo_clusters__state, AmmoClusterState AUTO_LOAD)
   let wreckage_name_id = blk |> datablock_getNameId("wreckedPartId")
   let elevator_name_id = blk |> datablock_getNameId("elevator")
   let autoloader_name_id = blk |> datablock_getNameId("autoloader")
@@ -210,7 +209,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
         return
       add_related_part |> invoke(elevator_part_id)
       set_flag(ammo_clusters__state, AmmoClusterState HAS_ELEVATOR_PARTS, true)
-    elif is_auto_load_cluster && name_id == autoloader_name_id && t == int(DataBlockParamType TYPE_STRING)
+    elif name_id == autoloader_name_id && t == int(DataBlockParamType TYPE_STRING)
       let autoloader_part_name = blk |> datablock_getStr(i)
       let autoloader_part_id = find_part_id(unit.dmData, autoloader_part_name)
       if !autoloader_part_id.valid

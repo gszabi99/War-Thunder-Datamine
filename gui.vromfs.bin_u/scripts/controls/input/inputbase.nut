@@ -35,7 +35,9 @@ from "%scripts/dagui_library.nut" import *
     return ""
   }
 
-
+  function getTextShort() {
+    return this.getText()
+  }
 
   function getDeviceId() {
     return NULL_INPUT_DEVICE_ID

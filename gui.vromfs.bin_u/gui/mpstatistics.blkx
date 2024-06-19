@@ -344,17 +344,34 @@
                   "text-shade-y": "1",
                   "text-shade-color": "#88000000"
                 },
-                "Button_text": {
-                  "id": "custom_lang_info",
-                  "hasWarningText": "yes",
-                  "position": "relative",
-                  "visualStyle": "noBgr",
-                  "isTextArea": "yes",
-                  "display": "hide",
-                  "on_click": "onCustomLangInfo",
-                  "focus_border": {},
-                  "ButtonImg": {}
-                },
+                "Button_text": [
+                  {
+                    "id": "custom_lang_info",
+                    "hasWarningText": "yes",
+                    "position": "relative",
+                    "visualStyle": "noBgr",
+                    "isTextArea": "yes",
+                    "display": "hide",
+                    "on_click": "onCustomLangInfo",
+                    "reduceHeight": "yes",
+                    "smallFont": "yes",
+                    "focus_border": {}
+                  },
+                  {
+                    "id": "custom_sound_mods",
+                    "hasWarningText": "yes",
+                    "position": "relative",
+                    "visualStyle": "noBgr",
+                    "isTextArea": "yes",
+                    "text": "#mainmenu/customSoundMods",
+                    "tooltip": "#mainmenu/customSoundMods/tooltip",
+                    "display": "hide",
+                    "on_click": "onCustomSoundMods",
+                    "reduceHeight": "yes",
+                    "smallFont": "yes",
+                    "focus_border": {}
+                  }
+                ],
                 "tdiv": {
                   "id": "mission_texts_block_left",
                   "flow": "vertical",

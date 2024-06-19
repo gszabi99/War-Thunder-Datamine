@@ -32,9 +32,9 @@
     "startSpeed": 0.0,
     "maxSpeed": 510.0,
     "endSpeed": 0.0,
-    "maxDistance": 7000.0,
+    "maxDistance": 10000.0,
     "minDistance": 2000.0,
-    "rangeMax": 7000.0,
+    "rangeMax": 10000.0,
     "loadFactorMax": 2.0,
     "isHasLaserChannel": true,
     "guidanceType": "laser",
@@ -108,6 +108,10 @@
         30.0
       ],
       "breakLockMaxTime": 5.0,
+      "timeTableCorrection": [
+        0.699,
+        0.914
+      ],
       "laserSeeker": {
         "range": 10000.0,
         "rangeMax": 12000.0,
@@ -134,6 +138,158 @@
         "accelControlIntg": 0.058,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0016
+      },
+      "table0": {
+        "altitude": 500.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          999.134,
+          1003.12,
+          431.275,
+          784.795
+        ],
+        "rangeMax": [
+          7211.3,
+          7037.35,
+          6185.91,
+          8624.27
+        ],
+        "rangeMaxAltDiff": [
+          500.0,
+          1733.44
+        ],
+        "timeMax": [
+          18.016,
+          15.4726,
+          11.5806,
+          16.5416
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          0.0287733
+        ]
+      },
+      "table1": {
+        "altitude": 2000.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          1050.86,
+          1076.71,
+          769.624,
+          802.031
+        ],
+        "rangeMax": [
+          7492.07,
+          7003.78,
+          6234.74,
+          8871.46
+        ],
+        "rangeMaxAltDiff": [
+          2000.0,
+          2034.77
+        ],
+        "timeMax": [
+          18.0187,
+          14.5341,
+          11.2308,
+          16.0906
+        ],
+        "timeMaxAltDiff": [
+          2000.0,
+          -0.00865078
+        ]
+      },
+      "table2": {
+        "altitude": 5000.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          689.652,
+          1133.62,
+          1215.18,
+          781.019
+        ],
+        "rangeMax": [
+          8114.62,
+          7614.14,
+          9701.54,
+          5987.55
+        ],
+        "rangeMaxAltDiff": [
+          5000.0,
+          2240.42
+        ],
+        "timeMax": [
+          18.0179,
+          14.7747,
+          18.0151,
+          9.27221
+        ],
+        "timeMaxAltDiff": [
+          5000.0,
+          -0.621832
+        ]
+      },
+      "table3": {
+        "altitude": 8000.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          596.119,
+          585.265,
+          586.92,
+          600.145
+        ],
+        "rangeMax": [
+          8691.41,
+          9552.0,
+          7827.76,
+          10003.7
+        ],
+        "rangeMaxAltDiff": [
+          8000.0,
+          -178.915
+        ],
+        "timeMax": [
+          18.0,
+          18.0,
+          13.0195,
+          15.7194
+        ],
+        "timeMaxAltDiff": [
+          8000.0,
+          -100.0
+        ]
       }
     },
     "pressureDamage": {

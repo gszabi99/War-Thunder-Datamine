@@ -6,7 +6,7 @@ let { set_unit_option, set_gui_option, setGuiOptionsMode } = require("guiOptions
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_BULLET_COUNT0,
-  USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
+  USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_BULLETS_WEAPON0
 } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -75,10 +75,11 @@ function updateBulletCountOptions(unit) {
   foreach (idx, bulGroup in bulletGroups) {
     bulIdx = idx
     let name = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
-    let count = bulGroup.active ? (bulGroup.bulletsCount * bulGroup.guns) : 0
+    let count = bulGroup.active ? bulGroup.bulletsCount : 0
     set_option(USEROPT_BULLETS0 + bulIdx, name)
     set_unit_option(unit.name, USEROPT_BULLETS0 + bulIdx, name)
     set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
+    set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, bulGroup.getWeaponName())
   }
   ++bulIdx
 
@@ -86,6 +87,7 @@ function updateBulletCountOptions(unit) {
     set_option(USEROPT_BULLETS0 + bulIdx, "")
     set_unit_option(unit.name, USEROPT_BULLETS0 + bulIdx, "")
     set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
+    set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, "")
     ++bulIdx
   }
 }

@@ -56,6 +56,10 @@ local blockNameByDirection = {
     return " - ".join(this.elements.map(@(e) e.getText()), true)
   }
 
+  function getTextShort() {
+    return " - ".join(this.elements.map(@(e) e.getTextShort()), true)
+  }
+
   function getDeviceId() {
     if (this.elements.len())
       return this.elements[0].getDeviceId()

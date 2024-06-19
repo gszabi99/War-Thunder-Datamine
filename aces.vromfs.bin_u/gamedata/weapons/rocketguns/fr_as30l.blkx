@@ -37,7 +37,6 @@
     "endSpeed": 0.0,
     "maxDistance": 12000.0,
     "minDistance": 30.0,
-    "visRotationFreqX": 4.0,
     "isHasLaserChannel": true,
     "guidanceType": "laser",
     "launchZoneDistance": 200.0,
@@ -154,7 +153,15 @@
         30.0,
         30.0
       ],
+      "launchDistanceRange": [
+        1000.0,
+        11000.0
+      ],
       "breakLockMaxTime": 22.0,
+      "timeTableCorrection": [
+        0.217,
+        1.028
+      ],
       "laserSeeker": {
         "range": 10000.0,
         "rangeMax": 12000.0,
@@ -181,6 +188,120 @@
         "accelControlIntg": 0.0345,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0061
+      },
+      "table0": {
+        "altitude": 500.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          2589.12,
+          2281.76,
+          2218.02,
+          2070.84
+        ],
+        "rangeMax": [
+          8303.83,
+          9112.55,
+          10067.7,
+          11019.9
+        ],
+        "rangeMaxAltDiff": [
+          500.0,
+          -35.7383
+        ],
+        "timeMax": [
+          24.0,
+          24.0,
+          24.0,
+          24.0
+        ],
+        "timeMaxAltDiff": [
+          500.0,
+          0.0428
+        ]
+      },
+      "table1": {
+        "altitude": 2000.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          3140.88,
+          2737.19,
+          2633.16,
+          2448.61
+        ],
+        "rangeMax": [
+          8422.85,
+          9356.69,
+          10357.7,
+          11407.5
+        ],
+        "rangeMaxAltDiff": [
+          2000.0,
+          736.655
+        ],
+        "timeMax": [
+          24.0,
+          24.0,
+          24.0,
+          24.0
+        ],
+        "timeMaxAltDiff": [
+          2000.0,
+          1.52289
+        ]
+      },
+      "table2": {
+        "altitude": 5000.0,
+        "fighterMach": [
+          0.4,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          5089.58,
+          4441.18,
+          4017.7,
+          3872.39
+        ],
+        "rangeMax": [
+          8789.06,
+          9814.45,
+          10910.0,
+          12045.3
+        ],
+        "rangeMaxAltDiff": [
+          5000.0,
+          1050.65
+        ],
+        "timeMax": [
+          24.0,
+          24.0,
+          24.0,
+          24.0
+        ],
+        "timeMaxAltDiff": [
+          5000.0,
+          1.87104
+        ]
       }
     },
     "pressureDamage": {

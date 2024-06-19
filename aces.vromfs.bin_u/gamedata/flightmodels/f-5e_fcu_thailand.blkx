@@ -1956,7 +1956,9 @@
             },
             {
               "type": "radar",
-              "scale": 1.2,
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.75,
               "lineColor": [
                 0,
                 255,
@@ -1964,18 +1966,22 @@
               ],
               "hasAviaHorizont": true,
               "hideBackground": true,
-              "targetForm": "targetForm",
-              "font": "usa_ils",
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
               "netRowCnt": 4,
               "netColor": [
                 0,
                 255,
-                7
+                0
               ],
-              "hideScale": true,
-              "hideHorAngle": true,
-              "hideVerAngle": true,
-              "hideWeaponIndication": true
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
             }
           ]
         },
@@ -2204,9 +2210,19 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 45,
+              "bullets": 30,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": false
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 10,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -3306,10 +3322,8 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "prevModification": "us_blu_1",
       "modClass": "weapon",

@@ -8,11 +8,28 @@
     "on_click": "onTakeCancel",
     "unitTrashBin": {
       "id": "unitTrashBin",
+      "css-hier-invalidate": "yes",
+      "tdiv": {
+        "position": "absolute",
+        "size": "pw, ph",
+        "overflow": "hidden",
+        "blur": {},
+        "blur_foreground": {}
+      },
       "img": {
-        "background-image": "#ui/gameuiskin#icon_trash_bin.svg"
+        "background-image": "#ui/gameuiskin#icon_trash_bin.svg",
+        "size": "@trashBinIconSize, @trashBinIconSize",
+        "background-svg-size": "@trashBinIconSize, @trashBinIconSize",
+        "halign": "center"
       },
       "textareaNoTab": {
-        "text": "#slotbar/removeVehicle"
+        "id": "trashBinText",
+        "text": "#slotbar/removeVehicle",
+        "width": "0.9pw",
+        "margin-top": "1@blockInterval",
+        "halign": "center",
+        "text-align": "center",
+        "smallFont": "yes"
       }
     }
   }

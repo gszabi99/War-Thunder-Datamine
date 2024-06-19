@@ -39,6 +39,14 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
     return " + ".join(text, true)
   }
 
+  function getTextShort() {
+    let text = []
+    foreach (element in this.elements)
+      text.append(element.getTextShort())
+
+    return " + ".join(text, true)
+  }
+
   function getDeviceId() {
     if (this.elements.len())
       return this.elements[0].getDeviceId()

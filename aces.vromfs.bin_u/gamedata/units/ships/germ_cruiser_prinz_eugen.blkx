@@ -7097,16 +7097,6 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/naval/de_fumo_24_25.blk",
-        "dmPart": "antenna_target_location_01_dm"
-      },
-      {
-        "blk": "gameData/sensors/naval/de_fumo_26.blk",
-        "dmPart": "antenna_target_location_02_dm"
-      }
-    ],
     "fireDirecting": [
       {
         "dmPartMain": [
@@ -7196,18 +7186,12 @@
     ]
   },
   "radarAnimations": {
-    "anim": [
-      {
-        "radarAnimVar": "radar_target_yaw_rotate",
-        "animatedRadarIdx": 0
-      },
-      {
-        "radarAnimVar": "target_tagging_yaw_rotate",
-        "radarAntenaSpeed": 50.0,
-        "animatedRadarIdx": 1,
-        "radarAnimPitchVar": "target_tagging_pitch_rotate"
-      }
-    ]
+    "anim": {
+      "radarAnimVar": "target_tagging_yaw_rotate",
+      "radarAntenaSpeed": 50.0,
+      "animatedRadarIdx": 1,
+      "radarAnimPitchVar": "target_tagging_pitch_rotate"
+    }
   },
   "supportPlane": {
     "supportPlaneClass": "arado-196a-3",
@@ -15658,6 +15642,13 @@
       "nameLocId": "ship_flag_italy_04/name",
       "texture": "flag_italy_04_c*"
     },
+    "ship_flag_france_02": {
+      "category": "naval",
+      "unlockId": "ship_flag_france_02",
+      "nameLocId": "ship_flag_france_02/name",
+      "descLocId": "ship_flag_france_02/desc",
+      "texture": "flag_france_02_c*"
+    },
     "ship_flag_afganistan_01": {
       "category": "national",
       "unlockId": "ship_flag_afganistan_01",
@@ -16797,12 +16788,6 @@
       "unlockId": "ship_flag_northern_ireland_01",
       "nameLocId": "ship_flag_northern_ireland_01/name",
       "texture": "flag_northern_ireland_01_c*"
-    },
-    "ship_ship_flag_france_02": {
-      "category": "national",
-      "unlockId": "ship_flag_france_02",
-      "nameLocId": "ship_flag_france_02/name",
-      "texture": "flag_france_02_c*"
     },
     "ship_flag_pirate_01": {
       "category": "pirate",

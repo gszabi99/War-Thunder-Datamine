@@ -320,6 +320,11 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_OPEN_VISUAL_WEAPON_SELECTOR"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
     id = "ID_JETTISON_SECONDARY"
     checkAssign = false
   }

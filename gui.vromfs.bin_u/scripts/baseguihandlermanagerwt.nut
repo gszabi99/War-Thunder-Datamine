@@ -359,6 +359,10 @@ handlersManager.__update({
     //dlog(format("GP: controls changed to 0x%X", curControlsAllowMask.val))
   }
 
+  function restoreAllowControlMask() {
+    set_allowed_controls_mask(curControlsAllowMask.val)
+  }
+
   function updateWidgets() {
     let widgetsList = []
     local hasActiveDargScene = false

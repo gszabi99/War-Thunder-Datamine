@@ -2613,8 +2613,8 @@
   "nightVision": {
     "sightTPodThermal": {
       "resolution": [
-        1024,
-        768
+        500,
+        300
       ],
       "noiseFactor": 0.05
     }
@@ -2831,17 +2831,19 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -3196,17 +3198,19 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               }
@@ -3562,17 +3566,19 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare6",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               }
@@ -4145,17 +4151,19 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare7",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare8",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               }
@@ -4511,17 +4519,19 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare9",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
                 "emitter": "emtr_flare10",
                 "bullets": 120,
+                "bulletsCartridge": 1,
                 "external": true,
                 "separate": true
               }
@@ -4671,10 +4681,8 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_bol_pod": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -4694,26 +4702,26 @@
         "nightVision": {
           "gunnerIr": {
             "resolution": [
-              1920,
-              1080
+              800,
+              600
             ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
           },
           "pilotIr": {
             "resolution": [
-              1920,
-              1080
+              800,
+              600
             ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
           },
           "sightThermal": {
             "resolution": [
-              1024,
-              768
+              500,
+              300
             ],
             "noiseFactor": 0.05
           }

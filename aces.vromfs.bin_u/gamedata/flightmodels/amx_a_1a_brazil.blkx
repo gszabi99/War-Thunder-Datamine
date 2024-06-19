@@ -2533,6 +2533,14 @@
         "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_br_maa_1_default.blk"
       },
       {
+        "name": "amx_a_1a_brazil_skyfire_70_7",
+        "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_skyfire_70_7.blk"
+      },
+      {
+        "name": "amx_a_1a_brazil_skyfire_70_19",
+        "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_skyfire_70_19.blk"
+      },
+      {
         "name": "amx_a_1a_brazil_mk82_default",
         "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_mk82_default.blk"
       },
@@ -2547,6 +2555,26 @@
       {
         "name": "amx_a_1a_brazil_mk83",
         "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_mk83.blk"
+      },
+      {
+        "name": "amx_a_1a_brazil_bafg_230",
+        "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_bafg_230.blk"
+      },
+      {
+        "name": "amx_a_1a_brazil_bafg_460",
+        "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_bafg_460.blk"
+      },
+      {
+        "name": "amx_a_1a_brazil_bafg_230_2",
+        "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_bafg_230_2.blk"
+      },
+      {
+        "name": "amx_a_1a_brazil_bafg_460_2",
+        "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_bafg_460_2.blk"
+      },
+      {
+        "name": "amx_a_1a_brazil_bafg_920",
+        "blk": "gameData/FlightModels/weaponPresets/amx_a_1a_brazil_bafg_920.blk"
       },
       {
         "name": "amx_a_1a_brazil_lizard",
@@ -2635,33 +2663,37 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": true
             }
@@ -2690,6 +2722,30 @@
         "tier": 8,
         "order": 3,
         "WeaponPreset": [
+          {
+            "iconType": "nar_ap_middle",
+            "name": "skyfire_7",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_av_lm_70_7_sf_skyfire.blk",
+              "emitter": "rocket1",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "skyfire_19",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_lm_70_19_r.blk",
+              "emitter": "rocket1",
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "bombs_middle",
             "name": "mk_82",
@@ -2724,6 +2780,58 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_default.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "bafg_460",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bafg_230_2",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_2_default.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "bafg_460_2",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460_2.blk",
               "emitter": "bomb1",
               "bullets": 1,
               "external": true,
@@ -2790,6 +2898,54 @@
         "order": 5,
         "WeaponPreset": [
           {
+            "iconType": "nar_ap_middle",
+            "name": "skyfire_7",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_av_lm_70_7_sf_skyfire.blk",
+              "emitter": "rocket2",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "skyfire_19",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_lm_70_19_r.blk",
+              "emitter": "rocket2",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_middle_group",
+            "name": "skyfire_7_x2",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/gr_tcs_av_lm_70_7_sf_skyfire.blk",
+              "emitter": "pylon_amx_tsc_002",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "skyfire_19_x2",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/gr_tcs_lm_70_19_r.blk",
+              "emitter": "pylon_amx_tsc_002",
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "mk_82",
             "Weapon": {
@@ -2855,6 +3011,100 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_default.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "bafg_230_x2",
+            "reqModification": "br_bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_230.blk",
+              "emitter": "pylon_amx_tsc_002",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "bafg_460",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bafg_230_2",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_2_default.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "bafg_230_2_x2",
+            "reqModification": "br_bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_230_2.blk",
+              "emitter": "pylon_amx_tsc_002",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "bafg_460_2",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460_2.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "bafg_920",
+            "reqModification": "br_bafg_920",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_920.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -3059,6 +3309,155 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "bafg_230_fuse",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_default.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "bafg_230_x2_fuse",
+            "reqModification": "br_bafg_230",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_230.blk",
+              "emitter": "pylon_amx_tsc_003",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "bafg_460_fuse",
+            "reqModification": "br_bafg_460",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special_group",
+            "name": "bafg_460_x2",
+            "reqModification": "br_bafg_460",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_460.blk",
+              "emitter": "pylon_amx_tsc_003",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bafg_230_2_fuse",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_2_default.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "bafg_230_2_x2_fuse",
+            "reqModification": "br_bafg_230",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_230_2.blk",
+              "emitter": "pylon_amx_tsc_003",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "bafg_460_2_fuse",
+            "reqModification": "br_bafg_460",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460_2.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag_group_x2",
+            "name": "bafg_460_2_x2",
+            "reqModification": "br_bafg_460",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_460_2.blk",
+              "emitter": "pylon_amx_tsc_003",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "bafg_920_fuse",
+            "reqModification": "br_bafg_920",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_920.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "flir_container",
             "name": "gr_litening_pod",
             "reqModification": "gr_litening_pod",
@@ -3085,6 +3484,54 @@
         "tier": 5,
         "order": 6,
         "WeaponPreset": [
+          {
+            "iconType": "nar_ap_middle",
+            "name": "skyfire_7",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_av_lm_70_7_sf_skyfire.blk",
+              "emitter": "rocket3",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "skyfire_19",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_lm_70_19_r.blk",
+              "emitter": "rocket3",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_middle_group",
+            "name": "skyfire_7_x2",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/gr_tcs_av_lm_70_7_sf_skyfire.blk",
+              "emitter": "pylon_amx_tsc_004",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "skyfire_19_x2",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/gr_tcs_lm_70_19_r.blk",
+              "emitter": "pylon_amx_tsc_004",
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "bombs_middle",
             "name": "mk_82",
@@ -3151,6 +3598,100 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_default.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "bafg_230_x2",
+            "reqModification": "br_bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_230.blk",
+              "emitter": "pylon_amx_tsc_004",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "bafg_460",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bafg_230_2",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_2_default.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "bafg_230_2_x2",
+            "reqModification": "br_bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/br_tcs_bafg_230_2.blk",
+              "emitter": "pylon_amx_tsc_004",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "bafg_460_2",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460_2.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "bafg_920",
+            "reqModification": "br_bafg_920",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_920.blk",
+              "emitter": "bomb4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -3223,6 +3764,30 @@
         "order": 4,
         "WeaponPreset": [
           {
+            "iconType": "nar_ap_middle",
+            "name": "skyfire_7",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_av_lm_70_7_sf_skyfire.blk",
+              "emitter": "rocket4",
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "skyfire_19",
+            "reqModification": "br_skyfire_70",
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "blk": "gameData/Weapons/containers/br_lm_70_19_r.blk",
+              "emitter": "rocket4",
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "mk_82",
             "Weapon": {
@@ -3256,6 +3821,58 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "bafg_230",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_default.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "bafg_460",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bafg_230_2",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_230_2_default.blk",
+              "emitter": "bomb5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "bafg_460_2",
+            "reqModification": "br_bafg_460",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/br_bafg_460_2.blk",
               "emitter": "bomb5",
               "bullets": 1,
               "external": true,
@@ -3489,10 +4106,7 @@
       "tier": 3,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -3573,6 +4187,10 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "br_bafg_460"
+    },
+    "br_skyfire_70": {
+      "modClass": "weapon",
+      "tier": 2
     },
     "gr_litening_pod": {
       "modClass": "weapon",

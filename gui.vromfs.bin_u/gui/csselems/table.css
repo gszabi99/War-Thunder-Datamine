@@ -784,3 +784,34 @@ table.transpTable, .transpTable > tr, .transpTable > tr > td {
 .noPad > tr > td {
   padding:0;
 }
+
+table.btlReward[compactColumns=no] td {
+  padding-left:4@blockInterval;
+  padding-right:4@blockInterval;
+}
+
+table.btlReward[compactColumns=yes] > tr[headerRow=yes] textareaNoTab {
+  padding-left:1@blockInterval;
+  padding-right:1@blockInterval;
+  smallFont:yes;
+  max-width:150@sf/@pf;
+}
+
+table.btlReward[compactColumns=yes] > tr[headerRow=no] activeText {
+  padding-left:1@blockInterval;
+}
+
+table.btlReward[compactColumns=yes] > tr[headerRow=no] > td[hasImage=no] > activeText {
+  padding-right:1@blockInterval;
+}
+
+table.btlReward[compactColumns=yes] rewardFormula {
+  padding-left:1@blockInterval;
+  padding-right:1@blockInterval;
+}
+
+table.btlReward cellSeparator {
+  height:ph;
+  width:2@dp;
+  background-color:@separatorBlockColor;
+}

@@ -2455,36 +2455,38 @@
               "beamShape": "caret",
               "fontScale": 0.65,
               "lineColor": [
-                20,
-                90,
-                200
+                0,
+                255,
+                7
               ],
               "targetForm": "square",
               "modeColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "verAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "horAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "scaleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "targetColor": [
+                0,
                 255,
-                255,
-                255
-              ]
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
             },
             {
               "type": "thermal",
@@ -2528,36 +2530,38 @@
               "beamShape": "caret",
               "fontScale": 0.65,
               "lineColor": [
-                20,
-                90,
-                200
+                0,
+                255,
+                7
               ],
               "targetForm": "square",
               "modeColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "verAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "horAngleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "scaleColor": [
+                0,
                 255,
-                255,
-                255
+                7
               ],
               "targetColor": [
+                0,
                 255,
-                255,
-                255
-              ]
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
             }
           ]
         },
@@ -2698,8 +2702,8 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_default.blk"
       },
       {
-        "name": "f_16d_block_40_barak_2_aim_9l_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_9l_default.blk"
+        "name": "f_16d_block_40_barak_2_aim_9m_default",
+        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_aim_9m_default.blk"
       },
       {
         "name": "f_16d_block_40_barak_2_aim_9l",
@@ -2895,7 +2899,7 @@
               "bullets": 30,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
@@ -2904,25 +2908,43 @@
               "bullets": 30,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
-              "bullets": 60,
+              "bullets": 30,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
-              "bullets": 60,
+              "bullets": 30,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "external": true,
+              "separate": false,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
+              "external": true,
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2946,11 +2968,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_001",
               "bullets": 1,
               "external": true,
@@ -4233,11 +4254,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_006",
               "bullets": 1,
               "external": true,

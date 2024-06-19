@@ -17,6 +17,7 @@
   "ilsSU145": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
+  "mfdCamTads": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -48,9 +49,6 @@
   ],
   "canTakeoffWithoutGear": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2263,14 +2261,80 @@
           "page": [
             {
               "type": "rwr",
-              "scale": 1.15
+              "scale": 0.85,
+              "circleCnt": 3,
+              "angleMarkStep": 30.0,
+              "centralMark": "empty"
             },
             {
               "type": "radar",
-              "scale": 0.95
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "showCueHeights": true,
+              "lineWidth": 0.5,
+              "centerRadar": true
+            },
+            {
+              "type": "ils_duplicate",
+              "scale": 1.3
             },
             {
               "type": "map"
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
             }
           ]
         },
@@ -2289,6 +2353,17 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
+            },
+            {
+              "type": "ils_duplicate",
+              "scale": 1.3
+            },
+            {
+              "type": "map"
             }
           ]
         },
@@ -2382,7 +2457,8 @@
           15.0
         ],
         "opticType": "",
-        "turretNo": 0
+        "turretNo": 0,
+        "nvIndex": 2
       },
       {
         "pos": [
@@ -2509,7 +2585,9 @@
       "node": [
         "lau7_l",
         "lau7_l1",
+        "lau7_l2",
         "lau7_r1",
+        "lau7_r2",
         "lau7_r",
         "lau_117_1",
         "lau_117_2",
@@ -2585,7 +2663,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 60,
-              "bulletsCartridge": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
@@ -2594,7 +2672,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare6",
               "bullets": 60,
-              "bulletsCartridge": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
@@ -2603,7 +2681,7 @@
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 60,
-              "bulletsCartridge": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -2951,6 +3029,22 @@
         "order": 5,
         "WeaponPreset": [
           {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": "lau7_l2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "emitter": "aim_120a_missile_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm_65d",
             "reqModification": "us_agm_65d",
@@ -3265,6 +3359,22 @@
         "tier": 4,
         "order": 6,
         "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120a",
+            "reqModification": "us_aim_120a",
+            "ShowNodes": {
+              "node": "lau7_r2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "emitter": "aim_120a_missile_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
           {
             "iconType": "missile_air_to_uni",
             "name": "agm_65d",
@@ -4172,9 +4282,15 @@
   },
   "default_skin": {
     "name": "default",
-    "replace_tex": {
-      "from": "av_8b_plus_c*",
-      "to": "av_8b_plus_us_c*"
-    }
+    "replace_tex": [
+      {
+        "from": "av_8b_plus_c*",
+        "to": "av_8b_plus_us_c*"
+      },
+      {
+        "from": "av_8b_plus_n*",
+        "to": "av_8b_plus_us_n*"
+      }
+    ]
   }
 }

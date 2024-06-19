@@ -1824,6 +1824,10 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
     }
 
+    if (tRow?.fillTooltipFunc != null) {
+      tRow.fillTooltipFunc(this.debriefingResult, obj, this)
+      return
+    }
     let rowsCfg = []
     if (!tRow.joinRows) {
       if (tRow.isCountedInUnits) {

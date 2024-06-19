@@ -30,7 +30,7 @@ massTransp {
         canSelectNone:t='yes'
         <</selectOnHover>>
         id:t='airs_table_<<countryIdx>>'
-        pos:t='0, @slotbarInvisPad-@slotbar_bottom_margin+1@slotBattleButtonHeight'
+        pos:t='0, @slotbarInvisPad-@slotbar_bottom_margin+1@slotBattleButtonHeight+@slotbar_top_shade'
         position:t='relative'
         behaviour:t='<<#slotbarBehavior>><<slotbarBehavior>><</slotbarBehavior>><<^slotbarBehavior>>ActivateSelect<</slotbarBehavior>>'
         navigatorShortcuts:t='yes'

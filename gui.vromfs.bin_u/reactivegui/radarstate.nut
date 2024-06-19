@@ -37,6 +37,7 @@ let modeNames = [
   "hud/PD BST",
   "hud/PD VSL",
   "hud/PD track",
+  "hud/PD RAM",
 
   "hud/PD HDN standby",
   "hud/PD HDN search",

@@ -1,0 +1,96 @@
+airWeaponSelectorItem {
+  background-color:#292C32;
+  css-hier-invalidate:yes;
+  size:0.06@shHud, 0.06@shHud;
+  border-color:#171B23;
+  border:yes;
+  behaviour:button;
+  interactive:yes;
+}
+
+airWeaponSelectorItem[isSelected=yes] {
+  background-color:#2F353E;
+}
+
+airWeaponSelectorItem[isBordered=yes] {
+  border-color:#E2E2E2;
+}
+
+airWeaponSelectorIcon {
+  size:0.06@shHud, 0.06@shHud;
+  position:relative;
+  pos:(pw-w)/2, (ph-h)/2;
+  background-repeat:expand;
+  background-svg-size:0.06@shHud, 0.06@shHud;
+  background-color:#FFFFFF;
+  input-transparent:yes;
+}
+
+airWeaponSelectorItem[enable=no],
+airWeaponSelectorItem[weaponIdx=-1],
+airWeaponSelectorItem[hasBullets=no] {
+  interactive:no;
+}
+
+airWeaponSelectorItem[hasBullets=no] > airWeaponSelectorIcon {
+  background-color:#44444444;
+}
+
+airWeaponSelectorItem[enable=no] > airWeaponSelectorIcon,
+airWeaponSelectorItem[weaponIdx=-1] > airWeaponSelectorIcon {
+  display:hide;
+}
+
+airWeaponSelectorCloseBtn {
+  behaviour:button;
+  re-type:9rect;
+  color:#AAAAAA;
+  bgcolor:#292C32;
+  color-factor:125;
+  border-color:#000000;
+  border:yes;
+  font:small_text;
+}
+
+airWeaponSelectorCloseBtn:hover {
+  color:#FFFFFF;
+  color-factor:255;
+}
+
+airWeaponSelectorCountermeasure {
+  total-input-transparent:yes;
+  background-color:#292C32;
+  css-hier-invalidate:yes;
+  min-width:0.128@shHud;
+  height:0.032@shHud;
+  border-color:#171B23;
+  border:yes;
+  behaviour:button;
+  interactive:yes;
+  margin-left:0.004@shHud;
+}
+
+airWeaponSelectorCountermeasure[isSelected=yes] {
+  background-color:#2F353E;
+}
+
+airWeaponSelectorCountermeasure[isBordered=yes] {
+  border-color:#E2E2E2;
+}
+
+airWeaponSelectorCountermeasure > label {
+  re-type:text;
+  color:#FFFFFF;
+  font:@fontSmall;
+}
+
+airWeaponSelectorCountermeasure > img {
+  position:absolute;
+  rotation:90;
+  top:(ph-h)/2;
+  left:pw - h/2 -0.008@shHud;
+  size:0.016@shHud, 0.064@shHud;
+  background-svg-size:0.016@shHud, 0.064@shHud;
+  background-repeat:aspect-ratio;
+  bgcolor:#FFFFFF;
+}

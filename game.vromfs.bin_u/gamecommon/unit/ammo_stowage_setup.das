@@ -223,6 +223,14 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
         // ammo_stowage_debug_print_all_clusters(v)
         logwarn("{unit.props.fileName}: failed to distribute ammo slots, distributed/excess={stowage_ammo_arr}, ammo_info={ammo_info_arr}")
 
+  // if we are initing stowage, limit ammo in slots with initially loaded ammo count
+  if init_num
+    for cluster_id, slots_range in iter_range(v.ammo_clusters__slotsRange), v.ammo_clusters__slotsRange
+      if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage LOADED_IN_GUN)
+        continue
+      for slot_id in slots_range.x..slots_range.y
+        v.ammo_slots__numAmmo[slot_id].y = v.ammo_slots__numAmmo[slot_id].x
+
   // ballance slots in each cluster
   for cluster_id in iter_range(v.ammo_clusters__state)
     ammo_cluster_balance_slots(unit, cluster_id, false, v)

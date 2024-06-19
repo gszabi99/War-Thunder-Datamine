@@ -49,6 +49,7 @@ let { guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBen
 let { guiStartCredits } = require("%scripts/credits.nut")
 let { guiStartReplays } = require("%scripts/replays/replayScreen.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
+let { openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDeepLink } = require("%scripts/user/wtAssistantDeeplink.nut")
 
 let list = {
   SKIRMISH = {
@@ -281,6 +282,13 @@ let list = {
     isFeatured = @() !hasFeature("ShowUrlQrCode")
     isHidden = @(...) !hasFeature("ServerReplay") || (!hasFeature("AllowExternalLink") && !hasFeature("ShowUrlQrCode"))
        || !isInMenu()
+  }
+  WT_ASSISTANT = {
+    text = @() "#topmenu/wtAssistantDeeplink"
+    onClickFunc = @(...) openModalWTAssistantlDeeplink("COMMUNITY")
+    isHidden = @(...) isExternalOperator()
+      ? !hasFeature("AllowWTAssistantDeeplink") || !hasExternalAssistantDeepLink()
+      : !hasFeature("AllowWTAssistantDeeplink")
   }
   EAGLES = {
     text = @() "#charServer/chapter/eagles"

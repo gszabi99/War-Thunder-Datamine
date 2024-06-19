@@ -11423,6 +11423,20 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
+    "120mm_M908_HE_OR": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "120mm_M908_HE_OR_ammo_pack",
+      "group": "120mm_NATO",
+      "effects": {
+        "additiveBulletMod": "120mm_M908_HE_OR"
+      }
+    },
+    "120mm_M908_HE_OR_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "105mm_NATO_APDS_FS": {
       "image": "#ui/gameuiskin#tank_ammo",
       "reqModification": "105mm_NATO_APDS_FS_ammo_pack",
@@ -23911,12 +23925,52 @@
         "additiveBulletMod": "countermeasures_launcher_chaff"
       }
     },
+    "countermeasures_launcher_chaff_large": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasuresLarge",
+      "isReserve": true,
+      "effects": {
+        "additiveBulletMod": "countermeasures_launcher_chaff_large"
+      }
+    },
+    "countermeasures_launcher_chaff_bol_pod": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasuresBol_pod",
+      "isReserve": true,
+      "effects": {
+        "additiveBulletMod": "countermeasures_launcher_chaff_bol_pod"
+      }
+    },
+    "countermeasures_launcher_chaff_add_pod": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasuresAdd_pod",
+      "isReserve": true,
+      "effects": {
+        "additiveBulletMod": "countermeasures_launcher_chaff_add_pod"
+      }
+    },
     "maw_countermeasures_launcher_chaff": {
       "reqModification": "MAW_system_heli_false_thermal_targets_large",
       "group": "countermeasures",
       "isReserve": true,
       "effects": {
         "additiveBulletMod": "maw_countermeasures_launcher_chaff"
+      }
+    },
+    "maw_countermeasures_launcher_chaff_large": {
+      "reqModification": "MAW_system_heli_false_thermal_targets_large",
+      "group": "countermeasuresLarge",
+      "isReserve": true,
+      "effects": {
+        "additiveBulletMod": "maw_countermeasures_launcher_chaff_large"
+      }
+    },
+    "countermeasures_launcher_chaff_large_add_pod": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasuresLarge_add_pod",
+      "isReserve": true,
+      "effects": {
+        "additiveBulletMod": "countermeasures_launcher_chaff_large_add_pod"
       }
     },
     "q5_countermeasures_launcher_chaff_priority": {
@@ -24022,6 +24076,14 @@
         "bulletMod": "maw_countermeasures_launcher_chaff_only_large"
       }
     },
+    "fn_hmp400_lcc_launcher_chaff": {
+      "reqModification": "fn_hmp400_lcc",
+      "group": "countermeasures",
+      "isReserve": true,
+      "effects": {
+        "additiveBulletMod": "fn_hmp400_lcc_launcher_chaff"
+      }
+    },
     "fn_hmp400_lcc_countermeasures_launcher_chaff_priority": {
       "reqModification": "fn_hmp400_lcc",
       "group": "countermeasures",
@@ -24103,7 +24165,7 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
-    "br_sbat_70": {
+    "br_skyfire_70": {
       "image": "#ui/gameuiskin#pilon_block_rocket",
       "animation": "video/unitModifications/rocket_block.ivf",
       "modClass": "weapon",

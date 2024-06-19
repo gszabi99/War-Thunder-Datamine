@@ -12,7 +12,7 @@
   "haveCCRPForTurret": true,
   "hmdAH64": true,
   "hasHelmetDesignator": true,
-  "mfdCamTads": true,
+  "mfdCamTadsApache": true,
   "gearSinkRangeLR": 0.245,
   "gearSinkRangeC": 0.242,
   "tpsCameraTargetOffsetAtZoom": [
@@ -1676,25 +1676,28 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
               "emitter": "emtr_flare6",
               "bullets": 32,
-              "external": true
+              "external": true,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
               "emitter": "emtr_flare7",
               "bullets": 32,
-              "external": true
+              "external": true,
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_large_launcher_jet_maw.blk",
               "emitter": "emtr_flare1",
               "bullets": 8,
               "external": true,
-              "separate": false
+              "separate": false,
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -1731,17 +1734,19 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
-                "external": true
+                "external": true,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 30,
-                "external": true
+                "external": true,
+                "bulletsCartridge": 1
               }
             ],
             "sensors": {
@@ -1986,17 +1991,19 @@
             "Weapon": [
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 30,
-                "external": true
+                "external": true,
+                "bulletsCartridge": 1
               },
               {
                 "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
                 "emitter": "emtr_flare5",
                 "bullets": 30,
-                "external": true
+                "external": true,
+                "bulletsCartridge": 1
               }
             ],
             "sensors": {
@@ -2071,11 +2078,8 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "maw_countermeasures_launcher_chaff_only": {},
-    "maw_countermeasures_launcher_flare_only": {},
-    "maw_countermeasures_launcher_chaff_priority": {},
-    "maw_countermeasures_launcher_flare_priority": {},
-    "MAW_system_heli_false_thermal_targets": {
+    "maw_countermeasures_launcher_chaff": {},
+    "MAW_system_heli_false_thermal_targets_large": {
       "modClass": "weapon",
       "turn_it_off": false,
       "tier": 1,

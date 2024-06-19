@@ -1,8 +1,10 @@
 
 from "%scripts/dagui_library.nut" import *
 let { abs, sqrt } = require("math")
+let { get_time_msec } = require("dagor.time")
 
 const START_DRAG_OFFSET = 3
+const DOUBLE_CLICK_TRESHOLD = 250
 
 // To detect the start of drag gestures without moving an object
 let class DragStartListener {
@@ -11,6 +13,7 @@ let class DragStartListener {
   isDraggingPID = dagui_propid_add_name_id("is_dragging")
   clickPosPID = dagui_propid_add_name_id("_click_pos")
   isMousePressedPID = dagui_propid_add_name_id("is_mouse_pressed")
+  lastClickedTimePID = dagui_propid_add_name_id("last_clicked_time")
 
   getIsObjDragging = @(obj) obj.getIntProp(this.isDraggingPID, 0)
   getIsMousePressedOnObj = @(obj) obj.getIntProp(this.isMousePressedPID, 0)
@@ -33,16 +36,48 @@ let class DragStartListener {
     return RETCODE_NOTHING
   }
 
+  function notifyParentObj(sourceObj, event) {
+    let parentObjTag = sourceObj?.proxyEventsParentTag
+    if (parentObjTag == null)
+      return
+
+    local curParent = sourceObj?.getParent()
+    local foundObj = null
+    while(curParent != null) {
+      if (curParent?.tag == parentObjTag) {
+        foundObj = curParent
+        break
+      }
+      curParent = curParent?.getParent()
+    }
+
+    if (foundObj?.isValid())
+      foundObj.sendNotify(event)
+  }
+
+  function handleDblClick(obj, is_up) {
+    let curTime = get_time_msec()
+    if (!is_up) {
+      let lastClickedTime = obj.getIntProp(this.lastClickedTimePID) ?? 0
+      if (curTime - lastClickedTime <= DOUBLE_CLICK_TRESHOLD)
+        this.notifyParentObj(obj, "dbl_click")
+    }
+
+    if (is_up)
+      obj.setIntProp(this.lastClickedTimePID, curTime)
+  }
+
   function onLMouse(obj, mx, my, is_up, _bits) {
     obj.setIntProp(this.isMousePressedPID, is_up ? 0 : 1)
+    obj.setIntProp(this.isDraggingPID, 0)
     if (is_up && !this.getIsObjDragging(obj))  // it's a simple click without movement
       obj.getScene().simulateMouseClick(mx, my, 1)
-
-    obj.setIntProp(this.isDraggingPID, 0)
     if (!is_up)
       obj.setIntProp2x16(this.clickPosPID, mx, my)
+    if (obj?.proxyEventsParentTag)
+      this.handleDblClick(obj, is_up)
 
-    return  !is_up ? RETCODE_HALT : RETCODE_PROCESSED
+    return !is_up ? RETCODE_HALT : RETCODE_PROCESSED
   }
 
   function onDetach(obj) {

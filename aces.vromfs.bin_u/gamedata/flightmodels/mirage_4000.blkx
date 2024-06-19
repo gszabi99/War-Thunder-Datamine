@@ -2505,12 +2505,36 @@
             },
             {
               "type": "radar",
+              "font": "mirage_ils",
               "scale": 0.9,
-              "hideBackground": true
+              "hideBackground": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "hasAviaHorizont": true,
+              "centerRadar": true,
+              "showScanAzimuth": true,
+              "showCueHeights": true,
+              "cueTopHeiColor": [
+                0,
+                255,
+                0
+              ],
+              "cueLowHeiColor": [
+                0,
+                255,
+                0
+              ],
+              "cueUndergroundColor": [
+                0,
+                255,
+                0
+              ]
             },
             {
               "type": "rwr",
-              "scale": 1.0
+              "scale": 1.0,
+              "circleCnt": 1,
+              "centralMark": "cross"
             },
             {
               "type": "map"
@@ -2874,7 +2898,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb7",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -2890,7 +2915,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb7",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -2906,7 +2932,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
               "emitter": "bomb7",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -2922,7 +2949,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_1000kg_samp_mk84.blk",
               "emitter": "bomb7",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3041,7 +3069,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb8",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3057,7 +3086,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb8",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3073,7 +3103,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
               "emitter": "bomb8",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3089,7 +3120,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_1000kg_samp_mk84.blk",
               "emitter": "bomb8",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3192,7 +3224,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb4",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3208,7 +3241,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb4",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3227,7 +3261,7 @@
               "bullets": 56,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 8
+              "bulletsCartridge": 1
             }
           }
         ]
@@ -3251,7 +3285,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb1",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3267,7 +3302,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb1",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3310,7 +3346,8 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/pylon_m4000_9b_250.blk",
               "emitter": "pylon_m4000_9b",
-              "jettisonable": false
+              "jettisonable": false,
+              "machLimit": 1.01
             }
           },
           {
@@ -3326,7 +3363,8 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/pylon_m4000_9b_250_200.blk",
               "emitter": "pylon_m4000_9b",
-              "jettisonable": false
+              "jettisonable": false,
+              "machLimit": 1.01
             }
           },
           {
@@ -3346,7 +3384,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
                 "emitter": "bomb6",
-                "bullets": 1
+                "bullets": 1,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
@@ -3354,7 +3393,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
                 "emitter": "bomb3",
-                "bullets": 1
+                "bullets": 1,
+                "machLimit": 1.01
               }
             ]
           },
@@ -3375,7 +3415,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/BombGuns/fr_1000kg_samp_mk84.blk",
                 "emitter": "bomb6",
-                "bullets": 1
+                "bullets": 1,
+                "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
@@ -3383,7 +3424,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/BombGuns/fr_1000kg_samp_mk84.blk",
                 "emitter": "bomb3",
-                "bullets": 1
+                "bullets": 1,
+                "machLimit": 1.01
               }
             ]
           },
@@ -3441,7 +3483,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb2",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3457,7 +3500,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb2",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           }
         ]
@@ -3481,7 +3525,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb5",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3497,7 +3542,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb5",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3516,7 +3562,7 @@
               "bullets": 56,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 8
+              "bulletsCartridge": 1
             }
           }
         ]
@@ -3601,7 +3647,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb9",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3617,7 +3664,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb9",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3633,7 +3681,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
               "emitter": "bomb9",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3649,7 +3698,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_1000kg_samp_mk84.blk",
               "emitter": "bomb9",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3799,7 +3849,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
               "emitter": "bomb10",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3815,7 +3866,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25_200.blk",
               "emitter": "bomb10",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3831,7 +3883,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_500kg_samp_mk83.blk",
               "emitter": "bomb10",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3847,7 +3900,8 @@
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/fr_1000kg_samp_mk84.blk",
               "emitter": "bomb10",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -4044,7 +4098,7 @@
       "tier": 4,
       "modClass": "lth"
     },
-    "countermeasures_launcher_chaff": {},
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,

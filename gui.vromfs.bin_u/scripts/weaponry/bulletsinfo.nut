@@ -40,6 +40,7 @@ let BULLET_TYPE = {
 }
 
 let DEFAULT_PRIMARY_BULLETS_INFO = {
+  weapName                  = ""
   guns                      = 1
   total                     = 0 //cartridges total
   isBulletBelt              = true
@@ -510,6 +511,7 @@ function getBulletsInfoForPrimaryGuns(air) {
       }
       else {
         wpList[weapon.blk] <- clone DEFAULT_PRIMARY_BULLETS_INFO
+        wpList[weapon.blk].weapName = getWeaponNameByBlkPath(weapon.blk)
         if (!("bullets" in weapon))
           continue
 

@@ -2517,6 +2517,13 @@
     "nozzleAngleThreshold": 0.3
   },
   "cockpit": {
+    "targetingPodFov": [
+      24.7,
+      7.7
+    ],
+    "zoomOutFov": 24.7,
+    "zoomInFov": 7.7,
+    "sightInFov": 1.0,
     "headPos": [
       5.4,
       0.434,
@@ -2588,15 +2595,6 @@
       0.0
     ],
     "lightRadius3": 0.2,
-    "targetingPodFov": [
-      12.0,
-      3.2
-    ],
-    "zoomOutFov": 24.7,
-    "zoomInFov": 7.7,
-    "sightInFov": 7.37,
-    "sightOutFov": 18.49,
-    "sightFov": 18.49,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2869,7 +2867,8 @@
               0,
               255,
               0
-            ]
+            ],
+            "centerRadar": true
           }
         },
         {
@@ -3204,33 +3203,37 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 15,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -3775,9 +3778,10 @@
           },
           "Weapon": {
             "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
             "emitter": "emtr_flare5",
             "bullets": 100,
+            "bulletsCartridge": 1,
             "external": true,
             "separate": true
           }
@@ -4190,9 +4194,10 @@
           },
           "Weapon": {
             "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_flare_large.blk",
             "emitter": "emtr_flare6",
             "bullets": 100,
+            "bulletsCartridge": 1,
             "external": true,
             "separate": true
           }
@@ -5053,10 +5058,8 @@
       "tier": 3,
       "reqModification": "us_1000lb_mk83"
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,

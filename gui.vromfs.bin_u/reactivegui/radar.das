@@ -43,6 +43,7 @@ let modeNames = [[string
   "hud/PD BST";
   "hud/PD VSL";
   "hud/PD track";
+  "hud/PD RAM";
 
   "hud/PD HDN standby";
   "hud/PD HDN search";
@@ -161,6 +162,10 @@ struct CanvasParams
   hideWeaponIndication : bool = false
   showScanAzimuth : bool = false
   cueHeights : bool = false
+  centerRadar : bool = false
+  cueTopHeiColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  cueLowHeiColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
+  cueUndergroundColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
@@ -211,6 +216,10 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.hideWeaponIndication = props |> getBool("hideWeaponIndication", false)
   storage.showScanAzimuth = props |> getBool("showScanAzimuth", false)
   storage.cueHeights = props |> getBool("cueHeights", false)
+  storage.centerRadar = props |> getBool("centerRadar", false)
+  storage.cueTopHeiColor = props |> getColor("cueTopHeiColor", storage.color)
+  storage.cueLowHeiColor = props |> getColor("cueLowHeiColor", storage.color)
+  storage.cueUndergroundColor = props |> getColor("cueUndergroundColor", storage.color)
 
 [export]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -267,7 +276,7 @@ def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
     b_scope_sector(ctx, data, origin, rdata.size, half_width, 0.5)
 
   let reflectionPos = gridPos + float2(0., rdata.size.y * 0.5)
-  render_ground_reflection(ctx, rdata.size, reflectionPos, is_color_or_white(data.color), int2(16, 8), false)
+  render_ground_reflection(ctx, rdata.size, reflectionPos, is_color_or_white(data.lineColor), int2(16, 8), false)
   if get_radar_hud_is_visible() && !data.hideBeam
     if get_radar_hud_is_emitting()
       let dist = get_radar_hud_distance()
@@ -700,14 +709,14 @@ def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
 def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; position : float2)
   let size = get_radar_hud_has_azimuth_scale() ? rdata.size : float2(rdata.size.x * 0.2, rdata.size.y)
   let offsets = b_scope_square_labels(ctx, data, position, size, data.fontSize)
-  let pos = position + float2(offsets.x, offsets.y)
   let sz = size - float2(offsets.x, offsets.y + offsets.z)
+  let pos = data.centerRadar ? (position + size * 0.5 - sz * 0.5) : (position + float2(offsets.x, offsets.y))
   if !data.hideBack || data.showScanAzimuth
     b_scope_square_bkg(ctx, data, pos, sz)
   if !data.hideBack
     b_scope_square_target_sector(ctx, data, pos, sz)
   b_scope_square_azimuth(ctx, data, pos, sz, true, get_radar_hud_turret_azimuth(), -1., -1.)
-  render_ground_reflection(ctx, sz, pos, is_color_or_white(data.color), int2(20, 10), true)
+  render_ground_reflection(ctx, sz, pos, is_color_or_white(data.lineColor), int2(20, 10), true)
   if get_radar_hud_is_visible()
     if get_radar_hud_is_emitting() && !data.hideBeam
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
@@ -726,7 +735,7 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   if !data.hideHorAngle
     b_scope_square_inner_labels(ctx, data, pos, sz, data.fontSize)
   if data.hasAviaHorizont
-    b_scope_square_aviahorizont(ctx, data, data.netRowCnt <= 0 ? pos : rdata.pos, data.netRowCnt <= 0 ? sz : rdata.size)
+    b_scope_square_aviahorizont(ctx, data, pos, sz)
   draw_additional_net(ctx, data, rdata.pos, rdata.size)
 
 def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)
@@ -755,7 +764,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   ctx |> draw_str_scaled(1.0, modeName, modeName |> length())
   vertOffset += strBoxMode.width.y + ctx |> hdpx(4.)
 
-  if get_radar_hud_noise_signal_visible() && get_radar_hud_is_visible() && get_radar_hud_noise_signal() > 0.5
+  if get_radar_hud_noise_signal_visible() && get_radar_hud_is_visible() && get_radar_hud_noise_signal() > 0.5 && !data.enableByMfd
     noise_signal(ctx, data, float2(pos.x + size.x * 0.44 - strBoxMode.width.x * 0.5, pos.y - ctx |> hdpx(2.)), size * 0.06,
      get_radar_hud_noise_signal())
 
@@ -767,7 +776,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
     ctx |> goto_xy(pos.x + size.x * 0.57 + strBoxMode.width.x * 0.5, pos.y + strBoxMode2.width.y)
     ctx |> draw_str_scaled(1.0, modeName2, modeName2 |> length())
 
-    if get_radar_hud_noise_signal_visible() && get_radar_hud_noise_signal2() > 0.5
+    if get_radar_hud_noise_signal_visible() && get_radar_hud_noise_signal2() > 0.5 && !data.enableByMfd
       noise_signal(ctx, data, float2(pos.x + size.x * 0.51 + strBoxMode.width.x * 0.5, pos.y), float2(size.x * 0.06, size.y * 0.07),
      get_radar_hud_noise_signal2())
 
@@ -780,7 +789,10 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
       let deg = loc("measureUnits/deg")
       let text = "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : " ")
       let strBoxScan = get_str_bbox(text, text |> length(), fctx)
-      ctx |> goto_xy(pos.x + horOffset, pos.y + vertOffset + strBoxScan.width.y)
+      if data.centerRadar
+        ctx |> goto_xy(pos.x + horOffset, pos.y + vertOffset + strBoxScan.width.y * 0.5)
+      else
+        ctx |> goto_xy(pos.x + horOffset, pos.y + vertOffset + strBoxScan.width.y)
       ctx |> draw_str_scaled(1.0, text, text |> length())
       vertOffset2 += strBoxScan.width.y
 
@@ -788,21 +800,25 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
     ctx |> set_color(data.scaleColor)
     ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, ctx))
 
-    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
-     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
-    let text = textMax + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
-    let strBox = get_str_bbox(text, text |> length(), fctx)
-    ctx |> goto_xy(pos.x + size.x - strBox.width.x, pos.y + vertOffset + strBox.width.y)
-    ctx |> draw_str_scaled(1.0, text, text |> length())
-    if vertOffset2 == 0.
-      vertOffset2 += strBox.width.y
-
     let textMin = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_min(), true, 1.) :
      get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_min() * 1000., true, 1.))
     let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
     bottomOffset = strBoxMin.width.y
     ctx |> goto_xy(pos.x + size.x - strBoxMin.width.x, pos.y + size.y)
     ctx |> draw_str_scaled(1.0, textMin, textMin |> length())
+
+    let textMax = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
+    let text = textMax + (get_radar_hud_distance_scale_max() > 1 ? "*" : " ")
+    let strBox = get_str_bbox(text, text |> length(), fctx)
+    if vertOffset2 == 0.
+      vertOffset2 += strBox.width.y
+    if data.centerRadar
+      let newPos = pos.y + (vertOffset + vertOffset2 + bottomOffset) * 0.5
+      ctx |> goto_xy(pos.x + size.x - strBox.width.x, newPos)
+    else
+      ctx |> goto_xy(pos.x + size.x - strBox.width.x, pos.y + vertOffset + strBox.width.y)
+    ctx |> draw_str_scaled(1.0, text, text |> length())
 
   vertOffset += vertOffset2 + ctx |> hdpx(4.)
   let sz = float2(size.x - horOffset, size.y - vertOffset - bottomOffset)
@@ -1150,14 +1166,16 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
     let hminText = format("%d", roundi(hmin))
     var fctx : StdGuiFontContext
     get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
+    ctx |> set_color(data.cueTopHeiColor)
     ctx |> set_font(data.fontId, 0, 0)
     ctx |> set_font_ht(data.fontSize)
 
     ctx |> goto_xy(cuePos.x + cueAzimuthHwr * size.x + 3., cuePos.y - cueDistWidthRel * size.y * 0.5)
-    ctx |> draw_str_scaled(1.0, hmaxText, hmaxText |> length())
+    ctx |> draw_str_scaled(1., hmaxText, hmaxText |> length())
 
+    ctx |> set_color(hmin < 0. ? data.cueUndergroundColor : data.cueLowHeiColor)
     ctx |> goto_xy(cuePos.x + cueAzimuthHwr * size.x + 3., cuePos.y + cueDistWidthRel * size.y * 0.5)
-    ctx |> draw_str_scaled(1.0, hminText, hminText |> length())
+    ctx |> draw_str_scaled(1., hminText, hminText |> length())
 
 def b_scope(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   let offsets = b_scope_labels(ctx, rdata, data)

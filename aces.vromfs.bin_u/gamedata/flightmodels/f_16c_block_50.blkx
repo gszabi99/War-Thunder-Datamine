@@ -2369,7 +2369,23 @@
                 255
               ],
               "showCueHeights": true,
-              "showScanAzimuth": true
+              "showScanAzimuth": true,
+              "cueTopHeiColor": [
+                200,
+                200,
+                200
+              ],
+              "cueLowHeiColor": [
+                20,
+                90,
+                200
+              ],
+              "cueUndergroundColor": [
+                255,
+                20,
+                20
+              ],
+              "centerRadar": true
             },
             {
               "type": "thermal",
@@ -2444,7 +2460,23 @@
                 255
               ],
               "showCueHeights": true,
-              "showScanAzimuth": true
+              "showScanAzimuth": true,
+              "cueTopHeiColor": [
+                200,
+                200,
+                200
+              ],
+              "cueLowHeiColor": [
+                20,
+                90,
+                200
+              ],
+              "cueUndergroundColor": [
+                255,
+                20,
+                20
+              ],
+              "centerRadar": true
             }
           ]
         },
@@ -2587,8 +2619,8 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_default.blk"
       },
       {
-        "name": "f_16c_block_50_aim_9l_default",
-        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_aim_9l_default.blk"
+        "name": "f_16c_block_50_aim_9m_default",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_aim_9m_default.blk"
       },
       {
         "name": "f_16c_block_50_aim_7",
@@ -2692,7 +2724,13 @@
         "pylon2_aim7",
         "pylon6_aim7",
         "us_370gal_drop_tank_pylon_001",
-        "us_370gal_drop_tank_pylon_002"
+        "us_370gal_drop_tank_pylon_002",
+        "us_lau_129aa_001",
+        "us_lau_129aa_002",
+        "us_lau_129aa_003",
+        "us_lau_129aa_004",
+        "us_lau_129aa_005",
+        "us_lau_129aa_006"
       ]
     },
     "HideDmParts": {
@@ -2760,7 +2798,7 @@
               "bullets": 60,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
             },
             {
               "trigger": "countermeasures",
@@ -2769,7 +2807,7 @@
               "bullets": 60,
               "external": true,
               "separate": false,
-              "bulletsCartridge": 30
+              "bulletsCartridge": 1
             }
           ]
         }
@@ -2793,11 +2831,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_001",
               "bullets": 1,
               "external": true,
@@ -2806,8 +2843,14 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a_wingtip",
+            "name": "aim_120a_wingtip_slot1",
             "reqModification": "us_aim_120a",
+            "HideNodes": {
+              "node": "launcher_aim9_1"
+            },
+            "ShowNodes": {
+              "node": "us_lau_129aa_001"
+            },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
@@ -2869,7 +2912,7 @@
             "ShowNodes": {
               "node": [
                 "pylon1",
-                "launcher_aim9_2"
+                "us_lau_129aa_002"
               ]
             },
             "Weapon": {
@@ -2949,7 +2992,7 @@
             "ShowNodes": {
               "node": [
                 "pylon3",
-                "launcher_aim9_3"
+                "us_lau_129aa_003"
               ]
             },
             "Weapon": {
@@ -3667,7 +3710,7 @@
             "ShowNodes": {
               "node": [
                 "pylon7",
-                "launcher_aim9_4"
+                "us_lau_129aa_004"
               ]
             },
             "Weapon": {
@@ -3955,7 +3998,7 @@
             "ShowNodes": {
               "node": [
                 "pylon8",
-                "launcher_aim9_5"
+                "us_lau_129aa_005"
               ]
             },
             "Weapon": {
@@ -3988,11 +4031,10 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_wingtip",
-            "reqModification": "us_aim_9m",
+            "name": "aim_9m_wingtip_default",
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_006",
               "bullets": 1,
               "external": true,
@@ -4001,8 +4043,14 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a_wingtip",
+            "name": "aim_120a_wingtip_slot10",
             "reqModification": "us_aim_120a",
+            "HideNodes": {
+              "node": "launcher_aim9_6"
+            },
+            "ShowNodes": {
+              "node": "us_lau_129aa_006"
+            },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",

@@ -10,9 +10,8 @@ actionBar {
   <<#items>>
     <<>items>>
   <</items>>
-}
-tdiv {
-  id:t='secondActions'
-  position:t='absolute'
-  pos:t='0, -h'
+
+  <<#extraItems>>
+    <<>extraItems>>
+  <</extraItems>>
 }

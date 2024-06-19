@@ -101,8 +101,8 @@ def burav_delayed_track(evt : Event;
                         burav__appearSound : string)
   if !burav__delayed
     oneshot(burav__appearSound)
-  if burav__delayed && is_playing(burav__nearSoundEvent.handle)
-    abandon(burav__nearSoundEvent.handle)
+  if burav__delayed && is_playing(burav__nearSoundEvent)
+    abandon(burav__nearSoundEvent)
 
 [es(tag=gameClient)]
 def burav_client_update_es(act : UpdateStageInfoAct;
@@ -139,12 +139,12 @@ def burav_near_effect_update_es(act : UpdateStageInfoAct;
   let unitPos = unitPos3.xz
   let dist = length(unitPos - burav__position)
   if !burav__delayed && dist <= burav__near_dist
-    if !is_playing(burav__nearSoundEvent.handle)
+    if !is_playing(burav__nearSoundEvent)
       burav__nearSoundEvent |> play(burav__nearSound)
-    set_var_optional(burav__nearSoundEvent.handle, "dist", dist)
+    set_var_optional(burav__nearSoundEvent, "dist", dist)
   else
-    if is_playing(burav__nearSoundEvent.handle)
-      abandon(burav__nearSoundEvent.handle)
+    if is_playing(burav__nearSoundEvent)
+      abandon(burav__nearSoundEvent)
 
 [es(tag=server, REQUIRE=inFlight)]
 def burav_control_command_es(evt : EventTryControlBurav;

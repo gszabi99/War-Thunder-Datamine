@@ -1973,8 +1973,8 @@
       18.75,
       3.0
     ],
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
+    "sightInFov": 3.0,
+    "sightOutFov": 18.75,
     "sightFov": 1.0,
     "headPos": [
       4.65,
@@ -2562,17 +2562,19 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 60,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 60,
+              "bulletsCartridge": 1,
               "external": true,
               "separate": false
             }
@@ -3880,10 +3882,7 @@
       "reqModification": "M60_belt_pack",
       "tier": 3
     },
-    "countermeasures_launcher_chaff_only": {},
-    "countermeasures_launcher_flare_only": {},
-    "countermeasures_launcher_chaff_priority": {},
-    "countermeasures_launcher_flare_priority": {},
+    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,

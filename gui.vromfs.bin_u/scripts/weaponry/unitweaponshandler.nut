@@ -495,7 +495,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitWeaponChanged(_p) {
-    this.updateAllItems()
+    this.setUnit(this.unit, true)
   }
 
   function onEventBulletsGroupsChanged(_p) {

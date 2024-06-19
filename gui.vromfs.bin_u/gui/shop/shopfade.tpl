@@ -13,7 +13,7 @@ tdiv {
     background-image:t='#ui/gameuiskin#shop_group_bluegradient.svg'
   <</isRed>>
 
-  background-svg-size:t="512@dp, 128@dp"
+  background-svg-size:t='256@dp, 64@dp'
   background:t='yes'
   width:t='<<width>>'
   height:t='ph+1@dp'

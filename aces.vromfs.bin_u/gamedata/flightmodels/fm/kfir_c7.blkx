@@ -1001,7 +1001,7 @@
       "ShaftRPMMax": 7950.0,
       "ShaftRpmController": false,
       "Power": 1200.0,
-      "ConsumptionOmegaMax": 1.05,
+      "ConsumptionOmegaMax": 0.95,
       "TorqueZeroOmegaMult": 3.0,
       "TurbineTimeConstant": 1.4,
       "ThrustMax": {
@@ -1367,7 +1367,7 @@
         "ThrustMult": 1.4,
         "TorqueMultMinRpm": 4.5,
         "TorqueMultMaxRpm": 1.5,
-        "ConsumptionMult": 2.1,
+        "ConsumptionMult": 2.3,
         "TurbineTimeConstantMult": 0.5
       }
     },
@@ -1626,7 +1626,7 @@
   },
   "Mass": {
     "EmptyMass": 7285.0,
-    "MaxFuelMass0": 2572.0,
+    "MaxFuelMass0": 3285.0,
     "FuelAccumulatorCapacity0": 70.0,
     "MinimalLoadFactor0": -0.3,
     "FuelAccumulatorFlowRate0": 7.5,
@@ -1685,6 +1685,14 @@
       "tank6_system": 0,
       "tank6_external": false,
       "tank6_priority": 4,
+      "tank7_capacity": 713.0,
+      "tank7_system": 0,
+      "tank7_external": true,
+      "tank7_priority": 0,
+      "tank8_capacity": 713.0,
+      "tank8_system": 0,
+      "tank8_external": true,
+      "tank8_priority": 0,
       "engine1_dm": 1860.0
     },
     "PartsWithSurface": {
@@ -1742,8 +1750,8 @@
     "tank4_dm": true,
     "tank5_dm": true,
     "tank6_dm": true,
-    "tank7_dm": true,
-    "tank8_dm": true,
+    "tank7_dm": false,
+    "tank8_dm": false,
     "tank9_dm": true,
     "tank10_dm": true,
     "tank11_dm": true,

@@ -69,6 +69,7 @@
 @const slotGroupTagHeight: 4@dp;
 @const groupUnfoldMarkWidth: 29@sf/@pf \ 1;
 @const groupUnfoldMarkHeight: 20@sf/@pf \ 1;
+@const swapCrewsHeaderHeight: 30@sf/@pf \ 1;
 
 unitItemContainer {
   css-hier-invalidate:yes;
@@ -155,7 +156,7 @@ shopItem {
 
 slotbarTable > unitCell > shopItem,
 slotbarTable > unitItemContainer > shopItem {
-  pos:0, 22@sf/@pf;
+  pos:0, ph/2-h/2+1@sf/@pf;
   position: relative;
 }
 
@@ -1019,6 +1020,7 @@ extraInfoBlock {
   border:yes;
   border-color:@extraInfoBlockBorderColor;
   border-offset:@sf/@pf;
+  not-input-transparent:yes;
 }
 
 slotCrewHintContainer {
@@ -1030,6 +1032,28 @@ slotCrewHintContainer {
   css-hier-invalidate:yes;
   not-input-transparent:yes;
   display:hide;
+}
+
+slotMissionHintContainer {
+  min-width:pw;
+  min-height:ph;
+  position:absolute;
+  css-hier-invalidate:yes;
+  not-input-transparent:yes;
+  display:hide;
+}
+
+slotMissionHint {
+  width:2pw;
+  pos:pw/2-w/2, ph;
+  padding:@blockInterval, 3@blockInterval, @blockInterval, @blockInterval;
+  position:absolute;
+  background-color:#1C2C36;
+  border:yes;
+  border-color:@extraInfoBlockBorderColor;
+  border-offset:1@sf/@pf;
+  flow:vertical;
+  order-popup:yes;
 }
 
 slotCrewHint {
@@ -1049,16 +1073,44 @@ slotCrewHint[placement=under_slot] {
   pos:pw/2-w/2, ph+@slotExtraInfoHeight;
 }
 
+slotMissionHintContainer > slotHoverHighlight,
+slotMissionHintContainer > slotBottomGradientLine,
 slotCrewHintContainer > tdiv > slotHoverHighlight,
 slotCrewHintContainer > tdiv > slotBottomGradientLine {
   display:show;
 }
+
+slotMissionHintContainer > slotBottomGradientLine,
 slotCrewHintContainer > tdiv > slotBottomGradientLine {
   pos:0, ph-h;
 }
 
 slotCrewHintContainer:hover,
-extraInfoBlock:hover > slotCrewHintContainer {
+slotMissionHintContainer:hover,
+extraInfoBlock:hover > slotCrewHintContainer,
+extraInfoBlockTop:hover > slotMissionHintContainer {
+  display:show;
+}
+
+extraInfoBlock:hover > Button_text {
+  display:show;
+}
+
+
+extraInfoBlock[isEmptySlot=yes] > crewNumText,
+extraInfoBlock[isEmptySlot=yes] > slotCrewHintContainer > tdiv > crewNumText {
+  display:show;
+}
+
+extraInfoBlock[isEmptySlot=yes] > crewInfoNumBlock {
+  display:hide;
+}
+extraInfoBlock[isEmptySlot=yes]:hover > crewNumText,
+extraInfoBlock[isEmptySlot=yes] > slotCrewHintContainer > tdiv > crewNumText {
+  display:hide;
+}
+
+extraInfoBlock[isEmptySlot=yes]:hover > crewInfoNumBlock {
   display:show;
 }
 
@@ -1632,6 +1684,16 @@ unitItemContainer.slotbarClone > shopItem > bottomButtonsDiv {
   display: hide;
 }
 
+unitItemContainer.slotbarClone[swapCrews=yes] {
+  pos: 0, 0;
+  position:relative;
+  padding: 5@sf/@pf;
+}
+
+unitItemContainer.slotbarClone[swapCrews=yes] > shopItem {
+  pos:0, 0;
+}
+
 unitItemContainer.slotbarCloneSource > shopItem {
   refuseOpenHoverMenu: yes;
   display: hide;
@@ -1646,25 +1708,29 @@ unitTrashBin {
   border-color: #28FFFFFF;
   background-color: #501A2328;
   flow: vertical;
-  padding: 2@blockInterval;
+  padding: 1.5@blockInterval;
 }
 
-unitTrashBin > img {
-  size: @trashBinIconSize, @trashBinIconSize;
-  background-svg-size: @trashBinIconSize, @trashBinIconSize;
-  halign: center;
+unitTrashBin.disabled {
+  border-color: #5AFF0000;
 }
 
-unitTrashBin > textareaNoTab {
-  width: 0.8pw;
-  halign: center;
-  text-align: center;
-  smallFont: yes;
+unitTrashBin.disabled > img {
+  background-image: #ui/gameuiskin#icon_trash_bin_stop.svg;
 }
 
 unitTrashBin[active=yes] {
   border-color: #5AFFFFFF;
   background-color: #5A1A2328;
+}
+
+unitTrashBin[active=yes] {
+  border-color: #5AFFFFFF;
+  background-color: #5A1A2328;
+}
+
+unitTrashBin.disabled[active=yes] {
+  border-color: #5AFF0000;
 }
 
 unitTrashBin[active=yes] > img {
@@ -1675,4 +1741,54 @@ unitTrashBin[active=yes] > img {
 
 unitTrashBin[active=yes] > textareaNoTab {
   display: hide;
+}
+
+unitItemContainer.slotbarClone[swapCrews=yes] > shopItem > bottomline > shopItemText,
+unitItemContainer.slotbarClone[swapCrews=yes] > shopItem > bottomline > classIconPlace,
+unitItemContainer.slotbarClone[swapCrews=yes] > shopItem > bottomline > shopItemPrice {
+  display: hide;
+}
+
+unitItemContainer.slotbarClone[swapCrews=yes] > shopItem > bottomline > crewNumText {
+  display: show;
+  pos: pw-w-2@sf/@pf, ph/2-h/2;
+  text-align:right;
+  position: absolute;
+}
+
+slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer {
+  size: @slot_width, 1@slotbarHeight - @slotbar_pad_top - @slotbar_pad_bottom;
+  padding: @slot_interval, 0;
+  css-hier-invalidate: yes;
+}
+
+slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer[swappedItem=yes] {
+  margin-top: h + 1@slotbarTop - 4@slotTopLineHeight;
+}
+
+slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer[swappedItem=yes] > unhoverDiv {
+ display: show;
+}
+
+slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer[fakeItem=yes] {
+  not-input-transparent: yes;
+}
+
+slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer[fakeItem=yes] > shopItem {
+  behaviour: massTransparency;
+  transp-base: 64;
+  transp-end: 64;
+}
+
+slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer[fakeItem=yes] > shopItem > bottomline > crewNumText {
+  display: hide;
+}
+
+unitItemContainer.slotbarClone[swapCrews=yes]> shopItem > talismanIcon {
+  display: hide;
+}
+
+unitItemContainer.slotbarClone[swapCrews=yes][swappedItem=yes] > shopItem > bottomline > shopItemPrice,
+unitItemContainer.slotbarClone[swapCrews=yes][swappedItem=yes] > shopItem > talismanIcon {
+  display: show;
 }

@@ -167,7 +167,7 @@ function hardPersistWatched(key, def=null, big_immutable_data = null) {
         //let size0 = get_quirrel_object_size(val).size
         if (big_immutable_data) {
           let t3 = get_time_msec()
-          shrink_object(val)
+          deduplicate_object(val)
           let t4 = get_time_msec()
           //let size1 = get_quirrel_object_size(val).size
           //print($">>> Shrinking {key} from {size0} to {size1} bytes, time = {t4-t3} ms")

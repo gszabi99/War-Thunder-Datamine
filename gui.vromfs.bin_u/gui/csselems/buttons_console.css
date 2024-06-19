@@ -505,7 +505,8 @@ Button_text[visualStyle=common] > btnText {
   color: @commonTextColor;
 }
 
-bottomButtonsDiv > Button_text[visualStyle=common] {
+bottomButtonsDiv > Button_text[visualStyle=common],
+Button_text.swapCrew {
   background-color:#54656e;
   background-position:0;
   background-image:'';
@@ -518,7 +519,9 @@ bottomButtonsDiv > Button_text[visualStyle=common]:pushed,
 bottomButtonsDiv > Button_text[visualStyle=common][active=yes],
 bottomButtonsDiv > Button_text[visualStyle=common][selected=yes],
 bottomButtonsDiv > Button_text[visualStyle=common]:disabled,
-bottomButtonsDiv > Button_text[visualStyle=common][inactiveColor=yes] {
+bottomButtonsDiv > Button_text[visualStyle=common][inactiveColor=yes],
+Button_text.swapCrew:hover,
+Button_text.swapCrew:pushed {
   background-color:@white;
   background-position:3, 4, 3, 4;
   foreground-color:@transparent;
@@ -2149,7 +2152,7 @@ Button_text.bottomAirItem {
 }
 
 Button_text.bottomAirItem[isSlotbar=yes] {
-  min-width:40@sf/@pf;
+  min-width:51@sf/@pf;
 }
 
 Button_text.bottomAirItem > img {
@@ -2536,6 +2539,10 @@ Button_text[visualStyle=noBgr][isTextArea=yes] {
   re-type:textarea;
 }
 
+Button_text[visualStyle=noBgr][reduceHeight=yes] {
+  min-height:0;
+}
+
 Button_text[visualStyle=noBgr] > img {
   background-color:@buttonFontColor;
 }
@@ -2753,4 +2760,33 @@ Button_text[type=trashBin] > img {
 
 Button_text[type=trashBin]:hover {
   background-color:@buttonCloseColorHover;
+}
+
+Button_text.swapCrew {
+  min-width:51@sf/@pf;
+  height:ph;
+  margin:0;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  padding:1@smallButtonImgPadding;
+  not-input-transparent:no;
+  order-popup:yes;
+  skip-navigation:yes;
+}
+
+Button_text.swapCrew > img {
+  background-image:#ui/gameuiskin#slot_change_aircraft.svg;
+  background-rotation:90;
+  background-position:0;
+  background-repeat:expand;
+  background-svg-size:@sIco, @sIco;
+  size:ph, ph;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  background-color: @buttonFontColor;
+  re-type:rotation;
+}
+
+Button_text[status=red] {
+  color: @redMenuButtonColor;
 }

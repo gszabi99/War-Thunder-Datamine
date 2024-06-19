@@ -649,7 +649,149 @@
       "shader": "explosion_patch_color",
       "normalMap": "explosion_patch_ship_n",
       "colorMap": "explosion_patch_ship_c",
+      "materialParamsMap": "explosion_patch_ps_m",
       "heightScale": 0.008
+    },
+    "shipSteel": {
+      "shader": "explosion_patch_color",
+      "normalMap": "explosion_patch_ps_n",
+      "colorMap": "explosion_patch_ps_c",
+      "materialParamsMap": "explosion_patch_ps_m",
+      "minVolumeBias": 0.05,
+      "minTraceDist": 0.1,
+      "maxTraceDist": 0.5,
+      "parallaxDepthLimit": 1.0,
+      "rendinst_normalMap": "explosion_patch_environment_n",
+      "rendinst_colorMap": "explosion_patch_environment_c",
+      "rendinst_materialMap": "explosion_patch_environment_m",
+      "props": {
+        "kinetic_penetration": {
+          "tc": [
+            0.0,
+            0.25,
+            0.25,
+            0.5
+          ],
+          "sizeScale": 5.0
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.25,
+            0.25,
+            0.5,
+            0.5
+          ],
+          "sizeScale": 5.0
+        },
+        "kinetic_ricochet": {
+          "tc": [
+            0.25,
+            0.0,
+            0.5,
+            0.25
+          ],
+          "sizeScale": 7.0,
+          "angleLimit": 10.0
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.0,
+            0.75,
+            0.25,
+            1.0
+          ],
+          "sizeScale": 15.0
+        },
+        "explosive_penetration_angled": {
+          "tc": [
+            0.0,
+            0.75,
+            0.25,
+            1.0
+          ],
+          "sizeScale": 15.0,
+          "angleLimit": 5.0
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.75,
+            0.25,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 15.0
+        },
+        "explosive_non_penetration_angled": {
+          "tc": [
+            0.75,
+            0.25,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 15.0,
+          "angleLimit": 5.0
+        },
+        "explosive_penetration_bombs": {
+          "tc": [
+            0.0,
+            0.75,
+            0.25,
+            1.0
+          ],
+          "sizeScale": 15.0
+        },
+        "explosive_non_penetration_bombs": {
+          "tc": [
+            0.75,
+            0.25,
+            1.0,
+            0.5
+          ],
+          "sizeScale": 25.0
+        }
+      },
+      "rendinstProps": {
+        "kinetic_penetration": {
+          "tc": [
+            0.0,
+            0.25,
+            0.5,
+            0.5
+          ],
+          "sizeScale": 0.3,
+          "randomCount": 2
+        },
+        "kinetic_non_penetration": {
+          "tc": [
+            0.0,
+            0.25,
+            0.5,
+            0.5
+          ],
+          "sizeScale": 0.3,
+          "randomCount": 2
+        },
+        "explosive_penetration": {
+          "tc": [
+            0.5,
+            0.25,
+            0.75,
+            0.5
+          ],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        },
+        "explosive_non_penetration": {
+          "tc": [
+            0.5,
+            0.25,
+            0.75,
+            0.5
+          ],
+          "sizeScale": 0.3,
+          "randomCount": 1
+        }
+      }
     },
     "steel": {
       "shader": "explosion_patch_color",

@@ -102,46 +102,6 @@
       "permanentlyActivated": true,
       "inertialNavigation": true,
       "inertialNavigationDriftSpeed": 3.5,
-      "flightTime0": [
-        1000.0,
-        6.03
-      ],
-      "flightTime1": [
-        2000.0,
-        10.72
-      ],
-      "flightTime2": [
-        3000.0,
-        14.29
-      ],
-      "flightTime3": [
-        4000.0,
-        17.54
-      ],
-      "flightTime4": [
-        5000.0,
-        20.65
-      ],
-      "flightTime5": [
-        6000.0,
-        23.67
-      ],
-      "flightTime6": [
-        7000.0,
-        26.9
-      ],
-      "flightTime7": [
-        8000.0,
-        30.58
-      ],
-      "flightTime8": [
-        9000.0,
-        34.82
-      ],
-      "flightTime9": [
-        10000.0,
-        39.63
-      ],
       "launchAngleMax": [
         20.0,
         40.0
@@ -149,6 +109,10 @@
       "launchDistanceRange": [
         1200.0,
         8000.0
+      ],
+      "timeTableCorrection": [
+        0.028,
+        1.169
       ],
       "breakLockMaxTime": 30.0,
       "laserSeeker": {
@@ -176,6 +140,82 @@
         "accelControlIntg": 0.0161,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0057
+      },
+      "table0": {
+        "altitude": 100.0,
+        "fighterMach": [
+          0.1,
+          0.4
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          1000.0,
+          1000.0,
+          1000.0,
+          1000.0
+        ],
+        "rangeMax": [
+          8000.0,
+          8000.0,
+          8000.0,
+          8000.0
+        ],
+        "rangeMaxAltDiff": [
+          50.0,
+          0.0
+        ],
+        "timeMax": [
+          30.9959,
+          27.8866,
+          26.6861,
+          24.807
+        ],
+        "timeMaxAltDiff": [
+          50.0,
+          -0.00528717
+        ]
+      },
+      "table1": {
+        "altitude": 2000.0,
+        "fighterMach": [
+          0.1,
+          0.4
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          1000.0,
+          1000.0,
+          1000.0,
+          1000.0
+        ],
+        "rangeMax": [
+          8000.0,
+          8000.0,
+          8000.0,
+          8000.0
+        ],
+        "rangeMaxAltDiff": [
+          50.0,
+          0.0
+        ],
+        "timeMax": [
+          30.5251,
+          27.7376,
+          26.6364,
+          25.0139
+        ],
+        "timeMaxAltDiff": [
+          1000.0,
+          -0.106819
+        ]
       }
     },
     "stabilityRicochetModifier": {
@@ -513,7 +553,8 @@
     },
     "damage": {
       "explosive": {
-        "offset": 0.3
+        "offset": 0.25,
+        "radius": 0.35
       },
       "shatter": {
         "useRealShatters": true,
