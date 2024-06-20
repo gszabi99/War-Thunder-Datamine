@@ -57,8 +57,6 @@ let BULLETS_LIST_PARAMS = {
   isForcedAvailable     = false
 }
 
-const BULLETS_CALIBER_QUANTITY = 4
-
 let unitsPrimaryBulletsInfo = {}
 
 //
@@ -554,7 +552,7 @@ function canBulletsBeDuplicate(unit) {
 function getLastFakeBulletsIndex(unit) {
   if (!canBulletsBeDuplicate(unit))
     return getBulletsGroupCount(unit, true)
-  return BULLETS_CALIBER_QUANTITY - getBulletsGroupCount(unit, false) +
+  return unit.unitType.bulletSetsQuantity - getBulletsGroupCount(unit, false) +
     getBulletsGroupCount(unit, true)
 }
 
