@@ -9,8 +9,8 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
 let stdMath = require("%sqstd/math.nut")
 let { AMMO, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
-let { getLinkedGunIdx, getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getBulletsSetData,
+let { getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getBulletsSetData, getLinkedGunIdx,
         getOptionsBulletsList,
         getBulletsGroupCount,
         getActiveBulletsGroupInt,
@@ -336,7 +336,7 @@ enum bulletsAmountState {
 
     for (local groupIndex = 0; groupIndex < bulletsTotal; groupIndex++) {
       let linkedIdx = getLinkedGunIdx(groupIndex, this.getGunTypesCount(),
-        this.unit.unitType.bulletSetsQuantity)
+        this.unit.unitType.bulletSetsQuantity, this.unit)
 
       let bullets = getOptionsBulletsList(this.unit, groupIndex, false, this.isForcedAvailable)
       let selectedName = bullets.values?[bullets.value] ?? ""

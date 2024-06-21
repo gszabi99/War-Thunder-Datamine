@@ -914,12 +914,6 @@ function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true) {
   return false
 }
 
-function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, canBeDuplicate = true) {
-  if (!canBeDuplicate)
-    return groupIdx
-  return (groupIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
-}
-
 function checkUnitSecondaryWeapons(unit) {
   foreach (weapon in getSecondaryWeaponsList(unit))
     if (isWeaponEnabled(unit, weapon) ||
@@ -1015,7 +1009,6 @@ return {
   isWeaponUnlocked
   getWeaponByName
   isUnitHaveAnyWeaponsTags
-  getLinkedGunIdx
   checkUnitWeapons
   checkUnitSecondaryWeapons
   checkUnitBullets

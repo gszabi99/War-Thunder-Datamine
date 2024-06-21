@@ -422,7 +422,6 @@ function buildEmptySlot(id, _unit, params) {
       crewPoints = getCrewSpText(crew?.skillPoints ?? 0)
       crewId
       crewIdInCountry = crew?.idInCountry
-      crewTrainInactive = true
       needCurPoints = true
     })
   }

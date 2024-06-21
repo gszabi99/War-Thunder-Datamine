@@ -128,9 +128,7 @@ extraInfoBlock {
       margin-top:t='2@sf/@pf'
       margin-bottom:t='5@sf/@pf'
       crewId='<<crewId>>'
-      <<#crewTrainInactive>>
       inactiveColor:t='yes'
-      <</crewTrainInactive>>
       tdiv {
         position:t='absolute'
         pos:t='pw/2-w/2, ph/2-h/2'

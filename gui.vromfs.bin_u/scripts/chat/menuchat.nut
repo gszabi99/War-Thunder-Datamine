@@ -1479,7 +1479,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (privateMsg) {  //private message
           local thisCapture = this
           checkChatEnableWithPlayer(user, function(chatEnabled) {
-            if (::isUserBlockedByPrivateSetting(db.userId, user) || !chatEnabled)
+            if (::isUserBlockedByPrivateSetting(db?.userId, user) || !chatEnabled)
               return
 
             if (db.type == "chat")

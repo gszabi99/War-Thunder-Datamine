@@ -8,7 +8,7 @@ let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { ceil, change_bit } = require("%sqstd/math.nut")
-let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getLinkedGunIdx, getCommonWeapons,
+let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
@@ -549,6 +549,32 @@ function canBulletsBeDuplicate(unit) {
   return unit?.unitType.canUseSeveralBulletsForGun ?? false
 }
 
+function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit, canBeDuplicate = true) {
+  if (!canBeDuplicate)
+    return groupIdx
+
+  if (totalGroups * 2 <= bulletSetsQuantity)
+    return (groupIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
+
+  //If there are too many groups it is necessary not to take up space
+  //for those duplicate groups for which we do not show duplicates at all
+  let gunsInfo = getBulletsInfoForPrimaryGuns(unit)
+  local groupCount = 0
+  let gunIdxWithDupicate = []
+  foreach (gunIdx, gunInfo in gunsInfo) {
+    if (!gunInfo.isBulletBelt) {
+      gunIdxWithDupicate.append(gunIdx)
+      continue
+    }
+    if (groupIdx == groupCount)
+      return gunIdx
+    groupCount++
+  }
+
+  return gunIdxWithDupicate[((groupIdx.tofloat() - groupCount) * gunIdxWithDupicate.len()
+    / (bulletSetsQuantity - groupCount) + 0.001).tointeger()]
+}
+
 function getLastFakeBulletsIndex(unit) {
   if (!canBulletsBeDuplicate(unit))
     return getBulletsGroupCount(unit, true)
@@ -820,9 +846,9 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     return descr
   }
 
-  let linked_index = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, canBeDuplicate)
+  let linked_index = getLinkedGunIdx(groupIdx, modTotal, bulletSetsQuantity, air, canBeDuplicate)
   descr.duplicate = canBeDuplicate && groupIdx > 0 &&
-    linked_index == getLinkedGunIdx(groupIdx - 1, modTotal, bulletSetsQuantity, canBeDuplicate)
+    linked_index == getLinkedGunIdx(groupIdx - 1, modTotal, bulletSetsQuantity, air, canBeDuplicate)
 
   let groups = []
   for (local modifNo = 0; modifNo < air.modifications.len(); modifNo++) {
@@ -877,7 +903,7 @@ function getActiveBulletsGroupIntForDuplicates(unit, params) {
   local maxCatridges = 0
   let bulletSetsQuantity = unit.unitType.bulletSetsQuantity
   for (local i = 0; i < bulletSetsQuantity; i++) {
-    let linkedIdx = getLinkedGunIdx(i, groupsCount, bulletSetsQuantity)
+    let linkedIdx = getLinkedGunIdx(i, groupsCount, bulletSetsQuantity, unit)
     if (linkedIdx == lastLinkedIdx) {
       duplicates++
     }
@@ -1175,4 +1201,5 @@ return {
   getBulletsSetMaxAmmoWithConstraints
   getBulletsNamesBySet
   isPairBulletsGroup
+  getLinkedGunIdx
 }

@@ -34,12 +34,11 @@ let { updateModItem, createModItem, createModBundle, createModItemLayout
 let { isBullets, getBulletsList, setUnitLastBullets,
   getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
   getLastFakeBulletsIndex, isBulletsGroupActiveByMod, getBulletsInfoForPrimaryGuns,
-  isPairBulletsGroup
+  isPairBulletsGroup, getLinkedGunIdx
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets,
   checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList,
   getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd,
-  getLinkedGunIdx
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setDoubleTextToButton, placePriceTextToButton
@@ -304,7 +303,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!bulletsList.values.len() || bulletsList.duplicate)
         continue
       let linkedGunIdx = getLinkedGunIdx(groupIndex, gunsInfo.len(),
-        this.air.unitType.bulletSetsQuantity)
+        this.air.unitType.bulletSetsQuantity, this.air)
       if (isPairBulletsGroup(bulletsList, gunsInfo?[linkedGunIdx]))
         continue
       this.bulletsByGroupIndex[groupIndex] <- bulletsList

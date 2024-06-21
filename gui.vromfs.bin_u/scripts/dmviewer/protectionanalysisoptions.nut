@@ -8,9 +8,8 @@ let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
 let { WEAPON_TYPE, TRIGGER_TYPE,
-        getLinkedGunIdx,
         getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getBulletsList,
+let { getBulletsList, getLinkedGunIdx,
         getBulletsSetData,
         getBulletsSearchName,
         getBulletsGroupCount,
@@ -376,7 +375,7 @@ options.addTypes({
 
       // Offensive Armament
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
-        let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, false)
+        let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, unit, false)
         if (gunIdx == curGunIdx)
           continue
 

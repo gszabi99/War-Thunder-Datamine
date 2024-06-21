@@ -11,13 +11,15 @@
   },
   "tdiv": {
     "id": "tablePlace",
-    "top": "sh - 1@slotbarOffset - h - 1@slotbar_pad_top - 1@slotbar_pad_bottom + 1@slotbarTop",
+    "top": "sh - 1@slotbarOffset - h - 1@slotbar_pad_top - 1@slotbar_pad_bottom + 1@slotbarTop + 1@slotTopLineHeight",
     "position": "root",
     "flow": "vertical",
     "tdiv": {
       "size": "pw, 1@slotbarHeight - @slotbar_pad_top - @slotbar_pad_bottom + @swapCrewsHeaderHeight + 3@blockInterval",
       "background-color": "@frameDarkBackgroundColor",
-      "position": "absolute"
+      "position": "absolute",
+      "border": "yes",
+      "border-color": "@buttonBorderColorDisabled"
     },
     "textareaNoTab": {
       "position": "relative",
@@ -33,11 +35,13 @@
       "overflow-x": "auto",
       "swapCrew": "yes",
       "css-hier-invalidate": "yes",
+      "input-transparent": "yes",
       "slotbarTable": {
         "id": "airs_table",
         "behavior": "posNavigator",
         "css-hier-invalidate": "yes",
         "position": "relative",
+        "input-transparent": "yes",
         "height": "2@slotbarHeight - 2@slotbar_pad_top - 2@slotbar_pad_bottom + 1@slotbarTop",
         "on_select": "onSlotSelect",
         "on_pushed": "::gcb.delayedTooltipListPush",

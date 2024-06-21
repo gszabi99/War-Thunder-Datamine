@@ -734,12 +734,24 @@
           },
           "setFsmActive": [
             {
-              "fsm": "radarTrackModes",
+              "fsm": "illumination",
               "active": true
             },
             {
-              "fsm": "illumination",
+              "fsm": "radarTrackModes",
               "active": true
+            }
+          ],
+          "setCustomActionTemplate": [
+            {
+              "fsm": "radarTrackModes",
+              "name": "setPulseModeName",
+              "actionTemplateName": "setPulseTrackModeName"
+            },
+            {
+              "fsm": "radarTrackModes",
+              "name": "setMtiModeName",
+              "actionTemplateName": "setMtiTrackModeName"
             }
           ]
         },
@@ -832,16 +844,18 @@
             "active": false
           }
         },
-        "setRadarAcmLockModeName": {
-          "doCustomActionTemplate": {
-            "fsm": "radarStandbySearchModes",
-            "name": "setAcmLockModeName"
-          }
-        },
         "setRadarAcmLockMode": {
           "setAcmLockMode": {},
           "setScanPatternSet": {
             "scanPatternSet": "radarAcmLock"
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
           },
           "setDistGatePos": {
             "source": "constRange",
@@ -853,16 +867,22 @@
             "pos": 0.0,
             "width": 1800.0
           },
+          "setCustomActionTemplate": [
+            {
+              "fsm": "radarTrackModes",
+              "name": "setPulseModeName",
+              "actionTemplateName": "setPulseAcmModeName"
+            },
+            {
+              "fsm": "radarTrackModes",
+              "name": "setMtiModeName",
+              "actionTemplateName": "setMtiAcmModeName"
+            }
+          ],
           "setFsmActive": {
             "fsm": "radarTrackModes",
             "active": true
-          },
-          "setCustomActionTemplate": {
-            "fsm": "main",
-            "name": "setRadarModeName",
-            "actionTemplateName": "setRadarAcmLockModeName"
-          },
-          "setRadarAcmLockModeName": {}
+          }
         },
         "setIrstAcmLockModeCommon": {
           "setTransiver": {
@@ -873,6 +893,14 @@
           },
           "setScanPatternSet": {
             "scanPatternSet": "irstAcmLock"
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
           },
           "setModeName": {
             "name": "IRST ACM"
@@ -1640,11 +1668,6 @@
               "fsm": "radarStandbySearchModes",
               "name": "setBvrLockModeName",
               "actionTemplateName": "setPulseBvrLockModeName"
-            },
-            {
-              "fsm": "radarStandbySearchModes",
-              "name": "setAcmLockModeName",
-              "actionTemplateName": "setPulseAcmLockModeName"
             }
           ]
         },
@@ -1689,11 +1712,6 @@
               "fsm": "radarStandbySearchModes",
               "name": "setBvrLockModeName",
               "actionTemplateName": "setPulseBvrLockModeName"
-            },
-            {
-              "fsm": "radarStandbySearchModes",
-              "name": "setAcmLockModeName",
-              "actionTemplateName": "setPulseAcmLockModeName"
             }
           ],
           "doCustomActionTemplate": {
@@ -1734,11 +1752,6 @@
               "fsm": "radarStandbySearchModes",
               "name": "setBvrLockModeName",
               "actionTemplateName": "setPulseBvrLockModeName"
-            },
-            {
-              "fsm": "radarStandbySearchModes",
-              "name": "setAcmLockModeName",
-              "actionTemplateName": "setPulseAcmLockModeName"
             }
           ],
           "doCustomActionTemplate": {
@@ -1779,26 +1792,11 @@
               "fsm": "radarStandbySearchModes",
               "name": "setBvrLockModeName",
               "actionTemplateName": "setMtiBvrLockModeName"
-            },
-            {
-              "fsm": "radarStandbySearchModes",
-              "name": "setAcmLockModeName",
-              "actionTemplateName": "setMtiAcmLockModeName"
             }
           ],
           "doCustomActionTemplate": {
             "fsm": "main",
             "name": "setRadarModeName"
-          }
-        },
-        "setPulseAcmLockModeName": {
-          "setModeName": {
-            "name": "ACM"
-          }
-        },
-        "setMtiAcmLockModeName": {
-          "setModeName": {
-            "name": "MTI ACM"
           }
         }
       },
@@ -2143,8 +2141,9 @@
           "setSignal": {
             "signal": "pulseTrack"
           },
-          "setModeName": {
-            "name": "track"
+          "doCustomActionTemplate": {
+            "fsm": "radarTrackModes",
+            "name": "setPulseModeName"
           }
         },
         "setBsvDh": {
@@ -2154,8 +2153,9 @@
           "setSignal": {
             "signal": "pulseTrackStc"
           },
-          "setModeName": {
-            "name": "track"
+          "doCustomActionTemplate": {
+            "fsm": "radarTrackModes",
+            "name": "setPulseModeName"
           }
         },
         "setSmv": {
@@ -2165,8 +2165,9 @@
           "setSignal": {
             "signal": "pulseTrack"
           },
-          "setModeName": {
-            "name": "track"
+          "doCustomActionTemplate": {
+            "fsm": "radarTrackModes",
+            "name": "setPulseModeName"
           }
         },
         "setMv": {
@@ -2176,8 +2177,9 @@
           "setSignal": {
             "signal": "mtiTrack"
           },
-          "setModeName": {
-            "name": "MTI track"
+          "doCustomActionTemplate": {
+            "fsm": "radarTrackModes",
+            "name": "setMtiModeName"
           }
         },
         "setBsv": {
@@ -2187,8 +2189,29 @@
           "setSignal": {
             "signal": "pulseTrack"
           },
+          "doCustomActionTemplate": {
+            "fsm": "radarTrackModes",
+            "name": "setPulseModeName"
+          }
+        },
+        "setPulseAcmModeName": {
+          "setModeName": {
+            "name": "ACM"
+          }
+        },
+        "setMtiAcmModeName": {
+          "setModeName": {
+            "name": "MTI ACM"
+          }
+        },
+        "setPulseTrackModeName": {
           "setModeName": {
             "name": "track"
+          }
+        },
+        "setMtiTrackModeName": {
+          "setModeName": {
+            "name": "MTI track"
           }
         }
       },
