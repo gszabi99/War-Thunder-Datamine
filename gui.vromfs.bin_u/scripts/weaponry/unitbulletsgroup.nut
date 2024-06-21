@@ -199,7 +199,7 @@ let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/opti
   canChangeBullet = @() this.bullets.values.len() > 1
     && !this.isPairBulletsGroup()
 
-  isPairBulletsGroup = @() isPairBulletsGroup(this.bullets, this.gunInfo)
+  isPairBulletsGroup = @() isPairBulletsGroup(this.bullets)
 
   function getWeaponName() {
     let needSetWeaponName = this.unit.isAir() || this.unit.isHelicopter()

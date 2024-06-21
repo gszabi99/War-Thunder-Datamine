@@ -570,6 +570,8 @@ function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, unit, canBeD
       return gunIdx
     groupCount++
   }
+  if (gunIdxWithDupicate.len() == 0)
+    return groupIdx
 
   return gunIdxWithDupicate[((groupIdx.tofloat() - groupCount) * gunIdxWithDupicate.len()
     / (bulletSetsQuantity - groupCount) + 0.001).tointeger()]
@@ -812,6 +814,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     values = []
     saveValues = []
     isTurretBelt = false
+    isBulletBelt = true
     weaponType = WEAPON_TYPE.GUNS
     caliber = 0
     duplicate = false //tank gun bullets can be duplicate to change bullets during the battle
@@ -840,6 +843,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
         return descr
       descr.caliber = bData.caliber
       descr.weaponType = bData.weaponType
+      descr.isBulletBelt = bData?.isBulletBelt ?? true
     }
 
     appendOneBulletsItem(descr, modifName, air, "", params.needTexts) //fake default bullet item
@@ -877,6 +881,7 @@ local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
       if (bData) {
         descr.caliber = bData.caliber
         descr.weaponType = bData.weaponType
+        descr.isBulletBelt = bData?.isBulletBelt ?? true
       }
     }
 
@@ -1161,9 +1166,9 @@ function getBulletsSetMaxAmmoWithConstraints(constraintsByTrigger, bulletsSet) {
 }
 
 //Can take both bullets at once, dividing the total number of bullets between them.
-let isPairBulletsGroup = @(bullets, gunInfo) bullets.values.len() == 2
+let isPairBulletsGroup = @(bullets) bullets.values.len() == 2
   && bullets.weaponType == WEAPON_TYPE.COUNTERMEASURES
-  && !(gunInfo?.isBulletBelt ?? true)
+  && !(bullets?.isBulletBelt ?? true)
 
 return {
   BULLET_TYPE
