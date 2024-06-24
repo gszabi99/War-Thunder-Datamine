@@ -35,10 +35,12 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   needUiUpdate = false
   timeEndBenchmark = -1
   selectedPresetName = ""
+  hasInitedGraphicsAutodetect = false
 
   function initScreen() {
     saveLocalAccountSettings("gpuBenchmark/seen", true)
     initGraphicsAutodetect()
+    this.hasInitedGraphicsAutodetect = true
     showObjById("btnApply", false, this.scene)
   }
 
@@ -67,6 +69,9 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBenchmarkStart() {
+    if (!this.hasInitedGraphicsAutodetect)
+      return
+
     showObjById("benchmarkStart", false, this.scene)
     showObjById("btnStart", false, this.scene)
     showObjById("waitAnimation", true, this.scene)
@@ -132,6 +137,7 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBack() {
+    this.hasInitedGraphicsAutodetect = false
     closeGraphicsAutodetect()
     base.goBack()
   }

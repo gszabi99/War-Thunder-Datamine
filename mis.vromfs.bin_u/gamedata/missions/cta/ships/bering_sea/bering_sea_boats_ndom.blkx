@@ -119,8 +119,31 @@
               "icontype": "ship",
               "side": "enemy",
               "target": "t2_boat_spawn_icon02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "t1_briefing_spawnpoint_heavy01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "t1_briefing_spawnpoint_heavy02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "t2_briefing_spawnpoint_heavy01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "t2_briefing_spawnpoint_heavy02"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "ndom_battle_area"
+          }
         }
       }
     }
@@ -511,6 +534,141 @@
         ]
       ],
       "objLayer": 0,
+      "props": {}
+    },
+    "t1_briefing_spawnpoint_heavy01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1251.21,
+          4.18115,
+          2410.46
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_briefing_spawnpoint_heavy01": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1884.6,
+          0.0,
+          -2410.6
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_briefing_spawnpoint_heavy02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          -1883.96,
+          0.0,
+          2410.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_briefing_spawnpoint_heavy02": {
+      "type": "Point",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1251.3,
+          27.5195,
+          -2410.7
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "ndom_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          6000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          700.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          6000.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "objLayer": 3,
       "props": {}
     }
   },

@@ -54,11 +54,9 @@ def setup_ammo_cluster_add(cluster_id : int; var num_ammo : int&; ammo_type : in
     return 0
   // add remaining ammo to slots
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
-  var slot_id = slots_range.y - 1
   let num_ammo_before = num_ammo
-  for _ in slots_range.x..slots_range.y
+  for slot_id in slots_range.x..slots_range.y
     ammo_stowage_add_ammo_to_slot_partial(cluster_id, slot_id, num_ammo, ammo_type, v)
-    slot_id--
   return num_ammo_before - num_ammo
 
 
@@ -223,6 +221,10 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
         // ammo_stowage_debug_print_all_clusters(v)
         logwarn("{unit.props.fileName}: failed to distribute ammo slots, distributed/excess={stowage_ammo_arr}, ammo_info={ammo_info_arr}")
 
+  // ballance slots in each cluster
+  for cluster_id in iter_range(v.ammo_clusters__state)
+    ammo_cluster_balance_slots(unit, cluster_id, false, v)
+
   // if we are initing stowage, limit ammo in slots with initially loaded ammo count
   if init_num
     for cluster_id, slots_range in iter_range(v.ammo_clusters__slotsRange), v.ammo_clusters__slotsRange
@@ -231,9 +233,6 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
       for slot_id in slots_range.x..slots_range.y
         v.ammo_slots__numAmmo[slot_id].y = v.ammo_slots__numAmmo[slot_id].x
 
-  // ballance slots in each cluster
-  for cluster_id in iter_range(v.ammo_clusters__state)
-    ammo_cluster_balance_slots(unit, cluster_id, false, v)
   // update dm parts
   let enable_all_parts = is_in_hangar()
   var is_dm_changed = false

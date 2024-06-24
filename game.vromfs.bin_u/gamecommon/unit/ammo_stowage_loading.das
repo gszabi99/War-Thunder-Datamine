@@ -397,15 +397,15 @@ def load_clusters_in_order(stowage_blk : DataBlock&; model_name : string; load_c
     let cluster_stage = load_cluster_stage(*cluster_blk)
     clusters |> push([[auto blk_i, idx, cluster_type, cluster_stage]])
 
-  if indexed
-    // sort by index & stage
-    clusters |> sort() <| $(a, b)
-      if a.cluster_stage != b.cluster_stage
-        return a.cluster_stage < b.cluster_stage
-      if a.index != b.index
-        return a.index < b.index
-      return a.blk_i < b.blk_i
+  // sort by index & stage
+  clusters |> sort() <| $(a, b)
+    if a.cluster_stage != b.cluster_stage
+      return a.cluster_stage < b.cluster_stage
+    if a.index != b.index && indexed
+      return a.index < b.index
+    return a.blk_i > b.blk_i
 
+  if indexed
     // do some additional validation
     if length(clusters) > 0
       assert(int(AmmoClusterType NUM_TYPES) == 2)
