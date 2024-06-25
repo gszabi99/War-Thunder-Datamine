@@ -13,7 +13,7 @@ let { ceil } = require("math")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let mpChatModel = require("%scripts/chat/mpChatModel.nut")
+let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let avatars = require("%scripts/user/avatars.nut")
 let { setMousePointerInitialPosOnChildByValue } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -1018,7 +1018,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getChatLog() {
-    return mpChatModel.getLogForBanhammer()
+    return getLogForBanhammer()
   }
 
   getLocalTeam = @() ::get_local_team_for_mpstats()

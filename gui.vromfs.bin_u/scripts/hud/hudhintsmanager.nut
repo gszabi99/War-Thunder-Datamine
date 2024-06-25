@@ -6,7 +6,7 @@ let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_charserver_time_sec } = require("chard")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { subscribe_handler, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -21,6 +21,7 @@ let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTi
 let { register_command } = require("console")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 
@@ -194,12 +195,17 @@ let g_hud_hints_manager = {
 
     let isTank = getHudUnitType() == HUD_UNIT_TYPE.TANK
     let isShip = getHudUnitType() == HUD_UNIT_TYPE.SHIP
+    let isAir = getHudUnitType() == HUD_UNIT_TYPE.AIRCRAFT
+    let isHeli = getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER
 
     local posY = "ph - h - @hudActionBarItemHeight"
     if (isShip) {
       posY = $"{shipFireControlPos.y} - 1@bhHud - h"
     } else if (isTank) {
       posY = "ph - h - @hudActionBarItemHeight - @tankGunsAmmoBlockHeight"
+    } else if (isAir || isHeli) {
+      if (isVisualHudAirWeaponSelectorOpened())
+        posY = $"ph - h - 1@awsHeight"
     }
 
     hintBlockObj.pos = $"0.5pw - 0.5w, {posY}"
@@ -598,6 +604,8 @@ let g_hud_hints_manager = {
 }
 
 eventbus_subscribe("update_ship_fire_control_panel", @(value) g_hud_hints_manager.onUpdateShipFireControlPanel(value))
+add_event_listener("ChangedShowActionBar", @(_value) g_hud_hints_manager.updatePosHudHintBlock())
+
 
 dmPanelStatesAabb.subscribe(function(value) {
   g_hud_hints_manager.changeMissionHintsPosition(value)

@@ -82,6 +82,8 @@ let class VacationBin (gui_handlers.BaseGuiHandlerWT) {
   onSlotChangeAircraft = @ () null
   onOpenCrewWindow = @ (_obj) null
   onSwapCrews = @ (_obj) null
+  onOpenCrewPopup = @(_obj) null
+  hideAllPopups = @(_obj) null
 }
 
 gui_handlers.VacationBin <- VacationBin

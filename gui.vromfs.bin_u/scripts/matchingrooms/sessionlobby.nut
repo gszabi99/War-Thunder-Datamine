@@ -65,7 +65,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { isInFlight } = require("gameplayBinding")
 let time = require("%scripts/time.nut")
-let ingame_chat = require("%scripts/chat/mpChatModel.nut")
+let { clearMpChatLog } = require("%scripts/chat/mpChatModel.nut")
 let { isInJoiningGame, isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus, isInSessionLobbyEventRoom,
   isMeSessionLobbyRoomOwner, isRoomInSession
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -1818,7 +1818,7 @@ SessionLobby = {
     SessionLobbyState.roomUpdated = true
     SessionLobbyState.members = getTblValue("members", params, [])
     this.initMyParamsByMemberInfo()
-    ingame_chat.clearLog()
+    clearMpChatLog()
     ::g_squad_utils.updateMyCountryData()
 
     let public = getTblValue("public", params, SessionLobbyState.settings)

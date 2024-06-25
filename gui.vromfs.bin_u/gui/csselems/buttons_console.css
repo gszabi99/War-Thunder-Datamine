@@ -506,7 +506,8 @@ Button_text[visualStyle=common] > btnText {
 }
 
 bottomButtonsDiv > Button_text[visualStyle=common],
-Button_text.swapCrew {
+Button_text.swapCrew ,
+Button_text.openCrewPopup {
   background-color:#54656e;
   background-position:0;
   background-image:'';
@@ -521,7 +522,9 @@ bottomButtonsDiv > Button_text[visualStyle=common][selected=yes],
 bottomButtonsDiv > Button_text[visualStyle=common]:disabled,
 bottomButtonsDiv > Button_text[visualStyle=common][inactiveColor=yes],
 Button_text.swapCrew:hover,
-Button_text.swapCrew:pushed {
+Button_text.swapCrew:pushed,
+Button_text.openCrewPopup:hover,
+Button_text.openCrewPopup:pushed {
   background-color:@white;
   background-position:3, 4, 3, 4;
   foreground-color:@transparent;
@@ -2762,14 +2765,15 @@ Button_text[type=trashBin]:hover {
   background-color:@buttonCloseColorHover;
 }
 
-Button_text.swapCrew {
+Button_text.swapCrew,
+Button_text.openCrewPopup {
   min-width:51@sf/@pf;
   height:ph;
   margin:0;
   position:absolute;
   pos:50%pw-50%w, 50%ph-50%h;
   padding:1@smallButtonImgPadding;
-  not-input-transparent:no;
+  input-transparent:yes;
   order-popup:yes;
   skip-navigation:yes;
 }
@@ -2787,6 +2791,29 @@ Button_text.swapCrew > img {
   re-type:rotation;
 }
 
+Button_text.openCrewPopup > img {
+  background-image:#ui/gameuiskin#slot_menu.svg;
+  background-position:0;
+  background-repeat:expand;
+  background-svg-size:@sIco, @sIco;
+  size:ph, ph;
+  position:absolute;
+  pos:50%pw-50%w, 50%ph-50%h;
+  background-color: @buttonFontColor;
+}
+
+[show_console_buttons=yes] Button_text.openCrewPopup > img {
+  pos:pw-w, 50%ph-50%h;
+}
+
+[show_console_buttons=yes] Button_text.openCrewPopup > ButtonImg {
+  left:0;
+}
+
 Button_text[status=red] {
   color: @redMenuButtonColor;
+}
+
+Button_text.smallButton:hover > tdiv > text {
+  color:buttonFontColorHover;
 }

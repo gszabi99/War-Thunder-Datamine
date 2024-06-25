@@ -1,10 +1,12 @@
-tdiv {
+airWeaponSelector {
   flow:t='vertical'
   tdiv {
     id:t='countermeasures_container'
     position:t='absolute'
-    pos:t='0, -h - 0.008@shHud'
+    pos:t='0, -h - 1@awsPadCounterMeasures'
     flow:t='horizontal'
+    behaviour:t='posNavigator'
+    navigatorShortcuts:t='SpaceA'
 
     airWeaponSelectorCountermeasure {
       id:t='countermeasure_1'
@@ -13,6 +15,7 @@ tdiv {
       on_hover:t='onCounterMeasureHover'
       on_unhover:t='onCounterMeasureUnhover'
       on_click:t='onCounterMeasureClick'
+      on_dbl_click:t='onCounterMeasureClick'
       isSelected:t='no'
       isBordered:t='no'
       img{
@@ -26,6 +29,7 @@ tdiv {
         margin-left:t='0.008@shHud'
         margin-right:t='0.072@shHud'
       }
+      focus_border{}
     }
 
     airWeaponSelectorCountermeasure {
@@ -35,6 +39,8 @@ tdiv {
       on_hover:t='onCounterMeasureHover'
       on_click:t='onCounterMeasureClick'
       on_unhover:t='onCounterMeasureUnhover'
+      on_dbl_click:t='onCounterMeasureClick'
+
       isSelected:t='no'
       isBordered:t='no'
       img{
@@ -48,6 +54,7 @@ tdiv {
         margin-left:t='0.008@shHud'
         margin-right:t='0.072@shHud'
       }
+      focus_border{}
     }
 
     airWeaponSelectorCountermeasure {
@@ -57,6 +64,8 @@ tdiv {
       on_hover:t='onCounterMeasureHover'
       on_click:t='onCounterMeasureClick'
       on_unhover:t='onCounterMeasureUnhover'
+      on_dbl_click:t='onCounterMeasureClick'
+
       isSelected:t='no'
       isBordered:t='no'
       label {
@@ -98,6 +107,7 @@ tdiv {
           }
         }
       }
+      focus_border{}
     }
   }
 
@@ -107,6 +117,8 @@ tdiv {
     flow:t='horizontal'
     interactive:t='yes'
     on_unhover:t='onAirWeapSelectorUnhover'
+    behaviour:t='posNavigator'
+    navigatorShortcuts:t='SpaceA'
 
     <<#tiersView>>
       airWeaponSelectorItem{
@@ -121,8 +133,8 @@ tdiv {
         margin-right:t='0.002@shHud'
         on_hover:t='onAirWeapSelectorHover'
         on_unhover:t='onAirWeapSelectorUnhover'
+        on_dbl_click:t='onSecondaryWeaponClick'
         on_click:t='onSecondaryWeaponClick'
-        on_dbl_click:t='onSecondaryWeaponClick';
 
         airWeaponSelectorIcon {
           background-image:t='<<#img>><<img>><</img>>'
@@ -163,11 +175,12 @@ tdiv {
       text:t=' '
     }
   }
-
+  
   airWeaponSelectorCloseBtn {
+    id:t='close_btn'
     position:t='absolute'
     pos:t='pw - w - 0.002@shHud, -h - 0.008@shHud'
-    text:t='<<closeBtnLabel>>'
+    text:t=''
     padding-right:t='ph/2'
     on_click:t='onCancel'
     padding-bottom:t='0.002@shHud'
@@ -185,9 +198,46 @@ tdiv {
     }
   }
 
+  Button_text {
+    id:t = 'close_btn_consoles'
+    text:t = '#mainmenu/btnClose'
+    position:t='absolute'
+    pos:t='pw - w - 0.002@shHud, -h - 0.008@shHud'
+    btnName:t='B'
+    padding-right:t='ph/2'
+    padding-bottom:t='0.002@shHud'
+    padding-top:t='0.002@shHud'
+    padding-left:t='0.01@shHud'
+    _on_click:t = 'onCancel'
+    color:t='#AAAAAA'
+    bgcolor:t='#292C32'
+    display:t='hide'
+    ButtonImg {}
+
+    img {
+      position:t='relative'
+      re-type:t='9rect'
+      size:t='ph/2, ph/2'
+      top:t='(ph-h)/2'
+      background-image:t='#ui/gameuiskin#btn_close.svg'
+      background-svg-size:t='w, h'
+      background-repeat:t='expand'
+    }
+  }
 }
 
 DummyButton {
   btnName:t='B'
   _on_click:t='onCancel'
+}
+
+DummyButton {
+  btnName:t='A'
+  _on_click:t='onJoystickApplySelection'
+}
+
+timer{
+  bhv:t='Timer'
+  id:t='visual_selector_axis_timer'
+  timer_handler_func:t='onVisualSelectorAxisInputTimer'
 }

@@ -18,7 +18,7 @@ let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
-let { send, subscribe } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isProgressVisible, getHudUnitType } = require("hudState")
@@ -41,6 +41,7 @@ let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
+let { initMpChatModel } = require("%scripts/chat/mpChatModel.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -55,11 +56,17 @@ function getCurActionBar() {
   return handler?.currentHud.actionBar
 }
 
-subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
-subscribe("getActionBarState", function(_) {
+eventbus_subscribe("collapseActionBar", @(_) getCurActionBar()?.collapse())
+eventbus_subscribe("getActionBarState", function(_) {
   let actionBar = getCurActionBar()
   if (actionBar != null)
-    send("setActionBarState", actionBar.getState())
+    eventbus_send("setActionBarState", actionBar.getState())
+})
+
+eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
+  handlersManager.clearScene()
+  handlersManager.loadHandler(gui_handlers.Hud)
+  initMpChatModel()
 })
 
 gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -128,7 +135,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
-    send("updateIsSpectatorMode", this.spectatorMode)
+    eventbus_send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.switchHud(this.getHudType())
@@ -549,7 +556,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateMissionProgressPlace() {
     let curHud = this.getHudType()
     if (curHud == HUD_TYPE.SHIP || curHud == HUD_TYPE.AIR) {
-      send("updateMissionProgressHeight", getMissionProgressHeight())
+      eventbus_send("updateMissionProgressHeight", getMissionProgressHeight())
       return
     }
 

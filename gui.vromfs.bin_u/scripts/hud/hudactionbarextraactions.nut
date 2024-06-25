@@ -46,12 +46,18 @@ function getExtraActionItemsView(unit) {
 
   if (hasFeature("AirVisualWeaponSelector") && unit.hasWeaponSlots && isAir && has_secondary_weapons()) {
     let item = clone extraItemViewTemplate
-    let shType = ::g_shortcut_type.getShortcutTypeByShortcutId("ID_OPEN_VISUAL_WEAPON_SELECTOR")
-    let shortCut = shType.getFirstInput("ID_OPEN_VISUAL_WEAPON_SELECTOR")
-    let shortcutText = shortCut.getTextShort()
+    let shortcutId = "ID_OPEN_VISUAL_WEAPON_SELECTOR"
+    let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+    let scInput = shType.getFirstInput(shortcutId)
+    let shortcutText = scInput.getTextShort()
+    let isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
+    let showShortcut = isXinput || shortcutText != ""
+
     item.shortcutText = shortcutText
+    item.isXinput = showShortcut && isXinput
     item.isLongScText = utf8_strlen(shortcutText) >= LONG_ACTIONBAR_TEXT_LEN
     item.onClick <- "onVisualSelectorClick"
+    item.mainShortcutId <- shortcutId
     item.icon = "#ui/gameuiskin#weapon_selector_icon"
     item.id = getExtraActionBarObjId(extraId)
     extraId++

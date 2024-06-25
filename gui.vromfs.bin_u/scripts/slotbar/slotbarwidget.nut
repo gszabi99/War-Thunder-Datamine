@@ -1597,7 +1597,29 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!crew)
       return
 
+    this.hideAllPopups()
+
     swapCrewHandler.open(crew, this.getCurrentAirsTable(), this)
+  }
+
+  function onOpenCrewPopup(obj) {
+    let popup = obj.getParent().findObject("extra_info_block_crew_hint")
+    let showPopup = popup?["showed"] != "yes"
+    popup["showed"] = showPopup ? "yes" : "no"
+    this.guiScene.applyPendingChanges(false)
+    let btn = popup.findObject("swap_crew_btn")
+    if(btn != null && showPopup)
+      btn.setMouseCursorOnObject()
+  }
+
+  function hideAllPopups(_obj = null) {
+    let table = this.getCurrentAirsTable()
+    for (local i = 0; i < table.childrenCount(); i++) {
+      let item = table.getChild(i)
+      let popup = item.findObject("extra_info_block_crew_hint")
+      if(popup != null)
+        popup["showed"] = "no"
+    }
   }
 
   onUnitCellDrop = @() null

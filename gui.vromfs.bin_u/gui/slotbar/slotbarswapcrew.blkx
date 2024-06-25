@@ -38,7 +38,7 @@
       "input-transparent": "yes",
       "slotbarTable": {
         "id": "airs_table",
-        "behavior": "posNavigator",
+        "behavior": "ActivateSelect",
         "css-hier-invalidate": "yes",
         "position": "relative",
         "input-transparent": "yes",
@@ -46,7 +46,8 @@
         "on_select": "onSlotSelect",
         "on_pushed": "::gcb.delayedTooltipListPush",
         "on_hold_start": "::gcb.delayedTooltipListHoldStart",
-        "on_hold_stop": "::gcb.delayedTooltipListHoldStop"
+        "on_hold_stop": "::gcb.delayedTooltipListHoldStop",
+        "navigatorShortcuts": "yes"
       }
     }
   }

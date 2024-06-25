@@ -6,7 +6,6 @@ let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -205,13 +204,6 @@ let optionsModeByGameMode = {
 ::get_options_mode <- function get_options_mode(game_mode) {
   return optionsModeByGameMode?[game_mode] ?? OPTIONS_MODE_GAMEPLAY
 }
-
-eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
-  handlersManager.clearScene()
-  handlersManager.loadHandler(gui_handlers.Hud)
-
-  require("%scripts/chat/mpChatModel.nut").init()
-})
 
 ::get_squad_bonus_for_same_cyber_cafe <- function get_squad_bonus_for_same_cyber_cafe(effectType, num = -1) {
   if (num < 0)

@@ -1,13 +1,26 @@
+@const awsCounterMeasureHeight: (0.032*@shHud)\1;
+@const awsItemHeight: (0.06*@shHud)\1;
+@const awsPadBottom: (0.022*@shHud)\1;
+@const awsPadCounterMeasures: (0.008*@shHud)\1;
+@const awsHeight: 3@awsPadCounterMeasures + 1@awsPadBottom + 1@awsItemHeight + 1@awsCounterMeasureHeight;
+
 airWeaponSelectorItem {
   background-color:#292C32;
   css-hier-invalidate:yes;
-  size:0.06@shHud, 0.06@shHud;
+  size:@awsItemHeight, @awsItemHeight;
   border-color:#171B23;
   border:yes;
   behaviour:button;
   interactive:yes;
 }
 
+[show_console_buttons=yes] airWeaponSelectorItem:hover {
+  needFocusBorder:yes;
+}
+
+[show_console_buttons=yes] airWeaponSelectorCountermeasure:hover {
+  needFocusBorder:yes;
+}
 airWeaponSelectorItem[isSelected=yes] {
   background-color:#2F353E;
 }
@@ -17,11 +30,11 @@ airWeaponSelectorItem[isBordered=yes] {
 }
 
 airWeaponSelectorIcon {
-  size:0.06@shHud, 0.06@shHud;
+  size:@awsItemHeight, @awsItemHeight;
   position:relative;
   pos:(pw-w)/2, (ph-h)/2;
   background-repeat:expand;
-  background-svg-size:0.06@shHud, 0.06@shHud;
+  background-svg-size:@awsItemHeight, @awsItemHeight;
   background-color:#FFFFFF;
   input-transparent:yes;
 }
@@ -41,6 +54,30 @@ airWeaponSelectorItem[weaponIdx=-1] > airWeaponSelectorIcon {
   display:hide;
 }
 
+airWeaponSelector > Button_text {
+  color:#AAAAAA;
+  bgcolor:#292C32;
+  border-color:#171B23;
+  border:yes;
+  text:"";
+  min-width:0;
+}
+
+airWeaponSelector > Button_text:hover {
+  color:#FFFFFF;
+  color-factor:255;
+}
+
+[show_console_buttons=yes] airWeaponSelector > Button_text {
+  width:2@buttonHeight;
+  min-width:2@buttonHeight;
+  display:show;
+}
+
+[show_console_buttons=yes] airWeaponSelector > DummyButton[btnName=B] {
+  display:hide;
+}
+
 airWeaponSelectorCloseBtn {
   behaviour:button;
   re-type:9rect;
@@ -52,9 +89,8 @@ airWeaponSelectorCloseBtn {
   font:small_text;
 }
 
-airWeaponSelectorCloseBtn:hover {
-  color:#FFFFFF;
-  color-factor:255;
+[show_console_buttons=yes] airWeaponSelectorCloseBtn {
+  display:hide;
 }
 
 airWeaponSelectorCountermeasure {
@@ -62,12 +98,16 @@ airWeaponSelectorCountermeasure {
   background-color:#292C32;
   css-hier-invalidate:yes;
   min-width:0.128@shHud;
-  height:0.032@shHud;
+  height:@awsCounterMeasureHeight;
   border-color:#171B23;
   border:yes;
   behaviour:button;
   interactive:yes;
   margin-left:0.004@shHud;
+}
+
+[show_console_buttons=yes] airWeaponSelectorCountermeasure:hover {
+  needFocusBorder:yes;
 }
 
 airWeaponSelectorCountermeasure[isSelected=yes] {

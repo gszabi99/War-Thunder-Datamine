@@ -271,7 +271,7 @@ function debug_dump_respawn_save(filename) {
     { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock();
       get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ userIdInt64.value, false ] }
-    { id = "_fake_mpchat_log", value = require("%scripts/chat/mpChatModel.nut").getLog() }
+    { id = "_fake_mpchat_log", value = require("%scripts/chat/mpChatModel.nut").getMpChatLog() }
     "LAST_SESSION_DEBUG_INFO"
     "get_current_mission_info_cached"
     "has_available_slots"
@@ -354,7 +354,7 @@ function debug_dump_respawn_load(filename) {
   getCurMissionRules()
   clearCrewsList()
   initListLabelsSquad()
-  require("%scripts/chat/mpChatModel.nut")?.setLog(getroottable()?._fake_mpchat_log)
+  require("%scripts/chat/mpChatModel.nut").setMpChatLog(getroottable()?._fake_mpchat_log)
   eventbus_send("gui_start_respawn")
   broadcastEvent("MpChatLogUpdated")
   broadcastEvent("BattleLogMessage")

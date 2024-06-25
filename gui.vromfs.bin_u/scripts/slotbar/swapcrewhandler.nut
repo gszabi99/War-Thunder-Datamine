@@ -50,6 +50,7 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
     let itemsCount = this.airsTableSource.childrenCount()
     this.slotsCrews.clear()
     this.itemToScroll = null
+    local swappedItem = null
 
     for (local i = 0; i < itemsCount; i++) {
       let item = this.airsTableSource.getChild(i)
@@ -66,8 +67,10 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
       itemClone["class"] = "slotbarClone"
       itemClone["swapCrews"] = "yes"
 
-      if(this.curClonObjId == item.id)
+      if(this.curClonObjId == item.id) {
         itemClone["swappedItem"] = "yes"
+        swappedItem = itemClone
+      }
 
       if(isEmpty) {
         let topTextId = $"{itemClone.id.split("td_")[1]}_txt"
@@ -86,6 +89,8 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
 
     this.guiScene.applyPendingChanges(false)
     this.itemToScroll?.scrollToView(true)
+
+    swappedItem.setMouseCursorOnObject()
   }
 
   function onSlotSelect(obj) {
@@ -112,6 +117,8 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
   onUnitCellDragStart = @(_obj) null
   onUnitCellDrop = @(_obj) null
   onUnitCellMove = @(_obj) null
+  onOpenCrewPopup = @(_obj) null
+  hideAllPopups = @(_obj) null
 }
 
 gui_handlers.SwapCrewHandler <- SwapCrewHandler

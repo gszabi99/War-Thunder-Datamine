@@ -70,6 +70,11 @@ gui_handlers.HudAir <- class (gui_handlers.BaseUnitHud) {
   function updateShowHintsNest() {
     showObjById("actionbar_hints_nest", false, this.scene)
   }
+
+  function onDestroy()  {
+    this.airWeaponSelector?.onDestroy()
+  }
+
 }
 
 return {

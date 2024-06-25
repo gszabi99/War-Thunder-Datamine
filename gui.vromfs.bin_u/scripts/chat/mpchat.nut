@@ -11,7 +11,9 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let ingame_chat = require("%scripts/chat/mpChatModel.nut")
+let { onInternalMessage, getLogForBanhammer, unblockMessage, getMpChatLog,
+  onIncomingMessage
+} = require("%scripts/chat/mpChatModel.nut")
 let penalties = require("%scripts/penitentiary/penalties.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
@@ -366,7 +368,7 @@ local MP_CHAT_PARAMS = {
     local devoiceMsgText = penalties.getDevoiceMessage()
     if (devoiceMsgText) {
       devoiceMsgText = $"<color=@chatInfoColor>{devoiceMsgText}</color>"
-      ingame_chat.onInternalMessage(devoiceMsgText)
+      onInternalMessage(devoiceMsgText)
       this.setInputField("")
     }
     return devoiceMsgText != null
@@ -524,7 +526,7 @@ local MP_CHAT_PARAMS = {
     })
   }
 
-  getChatLogForBanhammer = @() ingame_chat.getLogForBanhammer()
+  getChatLogForBanhammer = @() getLogForBanhammer()
 
   function onChatLinkClick(obj, _itype, link)  { this.onChatLink(obj, link, is_platform_pc) }
   function onChatLinkRClick(obj, _itype, link) { this.onChatLink(obj, link, false) }
@@ -546,7 +548,7 @@ local MP_CHAT_PARAMS = {
       this.log_text = ::g_chat.revealBlockedMsg(this.log_text, link)
 
       let pureMessage = ::g_chat.convertLinkToBlockedMsg(link)
-      ingame_chat.unblockMessage(pureMessage)
+      unblockMessage(pureMessage)
       this.updateAllLogs()
     }
   }
@@ -593,7 +595,7 @@ local MP_CHAT_PARAMS = {
       }
     }
 
-    let logObj = ingame_chat.getLog()
+    let logObj = getMpChatLog()
     this.log_text = ""
     local formattedLogs = []
     processLog(logObj, 0, formattedLogs)
@@ -811,11 +813,6 @@ eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
   ::get_game_chat_handler().hideChatInput(sceneData, value)
 }
 
-::clear_game_chat <- function clear_game_chat() {
-  debugTableData(ingame_chat)
-  ingame_chat.clearLog()
-}
-
 ::get_gamechat_log_text <- function get_gamechat_log_text() {
   return ::get_game_chat_handler().getLogText()
 }
@@ -831,7 +828,7 @@ eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
 }
 
 ::chat_system_message <- function chat_system_message(text) {
-  ingame_chat.onIncomingMessage("", text, false, 0, true)
+  onIncomingMessage("", text, false, 0, true)
 }
 
 ::add_tags_for_mp_players <- function add_tags_for_mp_players() {

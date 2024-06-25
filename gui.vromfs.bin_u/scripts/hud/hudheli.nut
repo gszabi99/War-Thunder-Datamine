@@ -59,6 +59,11 @@ gui_handlers.HudHeli <- class (gui_handlers.BaseUnitHud) {
       && g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
     showObjById("hud_air_tactical_map", isVisible, this.scene)
   }
+
+  function onDestroy()  {
+    this.airWeaponSelector?.onDestroy()
+  }
+
 }
 
 return {

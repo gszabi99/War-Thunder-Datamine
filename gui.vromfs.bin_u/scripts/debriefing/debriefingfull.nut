@@ -11,7 +11,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { fabs } = require("math")
 let DataBlock = require("DataBlock")
 let { get_mp_session_id_str, is_mplayer_peer } = require("multiplayer")
-let mpChatModel = require("%scripts/chat/mpChatModel.nut")
+let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -35,6 +35,8 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 
 local debriefingResult = null
 local dynamicResult = -1
@@ -437,6 +439,10 @@ debriefingRows = [
 
       let rows = unitBonuses.map(function(unitBonus, idx) {
         let { unit, overflow, invModuleExp = 0, invModuleName = null} = unitBonus
+        let unitModel = getAircraftByName(unit)
+        let researchedModName = invModuleName != null
+          ? getModItemName(unitModel, getModificationByName(unitModel, invModuleName), false)
+          : null
 
         return {
           isEven = idx % 2 == 0
@@ -448,7 +454,7 @@ debriefingRows = [
                 hasFormula = true
               }
             }
-            { cell = { text = invModuleName ? loc($"modification/{invModuleName}") : cellNoValSymbol}}
+            { cell = { text = researchedModName ?? cellNoValSymbol}}
             { cell = {
                 text = invModuleExp || cellNoValSymbol
                 image = invModuleExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
@@ -1260,7 +1266,7 @@ function gatherDebriefingResult() {
   debriefingResult.activeWager <- getDebriefingActiveWager()
   debriefingResult.eventId <- getDebriefingEventId()
   debriefingResult.chatLog <- ::get_gamechat_log_text()
-  debriefingResult.logForBanhammer <- mpChatModel.getLogForBanhammer()
+  debriefingResult.logForBanhammer <- getLogForBanhammer()
 
   debriefingResult.exp.timBattleTime <- getTblValue("battleTime", debriefingResult.exp, 0)
   debriefingResult.needRewardColumn <- false

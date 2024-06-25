@@ -1011,16 +1011,24 @@ specIconBlock > shopTrainedImg, specIconBlock > warningIcon {
 }
 
 extraInfoBlock {
-  re-type:9rect;
-  size:pw, @slotExtraInfoHeight;
+  size:1.1pw, @slotExtraInfoHeight;
   pos:pw/2-w/2, ph+@sf/@pf;
+  position:absolute;
+  css-hier-invalidate:yes;
+  not-input-transparent:yes;
+  interactive:yes;
+}
+
+extraInfoBlock > content {
+  re-type:9rect;
+  size:1/1.1*pw, ph;
+  pos:pw/2-w/2, 0;
   position:absolute;
   background-color:@extraInfoBlockBgColor;
   css-hier-invalidate:yes;
   border:yes;
   border-color:@extraInfoBlockBorderColor;
   border-offset:@sf/@pf;
-  not-input-transparent:yes;
 }
 
 slotCrewHintContainer {
@@ -1031,6 +1039,16 @@ slotCrewHintContainer {
   order-popup:yes;
   css-hier-invalidate:yes;
   not-input-transparent:yes;
+  display:hide;
+  interactive:yes;
+  padding:3@sf/@pf, 3@sf/@pf, 3@sf/@pf, 5@sf/@pf;
+}
+
+slotCrewHintContainer[showed=yes] {
+  display:show;
+}
+
+[show_console_buttons=no] slotCrewHintContainer > Button_text[isSwapCrewButton=yes] {
   display:hide;
 }
 
@@ -1087,30 +1105,33 @@ slotCrewHintContainer > tdiv > slotBottomGradientLine {
 
 slotCrewHintContainer:hover,
 slotMissionHintContainer:hover,
-extraInfoBlock:hover > slotCrewHintContainer,
+[show_console_buttons=no] extraInfoBlock:hover > content > slotCrewHintContainer,
 extraInfoBlockTop:hover > slotMissionHintContainer {
   display:show;
 }
 
-extraInfoBlock:hover > Button_text {
+[show_console_buttons=no] extraInfoBlock:hover > content > Button_text.swapCrew {
   display:show;
 }
 
-
-extraInfoBlock[isEmptySlot=yes] > crewNumText,
-extraInfoBlock[isEmptySlot=yes] > slotCrewHintContainer > tdiv > crewNumText {
+[show_console_buttons=yes] extraInfoBlock:hover > content > Button_text.openCrewPopup {
   display:show;
 }
 
-extraInfoBlock[isEmptySlot=yes] > crewInfoNumBlock {
+extraInfoBlock[isEmptySlot=yes] > content > crewNumText,
+extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewNumText {
+  display:show;
+}
+
+extraInfoBlock[isEmptySlot=yes] > content > crewInfoNumBlock {
   display:hide;
 }
-extraInfoBlock[isEmptySlot=yes]:hover > crewNumText,
-extraInfoBlock[isEmptySlot=yes] > slotCrewHintContainer > tdiv > crewNumText {
+extraInfoBlock[isEmptySlot=yes]:hover > content > crewNumText,
+extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewNumText {
   display:hide;
 }
 
-extraInfoBlock[isEmptySlot=yes]:hover > crewInfoNumBlock {
+extraInfoBlock[isEmptySlot=yes]:hover > content > crewInfoNumBlock {
   display:show;
 }
 
@@ -1203,15 +1224,15 @@ extraInfoVertSeparator {
 }
 
 text[crewStatus=show], textareaNoTab[crewStatus=show], textAreaCentered[crewStatus=show],
-shopItem[crewStatus=show] > extraInfoBlock > crewInfoExpBlock > shopItemText {
+shopItem[crewStatus=show] > extraInfoBlock > content > crewInfoExpBlock > shopItemText {
   color:@commonTextColor;
 }
 text[crewStatus=ready], textareaNoTab[crewStatus=ready], textAreaCentered[crewStatus=ready],
-shopItem[crewStatus=ready] > extraInfoBlock > crewInfoExpBlock > shopItemText {
+shopItem[crewStatus=ready] > extraInfoBlock > content > crewInfoExpBlock > shopItemText {
   color:@crewSkillsText_ready;
 }
 text[crewStatus=full], textareaNoTab[crewStatus=full], textAreaCentered[crewStatus=full],
-shopItem[crewStatus=full] > extraInfoBlock > crewInfoExpBlock > shopItemText {
+shopItem[crewStatus=full] > extraInfoBlock > content > crewInfoExpBlock > shopItemText {
   color:@crewSkillsText_full;
   wink:yes;
 }
@@ -1760,6 +1781,7 @@ slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer {
   size: @slot_width, 1@slotbarHeight - @slotbar_pad_top - @slotbar_pad_bottom;
   padding: @slot_interval, 0;
   css-hier-invalidate: yes;
+  margin-top: 2@slotTopLineHeight;
 }
 
 slotsScrollDiv[swapCrew=yes] > slotbarTable > unitItemContainer[swappedItem=yes] {
