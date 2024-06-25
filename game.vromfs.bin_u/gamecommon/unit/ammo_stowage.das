@@ -87,21 +87,15 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
   var stowage_all_parts_broken = clusters_range.x != clusters_range.y
   var stowage_has_autoloader_parts = false
   var stowage_has_elevator_parts = false
-  var per_ammo_type_def_state = 0u
-  var has_first_stage = false
+  assert(int(AmmoClusterStage NUM_STAGES) == 4)
+  var stage_present : bool[4]
+  for p in stage_present
+    p = false
   for cluster_id in clusters_range.x..clusters_range.y
     let cluster_state = v.ammo_clusters__state[cluster_id]
     let cluster_stage = get_ammo_cluster_stage(cluster_id, v)
     let parts_range = v.ammo_clusters__relatedPartsRange[cluster_id]
-
-    if cluster_stage == int(AmmoClusterStage FIRST_STAGE)
-      has_first_stage = true
-    if cluster_stage == int(AmmoClusterStage FIRST_STAGE) || cluster_stage == int(AmmoClusterStage SECOND_STAGE)
-      per_ammo_type_def_state = (
-        uint(AmmoStowagePerAmmoState EMPTY) |
-        uint(AmmoStowagePerAmmoState EMPTY_FIRST_STAGE) |
-        uint(AmmoStowagePerAmmoState EMPTY_SECOND_STAGE)
-      )
+    stage_present[cluster_stage] = true
 
     stowage_has_autoloader_parts = get_flag(cluster_state, AmmoClusterState HAS_AUTOLOADER_PARTS) || stowage_has_autoloader_parts
     stowage_has_elevator_parts = get_flag(cluster_state, AmmoClusterState HAS_ELEVATOR_PARTS) || stowage_has_elevator_parts
@@ -119,12 +113,19 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
   for ammo_type in 0..ammo_type_count
     let glob_ammo_idx = per_ammo_offset + ammo_type
     let ammo_type_remap = v.ammo_stowage__ammoTypeRemap[ammo_type]
+
+    v.ammo_per_type_data__state[glob_ammo_idx] = 0u
+    if stage_present[int(AmmoClusterStage FIRST_STAGE)] || stage_present[int(AmmoClusterStage SECOND_STAGE)]
+      v.ammo_per_type_data__state[glob_ammo_idx] |= (
+          uint(AmmoStowagePerAmmoState EMPTY) |
+          uint(AmmoStowagePerAmmoState EMPTY_FIRST_STAGE) |
+          uint(AmmoStowagePerAmmoState EMPTY_SECOND_STAGE)
+        )
+
     if ammo_type_remap.x != stowage_id
       // ammo type from other stowage - skip
-      v.ammo_per_type_data__state[glob_ammo_idx] = 0u
       continue
 
-    v.ammo_per_type_data__state[glob_ammo_idx] = per_ammo_type_def_state
     set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState EMPTY_AUTO_LOAD, stowage_has_auto_load)
     var loaded_ammo_cnt = 0
     var is_ready_to_shoot = false
@@ -140,7 +141,7 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
         loaded_ammo_cnt += 1 // todo: base gun
         is_ready_to_shoot = true
     set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState EMPTY_LOADED_AMMO, loaded_ammo_cnt == 0)
-    v.ammo_per_type_data__numAmmoFs[glob_ammo_idx] = has_first_stage ? 0 : -1
+    v.ammo_per_type_data__numAmmoFs[glob_ammo_idx] = stage_present[int(AmmoClusterStage FIRST_STAGE)] || stage_present[int(AmmoClusterStage LOADED_IN_GUN)] ? 0 : -1
     // check if weapon is blocked by broken parts
     var weapon_blocked_by_broken_parts = false
     if stowage_has_elevator_parts && stowage_all_parts_broken
@@ -149,6 +150,9 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
       weapon_blocked_by_broken_parts = true
     set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState BLOCKED_BY_BROKEN_PARTS, weapon_blocked_by_broken_parts)
 
+  // if we have LOADED_IN_GUN clusters, we add them to numAmmoFs, otherwise we add FIRST_STAGE clusters
+  // this is required for Weapon::getEmitterNo()
+  let fs_cluster_stage = stage_present[int(AmmoClusterStage LOADED_IN_GUN)] ? int(AmmoClusterStage LOADED_IN_GUN) : int(AmmoClusterStage FIRST_STAGE)
 
   var ammo_hash = 1u
   for cluster_id in clusters_range.x..clusters_range.y
@@ -166,7 +170,7 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
       let glob_ammo_idx = per_ammo_offset + slot_ammo_type
       if slot_ammo.x == 0
         continue
-      if cluster_stage == int(AmmoClusterStage FIRST_STAGE) && cluster_type == int(AmmoClusterType SHELLS)
+      if cluster_stage == fs_cluster_stage && cluster_type == int(AmmoClusterType SHELLS)
         v.ammo_per_type_data__numAmmoFs[glob_ammo_idx] += slot_ammo.x
       set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState EMPTY, false)
       if cluster_stage == int(AmmoClusterStage FIRST_STAGE)
