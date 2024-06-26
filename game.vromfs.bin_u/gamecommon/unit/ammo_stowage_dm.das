@@ -269,7 +269,6 @@ def is_ammo_slot_affected_by_dm_effect(unit : Unit?; stowage_id : int; cluster_i
                                          ammo_stowage__ammoState : uint;
                                          ammo_stowage__ammoTypeRemap : IPoint4List;
                                          ammo_stowage__weaponsIds : IntList;
-                                         ammo_stowages__state : UInt32List;
                                          ammo_clusters__typeAndStage : UInt16List;
                                          ammo_slots__ammoMaskAndType : UInt32List;
                                          ammo_slots__numAmmo : IPoint2List
@@ -281,13 +280,11 @@ def is_ammo_slot_affected_by_dm_effect(unit : Unit?; stowage_id : int; cluster_i
   var result = [[AffectedByDmEffect expl=false, fire=false]]
   if slot_ammo.x == 0
     return result
-  let is_separate_loading = get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState SEPARATE_LOADING)
   let is_charges = get_ammo_cluster_type(cluster_id, v) == int(AmmoClusterType CHARGES)
   ammo_stowage_iter_all_ammo_props(wc, get_ammo_slot_type(slot_id, v), v) <| $ [unused_argument(fract)] (props; fract : float)
     if !is_charges
       result.expl = props.explosiveProps.mass > 0.f || result.expl
-    if is_charges || !is_separate_loading
-      result.fire = (props.powderPortion > 0.f && props.ballisticsProps.mass > 0.f) || result.fire
+    result.fire = (props.powderPortion > 0.f && props.ballisticsProps.mass > 0.f) || result.fire
   return result
 
 
@@ -664,7 +661,6 @@ def ammo_stowage_do_fire(unit : Unit?; eid : EntityId; remap : PartRemap; offend
                            ammo_stowage__weaponsIds : IntList;
                            ammo_stowage__ammoState : uint- const;
                            ammo_stowage__delayedOffender : OffenderData- const;
-                           ammo_stowages__state : UInt32List;
                            ammo_clusters__state : UInt32List- const;
                            ammo_clusters__typeAndStage : UInt16List;
                            ammo_clusters__slotsRange : IPoint2List;
@@ -716,7 +712,6 @@ def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; o
                                 ammo_stowage__fatalDetonatePortion : float2;
                                 ammo_stowage__ammoTypeRemap : IPoint4List;
                                 ammo_stowage__weaponsIds : IntList;
-                                ammo_stowages__state : UInt32List;
                                 ammo_clusters__typeAndStage : UInt16List;
                                 ammo_clusters__state : UInt32List- const;
                                 ammo_clusters__slotsRange : IPoint2List;
@@ -774,7 +769,6 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
                                           ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                           ammo_stowage__fatalDetonatePortion : float2;
                                           ammo_stowage__partIdRemap : IPoint4List;
-                                          ammo_stowages__state : UInt32List;
                                           ammo_clusters__typeAndStage : UInt16List;
                                           ammo_clusters__state : UInt32List- const;
                                           ammo_clusters__slotsRange : IPoint2List;
@@ -820,7 +814,6 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
                                 ammo_stowage__explosiveProperties : ExplosiveProps- const;
                                 ammo_stowage__fatalDetonatePortion : float2;
                                 ammo_stowage__partIdRemap : IPoint4List;
-                                ammo_stowages__state : UInt32List;
                                 ammo_clusters__typeAndStage : UInt16List;
                                 ammo_clusters__state : UInt32List- const;
                                 ammo_clusters__damageEffectPresetId : IntList;
@@ -864,8 +857,6 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
   if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_EXPL) || get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FULL_EXPL)
     if affected_by.expl
       ammo_stowage_do_explosion(unit, eid, remap, evt.offender, seed, dm_effects) <| v
-    elif affected_by.fire
-      ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
   if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FIRE)
     if affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
