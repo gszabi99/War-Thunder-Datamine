@@ -223,15 +223,15 @@ let class HudAirWeaponSelector {
     for (local i = 0; i < tiersCount; i++) {
       let tier = this.chosenPreset.tiersView[i]
       let weaponCell = this.nestObj.findObject($"tier_{tier.tierId}")
+      let isSelectedTier = selectedIds.contains(tier.tierId)
       if (weaponCell != null) {
-        weaponCell.isBordered = selectedIds.contains(tier.tierId) ? "yes" : "no"
-        weaponCell.isSelected = selectedIds.contains(tier.tierId) ? "yes" : "no"
+        weaponCell.isBordered = isSelectedTier ? "yes" : "no"
+        weaponCell.isSelected = isSelectedTier ? "yes" : "no"
       }
-      if (isXInputDevice()
-          && this.buttonsFloors.weapons.currentIndex < 0
-          && selectedIds.contains(tier.tierId)) {
+      if (this.buttonsFloors.weapons.currentIndex < 0 && isSelectedTier) {
         this.buttonsFloors.weapons.currentIndex = i
-        this.setFocusBorder(weaponCell)
+        if (isXInputDevice())
+          this.setFocusBorder(weaponCell)
       }
     }
 
@@ -293,10 +293,9 @@ let class HudAirWeaponSelector {
       return
     let weaponIdx = to_integer_safe(obj.weaponIdx)
     set_secondary_weapon(weaponIdx)
-    if (isXInputDevice()) {
+    this.buttonsFloors.weapons.currentIndex = this.getTierIndex(to_integer_safe(obj.tierId))
+    if (isXInputDevice())
       this.setFocusBorder(obj)
-      this.buttonsFloors.weapons.currentIndex = this.getTierIndex(to_integer_safe(obj.tierId))
-    }
     this.updatePresetData()
     this.close()
   }
@@ -490,7 +489,9 @@ let class HudAirWeaponSelector {
   function onCounterMeasuresFloorSelect() {
     let floor = this.buttonsFloors.counter_measures
     let countermeasuresContainer = this.nestObj.findObject("countermeasures_container")
-    let mode = this.counterMeasuresIds[floor.currentIndex]
+    let mode = this.counterMeasuresIds?[floor.currentIndex]
+    if (mode == null)
+      return
     let btn = countermeasuresContainer.findObject($"countermeasure_{mode}")
     if (btn != null && btn.isVisible()) {
       this.setFocusBorder(btn)
@@ -500,7 +501,9 @@ let class HudAirWeaponSelector {
 
   function onWeaponsFloorSelect() {
     let floor = this.buttonsFloors.weapons
-    let tier = this.chosenPreset.tiersView[floor.currentIndex]
+    let tier = this.chosenPreset.tiersView?[floor.currentIndex]
+    if (tier == null)
+      return
     let btn = this.nestObj.findObject($"tier_{tier.tierId}")
     if (btn != null)
       this.setFocusBorder(btn)
@@ -512,7 +515,9 @@ let class HudAirWeaponSelector {
 
   function onJoystickSelectWeaponBtn() {
     let floor = this.buttonsFloors.weapons
-    let tier = this.chosenPreset.tiersView[floor.currentIndex]
+    let tier = this.chosenPreset.tiersView?[floor.currentIndex]
+    if (tier == null)
+      return
     let selectedBtn = this.nestObj.findObject($"tier_{tier.tierId}")
     this.onSecondaryWeaponClick(selectedBtn)
   }
@@ -520,7 +525,9 @@ let class HudAirWeaponSelector {
   function onJoystickSelectCounterMeasureBtn() {
     let floor = this.buttonsFloors.counter_measures
     let countermeasuresContainer = this.nestObj.findObject("countermeasures_container")
-    let mode = this.counterMeasuresIds[floor.currentIndex]
+    let mode = this.counterMeasuresIds?[floor.currentIndex]
+    if (mode == null)
+      return
     let btn = countermeasuresContainer.findObject($"countermeasure_{mode}")
     this.onCounterMeasureClick(btn)
   }
@@ -528,7 +535,7 @@ let class HudAirWeaponSelector {
   function selectNextWeaponBtn(side) {
     local btn = null
     let floor = this.buttonsFloors.weapons
-    let tier = this.chosenPreset.tiersView[floor.currentIndex]
+    let tier = this.chosenPreset.tiersView?[floor.currentIndex]
     local newTierIndex = floor.currentIndex
     let tiersCount = this.chosenPreset.tiersView.len()
 
