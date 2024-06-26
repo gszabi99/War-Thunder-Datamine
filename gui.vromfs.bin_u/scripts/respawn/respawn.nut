@@ -694,7 +694,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       hasExtraInfoBlockTop = true
       showAdditionExtraInfo = true
       showCrewHintUnderSlot = true
-      hasCrewHint = true
       shouldSelectAvailableUnit = this.isRespawn
       customViewCountryData = { [playerCountry] = {
         icon = this.missionRules.getOverrideCountryIconByTeam(get_mp_local_team())

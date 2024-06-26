@@ -98,7 +98,6 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateSessionInfo()
     this.createSlotbar({
       getLockedCountryData = @() SessionLobby.getLockedCountryData()
-      hasCrewHint = true
     })
     this.setSceneTitle(loc("multiplayer/lobby"))
     this.updateWindow()

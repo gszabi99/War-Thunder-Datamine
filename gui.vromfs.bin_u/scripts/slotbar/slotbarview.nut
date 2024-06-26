@@ -39,8 +39,12 @@ let { getCrewLevel, getCrewStatus, isCrewMaxLevel } = require("%scripts/crew/cre
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 
 const DEFAULT_STATUS = "none"
+
+let hasCrewModalWndInScene = @() isHandlerInScene(gui_handlers.CrewModalHandler)
 
 function getUnitSlotRentInfo(unit, params) {
   let info = {
@@ -415,6 +419,7 @@ function buildEmptySlot(id, _unit, params) {
       hasCrewIdTextInfo = true
       hasCrewIdInfo = true
       hasActions
+      canOpenCrewWnd = hasActions && !hasCrewModalWndInScene()
       hasCrewHint
       crewNum = $"{crew.idInCountry + 1}"
       isEmptySlot = "yes"
@@ -739,6 +744,7 @@ function buildCommonUnitSlot(id, unit, params) {
       hasUnit
       needCurPoints
       hasActions
+      canOpenCrewWnd = hasActions && !hasCrewModalWndInScene()
       hasCrewHint
       showCrewHintUnderSlot
       showAdditionExtraInfo

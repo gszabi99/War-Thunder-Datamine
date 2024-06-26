@@ -97,7 +97,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   showRepairBox = true  //need to show repair checkboxes
   hasResearchesBtn = false //offset from left border for Researches button
   hasActions = true
-  hasCrewHint = false
+  hasCrewHint = true
   missionRules = null
   showNewSlot = null //bool
   showEmptySlot = null //bool
@@ -1604,6 +1604,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onOpenCrewPopup(obj) {
     let popup = obj.getParent().findObject("extra_info_block_crew_hint")
+    if (!(popup?.isValid() ?? false))
+      return
     let showPopup = popup?["showed"] != "yes"
     popup["showed"] = showPopup ? "yes" : "no"
     this.guiScene.applyPendingChanges(false)

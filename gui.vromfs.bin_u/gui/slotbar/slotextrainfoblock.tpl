@@ -120,6 +120,7 @@ extraInfoBlock {
 
       }
       <<#hasActions>>
+      <<#canOpenCrewWnd>>
       Button_text {
         id:t='open_crew_wnd_btn'
         class:t='smallButton'
@@ -143,6 +144,7 @@ extraInfoBlock {
           }
         }
       }
+      <</canOpenCrewWnd>>
       Button_text {
         class:t='smallButton'
         id:t='swap_crew_btn'
