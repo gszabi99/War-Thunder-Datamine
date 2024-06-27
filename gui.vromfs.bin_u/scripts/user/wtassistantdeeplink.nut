@@ -7,6 +7,7 @@ let { log } = require("%sqstd/log.nut")()
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let regexp2 = require("regexp2")
+let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 
 const BASE_URL = "https://warthundercompanion.page.link/?link=https%3A%2F%2Fassistant%2Fauth%2F%3Fstoken%3D{stokenParam}%26stat%3D{deeplinkPlaceParam}%26nick%3D{nickParam}%26login%3D{userIdParam}&apn=com.gaijinent.WarThunderCompanion&isi=899236988&ibi=com.saniaxxx.wtr-assistant" // warning disable: -forgot-subst
 
@@ -78,6 +79,8 @@ eventbus_subscribe("onGetStokenForWTAssistantlDeeplink", function(msg) {
     needShowUrlLink = false
   })
 })
+
+addPromoAction("show_wta_baner", @(_handler, _params, _obj) openModalWTAssistantlDeeplink("PROMO"))
 
 return {
   openModalWTAssistantlDeeplink

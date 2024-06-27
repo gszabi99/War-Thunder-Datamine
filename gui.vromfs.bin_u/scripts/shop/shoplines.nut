@@ -110,12 +110,12 @@ let ShopLines = class {
     if (endReleaseDate > 0) {
       let hasReqAir = (air?.reqAir ?? "") != ""
       let locId = air?.futureReqAirDesc ?? (hasReqAir ? "shop/futureReqAir/desc" : "shop/futureReqAir/desc/withoutReqAir")
-      return stripTags(loc(locId, {
+      return loc(locId, {
         futureReqAir = getUnitName(air?.futureReqAir)
         curAir = getUnitName(air)
         reqAir = hasReqAir ? getUnitName(air.reqAir) : ""
         date = buildDateStr(endReleaseDate)
-      }))
+      })
     }
     return ""
   }
@@ -139,7 +139,7 @@ let ShopLines = class {
 
     this.lastLineIndex++
     let idString = $"id:t='line_{this.lastLineIndex}';"
-    let alarmTooltip = this.getAlarmIconTooltip(lineConfig)
+    let alarmTooltip = stripTags(this.getAlarmIconTooltip(lineConfig))
     let alarmIconFormat = "".concat("shopAlarmIcon { %s pos:t='%s, %s'; onEdge:t='%s'; tooltip:t='",
         alarmTooltip, "'; } ")
 
@@ -313,6 +313,7 @@ let ShopLines = class {
       posY = $"{(r0 + 0.5 + offset)}@shop_height - 0.5@modArrowWidth"
       lineObj.pos = $"{posX} + 0.5*({width}) - 0.5w, {posY} + 0.5@modArrowWidth - 0.5h"
       lineObj.onEdge = edge
+      lineObj.tooltip = this.getAlarmIconTooltip(lineConfig)
 
     } else if (lineType == "alarmIcon_vertical") {
       posX = $"{(c0 + 0.5 + offset)}@shop_width - 0.5@modArrowWidth"
@@ -320,6 +321,7 @@ let ShopLines = class {
       posY = $"{(r0 + 1)}@shop_height - {pad1}"
       lineObj.pos = $"{posX} + 0.5@modArrowWidth - 0.5w, {posY} + 0.5*({height}) - 0.5h"
       lineObj.onEdge = edge
+      lineObj.tooltip = this.getAlarmIconTooltip(lineConfig)
     }
 
     lineObj.shopStat = status

@@ -22,6 +22,7 @@ unhoverDiv {
 
 shopItem {
   id:t='<<shopItemId>>'
+  interactive:t='yes'
   <<#shopStatus>>
   shopStat:t='<<shopStatus>>'
   <</shopStatus>>

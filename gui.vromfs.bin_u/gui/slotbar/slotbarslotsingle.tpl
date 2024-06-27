@@ -24,6 +24,7 @@ selected:t='no'
 
 shopItem {
   id:t='<<shopItemId>>'
+  interactive:t='yes'
   behavior:t='Timer'
   timer_interval_msec:t='1000'
   unit_name:t='<<unitName>>'

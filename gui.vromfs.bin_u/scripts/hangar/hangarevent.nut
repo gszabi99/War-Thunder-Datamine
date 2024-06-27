@@ -7,6 +7,8 @@ let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { enable_scene_camera, disable_scene_camera } = require("hangar")
+let { resetTimeout } = require("dagor.workcycle")
 
 function startGameMode(params) {
   if(handlersManager.findHandlerClassInScene(gui_handlers.MainMenu) == null)
@@ -83,6 +85,8 @@ function clickToReqUnlock(params) {
   curCount++
   showCountObj(curCount)
   clickCountByUnlock[unlockName].curCount = curCount
+  disable_scene_camera()
+  resetTimeout(5, enable_scene_camera)
   if (!isProfileReceived.get() || unlockName == "" || clickCount <= 0 || isUnlocked || curCount < clickCount)
     return
 

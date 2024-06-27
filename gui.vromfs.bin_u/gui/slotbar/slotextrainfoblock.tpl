@@ -2,6 +2,10 @@
 extraInfoBlock {
   id:t='extra_info_block'
   isEmptySlot:t='<<@isEmptySlot>>'
+  <<#hasActions>>
+  interactive:t='yes'
+  <</hasActions>>
+
   content {
     <<#hasCrewIdInfo>>
     crewInfoNumBlock {

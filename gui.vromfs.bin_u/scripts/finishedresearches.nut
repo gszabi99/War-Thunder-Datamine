@@ -185,10 +185,14 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
+    if (!needSelectCrew) {
+      this.goBack()
+      return
+    }
+
     this.updateResearchedUnit()
     this.updateButtons()
-    if (needSelectCrew)
-      this.trainCrew()
+    this.trainCrew()
   }
 
   function getUnitPlaceObj() {
