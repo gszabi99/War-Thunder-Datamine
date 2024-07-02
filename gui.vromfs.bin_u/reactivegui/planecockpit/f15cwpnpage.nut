@@ -189,10 +189,10 @@ function cbt(pos, is_center, is_pylon) {
   }
 }
 
-let pods = @(width, height) function() {
+let pods = @(width, height, less_pods) function() {
   let childrens = []
 
-  let positions = [
+  let positionsC = [
     [width * 0.7, height * 0.5],//0
     [width * 0.15, height * 0.5],//1 left wing, left AA pylon
     [width * 0.16, height * 0.01],//2 left fuel tank or agm pylon
@@ -208,15 +208,37 @@ let pods = @(width, height) function() {
     [width * 0.76 height * 0.01],//12 right fuel tank or AGM pylon
     [width * 0.7, height * 0.5]//13 right wing, right AA pylon
   ]
+  let positionsJ = [
+    [width * 0.7, height * 0.5],//0
+    [width * 0.15, height * 0.5],//1 left wing, left AA pylon
+    [width * 0.16, height * 0.01],//2 left fuel tank or agm pylon
+    [width * 0.29, height * 0.5],//3 left wing, right AA pylon
+    [width * 0.34, height * 0.68],//4 left back body AA pylon
+    [width * 0.34, height * 0.22],//5 left front body AA pylon
+    [width * 0.46, height * 0.01],//6 central fuel tank or AGM
+    [width * 0.5, height * 0.22],//7 right front body AA pylon
+    [width * 0.5, height * 0.68],//8 right back body AA pylon
+    [width * 0.55, height * 0.5],//9 right wing, left AA pylon
+    [width * 0.76 height * 0.01],//10 right fuel tank or AGM pylon
+    [width * 0.7, height * 0.5]//11 right wing, right AA pylon
+  ]
+
   for (local i = 0; i < WeaponSlots.get().len(); ++i) {
     if (WeaponSlots.get()[i] != null) {
       if (WeaponSlotsTrigger.get()[i] == weaponTriggerName.AAM_TRIGGER && WeaponSlotsCnt.get()[i] > 0) {
-        childrens.append(aamMark(positions[WeaponSlots.get()[i]], i))
+        childrens.append(aamMark(less_pods ? positionsJ[WeaponSlots.get()[i]] : positionsC[WeaponSlots.get()[i]], i))
       }
-      else if (WeaponSlots.get()[i] == 2 || WeaponSlots.get()[i] == 12 || WeaponSlots.get()[i] == 7) {
-        childrens.append(fuelMark(positions[WeaponSlots.get()[i]], i))
+      else if (!less_pods && (WeaponSlots.get()[i] == 2 || WeaponSlots.get()[i] == 12 || WeaponSlots.get()[i] == 7)) {
+        childrens.append(fuelMark(less_pods ? positionsJ[WeaponSlots.get()[i]] : positionsC[WeaponSlots.get()[i]], i))
         if (WeaponSlots.get()[i] != 2) {
           let isCenter = WeaponSlots.get()[i] == 7
+          childrens.append(cbt(isCenter ? [width * 0.32, height * 0.8] : [width * 0.32, height * 0.85], isCenter, WeaponSlotsTrigger.get()[i] != weaponTriggerName.EXTERNAL_FUEL_TANKS_TRIGGER))
+        }
+      }
+      else if (less_pods && (WeaponSlots.get()[i] == 2 || WeaponSlots.get()[i] == 10 || WeaponSlots.get()[i] == 6)) {
+        childrens.append(fuelMark(less_pods ? positionsJ[WeaponSlots.get()[i]] : positionsC[WeaponSlots.get()[i]], i))
+        if (WeaponSlots.get()[i] != 2) {
+          let isCenter = WeaponSlots.get()[i] == 6
           childrens.append(cbt(isCenter ? [width * 0.32, height * 0.8] : [width * 0.32, height * 0.85], isCenter, WeaponSlotsTrigger.get()[i] != weaponTriggerName.EXTERNAL_FUEL_TANKS_TRIGGER))
         }
       }
@@ -230,7 +252,7 @@ let pods = @(width, height) function() {
   }
 }
 
-function wpnPage(pos, size) {
+function f15cWpn(pos, size) {
   return {
     size
     pos
@@ -240,8 +262,27 @@ function wpnPage(pos, size) {
       flares
       cannons
       labels
-      pods(size[0], size[1])
+      pods(size[0], size[1], false)
     ]
   }
 }
-return wpnPage
+
+function f15jWpn(pos, size) {
+  return {
+    size
+    pos
+    children = [
+      aircraft
+      chaffs
+      flares
+      cannons
+      labels
+      pods(size[0], size[1], true)
+    ]
+  }
+}
+
+return {
+  f15cWpn
+  f15jWpn
+}
