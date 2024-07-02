@@ -791,6 +791,8 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
   if get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_EXPL) || get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FULL_EXPL)
     if affected_by.expl
       ammo_stowage_do_explosion(unit, eid, remap, evt.offender, evt.seed, evt.dmEffects) <| v
+    elif affected_by.fire
+      ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
   if get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FIRE)
     if affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
@@ -857,6 +859,8 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
   if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_EXPL) || get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FULL_EXPL)
     if affected_by.expl
       ammo_stowage_do_explosion(unit, eid, remap, evt.offender, seed, dm_effects) <| v
+    elif affected_by.fire
+      ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
   if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FIRE)
     if affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v

@@ -99,8 +99,10 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
     showObjById("accept", !hasOneOkBtn, this.scene)
     showObjById("decline", !hasOneOkBtn, this.scene)
 
-    if (this.isNewEulaVersion)
-      this.scene.findObject("eula_title").setValue(loc("eula/eulaUpdateTitle"))
+    let eulaTitle = getCurCircuitOverride("eulaPrefix", "") != "" ? ""
+      : this.isNewEulaVersion ? loc("eula/eulaUpdateTitle")
+      : loc("eula/eulaTitle")
+    this.scene.findObject("eula_title").setValue(eulaTitle)
   }
 
   function onAcceptEula() {
