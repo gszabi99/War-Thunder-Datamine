@@ -56,7 +56,7 @@
       "scoreLimit": 5400,
       "timeLimit": 25,
       "deathPenaltyMul": 0.2,
-      "allowEmptyTeams": false,
+      "allowEmptyTeams": true,
       "country_axis": "germany",
       "country_allies": "britain",
       "restoreType": "attempts",
@@ -414,7 +414,14 @@
             "object_var_value": 0,
             "team": "A"
           }
-        ]
+        ],
+        "unitSetProperties": {
+          "object": [
+            "t1_movable_units_squad",
+            "t2_movable_units_squad"
+          ],
+          "movementTraceRI": true
+        }
       },
       "else_actions": {}
     },
