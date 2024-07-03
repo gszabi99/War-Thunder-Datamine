@@ -8338,6 +8338,50 @@
       }
     },
     {
+      "id": "smaller_team_sizes_promo",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 1,
+        "condition": [
+          {
+            "type": "minStat",
+            "value": [
+              1,
+              1,
+              1
+            ],
+            "stat": "playerkills"
+          },
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "air_realistic"
+          },
+          {
+            "type": "playerUnitMRank",
+            "minMRank": 28,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-02 10:00:00",
+            "endDate": "2024-08-02 10:00:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2_11_0_X_rented_trophy_youtubers",
       "type": "achievement",
       "hidden": true

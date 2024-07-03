@@ -1,0 +1,1368 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17"
+      ]
+    },
+    "mission": {
+      "level": "levels/air_mysterious_valley.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear",
+      "noRespawns": false,
+      "locName": "missions/_GS/heavy_tank;location/air_mysterious_valley",
+      "locDesc": "missions/_GS/desc",
+      "scoreLimit": 5400,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.2,
+      "allowEmptyTeams": false,
+      "country_axis": "germany",
+      "country_allies": "britain",
+      "restoreType": "attempts",
+      "optionalTakeOff": true,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "spectator_points": {
+      "spectatorPoint": [
+        "spectator_point_01",
+        "spectator_point_02",
+        "spectator_point_03",
+        "spectator_point_04"
+      ]
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "fighter",
+              "side": "ally",
+              "target": "t1_airfield",
+              "lookAt": "briefing_central_point"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "t2_briefing_attack_point_02"
+            },
+            {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "t2_briefing_attack_point_01"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "t1_briefing_attack_point_02"
+            },
+            {
+              "icontype": "fighter",
+              "side": "enemy",
+              "target": "t2_airfield",
+              "lookAt": "briefing_central_point"
+            },
+            {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "t1_briefing_attack_point_01"
+            },
+            {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "t1_briefing_defend_point"
+            },
+            {
+              "icontype": "artillery",
+              "side": "enemy",
+              "target": "t2_briefing_defend_point"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/planes/arcade/GS/air_mysterious_valley/as_air_spawns_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/base_logic_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/land_units_death_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/land_units_move_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/gs_objectives_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/gs/assaults_gs_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/gs/template_at_gs_planeset.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/arcade/GS/air_mysterious_valley/mu_movable_units_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/arcade/GS/air_mysterious_valley/stc_static_units_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/cta/planes/arcade/GS/air_mysterious_valley/bdt_bases_destroy_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/bridges/air_mysterious_valley_bridges.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "start_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "barabashka_enabled"
+        },
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetReal": [
+          {
+            "value": 1800.0,
+            "var": [
+              "arcade_destroy_timer",
+              "historical_destroy_timer"
+            ]
+          },
+          {
+            "value": 250.0,
+            "var": "nearDamageDistance"
+          }
+        ],
+        "varSetInt": [
+          {
+            "value": 600,
+            "var": "long_time_is"
+          },
+          {
+            "value": 900,
+            "var": "long_time_arcade_timer"
+          },
+          {
+            "value": 64000,
+            "var": "long_time_arcade_distance"
+          }
+        ],
+        "unitSetIndication": [
+          {
+            "set": true,
+            "target": "t1_quest_units_squad",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "B"
+          },
+          {
+            "set": true,
+            "target": "t2_quest_units_squad",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "A"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "update_indicators": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "missionSetTargetsIndicator": [
+          {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 1,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_quest_units_squad"
+          },
+          {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "tank",
+            "icon army": 2,
+            "set": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t2_quest_units_squad"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "air_spawn_t1_name": "",
+    "air_spawn_t2_name": "",
+    "bomber_spawn_t1_name": "",
+    "bomber_spawn_t2_name": ""
+  },
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": {
+      "name": "t1_player01",
+      "tm": [
+        [
+          0.994151,
+          0.0,
+          0.108
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.108,
+          0.0,
+          0.994151
+        ],
+        [
+          14068.5,
+          2209.5,
+          8695.49
+        ]
+      ],
+      "unit_class": "a5m4",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": {}
+    },
+    "squad": [
+      {
+        "name": "t1_land_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            14059.5,
+            650.883,
+            -34641.1
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_static_units_squad"
+        }
+      },
+      {
+        "name": "t2_land_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            27591.4,
+            632.991,
+            -22754.3
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_static_units_squad"
+        }
+      },
+      {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            19344.9,
+            657.642,
+            -35148.4
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_land_squad",
+            "t1_movable_units_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            28145.5,
+            639.116,
+            -27923.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_land_squad",
+            "t2_movable_units_squad"
+          ]
+        }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            993.35,
+            60.0,
+            2251.85
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t1_aaa_squad",
+            "t1_aaa_static_squad"
+          ]
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            5404.1,
+            60.0,
+            9490.45
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "bdt_t2_aaa_squad",
+            "t2_aaa_static_squad"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "t1_airfield_bombing_zone": {
+      "type": "Box",
+      "tm": [
+        [
+          -119.037,
+          0.0,
+          1996.45
+        ],
+        [
+          0.0,
+          350.0,
+          0.0
+        ],
+        [
+          -748.67,
+          0.0,
+          -44.6418
+        ],
+        [
+          17226.0,
+          -5.31907,
+          -4046.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_airfield_bombing_zone": {
+      "type": "Box",
+      "tm": [
+        [
+          -29.4601,
+          0.0,
+          1999.78
+        ],
+        [
+          0.0,
+          350.0,
+          0.0
+        ],
+        [
+          -749.919,
+          0.0,
+          -11.0473
+        ],
+        [
+          12751.2,
+          -12.4,
+          21664.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_briefing_defend_point": {
+      "type": "Point",
+      "tm": [
+        [
+          0.695912,
+          0.0,
+          -0.718126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.718126,
+          0.0,
+          0.695912
+        ],
+        [
+          14523.3,
+          718.805,
+          6051.88
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_briefing_defend_point": {
+      "type": "Point",
+      "tm": [
+        [
+          0.695912,
+          0.0,
+          -0.718126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.718126,
+          0.0,
+          0.695912
+        ],
+        [
+          14681.9,
+          581.367,
+          11748.9
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_briefing_attack_point_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.695912,
+          0.0,
+          -0.718126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.718126,
+          0.0,
+          0.695912
+        ],
+        [
+          18380.3,
+          590.928,
+          5067.24
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_briefing_attack_point_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.695912,
+          0.0,
+          -0.718126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.718126,
+          0.0,
+          0.695912
+        ],
+        [
+          10695.5,
+          631.031,
+          4052.85
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_briefing_attack_point_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.695912,
+          0.0,
+          -0.718126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.718126,
+          0.0,
+          0.695912
+        ],
+        [
+          18628.5,
+          617.57,
+          12440.7
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_briefing_attack_point_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.695912,
+          0.0,
+          -0.718126
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.718126,
+          0.0,
+          0.695912
+        ],
+        [
+          10925.3,
+          588.226,
+          12156.6
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "briefing_central_point": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.534593,
+          0.0,
+          -0.845109
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.845109,
+          0.0,
+          -0.534593
+        ],
+        [
+          14194.0,
+          1177.44,
+          8620.34
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "spectator_point_01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.194227,
+          -0.258819,
+          -0.946198
+        ],
+        [
+          0.0520435,
+          0.965926,
+          -0.253532
+        ],
+        [
+          0.979575,
+          0.0,
+          0.201077
+        ],
+        [
+          13414.6,
+          1130.15,
+          12011.6
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spectator_point_02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.955564,
+          -0.258819,
+          0.141106
+        ],
+        [
+          -0.256044,
+          0.965926,
+          0.0378092
+        ],
+        [
+          -0.146083,
+          0.0,
+          -0.989272
+        ],
+        [
+          17655.0,
+          1130.15,
+          8615.86
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spectator_point_03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.0992893,
+          -0.258819,
+          0.960809
+        ],
+        [
+          0.0266045,
+          0.965926,
+          0.257448
+        ],
+        [
+          -0.994703,
+          0.0,
+          0.102791
+        ],
+        [
+          13892.4,
+          1130.15,
+          4801.97
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "spectator_point_04": {
+      "type": "Point",
+      "tm": [
+        [
+          0.959524,
+          -0.258819,
+          0.11102
+        ],
+        [
+          0.257104,
+          0.965926,
+          0.0297484
+        ],
+        [
+          -0.114937,
+          0.0,
+          0.993372
+        ],
+        [
+          7199.79,
+          1130.15,
+          7521.52
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t1_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.676938,
+          0.0,
+          0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.736039,
+          0.0,
+          -0.676938
+        ],
+        [
+          16222.9,
+          1000.0,
+          919.748
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t2_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.676938,
+          0.0,
+          0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.736039,
+          0.0,
+          -0.676938
+        ],
+        [
+          21114.3,
+          1000.0,
+          4572.09
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t1_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.676938,
+          0.0,
+          -0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.736039,
+          0.0,
+          0.676938
+        ],
+        [
+          6571.62,
+          999.99,
+          10910.6
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t2_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.676938,
+          0.0,
+          -0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.736039,
+          0.0,
+          0.676938
+        ],
+        [
+          10398.8,
+          999.99,
+          15710.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t1_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.676938,
+          0.0,
+          0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.736039,
+          0.0,
+          -0.676938
+        ],
+        [
+          18130.4,
+          1000.0,
+          1691.58
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t2_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.676938,
+          0.0,
+          0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.736039,
+          0.0,
+          -0.676938
+        ],
+        [
+          21974.3,
+          1000.0,
+          6495.11
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t1_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.676938,
+          0.0,
+          -0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.736039,
+          0.0,
+          0.676938
+        ],
+        [
+          7410.29,
+          999.991,
+          12824.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_t2_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.676938,
+          0.0,
+          -0.736039
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.736039,
+          0.0,
+          0.676938
+        ],
+        [
+          12334.1,
+          999.991,
+          16451.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "at_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          15906.5,
+          0.0,
+          1727.98
+        ],
+        [
+          0.0,
+          16000.0,
+          0.0
+        ],
+        [
+          -1727.98,
+          0.0,
+          15906.5
+        ],
+        [
+          14260.7,
+          1000.0,
+          8692.5
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "airfields_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          23859.6,
+          0.0,
+          2591.99
+        ],
+        [
+          0.0,
+          24000.0,
+          0.0
+        ],
+        [
+          -2591.99,
+          0.0,
+          23859.6
+        ],
+        [
+          14260.7,
+          571.953,
+          8692.5
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}
