@@ -2854,8 +2854,6 @@ function mkRadar(isAir = false, radar_color_watch = Watched(Color(0, 255, 0, 255
       azimuthMarkStrike(color)
     ] :
     [
-      forestallComponent(color)
-      forestallTargetLine(color)
       scanZoneAzimuthComponent(color)
       scanZoneElevationComponent(color)
       lockZoneComponent(color)

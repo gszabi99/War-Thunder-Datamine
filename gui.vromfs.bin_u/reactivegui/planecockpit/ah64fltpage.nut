@@ -41,6 +41,7 @@ let buttons = {
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = "ENG"
         }
@@ -57,6 +58,7 @@ let buttons = {
           pos = [pw(5), ph(1)]
           rendObj = ROBJ_TEXT
           color = baseColor
+          font = Fonts.ah64
           fontSize = baseFontSize
           text = "FUEL"
         }
@@ -73,6 +75,7 @@ let buttons = {
           pos = [pw(5), ph(1)]
           rendObj = ROBJ_TEXT
           color = baseColor
+          font = Fonts.ah64
           fontSize = baseFontSize
           text = "PERF"
         }
@@ -89,6 +92,7 @@ let buttons = {
           pos = [pw(5), ph(1)]
           rendObj = ROBJ_TEXT
           color = baseColor
+          font = Fonts.ah64
           fontSize = baseFontSize
           text = "UTIL"
         }
@@ -99,6 +103,7 @@ let buttons = {
       pos = [pw(79), ph(95)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "SET"
     }
@@ -113,6 +118,7 @@ let buttons = {
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = baseColor
+        font = Fonts.ah64
         fontSize = baseFontSize
         text = "FLT"
       }
@@ -122,7 +128,7 @@ let buttons = {
       pos = [pw(1), ph(66)]
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "-W-"
     }
@@ -150,7 +156,7 @@ let generateCompassMark = function(num, width) {
         color = baseColor
         hplace = ALIGN_CENTER
         fontSize = baseFontSize
-        font = Fonts.hud
+        font = Fonts.ah64
         text = text
         behavior = Behaviors.RtPropUpdate
         update = @() {
@@ -216,7 +222,7 @@ let compassVal = @(){
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   color = baseColor
-  font = Fonts.hud
+  font = Fonts.ah64
   fontSize = baseFontSize * 1.4
   text = CompassInt.get().tostring()
 }
@@ -229,7 +235,7 @@ let engineTorq = @(){
   valign = ALIGN_CENTER
   rendObj = ROBJ_TEXT
   color = baseColor
-  font = Fonts.hud
+  font = Fonts.ah64
   fontSize = baseFontSize * 1.2
   text = string.format("%d%%", Rpm.get())
   children = Rpm.get() >= 98 ? {
@@ -250,7 +256,7 @@ function angleTxt(num, isLeft, x = 0, y = 0) {
     hplace = isLeft ? ALIGN_LEFT : ALIGN_RIGHT
     color = num > 0 ? Color(0, 128, 255) : Color(128, 64, 48)
     fontSize = baseFontSize
-    font = Fonts.hud
+    font = Fonts.ah64
     text = abs(num).tostring()
   }
 }
@@ -400,7 +406,7 @@ let barAltitude = @(){
   pos = [pw(85), ph(14)]
   rendObj = ROBJ_TEXT
   color = baseColor
-  font = Fonts.hud
+  font = Fonts.ah64
   fontSize = baseFontSize * 1.2
   text = barAltValue.get().tostring()
 }
@@ -461,7 +467,7 @@ let altitudeText = @() {
     color = baseColor
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
-    font = Fonts.hud
+    font = Fonts.ah64
     fontSize = baseFontSize
     text = (Altitude.get() * metrToFeet < 50.0 ? altValue.get() : altValue.get() * 10).tostring()
   } : null
@@ -508,7 +514,7 @@ let lowAlt = @(){
     size = SIZE_TO_CONTENT
     pos = [pw(83), ph(54)]
     color = Color(255, 0, 0)
-    font = Fonts.hud
+    font = Fonts.ah64
     fontSize = baseFontSize * 1.2
     text = "LO"
   } : null
@@ -536,7 +542,7 @@ let speed = @(){
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   color = baseColor
-  font = Fonts.hud
+  font = Fonts.ah64
   fontSize = baseFontSize * 1.2
   text = speedVal.get().tointeger()
   children = speedVal.get() >= 210 || isHoverMode.get() ? {
@@ -560,7 +566,7 @@ let overload = @(){
     pos = [pw(8), ph(54.5)]
     rendObj = ROBJ_TEXT
     color = Color(255, 255, 255)
-    font = Fonts.hud
+    font = Fonts.ah64
     fontSize = baseFontSize * 1.2
     text = string.format("%.1fG", OverloadVal.get() * 0.1)
   } : null
@@ -662,7 +668,7 @@ let engineTemp = @(){
     pos = [pw(6), ph(20)]
     rendObj = ROBJ_TEXT
     color = Color(255, 200, 0)
-    font = Fonts.hud
+    font = Fonts.ah64
     fontSize = baseFontSize * 1.2
     text = string.format("%dC", engineTempVal.get())
   } : null

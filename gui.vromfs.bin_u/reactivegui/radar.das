@@ -485,8 +485,10 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
     let e3dColor = E3DCOLOR(Color4(color))
 
     if target.targetType == int(RadarTargetType TYPE_TARGET)
-      let angleLeft = max(angle - 0.5 * angularWidth, get_radar_hud_azimuth_min() - PI * 0.5)
-      let angleRight = min(angle + 0.5 * angularWidth, get_radar_hud_azimuth_max() - PI * 0.5)
+      let fullCircle = azimuthRange > PI + 0.035
+      let angleLeft = fullCircle ? (angle - 0.5 * angularWidth) : max(angle - 0.5 * angularWidth, get_radar_hud_azimuth_min() - PI * 0.5)
+      let angleRight = fullCircle ? (angle + 0.5 * angularWidth) : min(angle + 0.5 * angularWidth, get_radar_hud_azimuth_max() - PI * 0.5)
+
       if target.isSelected && get_radar_hud_has_azimuth_scale()
         if target.losSpeed < 30000.
           ctx |> render_ellipse_aa(pos, radius * 0.04, ctx |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)

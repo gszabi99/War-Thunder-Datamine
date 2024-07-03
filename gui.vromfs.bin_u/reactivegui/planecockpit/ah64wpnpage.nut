@@ -64,6 +64,7 @@ let buttons = @(){
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = "CHAN"
         }
@@ -80,6 +81,7 @@ let buttons = @(){
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = "ASE"
         }
@@ -96,6 +98,7 @@ let buttons = @(){
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = "CODE"
         }
@@ -112,6 +115,7 @@ let buttons = @(){
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = "COORD"
         }
@@ -128,6 +132,7 @@ let buttons = @(){
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = "UTIL"
         }
@@ -144,6 +149,7 @@ let buttons = @(){
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = baseColor
+        font = Fonts.ah64
         fontSize = baseFontSize
         text = "WPN"
       }
@@ -153,6 +159,7 @@ let buttons = @(){
       pos = [pw(28), ph(94.5)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "GUN"
     },
@@ -161,6 +168,7 @@ let buttons = @(){
       pos = [pw(40), ph(94.5)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "MSL"
       children = SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER ? {
@@ -176,6 +184,7 @@ let buttons = @(){
       pos = [pw(66), ph(94.5)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "RKT"
       children = SelectedTrigger.get() == weaponTriggerName.ROCKETS_TRIGGER ? {
@@ -196,6 +205,7 @@ let buttons = @(){
             pos = [pw(5), ph(1)]
             rendObj = ROBJ_TEXT
             color = baseColor
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = "BORESIGHT"
         }
@@ -206,6 +216,7 @@ let buttons = @(){
       pos = [pw(1), ph(77)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "GRAYSCALE"
     } : null),
@@ -214,6 +225,7 @@ let buttons = @(){
       pos = [pw(1), ph(16)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "PRI"
     } : null),
@@ -222,6 +234,7 @@ let buttons = @(){
       pos = [pw(1), ph(20)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "B  PRF"
       children = {
@@ -236,6 +249,7 @@ let buttons = @(){
       pos = [pw(1), ph(29)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "ALT"
     } : null),
@@ -244,6 +258,7 @@ let buttons = @(){
       pos = [pw(1), ph(33)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "C  PRF"
       children = {
@@ -258,6 +273,7 @@ let buttons = @(){
       pos = [pw(1), ph(40)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "SAL  SEL"
     } : null),
@@ -266,6 +282,7 @@ let buttons = @(){
       pos = [pw(1), ph(44)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "AUTO"
       children = {
@@ -279,6 +296,7 @@ let buttons = @(){
       pos = [0, ph(66)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "DEICE"
     } : null),
@@ -287,6 +305,7 @@ let buttons = @(){
       pos = [0, ph(78)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "MSL CCM"
     } : null),
@@ -295,6 +314,7 @@ let buttons = @(){
       pos = [pw(91), ph(16)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "TYPE"
     } : null),
@@ -309,6 +329,7 @@ let buttons = @(){
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = baseColor
+        font = Fonts.ah64
         fontSize = baseFontSize
         text = "SAL"
       }
@@ -318,6 +339,7 @@ let buttons = @(){
       pos = [pw(90), ph(30)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "MODE"
     } : null),
@@ -332,6 +354,7 @@ let buttons = @(){
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = baseColor
+        font = Fonts.ah64
         fontSize = baseFontSize
         text = "NORM"
       }
@@ -341,6 +364,7 @@ let buttons = @(){
       pos = [pw(92), ph(41)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "TRAJ"
     } : null),
@@ -355,6 +379,7 @@ let buttons = @(){
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = baseColor
+        font = Fonts.ah64
         fontSize = baseFontSize
         text = "HI"
       }
@@ -364,6 +389,7 @@ let buttons = @(){
       pos = [pw(92), ph(15)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "QTY"
     } : null),
@@ -373,6 +399,7 @@ let buttons = @(){
       pos = [pw(92), ph(20)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       halign = ALIGN_RIGHT
       text = RocketsSalvo.get() < 0 ? "ALL" : (RocketsSalvo.get() < 1 ? "1" : RocketsSalvo.get().tostring())
@@ -388,6 +415,7 @@ let buttons = @(){
       pos = [pw(89), ph(54)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "TRAIN"
     },
@@ -396,6 +424,7 @@ let buttons = @(){
       pos = [pw(90), ph(63)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "LRFD"
     },
@@ -410,6 +439,7 @@ let buttons = @(){
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = baseColor
+        font = Fonts.ah64
         fontSize = baseFontSize
         text = "FIRST"
       }
@@ -419,6 +449,7 @@ let buttons = @(){
       pos = [pw(92), ph(75)]
       rendObj = ROBJ_TEXT
       color = baseColor
+      font = Fonts.ah64
       fontSize = baseFontSize
       text = "ACQ"
     },
@@ -433,6 +464,7 @@ let buttons = @(){
         size = SIZE_TO_CONTENT
         rendObj = ROBJ_TEXT
         color = baseColor
+        font = Fonts.ah64
         fontSize = baseFontSize
         text = "TADS"
       }
@@ -459,7 +491,7 @@ let buttons = @(){
           pos = [pw(92), ph(31)]
           color = baseColor
           fillColor = baseColor
-          font = Fonts.hud
+          font = Fonts.ah64
           fontSize = baseFontSize * 0.8
           text = "I\nN\nV\nE\nN\nT\nO\nR\nY"
           behavior = Behaviors.TextArea
@@ -477,7 +509,7 @@ let buttons = @(){
               rendObj = ROBJ_TEXT
               size = SIZE_TO_CONTENT
               color = baseColor
-              font = Fonts.hud
+              font = Fonts.ah64
               fontSize = baseFontSize
               text = "6PD"
             }
@@ -486,7 +518,7 @@ let buttons = @(){
               rendObj = ROBJ_TEXT
               size = SIZE_TO_CONTENT
               color = baseColor
-              font = Fonts.hud
+              font = Fonts.ah64
               fontSize = baseFontSize
               text = RocketsCount.get().tostring()
             }
@@ -524,7 +556,7 @@ let gun = {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     color = baseColor
-    font = Fonts.hud
+    font = Fonts.ah64
     fontSize = baseFontSize * 1.1
     text = MachineGunsCnt.get().tostring()
   }
@@ -546,7 +578,7 @@ let gunArm = @(){
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXT
       color = SelectedTrigger.get() != -1 && LaunchImpossible.get() ? baseColor : Color(0, 0, 0, 255)
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * (SelectedTrigger.get() != -1 && LaunchImpossible.get() ? 1.2 : 1.4)
       text = SelectedTrigger.get() != -1 && LaunchImpossible.get() ? "SAFE" : "ARM"
       fontFx = FFT_BLUR
@@ -590,7 +622,7 @@ let chaff = {
     {
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = "CHAFF"
     }
@@ -598,7 +630,7 @@ let chaff = {
       watch = [ChaffsCount, FlaresCount]
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = (ChaffsCount.get() + FlaresCount.get()).tostring()
     }
@@ -610,7 +642,7 @@ let chaff = {
       children = {
         rendObj = ROBJ_TEXT
         color = Color(0, 0, 0, 255)
-        font = Fonts.mirage_ils
+        font = Fonts.ah64
         fontSize = baseFontSize * 1.1
         fontFx = FFT_BLUR
         fontFxColor = Color(0, 0, 0, 255)
@@ -638,7 +670,7 @@ let acqBox = {
     {
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = "ACQ"
     }
@@ -646,7 +678,7 @@ let acqBox = {
       watch = gunModeWatched
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = gunModeWatched.get()
     }
@@ -668,14 +700,14 @@ let sightBox = {
     {
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = "SIGHT"
     }
     {
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = "TADS"
     }
@@ -685,7 +717,7 @@ let sightBox = {
 let symbolB = {
   rendObj = ROBJ_TEXT
   color = baseColor
-  font = Fonts.mirage_ils
+  font = Fonts.ah64
   fontSize = baseFontSize * 1.1
   text = "B"
 }
@@ -705,7 +737,7 @@ let lrfdBox = {
     {
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = "LRFD"
     }
@@ -719,7 +751,7 @@ let lstBox = lrfdBox.__merge({
     {
       rendObj = ROBJ_TEXT
       color = baseColor
-      font = Fonts.hud
+      font = Fonts.ah64
       fontSize = baseFontSize * 1.1
       text = "LST"
     }
@@ -783,7 +815,7 @@ let pods = @(width, height, pos) function() {
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = SelectedTrigger.value != weaponTriggerName.AGM_TRIGGER ? baseColor : (isNext ? Color(255, 255, 255) : Color(0, 0, 0, 255))
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize * 0.9
                   text = isReady ? "B" : "L"
                   fontFx = FFT_BLUR
@@ -795,7 +827,7 @@ let pods = @(width, height, pos) function() {
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = SelectedTrigger.value != weaponTriggerName.AGM_TRIGGER ? baseColor : (isNext ? Color(255, 255, 255) : Color(0, 0, 0, 255))
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize * 0.9
                   text = isReady ? (IsLaserDesignatorEnabled.get() ? "T" : "R") : "S"
                   fontFx = FFT_BLUR
@@ -806,7 +838,7 @@ let pods = @(width, height, pos) function() {
                 rendObj = ROBJ_TEXT
                 size = SIZE_TO_CONTENT
                 color = baseColor
-                font = Fonts.hud
+                font = Fonts.ah64
                 fontSize = baseFontSize * 0.9
                 text = "L"
               }
@@ -845,7 +877,7 @@ let pods = @(width, height, pos) function() {
             rendObj = ROBJ_TEXT
             size = SIZE_TO_CONTENT
             color = SelectedWeapSlot.get() != slot ? baseColor : Color(0, 0, 0, 255)
-            font = Fonts.hud
+            font = Fonts.ah64
             fontSize = baseFontSize
             text = trigger == weaponTriggerName.ROCKETS_TRIGGER ? "6PD" : "ASR"
             fontFx = FFT_BLUR
@@ -884,7 +916,7 @@ let channels = @(){
           size = SIZE_TO_CONTENT
           pos = [0, ph(5)]
           color = baseColor
-          font = Fonts.hud
+          font = Fonts.ah64
           fontSize = baseFontSize
           text = "CHANNELS"
         }
@@ -904,7 +936,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "PRI"
                 }
@@ -912,7 +944,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "B"
                 }
@@ -931,7 +963,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "ALT"
                 }
@@ -939,7 +971,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "C"
                 }
@@ -956,7 +988,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "3"
                 }
@@ -964,7 +996,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "D"
                 }
@@ -981,7 +1013,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "4"
                 }
@@ -989,7 +1021,7 @@ let channels = @(){
                   rendObj = ROBJ_TEXT
                   size = SIZE_TO_CONTENT
                   color = baseColor
-                  font = Fonts.hud
+                  font = Fonts.ah64
                   fontSize = baseFontSize
                   text = "G"
                 }
