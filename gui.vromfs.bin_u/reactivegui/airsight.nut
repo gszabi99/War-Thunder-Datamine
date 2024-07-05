@@ -7,6 +7,7 @@ let {
   TurretsDirectionX, TurretsDirectionY, TurretsOverheat, TurretsReloading, TurretsVisible,
   FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY, FixedGunSightMode, FixedGunOverheat,
   IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning,
+  GuidedBombsTimeToHit, GuidedBombsTimeToWarning,
   RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
   NoLosToATGM, AlertColorHigh, HudColor, CurrentTime,
   BombReleaseVisible, BombReleaseDirX, BombReleaseBlockedState, BombReleaseBlockedStates, BombReleaseDirY, BombReleaseOpacity,
@@ -396,8 +397,11 @@ function laserDesignatorStatusComponent(colorWatch, posX, posY) {
     pos = [posX, posY]
     halign = ALIGN_CENTER
     size = [0, 0]
-    watch = [IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning]
-    children = IsLaserDesignatorEnabled.value || (AgmTimeToHit.value > 0 && AgmTimeToWarning.value <= 0) ? laserDesignatorStatus : null
+    watch = [IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning, GuidedBombsTimeToHit, GuidedBombsTimeToWarning]
+    children = IsLaserDesignatorEnabled.value
+      || (AgmTimeToHit.value > 0 && AgmTimeToWarning.value <= 0)
+      || (GuidedBombsTimeToHit.value > 0 && GuidedBombsTimeToWarning.value <= 0)
+      ? laserDesignatorStatus : null
   }
   return resCompoment
 }

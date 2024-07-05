@@ -31,7 +31,9 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   DistanceToGround, IsMfdEnabled, VerticalSpeed, MfdColor,
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
-let { isColorOrWhite, isDarkColor, styleText, styleLineForeground, fontOutlineFxFactor, fadeColor, hudFontHgt } = require("style/airHudStyle.nut")
+
+let HudStyle = require("style/airHudStyle.nut")
+
 let { AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
 
 let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
@@ -46,7 +48,9 @@ let aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
 let agmAimState = require("agmAimState.nut")
 let agmGuidanceLockState = agmAimState.GuidanceLockStateBlinked
 let agmGuidancePointIsTarget = agmAimState.PointIsTarget
-let guidedBombsAimState =  require("guidedBombsAimState.nut")
+let guidedBombsAimState = require("guidedBombsAimState.nut")
+let guidedBombsGuidanceLockState = guidedBombsAimState.GuidanceLockStateBlinked
+let guidedBombsGuidancePointIsTarget = guidedBombsAimState.PointIsTarget
 let compass = require("compass.nut")
 
 const NUM_VISIBLE_ENGINES_MAX = 6
@@ -96,7 +100,7 @@ let verticalSpeedScale = function(width, height, style, color) {
   })
 }
 
-function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = styleText) {
+function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = HudStyle.styleText) {
 
   let relativeHeight = Computed(@() clamp(DistanceToGround.value * 2.0, 0, 100))
 
@@ -354,7 +358,7 @@ function getGBCaption(guidanceLockState, pointIsTarget, mode) {
     texts.append(loc("HUD/TXT_GUIDED_BOMBS_STANDBY"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_WARMING_UP ||
            guidanceLockState == GuidanceLockResult.RESULT_POWER_ON)
-texts.append(loc("HUD/TXT_GUIDED_BOMBS_WARM_UP"))
+    texts.append(loc("HUD/TXT_GUIDED_BOMBS_WARM_UP"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_LOCKING)
     texts.append(loc("HUD/TXT_GUIDED_BOMBS_LOCK"))
   else if (guidanceLockState == GuidanceLockResult.RESULT_TRACKING)
@@ -470,23 +474,23 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
       : (state == HudColorState.LOW_ALERT) ? lowAlertColor
       : (state == HudColorState.MEDIUM_ALERT) ? mediumAlertColor
       : (state == HudColorState.HIGH_ALERT) ? highAlertColor
-      : isBomberView ? isColorOrWhite(activeColor)
+      : isBomberView ? HudStyle.isColorOrWhite(activeColor)
       : activeColor
   }
 
   let selectFxColor = function(state, activeColor, opacity) {
-    return (state == HudColorState.ACTIV) ? isDarkColor(activeColor)
+    return (state == HudColorState.ACTIV) ? HudStyle.isDarkColor(activeColor)
       ? Color(255, 255, 255, opacity * 255) : Color(0, 0, 0, opacity * 255)
       : Color(0, 0, 0, opacity * 255)
   }
 
   let selectFxFactor = function(state, activeColor, factor) {
-    return (state == HudColorState.ACTIV) ? isDarkColor(activeColor)
-    ? fontOutlineFxFactor * 0.15 * factor  : fontOutlineFxFactor * factor
-    : fontOutlineFxFactor * factor
+    return (state == HudColorState.ACTIV) ? HudStyle.isDarkColor(activeColor)
+    ? HudStyle.fontOutlineFxFactor * 0.15 * factor  : HudStyle.fontOutlineFxFactor * factor
+    : HudStyle.fontOutlineFxFactor * factor
   }
 
-  let colorAlertCaptionW = Computed(@() fadeColor(selectColor(alertStateCaptionComputed.value, colorWatch.value, PassivColor.value,
+  let colorAlertCaptionW = Computed(@() HudStyle.fadeColor(selectColor(alertStateCaptionComputed.value, colorWatch.value, PassivColor.value,
     AlertColorLow.value, AlertColorMedium.value, AlertColorHigh.value), 255))
 
   let colorFxCaption = Computed(@() selectFxColor(alertStateCaptionComputed.value, colorWatch.value, ParamTableShadowOpacity.value))
@@ -528,7 +532,7 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
 
   let valueComponent = @() style.__merge({
     watch = [valueComputed, alertValueStateComputed, valueColor, colorFxValue, factorFxValue]
-    color = fadeColor(valueColor.value, 255)
+    color = HudStyle.fadeColor(valueColor.value, 255)
     rendObj = ROBJ_TEXT
     size = [SIZE_TO_CONTENT, height]
     padding = [0, 0.075 * width, 0, 0]
@@ -541,14 +545,14 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
 
   let additionalComponent = @() style.__merge({
     watch = [additionalComputed, colorWatch, ParamTableShadowFactor, ParamTableShadowOpacity]
-    color = fadeColor(colorWatch.value, 255)
+    color = HudStyle.fadeColor(colorWatch.value, 255)
     rendObj = ROBJ_TEXT
     size = [0.7 * width, height]
     text = additionalComputed.value
-    fontFxFactor = isDarkColor(colorWatch.value) ?
-      fontOutlineFxFactor * 0.15 * ParamTableShadowFactor.value
-      : fontOutlineFxFactor * ParamTableShadowFactor.value
-    fontFxColor = isDarkColor(colorWatch.value)
+    fontFxFactor = HudStyle.isDarkColor(colorWatch.value) ?
+      HudStyle.fontOutlineFxFactor * 0.15 * ParamTableShadowFactor.value
+      : HudStyle.fontOutlineFxFactor * ParamTableShadowFactor.value
+    fontFxColor = HudStyle.isDarkColor(colorWatch.value)
       ? Color(255, 255, 255, 255 * ParamTableShadowOpacity.value)
       : Color(0, 0, 0, 255 * ParamTableShadowOpacity.value)
     fontSize = font_size
@@ -683,7 +687,8 @@ let textParamsMapMain = {
   },
   [AirParamsMain.GUIDED_BOMBS] = {
     titleComputed = Computed(@() GuidedBombsCount.value <= 0 ? loc("HUD/TXT_GUIDED_BOMBS_SHORT") :
-      getGBCaption(guidedBombsAimState.GuidanceLockStateBlinked.value, guidedBombsAimState.PointIsTarget.value, GuidedBombsMode.value))
+      getGBCaption(guidedBombsGuidanceLockState.get(), guidedBombsGuidancePointIsTarget.get(), GuidedBombsMode.value)
+    )
     valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(GuidedBombsCount.value, GuidedBombsSeconds.value,
       GuidedBombsTimeToHit.value, 0.0, GuidedBombsActualCount.value))
     selectedComputed = Computed(@() GuidedBombsSelected.value ? ">" : "")
@@ -860,7 +865,7 @@ textParamsMapSecondary[AirParamsSecondary.INSTRUCTOR] <- {
 
 let fuelKeyId = AirParamsSecondary.FUEL
 
-function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = hudFontHgt) {
+function generateParamsTable(mainMask, secondaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = HudStyle.hudFontHgt) {
   function getChildren(colorWatch, style, isBomberView) {
     let children = []
 
@@ -899,7 +904,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
     return children
   }
 
-  return function(colorWatch, isBomberView = false, style = styleText) {
+  return function(colorWatch, isBomberView = false, style = HudStyle.styleText) {
     let table = @() style.__merge({
       watch = [mainMask, secondaryMask, posWatched]
       pos = posWatched.value
@@ -963,7 +968,7 @@ function horizontalSpeedVector(elemStyle, color, height) {
   })
 }
 
-function HelicopterHorizontalSpeedComponent(color, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = styleLineForeground) {
+function HelicopterHorizontalSpeedComponent(color, posX = sw(50), posY = sh(50), height = hdpx(40), elemStyle = HudStyle.styleLineForeground) {
   return function() {
     return {
       pos = [posX - 2 * height, posY - height * 0.5]
@@ -1059,7 +1064,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5) {
   let atgmLaunchDistanceTrigger = {}
   atgmLaunchDistanceblinking.subscribe(@(v) v ? anim_start(atgmLaunchDistanceTrigger) : anim_request_stop(atgmLaunchDistanceTrigger))
 
-  return @() styleLineForeground.__merge({
+  return @() HudStyle.styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [aspect * width, height]
     color = colorWatch.value
@@ -1071,7 +1076,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5) {
       [VECTOR_LINE, hl, 0, 0, 0, 0, vl]
     ]
     children = [
-      @() styleLineForeground.__merge({
+      @() HudStyle.styleLineForeground.__merge({
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = hdpx(LINE_WIDTH + 1)
         size = [aspect * width, height]
@@ -1080,7 +1085,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5) {
         color = colorWatch.value
       }),
       isAtgmAngularRangeVisible.value
-        ? @() styleLineForeground.__merge({
+        ? @() HudStyle.styleLineForeground.__merge({
             rendObj = ROBJ_VECTOR_CANVAS
             lineWidth = hdpx(LINE_WIDTH)
             size = [aspect * width, height]
@@ -1097,7 +1102,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5) {
               loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger }]
           }) : null,
       isAtgmGuidanceRangeVisible.value
-        ? @() styleLineForeground.__merge({
+        ? @() HudStyle.styleLineForeground.__merge({
             rendObj = ROBJ_VECTOR_CANVAS
             lineWidth = hdpx(LINE_WIDTH)
             size = [aspect * width, height]
@@ -1114,7 +1119,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5) {
               loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger }]
           }) : null,
         isAtgmGuidanceRangeVisible.value
-          ? @() styleLineForeground.__merge({
+          ? @() HudStyle.styleLineForeground.__merge({
               rendObj = ROBJ_VECTOR_CANVAS
               lineWidth = hdpx(LINE_WIDTH + 1)
               size = [aspect * width, height]
@@ -1174,7 +1179,7 @@ function helicopterRocketSightMode(sightMode) {
   ]
 }
 
-let helicopterRocketAim = @(width, height, color, style = styleLineForeground) function() {
+let helicopterRocketAim = @(width, height, color, style = HudStyle.styleLineForeground) function() {
 
   let lines = helicopterRocketSightMode(RocketSightMode.value)
 
@@ -1222,7 +1227,7 @@ function agmLaunchZone(colorWatch, _w, _h) {
       return []
   }
 
-  return @() styleLineForeground.__merge({
+  return @() HudStyle.styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -1269,7 +1274,7 @@ function unitAngleBorder(launchZone, corner) {
   ]
 }
 
-let zoneStyle = styleLineForeground.__merge({
+let zoneStyle = HudStyle.styleLineForeground.__merge({
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(LINE_WIDTH)
   size = [sw(100), sh(100)]
@@ -1324,7 +1329,7 @@ function sight(colorWatch, height) {
   let dash = 0.8
   let centerOffset = 3
 
-  return @() styleLineForeground.__merge({
+  return @() HudStyle.styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     size = [height, height]
     color = colorWatch.value
@@ -1363,7 +1368,7 @@ function launchDistanceMaxComponent(colorWatch, width, height, posX, posY) {
       cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(AgmLaunchZoneDistMax.value) : ""
   }
 
-  let launchDistanceMax = @() styleText.__merge({
+  let launchDistanceMax = @() HudStyle.styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -1389,7 +1394,7 @@ function launchDistanceMaxComponent(colorWatch, width, height, posX, posY) {
 }
 
 function rangeFinderComponent(colorWatch, posX, posY) {
-  let rangefinder = @() styleText.__merge({
+  let rangefinder = @() HudStyle.styleText.__merge({
     rendObj = ROBJ_TEXT
     halign = ALIGN_CENTER
     text = cross_call.measureTypes.DISTANCE_SHORT.getMeasureUnitsText(RangefinderDist.value)
@@ -1473,7 +1478,7 @@ let detectAllyComponent = @(posX, posY) function() {
   if (DetectAllyProgress.value < 1.0)
     return res
 
-  return res.__update(styleText.__merge({
+  return res.__update(HudStyle.styleText.__merge({
     rendObj = ROBJ_TEXT
     text = DetectAllyProgress.value < 1.0 ? loc("detect_ally_progress")
       : (DetectAllyState.value ? loc("detect_ally_success")
