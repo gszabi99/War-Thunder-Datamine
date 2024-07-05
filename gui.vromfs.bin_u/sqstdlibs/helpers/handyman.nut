@@ -30,7 +30,6 @@
 
 #no-plus-concat
 
-let { get_time_msec } = require("dagor.time")
 let g_string =  require("%sqstd/string.nut")
 let { loc } = require("dagor.localize")
 local {regexp} = require("string")
@@ -609,16 +608,7 @@ handyman = {
     return this.defaultWriter.renderTokens(tokens, context, partials, template)
   }
 
-  function checkCacheReset() {//only for easier development
-    if (get_time_msec() - this.lastCacheReset < 1000)
-      return
-
-    this.lastCacheReset = get_time_msec()
-    this.tokensByTemplatePath.clear()
-  }
-
   function updateCache(templatePath) {
-    this.checkCacheReset()
     if (templatePath in this.tokensByTemplatePath)
       return
     local template = loadTemplateText(templatePath)

@@ -9,8 +9,10 @@ let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
-let { getEventEconomicName, checkEventFeaturePacks } = require("%scripts/events/eventInfo.nut")
+let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies
+} = require("%scripts/events/eventInfo.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
+let { isMeNewbieOnUnitType, getUnitTypeByNewbieEventId } = require("%scripts/myStats.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -27,6 +29,18 @@ function setSquadReadyFlag(event) {
     ::events.checkAndBuyTicket(event)
   else
     g_squad_manager.setReadyFlag()
+}
+
+function canJoinEventForNewbies(event) {
+  if (!isEventForNewbies(event))
+    return true
+
+  let unitType = getUnitTypeByNewbieEventId(event.name)
+  if (isMeNewbieOnUnitType(unitType))
+    return true
+
+  showInfoMsgBox(loc("events/notAvailableNewbiesMode/msg"))
+  return false
 }
 
 ::EventJoinProcess <- class {
@@ -154,6 +168,8 @@ function setSquadReadyFlag(event) {
     if (::events.checkEventDisableSquads(this, this.event.name))
       return this.remove()
     if (!this.checkEventTeamSize(mGameMode))
+      return this.remove()
+    if (!canJoinEventForNewbies(this.event))
       return this.remove()
     let diffCode = ::events.getEventDiffCode(this.event)
     let unitTypeMask = ::events.getEventUnitTypesMask(this.event)

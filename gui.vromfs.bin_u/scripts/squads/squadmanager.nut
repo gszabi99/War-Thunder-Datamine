@@ -32,7 +32,8 @@ let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId } = require("worldwar")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { lateBindGlobalModule } = require("%scripts/global_modules.nut")
-let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId
+} = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 
@@ -1005,8 +1006,13 @@ g_squad_manager = {
   }
 
   function onLeadershipTransfered() {
-    g_squad_manager.setReadyFlag(g_squad_manager.isSquadLeader())
-    g_squad_manager.setCrewsReadyFlag(g_squad_manager.isSquadLeader())
+    let isLeader = g_squad_manager.isSquadLeader()
+    g_squad_manager.setReadyFlag(isLeader)
+    g_squad_manager.setCrewsReadyFlag(isLeader)
+    if (isLeader) {
+      setCurrentGameModeById(getUserGameModeId() ?? getCurrentGameModeId())
+      g_squad_manager.updateLeaderData()
+    }
     broadcastEvent(squadEvent.STATUS_CHANGED)
   }
 
