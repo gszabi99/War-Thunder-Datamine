@@ -195,16 +195,11 @@
             "value": 0.0
           },
           "clearTargetsOfInterest": {},
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": false
-            },
-            {
-              "fsm": "track",
-              "active": false
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          },
+          "resetTrackMode": {}
         },
         "setRadarStandbyMode": {
           "setStandbyModeCommon": {},
@@ -413,6 +408,12 @@
             "scanPattern": "irstTrack"
           }
         },
+        "resetTrackMode": {
+          "setFsmActive": {
+            "fsm": "track",
+            "active": false
+          }
+        },
         "setRadar": {
           "setTransiver": {
             "transiver": "radarTrack"
@@ -467,10 +468,7 @@
           "stateTo": "radarParked",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "disableFromIrstTrack": {
@@ -479,10 +477,7 @@
           "stateTo": "irstParked",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarCheckLockType0": {
@@ -588,10 +583,7 @@
           "stateTo": "radarStandby",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "irstCheckLockType1": {
@@ -677,10 +669,7 @@
           "stateTo": "irstStandby",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarToIrstStandby": {

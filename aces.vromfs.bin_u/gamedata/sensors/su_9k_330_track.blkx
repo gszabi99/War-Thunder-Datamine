@@ -191,16 +191,11 @@
             "value": 0.0
           },
           "clearTargetsOfInterest": {},
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": false
-            },
-            {
-              "fsm": "track",
-              "active": false
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          },
+          "resetTrackMode": {}
         },
         "setRadarStandbyMode": {
           "setStandbyModeCommon": {},
@@ -388,7 +383,8 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
-          }
+          },
+          "updateActiveDetectedTarget": {}
         },
         "setRadarTrackMode": {
           "setTrackModeCommon": {},
@@ -406,6 +402,12 @@
           },
           "setScanPattern": {
             "scanPattern": "irstTrack"
+          }
+        },
+        "resetTrackMode": {
+          "setFsmActive": {
+            "fsm": "track",
+            "active": false
           }
         },
         "setRadar": {
@@ -462,10 +464,7 @@
           "stateTo": "radarParked",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "disableFromIrstTrack": {
@@ -474,10 +473,7 @@
           "stateTo": "irstParked",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarCheckLockType0": {
@@ -583,10 +579,7 @@
           "stateTo": "radarStandby",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "irstCheckLockType1": {
@@ -672,10 +665,7 @@
           "stateTo": "irstStandby",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarToIrstStandby": {
@@ -828,12 +818,40 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 20,
-              "timeOut": 2.0,
-              "radius": 1000.0,
-              "blend": 0.5
+              "limit": 10,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                100.0,
+                2000.0
+              ],
+              "dopplerSpeedGateMaxTime": 1.0,
+              "dopplerSpeedGateRange": [
+                60.0,
+                300.0
+              ],
+              "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
+                "dt": 0.0208,
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0
+              },
+              "distFilter": {
+                "alpha": 0.5,
+                "betta": 0.05,
+                "dt": 0.0208,
+                "limTimeOut": 1.0
+              },
+              "dopplerSpeedFilter": {
+                "alpha": 0.25,
+                "betta": 0.05,
+                "dt": 0.0208,
+                "limTimeOut": 1.0
+              }
             },
-            "updateActiveDetectedTarget": {},
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
             },

@@ -48,9 +48,9 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 80.0,
       "rollStabLimit": 30.0,
-      "period": 0.2,
-      "width": 3.5,
-      "barHeight": 1.0,
+      "period": 0.1,
+      "width": 2.5,
+      "barHeight": 0.8,
       "barsCount": 3,
       "rowMajor": false,
       "indicate": true,
@@ -69,10 +69,10 @@
       "yawStabLimit": 180.0,
       "pitchStabLimit": 80.0,
       "rollStabLimit": 30.0,
-      "period": 0.25,
-      "width": 1.0,
-      "barHeight": 1.0,
-      "barsCount": 2,
+      "period": 0.1,
+      "width": 2.5,
+      "barHeight": 0.8,
+      "barsCount": 3,
       "rowMajor": false,
       "indicate": true,
       "preciseMinor": true
@@ -91,10 +91,11 @@
       "pitchStabLimit": 60.0,
       "rollStabLimit": 30.0,
       "period": 0.05,
-      "width": 7.5,
-      "barHeight": 1.0,
-      "barsCount": 15,
+      "width": 45.0,
+      "barHeight": 1.5,
+      "barsCount": 40,
       "rowMajor": true,
+      "centerElevation": 30.0,
       "preciseMinor": true
     },
     "irstLosLock": {
@@ -144,7 +145,8 @@
       "distance": {
         "presents": true,
         "minValue": 100.0,
-        "maxValue": 36000.0
+        "maxValue": 36000.0,
+        "width": 70.0
       },
       "dopplerSpeed": {
         "presents": true,
@@ -199,16 +201,11 @@
             "value": 0.0
           },
           "clearTargetsOfInterest": {},
-          "setFsmActive": [
-            {
-              "fsm": "lock",
-              "active": false
-            },
-            {
-              "fsm": "track",
-              "active": false
-            }
-          ]
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          },
+          "resetTrackMode": {}
         },
         "setRadarStandbyMode": {
           "setStandbyModeCommon": {},
@@ -382,9 +379,15 @@
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
-          "setCenterElevation": {
-            "source": "activeTargetOfInterest"
-          },
+          "setCenterElevation": [
+            {
+              "source": "activeTargetOfInterest"
+            },
+            {
+              "source": "constant",
+              "value": 0.0
+            }
+          ],
           "setDistGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
@@ -393,10 +396,7 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": true
-          }
+          "updateActiveDetectedTarget": {}
         },
         "setRadarTrackMode": {
           "setTrackModeCommon": {},
@@ -405,6 +405,10 @@
           },
           "setScanPattern": {
             "scanPattern": "radarTrack"
+          },
+          "setFsmActive": {
+            "fsm": "radarTrack",
+            "active": true
           }
         },
         "setIrstTrackMode": {
@@ -414,7 +418,23 @@
           },
           "setScanPattern": {
             "scanPattern": "irstTrack"
+          },
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
           }
+        },
+        "resetTrackMode": {
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": false
+            },
+            {
+              "fsm": "radarTrack",
+              "active": false
+            }
+          ]
         },
         "setRadar": {
           "setTransiver": {
@@ -470,10 +490,7 @@
           "stateTo": "radarParked",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "disableFromIrstTrack": {
@@ -482,10 +499,7 @@
           "stateTo": "irstParked",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarCheckLockType0": {
@@ -591,10 +605,7 @@
           "stateTo": "radarStandby",
           "actions": {
             "setRadarStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "irstCheckLockType1": {
@@ -680,10 +691,7 @@
           "stateTo": "irstStandby",
           "actions": {
             "setIrstStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
+            "resetTrackMode": {}
           }
         },
         "radarToIrstStandby": {
@@ -715,7 +723,17 @@
             "setModeName": {
               "name": "IRST track"
             },
-            "setIrst": {}
+            "setIrst": {},
+            "setFsmActive": [
+              {
+                "fsm": "radarTrack",
+                "active": false
+              },
+              {
+                "fsm": "track",
+                "active": true
+              }
+            ]
           }
         },
         "irstToRadarTrack": {
@@ -729,7 +747,17 @@
             "setModeName": {
               "name": "track"
             },
-            "setRadar": {}
+            "setRadar": {},
+            "setFsmActive": [
+              {
+                "fsm": "track",
+                "active": false
+              },
+              {
+                "fsm": "radarTrack",
+                "active": true
+              }
+            ]
           }
         },
         "switchSelectedTarget": {
@@ -780,6 +808,46 @@
     "track": {
       "stateInit": "track",
       "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
         "extrapolate": {
           "event": "targetNotDetected",
           "actions": {
@@ -803,7 +871,12 @@
               "width": 0.0
             }
           }
-        },
+        }
+      }
+    },
+    "radarTrack": {
+      "stateInit": "track",
+      "transitions": {
         "scan": {
           "event": "update",
           "actions": {
@@ -836,21 +909,67 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 20,
-              "timeOut": 4.0,
-              "radius": 1000.0,
-              "blend": 0.5
+              "limit": 8,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                50.0,
+                2000.0
+              ],
+              "dopplerSpeedGateMaxTime": 1.0,
+              "dopplerSpeedGateRange": [
+                60.0,
+                300.0
+              ],
+              "dirFilter": {
+                "alpha": 0.8,
+                "betta": 0.1,
+                "dt": 0.0208,
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0
+              },
+              "distFilter": {
+                "alpha": 0.5,
+                "betta": 0.05,
+                "dt": 0.0208,
+                "limTimeOut": 1.0
+              },
+              "dopplerSpeedFilter": {
+                "alpha": 0.25,
+                "betta": 0.05,
+                "dt": 0.0208,
+                "limTimeOut": 1.0
+              }
             },
-            "updateActiveDetectedTarget": {},
             "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            },
-            "setCenterElevation": {
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
-              "width": 20000.0
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
             },
             "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
