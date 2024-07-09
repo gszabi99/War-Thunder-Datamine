@@ -51,7 +51,9 @@ let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
   isSquadronResearchMode = false, hasSlotbarByUnitsGroups = false, shopResearchMode = false,
-  shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null
+  shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null,
+  cellClass = "slotbarClone"
+
 ) {
   let actions = []
   if (!unit || ("airsGroup" in unit) || actionsNames.len() == 0 || is_in_loading_screen())
@@ -177,6 +179,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionFunc = @() takeUnitInSlotbar(unit, {
         unitObj = unitObj
         shouldCheckCrewsReady = shouldCheckCrewsReady
+        cellClass = cellClass
       })
     }
     else if (action == "repair") {

@@ -2493,6 +2493,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     shopResearchMode = this.shopResearchMode
     onSpendExcessExp = Callback(this.onSpendExcessExp, this)
     onCloseShop = Callback(this.onCloseShop, this)
+    cellClass = "shopClone"
   }
 
   checkAirShopReq = @(air) air?.shopReq ?? true
