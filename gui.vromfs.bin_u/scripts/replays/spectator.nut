@@ -54,6 +54,8 @@ let { updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_tactical_map } = require("%scripts/tacticalMap.nut")
 let { showOrdersContainer } = require("%scripts/items/orders.nut")
+let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
+let { loadGameChatToObj } = require("%scripts/chat/mpChat.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -510,7 +512,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
   function loadGameChat() {
     if (this.isMultiplayer) {
-      this.chatData = ::loadGameChatToObj(this.scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
+      this.chatData = loadGameChatToObj(this.scene.findObject("chat_container"), "%gui/chat/gameChatSpectator.blk", this,
                                      { selfHideInput = true, hiddenInput = !this.canSendChatMessages })
 
       let objGameChat = this.scene.findObject("gamechat")
@@ -840,7 +842,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       ::session_player_rmenu(
         this,
         player,
-        ::get_game_chat_handler()?.getChatLogForBanhammer() ?? ""
+        getLogForBanhammer()
       )
   }
 
@@ -889,7 +891,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       ::session_player_rmenu(
         this,
         player,
-        ::get_game_chat_handler()?.getChatLogForBanhammer() ?? "",
+        getLogForBanhammer(),
         [
           selectedPlayerBlock.getPosRC()[0] + selectedPlayerBlock.getSize()[0] / 2,
           selectedPlayerBlock.getPosRC()[1]

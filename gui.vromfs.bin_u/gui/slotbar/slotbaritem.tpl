@@ -29,12 +29,16 @@ massTransp {
         on_mouse_leave:t='onSlotbarMouseLeave'
         canSelectNone:t='yes'
         <</selectOnHover>>
+        <<#highlightSelected>>
+        highlightSelected:t=yes
+        <</highlightSelected>>
         id:t='airs_table_<<countryIdx>>'
         pos:t='0, @slotbarInvisPad-@slotbar_bottom_margin+1@slotBattleButtonHeight+@slotbar_top_shade'
         position:t='relative'
         behaviour:t='<<#slotbarBehavior>><<slotbarBehavior>><</slotbarBehavior>><<^slotbarBehavior>>ActivateSelect<</slotbarBehavior>>'
         navigatorShortcuts:t='yes'
         alwaysShowBorder:t='<<alwaysShowBorder>>'
+        css-hier-invalidate:t='yes'
 
         on_select:t = 'onSlotbarSelect'
         _on_activate:t='onSlotbarActivate'

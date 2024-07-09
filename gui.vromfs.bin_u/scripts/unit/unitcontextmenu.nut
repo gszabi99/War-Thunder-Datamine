@@ -44,7 +44,7 @@ let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManag
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
-let { getCrewStatus } = require("%scripts/crew/crew.nut")
+let { isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 
@@ -116,7 +116,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
       actionText = loc("mainmenu/btnCrew")
       icon       = "#ui/gameuiskin#slot_crew.svg"
-      haveWarning = isInArray(getCrewStatus(crew, unit), [ "ready", "full" ])
+      haveWarning = isCrewNeedUnseenIcon(crew, unit)
       haveDiscount = getCrewMaxDiscountByInfo(discountInfo) > 0
       showAction = inMenu
       let params = {

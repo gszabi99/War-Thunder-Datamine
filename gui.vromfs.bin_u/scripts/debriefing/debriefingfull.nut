@@ -12,6 +12,7 @@ let { fabs } = require("math")
 let DataBlock = require("DataBlock")
 let { get_mp_session_id_str, is_mplayer_peer } = require("multiplayer")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
+let { getGameChatLogText } = require("%scripts/chat/mpChat.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -37,6 +38,8 @@ let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+
+const TOOLTIP_MINIMIZE_SCREEN_WIDTH_PERCENT = 0.95
 
 local debriefingResult = null
 local dynamicResult = -1
@@ -64,6 +67,12 @@ function getMissionRewardSources(rewardSources, skillBonusLevel, paramsOvr = {})
       skillBonus = expSkillBonus
       skillBonusLevel = skillBonusLevel ?? 0
     }, { currencyImg = "#ui/gameuiskin#item_type_RP.svg" }.__merge(paramsOvr))
+}
+
+function adjustTooltipSize(obj) {
+  let [tooltipWidth] = obj.getSize()
+  if (tooltipWidth >= screen_width() * TOOLTIP_MINIMIZE_SCREEN_WIDTH_PERCENT)
+    obj.findObject("battle_reward_table").minimized = "yes"
 }
 
 let getTableNameById = @(row) $"tbl{row.getRewardId()}"
@@ -430,7 +439,7 @@ debriefingRows = [
       }
 
       let columns = [
-        {titleLocId = "options/unit"}
+        {titleLocId = "options/unit", isFirstCol = true}
         {titleLocId = "debriefing/Mission"}
         {titleLocId = "debriefing/researchedMod"}
         {titleLocId = "debriefing/modResearch"}
@@ -447,7 +456,7 @@ debriefingRows = [
         return {
           isEven = idx % 2 == 0
           cells = [
-            { cell = { text = loc($"{unit}_shop") }}
+            { cell = { text = loc($"{unit}_shop") }, isFirstCol = true }
             { cell =
               {
                 sources = getMissionRewardSources(unitBonus, debriefingResult?.exp.expSkillBonusLevel, { regularFont = true })
@@ -486,7 +495,7 @@ debriefingRows = [
       let unitBonuses = debriefing.researchPointsUnits.filter(@(i) i?.newNationBonusExp != null)
       let view = {
         columns = [
-          {titleLocId = "options/unit"}
+          {titleLocId = "options/unit", isFirstCol = true }
           {titleLocId = "debriefing/basicRp"}
           {titleLocId = "debriefing/researched_unit"}
           {titleLocId = "multiplayer/unitRank"}
@@ -495,7 +504,7 @@ debriefingRows = [
         rows = unitBonuses.map(@(bonus, idx) {
           isEven = idx % 2 == 0
           cells = [
-            { cell = { text = loc($"{bonus.unit}_shop") }}
+            { cell = { text = loc($"{bonus.unit}_shop") }, isFirstCol = true }
             { cell = {
                 text =  bonus.noBonusExpTotal
                 image = { src = "#ui/gameuiskin#item_type_RP.svg" } }
@@ -645,9 +654,11 @@ debriefingRows = [
         }
       })
 
-      let view = { columns, rows, compactColumns = true }
+      let view = { columns, rows }
       let markup = handyman.renderCached("%gui/userLog/userLogBattleRewardTooltip.tpl", view)
       handler.guiScene.replaceContentFromText(obj, markup, markup.len(), handler)
+
+      adjustTooltipSize(obj)
     }
   }
   { id = "ecSpawnScore"
@@ -1265,7 +1276,7 @@ function gatherDebriefingResult() {
   debriefingResult.activeBoosters <- getDebriefingActiveBoosters()
   debriefingResult.activeWager <- getDebriefingActiveWager()
   debriefingResult.eventId <- getDebriefingEventId()
-  debriefingResult.chatLog <- ::get_gamechat_log_text()
+  debriefingResult.chatLog <- getGameChatLogText()
   debriefingResult.logForBanhammer <- getLogForBanhammer()
 
   debriefingResult.exp.timBattleTime <- getTblValue("battleTime", debriefingResult.exp, 0)

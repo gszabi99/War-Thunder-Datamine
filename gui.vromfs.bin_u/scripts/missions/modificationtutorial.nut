@@ -66,8 +66,7 @@ function startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon = 
 
   set_game_mode(GM_TRAINING)
   set_gui_option(USEROPT_AIRCRAFT, unit.name)
-  if (tutorialMissionWeapon)
-    set_gui_option(USEROPT_WEAPONS, tutorialMissionWeapon)
+  set_gui_option(USEROPT_WEAPONS, tutorialMissionWeapon ?? "")
 
   let missInfoOvr = DataBlock()
   missInfoOvr.setFrom(misInfo)

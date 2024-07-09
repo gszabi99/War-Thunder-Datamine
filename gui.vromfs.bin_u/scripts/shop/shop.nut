@@ -1543,6 +1543,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onAircraftClick(obj, ignoreMenuHover = false) {
     this.selectCell(obj)
     let unit = this.getCurAircraft()
+    this.curAirName = unit?.name ?? ""
     this.checkSelectAirGroup(unit)
     this.openMenuForUnit(unit, ignoreMenuHover)
   }
@@ -1999,6 +2000,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let unit = getAircraftByName(obj?.holderId) ?? this.getCurAircraft()
     if (!unit)
       return
+    this.curAirName = unit.name
 
     slotActions.slotMainAction(unit, {
       onSpendExcessExp = Callback(this.onSpendExcessExp, this)

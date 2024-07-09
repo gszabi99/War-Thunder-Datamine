@@ -2143,15 +2143,17 @@ Button_text.smallButton {
   min-width:@smallButtonHeight;
 }
 
+slotCrewHintContainer Button_text.smallButton {
+  min-width:1@slot_width - 2@slot_interval;
+}
+
 Button_text.bottomAirItem {
   height:@sIco;
   pos:50%pw-50%w, 0;
   position:relative;
   min-width: 0.33@slot_width;
   padding:1@smallButtonImgPadding;
-  padding-top:1@smallButtonImgPadding + 1@dp + 3@sf/@pf;   not-input-transparent:yes;
-  order-popup:no;
-  skip-navigation:yes;
+  padding-top:1@smallButtonImgPadding + 1@dp + 3@sf/@pf;   skip-navigation:yes;
 }
 
 Button_text.bottomAirItem[isSlotbar=yes] {
@@ -2231,12 +2233,6 @@ weaponry_item Button_text.sliderValueButton[type=weaponryAmount] > ButtonImg {
 
 [show_console_buttons=yes] [move=yes] weaponBundleBlock:focus weaponry_item[selected=yes] Button_text {
   display:hide;
-}
-
-[show_console_buttons=no] unitCell[selected=yes] :hover Button_text.bottomAirItem,
-[show_console_buttons=no] unitItemContainer[selected=yes] :hover Button_text.bottomAirItem,
-Button_text.bottomAirItem:hover {
-  order-popup:yes;
 }
 
 

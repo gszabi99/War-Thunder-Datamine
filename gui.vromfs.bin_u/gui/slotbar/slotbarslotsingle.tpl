@@ -21,7 +21,7 @@ selected:t='no'
 <</isInTable>>
 
 <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
-
+<<#crewId>>crewId:t='<<crewId>>'<</crewId>>
 shopItem {
   id:t='<<shopItemId>>'
   interactive:t='yes'
@@ -30,6 +30,7 @@ shopItem {
   unit_name:t='<<unitName>>'
   proxyEventsParentTag:t='slotbarTable';
   <<#crewId>>crew_id:t='<<crewId>>'<</crewId>>
+  <<#crewInfoTranslucent>>crewInfoTranslucent:t='<<crewInfoTranslucent>>'<</crewInfoTranslucent>>
 
   <<^isInTable>>
   isInTable:t='no'
@@ -246,3 +247,8 @@ shopItem {
   dragParent:t='yes'
   <</needDnD>>
 }
+<<#needDnD>>
+on_end_edit:t='onCrewDropFinish'
+on_drag_drop:t='onCrewDrop'
+on_move:t='onCrewMove'
+<</needDnD>>

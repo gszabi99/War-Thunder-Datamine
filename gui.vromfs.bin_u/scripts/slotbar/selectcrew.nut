@@ -18,7 +18,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewsListByCountry, isUnitInSlotbar, getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot
+let { getCrewsListByCountry, isUnitInSlotbar, getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot, getCrewByAir
 } = require("%scripts/slotbar/slotbarState.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -56,9 +56,12 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
   isSelectByGroups = false
   dragAndDropMode = false
+  canSetCurUnit = false
 
   function initScreen() {
-    if (!this.unit || !this.unit.isUsable() || this.isHandlerUnitInSlotbar()
+    this.canSetCurUnit = !this.isHandlerUnitInSlotbar()
+
+    if (!this.unit || !this.unit.isUsable() || (!this.canSetCurUnit && !this.dragAndDropMode)
         || (this.unitObj != null && !this.unitObj.isValid())) {
       this.goBack()
       return
@@ -124,22 +127,31 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
         unitForSpecType = this.unit,
         alwaysShowBorder = true
         hasExtraInfoBlock = true
-        hasExtraInfoBlockTop = true
+        hasExtraInfoBlockTop = false
         slotbarBehavior = "posNavigator"
         needFullSlotBlock = true
-        selectOnHover = this.dragAndDropMode
+        selectOnHover = this.dragAndDropMode && this.canSetCurUnit
+        highlightSelected = this.dragAndDropMode && !this.canSetCurUnit
+        showCrewUnseenIcon = false
+        needHugeFooter = "yes"
+        showSingleCountryFlag = false
 
         applySlotSelectionOverride = @(_, __) this.onChangeUnit()
         onSlotDblClick = Callback(this.onApplyCrew, this)
         onSlotActivate = Callback(this.onApplyCrew, this)
       },
       "take-aircraft-slotbar")
-    if(this.dragAndDropMode)
-      this.guiScene.performDelayed(this, @() this.slotbarWeak.selectCrew(-1))
+
+    if (this.dragAndDropMode) {
+      let curCrew = getCrewByAir(this.unit)
+      let crewId = this.canSetCurUnit
+        ? -1
+        : (curCrew?.idInCountry ?? -1)
+      this.guiScene.performDelayed(this, @() this.slotbarWeak.selectCrew(crewId))
+    }
 
     this.onChangeUnit()
-
-    let legendObj = this.fillLegendData()
+    this.fillLegendData()
 
     move_mouse_on_child_by_value(this.slotbarWeak && this.slotbarWeak.getCurrentAirsTable())
 
@@ -148,12 +160,13 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
     showObjectsByTable(this.scene, {
       set_unit_btns = !this.dragAndDropMode
-      set_air_dnd_title = this.dragAndDropMode
+      set_air_dnd_title = this.dragAndDropMode && this.canSetCurUnit
+      vehicle_in_slot_msg = !this.canSetCurUnit
     })
 
     this.guiScene.setUpdatesEnabled(true, true)
 
-    this.updateObjectsPositions(tdClone, legendObj, textObj)
+    this.updateObjectsPositions(tdClone, textObj)
     this.checkUseTutorial()
   }
 
@@ -161,11 +174,12 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     ? slotbarWidget.create(params)
     : gui_handlers.SlotbarWidget.create(params)
 
-  function updateObjectsPositions(tdClone, legendObj, headerObj) {
+  function updateObjectsPositions(tdClone, headerObj) {
     let rootSize = this.guiScene.getRoot().getSize()
     let sh = rootSize[1]
     let bh = toPixels(this.guiScene, "@bh")
     let interval = toPixels(this.guiScene, "@itemsIntervalBig")
+    let bottomPanelHeight = toPixels(this.guiScene, "@bottomMenuPanelHeight")
 
     //count position by visual card obj. real td is higher and wider than a card.
     let visTdObj = tdClone.childrenCount() ? tdClone.getChild(0) : tdClone
@@ -179,52 +193,16 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     //place slotbar
     let sbObj = this.scene.findObject("slotbar_with_buttons")
     let sbSize = sbObj.getSize()
-    let isSlotbarOnTop = bottom + interval + sbSize[1] > sh - bh
+    let isSlotbarOnTop = bottom + interval + sbSize[1] > sh - bh - bottomPanelHeight
     local sbPosY = 0
     if (isSlotbarOnTop) {
       sbPosY = top - interval - sbSize[1]
       top = sbPosY
     }
-    else {
+    else
       sbPosY = bottom + interval
-      bottom = sbPosY + sbSize[1]
-    }
+
     sbObj.top = sbPosY
-
-    //place legend
-    if (checkObj(legendObj)) {
-      let legendSize = legendObj.getSize()
-
-      //try to put legend near unit td, but below slotbar when possible
-      local isNearTd = false
-      local bottomNoTd = bottom
-      if (tdPos[1] + tdSize[1] == bottom) {
-        bottomNoTd = tdPos[1] - interval
-        isNearTd = true
-      }
-
-      let isLegendBottom = bottomNoTd + interval + legendSize[1] <= sh - bh
-      local legendPosY = 0
-      if (isLegendBottom)
-        legendPosY = bottomNoTd + interval
-      else {
-        isNearTd = tdPos[1] == top
-        let topNoTd = isNearTd ? tdPos[1] + tdSize[1] + interval : top
-        legendPosY = topNoTd - interval - legendSize[1]
-        top = min(legendPosY, top)
-      }
-
-      legendObj.top = legendPosY
-
-      if (isNearTd) { //else centered.
-        let sw = rootSize[0]
-        let bw = toPixels(this.guiScene, "@bw")
-        local legendPosX = tdPos[0] + tdSize[0] + interval
-        if (legendPosX + legendSize[0] > sw - bw)
-          legendPosX = tdPos[0] - interval - legendSize[0]
-        legendObj.left = legendPosX
-      }
-    }
 
     //place headerMessage
     let headerPosY = top - interval - headerObj.getSize()[1]
@@ -278,18 +256,23 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUnitCellDrop(_obj) {
     this.guiScene.setCursor("normal", true)
-    if (this.takeCrewIdInCountry >= 0)
+    if (this.takeCrewIdInCountry >= 0 && this.canSetCurUnit)
       this.onApply()
     this.goBack()
   }
 
   function updateSelectedCrewPriceText() {
-    if (!this.dragAndDropMode)
-      placePriceTextToButton(this.scene, "btn_set_air", loc("mainmenu/btnTakeAircraft"), this.getTakeAirCost())
-    else if (this.takeCrewIdInCountry == -1)
-      this.scene.findObject("set_air_dnd_title_text").setValue("")
+    if (this.dragAndDropMode)
+      this.updateDndTitle()
     else
+      placePriceTextToButton(this.scene, "btn_set_air", loc("mainmenu/btnTakeAircraft"), this.getTakeAirCost())
+  }
+
+  function updateDndTitle() {
+    if (this.takeCrewIdInCountry != -1)
       placePriceTextToButton(this.scene, "set_air_dnd_title", loc("mainmenu/btnTakeAircraft"), this.getTakeAirCost())
+    else
+      this.scene.findObject("set_air_dnd_title_text").setValue("")
   }
 
   function onEventOnlineShopPurchaseSuccessful(_p) {
@@ -391,11 +374,14 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       id = specType.specName,
       specType = specType,
       imagePath = specType.trainedIcon,
-      locId = loc("crew/trained") + loc("ui/colon") + specType.getName()
+      locId = specType.getName()
     })
   }
 
   function fillLegendData() {
+    if (!this.canSetCurUnit)
+      return null
+
     let legendData = []
     foreach (_idx, crew in getCrewsListByCountry(this.country)) {
       let specType = getCrewSpecTypeByCode(getTrainedCrewSpecCode(crew, this.unit))
@@ -412,7 +398,8 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     })
 
     let view = {
-      header = loc("mainmenu/legend") + loc("ui/colon") + colorize("userlogColoredText", getUnitName(this.unit, false))
+      header = loc("mainmenu/selectCrew/qualificationLegend",
+        { unitName = colorize("userlogColoredText", getUnitName(this.unit)) })
       haveLegend = legendData.len() > 0
       legendData = legendData
     }

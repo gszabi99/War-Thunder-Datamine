@@ -24,6 +24,7 @@ local totalSkillsSteps = 5 //steps available for leveling.
 
 let crewSkillPages = []
 let availableCrewSkills = {}
+let unseenIconsNeeds = {}
 let unitCrewTrainReq = {} //[crewUnitType] = array
 
 let minCrewLevel = {
@@ -459,11 +460,12 @@ let minStepsForCrewStatus = [1, 2, 3]
 function count_available_skills(crew, crewUnitType) { //return part of availbleskills 0..1
   let curPoints = ("skillPoints" in crew) ? crew.skillPoints : 0
   if (!curPoints)
-    return 0.0
+    return {needUnseenIcon = false, count = 0}
 
   let crewSkills = get_aircraft_crew_by_id(crew.id)
   local notMaxTotal = 0
   let available = [0, 0, 0]
+  local maxStepCost = 0
 
   foreach (page in crewSkillPages)
     foreach (item in page.items) {
@@ -481,18 +483,33 @@ function count_available_skills(crew, crewUnitType) { //return part of availbles
         if (curStep + amount > totalSteps)
           continue
 
-        if (getNextCrewSkillStepCost(item, crewSkillValue, amount) <= curPoints)
+        let stepCost = getNextCrewSkillStepCost(item, crewSkillValue, amount)
+        if (amount == 1
+          && item?.memberName != "groundService" && (item?.memberName != "gunner" || item?.name != "members"))
+          maxStepCost = max(stepCost, maxStepCost)
+
+        if (stepCost <= curPoints)
           available[idx]++
       }
     }
 
+  let needUnseenIcon = !(maxStepCost == 0 || maxStepCost > curPoints)
+
   if (notMaxTotal == 0)
-    return 0
+    return {needUnseenIcon, count = 0}
 
   for (local i = 2; i >= 0; i--)
     if (available[i] >= 0.5 * notMaxTotal)
-      return i + 1
-  return 0
+      return {needUnseenIcon, count = i + 1}
+  return {needUnseenIcon, count = 0}
+}
+
+function isCrewNeedUnseenIcon(crew, unit) {
+  unit = unit ?? getAircraftByName(crew?.aircraft ?? "")
+  if (unit == null)
+    return false
+  let crewUnitType = unit.getCrewUnitType()
+  return unseenIconsNeeds?[crew.id][crewUnitType] ?? false
 }
 
 local isCrewSkillsAvailableInited = false
@@ -504,15 +521,21 @@ function updateCrewSkillsAvailable(forceUpdate = false) {
 
   loadCrewSkillsOnce()
   availableCrewSkills.clear()
+  unseenIconsNeeds.clear()
   foreach (cList in ::g_crews_list.getCrewsList())
     foreach (_idx, crew in cList?.crews || []) {
       let data = {}
+      let unseenIconsData = {}
       foreach (unitType in unitTypes.types) {
         let crewUnitType = unitType.crewUnitType
-        if (!data?[crewUnitType])
-          data[crewUnitType] <- count_available_skills(crew, crewUnitType)
+        if (!data?[crewUnitType]) {
+          let skillsAvailable = count_available_skills(crew, crewUnitType)
+          data[crewUnitType] <- skillsAvailable.count
+          unseenIconsData[crewUnitType] <- skillsAvailable.needUnseenIcon
+        }
       }
       availableCrewSkills[crew.id] <- data
+      unseenIconsNeeds[crew.id] <- unseenIconsData
     }
 }
 
@@ -596,4 +619,5 @@ return {
   loadCrewSkillsOnce
   updateCrewSkillsAvailable
   getCrewStatus
+  isCrewNeedUnseenIcon
 }

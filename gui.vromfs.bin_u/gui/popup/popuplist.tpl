@@ -3,7 +3,6 @@ popup_menu {
   not-input-transparent:t='yes'
   css-hier-invalidate:t='yes'
   position:t='root'
-  flow:t='vertical'
 
   rootUnderPopupMenu {
     on_click:t='<<underPopupClick>>'
@@ -18,6 +17,12 @@ popup_menu {
     }
   }
 
-  include "%gui/commonParts/buttonsList.tpl"
+  tdiv {
+    max-height:t='0.9sh'
+    overflow-y:t='auto'
+    flow:t='vertical'
+    include "%gui/commonParts/buttonsList.tpl"
+  }
+
   popup_menu_arrow {}
 }

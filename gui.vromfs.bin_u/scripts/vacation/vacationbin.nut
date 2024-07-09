@@ -84,6 +84,10 @@ let class VacationBin (gui_handlers.BaseGuiHandlerWT) {
   onSwapCrews = @ (_obj) null
   onOpenCrewPopup = @(_obj) null
   hideAllPopups = @(_obj) null
+  onCrewDragStart = @ (_obj) null
+  onCrewDropFinish = @ (_obj) null
+  onCrewDrop = @(_obj) null
+  onCrewMove = @(_obj) null
 }
 
 gui_handlers.VacationBin <- VacationBin

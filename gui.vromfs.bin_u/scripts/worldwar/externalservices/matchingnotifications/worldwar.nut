@@ -11,6 +11,7 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
 let { wwGetOperationId } = require("worldwar")
+let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
 
 matchingRpcSubscribe("worldwar.on_join_to_battle", function(params) {
   let operationId = params?.operationId ?? ""
@@ -89,7 +90,7 @@ matchingRpcSubscribe("worldwar.notify", function(params) {
   }
 
   if (text != "")
-    ::chat_system_message(text)
+    chatSystemMessage(text)
 })
 
 web_rpc.register_handler("worldwar_forced_subscribe", function(params) {

@@ -785,33 +785,31 @@ table.transpTable, .transpTable > tr, .transpTable > tr > td {
   padding:0;
 }
 
-table.btlReward[compactColumns=no] td {
-  padding-left:4@blockInterval;
-  padding-right:4@blockInterval;
-}
-
-table.btlReward[compactColumns=yes] > tr[headerRow=yes] textareaNoTab {
-  padding-left:1@blockInterval;
-  padding-right:1@blockInterval;
-  smallFont:yes;
-  max-width:150@sf/@pf;
-}
-
-table.btlReward[compactColumns=yes] > tr[headerRow=no] td > activeText {
-  padding-left:1@blockInterval;
-}
-
-table.btlReward[compactColumns=yes] > tr[headerRow=no] > td[hasImage=no] > activeText {
-  padding-right:1@blockInterval;
-}
-
-table.btlReward[compactColumns=yes] rewardFormula {
-  padding-left:1@blockInterval;
-  padding-right:1@blockInterval;
+table.btlReward[minimized=no] td {
+  padding-left:2@blockInterval;
+  padding-right:2@blockInterval;
 }
 
 table.btlReward cellSeparator {
-  height:ph;
-  width:1@dp;
+  position:absolute;
+  pos:-w, 0;
+  size: 1@dp, ph;
   background-color:@frameDarkMenuBorderColor;
+}
+
+table.btlReward[minimized=yes] {
+  css-hier-invalidate:all;
+  smallFont:yes;
+}
+
+table.btlReward[minimized=yes] img {
+  size:1@sIco, 1@sIco;
+  background-svg-size:1@sIco, 1@sIco;
+}
+
+table.btlReward[minimized=yes] rewardFormula activeText {
+  padding-left:1@dp; }
+
+table.btlReward[minimized=yes] > tr[headerRow=yes] textareaNoTab {
+  max-width:150@sf/@pf;
 }
