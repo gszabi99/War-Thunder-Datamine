@@ -1,10 +1,6 @@
 
 <<#hasExtraInfoBlockTop>>
 extraInfoBlockTop {
-  id:t="extraInfoBlockTop"
-  <<#hasExtraInfo>>
-  hasInfo:t='yes'
-  <</hasExtraInfo>>
   tdiv {
     size:t='pw, ph'
     textareaNoTab {
@@ -17,11 +13,9 @@ extraInfoBlockTop {
       pos:t='0, ph/2-(h-@sf/@pf)/2'
       <<#hasPriceText>>
       display:t='show'
-      hasInfo:t='yes'
       <</hasPriceText>>
       <<^hasPriceText>>
       display:t='hide'
-      hasInfo:t='no'
       <</hasPriceText>>
     }
 
@@ -43,11 +37,9 @@ extraInfoBlockTop {
       css-hier-invalidate:t='yes'
       <<#hasAdditionalHistoricalRespawns>>
       display:t='show'
-      hasInfo:t='yes'
       <</hasAdditionalHistoricalRespawns>>
       <<^hasAdditionalHistoricalRespawns>>
       display:t='hide'
-      hasInfo:t='no'
       <</hasAdditionalHistoricalRespawns>>
       tdiv {
         position:t='relative'
@@ -94,11 +86,9 @@ extraInfoBlockTop {
       pos:t='0, ph/2-(h-@sf/@pf)/2'
       <<#hasAdditionalRespawns>>
       display:t='show'
-      hasInfo:t='yes'
       <</hasAdditionalRespawns>>
       <<^hasAdditionalRespawns>>
       display:t='hide'
-      hasInfo:t='no'
       <</hasAdditionalRespawns>>
     }
 
@@ -122,11 +112,9 @@ extraInfoBlockTop {
       pos:t='0, ph/2-(h-@sf/@pf)/2'
       <<#hasSpareInfo>>
       display:t='show'
-      hasInfo:t='yes'
       <</hasSpareInfo>>
       <<^hasSpareInfo>>
       display:t='hide'
-      hasInfo:t='no'
       <</hasSpareInfo>>
     }
 
@@ -137,15 +125,16 @@ extraInfoBlockTop {
       pos:t='0, ph/2-(h-@sf/@pf)/2'
       text:t='#ui/minus'
       overlayTextColor:t='common'
-      <<^hasExtraInfo>>
+      <<#isMissingExtraInfo>>
       display:t='show'
-      <</hasExtraInfo>>
-      <<#hasExtraInfo>>
+      <</isMissingExtraInfo>>
+      <<^isMissingExtraInfo>>
       display:t='hide'
-      <</hasExtraInfo>>
+      <</isMissingExtraInfo>>
     }
   }
 
+  <<^isMissingExtraInfo>>
   <<#showAdditionExtraInfo>>
   slotMissionHintContainer {
     slotMissionHint {
@@ -232,5 +221,6 @@ extraInfoBlockTop {
     slotBottomGradientLine {}
   }
   <</showAdditionExtraInfo>>
+  <</isMissingExtraInfo>>
 }
 <</hasExtraInfoBlockTop>>

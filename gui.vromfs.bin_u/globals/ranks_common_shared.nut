@@ -206,30 +206,18 @@ function getSpawnScoreWeaponMulParamValue(unitName, unitClass, paramName) {
 
 function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmParams, aamParams) {
   local weaponMul = 1.0
-  local bombRocketMul = 1.0
-  local bombRocketMulMax = 1.0
   if (massParams.totalBombRocketMass > 0) {
     let bombRocketWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "BombRocketWeapon")
     if (bombRocketWeaponBlk?.mass != null) {
-      bombRocketMul += (interpolateArray((bombRocketWeaponBlk % "mass"), massParams.totalBombRocketMass) - 1.0)
-      bombRocketMulMax = math.max(bombRocketMulMax, bombRocketWeaponBlk.getParamValue(bombRocketWeaponBlk.paramCount() - 1).y)
+      weaponMul = interpolateArray((bombRocketWeaponBlk % "mass"), massParams.totalBombRocketMass)
     }
   }
   if (massParams.totalNapalmBombMass > 0) {
     let napalmBombWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "NapalmBombWeapon")
     if (napalmBombWeaponBlk?.mass != null) {
-      bombRocketMul += (interpolateArray((napalmBombWeaponBlk % "mass"), massParams.totalNapalmBombMass) - 1.0)
-      bombRocketMulMax = math.max(bombRocketMulMax, napalmBombWeaponBlk.getParamValue(napalmBombWeaponBlk.paramCount() - 1).y)
+      weaponMul = math.max(weaponMul, interpolateArray((napalmBombWeaponBlk % "mass"), massParams.totalNapalmBombMass))
     }
   }
-  if (massParams.totalGuidedBombMass > 0) {
-    let guidedBombWeaponBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "GuidedBombWeapon")
-    if (guidedBombWeaponBlk?.mass != null) {
-      bombRocketMul += (interpolateArray((guidedBombWeaponBlk % "mass"), massParams.totalGuidedBombMass) - 1.0)
-      bombRocketMulMax = math.max(bombRocketMulMax, guidedBombWeaponBlk.getParamValue(guidedBombWeaponBlk.paramCount() - 1).y)
-    }
-  }
-  weaponMul = math.min(bombRocketMul, bombRocketMulMax)
   if (atgmParams.visibilityTypeArr.len() > 0) {
     let atgmVisibilityTypeMulBlk = getSpawnScoreWeaponMulParamValue(unitName, unitClass, "AtgmVisibilityTypeMul")
     foreach (atgmVisibilityType in atgmParams.visibilityTypeArr) {
@@ -267,7 +255,7 @@ function getSpawnScoreWeaponMulByParams(unitName, unitClass, massParams, atgmPar
 
 function getCustomWeaponPresetParams(unitname, weaponTable) {
   let resTable = {
-    massParams = { totalBombRocketMass = 0, totalNapalmBombMass = 0, totalGuidedBombMass = 0, maxRocketTntMass = 0 }
+    massParams = { totalBombRocketMass = 0, totalNapalmBombMass = 0, maxRocketTntMass = 0 }
     atgmParams = { visibilityTypeArr = [], maxDistance = 0, hasProximityFuse = false }
     aamParams = { guidanceTypeArr = [] }
   }
@@ -279,7 +267,6 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
   foreach (weaponName, count in weaponTable) {
     let totalBombRocketMass = weaponsBlk?[weaponName].totalBombRocketMass ?? 0
     let totalNapalmBombMass = weaponsBlk?[weaponName].totalNapalmBombMass ?? 0
-    let totalGuidedBombMass = weaponsBlk?[weaponName].totalGuidedBombMass ?? 0
     let maxRocketTntMass = weaponsBlk?[weaponName].maxRocketTntMass ?? 0
     let atgmVisibilityType = weaponsBlk?[weaponName].atgmVisibilityType ?? ""
     let atgmMaxDistance = weaponsBlk?[weaponName].atgmMaxDistance ?? 0
@@ -288,7 +275,6 @@ function getCustomWeaponPresetParams(unitname, weaponTable) {
 
     resTable.massParams.totalBombRocketMass += (totalBombRocketMass * count)
     resTable.massParams.totalNapalmBombMass += (totalNapalmBombMass * count)
-    resTable.massParams.totalGuidedBombMass += (totalGuidedBombMass * count)
     resTable.massParams.maxRocketTntMass = math.max(maxRocketTntMass, resTable.massParams.maxRocketTntMass)
 
     if (atgmVisibilityType != "" && resTable.atgmParams.visibilityTypeArr.indexof(atgmVisibilityType) == null) {
@@ -329,7 +315,6 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
         let massParams = {
           totalBombRocketMass = weaponBlk?.totalBombRocketMass ?? 0
           totalNapalmBombMass = weaponBlk?.totalNapalmBombMass ?? 0
-          totalGuidedBombMass = weaponBlk?.totalGuidedBombMass ?? 0
           maxRocketTntMass = weaponBlk?.maxRocketTntMass ?? 0
         }
         let atgmParams = {

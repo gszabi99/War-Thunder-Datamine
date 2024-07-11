@@ -1,25 +1,24 @@
 tdiv {
   flow:t='vertical'
   table {
-    id:t='battle_reward_table'
     class:t='btlReward'
 
-    <<#minimized>>
-    minimized:t='yes'
-    <</minimized>>
+    <<#compactColumns>>
+    compactColumns:t='yes'
+    <</compactColumns>>
 
-    <<^minimized>>
-    minimized:t='no'
-    <</minimized>>
+    <<^compactColumns>>
+    compactColumns:t='no'
+    <</compactColumns>>
 
     tr {
       headerRow:t='yes'
 
       <<#columns>>
       td {
-        <<^isFirstCol>>
+        <<#compactColumns>><<^isFirstCol>>
         cellSeparator {}
-        <</isFirstCol>>
+        <</isFirstCol>><</compactColumns>>
 
         textareaNoTab {
           halign:t='center'
@@ -40,9 +39,9 @@ tdiv {
 
       <<#cells>>
       td {
-        <<^isFirstCol>>
+        <<#compactColumns>><<^isFirstCol>>
         cellSeparator {}
-        <</isFirstCol>>
+        <</isFirstCol>><</compactColumns>>
         <<#cell>>
         <<#cellType>>
         cellType:t='<<cellType>>'
@@ -107,12 +106,12 @@ tdiv {
   }
   <<#isLongTooltip>>
   textareaNoTab {
-    margin-left:t='2@blockInterval'
+    margin-left:t='4@blockInterval'
     text:t='...'
   }
   <<#allowToCopy>>
   textareaNoTab {
-    margin-left:t='2@blockInterval'
+    margin-left:t='4@blockInterval'
     text:t='#userlog/copyToClipboardFullInfo'
   }
   <</allowToCopy>>

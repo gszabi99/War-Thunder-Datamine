@@ -135,7 +135,7 @@ function updateCardStatus(obj, _id, statusTbl) {
     obj.tooltipId = tooltipId
   setBool(showInObj(obj, "talisman", hasTalismanIcon), "incomplete", !isTalismanComplete)
   setBool(showInObj(obj, "inServiceMark", needInService), "mounted", isMounted)
-  setBool(obj, "actionOnDrag", needInService && !isGroup)
+  setBool(obj, "actionOnDrag", needInService && !isMounted && !isGroup)
   showInObj(obj, "weaponStatusIcon", weaponsStatus != "").weaponsStatus = weaponsStatus
   showInObj(obj, "repairIcon", isBroken)
 

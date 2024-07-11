@@ -35,7 +35,7 @@ let { getCrewById, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nu
 let { getCurrentGameModeEdiff, isUnitAllowedForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getCrewLevel, getCrewStatus, isCrewMaxLevel, isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
+let { getCrewLevel, getCrewStatus, isCrewMaxLevel } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
@@ -408,7 +408,6 @@ function buildEmptySlot(id, _unit, params) {
     let crewLevelInfoView = {
       hasExtraInfoBlock = true
       hasCrewInfo       = true
-      crewNum           = $"{crew.idInCountry + 1}"
       crewLevel         = crewLevelText
       crewSpecIcon      = crewSpecIcon
     }
@@ -418,6 +417,7 @@ function buildEmptySlot(id, _unit, params) {
     crewLevelInfoData = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", {
       hasExtraInfoBlock = true
       hasCrewIdTextInfo = true
+      hasCrewIdInfo = true
       hasActions
       canOpenCrewWnd = hasActions && !hasCrewModalWndInScene()
       hasCrewHint
@@ -425,7 +425,7 @@ function buildEmptySlot(id, _unit, params) {
       isEmptySlot = "yes"
       crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
       crewPoints = getCrewSpText(crew?.skillPoints ?? 0)
-      crewId = crewId.tostring()
+      crewId
       crewIdInCountry = crew?.idInCountry
       needCurPoints = true
     })
@@ -442,7 +442,6 @@ function buildEmptySlot(id, _unit, params) {
     itemButtons = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", { itemButtons })
     extraInfoBlock = crewLevelInfoData
     crewNumWithTitle = hasCrew ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : "No crew"
-    crewId = crewId.tostring()
   })
 
   return handyman.renderCached("%gui/slotbar/slotbarSlotEmpty.tpl", emptySlotView)
@@ -641,7 +640,7 @@ function buildCommonUnitSlot(id, unit, params) {
     missionRules = null, bottomLineText = null, isSlotbarItem = false, isInTable = true,
     showInService = false, hasExtraInfoBlock = false, hasExtraInfoBlockTop = false,
     toBattle = false, toBattleButtonAction = "onSlotBattle", hasCrewHint = false,
-    showAdditionExtraInfo = false, showCrewHintUnderSlot = false, showCrewUnseenIcon = false
+    showAdditionExtraInfo = false, showCrewHintUnderSlot = false
   } = params
   local { inactive = false, status = DEFAULT_STATUS, tooltipParams = null } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
@@ -753,7 +752,7 @@ function buildCommonUnitSlot(id, unit, params) {
       crewLevelFull = crewLevelTextFull
       crewSpecIcon = crewSpec.trainedIcon
       crewStatus = getCrewStatus(crew, unitForCrewInfo)
-      hasCrewUnseenIcon = showCrewUnseenIcon && isCrewNeedUnseenIcon(crew, unitForCrewInfo) ? "yes" : "no"
+      hasCrewIdInfo = true
       crewNum = $"{crew.idInCountry + 1}"
       crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
       crewSpecializationLabel = hasUnit ? $"{loc("crew/trained")}{loc("ui/colon")}" : ""
@@ -851,7 +850,7 @@ function buildCommonUnitSlot(id, unit, params) {
       && (hasPriceText || hasAdditionalHistoricalRespawns)
     hasSpareSeparator = hasSpareInfo
       && (hasPriceText || hasAdditionalRespawns || hasAdditionalHistoricalRespawns)
-    hasExtraInfo = hasPriceText || hasAdditionalRespawns || hasSpareInfo || hasAdditionalHistoricalRespawns
+    isMissingExtraInfo = !hasPriceText && !hasAdditionalRespawns && !hasSpareInfo && !hasAdditionalHistoricalRespawns
   }
 
   if (hasPriceText)
@@ -943,7 +942,6 @@ function buildCommonUnitSlot(id, unit, params) {
     extraInfoBlockTop   = handyman.renderCached("%gui/slotbar/slotExtraInfoBlockTop.tpl", extraInfoTopView)
     refuseOpenHoverMenu = !hasActions
     crewNumWithTitle    = hasCrewInfo ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : ""
-    crewInfoTranslucent = toBattle ? "yes" : "no"
   })
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
   let isShowAsRandomUnit = groupName

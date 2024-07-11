@@ -176,7 +176,7 @@ let opticalSight = @(width, height,
     size = [width, height]
     watch = [TrackerVisible]
     children = [fullscreenCrosshair, rollIndicator, releaseTargetLockArea, releaseTargetLockCursor, fovLimits,
-      turretAngles(opticColorWatch, sightHdpx(150), sightHdpx(150), sightSw(50), sightSh(90), 0.5, true)
+      turretAngles(opticColorWatch, sightHdpx(150), sightHdpx(150), sightSw(50), sightSh(90))
     ]
   }
 }

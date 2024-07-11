@@ -44,16 +44,14 @@ let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManag
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
-let { isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
+let { getCrewStatus } = require("%scripts/crew/crew.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
   isSquadronResearchMode = false, hasSlotbarByUnitsGroups = false, shopResearchMode = false,
-  shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null,
-  cellClass = "slotbarClone"
-
+  shouldCheckCrewsReady = false, onSpendExcessExp = null, onCloseShop = null, slotbar = null
 ) {
   let actions = []
   if (!unit || ("airsGroup" in unit) || actionsNames.len() == 0 || is_in_loading_screen())
@@ -118,7 +116,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
       actionText = loc("mainmenu/btnCrew")
       icon       = "#ui/gameuiskin#slot_crew.svg"
-      haveWarning = isCrewNeedUnseenIcon(crew, unit)
+      haveWarning = isInArray(getCrewStatus(crew, unit), [ "ready", "full" ])
       haveDiscount = getCrewMaxDiscountByInfo(discountInfo) > 0
       showAction = inMenu
       let params = {
@@ -179,7 +177,6 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionFunc = @() takeUnitInSlotbar(unit, {
         unitObj = unitObj
         shouldCheckCrewsReady = shouldCheckCrewsReady
-        cellClass = cellClass
       })
     }
     else if (action == "repair") {

@@ -12,7 +12,7 @@ function takeUnitInSlotbar(unit, params = {}) {
     function() {
       checkSquadUnreadyAndDo(
         function () {
-          if (!unit || !unit.isUsable() || (isUnitInSlotbar(unit) && !params?.dragAndDropMode))
+          if (!unit || !unit.isUsable() || isUnitInSlotbar(unit))
             return
 
           guiStartSelectingCrew({

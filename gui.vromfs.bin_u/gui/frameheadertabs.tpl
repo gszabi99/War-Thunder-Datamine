@@ -1,7 +1,7 @@
 <<#tabs>>
 shopFilter {
   <<#id>>id:t='<<id>>'<</id>>
-  tooltip:t=''
+
   <<#hidden>>
   display:t='hide'
   enable:t='no'

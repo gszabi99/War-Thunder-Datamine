@@ -699,13 +699,10 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     initSelectedCrews()
     let units = []
     let crews = []
-    let crewInSlots = clone preset.crewInSlots
     local selected = preset.selected
     foreach (tbl in getCrewsList())
       if (tbl.country == countryId) {
-        foreach (crew in tbl.crews) {
-          if (!crewInSlots.contains(crew.id))
-            crewInSlots.append(crew.id)
+        foreach (crew in tbl.crews)
           if (("aircraft" in crew)) {
             let unitName = crew.aircraft
             if (!getAircraftByName(unitName))
@@ -716,7 +713,6 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
             if (selected == -1 || crew.idInCountry == getSelectedCrews(crew.idCountry))
               selected = crew.id
           }
-        }
       }
 
     if (units.len() == 0 || crews.len() == 0) //not found crews and units for country
@@ -725,7 +721,6 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     preset.units = units
     preset.crews = crews
     preset.selected = selected
-    preset.crewInSlots = crewInSlots
     this._updateInfo(preset)
     return preset
   }
@@ -788,16 +783,17 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     this.save()
   }
 
-  function swapValues(arr, values) {
-    arr.apply(@(v) (v in values) ? values[v] : v)
-  }
-
-  function replaceCrewsInCurrentPreset(countryId, crewIds) {
+  function updateCrewsInCurrentPreset(countryId, crewIds) {
     let crewInSlots = this.getCurrentPreset(countryId)?.crewInSlots
     if(crewInSlots == null)
       return
-    crewInSlots.replace(crewIds)
-    this.save()
+    let newCrews = crewIds.filter(@(c) crewInSlots.indexof(c) == null)
+    crewInSlots.extend(newCrews)
+    this.save(countryId)
+  }
+
+  function swapValues(arr, values) {
+    arr.apply(@(v) (v in values) ? values[v] : v)
   }
 }
 
