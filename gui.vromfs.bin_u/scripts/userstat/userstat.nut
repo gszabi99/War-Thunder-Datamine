@@ -34,7 +34,7 @@ function updateGetUnlocksValue(watchValue, response) {
 }
 
 function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) {
-  let data = Watched(defValue)
+  let data = Watched(clone defValue)
   let lastTime = Watched({ request = 0, update = 0 })
   let isRequestInProgress = @() lastTime.value.request > lastTime.value.update
     && lastTime.value.request + STATS_REQUEST_TIMEOUT > get_time_msec()
@@ -46,7 +46,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
       cb(result)
 
     if (result?.error) {
-      data(defValue)
+      data(clone defValue)
       return
     }
 
@@ -56,7 +56,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
         data.mutate(@(v) updateGetUnlocksValue(v, response))
     }
     else
-      data(result?.response ?? defValue)
+      data(result?.response ?? (clone defValue))
   }
 
   function prepareToRequest() {
@@ -65,7 +65,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
 
   function refresh(cb = null) {
     if (!::g_login.isLoggedIn()) {
-      data.update(defValue)
+      data.set(clone defValue)
       if (cb)
         cb({ error = "not logged in" })
       return
@@ -86,7 +86,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
   }
 
   function invalidateConfig(_p) {
-    data(defValue)
+    data(clone defValue)
     forceRefresh()
   }
 

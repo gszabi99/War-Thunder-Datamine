@@ -11,6 +11,7 @@ let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { register_command } = require("console")
 
 let researched_items_table = persist("researched_items_table", @() [])
 let abandoned_researched_items_for_session = persist("abandoned_researched_items_for_session", @() [])
@@ -227,3 +228,10 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
     })
   }
 }
+
+register_command(
+  @() guiStartChooseNextResearch({
+    prevUnit = "v_156_b1", country = "country_britain"}),
+  "showUnitFinishedResearchWnd")
+
+

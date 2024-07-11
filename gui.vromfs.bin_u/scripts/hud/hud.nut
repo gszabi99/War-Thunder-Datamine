@@ -41,7 +41,8 @@ let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
-let { initMpChatModel } = require("%scripts/chat/mpChatModel.nut")
+let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
+let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -66,7 +67,7 @@ eventbus_subscribe("getActionBarState", function(_) {
 eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
   handlersManager.clearScene()
   handlersManager.loadHandler(gui_handlers.Hud)
-  initMpChatModel()
+  initMpChatStates()
 })
 
 gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -184,11 +185,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function loadGameChat() {
     if (this.curChatData) {
-      ::detachGameChatSceneData(this.curChatData)
+      detachGameChatSceneData(this.curChatData)
       this.curChatData = null
     }
     if (::is_multiplayer())
-      this.curChatData = ::loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
+      this.curChatData = loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
         { selfHideInput = true, selfHideLog = true, selectInputIfFocusLost = true })
   }
 

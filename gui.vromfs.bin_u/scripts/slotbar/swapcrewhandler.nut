@@ -119,6 +119,10 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
   onUnitCellMove = @(_obj) null
   onOpenCrewPopup = @(_obj) null
   hideAllPopups = @(_obj) null
+  onCrewDragStart = @ (_obj) null
+  onCrewDropFinish = @ (_obj) null
+  onCrewDrop = @() null
+  onCrewMove = @() null
 }
 
 gui_handlers.SwapCrewHandler <- SwapCrewHandler

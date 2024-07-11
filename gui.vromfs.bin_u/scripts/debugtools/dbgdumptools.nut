@@ -42,6 +42,8 @@ let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
 let { curMissionRulesInvalidate, getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { setGameChatLogText } = require("%scripts/chat/mpChat.nut")
+let { getMpChatLog, setMpChatLog } = require("%scripts/chat/mpChatState.nut")
 
 //==================================================================================================
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
@@ -89,7 +91,7 @@ function debug_dump_debriefing_save(filename) {
     "shop_get_countries_list_with_autoset_units"
     "shop_get_units_list_with_autoset_modules"
     { id = "abandoned_researched_items_for_session", value = [] }
-    { id = "get_gamechat_log_text", value = getTblValue("chatLog", debriefingResult, "") }
+    { id = "_fake_mpchat_log_text", value = getTblValue("chatLog", debriefingResult, "") }
     { id = "getLogForBanhammer", value = debriefingResult?.logForBanhammer ??  "" }
     { id = "is_multiplayer", value = getTblValue("isMp", debriefingResult, false) }
     { id = "_fake_battlelog", value = HudBattleLog.battleLog }
@@ -181,6 +183,7 @@ function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
 
   curMissionRulesInvalidate()
   getCurMissionRules(true)
+  setGameChatLogText(getroottable()?._fake_mpchat_log_text)
 
   gatherDebriefingResult()
   guiStartDebriefingFull({
@@ -271,7 +274,7 @@ function debug_dump_respawn_save(filename) {
     { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock();
       get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ userIdInt64.value, false ] }
-    { id = "_fake_mpchat_log", value = require("%scripts/chat/mpChatModel.nut").getMpChatLog() }
+    { id = "_fake_mpchat_log", value = getMpChatLog() }
     "LAST_SESSION_DEBUG_INFO"
     "get_current_mission_info_cached"
     "has_available_slots"
@@ -354,7 +357,7 @@ function debug_dump_respawn_load(filename) {
   getCurMissionRules()
   clearCrewsList()
   initListLabelsSquad()
-  require("%scripts/chat/mpChatModel.nut").setMpChatLog(getroottable()?._fake_mpchat_log)
+  setMpChatLog(getroottable()?._fake_mpchat_log)
   eventbus_send("gui_start_respawn")
   broadcastEvent("MpChatLogUpdated")
   broadcastEvent("BattleLogMessage")

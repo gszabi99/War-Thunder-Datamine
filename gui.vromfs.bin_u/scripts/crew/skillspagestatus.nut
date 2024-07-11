@@ -1,107 +1,43 @@
 from "%scripts/dagui_library.nut" import *
 
-let {enumsAddTypes} = require("%sqStdLibs/helpers/enums.nut")
-let { getCrewTotalSteps, getCrewSkillNewValue, crewSkillValueToStep, getMaxAvailbleCrewStepValue
+let { getCrewTotalSteps, getCrewSkillNewValue, crewSkillValueToStep,
+  getNextCrewSkillStepCost
 } = require("%scripts/crew/crew.nut")
 
-let g_skills_page_status = {
-  types = []
-
-  template = {
-    priority = 0
-    minSteps = 0
-    minSkillsRel = 0 //relative value of skills on this page from all skills available on page.
-    style = ""
-    icon = "#ui/gameuiskin#new_crew_skill_points.svg"
-    color = "white"
-    show = true
-    wink = false
-  }
-
-}
-
-
-enumsAddTypes(g_skills_page_status, {
-  NONE = {
-    show = false
-  }
-  ONE = {
-    priority = 1
-    minSteps = 1
-    minSkillsRel = 0.1
-    style = "show"
-    color = "crewSkills_show"
-  }
-  HALF = {
-    priority = 2
-    minSteps = 2
-    minSkillsRel = 0.5
-    style = "ready"
-    color = "crewSkills_ready"
-  }
-  MOST = {
-    priority = 3
-    minSteps = 2
-    minSkillsRel = 0.7
-    style = "full"
-    color = "crewSkills_full"
-    wink = true
-  }
-  /*
-  FULL = {
-    priority = 4
-    minSteps = 5
-    minSkillsRel = 1.0
-    style = "full"
-    color = "crewSkills_full"
-    wink = true
-  }
-  */
-})
-
-g_skills_page_status.getPageStatus <- function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
-  local res = g_skills_page_status.NONE
+function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
+  local needShowAdvice = false
+  local avalibleSkills = []
   let items = getTblValue("items", page)
   if (!items || !items.len())
-    return res
+    return {needShowAdvice, avalibleSkills}
 
-  let total = items.len()
-  local allowedMax = 0  //amount of skills not maxed but allowed to max
-  let allowedAmount = [] //only for not maxed
+  local maxStepCost = 0
   foreach (item in items) {
-    if (!item.isVisible(crewUnitType))
+    if (!item.isVisible(crewUnitType)
+      || (page.id == "gunner" && item.name == "members")
+      || (page.id == "groundService" && item.name == "repairRank"))
       continue
 
+    let crewSkillValue = getCrewSkillNewValue(item, crew, unit)
     let totalSteps = getCrewTotalSteps(item)
-    let value = getCrewSkillNewValue(item, crew, unit)
-    let curStep = crewSkillValueToStep(item, value)
-    if (curStep >= totalSteps)
+    let curStep = crewSkillValueToStep(item, crewSkillValue)
+    if (curStep == totalSteps)
       continue
 
-    let availValue = getMaxAvailbleCrewStepValue(item, value, skillPoints)
-    let availStep = crewSkillValueToStep(item, availValue)
+    let stepCost = getNextCrewSkillStepCost(item, crewSkillValue, 1)
+    maxStepCost = max(maxStepCost, stepCost)
 
-    if (totalSteps == availStep)
-      allowedMax++
-    else
-      allowedAmount.append(availStep - curStep)
+    if (stepCost <= skillPoints)
+      avalibleSkills.append(item.name)
   }
-
-  foreach (statusType in this.types) {
-    if (res.priority >= statusType.priority)
-      continue
-
-    local checked = allowedMax
-    foreach (allowed in allowedAmount)
-      if (allowed >= statusType.minSteps)
-        checked++
-
-    if (statusType.minSkillsRel * total <= checked)
-      res = statusType
-  }
-  return res
+  needShowAdvice = (maxStepCost > 0) && (maxStepCost <= skillPoints)
+  let iconColor = needShowAdvice ? "crewPageIconGold"
+   : avalibleSkills.len() > 0 ? "crewPageIconSilver"
+   : "white"
+  return {needShowAdvice, avalibleSkills,
+    icon = "#ui/gameuiskin#new_crew_skill_points.svg", iconColor}
 }
 
-return freeze({
-  g_skills_page_status
-})
+return {
+  getPageStatus
+}
