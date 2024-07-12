@@ -189,6 +189,9 @@ let g_hud_hints_manager = {
   }
 
   function updatePosHudHintBlock() {
+    if (!(this.nest?.isValid() ?? false))
+      return
+
     let hintBlockObj = this.nest.findObject("hintBlock")
     if (!(hintBlockObj?.isValid() ?? false))
       return

@@ -111,6 +111,7 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
         continue
       }
 
+      gui_handlers.ActionsList.removeActionsListFromObject(originalItem)
       let itemsNest = this.scene.findObject("itemsNest")
 
       let item = originalItem.getClone(itemsNest, this)

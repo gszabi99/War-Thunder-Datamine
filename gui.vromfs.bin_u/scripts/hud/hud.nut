@@ -254,6 +254,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(hudObj))
       return false
 
+    this.currentHud?.onDestroy()
     this.guiScene.replaceContentFromText(hudObj, "", 0, this)
 
     if (newHudType == HUD_TYPE.CUTSCENE)

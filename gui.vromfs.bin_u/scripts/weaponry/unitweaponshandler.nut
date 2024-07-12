@@ -446,11 +446,11 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let itemObj = this.scene.findObject(this.weaponItemId)
+    let curWeapon = this.getCurWeapon()
     if (!checkObj(itemObj))
       return
 
     this.showItemParams.hasMenu <- this.canChangeWeaponry && this.hasWeaponsToChooseFrom()
-    let curWeapon = this.getCurWeapon()
     itemObj.show(curWeapon)
     if (!curWeapon)
       return
