@@ -2686,7 +2686,65 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic2_gun",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_turret",
+                "mainTurret": true,
+                "independent": true
+              },
+              "limits": {
+                "yaw": [
+                  -15.0,
+                  15.0
+                ],
+                "pitch": [
+                  -15.0,
+                  15.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_turret",
+                "mainTurret": true,
+                "independent": true
+              },
+              "limits": {
+                "yaw": [
+                  -38.0,
+                  38.0
+                ],
+                "pitch": [
+                  -55.0,
+                  15.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 200.0,
@@ -2695,8 +2753,9 @@
               "aimForOperatedShell": true,
               "turret": {
                 "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
+                "gun": "optic1_turret",
+                "mainTurret": true,
+                "independent": true
               },
               "limits": {
                 "yaw": [
@@ -2704,8 +2763,8 @@
                   90.0
                 ],
                 "pitch": [
-                  -90.0,
-                  90.0
+                  -85.0,
+                  81.0
                 ]
               }
             },
@@ -2886,14 +2945,13 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120a_default",
             "ShowNodes": {
               "node": "lau7_l1"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a_default.blk",
               "emitter": "aim_9_003",
               "bullets": 1,
               "external": true,
@@ -3638,14 +3696,13 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120a_default",
             "ShowNodes": {
               "node": "lau7_r1"
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120a_default.blk",
               "emitter": "aim_9_004",
               "bullets": 1,
               "external": true,

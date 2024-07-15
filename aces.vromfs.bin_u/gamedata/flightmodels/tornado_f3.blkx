@@ -3273,6 +3273,36 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
+            "iconType": "missile_air_to_air_special_group",
+            "name": "skyflash_deafult",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket1",
+                "pylon_rocket2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight_tornado_default.blk",
+                "emitter": "aim_7_2",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "launcher": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/uk_skyflash_aim_7_dogfight_tornado_default.blk",
+                "emitter": "aim_7_1",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "launcher": true
+              }
+            ]
+          },
+          {
             "iconType": "missile_air_to_air_midrange_group_x4",
             "name": "skyflash",
             "reqModification": "uk_skyflash",
