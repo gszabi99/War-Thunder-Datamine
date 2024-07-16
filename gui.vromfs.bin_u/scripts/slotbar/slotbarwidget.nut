@@ -1644,9 +1644,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function onCrewDragStart(obj) {
     removeAllGenericTooltip()
     this.hideAllPopups()
-    if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) //close unit context menu
-      gui_handlers.ActionsList.removeActionsListFromObject(obj)
-
     let draggedObj = obj.getParent().getParent()
     swapCrewsBegin(draggedObj, this.getCurrentAirsTable(), this)
   }

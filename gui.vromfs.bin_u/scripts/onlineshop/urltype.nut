@@ -15,6 +15,20 @@ let g_url_type = {
   types = []
 }
 
+function applyCurLangAfterSlash(url, langKey, keyBeforeLang, supportedLangs) {
+  let idx = url.indexof(keyBeforeLang)
+  if (idx == null)
+    return $"{url}/{langKey}"
+
+  let insertIdx = idx + keyBeforeLang.len()
+  local afterLangIdx = url.indexof("/", insertIdx)
+  if (afterLangIdx == null || !isInArray(url.slice(insertIdx, afterLangIdx), supportedLangs))
+    afterLangIdx = insertIdx
+  else
+    afterLangIdx++
+  return "".concat(url.slice(0, insertIdx), langKey, "/", url.slice(afterLangIdx))
+}
+
 g_url_type.template <- {
   typeName = "" //filled automatically by typeName
   sortOrder = URL_CHECK_ORDER.BY_URL_REGEXP
@@ -84,20 +98,14 @@ enumsAddTypes(g_url_type, {
     urlRegexpList = [
       regexp(@"^https?:\/\/warthunder\.com" + URL_ANY_ENDING),
     ]
-    applyLangKey = function(url, langKey) {
-      let keyBeforeLang = ".com/"
-      let idx = url.indexof(keyBeforeLang)
-      if (idx == null)
-        return url + "/" + langKey
+    applyLangKey = @(url, langKey) applyCurLangAfterSlash(url, langKey, ".com/", this.supportedLangs)
+  }
 
-      let insertIdx = idx + keyBeforeLang.len()
-      local afterLangIdx = url.indexof("/", insertIdx)
-      if (afterLangIdx == null || !isInArray(url.slice(insertIdx, afterLangIdx), this.supportedLangs))
-        afterLangIdx = insertIdx
-      else
-        afterLangIdx++
-      return url.slice(0, insertIdx) + langKey + "/" + url.slice(afterLangIdx)
-    }
+  LEGAL = {
+    urlRegexpList = [
+      regexp(@"^https?:\/\/legal\.gaijin\.net" + URL_ANY_ENDING),
+    ]
+    applyLangKey = @(url, langKey) applyCurLangAfterSlash(url, langKey, ".net/", this.supportedLangs)
   }
 }, null, "typeName")
 
