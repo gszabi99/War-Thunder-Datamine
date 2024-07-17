@@ -12,17 +12,12 @@
     "statType": "hydra",
     "caliber": 0.16,
     "length": 3.62,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "CxK": 2.3,
-    "wingAreaMult": 1.45,
-    "finsAoaHor": 0.290353,
-    "finsAoaVer": 0.290353,
-    "finsLatAccel": 47.9285,
-    "distFromCmToStab": 0.12,
+    "CxK": 1.9,
+    "wingAreaMult": 1.4,
+    "finsAoaHor": 0.330668,
+    "finsAoaVer": 0.330668,
+    "finsLatAccel": 46.7469,
+    "distFromCmToStab": 0.11,
     "mass": 118.0,
     "massEnd": 92.94,
     "massEnd1": 74.75,
@@ -101,8 +96,8 @@
     "amountPerTier": 1.0,
     "iconType": "missile_type_b_air_to_air_midrange",
     "arcadeProp": {
-      "finsAoaHor": 0.4,
-      "finsAoaVer": 0.4
+      "finsAoaHor": 0.35,
+      "finsAoaVer": 0.35
     },
     "guidance": {
       "inertialNavigation": true,
@@ -115,6 +110,10 @@
       "lockDistance": 20000.0,
       "afterLaunchSpeedUp": 170.0,
       "breakLockMaxTime": 100.0,
+      "timeTableCorrection": [
+        0.172,
+        0.606
+      ],
       "inertialGuidance": {
         "inertialNavigationDriftSpeed": 2.0,
         "datalink": true
@@ -180,9 +179,9 @@
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 7.5,
-        "loftTargetElevation": -5.0,
-        "loftAngleToAccelMult": 2.5,
+        "loftElevation": 27.5,
+        "loftTargetElevation": -3.5,
+        "loftAngleToAccelMult": 20.0,
         "loftTargetOmegaMax": 0.5,
         "timeToHitToGain0": [
           10.0,
@@ -196,10 +195,6 @@
           50.0,
           0.5
         ],
-        "timeToHitToGain3": [
-          60.0,
-          0.2
-        ],
         "timeToGain0": [
           0.3,
           0.0
@@ -211,9 +206,9 @@
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 40.0,
-        "accelControlProp": 0.0035,
-        "accelControlIntg": 0.0221,
-        "accelControlDiff": 0.0007,
+        "accelControlProp": 0.0101,
+        "accelControlIntg": 0.0065,
+        "accelControlDiff": 0.00015,
         "accelControlIntgLim": 1.0
       },
       "table0": {
@@ -228,28 +223,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          299.839,
-          1977.34,
-          371.115,
-          1875.47
+          287.793,
+          739.937,
+          334.49,
+          705.251
         ],
         "rangeMax": [
-          5484.01,
-          22943.1,
-          6216.43,
-          24084.5
+          6655.88,
+          55537.8,
+          7507.32,
+          57161.7
         ],
         "rangeMinDogfight": [
-          353.464,
-          1595.24,
-          382.347,
-          1368.32
+          297.791,
+          2275.74,
+          373.06,
+          2413.46
         ],
         "rangeMaxDogfight": [
-          7043.21,
-          8044.66,
-          9352.42,
-          8825.1
+          9532.98,
+          9347.82,
+          10095.4,
+          10327.1
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -260,10 +255,10 @@
           50.0
         ],
         "timeMax": [
-          15.2707,
-          32.7906,
-          15.6297,
-          33.5546
+          17.7625,
+          90.0006,
+          18.2291,
+          90.0
         ],
         "timeMaxAltDiff": [
           500.0,
@@ -282,28 +277,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          292.03,
-          1878.2,
-          367.751,
-          1884.27
+          333.894,
+          866.499,
+          385.019,
+          810.903
         ],
         "rangeMax": [
-          8889.77,
-          47009.3,
-          9976.2,
-          49435.4
+          10760.5,
+          64038.5,
+          12005.6,
+          66507.0
         ],
         "rangeMinDogfight": [
-          344.508,
-          1608.26,
-          442.896,
-          1419.42
+          364.18,
+          2139.49,
+          394.746,
+          1639.79
         ],
         "rangeMaxDogfight": [
-          12157.7,
-          11629.4,
-          13184.8,
-          14506.4
+          12492.8,
+          13398.8,
+          13397.4,
+          14591.3
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -314,10 +309,10 @@
           50.0
         ],
         "timeMax": [
-          22.8126,
-          41.6665,
-          23.527,
-          76.0844
+          26.6877,
+          90.0002,
+          27.5419,
+          90.0
         ],
         "timeMaxAltDiff": [
           500.0,
@@ -336,28 +331,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          311.943,
-          1854.15,
-          346.84,
-          1825.82
+          453.004,
+          1054.46,
+          446.894,
+          973.111
         ],
         "rangeMax": [
-          20059.2,
-          70541.0,
-          22863.8,
-          73915.9
+          22009.3,
+          84603.5,
+          24420.2,
+          88963.7
         ],
         "rangeMinDogfight": [
-          410.183,
-          1711.49,
-          503.163,
-          1623.68
+          496.228,
+          1862.93,
+          530.389,
+          1581.07
         ],
         "rangeMaxDogfight": [
-          26951.3,
-          23623.2,
-          29419.3,
-          25745.3
+          20124.8,
+          29291.3,
+          22117.3,
+          31160.1
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -368,10 +363,10 @@
           50.0
         ],
         "timeMax": [
-          51.8301,
+          51.1867,
           90.0,
-          55.2906,
-          90.0
+          53.2699,
+          89.9985
         ],
         "timeMaxAltDiff": [
           500.0,
@@ -390,28 +385,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          332.321,
-          3665.5,
-          1012.0,
-          3720.19
+          549.422,
+          1182.77,
+          606.483,
+          1136.16
         ],
         "rangeMax": [
-          44152.8,
-          83789.8,
-          48141.5,
-          87882.2
+          52471.9,
+          97941.6,
+          57027.8,
+          102587.0
         ],
         "rangeMinDogfight": [
-          1855.93,
-          1843.36,
-          1402.99,
-          1773.52
+          644.918,
+          1886.3,
+          703.4,
+          1776.3
         ],
         "rangeMaxDogfight": [
-          50000.0,
-          45200.8,
-          50000.0,
-          59133.0
+          52467.1,
+          73054.9,
+          57024.4,
+          77631.8
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -424,8 +419,8 @@
         "timeMax": [
           90.0,
           90.0,
-          89.9664,
-          90.0
+          90.0,
+          89.9979
         ],
         "timeMaxAltDiff": [
           500.0,
