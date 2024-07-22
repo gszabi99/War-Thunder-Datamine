@@ -169,8 +169,8 @@
     "irstSearchWide": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "elevationLimits": [
         -5.0,
@@ -187,12 +187,12 @@
     "irstSearchNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -60.0,
-        60.0
+        -30.0,
+        30.0
       ],
       "elevationLimits": [
-        -2.5,
-        2.5
+        -5.0,
+        5.0
       ],
       "period": 0.2,
       "width": 2.5,
@@ -2364,13 +2364,13 @@
         "setIrstLockTrack": {
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -60.0,
-              60.0
+              -30.0,
+              30.0
             ],
             "azmithWidth": 2.0,
             "elevationRange": [
-              -22.5,
-              52.5
+              -2.5,
+              2.5
             ],
             "elevationWidth": 3.0,
             "distanceRange": [
@@ -2406,6 +2406,14 @@
           }
         },
         "setIrst": {
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
           "setIrstLockTrack": {},
           "clearTargets": {},
           "setFsmActive": [
