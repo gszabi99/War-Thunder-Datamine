@@ -16,6 +16,7 @@ let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/generi
 let { getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let { abs } = require("math")
 let { isXInputDevice } = require("controls")
+let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
 function getCurrentHandler() {
   let airHandler = handlersManager.findHandlerClassInScene(gui_handlers.HudAir)?.airWeaponSelector
@@ -40,7 +41,6 @@ let class HudAirWeaponSelector {
   sceneTplName = "%gui/hud/hudAirWeaponSelector.tpl"
   unit = null
   guiScene = null
-  presets = null
   chosenPreset = null
   buttonsIndexByWeaponName = {}
   nestObj = null
@@ -81,13 +81,27 @@ let class HudAirWeaponSelector {
     this.currentBtnsFloor = this.buttonsFloors.weapons
     this.nestObj = nestObj
     this.guiScene = nestObj.getScene()
-    this.unit = unit
-    this.presets = getWeaponryByPresetInfo(unit)?.presets
-    let presetName = get_current_weapon_preset()?.presetName ?? getLastWeapon(unit.name)
-    let chosenPresetIdx = this.presets.findindex(@(w) w.name == presetName) ?? 0
-    this.presets[chosenPresetIdx].tiersView.reverse()
-    this.selectPreset(this.presets[chosenPresetIdx])
     this.nestObj.show(false)
+    this.selectUnit(unit)
+  }
+
+  function selectUnit(unit) {
+    this.unit = unit
+    if (unit == null) {
+      this.close()
+      return
+    }
+    let presetName = get_current_weapon_preset()?.presetName ?? getLastWeapon(unit.name)
+    this.selectPresetByName(presetName)
+  }
+
+  function selectPresetByName(presetName) {
+    let presets = getWeaponryByPresetInfo(this.unit).presets
+    if (presets.len() == 0)
+      return
+    let chosenPresetIdx = presets.findindex(@(w) w.name == presetName) ?? 0
+    presets[chosenPresetIdx].tiersView.reverse()
+    this.selectPreset(presets[chosenPresetIdx])
   }
 
   function selectPreset(preset) {
@@ -125,7 +139,7 @@ let class HudAirWeaponSelector {
     if (!this.isValid()) {
       return
     }
-    if (this.isInOpenedState)
+    if (this.isOpened())
       this.close()
     else
       this.open()
@@ -139,9 +153,24 @@ let class HudAirWeaponSelector {
 
   isValid = @() this.nestObj?.isValid() ?? false
 
+  function updateUnitAndPreset() {
+    let hudUnit = getPlayerCurUnit()
+    if (hudUnit?.name != this.unit?.name) {
+      this.selectUnit(hudUnit)
+      return
+    }
+
+    let presetName = get_current_weapon_preset()?.presetName ?? ""
+    if (this.chosenPreset?.name != presetName)
+      this.selectPresetByName(presetName)
+  }
+
   function open() {
-    if (!this.isValid() || this.unit == null
-      || !has_secondary_weapons() || getMfmHandler()?.isActive)
+    if (!this.isValid() || !has_secondary_weapons()
+      || getMfmHandler()?.isActive)
+      return
+    this.updateUnitAndPreset()
+    if (this.unit == null)
       return
 
     this.nestObj.show(true)
@@ -169,6 +198,8 @@ let class HudAirWeaponSelector {
   }
 
   function close() {
+    if (!this.isOpened())
+      return
     this.hoveredWeaponBtn = null
     this.isInOpenedState = false
     handlersManager.restoreAllowControlMask()
@@ -610,7 +641,7 @@ function openHudAirWeaponSelector() {
 
 function closeHudAirWeaponSelector() {
   let selectorHandler = getCurrentHandler()
-  if (selectorHandler == null || !selectorHandler.isInOpenedState)
+  if (selectorHandler == null)
     return
   selectorHandler.close()
 }

@@ -90,9 +90,12 @@ function get_error_data(header, error_code) {
   let errData = get_error_data(header, error_code)
 
   if (!isPlatformXboxOne) {
-    errData.text = "".concat(errData.text, "\n\n", (isPlatformSony ? "" : ("".concat(loc("msgbox/error_link_format_game"), loc("ui/colon")))))
-    let link = "".concat(getCurCircuitOverride("knowledgebaseUrl", loc("url/knowledgebase")), errData.errCode)
-    let linkText = isPlatformSony ? loc("msgbox/error_link_format_game") : link
+    let errorLinkFormatText = loc(getCurCircuitOverride($"errorLinkFormatLocId_{errData.errCode}", "msgbox/error_link_format_game"))
+    errData.text = "".concat(errData.text, "\n\n",
+      (isPlatformSony ? "" : ("".concat(errorLinkFormatText, loc("ui/colon")))))
+    let link = getCurCircuitOverride($"knowledgebaseUrl_{errData.errCode}")
+      ?? "".concat(getCurCircuitOverride("knowledgebaseUrl") ?? loc("url/knowledgebase"), errData.errCode)
+    let linkText = isPlatformSony ? errorLinkFormatText : link
     errData.text = "".concat(errData.text, $"<url={link}>{linkText}</url>")
   }
 

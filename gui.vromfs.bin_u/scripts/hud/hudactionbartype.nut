@@ -1206,6 +1206,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "special_unit_bomber_nuclear"
     _title = loc("hotkeys/ID_ACTION_BAR_ITEM_9")
     _icon = "#ui/gameuiskin#bomber_nuclear_streak"
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_ACTION_BAR_ITEM_9"
   }
 

@@ -13,6 +13,8 @@ chosen:t='no'
 selected:t='no'
 <</isSlotbarItem>>
 
+hasSelectedState:t='no'
+
 unhoverDiv {
   size:t='pw, ph'
   display:t='hide'

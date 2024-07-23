@@ -21,6 +21,7 @@ let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { CommunicationState } = require("%scripts/xbox/permissions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -480,6 +481,10 @@ registerRespondent("is_in_my_squad", function is_in_my_squad(userId, checkAutosq
 
 registerRespondent("is_in_squad", function is_in_squad(forChat = false) {
   return g_squad_manager.isInSquad(forChat)
+})
+
+addListenersWithoutEnv({
+  CrewsOrderChanged = @(_p) ::g_squad_utils.updateMyCountryData(false)
 })
 
 return {

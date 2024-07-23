@@ -10,7 +10,6 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
 
   draggedObj = null
   airsTableSource = null
-  slotbarWeak = null
 
   draggedClone = null
   draggedCrewCountry = null
@@ -75,7 +74,6 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onCrewDropFinish(_obj) {
-    this.slotbarWeak.fullUpdate()
     this.onCloseSwapCrews()
   }
 
@@ -191,4 +189,4 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.SwapCrewsHandler <- SwapCrewsHandler
 
-return @(draggedObj, airsTableSource, slotbarWeak) handlersManager.loadHandler(SwapCrewsHandler, { draggedObj, airsTableSource, slotbarWeak })
+return @(draggedObj, airsTableSource) handlersManager.loadHandler(SwapCrewsHandler, { draggedObj, airsTableSource })

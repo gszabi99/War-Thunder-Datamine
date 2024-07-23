@@ -1603,7 +1603,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return true
 
     if (bulletsManager.canChangeBulletsCount())
-      return bulletsManager.checkChosenBulletsCount(true, Callback(@() applyFunc(), this))
+      return bulletsManager.checkChosenBulletsCount(Callback(@() applyFunc(), this))
 
     let air = this.getCurSlotUnit()
     if (!air)

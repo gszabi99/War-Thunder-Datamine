@@ -62,7 +62,7 @@
 @const extraInfoTopShade: 2@dp;
 @const slotBorderSize: 1@dp;
 @const slotbarBottomLineHeight: 1@sf/@pf;
-@const slotTopLineHeight: 2@sf/@pf;
+@const slotTopLineHeight: 2@dp;
 @const unitTooltipTopLineHeight: 3@dp;
 @const unitTooltipTopLinePad: -1@dp; 
 @const slotBottomShadeHeight: 2@sf/@pf;
@@ -667,16 +667,6 @@ slotBottomGradientLine {
   display:hide;
 }
 
-unitCell > shopItem > slotPlate > topLine,
-unitItemContainer > shopItem > slotPlate > topLine {
-  size:pw, @slotTopLineHeight;
-}
-
-unitCell > shopItem[group=yes] > slotPlate > topLine {
-  size:pw, 7@sf/@pf;
-  pos:0, -4@sf/@pf;
-}
-
 unitCell[selected=yes] > shopItem > slotTopGradientLine,
 unitCell[selected=yes] > shopItem > slotBottomGradientLine,
 unitCell[selected=no] > shopItem:hover > slotBottomGradientLine,
@@ -689,12 +679,14 @@ unitItemContainer > shopItem:hover > slotHoverHighlight {
 }
 
 unitCell[isShopCell=yes] > shopItem > slotBottomGradientLine,
-unitCell[isShopCell=yes] > shopItem > slotTopGradientLine {
+unitCell[isShopCell=yes] > shopItem > slotTopGradientLine,
+unitItemContainer[hasSelectedState=no] > shopItem > slotBottomGradientLine,
+unitItemContainer[hasSelectedState=no] > shopItem > slotTopGradientLine {
   display:hide;
 }
 
 unitCell[isShopCell=yes] > shopItem:hover > slotBottomGradientLine,
-unitCell[isShopCell=yes] > shopItem:hover > slotBottomGradientLine {
+unitItemContainer[hasSelectedState=no] > shopItem:hover > slotBottomGradientLine {
   display:show;
 }
 
@@ -1045,6 +1037,14 @@ extraInfoBlock[needHugeFooter=yes] {
   size:1.1pw, @slotExtraInfoHeightHuge;
 }
 
+CountriesCrews[needHugeFooter=yes] extraInfoBlockHint {
+  needHugeFooter:yes;
+}
+
+extraInfoBlockHint[needHugeFooter=yes] {
+  size:pw, @slotExtraInfoHeightHuge;
+}
+
 extraInfoBlock > content {
   re-type:9rect;
   size:1/1.1*pw, ph;
@@ -1209,13 +1209,13 @@ crewInfoNumBlock > crewNumText {
   pos:0, ph/2-h/2;
 }
 
-extraInfoBlock[needHugeFooter=yes] > content > crewInfoNumBlock > icon {
+extraInfoBlock[needHugeFooter=yes] > content crewInfoNumBlock > icon {
   height:ph - 4@sf/@pf;
   background-svg-size:w, h;
   background-color:#44444444;
 }
 
-extraInfoBlock[needHugeFooter=yes] > content > crewInfoNumBlock > crewNumText {
+extraInfoBlock[needHugeFooter=yes] > content crewInfoNumBlock > crewNumText {
   font:@fontNormal;
   color:#44444444;
 }
@@ -1256,16 +1256,16 @@ crewInfoExpBlock > shopItemText {
   css-hier-invalidate:yes;
 }
 
-extraInfoBlock[needHugeFooter=yes] > content > crewInfoExpBlock > expAvailableIcon {
+extraInfoBlock[needHugeFooter=yes] > content crewInfoExpBlock > expAvailableIcon {
   height:ph - 4@sf/@pf;
 }
 
-extraInfoBlock[needHugeFooter=yes] > content > crewInfoExpBlock > icon {
+extraInfoBlock[needHugeFooter=yes] > content crewInfoExpBlock > icon {
   height:ph - 4@sf/@pf;
   background-svg-size:w, h;
 }
 
-extraInfoBlock[needHugeFooter=yes] > content > crewInfoExpBlock > shopItemText {
+extraInfoBlock[needHugeFooter=yes] > content crewInfoExpBlock > shopItemText {
   font:@fontNormal;
   color:@white;
 }

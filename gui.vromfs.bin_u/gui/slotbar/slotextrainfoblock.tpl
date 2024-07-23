@@ -185,7 +185,7 @@ extraInfoBlock {
       }
 
       <</hasActions>>
-      tdiv {
+      extraInfoBlockHint {
         position:t='absolute'
         size:t="pw, @slotExtraInfoHeight"
         pos:t='pw/2-w/2, ph'

@@ -105,7 +105,6 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
     swapedCrews[this.slotsCrews[row]] <- this.crew.id
     swapedCrews[this.crew.id] <- this.slotsCrews[row]
     ::slotbarPresets.swapCrewsInCurrentPreset(swapedCrews)
-    this.slotbarWeak.fullUpdate()
     this.goBack()
   }
 

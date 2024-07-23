@@ -13,9 +13,7 @@ function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
 
   local maxStepCost = 0
   foreach (item in items) {
-    if (!item.isVisible(crewUnitType)
-      || (page.id == "gunner" && item.name == "members")
-      || (page.id == "groundService" && item.name == "repairRank"))
+    if (!item.isVisible(crewUnitType))
       continue
 
     let crewSkillValue = getCrewSkillNewValue(item, crew, unit)
@@ -25,7 +23,8 @@ function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
       continue
 
     let stepCost = getNextCrewSkillStepCost(item, crewSkillValue, 1)
-    maxStepCost = max(maxStepCost, stepCost)
+    if ((page.id != "gunner" || item.name != "members") && (page.id != "groundService" || item.name != "repairRank"))
+      maxStepCost = max(maxStepCost, stepCost)
 
     if (stepCost <= skillPoints)
       avalibleSkills.append(item.name)

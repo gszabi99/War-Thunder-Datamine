@@ -164,6 +164,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   ignoreCheckSlotbar = false
   skipCheckCountrySelect = false
   skipCheckAirSelect = false
+  skipActionWithEmptySlot = false
 
   headerObj = null
   crewsObj = null
@@ -793,7 +794,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       let unit = this.getCurCrewUnit(crew)
       if (unit != null || (!isCountrySlotbarHasUnits(crew.country) && this.curSlotIdInCountry == 0))
         this.setCrewUnit(unit)
-      if (!unit && this.needActionsWithEmptyCrews)
+      if (!unit && this.needActionsWithEmptyCrews && !this.skipActionWithEmptySlot)
         this.onSlotChangeAircraft()
       return
     }
@@ -842,7 +843,9 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
           if (this.curSlotCountryId != selSlot.countryId)
             return
           this.ignoreCheckSlotbar = false
+          this.skipActionWithEmptySlot = true
           this.selectTblAircraft(obj, getSelectedCrews(this.curSlotCountryId))
+          this.skipActionWithEmptySlot = false
         }, this))
     this.afterSlotbarSelect?()
   }
@@ -1031,6 +1034,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!countryData)
       return
 
+    this.skipActionWithEmptySlot = true
     this.checkCreateCrewsNest(countryData)
     this.checkUpdateCountryInScene(countryData.idx)
 
@@ -1046,6 +1050,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     else
       this.onSlotbarSelect(this.crewsObj.findObject("airs_table_" + countryData.idx))
 
+    this.skipActionWithEmptySlot = false
     this.onSlotbarCountryChanged()
   }
 
@@ -1307,6 +1312,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventSlotbarPresetChangedWithoutProfileUpdate(_p) {
+    this.fullUpdate()
+  }
+
+  function onEventCrewsOrderChanged(_p) {
     this.fullUpdate()
   }
 
@@ -1645,7 +1654,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     removeAllGenericTooltip()
     this.hideAllPopups()
     let draggedObj = obj.getParent().getParent()
-    swapCrewsBegin(draggedObj, this.getCurrentAirsTable(), this)
+    swapCrewsBegin(draggedObj, this.getCurrentAirsTable())
   }
 
   function onSwapCrews(obj) {

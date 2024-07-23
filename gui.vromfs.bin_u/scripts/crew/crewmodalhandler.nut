@@ -412,7 +412,11 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let upgradeBlock = showObjById("upgrade_qualification_block", needShowUpgradeBlock, this.scene)
 
     let crewSpecType = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
-    upgradeBlock.findObject("current_qualification").setValue( "".concat(loc("crew/trained"), $": {crewSpecType.getName()}"))
+    upgradeBlock.findObject("current_qualification").setValue(
+      "".concat(loc("crew/trained"), loc("ui/colon")))
+    upgradeBlock.findObject("current_qualification_icon")["background-image"]
+      = crewSpecType.trainedIcon
+    upgradeBlock.findObject("current_qualification_desc").setValue(crewSpecType.getName())
 
     let nextSpecType = crewSpecType.getNextType()
     let levels = nextSpecType.getCurAndReqLevel(this.crew, this.curUnit)
@@ -445,15 +449,15 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         })
         : ""
 
-      crewLvlText = loc("crew/qualification/specDescriptionMain",
-        {
-         specName = colorize("activeTextColor", nextSpecType.getName())
-         descPart = specDescriptionPart
-         trainCost = colorize("activeTextColor",
-           crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
-        })
+      let nextSpecTypeImg = "".concat("{{img=", nextSpecType.trainedIcon, "}}")
+      crewLvlText = loc("crew/qualification/specDescriptionMain", {
+        specName = $"{nextSpecTypeImg}{colorize("activeTextColor", nextSpecType.getName())}"
+        descPart = specDescriptionPart
+        trainCost = colorize("activeTextColor",
+          crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
+      })
+      qualificationReqObj.setValue(crewLvlText)
     }
-    qualificationReqObj.setValue(crewLvlText)
 
     if (!isShowExpUpgrade)
       return

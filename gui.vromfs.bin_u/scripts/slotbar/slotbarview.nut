@@ -27,7 +27,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
-let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare,
+let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare, isUnitDisabledByMatching
 } = require("%scripts/respawn/respawnState.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -41,6 +41,9 @@ let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_game_mode } = require("mission")
+let { debug_dump_stack } = require("dagor.debug")
+let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -250,7 +253,8 @@ function getSpareCountText(spareCount, crew, unit, missionRules) {
   if (!isInFlight())
     return hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
 
-  let isSpareAllowedInMission = missionRules == null || missionRules.isAllowSpareInMission()
+  let isSpareAllowedInMission = (missionRules == null || missionRules.isAllowSpareInMission())
+    && get_game_mode() == GM_DOMINATION
   if (!isSpareAllowedInMission)
     return ""
   if (!crew)
@@ -826,7 +830,8 @@ function buildCommonUnitSlot(id, unit, params) {
     ? $"{additionalRespawns}{loc("ui/minus")}{loc("mission_hint/spawns_per_unit", {army = armyLocName})}"
     : ""
 
-  let extraInfoTopView = {
+  let isUnitDisabled = isInFlight() && crew && isUnitDisabledByMatching(crew.idInCountry)
+  let extraInfoTopView = !isUnitDisabled ? {
     showAdditionExtraInfo
     spareHintText
     priceHintText
@@ -852,9 +857,20 @@ function buildCommonUnitSlot(id, unit, params) {
     hasSpareSeparator = hasSpareInfo
       && (hasPriceText || hasAdditionalRespawns || hasAdditionalHistoricalRespawns)
     hasExtraInfo = hasPriceText || hasAdditionalRespawns || hasSpareInfo || hasAdditionalHistoricalRespawns
+  } : {
+    hasExtraInfo = false
+    hasExtraInfoBlockTop
   }
 
-  if (hasPriceText)
+  if (hasPriceText && hasSpareInfo && hasAdditionalRespawns && hasAdditionalHistoricalRespawns) {
+    let roomEvent = ::SessionLobby.getRoomEvent()
+    let economicName = roomEvent != null ? getEventEconomicName(roomEvent) : null  // warning disable: -declared-never-used
+    let unitName = unit.name // warning disable: -declared-never-used
+    debug_dump_stack()
+    logerr("[SLOTBAR] unit slot missiton block has 4 blocks")
+  }
+
+  if (hasPriceText && !isUnitDisabled)
     extraInfoTopView.__update(
       calcUnitSlotMissionInfoTextsWidth(priceText, additionalRespawns,
         hasAdditionalHistoricalRespawns ? additionalHistoricalRespawns : "",
