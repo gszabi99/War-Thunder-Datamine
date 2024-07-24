@@ -22,7 +22,7 @@ function canRespawnWithUniversalSpares(crew, unit) {
   if (isUnitOverrided)
     return false
 
-  if (isUnitDisabledByMatching)
+  if (isUnitDisabledByMatching(idInCountry))
     return false
 
   if (get_game_mode() != GM_DOMINATION)

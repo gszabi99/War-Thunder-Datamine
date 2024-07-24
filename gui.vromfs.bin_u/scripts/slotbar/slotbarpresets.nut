@@ -76,8 +76,9 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     slotbarPresets.clear()
     foreach (presetDataItem in newbiePresetsData.presetDataItems) {
       // This adds empty array to presets table if not already.
-      slotbarPresets[presetDataItem.country] <- getTblValue(presetDataItem.country, this.presets, [])
-      if (!presetDataItem.hasUnits)
+      let countryId = presetDataItem.country
+      slotbarPresets[countryId] <- this.presets?[countryId] ?? []
+      if (!presetDataItem.hasUnits && !this.canHaveEmptyPresets(countryId))
         continue
       let gameMode = getGameModeByUnitType(presetDataItem.unitType, -1, true)
       // Creating preset from preset data item.
