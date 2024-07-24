@@ -17,7 +17,8 @@ let visibleRewards = [
       if(!("event" in rewardTable))
         return ""
       let victimUnitCount = rewardTable.event.len()
-      let victimShipsCount = rewardTable.event.map(@(e)e.victimUnitFileName).filter(@(u) u.indexof("ships/") == 0).len()
+      let victimShipsCount = rewardTable.event.map(@(e)e?.victimUnitFileName).filter(
+        @(u) u != null && u.indexof("ships/") == 0).len()
       if (victimShipsCount == victimUnitCount)
         return "expEventScore/killOnlyShips"
       else if (victimShipsCount == 0)
