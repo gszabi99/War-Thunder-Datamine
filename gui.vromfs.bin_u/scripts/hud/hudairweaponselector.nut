@@ -107,6 +107,7 @@ let class HudAirWeaponSelector {
   function selectPreset(preset) {
     this.chosenPreset = preset
     this.slotIdToTiersId = {}
+    this.lastFocusBorderObj = null
     foreach (t in this.chosenPreset.tiersView) {
       let tier = t?.weaponry.tiers[t.tierId]
       if (tier != null && tier?.slot != null)
