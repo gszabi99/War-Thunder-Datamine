@@ -8,11 +8,13 @@ let { eventbus_send } = require("eventbus")
 let { isShowTankMinimap } = require("gameplayBinding")
 let { is_replay_playing } = require("replays")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
+let { HudAirWeaponSelector } = require("%scripts/hud/hudAirWeaponSelector.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
 
-gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
+gui_handlers.HudHeli <- class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
+  airWeaponSelector = null
 
   function initScreen() {
     base.initScreen()
@@ -20,14 +22,22 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
     this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
-    this.createAirWeaponSelector(getPlayerCurUnit())
+
+    if (hasFeature("AirVisualWeaponSelector")) {
+      let hudUnit = getPlayerCurUnit()
+      if (hudUnit != null && hudUnit.hasWeaponSlots) {
+        let weaponSelectorNest = this.scene.findObject("air_weapon_selector")
+        this.airWeaponSelector = isUnitHaveSecondaryWeapons(hudUnit)
+          ? HudAirWeaponSelector(hudUnit, weaponSelectorNest)
+          : null
+      }
+    }
 
     g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
       @(_) this.updateDmgIndicatorState(), this)
   }
 
-  function reinitScreen(_params = null) {
-    base.reinitScreen()
+  function reinitScreen(_params = {}) {
     this.actionBar.reinit()
     this.updateTacticalMapVisibility()
     ::hudEnemyDamage.reinit()
@@ -49,6 +59,11 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
       && g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
     showObjById("hud_air_tactical_map", isVisible, this.scene)
   }
+
+  function onDestroy()  {
+    this.airWeaponSelector?.onDestroy()
+  }
+
 }
 
 return {

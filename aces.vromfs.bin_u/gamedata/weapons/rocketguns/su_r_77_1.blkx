@@ -12,12 +12,12 @@
     "statType": "hydra",
     "caliber": 0.2,
     "length": 3.71,
-    "CxK": 1.7,
-    "wingAreaMult": 1.45,
-    "finsAoaHor": 0.460812,
-    "finsAoaVer": 0.460812,
-    "finsLatAccel": 53.5864,
-    "distFromCmToStab": 0.175,
+    "CxK": 1.85,
+    "wingAreaMult": 1.3,
+    "finsAoaHor": 0.402151,
+    "finsAoaVer": 0.402151,
+    "finsLatAccel": 54.7619,
+    "distFromCmToStab": 0.125,
     "mass": 190.0,
     "massEnd": 160.0,
     "timeFire": 2.0,
@@ -96,8 +96,8 @@
     "timeFire1": 5.0,
     "massEnd1": 120.0,
     "arcadeProp": {
-      "finsAoaHor": 0.47,
-      "finsAoaVer": 0.47
+      "finsAoaHor": 0.4,
+      "finsAoaVer": 0.4
     },
     "guidance": {
       "inertialNavigation": true,
@@ -110,10 +110,6 @@
       "lockDistance": 16000.0,
       "afterLaunchSpeedUp": 170.0,
       "breakLockMaxTime": 100.0,
-      "timeTableCorrection": [
-        0.18,
-        0.633
-      ],
       "inertialGuidance": {
         "inertialNavigationDriftSpeed": 2.0,
         "datalink": true
@@ -179,9 +175,9 @@
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 24.0,
-        "loftTargetElevation": -3.5,
-        "loftAngleToAccelMult": 17.5,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -5.0,
+        "loftAngleToAccelMult": 2.5,
         "loftTargetOmegaMax": 0.5,
         "timeToHitToGain0": [
           10.0,
@@ -195,6 +191,10 @@
           50.0,
           0.5
         ],
+        "timeToHitToGain3": [
+          60.0,
+          0.2
+        ],
         "timeToGain0": [
           0.3,
           0.0
@@ -207,7 +207,7 @@
         "propNavMult": 4.0,
         "reqAccelMax": 50.0,
         "accelControlProp": 0.0021,
-        "accelControlIntg": 0.005,
+        "accelControlIntg": 0.0116,
         "accelControlDiff": 0.00015,
         "accelControlIntgLim": 1.0
       },

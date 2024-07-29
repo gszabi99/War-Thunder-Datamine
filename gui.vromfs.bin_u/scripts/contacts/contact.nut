@@ -273,10 +273,8 @@ class Contact {
       return
     }
 
-    let contact = this
     this.checkInteractionStatus(function(status) {
-      let result = status == CommunicationState.Allowed
-        || (status == CommunicationState.FriendsOnly && contact.isInFriendGroup())
+      let result = status == CommunicationState.Allowed || (status == CommunicationState.FriendsOnly && this.isInFriendGroup())
       callback?(result)
     })
   }

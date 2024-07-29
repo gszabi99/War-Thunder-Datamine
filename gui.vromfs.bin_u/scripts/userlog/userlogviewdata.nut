@@ -52,8 +52,7 @@ let { getSkillCrewLevel, crewSkillPages, loadCrewSkillsOnce
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
-let imgFormat = @"img {size:t='%s'; background-image:t='%s';
- background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
+let imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
 let descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
 

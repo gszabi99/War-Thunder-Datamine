@@ -27,7 +27,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
-let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare, isUnitDisabledByMatching
+let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare,
 } = require("%scripts/respawn/respawnState.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -35,15 +35,12 @@ let { getCrewById, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nu
 let { getCurrentGameModeEdiff, isUnitAllowedForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getCrewLevel, getCrewStatus, isCrewMaxLevel, isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
+let { getCrewLevel, getCrewStatus, isCrewMaxLevel } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { get_game_mode } = require("mission")
-let { debug_dump_stack } = require("dagor.debug")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -253,8 +250,7 @@ function getSpareCountText(spareCount, crew, unit, missionRules) {
   if (!isInFlight())
     return hasSpare ? $"{spareCount}{loc("icon/spare")}" : ""
 
-  let isSpareAllowedInMission = (missionRules == null || missionRules.isAllowSpareInMission())
-    && get_game_mode() == GM_DOMINATION
+  let isSpareAllowedInMission = missionRules == null || missionRules.isAllowSpareInMission()
   if (!isSpareAllowedInMission)
     return ""
   if (!crew)
@@ -412,7 +408,6 @@ function buildEmptySlot(id, _unit, params) {
     let crewLevelInfoView = {
       hasExtraInfoBlock = true
       hasCrewInfo       = true
-      crewNum           = $"{crew.idInCountry + 1}"
       crewLevel         = crewLevelText
       crewSpecIcon      = crewSpecIcon
     }
@@ -422,6 +417,7 @@ function buildEmptySlot(id, _unit, params) {
     crewLevelInfoData = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", {
       hasExtraInfoBlock = true
       hasCrewIdTextInfo = true
+      hasCrewIdInfo = true
       hasActions
       canOpenCrewWnd = hasActions && !hasCrewModalWndInScene()
       hasCrewHint
@@ -429,7 +425,7 @@ function buildEmptySlot(id, _unit, params) {
       isEmptySlot = "yes"
       crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
       crewPoints = getCrewSpText(crew?.skillPoints ?? 0)
-      crewId = crewId.tostring()
+      crewId
       crewIdInCountry = crew?.idInCountry
       needCurPoints = true
     })
@@ -446,7 +442,6 @@ function buildEmptySlot(id, _unit, params) {
     itemButtons = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", { itemButtons })
     extraInfoBlock = crewLevelInfoData
     crewNumWithTitle = hasCrew ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : "No crew"
-    crewId = crewId.tostring()
   })
 
   return handyman.renderCached("%gui/slotbar/slotbarSlotEmpty.tpl", emptySlotView)
@@ -645,7 +640,7 @@ function buildCommonUnitSlot(id, unit, params) {
     missionRules = null, bottomLineText = null, isSlotbarItem = false, isInTable = true,
     showInService = false, hasExtraInfoBlock = false, hasExtraInfoBlockTop = false,
     toBattle = false, toBattleButtonAction = "onSlotBattle", hasCrewHint = false,
-    showAdditionExtraInfo = false, showCrewHintUnderSlot = false, showCrewUnseenIcon = false
+    showAdditionExtraInfo = false, showCrewHintUnderSlot = false
   } = params
   local { inactive = false, status = DEFAULT_STATUS, tooltipParams = null } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
@@ -757,7 +752,7 @@ function buildCommonUnitSlot(id, unit, params) {
       crewLevelFull = crewLevelTextFull
       crewSpecIcon = crewSpec.trainedIcon
       crewStatus = getCrewStatus(crew, unitForCrewInfo)
-      hasCrewUnseenIcon = showCrewUnseenIcon && isCrewNeedUnseenIcon(crew, unitForCrewInfo) ? "yes" : "no"
+      hasCrewIdInfo = true
       crewNum = $"{crew.idInCountry + 1}"
       crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
       crewSpecializationLabel = hasUnit ? $"{loc("crew/trained")}{loc("ui/colon")}" : ""
@@ -830,8 +825,7 @@ function buildCommonUnitSlot(id, unit, params) {
     ? $"{additionalRespawns}{loc("ui/minus")}{loc("mission_hint/spawns_per_unit", {army = armyLocName})}"
     : ""
 
-  let isUnitDisabled = isInFlight() && crew && isUnitDisabledByMatching(crew.idInCountry)
-  let extraInfoTopView = !isUnitDisabled ? {
+  let extraInfoTopView = {
     showAdditionExtraInfo
     spareHintText
     priceHintText
@@ -856,21 +850,10 @@ function buildCommonUnitSlot(id, unit, params) {
       && (hasPriceText || hasAdditionalHistoricalRespawns)
     hasSpareSeparator = hasSpareInfo
       && (hasPriceText || hasAdditionalRespawns || hasAdditionalHistoricalRespawns)
-    hasExtraInfo = hasPriceText || hasAdditionalRespawns || hasSpareInfo || hasAdditionalHistoricalRespawns
-  } : {
-    hasExtraInfo = false
-    hasExtraInfoBlockTop
+    isMissingExtraInfo = !hasPriceText && !hasAdditionalRespawns && !hasSpareInfo && !hasAdditionalHistoricalRespawns
   }
 
-  if (hasPriceText && hasSpareInfo && hasAdditionalRespawns && hasAdditionalHistoricalRespawns) {
-    let roomEvent = ::SessionLobby.getRoomEvent()
-    let economicName = roomEvent != null ? getEventEconomicName(roomEvent) : null  // warning disable: -declared-never-used
-    let unitName = unit.name // warning disable: -declared-never-used
-    debug_dump_stack()
-    logerr("[SLOTBAR] unit slot missiton block has 4 blocks")
-  }
-
-  if (hasPriceText && !isUnitDisabled)
+  if (hasPriceText)
     extraInfoTopView.__update(
       calcUnitSlotMissionInfoTextsWidth(priceText, additionalRespawns,
         hasAdditionalHistoricalRespawns ? additionalHistoricalRespawns : "",
@@ -959,7 +942,6 @@ function buildCommonUnitSlot(id, unit, params) {
     extraInfoBlockTop   = handyman.renderCached("%gui/slotbar/slotExtraInfoBlockTop.tpl", extraInfoTopView)
     refuseOpenHoverMenu = !hasActions
     crewNumWithTitle    = hasCrewInfo ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : ""
-    crewInfoTranslucent = toBattle ? "yes" : "no"
   })
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
   let isShowAsRandomUnit = groupName

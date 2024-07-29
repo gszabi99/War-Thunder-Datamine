@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_cur_warpoints, shop_upgrade_crew
 from "%scripts/dagui_library.nut" import *
+from "%scripts/crew/skillsPageStatus.nut" import g_skills_page_status
 
-let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -383,8 +383,9 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("crew_points_advice_block").show(isSkills)
     if (!isSkills)
       return
-    let statusType = getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
-    this.scene.findObject("crew_points_advice").show(statusType.needShowAdvice)
+    let statusType = g_skills_page_status.getPageStatus(this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
+    this.scene.findObject("crew_points_advice").show(statusType.show)
+    this.scene.findObject("crew_points_advice_text")["crewStatus"] = statusType.style
   }
 
   function updateBuyAllButton() {
@@ -412,11 +413,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let upgradeBlock = showObjById("upgrade_qualification_block", needShowUpgradeBlock, this.scene)
 
     let crewSpecType = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
-    upgradeBlock.findObject("current_qualification").setValue(
-      "".concat(loc("crew/trained"), loc("ui/colon")))
-    upgradeBlock.findObject("current_qualification_icon")["background-image"]
-      = crewSpecType.trainedIcon
-    upgradeBlock.findObject("current_qualification_desc").setValue(crewSpecType.getName())
+    upgradeBlock.findObject("current_qualification").setValue( "".concat(loc("crew/trained"), $": {crewSpecType.getName()}"))
 
     let nextSpecType = crewSpecType.getNextType()
     let levels = nextSpecType.getCurAndReqLevel(this.crew, this.curUnit)
@@ -449,15 +446,15 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         })
         : ""
 
-      let nextSpecTypeImg = "".concat("{{img=", nextSpecType.trainedIcon, "}}")
-      crewLvlText = loc("crew/qualification/specDescriptionMain", {
-        specName = $"{nextSpecTypeImg}{colorize("activeTextColor", nextSpecType.getName())}"
-        descPart = specDescriptionPart
-        trainCost = colorize("activeTextColor",
-          crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
-      })
-      qualificationReqObj.setValue(crewLvlText)
+      crewLvlText = loc("crew/qualification/specDescriptionMain",
+        {
+         specName = colorize("activeTextColor", nextSpecType.getName())
+         descPart = specDescriptionPart
+         trainCost = colorize("activeTextColor",
+           crewSpecType.getUpgradeCostByCrewAndByUnit(this.crew, this.curUnit, nextSpecType.code).tostring())
+        })
     }
+    qualificationReqObj.setValue(crewLvlText)
 
     if (!isShowExpUpgrade)
       return
@@ -551,17 +548,12 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!obj?.isValid())
         continue
 
-      let statusType = getPageStatus(
+      let statusType = g_skills_page_status.getPageStatus(
         this.crew, this.curUnit, page, this.curCrewUnitType, this.curPoints)
-      let needShowPageIcon = statusType.avalibleSkills.len() > 0
-      obj.show(needShowPageIcon)
-      let pageObj = pagesObj.findObject(page.id)
-      if (pageObj)
-        pageObj.tooltip = needShowPageIcon ? this.createPageTooltipFromSkills(statusType.avalibleSkills) : ""
-      if (needShowPageIcon) {
-        obj["background-image"] = statusType.icon
-        obj["background-color"] = this.guiScene.getConstantValue(statusType.iconColor) || ""
-      }
+      obj["background-image"] = statusType.icon
+      obj["background-color"] = this.guiScene.getConstantValue(statusType.color) || ""
+      obj.wink = statusType.wink ? "yes" : "no"
+      obj.show(statusType.show)
     }
     this.guiScene.setUpdatesEnabled(true, true)
   }
@@ -1121,11 +1113,4 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       hintQualification.pos = $"sw/2 - 0.8@sf - 1@bw + 2@shopWidthMax + 2@helpInterval, sh - h - 2@bh - 2@helpInterval"
 
   }
-
-  function createPageTooltipFromSkills(skills) {
-    if (skills.len() == 0)
-      return ""
-    return "".concat(loc("crew/skillUpgradesAvalible"), ":\n", "\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
-  }
-
 }

@@ -115,7 +115,6 @@ let class ActionBar {
   closeSecondActionsTimer = null
 
   currentActionWithMenu = null
-  extraActionsCount = 0
 
   constructor(nestObj) {
     if (!checkObj(nestObj))
@@ -162,7 +161,7 @@ let class ActionBar {
     }]))
   }
 
-  isCollapsable = @() this.canControl && ((this.actionItems.len() + this.extraActionsCount) > 0) && hasCollapseShortcut()
+  isCollapsable = @() this.canControl && (this.actionItems.len() > 0) && hasCollapseShortcut()
 
   function collapse() {
     if (!this.isValid())
@@ -235,7 +234,6 @@ let class ActionBar {
   }
 
   function fill() {
-    this.extraActionsCount = 0
     this.flushCooldownTimers()
     if (!checkObj(this.scene))
       return
@@ -246,7 +244,6 @@ let class ActionBar {
       items = this.actionItems.map((@(a, nestIndex) this.buildItemView(a, nestIndex, true)).bindenv(this))
       extraItems = getExtraActionItemsView(unit)
     }
-    this.extraActionsCount = view.extraItems?.len() ?? 0
 
     let partails = {
       items           = loadTemplateText("%gui/hud/actionBarItem.tpl")
@@ -268,7 +265,7 @@ let class ActionBar {
     this.guiScene.replaceContentFromText(this.scene.findObject("actions_nest"), blk, blk.len(), this)
     this.scene.findObject("action_bar").setUserData(this)
 
-    broadcastEvent("HudActionbarInited", { actionBarItemsAmount = this.actionItems.len() + this.extraActionsCount })
+    broadcastEvent("HudActionbarInited", { actionBarItemsAmount = this.actionItems.len() })
 
     this.hasXInputSh = view.items.findindex(@(item) item.showShortcut && item.isXinput) != null
     let shHeight = this.hasXInputSh ? this.getXInputShHeight() : this.getTextShHeight()
@@ -462,6 +459,7 @@ let class ActionBar {
     if ((prevActionItems?.len() ?? 0) != this.actionItems.len() || this.actionItems.len() == 0) {
       this.openSecondActionsMenu(null)
       this.fill()
+      broadcastEvent("HudActionbarResized", { size = this.actionItems.len() })
       return
     }
 

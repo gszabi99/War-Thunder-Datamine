@@ -99,9 +99,11 @@
                 "background-svg-size": "@cIco, @cIco"
               },
               "textareaNoTab": {
+                "id": "crew_points_advice_text",
                 "pos": "0.2@cIco, 0",
                 "position": "relative",
-                "text": "#crew/availablePoints/advice"
+                "text": "#crew/availablePoints/advice",
+                "crewStatus": ""
               }
             }
           },
@@ -166,28 +168,9 @@
                       "img": {
                         "isColoredImg": "yes",
                         "id": "upgrade_button_icon",
-                        "pos": "0.5ph - 0.5h, (ph-h)/2",
                         "background-image": "#ui/gameuiskin#spec_icon1_place.svg"
                       }
                     }
-                  }
-                },
-                {
-                  "textareaNoTab": [
-                    {
-                      "id": "current_qualification",
-                      "text": ""
-                    },
-                    {
-                      "id": "current_qualification_desc",
-                      "text": ""
-                    }
-                  ],
-                  "img": {
-                    "id": "current_qualification_icon",
-                    "background-svg-size": "@cIco,@cIco",
-                    "size": "@cIco,@cIco",
-                    "background-image": ""
                   }
                 },
                 {
@@ -208,15 +191,19 @@
                   }
                 }
               ],
-              "loadingHint": {
-                "id": "qualification_requirement",
-                "width": "pw",
-                "behaviour": "bhvHint",
-                "isWrapInRowAllowed": "yes",
-                "isCommonHint": "yes",
-                "hintAlign": "left",
-                "hintSizeStyle": "action"
-              }
+              "textareaNoTab": [
+                {
+                  "id": "current_qualification",
+                  "text-align": "left",
+                  "text": "#crew/trained"
+                },
+                {
+                  "id": "qualification_requirement",
+                  "text-align": "left",
+                  "width": "pw",
+                  "text": ""
+                }
+              ]
             }
           }
         ],

@@ -35,7 +35,7 @@ function steamUpdateContactsList(usersTable) {
   let steamAppId = steam_get_app_id()
   let res = {}
   foreach (uid, playerData in usersTable) {
-    let steamId = playerData?.id.tointeger()
+    let steamId = playerData.id.tointeger()
     let friend = steamFriendsList?[steamId]
     if (friend == null)
       continue

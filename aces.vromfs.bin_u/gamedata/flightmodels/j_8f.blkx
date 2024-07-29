@@ -2867,6 +2867,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "pl12",
+            "reqModification": "cn_pl12",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_l1",
@@ -2972,8 +2973,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
-            "name": "pl5b",
-            "reqModification": "j_7_pl5b",
+            "name": "default_pl5b",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_l",
@@ -2982,7 +2982,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl5b.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_pl5b_default.blk",
               "emitter": "pl_5b_1",
               "bullets": 1,
               "external": true,
@@ -2991,7 +2991,8 @@
           },
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "pl8_default",
+            "name": "pl8",
+            "reqModification": "cn_pl8",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_l",
@@ -3000,7 +3001,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl8_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_pl8.blk",
               "emitter": "pl_5b_1",
               "bullets": 1,
               "external": true,
@@ -3074,8 +3075,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
-            "name": "pl5b",
-            "reqModification": "j_7_pl5b",
+            "name": "default_pl5b",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_r",
@@ -3084,7 +3084,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl5b.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_pl5b_default.blk",
               "emitter": "pl_5b_2",
               "bullets": 1,
               "external": true,
@@ -3093,7 +3093,8 @@
           },
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "pl8_default",
+            "name": "pl8",
+            "reqModification": "cn_pl8",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_r",
@@ -3102,7 +3103,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/su_pl8_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/su_pl8.blk",
               "emitter": "pl_5b_2",
               "bullets": 1,
               "external": true,
@@ -3157,6 +3158,7 @@
           {
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "pl12",
+            "reqModification": "cn_pl12",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_r1",
@@ -3640,6 +3642,11 @@
       "tier": 3,
       "modClass": "weapon",
       "reqModification": "j_7_pl5b"
+    },
+    "cn_pl12": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "cn_pl8"
     }
   },
   "user_skin": {

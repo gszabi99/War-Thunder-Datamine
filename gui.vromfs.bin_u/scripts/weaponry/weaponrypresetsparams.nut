@@ -452,8 +452,7 @@ function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
   }
   let presetsList = getPresetsList(unit, chooseMenuList)
 
-  let presets = ("weapon_presets" in fullUnitBlk) ? fullUnitBlk.weapon_presets % "preset"
-    : []
+  let presets = fullUnitBlk.weapon_presets % "preset"
   foreach (preset in presetsList) {
     let showInWeaponMenu = ::is_debug_mode_enabled || (presets.findvalue(@(p) p.name == preset.name)?.showInWeaponMenu ?? true)
     if(showInWeaponMenu)

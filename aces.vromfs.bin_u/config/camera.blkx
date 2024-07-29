@@ -397,39 +397,7 @@
     "transitionFadeOutTime": 0.2,
     "viscosity": 0.01,
     "condition": {
-      "and": {
-        "isKillerFlightModel": {},
-        "isFlightModel": {}
-      }
-    }
-  },
-  "air_to_gnd_killer": {
-    "type": "TpsTargetFlightCamera",
-    "fov": 90.0,
-    "zoomFov": 30.0,
-    "targetingCameraModelPoint": [
-      0.0,
-      5.0,
-      0.0
-    ],
-    "targetingCameraDistance": 23.0,
-    "showtimeOnInactive": 5.0,
-    "showtimeOnDestroyed": 0.5,
-    "cameraShakeMultiplier": 0.15,
-    "transitionFadeInTime": 0.12,
-    "transitionFadeOutTime": 0.2,
-    "viscosity": 0.15,
-    "cameraControlSmooth": 0.0,
-    "cameraEllipsoidDownOffset": 1.5,
-    "useEllipsoidOffset": false,
-    "allowKiller": true,
-    "condition": {
-      "and": {
-        "isKillerFlightModel": {},
-        "not": {
-          "isFlightModel": {}
-        }
-      }
+      "isKillerFlightModel": {}
     }
   },
   "fixed": {
@@ -4245,7 +4213,6 @@
     "killer": {
       "camName": [
         "killer",
-        "air_to_gnd_killer",
         "camera_xray_shot",
         "camera_ship_killer",
         "camera_aaa_killer",

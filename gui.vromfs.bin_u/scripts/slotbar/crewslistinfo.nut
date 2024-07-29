@@ -23,24 +23,18 @@ function getMyCrewUnitsState(country = null) {
     if (!("crews" in c))
       continue
 
-    let crewAirs = []
+    unitsStateCached.crewAirs[c.country] <- []
     foreach (crew in c.crews)
       if (("aircraft" in crew) && crew.aircraft != "" && crew.isLocked == 0) {
         let air = getAircraftByName(crew.aircraft)
         if (air) {
-          crewAirs.append(crew.aircraft)
+          unitsStateCached.crewAirs[c.country].append(crew.aircraft)
           if (c.country == country && unitsStateCached.rank < air.rank)
             unitsStateCached.rank = air.rank
           if (wp_get_repair_cost(crew.aircraft) > 0)
             unitsStateCached.brokenAirs.append(crew.aircraft)
         }
       }
-
-    let preset = ::slotbarPresets.getCurrentPreset(c.country)
-    if(preset != null)
-      crewAirs.replace(preset.orderedUnits.filter(@(unit) crewAirs.indexof(unit) != -1))
-
-    unitsStateCached.crewAirs[c.country] <- crewAirs
   }
 
   return unitsStateCached
@@ -62,8 +56,6 @@ function getBrokenUnits() {
 addListenersWithoutEnv({
   CrewsListChanged = @(_p) unitsStateCached = null
   CrewsListInvalidate = @(_p) unitsStateCached = null
-  SlotbarPresetChangedWithoutProfileUpdate = @(_p) unitsStateCached = null
-  CrewsOrderChanged = @(_p) unitsStateCached = null
   UnitRepaired = @(_p) unitsStateCached = null
 }, g_listener_priority.CONFIG_VALIDATION)
 
@@ -71,3 +63,4 @@ return {
   getMyCrewUnitsState
   getBrokenUnits
 }
+

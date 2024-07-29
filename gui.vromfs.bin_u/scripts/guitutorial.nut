@@ -227,19 +227,6 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     if (needArrow && !blocksList.findvalue(@(b) b?.hasArrow == true))
       blocksList[0].hasArrow = true
 
-    local nextActionShortcut = getTblValue("nextActionShortcut", stepData)
-    if (nextActionShortcut && showConsoleButtons.value)
-      nextActionShortcut = "PRESS_TO_CONTINUE"
-
-    local markup = ""
-    if (nextActionShortcut) {
-      markup += showConsoleButtons.value ? ::Input.Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : ""
-      markup += "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = "#" + nextActionShortcut })
-    }
-
-    let nextShObj = this.scene.findObject("next_step_shortcut")
-    this.guiScene.replaceContentFromText(nextShObj, markup, markup.len(), this.ownerWeak)
-
     this.updateObjectsPos(blocksList, needArrow)
 
     if (needArrow) {
@@ -271,6 +258,19 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     ::guiTutor.createHighlight(this.scene.findObject("dark_screen"), blocksList, this, params)
 
     showObjById("dummy_console_next", actionType == tutorAction.ANY_CLICK, this.scene)
+
+    local nextActionShortcut = getTblValue("nextActionShortcut", stepData)
+    if (nextActionShortcut && showConsoleButtons.value)
+      nextActionShortcut = "PRESS_TO_CONTINUE"
+
+    local markup = ""
+    if (nextActionShortcut) {
+      markup += showConsoleButtons.value ? ::Input.Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : ""
+      markup += "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = "#" + nextActionShortcut })
+    }
+
+    let nextShObj = this.scene.findObject("next_step_shortcut")
+    this.guiScene.replaceContentFromText(nextShObj, markup, markup.len(), this.ownerWeak)
 
     let waitTime = getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY ? 1 : -1)
     if (waitTime > 0)

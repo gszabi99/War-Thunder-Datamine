@@ -11,9 +11,6 @@ let { get_unit_spawn_score_weapon_mul } = require("%appGlobals/ranks_common_shar
 
 let isSpareAircraftInSlot = @(idInCountry) is_bit_set(getSpareSlotsMask(), idInCountry)
 
-let isUnitDisabledByMatching = @(idInCountry) !is_bit_set(getBrokenSlotsMask(), idInCountry)
-  && is_bit_set(getDisabledByMatchingSlotsMask(), idInCountry)
-
 function canRespawnWithUniversalSpares(crew, unit) {
   if (!hasFeature("ActivateUniversalSpareInBattle"))
     return false
@@ -22,7 +19,7 @@ function canRespawnWithUniversalSpares(crew, unit) {
   if (isUnitOverrided)
     return false
 
-  if (isUnitDisabledByMatching(idInCountry))
+  if (!is_bit_set(getBrokenSlotsMask(), idInCountry) && is_bit_set(getDisabledByMatchingSlotsMask(), idInCountry))
     return false
 
   if (get_game_mode() != GM_DOMINATION)
@@ -59,6 +56,5 @@ return {
   getWasReadySlotsMask
   getDisabledSlotsMask
   isRespawnWithUniversalSpare
-  isUnitDisabledByMatching
 }
 

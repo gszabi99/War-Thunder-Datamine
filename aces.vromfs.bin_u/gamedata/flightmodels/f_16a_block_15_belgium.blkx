@@ -6,11 +6,8 @@
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
   "gyroSight": true,
-  "haveCCIPForRocket": true,
-  "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "haveCCRPForGun": true,
-  "haveCCRPForBombs": true,
   "isBwOpticSight": true,
   "mfdCamTads": true,
   "ilsMarconiAvionics": true,
@@ -2670,7 +2667,8 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_default",
+            "name": "aim_9m",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon1",
@@ -2679,7 +2677,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
               "emitter": "aim_9e_002",
               "bullets": 1,
               "external": true,
@@ -3607,7 +3605,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/ter_us_500lb_mk_82.blk",
-              "emitter": "ter_004",
+              "emitter": "ter_001",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -3714,7 +3712,7 @@
             "name": "pids",
             "reqModification": "countermeasures_belt_pack",
             "ShowNodes": {
-              "node": "pylon_terma_mlu_pids_r"
+              "node": "pylon_terma_mlu_pids_l"
             },
             "Weapon": {
               "trigger": "countermeasures",
@@ -3735,7 +3733,7 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/containers/ter_us_500lb_mk_82.blk",
-                "emitter": "ter_004",
+                "emitter": "ter_001",
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
@@ -3925,7 +3923,8 @@
           },
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9m_default",
+            "name": "aim_9m",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon8",
@@ -3934,7 +3933,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
               "emitter": "aim_9e_005",
               "bullets": 1,
               "external": true,

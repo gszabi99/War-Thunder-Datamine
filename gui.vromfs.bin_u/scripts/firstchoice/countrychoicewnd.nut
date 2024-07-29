@@ -371,13 +371,12 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             break
           }
 
-        if (hasUnits || unitType == this.selectedUnitType)
-          presetDataItems.append({
-            country = country
-            unitType = unitType.esUnitType
-            hasUnits = hasUnits
-            tasksData = tasksData
-          })
+        presetDataItems.append({
+          country = country
+          unitType = unitType.esUnitType
+          hasUnits = hasUnits
+          tasksData = tasksData
+        })
 
         if (hasUnits) {
           this.selectedCountry = this.selectedCountry ?? country

@@ -367,6 +367,53 @@
         "width": 30.0
       }
     },
+    "hprfTrack": [
+      {
+        "dynamicRange": [
+          40.0,
+          15.0
+        ],
+        "groundClutter": true,
+        "aircraftAsTarget": true,
+        "angularAccuracy": 0.05,
+        "distanceAccuracy": 12.0,
+        "track": true,
+        "distance": {
+          "presents": true,
+          "minValue": 200.0,
+          "maxValue": 74000.0,
+          "width": 150.0
+        }
+      },
+      {
+        "rangeFinder": true,
+        "dopplerSpeedFinder": true,
+        "dynamicRange": [
+          40.0,
+          15.0
+        ],
+        "groundClutter": true,
+        "aircraftAsTarget": true,
+        "angularAccuracy": 0.05,
+        "distanceAccuracy": 15.0,
+        "absDopplerSpeed": false,
+        "mainBeamDopplerSpeed": false,
+        "track": true,
+        "distance": {
+          "presents": true,
+          "minValue": 200.0,
+          "maxValue": 100000.0,
+          "width": 500.0
+        },
+        "dopplerSpeed": {
+          "presents": true,
+          "minValue": -1500.0,
+          "maxValue": 1500.0,
+          "signalWidthMin": 2.0,
+          "width": 20.0
+        }
+      }
+    ],
     "mprfAcm": {
       "groundClutter": false,
       "aircraftAsTarget": true,
@@ -409,7 +456,7 @@
         "width": 20.0
       }
     },
-    "hprfTrack": {
+    "hprfAcm": {
       "rangeFinder": true,
       "dopplerSpeedFinder": true,
       "dynamicRange": [
@@ -418,11 +465,7 @@
       ],
       "groundClutter": true,
       "aircraftAsTarget": true,
-      "angularAccuracy": 0.05,
-      "distanceAccuracy": 15.0,
-      "absDopplerSpeed": false,
-      "mainBeamDopplerSpeed": false,
-      "track": true,
+      "mainBeamNotchWidth": 40.0,
       "distance": {
         "presents": true,
         "minValue": 200.0,
@@ -1889,10 +1932,8 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 10,
-              "radius": 1000.0,
-              "dopplerSpeedGateMaxTime": 8.0
+              "radius": 1000.0
             },
-            "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}
           }
         },

@@ -24,7 +24,6 @@ let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { rnd_int } = require("dagor.random")
 
 let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -116,8 +115,11 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
                                }
                              })
 
-    this.updateBackgroundImage(data?[imageSectionName])
-
+    this.updateObjectByData(data, {
+                                name = imageSectionName,
+                                objId = "award_image",
+                                param = "background-image",
+                             })
     this.updateObjectByData(data, {
                                 name = "progressBar",
                                 objId = "left_framing",
@@ -163,18 +165,6 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
     let param = getTblValue("param", params, "")
     obj[param] = value
-  }
-
-  function updateBackgroundImage(images) {
-    let imagesCount = images != null ? images.paramCount() : 0
-    if (imagesCount == 0)
-      return
-
-    let obj = this.scene.findObject("award_image")
-    if (!(obj?.isValid() ?? false))
-      return
-
-    obj["background-image"] = images[rnd_int(0, imagesCount - 1).tostring()]
   }
 
   function callItemsRoulette() {

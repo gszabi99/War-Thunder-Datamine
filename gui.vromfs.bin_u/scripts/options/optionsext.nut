@@ -5092,10 +5092,8 @@ let optionsSetMap = {
   [USEROPT_ALLOW_SHOW_WISHLIST] = @(value, _descr, _optionId) enableShowWishlistForFriends(value),
   [USEROPT_ALLOW_SHOW_WISHLIST_COMMENTS] = @(value, _descr, _optionId) enableShowWishlistCommentsForFriends(value),
   [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS] = function(value, _descr, _optionId) {
-    if (get_allow_to_be_added_to_lb() != value) {
-      set_allow_to_be_added_to_lb(value)
-      save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
-    }
+    set_allow_to_be_added_to_lb(value)
+    save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
   },
   [USEROPT_QUEUE_EVENT_CUSTOM_MODE] = @(value, descr, _optionId) ::queue_classes.Event.setShouldQueueCustomMode(getTblValue("eventName", descr.context, ""), value),
   [USEROPT_PS4_ONLY_LEADERBOARD] = function(value, _descr, optionId) {

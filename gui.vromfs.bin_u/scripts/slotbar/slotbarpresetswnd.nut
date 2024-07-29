@@ -86,8 +86,6 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
       let perRow = 3
       let unitItems = []
 
-      let filteredUnits = preset.orderedUnits.filter(@(u) u != "")
-      let isPresetHasUnits = filteredUnits.len() > 0
       local presetBattleRatingText = ""
       if (hasFeature("SlotbarShowBattleRating")) {
         let ediff = this.getCurrentEdiff()
@@ -99,23 +97,22 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
           battleRatingMin = !battleRatingMin ? br : min(battleRatingMin, br)
           battleRatingMax = !battleRatingMax ? br : max(battleRatingMax, br)
         }
-        let battleRatingRange = isPresetHasUnits
-          ? format("%.1f %s %.1f", battleRatingMin, loc("ui/mdash"), battleRatingMax)
-          : "—"
+        let battleRatingRange = format("%.1f %s %.1f", battleRatingMin, loc("ui/mdash"), battleRatingMax)
         presetBattleRatingText = loc("shop/battle_rating") + loc("ui/colon") + battleRatingRange + "\n"
       }
 
       let gameMode = getGameModeById(preset.gameModeId) ?? getCurrentGameMode()
       let presetGameMode = gameMode != null ? loc("options/mp_mode") +
                                                 loc("ui/colon") + gameMode.text + "\n" : ""
-      let presetContents = "".concat(loc("shop/slotbarPresets/contents"), loc("ui/colon"), isPresetHasUnits ? "" : "—")
 
       let header = "".concat(stripTags(presetBattleRatingText),
         stripTags(presetGameMode),
-        presetContents)
+        loc("shop/slotbarPresets/contents"),
+        loc("ui/colon"))
       let markupList = ["textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } ".subst(header)]
 
       let unitsMarkupList = []
+      let filteredUnits = preset.units.filter(@(u) u != "")
       foreach (idx, unitId in filteredUnits) {
         let unit = getAircraftByName(unitId)
         if (!unit)
@@ -243,13 +240,9 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let unitNames = []
     foreach (unitId in preset.units)
-      unitNames.append(loc($"{unitId}_shop"))
-    local comment = ""
-    if (unitNames.len() > 0) {
-      comment = "".concat("(", loc("shop/slotbarPresets/contents"), loc("ui/colon"),
-        loc("ui/comma").join(unitNames, true), ")")
-      comment = format("textarea{overlayTextColor:t='bad'; text:t='%s'}", stripTags(comment))
-    }
+      unitNames.append(loc(unitId + "_shop"))
+    local comment = "(" + loc("shop/slotbarPresets/contents") + loc("ui/colon") + loc("ui/comma").join(unitNames, true) + ")"
+    comment = format("textarea{overlayTextColor:t='bad'; text:t='%s'}", stripTags(comment))
 
     this.msgBox("question_delete_preset", msgText,
     [

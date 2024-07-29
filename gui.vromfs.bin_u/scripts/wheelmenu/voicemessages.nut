@@ -10,7 +10,6 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_game_mode, get_game_type } = require("mission")
-let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
@@ -161,7 +160,7 @@ function showVoiceMessageList(show, category, squad, targetName) {
 
   let reason = getCantUseVoiceMessagesReason(squad)
   if (reason != "") {
-    chatSystemMessage(reason)
+    ::chat_system_message(reason)
     return false
   }
 

@@ -13,22 +13,20 @@ chosen:t='no'
 selected:t='no'
 <</isSlotbarItem>>
 
-hasSelectedState:t='no'
-
 unhoverDiv {
   size:t='pw, ph'
   display:t='hide'
   position:t='absolute'
   not-input-transparent:t='yes'
 }
-<<#crewId>>crewId:t='<<crewId>>'<</crewId>>
+
 shopItem {
   id:t='<<shopItemId>>'
   interactive:t='yes'
   <<#shopStatus>>
   shopStat:t='<<shopStatus>>'
   <</shopStatus>>
-  <<#crewId>>crew_id:t='<<crewId>>'<</crewId>>
+
   <<@extraInfoBlock>>
 
   slotPlate {
@@ -37,7 +35,10 @@ shopItem {
     bottomShade {}
   }
 
+  <<#isSlotbarItem>>
   slotHoverHighlight {}
+  <</isSlotbarItem>>
+
   focus_border {}
 
   <<#crewImage>>
@@ -55,7 +56,6 @@ shopItem {
   }
 
   <<#isSlotbarItem>>
-  slotTopGradientLine {}
   slotBottomGradientLine {}
   <</isSlotbarItem>>
 
@@ -91,8 +91,3 @@ shopItem {
 
   <<@itemButtons>>
 }
-<<#needDnD>>
-on_end_edit:t='onCrewDropFinish'
-on_drag_drop:t='onCrewDrop'
-on_move:t='onCrewMove'
-<</needDnD>>

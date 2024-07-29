@@ -171,7 +171,7 @@ let AdditionalCannonsState = Watched({ count = 0, seconds = -1, mode = 0, select
 let AgmState = Watched({
   count = 0, seconds = -1, timeToHit = -1, timeToWarning = -1, selected = false, name = "", actualCount = -1 })
 let AamState = Watched({ count = 0, seconds = -1, timeToHit = -1, selected = false, name = "", actualCount = -1 })
-let GuidedBombsState = Watched({ seconds = -1, timeToHit = -1, count = 0, mode = 0, selected = false, name = "", actualCount = -1, timeToWarning = -1})
+let GuidedBombsState = Watched({ seconds = -1, timeToHit = -1, count = 0, mode = 0, selected = false, name = "", actualCount = -1 })
 let FlaresState = Watched({ count = 0, mode = 0, seconds = -1 })
 let ChaffsState = Watched({ count = 0, mode = 0, seconds = -1 }) // -duplicate-assigned-expr
 
@@ -406,7 +406,6 @@ let helicopterState = {
   GuidedBombsActualCount = Computed(@() GuidedBombsState.value.actualCount),
   GuidedBombsName = Computed(@() GuidedBombsState.value.name),
   GuidedBombsSelected = Computed(@() GuidedBombsState.value.selected),
-  GuidedBombsTimeToWarning = Computed(@() GuidedBombsState.value.timeToWarning),
 
   FlaresCount = Computed(@() FlaresState.value.count),
   FlaresMode = Computed(@() FlaresState.value.mode),
@@ -637,11 +636,11 @@ interop.updateAam <- function(count, seconds, timeToHit, selected, name, actualC
     AamState({ count, seconds, timeToHit, selected, name, actualCount })
 }
 
-interop.updateGuidedBombs <- function(count, seconds, timeToHit, mode, selected, name, actualCount, timeToWarning = 1/*deprecated*/) {
+interop.updateGuidedBombs <- function(count, seconds, timeToHit, mode, selected, name, actualCount) {
   let curVal = GuidedBombsState.value
   if (curVal.count != count || curVal.seconds != seconds || curVal.timeToHit != timeToHit || curVal.mode != mode ||
-    curVal.name != name || curVal.actualCount != actualCount || curVal.selected != selected || curVal.timeToWarning != timeToWarning)
-    GuidedBombsState({ count, seconds, timeToHit, mode, selected, name, actualCount, timeToWarning })
+    curVal.name != name || curVal.actualCount != actualCount || curVal.selected != selected)
+    GuidedBombsState({ count, seconds, timeToHit, mode, selected, name, actualCount })
 }
 
 interop.updateFlares <- function(count, mode, seconds) {
