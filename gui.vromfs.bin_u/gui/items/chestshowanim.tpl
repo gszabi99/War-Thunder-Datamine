@@ -4,7 +4,7 @@ img {
   pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
   position:t='absolute'
   background-svg-size:t='256@sf/@pf, 256@sf/@pf'
-  background-image:t='!#ui/gameuiskin#circle_gradient_white.avif'
+  background-image:t='!#ui/images/chests/chest_bg_cloud_pulse'
   color-factor:t='0'
 
   behaviour:t='basicTransparency'
@@ -13,7 +13,7 @@ img {
   transp-end:t='255'
   transp-time:t='1500'
   transp-func:t='sin'
-  transp-delay:t='2200'
+  transp-delay:t='800'
 }
 
 tdiv {

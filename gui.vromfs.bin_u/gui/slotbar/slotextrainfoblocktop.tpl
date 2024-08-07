@@ -5,6 +5,7 @@ extraInfoBlockTop {
   <<#hasExtraInfo>>
   hasInfo:t='yes'
   <</hasExtraInfo>>
+  cursor:t='normal'
   tdiv {
     size:t='pw, ph'
     textareaNoTab {

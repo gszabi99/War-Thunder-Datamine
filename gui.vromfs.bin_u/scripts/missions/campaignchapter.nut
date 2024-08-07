@@ -919,8 +919,9 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkFilterData(filterData) {
-    local res = !this.filterText.len() || filterData.locString.indexof(this.filterText) != null
-      || (filterData.mission.blk?.name ?? "").indexof(this.filterText) != null
+    local res = !this.filterText.len()
+      || utf8ToLower(filterData.locString).indexof(this.filterText) != null
+      || utf8ToLower(filterData.mission.blk?.name ?? "").indexof(this.filterText) != null
     if (res && this.isOnlyFavorites)
       res = this.misListType.isMissionFavorite(filterData.mission)
     return res

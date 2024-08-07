@@ -110,8 +110,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.unit)
       return
 
-    let params = { hasActions = true }
-    let data = buildUnitSlot(this.unit.name, this.unit, params)
+    let data = buildUnitSlot(this.unit.name, this.unit)
     let airObj = this.scene.findObject("reward_aircrafts")
     this.guiScene.replaceContentFromText(airObj, data, data.len(), this)
     airObj.tooltipId = getTooltipType("UNIT").getTooltipId(this.unit.name)

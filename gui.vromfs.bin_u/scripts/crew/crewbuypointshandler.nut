@@ -9,6 +9,7 @@ let { floor } = require("math")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewCountry, getCrewButtonRow } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -55,7 +56,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateRows() {
     let tblObj = this.scene.findObject("buy_table")
     foreach (idx, pack in this.buyPointsPacks)
-      ::showDiscount(tblObj.findObject($"buy_discount_{idx}"),
+      showDiscount(tblObj.findObject($"buy_discount_{idx}"),
                      "skills", getCrewsList()[this.crew.idCountry].country, pack.name)
   }
 

@@ -221,9 +221,10 @@ function updateCardStatus(obj, _id, statusTbl) {
   obj.unitRarity = unitRarity
   setBool(obj, "isPkgDev", isPkgDev)
   setBool(obj, "isBroken", isBroken)
-  setBool(obj, "refuseOpenHoverMenu", !hasActionsMenu)
+  setBool(obj, "refuseOpenHoverMenu", !hasActionsMenu || isGroup)
   setBool(obj, "isElite", isElite)
   setBool(obj, "isRecentlyReleased", isRecentlyReleased)
+  obj["cursor"] = hasActionsMenu && !isGroup ? "context-menu" : "normal"
 
   obj.findObject("unitImage")["foreground-image"] = unitImage
   obj.findObject("unitTooltip").tooltipId = tooltipId
@@ -285,6 +286,7 @@ function updateCardStatus(obj, _id, statusTbl) {
   }
 
   let hasMainButton = !isInactive && (mainButtonText != "" || mainButtonIcon != "")
+    && (!showConsoleButtons.get() || isGroup)
   let mainBtnObj = obj.findObject("mainActionButton")
   setBool(mainBtnObj, "forceHide", !hasMainButton)
   if (hasMainButton) {

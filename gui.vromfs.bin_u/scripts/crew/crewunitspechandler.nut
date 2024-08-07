@@ -10,6 +10,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewTrainCost, getCrewButtonRow } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -176,7 +177,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let specType = getSpecTypeByCrewAndUnit(this.crew, unit)
       let discObj = rowObj.findObject("buy-discount")
       if (specType.hasNextType())
-        ::showAirDiscount(discObj, unit.name, "specialization", specType.getNextType().specName)
+        showAirDiscount(discObj, unit.name, "specialization", specType.getNextType().specName)
       else
         hideBonus(discObj)
     }

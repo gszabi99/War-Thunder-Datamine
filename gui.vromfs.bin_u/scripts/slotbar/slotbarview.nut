@@ -415,6 +415,7 @@ function buildEmptySlot(id, _unit, params) {
       crewNum           = $"{crew.idInCountry + 1}"
       crewLevel         = crewLevelText
       crewSpecIcon      = crewSpecIcon
+      isEmptySlot       = "yes"
     }
     crewLevelInfoData = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", crewLevelInfoView)
   }
@@ -640,8 +641,7 @@ function buildGroupSlot(id, unit, params) {
 function buildCommonUnitSlot(id, unit, params) {
   let { isLocalState = true, showBR = hasFeature("GlobalShowBattleRating"),
     forceNotInResearch = false, shopResearchMode = false, hasActions = false,
-    mainActionFunc = "", mainActionText = "", mainActionIcon = "", forceCrewInfoUnit = null,
-    crewId = -1, showWarningIcon = false, specType = null,
+    forceCrewInfoUnit = null, crewId = -1, showWarningIcon = false, specType = null,
     missionRules = null, bottomLineText = null, isSlotbarItem = false, isInTable = true,
     showInService = false, hasExtraInfoBlock = false, hasExtraInfoBlockTop = false,
     toBattle = false, toBattleButtonAction = "onSlotBattle", hasCrewHint = false,
@@ -704,25 +704,6 @@ function buildCommonUnitSlot(id, unit, params) {
   let hasCrewInfo = crewId >= 0
   let crew = hasCrewInfo ? getCrewById(crewId) : null
   let unitForCrewInfo = forceCrewInfoUnit || unit
-
-  //
-  // Bottom button view
-  //
-
-  let mainButtonAction = showConsoleButtons.value ? "onOpenActionsList" : mainActionFunc
-  let mainButtonText = showConsoleButtons.value ? "" : mainActionText
-  let mainButtonIcon = showConsoleButtons.value ? "#ui/gameuiskin#slot_menu.svg" : mainActionIcon
-  let checkTexts = mainButtonAction.len() > 0 && (mainButtonText.len() > 0 || mainButtonIcon.len() > 0)
-  let checkButton = !isVehicleInResearch || hasFeature("SpendGold")
-  let bottomButtonView = {
-    holderId            = id
-    hasButton           = hasActions && checkTexts && checkButton
-    mainButtonText      = mainButtonText
-    mainButtonAction    = mainButtonAction
-    hasMainButtonIcon   = mainButtonIcon.len()
-    mainButtonIcon      = mainButtonIcon
-    crewIdInCountry     = crew?.idInCountry
-  }
 
   let crewLevelText = (crew && unitForCrewInfo)
     ? getCrewLevel(crew, unitForCrewInfo, unitForCrewInfo.getCrewUnitType()).tointeger().tostring()
@@ -954,12 +935,12 @@ function buildCommonUnitSlot(id, unit, params) {
     itemButtons         = handyman.renderCached("%gui/slotbar/slotbarItemButtons.tpl", itemButtonsView)
     tooltipId           = getTooltipType("UNIT").getTooltipId(unit.name, tooltipParams)
     isTooltipByHold     = showConsoleButtons.value
-    bottomButton        = handyman.renderCached("%gui/slotbar/slotbarItemBottomButton.tpl", bottomButtonView)
     extraInfoBlock      = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", extraInfoViewBottom)
     extraInfoBlockTop   = handyman.renderCached("%gui/slotbar/slotExtraInfoBlockTop.tpl", extraInfoTopView)
-    refuseOpenHoverMenu = !hasActions
+    refuseOpenHoverMenu = !hasActions ? "yes" : "no"
     crewNumWithTitle    = hasCrewInfo ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : ""
     crewInfoTranslucent = toBattle ? "yes" : "no"
+    hasContextCursor    = hasActions
   })
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
   let isShowAsRandomUnit = groupName

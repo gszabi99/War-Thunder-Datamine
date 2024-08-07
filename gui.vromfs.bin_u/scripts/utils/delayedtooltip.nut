@@ -9,6 +9,8 @@ let { parse_json } = require("json")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
 let { InContainersNavigator } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
+let { canShowUnitContextMenu } = require("%scripts/unit/contextMenu.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -146,7 +148,13 @@ function showTooltipForObj(obj) {
 }
 
 function showHintForObj(obj) {
+  let hasContextMenu = canShowUnitContextMenu(obj)
+  if(!hasTooltip(obj) && !hasContextMenu)
+    return
+
   let hObj = getHintForObj(obj)
+  hObj["hasContextMenuHint"] = hasContextMenu ? "yes" : "no"
+
   if (!hObj)
     return
 
@@ -208,11 +216,14 @@ function onHover(obj) {
   hintTgt = obj
   restartHintTask(function(_) {
     removeHintTask()
-    if (hintTgt?.isValid() && hasTooltip(hintTgt))
-      if (is_mouse_last_time_used())
-        showTooltipForObj(hintTgt)
+    if (hintTgt?.isValid())
+      if (is_mouse_last_time_used()) {
+        if (hasTooltip(obj))
+          showTooltipForObj(hintTgt)
+      }
       else
-        showHintForObj(hintTgt)
+        if(showConsoleButtons.get())
+          showHintForObj(hintTgt)
   })
 }
 

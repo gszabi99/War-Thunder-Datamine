@@ -28,6 +28,7 @@ shopItem {
   <<#shopStatus>>
   shopStat:t='<<shopStatus>>'
   <</shopStatus>>
+  proxyEventsParentTag:t='slotbarTable'
   <<#crewId>>crew_id:t='<<crewId>>'<</crewId>>
   <<@extraInfoBlock>>
 
@@ -90,6 +91,7 @@ shopItem {
   <</crewImage>>
 
   <<@itemButtons>>
+  on_hover:t='onUnitHover'
 }
 <<#needDnD>>
 on_end_edit:t='onCrewDropFinish'

@@ -416,8 +416,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     if (!curUnit || !checkObj(obj))
       return
 
-    let params = { hasActions = true }
-    let unitData = buildUnitSlot(curUnit.name, curUnit, params)
+    let unitData = buildUnitSlot(curUnit.name, curUnit)
     this.guiScene.replaceContentFromText(obj, unitData, unitData.len(), this)
     fillUnitSlotTimers(obj.findObject(curUnit.name), curUnit)
   }

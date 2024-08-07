@@ -35,14 +35,14 @@ shopItem {
   <<^isInTable>>
   isInTable:t='no'
   <</isInTable>>
-
+  on_hover:t='onUnitHover'
+  on_unhover:t='::gcb.delayedTooltipHover'
   <<#isTooltipByHold>>
   tooltipId:t='<<tooltipId>>'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
   <</isTooltipByHold>>
 
-  <<#refuseOpenHoverMenu>>refuseOpenHoverMenu:t='yes'<</refuseOpenHoverMenu>>
+  refuseOpenHoverMenu:t='<<refuseOpenHoverMenu>>'
+  <<#hasContextCursor>>cursor:t='context-menu'<</hasContextCursor>>
 
   <<@extraInfoBlock>>
   <<@extraInfoBlockTop>>
@@ -237,8 +237,6 @@ shopItem {
   <</isTooltipByHold>>
 
   focus_border {}
-
-  <<@bottomButton>>
 
   <<#needDnD>>
   on_drag_start:t='onUnitCellDragStart'

@@ -5,7 +5,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -22,7 +21,8 @@ let { getCrewsListByCountry, isUnitInSlotbar, getBestTrainedCrewIdxForUnit, getF
 } = require("%scripts/slotbar/slotbarState.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCrewSpecTypeByCode, getTrainedCrewSpecCode } = require("%scripts/crew/crewSpecType.nut")
+let fillSlotbarLegend = require("%scripts/slotbar/fillSlotbarLegend.nut")
+let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 
 function getObjPosInSafeArea(obj) {
   let pos = obj.getPosRC()
@@ -116,30 +116,18 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let crew = getCrewsListByCountry(this.country)?[this.takeCrewIdInCountry]
     this.createSlotbar(
-      {
+      slotbarBaseCfg.__merge({
         crewId = crew?.id
         shouldSelectCrewRecruit =  this.takeCrewIdInCountry > 0 && !crew
         singleCountry = this.country
-        hasActions = false
-        showNewSlot = true
-        showEmptySlot = true,
-        needActionsWithEmptyCrews = false
-        unitForSpecType = this.unit,
-        alwaysShowBorder = true
-        hasExtraInfoBlock = true
-        hasExtraInfoBlockTop = false
-        slotbarBehavior = "posNavigator"
-        needFullSlotBlock = true
+        unitForSpecType = this.unit
         selectOnHover = this.dragAndDropMode && this.canSetCurUnit
         highlightSelected = this.dragAndDropMode && !this.canSetCurUnit
-        showCrewUnseenIcon = false
-        needHugeFooter = "yes"
-        showSingleCountryFlag = false
 
         applySlotSelectionOverride = @(_, __) this.onChangeUnit()
         onSlotDblClick = Callback(this.onApplyCrew, this)
         onSlotActivate = Callback(this.onApplyCrew, this)
-      },
+      }),
       "take-aircraft-slotbar")
 
     if (this.dragAndDropMode) {
@@ -151,7 +139,8 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.onChangeUnit()
-    this.fillLegendData()
+    if (this.canSetCurUnit)
+      fillSlotbarLegend(this.scene.findObject("qualification_legend"), this.unit, this)
 
     move_mouse_on_child_by_value(this.slotbarWeak && this.slotbarWeak.getCurrentAirsTable())
 
@@ -191,7 +180,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     local bottom = tdPos[1] + tdSize[1]
 
     //place slotbar
-    let sbObj = this.scene.findObject("slotbar_with_buttons")
+    let sbObj = this.scene.findObject("slotbar_with_controls")
     let sbSize = sbObj.getSize()
     let isSlotbarOnTop = bottom + interval + sbSize[1] > sh - bh - bottomPanelHeight
     local sbPosY = 0
@@ -255,7 +244,6 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   onUnitCellDragStart = @(_obj) null
 
   function onUnitCellDrop(_obj) {
-    this.guiScene.setCursor("normal", true)
     if (this.takeCrewIdInCountry >= 0 && this.canSetCurUnit)
       this.onApply()
     this.goBack()
@@ -361,7 +349,6 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   function onTakeCancel() {
     if (this.restrictCancel)
       return
-    this.guiScene.setCursor("normal", true)
     this.goBack()
   }
 
@@ -376,42 +363,6 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       imagePath = specType.trainedIcon,
       locId = specType.getName()
     })
-  }
-
-  function fillLegendData() {
-    if (!this.canSetCurUnit)
-      return null
-
-    let legendData = []
-    foreach (_idx, crew in getCrewsListByCountry(this.country)) {
-      let specType = getCrewSpecTypeByCode(getTrainedCrewSpecCode(crew, this.unit))
-      this.addLegendData(legendData, specType)
-    }
-
-    if (u.isEmpty(legendData))
-      return null
-
-    legendData.sort(function(a, b) {
-      if (a.specType.code != b.specType.code)
-        return a.specType.code > b.specType.code ? 1 : -1
-      return 0
-    })
-
-    let view = {
-      header = loc("mainmenu/selectCrew/qualificationLegend",
-        { unitName = colorize("userlogColoredText", getUnitName(this.unit)) })
-      haveLegend = legendData.len() > 0
-      legendData = legendData
-    }
-
-    let obj = this.scene.findObject("qualification_legend")
-    if (!checkObj(obj))
-      return null
-
-    let blk = handyman.renderCached("%gui/slotbar/legend_block.tpl", view)
-    this.guiScene.replaceContentFromText(obj, blk, blk.len(), this)
-
-    return obj
   }
 
   function onDestroy() {

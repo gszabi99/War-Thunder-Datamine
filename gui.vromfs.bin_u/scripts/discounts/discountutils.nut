@@ -7,6 +7,25 @@ let { get_price_blk } = require("blkGetters")
 let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 
+function invokeMultiArray(multiArray, currentArray, currentIndex, invokeCallback) {
+  if (currentIndex == multiArray.len()) {
+    invokeCallback(currentArray)
+    return
+  }
+  if (type(multiArray[currentIndex]) == "array") {
+    foreach (name in multiArray[currentIndex]) {
+      currentArray.append(name)
+      invokeMultiArray(multiArray, currentArray, currentIndex + 1, invokeCallback)
+      currentArray.pop()
+    }
+  }
+  else {
+    currentArray.append(multiArray[currentIndex])
+    invokeMultiArray(multiArray, currentArray, currentIndex + 1, invokeCallback)
+    currentArray.pop()
+  }
+}
+
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, _idx = 0) {
   if (blk == null)
@@ -14,7 +33,7 @@ let { showCurBonus } = require("%scripts/bonusModule.nut")
   let result = {
     maxDiscount = 0
   }
-  ::invoke_multi_array(path, function (arr) {
+  invokeMultiArray(path, [], 0, function (arr) {
     let block = getBlkByPathArray(arr, blk)
     let discountValue = getTblValue("discount", block, 0)
     result.maxDiscount = max(result.maxDiscount, discountValue)
@@ -24,7 +43,7 @@ let { showCurBonus } = require("%scripts/bonusModule.nut")
   return result.maxDiscount
 }
 
-::get_max_weaponry_discount_by_unitName <- function get_max_weaponry_discount_by_unitName(unitName, discountTypes = null) {
+function getMaxWeaponryDiscountByUnitName(unitName, discountTypes = null) {
   let unitTable = get_price_blk()?.aircrafts[unitName]
   if (!unitTable)
     return 0
@@ -54,7 +73,7 @@ let { showCurBonus } = require("%scripts/bonusModule.nut")
 }
 
 //You can use array of airNames - in result will be max discount from them.
-::showAirDiscount <- function showAirDiscount(obj, airName, group = null, groupValue = null, fullUpdate = false) {
+function showAirDiscount(obj, airName, group = null, groupValue = null, fullUpdate = false) {
   let path = ["aircrafts", airName]
   if (group)
     path.append(group)
@@ -64,14 +83,14 @@ let { showCurBonus } = require("%scripts/bonusModule.nut")
   showCurBonus(obj, discount, group ? group : "buy", true, fullUpdate)
 }
 
-::showUnitDiscount <- function showUnitDiscount(obj, unitOrGroup) {
+function showUnitDiscount(obj, unitOrGroup) {
   let discount = isUnitGroup(unitOrGroup)
     ? ::g_discount.getGroupDiscount(unitOrGroup.airsGroup)
     : ::g_discount.getUnitDiscount(unitOrGroup)
   showCurBonus(obj, discount, "buy")
 }
 
-::showDiscount <- function showDiscount(obj, name, group = null, groupValue = null, fullUpdate = false) {
+function showDiscount(obj, name, group = null, groupValue = null, fullUpdate = false) {
   let path = [name]
   if (group)
     path.append(group)
@@ -79,4 +98,11 @@ let { showCurBonus } = require("%scripts/bonusModule.nut")
     path.append(groupValue)
   let discount = ::getDiscountByPath(path)
   showCurBonus(obj, discount, name, true, fullUpdate)
+}
+
+return {
+  showUnitDiscount
+  showDiscount
+  getMaxWeaponryDiscountByUnitName
+  showAirDiscount
 }

@@ -38,6 +38,7 @@ let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { steam_is_running } = require("steam")
 let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
+let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 let unitButtonTypes = {
   hasMarketPlaceButton = false
@@ -334,7 +335,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
         this.scene.findObject("buy_discount").show(false)
         return
       }
-      ::showUnitDiscount(this.scene.findObject("buy_discount"), unit)
+      showUnitDiscount(this.scene.findObject("buy_discount"), unit)
     }
   }
 

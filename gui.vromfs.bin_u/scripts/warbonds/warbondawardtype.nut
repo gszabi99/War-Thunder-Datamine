@@ -153,7 +153,6 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
       let blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
       return format(blockFormat, buildUnitSlot(unit.name, unit, {
-        hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",
         showAsTrophyContent = true
         isLocalState = false

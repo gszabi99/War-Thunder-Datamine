@@ -73,6 +73,7 @@ let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.n
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
+let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -2039,7 +2040,7 @@ gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
     })
 
     let discountType = this.item.type == weaponsItem.spare ? "spare" : (this.item.type == weaponsItem.weapon) ? "weapons" : "mods"
-    ::showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
+    showAirDiscount(this.scene.findObject("multPurch_discount"), this.unit.name, discountType, this.item.name, true)
 
     this.sceneUpdate()
     move_mouse_on_obj(this.scene.findObject("skillSlider"))

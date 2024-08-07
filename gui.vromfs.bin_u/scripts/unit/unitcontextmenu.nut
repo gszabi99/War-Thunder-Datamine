@@ -47,6 +47,7 @@ let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 let { isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
+let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -139,7 +140,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("options/secondary_weapons")
       icon       = "#ui/gameuiskin#slot_preset.svg"
       haveWarning = checkUnitSecondaryWeapons(unit) != UNIT_WEAPONS_READY
-      haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name, ["weapons"]) > 0
+      haveDiscount = getMaxWeaponryDiscountByUnitName(unit.name, ["weapons"]) > 0
       showAction = inMenu &&
         needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
       actionFunc = @() weaponryPresetsModal.open({
@@ -165,7 +166,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
         || needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit)
-      haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
+      haveDiscount = getMaxWeaponryDiscountByUnitName(unit.name) > 0
       showAction = inMenu
       actionFunc = @() ::open_weapons_for_unit(unit, {
         curEdiff = curEdiff

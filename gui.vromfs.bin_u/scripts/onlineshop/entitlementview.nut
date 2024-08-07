@@ -130,7 +130,6 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
   let receiveOnce = "mainmenu/receiveOnlyOnce"
 
   let unitPlate = buildUnitSlot(unitName, unit, {
-    hasActions = true
     status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy"
     isLocalState = !ignoreAvailability
     showAsTrophyContent = true

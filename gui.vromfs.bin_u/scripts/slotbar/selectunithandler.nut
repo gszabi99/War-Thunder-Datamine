@@ -307,7 +307,6 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let markup = "\n".join(markupArr)
     let tblObj = this.scene.findObject("airs_table")
-    tblObj.alwaysShowBorder = "yes"
     this.guiScene.replaceContentFromText(tblObj, markup, markup.len(), this)
 
     this.showMoreObj = tblObj.findObject("td_show_more")

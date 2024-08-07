@@ -14,13 +14,12 @@ inactive:t='yes'
 
 shopItem {
 <</hasFullGroupBlock>>
-
   id:t='<<slotId>>'
   behavior:t='Timer'
   timer_interval_msec:t='1000'
   group:t='yes'
   primaryUnitId:t='<<primaryUnitId>>'
-
+  refuseOpenHoverMenu:t='yes'
   <<#isTooltipByHold>>
   tooltipId:t='<<tooltipId>>'
   on_hover:t='::gcb.delayedTooltipHover'

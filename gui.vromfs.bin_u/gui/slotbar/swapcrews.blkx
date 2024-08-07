@@ -6,16 +6,24 @@
     ],
     "accessKey": "Esc",
     "on_click": "onCloseSwapCrews",
-    "tdiv": {
-      "id": "itemsHolder",
-      "position": "absolute",
-      "overflow": "hidden",
-      "tdiv": {
-        "id": "itemsNest",
-        "position": "root",
+    "tdiv": [
+      {
+        "id": "itemsHolder",
+        "position": "absolute",
+        "overflow": "hidden",
+        "tdiv": {
+          "id": "itemsNest",
+          "position": "root",
+          "pos": "0, 0",
+          "size": "sw, sh"
+        }
+      },
+      {
+        "position": "absolute",
         "pos": "0, 0",
-        "size": "sw, sh"
+        "size": "sw, sh",
+        "cursor": "drag-n-drop"
       }
-    }
+    ]
   }
 }

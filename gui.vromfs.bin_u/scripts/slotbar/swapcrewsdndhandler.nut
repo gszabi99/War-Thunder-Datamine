@@ -29,7 +29,6 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
     itemsHolder.pos = $"{tableBounds.left}, {tableBounds.top}"
     itemsHolder.size = $"{tableBounds.width}, {tableBounds.height}"
 
-    this.guiScene.setCursor("drag-n-drop", true)
     this.showOriginalSlotbar(false)
 
     this.draggedCrewCountry = getCrewById(this.draggedObj.crewId.tointeger()).country
@@ -39,7 +38,7 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
     let objSize = this.draggedObj.getSize()
 
     gui_handlers.ActionsList.removeActionsListFromObject(this.draggedObj) //close unit context menu
-    this.draggedClone = this.draggedObj.getClone(this.scene, this)
+    this.draggedClone = this.draggedObj.getClone(this.scene.findObject("itemsNest"), this)
     this.draggedClone.pos = ", ".join(objPos)
     this.draggedClone["class"] = "swapCrewsDnD"
     this.draggedClone["bounds"] = ",".join([tableBounds.left, objPos[1], tableBounds.right, objPos[1] + objSize[1]])
@@ -48,7 +47,6 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onCloseSwapCrews() {
-    this.guiScene.setCursor("normal", true)
     this.showOriginalSlotbar(true)
     this.goBack()
   }
@@ -112,9 +110,8 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
       }
 
       gui_handlers.ActionsList.removeActionsListFromObject(originalItem)
-      let itemsNest = this.scene.findObject("itemsNest")
 
-      let item = originalItem.getClone(itemsNest, this)
+      let item = originalItem.getClone(this.scene.findObject("itemsNest"), this)
       item["class"] = "swapCrewsDnD"
       item.left = originalItemPos[0].tostring()
       item["left-base"] = originalItemPos[0].tostring()
@@ -178,13 +175,12 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
   onOpenCrewWindow = @ (_obj) null
   onSwapCrews = @ (_obj) null
   onOpenCrewPopup = @(_obj) null
-  hideAllPopups = @(_obj) null
-
   onSlotbarSelect = @(_obj) null
   onSlotbarActivate = @(_obj) null
   onSlotbarDblClick = @(_obj) null
   onUnitCellDrop = @(_obj) null
   onUnitCellMove = @(_obj) null
+  onCrewBlockHover = @(_obj) null
 }
 
 gui_handlers.SwapCrewsHandler <- SwapCrewsHandler

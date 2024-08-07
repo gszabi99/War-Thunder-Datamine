@@ -430,29 +430,6 @@ local last_update_entitlements_time = get_time_msec()
   return ::buildTableRow(rowName, rowData, even, trParams, "0")
 }
 
-function _invoke_multi_array(multiArray, currentArray, currentIndex, invokeCallback) {
-  if (currentIndex == multiArray.len()) {
-    invokeCallback(currentArray)
-    return
-  }
-  if (type(multiArray[currentIndex]) == "array") {
-    foreach (name in multiArray[currentIndex]) {
-      currentArray.append(name)
-      _invoke_multi_array(multiArray, currentArray, currentIndex + 1, invokeCallback)
-      currentArray.pop()
-    }
-  }
-  else {
-    currentArray.append(multiArray[currentIndex])
-    _invoke_multi_array(multiArray, currentArray, currentIndex + 1, invokeCallback)
-    currentArray.pop()
-  }
-}
-
-::invoke_multi_array <- function invoke_multi_array(multiArray, invokeCallback) {
-  _invoke_multi_array(multiArray, [], 0, invokeCallback)
-}
-
 ::save_to_json <- function save_to_json(obj) {
   assert(isInArray(type(obj), [ "table", "array" ]),
     "Data type not suitable for save_to_json: " + type(obj))

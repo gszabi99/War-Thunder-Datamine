@@ -1077,7 +1077,6 @@ let prizeViewConfig = {
     infoText += (infoText.len() ? "\n" : "") + colorize("badTextColor", loc(receiveOnce))
 
   let unitPlate = buildUnitSlot(unitName, unit, {
-    hasActions = true,
     status = (!receivedPrizes && isBought) ? "locked" : "canBuy",
     isLocalState = isShowLocalState
     showAsTrophyContent = true

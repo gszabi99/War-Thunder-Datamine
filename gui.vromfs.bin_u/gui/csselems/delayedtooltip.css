@@ -7,6 +7,10 @@ holdWaitPlace {
   order-popup:yes;
 }
 
+holdWaitPlace[hasContextMenuHint=yes] > smallHint > tdiv[contextMenuHint=yes] {
+  display:show;
+}
+
 holdWaitIconBg, holdWaitIcon {
   position:absolute;
   pos:-w, 50%ph-50%h;

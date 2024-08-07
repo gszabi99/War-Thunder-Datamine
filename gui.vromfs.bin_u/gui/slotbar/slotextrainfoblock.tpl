@@ -2,10 +2,13 @@
 extraInfoBlock {
   id:t='extra_info_block'
   isEmptySlot:t='<<@isEmptySlot>>'
+  hasActions:t='<<#hasActions>>yes<</hasActions>><<^hasActions>>no<</hasActions>>'
   <<#hasActions>>
   interactive:t='yes'
   <</hasActions>>
-
+  on_r_click:t='onOpenCrewPopup'
+  on_click:t='onOpenCrewPopup'
+  crewIdInCountry:t='<<crewIdInCountry>>'
   content {
     crewInfoNumBlock {
       icon {
@@ -39,6 +42,9 @@ extraInfoBlock {
       }
     }
     <</hasCrewInfo>>
+
+    slotHoverHighlight {}
+    slotBottomGradientLine {}
 
     <<#hasCrewHint>>
     slotCrewHintContainer {
@@ -122,18 +128,39 @@ extraInfoBlock {
 
       }
       <<#hasActions>>
-      <<#canOpenCrewWnd>>
-      tdiv {
-        position:t='relative'
-        width:t='1@sf/@pf'
-        height:t='1@smallButtonHeight'
-        left:t='(pw-w)/2'
+      slotCrewHintButtons {
+        pos:t='pw/2-w/2, 0'
+
+        Button_text {
+          class:t='smallButton'
+          id:t='swap_crew_btn'
+          pos:t='pw/2-w/2, 0'
+          position:t='relative'
+          on_click:t='onSwapCrews'
+          isSwapCrewButton:t='yes'
+          crewIdInCountry:t='<<crewIdInCountry>>'
+          inactiveColor:t='yes'
+          interactive:t='yes'
+          tdiv {
+            position:t='relative'
+            pos:t='pw/2-w/2, ph/2-h/2'
+            text {
+              pos:t='0, ph/2-h/2+@sf/@pf'
+              position:t='relative'
+              text:t='#slotbar/swapCrewButton'
+              smallFont:t='yes'
+            }
+          }
+        }
+
+        <<#canOpenCrewWnd>>
 
         Button_text {
           id:t='open_crew_wnd_btn'
           class:t='smallButton'
           pos:t='pw/2-w/2, 0'
-          position:t='absolute'
+          margin-top:t='2@sf/@pf'
+          position:t='relative'
           on_click:t='onOpenCrewWindow'
           crewId='<<crewId>>'
           inactiveColor:t='yes'
@@ -153,37 +180,8 @@ extraInfoBlock {
             }
           }
         }
-      }
       <</canOpenCrewWnd>>
-      tdiv {
-        position:t='relative'
-        pos:t='pw/2-w/2, 0'
-        width:t='1@sf/@pf'
-        height:t='1@smallButtonHeight'
-        isSwapCrewButton:t='yes'
-        Button_text {
-          class:t='smallButton'
-          id:t='swap_crew_btn'
-          pos:t='pw/2-w/2, 0'
-          position:t='relative'
-          on_click:t='onSwapCrews'
-          margin-top:t='2@sf/@pf'
-          crewIdInCountry:t='<<crewIdInCountry>>'
-          inactiveColor:t='yes'
-          interactive:t='yes'
-          tdiv {
-            position:t='relative'
-            pos:t='pw/2-w/2, ph/2-h/2'
-            text {
-              pos:t='0, ph/2-h/2+@sf/@pf'
-              position:t='relative'
-              text:t='#slotbar/swapCrewButton'
-              smallFont:t='yes'
-            }
-          }
-        }
       }
-
       <</hasActions>>
       extraInfoBlockHint {
         position:t='absolute'
@@ -229,30 +227,11 @@ extraInfoBlock {
       }
     }
     <</hasCrewHint>>
-    <<#hasActions>>
-    Button_text {
-      visualStyle:t='common'
-      class:t='swapCrew'
-      display:t='hide'
-      on_click:t='onSwapCrews'
-      crewIdInCountry:t='<<crewIdInCountry>>'
-      img {}
-    }
-    Button_text {
-      visualStyle:t='common'
-      class:t='openCrewPopup'
-      display:t='hide'
-      on_click:t='onOpenCrewPopup'
-      btnName:t='A'
-      img {}
-      ButtonImg {}
-    }
-    <</hasActions>>
+    on_hover:t='onCrewBlockHover'
+    focus_border {}
   }
-  on_hover:t='hideAllPopups'
   <<#hasActions>>
   on_drag_start:t='onCrewDragStart'
   <</hasActions>>
 }
-on_hover:t='hideAllPopups'
 <</hasExtraInfoBlock>>

@@ -30,6 +30,7 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 enum windowState {
   research,
@@ -165,7 +166,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     countriesObj.setValue(curValue)
 
     foreach (c in shopCountriesList)
-      ::showDiscount(countriesObj.findObject(c + "_discount"), "exp_to_gold_rate", c)
+      showDiscount(countriesObj.findObject(c + "_discount"), "exp_to_gold_rate", c)
   }
 
   function fillUnitList() {
@@ -444,7 +445,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.loadUnitList(getEsUnitType(this.unit))
     this.fillUnitList()
 
-    ::showDiscount(this.scene.findObject("convert-discount"), "exp_to_gold_rate", this.country, null, true)
+    showDiscount(this.scene.findObject("convert-discount"), "exp_to_gold_rate", this.country, null, true)
   }
 
   function onSwitchUnitType(obj) {

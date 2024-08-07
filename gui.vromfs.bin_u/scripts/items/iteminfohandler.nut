@@ -68,7 +68,6 @@ local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
     if (showConsoleButtons.value)
       move_mouse_on_obj(obj)
   }
-
 }
 
 gui_handlers.ItemInfoHandler <- ItemInfoHandler

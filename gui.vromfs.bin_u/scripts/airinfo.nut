@@ -76,6 +76,7 @@ let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
+let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -1519,7 +1520,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
     holderObj.getScene().replaceContentFromText(fullRepairTd, repairCostData, repairCostData.len(), null)
     foreach (modeName, objName in discountsList)
-      ::showAirDiscount(fullRepairTd.findObject(objName), air.name, "repair", modeName)
+      showAirDiscount(fullRepairTd.findObject(objName), air.name, "repair", modeName)
 
     if (!freeRepairsUnlimited) {
       if (hasFeature("repairCostUsesPlayTime")) {

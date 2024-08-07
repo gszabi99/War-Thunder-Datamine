@@ -61,6 +61,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+
 local lastUnitType = null
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
@@ -1702,7 +1703,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let unit = getAircraftByName(obj?.id)
     if (!unit)
       return
-    this.guiScene.setCursor("drag-n-drop", true)
     takeUnitInSlotbar(unit, this.getOnTakeUnitParams(unit, { dragAndDropMode = true }))
   }
 

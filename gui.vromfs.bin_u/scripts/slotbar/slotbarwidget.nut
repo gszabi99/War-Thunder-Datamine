@@ -52,7 +52,7 @@ let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { isCrewListOverrided, getCrewsListVersion, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { vacationBinOpen } = require("%scripts/vacation/vacationBin.nut")
+let { startSlotbarUnitDnD } = require("%scripts/slotbar/slotbarUnitDnDHandler.nut")
 let swapCrewHandler = require("%scripts/slotbar/swapCrewHandler.nut")
 let swapCrewsBegin = require("%scripts/slotbar/swapCrewsDnDHandler.nut")
 
@@ -1644,7 +1644,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     removeAllGenericTooltip()
     if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) //close unit context menu
       gui_handlers.ActionsList.removeActionsListFromObject(obj)
-    vacationBinOpen(obj, profileCountrySq.value)
+    startSlotbarUnitDnD({ draggedObj = obj, country = profileCountrySq.value, unit })
   }
 
   function onCrewDragStart(obj) {
@@ -1666,6 +1666,12 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenCrewPopup(obj) {
+    if (obj.isEmptySlot != "yes")
+      this.selectCrew(obj.crewIdInCountry.tointeger())
+
+    if(obj.hasActions == "no")
+      return
+
     let popup = obj.getParent().findObject("extra_info_block_crew_hint")
     if (!(popup?.isValid() ?? false))
       return
@@ -1685,6 +1691,15 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if(popup != null)
         popup["showed"] = "no"
     }
+  }
+
+  function onCrewBlockHover(_obj) {
+    this.hideAllPopups()
+  }
+
+  function onUnitHover(obj) {
+    base.onUnitHover(obj)
+    this.hideAllPopups()
   }
 
   onUnitCellDrop = @() null

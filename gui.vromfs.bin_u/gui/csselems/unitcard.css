@@ -71,6 +71,7 @@
 @const groupUnfoldMarkHeight: 20@sf/@pf \ 1;
 @const swapCrewsHeaderHeight: 30@sf/@pf \ 1;
 @const topUnitsBonusHeight:0.5@shop_height;
+@const unitTrashBinPosY:sh - 1@slotbarOffset - 1@slotbarHeight - 1@slotbarTop - h - 30@sf/@pf;
 
 unitItemContainer {
   css-hier-invalidate:yes;
@@ -145,12 +146,6 @@ unitItemContainer.slotbarClone {
   total-input-transparent:yes;
 }
 
-shopItem[dragging=yes] {
-  behavior:dragDropMover;
-  dragParent:yes;
-  title:"";
-}
-
 unitCell:hover > shopItem[actionOnDrag='yes'] {
   behavior:dragStartListener;
 }
@@ -178,6 +173,14 @@ slotbarTable > unitItemContainer > shopItem {
 .shopClone > shopItem,
 .slotbarClone > shopItem {
   refuseOpenHoverMenu:yes;
+  cursor:normal;
+}
+
+shopItem[dragging=yes] {
+  behavior:dragDropMover;
+  dragParent:yes;
+  title:"";
+  cursor:drag-n-drop;
 }
 
 shopItem > slotPlate > bottomShade {
@@ -1056,11 +1059,23 @@ extraInfoBlock > content {
   border:yes;
   border-color:@extraInfoBlockBorderColor;
   border-offset:1@slotBorderSize;
+  cursor:context-menu;
+}
+
+unitItemContainer.swapCrewsDnD[dragging=yes] > shopItem > extraInfoBlock > content {
+  cursor:drag-n-drop;
+}
+
+extraInfoBlock:hover {
+  behavior:dragStartListener;
+}
+
+extraInfoBlock {
+  behavior: button;
 }
 
 slotCrewHintContainer {
   min-width:pw;
-  min-height:3@sf/@pf;
   pos:pw/2-w/2, -h;
   position:absolute;
   order-popup:yes;
@@ -1068,15 +1083,11 @@ slotCrewHintContainer {
   not-input-transparent:yes;
   display:hide;
   interactive:yes;
-  padding:3@sf/@pf, 3@sf/@pf, 3@sf/@pf, 8@sf/@pf;
+  padding:3@sf/@pf;
 }
 
 slotCrewHintContainer[showed=yes] {
   display:show;
-}
-
-[show_console_buttons=no] slotCrewHintContainer > tdiv[isSwapCrewButton=yes] {
-  display:hide;
 }
 
 slotMissionHintContainer {
@@ -1084,14 +1095,13 @@ slotMissionHintContainer {
   min-height:ph;
   position:absolute;
   css-hier-invalidate:yes;
-  not-input-transparent:yes;
   display:hide;
 }
 
 slotMissionHint {
   width:2pw;
   pos:pw/2-w/2, ph;
-  padding:@blockInterval, 3@blockInterval, @blockInterval, @blockInterval;
+  padding:@blockInterval, 4@blockInterval, @blockInterval, @blockInterval;
   position:absolute;
   background-color:#1C2C36;
   border:yes;
@@ -1103,7 +1113,7 @@ slotMissionHint {
 
 slotCrewHint {
   min-width:1@slot_width - 2@slot_interval + 12@sf/@pf;
-  pos:pw/2-w/2, -h+ph-3@sf/@pf;
+  pos:pw/2-w/2, -h+ph;
   min-height:6@sf/@pf;
   padding:3@sf/@pf, 3@sf/@pf, 3@sf/@pf, ph;
   position:absolute;
@@ -1115,7 +1125,19 @@ slotCrewHint {
 }
 
 slotCrewHint[placement=under_slot] {
-  pos:pw/2-w/2, ph+@slotExtraInfoHeight;
+  pos:pw/2-w/2, ph + 4@blockInterval + 4@sf/@pf;
+  padding:3@sf/@pf, ph + 8@sf/@pf, 3@sf/@pf, 3@sf/@pf;
+}
+
+slotCrewHintButtons {
+  position:relative;
+  flow:vertical;
+  width:1px;
+  padding-bottom:3@sf/@pf;
+}
+
+slotCrewHint[placement=under_slot] > slotCrewHintButtons {
+  padding-bottom:0;
 }
 
 slotMissionHintContainer > slotHoverHighlight,
@@ -1125,6 +1147,7 @@ slotCrewHintContainer > tdiv > slotBottomGradientLine {
   display:show;
 }
 
+extraInfoBlock > content > slotBottomGradientLine,
 slotMissionHintContainer > slotBottomGradientLine,
 slotCrewHintContainer > tdiv > slotBottomGradientLine {
   pos:0, ph-h;
@@ -1132,21 +1155,14 @@ slotCrewHintContainer > tdiv > slotBottomGradientLine {
 
 slotCrewHintContainer:hover,
 slotMissionHintContainer:hover,
-[show_console_buttons=no] extraInfoBlock:hover > content > slotCrewHintContainer,
-extraInfoBlockTop[hasInfo=yes]:hover > slotMissionHintContainer {
+extraInfoBlockTop[hasInfo=yes]:hover > slotMissionHintContainer,
+extraInfoBlock:hover > content > slotHoverHighlight,
+extraInfoBlock:hover > content > slotBottomGradientLine {
   display:show;
 }
 
-[show_console_buttons=no] extraInfoBlock:hover > content > Button_text.swapCrew {
+extraInfoBlock[hasActions=no]:hover > content > slotCrewHintContainer {
   display:show;
-}
-
-[show_console_buttons=yes] extraInfoBlock:hover > content > Button_text.openCrewPopup {
-  display:show;
-}
-
-extraInfoBlock:hover {
-  behavior:dragStartListener;
 }
 
 extraInfoBlock[isEmptySlot=yes] > content > crewNumText,
@@ -1156,14 +1172,6 @@ extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewN
 
 extraInfoBlock[isEmptySlot=yes] > content > crewInfoNumBlock {
   display:hide;
-}
-extraInfoBlock[isEmptySlot=yes]:hover > content > crewNumText,
-extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewNumText {
-  display:hide;
-}
-
-extraInfoBlock[isEmptySlot=yes]:hover > content > crewInfoNumBlock {
-  display:show;
 }
 
 extraInfoBlockTop {
@@ -1208,6 +1216,10 @@ crewInfoNumBlock > icon {
 
 crewInfoNumBlock > crewNumText {
   pos:0, ph/2-h/2;
+}
+
+extraInfoBlock[needHugeFooter=yes] > content {
+  skip-cursor:yes;
 }
 
 extraInfoBlock[needHugeFooter=yes] > content crewInfoNumBlock > icon {
@@ -1604,7 +1616,7 @@ CrewsNest[noMissionBlock=yes] > slotsScrollDiv {
 slotsScrollDiv[flow=vertical] {
   width:@slot_width+6*@sf/@pf_outdated;
   max-height:9*(1@slot_height+2@slot_vert_pad)+2@slot_vert_pad+5*@scrn_tgt/100.0;
-  padding:3*@sf/@pf_outdated, @slot_vert_pad+2.5*@scrn_tgt/100.0;
+  padding:0, @slot_vert_pad+2.5*@scrn_tgt/100.0;
 }
 
 slotsScrollDiv.shopDiv {
@@ -1808,7 +1820,7 @@ unitItemContainer.slotbarCloneSource > shopItem {
 
 unitTrashBin {
   position: absolute;
-  pos: pw/2 - w/2, sh - 1@slotbarOffset - 1@slotbarHeight - 1@slotbarTop - h - 42@sf/@pf;
+  pos: pw/2 - w/2, @unitTrashBinPosY;
   input-transparent: yes;
   css-hier-invalidate: yes;
   border: yes;
@@ -1905,7 +1917,6 @@ unitItemContainer.swapCrewsDnD {
   size:@slot_width, @slotbarHeight;
   padding:@slot_interval, @slotbar_pad_top, @slot_interval, @slotbar_pad_bottom;
   css-hier-invalidate:yes;
-  selected:no;
   position:absolute;
   input-transparent:yes;
   total-input-transparent:yes;
@@ -1923,11 +1934,10 @@ unitItemContainer.swapCrewsDnD[dropFinished=yes] {
   selfRemoveOnFinish:1;
   _pos-timer:0;
 }
-
+unitItemContainer.swapCrewsDnD > shopItem > slotHoverHighlight,
+unitItemContainer.swapCrewsDnD[selected=no] > shopItem > slotBottomGradientLine,
 unitItemContainer.swapCrewsDnD > shopItem:hover Button_text.bottomAirItem,
 unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock:hover > content > slotCrewHintContainer,
-unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock:hover > content > Button_text.swapCrew,
-unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock:hover > content > Button_text.openCrewPopup,
 unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock[isEmptySlot=yes]:hover > content > crewInfoNumBlock {
   display:hide;
 }
@@ -1937,6 +1947,10 @@ unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock[isEmptySlot=yes] > co
   display:show;
 }
 
+extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewInfoNumBlock {
+  display:hide;
+}
+
 shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > crewInfoNumBlock,
 shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > slotCrewHintContainer > tdiv > crewInfoNumBlock,
 shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > crewInfoExpBlock,
@@ -1944,10 +1958,6 @@ shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > slotCrewHintConta
   behaviour: massTransparency;
   transp-base: 128;
   transp-end: 128;
-}
-unitItemContainer.swapCrewsDnD > shopItem > slotHoverHighlight,
-unitItemContainer.swapCrewsDnD > shopItem > slotBottomGradientLine {
-  display:hide;
 }
 
 unitItemContainer.swapCrewsDnD > shopItem {
@@ -1962,4 +1972,8 @@ unitItemContainer.swapCrewsDnD[dragging=yes] > shopItem > extraInfoBlock {
   input-transparent:yes;
   interactive:no;
   not-input-transparent:no;
+}
+
+unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock > content > slotCrewHintContainer {
+  display:hide;
 }

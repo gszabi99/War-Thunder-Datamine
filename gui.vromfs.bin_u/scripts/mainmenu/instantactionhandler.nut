@@ -986,18 +986,14 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.tryToStartUpgradeCrewTutorial()
   }
 
-  function getCurrentCrewSlot() {
-    let slotbar = this.getSlotbar()
-    return slotbar && slotbar.getCurrentCrewSlot()
-  }
-
   function tryToStartUpgradeCrewTutorial() {
     let curCrew = this.getCurCrew()
     if (curCrew == null || curCrew.isEmpty)
       return
 
-    let curCrewSlot = this.getCurrentCrewSlot()
-    if (!curCrewSlot)
+    let slotbar = this.getSlotbar()
+    let curSlotExtraInfoObj = slotbar?.getCurrentCrewSlot().findObject("extra_info_block")
+    if (!curSlotExtraInfoObj)
       return
 
     let tutorialPageId = getCrewSkillPageIdToRunTutorial(curCrew)
@@ -1006,21 +1002,19 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let steps = [
       {
-        obj = [curCrewSlot]
+        obj = [curSlotExtraInfoObj]
         text = loc("tutorials/upg_crew/skill_points_info") + " " + loc("tutorials/upg_crew/press_to_crew")
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
-        cb = @() this.openUnitActionsList(curCrewSlot, true, true)
+        cb = @() slotbar.onOpenCrewPopup(curSlotExtraInfoObj)
       },
       {
         actionType = tutorAction.WAIT_ONLY
         waitTime = 0.5
       },
       {
-        obj = [function() {
-          return curCrewSlot.findObject("crew")
-        }]
+        obj = [@() curSlotExtraInfoObj.findObject("open_crew_wnd_btn")]
         text = loc("tutorials/upg_crew/select_crew")
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT

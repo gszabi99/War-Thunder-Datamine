@@ -35,6 +35,7 @@ let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewSt
 let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
 } = require("%scripts/crew/crewDiscount.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -463,7 +464,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateWeaponryDiscounts(unit) {
-    let discount = unit ? ::get_max_weaponry_discount_by_unitName(unit.name) : 0
+    let discount = unit ? getMaxWeaponryDiscountByUnitName(unit.name) : 0
     let discountObj = this.scene.findObject("btnAirInfoWeaponry_discount")
     showCurBonus(discountObj, discount, "mods", true, true)
     if (checkObj(discountObj))

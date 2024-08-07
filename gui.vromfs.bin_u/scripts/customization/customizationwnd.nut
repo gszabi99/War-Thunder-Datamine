@@ -79,6 +79,7 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
+let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -821,12 +822,12 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let price = canBuyNotResearchedUnit ? this.unit.getOpenCost() : ::getUnitCost(this.unit)
       placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnOrder"), price)
 
-      ::showUnitDiscount(bObj.findObject("buy_discount"), this.unit)
+      showUnitDiscount(bObj.findObject("buy_discount"), this.unit)
     }
 
     let bOnlineObj = showObjById("btn_buy_online", canBuyOnline, this.scene)
     if (canBuyOnline && checkObj(bOnlineObj))
-      ::showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), this.unit)
+      showUnitDiscount(bOnlineObj.findObject("buy_online_discount"), this.unit)
 
     showObjById("btn_marketplace_find_unit", canFindUnitOnMarketplace, this.scene)
     showObjById("btn_use_coupon_unit", canUseCoupon, this.scene)

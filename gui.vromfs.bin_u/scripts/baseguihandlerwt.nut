@@ -921,6 +921,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   onCustomSoundMods = @() this.guiScene.performDelayed(this,
     @() broadcastEvent("showOptionsWnd", { group = "sound" }))
+
+  function onUnitHover(obj) {
+    ::gcb.delayedTooltipHover(obj)
+  }
 }
 
 gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT
