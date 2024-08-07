@@ -829,9 +829,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           let countries = getShopVisibleCountries()
           foreach (countryName in countries) {
             let countryData = this.cachedTopUnitsInfo?[countryName]
-            if (countryData && countryData.battlesRemain[lastUnitType.esUnitType] > 0 && countryData.unitTypeWithBonuses.contains(lastUnitType.esUnitType))
+            let battlesRemainCount = countryData?.battlesRemain[lastUnitType.esUnitType] ?? 0
+            if (countryData && battlesRemainCount > 0 && countryData.unitTypeWithBonuses.contains(lastUnitType.esUnitType))
               countriesBonusText = "".concat(countriesBonusText, countriesBonusText.len() > 0 ? ", " : "",
-                loc(countryName), "-", countryData.battlesRemain[lastUnitType.esUnitType].tostring())
+                loc(countryName), "-", battlesRemainCount.tostring())
           }
           if (countriesBonusText == "")
             countriesBonusText = "0"
@@ -1091,7 +1092,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.isPageHasNationBonus && unitInResearchStatus) {
       data.hasNationBonus = true
-      let battlesRemain = this.cachedTopUnitsInfo[this.curCountry].battlesRemain[lastUnitType.esUnitType]
+      let battlesRemain = this.cachedTopUnitsInfo?[this.curCountry].battlesRemain[lastUnitType.esUnitType] ?? 0
       data.battlesRemain <- $"{battlesRemain}/{expNewNationBonusDailyBattleCount}"
       let isNationBonusOver = battlesRemain == 0
       data.isNationBonusOver <- isNationBonusOver ? "yes" : "no"
@@ -2612,7 +2613,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function isPageNationBonusPlateActive(country, armyIndex) {
     let bonus = this.getNationBonusData(country)
-    return (bonus.ownTopUnitTypes.contains(armyIndex)
+    return bonus != null && (bonus.ownTopUnitTypes.contains(armyIndex)
       || bonus.unitTypeWithBonuses.contains(armyIndex))
   }
 
@@ -2620,7 +2621,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasFeature("ExpNewNationBonus"))
       return false
     let bonus = this.getNationBonusData(country)
-    return bonus.unitTypeWithBonuses.contains(armyIndex)
+    return bonus != null && bonus.unitTypeWithBonuses.contains(armyIndex)
   }
 
   getParamsForActionsList = @() {

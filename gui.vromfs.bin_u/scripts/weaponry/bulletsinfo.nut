@@ -240,7 +240,8 @@ function getBulletsSetData(air, modifName, noModList = null) {
         else if (rocket?.smokeShell == false)
            weaponType = WEAPON_TYPE.FLARES
         else if (rocket?.operated || rocket?.guidanceType)
-          weaponType = (rocket?.bulletType == BULLET_TYPE.ATGM_TANK)
+          weaponType = (rocket?.bulletType == BULLET_TYPE.ATGM_TANK
+            || rocket?.bulletType == BULLET_TYPE.ATGM_TANDEM_TANK)
             ? WEAPON_TYPE.AGM : WEAPON_TYPE.AAM
         else
           weaponType = WEAPON_TYPE.ROCKETS
