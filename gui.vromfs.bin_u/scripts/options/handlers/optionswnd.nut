@@ -28,8 +28,7 @@ let { isOptionReqRestartChanged, setOptionReqRestartValue
 } = require("%scripts/options/optionsUtils.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_PTT, USEROPT_SKIP_LEFT_BULLETS_WARNING,
-  USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_PTT, USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 let { isInFlight } = require("gameplayBinding")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { guiStartPostfxSettings } = require("%scripts/postFxSettings.nut")
@@ -574,10 +573,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function resetNotifications() {
-    foreach (opt in [USEROPT_SKIP_LEFT_BULLETS_WARNING,
-                     USEROPT_SKIP_WEAPON_WARNING
-                    ])
-      set_gui_option(opt, false)
+    set_gui_option(USEROPT_SKIP_WEAPON_WARNING, false)
 
     saveLocalAccountSettings("skipped_msg", null)
     resetTutorialSkip()

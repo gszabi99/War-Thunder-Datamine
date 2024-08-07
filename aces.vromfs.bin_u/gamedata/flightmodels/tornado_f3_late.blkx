@@ -3528,7 +3528,37 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air_midrange_special_group_x4",
+            "iconType": "missile_air_to_air_midrange_special_group",
+            "name": "aim_120_default",
+            "ShowNodes": {
+              "node": [
+                "pylon_rocket1",
+                "pylon_rocket2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+                "emitter": "aim_120_2",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "launcher": true
+              },
+              {
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+                "emitter": "aim_120_1",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "launcher": true
+              }
+            ]
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_group_x4",
             "name": "skyflash_temp",
             "reqModification": "uk_skyflash_temp",
             "ShowNodes": {
@@ -3579,7 +3609,7 @@
             ]
           },
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group_x4",
+            "iconType": "missile_air_to_air_midrange_special_group_x4",
             "name": "aim_120",
             "reqModification": "us_aim_120b",
             "ShowNodes": {

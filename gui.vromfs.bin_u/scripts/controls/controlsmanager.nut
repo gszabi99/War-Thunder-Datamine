@@ -14,7 +14,8 @@ let { getCurrentPreset, hasXInputDevice, isXInputDevice } = require("controls")
 let { startsWith } = require("%sqstd/string.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let optionsExtNames = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY } = optionsExtNames
 
 function getLoadedPresetBlk() {
   let presetBlk = DataBlock()
@@ -217,8 +218,8 @@ function getLoadedPresetBlk() {
     let prefix = "USEROPT_"
     foreach (oType, value in this.curPreset.params)
       if (startsWith(oType, prefix))
-        if (oType in getroottable())
-          set_option(getroottable()[oType], value)
+        if (oType in optionsExtNames)
+          set_option(optionsExtNames[oType], value)
     setGuiOptionsMode(mainOptionsMode)
   }
 

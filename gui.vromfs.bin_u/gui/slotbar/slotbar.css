@@ -19,3 +19,32 @@ slotbarTop {
 slotbarTop[offset=yes] {
   padding-left:1@slotbarShopBtnOffset;
 }
+
+slotbarNest.selectCrew slotbarTable {
+  pos: 0, ph/2-h/2-7@sf/@pf;
+}
+
+slotbarNest.selectCrew slotbarDiv {
+  width:1@slotbarWidthFull;
+}
+
+slotbarNest.selectCrew CountriesCrews[hasBackground=yes] {
+  size:pw, 1@slot_height+1@slotExtraInfoHeightHuge+3@blockInterval;
+  border:yes;
+  border-color:@buttonBorderColorDisabled;
+  background-color:@frameDarkBackgroundColor;
+}
+
+selectCrewLegend legendData {
+  flow:horizontal;
+  halign:center;
+  margin-top:2@blockInterval;
+}
+
+selectCrewLegend legendData textarea {
+  paragraph-indent: 0;
+}
+
+selectCrewLegend legendData tdiv {
+  margin: 2@blockInterval, 0;
+}

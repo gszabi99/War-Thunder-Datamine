@@ -17,7 +17,7 @@ let { getBulletsSetData, getLinkedGunIdx,
         getBulletsInfoForPrimaryGuns,
         getAmmoStowageConstraintsByTrigger,
         getBulletsSetMaxAmmoWithConstraints } = require("%scripts/weaponry/bulletsInfo.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_SKIP_LEFT_BULLETS_WARNING, USEROPT_MODIFICATIONS
+let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -205,20 +205,15 @@ enum bulletsAmountState {
     return res
   }
 
-  function checkChosenBulletsCount(needWarnUnallocated = false, applyFunc = null) {
+  function checkChosenBulletsCount(applyFunc = null) {
     if (getOverrideBullets(this.unit))
       return true
     let readyCounts = this.checkBulletsCountReady()
     if (readyCounts.status == bulletsAmountState.READY
-        || (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED
-          && (!needWarnUnallocated || get_gui_option(USEROPT_SKIP_LEFT_BULLETS_WARNING))))
+      || readyCounts.status == bulletsAmountState.HAS_UNALLOCATED)
       return true
 
-    local msg = ""
-    if (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED)
-      msg = format(loc("multiplayer/someBulletsLeft"), colorize("activeTextColor", readyCounts.unallocated.tostring()))
-    else
-      msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
+    let msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
 
     loadHandler(gui_handlers.WeaponWarningHandler,
       {
@@ -227,7 +222,6 @@ enum bulletsAmountState {
         list = ""
         showCheckBoxBullets = false
         ableToStartAndSkip = readyCounts.status != bulletsAmountState.LOW_AMOUNT
-        skipOption = USEROPT_SKIP_LEFT_BULLETS_WARNING
         onStartPressed = applyFunc
       })
 

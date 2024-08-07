@@ -669,6 +669,7 @@ let getEmptyConditionsConfig = @() {
       res.name = item.getName()
       res.image = item.getSmallIconName()
       res.desc = item.getDescription()
+      res.descrImageSize <- "1@smallItemHeight, 1@smallItemHeight"
     }
   }
 

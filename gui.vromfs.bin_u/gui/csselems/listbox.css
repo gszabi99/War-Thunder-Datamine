@@ -595,12 +595,20 @@ CountriesCrews {
   background-color:@transparent;
 }
 
+CountriesCrews[needHugeFooter=yes] {
+  size: pw, 1@slotbarHeight - 1@slotExtraInfoHeight + 1@slotExtraInfoHeightHuge;
+}
+
 CountriesCrews > massTransp {
   size: pw, ph;
 }
 
 CountriesCrews[hasBackground=yes] {
   background-color:@listboxSelOptionColor;
+}
+
+CountriesCrews[noMissionBlock=yes] {
+  size: pw, 1@slotbarHeight-@slotExtraInfoHeight;
 }
 
 shopFilter.slotsHeader:hover {

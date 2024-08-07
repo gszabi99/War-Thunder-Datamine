@@ -105,7 +105,6 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
     swapedCrews[this.slotsCrews[row]] <- this.crew.id
     swapedCrews[this.crew.id] <- this.slotsCrews[row]
     ::slotbarPresets.swapCrewsInCurrentPreset(swapedCrews)
-    this.slotbarWeak.fullUpdate()
     this.goBack()
   }
 
@@ -119,6 +118,10 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
   onUnitCellMove = @(_obj) null
   onOpenCrewPopup = @(_obj) null
   hideAllPopups = @(_obj) null
+  onCrewDragStart = @ (_obj) null
+  onCrewDropFinish = @ (_obj) null
+  onCrewDrop = @() null
+  onCrewMove = @() null
 }
 
 gui_handlers.SwapCrewHandler <- SwapCrewHandler

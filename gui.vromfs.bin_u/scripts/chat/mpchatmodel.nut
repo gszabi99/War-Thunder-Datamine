@@ -9,12 +9,9 @@ let { get_mission_time, get_mplayer_by_name } = require("mission")
 let { get_charserver_time_sec } = require("chard")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-
-let mpChatState = persist("mpChatState", @() {
-  log = [],
-  currentModeId = null,
-  maxLogSize = 20
-})
+let { getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentModeId
+} = require("%scripts/chat/mpChatState.nut")
+let { register_command } = require("console")
 
 let chatLogFormatForBanhammer = {
   category = ""
@@ -27,12 +24,8 @@ let chatLogFormatForBanhammer = {
   chatLog = null
 }
 
-function initMpChatModel() {
-  mpChatState.maxLogSize = ::g_chat.getMaxRoomMsgAmount()
-}
-
 function getLogForBanhammer() {
-  let logObj = mpChatState.log.map(@(message) {
+  let logObj = getMpChatLog().map(@(message) {
     from = message.sender
     userColor = message.userColor != "" ? get_main_gui_scene().getConstantValue(cutPrefix(message.userColor, "@")) : ""
     fromUid = message.uid
@@ -46,57 +39,49 @@ function getLogForBanhammer() {
   return chatLogFormatForBanhammer.__merge({ chatLog = logObj })
 }
 
-function onChatClear() {
-  mpChatState.log.clear()
-  eventbus_send("mpChatClear", {})
-}
-
 function clearMpChatLog() {
   onChatClear()
   broadcastEvent("MpChatLogUpdated")
 }
 
-function getMpChatLog() {
-  return mpChatState.log
-}
+function onIncomingMessageImpl(sender, msg, mode, automatic) {
+  let player = get_mplayer_by_name(sender)
+  let message = {
+    userColor = ""
+    msgColor = ""
+    clanTag = ""
+    uid = player?.userId.tointeger()
+    sender = sender
+    text = msg
+    isMyself = sender == userName.value || getRealName(sender) == userName.value
+    isBlocked = ::isPlayerNickInContacts(sender, EPL_BLOCKLIST)
+    isAutomatic = automatic
+    mode = mode
+    time = get_mission_time()
+    sTime = get_charserver_time_sec()
+    team = player?.team ?? MP_TEAM_NEUTRAL
+  }
 
-function setMpChatLog(l) {
-  mpChatState.log = l
+  addMessageToLog(message)
+  broadcastEvent("MpChatLogUpdated")
+  eventbus_send("mpChatPushMessage", message.__merge({
+    fullName = sender == "" ? ""
+      : ::g_contacts.getPlayerFullName(getPlayerName(sender), message.clanTag)
+  }))
 }
 
 function onIncomingMessage(sender, msg, _enemy, mode, automatic) {
+  if (automatic) {
+    onIncomingMessageImpl(sender, msg, mode, automatic)
+    return
+  }
+  if (!isChatEnabled() || mode == CHAT_MODE_PRIVATE)
+    return
+
   checkChatEnableWithPlayer(sender, function(canChat) {
-    if ((!isChatEnabled() || mode == CHAT_MODE_PRIVATE || !canChat) && !automatic)
+    if (!canChat)
       return
-
-    let player = get_mplayer_by_name(sender)
-
-    let message = {
-      userColor = ""
-      msgColor = ""
-      clanTag = ""
-      uid = player?.userId.tointeger()
-      sender = sender
-      text = msg
-      isMyself = sender == userName.value || getRealName(sender) == userName.value
-      isBlocked = ::isPlayerNickInContacts(sender, EPL_BLOCKLIST)
-      isAutomatic = automatic
-      mode = mode
-      time = get_mission_time()
-      sTime = get_charserver_time_sec()
-      team = player?.team ?? MP_TEAM_NEUTRAL
-    }
-
-    if (mpChatState.log.len() > mpChatState.maxLogSize) {
-      mpChatState.log.remove(0)
-    }
-    mpChatState.log.append(message)
-
-    broadcastEvent("MpChatLogUpdated")
-    eventbus_send("mpChatPushMessage", message.__merge({
-      fullName = sender == "" ? ""
-        : ::g_contacts.getPlayerFullName(getPlayerName(sender), message.clanTag)
-    }))
+    onIncomingMessageImpl(sender, msg, mode, automatic)
   })
 }
 
@@ -104,32 +89,24 @@ function onInternalMessage(str) {
     onIncomingMessage("", str, false, CHAT_MODE_ALL, true)
 }
 
-function unblockMessage(text) {
-  foreach (message in mpChatState.log) {
-    if (message.text == text) {
-      message.isBlocked = false
-      return
-    }
-  }
-}
-
 function onModeChanged(modeId, _playerName) {
-  if (mpChatState.currentModeId == modeId)
+  let currentModeId = getCurrentModeId()
+  if (currentModeId == modeId)
     return
 
   if (!::g_mp_chat_mode.getModeById(modeId).isEnabled()) {
-    let isEnabledCurMod = mpChatState.currentModeId != null
-      && ::g_mp_chat_mode.getModeById(mpChatState.currentModeId).isEnabled()
-    let enabledModId = isEnabledCurMod ? mpChatState.currentModeId
-      : ::g_mp_chat_mode.getNextMode(mpChatState.currentModeId)
+    let isEnabledCurMod = currentModeId != null
+      && ::g_mp_chat_mode.getModeById(currentModeId).isEnabled()
+    let enabledModId = isEnabledCurMod ? currentModeId
+      : ::g_mp_chat_mode.getNextMode(currentModeId)
     if (enabledModId != null)
       chat_set_mode(enabledModId, "")
     return
   }
 
-  mpChatState.currentModeId = modeId
+  setCurrentModeId(modeId)
   eventbus_send("hudChatModeIdUpdate", { modeId })
-  broadcastEvent("MpChatModeChanged", { modeId = mpChatState.currentModeId })
+  broadcastEvent("MpChatModeChanged", { modeId })
 }
 
 function onInputChanged(str) {
@@ -138,7 +115,7 @@ function onInputChanged(str) {
 }
 
 function onModeSwitched() {
-  let newModeId = ::g_mp_chat_mode.getNextMode(mpChatState.currentModeId)
+  let newModeId = ::g_mp_chat_mode.getNextMode(getCurrentModeId())
   if (newModeId == null)
     return
 
@@ -155,14 +132,21 @@ let mpChatModel = {
   onModeSwitched
 }
 
+register_command(
+  function(count) {
+    for (local i = 0; i < count; i++) {
+      onIncomingMessage("Kawakaze_Aki", "Attention to the map!<color=#FF96966E> [b5]</color>", null, 0, false)
+      onIncomingMessage("F16C1978@live", "ok ill go taxi in", null, 1, false)
+      onIncomingMessage("Iridescenzza", "and based material", null, 2, false)
+    }
+  }
+"mpChatModel.onIncomingMessage")
+
 set_chat_handler(mpChatModel)
 return {
-  initMpChatModel
   getLogForBanhammer
   clearMpChatLog
-  getMpChatLog
-  setMpChatLog
   onIncomingMessage
   onInternalMessage
-  unblockMessage
+  chatSystemMessage = @(text) onIncomingMessage("", text, false, 0, true)
 }

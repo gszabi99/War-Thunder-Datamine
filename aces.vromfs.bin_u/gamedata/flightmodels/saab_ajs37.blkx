@@ -2628,22 +2628,36 @@
           },
           {
             "iconType": "ltc",
-            "name": "ltc",
+            "name": "ltc_left",
             "ShowNodes": {
               "node": [
                 "kb_container_001",
                 "kb_container_001_cap"
               ]
             },
-            "Weapon": {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
-              "emitter": "emtr_flare1",
-              "bullets": 24,
-              "bulletsCartridge": 1,
-              "external": true,
-              "separate": true
-            }
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 24,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+                "emitter": "emtr_inversion_r",
+                "bullets": 340,
+                "external": true,
+                "separate": false,
+                "bulletsCartridge": 1,
+                "CustomBombHolder": {
+                  "node": "kb_container_001_cap"
+                }
+              }
+            ]
           },
           {
             "iconType": "nar_ap_special",
@@ -3007,22 +3021,36 @@
           },
           {
             "iconType": "ltc",
-            "name": "ltc",
+            "name": "ltc_right",
             "ShowNodes": {
               "node": [
                 "kb_container_002",
                 "kb_container_002_cap"
               ]
             },
-            "Weapon": {
-              "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
-              "emitter": "emtr_flare2",
-              "bullets": 24,
-              "bulletsCartridge": 1,
-              "external": true,
-              "separate": true
-            }
+            "Weapon": [
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 24,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+                "emitter": "airbrake_r",
+                "bullets": 340,
+                "external": true,
+                "separate": false,
+                "bulletsCartridge": 1,
+                "CustomBombHolder": {
+                  "node": "kb_container_002_cap"
+                }
+              }
+            ]
           },
           {
             "iconType": "nar_ap_special",

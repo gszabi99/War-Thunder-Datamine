@@ -111,14 +111,15 @@ def damage_area_update_server_es(act : UpdateStageInfoAct;
                                  damage_area__endTime, damage_area__radius, damage_area__damage : float;
                                  damage_area__damageTypeId, damage_area__offenderId, damage_area__seed : int;
                                  var damage_area__nextUpdateTime : float&)
-  if (act.curTime >= damage_area__endTime)
-    destroyEntity(eid)
   if (act.curTime > damage_area__nextUpdateTime)
+    print("damage tick")
     damage_area__nextUpdateTime = act.curTime + 1.
     var pos2 = damage_area__pos2;
     pos2.y = get_scene_height(damage_area__pos2, false);
     volumetric_damage(damage_area__pos1, pos2, damage_area__radius,
       damage_area__damage, damage_area__damageTypeId, damage_area__offenderId, damage_area__seed)
+  elif (act.curTime >= damage_area__endTime)
+    destroyEntity(eid)
 
 
 [es(tag=gameClient, after=damage_area_update_es)]

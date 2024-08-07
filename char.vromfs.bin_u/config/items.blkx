@@ -21087,6 +21087,144 @@
       }
     }
   },
+  "wagerGold_12win_3fail": {
+    "type": "wager",
+    "wagerParams": {
+      "maxWins": 12,
+      "maxFails": 3,
+      "minWager": 0,
+      "maxWager": 0,
+      "wagerStep": 0,
+      "win": {
+        "type": "unlocks",
+        "unlock": [
+          "hidden_win_streak",
+          "hidden_kill_streak"
+        ],
+        "typeLocIDWithoutValue": "conditions/win_with_1_kill"
+      },
+      "active": {
+        "type": "maxUnitsRankOnStartMission",
+        "minRank": 3,
+        "maxRank": 8,
+        "skipTemporary": true,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "eventMode",
+            "is_event": false
+          },
+          {
+            "type": "missionPostfix",
+            "allowed": false,
+            "postfix": "_pve_H2M"
+          }
+        ]
+      },
+      "winParams": {
+        "reward": [
+          {
+            "param": 1,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              100.0
+            ]
+          },
+          {
+            "param": 2,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              200.0
+            ]
+          },
+          {
+            "param": 3,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              300.0
+            ]
+          },
+          {
+            "param": 4,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              350.0
+            ]
+          },
+          {
+            "param": 5,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              400.0
+            ]
+          },
+          {
+            "param": 6,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              500.0
+            ]
+          },
+          {
+            "param": 7,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              550.0
+            ]
+          },
+          {
+            "param": 8,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              600.0
+            ]
+          },
+          {
+            "param": 9,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              700.0
+            ]
+          },
+          {
+            "param": 10,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              800.0
+            ]
+          },
+          {
+            "param": 11,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              900.0
+            ]
+          },
+          {
+            "param": 12,
+            "goldRewardParams": [
+              0.0,
+              0.0,
+              1000.0
+            ]
+          }
+        ]
+      }
+    }
+  },
   "wager_10winMission_maker_3fail_everyDayAward": {
     "type": "wager",
     "wagerParams": {

@@ -35,6 +35,10 @@ hint {
   pos:pw-w, 0;
 }
 
+loadingHint[hintAlign=left] > hint {
+  pos:0, 0;
+}
+
 hintRow {
   position: relative;
   pos: pw/2 - w/2, 0;
@@ -116,6 +120,12 @@ hintRow > combination > textareaNoTab {
 
 hintRow > timeBar textareaNoTab {
   font: @fontHudMedium;
+}
+
+loadingHint hintRow img {
+  pos: 0, 0;
+  size: 1@cIco, 1@cIco;
+  background-svg-size:1@cIco, 1@cIco;
 }
 
 loadingHint hintRow textareaNoTab,

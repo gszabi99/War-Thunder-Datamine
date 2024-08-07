@@ -10908,6 +10908,12 @@
       "hideUntilUnlocked": true
     },
     {
+      "id": "title_snail_enhanced_player",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
       "id": "title_god_of_vengeance",
       "type": "title",
       "chapter": "title",
@@ -13288,6 +13294,321 @@
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_skilled_marksman",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "type98_shin_gunto_eight_gift",
+      "userLogId": "type98_shin_gunto_eight_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "ija_8th_air_combat_group",
+          "ija_8th_tank_regiment",
+          "hull_number_8",
+          "jmsdf_air_patrol_squadron_8",
+          "jasdf_8th_fighter_squadron",
+          "jgsdf_8th_tank_battalion",
+          "8thanniversary_emblem_viiicorps"
+        ]
+      }
+    },
+    {
+      "id": "8thanniversary_emblem_viiicorps",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "8thanniversary_emblem_viiicorps_dmm",
+          "8thanniversary_emblem_viiicorps_scej"
+        ]
+      }
+    },
+    {
+      "id": "8thanniversary_emblem_viiicorps_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2024-08-06 07:00:00",
+        "endDate": "2024-11-01 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "8thanniversary_emblem_viiicorps_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2024-08-06 07:00:00",
+        "endDate": "2024-11-01 07:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
+    },
+    {
+      "id": "ija_8th_tank_regiment",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 8,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-06 07:00:00",
+            "endDate": "2024-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ija_8th_air_combat_group",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 8,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-06 07:00:00",
+            "endDate": "2024-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "hull_number_8",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 8,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 2
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-06 07:00:00",
+            "endDate": "2024-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jgsdf_8th_tank_battalion",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "tanks_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 8,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 8,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-06 07:00:00",
+            "endDate": "2024-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jasdf_8th_fighter_squadron",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 8,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 8,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-06 07:00:00",
+            "endDate": "2024-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jmsdf_air_patrol_squadron_8",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "ships_japan",
+      "hideUntilUnlocked": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 8,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "maxRank": 6,
+            "inSession": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-06 07:00:00",
+            "endDate": "2024-11-01 07:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "DMMAndSCEJAccounts"
+          }
+        ]
+      }
     },
     {
       "id": "one_for_all_all_for_one_decal",
@@ -26070,7 +26391,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -26127,7 +26447,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -26192,7 +26511,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -26398,7 +26716,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -26464,7 +26781,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -26527,7 +26843,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -26877,7 +27192,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -26937,7 +27251,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27000,7 +27313,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27056,7 +27368,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27420,7 +27731,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27566,7 +27876,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27633,7 +27942,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27698,7 +28006,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27838,7 +28145,6 @@
       "type": "achievement",
       "amount_exp": 0,
       "amount_warpoints": 0,
-      "forUserstat": true,
       "battlePassSeason": 14,
       "hidden": true,
       "chapter": "battlepass_season14",
@@ -27882,6 +28188,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "unlockStageCount",
@@ -28100,6 +28407,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "char_unlocks",
@@ -28157,6 +28465,7 @@
       "group": "battlepass_season_15_challenge_2",
       "locId": "mainmenu/type_tank",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -28214,6 +28523,7 @@
       "group": "battlepass_season_15_challenge_2",
       "locId": "mainmenu/type_tank_destroyer",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -28267,6 +28577,7 @@
       "group": "battlepass_season_15_challenge_2",
       "locId": "mainmenu/type_spaa",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -28321,6 +28632,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "missionsPlayedScore",
@@ -28389,6 +28701,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "unlockStageCount",
@@ -28442,6 +28755,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "char_unlocks",
@@ -28513,6 +28827,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_5",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -28581,6 +28896,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_5",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -28654,6 +28970,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_5",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -28723,6 +29040,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "char_unlocks",
@@ -28786,6 +29104,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_6",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 10000,
@@ -28838,6 +29157,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_6",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 10000,
@@ -28890,6 +29210,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_6",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 10000,
@@ -28940,6 +29261,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "unlockStageCount",
@@ -29075,6 +29397,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "totalMissionScore",
@@ -29137,6 +29460,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "char_unlocks",
@@ -29195,6 +29519,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_9",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedGroundScore",
         "inRow": false,
@@ -29262,6 +29587,7 @@
       "chapter": "battlepass_season15",
       "group": "battlepass_season_15_challenge_9",
       "icon": "!ui/gameuiskin#item_sub_challenge",
+      "hidden": true,
       "mode": {
         "type": "killedPlayersScore",
         "inRow": false,
@@ -29326,6 +29652,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "awardDamage",
@@ -29377,6 +29704,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "missionsPlayedScore",
@@ -29441,6 +29769,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "missionsWonScore",
@@ -29509,6 +29838,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "unlockStageCount",
@@ -29569,6 +29899,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "killedPlayersScore",
@@ -29626,6 +29957,7 @@
       "amount_warpoints": 0,
       "forUserstat": true,
       "battlePassSeason": 15,
+      "hidden": true,
       "chapter": "battlepass_season15",
       "mode": {
         "type": "char_unlocks",
@@ -29655,6 +29987,2234 @@
           {
             "type": "battlepassSeason",
             "season": 15
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_1",
+      "locDescId": "challenge_kill_players/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 150,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-24 12:00:00",
+            "endDate": "2024-08-14 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_2",
+      "locDescId": "challenge_get_score_on_tank_destroyer/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 10000,
+        "chardType": "char_static_progress",
+        "num": 10000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerType",
+            "unitType": "typeTankDestroyer"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-31 12:00:00",
+            "endDate": "2024-08-21 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_3",
+      "locDescId": "challenge_win_battles_with_one_kill/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 35,
+        "condition": [
+          {
+            "type": "minStat",
+            "value": [
+              1,
+              1,
+              1
+            ],
+            "stat": "playerkills"
+          },
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-07 12:00:00",
+            "endDate": "2024-08-28 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_4",
+      "locDescId": "challenge_play_missions_in_top3/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 15,
+        "condition": [
+          {
+            "type": "minStat",
+            "value": [
+              3,
+              3,
+              3
+            ],
+            "stat": "place"
+          },
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-14 12:00:00",
+            "endDate": "2024-09-04 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_5",
+      "locDescId": "challenge_kill_players_on_ground_at_50m/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "targetDistance",
+            "distance": 50.0,
+            "gt": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-21 12:00:00",
+            "endDate": "2024-09-11 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_6",
+      "locDescId": "challenge_kill_players_with_bomb_and_rocket/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "char_unlocks",
+        "typeLocID": "conditions/char_unlocks",
+        "num": 2,
+        "unlock": [
+          "battlepass_season_16_challenge_6_bomb",
+          "battlepass_season_16_challenge_6_rocket"
+        ],
+        "visualCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-28 12:00:00",
+            "endDate": "2024-09-18 12:00:00"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          }
+        ],
+        "condition": [
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_6_bomb",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_6",
+      "locId": "weaponType/bomb",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "weaponType",
+            "weapon": [
+              "unguided_bomb",
+              "guided_bomb"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-28 12:00:00",
+            "endDate": "2024-09-18 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_6_rocket",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_6",
+      "locId": "weaponType/rocketOrAgm",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "weaponType",
+            "weapon": [
+              "rocket",
+              "agm"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-28 12:00:00",
+            "endDate": "2024-09-18 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_7",
+      "locDescId": "challenge_kill_players_with_torpedo/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "weaponType",
+            "weapon": "torpedo"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-04 12:00:00",
+            "endDate": "2024-09-25 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_8",
+      "locDescId": "challenge_get_score_on_season_vehicles/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 20000,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnit",
+            "class": [
+              "pbm_5a",
+              "il_sholef"
+            ],
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-11 12:00:00",
+            "endDate": "2024-10-02 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_9",
+      "locDescId": "challenge_win_battles_with_one_kill_and_captures/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "unlocked",
+            "unlock": "hidden_kill_streak"
+          },
+          {
+            "type": "unlocked",
+            "unlock": "hidden_base_capturer"
+          },
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-18 12:00:00",
+            "endDate": "2024-10-09 12:00:00"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10",
+      "locDescId": "challenge_play_5_battles_in_different_nations/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "battlepass_season_16_challenge_10_usa",
+          "battlepass_season_16_challenge_10_germany",
+          "battlepass_season_16_challenge_10_ussr",
+          "battlepass_season_16_challenge_10_britain",
+          "battlepass_season_16_challenge_10_japan",
+          "battlepass_season_16_challenge_10_italy",
+          "battlepass_season_16_challenge_10_france",
+          "battlepass_season_16_challenge_10_china",
+          "battlepass_season_16_challenge_10_sweden",
+          "battlepass_season_16_challenge_10_israel"
+        ],
+        "visualCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          }
+        ],
+        "condition": [
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_usa",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_usa",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_usa"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_germany",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_germany",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_germany"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_ussr",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_ussr",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_ussr"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_britain",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "locId": "country_britain",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_britain"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_japan",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_japan",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_italy",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_italy",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_italy"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_france",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_france",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_france"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_china",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_china",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_china"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_sweden",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_sweden",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_sweden"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_10_israel",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_10",
+      "locId": "country_israel",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 4,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_israel"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-25 12:00:00",
+            "endDate": "2024-10-16 12:00:00"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_11",
+      "locDescId": "challenge_kill_all_type_vechicles_on_bomber/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "char_unlocks",
+        "typeLocID": "conditions/char_unlocks",
+        "num": 3,
+        "unlock": [
+          "battlepass_season_16_challenge_11_army",
+          "battlepass_season_16_challenge_11_fleet",
+          "battlepass_season_16_challenge_11_aviation"
+        ],
+        "visualCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "typeBomber"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-10-02 12:00:00",
+            "endDate": "2024-10-23 12:00:00"
+          }
+        ],
+        "condition": [
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_11_army",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_11",
+      "locId": "mainmenu/army",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-10-02 12:00:00",
+            "endDate": "2024-10-23 12:00:00"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "typeBomber"
+          },
+          {
+            "type": "targetType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_11_fleet",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_11",
+      "locId": "mainmenu/fleet",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-10-02 12:00:00",
+            "endDate": "2024-10-23 12:00:00"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "typeBomber"
+          },
+          {
+            "type": "targetType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_11_aviation",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_11",
+      "locId": "mainmenu/aviation",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-10-02 12:00:00",
+            "endDate": "2024-10-23 12:00:00"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "typeBomber"
+          },
+          {
+            "type": "targetType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_12",
+      "locDescId": "challenge_kill_3_players_without_death_on_tank_destroyer/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/killedPlayersSeries",
+        "num": 10,
+        "unlock": "hidden_battlepass_season_16_challenge_12_kill3_without_death",
+        "visualCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "typeTankDestroyer"
+          }
+        ],
+        "condition": [
+          {
+            "type": "battlepassProgress",
+            "progress": 210
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "hidden_battlepass_season_16_challenge_12_kill3_without_death",
+      "type": "streak",
+      "isAfterFlight": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden": true,
+      "stage": {
+        "param": 3,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": true,
+        "num": 1005000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "typeTankDestroyer"
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 210
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_13",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "unlockStageCount",
+        "num": 15,
+        "unlock": "global_kills_without_death",
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1",
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 400
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_14",
+      "locDescId": "challenge_kill_players_with_different_gun_caliber/desc",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "char_unlocks",
+        "typeLocID": "conditions/char_unlocks",
+        "num": 5,
+        "unlock": [
+          "battlepass_season_16_challenge_14_autocannons",
+          "battlepass_season_16_challenge_14_small_calibers",
+          "battlepass_season_16_challenge_14_medium_calibers",
+          "battlepass_season_16_challenge_14_big_calibers",
+          "battlepass_season_16_challenge_14_huge_calibers"
+        ],
+        "visualCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 600
+          }
+        ],
+        "condition": [
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_14_autocannons",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_14",
+      "locId": "battlepass_season_9_challenge_9_autocannons/name",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "weaponType",
+            "weapon": "generic"
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.035,
+            "notLess": false
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 600
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_14_small_calibers",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_14",
+      "locId": "battlepass_season_9_challenge_9_small_calibers/name",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "weaponType",
+            "weapon": "generic"
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.035,
+            "notLess": true
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.06,
+            "notLess": false
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 600
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_14_medium_calibers",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_14",
+      "locId": "battlepass_season_9_challenge_9_medium_calibers/name",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "weaponType",
+            "weapon": [
+              "generic",
+              "rocket"
+            ]
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.06,
+            "notLess": true
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.09,
+            "notLess": false
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 600
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_14_big_calibers",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_14",
+      "locId": "battlepass_season_9_challenge_9_big_calibers/name",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "weaponType",
+            "weapon": [
+              "generic",
+              "rocket"
+            ]
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.09,
+            "notLess": true
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.12,
+            "notLess": false
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 600
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_14_huge_calibers",
+      "type": "challenge",
+      "chapter": "battlepass_season16",
+      "group": "battlepass_season_16_challenge_14",
+      "locId": "battlepass_season_9_challenge_9_huge_calibers/name",
+      "icon": "!ui/gameuiskin#item_sub_challenge",
+      "mode": {
+        "type": "killedPlayersScore",
+        "inRow": false,
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "weaponType",
+            "weapon": [
+              "generic",
+              "rocket"
+            ]
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.12,
+            "notLess": true
+          },
+          {
+            "type": "battlepassProgress",
+            "progress": 600
+          },
+          {
+            "type": "playerHasFeature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "battlepass_season_16_challenge_all",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "battlePassSeason": 16,
+      "chapter": "battlepass_season16",
+      "mode": {
+        "type": "char_unlocks",
+        "typeLocID": "conditions/battlepassChallenges",
+        "num": 14,
+        "unlock": [
+          "battlepass_season_16_challenge_1",
+          "battlepass_season_16_challenge_2",
+          "battlepass_season_16_challenge_3",
+          "battlepass_season_16_challenge_4",
+          "battlepass_season_16_challenge_5",
+          "battlepass_season_16_challenge_6",
+          "battlepass_season_16_challenge_7",
+          "battlepass_season_16_challenge_8",
+          "battlepass_season_16_challenge_9",
+          "battlepass_season_16_challenge_10",
+          "battlepass_season_16_challenge_11",
+          "battlepass_season_16_challenge_12",
+          "battlepass_season_16_challenge_13",
+          "battlepass_season_16_challenge_14"
+        ],
+        "condition": [
+          {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          },
+          {
+            "type": "battlepassSeason",
+            "season": 16
           }
         ]
       }
@@ -53946,6 +56506,7 @@
       "chapter": "history_pages",
       "group": "jumping_general",
       "costGold": 1999,
+      "hidden": true,
       "visibleDays": 1.0,
       "manualOpen": true,
       "mode": {
@@ -53974,6 +56535,7 @@
       "locDescId": "2024_07_28_history_pages_trophy_gift/desc",
       "userLogId": "2022_06_12_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54047,6 +56609,7 @@
       "locDescId": "2024_07_24_history_pages_trophy_gift/desc",
       "userLogId": "2022_07_24_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54107,6 +56670,7 @@
       "locDescId": "2024_07_20_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_07_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54168,6 +56732,7 @@
       "locDescId": "2024_07_16_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_26_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54246,6 +56811,7 @@
       "locDescId": "2024_07_12_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_26_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54330,6 +56896,7 @@
       "locDescId": "2024_07_09_history_pages_trophy_gift/desc",
       "userLogId": "2022_05_13_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54425,6 +56992,7 @@
       "locDescId": "2024_07_05_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_07_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54509,6 +57077,7 @@
       "locDescId": "2024_07_01_history_pages_trophy_gift/desc",
       "userLogId": "2022_02_02_memorable_date_trophy",
       "group": "jumping_general",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -54578,6 +57147,727 @@
             "type": "timeRange",
             "beginDate": "2024-07-01 11:00:00",
             "endDate": "2024-07-04 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_cardicon_raymond_dronne_trophy_gift",
+      "locDescId": "2024_08_cardicon_raymond_dronne_trophy_gift/desc",
+      "userLogId": "cardicon_raymond_dronne_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "group": "fist_in_paris",
+      "costGold": 1999,
+      "visibleDays": 1.0,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "typeLocID": "conditions/completedTasks",
+        "num": 8,
+        "unlock": [
+          "2024_08_01_history_pages_trophy_gift",
+          "2024_08_04_history_pages_trophy_gift",
+          "2024_08_09_history_pages_trophy_gift",
+          "2024_08_12_history_pages_trophy_gift",
+          "2024_08_17_history_pages_trophy_gift",
+          "2024_08_21_history_pages_trophy_gift",
+          "2024_08_24_history_pages_trophy_gift",
+          "2024_08_28_history_pages_trophy_gift"
+        ],
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2024-08-01 11:00:00",
+          "endDate": "2024-09-03 11:30:00"
+        }
+      }
+    },
+    {
+      "id": "2024_08_28_history_pages_trophy_gift",
+      "locDescId": "2024_08_28_history_pages_trophy_gift/desc",
+      "userLogId": "2022_02_02_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "ussr_t_34_1941_l_11",
+              "ussr_t_34_1941",
+              "ussr_t_28",
+              "ussr_gaz_4m",
+              "ussr_t_26_1940",
+              "ussr_kv_1_L_11",
+              "ussr_t_60_1941",
+              "ussr_t_26_1940_1st_GvTBr",
+              "ussr_t_34_1941_cast_turret",
+              "ussr_zis_30",
+              "mig_3_series_1_15_bk_pod",
+              "lagg-3-8",
+              "lagg-3-11",
+              "il_2_1941",
+              "pe-3",
+              "i-153_m62",
+              "i-153_m62_zhukovskiy",
+              "i-16_type24",
+              "i-16_type18",
+              "i-16_type28",
+              "pe-2-1",
+              "yak-1_early",
+              "germ_pzkpfw_III_ausf_F",
+              "germ_pzkpfw_III_ausf_J_L42",
+              "germ_pzkpfw_38t_ausf_A",
+              "germ_pzkpfw_38t_ausf_F",
+              "germ_stug_III_ausf_A",
+              "germ_pzkpfw_IV_ausf_E",
+              "germ_pzkpfw_IV_ausf_F",
+              "bf-109e-3",
+              "bf-109e-4",
+              "bf-109f-4",
+              "bf-109f-2",
+              "ju-87b-2"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-28 11:00:00",
+            "endDate": "2024-08-31 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_24_history_pages_trophy_gift",
+      "locDescId": "2024_08_24_history_pages_trophy_gift/desc",
+      "userLogId": "2023_08_24_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "us_m5a1_stuart",
+              "us_m5a1_stuart_td",
+              "us_m10",
+              "us_m18_hellcat",
+              "us_m18_hellcat_black_cat",
+              "us_m4a2_sherman",
+              "us_m4a3_105_sherman",
+              "us_m4a2_76w_sherman",
+              "us_m4a5_ram_2",
+              "us_m8_greyhound",
+              "us_m8_scott",
+              "us_halftrack_m3_75mm_gmc",
+              "us_halftrack_m13",
+              "us_halftrack_m15",
+              "p-47d_22_re",
+              "p-47d",
+              "p-47d-28",
+              "p-51d-5",
+              "p-51d-20-na",
+              "p-61a_1",
+              "germ_sdkfz_222",
+              "germ_sdkfz_234_1",
+              "germ_sdkfz_234_2",
+              "germ_sdkfz_234_2_td",
+              "germ_sdkfz_9_flak37",
+              "germ_stug_III_ausf_G",
+              "germ_jgdpz_IV_L48",
+              "germ_pzkpfw_IV_ausf_G",
+              "germ_pzkpfw_IV_ausf_H",
+              "germ_pzkpfw_V_ausf_a_panther",
+              "germ_pzkpfw_V_ausf_d_panther",
+              "germ_pzkpfw_VI_ausf_h1_tiger",
+              "germ_pzkpfw_VI_ausf_h1_tiger_animal_version",
+              "germ_pzkpfw_VI_ausf_e_tiger",
+              "germ_pzkpfw_VI_ausf_b_tiger_IIp",
+              "germ_pzkpfw_VI_ausf_b_tiger_IIh",
+              "germ_pzkpfw_III_ausf_M",
+              "germ_pzkpfw_III_ausf_N",
+              "germ_sturmpanzer_IV_brummbar",
+              "germ_panzerjager_nashorn",
+              "germ_flakpanzer_38t_Gepard",
+              "germ_sdkfz_6_2_flak36",
+              "bf-109g-6",
+              "ju-87d-5",
+              "fw-190f-8",
+              "fw-190a-5_cannons",
+              "fw-190a-5",
+              "fw-190a-5_u2",
+              "uk_a17_mk_1_tetrarch",
+              "uk_daimler_mk_2",
+              "uk_sherman_II",
+              "uk_sherman_vc_firefly",
+              "uk_sherman_ic_firefly",
+              "uk_a_22f_mk_7_churchill_crocodile",
+              "uk_a27m_cromwell_5",
+              "uk_a27m_cromwell_1",
+              "uk_daimler_mk_2",
+              "uk_17_pdr_m10_achilles",
+              "uk_17_pdr_m10_achilles_norfolk_yeomanry",
+              "spitfire_ix_early",
+              "spitfire_mk5c_notrop",
+              "spitfire_mk5b_notrop",
+              "typhoon_mk1b",
+              "typhoon_mk1b_late",
+              "tempest_mkv",
+              "fr_m3a3_stuart",
+              "fr_m4a1_sherman",
+              "fr_m4a3_105_sherman",
+              "fr_m4a4_sherman",
+              "fr_m10"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-24 11:00:00",
+            "endDate": "2024-08-27 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_21_history_pages_trophy_gift",
+      "locDescId": "2024_08_21_history_pages_trophy_gift/desc",
+      "userLogId": "2022_02_02_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "ussr_t_34_1941_l_11",
+              "ussr_t_34_1941",
+              "ussr_gaz_4m",
+              "ussr_kv_1_L_11",
+              "ussr_t_60_1941",
+              "ussr_t_26_1940_1st_GvTBr",
+              "ussr_t_34_1941_cast_turret",
+              "mig_3_series_1_15_bk_pod",
+              "lagg-3-8",
+              "lagg-3-11",
+              "il_2_1941",
+              "pe-3",
+              "i-153_m62",
+              "i-153_m62_zhukovskiy",
+              "i-16_type24",
+              "i-16_type18",
+              "i-16_type28",
+              "pe-2-1",
+              "yak-1_early",
+              "germ_sdkfz_222",
+              "germ_pzkpfw_III_ausf_J",
+              "germ_pzkpfw_IV_ausf_F2",
+              "germ_panzerjager_1",
+              "germ_sdkfz_6_2_flak36",
+              "germ_stug_III_ausf_F",
+              "germ_pzkpfw_38t_Marder_III",
+              "bf-109f-4",
+              "ju-87d-3",
+              "fw-190a-1",
+              "fw-190a-4",
+              "bf-109e-7"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-21 11:00:00",
+            "endDate": "2024-08-24 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_17_history_pages_trophy_gift",
+      "locDescId": "2024_08_17_history_pages_trophy_gift/desc",
+      "userLogId": "2021_12_07_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "spitfire_mk1",
+              "d_520_france",
+              "gladiator_mk2",
+              "hurricane_mk1",
+              "bf-109e-1",
+              "bf-109e-3",
+              "bf-109e-4",
+              "do_17z_2",
+              "bf-110c-4",
+              "ju-87b-2",
+              "ju-88a-1",
+              "he-111h-2"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-17 11:00:00",
+            "endDate": "2024-08-20 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_12_history_pages_trophy_gift",
+      "locDescId": "2024_08_12_history_pages_trophy_gift/desc",
+      "userLogId": "2022_02_08_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "us_m5a1_stuart",
+              "us_m5a1_stuart_td",
+              "us_m10",
+              "us_m18_hellcat",
+              "us_m18_hellcat_black_cat",
+              "us_m4a2_sherman",
+              "us_m4a3_105_sherman",
+              "us_m4a2_76w_sherman",
+              "us_m4a5_ram_2",
+              "us_m8_greyhound",
+              "us_m8_scott",
+              "us_halftrack_m3_75mm_gmc",
+              "us_halftrack_m13",
+              "us_halftrack_m15",
+              "p-47d_22_re",
+              "p-47d",
+              "p-47d-28",
+              "p-51d-5",
+              "p-51d-20-na",
+              "p-61a_1",
+              "germ_sdkfz_222",
+              "germ_sdkfz_234_1",
+              "germ_sdkfz_234_2",
+              "germ_sdkfz_234_2_td",
+              "germ_sdkfz_9_flak37",
+              "germ_stug_III_ausf_G",
+              "germ_jgdpz_IV_L48",
+              "germ_pzkpfw_IV_ausf_G",
+              "germ_pzkpfw_IV_ausf_H",
+              "germ_pzkpfw_V_ausf_a_panther",
+              "germ_pzkpfw_V_ausf_d_panther",
+              "germ_pzkpfw_VI_ausf_h1_tiger",
+              "germ_pzkpfw_VI_ausf_h1_tiger_animal_version",
+              "germ_pzkpfw_VI_ausf_e_tiger",
+              "germ_pzkpfw_VI_ausf_b_tiger_IIp",
+              "germ_pzkpfw_VI_ausf_b_tiger_IIh",
+              "germ_pzkpfw_III_ausf_M",
+              "germ_pzkpfw_III_ausf_N",
+              "germ_sturmpanzer_IV_brummbar",
+              "germ_panzerjager_nashorn",
+              "germ_flakpanzer_38t_Gepard",
+              "germ_sdkfz_6_2_flak36",
+              "bf-109g-6",
+              "ju-87d-5",
+              "fw-190f-8",
+              "fw-190a-5_cannons",
+              "fw-190a-5",
+              "fw-190a-5_u2",
+              "uk_a17_mk_1_tetrarch",
+              "uk_daimler_mk_2",
+              "uk_sherman_II",
+              "uk_sherman_vc_firefly",
+              "uk_sherman_ic_firefly",
+              "uk_a_22f_mk_7_churchill_crocodile",
+              "uk_a27m_cromwell_5",
+              "uk_a27m_cromwell_1",
+              "uk_daimler_mk_2",
+              "uk_17_pdr_m10_achilles",
+              "uk_17_pdr_m10_achilles_norfolk_yeomanry",
+              "spitfire_ix_early",
+              "spitfire_mk5c_notrop",
+              "spitfire_mk5b_notrop",
+              "typhoon_mk1b",
+              "typhoon_mk1b_late",
+              "tempest_mkv"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-12 11:00:00",
+            "endDate": "2024-08-16 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_09_history_pages_trophy_gift",
+      "locDescId": "2024_08_09_history_pages_trophy_gift/desc",
+      "userLogId": "2022_01_10_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "ussr_t_34_85_zis_53",
+              "ussr_t_34_85_d_5t",
+              "ussr_m4a2_76w_sherman",
+              "ussr_is_1",
+              "ussr_is_2_1943",
+              "ussr_is_2_1944",
+              "ussr_is_2_1944_321",
+              "ussr_isu_122",
+              "ussr_isu_122s",
+              "ussr_su_100_1945",
+              "ussr_zis_12_94KM_1945",
+              "ussr_su_76m_1943",
+              "ussr_t_80",
+              "ussr_su_85m",
+              "ussr_su_85_1943",
+              "la-7",
+              "yak-3",
+              "yak-9u",
+              "il_2_37_1943",
+              "il_2m_1943",
+              "il-2m_mstitel",
+              "tu-2",
+              "germ_sdkfz_234_1",
+              "germ_sdkfz_234_2",
+              "germ_sdkfz_234_2_td",
+              "germ_sdkfz_234_3",
+              "germ_sdkfz_234_4",
+              "germ_sdkfz_251_21",
+              "germ_flakpanzer_IV_Wirbelwind",
+              "germ_panzerwerfer_42",
+              "germ_stug_III_ausf_G",
+              "germ_jgdpz_38t",
+              "germ_jgdpz_IV_L48",
+              "germ_pz_IV_L70",
+              "germ_pzkpfw_IV_ausf_G",
+              "germ_pzkpfw_IV_ausf_H",
+              "germ_pzkpfw_IV_ausf_J",
+              "germ_panzerbefelhswagen_IV_ausf_J",
+              "germ_pzkpfw_VI_ausf_h1_tiger",
+              "germ_pzkpfw_VI_ausf_h1_tiger_animal_version",
+              "germ_pzkpfw_VI_ausf_e_tiger",
+              "germ_pzkpfw_VI_ausf_b_tiger_IIp",
+              "germ_pzkpfw_VI_ausf_b_tiger_IIh",
+              "germ_pzkpfw_V_ausf_d_panther",
+              "germ_pzkpfw_V_ausf_a_panther",
+              "germ_pzkpfw_V_ausf_g_panther",
+              "germ_panzerjager_panther",
+              "germ_panzerbefelhswagen_jagdpanther",
+              "bf-109g-6",
+              "bf-109g-14",
+              "bf-109g-10",
+              "fw-190a-5_cannons",
+              "fw-190a-5",
+              "fw-190a-5_u2",
+              "fw-190a-8",
+              "fw-190d-9",
+              "fw-190f-8"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-09 11:00:00",
+            "endDate": "2024-08-12 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_04_history_pages_trophy_gift",
+      "locDescId": "2024_08_04_history_pages_trophy_gift/desc",
+      "userLogId": "2021_12_26_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "ussr_t_70_1942",
+              "ussr_t_34_1941",
+              "ussr_t_34_1942",
+              "ussr_kv_1_zis_5",
+              "ussr_kv_1s",
+              "ussr_su_122",
+              "il_2_37_1943",
+              "il_2m_1943",
+              "il-2m_mstitel",
+              "p-39k_1",
+              "yak-7b",
+              "yak-1b",
+              "yak-9",
+              "la-5_type37_early",
+              "yak-9t",
+              "pe-2-83",
+              "pe-2-205",
+              "germ_pzkpfw_III_ausf_L",
+              "germ_pzkpfw_III_ausf_M",
+              "germ_pzkpfw_IV_ausf_F2",
+              "germ_pzkpfw_IV_ausf_G",
+              "germ_stug_III_ausf_F",
+              "germ_stug_III_ausf_G",
+              "germ_pzkpfw_38t_Marder_III",
+              "germ_pzkpfw_38t_Marder_III_ausf_H",
+              "germ_panzerjager_nashorn",
+              "germ_pzkpfw_V_ausf_d_panther",
+              "germ_pzkpfw_VI_ausf_h1_tiger",
+              "germ_pzkpfw_VI_ausf_h1_tiger_animal_version",
+              "germ_t_34_747",
+              "bf-109g-6",
+              "fw-190a-5_cannons",
+              "ju-87g_1",
+              "ju-87g_2",
+              "hs-129b-2",
+              "ju-87d-3",
+              "ju-87d-5"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-04 11:00:00",
+            "endDate": "2024-08-08 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_08_01_history_pages_trophy_gift",
+      "locDescId": "2024_08_01_history_pages_trophy_gift/desc",
+      "userLogId": "2021_12_07_memorable_date_trophy",
+      "group": "fist_in_paris",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "history_pages",
+      "costGold": 299,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 3.0,
+        "mulMode3": 0.93,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "forceShowMulMode": 0,
+        "chardType": "char_static_progress",
+        "num": 20000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnit",
+            "inSession": true,
+            "inSessionAnd": false,
+            "class": [
+              "germ_kpz_t72m1",
+              "ussr_t_62",
+              "ussr_t_55a",
+              "ussr_bmp_1",
+              "ussr_bmp_2",
+              "uk_chieftain_mk_5",
+              "us_m901_itv"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-01 11:00:00",
+            "endDate": "2024-08-04 11:30:00"
           }
         ]
       }
@@ -67814,6 +71104,7 @@
       "chapter": "2024_06_tank",
       "icon": "!https://static-ggc.gaijin.net/units/uk_churchill_avre_200.avif",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
       "manualOpen": true,
       "mode": {
@@ -67838,6 +71129,7 @@
       "group": "coupon_upgrade",
       "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
       "manualOpen": true,
       "mode": {
@@ -67896,6 +71188,7 @@
       "amount_trophies": 1,
       "chapter": "2024_06_tank",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
       "manualOpen": true,
       "mode": {
@@ -67923,6 +71216,7 @@
       "lockStyle": "lock",
       "showInDesc": true,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -67945,6 +71239,7 @@
       "amount_trophies": 1,
       "chapter": "2024_06_tank",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
       "manualOpen": true,
       "mode": {
@@ -67972,6 +71267,7 @@
       "lockStyle": "lock",
       "showInDesc": true,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 4,
@@ -67992,6 +71288,7 @@
       "amount_trophies": 1,
       "chapter": "2024_06_tank",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
       "manualOpen": true,
       "mode": {
@@ -68011,6 +71308,7 @@
       "id": "15_06_2024_tank_stage",
       "locId": "marathon_tank_stage_6/name",
       "chapter": "2024_06_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -68072,6 +71370,7 @@
       "id": "13_06_2024_tank_stage",
       "locId": "marathon_tank_stage_5/name",
       "chapter": "2024_06_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -68133,6 +71432,7 @@
       "id": "11_06_2024_tank_stage",
       "locId": "marathon_tank_stage_4/name",
       "chapter": "2024_06_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -68194,6 +71494,7 @@
       "id": "09_06_2024_tank_stage",
       "locId": "marathon_tank_stage_3/name",
       "chapter": "2024_06_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -68255,6 +71556,7 @@
       "id": "07_06_2024_tank_stage",
       "locId": "marathon_tank_stage_2/name",
       "chapter": "2024_06_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -68316,6 +71618,7 @@
       "id": "05_06_2024_tank_stage",
       "locId": "marathon_tank_stage_1/name",
       "chapter": "2024_06_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 699,
@@ -68369,6 +71672,708 @@
             "type": "timeRange",
             "beginDate": "2024-06-05 11:00:00",
             "endDate": "2024-06-07 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_banana_clicker_decal_trophy",
+      "locId": "item/gift_prize_trophy",
+      "userLogId": "2024_banana_clicker_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "isAllowByClient": true
+    },
+    {
+      "id": "gift_2024_banana_clicker_battle_trophy_1",
+      "locId": "item/gift_prize_trophy",
+      "userLogId": "2024_banana_clicker_battle_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "timePlayed",
+        "num": 3,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "unlocked",
+            "positive": true,
+            "unlock": "gift_2024_banana_clicker_decal_trophy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_banana_clicker_battle_trophy_2",
+      "locId": "item/gift_prize_trophy",
+      "userLogId": "2024_banana_clicker_battle_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "timePlayed",
+        "num": 6,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "unlocked",
+            "positive": true,
+            "unlock": "gift_2024_banana_clicker_decal_trophy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_banana_clicker_battle_trophy_3",
+      "locId": "item/gift_prize_trophy",
+      "userLogId": "2024_banana_clicker_battle_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "timePlayed",
+        "num": 9,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "unlocked",
+            "positive": true,
+            "unlock": "gift_2024_banana_clicker_decal_trophy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_it_albatros_class_f544_coupon",
+      "type": "inventory",
+      "userLogId": "50273",
+      "chapter": "2024_07_ship",
+      "icon": "!https://static-ggc.gaijin.net/units/it_albatros_class_f544.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "05_08_2024_ship_stage",
+          "03_08_2024_ship_stage",
+          "01_08_2024_ship_stage",
+          "30_07_2024_ship_stage",
+          "28_07_2024_ship_stage",
+          "26_07_2024_ship_stage",
+          "24_07_2024_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_it_albatros_class_f544_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215088",
+      "chapter": "2024_07_ship",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 600000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-24 11:00:00",
+            "endDate": "2024-08-07 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_07_ship_trophy_1",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_07_ship",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "05_08_2024_ship_stage",
+          "03_08_2024_ship_stage",
+          "01_08_2024_ship_stage",
+          "30_07_2024_ship_stage",
+          "28_07_2024_ship_stage",
+          "26_07_2024_ship_stage",
+          "24_07_2024_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_07_ship_decal_trophy_1",
+      "locId": "item/gift_2024_07_ship_decal_trophy",
+      "locDescId": "gift_2024_07_ship_decal_trophy/desc",
+      "userLogId": "2024_07_ship_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_07_ship",
+      "icon": "!https://static-ggc.gaijin.net/decals/alcione_decals.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "05_08_2024_ship_stage",
+          "03_08_2024_ship_stage",
+          "01_08_2024_ship_stage",
+          "30_07_2024_ship_stage",
+          "28_07_2024_ship_stage",
+          "26_07_2024_ship_stage",
+          "24_07_2024_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_07_ship_trophy_2",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_07_ship",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "05_08_2024_ship_stage",
+          "03_08_2024_ship_stage",
+          "01_08_2024_ship_stage",
+          "30_07_2024_ship_stage",
+          "28_07_2024_ship_stage",
+          "26_07_2024_ship_stage",
+          "24_07_2024_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_07_ship_decal_trophy_2",
+      "locId": "item/gift_2024_07_ship_decal_trophy",
+      "locDescId": "gift_2024_07_ship_decal_trophy/desc",
+      "userLogId": "2024_07_ship_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_07_ship",
+      "icon": "!https://static-ggc.gaijin.net/decals/alcione_decals.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 4,
+        "unlock": [
+          "05_08_2024_ship_stage",
+          "03_08_2024_ship_stage",
+          "01_08_2024_ship_stage",
+          "30_07_2024_ship_stage",
+          "28_07_2024_ship_stage",
+          "26_07_2024_ship_stage",
+          "24_07_2024_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_07_ship_trophy_3",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_07_ship",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 5,
+        "unlock": [
+          "05_08_2024_ship_stage",
+          "03_08_2024_ship_stage",
+          "01_08_2024_ship_stage",
+          "30_07_2024_ship_stage",
+          "28_07_2024_ship_stage",
+          "26_07_2024_ship_stage",
+          "24_07_2024_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "2024_07_ship_event_flag_trophy_gift",
+      "userLogId": "2024_07_ship_event_flag_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_07_ship",
+      "icon": "!https://static-ggc.gaijin.net/ship_flags/flag_italy_05.png",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "05_08_2024_ship_stage",
+          "03_08_2024_ship_stage",
+          "01_08_2024_ship_stage",
+          "30_07_2024_ship_stage",
+          "28_07_2024_ship_stage",
+          "26_07_2024_ship_stage",
+          "24_07_2024_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "05_08_2024_ship_stage",
+      "locId": "marathon_ship_stage_7/name",
+      "chapter": "2024_07_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-05 11:00:00",
+            "endDate": "2024-08-07 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "03_08_2024_ship_stage",
+      "locId": "marathon_ship_stage_6/name",
+      "chapter": "2024_07_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-03 11:00:00",
+            "endDate": "2024-08-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "01_08_2024_ship_stage",
+      "locId": "marathon_ship_stage_5/name",
+      "chapter": "2024_07_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-08-01 11:00:00",
+            "endDate": "2024-08-03 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "30_07_2024_ship_stage",
+      "locId": "marathon_ship_stage_4/name",
+      "chapter": "2024_07_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-30 11:00:00",
+            "endDate": "2024-08-01 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "28_07_2024_ship_stage",
+      "locId": "marathon_ship_stage_3/name",
+      "chapter": "2024_07_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-28 11:00:00",
+            "endDate": "2024-07-30 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "26_07_2024_ship_stage",
+      "locId": "marathon_ship_stage_2/name",
+      "chapter": "2024_07_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-26 11:00:00",
+            "endDate": "2024-07-28 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "24_07_2024_ship_stage",
+      "locId": "marathon_ship_stage_1/name",
+      "chapter": "2024_07_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-07-24 11:00:00",
+            "endDate": "2024-07-26 11:30:00"
           }
         ]
       }

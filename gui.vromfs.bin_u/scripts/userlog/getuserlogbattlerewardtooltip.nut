@@ -250,15 +250,17 @@ function getUserLogBattleRewardTooltip(rewardDetails, eventName, isPlainText = f
     })
     .filter(@(row) row)
   let visibleColumns = getVisibleTableColumns(tableRows)
+  visibleColumns[0].isFirstCol <- true
 
   return {
     columns = visibleColumns
     rows = tableRows.map(@(reward, i) {
       isEven = i % 2 == 0
-      cells = visibleColumns.map(function(col) {
+      cells = visibleColumns.map(function(col, colIdx) {
         let cell = reward?[col.id] ?? ""
         return {
           cell = col?.cellTransformFn(cell, reward) ?? { text = cell }
+          isFirstCol = colIdx == 0
         }
       })
     })

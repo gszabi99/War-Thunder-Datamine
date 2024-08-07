@@ -7,7 +7,6 @@ extraInfoBlock {
   <</hasActions>>
 
   content {
-    <<#hasCrewIdInfo>>
     crewInfoNumBlock {
       icon {
         margin-right:t='@sf/@pf'
@@ -16,7 +15,6 @@ extraInfoBlock {
         text:t='<<crewNum>>'
       }
     }
-    <</hasCrewIdInfo>>
 
     <<#hasCrewIdTextInfo>>
     crewNumText {
@@ -27,7 +25,7 @@ extraInfoBlock {
     <<#hasCrewInfo>>
     crewInfoExpBlock {
       expAvailableIcon {
-        crewStatus:t='<<crewStatus>>'
+        hasUnseenIcon:t='<<hasCrewUnseenIcon>>'
         margin-right:t='2@sf/@pf'
       }
       shopItemText {
@@ -125,54 +123,69 @@ extraInfoBlock {
       }
       <<#hasActions>>
       <<#canOpenCrewWnd>>
-      Button_text {
-        id:t='open_crew_wnd_btn'
-        class:t='smallButton'
-        pos:t='pw/2-w/2, 0'
+      tdiv {
         position:t='relative'
-        on_click:t='onOpenCrewWindow'
-        crewId='<<crewId>>'
-        inactiveColor:t='yes'
-        tdiv {
-          position:t='relative'
-          pos:t='pw/2-w/2, ph/2-h/2'
-          expAvailableIcon {
-            crewStatus:t='<<crewStatus>>'
-            margin-right:t='2@sf/@pf'
-          }
-          text {
-            pos:t='0, ph/2-h/2+@sf/@pf'
+        width:t='1@sf/@pf'
+        height:t='1@smallButtonHeight'
+        left:t='(pw-w)/2'
+
+        Button_text {
+          id:t='open_crew_wnd_btn'
+          class:t='smallButton'
+          pos:t='pw/2-w/2, 0'
+          position:t='absolute'
+          on_click:t='onOpenCrewWindow'
+          crewId='<<crewId>>'
+          inactiveColor:t='yes'
+          tdiv {
+            css-hier-invalidate:t='yes'
             position:t='relative'
-            text:t='#slotInfoPanel/crewButton'
-            smallFont:t='yes'
+            pos:t='pw/2-w/2, ph/2-h/2'
+            expAvailableIcon {
+              hasUnseenIcon:t='<<hasCrewUnseenIcon>>'
+              margin-right:t='2@sf/@pf'
+            }
+            text {
+              pos:t='0, ph/2-h/2+@sf/@pf'
+              position:t='relative'
+              text:t='#slotInfoPanel/crewButton'
+              smallFont:t='yes'
+            }
           }
         }
       }
       <</canOpenCrewWnd>>
-      Button_text {
-        class:t='smallButton'
-        id:t='swap_crew_btn'
-        isSwapCrewButton:t='yes'
-        pos:t='pw/2-w/2, 0'
+      tdiv {
         position:t='relative'
-        on_click:t='onSwapCrews'
-        margin-top:t='2@sf/@pf'
-        crewIdInCountry:t='<<crewIdInCountry>>'
-        inactiveColor:t='yes'
-        interactive:t='yes'
-        tdiv {
+        pos:t='pw/2-w/2, 0'
+        width:t='1@sf/@pf'
+        height:t='1@smallButtonHeight'
+        isSwapCrewButton:t='yes'
+        Button_text {
+          class:t='smallButton'
+          id:t='swap_crew_btn'
+          pos:t='pw/2-w/2, 0'
           position:t='relative'
-          pos:t='pw/2-w/2, ph/2-h/2'
-          text {
-            pos:t='0, ph/2-h/2+@sf/@pf'
+          on_click:t='onSwapCrews'
+          margin-top:t='2@sf/@pf'
+          crewIdInCountry:t='<<crewIdInCountry>>'
+          inactiveColor:t='yes'
+          interactive:t='yes'
+          tdiv {
             position:t='relative'
-            text:t='#slotbar/swapCrewButton'
-            smallFont:t='yes'
+            pos:t='pw/2-w/2, ph/2-h/2'
+            text {
+              pos:t='0, ph/2-h/2+@sf/@pf'
+              position:t='relative'
+              text:t='#slotbar/swapCrewButton'
+              smallFont:t='yes'
+            }
           }
         }
       }
+
       <</hasActions>>
-      tdiv {
+      extraInfoBlockHint {
         position:t='absolute'
         size:t="pw, @slotExtraInfoHeight"
         pos:t='pw/2-w/2, ph'
@@ -182,7 +195,6 @@ extraInfoBlock {
         border-color:t="@extraInfoBlockBorderColor"
         border-offset:t="@sf/@pf"
 
-        <<#hasCrewIdInfo>>
         crewInfoNumBlock {
           icon {
             margin-right:t='@sf/@pf'
@@ -191,7 +203,6 @@ extraInfoBlock {
             text:t='<<crewNum>>'
           }
         }
-        <</hasCrewIdInfo>>
 
         <<#hasCrewIdTextInfo>>
         crewNumText {
@@ -239,6 +250,9 @@ extraInfoBlock {
     <</hasActions>>
   }
   on_hover:t='hideAllPopups'
+  <<#hasActions>>
+  on_drag_start:t='onCrewDragStart'
+  <</hasActions>>
 }
 on_hover:t='hideAllPopups'
 <</hasExtraInfoBlock>>

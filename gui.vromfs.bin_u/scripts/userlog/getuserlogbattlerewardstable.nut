@@ -13,7 +13,18 @@ let visibleRewards = [
   }
   {
     id = "eventKillGround"
-    locId = "expEventScore/killGround"
+    getLocId = function(rewardTable) {
+      if(!("event" in rewardTable))
+        return ""
+      let victimUnitCount = rewardTable.event.len()
+      let victimShipsCount = rewardTable.event.map(@(e)e?.victimUnitFileName).filter(
+        @(u) u != null && u.indexof("ships/") == 0).len()
+      if (victimShipsCount == victimUnitCount)
+        return "expEventScore/killOnlyShips"
+      else if (victimShipsCount == 0)
+        return "expEventScore/killOnlyGround"
+      return "expEventScore/killGround"
+    }
   }
   {
     id = "eventAssist"
@@ -83,11 +94,15 @@ let visibleRewards = [
 
 return function(logObj) {
   let rewards = visibleRewards
-    .map(@(reward) getBattleRewardTable(logObj?.container[reward.id]).__merge({
-      name = loc(reward.locId)
-      locId = reward.locId
-      id = reward.id
-    }))
+    .map(function(reward) {
+      let rewardTable = getBattleRewardTable(logObj?.container[reward.id])
+      let locId = reward?.getLocId(rewardTable) ?? reward.locId
+      return rewardTable.__merge({
+        name = loc(locId)
+        locId
+        id = reward.id
+      })
+    })
     .reduce(function(acc, reward) {
       let rewardDetails = getBattleRewardDetails(reward)
       if (rewardDetails.len() == 0)

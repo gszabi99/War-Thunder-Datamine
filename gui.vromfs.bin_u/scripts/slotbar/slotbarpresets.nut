@@ -76,8 +76,9 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     slotbarPresets.clear()
     foreach (presetDataItem in newbiePresetsData.presetDataItems) {
       // This adds empty array to presets table if not already.
-      slotbarPresets[presetDataItem.country] <- getTblValue(presetDataItem.country, this.presets, [])
-      if (!presetDataItem.hasUnits)
+      let countryId = presetDataItem.country
+      slotbarPresets[countryId] <- this.presets?[countryId] ?? []
+      if (!presetDataItem.hasUnits && !this.canHaveEmptyPresets(countryId))
         continue
       let gameMode = getGameModeByUnitType(presetDataItem.unitType, -1, true)
       // Creating preset from preset data item.
@@ -89,6 +90,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
           continue
         preset.units.append(taskData.airName)
         preset.crews.append(taskData.crewId)
+        preset.crewInSlots.append(taskData.crewId)
         if (preset.selected == -1)
           preset.selected = taskData.crewId
       }
@@ -177,8 +179,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   function getCurrentPreset(country = null) {
     country = country ?? profileCountrySq.value
     let index = this.getCurrent(country, -1)
-    let currentPresets = getTblValue(country, slotbarPresets)
-    return getTblValue(index, currentPresets)
+    return this.list(country)?[index]
   }
 
   function canCreate() {
@@ -188,8 +189,12 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   }
 
   function canEditCountryPresets(country = null) {
-    return isCountrySlotbarHasUnits(country ?? profileCountrySq.value)
+    country = country ?? profileCountrySq.value
+    return isCountrySlotbarHasUnits(country)
+      || this.canHaveEmptyPresets(country)
   }
+
+  canHaveEmptyPresets = @(country) !hasDefaultUnitsInCountry(country)
 
   function getPresetsReseveTypesText(country = null) {
     country = country ?? profileCountrySq.value
@@ -386,7 +391,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
       let presetsList = []
       foreach (_idx, p in slotbarPresets[countryId]) {
-        if (p.units.len() == 0)
+        if (p.units.len() == 0 && !this.canHaveEmptyPresets(countryId))
           continue
         presetsList.append("|".join([
                                       p.selected,
@@ -496,7 +501,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
     // Sometimes preset can consist of only invalid units (like expired rented units), so here
     // we automatically overwrite this permanently unloadable preset with valid one.
-    if (!unitsList.len()) {
+    if (!unitsList.len() && !this.canHaveEmptyPresets(countryId)) {
       let p = this.createEmptyPreset(countryId)
       foreach (i, unitId in p.units) {
         unitsList[unitId] <- p.crews[i]
@@ -621,9 +626,10 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
         if(data.len() > 5 && data[5] != "")
           preset.crewInSlots = data[5].split(",").map(@(v) to_integer_safe(v, 0, false))
 
-        let unitNames = split(data[2], ",")
-        let crewIds = split(data[1], ",")
-        if (!unitNames.len() || unitNames.len() != crewIds.len())
+        let canHaveEmptyPresets = this.canHaveEmptyPresets(countryId)
+        let unitNames = data[2] != "" ? split(data[2], ",") : []
+        let crewIds = data[1] != "" ? split(data[1], ",") : []
+        if ((!unitNames.len() && !canHaveEmptyPresets) || unitNames.len() != crewIds.len())
           continue
 
         //validate crews and units
@@ -640,10 +646,11 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
           preset.crews.append(crewId)
         }
 
-        if (!preset.units.len())
+        if (!preset.units.len() && !canHaveEmptyPresets)
           continue
 
         this._updateInfo(preset)
+
         res.append(preset)
         if (res.len() == this.getMaxPresetsCount(countryId))
           break
@@ -668,6 +675,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       units = []
       crews = []
       crewInSlots = []
+      orderedUnits = []
       selected = -1
       title = loc("shop/slotbarPresets/item", { number = presetIdx + 1 })
       gameModeId = ""
@@ -688,6 +696,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
     preset.unitTypesMask = unitTypesMask
     preset.enabled = true
+    this.reorderUnitsInPreset(preset)
 
     return preset
   }
@@ -699,10 +708,13 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     initSelectedCrews()
     let units = []
     let crews = []
+    let crewInSlots = clone preset.crewInSlots
     local selected = preset.selected
     foreach (tbl in getCrewsList())
       if (tbl.country == countryId) {
-        foreach (crew in tbl.crews)
+        foreach (crew in tbl.crews) {
+          if (!crewInSlots.contains(crew.id))
+            crewInSlots.append(crew.id)
           if (("aircraft" in crew)) {
             let unitName = crew.aircraft
             if (!getAircraftByName(unitName))
@@ -713,14 +725,17 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
             if (selected == -1 || crew.idInCountry == getSelectedCrews(crew.idCountry))
               selected = crew.id
           }
+        }
       }
 
-    if (units.len() == 0 || crews.len() == 0) //not found crews and units for country
-      return preset                           //so not need update preset from slotbar
+    if ((units.len() == 0 || crews.len() == 0) && !this.canHaveEmptyPresets(countryId))
+      return preset //not found crews and units for country so not need update preset from slotbar
 
     preset.units = units
     preset.crews = crews
     preset.selected = selected
+    preset.crewInSlots = crewInSlots
+
     this._updateInfo(preset)
     return preset
   }
@@ -751,6 +766,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (unitToSet) {
       preset.units = [ unitToSet.name ]
       preset.crews = [ crewToSet.id ]
+      preset.crewInSlots = [ crewToSet.id ]
       preset.selected = crewToSet.id
       this._updateInfo(preset)
     }
@@ -776,24 +792,37 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   }
 
   function swapCrewsInCurrentPreset(crewIds) {
-    let crewInSlots = this.getCurrentPreset()?.crewInSlots
+    let preset = this.getCurrentPreset()
+    let crewInSlots = preset?.crewInSlots
     if(crewInSlots == null)
       return
     this.swapValues(crewInSlots, crewIds)
+    this.reorderUnitsInPreset(preset)
     this.save()
-  }
-
-  function updateCrewsInCurrentPreset(countryId, crewIds) {
-    let crewInSlots = this.getCurrentPreset(countryId)?.crewInSlots
-    if(crewInSlots == null)
-      return
-    let newCrews = crewIds.filter(@(c) crewInSlots.indexof(c) == null)
-    crewInSlots.extend(newCrews)
-    this.save(countryId)
+    broadcastEvent("CrewsOrderChanged")
   }
 
   function swapValues(arr, values) {
     arr.apply(@(v) (v in values) ? values[v] : v)
+  }
+
+  function replaceCrewsInCurrentPreset(countryId, crewIds) {
+    let preset = this.getCurrentPreset(countryId)
+    let crewInSlots = preset?.crewInSlots
+    if(crewInSlots == null)
+      return
+    crewInSlots.replace(crewIds)
+    this.reorderUnitsInPreset(preset)
+    this.save()
+    broadcastEvent("CrewsOrderChanged")
+  }
+
+  function reorderUnitsInPreset(preset) {
+    let unitsOrder = preset.crews.map(@(c) preset.crewInSlots.indexof(c))
+    preset.orderedUnits <- preset.units
+      .map(@(unit, index) { unit, order = unitsOrder[index] })
+      .sort(@(u1, u2) u1.order <=> u2.order)
+      .map(@(unit) unit.unit)
   }
 }
 

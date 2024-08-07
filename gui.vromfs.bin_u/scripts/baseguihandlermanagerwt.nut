@@ -31,6 +31,7 @@ let { is_active_msg_box_in_scene } = require("%sqDagui/framework/msgBox.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isInFlight } = require("gameplayBinding")
 let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
+let { getMpChatControlsAllowMask } = require("%scripts/chat/mpChatState.nut")
 
 require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
@@ -330,11 +331,13 @@ handlersManager.__update({
           res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
         }
 
-    foreach (name in ["menu_chat_handler", "contacts_handler", "game_chat_handler"])
-      if (name in getroottable() && getroottable()[name]) {
-        let mask = getroottable()[name].getControlsAllowMask()
-        res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
-      }
+    let menuChatMask = getroottable()?.menu_chat_handler.getControlsAllowMask()
+    if (menuChatMask != null)
+      res = res & menuChatMask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | menuChatMask))
+
+    let mpChatMask = getMpChatControlsAllowMask()
+    res = res & mpChatMask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mpChatMask))
+
     let contactsHandler = getContactsHandler()
     if (contactsHandler != null) {
       let mask = contactsHandler.getControlsAllowMask()
