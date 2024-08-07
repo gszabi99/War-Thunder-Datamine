@@ -70,6 +70,7 @@
 @const groupUnfoldMarkWidth: 29@sf/@pf \ 1;
 @const groupUnfoldMarkHeight: 20@sf/@pf \ 1;
 @const swapCrewsHeaderHeight: 30@sf/@pf \ 1;
+@const topUnitsBonusHeight:0.5@shop_height;
 
 unitItemContainer {
   css-hier-invalidate:yes;
@@ -1722,6 +1723,14 @@ shopCollapsedIconText {
   padding:0, 0, 1@discountBoxPadding, 0;
 }
 
+nationBonusRankIcon > shopCollapsedIconText {
+  color:#FFFFFF;
+}
+
+nationBonusRankIcon[isNationBonusOver=yes] > shopCollapsedIconText {
+  color:@fadedTextColor;
+}
+
 shopCollapsedDiscountIcon {
   re-type:text;
   position:relative;
@@ -1742,9 +1751,34 @@ shopCollapsedDiscountIcon {
   textShade:yes;
 }
 
-shopRankTable[isCollapsed="yes"] remainingTimeUnitCellMarker,
-shopRankTable[isCollapsed="yes"] markerContainer {
+shopRankTable[isCollapsed=yes] remainingTimeUnitCellMarker,
+shopRankTable[isCollapsed=yes] markerContainer {
   display:hide;
+}
+
+shopTopUnitBonus {
+  position:absolute;
+  height:0.5@shop_height;
+  bgcolor:#B20B1E29;
+}
+
+shopTopUnitBonus[isRed=yes] {
+  bgcolor:#b21c0000;
+}
+
+shopTopUnitBonus topLine {
+  bgcolor:#ff4a5d5b;
+}
+
+shopTopUnitBonus[isRed=yes] topLine {
+  bgcolor:#ff781511;
+}
+
+shopTopUnitBonus > img {
+  size:pw, ph;
+  background-image:#ui/gameuiskin#pattern_bright_texture;
+  background-repeat:repeat;
+  bgcolor:#FFFFFFFF;
 }
 
 slotbarTable > unitItemContainer:hover > shopItem {

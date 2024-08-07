@@ -49,7 +49,7 @@ tdiv {
           }
           tdiv {
             margin-top:t='16@sf/@pf'
-            position:t='relative'          
+            position:t='relative'
             max-width:t='242@sf/@pf'
             overflow:t='hidden'
             textareaNoTab {
@@ -113,11 +113,43 @@ tdiv {
         tdiv {
           flow:t='vertical'
           tdiv {
-            size:t='195@sf/@pf, 68@sf/@pf'
+            size:t='195@sf/@pf, 80@sf/@pf'
             tdiv {
               pos:t='pw/2-w/2, ph/2-h/2'
               position:t='absolute'
-              <<@image>>
+              size:t='pw, ph'
+              img {
+                position:t='absolute'
+                size:t='pw, 0.5pw';
+                background-svg-size:t='pw, 0.5pw';
+                background-image:t='<<image>>'
+                tooltip:t='$tooltipObj'
+                tooltipObj {
+                tooltipId:t='<<tooltipId>>'
+                  display:t='hide'
+                  on_tooltip_open:t='onGenericTooltipOpen';
+                  on_tooltip_close:t='onTooltipObjClose';
+                }
+                <<#inWishlist>>
+                tdiv {
+                  position:t='absolute'
+                  pos:t='0, ph-1.5h'
+                  flow:t='horizontal'
+                  img {
+                    size:t='@sIco, @sIco'
+                    background-svg-size:t='@sIco, @sIco'
+                    background-image:t='#ui/gameuiskin#open_wishlist.svg'
+                  }
+                  textareaNoTab {
+                    margin-left:t='0.5@blockInterval'
+                    overlayTextColor:t='userlog'
+                    tinyFont:t='yes'
+                    text:t='#specialOffer/inWishlist'
+                    valign:t='center'
+                  }
+                }
+                <</inWishlist>>
+              }
             }
           }
           tdiv {
@@ -156,7 +188,7 @@ tdiv {
           }
           tdiv {
             margin-top:t='14@sf/@pf'
-            position:t='relative'          
+            position:t='relative'
             max-width:t='280@sf/@pf'
             overflow:t='hidden'
             textareaNoTab {

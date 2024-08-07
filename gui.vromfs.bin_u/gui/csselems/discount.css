@@ -60,6 +60,35 @@ discount_notification {
   textShade:yes;
 }
 
+nationBonusMarker {
+  background-image:#ui/gameuiskin#nation_bonus_marker.svg;
+  background-color:#FFFFFF;
+  size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
+  background-svg-size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
+  not-input-transparent:yes;
+}
+
+nationBonusMarker[isOver=yes] {
+  background-image:#ui/gameuiskin#nation_bonus_over_marker.svg;
+  background-color:#66666666;
+}
+
+nationBonusMarker[isOver=yes]:hover {
+  background-color:#FFFFFFFF;
+}
+
+nationBonusRankIcon > img {
+  background-svg-size:w, 1@discountBoxHeight;
+  background-repeat:expand-svg;
+  background-image:#ui/gameuiskin#nation_bonus_icon.svg;
+  background-color:#FFFFFFFF;
+}
+
+nationBonusRankIcon[isNationBonusOver=yes] > img {
+  background-color:#88FFFFFF;
+  background-image:#ui/gameuiskin#nation_bonus_over_icon.svg;
+}
+
 unlockUnitCellMarker {
   background-image:#ui/gameuiskin#unlock_marker.svg;
   background-color:#FFFFFF;

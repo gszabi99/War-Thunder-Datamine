@@ -66,8 +66,21 @@
       "display": "hide"
     },
     "markerContainer": {
+      "id": "marker_container",
       "position": "relative",
       "flow": "horizontal",
+      "nationBonusMarker": {
+        "id": "nation_bonus_marker",
+        "title": "$tooltipObj",
+        "display": "hide",
+        "tooltipObj": {
+          "id": "bonus_tooltip",
+          "tooltipId": "",
+          "display": "hide",
+          "on_tooltip_open": "onGenericTooltipOpen",
+          "on_tooltip_close": "onTooltipObjClose"
+        }
+      },
       "unlockUnitCellMarker": {
         "id": "unlockMarker",
         "display": "hide",

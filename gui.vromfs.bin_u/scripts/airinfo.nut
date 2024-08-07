@@ -1032,7 +1032,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
           let childBonusPercent = rBlk?[childParamName] ?? 0
 
           if (childBonusPercent > 0)
-            tdValueObj.setValue(colorize("userlogColoredText", $"{childBonusPercent}%"))
+            tdValueObj.setValue(colorize("userlogColoredText", $"{childBonusPercent + 100}%"))
           else
             prevUnitObj.show(false)
         }

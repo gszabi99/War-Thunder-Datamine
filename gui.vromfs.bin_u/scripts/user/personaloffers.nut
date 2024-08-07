@@ -10,7 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { format }  = require("string")
-let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor, getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
 let { curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer,
@@ -28,18 +28,19 @@ let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getWarpointsGoldCost } = require("%scripts/onlineShop/entitlements.nut")
-let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
+let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { hasInWishlist } = require("%scripts/wishlist/wishlistManager.nut")
 
 let offerTypes = {
-  unit = "shop/section/premium"
-  unlock = "trophy/unlockables_names/achievement"
-  gold = "charServer/chapter/eagles"
-  premium_in_hours = "charServer/entitlement/PremiumAccount"
-  item = "item"
+  unit = @(_c) loc("shop/section/premium")
+  unlock = @(_c) loc("trophy/unlockables_names/achievement")
+  gold = @(_c) loc("charServer/chapter/eagles")
+  premium_in_hours = @(_c) loc("charServer/entitlement/PremiumAccount")
+  item = @(_c) loc("item")
+  entitlement = @(c) getEntitlementShortName(getEntitlementConfig(c.entitlement))
 }
 
 let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
@@ -92,7 +93,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("discount_image_center")["width"] = max(0, maxSize - maxTextWidthNoResize)
   }
 
-  getGroupTitle = @(offerType) loc(offerTypes?[offerType] ?? $"trophy/unlockables_names/{offerType}", "")
+  getGroupTitle = @(offerType, config) offerTypes?[offerType](config) ?? loc($"trophy/unlockables_names/{offerType}", "")
 
   function prepareRewardsData() {
     this.groups = []
@@ -108,7 +109,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
       if(group == null) {
         group = {
           type = offerType
-          title = this.getGroupTitle(offerType)
+          title = this.getGroupTitle(offerType, localConfig)
           items = []
           units = []
           needSeparator =  this.groups.len() > 0
@@ -139,27 +140,10 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
       }
       else {
         let unit = getAircraftByName(localConfig.unit)
-
-        let fakeUnit = {
-          isFakeUnit = true
-          name = ""
-          nameLoc = ""
-          image = ::image_for_air(unit)
-        }
-
-        let unitPlate = buildUnitSlot(localConfig.unit, fakeUnit, {
-            hasActions = false
-            isLocalState = true
-            showAsTrophyContent = true
-            isReceivedPrizes = true
-            status = "canBuy"
-            unitRarity = "premium"
-            isElite = true
-            hasTalismanIcon = true
-            tooltipId = getTooltipType("UNIT").getTooltipId(localConfig.unit)
-          })
-        itemData.unitFullName <- getUnitName(unit, false)
-        itemData.image <- unitPlate
+        itemData.unitFullName <- getUnitName(unit, true)
+        itemData.image <- getUnitTooltipImage(unit)
+        itemData.tooltipId <- getTooltipType("UNIT").getTooltipId(localConfig.unit)
+        itemData.inWishlist <- hasInWishlist(localConfig.unit)
         itemData.countryIco <- getUnitCountryIcon(unit, false)
         let fonticon = getUnitRoleIcon(unit)
         let typeText = getFullUnitRoleText(unit)

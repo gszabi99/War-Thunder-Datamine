@@ -25,11 +25,105 @@ let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slo
 let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 let { getBonusImage } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-
+let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { get_ranks_blk } = require("blkGetters")
+let { get_charserver_time_sec } = require("chard")
+let { getUtcMidnight, secondsToString } = require("%scripts/time.nut")
+let timeBase = require("%appGlobals/timeLoc.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
+let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
+
+addTooltipTypes({
+  SHOP_CELL_NATION_BONUS = {
+    isCustomTooltipFill = true
+
+    getNationBonusElapsedUpdateTime = function() {
+      let midNight = getUtcMidnight()
+      let curTime = get_charserver_time_sec()
+      return midNight - curTime + (midNight < curTime ? timeBase.TIME_DAY_IN_SECONDS : 0)
+    }
+
+    updateNationBonusTooltipTime = function(timer, _dt) {
+      let parent = timer.getParent()
+      let timerText = parent.findObject("time_text")
+      let oldTime = to_integer_safe(timer.timeInSeconds)
+
+      let elapsedTime = this.getNationBonusElapsedUpdateTime()
+      if (oldTime < elapsedTime) {
+        timerText.setValue(secondsToString(0))
+        return
+      }
+      timer.timeInSeconds = elapsedTime
+      timerText.setValue(secondsToString(elapsedTime))
+    }
+
+    fillTooltip = function(obj, handler, _id, params) {
+      if (!obj.isValid())
+        return false
+
+      let { rank = 0, maxRank = -1, unitName = null, unitTypeName = "", isOver = false} = params
+      local view = {}
+      if (isOver) {
+        let timeInSeconds = this.getNationBonusElapsedUpdateTime()
+        let bonusUpdateTime = secondsToString(timeInSeconds)
+        view = {
+          timeLabel = loc("shop/unit_nation_bonus_tooltip/update_time")
+          timeText = bonusUpdateTime
+          isOver = "yes"
+          unitName
+          timeInSeconds
+        }
+      } else {
+        let bonusData = get_ranks_blk().ExpNewNationBonus?[unitTypeName]
+        let percentData = []
+        local lastPercent = -1
+        local lastPercentData = null
+
+        for (local i = 0; i <= maxRank; i++) {
+          let percent = bonusData?[$"rank{i}"]
+          if (percent == null)
+            continue
+          if (lastPercent == percent) {
+            lastPercentData.maxRank = i
+            continue
+          }
+
+          lastPercent = percent
+          lastPercentData = {minRank = i, maxRank = i, percent}
+          percentData.append(lastPercentData)
+        }
+
+        local percetnsString = ""
+        foreach (data in percentData) {
+          let rankStr = "".concat(get_roman_numeral(data.minRank),
+            data.minRank == data.maxRank ? "" : $"-{get_roman_numeral(data.maxRank)}")
+          percetnsString = "".concat(percetnsString, loc("shop/age/num", {num = rankStr}), $" - {data.percent}%",
+            data.maxRank == maxRank ? "" : " | ")
+        }
+
+        let battlesRemain = loc("shop/unit_nation_bonus_tooltip/battles_remain",
+          {battlesRemain = $"{params.battlesRemain}/{expNewNationBonusDailyBattleCount}"})
+
+        view = {
+          bonusAmount = loc("shop/unit_nation_bonus_tooltip/bonus_amount", {bonusAmount = bonusData?[$"rank{params.rank}"] ?? 0})
+          battlesRemain
+          unitName
+          rangNum = loc("ui/parentheses", {text = loc("shop/age/num", {num = get_roman_numeral(rank)})})
+          percents = loc("shop/unit_nation_bonus_tooltip/bonus_text", {percents = percetnsString})
+        }
+      }
+
+      let data = handyman.renderCached("%gui/shop/nationBonusIconTooltip.tpl", view)
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
+      if (isOver)
+        obj.findObject("over_timer").setUserData(this)
+      return true
+    }
+  }
+})
 
 function showInObj(obj, id, val) {
   let tgtObj = obj.findObject(id)
@@ -76,45 +170,47 @@ function initCell(cell, initData, shiftY) {
 
 function updateCardStatus(obj, _id, statusTbl) {
   let {
-    isGroup             = false,
-    unitName            = "",
-    unitImage           = "",
-    nameText            = "",
-    unitRarity          = "",
-    unitClassIcon       = "",
-    unitClass           = "",
-    isPkgDev            = false,
-    isRecentlyReleased  = false,
-    tooltipId           = "",
-    hasActionsMenu      = false,
-
-    shopStatus          = "",
-    unitRankText        = "",
-    isInactive          = false,
-    isViewDisabled      = false,
-    isBroken            = false,
-    isLocked            = false,
-    needInService       = false,
-    isMounted           = false,
-    isElite             = false,
-    hasTalismanIcon     = false,
-    isTalismanComplete  = true,
-    weaponsStatus       = "",
-    progressText        = "",
-    progressStatus      = "",
-    isResearchPaused    = false,
-    researchProgressOld = -1,
-    researchProgressNew = -1,
-    priceText           = "",
-    primaryUnitId       = "", //used for group timers
-    mainButtonText      = "",
-    mainButtonIcon      = "",
-
-    discount            = 0,
-    expMul              = 1.0,
-    wpMul               = 1.0,
-    hasObjective        = false,
-    markerHolderId      = ""
+    isGroup                   = false,
+    unitName                  = "",
+    unitImage                 = "",
+    nameText                  = "",
+    unitRarity                = "",
+    unitClassIcon             = "",
+    unitClass                 = "",
+    isPkgDev                  = false,
+    isRecentlyReleased        = false,
+    tooltipId                 = "",
+    hasActionsMenu            = false,
+    shopStatus                = "",
+    unitRankText              = "",
+    isInactive                = false,
+    isViewDisabled            = false,
+    isBroken                  = false,
+    isLocked                  = false,
+    needInService             = false,
+    isMounted                 = false,
+    isElite                   = false,
+    hasTalismanIcon           = false,
+    isTalismanComplete        = true,
+    weaponsStatus             = "",
+    progressText              = "",
+    progressStatus            = "",
+    isResearchPaused          = false,
+    researchProgressOld       = -1,
+    researchProgressNew       = -1,
+    priceText                 = "",
+    primaryUnitId             = "", //used for group timers
+    mainButtonText            = "",
+    mainButtonIcon            = "",
+    maxRank                   = -1,
+    discount                  = 0,
+    expMul                    = 1.0,
+    wpMul                     = 1.0,
+    hasObjective              = false,
+    rank                      = 0,
+    unitTypeName              = "",
+    hasNationBonus            = false,
+    nationBonusBattlesRemain  = 0
   } = statusTbl
   let isLongPriceText = isUnitPriceTextLong(priceText)
 
@@ -144,9 +240,22 @@ function updateCardStatus(obj, _id, statusTbl) {
     { viewId = "SHOP_SLOT_REMAINING_TIME_UNIT", unitName = unitName }
   ))
 
-  let markerObj = showInObj(obj, "unlockMarker", hasObjective)
-  if (hasObjective)
-    markerObj.holderId = unitName != "" ? unitName : markerHolderId
+  let markerContainer = obj.findObject("marker_container")
+  showInObj(markerContainer, "unlockMarker", hasObjective)
+
+  let nationBonus = showInObj(markerContainer, "nation_bonus_marker", hasNationBonus)
+  let isNationBonusOver = nationBonusBattlesRemain <= 0
+  nationBonus.isOver = isNationBonusOver ? "yes" : "no"
+  if (hasNationBonus) {
+    let tooltipObj = nationBonus.findObject("bonus_tooltip")
+    tooltipObj.tooltipId = getTooltipType("SHOP_CELL_NATION_BONUS").getTooltipId("bonus", {
+      battlesRemain = nationBonusBattlesRemain
+      rank
+      maxRank
+      isOver = isNationBonusOver
+      unitTypeName
+    })
+  }
 
   let nameObj = obj.findObject("nameText")
   nameObj.setValue(nameText)
@@ -184,7 +293,7 @@ function updateCardStatus(obj, _id, statusTbl) {
   }
 
   let needDiscount = discount > 0
-  let discountObj = obj.findObject("unitDiscount")
+  let discountObj = markerContainer.findObject("unitDiscount")
   if (!needDiscount)
     discountObj.setValue("")
   else {
@@ -314,7 +423,8 @@ function getUnitResearchStatusTbl(unit, params) {
   if (unitReqExp <= 0)
     return {}
 
-  let { forceNotInResearch = false, flushExp = 0 } = params
+  let { forceNotInResearch = false, flushExp = 0, unitTypeName,
+    nationBonusBattlesRemain, maxRank, hasNationBonus} = params
 
   let isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
   let isSquadronVehicle = unit.isSquadronVehicle()
@@ -329,15 +439,22 @@ function getUnitResearchStatusTbl(unit, params) {
     : unitCurExp + flushExp >= unitReqExp
 
   return {
-    progressText        =  isSquadronVehicle
+    progressText             =  isSquadronVehicle
       ? Cost().setSap(unitReqExp - unitCurExp).tostring()
       : Cost().setRp(unitReqExp - unitCurExp).tostring()
-    progressStatus      = isFull ? "researched"
+
+    progressStatus           = isFull ? "researched"
       : isVehicleInResearch ? "research"
       : ""
-    isResearchPaused    = !isVehicleInResearch || isLockedSquadronVehicle
-    researchProgressOld = (1000.0 * unitCurExp / unitReqExp).tointeger()
-    researchProgressNew = (1000.0 * unitNewExp / unitReqExp).tointeger()
+
+    isResearchPaused         = !isVehicleInResearch || isLockedSquadronVehicle
+    researchProgressOld      = (1000.0 * unitCurExp / unitReqExp).tointeger()
+    researchProgressNew      = (1000.0 * unitNewExp / unitReqExp).tointeger()
+    hasNationBonus           = hasNationBonus && isVehicleInResearch && !isSquadronVehicle
+    nationBonusBattlesRemain
+    rank                     = unit?.rank ?? 0
+    maxRank
+    unitTypeName
   }
 }
 
@@ -545,4 +662,5 @@ return {
   updateCellTimedStatus = updateCellTimedStatus
   initCell = initCell
   getUnitRankText = getUnitRankText
+  expNewNationBonusDailyBattleCount
 }

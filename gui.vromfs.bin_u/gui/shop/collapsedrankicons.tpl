@@ -6,6 +6,33 @@ tdiv {
   padding-left:t='2@modArrowWidth'
 
   <<#icons>>
+    <<#hasNationBonus>>
+    nationBonusRankIcon{
+      id:t='nation_bonus'
+      flow:t='horizontal'
+      isNationBonusOver:t=<<isNationBonusOver>>
+      img{
+        id:t='icon'
+        position:t='relative'
+        size:t='0.8@discountBoxHeight, 1@discountBoxHeight'
+      }
+      shopCollapsedIconText {
+        id:t='count_text'
+        position:t='relative'
+        top:t='(ph-h)/2 + 1@sf/@pf'
+        text:t='<<battlesRemain>>'
+        input-transparent:t='yes'
+      }
+      title:t='$tooltipObj'
+      tooltipObj {
+        id:t='bonus_tooltip'
+        tooltipId:t='<<nationBonusTooltipId>>'
+        display:t='hide'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+      }
+    }
+    <</hasNationBonus>>
     <<#discounts>>
       tdiv {
         float:t='horizontal'

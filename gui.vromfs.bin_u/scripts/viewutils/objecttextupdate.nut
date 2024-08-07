@@ -28,7 +28,9 @@ local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText 
       guiScene.replaceContentFromText(textBlockObj, textBlock, textBlock.len(), {})
   }
 
-  fObj.setValue(hasTextBlock ? "" : firstText)
+  if (!hasTextBlock)
+    fObj.setValue(firstText)
+
   let sObj = showObjById($"{firstBtnId}_text", !hasTextBlock, fObj)
   if (!hasTextBlock && checkObj(sObj))
     sObj.setValue(secondText)

@@ -555,7 +555,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       })
     }
 
-    let countriesNestObj = this.scene.findObject("header_countries")
+    let countriesNestObj = this.headerObj
     let countriesObjsCount = countriesNestObj.childrenCount()
     local needUpdateCountriesMarkup = countriesObjsCount != countriesView.countries.len()
     if (!needUpdateCountriesMarkup)
@@ -570,13 +570,13 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     if (needUpdateCountriesMarkup) {
       let countriesData = handyman.renderCached("%gui/slotbar/slotbarCountryItem.tpl", countriesView)
-      this.guiScene.replaceContentFromText(countriesNestObj, countriesData, countriesData.len(), this)
+      this.guiScene.replaceContentFromText(this.headerObj, countriesData, countriesData.len(), this)
     }
 
-    let needUpdateCountryContent = countriesNestObj.getValue() == selCountryIdx
-    countriesNestObj.setValue(selCountryIdx)
+    let needUpdateCountryContent = this.headerObj.getValue() == selCountryIdx
+    this.headerObj.setValue(selCountryIdx)
     if (needUpdateCountryContent)
-      this.onHeaderCountry(countriesNestObj)
+      this.onHeaderCountry(this.headerObj)
 
     if (this.selectedCrewData) {
       let selItem = getSlotObj(this.crewsObj, this.selectedCrewData.idCountry, this.selectedCrewData.idInCountry)
@@ -593,7 +593,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let countriesNestMaxWidth = toPixels(this.guiScene, "1@slotbarCountriesMaxWidth")
     let countriesNestWithBtnsObj = this.scene.findObject("header_countries_nest")
     if (countriesNestWithBtnsObj.getSize()[0] > countriesNestMaxWidth)
-      countriesNestObj.isShort = "yes"
+      this.headerObj.isShort = "yes"
 
     let needEvent = this.selectedCrewData
       && ((this.curSlotCountryId >= 0 && this.curSlotCountryId != this.selectedCrewData.idCountry)
@@ -1001,13 +1001,12 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function setCountry(country) {
     foreach (idx, c in getCrewsList())
       if (c.country == country) {
-        let hObj = this.scene.findObject("header_countries")
-        if (!checkObj(hObj) || hObj.getValue() == idx)
+        if (!checkObj(this.headerObj) || this.headerObj.getValue() == idx)
           break
 
         this.skipCheckCountrySelect = true
         this.skipCheckAirSelect = true
-        hObj.setValue(idx)
+        this.headerObj.setValue(idx)
         break
       }
   }
@@ -1069,14 +1068,13 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.singleCountry)
       return
 
-    let hObj = this.scene.findObject("header_countries")
-    if (hObj.childrenCount() <= 1)
+    if (this.headerObj.childrenCount() <= 1)
       return
 
-    let curValue = hObj.getValue()
-    let value = getNearestSelectableChildIndex(hObj, curValue, way)
+    let curValue = this.headerObj.getValue()
+    let value = getNearestSelectableChildIndex(this.headerObj, curValue, way)
     if (value != curValue)
-      hObj.setValue(value)
+      this.headerObj.setValue(value)
   }
 
   function onSlotChangeAircraft(obj = null) {
@@ -1201,11 +1199,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   //return GuiBox of visible slotbar countries
   function getBoxOfCountries() {
-    let headerCountriesObj = this.scene.findObject("header_countries")
-    if (!checkObj(headerCountriesObj))
+    if (!checkObj(this.headerObj))
       return null
 
-    return ::GuiBox().setFromDaguiObj(headerCountriesObj)
+    return ::GuiBox().setFromDaguiObj(this.headerObj)
   }
 
   function getSlotsData(unitId = null, slotCrewId = -1, searchCountryId = -1, withEmptySlots = false) {

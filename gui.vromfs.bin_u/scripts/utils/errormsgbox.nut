@@ -5,6 +5,8 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { getBannedMessage } = require("%scripts/penitentiary/penalties.nut")
+let { SERVER_ERROR_PLAYER_BANNED } = require("matching.errors")
 
 let errCodeToStringMap = {
   [YU2_TIMEOUT] = "80130182",
@@ -86,6 +88,14 @@ function get_error_data(header, error_code) {
   let guiScene = get_gui_scene()
   if (checkObj(guiScene["errorMessageBox"]))
     return
+
+  if (error_code == SERVER_ERROR_PLAYER_BANNED) {
+    let banMessage = getBannedMessage()
+    if (banMessage != "") {
+      scene_msg_box("errorMessageBox", guiScene, banMessage, buttons, def_btn, options)
+      return
+    }
+  }
 
   let errData = get_error_data(header, error_code)
 

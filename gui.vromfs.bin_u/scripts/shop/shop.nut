@@ -2,7 +2,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, shop_repair_all, shop_get_researchable_unit_name, shop_get_aircraft_hp, wp_get_repair_cost, clan_get_researching_unit, is_era_available, set_char_cb, is_mouse_last_time_used
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/dagui_library.nut" import *
-
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -24,7 +23,7 @@ let unitActions = require("%scripts/unit/unitActions.nut")
 let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText
+let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText, expNewNationBonusDailyBattleCount
 } = require("shopUnitCellFill.nut")
 let { ShopLines } = require("shopLines.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
@@ -40,7 +39,7 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { getDestinationRPUnitType, charSendBlk } = require("chard")
+let { getDestinationRPUnitType, charSendBlk, getTopUnitsInfo } = require("chard")
 let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -48,7 +47,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
 let {
   getEsUnitType, getUnitCountry, isUnitGift, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart,canResearchUnit
+  isUnitGroup, isGroupPart,canResearchUnit, getUnitName
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
@@ -59,13 +58,39 @@ let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
-
+let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
+let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 local lastUnitType = null
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
 const LOCAL_RANK_COLLAPSED_STATE_ID = "savedCollapsedRankState" //For save state of ranks in shop table collapsed / not collapsed
 const CONTAINER_COLLAPSE_BTN_COUNT = 1
+const BONUS_TOP_UNITS_PLATE_PADDING = "0.75@shop_height"
+
+let armyDataByPageName = {
+  aviation = {
+    id = ES_UNIT_TYPE_AIRCRAFT
+    locString = "mainmenu/aviation"
+  }
+  army = {
+    id = ES_UNIT_TYPE_TANK
+    locString = "mainmenu/army"
+  }
+  ships = {
+    id = ES_UNIT_TYPE_SHIP
+    locString = "mainmenu/ships"
+  }
+  helicopters = {
+    id = ES_UNIT_TYPE_HELICOPTER
+    locString = "mainmenu/helicopters"
+  }
+  boats = {
+    id = ES_UNIT_TYPE_BOAT
+    locString = "mainmenu/boats"
+  }
+}
 
 /*
 shopData = [
@@ -139,6 +164,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   cachedRankCollapsedState = null
   linesGenerator = null
   extraWidth = 0
+  cachedTopUnitsInfo = null
+  isPageHasNationBonus = false
 
   function initScreen() {
     this.linesGenerator = ShopLines()
@@ -322,7 +349,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return res
   }
 
-  function initUnitCells(tableObj, totalWidth) {
+  function initUnitCells(tableObj, totalWidth, premiumWidth) {
     let cellsByRanks = this.unitsByRank
     let cellHeight = to_pixels("@shop_height")
     let shInPixels = to_pixels("sh")
@@ -333,6 +360,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local tableIndex = 0
     local maxCellY = 0
+    let hasNationBonusFeature = hasFeature("ExpNewNationBonus")
     for (local rank = 0; rank <= this.maxRank; rank++) {
       if (!(rank in cellsByRanks))
         continue
@@ -372,15 +400,23 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
 
-      let height = $"{(maxCellY - parentPosY + 1) * cellHeightInPersent}"
-      this.animData.ranksHeights.append(height)
-
+      local height = $"{(maxCellY - parentPosY + 1) * cellHeightInPersent}"
       rankTable.show(true)
       rankTable.enable(true)
       rankTable.findObject("bottom_horizontal_line").show(rank == this.maxRank)
-
       let containerSize = $"{totalWidth}@shop_width, ph"
       let containerPos = $"{extraLeft}, -{parentPosY}@shop_height"
+
+      let topUnitsBonus = rankTable.findObject("top_units_bonus")
+      let needShowTopUnitBonus = hasNationBonusFeature && rank == this.maxRank
+      topUnitsBonus.show(needShowTopUnitBonus)
+      if (needShowTopUnitBonus) {
+        topUnitsBonus.top = $"{maxCellY - parentPosY + 1}@shop_height + {BONUS_TOP_UNITS_PLATE_PADDING}"
+        topUnitsBonus.width = $"{totalWidth - premiumWidth}@shop_width + {extraLeft} - 1.5@modArrowWidth"
+        topUnitsBonus.left = "0.75@modArrowWidth"
+      }
+
+      this.animData.ranksHeights.append(height)
       let arrowsContainer = rankTable.findObject("arrows_container")
       arrowsContainer.size = containerSize
       arrowsContainer.pos = containerPos
@@ -459,12 +495,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (idx < childCount) {
           let params = this.getUnitItemParams(unit?.unitOrGroup)
           let statusTable = getStatusTbl(unit?.unitOrGroup, params)
-          if (unit.unitOrGroup?.rank != null){
+          if (unit?.unitOrGroup.isFakeUnit || unit?.unitOrGroup.rank != null){
             let cachedStatuses = unit.posX >= this.cachedPremiumSectionPos
               ? this.cachedPremiumUnitsStatusByRanks
               : this.cachedUnitsStatusByRanks
 
-            let rankNum = unit?.unitOrGroup?.isFakeUnit ? 0 : unit.unitOrGroup.rank
+            let rankNum = unit?.unitOrGroup.isFakeUnit ? 0 : unit.unitOrGroup.rank
             if (!cachedStatuses?[rankNum])
               cachedStatuses[rankNum] <- []
             cachedStatuses[rankNum].append(statusTable)
@@ -501,8 +537,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(tableObj))
       return
 
+    this.cachedTopUnitsInfo = getTopUnitsInfo()
     this.updateBoughtVehiclesCount()
     lastUnitType = this.getCurPageUnitType()
+    this.isPageHasNationBonus = this.isArmyHasNationBonus(this.curCountry, lastUnitType.esUnitType)
 
     if (curName == "")
       curName = this.getResearchingSquadronVehicle()?.name ?? this.curAirName
@@ -548,8 +586,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.cachedPremiumSectionPos = treeData.sectionsPos?[1] ?? treeData.sectionsPos[treeData.sectionsPos.len()-1]
 
     this.guiScene.setUpdatesEnabled(false, false);
-
-    this.initUnitCells(tableObj, containersWidth)
+    this.initUnitCells(tableObj, containersWidth, treeData.sectionsPos[treeData.sectionsPos.len()-1]
+      - treeData.sectionsPos[treeData.sectionsPos.len()-2])
     this.updateCurUnitsList()
     this.fillBGLines(treeData)
     this.generateTierCollapsedIcons()
@@ -725,14 +763,18 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     containerIndex = 0
+    local lastRankCells = 0
+    local arrowsContainer = null
+    local alarmIconsContainer = null
     for (local rank = 0; rank <= this.maxRank; rank++) {
       let units = this.unitsByRank?[rank]
       if (units == null || units.len() == 0)
         continue
+      lastRankCells = this.unitsByRank[rank]
       if (datasByRanks?[rank] != null) {
         rankTable = this.getRankTable(tableObj, containerIndex)
-        let arrowsContainer = rankTable.findObject("arrows_container")
-        let alarmIconsContainer = rankTable.findObject("alarm_icons_container")
+        arrowsContainer = rankTable.findObject("arrows_container")
+        alarmIconsContainer = rankTable.findObject("alarm_icons_container")
 
         let lineArr = datasByRanks[rank]
         foreach (data in lineArr)
@@ -742,13 +784,69 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       containerIndex++
     }
 
-    this.linesGenerator.completeGenerateLines(this.guiScene)
+    if (!hasFeature("ExpNewNationBonus"))
+      this.linesGenerator.completeGenerateLines(this.guiScene)
+    else {
+      local maxCellY = 0
+      foreach (cell in lastRankCells)
+        maxCellY = maxCellY < cell.posY ? cell.posY : maxCellY
+
+      local hasUnitForNationBonus = false
+      foreach (cell in lastRankCells) {
+        let unit = cell.unitOrGroup?.airsGroup
+          ? cell.unitOrGroup.airsGroup[0]
+          : cell.unitOrGroup
+        let doesItGiveNationBonus = unit.getUnitWpCostBlk()?.doesItGiveNationBonus == true
+        if (!doesItGiveNationBonus)
+          continue
+        hasUnitForNationBonus = true
+        let lc = {line = [cell.posY, cell.posX, maxCellY + 1.5, cell.posX]}
+        let cellStatus = this.getItemStatusData(cell.unitOrGroup)
+        let arrowStatus = cellStatus.own || cellStatus.partOwn ? "owned" : "locked"
+        this.linesGenerator.modifyOrAddLine(this, arrowsContainer, alarmIconsContainer, containerIndex-1, lc, arrowStatus, "no")
+      }
+      this.linesGenerator.completeGenerateLines(this.guiScene)
+
+      rankTable = this.getRankTable(tableObj, containerIndex-1)
+      let topUnitBonusObj = rankTable.findObject("top_units_bonus")
+      topUnitBonusObj.show(hasUnitForNationBonus)
+
+      if (hasUnitForNationBonus) {
+        let heightForTopUnitsBonus =
+          to_pixels($"({BONUS_TOP_UNITS_PLATE_PADDING} + @topUnitsBonusHeight + 0.75@modArrowWidth)*100/sh")
+        let heightWithoutBonus = this.animData.ranksHeights[containerIndex-1].tofloat()
+        this.animData.ranksHeights[containerIndex-1] = $"{heightForTopUnitsBonus + heightWithoutBonus}"
+
+        let isNationBonusPlateActive = this.isPageNationBonusPlateActive(this.curCountry, lastUnitType.esUnitType)
+        topUnitBonusObj["isRed"] = isNationBonusPlateActive ? "no" : "yes"
+        let topBonusLabel = topUnitBonusObj.findObject("top_units_bonus_label")
+        let armyLoc = armyDataByPageName?[this.curPage] ? loc(armyDataByPageName[this.curPage].locString) : ""
+        topBonusLabel.setValue(loc("shop/exp_top_units_bonus", {type = armyLoc}))
+
+        if (isNationBonusPlateActive) {
+          let updateTime = buildTimeStr(getUtcMidnight(), false, false)
+          local countriesBonusText = ""
+          let countries = getShopVisibleCountries()
+          foreach (countryName in countries) {
+            let countryData = this.cachedTopUnitsInfo?[countryName]
+            if (countryData && countryData.battlesRemain[lastUnitType.esUnitType] > 0 && countryData.unitTypeWithBonuses.contains(lastUnitType.esUnitType))
+              countriesBonusText = "".concat(countriesBonusText, countriesBonusText.len() > 0 ? ", " : "",
+                loc(countryName), "-", countryData.battlesRemain[lastUnitType.esUnitType].tostring())
+          }
+          if (countriesBonusText == "")
+            countriesBonusText = "0"
+          topUnitBonusObj.tooltip = loc("shop/top_units_bonus_on", {time = updateTime, countries = countriesBonusText})
+        } else {
+          let battlesCount = expNewNationBonusDailyBattleCount
+          topUnitBonusObj.tooltip = loc("shop/top_units_bonus_off", {battlesCount})
+        }
+      }
+    }
 
     foreach (_row, rowArr in treeData.tree) //check groups even they dont have requirements
       for (local col = 0; col < rowArr.len(); col++)
         if (isUnitGroup(rowArr[col]))
           this.fillAirReq(rowArr[col])
-
   }
 
   function generateHeaders(treeData) {
@@ -905,7 +1003,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
           tooltipRank = txtRankIsLocked + "\n" + txtNeedUnits + "\n" + txtRankLockedDesc
           tooltipPlate = txtRankProgress + "\n" + txtNeedUnits
-
           break
         }
       }
@@ -965,6 +1062,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (statuses == null || statuses.len() == 0)
       return
     let discounts = data.discounts
+    local unitInResearchStatus = null
     foreach (status in statuses) {
       if ((status?.discount ?? 0) > 0) {
         let len = discounts.len()
@@ -979,15 +1077,35 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (!discountAdded)
           discounts.append({discount = status.discount, count = 1, unitsNames = $"{loc("discount/notification")}\n* {status.nameText}"})
       }
+
       if (status?.hasObjective) {
         data.objectivesCount++
+        let unitName = status?.isGroup ? getUnitName(status.markerHolderId) : status.nameText
         data.objectivesUnits = data.objectivesCount == 1
-          ? "".concat(loc("mainmenu/objectiveAvailable"), "\n* ", status.nameText)
-          : $"{data.objectivesUnits}\n* {status.nameText}"
+          ? "".concat(loc("mainmenu/objectiveAvailable"), "\n* ", unitName)
+          : $"{data.objectivesUnits}\n* {unitName}"
       }
+      if (!unitInResearchStatus && status?.shopStatus == "research")
+        unitInResearchStatus = status
+    }
+
+    if (this.isPageHasNationBonus && unitInResearchStatus) {
+      data.hasNationBonus = true
+      let battlesRemain = this.cachedTopUnitsInfo[this.curCountry].battlesRemain[lastUnitType.esUnitType]
+      data.battlesRemain <- $"{battlesRemain}/{expNewNationBonusDailyBattleCount}"
+      let isNationBonusOver = battlesRemain == 0
+      data.isNationBonusOver <- isNationBonusOver ? "yes" : "no"
+
+      data.nationBonusTooltipId <- getTooltipType("SHOP_CELL_NATION_BONUS").getTooltipId("bonus", {
+        unitName = $" ({unitInResearchStatus.nameText})"
+        battlesRemain
+        maxRank = this.maxRank
+        rank = unitInResearchStatus.rank
+        isOver = isNationBonusOver
+        unitTypeName = unitInResearchStatus.unitTypeName
+      })
     }
   }
-
 
   function generateTierCollapsedIcons() {
     let tableObj = this.getTableObj()
@@ -999,13 +1117,13 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (rankTable == null)
         continue
       index++
-      let icons = { discounts = [], objectivesCount = 0, objectivesUnits = "" }
+      let icons = { discounts = [], objectivesCount = 0, objectivesUnits = "", hasNationBonus = false }
       this.calcRankCollapsedIconData(this.cachedUnitsStatusByRanks?[rank], icons)
 
-      let premIcons = { discounts = [], objectivesCount = 0, objectivesUnits = "" }
+      let premIcons = { discounts = [], objectivesCount = 0, objectivesUnits = "", hasNationBonus = false}
       this.calcRankCollapsedIconData(this.cachedPremiumUnitsStatusByRanks?[rank], premIcons)
 
-      let viewData = {icons, premIcons, rank, armyId = this.curPage, country = this.curCountry}
+      let viewData = {icons, premIcons, rank, armyId = this.curPage, country = this.curCountry, }
       let data = handyman.renderCached("%gui/shop/collapsedRankIcons.tpl", viewData)
       let iconsContainer = rankTable.findObject("collapsed_icons")
       this.guiScene.replaceContentFromText(iconsContainer, data, data.len(), this)
@@ -1160,6 +1278,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       showBR = hasFeature("GlobalShowBattleRating")
       getEdiffFunc = this.getCurrentEdiff.bindenv(this)
       tooltipParams = { needShopInfo = true }
+      unitTypeName = unit?.unitType.name ?? unit?.airsGroup[0].unitType.name
+      hasNationBonus = this.isPageHasNationBonus
+      maxRank = this.maxRank
+      nationBonusBattlesRemain = this.isPageHasNationBonus
+        ? this.cachedTopUnitsInfo?[this.curCountry].battlesRemain[lastUnitType.esUnitType] ?? 0
+        : 0
     }
   }
 
@@ -1828,12 +1952,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     ::gui_modal_convertExp(unit)
   }
 
-  function getUnitNameByBtnId(id) {
-    if (id.len() < 13)
-      return ""
-    return id.slice(13)
-  }
-
   function onEventUnitResearch(params) {
     if (!checkObj(this.scene))
       return
@@ -2486,6 +2604,23 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     return unit
+  }
+
+  function getNationBonusData(country) {
+    return this.cachedTopUnitsInfo?[country]
+  }
+
+  function isPageNationBonusPlateActive(country, armyIndex) {
+    let bonus = this.getNationBonusData(country)
+    return (bonus.ownTopUnitTypes.contains(armyIndex)
+      || bonus.unitTypeWithBonuses.contains(armyIndex))
+  }
+
+  function isArmyHasNationBonus(country, armyIndex) {
+    if (!hasFeature("ExpNewNationBonus"))
+      return false
+    let bonus = this.getNationBonusData(country)
+    return bonus.unitTypeWithBonuses.contains(armyIndex)
   }
 
   getParamsForActionsList = @() {

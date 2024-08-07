@@ -63,6 +63,32 @@ function getDevoiceMessage(activeColor = "chatActiveInfoColor") {
   return txt
 }
 
+function getBannedMessage(status = null, banType = "ban") {
+  let { duration, seconds_left, category, comment } = status ?? penalty.getPenaltyStatus()
+  let onlyDecalsDisabled = banType == "decal"
+  let txtArr = []
+  if (duration >= penalty.BAN_USER_INFINITE_PENALTY || onlyDecalsDisabled) {
+    txtArr.append(loc($"charServer/{banType}/permanent"))
+  }
+  else {
+    let timeLeft = time.secondsToHours(get_time_till_decals_disabled() || seconds_left)
+    let durationHours = time.secondsToHours(duration)
+    txtArr.append(" ".concat(
+      format(loc($"charServer/{banType}/timed"), time.hoursToString(durationHours, false))
+      format(loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))
+    ))
+  }
+
+  if (!onlyDecalsDisabled) {
+    txtArr.append(
+      "".concat(loc("charServer/ban/reason"), loc("ui/colon"),
+        colorize("highlightedTextColor", loc($"charServer/ban/reason/{category}"))),
+      "", loc("charServer/ban/comment"), comment)
+  }
+
+  return "\n".join(txtArr)
+}
+
 
 function showBannedStatusMsgBox(showBanOnly = false) {
   let st = penalty.getPenaltyStatus()
@@ -72,11 +98,8 @@ function showBannedStatusMsgBox(showBanOnly = false) {
 
   debugTableData(st, { recursionLevel = -1, addStr = "BAN " })
 
-  local txt = ""
   local fn = function() {}
   local banType = ""
-  local onlyDecalsDisabled = false
-
   if (st.status == penalty.BAN) {
     banType  = "ban"
     fn = @() eventbus_send("request_logout", {})
@@ -92,29 +115,13 @@ function showBannedStatusMsgBox(showBanOnly = false) {
     }
   }
   else if (is_decals_disabled()) {
-    onlyDecalsDisabled = true
     banType = "decal"
   }
   else {
     return
   }
 
-  if (st.duration >= penalty.BAN_USER_INFINITE_PENALTY || onlyDecalsDisabled) {
-    txt += loc($"charServer/{banType}/permanent")
-  }
-  else {
-    let timeLeft = time.secondsToHours(get_time_till_decals_disabled() || st.seconds_left)
-    let durationHours = time.secondsToHours(st.duration)
-    txt += format(loc($"charServer/{banType}/timed"), time.hoursToString(durationHours, false))
-    txt += " " + format(loc("charServer/ban/timeLeft"), time.hoursToString(timeLeft, false, true))
-  }
-
-  if (!onlyDecalsDisabled) {
-    txt += "\n" + loc("charServer/ban/reason") + loc("ui/colon") + " " +
-      colorize("highlightedTextColor", loc("charServer/ban/reason/" + st.category)) + "\n\n"
-    txt += loc("charServer/ban/comment") + "\n" + st.comment
-  }
-
+  let txt = getBannedMessage(st, banType)
   if (txt != "") {
     scene_msg_box("banned", null, txt, [["ok", fn ]], "ok", { saved = true, cancel_fn = fn })
   }
@@ -129,6 +136,7 @@ function isMeBanned() {
 
 return {
   getDevoiceMessage
+  getBannedMessage
   showBannedStatusMsgBox
   isMeBanned
 }

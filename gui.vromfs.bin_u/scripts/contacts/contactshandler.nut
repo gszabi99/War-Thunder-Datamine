@@ -957,8 +957,8 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       {
         position = position
         curContactGroup = this.curGroup
-        onClose = function() {
-          if (this.checkScene())
+        onClose = function(isActionActivate) {
+          if (!isActionActivate && this.checkScene())
             move_mouse_on_child_by_value(this.scene.findObject("group_" + this.curGroup))
         }.bindenv(this)
       })

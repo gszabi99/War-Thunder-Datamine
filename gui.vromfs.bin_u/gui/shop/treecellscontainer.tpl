@@ -146,6 +146,23 @@ shopRankTable {
   shopTopUnitBonus {
     id:t='top_units_bonus'
     display:t='hide'
+    tooltip:t=''
+    css-hier-invalidate:t='yes'
+    text {
+      id:t='top_units_bonus_label'
+      position:t='absolute'
+      pos:t='(pw - w)/2, (ph - h)/2'
+      text:t='#shop/exp_top_units_bonus'
+      input-transparent:t='no'
+      img {
+        position:t='absolute'
+        pos:t='pw + 0.4w, (ph - h)/2'
+        size:t='0.65*ph, 0.65*ph'
+        background-image:t='#ui/gameuiskin#btn_help.svg'
+        background-svg-size:t='@cIco, @cIco'
+        bgcolor:t='#FFFFFFFF'
+      }
+    }
 
     img {
     }

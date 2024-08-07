@@ -168,10 +168,12 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
   }
 
   function afterModalDestroy() {
+    local isActionActivate = false
     if (this.choosenValue in this.config.actions) {
       let applyFunc = getTblValue("action", this.config.actions[this.choosenValue])
       ::call_for_handler(this.owner, applyFunc)
+      isActionActivate = true
     }
-    this.onClose?()
+    this.onClose?(isActionActivate)
   }
 }
