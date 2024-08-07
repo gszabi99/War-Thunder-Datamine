@@ -1809,7 +1809,19 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "linkedAnimPart": {
+            "horNode": "bone_turret_02",
+            "xrayHorNode": "driver_xray",
+            "horLimits": [
+              180.0,
+              -180.0
+            ],
+            "horOriginLimits": [
+              -180.0,
+              180.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -2002,33 +2014,6 @@
           ],
           "pitch": [
             -0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "dummy": true,
-        "trigger": "gunner3",
-        "triggerGroup": "primary",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "bone_gun_01",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_02_dm",
-        "speedYaw": 45.0,
-        "speedPitch": 45.0,
-        "bullets": 1,
-        "turret": {
-          "head": "bone_turret_02",
-          "gun": "emtr_fire_ammo_02"
-        },
-        "limits": {
-          "yaw": [
-            -45.0,
-            45.0
-          ],
-          "pitch": [
-            0.0,
             0.0
           ]
         }
@@ -2953,7 +2938,19 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "linkedAnimPart": {
+                  "horNode": "bone_turret_02",
+                  "xrayHorNode": "driver_xray",
+                  "horLimits": [
+                    180.0,
+                    -180.0
+                  ],
+                  "horOriginLimits": [
+                    -180.0,
+                    180.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [
@@ -3146,33 +3143,6 @@
                 ],
                 "pitch": [
                   -0.0,
-                  0.0
-                ]
-              }
-            },
-            {
-              "dummy": true,
-              "trigger": "gunner3",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_gun_01",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "barrelDP": "gun_barrel_02_dm",
-              "speedYaw": 45.0,
-              "speedPitch": 45.0,
-              "bullets": 1,
-              "turret": {
-                "head": "bone_turret_02",
-                "gun": "emtr_fire_ammo_02"
-              },
-              "limits": {
-                "yaw": [
-                  -45.0,
-                  45.0
-                ],
-                "pitch": [
-                  0.0,
                   0.0
                 ]
               }
