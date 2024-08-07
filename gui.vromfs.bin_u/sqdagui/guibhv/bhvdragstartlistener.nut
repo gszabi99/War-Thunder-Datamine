@@ -80,11 +80,13 @@ let class DragStartListener {
   function onLMouse(obj, mx, my, is_up, bits) {
     obj.setIntProp(this.isMousePressedPID, is_up ? 0 : 1)
     obj.setIntProp(this.isDraggingPID, 0)
-    if (!this.getIsObjDragging(obj))
+    if (!this.getIsObjDragging(obj)) {
       this.notifyParentRMouse(obj, mx, my, is_up, bits) // !!!FIX ME - Due to a bug in the posNavigator, it does not receive onLMouse events.
                                                         // As a workround, we throw onExtMouse into it.
                                                         // The right click was left because bhvPosNavigator did not process the left click as expected.
-
+      if (!obj?.isValid()) //after simulate parent click the object has become invalid
+        return RETCODE_HALT
+    }
 
     if (!is_up)
       obj.setIntProp2x16(this.clickPosPID, mx, my)
