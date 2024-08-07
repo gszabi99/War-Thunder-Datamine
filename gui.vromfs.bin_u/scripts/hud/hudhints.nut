@@ -2521,6 +2521,27 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:autoloader_damaged"
     lifeTime = 5.0
   }
+
+  KILL_STREAK_SAFE_EXIT = {
+    hintType = g_hud_hint_types.COMMON
+    getLocId = function(_hintData) {
+      return getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER
+        ? "hints/kill_streak_safe_exit_helicopter"
+        : "hints/kill_streak_safe_exit"
+    }
+    showEvent = "hint:kill_streak_safe_exit"
+  }
+
+  KILL_STREAK_REWARD = {
+    getHintNestId = @() "hud_messages_reward_messages"
+    getLocId = @(hintData) $"hints/kill_streak_reward_{hintData.streakType}"
+    getLocParams = @(hintData) { points = hintData.points }
+    showEvent = "hint:kill_streak_reward"
+    lifeTime = 5.0
+    isHideOnDeath = false
+    isHideOnWatchedHeroChanged = false
+  }
+
 },
 function() {
   this.name = "hint_" + this.typeName.tolower()

@@ -49,6 +49,15 @@ let buyAndOpenChestWndStyles = {
     timeExpiredTextParams="pos:t='0.65pw, 0.41ph-0.5h'; overlayTextColor:t='active'"
     chestNameTextParams="font-ht:t='40@sf/@pf'"
   }
+  silverSummer = {
+    headerBackgroundImage = "!ui/images/chests_wnd/silver_summer_image"
+    chestNameBackgroundImage = "!ui/images/chests_wnd/silver_summer_header"
+    headerBackgroundImageHeight = "720.0/1920w"
+    headerBackgroundImageMaxHeight = "0.70ph"
+    bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 1920.0*0.70sh/720)), sh"
+    timeExpiredTextParams="pos:t='0.75pw, 0.41ph-0.5h'; overlayTextColor:t='active'"
+    chestNameTextParams="font-ht:t='40@sf/@pf'"
+  }
 }
 
 enum sortIdxPrizesByType {
