@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 let { WeaponSlots, WeaponSlotsCnt, WeaponSlotsName, WeaponSlotsTrigger, WeaponSlotActive } = require("%rGui/planeState/planeWeaponState.nut")
 let { weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
 
@@ -83,7 +84,7 @@ function getWeaponSlotNumber() {
             color = WeaponSlotActive.get()[i] == true ? Color(0, 255, 0, 255) : baseColor
             fontSize = 15
             font = Fonts.ils31
-            text = WeaponSlotsTrigger.get()[i] == weaponTriggerName.BOMBS_TRIGGER ? "АБ" : loc(WeaponSlotsName.get()[i])
+            text = WeaponSlotsTrigger.get()[i] == weaponTriggerName.BOMBS_TRIGGER ? "АБ" : loc_checked(WeaponSlotsName.get()[i])
           }
         )
       }

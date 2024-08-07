@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 let { Speed, BarAltitude, Tangage, Accel } = require("%rGui/planeState/planeFlyState.nut")
 let { mpsToKmh, baseLineWidth, radToDeg, weaponTriggerName } = require("ilsConstants.nut")
 let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget,
@@ -751,7 +752,7 @@ function shellName(is_cn) {
     color = IlsColor.value
     fontSize = 35
     font = Fonts.ils31
-    text = !CannonMode.value && !AirCannonMode.value ? (!is_cn ? loc(CurWeaponName.value) : (RocketMode.get() ? "航箭" : (BombCCIPMode.get() || BombingMode.get() ? "航弹" : loc(CurWeaponName.value)))) : ""
+    text = !CannonMode.value && !AirCannonMode.value ? (!is_cn ? loc_checked(CurWeaponName.value) : (RocketMode.get() ? "航箭" : (BombCCIPMode.get() || BombingMode.get() ? "航弹" : loc_checked(CurWeaponName.value)))) : ""
   }
 }
 

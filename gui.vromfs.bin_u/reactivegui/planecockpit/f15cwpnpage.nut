@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 let { FlaresCount, ChaffsCount, CannonCount } = require("%rGui/airState.nut")
 let string = require("string")
 let { WeaponSlots, WeaponSlotsTrigger, WeaponSlotsCnt, SelectedWeapSlot,
@@ -159,7 +160,7 @@ function aamMark(pos, i) {
         color = baseColor
         font = Fonts.hud
         fontSize = baseFontSize
-        text = loc(string.format("%s/f15mfd", WeaponSlotsName.get()[i]))
+        text = loc_checked(string.format("%s/f15mfd", WeaponSlotsName.get()[i]))
       }
     ]
   }

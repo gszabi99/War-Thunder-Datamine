@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-
+from "%globalScripts/loc_helpers.nut" import loc_checked
 let { baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile, degToRad } = require("ilsConstants.nut")
 let { Tangage, Altitude, Speed, Mach, Overload, Roll, CompassValue, Aoa,
  MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
@@ -345,7 +345,7 @@ let aamCount = @(){
     color = IlsColor.value
     font = Fonts.hud
     fontSize = 35
-    text = string.format("%s%d", loc(string.format("%s/f_20", CurWeaponName.value)), ShellCnt.value)
+    text = string.format("%s%d", loc_checked(string.format("%s/f_20", CurWeaponName.value)), ShellCnt.value)
   } : null
 }
 

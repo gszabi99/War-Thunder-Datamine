@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 let { baseLineWidth, mpsToKmh, weaponTriggerName } = require("ilsConstants.nut")
 let { IlsColor, IlsLineScale, TargetPosValid, TargetPos, RocketMode, BombCCIPMode,
  AimLockPos, AimLockValid, AimLockDist, DistToTarget, IlsPosSize} = require("%rGui/planeState/planeToolsState.nut")
@@ -391,7 +392,7 @@ let shellName = @(){
   color = IlsColor.value
   fontSize = 35
   font = Fonts.ils31
-  text = SpiMode.value ? "ППУ" : GunMode.value ? "НПУ" : loc(string.format("%s/ils_28", CurWeaponName.value))
+  text = SpiMode.value ? "ППУ" : GunMode.value ? "НПУ" : loc_checked(string.format("%s/ils_28", CurWeaponName.value))
 }
 
 let shellCnt = @() {
@@ -470,7 +471,7 @@ let selectedStation = @(){
   color = IlsColor.value
   fontSize = 35
   font = Fonts.ils31
-  text = AtgmMode.value ? loc(string.format("%s/ils_28_st", CurWeaponName.value)) : isAAMMode.value ? "ППС" : RocketMode.value || BombCCIPMode.value ? (IsInnerSlot.value ? "ВНУТР" : "ВНЕШ") : ""
+  text = AtgmMode.value ? loc_checked(string.format("%s/ils_28_st", CurWeaponName.value)) : isAAMMode.value ? "ППС" : RocketMode.value || BombCCIPMode.value ? (IsInnerSlot.value ? "ВНУТР" : "ВНЕШ") : ""
 }
 
 function agmLaunchZone(width, height) {

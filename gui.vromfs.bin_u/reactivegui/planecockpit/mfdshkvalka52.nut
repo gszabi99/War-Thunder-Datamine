@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 
 let { Roll, ClimbSpeed, Speed, Altitude, Tangage, CompassValue, Overload } = require("%rGui/planeState/planeFlyState.nut")
 let { mpsToKmh, weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
@@ -753,7 +754,7 @@ let shellName = @(){
   color = baseColor
   fontSize = baseFontSize
   font = Fonts.ils31
-  text = GunMode.value ? "НПУ" : loc(string.format("%s/ils_28", CurWeaponName.value))
+  text = GunMode.value ? "НПУ" : loc_checked(string.format("%s/ils_28", CurWeaponName.value))
 }
 
 let shellCnt = @() {
@@ -815,7 +816,7 @@ let selectedStation = @(){
   color = baseColor
   fontSize = baseFontSize
   font = Fonts.ils31
-  text = AtgmMode.value ? loc(string.format("%s/ils_28_st", CurWeaponName.value)) : isAAMMode.value ? "ППС" : RocketMode.value || BombCCIPMode.value ? "ВНЕТШ" : ""
+  text = AtgmMode.value ? loc_checked(string.format("%s/ils_28_st", CurWeaponName.value)) : isAAMMode.value ? "ППС" : RocketMode.value || BombCCIPMode.value ? "ВНЕТШ" : ""
 }
 
 let gunnerControl = {

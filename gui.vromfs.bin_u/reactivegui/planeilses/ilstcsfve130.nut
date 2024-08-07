@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 
 let string = require("string")
 let { compassWrap, generateCompassMarkVE130 } = require("ilsCompasses.nut")
@@ -260,7 +261,7 @@ let shellName = @() {
   color = IlsColor.value
   fontSize = 45
   font = Fonts.mirage_ils
-  text = RocketMode.value ? "RK" : (CannonMode.value ? "CAS" : (isAAMMode.value ? loc(CurWeaponName.value) :  "CAN"))
+  text = RocketMode.value ? "RK" : (CannonMode.value ? "CAS" : (isAAMMode.value ? loc_checked(CurWeaponName.value) :  "CAN"))
 }
 
 function bombImpactLine(width, height) {

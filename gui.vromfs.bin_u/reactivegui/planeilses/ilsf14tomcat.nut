@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 
 let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetPos, RadarTargetDist,
   BombingMode, BombCCIPMode, RocketMode, CannonMode,
@@ -7,7 +8,7 @@ let { baseLineWidth, metrToNavMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { AdlPoint, CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
 let { Roll, Tangage, Altitude } = require("%rGui/planeState/planeFlyState.nut")
-let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { compassWrap, generateCompassMarkF14 } = require("ilsCompasses.nut")
 let { flyDirection } = require("commonElements.nut")
 let { AVQ7CCRP } = require("ilsAVQ7.nut")
@@ -220,7 +221,7 @@ let shellName = @() {
   color = IlsColor.value
   fontSize = 80
   font = Fonts.f14_ils
-  text = ShellMode.value ? "ORD" : (isAAMMode.value && !CannonMode.value ? loc(CurWeaponName.value) :  "G")
+  text = ShellMode.value ? "ORD" : (isAAMMode.value && !CannonMode.value ? loc_checked(CurWeaponName.value) :  "G")
 }
 
 let shellValue = Computed(@() !isAAMMode.value ? ShellCnt.value / 100 : ShellCnt.value)
@@ -255,7 +256,7 @@ let aimMark = @() {
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
-      translate = TargetPos.value
+      translate = isAAMMode.get() ? [IlsTrackerX.value, IlsTrackerY.value] : TargetPos.value
     }
   }
 }

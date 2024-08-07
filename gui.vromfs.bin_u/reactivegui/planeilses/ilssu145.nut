@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 
 let string = require("string")
 let { compassWrap, generateCompassMarkSU145 } = require("ilsCompasses.nut")
@@ -284,7 +285,7 @@ let shellName = @() {
    (BombingMode.value ? "AUTO" :
     (RocketMode.value ? "RKT" :
      (CannonMode.value ? "GUN" :
-      (isAAMMode.value ? loc(string.format("%s/su_145", CurWeaponName.value)) :
+      (isAAMMode.value ? loc_checked(string.format("%s/su_145", CurWeaponName.value)) :
       (HasGndReticle.value ? "GUN" : "")))))
 }
 

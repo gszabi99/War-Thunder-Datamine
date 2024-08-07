@@ -1,18 +1,21 @@
 from "%rGui/globals/ui_library.nut" import *
-let { Aoa, ClimbSpeed, Altitude, Speed, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
+from "%globalScripts/loc_helpers.nut" import loc_checked
+let { Aoa, ClimbSpeed, Altitude, Speed, Tangage, Roll, CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 let { baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { IlsColor, IlsLineScale, TargetPos, RocketMode, CannonMode, BombCCIPMode, BombingMode,
-  TargetPosValid, DistToTarget, RadarTargetDist, TimeBeforeBombRelease, TvvMark } = require("%rGui/planeState/planeToolsState.nut")
+  TargetPosValid, DistToTarget, RadarTargetDist, TimeBeforeBombRelease, TvvMark, RadarTargetDistRate,
+  RadarTargetPosValid, RadarTargetPos, AirCannonMode } = require("%rGui/planeState/planeToolsState.nut")
 let { cvt } = require("dagor.math")
 let string = require("string")
 let { SUMAltitude } = require("commonElements.nut")
-let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
+let { AdlPoint, CurWeaponName, ShellCnt, BulletImpactPoints, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
 let { sin, cos, round } = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDist, AamLaunchZoneDistDgftMax,
- AamLaunchZoneDistDgftMin, IsAamLaunchZoneVisible } = require("%rGui/radarState.nut")
+ AamLaunchZoneDistDgftMin, IsAamLaunchZoneVisible, LockZoneIlsWatched, IsLockZoneIlsVisible,
+ IsRadarEmitting } = require("%rGui/radarState.nut")
 
 let SUMAoaMarkH = Computed(@() cvt(Aoa.value, 0, 25, 100, 0).tointeger())
 let SUMAoa = @() {
@@ -262,43 +265,39 @@ let gunReticle = @() {
 }
 
 let AltThousandAngle = Computed(@() (Altitude.value * metrToFeet % 1000 / 2.7777 - 90.0).tointeger())
-let altCircle = @() {
-  watch = [CCIPMode, BombingMode]
+let altCircle = @(){
+  watch = IlsColor
   size = [pw(16), pw(16)]
   pos = [pw(58.5), ph(18.5)]
-  children = CCIPMode.value || BombingMode.value ? @() {
-    watch = IlsColor
-    size = flex()
+  rendObj = ROBJ_VECTOR_CANVAS
+  color = IlsColor.value
+  fillColor = Color(0, 0, 0, 0)
+  lineWidth = baseLineWidth * IlsLineScale.value * 2
+  commands = [
+    [VECTOR_LINE, 50, 0, 50, 0],
+    [VECTOR_LINE, 50, 100, 50, 100],
+    [VECTOR_LINE, 20.6, 9.5, 20.6, 9.5],
+    [VECTOR_LINE, 2.4, 34.5, 2.4, 34.5],
+    [VECTOR_LINE, 2.4, 65.5, 2.4, 65.5],
+    [VECTOR_LINE, 20.6, 90.5, 20.6, 90.5],
+    [VECTOR_LINE, 80.6, 90.5, 80.6, 90.5],
+    [VECTOR_LINE, 97.6, 65.5, 97.6, 65.5],
+    [VECTOR_LINE, 97.6, 34.5, 97.6, 34.5],
+    [VECTOR_LINE, 80.6, 9.5, 80.6, 9.5]
+  ]
+  children = @() {
+    watch = [AltThousandAngle, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
+    size = [pw(50), ph(50)]
+    pos = [pw(50), ph(50)]
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
-    lineWidth = baseLineWidth * IlsLineScale.value * 2
+    lineWidth = baseLineWidth * IlsLineScale.value * 1.5
     commands = [
-      [VECTOR_LINE, 50, 0, 50, 0],
-      [VECTOR_LINE, 50, 100, 50, 100],
-      [VECTOR_LINE, 20.6, 9.5, 20.6, 9.5],
-      [VECTOR_LINE, 2.4, 34.5, 2.4, 34.5],
-      [VECTOR_LINE, 2.4, 65.5, 2.4, 65.5],
-      [VECTOR_LINE, 20.6, 90.5, 20.6, 90.5],
-      [VECTOR_LINE, 80.6, 90.5, 80.6, 90.5],
-      [VECTOR_LINE, 97.6, 65.5, 97.6, 65.5],
-      [VECTOR_LINE, 97.6, 34.5, 97.6, 34.5],
-      [VECTOR_LINE, 80.6, 9.5, 80.6, 9.5]
+      [VECTOR_LINE, 80 * cos(degToRad(AltThousandAngle.value)), 80 * sin(degToRad(AltThousandAngle.value)),
+        50 * cos(degToRad(AltThousandAngle.value)), 50 * sin(degToRad(AltThousandAngle.value))]
     ]
-    children = @() {
-      watch = AltThousandAngle
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(50), ph(50)]
-      pos = [pw(50), ph(50)]
-      color = IlsColor.value
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.value * 1.5
-      commands = [
-        [VECTOR_LINE, 80 * cos(degToRad(AltThousandAngle.value)), 80 * sin(degToRad(AltThousandAngle.value)),
-          50 * cos(degToRad(AltThousandAngle.value)), 50 * sin(degToRad(AltThousandAngle.value))]
-      ]
-    }
-  } : null
+  }
 }
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
@@ -419,7 +418,7 @@ let aamLaunchZone = @(){
   pos = [0, ph(40)]
   children = IsLaunchZoneVisible.value ? [
     @(){
-      watch = currentLaunchDistLen
+      watch = [currentLaunchDistLen, IlsColor]
       pos = [pw(70), 0]
       size = [pw(2), ph(20)]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -433,7 +432,7 @@ let aamLaunchZone = @(){
       ]
     }
     @(){
-      watch = minLaunchZonePos
+      watch = [minLaunchZonePos, IlsColor]
       pos = [pw(67), 0]
       size = [pw(2), ph(20)]
       rendObj = ROBJ_VECTOR_CANVAS
@@ -445,7 +444,7 @@ let aamLaunchZone = @(){
       ]
     }
     @(){
-      watch = maxLaunchZonePos
+      watch = [maxLaunchZonePos, IlsColor]
       size = [pw(1.5), baseLineWidth * IlsLineScale.value]
       pos = [pw(68), ph(20 - maxLaunchZonePos.value)]
       rendObj = ROBJ_SOLID
@@ -456,14 +455,14 @@ let aamLaunchZone = @(){
       size = flex()
       children = IsDgftZoneVisible.value ? [
         @(){
-          watch = maxLaunchDgftZonePos
+          watch = [maxLaunchDgftZonePos, IlsColor]
           size = [pw(1.5), baseLineWidth * IlsLineScale.value]
           pos = [pw(66.5), ph(20 - maxLaunchDgftZonePos.value)]
           rendObj = ROBJ_SOLID
           color = IlsColor.value
         }
         @(){
-          watch = minLaunchDgftZonePos
+          watch = [minLaunchDgftZonePos, IlsColor]
           size = [pw(1.5), baseLineWidth * IlsLineScale.value]
           pos = [pw(66.5), ph(20 - minLaunchDgftZonePos.value)]
           rendObj = ROBJ_SOLID
@@ -472,7 +471,7 @@ let aamLaunchZone = @(){
       ] : null
     }
     @(){
-      watch = [curTargetDist, currentLaunchDistLen]
+      watch = [curTargetDist, currentLaunchDistLen, IlsColor]
       size = SIZE_TO_CONTENT
       pos = [pw(72.5), ph(19 - currentLaunchDistLen.value * 0.2)]
       rendObj = ROBJ_TEXT
@@ -482,6 +481,272 @@ let aamLaunchZone = @(){
       text = string.format("%.1f", curTargetDist.value * 0.1)
     }
   ] : null
+}
+
+let curWeapon = @(){
+  watch = [CurWeaponName, IlsColor, ShellCnt, isAAMMode]
+  pos = [pw(72), ph(80)]
+  size = SIZE_TO_CONTENT
+  rendObj = ROBJ_TEXT
+  color = IlsColor.get()
+  font = Fonts.hud
+  fontSize = 30
+  text = CurWeaponName.get() && CurWeaponName.get() != "" && isAAMMode.get() ? string.format("%d%s", ShellCnt.get(), loc_checked($"{CurWeaponName.get()}/tornado")) : "G"
+}
+
+let generateCompassMark = function(num, width) {
+  return {
+    size = [width * 0.15, ph(100)]
+    flow = FLOW_VERTICAL
+    children = [
+      @(){
+        watch = IlsColor
+        size = SIZE_TO_CONTENT
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        hplace = ALIGN_CENTER
+        fontSize = 30
+        font = Fonts.hud
+        text = num % 10 == 0 ? (num / 10).tostring() : ""
+      }
+      @(){
+        watch = IlsColor
+        size = [baseLineWidth, baseLineWidth]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * 1.5
+        hplace = ALIGN_CENTER
+        commands = [
+          [VECTOR_LINE, 0, 0, 0, 0]
+        ]
+      }
+    ]
+  }
+}
+
+function compass(width, generateFunc) {
+  let children = []
+  let step = 5.0
+
+  for (local i = 0; i <= 2.0 * 360.0 / step; ++i) {
+
+    let num = (i * step) % 360
+
+    children.append(generateFunc(num, width))
+  }
+  let getOffset = @() (360.0 + CompassValue.get()) * 0.03 * width
+  return {
+    size = flex()
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [-getOffset() + 0.425 * width, 0]
+      }
+    }
+    flow = FLOW_HORIZONTAL
+    children = children
+  }
+}
+
+function compassWrap(width, height, generateFunc) {
+  return {
+    size = [width * 0.3, height]
+    pos = [width * 0.35, height * 0.15]
+    clipChildren = true
+    children = [
+      compass(width * 0.3, generateFunc)
+      @(){
+        watch = IlsColor
+        rendObj = ROBJ_SOLID
+        size = [baseLineWidth, height * 0.03]
+        color = IlsColor.get()
+        pos = [width * 0.15 - baseLineWidth * 0.5, ph(4)]
+      }
+    ]
+  }
+}
+
+let relVelMarkPos = Computed(@() cvt(-RadarTargetDistRate.get() * mpsToKnots, -20, 100, 0, 100).tointeger())
+let targetRelVelScale = @(){
+  watch = TargetByRadar
+  size = flex()
+  children = TargetByRadar.get() ? @(){
+    watch = IlsColor
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = [pw(50), ph(3)]
+    pos = [pw(25), ph(84)]
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * 2.0
+    commands = [
+      [VECTOR_LINE, 0, 100, 0, 100],
+      [VECTOR_LINE, 16.7, 100, 16.7, 100],
+      [VECTOR_LINE, 33.3, 100, 33.3, 100],
+      [VECTOR_LINE, 50, 100, 50, 100],
+      [VECTOR_LINE, 66.7, 100, 66.7, 100],
+      [VECTOR_LINE, 83.3, 100, 83.3, 100],
+      [VECTOR_LINE, 100, 100, 100, 100]
+    ]
+    children = [
+      @(){
+        watch = [relVelMarkPos, IlsColor]
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        color = IlsColor.get()
+        lineWidth = baseLineWidth
+        commands = [
+          [VECTOR_LINE, 16.7, 100, 16.7, 20],
+          (relVelMarkPos.get() > 18 ? [VECTOR_LINE, 16.7, 20, relVelMarkPos.get() - 2, 20] : []),
+          (relVelMarkPos.get() < 15 ? [VECTOR_LINE, 16.7, 20, relVelMarkPos.get() + 2, 20] : []),
+          [VECTOR_LINE, relVelMarkPos.get(), 100, relVelMarkPos.get() - 2, 0],
+          [VECTOR_LINE, relVelMarkPos.get(), 100, relVelMarkPos.get() + 2, 0]
+        ]
+      }
+      {
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
+        pos = [pw(-5), ph(150)]
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize = 30
+        text = "-20"
+      }
+      {
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
+        pos = [pw(47), ph(150)]
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize = 30
+        text = "40"
+      }
+      {
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
+        pos = [pw(80), ph(150)]
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize = 30
+        text = "80"
+      }
+    ]
+  } : null
+}
+
+function radarTarget(width, height) {
+  return @(){
+    watch = [RadarTargetPosValid, isAAMMode, IlsColor]
+    size = flex()
+    children = RadarTargetPosValid.get() && !isAAMMode.get() ? {
+      rendObj = ROBJ_VECTOR_CANVAS
+      size = [pw(3), ph(3)]
+      color = IlsColor.get()
+      lineWidth = baseLineWidth
+      fillColor = Color(0, 0, 0, 0)
+      commands = [
+        [VECTOR_ELLIPSE, 0, 0, 100, 100]
+      ]
+      children = {
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
+        pos = [pw(120), -15]
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize = 30
+        text = "L"
+      }
+      animations = [
+        { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "radar_lock_limit" }
+      ]
+      behavior = Behaviors.RtPropUpdate
+      update = function() {
+        local target = RadarTargetPos
+        let leftBorder = width * 0.08
+        let rightBorder = width * 0.9
+        let topBorder = height * 0.04
+        let bottomBorder = height * 0.95
+        if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
+          anim_start("radar_lock_limit")
+        else
+          anim_request_stop("radar_lock_limit")
+        target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
+        return {
+          transform = {
+            translate = target
+          }
+        }
+      }
+    } : null
+  }
+}
+
+function getBulletImpactLineCommand() {
+  let commands = []
+  for (local i = 0; i < BulletImpactPoints.value.len() - 2; ++i) {
+    let point = BulletImpactPoints.value[i]
+    if (point.x == -1 && point.y == -1)
+      continue
+    commands.append([VECTOR_LINE, point.x, point.y, point.x, point.y])
+  }
+  return commands
+}
+
+let ccil = @(){
+  watch = [AirCannonMode, BulletImpactLineEnable]
+  size = flex()
+  children = AirCannonMode.get() && BulletImpactLineEnable.get() ? @(){
+    watch = [BulletImpactPoints, IlsColor]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = flex()
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get() * 2.0
+    commands = getBulletImpactLineCommand()
+  } : null
+}
+
+let lockZone = @(width, height) function() {
+  if (!IsLockZoneIlsVisible.get())
+    return { watch = [IsLockZoneIlsVisible, LockZoneIlsWatched] }
+
+  let mw = 100 / width
+  let mh = 100 / height
+  let corner = IsRadarEmitting.get() ? 0.1 : 0.02
+
+  let { x0, x1, x2, x3, y0, y1, y2, y3 } = LockZoneIlsWatched.get()
+  let _x0 = (x0 + x1 + x2 + x3) * 0.25
+  let _y0 = (y0 + y1 + y2 + y3) * 0.25
+
+  let px0 = (x0 - _x0) * mw
+  let py0 = (y0 - _y0) * mh
+  let px1 = (x1 - _x0) * mw
+  let py1 = (y1 - _y0) * mh
+  let px2 = (x2 - _x0) * mw
+  let py2 = (y2 - _y0) * mh
+  let px3 = (x3 - _x0) * mw
+  let py3 = (y3 - _y0) * mh
+
+  let commands = [
+    [ VECTOR_LINE, px0, py0, px0 + (px1 - px0) * corner, py0 + (py1 - py0) * corner ],
+    [ VECTOR_LINE, px0, py0, px0 + (px3 - px0) * corner, py0 + (py3 - py0) * corner ],
+
+    [ VECTOR_LINE, px1, py1, px1 + (px2 - px1) * corner, py1 + (py2 - py1) * corner ],
+    [ VECTOR_LINE, px1, py1, px1 + (px0 - px1) * corner, py1 + (py0 - py1) * corner ],
+
+    [ VECTOR_LINE, px2, py2, px2 + (px3 - px2) * corner, py2 + (py3 - py2) * corner ],
+    [ VECTOR_LINE, px2, py2, px2 + (px1 - px2) * corner, py2 + (py1 - py2) * corner ],
+
+    [ VECTOR_LINE, px3, py3, px3 + (px0 - px3) * corner, py3 + (py0 - py3) * corner ],
+    [ VECTOR_LINE, px3, py3, px3 + (px2 - px3) * corner, py3 + (py2 - py3) * corner ]
+  ]
+
+  return {
+    watch = [IsLockZoneIlsVisible, LockZoneIlsWatched, IlsColor, IlsLineScale]
+    pos = [_x0, _y0 ]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    size = flex()
+    commands
+  }
 }
 
 function IlsTornado(width, height) {
@@ -498,7 +763,13 @@ function IlsTornado(width, height) {
       altCircle,
       aamReticle,
       ccrp,
-      aamLaunchZone
+      aamLaunchZone,
+      compassWrap(width, height, generateCompassMark),
+      curWeapon,
+      targetRelVelScale,
+      radarTarget(width, height),
+      ccil,
+      lockZone(width, height)
     ]
   }
 }
