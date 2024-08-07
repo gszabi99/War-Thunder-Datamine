@@ -5,7 +5,7 @@ let { get_time_msec } = require("dagor.time")
 let { resetTimeout, defer } = require("dagor.workcycle")
 let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
 let { object_to_json_string } = require("json")
-let { getPlayerToken } = require("auth_wt")
+let { getPlayerTokenGlobal } = require("auth_wt")
 let { get_cur_circuit_block } = require("blkGetters")
 let logBQ = log_with_prefix("[BQ] ")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
@@ -75,7 +75,7 @@ function sendAll() {
   let headers = {
     action = "cln_bq_put_batch_json"
     appid  = APP_ID
-    token  = getPlayerToken()
+    token  = getPlayerTokenGlobal()
     withAppid = true
     withCircuit = true
   }

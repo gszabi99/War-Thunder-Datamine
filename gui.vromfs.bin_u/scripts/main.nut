@@ -255,7 +255,8 @@ local isFullScriptsLoaded = false
   }
 }
 
-if (is_platform_pc && getSystemConfigOption("debug/netLogerr") == null)
+if (is_platform_pc && getSystemConfigOption("debug/netLogerr") == null
+    && (get_cur_circuit_name().indexof("production") == null || getSystemConfigOption("releaseChannel", "") != ""))
     setSystemConfigOption("debug/netLogerr", true)
 
 if (::g_login.isAuthorized() || ::should_disable_menu()) { //scripts reload
