@@ -5,6 +5,8 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 
+let isPlayerInContacts = @(uid, groupName) ::isPlayerInContacts(uid, groupName)
+
 let Friend = class (BaseInvite) {
   static function getUidByParams(params) {
     return "".concat("FR_", getTblValue("inviterUid", params, ""))
@@ -31,7 +33,15 @@ let Friend = class (BaseInvite) {
   }
 
   function isAlreadyAccepted() {
-    return ::isPlayerInContacts(this.inviterUid, EPL_FRIENDLIST)
+    return isPlayerInContacts(this.inviterUid, EPL_FRIENDLIST)
+  }
+
+  function isVisible() {
+    return !this.isOutdated()
+      && !this.isDelayed
+      && !this.isAutoAccepted
+      && !this.isRejected
+      && !isPlayerInContacts(this.inviterUid, EPL_BLOCKLIST)
   }
 
   function getInviteText() {

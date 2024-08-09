@@ -55,6 +55,7 @@ let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { startSlotbarUnitDnD } = require("%scripts/slotbar/slotbarUnitDnDHandler.nut")
 let swapCrewHandler = require("%scripts/slotbar/swapCrewHandler.nut")
 let swapCrewsBegin = require("%scripts/slotbar/swapCrewsDnDHandler.nut")
+let { debug_dump_stack } = require("dagor.debug")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -1666,8 +1667,17 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenCrewPopup(obj) {
-    if (obj.isEmptySlot != "yes")
-      this.selectCrew(obj.crewIdInCountry.tointeger())
+    if (obj.isEmptySlot != "yes") {
+      let crewIdInCountry = obj.crewIdInCountry.tointeger()
+      this.selectCrew(crewIdInCountry)
+      if (!obj?.isValid()) {
+        let curSlotCountryId = this.curSlotCountryId // warning disable: -declared-never-used
+        let curSlotIdInCountry = this.curSlotIdInCountry // warning disable: -declared-never-used
+        debug_dump_stack()
+        logerr("[SlotbarWidget]: Extra info block removed after selectCrew")
+        return
+      }
+    }
 
     if(obj.hasActions == "no")
       return
