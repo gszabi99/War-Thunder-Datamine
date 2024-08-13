@@ -106,7 +106,8 @@ let class SlotbarUnitDnD (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
-    this.draggedObjParent["class"] = ""
+    if(this.draggedObjParent.isValid())
+      this.draggedObjParent["class"] = ""
   }
 
   onUnitCellDragStart = @ (_obj) null
