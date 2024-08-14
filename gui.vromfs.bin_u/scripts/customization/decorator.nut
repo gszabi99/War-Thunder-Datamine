@@ -108,6 +108,10 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
       this.lockedByDLC = has_entitlement(this.unlockBlk.showByEntitlement) ? null : this.unlockBlk.showByEntitlement
   }
 
+  function getLocalizedName() {
+    return this.decoratorType.getLocName(this.id)
+  }
+
   function getName() {
     let name = this.decoratorType.getLocName(this.id)
     return this.isRare() ? colorize(this.getRarityColor(), name) : name

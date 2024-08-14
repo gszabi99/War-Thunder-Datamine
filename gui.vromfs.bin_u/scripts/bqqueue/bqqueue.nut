@@ -154,6 +154,11 @@ function sendBqEvent(tableId, event, data = {}) {
   addToQueue(msg)
 }
 
+eventbus_subscribe("sendBqEvent", function(p) {
+  let { tableId, event, data = {} } = p
+  sendBqEvent(tableId, event, data)
+})
+
 addListenersWithoutEnv({
   LoginComplete = @(_p) startSendTimer()
 })

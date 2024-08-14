@@ -1,13 +1,15 @@
 from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
+let { eventbus_send } = require("eventbus")
 let scrollbar = require("%rGui/components/scrollbar.nut")
 let { formatText } = require("%rGui/components/formatText.nut")
 let { curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
   prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
-  chosenPatchnoteLoaded } = require("changeLogState.nut")
+  chosenPatchnoteLoaded, needShowSteamReviewBtn } = require("changeLogState.nut")
 let colors = require("%rGui/style/colors.nut")
-let { commonTextButton } = require("%rGui/components/textButton.nut")
+let { commonTextButton, steamReviewTextButton, buttonHeight
+} = require("%rGui/components/textButton.nut")
 let modalWindow = require("%rGui/components/modalWindow.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
@@ -17,6 +19,8 @@ let focusBorder = require("%rGui/components/focusBorder.nut")
 let { blurPanel } = require("%rGui/components/blurPanel.nut")
 let spinner = require("%rGui/components/spinner.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { format } = require("string")
+let { steam_get_app_id = @() 236390 } = require_optional("steam")
 
 let tabStyle = {
   fillColor = {
@@ -109,7 +113,7 @@ function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
 
 let patchnoteSelector = @() {
   watch = [versions, isVersionsExists, showConsoleButtons]
-  size = [flex(), ph(100)]
+  size = [flex(), buttonHeight]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
   padding = [blockInterval, 0, 0, 0]
@@ -193,18 +197,50 @@ function onCloseAction() {
   cross_call.startMainmenu()
 }
 
+function sendBqSteamReview(reason) {
+  eventbus_send("sendBqEvent", {
+    tableId = "CLIENT_POPUP_1"
+    event = "rate"
+    data = { from = "steam", reason }
+  })
+}
+
+function openSteamReview() {
+  eventbus_send("open_url", {
+    baseUrl = format(loc("url/steamstore/item"), steam_get_app_id().tostring())
+  })
+  sendBqSteamReview("pushReviewBtnInChangeLog")
+}
+
 let btnNext  = commonTextButton(loc("mainmenu/btnNextItem"), nextPatchNote,
   { hotkeys = [["{0} | Tab".subst(JB.B)]], margin = 0 })
 let btnClose = commonTextButton(loc("mainmenu/btnClose"), onCloseAction,
   { hotkeys = [["{0}".subst(JB.B)]], margin = 0 })
+let btnSteamReview = steamReviewTextButton(loc("write_review"), openSteamReview,
+  { hotkeys = [["J:Y"]], margin = 0, onAttach = @(_) sendBqSteamReview("showReviewBtnInChangeLog") })
+
 
 let nextButton = @() {
   watch = [curPatchnoteIdx]
   size = SIZE_TO_CONTENT
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_BOTTOM
-  padding = [blockInterval, 0, 0, blockInterval]
   children = curPatchnoteIdx.value != 0 ? btnNext : btnClose
+}
+
+let steamReviewButton = @() {
+  watch = [needShowSteamReviewBtn]
+  size = SIZE_TO_CONTENT
+  children = needShowSteamReviewBtn.get() ? btnSteamReview : null
+}
+
+let navbar = {
+  size = SIZE_TO_CONTENT
+  hplace = ALIGN_RIGHT
+  gap = blockInterval
+  flow = FLOW_HORIZONTAL
+  children = [
+    steamReviewButton
+    nextButton
+  ]
 }
 
 let clicksHandler = {
@@ -240,11 +276,11 @@ let changelogRoot = {
           }
           {
             size = [flex(), SIZE_TO_CONTENT]
-            flow = FLOW_HORIZONTAL
-            valign = ALIGN_CENTER
+            gap = blockInterval
+            flow = FLOW_VERTICAL
             children = [
               patchnoteSelector
-              nextButton
+              navbar
             ]
           }
         ]

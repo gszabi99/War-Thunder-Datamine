@@ -92,7 +92,8 @@ function mkVersion(v) {
   if (titleshort == "undefined" || utf8(titleshort).charCount() > 50)
     titleshort = null
   let date = v?.date ?? ""
-  return { version, title, tVersion, versionType, titleshort, iVersion = versionToInt(version), id = v.id, date }
+  return { version, title, tVersion, versionType, titleshort,
+    iVersion = versionToInt(version), id = v.id, date, customData = v?.customData }
 }
 
 function filterVersions(vers) {

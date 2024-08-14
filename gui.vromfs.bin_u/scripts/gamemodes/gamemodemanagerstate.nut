@@ -8,7 +8,7 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
-let { broadcastEvent, addListenersWithoutEnv
+let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
 } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -809,7 +809,22 @@ addListenersWithoutEnv({
     currentGameModeId = null
     clearGameModes()
   }
-})
+  function SquadDataUpdated(_params) {
+    if (g_squad_manager.isSquadLeader())
+      return
+
+    if (g_squad_manager.isMeReady()) {
+      let id = g_squad_manager.getLeaderGameModeId()
+      if (id != "" && id != getCurrentGameModeId())
+        setLeaderGameMode(id)
+      return
+    }
+
+    let id = getUserGameModeId()
+    if (id && id != "")
+      setCurrentGameModeById(id, true)
+  }
+}, CONFIG_VALIDATION)
 
 return {
   getCurrentGameModeId
@@ -828,7 +843,6 @@ return {
   markShowingGameModeAsSeen
   getUnseenGameModeCount
   isGameModeSeen
-  setLeaderGameMode
   getFeaturedModesConfig = @() freeze(featuredModes)
   getRequiredUnitTypes
   getUnitTypesByGameMode

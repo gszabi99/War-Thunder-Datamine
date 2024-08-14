@@ -362,5 +362,7 @@ require("%scripts/debugTools/dbgVoiceChat.nut")
 require("%scripts/debugTools/dbgDumpTools.nut")
 require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 
+require("%scripts/exportInfo/skinsLocExporter.nut")
+
 if (::g_login.isAuthorized() || disable_network()) //load scripts from packs only after login
   require("%scripts/worldWar/worldWar.nut")

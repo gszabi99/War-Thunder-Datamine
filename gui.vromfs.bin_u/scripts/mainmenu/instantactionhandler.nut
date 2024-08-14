@@ -68,7 +68,7 @@ let { guiStartSessionList, setMatchSearchGm, guiStartFlight, setCurrentCampaignM
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById,
   getCurrentGameMode, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount,
-  setLeaderGameMode, isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode
+  isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
@@ -134,6 +134,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     setGuiOptionsMode(OPTIONS_MODE_MP_DOMINATION)
 
     this.initToBattleButton()
+    this._lastGameModeId = getCurrentGameModeId()
     this.setCurrentGameModeName()
 
     this.setCurQueue(::queues.findQueue({}, this.queueMask))
@@ -457,13 +458,6 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       let id = g_squad_manager.getLeaderGameModeId()
       if (id == "" || id == getCurrentGameModeId())
         this.updateNoticeGMChanged()
-      else
-        setLeaderGameMode(id)
-    }
-    else {
-      let id = getUserGameModeId()
-      if (id && id != "")
-        setCurrentGameModeById(id, true)
     }
     this.setCurrentGameModeName()
     this.doWhenActiveOnce("updateStartButton")

@@ -1,5 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 let { subscribe, send } = require("eventbus")
+let extWatched = require("%rGui/globals/extWatched.nut")
 
 let versions = mkWatched(persist, "versions", [])
 let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { title = "", text = "" })
@@ -8,7 +9,11 @@ let patchnotesReceived = mkWatched(persist, "patchnotesReceived", false)
 let curPatchnote = mkWatched(persist, "curPatchnote", null)
 let curPatchnoteIdx = Computed(
   @() versions.value.findindex(@(inst) inst.id == curPatchnote.value?.id) ?? 0)
+let hasReviewBtnForCurPatchnote = Computed(@() curPatchnote.get()?.customData.showReviewBtn ?? false)
+let canShowSteamReviewBtn = extWatched("canShowSteamReviewBtn", false)
 
+let needShowSteamReviewBtn = Computed(@() hasReviewBtnForCurPatchnote.get()
+  && canShowSteamReviewBtn.get())
 
 subscribe("updateChosenPatchnoteContent", @(data) chosenPatchnoteContent(data.value))
 subscribe("updateChangelogsVersions", @(data) versions(data.value))
@@ -36,4 +41,5 @@ return {
   nextPatchNote = @() send("changePatchNote", { delta = 1 })
   prevPatchNote = @() send("changePatchNote", { delta = -1 })
   choosePatchnote = @(value) send("choosePatchnote", { value })
+  needShowSteamReviewBtn
 }

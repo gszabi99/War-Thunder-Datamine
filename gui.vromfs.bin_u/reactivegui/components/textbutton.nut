@@ -4,11 +4,13 @@ let textButton = require("textButtonBase.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 let textButtonTextCtor = require("textButtonTextCtor.nut")
 
+let buttonHeight = dp(2) + fpx(36)
+
 let commonButtonStyle = {
   halign = ALIGN_CENTER
   font = fontsState.get("normal")
   borderWidth = dp(1)
-  size = [SIZE_TO_CONTENT, dp(2) + fpx(36)]
+  size = [SIZE_TO_CONTENT, buttonHeight]
   minWidth = scrn_tgt(0.16)
   borderRadius = 0
   textCtor = textButtonTextCtor
@@ -34,6 +36,26 @@ let commonButtonStyle = {
     TextDisabled = Color(33, 33, 33, 38)
   }
 }
+
+let steamReviewButtonStyle = commonButtonStyle.__merge({
+  style = {
+    BgNormal     = 0xFF304F70
+    BgHover      = 0xFF4A88A8
+    BgActive     = 0xFFFFFFFF
+
+    BdNormal     = 0xFF304F70
+    BdHover      = 0xFF4A88A8
+    BdActive     = 0xFFFFFFFF
+
+    TextNormal   = 0xFF68C1F5
+    TextHover    = 0xFFFFFFFF
+    TextActive   = 0xFF304F70
+  }
+})
+
 return {
   commonTextButton = @(text, handler, params = {}) textButton.Bordered(text, handler, commonButtonStyle.__merge(params))
+  steamReviewTextButton = @(text, handler, params = {})
+    textButton.Bordered(text, handler, steamReviewButtonStyle.__merge(params))
+  buttonHeight
 }

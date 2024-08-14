@@ -95,6 +95,7 @@ let textButton = @(fill_color, border_width) function(text, handler, params = {}
         maxWidth = pw(100)
         ellipsis = false
         margin = textMargin
+        padding = params?.textPadding ?? [0, fpx(6), 0, 0]
         font
         fontSize
         group

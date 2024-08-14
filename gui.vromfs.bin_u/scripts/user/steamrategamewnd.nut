@@ -15,19 +15,15 @@ gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
   onApplyFunc = null
   descLocId = "msgbox/steam/rate_review"
   backgroundImg = null
+  backgroundImgRatio = 1
 
-  getSceneTplView = @() {}
-
-  function initScreen() {
-    let textObj= this.scene.findObject("rate_text")
-    textObj.setValue(loc(this.descLocId))
-    if (this.backgroundImg == null)
-      return
-    textObj.top = "ph-h-1@frameFooterHeight"
-
-    let obj = showObjById("backgroundImg", this.backgroundImg != null, this.scene)
-    obj["background-image"] = this.backgroundImg
+  getSceneTplView = @() {
+    backgroundImg = this.backgroundImg
+    backgroundImgRatio = this.backgroundImgRatio
+    descText = loc(this.descLocId)
   }
+
+  function initScreen() {}
 
   onApply = function() {
     this.onApplyFunc?(true)
