@@ -9,7 +9,8 @@ let isPurchaseAllowed = mkWatched(persist, "isPurchaseAllowed", true)
 let countryCodeToLocId = {
   BE = "country_belgium",
   NL = "country_netherlands",
-  RU = "country_russia"
+  RU = "country_russia",
+  KR = "country_south_korea",
 }
 
 // restrictedInCountries - array of countries codes
