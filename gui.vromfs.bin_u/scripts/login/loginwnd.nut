@@ -747,6 +747,7 @@ eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(_) {
     return
   let no_dump_login = getObjValue(loginWnd.scene, "loginbox_username", "")
   loginWnd.finishLogin(no_dump_login)
+  load_local_settings()
 })
 
 eventbus_subscribe(webauth_completion_event, function ProceedWebAuth(p) {
