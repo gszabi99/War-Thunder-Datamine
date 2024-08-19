@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, get_cur_gui_scene
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -14,6 +14,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { utf8ToLower, trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { defer } = require("dagor.workcycle")
 
 local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
@@ -151,6 +152,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateBg()
     this.updateButtons()
+    this.guiScene.discardUnusedPicture()
   }
 
   function onFilterEditBoxCancel() {
@@ -192,6 +194,10 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
 
   onFilterEditBoxActivate = @() null
   onChapterSelect = @() null
+
+  function onDestroy() {
+    defer(@() get_cur_gui_scene().discardUnusedPicture())
+  }
 }
 
 gui_handlers.PreloaderOptionsModal <- PreloaderOptionsModal
