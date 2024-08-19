@@ -455,11 +455,7 @@ let Trophy = class (BaseItem) {
     let timeText = this.getRemainingLifetimeText()
     if (timeText == "")
       return timeText
-
-    return "".concat(
-      loc("items/expireTimeBeforeActivation"),
-      loc("ui/colon"),
-      colorize("activeTextColor", timeText))
+    return loc("mainmenu/timeForBuyTrophy" { time = colorize("activeTextColor", timeText) })
   }
 
   canBuyTrophyByLimit = @() this.numTotal == 0 || this.numTotal > (get_trophy_info(this.id)?.openCount ?? 0)
