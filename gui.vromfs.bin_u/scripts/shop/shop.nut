@@ -61,6 +61,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { setNationBonusMarkState, getNationBonusMarkState, hasNationBonus } = require("%scripts/nationBonuses/nationBonuses.nut")
 
 local lastUnitType = null
 
@@ -624,7 +625,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     tableObj.setValue(cellData.tableIndex)
 
     this.updateButtons()
-
     broadcastEvent("ShopUnitTypeSwitched", { esUnitType = this.getCurPageEsUnitType() })
   }
 
@@ -812,6 +812,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let topUnitBonusObj = rankTable.findObject("top_units_bonus")
       topUnitBonusObj.show(hasUnitForNationBonus)
 
+      let showNationBonusObj = topUnitBonusObj.findObject("show_nation_bonus_in_tab")
+      showNationBonusObj.show(hasNationBonus(this.curCountry, this.curPage))
+      showNationBonusObj.setValue(getNationBonusMarkState(this.curCountry, this.curPage))
+
       if (hasUnitForNationBonus) {
         let heightForTopUnitsBonus =
           to_pixels($"({BONUS_TOP_UNITS_PLATE_PADDING} + @topUnitsBonusHeight + 0.75@modArrowWidth)*100/sh")
@@ -823,7 +827,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let topBonusLabel = topUnitBonusObj.findObject("top_units_bonus_label")
         let armyLoc = armyDataByPageName?[this.curPage] ? loc(armyDataByPageName[this.curPage].locString) : ""
         topBonusLabel.setValue(loc("shop/exp_top_units_bonus", {type = armyLoc}))
-
         if (isNationBonusPlateActive) {
           let updateTime = buildTimeStr(getUtcMidnight(), false, false)
           local countriesBonusText = ""
@@ -837,10 +840,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           }
           if (countriesBonusText == "")
             countriesBonusText = "0"
-          topUnitBonusObj.tooltip = loc("shop/top_units_bonus_on", {time = updateTime, countries = countriesBonusText})
+          topBonusLabel.tooltip = loc("shop/top_units_bonus_on", {time = updateTime, countries = countriesBonusText})
         } else {
           let battlesCount = expNewNationBonusDailyBattleCount
-          topUnitBonusObj.tooltip = loc("shop/top_units_bonus_off", {battlesCount})
+          topBonusLabel.tooltip = loc("shop/top_units_bonus_off", {battlesCount})
         }
       }
     }
@@ -2633,4 +2636,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   checkAirShopReq = @(air) air?.shopReq ?? true
+
+  function onShowNationBonusChange(obj) {
+    setNationBonusMarkState(this.curCountry, this.curPage, obj.getValue())
+  }
 }

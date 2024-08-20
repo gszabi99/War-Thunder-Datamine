@@ -1774,7 +1774,7 @@ shopRankTable[isCollapsed=yes] markerContainer {
 
 shopTopUnitBonus {
   position:absolute;
-  height:0.5@shop_height;
+  height:0.55@shop_height;
   bgcolor:#B20B1E29;
 }
 
@@ -1983,5 +1983,22 @@ unitItemContainer.swapCrewsDnD[dragging=yes] > shopItem > extraInfoBlock {
 }
 
 unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock > content > slotCrewHintContainer {
+  display:hide;
+}
+
+[show_console_buttons=no] middleline[isShowDragAndDropIcon=yes] {
+  flow:horizontal;
+}
+
+[show_console_buttons=no] middleline[isShowDragAndDropIcon=yes] > shopItemText {
+  width:fw;
+  left:0;
+}
+
+[show_console_buttons=yes] middleline[isShowDragAndDropIcon=yes] {
+  tooltip:"";
+}
+
+[show_console_buttons=yes] middleline[isShowDragAndDropIcon=yes] > dragAndDropIcon {
   display:hide;
 }

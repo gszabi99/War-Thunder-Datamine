@@ -48,6 +48,7 @@ let { isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -76,6 +77,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     local isWarning = false
     local iconRotation = 0
     local isObjective = false
+    local isShowDragAndDropIcon = false
 
     if (action == "showroom") {
       actionText = loc(isUsable ? "mainmenu/btnShowroom" : "mainmenu/btnPreview")
@@ -100,6 +102,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         continue
 
       actionText = loc("multiplayer/changeAircraft")
+      isShowDragAndDropIcon = !showConsoleButtons.get()
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
       showAction = inMenu && ::SessionLobby.canChangeCrewUnits()
       actionFunc = function () {
@@ -175,6 +178,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "take") {
       actionText = loc("mainmenu/btnTakeAircraft")
+      isShowDragAndDropIcon = !showConsoleButtons.get()
       icon       = "#ui/gameuiskin#slot_crew.svg"
       showAction = inMenu && isUsable && !isUnitInSlotbar(unit)
       actionFunc = @() takeUnitInSlotbar(unit, {
@@ -381,6 +385,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       isObjective
       iconRotation
       isWarning
+      isShowDragAndDropIcon
     })
   }
 

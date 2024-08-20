@@ -69,6 +69,7 @@ popup_actions_list[iconed=yes] > itemsList > button {
 }
 
 popup_actions_list > itemsList > actionListItem > text,
+popup_actions_list > itemsList > actionListItem > dragAndDropIcon > text,
 popup_actions_list > itemsList > button > text {
   background-color: @transparent;
   border-color:@transparent;
@@ -78,6 +79,11 @@ popup_actions_list > itemsList > button > text {
   color: @menuButtonTextColor;
   font:@fontNormal;
   css-hier-invalidate: yes;
+}
+
+popup_actions_list > itemsList > actionListItem > dragAndDropIcon > text {
+  pos:0, ph/2-h/2;
+  behavior:textarea;
 }
 
 popup_actions_list > itemsList > actionListItem > text[isObjective="yes"] {
@@ -125,7 +131,8 @@ popup_actions_list > itemsList > button:hover {
 
 popup_actions_list > itemsList > actionListItem[selected=yes] > text,
 popup_actions_list > itemsList > actionListItem:focus > text,
-popup_actions_list > itemsList > actionListItem:hover > text {
+popup_actions_list > itemsList > actionListItem:hover > text,
+popup_actions_list > itemsList > actionListItem:hover > dragAndDropIcon > text {
   color: @menuButtonTextColorHover;
 }
 
@@ -182,6 +189,7 @@ popup_actions_list > itemsList > actionListItem:disabled > text {
 }
 
 popup_actions_list > itemsList > actionListItem > icon,
+popup_actions_list > itemsList > actionListItem > dragAndDropIcon > icon,
 popup_actions_list > itemsList > button > icon {
   background-color: @menuButtonTextColor;
   background-svg-size:@cIco, @cIco;
@@ -192,6 +200,10 @@ popup_actions_list > itemsList > button > icon {
   pos: -w - 3*@sf/@pf_outdated;
 }
 
+popup_actions_list > itemsList > actionListItem > dragAndDropIcon > icon {
+  pos:0, ph/2-h/2;
+}
+
 popup_actions_list > itemsList > actionListItem:disabled > icon {
   background-color:@inactiveButtonBgColor;
 }
@@ -200,6 +212,7 @@ popup_actions_list > itemsList > actionListItem:disabled > icon {
 popup_actions_list > itemsList > actionListItem[selected=yes] > icon,
 popup_actions_list > itemsList > actionListItem:focus > icon,
 popup_actions_list > itemsList > actionListItem:hover > icon,
+popup_actions_list > itemsList > actionListItem:hover > dragAndDropIcon > icon,
 popup_actions_list > itemsList > button[selected=yes] > icon,
 popup_actions_list > itemsList > button:focus > icon,
 popup_actions_list > itemsList > button:hover > icon {
@@ -207,6 +220,7 @@ popup_actions_list > itemsList > button:hover > icon {
 }
 
 popup_actions_list > itemsList > actionListItem:pushed > icon,
+popup_actions_list > itemsList > actionListItem:pushed > dragAndDropIcon > icon,
 popup_actions_list > itemsList > button:pushed > icon {
   background-color: @menuButtonTextColorPushed;
 }

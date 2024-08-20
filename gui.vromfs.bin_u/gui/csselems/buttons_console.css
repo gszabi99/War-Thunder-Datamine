@@ -2815,5 +2815,34 @@ Button_text[status=red] {
 }
 
 Button_text.smallButton:hover > tdiv > text {
-  color:buttonFontColorHover;
+  color:@buttonFontColorHover;
+}
+
+Button_text.smallButton:hover > tdiv > dragCrewHint > text {
+  color:@buttonFontColorHover;
+}
+
+[show_console_buttons=no] Button_text[isSwapCrewButton=yes] {
+  tooltip:#slotbar/dragCrewHint;
+}
+
+[show_console_buttons=no] Button_text[isSwapCrewButton=yes] > tdiv > dragCrewHint{
+  display:show;
+}
+
+[show_console_buttons=no] Button_text[isShowDragAndDropHint=yes] {
+  padding-left: 1@buttonImgPadding;
+  padding-right: h+1@buttonImgPadding;
+}
+
+[show_console_buttons=yes] Button_text[isShowDragAndDropHint=yes] > dragAndDropIcon {
+  display:hide;
+}
+
+[show_console_buttons=yes] Button_text[isShowDragAndDropHint=yes] {
+  tooltip:"";
+}
+
+Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > text {
+  color: @buttonFontColorHover;
 }

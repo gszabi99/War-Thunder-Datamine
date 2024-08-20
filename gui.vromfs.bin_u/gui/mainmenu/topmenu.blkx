@@ -76,6 +76,18 @@
             "unlockMarker": {
               "type": "down",
               "value": "unlock_markers"
+            },
+            "nationBonusMarker": {
+              "behavior": "bhvUpdater",
+              "value": "{\"viewId\": \"SHOP_NATION_BONUS_MARKER\"}",
+              "display": "hide",
+              "tooltip": "$tooltipObj",
+              "tooltipObj": {
+                "tooltipId": "{\"id\":\"nationBonus\", \"ttype\":\"NATIONBONUSES\"}",
+                "on_tooltip_open": "onGenericTooltipOpen",
+                "on_tooltip_close": "onTooltipObjClose",
+                "display": "hide"
+              }
             }
           }
         }

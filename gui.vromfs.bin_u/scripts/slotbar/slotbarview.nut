@@ -393,7 +393,7 @@ function buildFakeSlot(id, unit, params) {
 
 function buildEmptySlot(id, _unit, params) {
   let { specType = null, forceCrewInfoUnit = null, emptyCost = null,
-    crewId = -1, hasActions = false, hasCrewHint = false } = params
+    crewId = -1, hasActions = false, hasCrewHint = false, isShowDragAndDropIcon = false } = params
   let itemButtons = specType == null ? { specIconBlock = false }
     : {
       specIconBlock = true
@@ -448,6 +448,7 @@ function buildEmptySlot(id, _unit, params) {
     extraInfoBlock = crewLevelInfoData
     crewNumWithTitle = hasCrew ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : "No crew"
     crewId = crewId.tostring()
+    isShowDragAndDropIcon
   })
 
   return handyman.renderCached("%gui/slotbar/slotbarSlotEmpty.tpl", emptySlotView)

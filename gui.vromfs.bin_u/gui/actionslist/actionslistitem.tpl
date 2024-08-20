@@ -34,7 +34,6 @@ actionListItem {
     color-factor:t='0'
   }
   <</haveWarning>>
-
   text {
     behavior:t='textarea';
     text:t='<<text>>';
@@ -52,7 +51,23 @@ actionListItem {
     <</isObjective>>
     color-factor:t='0'
   }
-
+  <<#isShowDragAndDropIcon>>
+  tooltip:t='#slotbar/dragUnitHint'
+  dragAndDropIcon {
+    css-hier-invalidate:t='yes'
+    margin-left:t='0.5@blockInterval'
+    flow:t='horizontal'
+    text {
+      text:t=' ('
+    }
+    icon {
+      background-image:t='#ui/gameuiskin#cursor_drag_n_drop.svg'
+    }
+    text {
+      text:t=')'
+    }
+  }
+  <</isShowDragAndDropIcon>>
   <<#haveDiscount>>
   discount_notification {
     id:t='discount_image';

@@ -87,6 +87,31 @@ shopItem {
       id:t='<<shopItemTextId>>'
       text:t='<<shopItemTextValue>>'
     }
+    <<#isShowDragAndDropIcon>>
+    isShowDragAndDropIcon:t='yes'
+    tooltip:t='#slotbar/dragUnitHint'
+    dragAndDropIcon {
+      position:t='relative'
+      top:t='50%ph-50%h'
+      flow:t='horizontal'
+      text {
+        text:t=' ('
+        smallFont:t='yes'
+      }
+      icon {
+        position:t='relative'
+        top:t='50%ph-50%h'
+        size:t='1@tIco, 1@tIco'
+        background-image:t='#ui/gameuiskin#cursor_drag_n_drop.svg'
+        background-svg-size:t='@tIco, @tIco'
+        background-color:t='@buttonFontColor'
+      }
+      text {
+        text:t=')'
+        smallFont:t='yes'
+      }
+    }
+    <</isShowDragAndDropIcon>>
   }
   <</crewImage>>
 

@@ -54,6 +54,20 @@ shopFilter {
       }
     }
 
+    nationBonusMarker {
+      behavior:t='bhvUpdater'
+      countryId:t='<<country>>'
+      value:t='{"viewId": "COUNTRY_NATION_BONUS_MARKER"}'
+      type:t='slotbarCountry'
+      tooltip:t='$tooltipObj'
+      tooltipObj {
+        tooltipId:t='{"id":"nationBonus", "ttype":"NATIONBONUSES", "countryId": "<<country>>"}'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+        display:t='hide'
+      }
+    }
+
     discountIcon {
       countryId:t='<<country>>'
       value:t='{"viewId": "COUNTRY_DISCOUN_ICON"}'
@@ -68,7 +82,6 @@ shopFilter {
       type:t='slotbarCountry'
       display:t='hide'
     }
-
     <<#seenIconCfg>>
     tdiv {
       behavior:t='bhvUpdater'

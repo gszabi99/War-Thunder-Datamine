@@ -146,21 +146,36 @@ shopRankTable {
   shopTopUnitBonus {
     id:t='top_units_bonus'
     display:t='hide'
-    tooltip:t=''
     css-hier-invalidate:t='yes'
-    text {
-      id:t='top_units_bonus_label'
+    tdiv {
       position:t='absolute'
       pos:t='(pw - w)/2, (ph - h)/2'
-      text:t='#shop/exp_top_units_bonus'
-      input-transparent:t='no'
-      img {
-        position:t='absolute'
-        pos:t='pw + 0.4w, (ph - h)/2'
-        size:t='0.65*ph, 0.65*ph'
-        background-image:t='#ui/gameuiskin#btn_help.svg'
-        background-svg-size:t='@cIco, @cIco'
-        bgcolor:t='#FFFFFFFF'
+      flow:t='vertical'
+      text {
+        id:t='top_units_bonus_label'
+        text:t='#shop/exp_top_units_bonus'
+        input-transparent:t="yes"
+        tooltip:t=''
+        img {
+          position:t='absolute'
+          pos:t='pw + 0.4w, (ph - h)/2'
+          size:t='0.65*ph, 0.65*ph'
+          background-image:t='#ui/gameuiskin#btn_help.svg'
+          background-svg-size:t='@cIco, @cIco'
+          bgcolor:t='#FFFFFFFF'
+        }
+      }
+      CheckBox {
+        id:t='show_nation_bonus_in_tab'
+        halign:t='center'
+        padding-right:t='40@sf/@pf'
+        type:t='rightSideCb'
+        value:t='yes'
+        inactiveColor:t='no'
+        text:t='#shop/show_nation_bonus_in_tab'
+        tooltip:t='#shop/show_nation_bonus_in_tab'
+        on_change_value:t='onShowNationBonusChange'
+        CheckBoxImg{}
       }
     }
 

@@ -77,6 +77,11 @@ nationBonusMarker[isOver=yes]:hover {
   background-color:#FFFFFFFF;
 }
 
+nationBonusMarker[type=slotbarCountry] {
+  position:relative;
+  pos:0, -h + 1@blockInterval + 3@sf/@pf;
+}
+
 nationBonusRankIcon > img {
   background-svg-size:w, 1@discountBoxHeight;
   background-repeat:expand-svg;
@@ -141,10 +146,17 @@ unlockMarker[isActive=yes] {
 }
 
 unlockMarker[type=inTab],
+nationBonusMarker[type=inTab],
 squadronExpIcon[type=inTab] {
   position:relative;
   pos:0, 50%ph-50%h;
   margin-left: 1@blockInterval;
+}
+
+nationBonusMarker[type=inTab] {
+  background-image:#ui/gameuiskin#nation_bonus_icon.svg;
+  size:0.69@newWidgetIconHeight, 0.86@newWidgetIconHeight;
+  background-svg-size:0.69@newWidgetIconHeight, 0.86@newWidgetIconHeight;
 }
 
 unlockMarker[type=slotbarCountry],
