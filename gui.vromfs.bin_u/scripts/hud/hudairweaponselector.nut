@@ -17,6 +17,7 @@ let { getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let { abs } = require("math")
 let { isXInputDevice } = require("controls")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 function getCurrentHandler() {
   let airHandler = handlersManager.findHandlerClassInScene(gui_handlers.HudAir)?.airWeaponSelector
@@ -196,6 +197,7 @@ let class HudAirWeaponSelector {
     broadcastEvent("ChangedShowActionBar")
     this.updatePresetData()
     this.updateCounterMeasures()
+    updateExtWatched({ isVisualWeaponSelectorVisible = true })
   }
 
   function close() {
@@ -209,6 +211,7 @@ let class HudAirWeaponSelector {
       return
     }
     this.nestObj.show(false)
+    updateExtWatched({ isVisualWeaponSelectorVisible = false })
   }
 
   function onCancel(_obj) {
@@ -216,8 +219,10 @@ let class HudAirWeaponSelector {
   }
 
   function onDestroy() {
-    if (this.isOpened())
+    if (this.isOpened()) {
+      updateExtWatched({ isVisualWeaponSelectorVisible = false })
       handlersManager.restoreAllowControlMask()
+    }
   }
 
   function onGenericTooltipOpen(obj) {

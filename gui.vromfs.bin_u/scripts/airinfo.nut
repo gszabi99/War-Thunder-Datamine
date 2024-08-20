@@ -702,6 +702,14 @@ function getFontIconByBattleType(battleType) {
   return loc("icon/unittype/aircraft")
 }
 
+function getTopCharacteristicValue(unit, item, diff) {
+  let { crewMemberTopSkill, prepareTextFunc } = item
+  let { crewMember, skill, parameter } = crewMemberTopSkill
+  let params = ::g_skill_parameters_request_type.MAX_VALUES.getParameters(-1, unit)
+  let topValue = params?[diff][crewMember][skill][parameter]
+  return topValue != null ? prepareTextFunc(topValue) : topValue
+}
+
 ::getCharacteristicActualValue <- function getCharacteristicActualValue(air, characteristicName, prepareTextFunc, modeName, showLocalState = true) {
   let modificators = showLocalState ? "modificators" : "modificatorsBase"
 
@@ -838,6 +846,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   holderObj.show(show)
   if (!show || !air)
     return
+
+  local topValueCount = 0
 
   let spare_cost = getGiftSparesCost(air)
 
@@ -1068,7 +1078,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     [ES_UNIT_TYPE_TANK] = [
       { id = "mass", id2 = "mass", prepareTextFunc = function(value) { return format("%.1f %s", (value / 1000.0), loc("measureUnits/ton")) } },
       { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) },
-      { id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value) { return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec")) } }
+      { id = "turnTurretTime", id2 = "turnTurretSpeed", prepareTextFunc = function(value) { return format("%.1f%s", value.tofloat(), loc("measureUnits/deg_per_sec")) },
+        crewMemberTopSkill = { crewMember = "tank_gunner" , skill = "tracking", parameter = "turnTurretSpeed" } }
     ],
     [ES_UNIT_TYPE_BOAT] = [
       //TODO ship modificators
@@ -1088,7 +1099,18 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   foreach (item in (modCharacteristics?[unitType] ?? {})) {
     let characteristicArr = ::getCharacteristicActualValue(air, [item.id, item.id2],
       item.prepareTextFunc, difficulty.crewSkillName, showLocalState || needCrewModificators)
-    holderObj.findObject("aircraft-" + item.id).setValue(characteristicArr[0])
+
+    holderObj.findObject($"aircraft-{item.id}").setValue(characteristicArr[0])
+
+    if(item?.crewMemberTopSkill != null) {
+      let topValue = getTopCharacteristicValue(air, item, difficulty.crewSkillName)
+      let hasTopValue = topValue != null && topValue != characteristicArr[0]
+      holderObj.findObject($"aircraft-{item.id}-topValueDiv").show(hasTopValue)
+      if(hasTopValue) {
+        holderObj.findObject($"aircraft-{item.id}-topValue").setValue(topValue)
+        topValueCount++
+      }
+    }
 
     if (!showLocalState && !needCrewModificators)
       continue
@@ -1275,8 +1297,25 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       let val = stdMath.roundToDigits(shotFreq * 60, 3).tostring()
       holderObj.findObject("aircraft-shotFreq").setValue(format("%s %s", val, loc("measureUnits/shotPerMinute")))
     }
-    if (reloadTime)
-      holderObj.findObject("aircraft-reloadTime").setValue(format("%.1f %s", reloadTime, loc("measureUnits/seconds")))
+    if (reloadTime) {
+      let prepareTextFunc = @(value) format("%.1f %s", value, loc("measureUnits/seconds"))
+      let reloadTimeTxt = prepareTextFunc(reloadTime)
+      holderObj.findObject("aircraft-reloadTime").setValue(reloadTimeTxt)
+
+      let crewMemberTopSkill = {
+        crewMember = "loader"
+        skill = "loading_time_mult"
+        parameter = "tankLoderReloadingTime"
+      }
+
+      let topValue = getTopCharacteristicValue(air, { crewMemberTopSkill, prepareTextFunc }, difficulty.crewSkillName)
+      let hasTopValue = topValue != null && topValue != reloadTimeTxt
+      holderObj.findObject($"aircraft-reloadTime-topValueDiv").show(hasTopValue)
+      if(hasTopValue) {
+        holderObj.findObject($"aircraft-reloadTime-topValue").setValue(topValue)
+        topValueCount++
+      }
+    }
     if (visibilityFactor) {
       holderObj.findObject("aircraft-visibilityFactor-title").setValue(loc("shop/visibilityFactor") + loc("ui/colon"))
       holderObj.findObject("aircraft-visibilityFactor-value").setValue(format("%d %%", visibilityFactor))
@@ -1861,6 +1900,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
   if (showLocalState)
     fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage)
+
+  showObjById("topValueHint", topValueCount > 0, holderObj)
 }
 
 ::showAirInfo <- showAirInfo

@@ -231,8 +231,38 @@
                             }
                           },
                           {
-                            "textarea": {
-                              "id": "aircraft-turnTurretTime"
+                            "tdiv": {
+                              "flow": "horizontal",
+                              "textarea": {
+                                "id": "aircraft-turnTurretTime"
+                              },
+                              "tdiv": {
+                                "id": "aircraft-turnTurretTime-topValueDiv",
+                                "display": "hide",
+                                "tooltip": "$tooltipObj",
+                                "textarea": [
+                                  {
+                                    "text": " ("
+                                  },
+                                  {
+                                    "id": "aircraft-turnTurretTime-topValue"
+                                  },
+                                  {
+                                    "text": ")"
+                                  }
+                                ],
+                                "img": {
+                                  "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                                  "background-svg-size": "@sIco,@sIco",
+                                  "size": "@sIco,@sIco"
+                                },
+                                "tooltipObj": {
+                                  "tooltipId": "{\"id\":\"shop/turnTurretTime/tooltip\", \"ttype\":\"TOPSKILLVALUE\"}",
+                                  "on_tooltip_open": "onGenericTooltipOpen",
+                                  "on_tooltip_close": "onTooltipObjClose",
+                                  "display": "hide"
+                                }
+                              }
                             }
                           }
                         ]
@@ -282,8 +312,38 @@
                             }
                           },
                           {
-                            "textarea": {
-                              "id": "aircraft-reloadTime"
+                            "tdiv": {
+                              "flow": "horizontal",
+                              "textarea": {
+                                "id": "aircraft-reloadTime"
+                              },
+                              "tdiv": {
+                                "id": "aircraft-reloadTime-topValueDiv",
+                                "display": "hide",
+                                "tooltip": "$tooltipObj",
+                                "textarea": [
+                                  {
+                                    "text": " ("
+                                  },
+                                  {
+                                    "id": "aircraft-reloadTime-topValue"
+                                  },
+                                  {
+                                    "text": ")"
+                                  }
+                                ],
+                                "img": {
+                                  "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                                  "background-svg-size": "@sIco,@sIco",
+                                  "size": "@sIco,@sIco"
+                                },
+                                "tooltipObj": {
+                                  "tooltipId": "{\"id\":\"shop/reloadTime/tooltip\", \"ttype\":\"TOPSKILLVALUE\"}",
+                                  "on_tooltip_open": "onGenericTooltipOpen",
+                                  "on_tooltip_close": "onTooltipObjClose",
+                                  "display": "hide"
+                                }
+                              }
                             }
                           }
                         ]
@@ -1061,21 +1121,80 @@
     "flow": "vertical",
     "input-transparent": "yes",
     "order-popup": "yes",
-    "skip-cursor": "yes",
-    "textareaNoTab": [
-      {
-        "id": "dmviewer_title",
-        "overlayTextColor": "active",
-        "text": "",
-        "input-transparent": "yes"
-      },
+    "skip-cursor": "skip",
+    "textareaNoTab": {
+      "id": "dmviewer_title",
+      "overlayTextColor": "active",
+      "text": "",
+      "input-transparent": "yes"
+    },
+    "tdiv": [
       {
         "id": "dmviewer_desc",
         "position": "relative",
         "margin-top": "8@sf/@pf",
-        "hideEmptyText": "yes",
-        "text": "",
-        "input-transparent": "yes"
+        "input-transparent": "yes",
+        "flow": "vertical"
+      },
+      {
+        "id": "dmviewer_ext_hint",
+        "flow": "vertical",
+        "position": "relative",
+        "width": "0.5@sf",
+        "total-input-transparent": "yes",
+        "display": "hide",
+        "rowSeparator": {
+          "margin": "0, @blockInterval"
+        },
+        "textareaNoTab": [
+          {
+            "position": "relative",
+            "margin-top": "@blockInterval",
+            "overlayTextColor": "active",
+            "text": "#xray_ext_hint/title"
+          },
+          {
+            "id": "dmviewer_ext_hint_desc",
+            "position": "relative",
+            "margin-top": "@blockInterval",
+            "hideEmptyText": "yes",
+            "text": "",
+            "smallFont": "yes",
+            "width": "pw"
+          }
+        ],
+        "img": {
+          "id": "dmviewer_ext_hint_icon",
+          "position": "relative",
+          "margin-top": "2@blockInterval",
+          "size": "@dIco, @dIco",
+          "background-image": ""
+        },
+        "loadingHint": {
+          "id": "dmviewer_ext_hint_shortcut",
+          "behaviour": "bhvHint",
+          "position": "relative",
+          "width": "pw",
+          "isXrayHint": "yes",
+          "smallFont": "yes",
+          "isWrapInRowAllowed": "yes",
+          "flow-align": "left"
+        }
+      },
+      {
+        "id": "topValueHint",
+        "display": "hide",
+        "img": {
+          "background-image": "#ui/gameuiskin#spec_icon2.svg",
+          "background-svg-size": "@sIco,@sIco",
+          "size": "@sIco,@sIco"
+        },
+        "textareaNoTab": {
+          "text": "#crewSkillParameter/topSkillValue",
+          "overlayTextColor": "faded",
+          "smallFont": "yes",
+          "valign": "center"
+        }
       }
     ],
     "movie": {
@@ -1084,51 +1203,6 @@
       "size": "@tooltipAnimationWidth,@tooltipAnimationHeight",
       "movie-autoStart": "yes",
       "movie-loop": "yes"
-    },
-    "tdiv": {
-      "id": "dmviewer_ext_hint",
-      "flow": "vertical",
-      "position": "relative",
-      "width": "0.5@sf",
-      "total-input-transparent": "yes",
-      "display": "hide",
-      "rowSeparator": {
-        "margin": "0, @blockInterval"
-      },
-      "textareaNoTab": [
-        {
-          "position": "relative",
-          "margin-top": "@blockInterval",
-          "overlayTextColor": "active",
-          "text": "#xray_ext_hint/title"
-        },
-        {
-          "id": "dmviewer_ext_hint_desc",
-          "position": "relative",
-          "margin-top": "@blockInterval",
-          "hideEmptyText": "yes",
-          "text": "",
-          "smallFont": "yes",
-          "width": "pw"
-        }
-      ],
-      "img": {
-        "id": "dmviewer_ext_hint_icon",
-        "position": "relative",
-        "margin-top": "2@blockInterval",
-        "size": "@dIco, @dIco",
-        "background-image": ""
-      },
-      "loadingHint": {
-        "id": "dmviewer_ext_hint_shortcut",
-        "behaviour": "bhvHint",
-        "position": "relative",
-        "width": "pw",
-        "isXrayHint": "yes",
-        "smallFont": "yes",
-        "isWrapInRowAllowed": "yes",
-        "flow-align": "left"
-      }
     }
   }
 }

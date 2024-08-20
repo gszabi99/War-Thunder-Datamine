@@ -7,7 +7,7 @@ let { get_option_auto_show_chat } = require("chat")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { canWriteToChat, hudLog, lastInputTime } = require("hudChatState.nut")
 let { isMultiplayer } = require("networkState.nut")
-let { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
+let { isChatPlaceVisible, isVisualWeaponSelectorVisible } = require("hud/hudPartVisibleState.nut")
 
 let tabsList = [
   { id = "Chat", text = loc("mainmenu/chat"), content = chat }
@@ -16,7 +16,7 @@ let tabsList = [
 let initialTabId = tabsList[0].id
 
 let isEnabled = Computed(@() isChatPlaceVisible.value && isMultiplayer.value)
-let isInteractive = Computed(@() canWriteToChat.value || cursorVisible.value)
+let isInteractive = Computed(@() canWriteToChat.value || (cursorVisible.value && !isVisualWeaponSelectorVisible.value))
 let isNewMessage = Watched(false)
 let isFadingOut = Watched(false)
 let isInited = Watched(false)

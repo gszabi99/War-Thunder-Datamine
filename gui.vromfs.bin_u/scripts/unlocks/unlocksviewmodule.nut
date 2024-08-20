@@ -1273,7 +1273,7 @@ function fillUnlockPurchaseButton(unlockData, unlockObj) {
 
   purchButtonObj.show(show)
   if (show)
-    placePriceTextToButton(unlockObj, "purchase_button", loc("mainmenu/btnBuy"), cost)
+    placePriceTextToButton(unlockObj, "purchase_button", loc("mainmenu/btnBuyInstantly"), cost)
 
   if (!show && !cost.isZero()) {
     let cantPurchase = $"UnlocksPurchase: can't purchase {unlockId}:"

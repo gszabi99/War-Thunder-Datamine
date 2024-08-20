@@ -29,6 +29,9 @@ local haveItemDiscount = null
 
 function on_xbox_products_list_update(success, products) {
   log($"XBOX SHOP: products list update succeeded: {success}")
+  if (reqProgressMsg)
+    progressMsg.destroy(XBOX_RECEIVE_CATALOG_MSG_ID)
+  reqProgressMsg = false
   if (!success)
     return
 
@@ -61,10 +64,6 @@ function on_xbox_products_list_update(success, products) {
     seenList.onListChanged()
   }
   invalidateSeenList = false
-
-  if (reqProgressMsg)
-    progressMsg.destroy(XBOX_RECEIVE_CATALOG_MSG_ID)
-  reqProgressMsg = false
 
   statsd.send_counter("sq.ingame_store.open", 1, { catalog = statsdMetric })
   if (onReceiveCatalogCb)

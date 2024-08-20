@@ -35,6 +35,8 @@ let { guiStartBuilder, guiStartFlight, guiStartCdOptions, setCurrentCampaignMiss
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
+let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
+let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 
@@ -72,7 +74,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (this.hasMissionBuilder)
       btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     showObjById("btn_select", true, this.scene)
-
+    this.updateWishlistButton()
     this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && isUnitInSlotbar(this.unit)
     if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
@@ -648,5 +650,22 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
   function onEventModificationPurchased(_p) {
     this.doWhenActiveOnce("updateCountermeasureOptions")
+  }
+
+  function onAddToWishlist() {
+    if(isWishlistFull())
+      return showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
+
+    addToWishlist(this.unit)
+  }
+
+  function updateWishlistButton() {
+    showObjById("btn_add_to_wishlist", hasFeature("Wishlist") && !hasInWishlist(this.unit.name) && !this.unit.isBought(), this.scene)
+    if(isWishlistFull())
+      this.scene.findObject("btn_add_to_wishlist")["status"] = "red"
+  }
+
+  function onEventAddedToWishlist(_p) {
+    this.updateWishlistButton()
   }
 }

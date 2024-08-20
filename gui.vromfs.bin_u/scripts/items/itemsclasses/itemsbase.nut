@@ -319,11 +319,10 @@ let BaseItem = class {
 
   function getItemTypeDescription(loc_params = {}) {
     local idText = ""
-    if (this.locId != null) {
-      idText = loc(this.locId, this.locId + "/typeDesc", loc_params)
-      if (idText != "")
-        return idText
-    }
+
+    idText = loc($"{this.locId}/typeDesc", "", loc_params)
+    if (idText != "")
+      return idText
 
     idText = loc($"item/{this.id}/typeDesc", "", loc_params)
     if (idText != "")

@@ -144,6 +144,20 @@
           "max-width": "0.5@sf",
           "halign": "center"
         }
+      },
+      {
+        "id": "topValueHint",
+        "display": "hide",
+        "halign": "center",
+        "img": {
+          "background-image": "#ui/gameuiskin#spec_icon2.svg",
+          "background-svg-size": "@sIco,@sIco",
+          "size": "@sIco,@sIco"
+        },
+        "textareaNoTab": {
+          "text": "#crewSkillParameter/topSkillValue",
+          "overlayTextColor": "faded"
+        }
       }
     ],
     "activeText": {
@@ -263,8 +277,31 @@
               }
             },
             {
-              "textareaNoTab": {
-                "id": "aircraft-turnTurretTime"
+              "tdiv": {
+                "flow": "horizontal",
+                "textareaNoTab": {
+                  "id": "aircraft-turnTurretTime"
+                },
+                "tdiv": {
+                  "id": "aircraft-turnTurretTime-topValueDiv",
+                  "display": "hide",
+                  "textareaNoTab": [
+                    {
+                      "text": " ("
+                    },
+                    {
+                      "id": "aircraft-turnTurretTime-topValue"
+                    },
+                    {
+                      "text": ")"
+                    }
+                  ],
+                  "img": {
+                    "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                    "background-svg-size": "@sIco,@sIco",
+                    "size": "@sIco,@sIco"
+                  }
+                }
               }
             }
           ]
@@ -308,8 +345,31 @@
               }
             },
             {
-              "textareaNoTab": {
-                "id": "aircraft-reloadTime"
+              "tdiv": {
+                "flow": "horizontal",
+                "textareaNoTab": {
+                  "id": "aircraft-reloadTime"
+                },
+                "tdiv": {
+                  "id": "aircraft-reloadTime-topValueDiv",
+                  "display": "hide",
+                  "textareaNoTab": [
+                    {
+                      "text": " ("
+                    },
+                    {
+                      "id": "aircraft-reloadTime-topValue"
+                    },
+                    {
+                      "text": ")"
+                    }
+                  ],
+                  "img": {
+                    "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                    "background-svg-size": "@sIco,@sIco",
+                    "size": "@sIco,@sIco"
+                  }
+                }
               }
             }
           ]

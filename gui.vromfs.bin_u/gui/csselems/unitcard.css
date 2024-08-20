@@ -1174,6 +1174,10 @@ extraInfoBlock[isEmptySlot=yes] > content > crewInfoNumBlock {
   display:hide;
 }
 
+extraInfoBlock[isEmptySlot=yes][needHugeFooter=yes] > content > crewInfoNumBlock {
+  display:show;
+}
+
 extraInfoBlockTop {
   re-type:9rect;
   size:pw, @slotExtraInfoHeight;
@@ -1219,7 +1223,7 @@ crewInfoNumBlock > crewNumText {
 }
 
 extraInfoBlock[needHugeFooter=yes] > content {
-  skip-cursor:yes;
+  skip-cursor:skip;
 }
 
 extraInfoBlock[needHugeFooter=yes] > content crewInfoNumBlock > icon {
@@ -1958,6 +1962,10 @@ shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > slotCrewHintConta
   behaviour: massTransparency;
   transp-base: 128;
   transp-end: 128;
+}
+
+extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > extraInfoBlockHint > crewInfoNumBlock {
+  display:hide;
 }
 
 unitItemContainer.swapCrewsDnD > shopItem {

@@ -30,7 +30,18 @@ root {
         background-image:t='!ui/gameuiskin#debriefing_bg_grad@@ss'
         bgcolor:t='#111823'
       }
-
+      <<#needTopGradient>>
+      tdiv {
+        size:t='2@buttonCloseHeight + 2@bh + 180@sf/@pf, sw'
+        pos:t='h/2 - w/2, - h/2 - 60@sf/@pf'
+        position:t='absolute'
+        background-image:t='!ui/gameuiskin#debriefing_bg_grad@@ss'
+        background-svg-size:t='144@sf/@pf, 4@sf/@pf'
+        background-repeat:t='expand-svg'
+        bgcolor:t='#111823'
+        rotation:t='90'
+      }
+      <</needTopGradient>>
       tdiv {
         width:t='1@rw'
         pos:t='0.5pw-0.5w, 1@bh'

@@ -97,7 +97,6 @@ tdiv {
     _blink:t='no'
 
     <<#prizeTooltipId>>
-    title:t='$tooltipObj'
     tooltipObj  {
       tooltipId:t='<<prizeTooltipId>>'
       display:t='hide'
@@ -126,6 +125,7 @@ tdiv {
       flow:t='vertical'
       <<#textBlock>>
       tdiv {
+        id:t='text_block_<<idx>>'
         <<#iconBeforeText>>
         img {
           size:t='1@sIco, 1@sIco'
@@ -138,6 +138,7 @@ tdiv {
         <</iconBeforeText>>
         <<#text>>
         textareaNoTab {
+          id:t='prize_text'
           max-width:t='p.p.p.w'
           pos:t='0, 0.5ph-0.5h'
           position:t='relative'
@@ -154,6 +155,35 @@ tdiv {
           background-svg-size:t='1@sIco, 1@sIco'
         }
         <</iconAfterText>>
+        <<#isTextNeedStroke>>
+        tdiv {
+          id:t='stroke_0'
+          position:t='absolute'
+          display:t='hide'
+          width:t='pw'
+          height:t=4@sf/@pf
+          background-color:t='#000000';
+          color-factor:t='0'
+        }
+        tdiv {
+          id:t='stroke_1'
+          position:t='absolute'
+          display:t='hide'
+          width:t='pw'
+          height:t=4@sf/@pf
+          background-color:t='#000000';
+          color-factor:t='0'
+        }
+        tdiv {
+          id:t='stroke_2'
+          position:t='absolute'
+          display:t='hide'
+          width:t='pw'
+          height:t=4@sf/@pf
+          background-color:t='#000000';
+          color-factor:t='0'
+        }
+        <</isTextNeedStroke>>
       }
       <</textBlock>>
     }

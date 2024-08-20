@@ -97,8 +97,38 @@
             }
           },
           {
-            "textarea": {
-              "id": "aircraft-turnTurretTime"
+            "tdiv": {
+              "flow": "horizontal",
+              "textarea": {
+                "id": "aircraft-turnTurretTime"
+              },
+              "tdiv": {
+                "id": "aircraft-turnTurretTime-topValueDiv",
+                "display": "hide",
+                "tooltip": "$tooltipObj",
+                "textarea": [
+                  {
+                    "text": " ("
+                  },
+                  {
+                    "id": "aircraft-turnTurretTime-topValue"
+                  },
+                  {
+                    "text": ")"
+                  }
+                ],
+                "img": {
+                  "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                  "background-svg-size": "@sIco,@sIco",
+                  "size": "@sIco,@sIco"
+                },
+                "tooltipObj": {
+                  "tooltipId": "{\"id\":\"shop/turnTurretTime/tooltip\", \"ttype\":\"TOPSKILLVALUE\"}",
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                }
+              }
             }
           }
         ]
@@ -148,8 +178,38 @@
             }
           },
           {
-            "textarea": {
-              "id": "aircraft-reloadTime"
+            "tdiv": {
+              "flow": "horizontal",
+              "textarea": {
+                "id": "aircraft-reloadTime"
+              },
+              "tdiv": {
+                "id": "aircraft-reloadTime-topValueDiv",
+                "display": "hide",
+                "tooltip": "$tooltipObj",
+                "textarea": [
+                  {
+                    "text": " ("
+                  },
+                  {
+                    "id": "aircraft-reloadTime-topValue"
+                  },
+                  {
+                    "text": ")"
+                  }
+                ],
+                "img": {
+                  "background-image": "#ui/gameuiskin#spec_icon2.svg",
+                  "background-svg-size": "@sIco,@sIco",
+                  "size": "@sIco,@sIco"
+                },
+                "tooltipObj": {
+                  "tooltipId": "{\"id\":\"shop/reloadTime/tooltip\", \"ttype\":\"TOPSKILLVALUE\"}",
+                  "on_tooltip_open": "onGenericTooltipOpen",
+                  "on_tooltip_close": "onTooltipObjClose",
+                  "display": "hide"
+                }
+              }
             }
           }
         ]

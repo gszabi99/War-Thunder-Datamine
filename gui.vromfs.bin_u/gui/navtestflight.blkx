@@ -12,26 +12,40 @@
     }
   },
   "navRight": {
-    "Button_text": {
-      "id": "btn_select",
-      "btnName": "X",
-      "text": "#mainmenu/btnOk",
-      "_on_click": "onApply",
-      "class": "battle",
-      "navButtonFont": "yes",
-      "css-hier-invalidate": "yes",
-      "pattern": {
-        "type": "bright_texture"
+    "Button_text": [
+      {
+        "id": "btn_add_to_wishlist",
+        "on_click": "onAddToWishlist",
+        "showButtonImageOnConsole": "no",
+        "text": "#mainmenu/add_to_wishlist",
+        "btnName": "LT",
+        "class": "image",
+        "img": {
+          "background-image": "#ui/gameuiskin#add_to_wishlist.svg"
+        },
+        "ButtonImg": {}
       },
-      "buttonWink": {
-        "_transp-timer": "0"
-      },
-      "buttonGlance": {},
-      "btnText": {
-        "id": "btn_select_text",
-        "text": "#mainmenu/btnOk"
-      },
-      "ButtonImg": {}
-    }
+      {
+        "id": "btn_select",
+        "btnName": "X",
+        "text": "#mainmenu/btnOk",
+        "_on_click": "onApply",
+        "class": "battle",
+        "navButtonFont": "yes",
+        "css-hier-invalidate": "yes",
+        "pattern": {
+          "type": "bright_texture"
+        },
+        "buttonWink": {
+          "_transp-timer": "0"
+        },
+        "buttonGlance": {},
+        "btnText": {
+          "id": "btn_select_text",
+          "text": "#mainmenu/btnOk"
+        },
+        "ButtonImg": {}
+      }
+    ]
   }
 }

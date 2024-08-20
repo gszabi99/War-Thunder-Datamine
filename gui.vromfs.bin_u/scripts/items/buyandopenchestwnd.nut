@@ -5,7 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadHandler, handlersManager, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { getStringWidthPx, getFontLineHeightPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
@@ -17,15 +17,17 @@ let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlock
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitRoleText, getUnitTooltipImage, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
-let { getEntitlementConfig, getEntitlementShortName } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, getEntitlementShortName, getEntitlementAmount } = require("%scripts/onlineShop/entitlements.nut")
 let { Cost } = require("%scripts/money.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { IPoint2 } = require("dagor.math")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { frnd } = require("dagor.random")
 let { PI, cos, sin } = require("%sqstd/math.nut")
 let { enableObjsByTable, activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
@@ -57,51 +59,217 @@ let buyAndOpenChestWndStyles = {
     bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 1920.0*0.70sh/720)), sh"
     timeExpiredTextParams="pos:t='0.75pw, 0.41ph-0.5h'; overlayTextColor:t='active'"
     chestNameTextParams="font-ht:t='40@sf/@pf'"
+    needTopGradient = "yes"
   }
 }
 
-enum sortIdxPrizesByType {
-  warpoints
-  entitlement
-  item
-  gold
-  multiAwardsOnWorthGold
-  unit
+let sortIdxItemsByType = [
+  itemType.WARPOINTS
+  itemType.ORDER
+  itemType.WAGER
+  itemType.UNIVERSAL_SPARE
+  itemType.BOOSTER
+  itemType.ENTITLEMENT
+  "gold"
+  itemType.DECAL
+  itemType.ATTACHABLE
+  itemType.SKIN
+  "loading_screen"
+  itemType.PROFILE_ICON
+  "multiAwardsOnWorthGold"
+  itemType.VEHICLE
+  itemType.TROPHY
+]
+
+let resourceTypes = {
+  decal = itemType.DECAL
+  attachable = itemType.ATTACHABLE
+  skin = itemType.SKIN
 }
 
-local waitingForShowChest = null
+let sortIdxPrizeByType = {
+  resourceType = {getType = @(prize) resourceTypes?[prize.resourceType] ?? -1}
+  warpoints = itemType.WARPOINTS
+  gold = "gold"
+  unit = itemType.VEHICLE
+  multiAwardsOnWorthGold = "multiAwardsOnWorthGold"
+  trophy = itemType.TROPHY
+  unlock = {
+    getType = @(prize) (prize?.unlock.indexof("loading_screen") ?? -1) >= 0
+      ? "loading_screen"
+      : itemType.PROFILE_ICON
+  }
+}
+
+function getSortIdxByPrize(prize) {
+  foreach (param, _value in prize)
+    if (sortIdxPrizeByType?[param])
+      return sortIdxItemsByType.indexof(
+        sortIdxPrizeByType[param]?.getType(prize) ?? sortIdxPrizeByType[param]) ?? -1
+
+  return -1
+}
+
+let additionalSortParamByType = {
+  [itemType.WARPOINTS] = @(item, _count = 1) item.getWarpoints(),
+  [itemType.BOOSTER] = @(item, _count = 1) item.wpRate > 0 ? item.wpRate : item.xpRate,
+  [itemType.ENTITLEMENT] = function(item, _count = 1) {
+    let ent = item.getEntitlement()
+    let entConfig = getEntitlementConfig(ent)
+    return getEntitlementAmount(entConfig)
+  },
+  [itemType.UNIVERSAL_SPARE] = @(_item, count = 1) count,
+  warpoints = @(prize, _count = 1) prize?.warpoints ?? 0,
+  gold = @(prize, _count = 1) prize?.gold ?? 0
+}
+
+function canGetTrophyPrize(prize) {
+  if (prize?.unit) {
+    if (prize?.mod)
+      return true
+
+    let unit = getAircraftByName(prize.unit)
+    let isBought = unit?.isBought() ?? false
+    return !isBought
+  }
+
+  if (prize?.resourceType) {
+    let decoratorType = getTypeByResourceType(prize.resourceType)
+    return !decoratorType.isPlayerHaveDecorator(prize?.resource ?? "")
+  }
+
+  if (prize?.unlock)
+    return !isUnlockOpened(prize.unlock)
+  return true
+}
+
+function parseTrophyContent(trophy) {
+  let content = trophy.getContent()
+  local allReceivedPrizes = []
+  let availablePrizes = []
+  let allPrizes = []
+
+  foreach (trophyPrize in content) {
+    if (trophyPrize?.availableIfAllPrizesReceived) {
+      allReceivedPrizes.append(trophyPrize)
+      continue
+    }
+    allPrizes.append(trophyPrize)
+    if (canGetTrophyPrize(trophyPrize))
+      availablePrizes.append(trophyPrize)
+  }
+  return {allReceivedPrizes, allPrizes, availablePrizes}
+}
+
+function getUnitPrizeIcon(unit) {
+  if (unit == null)
+    return null
+  let image = getUnitTooltipImage(unit)
+  return "".concat("width:t='1.5@itemWidth'; ",
+    LayersIcon.getCustomSizeIconData(image, "1.5@itemWidth, 0.5w"))
+}
+
+function getUnitPrizeText(unit, params = null) {
+  if (unit == null)
+    return null
+
+  let textArr = [
+    {
+      iconBeforeText = getUnitCountryIcon(unit)
+      text = colorize("@activeTextColor", getUnitName(unit))
+    }
+  ]
+  if (params?.isShortText)
+    return textArr
+
+  textArr.append(
+    {
+      text = colorize(getUnitClassColor(unit), getFullUnitRoleText(unit))
+      textParams = "smallFont:t='yes'"
+    }
+  )
+  return textArr
+}
+
+function getWarpointsText(prize) {
+  return [
+    {
+      text = colorize("@activeTextColor",
+        Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
+      iconAfterText = "#ui/gameuiskin#item_type_warpoints.svg"
+    }
+    {
+      text = colorize("@activeTextColor", loc("charServer/chapter/warpoints"))
+      textParams = "smallFont:t='yes'"
+    }
+  ]
+}
+
+function getGoldText(prize) {
+  return [
+    {
+      text = colorize("@activeTextColor",
+        Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
+      iconAfterText = "#ui/gameuiskin#item_type_eagles.svg"
+    }
+    {
+      text = colorize("@userlogColoredText", loc("charServer/chapter/eagles"))
+      textParams = "smallFont:t='yes'"
+    }
+  ]
+}
 
 let offerTypes = {
-  unit = {
-    function getTextView(prize) {
-      let unit = getAircraftByName(prize.unit)
-      if (unit == null)
-        return null
-      return [
-        {
-          iconBeforeText = getUnitCountryIcon(unit)
-          text = colorize("@activeTextColor", getUnitName(unit))
-        }
-        {
-          text = colorize(getUnitClassColor(unit), getFullUnitRoleText(unit))
-          textParams = "smallFont:t='yes'"
-        }
-      ]
+  trophy = {
+    function getPrizeForSort(trophy, params) {
+      let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)
+      let {availablePrizes} = parsedContent
+      return availablePrizes.len() == 1
+        ? availablePrizes[0]
+        : trophy.getTopPrize()
     }
-    function getImage(prize) {
-      let unit = getAircraftByName(prize.unit)
-      if (unit == null)
+
+    function getPrizeForIcon(trophy, params) {
+      let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)
+      let {allPrizes, availablePrizes} = parsedContent
+
+      return availablePrizes.len() == 1
+        ? availablePrizes[0]
+        : allPrizes.len() == 1 ? allPrizes[0] : trophy
+    }
+
+    function getImage(prize, params = {}) {
+      let trophy = params?.trophy ?? ::ItemsManager.findItemById(prize.item)
+      if (trophy == null)
         return null
 
-      let image = getUnitTooltipImage(unit)
-      return "".concat("width:t='1.5@itemWidth'; ",
-        LayersIcon.getCustomSizeIconData(image, "1.5@itemWidth, 0.5w"))
+      let prizeForIcon = this.getPrizeForIcon(prize, {parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)})
+      if (prizeForIcon?.unit) {
+        let unit = getAircraftByName(prizeForIcon.unit)
+        return getUnitPrizeIcon(unit)
+      }
+      return "".concat( "width:t='h';", ::trophyReward.getImageByConfig(prizeForIcon, true, ""))
+    }
+
+    getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item))
+  }
+
+  unit = {
+    function getTextView(prize, params = null) {
+      let unit = getAircraftByName(prize.unit)
+      return getUnitPrizeText(unit, params)
+    }
+
+    function getImage(prize, _params = null) {
+      let unit = getAircraftByName(prize.unit)
+      return getUnitPrizeIcon(unit)
     }
 
     getPrizeTooltipId = @(prize) getTooltipType("UNIT").getTooltipId(prize.unit)
   }
+
   multiAwardsOnWorthGold = {
-    function getTextView(prize) {
+    function getTextView(prize, _params = null) {
       let premExpMul = prize?.result.premExpMul
       if (premExpMul == null) //Only talisman is supported so far
         return null
@@ -116,7 +284,7 @@ let offerTypes = {
       return res
     }
 
-    function getImage(prize) {
+    function getImage(prize, _params = null) {
       let premExpMul = prize?.result.premExpMul
       if (premExpMul == null) //Only talisman is supported so far
         return null
@@ -131,7 +299,7 @@ let offerTypes = {
     }
   }
   entitlement = {
-    function getTextView(prize) {
+    function getTextView(prize, _params = null) {
       let ent = getEntitlementConfig(prize.entitlement)
       if (ent == null)
         return null
@@ -150,8 +318,8 @@ let offerTypes = {
     }
   }
   item = {
-    function getTextView(prize) {
-      local item = ::ItemsManager.findItemById(prize.item)
+    function getTextView(prize, params = null) {
+      local item = params?.item ?? ::ItemsManager.findItemById(prize.item)
       if (item == null)
         return null
 
@@ -161,6 +329,9 @@ let offerTypes = {
         count = count * (item?.metaBlk?.count ?? 1)
         item = contentItem
       }
+
+      if (item.iType == itemType.WARPOINTS)
+        return getWarpointsText({warpoints = item.getWarpoints()})
 
       local firstTextConfig = null
       local itemNameText = ""
@@ -174,7 +345,7 @@ let offerTypes = {
         itemNameText = item.getTypeName()
       } else {
         itemNameText = item.getName()
-        firstTextConfig = count > 1 ? { text = colorize("@activeTextColor", $"x{count}") } : { text = " " }
+        firstTextConfig = count > 1 ? { text = colorize("@activeTextColor", $"x{count}") } : { text = "" }
       }
 
       return [
@@ -186,39 +357,94 @@ let offerTypes = {
       ]
     }
 
+    function getImage(prize, params = null) {
+      local item = params?.item ?? ::ItemsManager.findItemById(prize.item)
+      if (item == null)
+        return null
+
+      item = item.getContentItem() ?? item
+      if (item.iType == itemType.VEHICLE)
+        return "".concat( "width:t='1.5@itemWidth';", ::trophyReward.getImageByConfig(prize, true, ""))
+      return null
+    }
+
     getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item))
   }
   warpoints = {
-    function getTextView(prize) {
-      return [
-        {
-          text = colorize("@activeTextColor",
-            Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
-          iconAfterText = "#ui/gameuiskin#item_type_warpoints.svg"
-        }
-        {
-          text = colorize("@activeTextColor", loc("charServer/chapter/warpoints"))
-          textParams = "smallFont:t='yes'"
-        }
-      ]
+    function getTextView(prize, _params = null) {
+      return getWarpointsText(prize)
     }
   },
   gold = {
-    function getTextView(prize) {
-      return [
-        {
-          text = colorize("@activeTextColor",
-            Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
-          iconAfterText = "#ui/gameuiskin#item_type_eagles.svg"
-        }
-        {
-          text = colorize("@userlogColoredText", loc("charServer/chapter/eagles"))
-          textParams = "smallFont:t='yes'"
-        }
-      ]
+    function getTextView(prize, _params = null) {
+      return getGoldText(prize)
     }
-  },
+  }
 }
+
+
+function getTrophyText(prize, params = {}) {
+  let trophy = params?.trophy ?? ::ItemsManager.findItemById(prize.item)
+  if (trophy == null)
+    return null
+
+  let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)
+  let {allReceivedPrizes, allPrizes, availablePrizes} = parsedContent
+
+  if (availablePrizes.len() > 1
+    || (availablePrizes.len() == 0 && allReceivedPrizes.len() > 1))
+    return [
+      { text = " "}
+      {
+        text = colorize("@activeTextColor", trophy.getName())
+        textParams = "smallFont:t='yes'"
+      }
+    ]
+
+  if (availablePrizes.len() == 1)
+    return offerTypes?[::trophyReward.getType(availablePrizes[0])].getTextView() ?? []
+
+  let allReceivedPrize = allReceivedPrizes.len() == 1 ? allReceivedPrizes[0] : null
+
+  let recivedPrizeType = allReceivedPrize != null
+    ? ::trophyReward.getType(allReceivedPrize)
+    : null
+  let recivedPrizeText = recivedPrizeType != null
+    ? offerTypes?[recivedPrizeType].getTextView(allReceivedPrize) ?? []
+    : []
+
+  if (recivedPrizeText.len() == 0)
+    return offerTypes.item.getTextView(prize)
+
+  local prizeTexts = null
+  if (allPrizes.len() == 1) {
+    let trophyPrize = allPrizes[0]
+    let prizeOfferType = ::trophyReward.getType(trophyPrize)
+
+    if (offerTypes?[prizeOfferType]) {
+      prizeTexts = offerTypes[prizeOfferType].getTextView(trophyPrize, {isShortText = true}) ?? []
+    } else {
+      let text = ::PrizesView.getPrizeText(trophyPrize, false, false, false)
+      prizeTexts = [{text, textParams = "smallFont:t='yes'", isTextNeedStroke = "yes"}]
+    }
+  } else
+    prizeTexts = offerTypes.item.getTextView(prize)
+
+  let doublePrizeTexts = []
+  foreach (val in prizeTexts)
+    if (val?.text != "") {
+      val.isTextNeedStroke <- "yes"
+      doublePrizeTexts.append(val)
+    }
+
+  foreach (val in recivedPrizeText)
+    if (val?.text != "")
+      doublePrizeTexts.append(val)
+
+  return doublePrizeTexts
+}
+
+offerTypes.trophy.getTextView <- getTrophyText
 
 let debugPrizes = [
   {
@@ -330,6 +556,8 @@ let debugPrizes = [
   }
 ]
 
+local waitingForShowChest = null
+
 let raysForPrizesProps = {
   w = 28, h = 3, moveTime = 250, transpTime = 250, scaleTime = 125,
   timeMult = 1, startDelay = 0, count = 16, rayDelay = 2,
@@ -414,22 +642,63 @@ function getPrizesView(prizes, bgDelay = 0) {
   let margin = (to_pixels("1@rw") - count * chestItemWidth) / (2 * count)
 
   foreach (prize in prizes) {
-    let offerType = ::trophyReward.getType(prize)
-    let customImageData = offerTypes?[offerType].getImage(prize)
+    local offerType = ::trophyReward.getType(prize)
     let item = ::ItemsManager.findItemById(prize?.item)
+    local sortIdx = -1
+    local additionalSortParam = 0
+
+    let params = {item}
+    if (item && offerType == "item") {
+      let contentItem = item.getContentItem()
+      if (contentItem) {
+        if (contentItem.iType == itemType.TROPHY) {
+          offerType = "trophy"
+          params.trophy <- contentItem
+          params.parsedContent <- parseTrophyContent(contentItem)
+
+          let trophyPrizeForSort = offerTypes.trophy.getPrizeForSort(contentItem, params) ?? prize
+          sortIdx = getSortIdxByPrize(trophyPrizeForSort)
+
+          let rewardType = ::trophyReward.getType(trophyPrizeForSort )
+          additionalSortParam = additionalSortParamByType?[rewardType](trophyPrizeForSort) ?? 0
+        } else {
+          let itemCount = (prize?.count ?? 1) * (item?.metaBlk.count ?? 1)
+          sortIdx = sortIdxItemsByType.indexof(contentItem.iType)
+          additionalSortParam = additionalSortParamByType?[contentItem.iType](contentItem, itemCount) ?? 0
+        }
+      }
+    }
+
+    if (sortIdx == -1) {
+      if (item) {
+        sortIdx = sortIdxItemsByType.indexof(item.iType)
+        additionalSortParam = additionalSortParamByType?[item.iType](item) ?? 0
+      } else {
+        sortIdx = getSortIdxByPrize(prize)
+        additionalSortParam = additionalSortParamByType?[offerType](prize) ?? 0
+      }
+    }
+
+    let customImageData = offerTypes?[offerType].getImage(prize, params)
+    let text = offerTypes?[offerType].getTextView(prize, params)
+    if (text != null)
+      foreach (idx, t in text)
+        t.idx <- idx.tostring()
+
     res.append({
       customImageData
       prizeTooltipId =  offerTypes?[offerType].getPrizeTooltipId(prize)
       layeredImage = customImageData != null ? null
        : ::trophyReward.getImageByConfig(prize, true, "")
-      textBlock = offerTypes?[offerType].getTextView(prize)
-      sortIdx = sortIdxPrizesByType?[offerType] ?? 0
-      additionalSortParam = prize?[offerType] ?? ""
+      textBlock = text
+      sortIdx
+      additionalSortParam
       margin = clamp(margin, 0, to_pixels("4@blockInterval"))
       chestItemWidth
       chestItemRarityColor = (item && item?.isRare()) ? item.getRarityColor() : "#45AACC"
     })
   }
+
   res.sort(@(a, b) a.sortIdx <=> b.sortIdx
     || a.additionalSortParam <=> b.additionalSortParam)
 
@@ -731,7 +1000,9 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    prizeObj.findObject("prize_info")["transp-time"] = 300
+    let prizeInfoObj = prizeObj.findObject("prize_info")
+    prizeInfoObj["transp-time"] = 300
+    prizeInfoObj["tooltip"] = "$tooltipObj"
     showObjById("rays", true, prizeObj)
     showObjById("blue_bg", true, prizeObj)
     this.guiScene.playSound("choose")
@@ -780,7 +1051,9 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     local curPrizeIdx = 0
     local curPrizeObj = this.getPrizeObjByIdx(curPrizeIdx)
     while (curPrizeObj?.isValid()) {
-      curPrizeObj.findObject("prize_info")["transp-time"] = 1
+      let prizeInfoObj = curPrizeObj.findObject("prize_info")
+      prizeInfoObj["transp-time"] = 1
+      prizeInfoObj["tooltip"] = "$tooltipObj"
       showObjById("rays", true, curPrizeObj)
       showObjById("blue_bg", true, curPrizeObj)
       curPrizeIdx++
@@ -806,13 +1079,49 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let data = handyman.renderCached("%gui/items/buyAndOpenChestPrizes.tpl", getPrizesView(prizes, 300))
-    this.guiScene.replaceContentFromText(this.scene.findObject("prizes_list"), data, data.len(), this)
+    let prizesView = getPrizesView(prizes, 300)
+    let data = handyman.renderCached("%gui/items/buyAndOpenChestPrizes.tpl", prizesView)
+    let prizeNest = this.scene.findObject("prizes_list")
+    this.guiScene.replaceContentFromText(prizeNest, data, data.len(), this)
+    let thisHandler = this
+    defer(@() thisHandler.updateStrikeText(prizeNest, prizesView.prizes))
     showObjById("prizes_list", true, this.scene)
     this.updateUseAmountControls()
     this.updateButtons()
     this.curShowPrizeIdx = null
     this.startOpening()
+  }
+
+  function updateStrikeText(prizeNest, prizes) {
+    if (!this?.isValid() || !prizeNest?.isValid())
+      return
+    let normalFontHeight = getFontLineHeightPx("fontNormal") + 1
+    let bigFontHeight = getFontLineHeightPx("fontMedium") + 1
+
+    foreach (prize in prizes) {
+      local prizeObj = null
+      foreach (text in prize.textBlock)
+        if (text?.isTextNeedStroke) {
+          prizeObj = prizeObj ?? prizeNest.findObject($"prize_{prize.idx}")
+          if (!prizeObj.isValid())
+            return
+          let strokeNest = prizeObj.findObject($"text_block_{text.idx}")
+          let isNormalFont = (text?.textParams.indexof("smallFont") ?? 0) > -1
+          let strokeStep = isNormalFont ? normalFontHeight : bigFontHeight
+          let size = strokeNest.getSize()
+          local posY = strokeStep / 2
+          local index = 0
+          while (posY < size[1] - strokeStep/3) {
+            let stroke = strokeNest.findObject($"stroke_{index}")
+            if (stroke == null)
+              break
+            stroke.pos = $"0, {posY}"
+            stroke.show(true)
+            posY = posY + strokeStep
+            index = index + 1
+          }
+        }
+    }
   }
 
   function onShowRewards() {

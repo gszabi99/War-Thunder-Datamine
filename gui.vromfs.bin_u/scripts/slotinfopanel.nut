@@ -18,7 +18,7 @@ let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCat
 let { getSkillCategoryName } = require("%scripts/crew/crewSkillsView.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -527,6 +527,17 @@ function createSlotInfoPanel(parentScene, showTabs, configSaveId) {
     configSavePath = $"{SLOT_INFO_CFG_SAVE_PATH}/{configSaveId}"
   })
 }
+
+addTooltipTypes({
+  TOPSKILLVALUE = {
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, id, _params) {
+      obj.getScene().replaceContent(obj, "%gui/airInfo/topValueTooltip.blk", handler)
+      obj.findObject("tooltipName").setValue(loc(id))
+      return true
+    }
+  }
+})
 
 return {
   createSlotInfoPanel

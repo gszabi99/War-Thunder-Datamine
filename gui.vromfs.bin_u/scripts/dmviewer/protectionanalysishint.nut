@@ -10,6 +10,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { round } = require("math")
 
 let { set_protection_analysis_editing } = require("hangarEventCommand")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -136,10 +137,10 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
       let pFunc = printValue?[id]
       return pFunc ? pFunc(val) : ""
     })
-    desc = "\n".join(desc, true)
 
     this.hintObj.findObject("dmviewer_title").setValue(title)
-    this.hintObj.findObject("dmviewer_desc").setValue(desc)
+    let data = handyman.renderCached("%gui/dmViewer/dmViewerHintDescItem.tpl", { items = desc.map(@(v) { value = v }) })
+    this.guiScene.replaceContentFromText(this.hintObj.findObject("dmviewer_desc"), data, data.len(), this)
   }
 
   function onTargetingCursorTimer(obj, _dt) {
