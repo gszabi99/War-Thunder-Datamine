@@ -14,7 +14,7 @@ tdiv {
       img{
         id:t='icon'
         position:t='relative'
-        size:t='0.8@discountBoxHeight, 1@discountBoxHeight'
+        size:t='0.69@discountBoxHeight, 1@discountBoxHeight'
       }
       shopCollapsedIconText {
         id:t='count_text'

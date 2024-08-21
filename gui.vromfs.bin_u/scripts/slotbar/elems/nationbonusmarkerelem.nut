@@ -98,12 +98,13 @@ addTooltipTypes({
       let bonuses = countryId == "" ? units : units.filter(@(b) b.unit.shopCountry == countryId)
       let unitsWithBonus = bonuses
         .filter(@(b) getNationBonusMarkState(b.unit.shopCountry, b.unit.unitType.armyId))
-        .map(@(b) {
+        .map(@(b, idx) {
           hasCountry = countryId == ""
           unitName = getUnitName(b.unit.name, true)
-          unitType = b.unit.unitType.fontIcon
+          unitTypeIco = b.unit?.customClassIco ?? $"#ui/gameuiskin#{b.unit.name}_ico.svg"
           countryIcon = getUnitCountryIcon(b.unit)
-          battlesRemain = $"({b.battlesRemainCount}/{expNewNationBonusDailyBattleCount})"
+          battlesRemain = $"{b.battlesRemainCount}/{expNewNationBonusDailyBattleCount}"
+          even = idx % 2 == 0
         })
 
       let data = handyman.renderCached("%gui/nationBonus/nationBonusesTooltip.tpl", { units = unitsWithBonus })
