@@ -11,7 +11,7 @@ let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
 let { Cost } = require("%scripts/money.nut")
 let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getBulletBeltShortName } = require("%scripts/weaponry/weaponryVisual.nut")
+let { getBulletBeltShortLocId } = require("%scripts/weaponry/weaponryVisual.nut")
 
 enum UnitControl {
   UNIT_CONTROL_BOT = 1
@@ -74,14 +74,23 @@ let tableColumns = [
       if (doesLocTextExist(weaponShortName))
         return {text = loc(weaponShortName)}
 
-      let bulletName = getBulletBeltShortName(cellValue)
-      return {text = reward?.weaponCaliber == null
-        ? bulletName
-        : "".concat(bulletName,
-          loc("ui/parentheses/space", {
-            text = "".concat((reward.weaponCaliber * 100).tointeger(), loc("measureUnits/mm"))
-          }))
+      let bulletBeltLocId = getBulletBeltShortLocId(cellValue)
+      if (doesLocTextExist(bulletBeltLocId))
+        return {text = reward?.weaponCaliber == null
+          ? loc(bulletBeltLocId)
+          : "".concat(loc(bulletBeltLocId),
+            loc("ui/parentheses/space", {
+              text = "".concat(reward.weaponCaliber * 1000, loc("measureUnits/mm"))
+            }))
+        }
+
+      if (reward?.bulletType != null) {
+        let locId = $"{reward.bulletType}/name/short"
+        if (doesLocTextExist(locId))
+          return {text = loc(locId)}
       }
+
+      return cellValue
     }
   }
   {

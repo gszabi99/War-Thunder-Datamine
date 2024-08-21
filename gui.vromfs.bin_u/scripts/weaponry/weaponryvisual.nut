@@ -42,8 +42,8 @@ function getLocIdPrefixByCaliber(name) {
   return name
 }
 
-let getBulletBeltShortName = @(id) (id == "" || id.endswith("_default")) ? loc("modification/default_bullets")
-  : loc($"{getLocIdPrefixByCaliber(id)}/name/short")
+let getBulletBeltShortLocId = @(id) (id == "" || id.endswith("_default")) ? "modification/default_bullets"
+  : $"{getLocIdPrefixByCaliber(id)}/name/short"
 
 function getBulletsCountText(curVal, maxVal, unallocated, guns) {
   local restText = ""
@@ -756,5 +756,5 @@ return {
   createModItem                   = createModItem
   createModBundle                 = createModBundle
   updateItemBulletsSlider         = updateItemBulletsSlider
-  getBulletBeltShortName
+  getBulletBeltShortLocId
 }
