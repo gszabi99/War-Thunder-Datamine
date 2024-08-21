@@ -813,7 +813,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       topUnitBonusObj.show(hasUnitForNationBonus)
 
       let showNationBonusObj = topUnitBonusObj.findObject("show_nation_bonus_in_tab")
-      showNationBonusObj.show(hasNationBonus(this.curCountry, this.curPage))
+      showNationBonusObj.show(hasNationBonus(this.curCountry, this.curPage) && hasFeature("ExpNewNationBonus"))
       showNationBonusObj.setValue(getNationBonusMarkState(this.curCountry, this.curPage))
 
       if (hasUnitForNationBonus) {

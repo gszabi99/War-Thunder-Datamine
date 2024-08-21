@@ -19,6 +19,9 @@ elemModelType.addTypes({
     function init() {
       subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
     }
+
+    isVisible = @() hasFeature("ExpNewNationBonus")
+
     onEventShopWndSwitched = @(_p) this.notify([])
     onEventNationBonusMarkStateChange = @(_p) this.notify([])
     onEventUnitResearch = @(_p) this.notify([])
@@ -31,6 +34,10 @@ elemViewType.addTypes({
     model = elemModelType.NATION_BONUS_MARKER
 
     updateView = function(obj, _params) {
+      if(!this.model.isVisible()) {
+        obj.show(false)
+        return
+      }
       let countryBonuses = getUnitsWithNationBonuses().units
         .findindex(@(b) getNationBonusMarkState(b.unit.shopCountry, b.unit.unitType.armyId))
       obj.show(countryBonuses != null)
@@ -41,6 +48,10 @@ elemViewType.addTypes({
     model = elemModelType.NATION_BONUS_MARKER
 
     updateView = function(obj, _params) {
+      if(!this.model.isVisible()) {
+        obj.show(false)
+        return
+      }
       let countryBonuses = getUnitsWithNationBonuses().units
         .findindex(@(b) b.unit.shopCountry == obj.countryId && getNationBonusMarkState(obj.countryId, b.unit.unitType.armyId))
       obj.show(topMenuShopActive.value && countryBonuses != null)
@@ -51,6 +62,10 @@ elemViewType.addTypes({
     model = elemModelType.NATION_BONUS_MARKER
 
     updateView = function(obj, _params) {
+      if(!this.model.isVisible()) {
+        obj.show(false)
+        return
+      }
       let showBonusMark = getNationBonusMarkState(obj.countryId, obj.armyId)
       if (!showBonusMark) {
         obj.show(showBonusMark)

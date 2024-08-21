@@ -196,7 +196,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   onChapterSelect = @() null
 
   function onDestroy() {
-    defer(@() get_cur_gui_scene().discardUnusedPicture())
+    defer(@() get_cur_gui_scene()?.discardUnusedPicture())
   }
 }
 

@@ -402,7 +402,7 @@ function getTrophyText(prize, params = {}) {
     ]
 
   if (availablePrizes.len() == 1)
-    return offerTypes?[::trophyReward.getType(availablePrizes[0])].getTextView() ?? []
+    return offerTypes?[::trophyReward.getType(availablePrizes[0])].getTextView(availablePrizes[0]) ?? []
 
   let allReceivedPrize = allReceivedPrizes.len() == 1 ? allReceivedPrizes[0] : null
 
