@@ -1,0 +1,2569 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "BluePlayer01",
+        "BluePlayer02",
+        "BluePlayer03",
+        "BluePlayer04",
+        "BluePlayer05",
+        "BluePlayer06",
+        "BluePlayer07",
+        "BluePlayer08",
+        "BluePlayer09",
+        "BluePlayer10",
+        "BluePlayer11",
+        "BluePlayer12",
+        "BluePlayer13",
+        "BluePlayer14",
+        "BluePlayer15",
+        "BluePlayer16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "RedPlayer01",
+        "RedPlayer02",
+        "RedPlayer03",
+        "RedPlayer04",
+        "RedPlayer05",
+        "RedPlayer06",
+        "RedPlayer07",
+        "RedPlayer08",
+        "RedPlayer09",
+        "RedPlayer10",
+        "RedPlayer11",
+        "RedPlayer12",
+        "RedPlayer13",
+        "RedPlayer14",
+        "RedPlayer15",
+        "RedPlayer16"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/avg_red_desert.bin",
+      "environment": "Day",
+      "weather": "clear",
+      "timeLimit": 10,
+      "locName": "missions/jets_AD;location/avg_red_desert",
+      "locDesc": "missions/jets_AD/desc",
+      "gt_mp_tickets": true,
+      "gt_mp_capture": true,
+      "isLimitedFuel": true,
+      "isLimitedAmmo": true,
+      "scoreLimit": 12500,
+      "deathPenaltyMul": 0.5,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 15.0
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "Airfields": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "addAirfield": [
+          {
+            "runwayStart": "BlueAFStart",
+            "runwayEnd": "BlueAFEnd",
+            "runwayWidth": 10.0,
+            "army": 1
+          },
+          {
+            "runwayStart": "RedAFStart",
+            "runwayEnd": "RedAFEnd",
+            "runwayWidth": 10.0,
+            "army": 2
+          }
+        ],
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "Blue Airfield",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "Blue Airfield",
+              "Spawn1",
+              "Spawn2",
+              "Spawn4",
+              "Spawn6",
+              "Spawn3",
+              "Spawn5"
+            ],
+            "team": "A",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "airfield_take_off": true,
+              "airfield_take_off_air_rb": true,
+              "vtol_jet": true
+            }
+          },
+          {
+            "loc_name": "",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "Red Airfield",
+              "Spawn11",
+              "Spawn12",
+              "Spawn13",
+              "Spawn14",
+              "Spawn15",
+              "Spawn06"
+            ],
+            "team": "B",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "airfield_take_off": true,
+              "airfield_take_off_air_rb": true,
+              "vtol_jet": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "Capzones A": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 0.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "Capzone A",
+          "iconIndex": 0,
+          "playAirfieldSound": true,
+          "canCaptureInAir": true,
+          "onlyPlayersCanCapture": true,
+          "zoneDefenders": {},
+          "capture_tags": {
+            "type_bomber": true,
+            "type_fighter": true,
+            "type_assault": true,
+            "type_interceptor": true,
+            "type_aa_fighter": true,
+            "type_light_bomber": true,
+            "type_frontline_bomber": true,
+            "type_longrange_bomber": true,
+            "type_hydroplane": true,
+            "carrier_take_off": true,
+            "vtol_jet": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Capzones B": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 0.5,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "Capzone B",
+          "iconIndex": 1,
+          "playAirfieldSound": true,
+          "canCaptureInAir": true,
+          "onlyPlayersCanCapture": true,
+          "zoneDefenders": {},
+          "capture_tags": {
+            "type_bomber": true,
+            "type_fighter": true,
+            "type_assault": true,
+            "type_interceptor": true,
+            "type_aa_fighter": true,
+            "type_light_bomber": true,
+            "type_frontline_bomber": true,
+            "type_longrange_bomber": true,
+            "type_hydroplane": true,
+            "carrier_take_off": true,
+            "vtol_jet": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Capzones C": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 0.6,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "Capzone C",
+          "iconIndex": 2,
+          "playAirfieldSound": true,
+          "canCaptureInAir": true,
+          "onlyPlayersCanCapture": true,
+          "zoneDefenders": {},
+          "capture_tags": {
+            "type_bomber": true,
+            "type_fighter": true,
+            "type_assault": true,
+            "type_interceptor": true,
+            "type_aa_fighter": true,
+            "type_light_bomber": true,
+            "type_frontline_bomber": true,
+            "type_longrange_bomber": true,
+            "type_hydroplane": true,
+            "carrier_take_off": true,
+            "vtol_jet": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Capzone D_T2": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "missionIsZoneCaptured": {
+          "target": "Capzone C",
+          "army": 2
+        }
+      },
+      "actions": {
+        "missionMarkAsCaptureZone": [
+          {
+            "army": 0,
+            "timeMultiplier": 0.6,
+            "disableZone": true,
+            "name_for_respawn_base": "",
+            "target": "Capzone C",
+            "iconIndex": 2,
+            "playAirfieldSound": true,
+            "canCaptureInAir": true,
+            "onlyPlayersCanCapture": true,
+            "useHUDMarkers": true,
+            "zoneDefenders": {},
+            "capture_tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "vtol_jet": true
+            }
+          },
+          {
+            "army": 0,
+            "timeMultiplier": 0.5,
+            "disableZone": false,
+            "name_for_respawn_base": "",
+            "target": "Capzone D01",
+            "iconIndex": 2,
+            "canCaptureInAir": true,
+            "onlyPlayersCanCapture": false,
+            "zoneDefenders": {},
+            "capture_tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "vtol_jet": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "Capzone D_T1": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "missionIsZoneCaptured": {
+          "target": "Capzone C",
+          "army": 1
+        }
+      },
+      "actions": {
+        "missionMarkAsCaptureZone": [
+          {
+            "army": 0,
+            "timeMultiplier": 0.6,
+            "disableZone": true,
+            "name_for_respawn_base": "",
+            "target": "Capzone C",
+            "iconIndex": 2,
+            "playAirfieldSound": true,
+            "canCaptureInAir": true,
+            "onlyPlayersCanCapture": true,
+            "zoneDefenders": {},
+            "capture_tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "vtol_jet": true
+            }
+          },
+          {
+            "army": 0,
+            "timeMultiplier": 0.5,
+            "disableZone": false,
+            "name_for_respawn_base": "",
+            "target": "Capzone D",
+            "iconIndex": 2,
+            "canCaptureInAir": true,
+            "onlyPlayersCanCapture": false,
+            "zoneDefenders": {},
+            "capture_tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "vtol_jet": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "Blue Airfield",
+        "tm": [
+          [
+            -0.664957,
+            0.0,
+            0.746881
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.746881,
+            0.0,
+            -0.664957
+          ],
+          [
+            3791.24,
+            293.944,
+            25632.4
+          ]
+        ],
+        "unit_class": "dynaf_universal_1line_3000_a",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "Red Airfield",
+        "tm": [
+          [
+            -0.380599,
+            0.0,
+            -0.924739
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.924739,
+            0.0,
+            -0.380599
+          ],
+          [
+            2801.31,
+            383.166,
+            -22549.1
+          ]
+        ],
+        "unit_class": "dynaf_universal_1line_3000_a",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ],
+    "armada": [
+      {
+        "name": "RedPlayer01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38448.7,
+            -25755.8,
+            8544.66
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39302.4,
+            -25755.8,
+            9978.5
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39369.6,
+            -25755.8,
+            10054.4
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39436.7,
+            -25755.8,
+            10130.3
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39503.9,
+            -25755.8,
+            10206.2
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39571.0,
+            -25755.8,
+            10282.1
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39638.2,
+            -25755.8,
+            10358.0
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39705.3,
+            -25755.8,
+            10433.9
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39772.5,
+            -25755.8,
+            10509.8
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39839.6,
+            -25755.8,
+            10585.7
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39906.8,
+            -25755.8,
+            10661.6
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer11",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39973.9,
+            -25755.8,
+            10737.4
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38634.1,
+            -25755.8,
+            8456.5
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -38819.4,
+            -25755.8,
+            8368.33
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39004.8,
+            -25755.8,
+            8280.17
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39190.2,
+            -25755.8,
+            8192.01
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39375.5,
+            -25755.8,
+            8103.85
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39560.9,
+            -25755.8,
+            8015.68
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39746.3,
+            -25755.8,
+            7927.52
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -39931.6,
+            -25755.8,
+            7839.36
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -40117.0,
+            -25755.8,
+            7751.2
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer11",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -40302.4,
+            -25755.8,
+            7663.04
+          ]
+        ],
+        "unit_class": "f_16c_block_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      }
+    ],
+    "structures": {
+      "name": "snowman_easter_egg",
+      "tm": [
+        [
+          -0.419513,
+          0.0,
+          -3.74277
+        ],
+        [
+          0.0,
+          3.76621,
+          0.0
+        ],
+        [
+          3.74277,
+          0.0,
+          -0.419513
+        ],
+        [
+          5210.94,
+          626.6,
+          2485.28
+        ]
+      ],
+      "unit_class": "snowman_a_unit",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 0,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "uniqueName": "davis",
+        "stealthRadius": 10.0
+      },
+      "way": {}
+    }
+  },
+  "areas": {
+    "Capzone C": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          2000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2000.0
+        ],
+        [
+          -6446.53,
+          199.99,
+          2328.17
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Capzone D01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1709.62,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2996.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1709.62
+        ],
+        [
+          1904.04,
+          142.555,
+          -3928.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Capzone A": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1709.62,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2996.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1709.62
+        ],
+        [
+          11220.9,
+          142.497,
+          -7712.06
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Capzone B": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1709.62,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2996.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1709.62
+        ],
+        [
+          11565.8,
+          142.535,
+          10734.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Capzone D": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          1709.62,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2996.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1709.62
+        ],
+        [
+          2062.12,
+          142.547,
+          8390.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueAFStart": {
+      "type": "Point",
+      "tm": [
+        [
+          0.161618,
+          0.0,
+          0.986854
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.986854,
+          0.0,
+          0.161618
+        ],
+        [
+          2875.6,
+          297.219,
+          26975.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueAFEnd": {
+      "type": "Point",
+      "tm": [
+        [
+          0.673614,
+          0.0,
+          -0.739082
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.739082,
+          0.0,
+          0.673614
+        ],
+        [
+          4918.59,
+          294.492,
+          24682.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn1": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4.8485,
+          0.0,
+          29.6055
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.6055,
+          0.0,
+          4.8485
+        ],
+        [
+          2872.8,
+          294.178,
+          26948.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn2": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4.8485,
+          0.0,
+          29.6055
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.6055,
+          0.0,
+          4.8485
+        ],
+        [
+          2897.31,
+          294.178,
+          26969.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn4": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4.8485,
+          0.0,
+          29.6055
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.6055,
+          0.0,
+          4.8485
+        ],
+        [
+          2912.13,
+          294.178,
+          26952.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn6": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4.8485,
+          0.0,
+          29.6055
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.6055,
+          0.0,
+          4.8485
+        ],
+        [
+          2927.15,
+          294.178,
+          26935.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn3": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4.8485,
+          0.0,
+          29.6055
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.6055,
+          0.0,
+          4.8485
+        ],
+        [
+          2888.92,
+          294.178,
+          26931.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn5": {
+      "type": "Sphere",
+      "tm": [
+        [
+          4.8485,
+          0.0,
+          29.6055
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -29.6055,
+          0.0,
+          4.8485
+        ],
+        [
+          2904.97,
+          294.178,
+          26915.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedAFStart": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.958076,
+          0.0,
+          -0.286515
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.286515,
+          0.0,
+          -0.958076
+        ],
+        [
+          1994.77,
+          386.44,
+          -23960.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedAFEnd": {
+      "type": "Point",
+      "tm": [
+        [
+          0.369797,
+          0.0,
+          0.929112
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.929112,
+          0.0,
+          0.369797
+        ],
+        [
+          3162.21,
+          383.714,
+          -21119.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -28.7422,
+          0.0,
+          -8.59545
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          8.59545,
+          0.0,
+          -28.7422
+        ],
+        [
+          2020.11,
+          383.399,
+          -23951.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -28.7422,
+          0.0,
+          -8.59545
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          8.59545,
+          0.0,
+          -28.7422
+        ],
+        [
+          1989.97,
+          383.399,
+          -23938.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -28.7422,
+          0.0,
+          -8.59545
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          8.59545,
+          0.0,
+          -28.7422
+        ],
+        [
+          1999.06,
+          383.399,
+          -23917.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -28.7422,
+          0.0,
+          -8.59545
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          8.59545,
+          0.0,
+          -28.7422
+        ],
+        [
+          2008.11,
+          383.399,
+          -23896.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -28.7422,
+          0.0,
+          -8.59545
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          8.59545,
+          0.0,
+          -28.7422
+        ],
+        [
+          2028.03,
+          383.399,
+          -23929.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Spawn06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -28.7422,
+          0.0,
+          -8.59545
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          8.59545,
+          0.0,
+          -28.7422
+        ],
+        [
+          2035.78,
+          383.399,
+          -23907.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}
