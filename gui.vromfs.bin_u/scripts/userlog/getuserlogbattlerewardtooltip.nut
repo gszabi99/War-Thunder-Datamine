@@ -67,6 +67,9 @@ let tableColumns = [
     id = "weaponName"
     titleLocId = "logs/ammunition"
     cellTransformFn = function(cellValue, reward) {
+      if (cellValue == "artillery")
+        return {text = loc("structures/ussr_122mm_m30_0")}
+
       if (doesLocTextExist(cellValue))
         return {text = loc(cellValue)}
 
