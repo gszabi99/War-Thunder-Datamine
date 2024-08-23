@@ -1090,7 +1090,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           ? "".concat(loc("mainmenu/objectiveAvailable"), "\n* ", unitName)
           : $"{data.objectivesUnits}\n* {unitName}"
       }
-      if (!unitInResearchStatus && status?.shopStatus == "research")
+      if (!unitInResearchStatus && status?.shopStatus == "research" && status?.rank)
         unitInResearchStatus = status
     }
 
