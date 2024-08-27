@@ -308,7 +308,7 @@ let shellCount = @() {
   color = IlsColor.value
   fontSize = 45
   font = Fonts.hud
-  text = BombMode.value ? "" : (GunMode.value ? string.format("%03d", GunBullets0.value + GunBullets1.value) : (isAAMMode.value || RocketMode.value ? ShellCnt.value.tointeger() : ""))
+  text = BombMode.value ? "" : (GunMode.value ? string.format("%03d", max(0, GunBullets0.value) + max(0, GunBullets1.value)) : (isAAMMode.value || RocketMode.value ? ShellCnt.value.tointeger() : ""))
 }
 
 let flyDirHide = Computed(@() HasGndReticle.value && abs(TargetPos.value[0] - IlsPosSize[2] * 0.5) < IlsPosSize[2] * 0.05 && abs(TargetPos.value[1] - IlsPosSize[3] * 0.5) < IlsPosSize[3] * 0.05)

@@ -128,20 +128,13 @@ function getMaskByLevel(level) {
 
 function getBestSkinsList(skinsList, unitName, level, skinType) {
   let res = []
-  local bestMatch = 0
   let locationMask = getMaskByLevel(level)
   foreach (skin in skinsList) {
     let match = stdMath.number_of_set_bits(locationMask & getSkinLocationsMask(skin, unitName, skinType))
-    if (!match)
-      continue
-    if (match > bestMatch) {
-      bestMatch = match
-      res.clear()
-    }
-    if (match == bestMatch)
-      res.append(skin)
+    if (match)
+      res.append({match, skin})
   }
-  return res
+  return res.sort(@(a, b) b.match <=> a.match).map(@(i) i.skin)
 }
 
 function getIconTypeByMask(mask) {
