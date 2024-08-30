@@ -13,13 +13,15 @@ require %game.unit.unit_events
 require %game.events
 require strings
 require app
-
+require Sound
 
 [es(tag=sound)]
 def gm_engine_sound_init_es(evt : CmdInitComponent;
                             eid : EntityId;
                             uid : int;
                             playerNo : int;
+                            className : string;
+                            unitType : int;
                             var gm_engine_sound__pos_offset : float3&;
                             var gm_engine_sound__load_smooth : float&;
                             var gm_engine_sound__event_name : das_string&;
@@ -58,6 +60,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
       if !useNewEngineSound
         addSubTemplate(eid, "disabled_update") // delete with old engineSound system for gm
         return
+
       var engineBlk = sndBlk |> datablock_get_block_by_name(engineBlkName)
       if !is_hero && !is_low_mem_mode()
         let mainEngineBlkName = modelSoundBlk |> datablock_getStr("EngineName", "")
@@ -113,6 +116,54 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
         gm_engine_sound__event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
         gm_engine_sound__start_event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
         gm_engine_sound__stop_event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
+
+      if !is_mod_enabled()
+        return
+
+      using() <| $(var overloadsBlk : DataBlock)
+        let overloadBlkName = (uint(unitType) == uint(UnitType UT_Ship) || uint(unitType) == uint(UnitType UT_Submarine)) ? "sound/mod/ship_sound_overloads.blk" : "sound/mod/tank_sound_overloads.blk"
+        if datablock_load(overloadsBlk, overloadBlkName, DataBlockReadFlag ROBUST)
+          var modelName = className
+          let idx = modelName |> find("/")
+          if idx >= 0
+            modelName = modelName |> chop(idx + 1, length(modelName) - idx)
+          let customSoundBlk = overloadsBlk |> datablock_get_block_by_name(modelName)
+          if customSoundBlk == null
+            return
+          let customEngineSoundBlk = *customSoundBlk |> datablock_get_block_by_name("engine")
+          if customEngineSoundBlk != null
+            let cutomOutsideBlk = *customEngineSoundBlk |> datablock_get_block_by_name("outside")
+            if cutomOutsideBlk != null
+              let path = cutomOutsideBlk |> datablock_getStr("path", "")
+              let event = cutomOutsideBlk |> datablock_getStr("name", "")
+              gm_engine_sound__event_name := path + "/" + event
+              let eventStart = cutomOutsideBlk |> datablock_getStr("eventStart", "")
+              gm_engine_sound__start_event_name := path + "/" + eventStart
+              let eventStop = cutomOutsideBlk |> datablock_getStr("eventStop", "")
+              gm_engine_sound__stop_event_name := path + "/" + eventStop
+
+
+            let cutomInsideBlk = *customEngineSoundBlk |> datablock_get_block_by_name("interior")
+            if cutomInsideBlk != null
+              let path = cutomInsideBlk |> datablock_getStr("path", "")
+              let event = cutomInsideBlk |> datablock_getStr("name", "")
+              gm_engine_sound__event_inside_name := path + "/" + event
+              let eventStart = cutomInsideBlk |> datablock_getStr("eventStart", "")
+              gm_engine_sound__start_inside_name := path + "/" + eventStart
+              let eventStop = cutomInsideBlk |> datablock_getStr("eventStop", "")
+              gm_engine_sound__stop_inside_name := path + "/" + eventStop
+
+
+            if !is_hero
+              let cutomAiBlk = *customEngineSoundBlk |> datablock_get_block_by_name("ai")
+              if cutomAiBlk != null
+                let path = cutomAiBlk |> datablock_getStr(is_enemy ? "pathEnemy" : "path", "")
+                let event = cutomAiBlk |> datablock_getStr("name", "")
+                gm_engine_sound__event_name := path + "/" + event
+                let eventStart = cutomAiBlk |> datablock_getStr("eventStart", "")
+                gm_engine_sound__start_event_name := path + "/" + eventStart
+                let eventStop = cutomAiBlk |> datablock_getStr("eventStop", "")
+                gm_engine_sound__stop_event_name := path + "/" + eventStop
 
 
 [es(tag=sound, REQUIRE = controlledHero, REQUIRE_NOT = disabled)]
@@ -207,6 +258,8 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
 
   let velocityLen = length(gm.velocity)
   let speed = cvt(velocityLen, 0.f, 10.f, 0.f, 100.f)
+  let app = get_app()
+  let depth = ((app != null) ? app.currentScene.waterLevel : 0.f) - gm_engine_sound__pos.y
 
   let climb = gm |> calcuate_climb(sign(speedVector), velocityLen)
   let visible = gm.isVisibleFromHero ? 1. : 0.
@@ -221,6 +274,7 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
     curEvent |> set_var_optional("climb", climb)
     curEvent |> set_var_optional("is_visible", visible)
     curEvent |> set_var_optional("building_density", gm.buildingDensity)
+    curEvent |> set_var_optional("depth", depth)
 
   if !is_playing(gm_engine_sound__event) && is_valid_event(gm_engine_sound__event)
     release(gm_engine_sound__event)

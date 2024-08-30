@@ -41,6 +41,7 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
       : authDataByTypes.unknown
 
     let prefix = getCurCircuitOverride("passImgPrefix", "#ui/images/")
+    let email = getObjValue(this.loginScene, "loginbox_username", "")
     return {
       verStatusText = data?.getText() ?? data.text
       authTypeImg = data.img.subst({ prefix })
@@ -49,7 +50,7 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
       isRememberDevice = getObjValue(this.loginScene, "loginbox_code_remember_this_device", false)
       timerWidth = daguiFonts.getStringWidthPx("99:99:99", "fontNormal", this.guiScene)
       signInTroublesURL = getCurCircuitOverride("signInTroublesURL", "#url/2step/signInTroubles")
-      restoreProfileURL = getCurCircuitOverride("restoreProfileURL", "#url/2step/restoreProfile")
+      restoreProfileURL = "".concat(getCurCircuitOverride("restoreProfileURL", loc("url/2step/restoreProfile")), $"?email={email}&from=game")
     }
   }
 

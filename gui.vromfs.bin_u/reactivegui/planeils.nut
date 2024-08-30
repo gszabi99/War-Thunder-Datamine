@@ -52,6 +52,7 @@ let ilsSetting = Computed(function() {
     isTCSF196 = false
     isJ8HK = false
     isKaiserA10 = false
+    isKaiserA10c = false
     isF14 = false
     isMig17pf = false
     isTcsfVe130 = false
@@ -68,6 +69,7 @@ let ilsSetting = Computed(function() {
     isVDO = false
     isKai24p = false
     isF20 = false
+    isMetric = false
   }
   if (BlkFileName.value == "")
     return res
@@ -92,6 +94,7 @@ let ilsSetting = Computed(function() {
     isTCSF196 = blk.getBool("ilsTCSF196", false)
     isJ8HK = blk.getBool("ilsJ8HK", false)
     isKaiserA10 = blk.getBool("ilsKaiserA10", false)
+    isKaiserA10c = blk.getBool("ilsKaiserA10c", false)
     isF14 = blk.getBool("ilsF14", false)
     isMig17pf = blk.getBool("ilsMig17pf", false)
     isTcsfVe130 = blk.getBool("ilsTCSFVE130", false)
@@ -109,6 +112,7 @@ let ilsSetting = Computed(function() {
     isKai24p = blk.getBool("ilsKai24p", false)
     isF20 = blk.getBool("ilsF20", false)
     isChinaLang = blk.getBool("chinaLang", false)
+    isMetric = blk.getBool("isMetricIls", false)
   }
 })
 
@@ -120,12 +124,12 @@ let planeIls = @(width, height) function() {
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
-    isKai24p, isF20, isChinaLang } = ilsSetting.value
+    isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
-      isF20)
+      isF20 || isKaiserA10c)
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
     children = [
@@ -150,7 +154,7 @@ let planeIls = @(width, height) function() {
       (isShimadzu ? ShimadzuIls(width, height) : null),
       (isTCSF196 ? TCSF196(width, height) : null),
       (isJ8HK ? J8IIHK(width, height) : null),
-      (isKaiserA10 ? KaiserA10(width, height) : null),
+      (isKaiserA10 ? KaiserA10(width, height, false) : null),
       (isF14 ? F14(width, height) : null),
       (isMig17pf ? mig17(width, height) : null),
       (isTcsfVe130 ? TCSFVE130(width, height) : null),
@@ -161,11 +165,12 @@ let planeIls = @(width, height) function() {
       (isElbit ? Elbit(width, height) : null),
       (isIls28K ? Ils28K(width, height) : null),
       (isF15a ? ilsF15a(width, height) : null),
-      (isEP17 ? ilsEP17(width, height) : null),
+      (isEP17 ? ilsEP17(width, height, isMetric) : null),
       (isAmx ? ilsAmx(width, height) : null),
       (isVDO ? KaiserVDO(width, height) : null),
       (isKai24p ? ilsKai24p(width, height) : null),
       (isF20 ? ilsF20(width, height) : null),
+      (isKaiserA10c ? KaiserA10(width, height, true) : null),
       (isStockHeli ? StockHeliIls() : null)
     ]
   }

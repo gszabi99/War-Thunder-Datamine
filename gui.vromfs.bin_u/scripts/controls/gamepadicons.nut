@@ -60,8 +60,6 @@ let controlsList = { //table for faster check existance
   r_stick_to_left_n_right = true
   r_stick_to_up_n_down = true
   r_stick_up = true
-  l_stick_center = true
-  r_stick_center = true
 
   table_plays_icon = true
   team_dirpad = true
@@ -96,8 +94,6 @@ let btnNameByIndex = [
   "r_stick_left"  // 23 JOY_XBOX_REAL_BTN_R_THUMB_LEFT
   "r_stick_up"    // 24 JOY_XBOX_REAL_BTN_R_THUMB_UP
   "r_stick_down"  // 25 JOY_XBOX_REAL_BTN_R_THUMB_DOWN
-  "l_stick_center" // 26 JOY_XBOX_REAL_BTN_L_THUMB_CENTER
-  "r_stick_center" // 27 JOY_XBOX_REAL_BTN_R_THUMB_CENTER
 ]
 
 let mouseButtonTextures = [

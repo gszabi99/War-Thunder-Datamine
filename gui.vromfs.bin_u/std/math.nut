@@ -166,6 +166,12 @@ function median(sortedList) {
     : (sortedList[(n / 2) - 1] + sortedList[n / 2]) / 2.0
 }
 
+function truncateToMultiple(number, multiple) {
+  if (multiple == 0)
+    return -1
+  return math.floor(number / multiple) * multiple
+}
+
 //EXPORT content for require
 let export = math.__merge({
   GOLDEN_RATIO
@@ -187,6 +193,7 @@ let export = math.__merge({
   calcPercent = @(value) (100.0 * value + 0.5).tointeger()
   average
   median
+  truncateToMultiple
 })
 
 return export

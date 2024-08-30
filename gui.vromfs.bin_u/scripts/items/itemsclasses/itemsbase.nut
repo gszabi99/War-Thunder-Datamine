@@ -400,6 +400,7 @@ let BaseItem = class {
     if (getTblValue("contentIcon", params, true))
       res.contentIconData <- this.getContentIconData()
 
+    res.isPrizeUnitBought <- this?.isPrizeUnitBought() ?? false
     return this.getSubstitutionViewData(res, params)
   }
 
@@ -555,6 +556,7 @@ let BaseItem = class {
         btnName = this.getBuyText(false, isShort)
         btnColoredName = this.getBuyText(true, isShort)
         isInactive = this.hasReachedMaxAmount()
+        btnStyle = this?.isPrizeUnitBought() ? "" : null
       }
 
     return null
@@ -790,7 +792,7 @@ let BaseItem = class {
   isVisibleInWorkshopOnly = @() false
   getIconName = @() this.getSmallIconName()
   canCraftOnlyInCraftTree = @() false
-  getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount" }
+  getLocIdsList = @() { reachedMaxAmount = "item/reached_max_amount", vehicleAlreadyBought = "item/vehicle_already_bought" }
   consume = @(_cb, _params) false
   showAllowableRecipesOnly = @() false
   hasUsableRecipe = @() false

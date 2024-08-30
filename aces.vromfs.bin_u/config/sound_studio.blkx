@@ -693,7 +693,6 @@
         "sounds/fx/everywhere/ground/turrets",
         "sounds/fx/everywhere/aircraft/outside_mechanisation",
         "sounds/fx/everywhere/aircraft/canopy",
-        "sounds/fx/everywhere/aircraft/wheel_hit",
         "sounds/outside/fx/track_surfaces",
         "sounds/outside/fx/ship_water",
         "sounds/outside_underwater/engines"
@@ -1162,9 +1161,11 @@
     "eventOutside": "vibration_camera",
     "eventCockpitOpen": "vibration_cockpit_open",
     "eventCockpitOpenJet": "vibration_jet_cockpit_open",
+    "eventCockpitOpenHeli": "vibration_heli_cockpit_open",
     "eventOutsideLand": "vibration_land_camera",
     "eventCockpitLand": "vibration_land_cockpit",
     "eventCockpitLandJet": "vibration_jet_land_cockpit",
+    "eventCockpitLandHeli": "vibration_heli_land_cockpit",
     "eventOverheatCamera": "engine_overheat_camera",
     "eventOverheatCockpit": "engine_overheat_cockpit",
     "eventOverheatStart": "engine_overheat_start",
@@ -20728,10 +20729,34 @@
           "event": "07_fighting_for_survivability/voice_message_gunner_fire_control_damaged",
           "playerRole": "tank_gunner"
         },
+        "stabilizerDestroyed": {
+          "event": "07_fighting_for_survivability/voice_message_gunner_stabilizer_damaged",
+          "playerRole": "tank_gunner",
+          "minSpeechInterval": 0.0,
+          "delayTime": 1.0
+        },
+        "weaponGuidanceDestroyed": {
+          "event": "07_fighting_for_survivability/voice_message_gunner_guided_weapon_ctrl_damaged",
+          "playerRole": "tank_gunner",
+          "minSpeechInterval": 0.0,
+          "delayTime": 1.0
+        },
         "fireControlRepaired": {
           "event": "07_fighting_for_survivability/voice_message_gunner_fire_control_repaired",
           "playerRole": "tank_gunner",
           "minSpeechInterval": 30.0
+        },
+        "stabilizerRepaired": {
+          "event": "07_fighting_for_survivability/voice_message_gunner_stabilizer_repaired",
+          "playerRole": "tank_gunner",
+          "minSpeechInterval": 0.0,
+          "delayTime": 1.0
+        },
+        "weaponGuidanceRepaired": {
+          "event": "07_fighting_for_survivability/voice_message_gunner_guided_weapon_ctrl_repaired",
+          "playerRole": "tank_gunner",
+          "minSpeechInterval": 0.0,
+          "delayTime": 1.0
         },
         "electronicsRepaired": {
           "event": "07_fighting_for_survivability/voice_message_gunner_electronic_repaired",

@@ -62,8 +62,6 @@ let { set_rnd_seed } = require("dagor.random")
   hasFeature = require("%scripts/user/features.nut").hasFeature
 }
 
-::FORCE_UPDATE <- true
-
 registerPersistentData("MainGlobals", getroottable(),
   [
     "is_debug_mode_enabled", "first_generation",

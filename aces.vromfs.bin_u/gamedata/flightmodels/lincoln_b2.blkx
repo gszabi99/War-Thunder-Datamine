@@ -20,6 +20,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -3128,6 +3129,46 @@
               }
             ]
           }
+        },
+        "preset": {
+          "name": "lincoln_default",
+          "blk": "gameData/FlightModels/weaponPresets/lincoln_14x250lbs.blk",
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs_43.blk",
+              "amountPerTier": 2.0,
+              "tier": [
+                {
+                  "idx": 3,
+                  "iconType": "bombs_small_group_x2"
+                },
+                {
+                  "idx": 4,
+                  "iconType": "bombs_small_group_x2"
+                },
+                {
+                  "idx": 5,
+                  "iconType": "bombs_small_group_x2"
+                },
+                {
+                  "idx": 6,
+                  "iconType": "bombs_small_group_x2"
+                },
+                {
+                  "idx": 7,
+                  "iconType": "bombs_small_group_x2"
+                },
+                {
+                  "idx": 8,
+                  "iconType": "bombs_small_group_x2"
+                },
+                {
+                  "idx": 9,
+                  "iconType": "bombs_small_group_x2"
+                }
+              ]
+            }
+          }
         }
       },
       {
@@ -3182,6 +3223,21 @@
             ]
           }
         }
+      },
+      {
+        "name": "lincoln_1x4000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/lincoln_1x4000lbs.blk",
+        "reqModification": "wellington_lbc"
+      },
+      {
+        "name": "lincoln_1x8000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/lincoln_1x8000lbs.blk",
+        "reqModification": "uk_12000lb_hc_mkI_n52_bomb"
+      },
+      {
+        "name": "lincoln_1x12000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/lincoln_1x12000lbs.blk",
+        "reqModification": "uk_12000lb_hc_mkI_n52_bomb"
       }
     ]
   },
@@ -3468,14 +3524,23 @@
     },
     "subc_mk3": {
       "modClass": "weapon",
-      "tier": 3,
-      "reqModLevel": 7.0,
+      "tier": 2,
       "reqModification": "subc_mk1"
     },
     "subc_mk3_2": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 3,
       "reqModification": "subc_mk3"
+    },
+    "wellington_lbc": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "subc_mk3_2"
+    },
+    "uk_12000lb_hc_mkI_n52_bomb": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "wellington_lbc"
     }
   },
   "user_skin": {

@@ -306,12 +306,18 @@
       "wheel_r_04_dm": {},
       "wheel_r_05_dm": {},
       "wheel_r_06_dm": {},
+      "wheel_r_07_dm": {},
+      "wheel_r_08_dm": {},
+      "wheel_r_09_dm": {},
       "wheel_l_01_dm": {},
       "wheel_l_02_dm": {},
       "wheel_l_03_dm": {},
       "wheel_l_04_dm": {},
       "wheel_l_05_dm": {},
       "wheel_l_06_dm": {},
+      "wheel_l_07_dm": {},
+      "wheel_l_08_dm": {},
+      "wheel_l_09_dm": {},
       "wheel_r_drive_dm": {},
       "wheel_l_drive_dm": {},
       "wheel_r_back_dm": {},
@@ -468,35 +474,6 @@
       "power_system_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
-      }
-    },
-    "cannon_breech": {
-      "armorClass": "tank_structural_steel",
-      "hp": 150.0,
-      "armorThickness": 150.0,
-      "fireProtectionHp": 5.0,
-      "hidableInViewer": false,
-      "cannon_breech_dm": {
-        "restrainDamage": 0.5
-      },
-      "cannon_breech_01_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_02_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_03_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_04_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_05_dm": {
-        "armorThickness": 10.0
-      },
-      "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
       }
     },
     "power_block": {
@@ -761,6 +738,16 @@
         "armorThickness": 10.0,
         "hp": 100.0
       }
+    },
+    "cannon_breech": {
+      "armorClass": "tank_structural_steel",
+      "hp": 150.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "hidableInViewer": false,
+      "restrainDamage": 0.5,
+      "cannon_breech_01_dm": {},
+      "cannon_breech_02_dm": {}
     }
   },
   "sound": {
@@ -1574,7 +1561,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -1848,6 +1836,7 @@
           "hasHorizontal": false,
           "horizontalOmegaMult": 1.0,
           "horizontalSpeedLimitKPH": 50.0,
+          "forceEnabled": true,
           "hasVertical": true,
           "verticalOmegaMult": 0.7,
           "verticalSpeedLimitKPH": 24.0,
@@ -1988,7 +1977,7 @@
           ],
           "pitch": [
             -10.0,
-            50.0
+            22.0
           ]
         }
       },
@@ -2278,58 +2267,30 @@
     }
   },
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)_01$",
+    "find": "^bone_suspension_(._\\d\\d)$",
     "points": {
-      "suspension_01": {
-        "name": "bone_suspension_$1_01"
+      "suspension": {
+        "name": "bone_suspension_$1"
       },
-      "wheel_01": {
-        "searchChildren": {
-          "parent": "suspension_01",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "suspension_02": {
-        "name": "bone_suspension_$1_02"
-      },
-      "wheel_02": {
-        "searchChildren": {
-          "parent": "suspension_02",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
-          ]
-        }
+      "wheel": {
+        "name": "bone_wheel_$1",
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
-      "edge": [
-        {
-          "from": "suspension_01",
-          "to": "wheel_01"
-        },
-        {
-          "from": "suspension_02",
-          "to": "wheel_02"
-        }
-      ]
+      "edge": {
+        "from": "suspension",
+        "to": "wheel"
+      }
     }
   },
   "ammo": {

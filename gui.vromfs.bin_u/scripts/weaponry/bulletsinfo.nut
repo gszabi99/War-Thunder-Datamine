@@ -6,6 +6,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { ceil, change_bit } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
@@ -467,6 +468,8 @@ function findIdenticalWeapon(weapon, weaponList, modsList) {
 
   return null
 }
+
+eventbus_subscribe("clearCacheForBullets", @(_) unitsPrimaryBulletsInfo.clear())
 
 function getBulletsInfoForPrimaryGuns(air) {
   if (!air.unitType.canUseSeveralBulletsForGun)

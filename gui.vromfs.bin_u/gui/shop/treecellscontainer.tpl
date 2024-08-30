@@ -151,20 +151,27 @@ shopRankTable {
       position:t='absolute'
       pos:t='(pw - w)/2, (ph - h)/2'
       flow:t='vertical'
-      text {
-        id:t='top_units_bonus_label'
-        text:t='#shop/exp_top_units_bonus'
-        input-transparent:t="yes"
+      tdiv {
+        position:t='relative'
+        flow:t='horizontal'
         tooltip:t=''
+        text {
+          position:t='relative'
+          id:t='top_units_bonus_label'
+          text:t='#shop/exp_top_units_bonus'
+          input-transparent:t="yes"
+        }
         img {
-          position:t='absolute'
-          pos:t='pw + 0.4w, (ph - h)/2'
-          size:t='0.65*ph, 0.65*ph'
+          position:t='relative'
+          top:t='(ph-h)/2'
+          margin-left:t='5@sf/@pf'
+          size:t='22@sf/@pf, 22@sf/@pf'
           background-image:t='#ui/gameuiskin#btn_help.svg'
           background-svg-size:t='@cIco, @cIco'
           bgcolor:t='#FFFFFFFF'
         }
       }
+
       CheckBox {
         id:t='show_nation_bonus_in_tab'
         halign:t='center'

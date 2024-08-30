@@ -413,8 +413,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -856,6 +857,9 @@
     "EngineNameAi": "engine_tank_ai_middle",
     "TrackSoundNameAi": "tracks_ai_middle"
   },
+  "hideNodesInDmg": {
+    "node": "rocket_inside"
+  },
   "DamageEffects": {
     "part": [
       {
@@ -1288,7 +1292,7 @@
         "errExplTime": 0.0,
         "turret": {
           "head": "bone_turret",
-          "gun": "gun",
+          "gun": "bone_gun",
           "gunnerDm": "gunner_dm",
           "linkedAnimPart": {
             "verNode": "bone_camera_gunner",
@@ -1410,7 +1414,10 @@
           ]
         }
       }
-    ]
+    ],
+    "animatedBones": {
+      "node": "bone_roll_01"
+    }
   },
   "weapon_presets": {
     "preset": {

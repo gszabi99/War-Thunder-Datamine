@@ -22,6 +22,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2399,7 +2400,7 @@
     }
   },
   "flexWing": {
-    "wingStrainCoeff": 0.4,
+    "wingStrainCoeff": 0.2,
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
@@ -2426,6 +2427,10 @@
       {
         "name": "lightning_f35_540lb",
         "blk": "gameData/FlightModels/weaponPresets/lightning_f35_540lb.blk"
+      },
+      {
+        "name": "lightning_f35_540lb_retarded",
+        "blk": "gameData/FlightModels/weaponPresets/lightning_f35_540lb_retarded.blk"
       },
       {
         "name": "lightning_f35_1000lb",
@@ -2591,6 +2596,23 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_540_retarded",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": "pylon_adapter1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "bomb_1000",
             "reqModification": "uk_mk_10_1000lb",
@@ -2630,6 +2652,37 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "bomb_540_retarded_x2",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_adapter1",
+                "adapter1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
                 "emitter": "bomb4",
                 "bullets": 1,
                 "external": true,
@@ -3233,6 +3286,23 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "bomb_540_retarded",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": "pylon_adapter2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "bomb_1000",
             "reqModification": "uk_mk_10_1000lb",
@@ -3272,6 +3342,37 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "bomb_540_retarded_x2",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_adapter2",
+                "adapter2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
+                "emitter": "bomb5",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
                 "emitter": "bomb6",
                 "bullets": 1,
                 "external": true,

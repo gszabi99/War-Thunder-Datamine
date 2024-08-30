@@ -27,6 +27,7 @@ let {addModalWindow, removeModalWindow, modalWindowsComponent} = modalWindows
 let {showMsgbox} = require("editor_msgbox.nut")
 let infoBox = @(text) showMsgbox({text})
 let mkSortModeButton = require("components/mkSortModeButton.nut")
+let nameFilter = require("components/nameFilter.nut")
 
 let cursors = require("components/cursors.nut")
 let {mkTemplateTooltip, mkCompMetaInfoText} = require("components/templateHelp.nut")
@@ -1138,7 +1139,7 @@ function mkEntityRow(eid, template_name, name, is_odd) {
   }
 }
 
-let sortedEntites = Computed(function() {
+let sortedEntities = Computed(function() {
   if (!propPanelVisible.value)
     return []
 
@@ -1157,6 +1158,38 @@ let sortedEntites = Computed(function() {
     entitiesList.sort(@(lsh, rsh) entitySortState.value.func(lsh.eid, rsh.eid))
   return entitiesList
 })
+
+let templateFilterText = Watched("")
+
+let filteredEntities = Computed(function() {
+  let text = templateFilterText.get()
+  let needFilter = (text?.len() ?? 0) > 0
+  return needFilter
+    ? sortedEntities.get().filter(@(v) v.name.contains(text))
+    : sortedEntities.get()
+})
+
+let templateFilter = nameFilter(templateFilterText, {
+  placeholder = "Filter by template"
+
+  function onChange(text) {
+    templateFilterText.set(text)
+  }
+
+  function onEscape() {
+    set_kb_focus(null)
+  }
+
+  function onReturn() {
+    set_kb_focus(null)
+  }
+
+  function onClear() {
+    templateFilterText.set("")
+    set_kb_focus(null)
+  }
+})
+
 
 function compPanel() {
 
@@ -1207,7 +1240,7 @@ function compPanel() {
     local listRows = []
     if (showList) {
       local odd = true
-      foreach (v in sortedEntites.value) {
+      foreach (v in filteredEntities.get()) {
         listRows.append(mkEntityRow(v.eid, v.tplName, v.name, odd))
         odd = !odd
       }
@@ -1229,7 +1262,7 @@ function compPanel() {
       watch = [
         selectedEntity, selectedEntities, propPanelVisible, filterString,
         windowState, isCurEntityComponents, filteredCurComponents, selectedCompName,
-        de4workMode, riSelectShown, sortedEntites
+        de4workMode, riSelectShown, filteredEntities
       ]
       size = [sw(100), sh(100)]
 
@@ -1270,6 +1303,7 @@ function compPanel() {
                     closeButton(closePropPanel)
                   ]
                 }
+                showList ? templateFilter : null
                 nonSceneEntity ? warningGenerated() : null
                 showComps && isCurEntityComponents.value ? compNameFilter : null
                 showComps ? scrolledGrid : null

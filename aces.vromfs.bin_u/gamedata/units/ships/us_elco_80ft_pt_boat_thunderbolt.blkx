@@ -39,7 +39,6 @@
   ],
   "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "canReloadNonGuns": true,
-  "rearmTimeOnField": 60.0,
   "supportsCombinedPriSecTriggers": true,
   "hideNodesInDmg": {
     "node": "flag"
@@ -971,6 +970,12 @@
       "armorThickness": 5.0,
       "fireProtectionHp": 8.0,
       "ammunition_storage_01_dm": {
+        "hp": 400.0
+      },
+      "ammunition_storage_02_dm": {
+        "hp": 400.0
+      },
+      "ammunition_storage_03_dm": {
         "hp": 400.0
       }
     },
@@ -3801,10 +3806,34 @@
   },
   "ammoStowages": {
     "ammo1": {
+      "weaponTrigger": "gunner0",
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_01_dm": {
+          "count": 900
+        }
+      }
+    },
+    "ammo2": {
       "weaponTrigger": [
-        "gunner0",
         "gunner3",
-        "gunner4",
+        "gunner4"
+      ],
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_02_dm": {
+          "count": 8000
+        }
+      }
+    },
+    "ammo3": {
+      "weaponTrigger": [
         "gunner1",
         "gunner2"
       ],
@@ -3813,8 +3842,8 @@
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
-        "ammunition_storage_01_dm": {
-          "count": 17900
+        "ammunition_storage_03_dm": {
+          "count": 9000
         }
       }
     }

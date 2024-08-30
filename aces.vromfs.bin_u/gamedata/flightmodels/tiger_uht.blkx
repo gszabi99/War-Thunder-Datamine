@@ -10,7 +10,7 @@
   "haveCCIPForTurret": true,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
-  "hmdAH64": true,
+  "hmdTopOwl": true,
   "hasHelmetDesignator": true,
   "mfdCamTads": true,
   "gearSinkRangeLR": 0.195,
@@ -38,6 +38,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map_helicopter.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1441,23 +1442,6 @@
               "type": "map"
             }
           ]
-        },
-        {
-          "textureArea": [
-            0.0,
-            0.0,
-            0.8,
-            0.8
-          ],
-          "page": {
-            "type": "plane_ils",
-            "ilsSize": [
-              0.2,
-              0.2
-            ],
-            "ilsOffsetForce": 0.2,
-            "brightnessMult": 3.5
-          }
         }
       ]
     },
@@ -1485,7 +1469,12 @@
     "sensor": [
       {
         "blk": "gameData/sensors/ir_tracker_360.blk",
-        "node": "optic1_gun"
+        "node": "optic1_gun",
+        "offset": [
+          0.0,
+          2.6,
+          0.0
+        ]
       },
       {
         "blk": "gameData/sensors/us_alr_400.blk"
@@ -2213,7 +2202,12 @@
           "sensor": [
             {
               "blk": "gameData/sensors/ir_tracker_360.blk",
-              "node": "optic1_gun"
+              "node": "optic1_gun",
+              "offset": [
+                0.0,
+                2.65,
+                0.0
+              ]
             },
             {
               "blk": "gameData/sensors/us_alr_400.blk"

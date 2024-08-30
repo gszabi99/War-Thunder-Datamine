@@ -20,6 +20,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2179,12 +2180,20 @@
         "blk": "gameData/FlightModels/weaponPresets/q_5_early_default.blk"
       },
       {
+        "name": "q_5_early_4x100kg_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/q_5_early_4x100kg_bombs.blk"
+      },
+      {
         "name": "q_5_early_4x250kg_bombs",
         "blk": "gameData/FlightModels/weaponPresets/q_5_early_4x250kg_bombs.blk"
       },
       {
         "name": "q_5_early_type90_rockets",
         "blk": "gameData/FlightModels/weaponPresets/q_5_early_type90_rockets.blk"
+      },
+      {
+        "name": "q_5_early_4x250kg_incendiary_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/q_5_early_4x250kg_incendiary_bombs.blk"
       }
     ]
   },
@@ -2254,66 +2263,170 @@
         "index": 2,
         "tier": 7,
         "order": 3,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "gp250",
-          "reqModification": "cn_q5_type_250",
-          "Weapon": {
-            "trigger": "bombs",
-            "blk": "gameData/Weapons/BombGuns/su_ofab250_olive.blk",
-            "emitter": "bomb250_3",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "100_2",
+            "reqModification": "cn_q5_type_100",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_100_2.blk",
+              "emitter": "gp_100_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "gp250",
+            "reqModification": "cn_q5_type_250",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2.blk",
+              "emitter": "gp_250_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "gp250_inc",
+            "reqModification": "cn_q5_type_250",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+              "emitter": "gp_250_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 3,
         "tier": 6,
         "order": 5,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_middle_group_x2",
-          "name": "gp250_x2",
-          "reqModification": "cn_q5_type_250",
-          "Weapon": [
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250_olive.blk",
-              "emitter": "bomb250_2",
-              "bullets": 1,
-              "external": false,
-              "separate": true
-            },
-            {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/BombGuns/su_ofab250_olive.blk",
-              "emitter": "bomb250_1",
-              "bullets": 1,
-              "external": false,
-              "separate": true
-            }
-          ]
-        }
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x2",
+            "name": "100_2_x2",
+            "reqModification": "cn_q5_type_100",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_100_2.blk",
+                "emitter": "gp_100_003",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_100_2.blk",
+                "emitter": "gp_100_004",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "gp250_x2",
+            "reqModification": "cn_q5_type_250",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2.blk",
+                "emitter": "gp_250_003",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2.blk",
+                "emitter": "gp_250_004",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "napalm_middle_group_x2",
+            "name": "gp250_x2_inc",
+            "reqModification": "cn_q5_type_250",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+                "emitter": "gp_250_003",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+                "emitter": "gp_250_004",
+                "bullets": 1,
+                "external": false,
+                "separate": true
+              }
+            ]
+          }
+        ]
       },
       {
         "index": 4,
         "tier": 5,
         "order": 4,
-        "WeaponPreset": {
-          "iconType": "bombs_middle",
-          "name": "gp250",
-          "reqModification": "cn_q5_type_250",
-          "Weapon": {
-            "trigger": "bombs",
-            "blk": "gameData/Weapons/BombGuns/su_ofab250_olive.blk",
-            "emitter": "bomb250_4",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "100_2",
+            "reqModification": "cn_q5_type_100",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_100_2.blk",
+              "emitter": "gp_100_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "gp250",
+            "reqModification": "cn_q5_type_250",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2.blk",
+              "emitter": "gp_250_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "gp250_inc",
+            "reqModification": "cn_q5_type_250",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+              "emitter": "gp_250_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 5,
@@ -2587,7 +2700,12 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
+    "cn_q5_type_100": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "cn_q5_type_250": {
+      "reqModification": "cn_q5_type_100",
       "modClass": "weapon",
       "tier": 2
     },

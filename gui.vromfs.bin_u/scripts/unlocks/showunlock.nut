@@ -51,7 +51,7 @@ function guiStartUnlockWnd(config) {
   return true
 }
 
-::showUnlockWnd <- function showUnlockWnd(config) {
+function showUnlockWnd(config) {
   if (isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
       isHandlerInScene(gui_handlers.RankUpModal) ||
       isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
@@ -59,6 +59,8 @@ function guiStartUnlockWnd(config) {
 
   guiStartUnlockWnd(config)
 }
+
+::showUnlockWnd <- showUnlockWnd
 
 ::check_delayed_unlock_wnd <- function check_delayed_unlock_wnd(prevUnlockData = null) {
   disableSeenUserlogs([prevUnlockData?.disableLogId])
@@ -348,4 +350,5 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 return {
   guiStartUnlockWnd
+  showUnlockWnd
 }

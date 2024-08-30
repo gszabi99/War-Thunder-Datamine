@@ -2758,6 +2758,9 @@
         "hp": 400.0
       },
       "ammunition_storage_02_dm": {
+        "hp": 400.0
+      },
+      "ammunition_storage_03_dm": {
         "hp": 600.0
       }
     },
@@ -3457,7 +3460,7 @@
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_2",
         "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_02_dm": {
+        "ammunition_storage_03_dm": {
           "count": 2000
         }
       }
@@ -3465,7 +3468,6 @@
     "ammo2": {
       "weaponTrigger": [
         "gunner0",
-        "gunner1",
         "gunner2"
       ],
       "shells": {
@@ -3474,11 +3476,23 @@
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
         "ammunition_storage_01_dm": {
-          "count": 10000
+          "count": 8000
         }
       }
     },
     "ammo3": {
+      "weaponTrigger": "gunner1",
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_02_dm": {
+          "count": 2000
+        }
+      }
+    },
+    "ammo4": {
       "weaponTrigger": "mines",
       "removeLoadedAmmo": false,
       "fatalFire": false,

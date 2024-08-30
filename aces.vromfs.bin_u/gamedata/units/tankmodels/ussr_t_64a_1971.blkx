@@ -622,8 +622,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2167,12 +2168,6 @@
       "animationMultiplier": -0.68,
       "height": 0.062,
       "width": 0.54,
-      "fricSideRot": [
-        5.0,
-        0.0,
-        0.6,
-        0.3
-      ],
       "tracksTensionK": [
         3.5,
         10.0,
@@ -2186,7 +2181,13 @@
       "trackMaxSinking": 0.17,
       "trackMaxHeight": 1.16,
       "trackStartOffset": 0.01,
-      "trackConnector": true
+      "trackConnector": true,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.6,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",

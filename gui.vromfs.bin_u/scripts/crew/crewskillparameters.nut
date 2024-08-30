@@ -6,6 +6,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
 let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
 let { get_game_params_blk, get_wpcost_blk } = require("blkGetters")
+let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 
 let parametersByCrewId = {}
 let skillGroups = { //skills which have completely the same parameters for different members
@@ -88,7 +89,7 @@ function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, u
     resArray.append(colorize("warningTextColor", text))
   }
   else if (crew && memberName == "groundService" && skillName == "repair") {
-    let fullParamsList = ::g_skill_parameters_request_type.CURRENT_VALUES.getParameters(crew.id, unit)
+    let fullParamsList = skillParametersRequestType.CURRENT_VALUES.getParameters(crew.id, unit)
     let repairRank = fullParamsList?[difficulty.crewSkillName][memberName].repairRank.groundServiceRepairRank ?? 0
     if (repairRank != 0 && unit && unit.rank > repairRank) {
       let text = loc("crew/notEnoughRepairRank", {
@@ -198,7 +199,7 @@ function getSortedArrayByParamsTable(parameters, crewUnitType) {
 function parseParameters(columnTypes,
   currentParametersByRequestType, selectedParametersByRequestType, crewUnitType) {
   let res = []
-  let currentParameters = currentParametersByRequestType[::g_skill_parameters_request_type.CURRENT_VALUES]
+  let currentParameters = currentParametersByRequestType[skillParametersRequestType.CURRENT_VALUES]
   if (!u.isTable(currentParameters))
     return res
 
@@ -234,7 +235,7 @@ function getSkillListParameterRowsView(crew, difficulty, notFilteredSkillsList, 
   let columnTypes = getColumnsTypesList(skillsList, crewUnitType)
 
   //preparing full requestsList
-  let fullRequestsList = [::g_skill_parameters_request_type.CURRENT_VALUES] //required for getting params list
+  let fullRequestsList = [skillParametersRequestType.CURRENT_VALUES] //required for getting params list
   foreach (columnType in columnTypes) {
     u.appendOnce(columnType.previousParametersRequestType, fullRequestsList, true)
     u.appendOnce(columnType.currentParametersRequestType, fullRequestsList, true)

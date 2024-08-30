@@ -9,7 +9,7 @@ let { brokenEnginesCount, enginesInCooldown, enginesCount,
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
   aliveCrewMembersCount, driverAlive } = require("crewState.nut")
-let { isVisibleDmgIndicator } = require("hudState.nut")
+let { needShowDmgIndicator } = require("hudState.nut")
 let dmModule = require("dmModule.nut")
 let { damageModule, shipSteeringGauge, hudLogBgColor } = require("style/colors.nut").hud
 
@@ -384,27 +384,27 @@ let xraydoll = {
 }
 
 return @() {
-  watch = isVisibleDmgIndicator
+  watch = needShowDmgIndicator
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
-  padding = isVisibleDmgIndicator.value ? hdpx(10) : 0
-  gap = isVisibleDmgIndicator.value ? { size = [flex(), hdpx(5)] } : 0
+  padding = needShowDmgIndicator.get() ? hdpx(10) : 0
+  gap = needShowDmgIndicator.get() ? { size = [flex(), hdpx(5)] } : 0
   behavior = Behaviors.RecalcHandler
   function onRecalcLayout(_initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {
       eventbus_send("update_damage_panel_state", {
         pos = [elem.getScreenPosX(), elem.getScreenPosY()]
         size = [elem.getWidth(), elem.getHeight()]
-        visible = isVisibleDmgIndicator.value
+        visible = needShowDmgIndicator.get()
       })
     }
     else
       eventbus_send("update_damage_panel_state", {})
   }
 
-  children = isVisibleDmgIndicator.value
+  children = needShowDmgIndicator.get()
     ? [
         speedComp
         shipStateDisplay

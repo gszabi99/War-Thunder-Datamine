@@ -26,4 +26,4 @@ def unit_set_controlled_by_on_client_es(evt : Event;
                                         var replication : NetObject)
   let SERVER_CONN_ID = 0
   replication |> net_object_setControlledBy(SERVER_CONN_ID)
-  print("[ECS] set SERVER_CONN_ID for unit {uid}")
+  print("[ECS] set SERVER_CONN_ID for unit uid:{uid}")

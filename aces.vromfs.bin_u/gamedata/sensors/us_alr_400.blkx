@@ -13,16 +13,25 @@
   ],
   "range": 70000.0,
   "signalSfxName": "alarm_radar",
-  "band4": true,
-  "band5": true,
-  "band6": true,
+  "band4": [
+    true,
+    true
+  ],
+  "band5": [
+    true,
+    true
+  ],
+  "band6": [
+    true,
+    true
+  ],
   "band7": true,
   "band8": true,
   "band9": true,
   "detectTracking": true,
   "detectLaunch": false,
   "targetTracking": true,
-  "matchSector": 15.0,
+  "matchSector": 10.0,
   "targetSuperResolution": false,
   "trackedTargetsMax": 12,
   "targetRangeFinder": true,
@@ -35,6 +44,10 @@
   "targetHoldTime": 5.0,
   "newTargetHoldTime": 5.0,
   "mandatoryRecognition": false,
+  "band2": true,
+  "band3": true,
+  "override:targetSuperResolution": true,
+  "band10": true,
   "receivers": {
     "receiver": [
       {
@@ -53,8 +66,112 @@
       }
     ]
   },
+  "targetsPresenceGroups": {
+    "targetsPresenceGroup": [
+      {
+        "text": "hud/rwr_threat_ai_track",
+        "search": false,
+        "track": true,
+        "launch": true,
+        "group": [
+          "MiG-19",
+          "MiG-21",
+          "MiG-23",
+          "MiG-29",
+          "F-3",
+          "F-8",
+          "F-4",
+          "F-104",
+          "F-5",
+          "F-14",
+          "F-15",
+          "F-16",
+          "F-18",
+          "Tornado F",
+          "Tornado Gr1",
+          "Vautour",
+          "Mirage-3",
+          "Mirage F1",
+          "Mirage 2000",
+          "A-32",
+          "J-35",
+          "J-37",
+          "J-39",
+          "J-7",
+          "J-8",
+          "MiG-23 CW",
+          "MiG-29 CW",
+          "F-3 CW",
+          "F-4 CW",
+          "F-104 CW",
+          "F-14 CW",
+          "F-15 CW",
+          "F-16 CW",
+          "F-18 CW",
+          "J-37 CW",
+          "J-39 CW",
+          "Tornado F CW",
+          "Mirage 2000 CW",
+          "J-8 CW",
+          "ARH"
+        ]
+      },
+      {
+        "text": "hud/rwr_threat_aaa_track",
+        "search": false,
+        "track": true,
+        "launch": true,
+        "group": "AAA"
+      },
+      {
+        "text": "hud/rwr_threat_sam_track",
+        "search": false,
+        "track": true,
+        "launch": true,
+        "group": [
+          "S-125",
+          "2S6",
+          "9K330",
+          "ADATS",
+          "Roland",
+          "Crotale",
+          "ASRAD"
+        ]
+      },
+      {
+        "text": "hud/rwr_threat_cw",
+        "search": false,
+        "track": true,
+        "launch": true,
+        "group": [
+          "MiG-23 CW",
+          "MiG-29 CW",
+          "F-3 CW",
+          "F-4 CW",
+          "F-104 CW",
+          "F-14 CW",
+          "F-16 CW",
+          "F-18 CW",
+          "Tornado F CW",
+          "Mirage 2000 CW",
+          "J-37 CW",
+          "J-39 CW",
+          "J-8 CW"
+        ]
+      }
+    ]
+  },
   "groups": {
     "group": [
+      {
+        "name": "Roland",
+        "detectLaunch": true,
+        "type": "Roland TA"
+      },
+      {
+        "name": "Naval",
+        "type": "AN-SPG-51"
+      },
       {
         "name": "2S6",
         "detectLaunch": true,
@@ -598,11 +715,40 @@
         "detectTracking": true,
         "detectLaunch": true,
         "type": "weapon"
+      },
+      {
+        "name": "AH-64",
+        "type": "AN/APG-78"
+      },
+      {
+        "name": "Ka-52",
+        "type": "RN-01 Arbalet"
+      },
+      {
+        "name": "Mi-28",
+        "type": "N-025"
+      },
+      {
+        "name": "S1",
+        "detectLaunch": true,
+        "type": "1RS2"
+      },
+      {
+        "name": "9P157",
+        "type": "1L32-1"
       }
     ]
   },
   "targetsDirectionGroups": {
     "targetsDirectionGroup": [
+      {
+        "text": "RLD",
+        "group": "Roland"
+      },
+      {
+        "text": "NVL",
+        "group": "Naval"
+      },
       {
         "text": "2S6",
         "group": "2S6"
@@ -816,6 +962,27 @@
       {
         "text": "MSL",
         "group": "ARH"
+      },
+      {
+        "text": "A64",
+        "group": "AH-64"
+      },
+      {
+        "text": "K52",
+        "group": "Ka-52"
+      },
+      {
+        "text": "M28",
+        "group": "Mi-28"
+      },
+      {
+        "text": "S1",
+        "detectLaunch": true,
+        "group": "S1"
+      },
+      {
+        "text": "9P7",
+        "group": "9P157"
       }
     ]
   }

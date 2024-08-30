@@ -27,6 +27,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2425,6 +2426,10 @@
         "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1_rocket_aim_9.blk"
       },
       {
+        "name": "jaguar_gr1_phimat_counteiner",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1_phimat_counteiner.blk"
+      },
+      {
         "name": "jaguar_gr1_rocket_crv7_ra79",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1_rocket_crv7_ra79.blk"
       }
@@ -2890,6 +2895,26 @@
             }
           },
           {
+            "iconType": "ltc",
+            "name": "phimat_container",
+            "reqModification": "chaff_pods",
+            "ShowNodes": {
+              "node": [
+                "pylon_marta_magic_r",
+                "phimat_container"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+              "external": true,
+              "separate": false,
+              "emitter": "phimat_container",
+              "bullets": 216,
+              "bulletsCartridge": 1
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "uk_540lbs",
             "reqModification": "uk_mk_n1_540lb",
@@ -3092,7 +3117,13 @@
       "invertEnableLogic": false
     },
     "CdMin_Fuse": {},
-    "new_cover": {},
+    "chaff_pods": {
+      "modClass": "lth",
+      "tier": 1
+    },
+    "new_cover": {
+      "prevModification": "chaff_pods"
+    },
     "structure_str": {},
     "hp_105_jet": {},
     "g_suit": {},

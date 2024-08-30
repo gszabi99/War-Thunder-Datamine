@@ -1,4 +1,14 @@
-root {
+<<#blurPos>>
+hangarControlTracking {}
+<</blurPos>>
+
+tdiv {
+  size:t='<<blurSize>>'
+  <<#blurPos>>
+  position:t='absolute'
+  pos:t='<<blurPos>>'
+  <</blurPos>>
+  overflow:t='hidden'
   blur {}
   blur_foreground {}
   frame {
@@ -83,4 +93,9 @@ root {
       }
     }
   }
+}
+
+gamercard_div {
+  include '%gui/gamercardTopPanel.blk'
+  include '%gui/gamercardBottomPanel.blk'
 }

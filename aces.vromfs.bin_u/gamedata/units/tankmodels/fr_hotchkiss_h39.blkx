@@ -387,8 +387,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1826,10 +1827,6 @@
       }
     },
     "suspension": {
-      "maxDisplacementOffsets": [
-        -0.05,
-        0.025
-      ],
       "suspensionOffsets": [
         -0.1,
         -0.02,
@@ -1849,78 +1846,28 @@
   "PhysSys": {
     "find": "^bone_suspension_(._\\d\\d)$",
     "points": {
-      "suspension_01": {
+      "suspension": {
+        "name": "bone_suspension_$1"
+      },
+      "wheel": {
+        "name": "bone_wheel_$1",
         "limitMin": [
-          -0.5,
-          -0.5,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          0.5,
-          0.5,
+          1.0,
+          1.0,
           0.0
-        ],
-        "name": "bone_suspension_$1_01"
-      },
-      "suspension_02": {
-        "limitMin": [
-          -0.5,
-          -0.5,
-          0.0
-        ],
-        "limitMax": [
-          0.5,
-          0.5,
-          0.0
-        ],
-        "name": "bone_suspension_$1_02"
-      },
-      "wheel_01": {
-        "searchChildren": {
-          "parent": "suspension_01",
-          "find": "bone_wheel_",
-          "occurence": 1,
-          "limitMin": [
-            -0.5,
-            -0.5,
-            0.0
-          ],
-          "limitMax": [
-            0.5,
-            0.5,
-            0.0
-          ]
-        }
-      },
-      "wheel_02": {
-        "searchChildren": {
-          "parent": "suspension_02",
-          "find": "bone_wheel_",
-          "occurence": 1,
-          "limitMin": [
-            -0.5,
-            -0.5,
-            0.0
-          ],
-          "limitMax": [
-            0.5,
-            0.5,
-            0.0
-          ]
-        }
+        ]
       }
     },
     "constraints": {
-      "edge": [
-        {
-          "from": "suspension_01",
-          "to": "wheel_01"
-        },
-        {
-          "from": "suspension_02",
-          "to": "wheel_02"
-        }
-      ]
+      "edge": {
+        "from": "suspension",
+        "to": "wheel"
+      }
     }
   },
   "ammo": {

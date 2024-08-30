@@ -43,7 +43,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "rearmTimeOnField": 30.0,
   "crosshairPreset": "sw_landsverk_ush_204_gk",
   "DamageParts": {
     "formatVersion": 2,
@@ -333,8 +332,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2739,6 +2739,7 @@
     "new_tank_horizontal_aiming": {},
     "new_tank_vertical_aiming": {},
     "art_support": {},
+    "aa_new_gun": {},
     "tank_medical_kit": {
       "image": "#ui/gameuiskin#tank_reinforcement_sw"
     },

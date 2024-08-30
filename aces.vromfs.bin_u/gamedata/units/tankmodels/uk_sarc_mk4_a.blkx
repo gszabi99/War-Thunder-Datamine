@@ -639,8 +639,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1723,30 +1724,6 @@
     "ex_decor_body_l_06_dm": true,
     "ex_armor_02_dm": true
   },
-  "chainIK": {
-    "points": [
-      {
-        "point": [
-          {
-            "nameTemplate": "bone_turret_05"
-          },
-          {
-            "nameTemplate": "bone_turret_06"
-          }
-        ]
-      },
-      {
-        "point": [
-          {
-            "nameTemplate": "bone_turret_01"
-          },
-          {
-            "nameTemplate": "bone_turret_02"
-          }
-        ]
-      }
-    ]
-  },
   "MetaParts": {
     "open_fightning_compartment": {
       "part": [
@@ -2174,6 +2151,10 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "brokenWheelSteeringDeflection": -15.0,
+      "steeringNodes": {
+        "wheel_r_01": "bone_wheel_r_01",
+        "wheel_l_01": "bone_wheel_l_01"
+      },
       "steeringDeflection": {
         "wheel_l_01": 20.0,
         "wheel_r_01": 20.0,
@@ -2208,66 +2189,652 @@
     }
   },
   "PhysSys": {
-    "find": "bone_suspension_(\\w)_(\\d+)$",
-    "points": {
-      "lever": {
-        "limitMin": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "limitMax": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2"
-      },
-      "suspension_01_01": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2_01"
-      },
-      "wheel": {
-        "searchChildren": {
-          "occurence": 1,
-          "limitMin": [
-            -1.0,
-            -1.0,
-            0.0
+    "group": [
+      {
+        "find": "bone_suspension_c_01",
+        "points": {
+          "lever": {
+            "limitMin": [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_c_01"
+          },
+          "wheel_r_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_r_01"
+            }
+          },
+          "wheel_l_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_l_01"
+            }
+          },
+          "suspension_l_02": {
+            "limitMin": [
+              -0.5,
+              -0.5,
+              0.0
+            ],
+            "limitMax": [
+              0.5,
+              0.5,
+              0.0
+            ],
+            "name": "bone_suspension_l_01_02"
+          },
+          "suspension_r_02": {
+            "limitMin": [
+              -0.5,
+              -0.5,
+              0.0
+            ],
+            "limitMax": [
+              0.5,
+              0.5,
+              0.0
+            ],
+            "name": "bone_suspension_r_01_02"
+          },
+          "suspension_l_03": {
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "name": "bone_suspension_l_01_03"
+          },
+          "suspension_r_03": {
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "name": "bone_suspension_r_01_03"
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "from": "lever",
+              "to": "wheel_r_01"
+            },
+            {
+              "from": "lever",
+              "to": "wheel_l_01"
+            },
+            {
+              "from": "suspension_l_02",
+              "to": "wheel_l_01",
+              "moveSecond": false
+            },
+            {
+              "from": "suspension_r_02",
+              "to": "wheel_r_01",
+              "moveSecond": false
+            },
+            {
+              "from": "suspension_l_03",
+              "to": "suspension_l_02"
+            },
+            {
+              "from": "suspension_r_03",
+              "to": "suspension_r_02"
+            }
           ],
-          "limitMax": [
-            1.0,
-            1.0,
-            0.0
+          "slider": {
+            "moveNodes": true,
+            "rotateSecond": false,
+            "moveSecond": true,
+            "moveOnly": false,
+            "point": "lever",
+            "from": "wheel_l_01",
+            "to": "wheel_r_01"
+          }
+        }
+      },
+      {
+        "find": "bone_suspension_c_02",
+        "points": {
+          "lever": {
+            "limitMin": [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_c_02"
+          },
+          "wheel_r_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_r_02"
+            }
+          },
+          "wheel_l_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_l_02"
+            }
+          },
+          "suspension_l_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_l_02_02"
+          },
+          "suspension_r_02": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_r_02_02"
+          },
+          "suspension_l_03": {
+            "limitMin": [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_l_02_03"
+          },
+          "suspension_r_03": {
+            "limitMin": [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_r_02_03"
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "from": "lever",
+              "to": "wheel_r_01"
+            },
+            {
+              "from": "lever",
+              "to": "wheel_l_01"
+            },
+            {
+              "from": "suspension_l_02",
+              "to": "wheel_l_01",
+              "moveSecond": false
+            },
+            {
+              "from": "suspension_r_02",
+              "to": "wheel_r_01",
+              "moveSecond": false
+            },
+            {
+              "rotateSecond": true,
+              "moveSecond": false,
+              "from": "suspension_l_03",
+              "to": "suspension_l_02"
+            },
+            {
+              "rotateSecond": true,
+              "moveSecond": false,
+              "from": "suspension_r_03",
+              "to": "suspension_r_02"
+            }
           ],
-          "find": "bone_wheel_",
-          "parent": "lever"
+          "slider": {
+            "moveNodes": true,
+            "rotateSecond": false,
+            "moveSecond": true,
+            "moveOnly": false,
+            "point": "lever",
+            "from": "wheel_l_01",
+            "to": "wheel_r_01"
+          }
         }
       }
-    },
-    "constraints": {
-      "edge": [
-        {
-          "to": "wheel",
-          "from": "suspension_01_01"
-        },
-        {
-          "to": "lever",
-          "from": "suspension_01_01",
-          "moveSecond": false,
-          "moveOnly": true
-        }
-      ]
-    }
+    ]
+  },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_29_01"
+          },
+          {
+            "nameTemplate": "bone_roll_29_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_30_01"
+          },
+          {
+            "nameTemplate": "bone_roll_30_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_31_01"
+          },
+          {
+            "nameTemplate": "bone_roll_31_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_32_01"
+          },
+          {
+            "nameTemplate": "bone_roll_32_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_33_01"
+          },
+          {
+            "nameTemplate": "bone_roll_33_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_34_01"
+          },
+          {
+            "nameTemplate": "bone_roll_34_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_35_01"
+          },
+          {
+            "nameTemplate": "bone_roll_35_02"
+          }
+        ]
+      }
+    ]
   },
   "repairParts": {
     "wheel_l_01_dm": {
@@ -3092,6 +3659,15 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "fr_camo_winter_green_white*"
+      }
+    },
+    {
+      "name": "uk_camo_very_dark_drab",
+      "nameLocId": "skin/uk_camo_very_dark_drab",
+      "descLocId": "skin/uk_camo_very_dark_drab/desc",
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "uk_camo_very_dark_drab*"
       }
     }
   ],

@@ -283,58 +283,27 @@
     "find": "^bone_suspension_(._\\d\\d)$",
     "points": {
       "suspension": {
-        "name": "bone_suspension_$1",
+        "name": "bone_suspension_$1"
+      },
+      "wheel": {
+        "name": "bone_wheel_$1",
         "limitMin": [
-          0.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          0.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
-      },
-      "wheel": {
-        "searchChildren": {
-          "occurence": 1,
-          "limitMin": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "parent": "suspension",
-          "find": ""
-        }
       }
     },
     "constraints": {
-      "direction": {
+      "edge": {
         "from": "suspension",
-        "to": "wheel",
-        "moveNodes": true,
-        "rotateSecond": false,
-        "moveSecond": true,
-        "moveOnly": false,
-        "point": "suspension"
-      },
-      "edge": [
-        {
-          "moveNodes": false,
-          "moveSecond": false,
-          "from": "suspension",
-          "to": "wheel"
-        },
-        {
-          "from": "wheel",
-          "to": "wheel"
-        }
-      ]
+        "to": "wheel"
+      }
     }
   },
   "unitFx": {
@@ -2559,8 +2528,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {

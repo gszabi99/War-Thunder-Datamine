@@ -28,6 +28,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -3090,6 +3091,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_20a_aim_9l.blk"
       },
       {
+        "name": "f_20a_aim_9l_x4",
+        "blk": "gameData/FlightModels/weaponPresets/f_20a_aim_9l_x4.blk"
+      },
+      {
         "name": "f_20a_aim_7f",
         "blk": "gameData/FlightModels/weaponPresets/f_20a_aim_7f.blk"
       },
@@ -3211,7 +3216,7 @@
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
-              "bullets": 280,
+              "bullets": 230,
               "light": false,
               "spread": 1.2,
               "traceOffset": 1
@@ -3222,7 +3227,7 @@
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
-              "bullets": 280,
+              "bullets": 230,
               "light": false,
               "spread": 1.2,
               "traceOffset": 1
@@ -3298,6 +3303,26 @@
         "tier": 8,
         "order": 3,
         "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_default",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon_1",
+                "bomb_pylon_1_upor",
+                "slat1_l",
+                "aim_9_aero1a_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+              "emitter": "aim_9_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
           {
             "iconType": "missile_type_b_air_to_air_group",
             "name": "us_aim9l_sidewinder_x2",
@@ -4054,6 +4079,26 @@
         "tier": 4,
         "order": 4,
         "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_default",
+            "ShowNodes": {
+              "node": [
+                "bomb_pylon_4",
+                "bomb_pylon_4_upor",
+                "slat1_r",
+                "aim_9_aero1a_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+              "emitter": "aim_9_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
           {
             "iconType": "missile_type_b_air_to_air_group",
             "name": "us_aim9l_sidewinder_x2",

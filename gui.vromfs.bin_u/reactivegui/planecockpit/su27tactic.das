@@ -55,7 +55,7 @@ def draw_scale(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canv
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
-  let scaleText = format("%d", roundi(get_radar_hud_distance_max() * 0.1))
+  let scaleText = fmt(":d", roundi(get_radar_hud_distance_max() * 0.1))
   let scaleTextBox = get_str_bbox(scaleText, scaleText |> length(), fctx)
   ctx |> goto_xy(pos.x + 0.5 * (sz.x * 0.1 - scaleTextBox.width.x), pos.y + 0.98 * sz.y - 5.)
   ctx |> draw_str_scaled(1.0, scaleText, scaleText |> length())
@@ -74,7 +74,7 @@ def draw_tas(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canvas
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(data.fontSize);
 
-  let speedText = format("%d", roundi(hero.speed * 3.6))
+  let speedText = fmt(":d", roundi(hero.speed * 3.6))
   let speedTextBox = get_str_bbox(speedText, speedText |> length(), fctx)
   ctx |> render_frame(pos.x + 0.9 * sz.x, pos.y + sz.y * 0.98 - speedTextBox.width.y * 2., pos.x + sz.x, pos.y + sz.y * 0.98, ctx |> hdpx(1.))
   ctx |> goto_xy(pos.x + 0.95 * sz.x - speedTextBox.width.x * 0.5, pos.y + sz.y * 0.98 - speedTextBox.width.y * 0.5)
@@ -88,7 +88,7 @@ def b_scope_sector(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   ctx |> render_sector_aa(origin, sectorR, float2(-PI, 0.), 1.2,
    data.color, transparentColor)
 
-  let coord <- to_array_move([[float2[3] float2(pos.x + sz.x * 0.5, origin.y- sectorR.y- sz.y * 0.02);
+  let coord <- to_array_move([[float2[3] float2(pos.x + sz.x * 0.5, origin.y - sectorR.y - sz.y * 0.02);
    float2(pos.x + sz.x * 0.48, origin.y - sectorR.y + sz.y * 0.02);
    float2(pos.x + sz.x * 0.52, origin.y - sectorR.y + sz.y * 0.02)]])
   ctx |> render_line_aa(coord, true, 2., float2(0, 0), data.color)

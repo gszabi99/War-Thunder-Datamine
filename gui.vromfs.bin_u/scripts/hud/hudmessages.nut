@@ -222,11 +222,85 @@ enumsAddTypes(g_hud_messages, {
     }
   }
 
+  TANK_HUD_NOTIFICATION = {
+    nestId = "hud_message_tank_notification"
+    showSec = 5
+    messagesMax = 3
+    messageEvent = "HudMessage"
+    hudEvents = {
+      LocalPlayerAlive  = @(_ed) this.clearStack()
+    }
+
+    onMessage = function (messageData) {
+      if (messageData.type != HUD_MSG_EVENT)
+        return
+      if (!checkObj(this.nest))
+        return
+      if (HUD_UNIT_TYPE.TANK != getHudUnitType())
+        return
+
+      let checkField = (messageData.id != -1) ? "id" : "text"
+      let oldMessage = u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
+      if (oldMessage)
+        this.refreshMessage(messageData, oldMessage)
+      else
+        this.addMessage(messageData)
+    }
+
+    addMessage = function (messageData) {
+      this.cleanUp()
+      let message = {
+        timer = null
+        messageData = messageData
+        obj = null
+      }
+      this.stack.append(message)
+      let view = {
+        text = messageData.text
+      }
+      let blk = handyman.renderCached("%gui/hud/messageStack/tankNotificationMessage.tpl", view)
+      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
+      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
+
+      if (this.nest.isVisible()) {
+        message.obj["height-end"] = message.obj.getSize()[1]
+        message.obj.setIntProp(heightPID, 0)
+        message.obj.slideDown = "yes"
+        this.guiScene.setUpdatesEnabled(true, true)
+      }
+
+      message.timer = this.timers.addTimer(this.showSec, function () {
+        if (checkObj(message.obj))
+          message.obj.remove = "yes"
+        this.removeMessage(message)
+      }.bindenv(this)).weakref()
+    }
+
+    refreshMessage = function (messageData, message) {
+      let updateText = message.messageData.text != messageData.text
+      message.messageData = messageData
+      if (message.timer)
+        this.timers.setTimerTime(message.timer, this.showSec)
+      if (updateText && checkObj(message.obj))
+        message.obj.findObject("text").setValue(messageData.text)
+    }
+
+    clearStack = function () {
+      this.stack.clear()
+      if (!checkObj(this.nest))
+        return
+      this.nest.deleteChildren()
+    }
+  }
+
   PLAYER_DAMAGE = {
     nestId = "hud_message_player_damage_notification"
     showSec = 5
     messagesMax = 3
     messageEvent = "HudMessage"
+    hudEvents = {
+      LocalPlayerAlive  = @(_ed) this.clearStack()
+    }
 
     onMessage = function (messageData) {
       if (messageData.type != HUD_MSG_DAMAGE && messageData.type != HUD_MSG_EVENT)
@@ -280,6 +354,13 @@ enumsAddTypes(g_hud_messages, {
         this.timers.setTimerTime(message.timer, this.showSec)
       if (updateText && checkObj(message.obj))
         message.obj.findObject("text").setValue(messageData.text)
+    }
+
+    clearStack = function () {
+      this.stack.clear()
+      if (!checkObj(this.nest))
+        return
+      this.nest.deleteChildren()
     }
   }
 

@@ -15,6 +15,8 @@ let { getComplexAxesId, isComponentsAssignedToSingleInputItem
 let { PI } = require("math")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { hasXInputDevice } = require("controls")
+let { getHudKillStreakShortcutId } = require("%scripts/hud/hudActionBarType.nut")
 
 const ITEMS_PER_PAGE = 8
 
@@ -242,7 +244,17 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     objPageInfo.setValue(shouldShowPages
       ? loc("mainmenu/pageNumOfPages", { num = this.pageIdx + 1, total = this.pagesTotal })
       : "")
-    showObjById("btnSwitchPage", shouldShowPages, this.scene)
+
+    local needLbBtn = true
+    if (shouldShowPages && hasXInputDevice()) {
+      let shortcutId = getHudKillStreakShortcutId()
+      let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+      let scInput = shType.getFirstInput(shortcutId)
+      let shortcutText = scInput.getTextShort()
+      needLbBtn = (shortcutText.indexof("LB") ?? -1) < 0
+    }
+    showObjById("btnSwitchPage_LB", needLbBtn && shouldShowPages, this.scene)
+    showObjById("btnSwitchPage_LT", !needLbBtn && shouldShowPages, this.scene)
   }
 
   function updateTitlePos() {

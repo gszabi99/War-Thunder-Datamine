@@ -96,7 +96,7 @@ let getMainOptions = function() {
       [USEROPT_ORDER_AUTO_ACTIVATE, "spinner", hasFeature("OrderAutoActivate")],
       [USEROPT_TANK_ALT_CROSSHAIR, "spinner", can_add_tank_alt_crosshair()
                                                 && (hasFeature("TankAltCrosshair")
-                                                    || get_user_alt_crosshairs().len()
+                                                    || get_user_alt_crosshairs("", "").len()
                                                    )],
 
       ["options/header/air"],
@@ -129,6 +129,8 @@ let getMainOptions = function() {
       [USEROPT_CROSSHAIR_TYPE, "combobox"],
       [USEROPT_CROSSHAIR_COLOR, "combobox"],
       [USEROPT_INDICATED_SPEED_TYPE, "spinner"],
+      [USEROPT_INDICATED_ALTITUDE_TYPE, "spinner"],
+      [USEROPT_RADAR_ALTITUDE_ALERT, "slider"],
       [USEROPT_CROSSHAIR_DEFLECTION, "spinner"],
       [USEROPT_GYRO_SIGHT_DEFLECTION, "spinner", hasFeature("allowShowGyroSightDeflection")],
       [USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! isInFlight()],
@@ -155,6 +157,7 @@ let getMainOptions = function() {
       [USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT, "slider"],
 
       ["options/header/tank"],
+      [TANK_SIGHT_SETTINGS, "button", hasFeature("enableCustomTankSights")],
       [USEROPT_GRASS_IN_TANK_VISION, "spinner"],
       [USEROPT_XRAY_DEATH, "spinner", hasFeature("XrayDeath")],
       [USEROPT_XRAY_KILL, "spinner", hasFeature("XrayKill")],

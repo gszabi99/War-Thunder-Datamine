@@ -19,7 +19,7 @@ let { getUnitTooltipImage, getUnitRoleIcon, getFullUnitRoleText, getUnitClassCol
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { utf8ToLower } = require("%sqstd/string.nut")
+let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/wishlist/wishlistFilter.nut")
 let { showAirInfo } = require("%scripts/airInfo.nut")
 let unitStatus = require("%scripts/unit/unitStatus.nut")
@@ -39,6 +39,8 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { steam_is_running } = require("steam")
 let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
+
+let unitButtonDiscount = ["btn_buy_discount_", "btn_shop_discount_"]
 
 let unitButtonTypes = {
   hasMarketPlaceButton = false
@@ -124,8 +126,7 @@ function filterUnitsListFunc(item, nameFilter, fuid) {
   let isFriendWishlist = fuid != null
 
   //name
-  let unitLocName = getUnitName(unit, false)
-  if(nameFilter != "" && ([unitLocName, item.unit].findindex(@(v) utf8ToLower(v).indexof(nameFilter) != null) == null))
+  if(nameFilter != "" && !isUnitLocNameMatchSearchStr(unit, nameFilter))
     return false
 
   let selectedFilters = getSelectedFilters()
@@ -290,6 +291,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(this.itemsListObj, data, data.len(), this)
 
     this.showRightPanelAndNavBar(units.len() > 0)
+    this.updateUnitsDiscounts()
   }
 
   unitIdxInList = @(unitName) this.filteredUnits.findindex(@(v) v.unit == unitName)
@@ -327,7 +329,8 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btnConditions", hasConditionsButton, this.scene)
     showObjById("btnTrashBin", this.friendUid == null, this.scene)
     showObjById("btnGoToVechicle", hasGoToVechicleButton, this.scene)
-
+    if (hasShopButton)
+      showUnitDiscount(this.scene.findObject("btn_shop_discount"), unit)
 
     if(hasBuyButton) {
       placePriceTextToButton(this.scene, "btnBuy", loc("mainmenu/btnOrder"), unitPrice)
@@ -406,7 +409,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
 
   function applyNameFilter(obj) {
     clearTimer(this.applyFilterTimer)
-    this.unitNameFilter = utf8ToLower(obj.getValue())
+    this.unitNameFilter = obj.getValue()
     if(this.unitNameFilter == "") {
       this.fillItemsList()
       return
@@ -571,6 +574,26 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventBeforeStartShowroom(_p) {
     handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+  }
+
+  function updateUnitsDiscounts() {
+    foreach (unitData in this.filteredUnits) {
+      let unitName = unitData.unit
+      let unit = getAircraftByName(unitName)
+      if (unit == null)
+        continue
+      foreach (objPrefix in unitButtonDiscount) {
+        let obj = this.scene.findObject($"{objPrefix}{unitName}")
+        if (obj?.isValid())
+          showUnitDiscount(obj, unit)
+      }
+    }
+
+  }
+
+  function onEventDiscountsDataUpdated(_) {
+    this.updateButtons()
+    this.updateUnitsDiscounts()
   }
 }
 

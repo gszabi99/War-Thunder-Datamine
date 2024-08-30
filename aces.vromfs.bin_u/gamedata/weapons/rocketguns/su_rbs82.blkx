@@ -5,6 +5,24 @@
   "helicopterGroup": 2,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
+  "normalizationPreset": "ap",
+  "ricochetPreset": "ap",
+  "groundRicochetPreset": "ap_ground",
+  "secondaryShattersPreset": "ap_large_caliber",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.3,
+  "stabilityReductionAfterPenetration": 0.0,
+  "stucking": 0.7,
+  "stuckingAngle": 45.0,
+  "bulletType": "ap_tank",
+  "slopeEffectPreset": "ap",
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
+  "shellAnimation": "video/shells_animations/aphe.ivf",
   "rocket": {
     "bulletName": "su_rbs82",
     "effectOffset": [
@@ -318,5 +336,28 @@
         ]
       }
     }
+  },
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.2
+    ],
+    "mod2": [
+      20.0,
+      0.4
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.6
+      ],
+      [
+        45.0,
+        0.9
+      ]
+    ]
+  },
+  "pressureDamage": {
+    "damageType": "pressure"
   }
 }

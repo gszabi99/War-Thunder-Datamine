@@ -46,6 +46,7 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "drowningCheckHeightMultiplier": 0.8,
   "ikGunner": [
     {
       "model": "italian_gunner_char",
@@ -558,8 +559,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1898,8 +1900,8 @@
             360.0
           ],
           "pitch": [
-            -10.0,
-            12.0
+            -17.0,
+            65.0
           ]
         },
         "limitsTable": {
@@ -1910,10 +1912,24 @@
             12.0
           ],
           "lim2": [
-            -145.0,
-            -20.0,
-            -8.0,
-            12.0
+            [
+              -145.0,
+              -135.0,
+              -8.0,
+              12.0
+            ],
+            [
+              -135.0,
+              -55.0,
+              -8.0,
+              65.0
+            ],
+            [
+              -55.0,
+              -20.0,
+              -8.0,
+              12.0
+            ]
           ],
           "lim3": [
             -20.0,
@@ -1924,7 +1940,7 @@
           "lim4": [
             20.0,
             145.0,
-            -10.0,
+            -17.0,
             5.0
           ],
           "lim5": [
@@ -2964,8 +2980,8 @@
                   360.0
                 ],
                 "pitch": [
-                  -10.0,
-                  12.0
+                  -17.0,
+                  65.0
                 ]
               },
               "limitsTable": {
@@ -2976,10 +2992,24 @@
                   12.0
                 ],
                 "lim2": [
-                  -145.0,
-                  -20.0,
-                  -8.0,
-                  12.0
+                  [
+                    -145.0,
+                    -135.0,
+                    -8.0,
+                    12.0
+                  ],
+                  [
+                    -135.0,
+                    -55.0,
+                    -8.0,
+                    65.0
+                  ],
+                  [
+                    -55.0,
+                    -20.0,
+                    -8.0,
+                    12.0
+                  ]
                 ],
                 "lim3": [
                   -20.0,
@@ -2990,7 +3020,7 @@
                 "lim4": [
                   20.0,
                   145.0,
-                  -10.0,
+                  -17.0,
                   5.0
                 ],
                 "lim5": [
@@ -3135,7 +3165,7 @@
       "descLocId": "skin/it_camo_modern_three_color/desc",
       "replace_tex": {
         "from": "it_camo_olive_green*",
-        "to": "it_camo_threecolor_modern*"
+        "to": "it_camo_modern_three_color*"
       }
     },
     {

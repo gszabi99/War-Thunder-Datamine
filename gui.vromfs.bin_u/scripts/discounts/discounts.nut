@@ -12,7 +12,7 @@ let { canUseIngameShop, haveDiscount, getShopItemsTable, needEntStoreDiscountIco
 } = require("%scripts/onlineShop/entitlementsShopData.nut")
 
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, discountUnitsBundles } = require("%scripts/onlineShop/entitlements.nut")
 
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch
 let topMenuOnlineShopId = Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")
@@ -205,7 +205,8 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
   if (canUseIngameShop() && needEntStoreDiscountIcon)
     discountsList[topMenuOnlineShopId.value] = haveDiscount()
 
-  discountsList.entitlementUnits.__update(this.consoleEntitlementUnits)
+  discountsList.entitlementUnits.__update(
+    this.consoleEntitlementUnits, discountUnitsBundles.get())
 
   local isShopDiscountVisible = false
   foreach (airName, discount in discountsList.airList)
@@ -359,6 +360,8 @@ g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
 
   return newDiscountsList
 }
+
+discountUnitsBundles.subscribe(@(_) g_discount.updateDiscountData())
 
 // Independent Modules
 require("%scripts/slotbar/elems/discountIconElem.nut")

@@ -231,13 +231,13 @@
         "armorThickness": 10.0
       },
       "turret_03_back_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "turret_04_top_dm": {
         "armorThickness": 10.0
       },
       "turret_04_back_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "turret_04_bottom_dm": {
         "armorThickness": 10.0
@@ -256,7 +256,7 @@
         "armorThickness": 84.0
       },
       "superstructure_back_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "gun_mask_05_dm": {
         "armorThickness": 20.0
@@ -646,8 +646,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2466,7 +2467,7 @@
     ]
   },
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)$",
+    "find": "bone_suspension_(\\w)_(\\d+)$",
     "points": {
       "lever": {
         "limitMin": [
@@ -2479,9 +2480,9 @@
           0.0,
           0.0
         ],
-        "name": "bone_suspension_$1"
+        "name": "bone_suspension_$1_$2"
       },
-      "suspension_01_03": {
+      "suspension_01_01": {
         "limitMin": [
           -1.0,
           -1.0,
@@ -2492,9 +2493,9 @@
           1.0,
           0.0
         ],
-        "name": "bone_suspension_$1_03"
+        "name": "bone_suspension_$1_$2_01"
       },
-      "suspension_01_04": {
+      "suspension_01_02": {
         "limitMin": [
           -1.0,
           -1.0,
@@ -2505,19 +2506,19 @@
           1.0,
           0.0
         ],
-        "name": "bone_suspension_$1_04"
+        "name": "bone_suspension_$1_$2_02"
       },
       "wheel": {
         "searchChildren": {
           "occurence": 1,
           "limitMin": [
-            -1.0,
-            -1.0,
+            0.0,
+            0.0,
             0.0
           ],
           "limitMax": [
-            1.0,
-            1.0,
+            0.0,
+            0.0,
             0.0
           ],
           "parent": "lever",
@@ -2526,20 +2527,20 @@
       }
     },
     "constraints": {
-      "edge": {
-        "to": "wheel",
-        "from": "lever"
-      },
-      "projection": [
+      "edge": [
         {
-          "to": "lever",
-          "from": "wheel",
-          "point": "suspension_01_03"
+          "from": "lever",
+          "to": "wheel"
         },
         {
-          "point": "suspension_01_04",
-          "to": "lever",
-          "from": "wheel"
+          "from": "suspension_01_02",
+          "to": "wheel",
+          "moveNodes": false
+        },
+        {
+          "from": "suspension_01_01",
+          "to": "wheel",
+          "moveNodes": false
         }
       ]
     }

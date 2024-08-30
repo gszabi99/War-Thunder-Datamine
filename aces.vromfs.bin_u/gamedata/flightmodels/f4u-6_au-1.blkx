@@ -15,6 +15,7 @@
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2178,6 +2179,18 @@
               "spread": 1.75
             },
             {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonAN_M3.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "shell": "emtr_shellrejection4",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 246,
+              "dm": "cannon4_dm",
+              "spread": 1.75
+            },
+            {
               "trigger": "machine gun",
               "blk": "gameData/Weapons/cannonAN_M3.blk",
               "emitter": "flare2",
@@ -2187,10 +2200,11 @@
               "isWingRPositioned": false,
               "bullets": 246,
               "dm": "cannon2_dm",
+              "traceOffset": 1,
               "spread": 1.75
             },
             {
-              "trigger": "cannon",
+              "trigger": "machine gun",
               "blk": "gameData/Weapons/cannonAN_M3.blk",
               "emitter": "flare3",
               "flash": "flare3",
@@ -2199,17 +2213,6 @@
               "isWingRPositioned": false,
               "bullets": 246,
               "dm": "cannon3_dm",
-              "traceOffset": 1,
-              "spread": 1.75
-            },
-            {
-              "trigger": "machine gun",
-              "blk": "gameData/Weapons/cannonAN_M3.blk",
-              "emitter": "flare4",
-              "flash": "flare4",
-              "shell": "emtr_shellrejection4",
-              "bullets": 246,
-              "dm": "cannon4_dm",
               "traceOffset": 1,
               "spread": 1.75
             }

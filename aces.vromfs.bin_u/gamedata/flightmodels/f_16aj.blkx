@@ -40,6 +40,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1863,7 +1864,7 @@
     ]
   },
   "ikPilot": {
-    "model": "pilot_japan_late_char",
+    "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1877,9 +1878,9 @@
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
         "flexionDir": [
-          0.5,
+          0.0,
           -1.0,
-          0.2
+          0.3
         ],
         "type": "leftHand",
         "detachedNodeYpr": [
@@ -1899,9 +1900,9 @@
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
         "flexionDir": [
-          -0.3,
+          0.0,
           -1.0,
-          -0.5
+          -0.3
         ],
         "type": "rightHand",
         "detachedNodeYpr": [
@@ -1923,7 +1924,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          0.3
+          0.2
         ]
       },
       {
@@ -1934,7 +1935,7 @@
         "flexionDir": [
           0.0,
           1.0,
-          -0.3
+          -0.2
         ]
       }
     ]
@@ -3691,6 +3692,112 @@
       -4.78337,
       -0.0561663,
       4.18291e-8
+    ]
+  },
+  "lerxVapors": {
+    "lerxVapor": [
+      {
+        "entryPoint": [
+          5.372,
+          0.165,
+          0.58
+        ],
+        "exitPoint": [
+          -3.708,
+          0.124,
+          2.069
+        ],
+        "entryTangent": [
+          1.11,
+          0.544,
+          0.672
+        ],
+        "exitTangent": [
+          -2.212,
+          1.274,
+          1.916
+        ],
+        "exitTangentHeight": [
+          -0.761,
+          0.572
+        ],
+        "exitTangentWidth": [
+          -0.855,
+          0.781
+        ],
+        "exitPointHeight": [
+          -1.057,
+          1.578
+        ],
+        "exitPointWidth": [
+          -0.478,
+          0.78
+        ],
+        "radius": [
+          0.15,
+          0.5
+        ],
+        "noiseParms": [
+          -0.25,
+          3.0
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          2.2,
+          0.703
+        ]
+      },
+      {
+        "entryPoint": [
+          5.372,
+          0.165,
+          -0.58
+        ],
+        "exitPoint": [
+          -3.708,
+          0.124,
+          -2.069
+        ],
+        "entryTangent": [
+          1.11,
+          0.544,
+          -0.672
+        ],
+        "exitTangent": [
+          -2.212,
+          1.274,
+          -1.916
+        ],
+        "exitTangentHeight": [
+          -0.761,
+          0.572
+        ],
+        "exitTangentWidth": [
+          0.855,
+          -0.781
+        ],
+        "exitPointHeight": [
+          -1.057,
+          1.578
+        ],
+        "exitPointWidth": [
+          0.478,
+          -0.78
+        ],
+        "radius": [
+          0.15,
+          0.5
+        ],
+        "noiseParms": [
+          -0.25,
+          3.0
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          2.2,
+          0.703
+        ]
+      }
     ]
   }
 }

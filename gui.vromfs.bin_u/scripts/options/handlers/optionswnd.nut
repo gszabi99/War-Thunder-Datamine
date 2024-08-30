@@ -18,6 +18,7 @@ let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onR
 let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
+let openTankSightSettings = require("%scripts/options/handlers/tankSightSettings.nut")
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsState.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
@@ -469,9 +470,10 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     }
   }
 
-  function onOpenGpuBenchmark() {
-    showGpuBenchmarkWnd()
-  }
+  onOpenGpuBenchmark = showGpuBenchmarkWnd
+  onPreloaderSettings = preloaderOptionsModal
+  onTankSightSettings = openTankSightSettings
+  onDialogAddRadio = openAddRadioWnd
 
   function onPostFxSettings(_obj) {
     this.applyFunc = guiStartPostfxSettings
@@ -483,10 +485,6 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     this.applyFunc = fxOptions.openHdrSettings
     this.applyOptions()
     this.joinEchoChannel(false)
-  }
-
-  function onPreloaderSettings() {
-    preloaderOptionsModal()
   }
 
   function onWebUiMap() {
@@ -510,10 +508,6 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       group.onApplyHandler();
 
     return result;
-  }
-
-  function onDialogAddRadio() {
-    openAddRadioWnd()
   }
 
   function onDialogEditRadio() {

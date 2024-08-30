@@ -18,6 +18,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -3036,17 +3037,31 @@
               "gunnerDm": "gunner4_dm",
               "gunDm": "gun1_dm",
               "partsDP": "gun1_dm",
-              "bullets": 190,
+              "bullets": 170,
               "turret": {
                 "head": "turret1",
                 "gun": "gun1"
               },
               "limits": {
                 "yaw": [
-                  -25.0,
-                  25.0
+                  -60.0,
+                  60.0
                 ],
                 "pitch": [
+                  -7.0,
+                  41.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -25.0,
+                  0.0,
+                  0.0,
+                  50.0
+                ],
+                "lim2": [
+                  0.0,
+                  25.0,
                   0.0,
                   50.0
                 ]
@@ -3095,12 +3110,12 @@
               },
               "limits": {
                 "yaw": [
-                  -20.0,
-                  20.0
+                  -26.0,
+                  26.0
                 ],
                 "pitch": [
-                  -50.0,
-                  5.0
+                  -45.0,
+                  0.0
                 ]
               }
             }

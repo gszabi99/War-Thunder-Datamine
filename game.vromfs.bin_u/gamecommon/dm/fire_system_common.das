@@ -42,7 +42,7 @@ def check_is_burning(v : tuple<fire_data__startTime : FloatList>) : bool
 def can_be_extinguished_with_extinguisher(v : tuple<
                                             fire_data__startTime : FloatList;
                                             fire_data__fireParamsId : IntList
-                                          >) : bool
+                                            >) : bool
   for start_time, fire_params_id in v.fire_data__startTime, v.fire_data__fireParamsId
     if start_time > 0.0f
       let fire_params = get_fire_params(fire_params_id)
@@ -63,7 +63,7 @@ def fire_system_start_single_burn(eid : EntityId; desc : StartSingleBurnDesc;
                                     fire_data__startTime : FloatList;
                                     fire_data__extinguishProgress : FloatList;
                                     fire_data__underwaterTimer : FloatList
-                                  >) : int
+                                    >) : int
   if length(v.fire_data__packedPartId) > 255
     return -1
 
@@ -112,7 +112,7 @@ def fire_system_stop_single_burn(eid : EntityId; fire_id : int;
                                  var v : tuple<
                                    fire_data__initiatorId : UInt32List;
                                    fire_data__startTime : FloatList
-                                 >)
+                                   >)
   if fire_id >= 0 && fire_id < length(v.fire_data__initiatorId)
     sendEvent(eid, [[EventOnStopSingleBurn fireId=fire_id, initiatorId=v.fire_data__initiatorId[fire_id]]])
     v.fire_data__startTime[fire_id] = -1.0f;
@@ -140,7 +140,7 @@ def fire_system_get_fire_sphere(fire_id : int; at_time : float;
                                   fire_data__offset : Point3List;
                                   fire_data__radius : Point2List;
                                   fire_data__startTime : FloatList
-                                >)
+                                  >)
   let fire_params = get_fire_params(v.fire_data__fireParamsId[fire_id])
   let radius = v.fire_data__radius[fire_id]
   return BSphere3(v.fire_data__offset[fire_id], cvt(at_time - v.fire_data__startTime[fire_id],
@@ -154,7 +154,7 @@ def fire_system_can_part_burn(part_id : PartId;
                               v : tuple<
                                 ammo_slots__state : UInt32List;
                                 ammo_stowage__partIdRemap : IPoint4List
-                              >) : bool
+                                >) : bool
   let remap = get_remap(v.ammo_stowage__partIdRemap, part_id)
   if remap.partId.valid
     return !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState FLOODED)

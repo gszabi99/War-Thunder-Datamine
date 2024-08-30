@@ -1673,10 +1673,12 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (newPresetId == curPresetId)
       return true
 
-    if (contentPreset.isAgreed(diffCode, newPresetId))
-      return true // User already agreed to set this or higher preset.
+    if (contentPreset.isAgreed(diffCode, newPresetId)) { // User already agreed to set this or higher preset.
+      contentPreset.setPreset(diffCode, newPresetId, false)
+      return true
+    }
 
-  loadHandler(gui_handlers.SkipableMsgBox, {
+    loadHandler(gui_handlers.SkipableMsgBox, {
       parentHandler = this
       onStartPressed = function() {
         contentPreset.setPreset(diffCode, newPresetId, true)

@@ -44,12 +44,8 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "rearmTimeOnField": 120.0,
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
   "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "controlDevices": {
     "device": [
       {
@@ -205,8 +201,7 @@
         "armorThickness": 10.0
       },
       "turret_04_front_dm": {
-        "armorThickness": 8.0,
-        "armorClass": "tank_structural_steel"
+        "armorThickness": 20.0
       },
       "turret_05_front_dm": {
         "armorThickness": 20.0
@@ -522,8 +517,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {

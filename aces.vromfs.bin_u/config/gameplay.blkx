@@ -58,6 +58,7 @@
   "saclosMissileCrossVelRatioMax": 0.5,
   "saclosMissileRequestedAccelMult": 0.25,
   "saclosMissileRequestedAccelToOmegaMult": 50.0,
+  "missileMaxTicksPerFrame": 15,
   "resyncSaclosGuidanceParams": true,
   "smoothGuidedMissilesResyncOnClient": true,
   "smoothGuidedMissilesResyncPosTimeConst": 2.0,
@@ -6377,8 +6378,8 @@
         ]
       },
       {
-        "name": "tiger_uht",
-        "weap": "tiger_uht_gun_fn_m3p",
+        "name": "tiger_had_block2_france",
+        "weap": "tiger_had_france_default",
         "rankRange": [
           25,
           50
@@ -6386,7 +6387,7 @@
       },
       {
         "name": "mi_24v",
-        "weap": "mi_24v_default",
+        "weap": "mi_24v_guv_8700",
         "rankRange": [
           25,
           50
@@ -6409,24 +6410,16 @@
         ]
       },
       {
-        "name": "sa_341f",
-        "weap": "sa_341f_default",
+        "name": "z_10",
+        "weap": "z_10_default",
         "rankRange": [
           25,
           50
         ]
       },
       {
-        "name": "hkp9a_cb2",
-        "weap": "hkp9a_cb2_ffv_uni_pod",
-        "rankRange": [
-          25,
-          50
-        ]
-      },
-      {
-        "name": "hkp9a_cb3_fc",
-        "weap": "hkp9a_cb3_fc_ffv_uni_pod",
+        "name": "ah_1w",
+        "weap": "ah_1w_default",
         "rankRange": [
           25,
           50
@@ -7672,6 +7665,7 @@
       "PD HDN search",
       "PD HDN acquisition",
       "PD HDN ACM",
+      "PD HDN HMD",
       "PD HDN BST",
       "PD HDN VSL",
       "PD HDN track",
@@ -8732,5 +8726,13 @@
   "reloadingTorpedoMults": {
     "exp_destroyer_0": 2.0,
     "exp_cruiser_0": 2.0
+  },
+  "depthChargeSalvoParams": {
+    "duration": 16.5,
+    "relativeCount": 1.0,
+    "explosionDepth": [
+      20.0,
+      40.0
+    ]
   }
 }

@@ -6,7 +6,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
 local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
-  wndType = handlerType.MODAL
+  wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
   sceneTplName         = "%gui/popup/popupFilterWindow.tpl"
@@ -92,28 +92,28 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
     local posY = 0
 
     if (this.popupAlign == "top") {
-      posX = this.btnPosition[0]
-      posY = this.btnPosition[1] - popupSize[1] - to_pixels("1@blockInterval")
+      posX = 0
+      posY = - popupSize[1] - to_pixels("1@blockInterval")
     }
     else if (this.popupAlign == "top-center") {
-      posX = this.btnPosition[0] + this.btnWidth / 2 - popupSize[0] / 2
-      posY = this.btnPosition[0] - popupSize[1] - to_pixels("1@blockInterval")
+      posX = this.btnWidth / 2 - popupSize[0] / 2
+      posY = - popupSize[1] - to_pixels("1@blockInterval")
     }
     else if (this.popupAlign == "top-right") {
-      posX = this.btnPosition[0] + this.btnWidth - popupSize[0]
-      posY = this.btnPosition[1] - popupSize[1] - to_pixels("1@blockInterval")
+      posX = this.btnWidth - popupSize[0]
+      posY = - popupSize[1] - to_pixels("1@blockInterval")
     }
     else if (this.popupAlign == "bottom") {
-      posX = this.btnPosition[0]
-      posY = this.btnPosition[1] + this.btnHeight + to_pixels("1@blockInterval")
+      posX = 0
+      posY = this.btnHeight + to_pixels("1@blockInterval")
     }
     else if (this.popupAlign == "bottom-center") {
-      posX = this.btnPosition[0] + this.btnWidth / 2 - popupSize[0] / 2
-      posY = this.btnPosition[1] + this.btnHeight + to_pixels("1@blockInterval")
+      posX = this.btnWidth / 2 - popupSize[0] / 2
+      posY = this.btnHeight + to_pixels("1@blockInterval")
     }
     else if (this.popupAlign == "bottom-right") {
-      posX = this.btnPosition[0] + this.btnWidth - popupSize[0]
-      posY = this.btnPosition[1] + this.btnHeight + to_pixels("1@blockInterval")
+      posX = this.btnWidth - popupSize[0]
+      posY = this.btnHeight + to_pixels("1@blockInterval")
     }
     popupObj["pos"] = $"{posX}, {posY}"
   }
@@ -178,7 +178,14 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   getSelectedFiltersCount = @() this.stateList.filter(@(inst) inst.value).len()
 
   function close() {
-    this.goBack()
+    if (!this.isValid())
+      return
+    this.guiScene.destroyElement(this.scene.findObject("filter_popup_nest"))
+  }
+
+  function isValid() {
+    return base.isValid()
+      && (this.scene.findObject("filter_popup_nest")?.isValid() ?? false)
   }
 }
 

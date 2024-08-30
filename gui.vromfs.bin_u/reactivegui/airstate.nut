@@ -21,6 +21,8 @@ local IndicatorsVisible = Watched(false)
 local CurrentTime = Watched(false)
 
 let DistanceToGround = Watched(0.0)
+let RadarAltitude = Watched(0.0)
+let RadarAltitudeAlert = Watched(0.0)
 let VerticalSpeed = Watched(0.0)
 
 let RocketAimX = Watched(0.0)
@@ -270,6 +272,8 @@ let helicopterState = {
   CurrentTime,
 
   DistanceToGround,
+  RadarAltitude,
+  RadarAltitudeAlert,
   VerticalSpeed,
 
   RocketAimX,
@@ -637,7 +641,7 @@ interop.updateAam <- function(count, seconds, timeToHit, selected, name, actualC
     AamState({ count, seconds, timeToHit, selected, name, actualCount })
 }
 
-interop.updateGuidedBombs <- function(count, seconds, timeToHit, mode, selected, name, actualCount, timeToWarning = 1/*deprecated*/) {
+interop.updateGuidedBombs <- function(count, seconds, timeToHit, mode, selected, name, actualCount, timeToWarning) {
   let curVal = GuidedBombsState.value
   if (curVal.count != count || curVal.seconds != seconds || curVal.timeToHit != timeToHit || curVal.mode != mode ||
     curVal.name != name || curVal.actualCount != actualCount || curVal.selected != selected || curVal.timeToWarning != timeToWarning)

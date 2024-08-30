@@ -2,7 +2,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
-let { eventbus_send } = require("eventbus")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -24,7 +23,8 @@ let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophy
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { floor } = require("math")
-let { showBuyAndOpenChestWnd, getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWnd.nut")
+let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -266,8 +266,8 @@ function tryUseRecipes(recipes, componentItem, params = {}) {
   if (showUseErrorMsgIfNeed(recipe, componentItem, recipes) || recipe == null)
     return false
 
-  if (getBuyAndOpenChestWndStyle(componentItem) && !params?.isFromChestWnd) {
-    showBuyAndOpenChestWnd(componentItem)
+  if (hasBuyAndOpenChestWndStyle(componentItem) && !params?.isFromChestWnd) {
+    broadcastEvent("openChestWndOrTrophy", {chest = componentItem})
     return true
   }
 
@@ -755,14 +755,8 @@ local ExchangeRecipes = class {
           expectedPrizes
           rewardWndConfig
         })
-      else {
-        let rewardsHandler = showBuyAndOpenChestWnd(componentItem)
-        if (rewardsHandler != null)
-          rewardsHandler.showReceivedPrizes(expectedPrizes)
-        else
-          eventbus_send("guiStartOpenTrophy",
-            rewardWndConfig.__update({ [componentItem.id] = expectedPrizes }))
-      }
+      else
+        broadcastEvent("openChestWndOrTrophy", {chest = componentItem, expectedPrizes, rewardWndConfig})
     }
     else if (effectOnOpenChest?.playSound != null) {
       let isDelayedExchange = resultItems.findindex(@(v) v?.itemdef.type == "delayedexchange") != null

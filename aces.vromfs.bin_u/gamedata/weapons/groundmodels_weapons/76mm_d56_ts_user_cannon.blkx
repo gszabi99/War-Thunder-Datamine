@@ -713,6 +713,48 @@
           "demarreCaliberPow": 1.07
         }
       },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "secondaryShattersPreset": "ap_large_caliber",
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.6,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.25,
+                "angles": [
+                  45.0,
+                  105.0
+                ],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  130.0,
+                  180.0
+                ],
+                "countPortion": 0.1
+              }
+            ]
+          }
+        }
+      },
       "visual": {
         "range_percent_of_ammo": [
           100.0,

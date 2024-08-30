@@ -646,7 +646,7 @@ let handlersManager = {
       return false
     restoreData.handlerClass <- restoreHandler.getclass()
     if (triggerHandlerClass == null)
-      triggerHandlerClass = this.getActiveBaseHandler()
+      triggerHandlerClass = this.getActiveBaseHandler()?.getclass()
     if (!triggerHandlerClass)
       return false
 

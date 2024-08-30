@@ -26,12 +26,17 @@ tdiv {
         margin-right:t='2@blockInterval'
       }
       <</hasCountry>>
-      img {
-        background-image:t='<<unitTypeIco>>'
-        size:t='@sIco, @sIco'
-        background-svg-size:t='@tableIcoSize, @tableIcoSize'
-        background-repeat:t='aspect-ratio'
+      tdiv {
+        width:t='2@sIco'
         margin-right:t='2@blockInterval'
+        img {
+          background-image:t='<<unitTypeIco>>'
+          size:t='<<#isWideIco>>2<</isWideIco>>@sIco, @sIco'
+          background-svg-size:t='<<#isWideIco>>2<</isWideIco>>@sIco, @sIco'
+          background-repeat:t='aspect-ratio'
+          valign:t='center'
+          halign:t='center'
+        }
       }
       textareaNoTab {
         text:t='<<unitName>>'

@@ -180,8 +180,9 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
   local logName = ::getLogNameByType(logObj.type)
   local priceText = Cost(("wpCost" in logObj) ? logObj.wpCost : 0,
     ("goldCost" in logObj) ? logObj.goldCost : 0).tostring()
+
   if (priceText != "")
-    priceText = " (" + priceText + ")"
+    priceText = loc("ui/parentheses/space", { text = priceText })
 
   if (logObj.type == EULT_SESSION_START ||
       logObj.type == EULT_EARLY_SESSION_LEAVE ||
@@ -1325,13 +1326,22 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
       itemsNumber ++
     }
 
+    let costString = Cost(("wpCost" in logObj) ? logObj.wpCost * amount : 0,
+      ("goldCost" in logObj) ? logObj.goldCost * amount : 0).tostring()
+
     res.logImg = res.logImg || BaseItem.typeIcon
-    let locId = "userlog/" + logName
+
+    let locId = costString == "" ? $"userlog/{logName}"
+      : amount > 1 ? "userlog/buy_item/multiple"
+      : "userlog/buy_item"
+
     res.name = loc(locId, {
       numItemsColored = colorize("userlogColoredText", amount)
       numItems = amount
       numItemsAdd = amount
       itemName = itemsNumber == 1 ? firstItemName : ""
+      price = costString
+      amount = amount
     })
 
     if (itemsNumber > 1)
@@ -1340,6 +1350,8 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
         numItems = amount
         numItemsAdd = amount
         itemName = itemsListText
+        price = costString
+        amount = amount
       })
   }
   else if (logObj.type == EULT_TICKETS_REMINDER) {
@@ -1660,6 +1672,9 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
 
     res.descriptionBlk <- descriptionBlkMultipleFormat.subst("".join(markupArr))
     res.description <- "\n".join(descLines, true)
+  }
+  else if (logObj.type == EULT_COMPLAINT_UPHELD) {
+    res.name = loc($"userlog/{logName}/successful_single")
   }
 
   if (isMissionExtrLog || (res?.description ?? "") != "") {

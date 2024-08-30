@@ -27,6 +27,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -3175,21 +3176,21 @@
         },
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+            "blk": "gameData/Weapons/BombGuns/su_fab250.blk",
             "amountPerTier": 4.0,
             "iconType": "bombs_small_group"
           }
         }
       },
       {
-        "name": "tu-4_40xfab100",
-        "blk": "gameData/FlightModels/weaponPresets/tu-4_40xfab100.blk",
+        "name": "tu-4_china_40xfab100",
+        "blk": "gameData/FlightModels/weaponPresets/tu-4_china_40xfab100.blk",
         "tags": {
           "free": true
         },
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+            "blk": "gameData/Weapons/BombGuns/cn_gp_100_2.blk",
             "tier": [
               {
                 "idx": 1,
@@ -3236,24 +3237,24 @@
         }
       },
       {
-        "name": "tu-4_40xfab250",
-        "blk": "gameData/FlightModels/weaponPresets/tu-4_40xfab250.blk",
+        "name": "tu-4_china_40xfab250",
+        "blk": "gameData/FlightModels/weaponPresets/tu-4_china_40xfab250.blk",
         "reqModification": "kd-3_bc",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab_250m_46.blk",
+            "blk": "gameData/Weapons/BombGuns/cn_gp_250_2.blk",
             "amountPerTier": 4.0,
             "iconType": "bombs_middle_group_x4"
           }
         }
       },
       {
-        "name": "tu-4_12xfab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-4_12xfab500.blk",
+        "name": "tu-4_china_12xfab500",
+        "blk": "gameData/FlightModels/weaponPresets/tu-4_china_12xfab500.blk",
         "reqModification": "kd-3_bc",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab_500m_46.blk",
+            "blk": "gameData/Weapons/BombGuns/cn_gp_500_2.blk",
             "tier": [
               {
                 "idx": 4,
@@ -3276,12 +3277,12 @@
         }
       },
       {
-        "name": "tu-4_20xfab500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-4_20xfab500.blk",
+        "name": "tu-4_china_20xfab500",
+        "blk": "gameData/FlightModels/weaponPresets/tu-4_china_20xfab500.blk",
         "reqModification": "kd-3_bc",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab_500m_46.blk",
+            "blk": "gameData/Weapons/BombGuns/cn_gp_500_2.blk",
             "amountPerTier": 4.0,
             "iconType": "bombs_large_group_x4"
           }
@@ -3300,26 +3301,38 @@
         }
       },
       {
-        "name": "tu-4_8xfab1500",
-        "blk": "gameData/FlightModels/weaponPresets/tu-4_8xfab1500.blk",
+        "name": "tu-4_china_8xfab1500",
+        "blk": "gameData/FlightModels/weaponPresets/tu-4_china_8xfab1500.blk",
         "reqModification": "bd-4_bc",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab_1500m_46.blk",
+            "blk": "gameData/Weapons/BombGuns/cn_gp_1500_2.blk",
             "amountPerTier": 1.0,
             "iconType": "bombs_heavy_middle"
           }
         }
       },
       {
-        "name": "tu-4_4xfab3000",
-        "blk": "gameData/FlightModels/weaponPresets/tu-4_4xfab3000.blk",
+        "name": "tu-4_china_4xfab3000",
+        "blk": "gameData/FlightModels/weaponPresets/tu-4_china_4xfab3000.blk",
         "reqModification": "bd-4_bc",
         "weaponConfig": {
           "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab_3000m_46.blk",
+            "blk": "gameData/Weapons/BombGuns/cn_gp_3000_2.blk",
             "amountPerTier": 1.0,
             "iconType": "bombs_heavy"
+          }
+        }
+      },
+      {
+        "name": "tu-4_china_40xfab250_incedniary",
+        "blk": "gameData/FlightModels/weaponPresets/tu-4_china_40xfab250_incedniary.blk",
+        "reqModification": "kd-3_bc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+            "amountPerTier": 4.0,
+            "iconType": "napalm_middle_group_x4"
           }
         }
       }

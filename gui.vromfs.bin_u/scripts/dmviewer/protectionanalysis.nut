@@ -12,7 +12,7 @@ let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.n
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
 let { hangar_protection_map_update, hangar_crew_map_update, set_protection_analysis_editing,
-  set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test } = require("hangarEventCommand")
+  set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test, set_test_projectile_props } = require("hangarEventCommand")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
@@ -23,6 +23,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 local switch_damage = false
 local allow_cutting = false
 local explosionTest = false
+local testProjectileProps = false
 
 const CB_VERTICAL_ANGLE = "protectionAnalysis/cbVerticalAngleValue"
 
@@ -84,6 +85,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     switch_damage = true //value is off by default it will be changed in AllowSimulation
     allow_cutting = false
     explosionTest = false
+    testProjectileProps = false
 
     this.scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
 
@@ -159,6 +161,13 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(sObj)) {
       explosionTest = !explosionTest
       set_explosion_test(explosionTest)
+    }
+  }
+
+  function onTestProjectileProps(sObj) {
+    if (checkObj(sObj)) {
+      testProjectileProps = !testProjectileProps
+      set_test_projectile_props(testProjectileProps)
     }
   }
 
@@ -310,6 +319,17 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function getHandlerRestoreData() {
+    return {
+      openData = {
+        backSceneParams = this.backSceneParams
+      }
+    }
+  }
+
+  function onEventBeforeOpenWeaponryPresetsWnd(_) {
+    handlersManager.requestHandlerRestore(this, this.getclass())
+  }
 }
 
 

@@ -135,6 +135,10 @@ function isMissionExtrCheckFucn(userLog) {
     reqFeature = "WorldWar"
     show = [EULT_WW_START_OPERATION, EULT_WW_CREATE_OPERATION, EULT_WW_END_OPERATION, EULT_WW_AWARD]
   }
+  {
+    id = "systemNotifications"
+    show = [EULT_COMPLAINT_UPHELD]
+  }
 ]
 
 ::gui_modal_userLog <- function gui_modal_userLog() {

@@ -29,6 +29,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { findItemById, itemsShopListVersion, inventoryListVersion
 } = require("%scripts/items/itemsManager.nut")
+let { getPrizeText } = require("%scripts/items/prizesView.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -284,7 +285,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
     if (hasAdditionalTrophyItem) {
       let topPrize = additionalTrophyItem.getTopPrize()
       name = ::PrizesView.getPrizeTypeName(topPrize, false)
-      valueText = loc("ui/parentheses", { text = ::PrizesView.getPrizeText(topPrize, false) })
+      valueText = loc("ui/parentheses", { text = getPrizeText(topPrize, false) })
       cost = cost + additionalTrophyItem.getCost()
     }
     let isImprovedBattlePass = isBattlePassConfig && hasAdditionalTrophyItem

@@ -1391,6 +1391,21 @@
       }
     ]
   },
+  "tank_phys_tracks": {
+    "physical_tracks__meshName": "",
+    "physical_tracks__nonSymmetric": false,
+    "physical_tracks__trackCount": 0,
+    "physical_tracks": {
+      "_tags": "render"
+    },
+    "physical_tracks__isLeft:list<b>": {
+      "_tags": "render"
+    },
+    "physical_tracks_force_update:b": {
+      "_tags": "render",
+      "value": true
+    }
+  },
   "ground_unit": {
     "_use": [
       "simple_ground_unit",
@@ -1433,7 +1448,8 @@
   "tank": {
     "_use": [
       "ground_unit",
-      "gm_engine_sound"
+      "gm_engine_sound",
+      "tank_phys_tracks"
     ],
     "mods:list<t>": {
       "mod": [
@@ -1445,16 +1461,6 @@
     },
     "track_sound": {
       "_tags": "sound"
-    },
-    "physical_tracks": {
-      "_tags": "render"
-    },
-    "physical_tracks__isLeft:list<b>": {
-      "_tags": "render"
-    },
-    "physical_tracks_force_update:b": {
-      "_tags": "render",
-      "value": true
     }
   },
   "simple_ship": {
@@ -2161,8 +2167,8 @@
       },
       {
         "_tags": "server",
-        "damage_area__offenderId": 0,
-        "damage_area__nextUpdateTime": 0.0
+        "damage_area__nextUpdateTime": 0.0,
+        "damage_area__offender": {}
       },
       {
         "_tags": "gameClient",
@@ -2313,6 +2319,7 @@
   },
   "bullet": {
     "_use": "projectile",
+    "bullet_client_lod:u8": {},
     "bullet_component": {}
   },
   "shell_delayed": {

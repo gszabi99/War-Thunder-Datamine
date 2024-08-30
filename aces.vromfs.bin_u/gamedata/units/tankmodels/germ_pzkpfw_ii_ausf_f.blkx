@@ -374,8 +374,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1765,8 +1766,8 @@
     "suspension": {
       "suspensionOffsets": [
         -0.055,
-        -0.095,
-        0.095
+        -0.05,
+        0.005
       ],
       "defaultGearRadius": 0.275,
       "topGearRadius": 0.08,
@@ -1785,27 +1786,56 @@
     "find": "^bone_suspension_(._\\d\\d)$",
     "points": {
       "suspension": {
-        "name": "bone_suspension_$1"
+        "name": "bone_suspension_$1",
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ]
       },
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1.0,
-          -1.0,
+          -0.5,
+          -0.5,
           0.0
         ],
         "limitMax": [
-          1.0,
-          1.0,
+          0.5,
+          0.5,
           0.0
         ]
+      },
+      "suspension_01": {
+        "limitMin": [
+          0.0,
+          -0.5,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "name": "bone_suspension_$1_01"
       }
     },
     "constraints": {
-      "edge": {
-        "from": "suspension",
-        "to": "wheel"
-      }
+      "edge": [
+        {
+          "from": "suspension",
+          "to": "wheel"
+        },
+        {
+          "from": "suspension_01",
+          "to": "wheel"
+        }
+      ]
     }
   },
   "unitFx": {

@@ -23,6 +23,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2192,7 +2193,7 @@
         3000.0
       ],
       "ammo_counter1": [
-        250.0,
+        500.0,
         0.0
       ]
     },
@@ -2344,7 +2345,6 @@
             "dm": "cannon1_dm",
             "bullets": 160,
             "spread": 1.0,
-            "counterIndex": 1,
             "dragCx": 0.001,
             "gearLimit": [
               0.0,
@@ -2551,7 +2551,7 @@
           },
           {
             "iconType": "doublebarreled_box",
-            "name": "gsh23l_default",
+            "name": "gsh23l_default_left",
             "ShowDmParts": {
               "node": [
                 "cannon2_dm",
@@ -3049,7 +3049,7 @@
           },
           {
             "iconType": "doublebarreled_box",
-            "name": "gsh23l_default",
+            "name": "gsh23l_default_right",
             "ShowDmParts": {
               "node": [
                 "cannon3_dm",
@@ -3071,7 +3071,8 @@
               "dm": "cannon3_dm",
               "bullets": 250,
               "spread": 1.0,
-              "external": true
+              "external": true,
+              "counterIndex": 1
             }
           }
         ]

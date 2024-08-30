@@ -144,6 +144,12 @@ let g_hud_display_timers = {
       needTimeText = true
     },
     {
+      id = "building_status"
+      color = "@white"
+      icon = "#ui/gameuiskin#icon_building_in_progress.svg"
+      needTimeText = true
+    },
+    {
       id = "inextinguishable_fire_status"
       color = "#DD1111"
       icon = "#ui/gameuiskin#fire_indicator.svg"
@@ -192,6 +198,7 @@ let g_hud_display_timers = {
     g_hud_event_manager.subscribe("TankDebuffs:Battery", this.onBattery, this)
     g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", this.onExtinguishAssist, this)
     g_hud_event_manager.subscribe("TankDebuffs:MineDetonation", this.onMineDetonation, this)
+    g_hud_event_manager.subscribe("TankDebuffs:Building", this.onBuilding, this)
     g_hud_event_manager.subscribe("ShipDebuffs:Rearm", this.onRearm, this)
     g_hud_event_manager.subscribe("ShipDebuffs:Repair", this.onRepair, this)
     g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", this.onMoveCooldown, this)
@@ -484,6 +491,28 @@ let g_hud_display_timers = {
 
     ::g_time_bar.setPeriod(timebarObj, 0)
     ::g_time_bar.setCurrentTime(timebarObj, 0)
+  }
+
+  function onBuilding(debuffs_data) {
+    let placeObj = this.scene.findObject("building_status")
+    if (!checkObj(placeObj))
+      return
+
+    let showTimer = debuffs_data.timer > 0.0
+    placeObj.animation = showTimer ? "show" : "hide"
+
+    let timeTextObj = placeObj.findObject("time_text")
+    timeTextObj.setValue(debuffs_data.timer.tointeger().tostring());
+    let timebarObj = placeObj.findObject("timer")
+
+    ::g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
+    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.timer)
+    if (debuffs_data.pause) {
+      ::g_time_bar.pauseTimer(timebarObj)
+    }
+    else if (debuffs_data.backward == true) {
+      ::g_time_bar.setDirectionBackward(timebarObj)
+    }
   }
 
   function onInextinguishableFire(debuffs_data) {

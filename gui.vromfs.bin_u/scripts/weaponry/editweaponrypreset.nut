@@ -4,6 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let regexp2 = require("regexp2")
+let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
@@ -12,13 +13,15 @@ let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { openPopupList } = require("%scripts/popups/popupList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { addCustomPreset, isPresetChanged } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { addCustomPreset, isPresetChanged, convertPresetToBlk
+} = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
+let { set_weapon_visual_custom_blk } = require("unitCustomization")
 
 const MASS_KG_PRESIZE = 0.1
 
@@ -43,8 +46,15 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   availableWeapons     = null
   favoriteArr          = null
   unitBlk              = null
+  parentSize           = null
+  parentPos            = null
+  afterClose           = null
 
-  getSceneTplView = @() { presets = this.getPresetMarkup() }
+  getSceneTplView = @() {
+    blurSize = $"{this.parentSize?[0] ?? "sw"}, {this.parentSize?[1] ?? "sh"}"
+    blurPos = this.parentPos != null ? " ,".join(this.parentPos) : null
+    presets = this.getPresetMarkup()
+  }
   getKgUnitsText = @(val, addMeasureUnits = true) getMeasureTypeByName("kg", addMeasureUnits).getMeasureUnitsText(round_by_value(val, MASS_KG_PRESIZE))
 
   function initScreen() {
@@ -54,6 +64,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
     this.updateWeightCapacityText()
     this.presetNest = this.scene.findObject("presetNest")
     move_mouse_on_obj(this.presetNest.findObject("presetHeader_"))
+    set_weapon_visual_custom_blk(this.unit.name, convertPresetToBlk(this.preset))
   }
 
   function getPresetMarkup() {
@@ -216,6 +227,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
       move_mouse_on_obj(this.presetNest.findObject($"tier_{tierId}"))
     }, this)
     editSlotInPreset(this.preset, tierId, presetId, this.availableWeapons, this.unit, this.favoriteArr, cb, isForced)
+    set_weapon_visual_custom_blk(this.unit.name, convertPresetToBlk(this.preset))
   }
 
   onWeaponChoose = @(obj) this.chooseWeapon(obj.holderId.tointeger(), obj.id)
@@ -273,6 +285,11 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
         ["yes", base.goBack],
         ["cancel", function () {}]
       ], "cancel")
+  }
+
+  function onDestroy() {
+    set_weapon_visual_custom_blk("", DataBlock())
+    this?.afterClose()
   }
 
   function checkWeightRestrictions() {

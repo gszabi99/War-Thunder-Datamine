@@ -64,8 +64,7 @@ function onCollapseShortcutPress(v) {
   }
 }
 
-eventbus_subscribe("onCollapseActionBarBtn",
-  @(v) v?.isKeyDown != null ? onCollapseShortcutPress(v) : eventbus_send("collapseActionBar"))
+eventbus_subscribe("onCollapseActionBarBtn", onCollapseShortcutPress)
 subscribe("setIsActionBarVisible", @(v) isActionBarVisible.set(v))
 subscribe("setIsActionBarCollapsed", @(v) isActionBarCollapsed.set(v))
 subscribe("setActionBarState", function(params) {

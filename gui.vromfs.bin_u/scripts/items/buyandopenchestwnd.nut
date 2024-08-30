@@ -1,13 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let { eventbus_send } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadHandler, handlersManager, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getStringWidthPx, getFontLineHeightPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let trophyRewardListByCategory = require("%scripts/items/listPopupWnd/trophyRewardListByCategory.nut")
@@ -16,52 +17,28 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { activeUnlocks, receiveRewards } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
-let { getFullUnitRoleText, getUnitTooltipImage, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
+let { getFullUnitRoleText, getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getEntitlementConfig, getEntitlementShortName, getEntitlementAmount } = require("%scripts/onlineShop/entitlements.nut")
 let { Cost } = require("%scripts/money.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { IPoint2 } = require("dagor.math")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { frnd } = require("dagor.random")
-let { PI, cos, sin } = require("%sqstd/math.nut")
+let { PI, cos, sin, abs } = require("%sqstd/math.nut")
 let { enableObjsByTable, activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { getPrizeText } = require("%scripts/items/prizesView.nut")
+let { getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
+let regexp2 = require("regexp2")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
 const CHEST_SHOW_FINISHED_ANIM_TIMER_ID = "timer_finish_show_chest_animation"
 
-let buyAndOpenChestWndStyles = {
-  newYear23 = {
-    headerBackgroundImage = "!ui/images/chests_wnd/golden_new_year_image"
-    chestNameBackgroundImage = "!ui/images/chests_wnd/golden_new_year_header"
-    headerBackgroundImageHeight = "512.0/2420w"
-    headerBackgroundImageMaxHeight = "0.43ph"
-    bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 2420.0*0.43sh/512)), sh"
-    timeExpiredTextParams = "pos:t='0.75pw, 0.4ph-0.5h'"
-  }
-  silverCommon = {
-    headerBackgroundImage = "!ui/images/chests_wnd/silver_common_image"
-    chestNameBackgroundImage = "!ui/images/chests_wnd/silver_common_header"
-    headerBackgroundImageHeight = "720.0/1920w"
-    headerBackgroundImageMaxHeight = "0.70ph"
-    bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 1920.0*0.70sh/720)), sh"
-    timeExpiredTextParams="pos:t='0.65pw, 0.41ph-0.5h'; overlayTextColor:t='active'"
-    chestNameTextParams="font-ht:t='40@sf/@pf'"
-  }
-  silverSummer = {
-    headerBackgroundImage = "!ui/images/chests_wnd/silver_summer_image"
-    chestNameBackgroundImage = "!ui/images/chests_wnd/silver_summer_header"
-    headerBackgroundImageHeight = "720.0/1920w"
-    headerBackgroundImageMaxHeight = "0.70ph"
-    bgCornersShadowSize = "3((sw - 1@swOrRwInVr) $max (sw - 1920.0*0.70sh/720)), sh"
-    timeExpiredTextParams="pos:t='0.75pw, 0.41ph-0.5h'; overlayTextColor:t='active'"
-    chestNameTextParams="font-ht:t='40@sf/@pf'"
-    needTopGradient = "yes"
-  }
-}
+
+let decolorizeRegExp = regexp2(@"\<color(/?[^>]+)>")
 
 let sortIdxItemsByType = [
   itemType.WARPOINTS
@@ -176,7 +153,7 @@ function getUnitPrizeText(unit, params = null) {
   let textArr = [
     {
       iconBeforeText = getUnitCountryIcon(unit)
-      text = colorize("@activeTextColor", getUnitName(unit))
+      text = getUnitName(unit)
     }
   ]
   if (params?.isShortText)
@@ -184,7 +161,7 @@ function getUnitPrizeText(unit, params = null) {
 
   textArr.append(
     {
-      text = colorize(getUnitClassColor(unit), getFullUnitRoleText(unit))
+      text = getFullUnitRoleText(unit)
       textParams = "smallFont:t='yes'"
     }
   )
@@ -194,12 +171,11 @@ function getUnitPrizeText(unit, params = null) {
 function getWarpointsText(prize) {
   return [
     {
-      text = colorize("@activeTextColor",
-        Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
+      text = Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, needIcon = false })
       iconAfterText = "#ui/gameuiskin#item_type_warpoints.svg"
     }
     {
-      text = colorize("@activeTextColor", loc("charServer/chapter/warpoints"))
+      text = loc("charServer/chapter/warpoints")
       textParams = "smallFont:t='yes'"
     }
   ]
@@ -208,12 +184,11 @@ function getWarpointsText(prize) {
 function getGoldText(prize) {
   return [
     {
-      text = colorize("@activeTextColor",
-        Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
+      text = Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, needIcon = false })
       iconAfterText = "#ui/gameuiskin#item_type_eagles.svg"
     }
     {
-      text = colorize("@userlogColoredText", loc("charServer/chapter/eagles"))
+      text = loc("charServer/chapter/eagles")
       textParams = "smallFont:t='yes'"
     }
   ]
@@ -273,12 +248,12 @@ let offerTypes = {
       let premExpMul = prize?.result.premExpMul
       if (premExpMul == null) //Only talisman is supported so far
         return null
-      let res = [ { text = colorize("@activeTextColor", loc("modification/premExpMul")) } ]
+      let res = [ { text = loc("modification/premExpMul") } ]
       let unit = getAircraftByName(premExpMul?.unit0 ?? "")
       if (unit != null)
         res.append({
           iconBeforeText = getUnitCountryIcon(unit)
-          text = colorize(getUnitClassColor(unit), getUnitName(unit))
+          text = getUnitName(unit)
           textParams = "smallFont:t='yes'"
         })
       return res
@@ -308,10 +283,10 @@ let offerTypes = {
         : ""
       return [
         {
-          text = timeText != "" ? colorize("@activeTextColor", timeText) : null
+          text = timeText != "" ? timeText : null
         }
         {
-          text = colorize("@userlogColoredText", getEntitlementShortName(ent))
+          text = getEntitlementShortName(ent)
           textParams = "smallFont:t='yes'"
         }
       ]
@@ -345,13 +320,13 @@ let offerTypes = {
         itemNameText = item.getTypeName()
       } else {
         itemNameText = item.getName()
-        firstTextConfig = count > 1 ? { text = colorize("@activeTextColor", $"x{count}") } : { text = "" }
+        firstTextConfig = count > 1 ? { text = $"x{count}" } : { text = " " }
       }
 
       return [
         firstTextConfig
         {
-          text = colorize("@activeTextColor", itemNameText)
+          text = itemNameText
           textParams = "smallFont:t='yes'"
         }
       ]
@@ -396,13 +371,20 @@ function getTrophyText(prize, params = {}) {
     return [
       { text = " "}
       {
-        text = colorize("@activeTextColor", trophy.getName())
+        text = trophy.getName()
         textParams = "smallFont:t='yes'"
       }
     ]
 
-  if (availablePrizes.len() == 1)
-    return offerTypes?[::trophyReward.getType(availablePrizes[0])].getTextView(availablePrizes[0]) ?? []
+  if (availablePrizes.len() == 1) {
+    let prizeOfferType = ::trophyReward.getType(availablePrizes[0])
+    return offerTypes?[prizeOfferType]
+      ? offerTypes[prizeOfferType].getTextView(availablePrizes[0]) ?? []
+      : [
+          {text = " "}
+          {text = getPrizeText(availablePrizes[0], false, false, false), textParams = "smallFont:t='yes'"}
+        ]
+  }
 
   let allReceivedPrize = allReceivedPrizes.len() == 1 ? allReceivedPrizes[0] : null
 
@@ -424,7 +406,7 @@ function getTrophyText(prize, params = {}) {
     if (offerTypes?[prizeOfferType]) {
       prizeTexts = offerTypes[prizeOfferType].getTextView(trophyPrize, {isShortText = true}) ?? []
     } else {
-      let text = ::PrizesView.getPrizeText(trophyPrize, false, false, false)
+      let text = getPrizeText(trophyPrize, false, false, false)
       prizeTexts = [{text, textParams = "smallFont:t='yes'", isTextNeedStroke = "yes"}]
     }
   } else
@@ -432,13 +414,13 @@ function getTrophyText(prize, params = {}) {
 
   let doublePrizeTexts = []
   foreach (val in prizeTexts)
-    if (val?.text != "") {
+    if (val?.text != "" && val?.text != " ") {
       val.isTextNeedStroke <- "yes"
       doublePrizeTexts.append(val)
     }
 
   foreach (val in recivedPrizeText)
-    if (val?.text != "")
+    if (val?.text != "" && val?.text != " ")
       doublePrizeTexts.append(val)
 
   return doublePrizeTexts
@@ -874,6 +856,12 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let canOpenChest = this.getCanOpenChest()
+    if (!canOpenChest && this.chestItem?.isInventoryItem) {
+      let chestFromShop = ::ItemsManager.findItemById(to_integer_safe(this.chestItem.id, this.chestItem.id))
+      if (chestFromShop != null)
+        this.chestItem = chestFromShop
+    }
+
     showObjById("btn_buy", !canOpenChest, this.scene)
     showObjById("btn_open", canOpenChest, this.scene)
     this.updateActionButtonText()
@@ -1080,20 +1068,69 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let prizesView = getPrizesView(prizes, 300)
+    this.decolorizeText(prizesView)
     let data = handyman.renderCached("%gui/items/buyAndOpenChestPrizes.tpl", prizesView)
     let prizeNest = this.scene.findObject("prizes_list")
     this.guiScene.replaceContentFromText(prizeNest, data, data.len(), this)
     let thisHandler = this
-    defer(@() thisHandler.updateStrikeText(prizeNest, prizesView.prizes))
-    showObjById("prizes_list", true, this.scene)
+    prizeNest.show(true)
+    defer(@() thisHandler?.isValid() ? thisHandler.updateStrikeText(prizeNest, prizesView.prizes) : null )
+    defer(@() thisHandler?.isValid() ? thisHandler.optimizeShadowsLayer(prizeNest) : null )
     this.updateUseAmountControls()
     this.updateButtons()
     this.curShowPrizeIdx = null
     this.startOpening()
   }
 
+  function decolorizeText(prizesView) {
+    foreach (prize in prizesView.prizes)
+      foreach (text in prize.textBlock)
+        text.text = "".concat("<color=#FFFFFF>", decolorizeRegExp.replace("", text.text), "</color>")
+  }
+
+  function optimizeShadowsLayer(prizeNest) {
+    if (!prizeNest?.isValid())
+      return
+
+    local prizeObj = prizeNest.findObject("prize_0")
+    local i = 0;
+    while (prizeObj != null) {
+      let layer = prizeObj.findObject("bg_icon_layer")
+      local shadowsCount = layer.childrenCount()
+      let params = {biggestObj = null, square = 0}
+      for (local n = 0; n < shadowsCount; n++)
+        this.hideNotBiggestShadows(layer.getChild(n), params)
+
+      if (params.biggestObj) {
+        shadowsCount = params.biggestObj.childrenCount()
+        if ((params.biggestObj?["background-image"] ?? "") != "" || shadowsCount > 1)
+          for (local n = 0; n < shadowsCount; n++) {
+            let child = params.biggestObj.getChild(n)
+            let childSize = child.getSize()
+            if (abs(childSize[0] * childSize[1] - params.square) > params.square * 0.05)
+              child.show(false)
+          }
+      }
+      i = i + 1
+      prizeObj = prizeNest.findObject($"prize_{i}")
+    }
+  }
+
+  function hideNotBiggestShadows(obj, params) {
+    let size = obj.getSize()
+    let square = size[0]*size[1]
+    let currentSquare = params?.square ?? 0
+    if (currentSquare < square) {
+      if (params?.biggestObj)
+        params.biggestObj.show(false)
+      params.biggestObj = obj
+      params.square = square
+    } else
+      obj.show(false)
+  }
+
   function updateStrikeText(prizeNest, prizes) {
-    if (!this?.isValid() || !prizeNest?.isValid())
+    if (!prizeNest?.isValid())
       return
     let normalFontHeight = getFontLineHeightPx("fontNormal") + 1
     let bigFontHeight = getFontLineHeightPx("fontMedium") + 1
@@ -1146,8 +1183,6 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-let getBuyAndOpenChestWndStyle = @(item) buyAndOpenChestWndStyles?[item?.itemDef.tags.openingWndStyle ?? ""]
-
 function showBuyAndOpenChestWnd(chestItem) {
   if (chestItem == null)
     return null
@@ -1156,7 +1191,7 @@ function showBuyAndOpenChestWnd(chestItem) {
   if (styleConfig == null)
     return null
 
-  return loadHandler(BuyAndOpenChestHandler, { chestItem, styleConfig})
+  return loadHandler(BuyAndOpenChestHandler, {chestItem, styleConfig})
 }
 
 function showBuyAndOpenChestWndById(chestId) {
@@ -1214,6 +1249,33 @@ addListenersWithoutEnv({
   InventoryUpdate = @(_) tryOpenChestWindow()
 })
 
+function openChestOrTrophy(params) {
+  let {chest = null, expectedPrizes = null, receivedPrizes = null,
+    rewardWndConfig = null} = params
+  let chestId = chest?.id ?? params?.chestId
+  let rewardsHandler = chest != null
+    ? showBuyAndOpenChestWnd(chest)
+    : showBuyAndOpenChestWndById(chestId)
+
+  let prizes = receivedPrizes ?? expectedPrizes
+  if (prizes == null)
+    return
+
+  if (rewardsHandler != null) {
+    rewardsHandler.showReceivedPrizes(prizes)
+    return
+  }
+
+  if (rewardWndConfig == null)
+    return
+
+  eventbus_send("guiStartOpenTrophy",
+      rewardWndConfig.__update({ [chestId] = prizes }))
+}
+
+add_event_listener("openChestWndOrTrophy", openChestOrTrophy)
+add_event_listener("showBuyAndOpenChestWndWhenReceive", showBuyAndOpenChestWndWhenReceive)
+
 register_command(showBuyAndOpenChestWndById, "debug.showBuyAndOpenChestWnd")
 register_command(function(chestId) {
     let handler = showBuyAndOpenChestWndById(chestId)
@@ -1222,10 +1284,3 @@ register_command(function(chestId) {
     handler.showReceivedPrizes(debugPrizes)
   },
   "debug.showBuyAndOpenChestWndWithDebugPrizes")
-
-return {
-  showBuyAndOpenChestWnd
-  showBuyAndOpenChestWndById
-  showBuyAndOpenChestWndWhenReceive
-  getBuyAndOpenChestWndStyle
-}

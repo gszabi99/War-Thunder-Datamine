@@ -13,6 +13,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2042,6 +2043,27 @@
         "name": "p_63a_10_mk78_mod2",
         "blk": "gameData/FlightModels/weaponPresets/p_63a_10_mk78_mod2.blk",
         "reqModification": "us_mk78_mod0"
+      },
+      {
+        "name": "p_63c_5_m8_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/p_63c_5_m8_rockets.blk",
+        "reqModification": "us_mk78_mod0"
+      },
+      {
+        "name": "p_63c_5_bomb_m8_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/p_63c_5_bomb_m8_rockets.blk",
+        "reqModification": [
+          "fmbc_mk2",
+          "bazooka_pylon"
+        ]
+      },
+      {
+        "name": "p_63c_5_fire_bomb_m8_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/p_63c_5_fire_bomb_m8_rockets.blk",
+        "reqModification": [
+          "us_mk78_mod0",
+          "bazooka_pylon"
+        ]
       }
     ]
   },
@@ -2265,10 +2287,13 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "fmbc_mk2": {
-      "prevModification": "us_mk78_mod0",
-      "reqModLevel": 6.0,
+    "bazooka_pylon": {
       "tier": 2,
+      "modClass": "weapon"
+    },
+    "fmbc_mk2": {
+      "prevModification": "bazooka_pylon",
+      "tier": 3,
       "modClass": "weapon"
     }
   },

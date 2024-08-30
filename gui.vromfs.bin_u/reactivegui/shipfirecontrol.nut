@@ -13,6 +13,7 @@ let { IsRadarVisible } = require("radarState.nut")
 let fcsState = require("%rGui/fcsState.nut")
 let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.nut")
 let { eventbus_send } = require("eventbus")
+let { drawArrow } = require("fcsComponent.nut")
 
 function mkCirclePicture(radius, thickness) {
   let getDistance = @(x, y) sqrt(x * x + y * y)
@@ -254,36 +255,6 @@ let progressBar = @() {
         }
       ]
     }
-  }
-}
-
-function drawArrow(x, y, dirX, dirY, color, fill = false, scale = 1) {
-  let arrowSize = sh(2)
-  local arrowCommands = []
-
-  if (fill) {
-    arrowCommands = dirX == 0
-      ? [[VECTOR_POLY, 0, 0, 25, dirY * 50, -25, dirY * 50]]
-      : [[VECTOR_POLY, 0, 0, -dirX * 50, 25, -dirX * 50, -25]]
-  }
-  else {
-    arrowCommands = dirX == 0 ? [
-        [VECTOR_LINE, 0, dirY * 5, 35,  dirY * 55],
-        [VECTOR_LINE, 0, dirY * 5, -35, dirY * 55]
-      ] : [
-        [VECTOR_LINE, -dirX * 5, 0, -dirX * 55, 25],
-        [VECTOR_LINE, -dirX * 5, 0, -dirX * 55, -25]
-      ]
-  }
-
-  return {
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [arrowSize, arrowSize]
-    pos = [x, y]
-    lineWidth = hdpx(2 * scale)
-    color = color
-    fillColor = fill ? color : Color(0, 0, 0, 0)
-    commands = arrowCommands
   }
 }
 

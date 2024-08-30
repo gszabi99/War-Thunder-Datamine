@@ -719,8 +719,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2170,7 +2171,7 @@
     },
     "tracks": {
       "animationMultiplier": 0.56,
-      "height": 0.08,
+      "height": 0.02,
       "width": 0.28
     },
     "collisionProps": {
@@ -2208,19 +2209,21 @@
         -0.04,
         0.01
       ],
-      "defaultGearRadius": 0.35,
+      "defaultGearRadius": 0.42,
       "topGearRadius": 0.1,
       "frontBackGearRadius": 0.33,
       "defaultDampeningForce": [
         15000.0,
         15000.0
       ],
+      "wheel_l_01": 0.42,
+      "wheel_r_01": 0.42,
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "brokenWheelSteeringDeflection": -15.0,
       "steeringDeflection": {
-        "wheel_r_01": 45.0,
-        "wheel_l_01": 45.0,
+        "wheel_r_01": 35.0,
+        "wheel_l_01": 35.0,
         "steeringTau": 1.5
       },
       "wheels": {

@@ -43,6 +43,7 @@ let modeNames = [
   "hud/PD HDN search",
   "hud/PD HDN acquisition",
   "hud/PD HDN ACM",
+  "hud/PD HDN HMD",
   "hud/PD HDN BST",
   "hud/PD HDN VSL",
   "hud/PD HDN track",
@@ -147,6 +148,7 @@ let Speed = Watched(0.0)
   //radar 1
 let IsRadarVisible = Watched(false)
 let IsRadarEmitting = Watched(false)
+let IsRadarDamaged = Watched(false)
 let RadarModeNameId = Watched(-1)
 let Azimuth = Watched(0.0)
 let Elevation = Watched(0.0)
@@ -246,7 +248,7 @@ radarState.__update({
     Speed,
 
     //radar 1
-    IsRadarVisible, IsRadarEmitting, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
+    IsRadarVisible, IsRadarEmitting, IsRadarDamaged, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
 
     //radar 2
     IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,

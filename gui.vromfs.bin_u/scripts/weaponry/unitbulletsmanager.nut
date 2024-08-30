@@ -6,7 +6,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
+let { get_gui_option, getGuiOptionsMode, set_unit_option, set_gui_option } = require("guiOptions")
 let stdMath = require("%sqstd/math.nut")
 let { AMMO, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
 let { getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -17,11 +17,13 @@ let { getBulletsSetData, getLinkedGunIdx,
         getBulletsInfoForPrimaryGuns,
         getAmmoStowageConstraintsByTrigger,
         getBulletsSetMaxAmmoWithConstraints } = require("%scripts/weaponry/bulletsInfo.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS
+let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS, USEROPT_BULLETS0, USEROPT_BULLET_COUNT0,
+  USEROPT_BULLETS_WEAPON0
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { guiStartWeaponrySelectModal } = require("%scripts/weaponry/weaponrySelectModal.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 
 enum bulletsAmountState {
   READY
@@ -276,6 +278,28 @@ enum bulletsAmountState {
       align = align
       onChangeValueCb = Callback(@(mod) this.changeBulletsValue(bulGroup, mod.name), this)
     })
+  }
+
+  function updateBulletCountOptions(bulletGroups = null) {
+    local bulIdx = 0
+    foreach (idx, bulGroup in (bulletGroups ?? this.getBulletsGroups())) {
+      bulIdx = idx
+      let name = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
+      let count = bulGroup.active ? bulGroup.bulletsCount : 0
+      set_option(USEROPT_BULLETS0 + bulIdx, name)
+      set_unit_option(this.unit.name, USEROPT_BULLETS0 + bulIdx, name)
+      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
+      set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, bulGroup.getWeaponName())
+    }
+    ++bulIdx
+
+    while (bulIdx < BULLETS_SETS_QUANTITY) {
+      set_option(USEROPT_BULLETS0 + bulIdx, "")
+      set_unit_option(this.unit.name, USEROPT_BULLETS0 + bulIdx, "")
+      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
+      set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, "")
+      ++bulIdx
+    }
   }
 
 //**************************************************************************************

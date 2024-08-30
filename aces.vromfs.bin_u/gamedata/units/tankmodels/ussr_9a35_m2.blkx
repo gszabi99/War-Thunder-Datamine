@@ -434,8 +434,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -3128,46 +3129,43 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
-      "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
-      "shells": {
-        "fireEvent": "ammo_fire",
-        "explosionEvent": "ammo_explosion",
-        "wreckedPartId": 0,
-        "ammo_body_01_dm": {
-          "count": 1
-        },
-        "ammo_body_02_dm": {
-          "count": 1
-        },
-        "ammo_body_03_dm": {
-          "count": 1
-        },
-        "ammo_body_04_dm": {
-          "count": 1
-        },
-        "ammo_body_05_dm": {
-          "count": 1,
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
           "fatalFire": false,
-          "fatalExplosion": false
+          "fatalExplosion": false,
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          }
         },
-        "ammo_body_06_dm": {
-          "count": 1,
-          "fatalFire": false,
-          "fatalExplosion": false
-        },
-        "ammo_body_07_dm": {
-          "count": 1,
-          "fatalFire": false,
-          "fatalExplosion": false
-        },
-        "ammo_body_08_dm": {
-          "count": 1,
-          "fatalFire": false,
-          "fatalExplosion": false
+        {
+          "autoLoad": true,
+          "autoloader": "autoloader_dm",
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_01_dm": {
+            "count": 1
+          }
         }
-      }
+      ]
     }
   },
   "smokeScreenExhaustEmitters": {

@@ -67,6 +67,7 @@ enum DargWidgets {
   , DAMAGE_PANEL
   , HUD_TOUCH
   , RESPAWN
+  , TANK_SIGHT_SETTINGS
 };
 
 enum AirParamsMain {
@@ -81,24 +82,25 @@ enum AirParamsMain {
   SPEED =             8,
   MACH =              9,
   ALTITUDE =          10,
-  ROCKET =            11,
-  BOMBS =             12,
-  TORPEDO =           13,
-  AGM =               14,
-  AAM =               15,
-  GUIDED_BOMBS =      16,
-  FLARES =            17,
-  CHAFFS =            18,
-  MACHINE_GUNS_1 =    19,
-  MACHINE_GUNS_2 =    20,
-  MACHINE_GUNS_3 =    21,
-  CANNON_1 =          22,
-  CANNON_2 =          23,
-  CANNON_3 =          24,
-  MACHINE_GUN =       25,
-  CANNON_ADDITIONAL = 26,
-  IRCM =              27,
-  RATE_OF_FIRE =      28
+  RADAR_ALTITUDE =    11,
+  ROCKET =            12,
+  BOMBS =             13,
+  TORPEDO =           14,
+  AGM =               15,
+  AAM =               16,
+  GUIDED_BOMBS =      17,
+  FLARES =            18,
+  CHAFFS =            19,
+  MACHINE_GUNS_1 =    20,
+  MACHINE_GUNS_2 =    21,
+  MACHINE_GUNS_3 =    22,
+  CANNON_1 =          23,
+  CANNON_2 =          24,
+  CANNON_3 =          25,
+  MACHINE_GUN =       26,
+  CANNON_ADDITIONAL = 27,
+  IRCM =              28,
+  RATE_OF_FIRE =      29
 };
 
 enum AirParamsSecondary {

@@ -37,6 +37,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map_helicopter.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -269,11 +270,6 @@
           {
             "damage": 200.0,
             "tail_dm": 1.0
-          },
-          {
-            "damage": 300.0,
-            "tail_dm": 1.0,
-            "expl": 1.0
           }
         ],
         "onKill": [
@@ -304,32 +300,27 @@
           {
             "damage": 30.0,
             "tail_dm": 1.0,
-            "expl": 0.3
+            "nothing": 3.0
           },
           {
             "damage": 50.0,
-            "tail_dm": 1.0,
-            "expl": 0.4
+            "tail_dm": 1.0
           },
           {
             "damage": 70.0,
-            "tail_dm": 1.0,
-            "expl": 0.5
+            "tail_dm": 1.0
           },
           {
             "damage": 100.0,
-            "tail_dm": 1.0,
-            "expl": 0.5
+            "tail_dm": 1.0
           },
           {
             "damage": 200.0,
-            "tail_dm": 1.0,
-            "expl": 0.5
+            "tail_dm": 1.0
           },
           {
             "damage": 300.0,
-            "tail_dm": 1.0,
-            "expl": 1.0
+            "tail_dm": 1.0
           }
         ]
       },
@@ -1939,7 +1930,12 @@
     "sensor": [
       {
         "blk": "gameData/sensors/ir_tracker_360.blk",
-        "node": "optic1_gun"
+        "node": "optic1_gun",
+        "offset": [
+          0.0,
+          2.45,
+          0.0
+        ]
       },
       {
         "blk": "gameData/sensors/us_flir.blk",

@@ -83,6 +83,7 @@ elemViewType.addTypes({
         maxRank = maxRanks?[obj.countryId][obj.armyId] ?? 0
         rank = bonus.unit.rank
         unitTypeName = bonus.unit.unitType.name
+        isRecentlyReleased = bonus.unit.isRecentlyReleased()
       })
       obj.findObject("nationBonusMarkerTooltip").tooltipId = nationBonusTooltipId
     }
@@ -102,6 +103,7 @@ addTooltipTypes({
           hasCountry = countryId == ""
           unitName = getUnitName(b.unit.name, true)
           unitTypeIco = b.unit?.customClassIco ?? $"#ui/gameuiskin#{b.unit.name}_ico.svg"
+          isWideIco = ["ships", "helicopters", "boats"].contains(b.unit.unitType.armyId)
           countryIcon = getUnitCountryIcon(b.unit)
           battlesRemain = $"{b.battlesRemainCount}/{expNewNationBonusDailyBattleCount}"
           even = idx % 2 == 0

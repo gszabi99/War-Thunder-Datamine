@@ -30,7 +30,7 @@ require %game.events
 [with_bundle(v)]
 def ammo_stowage_restore_slots(var v : tuple<
                                  ammo_slots__state : UInt32List
-                               >) : void
+                                 >) : void
   // water is cleared upon repair/respawn, so it is safe to just set FLOODED to false for all slots
   for state in v.ammo_slots__state
     set_flag(state, AmmoSlotState ENABLED, true)
@@ -41,7 +41,7 @@ def ammo_stowage_restore_slots(var v : tuple<
 def ammo_stowage_respawn_handle(evt : EventUnitRespawn; eid : EntityId;
                                 var v : tuple<
                                   ammo_slots__state : UInt32List
-                                >) : void
+                                  >) : void
   ammo_stowage_restore_slots() <| v
   sendEvent(eid, [[EventBulletsAmountChanged isRefill=true]])
 
@@ -50,7 +50,7 @@ def ammo_stowage_respawn_handle(evt : EventUnitRespawn; eid : EntityId;
 def ammo_stowage_repair_handle(evt : EventUnitRepair; eid : EntityId;
                                var v : tuple<
                                  ammo_slots__state : UInt32List
-                               >) : void
+                                 >) : void
   ammo_stowage_restore_slots() <| v
   sendEvent(eid, [[EventBulletsAmountChanged isRefill=false]])
 
@@ -74,11 +74,11 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
                                           ammo_clusters__typeAndStage : UInt16List;
                                           ammo_clusters__slotsRange : IPoint2List;
                                           ammo_clusters__relatedPartsRange : IPoint2List;
-                                          ammo_slots__numAmmo : IPoint2List- const;
+                                          ammo_slots__numAmmo : IPoint2List -const;
                                           ammo_slots__ammoMaskAndType : UInt32List;
-                                          ammo_per_type_data__state : UInt32List- const;
-                                          ammo_per_type_data__numAmmoFs : IntList- const
-                                        >) : tuple<hash : uint; data_range : int2>
+                                          ammo_per_type_data__state : UInt32List -const;
+                                          ammo_per_type_data__numAmmoFs : IntList -const
+                                          >) : tuple<hash : uint; data_range : int2>
   let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
   let stowage_has_auto_load = get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState HAS_AUTO_LOAD)
   let enable_per_ammo_types = get_flag(v.ammo_stowage__ammoState, AmmoState ENABLE_PER_AMMO_TYPES)
@@ -197,7 +197,7 @@ def find_next_slots_to_replenish(stowage_id : int; amount : int;
                                    ammo_slots__state : UInt32List;
                                    ammo_slots__ammoMaskAndType : UInt32List;
                                    ammo_slots__numAmmo : IPoint2List
-                                 >) : tuple<from_cluster_slot_id : int2[2]; to_cluster_slot_id : int2[2]; ammo_type : int>
+                                   >) : tuple<from_cluster_slot_id : int2[2]; to_cluster_slot_id : int2[2]; ammo_type : int>
   assert(int(AmmoClusterType NUM_TYPES) == 2)
   var from_slot_ids : int2[2]
   var to_slot_ids : int2[2]
@@ -286,26 +286,26 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
                                                      ammo_stowage__ammoTypeRemap : IPoint4List;
                                                      ammo_stowage__weaponsIds : IntList;
                                                      ammo_stowages__state : UInt32List;
-                                                     ammo_stowages__replenishmentStartEnd : Point2List- const;
-                                                     ammo_stowages__replenishmentTime : Point2List- const;
+                                                     ammo_stowages__replenishmentStartEnd : Point2List -const;
+                                                     ammo_stowages__replenishmentTime : Point2List -const;
                                                      ammo_stowages__weaponTriggersRange : IPoint2List;
                                                      ammo_stowages__bulletsCartridge : IntList;
                                                      ammo_stowages__clustersRange : IPoint2List;
-                                                     ammo_stowages__cachedAmmoHash : UInt32List- const;
+                                                     ammo_stowages__cachedAmmoHash : UInt32List -const;
                                                      ammo_clusters__state : UInt32List;
                                                      ammo_clusters__typeAndStage : UInt16List;
                                                      ammo_clusters__ammoClassConstraints : UInt32List;
                                                      ammo_clusters__relatedPartsRange : IPoint2List;
 
                                                      ammo_clusters__slotsRange : IPoint2List;
-                                                     ammo_slots__state : UInt32List- const;
-                                                     ammo_slots__numAmmo : IPoint2List- const;
-                                                     ammo_slots__ammoMaskAndType : UInt32List- const;
+                                                     ammo_slots__state : UInt32List -const;
+                                                     ammo_slots__numAmmo : IPoint2List -const;
+                                                     ammo_slots__ammoMaskAndType : UInt32List -const;
                                                      ammo_slots__partId : PartIdList;
 
-                                                     ammo_per_type_data__state : UInt32List- const;
-                                                     ammo_per_type_data__numAmmoFs : IntList- const
-                                                   >)
+                                                     ammo_per_type_data__state : UInt32List -const;
+                                                     ammo_per_type_data__numAmmoFs : IntList -const
+                                                     >)
   var unit = get_unit(uid)
   if unit == null || unit.isDelayed || !active
     return

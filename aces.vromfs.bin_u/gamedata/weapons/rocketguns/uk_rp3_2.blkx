@@ -72,24 +72,24 @@
     "smokeEffect2": "",
     "hazeEffect": "",
     "endSmokeViscosity": 0.05,
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "groundRicochetPreset": "he_ground",
-    "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.5,
+    "normalizationPreset": "ap",
+    "ricochetPreset": "ap",
+    "groundRicochetPreset": "ap_ground",
+    "secondaryShattersPreset": "ap_large_caliber",
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "rocket_tank",
+    "stabilityReductionAfterPenetration": 0.0,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
+    "bulletType": "ap_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
       0.1,
       2.0
     ],
-    "explodeOnRendinst": true,
-    "useEffectiveArmorThicknessForShatter": true,
-    "shellAnimation": "video/shells_animations/rocket_he.ivf",
+    "shellAnimation": "video/shells_animations/aphe.ivf",
     "armorpower": {
       "ArmorPower0m": [
         41.0,
@@ -315,15 +315,21 @@
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
-        0.5
+        0.2
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.4
       ],
       "mod3": [
-        30.0,
-        0.99
+        [
+          30.0,
+          0.6
+        ],
+        [
+          45.0,
+          0.9
+        ]
       ]
     },
     "pressureDamage": {

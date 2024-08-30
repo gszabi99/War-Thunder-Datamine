@@ -42,6 +42,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2446,6 +2447,10 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_r1_bgl_1000.blk"
       },
       {
+        "name": "mirage_2000d_r1_bgl_400",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_r1_bgl_400.blk"
+      },
+      {
         "name": "mirage_2000d_r1_as_30l",
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_r1_as_30l.blk"
       }
@@ -2867,6 +2872,27 @@
               "blk": "gameData/Weapons/rocketGuns/fr_as30l.blk",
               "emitter": "rocket_as30_001",
               "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "pdlct_s"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "bgl_400",
+            "reqModification": "fr_bgl400",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_bgl_400.blk",
+              "emitter": "bomb7",
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 6,
@@ -3553,6 +3579,27 @@
               "slot": 6,
               "preset": "pdlct_s"
             }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "bgl_400",
+            "reqModification": "fr_bgl400",
+            "ShowNodes": {
+              "node": "pylon_clb_lat_003"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/fr_bgl_400.blk",
+              "emitter": "bomb8",
+              "bullets": 1,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "pdlct_s"
+            }
           }
         ]
       },
@@ -3906,6 +3953,12 @@
       "modClass": "weapon",
       "reqModification": "it_pdlct_s_pod"
     },
+    "fr_bgl400": {
+      "prevModification": "fr_as_30l",
+      "reqModification": "us_gbu_12",
+      "modClass": "weapon",
+      "tier": 2
+    },
     "us_gbu_12": {
       "reqModification": "it_pdlct_s_pod",
       "modClass": "weapon",
@@ -3922,7 +3975,7 @@
       "tier": 4
     },
     "us_gbu_24": {
-      "prevModification": "fr_as_30l",
+      "prevModification": "fr_bgl400",
       "reqModification": "fr_bgl1000",
       "modClass": "weapon",
       "tier": 4

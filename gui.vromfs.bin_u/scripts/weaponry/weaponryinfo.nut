@@ -618,8 +618,11 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
   let colon = loc("ui/colon")
 
   local massText = null
-  if (weapon.massLbs > 0)
+  if (weapon.massLbs > 0) {
     massText = getMeasureTypeByName("lbs", true).getMeasureUnitsText(weapon.massLbs)
+    if (weapon.massKg > 0)
+      massText = $"{massText} ({getMeasureTypeByName("kg", true).getMeasureUnitsText(weapon.massKg)})"
+  }
   else if (weapon.massKg > 0)
     massText = getMeasureTypeByName("kg", true).getMeasureUnitsText(weapon.massKg)
   if (massText)

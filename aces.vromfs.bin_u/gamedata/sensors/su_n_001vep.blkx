@@ -53,11 +53,11 @@
       "antenna": {
         "azimuth": {
           "angleHalfSens": 3.0,
-          "sideLobesSensitivity": -80.0
+          "sideLobesSensitivity": -120.0
         },
         "elevation": {
           "angleHalfSens": 0.3,
-          "sideLobesSensitivity": -80.0
+          "sideLobesSensitivity": -120.0
         }
       }
     }
@@ -170,38 +170,42 @@
     "irstSearchWide": {
       "type": "pyramide",
       "azimuthLimits": [
-        -30.0,
-        30.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -5.0,
-        5.0
+        -22.5,
+        52.5
       ],
-      "period": 1.1,
+      "period": 5.0,
       "width": 5.0,
       "barHeight": 1.5,
       "barsCount": 40,
       "rowMajor": false,
       "isSmoothMajor": true,
-      "barsOneWay": false
+      "barsOneWay": false,
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0
     },
     "irstSearchNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -30.0,
-        30.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
-        -5.0,
-        5.0
+        -22.5,
+        52.5
       ],
-      "period": 0.2,
+      "period": 1.0,
       "width": 2.5,
       "barHeight": 1.42,
       "barsCount": 14,
       "rowMajor": false,
       "isSmoothMajor": true,
-      "barsOneWay": false
+      "barsOneWay": false,
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0
     },
     "irstBvrLock": {
       "type": "pyramide",
@@ -390,6 +394,26 @@
         "width": 24.0
       }
     },
+    "hmdLock": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "mainBeamNotchWidth": 40.0,
+      "distance": {
+        "presents": true,
+        "minValue": 250.0,
+        "maxValue": 20000.0,
+        "width": 250.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -900.0,
+        "maxValue": 900.0,
+        "signalWidthMin": 2.0,
+        "width": 24.0
+      }
+    },
     "acmTrack": {
       "groundClutter": false,
       "aircraftAsTarget": true,
@@ -457,6 +481,9 @@
     },
     "acm": {
       "range1": 10000.0
+    },
+    "hmd": {
+      "range1": 20000.0
     }
   },
   "fsms": {
@@ -929,8 +956,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
+            "pos": 10000.0,
+            "width": 20000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -1142,12 +1169,12 @@
           "clearTargetsOfInterest": {},
           "setScanPatternSet": {},
           "resetScanPhase": {},
-          "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
-          },
           "setFsmActive": {
             "fsm": "helmetDesignation",
             "active": true
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "hmd"
           }
         },
         "resetHmdStandbyMode": {
@@ -1175,7 +1202,7 @@
             }
           ],
           "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
+            "scopeRangeSet": "hmd"
           }
         },
         "resetHmdLockMode": {
@@ -1196,7 +1223,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "acmLock"
+            "signal": "hmdLock"
           }
         },
         "setRadarHmdLockCommon": {
@@ -1224,8 +1251,8 @@
           "setRadarHmdLockCommon": {},
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
+            "pos": 10000.0,
+            "width": 20000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -1258,8 +1285,8 @@
           "setRadarHmdLockCommon": {},
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
+            "pos": 10000.0,
+            "width": 20000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -2365,13 +2392,13 @@
         "setIrstLockTrack": {
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -30.0,
-              30.0
+              -60.0,
+              60.0
             ],
             "azmithWidth": 2.0,
             "elevationRange": [
-              -2.5,
-              2.5
+              -22.5,
+              52.5
             ],
             "elevationWidth": 3.0,
             "distanceRange": [
@@ -2469,7 +2496,7 @@
               },
               {
                 "source": "designationCue",
-                "value": 0.334
+                "value": 0.5
               }
             ],
             "setCenterElevation": [
@@ -2557,7 +2584,7 @@
               },
               {
                 "source": "designationCue",
-                "value": 0.334
+                "value": 0.5
               }
             ],
             "setCenterElevation": [

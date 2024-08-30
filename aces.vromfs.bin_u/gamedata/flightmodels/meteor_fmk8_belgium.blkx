@@ -18,6 +18,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2515,7 +2516,7 @@
         "WeaponPreset": [
           {
             "iconType": "rockets_he_middle_group_x4",
-            "name": "rp_3",
+            "name": "rp_3_slot1",
             "reqModification": "gloster_rc",
             "ShowNodes": {
               "node": "rocket_pylon2_l"
@@ -2526,28 +2527,32 @@
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_1",
-                "bullets": 1
+                "bullets": 1,
+                "order": 10
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_5",
-                "bullets": 1
+                "bullets": 1,
+                "order": 12
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_9",
-                "bullets": 1
+                "bullets": 1,
+                "order": 14
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_13",
-                "bullets": 1
+                "bullets": 1,
+                "order": 16
               }
             ]
           },
@@ -2608,7 +2613,7 @@
         "WeaponPreset": [
           {
             "iconType": "rockets_he_middle_group_x4",
-            "name": "rp_3",
+            "name": "rp_3_slot3",
             "reqModification": "gloster_rc",
             "ShowNodes": {
               "node": "rocket_pylon2_r"
@@ -2619,28 +2624,32 @@
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_2",
-                "bullets": 1
+                "bullets": 1,
+                "order": 11
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_6",
-                "bullets": 1
+                "bullets": 1,
+                "order": 13
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_10",
-                "bullets": 1
+                "bullets": 1,
+                "order": 15
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
                 "emitter": "uk_hvar_14",
-                "bullets": 1
+                "bullets": 1,
+                "order": 17
               }
             ]
           },

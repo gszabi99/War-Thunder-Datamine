@@ -1517,22 +1517,13 @@
   },
   "Gear": {
     "SinkFactor": 1000.0,
-    "SinkRateMult": 1.04592,
+    "SinkRateMult": 1.09393,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
+    "GearOffset": 0.0,
     "UseCenterOfGravity": true,
-    "RetractableCentralGear": true,
-    "CenterGearType": "ManualSteering",
-    "CenterGearBrakes": false,
-    "FullBrakeSlidingFrictionMult": 0.96,
-    "FrontalSpringsHeight": 0.3,
-    "TailSpringsHeight": 0.3,
-    "FrontalSpringsCoeff": 300000.0,
-    "TailSpringsCoeff": 120000.0,
+    "HasGear": true,
     "HasWheels": true,
-    "LeftWheelRadius": 0.9048,
-    "RightWheelRadius": 0.91048,
-    "CenterWheelRadius": 0.9,
     "Height": 1.0,
     "Pitch": 2.842,
     "WaterSpeedPropCheckVal": [
@@ -1546,7 +1537,67 @@
     "WaterRudderSpeedRange": [
       8.33333,
       13.8889
-    ]
+    ],
+    "StrutL": {
+      "SpringHeight": 0.35,
+      "SpringCoeff": 310000.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
+      "WheelRadus": 0.9,
+      "Retractable": true,
+      "LeftBrake": true,
+      "RightBrake": false,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
+      "SteerType": "Fixed"
+    },
+    "StrutR": {
+      "SpringHeight": 0.35,
+      "SpringCoeff": 310000.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
+      "WheelRadus": 0.9,
+      "Retractable": true,
+      "LeftBrake": false,
+      "RightBrake": true,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
+      "SteerType": "Fixed"
+    },
+    "StrutC": {
+      "SpringHeight": 0.15,
+      "SpringCoeff": 300000.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
+      "WheelRadus": 0.9,
+      "Retractable": true,
+      "LeftBrake": false,
+      "RightBrake": false,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
+      "SteerType": "ManualSteering"
+    }
   },
   "Passport": {
     "mass": 12105.0,

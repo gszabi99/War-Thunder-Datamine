@@ -48,6 +48,12 @@
   "shatterProbeDist": 0.1,
   "minArmorOverlap": 0.3,
   "defaultExplosionOffset": 0.05,
+  "shellIntegrityAfterExplosionByExplosiveMass": [
+    75.0,
+    400.0,
+    0.35,
+    0.85
+  ],
   "defaultCaliberToArmorForGuiPenetrationTable": 1.25,
   "secondaryShattersCountLimitForTest": 30,
   "simpleCriticalDamageTester": true,
@@ -66,6 +72,7 @@
   "kineticDamageCanCutPart": true,
   "hitCameraShootUpdateCooldown": 5.0,
   "hitCameraShotFreqThreshold": 0.9,
+  "hitCameraCaliberThreshold": 0.015,
   "hitCameraShatterThreshold": 0.005,
   "showDestroyedPartTime": 2.0,
   "showHitToDestroyedPartTime": 0.0,
@@ -4637,6 +4644,8 @@
   },
   "maxRepairTime": {
     "default": 233,
+    "cn_al_khalid_1": 140,
+    "cn_antelope_tc_1l_ads": 134,
     "cn_bt_5": 134,
     "cn_cm11": 140,
     "cn_cm_25": 134,
@@ -4767,6 +4776,7 @@
     "fr_citroen_kegresse_p4t": 134,
     "fr_crotale_ng": 134,
     "fr_crusader_mk_2": 134,
+    "fr_cv_9035_nl": 134,
     "fr_fcm_36": 134,
     "fr_hotchkiss_h35": 134,
     "fr_hotchkiss_h39": 134,
@@ -5005,10 +5015,12 @@
     "il_merkava_mk_4m": 140,
     "il_mim_72_chaparral": 134,
     "il_namer_rcws_30": 140,
+    "il_sholef": 166,
     "il_ss_11_halftrack": 134,
     "il_tcm_20": 134,
     "il_tiran_4": 140,
     "il_tiran_4_sh": 140,
+    "il_tiran_6": 140,
     "il_zsu_23_4": 134,
     "il_zsu_57_2": 134,
     "it_2s1": 140,
@@ -5105,6 +5117,7 @@
     "it_zsu_57_2": 134,
     "jp_halftrack_m16": 134,
     "jp_hiro_sha": 134,
+    "jp_icv_prototype": 134,
     "jp_m19": 134,
     "jp_m24_chaffee": 134,
     "jp_m36b2_jgsdf": 140,
@@ -5191,6 +5204,7 @@
     "sw_itpsv_90": 140,
     "sw_k9_vidar": 166,
     "sw_kungstiger": 140,
+    "sw_kv_1_1942_fin": 140,
     "sw_l_62_anti_II": 134,
     "sw_lago_1": 134,
     "sw_landsverk_ush_204_gk": 134,
@@ -5364,6 +5378,7 @@
     "uk_sherman_vc_firefly": 140,
     "uk_skink_aa": 140,
     "uk_sp_17_pdr_valentine": 140,
+    "uk_stormer_air_defence": 134,
     "uk_stormer_hvm": 134,
     "uk_t17e2": 134,
     "uk_t_90s_bheeshma": 140,
@@ -5496,6 +5511,7 @@
     "us_t14": 140,
     "us_t18_e2": 134,
     "us_t1e1": 140,
+    "us_t1e1_90": 140,
     "us_t20": 140,
     "us_t25": 140,
     "us_t26e4_superpershing": 140,
@@ -5681,6 +5697,7 @@
     "ussr_zis_43": 134,
     "ussr_zprk_2s6": 134,
     "ussr_zsu_23_4": 134,
+    "ussr_zsu_23_4m2": 134,
     "ussr_zsu_23_4m4": 134,
     "ussr_zsu_29k": 134,
     "ussr_zsu_37": 134,
@@ -5712,9 +5729,20 @@
     "fr_destroyer_le_fantasque_class_le_triomphant": 71,
     "fr_destroyer_marceau_class_marceau": 71,
     "fr_destroyer_vauquelin_class_vauquelin": 71,
+    "fr_lcg_m_l9059": 58,
+    "fr_mtb96_vosper": 53,
+    "fr_p730_combattante": 41,
+    "fr_type40k_vedette": 44,
+    "fr_vlt1": 44,
     "fr_vlt2": 44,
+    "fr_vtb11": 44,
+    "fr_vtb13": 44,
+    "fr_vtb14": 44,
+    "fr_vtb8": 44,
+    "fr_vtb9": 44,
     "germ_artilleriefahrprahm_typ_d1": 73,
     "germ_artilleriefahrprahm_typ_d3": 73,
+    "germ_battlecruiser_derfflinger": 140,
     "germ_battlecruiser_von_der_tann": 140,
     "germ_battleship_baden": 140,
     "germ_battleship_bayern": 140,
@@ -5785,6 +5813,7 @@
     "it_a1_vosper": 58,
     "it_alano_9851": 46,
     "it_albatros_class_f543": 65,
+    "it_albatros_class_f544": 73,
     "it_battleship_andrea_doria": 118,
     "it_battleship_caio_duilio": 173,
     "it_battleship_conte_di_cavour": 173,
@@ -5891,6 +5920,7 @@
     "jp_t14_class_mod01": 44,
     "jp_t51a": 58,
     "jp_t51b": 58,
+    "jp_type1_pt2": 58,
     "jp_type38_1944": 44,
     "jp_type5_escortboat": 46,
     "jp_type7_pt808": 41,
@@ -5911,6 +5941,7 @@
     "uk_battleship_iron_duke": 140,
     "uk_battleship_marlborough": 140,
     "uk_battleship_orion": 140,
+    "uk_battleship_q_elizabet_class_barham": 124,
     "uk_brave_borderer": 58,
     "uk_corvette_orla": 73,
     "uk_corvette_peacock": 73,
@@ -5987,6 +6018,7 @@
     "us_battleship_mississippi": 140,
     "us_battleship_nevada": 173,
     "us_battleship_north_dakota": 133,
+    "us_battleship_tennessee": 173,
     "us_battleship_texas": 153,
     "us_battleship_wyoming_class": 140,
     "us_cruiser_atlanta_class_atlanta": 83,
@@ -6058,6 +6090,7 @@
     "ussr_1124_art": 30,
     "ussr_1124_rct": 30,
     "ussr_aircraftcarrier_baku": 119,
+    "ussr_battlecruiser_izmail": 129,
     "ussr_battlecruiser_kronshtadt": 173,
     "ussr_battleship_imperatritsa_mariya": 140,
     "ussr_battleship_marat": 155,
@@ -10629,5 +10662,143 @@
         600.0
       ]
     ]
+  },
+  "xrayFilter": {
+    "armor": {
+      "isTank": true,
+      "showArmorParts": true
+    },
+    "weapon": {
+      "isTank": true,
+      "partClass": [
+        "gun",
+        "gun_barrel",
+        "cannon_breech",
+        "aps_launcher_NN"
+      ]
+    },
+    "artillery_ship": {
+      "isShip": true,
+      "partClass": "gun_barrel"
+    },
+    "ammo": {
+      "showDecorators": true,
+      "partClass": [
+        "ammo",
+        "autoloader",
+        "elevator_NN",
+        "ammunition_storage"
+      ]
+    },
+    "propulsion": {
+      "partClass": [
+        "engine",
+        "transmission",
+        "driver_controls",
+        "power_system",
+        "radiator",
+        "funnel_NN"
+      ]
+    },
+    "crew": {
+      "isTank": true,
+      "partClass": [
+        "commander",
+        "driver",
+        "gunner",
+        "loader",
+        "machinegunner"
+      ]
+    },
+    "fuel": {
+      "partClass": [
+        "fuel",
+        "coal_bunker_NN"
+      ]
+    },
+    "sensors_optics": {
+      "isTank": true,
+      "partClass": [
+        "sensor",
+        "aps_sensor_NN",
+        "commander_panoramic_sight",
+        "optic",
+        "optic_gun",
+        "optic_gun_N",
+        "optic_gun_NN",
+        "optic_turret",
+        "optic_turret_NN",
+        "optic_body_mg",
+        "optic_body",
+        "optic_body_r",
+        "optic_body_l",
+        "optic_body_1",
+        "optic_body_2",
+        "optic_body_NN"
+      ]
+    },
+    "drives": {
+      "isTank": true,
+      "partClass": [
+        "drive_turret_h",
+        "drive_turret_v"
+      ]
+    },
+    "electronic": {
+      "isTank": true,
+      "partClass": [
+        "electronic_equipment",
+        "electronic_equipment_NN",
+        "fire_control_system",
+        "radio_station",
+        "radio_station_NN",
+        "counter_measure"
+      ]
+    },
+    "torpedoes_ship": {
+      "isShip": true,
+      "partClass": [
+        "torpedo",
+        "torpedo_tube"
+      ]
+    },
+    "aux_weapons_ship": {
+      "isShip": true,
+      "partClass": [
+        "catapult",
+        "depth_charge",
+        "mine_NN",
+        "depth_charge_mount_NN",
+        "depth_charge_mount_l_NN",
+        "depth_charge_mount_r_NN"
+      ]
+    },
+    "ship_control": {
+      "isShip": true,
+      "partClass": [
+        "bridge",
+        "radio_station",
+        "radio_station_NN",
+        "fire_control_room_NN"
+      ]
+    },
+    "fire_control_ship": {
+      "isShip": true,
+      "partClass": [
+        "antenna_target_location",
+        "antenna_target_tagging",
+        "antenna_target_location_NN",
+        "antenna_target_tagging_NN",
+        "antenna_target_tagging_mount_NN",
+        "fire_director_NN",
+        "fire_director_mount_NN",
+        "rangefinder_NN",
+        "rangefinder_mount_NN"
+      ]
+    },
+    "damage_control_ship": {
+      "isShip": true,
+      "partClass": "pump"
+    }
   }
 }

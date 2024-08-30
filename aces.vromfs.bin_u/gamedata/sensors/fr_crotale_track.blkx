@@ -30,7 +30,7 @@
       "range7": 0.0,
       "antenna": {
         "angleHalfSens": 0.4,
-        "sideLobesSensitivity": -60.0
+        "sideLobesSensitivity": -120.0
       }
     }
   },
@@ -435,44 +435,6 @@
             "init": {},
             "setRadarStandbyMode": {},
             "setRadar": {}
-          }
-        },
-        "unparkRadar": {
-          "stateFrom": "radarParked",
-          "event": "enable",
-          "stateTo": "radarStandby"
-        },
-        "unparkIrst": {
-          "stateFrom": "irstParked",
-          "event": "enable",
-          "stateTo": "irstStandby"
-        },
-        "parkRadar": {
-          "stateFrom": "radarStandby",
-          "event": "disable",
-          "stateTo": "radarParked"
-        },
-        "parkIrst": {
-          "stateFrom": "irstStandby",
-          "event": "disable",
-          "stateTo": "irstParked"
-        },
-        "disableFromRadarTrack": {
-          "stateFrom": "radarTrack",
-          "event": "disable",
-          "stateTo": "radarParked",
-          "actions": {
-            "setRadarStandbyMode": {},
-            "resetTrackMode": {}
-          }
-        },
-        "disableFromIrstTrack": {
-          "stateFrom": "irstTrack",
-          "event": "disable",
-          "stateTo": "irstParked",
-          "actions": {
-            "setIrstStandbyMode": {},
-            "resetTrackMode": {}
           }
         },
         "radarCheckLockType0": {

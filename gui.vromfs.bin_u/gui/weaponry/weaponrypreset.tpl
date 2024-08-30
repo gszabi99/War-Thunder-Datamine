@@ -3,7 +3,7 @@ weaponryPreset {
   id:t='preset'
   presetId:t='<<presetId>>'
   width:t='pw'
-  padding:t='0, 1@blockInterval'
+  padding-bottom:t='1@blockInterval'
   chosen:t='<<chosen>>'
   <<#isCollapsable>>
   height:t='@buttonHeight'

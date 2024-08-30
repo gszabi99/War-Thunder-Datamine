@@ -84,8 +84,9 @@ tdiv {
           width:t='pw/4'
           img {
             halign:t='center'
-            size:t='@sIco, @sIco'
-            background-svg-size:t='@sIco, @sIco'
+            valign:t='center'
+            size:t='<<#isWideIco>>2<</isWideIco>>@sIco, @sIco'
+            background-svg-size:t='<<#isWideIco>>2<</isWideIco>>@sIco, @sIco'
             background-image:t='<<icon>>'
             background-repeat:t='aspect-ratio'
           }

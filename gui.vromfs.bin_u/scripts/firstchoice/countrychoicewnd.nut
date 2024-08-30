@@ -175,7 +175,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let headerObj = this.scene.findObject("choice_header")
     if (checkObj(headerObj))
-      headerObj.setValue(loc("mainmenu/" + headerLocId))
+      headerObj.setValue("".concat(loc($"mainmenu/{headerLocId}"), loc("ui/parentheses/space", { text = loc($"mainmenu/{headerLocId}/hint") })))
     fillUserNick(this.scene.findObject("usernick_place"))
 
     let listObj = this.scene.findObject("first_choices_block")

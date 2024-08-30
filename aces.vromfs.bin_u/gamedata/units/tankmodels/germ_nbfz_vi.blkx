@@ -442,8 +442,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2090,115 +2091,7 @@
       }
     }
   },
-  "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)$",
-    "points": {
-      "lever": {
-        "name": "bone_suspension_$1",
-        "limitMin": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "limitMax": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      },
-      "rocker": {
-        "name": "bone_suspension_$1_01",
-        "limitMin": [
-          -0.5,
-          -0.5,
-          0.0
-        ],
-        "limitMax": [
-          0.5,
-          0.5,
-          0.0
-        ]
-      },
-      "wheel_01": {
-        "searchChildren": {
-          "parent": "rocker",
-          "find": "bone_wheel_",
-          "occurence": 1,
-          "limitMin": [
-            -1.0,
-            -1.0,
-            0.0
-          ],
-          "limitMax": [
-            1.0,
-            1.0,
-            0.0
-          ]
-        }
-      },
-      "wheel_02": {
-        "searchChildren": {
-          "parent": "rocker",
-          "find": "bone_wheel_",
-          "occurence": 2,
-          "limitMin": [
-            -1.0,
-            -1.0,
-            0.0
-          ],
-          "limitMax": [
-            1.0,
-            1.0,
-            0.0
-          ]
-        }
-      },
-      "spring": {
-        "name": "suspension_$1_02",
-        "limitMin": [
-          0.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          0.0,
-          1.0,
-          0.0
-        ]
-      }
-    },
-    "constraints": {
-      "edge": [
-        {
-          "from": "lever",
-          "to": "rocker"
-        },
-        {
-          "from": "spring",
-          "to": "rocker"
-        },
-        {
-          "from": "rocker",
-          "to": "wheel_01"
-        },
-        {
-          "from": "rocker",
-          "to": "wheel_02"
-        }
-      ],
-      "projection": {
-        "from": "wheel_01",
-        "to": "wheel_02",
-        "point": "rocker",
-        "moveEdge": true
-      },
-      "direction": {
-        "from": "wheel_01",
-        "to": "wheel_02",
-        "point": "rocker"
-      }
-    }
-  },
+  "PhysSys": {},
   "ammo": {
     "combustionTime": 10.0,
     "detonateProb": 0.15,

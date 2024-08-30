@@ -62,7 +62,7 @@ let class DragStartListener {
   function notifyParentRMouse(sourceObj, mx, my, is_up, bits) {
     let foundObj = this.findParentObj(sourceObj)
     if (foundObj?.isValid())
-      foundObj?.sendMouseRBtn(mx, my, is_up, bits)
+      foundObj.sendMouseRBtn(mx, my, is_up, bits)
   }
 
   function handleDblClick(obj, is_up) {

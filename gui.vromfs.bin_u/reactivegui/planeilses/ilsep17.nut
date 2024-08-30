@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { IlsColor, IlsLineScale, BombCCIPMode, RocketMode, CannonMode, BombingMode,
  TargetPosValid, TargetPos, TvvMark, RadarTargetDist, DistToTarget, IlsPosSize,
  RadarTargetPos, AimLockPos, AimLockValid, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, mpsToKnots, metrToFeet, metrToMile } = require("ilsConstants.nut")
+let { baseLineWidth, mpsToKnots, metrToFeet, metrToMile, mpsToKmh } = require("ilsConstants.nut")
 let { Speed, Mach, BarAltitude, Altitude, Overload, Aoa, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
@@ -14,8 +14,9 @@ let { setInterval, clearTimer } = require("dagor.workcycle")
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 let isCCIPMode = Computed(@() RocketMode.value || BombCCIPMode.value || CannonMode.value)
-let speedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
-function speed(width, height) {
+let speedMpsValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
+let speedKmhValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
+function speed(width, height, is_metric) {
   return {
     size = [width * 0.1 + baseLineWidth * IlsLineScale.value, height * 0.3 + baseLineWidth * IlsLineScale.value]
     pos = [pw(10), height * 0.35 - baseLineWidth * IlsLineScale.value * 0.5]
@@ -41,7 +42,7 @@ function speed(width, height) {
         behavior = Behaviors.RtPropUpdate
         update = @() {
           transform = {
-            translate = [0, ((Speed.value * mpsToKnots) % 50.0) * height * 0.001]
+            translate = [0, ((Speed.value * (is_metric ? mpsToKmh : mpsToKnots)) % 50.0) * height * 0.001]
           }
         }
       }
@@ -57,7 +58,7 @@ function speed(width, height) {
         ]
       }
       @(){
-        watch = speedValue
+        watch = is_metric ? speedKmhValue : speedMpsValue
         size = [pw(70), SIZE_TO_CONTENT]
         pos = [0, ph(46)]
         rendObj = ROBJ_TEXT
@@ -65,8 +66,8 @@ function speed(width, height) {
         halign= ALIGN_RIGHT
         color = IlsColor.value
         font = Fonts.mirage_ils
-        fontSize = 40
-        text = speedValue.value.tostring()
+        fontSize = (is_metric ? speedKmhValue : speedMpsValue).get() > 1000 ? 30 : 40
+        text = (is_metric ? speedKmhValue : speedMpsValue).get().tostring()
       }
     ]
   }
@@ -134,14 +135,15 @@ let generateAltMark = function(num) {
   }
 }
 
-function altitude(height, generateFunc) {
+function altitude(height, generateFunc, is_metric) {
   let children = []
   for (local i = 65000; i >= 0;) {
     children.append(generateFunc(i))
     i -= i > 500 ? 250 : 100
   }
 
-  let getOffset = @() ((65000 - max(BarAltitude.value * metrToFeet, 500)) * 0.0008 + (BarAltitude.value * metrToFeet >= 500 ? 0.0 : ((500 - BarAltitude.value * metrToFeet) * 0.002)) - 0.37) * height
+  let mul = is_metric ? 1.0 : metrToFeet
+  let getOffset = @() ((65000 - max(BarAltitude.value * mul, 500)) * 0.0008 + (BarAltitude.value * mul >= 500 ? 0.0 : ((500 - BarAltitude.value * mul) * 0.002)) - 0.37) * height
   return {
     size = [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
@@ -155,59 +157,64 @@ function altitude(height, generateFunc) {
   }
 }
 
-let altValueThousand = Computed(@() (Altitude.value * metrToFeet / 1000.0).tointeger())
-let altValueMod = Computed(@() (Altitude.value * metrToFeet % 1000.0).tointeger())
-let altCompressed = {
-  size = flex()
-  children = [
-    {
-      pos = [0, ph(45)]
-      size = flex()
-      flow = FLOW_HORIZONTAL
-      children = [
-        @(){
-          watch = altValueThousand
-          size = SIZE_TO_CONTENT
-          rendObj = ROBJ_TEXT
-          color = IlsColor.value
-          padding = [0, 5]
-          font = Fonts.mirage_ils
-          fontSize = 45
-          text = altValueThousand.value.tostring()
-        }
-        @(){
-          watch = altValueMod
-          pos = [0, 10]
-          rendObj = ROBJ_TEXT
-          valign = ALIGN_BOTTOM
-          color = IlsColor.value
-          font = Fonts.mirage_ils
-          fontSize = 30
-          text = string.format("%03d", altValueMod.value)
-        }
-      ]
-    }
-    @(){
-      watch = IlsColor
-      rendObj = ROBJ_TEXT
-      pos = [pw(20), ph(35)]
-      size = SIZE_TO_CONTENT
-      color = IlsColor.value
-      font = Fonts.mirage_ils
-      fontSize = 45
-      text = "A"
-    }
-  ]
+let altValueThousandF = Computed(@() (Altitude.value * metrToFeet / 1000.0).tointeger())
+let altValueModF = Computed(@() (Altitude.value * metrToFeet % 1000.0).tointeger())
+let altValueThousandM = Computed(@() (Altitude.value / 1000.0).tointeger())
+let altValueModM = Computed(@() (Altitude.value % 1000.0).tointeger())
+
+function altCompressed(is_metric) {
+  return {
+    size = flex()
+    children = [
+      {
+        pos = [0, ph(45)]
+        size = flex()
+        flow = FLOW_HORIZONTAL
+        children = [
+          @(){
+            watch = is_metric ? altValueThousandM : altValueThousandF
+            size = SIZE_TO_CONTENT
+            rendObj = ROBJ_TEXT
+            color = IlsColor.value
+            padding = [0, 5]
+            font = Fonts.mirage_ils
+            fontSize = 45
+            text = (is_metric ? altValueThousandM : altValueThousandF).get().tostring()
+          }
+          @(){
+            watch = is_metric ? altValueModM : altValueModF
+            pos = [0, 10]
+            rendObj = ROBJ_TEXT
+            valign = ALIGN_BOTTOM
+            color = IlsColor.value
+            font = Fonts.mirage_ils
+            fontSize = 30
+            text = string.format("%03d", (is_metric ? altValueModM : altValueModF).get())
+          }
+        ]
+      }
+      @(){
+        watch = IlsColor
+        rendObj = ROBJ_TEXT
+        pos = [pw(20), ph(35)]
+        size = SIZE_TO_CONTENT
+        color = IlsColor.value
+        font = Fonts.mirage_ils
+        fontSize = 45
+        text = "A"
+      }
+    ]
+  }
 }
 
-function altWrap(width, height, generateFunc) {
+function altWrap(width, height, generateFunc, is_metric) {
   return @(){
     watch = isAAMMode
     size = [width * 0.17, height * 0.4]
     pos = [width * 0.75, height * 0.3]
     clipChildren = true
     children = !isAAMMode.value ? [
-      altitude(height * 0.4, generateFunc)
+      altitude(height * 0.4, generateFunc, is_metric)
       {
         rendObj = ROBJ_VECTOR_CANVAS
         size = [width * 0.02, height * 0.024]
@@ -219,7 +226,7 @@ function altWrap(width, height, generateFunc) {
           [VECTOR_LINE, 0, 100, 100, 50]
         ]
       }
-    ] : altCompressed
+    ] : altCompressed(is_metric)
   }
 }
 
@@ -1035,79 +1042,82 @@ let curDistMarkPos = Computed(@() (RadarTargetDist.value / maxDistOfLaunchZone.v
 let maxDistMarkPos = Computed(@() (AamLaunchZoneDistMaxVal.value / maxDistOfLaunchZone.value * 100.0).tointeger())
 let minDistMarkPos = Computed(@() (AamLaunchZoneDistMinVal.value / maxDistOfLaunchZone.value * 100.0).tointeger())
 let distMiles = Computed(@() (RadarTargetDist.value * metrToMile * 10.0).tointeger())
-let launchZone = @(){
-  watch = radarTargetVisible
-  size = flex()
-  pos = [pw(40), ph(60)]
-  children = radarTargetVisible.value ? {
-    size = [pw(20), ph(10)]
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = IlsColor.value
-    fillColor = Color(0, 0, 0, 0)
-    lineWidth = baseLineWidth * IlsLineScale.value * 0.7
-    commands = [
-      [VECTOR_ELLIPSE, 0, 50, 5, 10],
-      [VECTOR_LINE, 5, 50, 100, 50]
-    ]
-    children = [
-      {
-        rendObj = ROBJ_TEXT
-        pos = [pw(-5), ph(40)]
-        size = [pw(10), ph(20)]
-        color = IlsColor.value
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        font = Fonts.mirage_ils
-        fontSize = 20
-        text = "R"
-      }
-      @(){
-        watch = curDistMarkPos
-        size = flex()
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value * 0.5
-        commands = [
-          [VECTOR_LINE, curDistMarkPos.value, 50, curDistMarkPos.value - 3, 40],
-          [VECTOR_LINE, curDistMarkPos.value, 50, curDistMarkPos.value + 3, 40],
-          [VECTOR_LINE, curDistMarkPos.value - 3, 40, curDistMarkPos.value - 8, 40]
-        ]
-      }
-      @(){
-        watch = maxDistMarkPos
-        size = flex()
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value * 0.5
-        commands = [
-          [VECTOR_LINE, maxDistMarkPos.value, 50, maxDistMarkPos.value, 65],
-          [VECTOR_LINE, maxDistMarkPos.value - 4, 65, maxDistMarkPos.value, 65]
-        ]
-      }
-      @(){
-        watch = minDistMarkPos
-        size = flex()
-        rendObj = ROBJ_VECTOR_CANVAS
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value * 0.5
-        commands = [
-          [VECTOR_LINE, minDistMarkPos.value, 50, minDistMarkPos.value, 65],
-          [VECTOR_LINE, minDistMarkPos.value + 4, 65, minDistMarkPos.value, 65]
-        ]
-      }
-      @() {
-        watch = distMiles
-        size = [flex(), SIZE_TO_CONTENT]
-        pos = [0, ph(70)]
-        rendObj = ROBJ_TEXT
-        color = IlsColor.value
-        halign = ALIGN_CENTER
-        font = Fonts.mirage_ils
-        fontSize = 25
-        text = string.format("R%.1f", distMiles.value * 0.1)
-      }
-    ]
-  } : null
+let distKm = Computed(@() (RadarTargetDist.value * 0.001 * 10.0).tointeger())
+function launchZone(is_metric) {
+  return @(){
+    watch = radarTargetVisible
+    size = flex()
+    pos = [pw(40), ph(60)]
+    children = radarTargetVisible.value ? {
+      size = [pw(20), ph(10)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.value * 0.7
+      commands = [
+        [VECTOR_ELLIPSE, 0, 50, 5, 10],
+        [VECTOR_LINE, 5, 50, 100, 50]
+      ]
+      children = [
+        {
+          rendObj = ROBJ_TEXT
+          pos = [pw(-5), ph(40)]
+          size = [pw(10), ph(20)]
+          color = IlsColor.value
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          font = Fonts.mirage_ils
+          fontSize = 20
+          text = "R"
+        }
+        @(){
+          watch = curDistMarkPos
+          size = flex()
+          rendObj = ROBJ_VECTOR_CANVAS
+          color = IlsColor.value
+          lineWidth = baseLineWidth * IlsLineScale.value * 0.5
+          commands = [
+            [VECTOR_LINE, curDistMarkPos.value, 50, curDistMarkPos.value - 3, 40],
+            [VECTOR_LINE, curDistMarkPos.value, 50, curDistMarkPos.value + 3, 40],
+            [VECTOR_LINE, curDistMarkPos.value - 3, 40, curDistMarkPos.value - 8, 40]
+          ]
+        }
+        @(){
+          watch = maxDistMarkPos
+          size = flex()
+          rendObj = ROBJ_VECTOR_CANVAS
+          color = IlsColor.value
+          lineWidth = baseLineWidth * IlsLineScale.value * 0.5
+          commands = [
+            [VECTOR_LINE, maxDistMarkPos.value, 50, maxDistMarkPos.value, 65],
+            [VECTOR_LINE, maxDistMarkPos.value - 4, 65, maxDistMarkPos.value, 65]
+          ]
+        }
+        @(){
+          watch = minDistMarkPos
+          size = flex()
+          rendObj = ROBJ_VECTOR_CANVAS
+          color = IlsColor.value
+          lineWidth = baseLineWidth * IlsLineScale.value * 0.5
+          commands = [
+            [VECTOR_LINE, minDistMarkPos.value, 50, minDistMarkPos.value, 65],
+            [VECTOR_LINE, minDistMarkPos.value + 4, 65, minDistMarkPos.value, 65]
+          ]
+        }
+        @() {
+          watch = is_metric ? distKm : distMiles
+          size = [flex(), SIZE_TO_CONTENT]
+          pos = [0, ph(70)]
+          rendObj = ROBJ_TEXT
+          color = IlsColor.value
+          halign = ALIGN_CENTER
+          font = Fonts.mirage_ils
+          fontSize = 25
+          text = string.format("R%.1f", (is_metric ? distKm : distMiles).get() * 0.1)
+        }
+      ]
+    } : null
+  }
 }
 
 function getRadarMode() {
@@ -1236,13 +1246,13 @@ let ccrpMarks = @() {
   ] : null
 }
 
-function EP17(width, height) {
+function EP17(width, height, is_metric) {
   return {
     size = [width, height]
     children = [
-      speed(width, height)
+      speed(width, height, is_metric)
       mach
-      altWrap(width, height, generateAltMark)
+      altWrap(width, height, generateAltMark, is_metric)
       tvvLinked
       overload
       reticle
@@ -1261,7 +1271,7 @@ function EP17(width, height) {
         ]
       }
       radarTargetMark
-      launchZone
+      launchZone(is_metric)
       aamTargetMark
       aamReadyMark
       radarMode

@@ -709,8 +709,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2177,14 +2178,25 @@
       "dampeningRelaxationRatio": 0.15,
       "dampeningCompressionRatio": 0.05,
       "brokenWheelSteeringDeflection": -15.0,
+      "wheelsCarts": {
+        "wheel_r_01": "bone_suspension_01",
+        "wheel_r_01_01": "bone_suspension_01",
+        "wheel_r_02": "bone_suspension_01",
+        "wheel_l_01": "bone_suspension_01",
+        "wheel_l_01_01": "bone_suspension_01",
+        "wheel_l_02": "bone_suspension_01"
+      },
+      "carts": {
+        "bone_suspension_01": {
+          "maxSteer": 25.0,
+          "blockWheelsSteering": true
+        }
+      },
       "steeringDeflection": {
-        "wheel_l_01": 25.0,
-        "wheel_l_02": 10.0,
-        "wheel_r_01": 25.0,
-        "wheel_r_02": 10.0,
         "steeringTau": 1000000.0,
         "steeringSpd": 1.0,
-        "steeringNeutralSpd": 3.0
+        "steeringNeutralSpd": 3.0,
+        "viscositySteeringCarts": 0.1
       },
       "wheelsWidth": {
         "wheel_l_03": 0.4,

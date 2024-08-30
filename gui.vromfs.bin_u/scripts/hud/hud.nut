@@ -26,7 +26,7 @@ let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
 let { is_replay_playing } = require("replays")
-let { hitCameraInit, hitCameraReinit } = require("%scripts/hud/hudHitCamera.nut")
+let { hitCameraInit, hitCameraReinit, getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
 let { hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
@@ -43,6 +43,7 @@ let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
 let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
 let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
+let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -62,6 +63,9 @@ eventbus_subscribe("getActionBarState", function(_) {
   let actionBar = getCurActionBar()
   if (actionBar != null)
     eventbus_send("setActionBarState", actionBar.getState())
+})
+eventbus_subscribe("getHudHitCameraState", function(_) {
+  eventbus_send("setHudHitCameraState", getHitCameraAABB())
 })
 
 eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
@@ -284,7 +288,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onHudSwitched() {
     handlersManager.updateWidgets()
-    this.updateHudVisMode(::FORCE_UPDATE)
+    this.updateHudVisModeForce()
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
     // All required checks are performed internally.
@@ -343,14 +347,15 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.curHudVisMode = visMode
 
-    let isDmgPanelVisible = visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL) &&
-      is_tank_damage_indicator_visible()
+    let isDmgPanelVisible = !isInKillerCamera.get()
+      && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
+      && is_tank_damage_indicator_visible()
 
     let objsToShow = {
       xray_render_dmg_indicator = isDmgPanelVisible
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
-      hud_tank_tactical_map     = visMode.isPartVisible(HUD_VIS_PART.MAP)
+      hud_tank_tactical_map     = !isInKillerCamera.get() && visMode.isPartVisible(HUD_VIS_PART.MAP)
       hud_kill_log              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
       chatPlace                 = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
@@ -367,7 +372,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  updateHudVisModeForce = @() this.updateHudVisMode(::FORCE_UPDATE)
+  updateHudVisModeForce = @() this.updateHudVisMode(true)
   onEventChangedPartHudVisible = @(_) this.doWhenActiveOnce("updateHudVisModeForce")
 
   function onHudUpdate(_obj = null, dt = 0.0) {

@@ -1,6 +1,6 @@
 options no_aot
 module bfg_ecs shared
-require daBfg public
+require daBfg.daBfg public
 require DagorSystem public
 
 require daslib/ast_boost

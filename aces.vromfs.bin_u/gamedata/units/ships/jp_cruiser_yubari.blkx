@@ -41,7 +41,6 @@
     2.0,
     0.0
   ],
-  "rearmSmokeTimeOnField": 180.0,
   "canReloadNonGuns": true,
   "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
@@ -2611,7 +2610,6 @@
       "fireProtectionHp": 120.0,
       "armorClass": "ship_STS",
       "armorThickness": 40.0,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.35,
@@ -2705,7 +2703,6 @@
       "armorClass": "ship_STS",
       "armorThickness": 40.0,
       "hidableInViewer": true,
-      "hidableInXrayViewer": true,
       "fireDamageMult": 0.001,
       "shatterDamageMult": 0.001,
       "genericDamageMult": 0.2,
@@ -4056,9 +4053,7 @@
         "rangefinder_01_dm",
         "rangefinder_02_dm",
         "rangefinder_03_dm",
-        "rangefinder_04_dm",
-        "rangefinder_05_dm",
-        "rangefinder_06_dm"
+        "rangefinder_04_dm"
       ],
       "measureAccuracy": 0.85,
       "targetLockTime": 20.0,
@@ -4069,7 +4064,19 @@
         "primary": true,
         "secondary": false,
         "machinegun": false
-      }
+      },
+      "dmPartLimits": [
+        {
+          "dmPart": "rangefinder_05_dm",
+          "maxYaw": -10.0,
+          "minYaw": 180.0
+        },
+        {
+          "dmPart": "rangefinder_06_dm",
+          "maxYaw": -180.0,
+          "minYaw": 10.0
+        }
+      ]
     }
   },
   "commonWeapons": {

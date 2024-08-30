@@ -19,7 +19,7 @@
       "range7": 0.0,
       "antenna": {
         "angleHalfSens": 0.5,
-        "sideLobesSensitivity": -60.0
+        "sideLobesSensitivity": -120.0
       }
     }
   },
@@ -386,28 +386,6 @@
             "designateTarget"
           ],
           "stateTo": "standby",
-          "actions": {
-            "setStandbyMode": {},
-            "setFsmActive": {
-              "fsm": "track",
-              "active": false
-            }
-          }
-        },
-        "unparkRadar": {
-          "stateFrom": "parked",
-          "event": "enable",
-          "stateTo": "standby"
-        },
-        "parkRadar": {
-          "stateFrom": "standby",
-          "event": "disable",
-          "stateTo": "parked"
-        },
-        "disableFromRadarTrack": {
-          "stateFrom": "track",
-          "event": "disable",
-          "stateTo": "parked",
           "actions": {
             "setStandbyMode": {},
             "setFsmActive": {

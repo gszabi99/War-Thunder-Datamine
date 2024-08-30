@@ -463,8 +463,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1969,6 +1970,8 @@
       "neutralGearRatio": 7.0,
       "gearRatios": {
         "ratio": [
+          -2.16,
+          -4.39,
           -6.62,
           -13.24,
           0.0,
@@ -3118,17 +3121,8 @@
         "fireEvent": "ammo_fire",
         "explosionEvent": "ammo_explosion",
         "wreckedPartId": 0,
-        "ammo_turret_02_dm": {
-          "count": 125
-        },
-        "ammo_body_01_dm": {
-          "count": 125
-        },
-        "ammo_body_02_dm": {
-          "count": 125
-        },
         "ammo_turret_01_dm": {
-          "count": 125
+          "count": 500
         }
       }
     }

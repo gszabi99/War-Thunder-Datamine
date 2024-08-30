@@ -35,6 +35,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2039,6 +2040,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk83.blk"
       },
       {
+        "name": "f-104g_bomb_mk84",
+        "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_mk84.blk"
+      },
+      {
         "name": "f-104g_bomb_matra_25e",
         "blk": "gameData/FlightModels/weaponPresets/f-104g_bomb_matra_25e.blk"
       },
@@ -2617,6 +2622,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "1000lb_mk_83_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "mk84",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": "pylon_fus_001"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
               "emitter": "1000lb_mk_83_002",
               "bullets": 1,
               "external": true,
@@ -3230,6 +3251,11 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "us_750lb_m117a1"
+    },
+    "us_2000lb_mk84": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_1000lb_mk83"
     },
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {

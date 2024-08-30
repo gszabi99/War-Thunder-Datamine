@@ -31,6 +31,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2075,7 +2076,7 @@
       },
       {
         "index": 1,
-        "tier": 8,
+        "tier": 9,
         "order": 1,
         "WeaponPreset": {
           "iconType": "missile_air_to_air",
@@ -2096,7 +2097,7 @@
       },
       {
         "index": 2,
-        "tier": 7,
+        "tier": 8,
         "order": 3,
         "WeaponPreset": [
           {
@@ -2105,7 +2106,7 @@
             "reqModification": "us_2_75_in_ffar_lau_3a",
             "ShowNodes": {
               "node": [
-                "pylon_wing_001",
+                "pylon_fus_002",
                 "pylon_wing_001_dop"
               ]
             },
@@ -2157,12 +2158,37 @@
       },
       {
         "index": 3,
-        "tier": 6,
+        "tier": 7,
         "order": 5,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air",
+          "name": "aim_9b_slot3",
+          "reqModification": "us_aim_9b",
+          "ShowNodes": {
+            "node": "aim_9_pylon_003"
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+            "emitter": "aim_9_003",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "BannedWeaponPreset": {
+            "slot": 4,
+            "preset": "m117_slot4"
+          }
+        }
+      },
+      {
+        "index": 4,
+        "tier": 6,
+        "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "bombs_large",
-          "name": "m117",
+          "name": "m117_slot4",
           "reqModification": "us_750lb_m117a1",
           "ShowNodes": {
             "node": "pylon_fus_001"
@@ -2173,12 +2199,47 @@
             "emitter": "750lb_m117_002",
             "bullets": 1,
             "external": true
+          },
+          "BannedWeaponPreset": [
+            {
+              "slot": 3,
+              "preset": "aim_9b_slot3"
+            },
+            {
+              "slot": 5,
+              "preset": "aim_9b_slot5"
+            }
+          ]
+        }
+      },
+      {
+        "index": 5,
+        "tier": 5,
+        "order": 6,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air",
+          "name": "aim_9b_slot5",
+          "reqModification": "us_aim_9b",
+          "ShowNodes": {
+            "node": "aim_9_pylon_004"
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk",
+            "emitter": "aim_9_004",
+            "bullets": 1,
+            "external": true,
+            "separate": true
+          },
+          "BannedWeaponPreset": {
+            "slot": 4,
+            "preset": "m117_slot4"
           }
         }
       },
       {
-        "index": 4,
-        "tier": 5,
+        "index": 6,
+        "tier": 4,
         "order": 4,
         "WeaponPreset": [
           {
@@ -2238,8 +2299,8 @@
         ]
       },
       {
-        "index": 5,
-        "tier": 4,
+        "index": 7,
+        "tier": 3,
         "order": 2,
         "WeaponPreset": {
           "iconType": "missile_air_to_air",

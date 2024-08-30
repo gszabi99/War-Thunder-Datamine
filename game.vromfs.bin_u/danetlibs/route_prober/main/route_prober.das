@@ -106,7 +106,7 @@ def try_launch_route_prober(add_rtt : int) : void
       init |> set("route_id", route_id)
 
 def get_diff_bucket_str(rtt_diff : int) : string
-  let buckets = [[int-9000; -500; -200; -100; -75; -50; -40; -30; -20; -15; -10; -5; 0; 5; 10; 15; 20; 30; 40; 50; 75; 100; 200; 500; 9000]]
+  let buckets = [[int -9000; -500; -200; -100; -75; -50; -40; -30; -20; -15; -10; -5; 0; 5; 10; 15; 20; 30; 40; 50; 75; 100; 200; 500; 9000]]
   var lb = lower_bound(buckets, rtt_diff) // lb in [0..length(buckets)]
   if lb == length(buckets)
     lb -= 1

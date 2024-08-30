@@ -28,7 +28,7 @@ let { CannonMode, CannonSelectedArray, CannonSelected, CannonReloadTime, CannonC
   RocketSightMode, RocketAimVisible, StaminaValue, StaminaState,
   RocketAimX, RocketAimY, TATargetVisible, IRCMState,
   Mach, CritMach, Ias, CritIas, InstructorState, InstructorForced, IsEnginesControled, ThrottleState, isEngineControled,
-  DistanceToGround, IsMfdEnabled, VerticalSpeed, MfdColor,
+  DistanceToGround, RadarAltitude, RadarAltitudeAlert, IsMfdEnabled, VerticalSpeed, MfdColor,
   ParamTableShadowFactor, ParamTableShadowOpacity, isCannonJamed
 } = require("airState.nut")
 
@@ -620,6 +620,14 @@ let textParamsMapMain = {
     alertStateCaptionComputed = WatchedRo(HudColorState.ACTIV)
     alertValueStateComputed = WatchedRo(HudColorState.ACTIV)
   },
+  [AirParamsMain.RADAR_ALTITUDE] = {
+    titleComputed = WatchedRo(loc("HUD/RADAR_ALTITUDE_SHORT"))
+    valueComputed = Computed(@() !isInitializedMeasureUnits.value ? "" : " ".concat(math.floor(RadarAltitude.value), loc(measureUnitsNames.value.alt)))
+    selectedComputed = WatchedRo("")
+    additionalComputed = WatchedRo("")
+    alertStateCaptionComputed = Computed(@() RadarAltitude.value < RadarAltitudeAlert.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+    alertValueStateComputed = Computed(@() RadarAltitude.value < RadarAltitudeAlert.value ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
+  },
   [AirParamsMain.CANNON_ADDITIONAL] = {
     titleComputed = Computed(@() getAdditionalCannonCaption(CannonsAdditionalMode.value))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonsAdditionalCount.value, CannonsAdditionalSeconds.value))
@@ -872,7 +880,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
     foreach (key, param in textParamsMapMain) {
       if ((1 << key) & mainMask.value)
         children.append(createParam(param, width, height, style, colorWatch, needCaption, forIls, isBomberView, font_size))
-      if (key == AirParamsMain.ALTITUDE && is_aircraft) {
+      if (key == AirParamsMain.RADAR_ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_TEXT
           size = [0, hdpx(12)]

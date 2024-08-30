@@ -2809,6 +2809,9 @@
       },
       "ammunition_storage_02_dm": {
         "hp": 400.0
+      },
+      "ammunition_storage_03_dm": {
+        "hp": 400.0
       }
     },
     "depth_charges": {
@@ -2869,7 +2872,7 @@
   "commonWeapons": {
     "Weapon": [
       {
-        "trigger": "gunner3",
+        "trigger": "gunner0",
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/navalModels_weapons/40mm_l60_bofors_mk3_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
@@ -2994,7 +2997,7 @@
         }
       },
       {
-        "trigger": "gunner2",
+        "trigger": "gunner1",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
@@ -3119,7 +3122,7 @@
         }
       },
       {
-        "trigger": "gunner0",
+        "trigger": "gunner2",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_01",
@@ -3220,7 +3223,7 @@
         }
       },
       {
-        "trigger": "gunner0",
+        "trigger": "gunner2",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_02",
@@ -3321,7 +3324,7 @@
         }
       },
       {
-        "trigger": "gunner1",
+        "trigger": "gunner3",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_03",
@@ -3422,7 +3425,7 @@
         }
       },
       {
-        "trigger": "gunner1",
+        "trigger": "gunner3",
         "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
         "emitter": "emtr_gun_flame_04",
@@ -3579,21 +3582,30 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": [
-        "gunner0",
-        "gunner1"
-      ],
+      "weaponTrigger": "gunner0",
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_1",
         "explosionEvent": "ammo_explosion_1",
-        "ammunition_storage_01_dm": {
-          "count": 8000
+        "ammunition_storage_03_dm": {
+          "count": 2000
         }
       }
     },
     "ammo2": {
+      "weaponTrigger": "gunner1",
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_2",
+        "explosionEvent": "ammo_explosion_2",
+        "ammunition_storage_02_dm": {
+          "count": 1800
+        }
+      }
+    },
+    "ammo3": {
       "weaponTrigger": [
         "gunner2",
         "gunner3"
@@ -3603,8 +3615,8 @@
         "fatalExplosion": true,
         "fireEvent": "ammo_fire_2",
         "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_02_dm": {
-          "count": 3800
+        "ammunition_storage_01_dm": {
+          "count": 8000
         }
       }
     }

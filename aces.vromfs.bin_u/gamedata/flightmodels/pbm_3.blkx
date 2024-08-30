@@ -30,6 +30,10 @@
     "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
     "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk"
   ],
+  "damagePartsToAvionicsPartsMapBlk": [
+    "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
+    "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk"
+  ],
   "damagePartsToVisualEffectsMapBlk": [
     "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
     "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk"
@@ -99,10 +103,10 @@
       "flap1_r_dm": {
         "hp": 59.5
       },
-      "flap2_l_dm": {
+      "flap_l_dm": {
         "hp": 60.5
       },
-      "flap2_r_dm": {
+      "flap_r_dm": {
         "hp": 60.5
       },
       "rudder0_dm": {
@@ -191,8 +195,11 @@
       "tailcontrol_dm": {
         "hp": 120.5
       },
+      "wingcontrol_dm": {
+        "hp": 79.5
+      },
       "wingcontrol_l_dm": {
-        "hp": 120.5
+        "hp": 90.7
       },
       "wingcontrol_r_dm": {
         "hp": 103.5
@@ -234,12 +241,6 @@
         "hp": 20.0
       },
       "gunner6_dm": {
-        "hp": 20.0
-      },
-      "gunner7_dm": {
-        "hp": 20.0
-      },
-      "gunner8_dm": {
         "hp": 20.0
       },
       "pilot1_dm": {
@@ -602,7 +603,7 @@
         ]
       },
       {
-        "name": "flap2_l_dm",
+        "name": "flap_l_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -643,7 +644,7 @@
         ]
       },
       {
-        "name": "flap2_r_dm",
+        "name": "flap_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -839,12 +840,6 @@
       },
       {
         "name": "gunner6_dm"
-      },
-      {
-        "name": "gunner7_dm"
-      },
-      {
-        "name": "gunner8_dm"
       },
       {
         "name": "oil1_dm",
@@ -1748,6 +1743,9 @@
             "flame": 1.1
           }
         ]
+      },
+      {
+        "name": "wingcontrol_dm"
       },
       {
         "name": "wingcontrol_l_dm"

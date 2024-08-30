@@ -27,7 +27,7 @@ def replace_extension(path, ext : string)
     return "{slice(path, 0, dotIdx)}.{ext}"
   return path
 
-def get_local_path_to_dag(root : string; var path : das_string |#) : bool
+def get_local_path_to_dag(root : string; var path : das_string | #) : bool
 
   let file = get_dlg_open_file("", "dag") |> replace("\\", "/")
   if !empty(file)

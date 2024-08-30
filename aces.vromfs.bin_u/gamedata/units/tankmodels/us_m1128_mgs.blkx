@@ -252,7 +252,7 @@
     "heavy_scirts": {
       "armorClass": "hull_side_special_armor",
       "hp": 400.0,
-      "armorThickness": 50.0,
+      "armorThickness": 124.0,
       "explosionDamageMult": 10.0,
       "genericArmorQuality": 0.25,
       "explosionArmorQuality": 0.15,
@@ -318,6 +318,9 @@
         "armorThickness": 40.0
       },
       "turret_top_dm": {
+        "armorThickness": 15.0
+      },
+      "turret_05_front_dm": {
         "armorThickness": 15.0
       },
       "ex_armor_turret_01_dm": {
@@ -589,8 +592,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2443,12 +2447,32 @@
         "wheel_r_04": true,
         "wheel_l_04": true
       }
+    },
+    "movableSuspension": {
+      "speed": 0.07,
+      "maxSpeedForMove": 1.0,
+      "clearance": {
+        "wheel_l_01": {},
+        "wheel_r_01": {},
+        "wheel_l_02": {},
+        "wheel_r_02": {},
+        "wheel_l_03": {},
+        "wheel_r_03": {},
+        "wheel_l_04": {},
+        "wheel_r_04": {}
+      },
+      "pitch": {
+        "wheel_l_01": {},
+        "wheel_r_01": {},
+        "wheel_l_04": {},
+        "wheel_r_04": {}
+      }
     }
   },
   "PhysSys": {
     "group": [
       {
-        "find": "^bone_suspension_(._\\d\\d)$",
+        "find": "bone_suspension_(\\w)_(\\d+)$",
         "points": {
           "lever": {
             "limitMin": [
@@ -2461,9 +2485,9 @@
               0.0,
               0.0
             ],
-            "name": "bone_suspension_$1"
+            "name": "bone_suspension_$1_$2"
           },
-          "suspension_01": {
+          "suspension_01_01": {
             "limitMin": [
               -1.0,
               -1.0,
@@ -2474,7 +2498,7 @@
               1.0,
               0.0
             ],
-            "name": "bone_suspension_$1_01"
+            "name": "bone_suspension_$1_$2_01"
           },
           "wheel": {
             "searchChildren": {
@@ -2498,19 +2522,20 @@
           "edge": [
             {
               "to": "wheel",
-              "from": "lever"
+              "from": "lever",
+              "moveNodes": false
             },
             {
-              "point": "suspension_01",
+              "moveNodes": false,
+              "moveSecond": false,
               "to": "wheel",
-              "from": "suspension_01",
-              "moveNodes": false
+              "from": "suspension_01_01"
             }
           ]
         }
       },
       {
-        "find": "^bone_suspension_(\\w)_back_(\\d+)$",
+        "find": "bone_suspension_(\\w)_back_(\\d+)$",
         "points": {
           "lever": {
             "limitMin": [
@@ -2526,17 +2551,21 @@
             "name": "bone_suspension_$1_back_$2"
           },
           "wheel": {
-            "limitMin": [
-              -1.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              1.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_wheel_$1_back_$2"
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
           }
         },
         "constraints": {

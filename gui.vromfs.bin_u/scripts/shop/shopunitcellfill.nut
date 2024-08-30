@@ -18,7 +18,7 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGift, isUnitGroup, canResearchUnit,
+let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGroup, canResearchUnit,
   bit_unit_status, canBuyUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
@@ -70,7 +70,7 @@ addTooltipTypes({
         let timeInSeconds = this.getNationBonusElapsedUpdateTime()
         let bonusUpdateTime = secondsToString(timeInSeconds)
         view = {
-          timeLabel = loc("shop/unit_nation_bonus_tooltip/update_time")
+          timeLabel = "".concat(loc("shop/unit_nation_bonus_tooltip/update_time"), " ")
           timeText = bonusUpdateTime
           isOver = "yes"
           unitName
@@ -107,8 +107,13 @@ addTooltipTypes({
         let battlesRemain = loc("shop/unit_nation_bonus_tooltip/battles_remain",
           {battlesRemain = $"{params.battlesRemain}/{expNewNationBonusDailyBattleCount}"})
 
+        let { isRecentlyReleased } = params
+        let recentlyReleasedDays = get_ranks_blk()?.recentlyReleasedUnitConsideredNewDays ?? 0
+
         view = {
-          bonusAmount = loc("shop/unit_nation_bonus_tooltip/bonus_amount", {bonusAmount = bonusData?[$"rank{params.rank}"] ?? 0})
+          bonusText = isRecentlyReleased ? loc("shop/unit_nation_bonus_tooltip/recentlyReleasedDays", { recentlyReleasedDays })
+            : loc("shop/unit_nation_bonus_tooltip/bonus_amount", {bonusAmount = bonusData?[$"rank{params.rank}"] ?? 0})
+          isRecentlyReleased
           battlesRemain
           unitName
           rangNum = loc("ui/parentheses", {text = loc("shop/age/num", {num = get_roman_numeral(rank)})})
@@ -246,7 +251,8 @@ function updateCardStatus(obj, _id, statusTbl) {
 
   let nationBonus = showInObj(markerContainer, "nation_bonus_marker", hasNationBonus)
   let isNationBonusOver = nationBonusBattlesRemain <= 0
-  nationBonus.isOver = isNationBonusOver ? "yes" : "no"
+  nationBonus.isOver = (isNationBonusOver || isRecentlyReleased) ? "yes" : "no"
+
   if (hasNationBonus) {
     let tooltipObj = nationBonus.findObject("bonus_tooltip")
     tooltipObj.tooltipId = getTooltipType("SHOP_CELL_NATION_BONUS").getTooltipId("bonus", {
@@ -255,6 +261,7 @@ function updateCardStatus(obj, _id, statusTbl) {
       maxRank
       isOver = isNationBonusOver
       unitTypeName
+      isRecentlyReleased
     })
   }
 
@@ -390,7 +397,7 @@ let getUnitStatusTbl = function(unit, params) {
     hasTalismanIcon     = isSpecial || shopIsModificationEnabled(unit.name, "premExpMul")
     priceText           = getUnitShopPriceText(unit)
 
-    discount            = isOwn || isUnitGift(unit) ? 0 : ::g_discount.getUnitDiscount(unit)
+    discount            = isOwn ? 0 : ::g_discount.getUnitDiscount(unit)
     expMul              = wp_shop_get_aircraft_xp_rate(unit.name)
     wpMul               = wp_shop_get_aircraft_wp_rate(unit.name)
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0

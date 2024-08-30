@@ -14,6 +14,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2176,22 +2177,40 @@
         "tier": 6,
         "order": 3,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "bombs_large",
-          "name": "1000lbs",
-          "reqModification": "flbc_mk1",
-          "ShowNodes": {
-            "node": "bomb_pylon_1000_c"
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "500lbs",
+            "reqModification": "flbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_1000_c"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb_1000_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "bombs",
-            "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
-            "emitter": "bomb_1000_1",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs",
+            "reqModification": "flbc_mk1",
+            "ShowNodes": {
+              "node": "bomb_pylon_1000_c"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+              "emitter": "bomb_1000_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 3,

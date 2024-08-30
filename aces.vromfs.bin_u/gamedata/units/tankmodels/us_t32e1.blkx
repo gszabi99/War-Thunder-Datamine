@@ -880,18 +880,18 @@
               0.0,
               0.0
             ],
-            "name": "bone_suspension_$1_01"
+            "name": "bone_suspension_$1_$2"
           },
           "suspension_01_01": {
             "name": "bone_suspension_$1_$2_01",
             "limitMin": [
-              -0.5,
-              -0.5,
+              0.0,
+              -1.0,
               0.0
             ],
             "limitMax": [
-              0.5,
-              0.5,
+              0.0,
+              1.0,
               0.0
             ]
           },
@@ -915,13 +915,13 @@
           "suspension_01_02": {
             "name": "bone_suspension_$1_$2_02",
             "limitMin": [
-              -0.5,
-              -0.5,
+              0.0,
+              0.0,
               0.0
             ],
             "limitMax": [
-              0.5,
-              0.5,
+              0.0,
+              0.0,
               0.0
             ]
           }
@@ -933,33 +933,18 @@
               "to": "wheel"
             },
             {
-              "rotateSecond": true,
               "moveSecond": false,
-              "to": "suspension_01_01",
-              "from": "lever"
+              "from": "suspension_01_01",
+              "to": "wheel"
             }
           ],
-          "projection": [
-            {
-              "to": "wheel",
-              "from": "lever",
-              "point": "suspension_01_01"
-            },
-            {
-              "movePoint": false,
-              "moveEdge": true,
-              "moveEdgeNodes": false,
-              "point": "suspension_01_02",
-              "from": "lever",
-              "to": "suspension_01_01"
-            },
-            {
-              "point": "suspension_01_01",
-              "to": "suspension_01_02",
-              "from": "lever",
-              "movePoint": false
-            }
-          ]
+          "projection": {
+            "to": "suspension_01_01",
+            "from": "lever",
+            "point": "suspension_01_02",
+            "movePoint": false,
+            "moveEdgeNodes": false
+          }
         }
       },
       {
@@ -2858,8 +2843,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {

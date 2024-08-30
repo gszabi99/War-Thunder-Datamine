@@ -148,7 +148,7 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
   // load parts
   load_repair_parts(
     unit,
-    unit.isTank || unit.isWalker || unit.isHuman ? get_dm_params().tankRepairParts : get_dm_params().shipRepairParts, false,
+    unit.isTank || unit.isWalker || unit.isHuman ? get_wt_dm_params().tankRepairParts : get_wt_dm_params().shipRepairParts, false,
     repair_system_parts_id,
     repair_system_parts_state,
     repair_system_parts_hp,
@@ -274,7 +274,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   if gm != null
     repair_system_speed_multiplier *= gm.crewRepairSpeedMultiplier
   if get_flag(repair_system_state, RepairState REPAIR_ON_BASE)
-    repair_system_speed_multiplier *= get_dm_params().repairOnBaseMul
+    repair_system_speed_multiplier *= get_wt_dm_params().repairOnBaseMul
   if !get_flag(repair_system_state, RepairState HAS_REPAIR_TOOLKIT) && get_flag(repair_system_state, RepairState REPAIR_PENALTY_WITHOUT_TOOLKIT)
     repair_system_speed_multiplier *= repair_system_repair_hp_multiplier
 
@@ -593,7 +593,7 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
       else
         delay = 0.001f
     else
-      delay = get_dm_params().repairDelayTimerForTanks
+      delay = get_wt_dm_params().repairDelayTimerForTanks
 
     let can_start = can_start_repair(
       unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,

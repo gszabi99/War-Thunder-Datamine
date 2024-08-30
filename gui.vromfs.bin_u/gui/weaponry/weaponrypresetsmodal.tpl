@@ -3,7 +3,7 @@ root {
   blur_foreground {}
   on_click:t='goBack'
   frame {
-    size:t='<<wndWidth>>, 1@maxWindowHeight'
+    height:t='1@maxWindowHeight'
     class:t='wndNav'
     css-hier-invalidate:t='yes'
     isCenteredUnderLogo:t='yes'
@@ -16,13 +16,13 @@ root {
       Button_close { id:t = 'btn_back' }
     }
     tdiv{
-      size:t='pw, ph'
+      height:t='ph'
       flow:t='horizontal'
       padding:t='1@blockInterval, 0'
       css-hier-invalidate:t='yes'
       tdiv {
         id:t='presetNest'
-        width:t='fw'
+        width:t='<<presetsWidth>>'
         flow:t='vertical'
         overflow-y:t='auto'
 

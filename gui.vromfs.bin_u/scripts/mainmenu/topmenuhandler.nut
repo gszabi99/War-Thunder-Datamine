@@ -468,8 +468,8 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       { obj = "dmviewer_protection_analysis_btn"
         msgId = "hint_dmviewer_protection_analysis_btn"
       }
-      { obj = "dmviewer_show_extra_xray"
-        msgId = "hint_dmviewer_show_extra_xray"
+      { obj = "filter_nest"
+        msgId = "hint_dmviewer_xray_part_filter"
       }
       { obj = "dmviewer_show_extended_hints"
         msgId = "hint_dmviewer_show_extended_hints"

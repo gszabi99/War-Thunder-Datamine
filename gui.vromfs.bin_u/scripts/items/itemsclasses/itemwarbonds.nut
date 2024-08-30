@@ -8,6 +8,8 @@ let Warbonds = class (ItemCouponBase) {
   static name = "Warbonds"
   static typeIcon = "#ui/gameuiskin#item_type_warbonds.svg"
 
+  canMultipleConsume = true
+
   getWarbond           = @() ::g_warbonds.findWarbond(this.metaBlk?.warbonds)
   getWarbondsAmount    = @() this.metaBlk?.count || 0
   canConsume           = @() this.isInventoryItem && this.getWarbond() != null && this.getWarbondsAmount() > 0

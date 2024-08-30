@@ -134,11 +134,18 @@ wishedItem{
         buttonWink{}
         buttonGlance{}
         btnName:t='X'
+        unit:t=<<unitName>>
         ButtonImg {
           showOnSelect:t='yes'
         }
         img{ background-image:t='#ui/gameuiskin#store_icon.svg' }
-        unit:t=<<unitName>>
+        discount {
+          id:t='btn_shop_discount_<<unitName>>'
+          text:t=''
+          pos:t='pw-70%w, -80%h'
+          position:t='absolute'
+          rotation:t='-30'
+        }
       }
       <</hasShopButton>>
       <<#hasBuyButton>>
@@ -155,6 +162,7 @@ wishedItem{
         buttonWink{}
         buttonGlance{}
         btnName:t='X'
+        unit:t=<<unitName>>
         ButtonImg {
           showOnSelect:t='yes'
         }
@@ -163,7 +171,13 @@ wishedItem{
           class:t='buttonText'
           text:t='<<priceText>>'
         }
-        unit:t=<<unitName>>
+        discount {
+          id:t='btn_buy_discount_<<unitName>>'
+          text:t=''
+          pos:t='pw-70%w, -80%h'
+          position:t='absolute'
+          rotation:t='-30'
+        }
       }
       <</hasBuyButton>>
       <<#hasMarketPlaceButton>>

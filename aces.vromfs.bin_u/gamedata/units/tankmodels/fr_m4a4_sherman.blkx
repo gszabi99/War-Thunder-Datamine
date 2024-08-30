@@ -1063,131 +1063,176 @@
   },
   "class_tags": {},
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)$",
-    "points": {
-      "suspension_01": {
-        "name": "bone_suspension_$1_01"
-      },
-      "wheel_01": {
-        "searchChildren": {
-          "parent": "suspension_01",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
+    "group": [
+      {
+        "find": "^suspension_(._\\d\\d)$",
+        "points": {
+          "suspension_01": {
+            "name": "bone_suspension_$1_01"
+          },
+          "wheel_01": {
+            "searchChildren": {
+              "parent": "suspension_01",
+              "find": "bone_wheel_.*",
+              "limitMin": [
+                -1000.0,
+                0.0,
+                0.0
+              ],
+              "limitMax": [
+                1000.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "suspension_02": {
+            "name": "bone_suspension_$1_02"
+          },
+          "wheel_02": {
+            "searchChildren": {
+              "parent": "suspension_02",
+              "find": "bone_wheel_.*",
+              "limitMin": [
+                -1000.0,
+                0.0,
+                0.0
+              ],
+              "limitMax": [
+                1000.0,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "lever": {
+            "name": "suspension_$1",
+            "limitMin": [
+              0.0,
+              -1000.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1000.0,
+              0.0
+            ]
+          },
+          "lever_proj_01": {
+            "createOnEdge": {
+              "point1": "suspension_01",
+              "point2": "wheel_01",
+              "pos": 0.7,
+              "limitMin": [
+                -1000.0,
+                -1000.0,
+                0.0
+              ],
+              "limitMax": [
+                1000.0,
+                1000.0,
+                0.0
+              ]
+            }
+          },
+          "lever_proj_02": {
+            "createOnEdge": {
+              "type": "onEdge",
+              "point1": "suspension_02",
+              "point2": "wheel_02",
+              "pos": 0.7,
+              "limitMin": [
+                -1000.0,
+                -1000.0,
+                0.0
+              ],
+              "limitMax": [
+                1000.0,
+                1000.0,
+                0.0
+              ]
+            }
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "from": "suspension_01",
+              "to": "wheel_01"
+            },
+            {
+              "from": "suspension_02",
+              "to": "wheel_02"
+            },
+            {
+              "from": "lever",
+              "to": "lever_proj_01"
+            },
+            {
+              "from": "lever",
+              "to": "lever_proj_02"
+            },
+            {
+              "from": "lever_proj_01",
+              "to": "lever_proj_02"
+            }
           ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
+          "slider": [
+            {
+              "point": "lever_proj_01",
+              "from": "suspension_01",
+              "to": "wheel_01"
+            },
+            {
+              "point": "lever_proj_02",
+              "from": "suspension_02",
+              "to": "wheel_02"
+            }
           ]
         }
       },
-      "suspension_02": {
-        "name": "bone_suspension_$1_02"
-      },
-      "wheel_02": {
-        "searchChildren": {
-          "parent": "suspension_02",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "lever": {
-        "name": "bone_suspension_$1",
-        "limitMin": [
-          0.0,
-          -1000.0,
-          0.0
-        ],
-        "limitMax": [
-          0.0,
-          1000.0,
-          0.0
-        ]
-      },
-      "lever_proj_01": {
-        "createOnEdge": {
-          "point1": "suspension_01",
-          "point2": "wheel_01",
-          "pos": 0.7,
-          "limitMin": [
-            -1000.0,
-            -1000.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            1000.0,
-            0.0
-          ]
-        }
-      },
-      "lever_proj_02": {
-        "createOnEdge": {
-          "type": "onEdge",
-          "point1": "suspension_02",
-          "point2": "wheel_02",
-          "pos": 0.7,
-          "limitMin": [
-            -1000.0,
-            -1000.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            1000.0,
-            0.0
-          ]
+      {
+        "find": "^suspension_(\\w)$",
+        "points": {
+          "suspension": {
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "name": "bone_suspension_$1_03"
+          },
+          "wheelBack": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                0.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                0.0,
+                0.0
+              ],
+              "parent": "suspension",
+              "find": "wheel_"
+            }
+          }
+        },
+        "constraints": {
+          "edge": {
+            "from": "suspension",
+            "to": "wheelBack"
+          }
         }
       }
-    },
-    "constraints": {
-      "edge": [
-        {
-          "from": "suspension_01",
-          "to": "wheel_01"
-        },
-        {
-          "from": "suspension_02",
-          "to": "wheel_02"
-        },
-        {
-          "from": "lever",
-          "to": "lever_proj_01"
-        },
-        {
-          "from": "lever",
-          "to": "lever_proj_02"
-        },
-        {
-          "from": "lever_proj_01",
-          "to": "lever_proj_02"
-        }
-      ],
-      "slider": [
-        {
-          "point": "lever_proj_01",
-          "from": "suspension_01",
-          "to": "wheel_01"
-        },
-        {
-          "point": "lever_proj_02",
-          "from": "suspension_02",
-          "to": "wheel_02"
-        }
-      ]
-    }
+    ]
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -2180,8 +2225,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {

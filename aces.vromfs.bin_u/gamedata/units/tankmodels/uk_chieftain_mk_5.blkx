@@ -558,8 +558,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2073,21 +2074,21 @@
     }
   },
   "PhysSys": {
-    "find": "^suspension_(._\\d\\d)$",
+    "find": "^bone_suspension_(._\\d\\d)$",
     "points": {
       "suspension": {
-        "name": "suspension_$1"
+        "name": "bone_suspension_$1"
       },
       "wheel": {
         "name": "bone_wheel_$1",
         "limitMin": [
-          -1000.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          1000.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ]
       }

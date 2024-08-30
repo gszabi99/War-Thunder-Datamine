@@ -1010,8 +1010,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2114,10 +2115,12 @@
       "blk": "gameData/Weapons/groundModels_weapons/88mm_Flak41_user_cannon.blk",
       "emitter": "bone_gun_barrel",
       "flash": "emtr_gun_flame",
+      "useEmitter": true,
       "defaultYaw": 0.0,
       "defaultPitch": 0.0,
       "barrelDP": "gun_barrel_dm",
       "breechDP": "cannon_breech_dm",
+      "aimingFromBoneGun": false,
       "speedYaw": 10.0,
       "speedPitch": 4.0,
       "fireConeAngle": 1.0,
@@ -3438,6 +3441,7 @@
           "Weapon": {
             "trigger": "gunner0",
             "blk": "gameData/Weapons/groundModels_weapons/88mm_Flak41_user_cannon.blk",
+            "useEmitter": true,
             "emitter": "bone_gun_barrel",
             "flash": "emtr_gun_flame",
             "shotFreq": 0.1667,
@@ -3445,6 +3449,7 @@
             "defaultPitch": 0.0,
             "barrelDP": "gun_barrel_dm",
             "breechDP": "cannon_breech_dm",
+            "aimingFromBoneGun": false,
             "speedYaw": 10.0,
             "speedPitch": 4.0,
             "fireConeAngle": 1.0,

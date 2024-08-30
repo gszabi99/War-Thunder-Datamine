@@ -560,8 +560,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1890,7 +1891,18 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun",
-          "barrel": "bone_gun_barrel"
+          "barrel": "bone_gun_barrel",
+          "linkedAnimPart": {
+            "verNode": "bone_lantern_01",
+            "verLimits": [
+              -8.0,
+              20.0
+            ],
+            "verOriginLimits": [
+              -8.0,
+              21.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -2975,7 +2987,18 @@
               "turret": {
                 "head": "bone_turret",
                 "gun": "bone_gun",
-                "barrel": "bone_gun_barrel"
+                "barrel": "bone_gun_barrel",
+                "linkedAnimPart": {
+                  "verNode": "bone_lantern_01",
+                  "verLimits": [
+                    -8.0,
+                    20.0
+                  ],
+                  "verOriginLimits": [
+                    -8.0,
+                    21.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [

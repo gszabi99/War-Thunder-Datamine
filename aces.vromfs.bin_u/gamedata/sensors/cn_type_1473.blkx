@@ -2,6 +2,7 @@
   "type": "radar",
   "name": "Type 1473",
   "showMissileLaunchZone": true,
+  "showMissileDgftLaunchZone": true,
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
@@ -26,7 +27,7 @@
       "power": 1000.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 7000.0,
+      "range": 70000.0,
       "rangeMax": 90000.0,
       "multipathEffect": [
         0.0,
@@ -48,7 +49,7 @@
     }
   },
   "scanPatterns": {
-    "radarSearchManualNarrow": {
+    "searchNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -66,7 +67,7 @@
       "barsCount": 4,
       "rowMajor": true
     },
-    "radarSearchManualWide": {
+    "searchMedium": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -84,7 +85,26 @@
       "barsCount": 4,
       "rowMajor": true
     },
-    "radarTwsNarrow": {
+    "bvrLockSearch": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 0.6,
+      "width": 4.0,
+      "barHeight": 2.5,
+      "barsCount": 4,
+      "rowMajor": true,
+      "indicate": true
+    },
+    "twsNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -104,7 +124,7 @@
       "preciseMinor": true,
       "tws": true
     },
-    "radarTwsWide": {
+    "twsMedium": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -124,7 +144,7 @@
       "preciseMinor": true,
       "tws": true
     },
-    "radarDesignationLockSearch": {
+    "bvrLockTws": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -136,14 +156,28 @@
       ],
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
-      "period": 0.6,
+      "period": 0.3,
       "width": 4.0,
       "barHeight": 2.5,
-      "barsCount": 4,
+      "barsCount": 2,
       "rowMajor": true,
       "indicate": true
     },
-    "radarVerticalLock": {
+    "boresightLock": {
+      "type": "cone",
+      "azimuthLimits": [
+        -85.0,
+        85.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "period": 0.3,
+      "width": 1.5,
+      "indicate": true
+    },
+    "verticalLock": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -161,7 +195,7 @@
       "centerElevation": 15.0,
       "indicate": true
     },
-    "radarHmdLock": {
+    "hmdLock": {
       "type": "pyramide",
       "azimuthLimits": [
         -85.0,
@@ -179,7 +213,7 @@
       "indicate": true,
       "hmd": true
     },
-    "radarTrack": {
+    "track": {
       "type": "no",
       "azimuthLimits": [
         -85.0,
@@ -190,7 +224,7 @@
         60.0
       ]
     },
-    "radarHmdTrack": {
+    "hmdTrack": {
       "type": "no",
       "azimuthLimits": [
         -85.0,
@@ -240,6 +274,26 @@
         "maxValue": 1200.0,
         "signalWidthMin": 5.0,
         "width": 150.0
+      }
+    },
+    "mprfAcm": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "mainBeamNotchWidth": 40.0,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 90000.0,
+        "width": 500.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -900.0,
+        "maxValue": 900.0,
+        "signalWidthMin": 2.0,
+        "width": 24.0
       }
     },
     "mprfTrack": {
@@ -316,19 +370,17 @@
     }
   },
   "scanPatternSets": {
-    "radarSearchManual": {
-      "scanPattern1": "radarSearchManualNarrow",
-      "scanPattern2": "radarSearchManualWide"
+    "search": {
+      "scanPattern1": "searchNarrow",
+      "scanPattern2": "searchMedium"
     },
-    "radarTws": {
-      "scanPattern1": "radarTwsNarrow",
-      "scanPattern2": "radarTwsWide"
+    "tws": {
+      "scanPattern1": "twsNarrow",
+      "scanPattern2": "twsMedium"
     },
-    "radarAcmLock": {
-      "scanPattern1": "radarVerticalLock"
-    },
-    "radarHmdLock": {
-      "scanPattern1": "radarHmdLock"
+    "acmLock": {
+      "scanPattern1": "boresightLock",
+      "scanPattern2": "verticalLock"
     }
   },
   "scopeRangeSets": {
@@ -346,29 +398,39 @@
     "main": {
       "stateInit": "init",
       "actionsTemplates": {
-        "disableRadarTrackModes": {
+        "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -85.0,
+              85.0
+            ],
+            "azmithWidth": 5.0,
+            "elevationRange": [
+              -45.0,
+              60.0
+            ],
+            "distanceRange": [
+              0.0,
+              80000.0
+            ],
+            "distanceWidth": 2000.0,
+            "distanceRelWidthMin": 0.05,
+            "dopplerSpeedRange": [
+              -1500.0,
+              1500.0
+            ],
+            "dopplerSpeedWidth": 60.0,
+            "dopplerSpeedRelWidthMin": 0.05
+          },
           "setFsmActive": {
-            "fsm": "radarTrackModes",
-            "active": false
+            "fsm": "searchModes",
+            "active": true
           }
         },
-        "setRadarMprfSearch": {
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "mprfSearch"
-          }
-        },
-        "setRadarHprfSearch": {
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfSearch"
-          }
-        },
-        "setStandbySearchTwsModeCommon": {
+        "setStandbySearchModeCommon": {
           "setCenterAzimuth": {
             "source": "constant",
             "value": 0.0
@@ -379,141 +441,33 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setFsmActive": {
+            "fsm": "searchModes",
+            "active": true
           }
         },
         "setStandbyModeCommon": {
-          "setStandbySearchTwsModeCommon": {},
+          "setStandbySearchModeCommon": {},
           "setEnabled": {
             "value": false
           }
         },
-        "setRadarSearchStandbyModeCommon": {
-          "setStandbyModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "radarSearchManual"
-          },
+        "resetStandbyMode": {
           "setFsmActive": {
-            "fsm": "radarSearchModes",
-            "active": true
+            "fsm": "searchModes",
+            "active": false
           }
         },
-        "setMprfStandbyMode": {
-          "setRadarSearchStandbyModeCommon": {},
-          "setRadarMprfSearch": {},
-          "setModeName": {
-            "name": "PD standby"
-          }
-        },
-        "setHprfStandbyMode": {
-          "setRadarSearchStandbyModeCommon": {},
-          "setRadarHprfSearch": {},
-          "setModeName": {
-            "name": "PD HDN standby"
-          }
-        },
-        "setSearchTwsModeCommon": {
-          "setStandbySearchTwsModeCommon": {},
-          "setEnabled": {
-            "value": true
-          }
-        },
-        "setSearchModeCommon": {
-          "setSearchTwsModeCommon": {},
-          "setCueEnabled": {
-            "value": true,
-            "updateActiveTargetUnderCue": false
-          },
-          "setFsmActive": {
-            "fsm": "search",
-            "active": true
-          }
-        },
-        "setRadarSearchModeCommon": {
-          "setSearchModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "radarSearchManual"
-          },
-          "setFsmActive": {
-            "fsm": "radarSearchModes",
-            "active": true
-          }
-        },
-        "setMprfSearchMode": {
-          "setRadarSearchModeCommon": {},
-          "setRadarMprfSearch": {},
-          "setModeName": {
-            "name": "PD search"
-          }
-        },
-        "setHprfSearchMode": {
-          "setRadarSearchModeCommon": {},
-          "setRadarHprfSearch": {},
-          "setModeName": {
-            "name": "PD HDN search"
-          }
-        },
-        "resetSearchModeEmpty": {},
         "resetSearchMode": {
           "clearTargets": {},
-          "setFsmActive": {
-            "fsm": "search",
-            "active": false
-          },
-          "setCueEnabled": {
-            "value": false
-          }
-        },
-        "resetRadarSearchMode": {
-          "resetSearchMode": {},
-          "setFsmActive": {
-            "fsm": "radarSearchModes",
-            "active": false
-          }
-        },
-        "setRadarTwsModeCommon": {
-          "setSearchTwsModeCommon": {},
-          "setCueEnabled": {
-            "value": true,
-            "updateActiveTargetUnderCue": true
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "radarTws"
-          },
           "setFsmActive": [
             {
-              "fsm": "radarSearchModes",
-              "active": true
-            },
-            {
-              "fsm": "tws",
-              "active": true
-            }
-          ]
-        },
-        "setMprfTwsMode": {
-          "setRadarTwsModeCommon": {},
-          "setRadarMprfSearch": {},
-          "setModeName": {
-            "name": "TWS search"
-          }
-        },
-        "setHprfTwsMode": {
-          "setRadarTwsModeCommon": {},
-          "setRadarHprfSearch": {},
-          "setModeName": {
-            "name": "TWS HDN search"
-          }
-        },
-        "resetRadarTwsMode": {
-          "clearTargets": {},
-          "clearTargetsOfInterest": {},
-          "setFsmActive": [
-            {
-              "fsm": "tws",
+              "fsm": "search",
               "active": false
             },
             {
-              "fsm": "radarSearchModes",
+              "fsm": "searchModes",
               "active": false
             }
           ],
@@ -521,25 +475,19 @@
             "value": false
           }
         },
-        "setDesignationLockModeCommon": {
+        "setBvrLockModeCommon": {
           "setEnabled": {
             "value": true
           },
           "setScanPatternSet": {},
-          "resetScanPhase": {},
+          "resetScanPhase": {}
+        },
+        "setBvrLockMode": {
+          "setBvrLockModeCommon": {},
           "setFsmActive": {
-            "fsm": "lock",
+            "fsm": "bvrLock",
             "active": true
-          }
-        },
-        "setRadarDesignationLockModeCommon": {
-          "setDesignationLockModeCommon": {},
-          "setScanPattern": {
-            "scanPattern": "radarDesignationLockSearch"
-          }
-        },
-        "setMprfDesignationLockModeCommon": {
-          "setRadarDesignationLockModeCommon": {},
+          },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 2000.0
@@ -547,51 +495,13 @@
           "setRelSpeedGatePos": {
             "source": "constRange",
             "pos": 0.0,
-            "width": 1800.0
-          },
-          "setCenterAzimuth": {
-            "source": "targetDesignation"
-          },
-          "setRadarMprfSearch": {}
-        },
-        "setHprfDesignationLockModeCommon": {
-          "setRadarDesignationLockModeCommon": {},
-          "setDistGatePos": {
-            "source": "targetDesignation",
             "width": 3000.0
           },
-          "setRelSpeedGatePos": {
-            "source": "constRange",
-            "pos": 600.0,
-            "width": 1200.0
+          "setScanPattern": {
+            "scanPattern": "bvrLockSearch"
           },
           "setCenterAzimuth": {
             "source": "targetDesignation"
-          },
-          "setRadarHprfSearch": {}
-        },
-        "setMprfDesignationLockMode": {
-          "setMprfDesignationLockModeCommon": {},
-          "setModeName": {
-            "name": "PD acquisition"
-          }
-        },
-        "setHprfDesignationLockMode": {
-          "setHprfDesignationLockModeCommon": {},
-          "setModeName": {
-            "name": "PD HDN acquisition"
-          }
-        },
-        "setMprfTwsDesignationLockMode": {
-          "setMprfDesignationLockModeCommon": {},
-          "setModeName": {
-            "name": "TWS acquisition"
-          }
-        },
-        "setHprfTwsDesignationLockMode": {
-          "setHprfDesignationLockModeCommon": {},
-          "setModeName": {
-            "name": "TWS HDN acquisition"
           }
         },
         "designatedTargetSearch": {
@@ -606,133 +516,9 @@
             "sensorIndex": 0
           }
         },
-        "setMprfTrackParams": {
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "mprfTrack"
-          },
-          "setModeName": {
-            "name": "PD track"
-          }
-        },
-        "setHprfTrackParams": {
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfTrack"
-          },
-          "setModeName": {
-            "name": "PD HDN track"
-          }
-        },
-        "setRadarAcmHmdLockModeCommon": {
-          "setEnabled": {
-            "value": true
-          },
-          "resetScanPhase": {},
+        "resetBvrLockMode": {
           "setFsmActive": {
-            "fsm": "lock",
-            "active": true
-          },
-          "setDistGatePos": {
-            "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "constRange",
-            "pos": 0.0,
-            "width": 1800.0
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
-          },
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "acmTrack"
-          },
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setPrimaryTrackParams",
-              "actionTemplateName": "setMprfTrackParams"
-            },
-            {
-              "fsm": "main",
-              "name": "setSecondaryTrackParams",
-              "actionTemplateName": "setHprfTrackParams"
-            }
-          ]
-        },
-        "setRadarAcmLockMode": {
-          "setRadarAcmHmdLockModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "radarAcmLock"
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "setModeName": {
-            "name": "PD ACM"
-          }
-        },
-        "setRadarHmdStandbyMode": {
-          "setStandbyModeCommon": {},
-          "setFsmActive": {
-            "fsm": "helmetDesignation",
-            "active": true
-          },
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "acmTrack"
-          },
-          "setScanPatternSet": {
-            "scanPatternSet": "radarHmdLock"
-          },
-          "setDistGatePos": {
-            "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
-          },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
-          },
-          "setModeName": {
-            "name": "PD HMD"
-          }
-        },
-        "setRadarHmdLockMode": {
-          "setRadarAcmHmdLockModeCommon": {},
-          "setScanPatternSet": {
-            "scanPatternSet": "radarHmdLock"
-          },
-          "setCenterAzimuth": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "setCenterElevation": {
-            "source": "constant",
-            "value": 0.0
-          },
-          "setModeName": {
-            "name": "PD HMD"
-          }
-        },
-        "resetLockMode": {
-          "setFsmActive": {
-            "fsm": "lock",
+            "fsm": "bvrLock",
             "active": false
           }
         },
@@ -741,6 +527,9 @@
             "value": true
           },
           "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "track"
+          },
           "addTargetOfInterest": {},
           "setLastTargetOfInterestActive": {},
           "updateActiveTargetOfInterest": {},
@@ -758,102 +547,376 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setFsmActive": {
-            "fsm": "track",
-            "active": true
-          }
-        },
-        "setRadarTrackModeCommon": {
-          "setTrackMode": {},
-          "setIllumination": {
-            "illumination": true
-          }
-        },
-        "setRadarDesignationTrackMode": {
-          "setRadarTrackModeCommon": {},
-          "setScanPattern": {
-            "scanPattern": "radarTrack"
-          },
-          "setFsmActive": {
-            "fsm": "radarTrackModes",
-            "active": true
-          }
-        },
-        "setRadarAcmTrackMode": {
-          "setRadarTrackModeCommon": {},
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "acmTrack"
-          },
-          "setScanPattern": {
-            "scanPattern": "radarTrack"
-          },
-          "setModeName": {
-            "name": "PD track"
-          }
-        },
-        "setRadarHmdTrackMode": {
-          "setRadarTrackModeCommon": {},
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "acmTrack"
-          },
-          "setScanPattern": {
-            "scanPattern": "radarHmdTrack"
-          },
-          "setModeName": {
-            "name": "PD track"
-          }
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": true
+            },
+            {
+              "fsm": "illumination",
+              "active": true
+            }
+          ]
         },
         "resetTrackMode": {
           "clearTargetsOfInterest": {},
+          "setFsmActive": [
+            {
+              "fsm": "track",
+              "active": false
+            },
+            {
+              "fsm": "illumination",
+              "active": false
+            }
+          ]
+        },
+        "setAcmLockMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "resetScanPhase": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "acmLock"
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
           "setFsmActive": {
-            "fsm": "track",
+            "fsm": "acmLock",
+            "active": true
+          },
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acm"
+          },
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfAcm"
+          },
+          "setModeName": {
+            "name": "PD ACM"
+          }
+        },
+        "resetAcmLockMode": {
+          "setFsmActive": {
+            "fsm": "acmLock",
             "active": false
           }
         },
-        "resetRadarTrackMode": {
-          "resetTrackMode": {},
-          "setIllumination": {
-            "illumination": false
+        "setSearchStandbyModeCommon": {
+          "setStandbyModeCommon": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
           }
         },
-        "resetRadarDesignationTrackMode": {
-          "resetRadarTrackMode": {},
+        "setTwsStandbyModeCommon": {
+          "setStandbyModeCommon": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "tws"
+          }
+        },
+        "setSearchModeCommon": {
+          "setStandbySearchModeCommon": {},
+          "setEnabled": {
+            "value": true
+          },
+          "setCueEnabled": {
+            "value": true,
+            "updateActiveTargetUnderCue": false
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
           "setFsmActive": {
-            "fsm": "radarTrackModes",
+            "fsm": "search",
+            "active": true
+          }
+        },
+        "setTwsSearchModeCommon": {
+          "setStandbySearchModeCommon": {},
+          "setEnabled": {
+            "value": true
+          },
+          "setCueEnabled": {
+            "value": true,
+            "updateActiveTargetUnderCue": true
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "tws"
+          },
+          "setFsmActive": {
+            "fsm": "tws",
+            "active": true
+          }
+        },
+        "resetTwsMode": {
+          "clearTargets": {},
+          "clearTargetsOfInterest": {},
+          "setFsmActive": [
+            {
+              "fsm": "tws",
+              "active": false
+            },
+            {
+              "fsm": "searchModes",
+              "active": false
+            }
+          ],
+          "setCueEnabled": {
+            "value": false
+          }
+        },
+        "designatedTargetTws": {
+          "designateActiveDetectedTarget": {
+            "type": 0,
+            "self": true,
+            "sensorIndex": 0
+          }
+        },
+        "setTwsBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "bvrLock",
+            "active": true
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 300.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "targetDesignation",
+            "width": 20.0
+          },
+          "setScanPattern": {
+            "scanPattern": "bvrLockTws"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
+          "setModeName": [
+            {
+              "name": "TWS acquisition"
+            },
+            {
+              "name": "TWS acquisition"
+            }
+          ]
+        },
+        "setMprfStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "PD standby"
+          }
+        },
+        "setHprfStandbyMode": {
+          "setSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "PD HDN standby"
+          }
+        },
+        "setTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS standby"
+          }
+        },
+        "setMprfSearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "PD search"
+          }
+        },
+        "setHprfSearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "PD HDN search"
+          }
+        },
+        "setTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS search"
+          }
+        },
+        "setMprfBvrLockMode": {
+          "setBvrLockMode": {},
+          "setModeName": {
+            "name": "PD acquisition"
+          }
+        },
+        "setHprfBvrLockMode": {
+          "setBvrLockMode": {},
+          "setModeName": {
+            "name": "PD HDN acquisition"
+          }
+        },
+        "setHmdStandbyMode": {
+          "setEnabled": {
+            "value": false
+          },
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acm"
+          },
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": true
+          },
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfAcm"
+          },
+          "setModeName": {
+            "name": "PD HMD"
+          }
+        },
+        "resetHmdStandbyMode": {
+          "resetStandbyMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
             "active": false
           }
+        },
+        "setHmdLockMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setFsmActive": [
+            {
+              "fsm": "acmLock",
+              "active": true
+            },
+            {
+              "fsm": "helmetDesignation",
+              "active": true
+            }
+          ],
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acm"
+          },
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfAcm"
+          },
+          "setModeName": {
+            "name": "PD HMD"
+          }
+        },
+        "resetHmdLockMode": {
+          "resetAcmLockMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": false
+          }
+        },
+        "setHmdTrackMode": {
+          "setTrackMode": {},
+          "setScanPattern": {
+            "scanPattern": "hmdTrack"
+          }
+        },
+        "resetHmdTrackMode": {
+          "resetTrackMode": {}
         }
       },
       "transitions": {
         "init": {
           "stateFrom": "init",
           "event": "init",
-          "actions": {
-            "setCustomActionTemplate": {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetSearchModeEmpty"
-            },
-            "setEnabled": {
-              "value": false
-            }
-          }
-        },
-        "activate": {
-          "stateFrom": "init",
-          "event": "fsmActivate",
           "stateTo": "standby",
           "actions": {
-            "setFsmActive": {
-              "fsm": "sensorTypes",
-              "active": true
-            }
+            "init": {}
           }
         },
         "standbyToSearch": {
@@ -862,10 +925,16 @@
           "event": "enable",
           "stateTo": "search",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
         "searchToStandby": {
@@ -886,7 +955,7 @@
             ]
           }
         },
-        "designationLock": {
+        "bvrLock": {
           "stateFrom": "search",
           "command": "selectTarget",
           "actions": {
@@ -906,10 +975,10 @@
             }
           }
         },
-        "designationLockResponce": {
+        "bvrLockResponce": {
           "stateFrom": "checkDesignationType0",
           "event": "designationTypeEquals",
-          "stateTo": "designationLock",
+          "stateTo": "bvrLock",
           "actions": {
             "doCustomActionTemplate": [
               {
@@ -918,7 +987,7 @@
               },
               {
                 "fsm": "main",
-                "name": "setDesignationLockMode"
+                "name": "setBvrLockMode"
               }
             ]
           }
@@ -928,32 +997,42 @@
           "event": "designationTypeNotEquals",
           "stateTo": "search"
         },
-        "designationLockToDesignationTrack": {
-          "stateFrom": "designationLock",
+        "bvrLockToBvrTrack": {
+          "stateFrom": "bvrLock",
           "event": "targetDetected",
-          "stateTo": "designationTrack",
+          "stateTo": "bvrTrack",
           "actions": {
-            "resetLockMode": {},
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setDesignationTrackMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrTrackMode"
+              }
+            ]
           }
         },
-        "failedDesignationLock": {
-          "stateFrom": "designationLock",
+        "failedBvrLock": {
+          "stateFrom": "bvrLock",
           "event": "scanFinished",
           "stateTo": "search",
           "actions": {
-            "resetLockMode": {},
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
           }
         },
-        "finishedDesignationTrack": {
-          "stateFrom": "designationTrack",
+        "finishedBvrTrack": {
+          "stateFrom": "bvrTrack",
           "event": "targetsOfInterestCleanup",
           "command": "selectTarget",
           "stateTo": "search",
@@ -961,13 +1040,62 @@
             "doCustomActionTemplate": [
               {
                 "fsm": "main",
-                "name": "resetDesignationTrackMode"
+                "name": "resetBvrTrackMode"
               },
               {
                 "fsm": "main",
                 "name": "setSearchMode"
               }
             ]
+          }
+        },
+        "updateStandbyMode": {
+          "stateFrom": "standby",
+          "event": "fsmActivate",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
+          }
+        },
+        "updateSearchMode": {
+          "stateFrom": "search",
+          "event": "fsmActivate",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode"
+              }
+            ]
+          }
+        },
+        "switchScanPattern": {
+          "stateFrom": [
+            "standby",
+            "search",
+            "acmLock"
+          ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {}
+          }
+        },
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": {}
           }
         },
         "searchToAcmLock": {
@@ -987,41 +1115,21 @@
             ]
           }
         },
-        "standbyToHmdStandby": {
-          "stateFrom": "standby",
-          "command": "selectTarget",
-          "stateTo": "hmdLock",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
-          }
-        },
-        "standbyToAcmLock": {
-          "stateFrom": "standby",
-          "command": "acmSwitch",
-          "stateTo": "acmLock",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setAcmLockMode"
-            }
-          }
-        },
         "acmLockToAcmTrack": {
           "stateFrom": "acmLock",
           "event": "targetDetected",
           "stateTo": "acmTrack",
           "actions": {
-            "setFsmActive": {
-              "fsm": "lock",
-              "active": false
-            },
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setAcmTrackMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetAcmLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setAcmTrackMode"
+              }
+            ]
           }
         },
         "acmLockToStandby": {
@@ -1029,23 +1137,16 @@
           "command": "selectTarget",
           "stateTo": "standby",
           "actions": {
-            "resetLockMode": {},
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
-          }
-        },
-        "acmLockToHmdStandby": {
-          "stateFrom": "acmLock",
-          "command": "acmSwitch",
-          "stateTo": "hmdStandby",
-          "actions": {
-            "resetLockMode": {},
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetAcmLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
+              }
+            ]
           }
         },
         "acmTrackToAcmLock": {
@@ -1082,106 +1183,8 @@
             ]
           }
         },
-        "acmTrackToHmdStandby": {
+        "acmTrackToSearch": {
           "stateFrom": "acmTrack",
-          "command": "acmSwitch",
-          "stateTo": "hmdStandby",
-          "actions": {
-            "doCustomActionTemplate": [
-              {
-                "fsm": "main",
-                "name": "resetAcmTrackMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setHmdStandbyMode"
-              }
-            ]
-          }
-        },
-        "hmdStandbyToHmdLock": {
-          "stateFrom": "hmdStandby",
-          "command": "selectTarget",
-          "stateTo": "hmdLock",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdLockMode"
-            }
-          }
-        },
-        "hmdStandbyToSearch": {
-          "stateFrom": "hmdStandby",
-          "command": "acmSwitch",
-          "stateTo": "search",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "helmetDesignation",
-              "active": false
-            },
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
-          }
-        },
-        "hmdLockToHmdTrack": {
-          "stateFrom": "hmdLock",
-          "event": "targetDetected",
-          "stateTo": "hmdTrack",
-          "actions": {
-            "setFsmActive": [
-              {
-                "fsm": "lock",
-                "active": false
-              },
-              {
-                "fsm": "helmetDesignation",
-                "active": false
-              }
-            ],
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdTrackMode"
-            }
-          }
-        },
-        "failedHmdLock": {
-          "stateFrom": "hmdLock",
-          "event": "scanFinished",
-          "stateTo": "hmdStandby",
-          "actions": {
-            "resetLockMode": {},
-            "setFsmActive": {
-              "fsm": "helmetDesignation",
-              "active": false
-            },
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdStandbyMode"
-            }
-          }
-        },
-        "hmdTrackToHmdStandby": {
-          "stateFrom": "hmdTrack",
-          "event": "targetsOfInterestCleanup",
-          "command": "selectTarget",
-          "stateTo": "hmdStandby",
-          "actions": {
-            "doCustomActionTemplate": [
-              {
-                "fsm": "main",
-                "name": "resetAcmTrackMode"
-              },
-              {
-                "fsm": "main",
-                "name": "setHmdStandbyMode"
-              }
-            ]
-          }
-        },
-        "hmdTrackToSearch": {
-          "stateFrom": "hmdTrack",
           "command": "acmSwitch",
           "stateTo": "search",
           "actions": {
@@ -1197,544 +1200,385 @@
             ]
           }
         },
-        "updateStandbyMode": {
+        "standbyToAcmLock": {
           "stateFrom": "standby",
-          "event": "fsmActivate",
+          "command": "acmSwitch",
+          "stateTo": "acmLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setStandbyMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setAcmLockMode"
+              }
+            ]
           }
         },
-        "updateSearchMode": {
-          "stateFrom": "search",
-          "event": "fsmActivate",
+        "standbyToHmdStandby": {
+          "stateFrom": "standby",
+          "command": "selectTarget",
+          "stateTo": "hmdLock",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSearchMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
           }
         },
-        "updateAcmLockMode": {
+        "acmLockToHmdStandby": {
           "stateFrom": "acmLock",
-          "event": "fsmActivate",
+          "command": "acmSwitch",
+          "stateTo": "hmdStandby",
           "actions": {
-            "resetLockMode": {},
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setAcmLockMode"
-            }
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetAcmLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdStandbyMode"
+              }
+            ]
           }
         },
-        "updateHmdStandbyMode": {
+        "hmdStandbyToSearch": {
           "stateFrom": "hmdStandby",
-          "event": "fsmActivate",
+          "command": "acmSwitch",
+          "stateTo": "search",
           "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setHmdStandbyMode"
-            }
-          }
-        },
-        "updateDesignationTrackMode": {
-          "stateFrom": "designationTrack",
-          "event": "fsmActivate",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "changeDesignationTrackMode"
-            }
-          }
-        },
-        "updateAcmHmdTrackMode": [
-          {
-            "stateFrom": "acmTrack",
-            "event": "fsmActivate",
-            "actions": {
-              "doCustomActionTemplate": {
+            "doCustomActionTemplate": [
+              {
                 "fsm": "main",
-                "name": "changeAcmTrackMode"
-              }
-            }
-          },
-          {
-            "stateFrom": "hmdTrack",
-            "event": "fsmActivate",
-            "actions": {
-              "doCustomActionTemplate": {
+                "name": "resetHmdStandbyMode"
+              },
+              {
                 "fsm": "main",
-                "name": "changeHmdTrackMode"
+                "name": "setSearchMode"
               }
-            }
-          }
-        ],
-        "switchScanPattern": {
-          "stateFrom": [
-            "standby",
-            "search",
-            "acmLock"
-          ],
-          "command": "scanPatternSwitch",
-          "actions": {
-            "setNextScanPattern": {}
+            ]
           }
         },
-        "switchScopeRange": {
-          "command": "rangeSwitch",
+        "hmdStandbyToHmdLock": {
+          "stateFrom": "hmdStandby",
+          "command": "selectTarget",
+          "stateTo": "hmdLock",
           "actions": {
-            "setNextScopeRange": {}
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode"
+              }
+            ]
+          }
+        },
+        "hmdLockToHmdTrack": {
+          "stateFrom": "hmdLock",
+          "event": "targetDetected",
+          "stateTo": "hmdTrack",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdTrackMode"
+              }
+            ]
+          }
+        },
+        "hmdLockToHmdStandby": {
+          "stateFrom": "hmdLock",
+          "event": "scanFinished",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdStandbyMode"
+              }
+            ]
+          }
+        },
+        "hmdTrackToHmdStandby": {
+          "stateFrom": "hmdTrack",
+          "event": "targetsOfInterestCleanup",
+          "command": "selectTarget",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdStandbyMode"
+              }
+            ]
           }
         }
       }
     },
-    "sensorTypes": {
+    "searchModes": {
       "stateInit": "init",
-      "actionsTemplates": {
-        "setRadar": {
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setAcmLockMode",
-              "actionTemplateName": "setRadarAcmLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setHmdStandbyMode",
-              "actionTemplateName": "setRadarHmdStandbyMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setHmdLockMode",
-              "actionTemplateName": "setRadarHmdLockMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "radarSearchModes",
-            "name": "restoreRadarSearchMode"
-          }
-        }
-      },
       "transitions": {
-        "activate": {
+        "initToMprf": {
           "stateFrom": "init",
           "event": "fsmActivate",
-          "stateTo": "radar",
-          "actions": {
-            "setRadar": {}
-          }
-        }
-      }
-    },
-    "radarSearchModes": {
-      "stateInit": "init",
-      "actionsTemplates": {
-        "setMprfTargetDesignationRange": {
-          "setTargetDesignationRange": {
-            "azimuthRange": [
-              -85.0,
-              85.0
-            ],
-            "azmithWidth": 5.0,
-            "elevationRange": [
-              -45.0,
-              60.0
-            ],
-            "distanceRange": [
-              0.0,
-              80000.0
-            ],
-            "distanceWidth": 2000.0,
-            "distanceRelWidthMin": 0.05
-          }
-        },
-        "setHprfTargetDesignationRange": {
-          "setTargetDesignationRange": {
-            "azimuthRange": [
-              -85.0,
-              85.0
-            ],
-            "azmithWidth": 5.0,
-            "elevationRange": [
-              -45.0,
-              60.0
-            ],
-            "distanceRange": [
-              0.0,
-              80000.0
-            ],
-            "distanceWidth": 3000.0,
-            "distanceRelWidthMin": 0.05
-          }
-        },
-        "setRadarCommon": {
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "designateTarget",
-              "actionTemplateName": "designatedTargetSearch"
-            },
-            {
-              "fsm": "main",
-              "name": "setDesignationTrackMode",
-              "actionTemplateName": "setRadarDesignationTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setAcmTrackMode",
-              "actionTemplateName": "setRadarAcmTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setHmdTrackMode",
-              "actionTemplateName": "setRadarHmdTrackMode"
-            }
-          ]
-        },
-        "setMprfCommon": {
-          "setRadarCommon": {},
-          "setMprfTargetDesignationRange": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setStandbyMode",
-              "actionTemplateName": "setMprfStandbyMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setPrimaryTrackParams",
-              "actionTemplateName": "setMprfTrackParams"
-            },
-            {
-              "fsm": "main",
-              "name": "setSecondaryTrackParams",
-              "actionTemplateName": "setHprfTrackParams"
-            }
-          ]
-        },
-        "setHprfCommon": {
-          "setRadarCommon": {},
-          "setHprfTargetDesignationRange": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setStandbyMode",
-              "actionTemplateName": "setHprfStandbyMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setPrimaryTrackParams",
-              "actionTemplateName": "setHprfTrackParams"
-            },
-            {
-              "fsm": "main",
-              "name": "setSecondaryTrackParams",
-              "actionTemplateName": "setMprfTrackParams"
-            }
-          ]
-        },
-        "setMprfSearch": {
-          "setMprfCommon": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setMprfSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setDesignationLockMode",
-              "actionTemplateName": "setMprfDesignationLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetRadarSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetDesignationTrackMode",
-              "actionTemplateName": "resetRadarDesignationTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetAcmTrackMode",
-              "actionTemplateName": "resetRadarTrackMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
-          },
-          "setFsmActive": [
-            {
-              "fsm": "main",
-              "active": false
-            },
-            {
-              "fsm": "main",
-              "active": true
-            }
-          ]
-        },
-        "setMprfTws": {
-          "setMprfCommon": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setMprfTwsMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setDesignationLockMode",
-              "actionTemplateName": "setMprfTwsDesignationLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetRadarTwsMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetDesignationTrackMode",
-              "actionTemplateName": "resetRadarDesignationTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetAcmTrackMode",
-              "actionTemplateName": "resetRadarTrackMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
-          },
-          "setFsmActive": [
-            {
-              "fsm": "main",
-              "active": false
-            },
-            {
-              "fsm": "main",
-              "active": true
-            }
-          ]
-        },
-        "setHprfSearch": {
-          "setHprfCommon": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setHprfSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setDesignationLockMode",
-              "actionTemplateName": "setHprfDesignationLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetRadarSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetDesignationTrackMode",
-              "actionTemplateName": "resetRadarDesignationTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetAcmTrackMode",
-              "actionTemplateName": "resetRadarTrackMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
-          },
-          "setFsmActive": [
-            {
-              "fsm": "main",
-              "active": false
-            },
-            {
-              "fsm": "main",
-              "active": true
-            }
-          ]
-        },
-        "setHprfTws": {
-          "setHprfCommon": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setHprfTwsMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setDesignationLockMode",
-              "actionTemplateName": "setHprfTwsDesignationLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetRadarTwsMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetDesignationTrackMode",
-              "actionTemplateName": "resetRadarDesignationTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetAcmTrackMode",
-              "actionTemplateName": "resetRadarTrackMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
-          },
-          "setFsmActive": [
-            {
-              "fsm": "main",
-              "active": false
-            },
-            {
-              "fsm": "main",
-              "active": true
-            }
-          ]
-        }
-      },
-      "transitions": {
-        "init": {
-          "stateFrom": "init",
-          "event": "init",
           "stateTo": "mprf",
           "actions": {
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restoreRadarSearchMode",
-              "actionTemplateName": "setMprfSearch"
-            }
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setMprfStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetStandbyMode",
+                "actionTemplateName": "resetStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setMprfSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setMprfBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetBvrLockMode",
+                "actionTemplateName": "resetBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "setAcmLockMode",
+                "actionTemplateName": "setAcmLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetAcmLockMode",
+                "actionTemplateName": "resetAcmLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrTrackMode",
+                "actionTemplateName": "setTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetBvrTrackMode",
+                "actionTemplateName": "resetTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setAcmTrackMode",
+                "actionTemplateName": "setTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetAcmTrackMode",
+                "actionTemplateName": "resetTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdStandbyMode",
+                "actionTemplateName": "setHmdStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetHmdStandbyMode",
+                "actionTemplateName": "resetHmdStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdLockMode",
+                "actionTemplateName": "setHmdLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetHmdLockMode",
+                "actionTemplateName": "resetHmdLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setHmdTrackMode",
+                "actionTemplateName": "setHmdTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetHmdTrackMode",
+                "actionTemplateName": "resetHmdTrackMode"
+              }
+            ]
           }
         },
-        "mprfToMprfTws": {
+        "mprfToTws": {
           "stateFrom": "mprf",
           "command": "modeSwitch",
-          "stateTo": "mprfTws",
+          "stateTo": "tws",
           "actions": {
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restoreRadarSearchMode",
-              "actionTemplateName": "setMprfTws"
-            },
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setTwsStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setTwsBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetTws"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetTwsMode"
+              }
+            ],
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "resetSearchMode"
             },
-            "setMprfTws": {}
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
           }
         },
-        "mprfTwsToHprf": {
-          "stateFrom": "mprfTws",
+        "twsToHprf": {
+          "stateFrom": "tws",
           "command": "modeSwitch",
           "stateTo": "hprf",
           "actions": {
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restoreRadarSearchMode",
-              "actionTemplateName": "setHprfSearch"
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setHprfStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setHprfSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setHprfBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
             },
-            "setHprfSearch": {}
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
           }
         },
-        "hprfToHprfTws": {
+        "hprfToMprf": {
           "stateFrom": "hprf",
-          "command": "modeSwitch",
-          "stateTo": "hprfTws",
-          "actions": {
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restoreRadarSearchMode",
-              "actionTemplateName": "setHprfTws"
-            },
-            "setHprfTws": {}
-          }
-        },
-        "hprfTwsToMprf": {
-          "stateFrom": "hprfTws",
           "command": "modeSwitch",
           "stateTo": "mprf",
           "actions": {
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restoreRadarSearchMode",
-              "actionTemplateName": "setMprfSearch"
-            },
-            "setMprfSearch": {}
-          }
-        }
-      }
-    },
-    "radarTrackModes": {
-      "stateInit": "init",
-      "transitions": {
-        "activate": {
-          "event": "fsmActivate",
-          "stateTo": "primary",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setPrimaryTrackParams"
-            }
-          }
-        },
-        "updatePrimary": {
-          "stateFrom": "primary",
-          "event": "update",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setPrimaryTrackParams"
-            }
-          }
-        },
-        "updateSecondary": {
-          "stateFrom": "secondary",
-          "event": "update",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSecondaryTrackParams"
-            }
-          }
-        },
-        "primaryToSecondary": {
-          "stateFrom": "primary",
-          "command": "modeSwitch",
-          "stateTo": "secondary",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setSecondaryTrackParams"
-            }
-          }
-        },
-        "secondaryToPrimary": {
-          "stateFrom": "secondary",
-          "command": "modeSwitch",
-          "stateTo": "primary",
-          "actions": {
-            "doCustomActionTemplate": {
-              "fsm": "main",
-              "name": "setPrimaryTrackParams"
-            }
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setMprfStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setMprfSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setMprfBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
           }
         }
       }
@@ -1829,7 +1673,7 @@
             "scan": {},
             "extrapolateTargetsOfInterest": {},
             "clearTargetsOfInterest": {
-              "timeOut": 12.0
+              "timeOut": 8.0
             },
             "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
@@ -1876,7 +1720,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 12,
+              "limit": 10,
               "radius": 1000.0,
               "dopplerSpeedGateMaxTime": 8.0
             },
@@ -1930,7 +1774,7 @@
         }
       }
     },
-    "lock": {
+    "bvrLock": {
       "stateInit": "lock",
       "transitions": {
         "scan": {
@@ -1945,6 +1789,236 @@
             "detectTarget": {
               "ignoreOwnWeapon": true,
               "rangeMult": 1.0
+            }
+          }
+        }
+      }
+    },
+    "acmLock": {
+      "stateInit": "lock",
+      "transitions": {
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": {}
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        }
+      }
+    },
+    "track": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "setMprfTrack": {
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfTrack"
+          }
+        },
+        "setHprfTrack": {
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfTrack"
+          }
+        },
+        "track": {
+          "updateActiveTargetOfInterest": {
+            "dirFilter": {},
+            "distFilter": {},
+            "dopplerSpeedFilter": {}
+          },
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          }
+        },
+        "extrapolate": {
+          "extrapolateTargetsOfInterest": {},
+          "clearTargetsOfInterest": {
+            "timeOut": 3.0,
+            "dirRateLim": 1.0
+          },
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          }
+        }
+      },
+      "transitions": {
+        "start": {
+          "event": "fsmActivate",
+          "stateTo": "mprf",
+          "actions": {
+            "setMprfTrack": {},
+            "setModeName": {
+              "name": "PD track"
+            }
+          }
+        },
+        "tryDetectMprf": {
+          "stateFrom": "mprfTry",
+          "event": "update",
+          "actions": {
+            "setMprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "hprfOkTryDetectMprf": {
+          "stateFrom": "hprfOkMprfTry",
+          "event": "update",
+          "actions": {
+            "setMprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setHprfTrack": {}
+          }
+        },
+        "tryDetectHprf": {
+          "stateFrom": "hprfTry",
+          "event": "update",
+          "actions": {
+            "setHprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setMprfTrack": {}
+          }
+        },
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "trackMprf": {
+          "stateFrom": "mprf",
+          "event": "targetDetected",
+          "actions": {
+            "track": {}
+          }
+        },
+        "startTrackMprf": {
+          "stateFrom": [
+            "mprfTry",
+            "hprfOkMprfTry"
+          ],
+          "event": "targetDetected",
+          "stateTo": "mprf",
+          "actions": {
+            "setMprfTrack": {},
+            "track": {},
+            "setModeName": {
+              "name": "PD track"
+            }
+          }
+        },
+        "trackHprf": [
+          {
+            "stateFrom": "hprf",
+            "event": "targetDetected",
+            "stateTo": "hprfOkMprfTry",
+            "actions": {
+              "track": {}
+            }
+          },
+          {
+            "stateFrom": "hprf",
+            "event": "targetDetected",
+            "stateTo": "mprfTry",
+            "actions": {
+              "track": {},
+              "setMprfTrack": {}
+            }
+          }
+        ],
+        "startTrackHprf": {
+          "stateFrom": "hprfTry",
+          "event": "targetDetected",
+          "stateTo": "hprf",
+          "actions": {
+            "setHprfTrack": {},
+            "track": {},
+            "setModeName": {
+              "name": "PD HDN track"
+            }
+          }
+        },
+        "mprfToHprf": {
+          "stateFrom": [
+            "mprf",
+            "mprfTry"
+          ],
+          "event": "targetNotDetected",
+          "stateTo": "hprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "backToHprf": {
+          "stateFrom": "hprfOkMprfTry",
+          "event": "targetNotDetected",
+          "stateTo": "hprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "hprfToMprf": {
+          "stateFrom": "hprf",
+          "event": "targetNotDetected",
+          "stateTo": "mprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "hprfTryToMprf": {
+          "stateFrom": "hprfTry",
+          "event": "targetNotDetected",
+          "stateTo": "mprfTry",
+          "actions": {
+            "extrapolate": {},
+            "setModeName": {
+              "name": "track memory"
             }
           }
         }
@@ -1980,63 +2054,42 @@
         }
       }
     },
-    "track": {
-      "stateInit": "track",
+    "illumination": {
+      "stateInit": "init",
       "transitions": {
-        "detect": {
+        "activate": {
+          "event": "fsmActivate",
+          "stateTo": "active",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true,
+              "pauseMax": 20.0
+            }
+          }
+        },
+        "deactivate": {
+          "event": "fsmDeactivate",
+          "stateTo": "inactive",
+          "actions": {
+            "setIllumination": {
+              "transiver": false
+            }
+          }
+        },
+        "activateIllumination": {
+          "event": "sarhMissileLaunch",
+          "actions": {
+            "setIlluminationTimeOut": {
+              "timeOut": 60.0
+            }
+          }
+        },
+        "updateIllumination": {
           "event": "update",
           "actions": {
-            "detectTarget": {
-              "ignoreOwnWeapon": true,
-              "rangeMult": 1.0
-            }
-          }
-        },
-        "track": {
-          "event": "targetDetected",
-          "actions": {
-            "updateActiveTargetOfInterest": {
-              "dirFilter": {},
-              "distFilter": {},
-              "dopplerSpeedFilter": {}
-            },
-            "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            },
-            "setCenterElevation": {
-              "source": "activeTargetOfInterest"
-            },
-            "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            }
-          }
-        },
-        "extrapolate": {
-          "event": "targetNotDetected",
-          "actions": {
-            "extrapolateTargetsOfInterest": {},
-            "clearTargetsOfInterest": {
-              "timeOut": 3.0,
-              "dirRateLim": 1.0
-            },
-            "setCenterAzimuth": {
-              "source": "activeTargetOfInterest"
-            },
-            "setCenterElevation": {
-              "source": "activeTargetOfInterest"
-            },
-            "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
+            "checkIlluminationTimeOut": {
+              "transiver": true,
+              "pauseMax": 20.0
             }
           }
         }

@@ -16,6 +16,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2276,10 +2277,87 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "spitfireIX_default",
-      "blk": "gameData/FlightModels/weaponPresets/empty.blk"
-    }
+    "preset": [
+      {
+        "name": "spitfireIX_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      },
+      {
+        "name": "iaf_16x8cm_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_iaf_16x8cm_rockets.blk",
+        "reqModification": "8_cm_flz_rakete",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/weapons/rocketGuns/sws_oerlikon_oe82.blk",
+            "amountPerTier": 4.0,
+            "iconType": "rockets_ap_small_group",
+            "tier": [
+              {
+                "idx": 4
+              },
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              },
+              {
+                "idx": 8
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "iaf_2x250lbs_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_iaf_2x250lbs_bombs.blk",
+        "reqModification": "fsbc_mk5"
+      },
+      {
+        "name": "iaf_2x250lbs_16x8cm_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_iaf_2x250lbs_8cm_rockets.blk",
+        "reqModification": [
+          "fsbc_mk5",
+          "8_cm_flz_rakete"
+        ],
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/weapons/rocketGuns/sws_oerlikon_oe82.blk",
+              "amountPerTier": 4.0,
+              "iconType": "rockets_ap_small_group",
+              "tier": [
+                {
+                  "idx": 3
+                },
+                {
+                  "idx": 4
+                },
+                {
+                  "idx": 8
+                },
+                {
+                  "idx": 9
+                }
+              ]
+            },
+            {
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "amountPerTier": 1.0,
+              "iconType": "bombs_middle",
+              "tier": [
+                {
+                  "idx": 5
+                },
+                {
+                  "idx": 7
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
   },
   "default_skin_tomoe": {
     "replace_tex": {
@@ -2587,6 +2665,15 @@
     "hispano_mk_2_1943_new_gun": {
       "reqModification": "hispano_mk_2_narrow_chamber_new_gun",
       "tier": 4
+    },
+    "fsbc_mk5": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "8_cm_flz_rakete": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fsbc_mk5"
     }
   },
   "cutting": {

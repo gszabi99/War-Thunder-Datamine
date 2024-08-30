@@ -13,7 +13,7 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
-  sceneTplName         = "%gui/popup/popupFilterButton.tpl"
+  sceneTplName         = "%gui/popup/popupFilterWidget.tpl"
 
   //init params
   filterTypesFn        = null
@@ -29,11 +29,13 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
   function getSceneTplView() {
     this.btnTitle = this.btnTitle ?? loc("tournaments/filters")
     let k = showConsoleButtons.value ? 2 : 1
-    this.btnWidth = to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
-      + getStringWidthPx($"{this.btnTitle} {loc("ui/parentheses", {text = " +99"})}", "nav_button_font")
+    this.btnWidth = this.btnWidth
+      ?? (to_pixels($"{k}@buttonIconHeight+{k}@buttonTextPadding+{k*2}@blockInterval")
+        + getStringWidthPx($"{this.btnTitle} {loc("ui/parentheses", {text = " +99"})}", "nav_button_font"))
 
     return {
-      btnName = this.btnName ?? "Y"
+      btnName = this.btnName == "" ? null
+        : this.btnName ?? "Y"
       btnWidth = this.btnWidth
       visualStyle = this.visualStyle
       on_click = "onShowFilterBtnClick"
@@ -52,11 +54,14 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onShowFilterBtnClick(_obj) {
+    if (!this.isValid())
+      return
+
     if((this.popupFilterWnd?.isValid() ?? false) == false)
       this.popupFilterWnd = handlersManager.loadHandler(PopupFilterWindow, {
         filterTypes = this.filterTypesFn()
         onChangeFn = this.onChangeFn
-        scene = this.scene
+        scene = this.scene.findObject("filter_window_nest")
         btnTitle = this.btnTitle
         btnName = this.btnName ?? "Y"
         btnWidth = this.btnWidth

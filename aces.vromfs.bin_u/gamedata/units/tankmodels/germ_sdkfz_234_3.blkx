@@ -2155,6 +2155,9 @@
       "turret_04_back_dm": {
         "armorThickness": 5.0
       },
+      "turret_04_top_dm": {
+        "armorThickness": 14.5
+      },
       "gun_mask_01_dm": {
         "armorThickness": 14.5
       },
@@ -2162,6 +2165,15 @@
         "armorThickness": 14.5
       },
       "gun_mask_03_dm": {
+        "armorThickness": 14.5
+      },
+      "gun_mask_05_dm": {
+        "armorThickness": 14.5
+      },
+      "gun_mask_06_dm": {
+        "armorThickness": 14.5
+      },
+      "gun_mask_07_dm": {
         "armorThickness": 14.5
       },
       "ex_armor_body_01_dm": {
@@ -2418,8 +2430,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -3350,7 +3363,10 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "commander",
+        "driver"
+      ]
     }
   },
   "commonWeapons": {

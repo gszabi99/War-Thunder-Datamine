@@ -173,7 +173,7 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
     extinguish_mult = extinguish_in_progress ? extinguish_mult : 0.0f
     unwatering_mult = unwatering_in_progress ? unwatering_mult : 0.0f
 
-    let penalties = get_dm_params().shipboardDamageControlWeight
+    let penalties = get_wt_dm_params().shipboardDamageControlWeight
     let repair_inv_penalty = safeinv(penalties.x)
     let extinguish_inv_penalty = safeinv(penalties.y)
     let unwatering_inv_penalty = safeinv(penalties.z)

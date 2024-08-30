@@ -1,8 +1,15 @@
+options no_unused_block_arguments = false
+
 module daBfg shared
 
 require daBfgCore public
 require DagorDriver3D public
 require DagorShaders public
+
+require ast
+require daslib/ast_boost
+require daslib/macro_boost
+require daslib/templates_boost
 
 
 struct NameSpaceRequest
@@ -24,34 +31,28 @@ struct VirtualResourceRequestBase
   resUid : ResUid
   nodeId : NodeNameId
 
-
-struct VirtualResourceHandle
-  registry : InternalRegistry?
-  resUid : ResUid
-
 struct VirtualResourceCreationSemiRequest : VirtualResourceRequestBase {}
 struct VirtualResourceSemiRequest : VirtualResourceRequestBase {}
 struct VirtualResourceRequest : VirtualResourceRequestBase {}
-
-struct VirtualTextureHandle : VirtualResourceHandle {}
-struct VirtualBufferHandle : VirtualResourceHandle {}
-
 struct VirtualTextureRequest : VirtualResourceRequest {}
 struct VirtualBufferRequest : VirtualResourceRequest {}
+
+struct VirtualResourceHandleBase
+  provider : ResourceProvider const?
+  resUid : ResUid
+
+struct VirtualTextureHandle : VirtualResourceHandleBase {}
+struct VirtualBufferHandle : VirtualResourceHandleBase {}
+
 
 
 struct StateRequest
   registry : InternalRegistry?
   nodeId : NodeNameId
 
-variant VrsRateTexture
-  some : VirtualResourceSemiRequest
-  none : void?
-
-struct VrsRequirements
+struct VrsSettings
   rateX : uint
   rateY : uint
-  rateTexture : VrsRateTexture
   vertexCombiner : VariableRateShadingCombiner
   pixelCombiner : VariableRateShadingCombiner
 
@@ -71,21 +72,23 @@ struct VirtualAttachmentRequest
   layer : uint
 
 
-struct AutoResolutionRequest
+struct AutoResolutionRequestBase
   autoResTypeId : AutoResTypeNameId
   multiplier : float = 1.0f
-  registry : InternalRegistry?
+  provider : ResourceProvider const?
 
+struct AutoResolutionRequest2 : AutoResolutionRequestBase {}
+struct AutoResolutionRequest3 : AutoResolutionRequestBase {}
 
-variant TextureResolution
+variant TextureResolution2
   res : tuple<x : uint; y : uint>
-  autoRes : AutoResolutionRequest
+  autoRes : AutoResolutionRequest2
 
 
 struct Texture2dCreateInfo
-  resolution : TextureResolution
+  resolution : TextureResolution2
   creationFlags : uint
-  mipLevels : uint
+  mipLevels : uint = 1u
 
 
 struct BufferCreateInfo
@@ -211,12 +214,17 @@ def operator /(var self : NameSpaceRequest; child_name : string) : NameSpaceRequ
     registry = self.registry]]
 
 
-def getResolution(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest
-  return [[AutoResolutionRequest
+def getResolution`2(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest2
+  return [[AutoResolutionRequest2()
     autoResTypeId=self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
     multiplier=multiplier,
-    registry=self.registry]]
+    provider=self.registry |> getProvider()]]
 
+def getResolution`3(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest3
+  return [[AutoResolutionRequest3()
+    autoResTypeId=self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
+    multiplier=multiplier,
+    provider=self.registry |> getProvider()]]
 
 def read(var self : NameSpaceRequest; name : string) : VirtualResourceSemiRequest
   let nameId = self.registry.knownNames |> addNameId`ResNameId(self.nameSpaceId, name)
@@ -239,7 +247,7 @@ def read(var self : NameSpaceRequest; slot : NamedSlot) : VirtualResourceSemiReq
   return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=false]]]]
 
 
-def history(var self : NameSpaceRequest; var name : string) : VirtualResourceSemiRequest
+def historyFor(var self : NameSpaceRequest; var name : string) : VirtualResourceSemiRequest
   let nameId = self.registry.knownNames |> addNameId`ResNameId(self.nameSpaceId, name)
   using() <| $(var req : ResourceRequest#)
     req.usage = [[ResourceUsage access=Access READ_ONLY]]
@@ -296,7 +304,7 @@ def texture(var self : VirtualResourceCreationSemiRequest; info : Texture2dCreat
       else
         desc.width = info.resolution as res.x
         desc.height = info.resolution as res.y
-      res |> setTextureInfo(desc)
+      res |> setDescription(desc)
 
     res.resType = ResourceType Texture
 
@@ -326,15 +334,163 @@ def buffer(var self : VirtualResourceSemiRequest) : VirtualBufferRequest
   return <- [[VirtualBufferRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
 
 
-def blob(var self : VirtualResourceSemiRequest) : VirtualResourceRequest
-  assert(false, "Blobs are not implemented in daScript API")
-  self.registry.resources |> get(self.resUid.nameId) <| $(var res : ResourceData&)
-    res.resType = ResourceType Blob
+[macro_function]
+def isDasNative(var t : TypeDeclPtr) : bool
+  if t.isHandle
+    return false
 
-  return <- [[VirtualResourceRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
+  if length(t.dim) > 0
+    return true
+
+  // These are interop types by default, see typeInterop.cpp
+  return (
+    t.baseType != Type tBool &&
+    t.baseType != Type tInt8 &&
+    t.baseType != Type tUInt8 &&
+    t.baseType != Type tInt16 &&
+    t.baseType != Type tUInt16 &&
+    t.baseType != Type tInt &&
+    t.baseType != Type tUInt &&
+    t.baseType != Type tInt64 &&
+    t.baseType != Type tUInt64 &&
+    t.baseType != Type tFloat &&
+    t.baseType != Type tDouble
+  )
 
 
-def modifyRequest(var self : VirtualResourceRequest; modifier : block<(var request : daBfgCore::ResourceRequest) : void>)
+[macro_function]
+def useDasCtorDtor(var t : TypeDeclPtr) : bool
+  // For Pods, we can use memset to 0 on the C++ side
+  return !t.isPod && isDasNative(t)
+
+[macro_function]
+def private tryAddBlobSpecializations(var blobType : TypeDeclPtr) : void
+  let mangledBlobTypeName = get_mangled_name(blobType)
+  let blobTypeHash = hash(mangledBlobTypeName)
+
+  // We add 2 new types per blob type: blob request and blob handle
+  let vrrBase = typeinfo(ast_typedecl type<VirtualResourceRequest>).structType
+  var inscope blobRequestStruct <- clone_structure(vrrBase)
+  blobRequestStruct.name := "VirtualBlobRequest`{blobTypeHash}"
+  blobRequestStruct.parent := vrrBase
+  blobRequestStruct.flags |= StructureFlags generated
+
+  let vrhBase = typeinfo(ast_typedecl type<VirtualResourceHandleBase>).structType
+  var inscope blobHandleStruct <- clone_structure(vrhBase)
+  blobHandleStruct.name := "VirtualBlobHandle`{blobTypeHash}"
+  blobHandleStruct.parent := vrhBase
+  blobHandleStruct.flags |= StructureFlags generated
+
+  var inscope blobHandleFn <- qmacro_function("handle") <| \
+    $(self : $t(blobRequestStruct)) : $t(blobHandleStruct) {
+      return <- [[$t(blobHandleStruct) provider=self.registry |> getProvider(), resUid=self.resUid]];
+    }
+  compiling_module() |> add_function(blobHandleFn)
+
+  if !blobType.isRef
+    var inscope blobGetFn <- qmacro_function("get") <| \
+      $(self : $t(blobHandleStruct); cb : block<(var value : $t(blobType)&) : void>) : void {
+        let blobView = self.provider |> getBlobView(self.resUid.nameId, self.resUid.history);
+        invoke(cb) <| deref(unsafe(reinterpret<$t(blobType)?> blobView |> getData($v(mangledBlobTypeName))));
+      }
+    compiling_module() |> add_function(blobGetFn)
+  else
+    var inscope blobGetFn <- qmacro_function("get") <| \
+      $(self : $t(blobHandleStruct); cb : block<(var value : $t(blobType)) : void>) : void {
+        let blobView = self.provider |> getBlobView(self.resUid.nameId, self.resUid.history);
+        invoke(cb) <| deref(unsafe(reinterpret<$t(blobType)?> blobView |> getData($v(mangledBlobTypeName))));
+      }
+    compiling_module() |> add_function(blobGetFn)
+
+  if useDasCtorDtor(blobType)
+    var inscope exprReinterpret <- qmacro(unsafe(reinterpret<$t(blobType)?> self))
+    // NOTE: some project use the "please error out if some optimizations
+    // were not possible due to aliasing restrictions" mode, so we need to
+    // explicitly say that no aliasing is happening here, hence the `assumeNoAlias`
+    var inscope exprDeref <- new [[ExprPtr2Ref() subexpr <- exprReinterpret, assumeNoAlias=true]]
+    var inscope blobCtorFn <- qmacro_function("ctor`{blobTypeHash}") <| \
+      $(var self : void?) : void {
+        $e(exprDeref) <- [[$t(blobType)()]];
+      }
+    compiling_module() |> add_function(blobCtorFn)
+
+    var inscope blobDtorFn <- qmacro_function("dtor`{blobTypeHash}") <| \
+      $(var self : void?) : void {
+        delete deref(unsafe(reinterpret<$t(blobType)?> self));
+      }
+    compiling_module() |> add_function(blobDtorFn)
+
+  compiling_module() |> add_structure(blobRequestStruct)
+  compiling_module() |> add_structure(blobHandleStruct)
+
+// when we do registry |> create("kek") |> blob(type<int>), we need to
+// generate a bunch of stuff and inject it into the script to be used by
+// the following functions like handle, get, etc.
+[call_macro(name="blob")]
+class BlobMacro : AstCallMacro
+  [unused_argument(mod)] def override visit(prog : ProgramPtr; mod : Module ?; var expr : smart_ptr<ExprCallMacro>) : ExpressionPtr
+    macro_verify(expr.arguments |> length == 2, prog, expr.at,
+      "Function-like macro `blob` accepts two arguments: request and \
+       blob type, e.g. registry |> read(\"sea_level\") |> blob(type<float>)")
+
+    assume request = expr.arguments[0]
+    var inscope creationReqTd <- typeinfo(ast_typedecl type<VirtualResourceCreationSemiRequest>)
+    let isCreationReq = is_same_type(request._type, creationReqTd, RefMatters no, ConstMatters no, TemporaryMatters no)
+    var inscope regularReqTd <- typeinfo(ast_typedecl type<VirtualResourceSemiRequest>)
+    let isRegularReq = is_same_type(request._type, regularReqTd, RefMatters no, ConstMatters no, TemporaryMatters no)
+
+    macro_verify(isCreationReq || isRegularReq, prog, expr.at,
+                 "First argument of function-like macro `blob` must be a resource request, \
+                  e.g. registry |> read(\"sea_level\") or registry |> create(\"sea_level\", History No)")
+
+    var inscope blobType := expr.arguments[1]._type
+
+    macro_verify(blobType != null, prog, expr.at,
+                 "Unknown blob type! Perhaps you forgot to require the module that contains it? Got `{describe(expr.arguments[1])}`")
+    macro_verify(!blobType.isVoid, prog, expr.at,
+                 "Blob type must not be void! Got '{describe(blobType)}'")
+    macro_verify(!blobType.isConst, prog, expr.at,
+                 "Blob type must not be a constant! Got {describe(blobType)}")
+
+    tryAddBlobSpecializations(blobType)
+
+    let mangledBlobTypeName = get_mangled_name(blobType)
+    let blobTypeHash = hash(mangledBlobTypeName)
+
+    var requestStruct = compiling_program() |> find_unique_structure("VirtualBlobRequest`{blobTypeHash}")
+
+    macro_verify(requestStruct != null, prog, expr.at, "Failed to retreive the request structure back from the module!")
+
+    if isCreationReq
+      return <- qmacro_expr <| ${
+          $(var self : VirtualResourceCreationSemiRequest) {
+            $(var res : ResourceData&) {
+              static_if $v(useDasCtorDtor(blobType)) {
+                res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
+                  getTypeInfo(type<$t(blobType)>), @@$c("ctor`{blobTypeHash}"), @@$c("dtor`{blobTypeHash}"));
+              } else {
+                let nullFunc = [[function<(var arg0 : void?) : void> ]];
+                res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
+                  getTypeInfo(type<$t(blobType)>), nullFunc, nullFunc);
+              }
+
+              res.resType = ResourceType Blob;
+            } |> invoke(self.registry.resources |> get(self.resUid.nameId));
+            return <- [[$t(requestStruct) registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]];
+          } |> invoke($e(request));
+        }
+    else
+      return <- qmacro_expr <| ${
+          $(var self : VirtualResourceSemiRequest) {
+            self |> modifyRequest() <| $(var request : ResourceRequest&) {
+              request |> markWithTag($v(mangledBlobTypeName));
+            };
+            return <- [[$t(requestStruct) registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]];
+          } |> invoke($e(request));
+        }
+
+
+def modifyRequest(var self; modifier : block<(var request : daBfgCore::ResourceRequest) : void>)
   invoke(modifier, self.resUid.history ?
     self.registry.nodes[self.nodeId].historyResourceReadRequests[self.resUid.nameId] :
     self.registry.nodes[self.nodeId].resourceRequests[self.resUid.nameId])
@@ -383,24 +539,28 @@ def bindToShaderVar(var self : auto(TT); name : string = "") : TT
 
 
 def handle(self : VirtualTextureRequest) : VirtualTextureHandle
-  return <- [[VirtualTextureHandle registry=self.registry, resUid=self.resUid]]
+  return <- [[VirtualTextureHandle provider=self.registry |> getProvider(), resUid=self.resUid]]
 
 
 def handle(self : VirtualBufferRequest) : VirtualBufferHandle
-  return <- [[VirtualBufferHandle registry=self.registry, resUid=self.resUid]]
+  return <- [[VirtualBufferHandle provider=self.registry |> getProvider(), resUid=self.resUid]]
 
 
-def view(handle : VirtualTextureHandle) : ManagedTexView
-  return handle.registry |> getResourceProvider |> getTexView(handle.resUid.nameId, handle.resUid.history)
+def view(self : VirtualTextureHandle) : ManagedTexView
+  return self.provider |> getTexView(self.resUid.nameId, self.resUid.history)
 
 
-def view(handle : VirtualBufferHandle) : ManagedBufView
-  return handle.registry |> getResourceProvider |> getBufView(handle.resUid.nameId, handle.resUid.history)
+def view(self : VirtualBufferHandle) : ManagedBufView
+  return self.provider |> getBufView(self.resUid.nameId, self.resUid.history)
 
 
-def get(resolution : AutoResolutionRequest) : int2
-  return resolution.registry |> getResourceProvider |> getResolution(resolution.autoResTypeId)
+def get(self : AutoResolutionRequest2) : int2
+  let baseRes = self.provider |> getResolution`2(self.autoResTypeId)
+  return int2(float2(baseRes) * self.multiplier)
 
+def get(self : AutoResolutionRequest3) : int3
+  let baseRes = self.provider |> getResolution`3(self.autoResTypeId)
+  return int3(float3(baseRes) * self.multiplier)
 
 def requestState(var self : Registry) : StateRequest
   if self.registry.nodes[self.nodeId].stateRequirements is some
@@ -439,24 +599,12 @@ def allowWireFrame(var self : StateRequest) : StateRequest
   return self
 
 
-def allowVrs(var self : StateRequest; vrs : VrsRequirements) : StateRequest
-  if vrs.rateTexture is none
-    // TODO: reset rate texture?
-    return self
-
-  let rateTexId = (vrs.rateTexture as some).resUid.nameId
-  self.registry.nodes[self.nodeId].readResources |> insert(rateTexId)
-  using() <| $(var req : ResourceRequest#)
-    req.usage = [[ResourceUsage access=Access READ_ONLY, usageType=Usage VRS_RATE_TEXTURE, stage=Stage ALL_GRAPHICS]]
-    self.registry.nodes[self.nodeId].resourceRequests[rateTexId] := req
-
+def vrs(var self : StateRequest; vrs : VrsSettings) : StateRequest
   assume stateReqs = self.registry.nodes[self.nodeId].stateRequirements as some
-  stateReqs.vrsState |> emplace_some
-  assume vrsState = stateReqs.vrsState as some
+  assume vrsState = stateReqs.vrsState
 
   vrsState.rateX = vrs.rateX
   vrsState.rateY = vrs.rateY
-  vrsState.rateTextureResId = rateTexId
   vrsState.vertexCombiner = vrs.vertexCombiner
   vrsState.pixelCombiner = vrs.pixelCombiner
 
@@ -568,3 +716,29 @@ def depthRw(var self : VirtualPassRequest; attachment : auto) : VirtualPassReque
 
 def depthRo(var self : VirtualPassRequest; attachment : auto) : VirtualPassRequest
   return self |> depth(attachment, Access READ_ONLY, true);
+
+def vrsRate(var self : VirtualPassRequest; name : string[]) : VirtualPassRequest
+  let attachment <- [[VirtualAttachmentRequest resource=[[VirtualAttachmentResource name=name]]]]
+  return self |> color(attachments)
+
+def vrsRate(var self : VirtualPassRequest; attachment : VirtualAttachmentRequest) : VirtualPassRequest
+  assume reqs = self.registry.nodes[self.nodeId].renderingRequirements as some
+
+  if reqs.vrsRateAttachment.nameId != ResNameId Invalid
+    let selfName = self.registry.knownNames |> getName(self.nodeId)
+    error("Encountered duplicate VRS rate attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
+
+  let uid = self |> processAttachment(attachment, Access READ_ONLY)
+  verify(!uid.history)
+  self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
+    ResourceUsage access=Access READ_ONLY,
+    stage=Stage POST_RASTER,
+    usageType=Usage VRS_RATE_TEXTURE]]
+  reqs.vrsRateAttachment = [[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]]
+
+  if attachment.mipLevel != 0u || attachment.layer != 0u
+    let selfName = self.registry.knownNames |> getName(self.nodeId)
+    error("Warning: attempted to specify a mip level or a layer for a VRS rate texture in node {selfName}. \
+          This is currently supported by NONE of our drivers and will be ignored.")
+
+  return self

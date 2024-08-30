@@ -18,6 +18,7 @@ let changelog = require("changelog/changelog.ui.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
 let { fullScreenBlurPanel } = require("%rGui/components/blurPanel.nut")
+let tankSightPreview = require("%rGui/tankSightPreview.nut")
 
 let widgetsMap = {
   [DargWidgets.HUD] = function() {
@@ -84,7 +85,9 @@ let widgetsMap = {
         : fullScreenBlurPanel
       mkScoreboard()
     ]
-  }
+  },
+
+  [DargWidgets.TANK_SIGHT_SETTINGS] = @() tankSightPreview
 }
 
 // A stub to enable hover functionality

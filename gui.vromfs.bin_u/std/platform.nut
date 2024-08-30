@@ -27,7 +27,9 @@ let isPS5 = platformId == "ps5"
 let isSony = is_sony
 
 let isPC = is_pc
-let is_steam_deck = is_running_on_steam_deck()
+let is_steam_deck = DBGLEVEL > 0
+  ? dgs_get_settings().getBool("is_running_on_steam_deck", is_running_on_steam_deck())
+  : is_running_on_steam_deck()
 
 let aliases = {
   pc = is_pc

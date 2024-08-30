@@ -4,7 +4,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let { lerp } = require("%sqstd/math.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isDataBlock } = require("%sqstd/datablock.nut")
+let { isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
 let { Point2 } = require("dagor.math")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 
@@ -252,6 +252,38 @@ function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
   return res
 }
 
+local xrayFilterCached = null
+function getXrayFilter() {
+  if (xrayFilterCached)
+    return xrayFilterCached
+
+  xrayFilterCached = []
+  let blk = getDmgModelBlk()
+  let xrayFilterBlk = blk?.xrayFilter
+  if ((xrayFilterBlk?.blockCount() ?? 0) == 0)
+    return xrayFilterCached
+
+  eachBlock(xrayFilterBlk, function(block, name, idx) {
+    let { isTank = null, isShip = null } = block
+    let isForAllUnitTypes = isTank == null && isShip == null
+    let units = block % "unit"
+    xrayFilterCached.append({
+      name
+      bit = 1 << idx
+      isTank = isTank || isForAllUnitTypes
+      isShip = isShip || isForAllUnitTypes
+      units
+    })
+  })
+  return xrayFilterCached
+}
+
+let getTankXrayFilter = @(unitName) getXrayFilter()
+  .filter(@(f) f.isTank && (f.units.len() == 0 || f.units.contains(unitName)))
+
+let getShipXrayFilter = @(unitName) getXrayFilter()
+  .filter(@(f) f.isShip && (f.units.len() == 0 || f.units.contains(unitName)))
+
 addListenersWithoutEnv({
   SignOut = @(_p) resetData()
 }, g_listener_priority.CONFIG_VALIDATION)
@@ -262,4 +294,6 @@ return {
   getTntEquivalentDmg
   getTntEquivalentText
   getDestructionInfoTexts
+  getTankXrayFilter
+  getShipXrayFilter
 }

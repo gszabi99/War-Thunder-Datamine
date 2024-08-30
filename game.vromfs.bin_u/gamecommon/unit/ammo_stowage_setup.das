@@ -24,9 +24,9 @@ require %game.unit.ammo_stowage_common
 def setup_ammo_cluster_subtract(cluster_id : int; var num_ammo : int&; ammo_type : int;
                                 v : tuple<
                                   ammo_clusters__slotsRange : IPoint2List;
-                                  ammo_slots__numAmmo : IPoint2List- const;
-                                  ammo_slots__ammoMaskAndType : UInt32List- const
-                                >) : int
+                                  ammo_slots__numAmmo : IPoint2List -const;
+                                  ammo_slots__ammoMaskAndType : UInt32List -const
+                                  >) : int
   // subtract excess ammo from slots
   var subtracted_ammo = 0
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
@@ -45,11 +45,11 @@ def setup_ammo_cluster_add(cluster_id : int; var num_ammo : int&; ammo_type : in
                            v : tuple<
                              ammo_clusters__state : UInt32List;
                              ammo_clusters__slotsRange : IPoint2List;
-                             ammo_slots__state : UInt32List- const;
-                             ammo_slots__numAmmo : IPoint2List- const;
-                             ammo_slots__ammoMaskAndType : UInt32List- const;
+                             ammo_slots__state : UInt32List -const;
+                             ammo_slots__numAmmo : IPoint2List -const;
+                             ammo_slots__ammoMaskAndType : UInt32List -const;
                              ammo_stowage__ammoTypeToMask : UInt32List
-                           >) : int
+                             >) : int
   if num_ammo == 0
     return 0
   // add remaining ammo to slots
@@ -67,7 +67,7 @@ def ammo_stowage_debug_print_all_clusters(v : tuple<
                                             ammo_clusters__slotsRange : IPoint2List;
                                             ammo_slots__numAmmo : IPoint2List;
                                             ammo_slots__ammoMaskAndType : UInt32List
-                                          >) : void
+                                            >) : void
   for cluster_id in iter_range(v.ammo_clusters__state)
     print("printing ammo in cluster {cluster_id}")
     var ammo_count : array<int>
@@ -87,22 +87,22 @@ def ammo_stowage_debug_print_all_clusters(v : tuple<
 def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : bool;
                               v : tuple<
                                 ammo_stowage__ammoState : uint;
-                                ammo_stowage__ammoLost : int-const;
+                                ammo_stowage__ammoLost : int -const;
                                 ammo_stowage__ammoTypeToMask : UInt32List;
 
-                                ammo_stowages__state : UInt32List- const;
+                                ammo_stowages__state : UInt32List -const;
                                 ammo_stowages__clustersRange : IPoint2List;
                                 ammo_stowages__weaponTriggersRange : IPoint2List;
                                 ammo_stowage__weaponTriggers : IntList;
 
                                 ammo_clusters__typeAndStage : UInt16List;
-                                ammo_clusters__state : UInt32List- const;
+                                ammo_clusters__state : UInt32List -const;
                                 ammo_clusters__slotsRange : IPoint2List;
-                                ammo_slots__state : UInt32List- const;
+                                ammo_slots__state : UInt32List -const;
                                 ammo_slots__partId : PartIdList;
-                                ammo_slots__numAmmo : IPoint2List- const;
-                                ammo_slots__ammoMaskAndType : UInt32List- const
-                              >) : bool
+                                ammo_slots__numAmmo : IPoint2List -const;
+                                ammo_slots__ammoMaskAndType : UInt32List -const
+                                >) : bool
   // this can be an ammo stowage flag instead
   let can_load_to_breech = !is_in_hangar()
 
@@ -253,21 +253,21 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
 def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; active : bool; eid : EntityId; uid : int;
                                   v : tuple<
                                     ammo_stowage__ammoState : uint;
-                                    ammo_stowage__ammoLost : int-const;
+                                    ammo_stowage__ammoLost : int -const;
                                     ammo_stowage__ammoTypeToMask : UInt32List;
-                                    ammo_stowages__state : UInt32List- const;
+                                    ammo_stowages__state : UInt32List -const;
                                     ammo_stowages__replenishmentStartEnd : Point2List;
                                     ammo_stowages__clustersRange : IPoint2List;
                                     ammo_stowages__weaponTriggersRange : IPoint2List;
                                     ammo_stowage__weaponTriggers : IntList;
                                     ammo_clusters__typeAndStage : UInt16List;
-                                    ammo_clusters__state : UInt32List- const;
+                                    ammo_clusters__state : UInt32List -const;
                                     ammo_clusters__slotsRange : IPoint2List;
-                                    ammo_slots__state : UInt32List- const;
+                                    ammo_slots__state : UInt32List -const;
                                     ammo_slots__partId : PartIdList;
-                                    ammo_slots__numAmmo : IPoint2List- const;
-                                    ammo_slots__ammoMaskAndType : UInt32List- const
-                                  >)
+                                    ammo_slots__numAmmo : IPoint2List -const;
+                                    ammo_slots__ammoMaskAndType : UInt32List -const
+                                    >)
   if !active
     return
   var unit = get_unit(uid)
@@ -283,21 +283,21 @@ def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; active : bool; ei
 def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; active : bool; eid : EntityId; uid : int;
                                            v : tuple<
                                              ammo_stowage__ammoState : uint;
-                                             ammo_stowage__ammoLost : int-const;
+                                             ammo_stowage__ammoLost : int -const;
                                              ammo_stowage__ammoTypeToMask : UInt32List;
-                                             ammo_stowages__state : UInt32List- const;
+                                             ammo_stowages__state : UInt32List -const;
                                              ammo_stowages__replenishmentStartEnd : Point2List;
                                              ammo_stowages__clustersRange : IPoint2List;
                                              ammo_stowages__weaponTriggersRange : IPoint2List;
                                              ammo_stowage__weaponTriggers : IntList;
                                              ammo_clusters__typeAndStage : UInt16List;
-                                             ammo_clusters__state : UInt32List- const;
+                                             ammo_clusters__state : UInt32List -const;
                                              ammo_clusters__slotsRange : IPoint2List;
-                                             ammo_slots__state : UInt32List- const;
+                                             ammo_slots__state : UInt32List -const;
                                              ammo_slots__partId : PartIdList;
-                                             ammo_slots__numAmmo : IPoint2List- const;
-                                             ammo_slots__ammoMaskAndType : UInt32List- const
-                                           >)
+                                             ammo_slots__numAmmo : IPoint2List -const;
+                                             ammo_slots__ammoMaskAndType : UInt32List -const
+                                             >)
   if !active
     return
   var unit = get_unit(uid)
@@ -312,7 +312,7 @@ def ammo_stowage_force_reload_gun_es(evt : EventAmmoStowageForceReloadGun; uid :
                                      v : tuple<
                                        ammo_stowages__weaponTriggersRange : IPoint2List;
                                        ammo_stowage__weaponTriggers : IntList
-                                     >)
+                                       >)
   var unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return
@@ -340,7 +340,7 @@ def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
                                ammo_slots__numAmmo : IPoint2List;
                                ammo_slots__ammoMaskAndType : UInt32List;
                                ammo_stowage__ammoTypeToMask : UInt32List const
-                             >) : void
+                               >) : void
   assume bs = *evt.bs
   let current_time = float(get_app().usefulTotalTime)
   var stowage_cnt = 0

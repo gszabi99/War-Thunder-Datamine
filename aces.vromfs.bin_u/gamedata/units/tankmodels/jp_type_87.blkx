@@ -102,7 +102,8 @@
     "engine": {
       "horsePowers": 870.0,
       "maxRPM": 2200.0,
-      "minRPM": 800.0
+      "minRPM": 800.0,
+      "model": "mitsubishi_10zf_22wt"
     },
     "mechanics": {
       "steerType": "clutch_braking",
@@ -1137,8 +1138,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -3028,15 +3030,18 @@
               "dmPart": [
                 "antenna_target_tagging_dm",
                 "electronic_equipment_dm"
-              ]
+              ],
+              "powerButtonIdx": -1
             },
             {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-              "dmPart": "electronic_equipment_dm"
+              "dmPart": "electronic_equipment_dm",
+              "powerButtonIdx": -1
             },
             {
               "blk": "gameData/sensors/it_ralm-101.blk",
-              "dmPart": "electronic_equipment_dm"
+              "dmPart": "electronic_equipment_dm",
+              "powerButtonIdx": -1
             }
           ]
         }
@@ -3474,7 +3479,8 @@
         "dmPart": [
           "antenna_target_tagging_dm",
           "electronic_equipment_dm"
-        ]
+        ],
+        "powerButtonIdx": -1
       }
     ]
   },

@@ -2,14 +2,13 @@ from "%scripts/dagui_natives.nut" import get_option_xray_kill
 from "%scripts/dagui_library.nut" import *
 from "hitCamera" import *
 from "app" import is_dev_version
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_mission_time } = require("mission")
 let { g_hud_enemy_debuffs } = require("%scripts/hud/hudEnemyDebuffsType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { eventbus_subscribe, eventbus_send } = require("eventbus")
+let { setTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
 let { get_game_params_blk } = require("blkGetters")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -394,6 +393,10 @@ let healthColorConfig = [
 
 
 
+function sendHudHitCameraState() {
+  eventbus_send("setHudHitCameraState", getHitCameraAABB())
+}
+
 function update() {
   if (!(scene?.isValid() ?? false))
     return
@@ -404,6 +407,8 @@ function update() {
 
   updateFadeAnimation()
   updateTitle()
+
+  deferOnce(sendHudHitCameraState)
 }
 
 function hitCameraReinit() {

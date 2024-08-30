@@ -37,7 +37,6 @@
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "shipsDisableDeadCoverParts": false,
-  "rearmTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "isStackRearm": true,
   "hideNodesInDmg": {
@@ -2395,8 +2394,6 @@
         "trigger": "gunner3",
         "triggerGroup": "rockets",
         "blk": "gameData/Weapons/navalModels_weapons/rocket_rim_24_a_naval_rocket_launcher.blk",
-        "weaponType": "rockets",
-        "flash": "bone_rocket_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
         "emitterGenRange": [
@@ -2405,16 +2402,36 @@
         ],
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
-        "bullets": 2,
+        "reloadAnimVar": "ashville_class_douglas_action",
         "barrelDP": "auxiliary_caliber_turret_01_dm",
         "breechDP": "auxiliary_caliber_turret_02_dm",
         "brokenBarrelAllowShoot": false,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "autoLoader": true,
         "speedYaw": 0.0,
         "speedPitch": 0.0,
         "fireConeAngle": 1.0,
-        "allowableDelta": 30.0,
+        "allowableDelta": [
+          30.0,
+          2.0
+        ],
+        "bullets": 4,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
         "turret": {
           "head": "bone_gun_01",
           "gun": "bone_gun_01",
@@ -2461,12 +2478,13 @@
       "prevModification": "76mm_usa_mk34_navy_AP_ammo_pack"
     },
     "12mm_usa_M2HB_universal": {},
-    "12mm_usa_M2HB_AP_navy_ammo_pack": {},
     "12mm_usa_M2HB_AP_navy": {},
+    "12mm_usa_M2HB_AP_navy_ammo_pack": {},
+    "12mm_usa_M2HB_APIT_navy": {},
     "12mm_usa_M2HB_APIT_navy_ammo_pack": {
       "prevModification": "12mm_usa_M2HB_AP_navy_ammo_pack"
     },
-    "12mm_usa_M2HB_APIT_navy": {},
+    "343mm_usa_rim24a_rocket_naval": {},
     "new_aa_caliber_turrets": {},
     "new_main_caliber_turrets": {
       "prevModification": "new_aa_caliber_turrets"
@@ -3414,7 +3432,7 @@
           "explosionEvent": "ammo_explosion_1",
           "fireEvent": "ammo_fire_1",
           "dstrElevatorDisablesShooting": false,
-          "ammo_turret_01_dm": {
+          "ammo_turret_03_dm": {
             "count": 200
           }
         },
@@ -3450,27 +3468,22 @@
     },
     "ammo3": {
       "weaponTrigger": "gunner3",
-      "entityMunition": "aux",
       "removeLoadedAmmo": false,
       "fatalFire": false,
       "fatalExplosion": false,
       "fireEvent": "torpedo_fire",
       "explosionEvent": "torpedo_explosion",
       "fireParamsPreset": "ship_torpedo_fire",
-      "shells": [
-        {
-          "damageEffect": "ammunition_rockets",
-          "ammo_turret_02_dm": {
-            "count": 1
-          }
+      "shells": {
+        "autoLoad": true,
+        "damageEffect": "ammunition_depth_charges",
+        "ammo_turret_01_dm": {
+          "count": 1
         },
-        {
-          "damageEffect": "ammunition_rockets",
-          "ammo_turret_03_dm": {
-            "count": 1
-          }
+        "ammo_turret_02_dm": {
+          "count": 1
         }
-      ]
+      }
     }
   },
   "winch": {

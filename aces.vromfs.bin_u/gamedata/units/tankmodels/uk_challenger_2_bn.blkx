@@ -22,6 +22,7 @@
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
+  "turretsBoundingBoxExtent": 0.18,
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -698,8 +699,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2146,7 +2148,7 @@
         "turret": {
           "head": "bone_mg_aa_h_01",
           "gun": "bone_mg_aa_v_01",
-          "gunnerDm": "commander_dm"
+          "gunnerDm": "loader_dm"
         },
         "limits": {
           "yaw": [
@@ -3357,7 +3359,7 @@
               "turret": {
                 "head": "bone_mg_aa_h_01",
                 "gun": "bone_mg_aa_v_01",
-                "gunnerDm": "commander_dm"
+                "gunnerDm": "loader_dm"
               },
               "limits": {
                 "yaw": [

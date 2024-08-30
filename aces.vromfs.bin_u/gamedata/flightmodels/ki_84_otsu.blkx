@@ -17,6 +17,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1878,6 +1879,11 @@
         "reqModification": "ki84_9in_mod23"
       },
       {
+        "name": "ki_84_100kg_2bomb",
+        "blk": "gameData/FlightModels/weaponPresets/ki_84_100kg_2bomb.blk",
+        "reqModification": "ki_10in_mod24"
+      },
+      {
         "name": "ki_84_250kg_2bomb",
         "blk": "gameData/FlightModels/weaponPresets/ki_84_250kg_2bomb.blk",
         "reqModification": "ki84_12in_mod27"
@@ -2404,14 +2410,17 @@
     },
     "ki84_9in_mod23": {
       "modClass": "weapon",
-      "tier": 1,
-      "reqModLevel": 5.0
+      "tier": 1
+    },
+    "ki_10in_mod24": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "ki84_9in_mod23"
     },
     "ki84_12in_mod27": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModLevel": 11.0,
-      "reqModification": "ki84_9in_mod23"
+      "reqModification": "ki_10in_mod24"
     }
   },
   "default_skin_tomoe": {

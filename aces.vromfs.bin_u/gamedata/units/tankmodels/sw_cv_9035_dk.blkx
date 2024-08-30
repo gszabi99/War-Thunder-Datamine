@@ -629,8 +629,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2065,6 +2066,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "useEmitter": true,
         "shellCasingEmitter": "emtr_shell",
         "shellCasingMesh": "auto_cannon_cartridge_case",
         "hatchAnimVar": "hatch_toggle",
@@ -2077,6 +2079,7 @@
         ],
         "shellCasingExtractSound": "shell_eject_hatch",
         "linkShellCasingToGun": true,
+        "recoilOffset": 0.15,
         "stabilizerDmPart": [
           "fire_control_system_dm",
           "power_system_dm"
@@ -3049,6 +3052,28 @@
     ],
     "detectionHeight": 2.71
   },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "fireEvent": "ammo_fire",
+        "explosionEvent": "ammo_explosion",
+        "wreckedPartId": 0,
+        "ammo_body_dm": {
+          "count": 140
+        },
+        "ammo_turret_01_dm": {
+          "count": 35
+        },
+        "ammo_turret_dm": {
+          "count": 35
+        }
+      }
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -3150,6 +3175,7 @@
               "blk": "gameData/Weapons/groundModels_weapons/35mm_bushmaster_3_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
+              "useEmitter": true,
               "shellCasingEmitter": "emtr_shell",
               "shellCasingMesh": "auto_cannon_cartridge_case",
               "hatchAnimVar": "hatch_toggle",
@@ -3162,6 +3188,7 @@
               ],
               "shellCasingExtractSound": "shell_eject_hatch",
               "linkShellCasingToGun": true,
+              "recoilOffset": 0.15,
               "stabilizerDmPart": [
                 "fire_control_system_dm",
                 "power_system_dm"

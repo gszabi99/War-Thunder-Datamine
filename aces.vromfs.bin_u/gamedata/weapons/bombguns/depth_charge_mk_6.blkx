@@ -23,7 +23,7 @@
     ],
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "mass": 190.0,
+    "mass": 196.0,
     "explosiveType": "tnt",
     "explosiveMass": 136.0,
     "bombType": "he_bomb",
@@ -36,6 +36,8 @@
     "explosionFx": "bomb_expl_200kg",
     "explosionPatchRadius": 8.0,
     "waterExplosionEffect": "water_explosion_big",
+    "underwaterExplosionEffect": "underwater_explosion",
+    "underwaterTrailFx": "underwater_trp_propeller_water_splashes",
     "fxGroundDust": "dust_ground_explosions_wave_dirt_small",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_small",
     "fxSandDust": "dust_ground_explosions_wave_sand_small",
@@ -86,18 +88,7 @@
       1000.0
     ],
     "explodeTreshold": 0.00001,
-    "explodeHitPower": 400.0,
-    "explodeArmorPower": 100.0,
-    "explodeRadius": [
-      6.0,
-      16.0
-    ],
     "rendinstDamageRadius": 18.0,
-    "shutterDamage": true,
-    "shutterDamageRadius": 80.0,
-    "shutterAmount": 3000,
-    "shutterArmorPower": 12.0,
-    "shutterHit": 15.0,
     "isDepthCharge": true,
     "stabilityRicochetModifier": {
       "mod1": [
@@ -294,6 +285,12 @@
             "fHitCritical": true
           }
         ]
+      }
+    },
+    "damage": {
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0
       }
     }
   }

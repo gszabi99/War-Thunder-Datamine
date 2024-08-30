@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change, hangar_show_hidden_xray_parts_change
+from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change
 from "%scripts/dagui_library.nut" import *
 
 let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
@@ -14,7 +14,7 @@ let { format } = require("string")
 let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
 let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode,
-  hangar_get_dm_viewer_parts_count } = require("hangar")
+  hangar_get_dm_viewer_parts_count, set_xray_parts_filter } = require("hangar")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -30,7 +30,7 @@ let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-let { utf8ToUpper, startsWith, utf8ToLower } = require("%sqstd/string.nut")
+let { utf8ToUpper, startsWith, utf8ToLower, cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
@@ -42,7 +42,12 @@ let { isStatsLoaded, isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { get_option, set_option } = require("%scripts/options/optionsExt.nut")
+let { USEROPT_XRAY_FILTER_TANK, USEROPT_XRAY_FILTER_SHIP
+} = require("%scripts/options/optionsExtNames.nut")
+let { openPopupFilter, RESET_ID } = require("%scripts/popups/popupFilterWidget.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 
 /*
   dmViewer API:
@@ -54,6 +59,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 */
 
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
+
+const XRAY_FILTER_OBJ_PREFIX = "xray_filter_"
 
 local compareWeaponFunc = @(w1, w2) u.isEqual(w1?.trigger ?? "", w2?.trigger ?? "")
   && u.isEqual(w1?.blk ?? "", w2?.blk ?? "")
@@ -226,6 +233,49 @@ function getRadarSensorType(sensorPropsBlk) {
     : "radar"
 }
 
+function getXrayFilterOption() {
+  let unitName = hangar_get_current_unit_name()
+  let unit = getAircraftByName(unitName)
+  if (unit == null)
+    return null
+
+  if (unit.isTank())
+    return get_option(USEROPT_XRAY_FILTER_TANK, { unitName })
+
+  if (unit.isShipOrBoat())
+    return get_option(USEROPT_XRAY_FILTER_SHIP, { unitName })
+
+  return null
+}
+
+function getXrayFilterList() {
+  let xrayFilterOption = getXrayFilterOption()
+  if (xrayFilterOption == null)
+    return []
+  let res = []
+  let value = xrayFilterOption.value
+  foreach (idx, item in xrayFilterOption.items)
+    res.append({
+      id = $"{XRAY_FILTER_OBJ_PREFIX}{idx}"
+      text = item
+      value = (xrayFilterOption.values[idx] & value) != 0
+    })
+  return [{ checkbox = res }]
+}
+
+function applyXrayFilter(objId, _tName, value) {
+  let xrayFilterOption = getXrayFilterOption()
+  let optionId = xrayFilterOption.type
+  if (objId == RESET_ID) {
+    set_option(optionId, 0, xrayFilterOption)
+    return
+  }
+  let idx = cutPrefix(objId, XRAY_FILTER_OBJ_PREFIX).tointeger()
+  let optionValue = value ? (xrayFilterOption.value | xrayFilterOption.values[idx])
+    : (xrayFilterOption.value & ~xrayFilterOption.values[idx])
+  set_option(optionId, optionValue, xrayFilterOption)
+}
+
 local dmViewer
 dmViewer = {
   active = false
@@ -248,7 +298,6 @@ dmViewer = {
   }
 
   isVisibleExternalPartsArmor = true
-  isVisibleExternalPartsXray  = true
 
   prevHintParams = {}
 
@@ -356,7 +405,7 @@ dmViewer = {
     this.unit = getAircraftByName(unitId)
     if (! this.unit)
       return
-    this.maxValuesParams = ::g_skill_parameters_request_type.MAX_VALUES.getParameters(-1, this.unit)
+    this.maxValuesParams = skillParametersRequestType.MAX_VALUES.getParameters(-1, this.unit)
     this.crew = getCrewByAir(this.unit)
     this.loadUnitBlk()
     let map = getTblValue("xray", this.unitBlk)
@@ -576,9 +625,9 @@ dmViewer = {
         obj.show(this.view_mode == DM_VIEWER_ARMOR && (this.unit?.unitType.canShowProtectionAnalysis() ?? false))
     }
 
+    let isTankOrShip = this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat())
     // Outer parts visibility toggle in Armor and Xray modes
     if (hasFeature("DmViewerExternalArmorHiding")) {
-      let isTankOrShip = this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat())
       obj = handler.scene.findObject("dmviewer_show_external_dm")
       if (checkObj(obj)) {
         let isShowOption = this.view_mode == DM_VIEWER_ARMOR && isTankOrShip
@@ -586,12 +635,29 @@ dmViewer = {
         if (isShowOption)
           obj.setValue(this.isVisibleExternalPartsArmor)
       }
-      obj = handler.scene.findObject("dmviewer_show_extra_xray")
-      if (checkObj(obj)) {
-        let isShowOption = this.view_mode == DM_VIEWER_XRAY && isTankOrShip
-        obj.show(isShowOption)
-        if (isShowOption)
-          obj.setValue(this.isVisibleExternalPartsXray)
+    }
+
+    obj = handler.scene.findObject("filter_nest")
+    if (obj?.isValid()) {
+      let xrayFilterOption = getXrayFilterOption()
+      let isShowOption = this.view_mode == DM_VIEWER_XRAY && isTankOrShip
+        && (xrayFilterOption?.values.len() ?? 0) > 0
+      obj.show(isShowOption)
+      if (isShowOption) {
+        if (obj.childrenCount() == 0) {
+          openPopupFilter({
+            scene = obj
+            btnTitle = loc("xray_part_filter")
+            btnName = ""
+            btnWidth = "1@airInfoPanelDmSwitcherWidth"
+            popupAlign = "top"
+            onChangeFn = applyXrayFilter
+            filterTypesFn = getXrayFilterList
+          })
+        }
+        else
+          broadcastEvent("UpdateFiltersCount") //update filter count after validate option value
+        set_xray_parts_filter(xrayFilterOption.value)
       }
     }
 
@@ -1419,7 +1485,7 @@ dmViewer = {
                     sources.insert(1, boosterMainBlk)
                   thrustTakeoff = this.getFirstFound(sources, @(b) b?.Thrust ?? b?.thrust, 0)
                 }
-                else if (engineType == "turboprop") {
+                else if (engineType == "turboprop" || engineType == "turboshaft") {
                   powerMax = horsePowerValue
                   thrustMax = thrustValue * thrustMult
                 }
@@ -2238,10 +2304,11 @@ dmViewer = {
       let isSecondaryName     = startsWith(weaponPartName, "auxiliary")
       let isPrimaryTrigger    = weaponInfoBlk?.triggerGroup == "primary"
       let isSecondaryTrigger  = weaponInfoBlk?.triggerGroup == "secondary"
+      let isMachinegun  = weaponInfoBlk?.triggerGroup == "machinegun"
       return {
-        isPrimary     = isPrimaryTrigger   || (isPrimaryName   && !isSecondaryTrigger)
-        isSecondary   = isSecondaryTrigger || (isSecondaryName && !isPrimaryTrigger)
-        isMachinegun  = weaponInfoBlk?.triggerGroup == "machinegun"
+        isPrimary     = isPrimaryTrigger   || (isPrimaryName   && !isSecondaryTrigger && !isMachinegun)
+        isSecondary   = isSecondaryTrigger || (isSecondaryName && !isPrimaryTrigger && !isMachinegun)
+        isMachinegun  = isMachinegun
       }
     }
 
@@ -2296,12 +2363,14 @@ dmViewer = {
           continue
 
         local speed = 0
+        local speedMul = 1
         if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
           let mainTurretSpeed = unitModificators?[a.modifName] ?? 0
           let value = weaponInfoBlk?[a.blkName] ?? 0
           let weapons = this.getUnitWeaponList()
           let mainTurretValue = weapons?[0]?[a.blkName] ?? 0
-          speed = mainTurretValue ? (mainTurretSpeed * value / mainTurretValue) : mainTurretSpeed
+          speedMul = value / mainTurretValue
+          speed = mainTurretValue ? (mainTurretSpeed * speedMul) : mainTurretSpeed
         }
         else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
           let modId   = status.isPrimary    ? "new_main_caliber_turrets"
@@ -2320,7 +2389,8 @@ dmViewer = {
         if (speed) {
           let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", round(speed))
           let res = { value = "".concat(loc("crewSkillParameter/" + a.modifName), loc("ui/colon"), speedTxt, loc("measureUnits/deg_per_sec")) }
-          let topValue = this.maxValuesParams?[this.difficulty.crewSkillName][a.crewMemberTopSkill.crewMember][a.crewMemberTopSkill.skill][a.modifName]
+          local topValue = this.maxValuesParams?[this.difficulty.crewSkillName][a.crewMemberTopSkill.crewMember][a.crewMemberTopSkill.skill][a.modifName]
+          topValue = topValue ? topValue * speedMul : topValue
           if (topValue != null && topValue > speed) {
             let topValueTxt = topValue < 10 ? format("%.1f", topValue) : format("%d", round(topValue))
             res.topValue <- "".concat(topValueTxt, loc("measureUnits/deg_per_sec"))
@@ -2371,7 +2441,7 @@ dmViewer = {
   }
 
   function getShipArtilleryReloadTimeBase(weaponName) {
-    let baseValuesParams = ::g_skill_parameters_request_type.BASE_VALUES.getParameters(-1, this.unit)
+    let baseValuesParams = skillParametersRequestType.BASE_VALUES.getParameters(-1, this.unit)
     foreach (c in [ "main_caliber_loading_time", "aux_caliber_loading_time", "antiair_caliber_loading_time" ]) {
       let reloadTimeBase = baseValuesParams?[this.difficulty.crewSkillName]["ship_artillery"][c][$"weapons/{weaponName}"]
       if (reloadTimeBase)
@@ -2420,9 +2490,11 @@ dmViewer = {
                 if (mainGunReloadTimeMax)
                   reloadTimeS = mainGunReloadTime * thisGunReloadTimeMax / mainGunReloadTimeMax
               }
+              topValue = round_by_value(thisGunReloadTimeMax, 0.1)
             }
           }
-          topValue = this.maxValuesParams?[this.difficulty.crewSkillName]["loader"]["loading_time_mult"]["tankLoderReloadingTime"]
+          if(topValue == 0)
+            topValue = this.maxValuesParams?[this.difficulty.crewSkillName]["loader"]["loading_time_mult"]["tankLoderReloadingTime"]
         }
       }
     }
@@ -2689,11 +2761,6 @@ dmViewer = {
     hangar_show_external_dm_parts_change(isShow)
   }
 
-  function showExternalPartsXray(isShow) {
-    this.isVisibleExternalPartsXray = isShow
-    hangar_show_hidden_xray_parts_change(isShow)
-  }
-
   function onEventActiveHandlersChanged(_p) {
     this.update()
   }
@@ -2731,7 +2798,7 @@ dmViewer = {
 }
 
 registerPersistentData("dmViewer", dmViewer, [ "active", "view_mode", "_currentViewMode", "isDebugMode",
-    "isVisibleExternalPartsArmor", "isVisibleExternalPartsXray" ])
+    "isVisibleExternalPartsArmor" ])
 subscribe_handler(dmViewer, g_listener_priority.DEFAULT_HANDLER)
 
 eventbus_subscribe("on_hangar_damage_part_pick", @(p) dmViewer.updateHint(p))

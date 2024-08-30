@@ -1,7 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil, sqrt } = require("math")
@@ -76,7 +76,7 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
   }
 
   if (needSecondaryWeaponsWnd(unit))
-    weaponryPresetsModal.open({ //open modal menu for air and helicopter only
+    weaponryPresetsWnd.open({ //open modal menu for air and helicopter only
         unit = unit
         chooseMenuList   = list
         initLastWeapon   = curWeaponName

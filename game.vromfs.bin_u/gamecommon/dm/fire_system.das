@@ -23,8 +23,8 @@ def fire_damage_init_es(evt : CmdInitComponent; var fire_damage__updateBurnInter
 def fire_damage_update_es(act : UpdateStageInfoAct;
                           eid : EntityId;
                           v : tuple<
-                            fire_system_require_net_sync : bool- const;
-                            fire_damage__nextUpdateTime : float-const;
+                            fire_system_require_net_sync : bool -const;
+                            fire_damage__nextUpdateTime : float -const;
                             fire_damage__updateBurnInterval : float;
                             fire_damage__isBurn : bool;
                             fire_data__packedPartId : UInt32List;
@@ -32,10 +32,10 @@ def fire_damage_update_es(act : UpdateStageInfoAct;
                             fire_data__fireParamsId : IntList;
                             fire_data__offset : Point3List;
                             fire_data__radius : Point2List;
-                            fire_data__initiatorId : UInt32List- const;
-                            fire_data__startTime : FloatList- const;
-                            fire_data__underwaterTimer : FloatList- const
-                          >)
+                            fire_data__initiatorId : UInt32List -const;
+                            fire_data__startTime : FloatList -const;
+                            fire_data__underwaterTimer : FloatList -const
+                            >)
   if !v.fire_damage__isBurn
     return
 
@@ -107,7 +107,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
                                            fire_data__startTime : FloatList;
                                            fire_data__extinguishProgress : FloatList;
                                            fire_data__underwaterTimer : FloatList
-                                         >)
+                                           >)
   if unit.visual == null
     return
   assume dm = *unit.visual
@@ -170,7 +170,7 @@ def fire_damage_start_burn_with_offender(evt : EventFireSystemStartBurnWithOffen
                                            fire_system_require_net_sync : bool;
                                            ammo_slots__state : UInt32List const;
                                            ammo_stowage__partIdRemap : IPoint4List const
-                                         >)
+                                           >)
   if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
     return
   let unit = get_unit(uid)
@@ -202,7 +202,7 @@ def fire_damage_start_burn_with_offender_in_pos(evt : EventFireSystemStartBurnWi
                                                   fire_system_require_net_sync : bool;
                                                   ammo_slots__state : UInt32List const;
                                                   ammo_stowage__partIdRemap : IPoint4List const
-                                                >)
+                                                  >)
   if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
     return
   let unit = get_unit(uid)
@@ -231,7 +231,7 @@ def fire_damage_stop_burn_es(evt : CmdStopBurn;
                                fire_data__underwaterTimer : FloatList;
                                fire_system_require_net_sync : bool;
                                fire_damage__isBurn : bool
-                             >)
+                               >)
   sendEvent(eid, [[EventOnStopBurn wasBurning=v.fire_damage__isBurn]])
   v.fire_data__packedPartId |> clear()
   v.fire_data__nodeId |> clear()
@@ -265,9 +265,9 @@ def fire_system_net_sync_update_es(act : UpdateStageInfoAct;
                                      fire_data__packedPartId : UInt32List;
                                      fire_data__fireParamsId : IntList;
                                      fire_data__startTime : FloatList;
-                                     fire_system_require_net_sync : bool- const;
+                                     fire_system_require_net_sync : bool -const;
                                      fire_damage__isBurn : bool
-                                   >)
+                                     >)
   if !v.fire_system_require_net_sync
     return
   v.fire_system_require_net_sync = false
@@ -299,8 +299,8 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
                                      fire_data__startTime : FloatList;
                                      fire_data__extinguishProgress : FloatList;
                                      fire_data__underwaterTimer : FloatList;
-                                     fire_damage__isBurn : bool- const
-                                   >)
+                                     fire_damage__isBurn : bool -const
+                                     >)
   let total_time = float(get_app().usefulTotalTime)
   let was_burning = v.fire_damage__isBurn;
   v.fire_damage__isBurn = evt.isBurning;

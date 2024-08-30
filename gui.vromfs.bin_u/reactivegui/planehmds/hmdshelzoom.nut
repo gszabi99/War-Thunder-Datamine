@@ -4,6 +4,7 @@ let { GuidanceLockResult } = require("guidanceConstants")
 let { IlsColor, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
 let { GuidanceLockState, HmdDesignation, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorDesignation } = require("%rGui/radarState.nut")
+let { isInVr } = require("%rGui/style/screenState.nut")
 
 let { baseLineWidth } = require("hmdConstants.nut")
 
@@ -14,7 +15,7 @@ function crosshair(width, _height) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
-    color = IlsColor.value
+    color = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
     lineWidth = baseLineWidth * IlsLineScale.value
     fillColor = Color(0, 0, 0, 0)
     commands =

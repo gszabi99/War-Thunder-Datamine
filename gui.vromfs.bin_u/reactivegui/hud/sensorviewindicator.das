@@ -159,7 +159,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var mach = ""
       var machBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_MACH) && distSq <= lod1DistSq
-        mach = "M: {format("%.2f", shell.mach)}"
+        mach = "M: {fmt(":.2f", shell.mach)}"
         machBox = get_str_bbox(mach, mach |> length(), fctx)
         width = max(width, machBox.width.x + padding * 2.)
         height += machBox.width.y + padding
@@ -183,7 +183,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var timeStr = ""
       var timeBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_LIFETIME) && distSq <= lod0DistSq
-        timeStr = "{loc("hud/lifeTime")}: {format("%.1f", shell.lifeTime)} {loc("measureUnits/seconds")}"
+        timeStr = "{loc("hud/lifeTime")}: {fmt(":.1f", shell.lifeTime)} {loc("measureUnits/seconds")}"
         timeBox = get_str_bbox(timeStr, timeStr |> length(), fctx)
         width = max(width, timeBox.width.x + padding * 2.)
         height += timeBox.width.y + padding
@@ -191,7 +191,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var overloadStr = ""
       var overloadBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_OVERLOAD) && distSq <= lod0DistSq
-        overloadStr = "{loc("hud/overload")}: {format("%.1f", shell.overload)} {loc("measureUnits/gForce")}"
+        overloadStr = "{loc("hud/overload")}: {fmt(":.1f", shell.overload)} {loc("measureUnits/gForce")}"
         overloadBox = get_str_bbox(overloadStr, overloadStr |> length(), fctx)
         width = max(width, overloadBox.width.x + padding * 2.)
         height += overloadBox.width.y + padding
@@ -199,7 +199,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var aoaStr = ""
       var aoaBox = BBox2()
       if get_sensor_view_filter(SensorViewFilterType SVF_RKT_AOA) && distSq <= lod0DistSq
-        aoaStr = "{loc("hud/aoa")}: {format("%.1f", shell.aoa)} {loc("measureUnits/deg")}"
+        aoaStr = "{loc("hud/aoa")}: {fmt(":.1f", shell.aoa)} {loc("measureUnits/deg")}"
         aoaBox = get_str_bbox(aoaStr, aoaStr |> length(), fctx)
         width = max(width, aoaBox.width.x + padding * 2.)
         height += aoaBox.width.y + padding

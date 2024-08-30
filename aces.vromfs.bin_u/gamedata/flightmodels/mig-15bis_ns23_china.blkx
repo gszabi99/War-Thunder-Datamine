@@ -17,6 +17,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -1881,45 +1882,6 @@
       ]
     }
   },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "mig_15bis_nr23_default",
-        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_nr23_default.blk"
-      },
-      {
-        "name": "mig_15bis_nr23_100lb_bombs",
-        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_nr23_100lb_bombs.blk",
-        "reqModification": "bd-2-48"
-      },
-      {
-        "name": "mig_15bis_16xs_5k_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_16xs_5k_rockets.blk",
-        "reqModification": "C5",
-        "weaponConfig": {
-          "presetType": "ARMORED",
-          "Weapon": {
-            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
-            "amountPerTier": 8.0,
-            "iconType": "nar_ap_small"
-          }
-        }
-      },
-      {
-        "name": "mig_15bis_16xs_5m_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_16xs_5m_rockets.blk",
-        "reqModification": "C5M",
-        "weaponConfig": {
-          "presetType": "AIR_TO_GROUND"
-        }
-      },
-      {
-        "name": "mig_15bis_2xs_21_rockets",
-        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_2xs_21_rockets.blk",
-        "reqModification": "C21"
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2352,6 +2314,45 @@
       -3.95242,
       -0.00126842,
       -0.000142932
+    ]
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "mig_15bis_nr23_default",
+        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_nr23_default.blk"
+      },
+      {
+        "name": "mig_15bis_nr23_china_100kg_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_nr23_china_100kg_bombs.blk",
+        "reqModification": "bd-2-48"
+      },
+      {
+        "name": "mig_15bis_16xs_5k_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_16xs_5k_rockets.blk",
+        "reqModification": "C5",
+        "weaponConfig": {
+          "presetType": "ARMORED",
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/su_s_5k_rocket.blk",
+            "amountPerTier": 8.0,
+            "iconType": "nar_ap_small"
+          }
+        }
+      },
+      {
+        "name": "mig_15bis_16xs_5m_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_16xs_5m_rockets.blk",
+        "reqModification": "C5M",
+        "weaponConfig": {
+          "presetType": "AIR_TO_GROUND"
+        }
+      },
+      {
+        "name": "mig_15bis_2xs_21_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/mig_15bis_2xs_21_rockets.blk",
+        "reqModification": "C21"
+      }
     ]
   },
   "default_skin": {

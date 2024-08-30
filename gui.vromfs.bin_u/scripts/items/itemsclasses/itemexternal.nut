@@ -34,7 +34,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { showBuyAndOpenChestWndWhenReceive, showBuyAndOpenChestWnd, getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWnd.nut")
+let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 
@@ -106,6 +106,8 @@ let ItemExternal = class (BaseItem) {
   allowToBuyAmount = -1
 
   isAllowWideSize = true
+
+  canMultipleConsume = false
 
   constructor(itemDefDesc, itemDesc = null, _slotData = null) {
     base.constructor(emptyBlk)
@@ -541,17 +543,20 @@ let ItemExternal = class (BaseItem) {
     if (!uid)
       return
 
+    let itemAmountByUid = this.amountByUids[uid] //to not remove item while in progress
+    let consumeAmount = this.shouldAutoConsume && this.canMultipleConsume
+      ? itemAmountByUid
+      : 1
     let blk = DataBlock()
     blk.setInt("itemId", uid.tointeger())
-
-    let itemAmountByUid = this.amountByUids[uid] //to not remove item while in progress
+    blk.setInt("quantity", consumeAmount)
     let taskCallback = function() {
       let item = ::ItemsManager.findItemByUid(uid)
       //items list refreshed, but ext inventory only requested.
       //so update item amount to avoid repeated request before real update
       if (item && item.amountByUids[uid] == itemAmountByUid) {
-        item.amountByUids[uid]--
-        item.amount--
+        item.amountByUids[uid] -= consumeAmount
+        item.amount -= consumeAmount
         if (item.amountByUids[uid] <= 0) {
           inventoryClient.removeItem(uid)
           if (item.uids?[0] == uid)
@@ -861,7 +866,7 @@ let ItemExternal = class (BaseItem) {
   isMultiPurchaseAvailable = @() this.allowToBuyAmount > 1
 
   onCheckLegalRestrictions = @(cb, handler, params)
-    getBuyAndOpenChestWndStyle(this) && !params?.isFromChestWnd ? showBuyAndOpenChestWnd(this)
+    hasBuyAndOpenChestWndStyle(this) && !params?.isFromChestWnd ? broadcastEvent("openChestWndOrTrophy", {chest = this})
       : (this.isMultiPurchaseAvailable() && params?.amount == null) ? this.showChooseAmountWnd(cb, handler, params)
       : this.showBuyConfirm(cb, handler, params)
 
@@ -910,7 +915,7 @@ let ItemExternal = class (BaseItem) {
     let onSuccess = function() {
       if (cb)
         cb({ success = true })
-      showBuyAndOpenChestWndWhenReceive(item)
+      broadcastEvent("showBuyAndOpenChestWndWhenReceive", item)
     }
     let onError = @(_errCode) cb ? cb({ success = false }) : null
 

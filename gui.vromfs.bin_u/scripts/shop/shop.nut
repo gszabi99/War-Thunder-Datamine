@@ -827,6 +827,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let topBonusLabel = topUnitBonusObj.findObject("top_units_bonus_label")
         let armyLoc = armyDataByPageName?[this.curPage] ? loc(armyDataByPageName[this.curPage].locString) : ""
         topBonusLabel.setValue(loc("shop/exp_top_units_bonus", {type = armyLoc}))
+
+        local tooltipText = ""
         if (isNationBonusPlateActive) {
           let updateTime = buildTimeStr(getUtcMidnight(), false, false)
           local countriesBonusText = ""
@@ -840,11 +842,14 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           }
           if (countriesBonusText == "")
             countriesBonusText = "0"
-          topBonusLabel.tooltip = loc("shop/top_units_bonus_on", {time = updateTime, countries = countriesBonusText})
+          tooltipText = loc("shop/top_units_bonus_on", {time = updateTime, countries = countriesBonusText})
         } else {
           let battlesCount = expNewNationBonusDailyBattleCount
-          topBonusLabel.tooltip = loc("shop/top_units_bonus_off", {battlesCount})
+          tooltipText = loc("shop/top_units_bonus_off", {battlesCount})
         }
+        let tooltipPlace = topBonusLabel.getParent()
+        if (tooltipPlace)
+          tooltipPlace.tooltip = tooltipText
       }
     }
 
@@ -1108,6 +1113,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         rank = unitInResearchStatus.rank
         isOver = isNationBonusOver
         unitTypeName = unitInResearchStatus.unitTypeName
+        isRecentlyReleased = unitInResearchStatus.isRecentlyReleased
       })
     }
   }

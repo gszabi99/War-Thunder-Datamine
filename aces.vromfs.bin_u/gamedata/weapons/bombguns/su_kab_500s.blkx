@@ -5,7 +5,7 @@
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
-  "mesh": "su_kab_500l",
+  "mesh": "su_kab_500se",
   "tags": {},
   "bomb": {
     "bulletName": "su_kab_500s",
@@ -21,8 +21,8 @@
       2.5
     ],
     "wingAreaMult": 1.6,
-    "finsAoaHor": 0.2,
-    "finsAoaVer": 0.2,
+    "finsAoaHor": 0.3,
+    "finsAoaVer": 0.3,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -43,7 +43,7 @@
     "explosiveType": "tgaf_5",
     "explosiveMass": 195.0,
     "guidanceType": "sns",
-    "timeLife": 150.0,
+    "timeLife": 40.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -127,25 +127,33 @@
       "constantDesignationSourceTypeMask": 1,
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 5.0,
-        "loftTargetElevation": -40.0,
-        "loftAngleToAccelMult": 0.001,
-        "loftTargetOmegaMax": 0.75,
+        "loftElevation": 4.0,
+        "loftTargetElevation": -12.0,
+        "loftAngleToAccelMult": 0.5,
+        "loftTargetOmegaMax": 0.45,
         "timeToGain0": [
-          150.0,
-          1.0
+          1.5,
+          0.0
         ],
         "timeToGain1": [
-          150.1,
+          1.51,
+          1.0
+        ],
+        "timeToGain2": [
+          40.0,
+          1.0
+        ],
+        "timeToGain3": [
+          40.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 4.0,
-        "accelControlProp": 0.0626,
-        "accelControlIntg": 0.1181,
+        "accelControlProp": 0.0211,
+        "accelControlIntg": 0.1495,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0004
+        "accelControlDiff": 0.0007
       }
     },
     "arcadeProp": {

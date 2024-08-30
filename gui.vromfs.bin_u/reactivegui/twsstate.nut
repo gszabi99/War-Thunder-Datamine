@@ -13,6 +13,7 @@ let warningSystemState = {
   CurrentTime = Watched(0.0),
 
   IsTwsActivated = Watched(false),
+  IsTwsDamaged = Watched(false),
   CollapsedIcon = Watched(false), //for designer switch from Icon (true) to collapsed Tws
   LastTargetAge = Watched(1.0),
 

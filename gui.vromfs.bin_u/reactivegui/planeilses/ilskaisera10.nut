@@ -1,24 +1,28 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/loc_helpers.nut" import loc_checked
 
 let string = require("string")
 let { IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
       IlsAtgmTargetPos, IlsAtgmLocked, AtgmTargetDist, TargetPosValid,
       TargetPos, RocketMode, CannonMode, BombCCIPMode, DistToTarget,
-      BombingMode } = require("%rGui/planeState/planeToolsState.nut")
+      BombingMode, AimLockPos, AimLockValid, IlsPosSize, AimLockDist,
+      AirCannonMode, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { compassWrap, generateCompassMarkShim } = require("ilsCompasses.nut")
-let { Tangage, BarAltitude, Altitude, Speed, Roll } = require("%rGui/planeState/planeFlyState.nut");
+let { Tangage, BarAltitude, Altitude, Speed, Roll, Overload } = require("%rGui/planeState/planeFlyState.nut");
 let { round, cos, sin, PI } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let { ShellCnt }  = require("%rGui/planeState/planeWeaponState.nut");
+let { ShellCnt, CurWeaponName }  = require("%rGui/planeState/planeWeaponState.nut");
+let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
+let { bulletsImpactLine } = require("commonElements.nut")
 
 let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let a10Speed = @() {
   watch = [SpeedValue, IlsColor]
   rendObj = ROBJ_TEXT
-  pos = [pw(10), ph(50)]
+  pos = [pw(14), ph(50)]
   size = flex()
   color = IlsColor.value
   fontSize = 40
@@ -184,12 +188,13 @@ let maverickAimMark = @() {
 }
 
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
-let ccipDistF = Computed(@() cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
+let ccipDistF = Computed(@() BombingMode.get() ? cvt(TimeBeforeBombRelease.get(), 0, 15, -90, 270).tointeger() :
+ cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
 let ccipDistM = Computed(@() (DistToTarget.value < 0 || DistToTarget.value >= 10000 ? -1 : DistToTarget.value * metrToMile * 10.0).tointeger())
 let gunAimMark = @() {
-  watch = [TargetPosValid, CCIPMode]
+  watch = [TargetPosValid, CCIPMode, AirCannonMode]
   size = flex()
-  children = TargetPosValid.value ?
+  children = TargetPosValid.value && !AirCannonMode.get() ?
     @() {
       watch = [IlsColor, ccipDistF]
       size = [pw(8), ph(8)]
@@ -223,7 +228,7 @@ let gunAimMark = @() {
       behavior = Behaviors.RtPropUpdate
       update = @() {
         transform = {
-          translate = [TargetPos.value[0], TargetPos.value[1]]
+          translate = BombingMode.get() ? [IlsPosSize[2] * 0.5, IlsPosSize[3] * 0.5] : [TargetPos.value[0], TargetPos.value[1]]
         }
       }
     }
@@ -236,7 +241,8 @@ let maverickAim = @() {
   children = IlsAtgmTrackerVisible.value && !CannonMode.value ? [maverickAimMark] : []
 }
 
-function impactLine(_width, height) {
+function impactLine(_width, height, c_version) {
+  let line = c_version ? [VECTOR_LINE_DASHED, 0, 0, 0, -100, 25, 30] : [VECTOR_LINE, 0, 0, 0, -100]
   return @() {
     watch = [TargetPosValid, BombCCIPMode, BombingMode, RocketMode, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -244,7 +250,7 @@ function impactLine(_width, height) {
     size = flex()
     color = IlsColor.value
     commands = [
-      (TargetPosValid.value && (BombCCIPMode.value || BombingMode.value || RocketMode.value) ? [VECTOR_LINE, 0, 0, 0, -100] : [])
+      (TargetPosValid.value && (BombCCIPMode.value || BombingMode.value || RocketMode.value) ? line : [])
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
@@ -304,27 +310,33 @@ let smallGunCrosshair = @() {
   }
 }
 
-let modeTxt = @() {
-  watch = [CannonMode, IlsColor, RocketMode, BombCCIPMode, BombingMode, GuidanceLockState]
-  rendObj = ROBJ_TEXT
-  pos = [pw(10), ph(80)]
-  size = flex()
-  color = IlsColor.value
-  fontSize = 30
-  font = Fonts.hud
-  text = GuidanceLockState.value <= GuidanceLockResult.RESULT_STANDBY ?
-   (BombingMode.value ? "CCRP" : (RocketMode.value || BombCCIPMode.value ? "CCIP" : (CannonMode.value ? "GUNS" : ""))) : "AIR-TO-AIR"
+function modeTxt(c_version) {
+  return @() {
+    watch = [CannonMode, IlsColor, RocketMode, BombCCIPMode, BombingMode, GuidanceLockState]
+    rendObj = ROBJ_TEXT
+    pos = c_version ? [pw(38), ph(40)] : [pw(10), ph(80)]
+    size = c_version ? [pw(24), flex()] : flex()
+    color = IlsColor.value
+    fontSize = c_version ? 40 : 30
+    font = Fonts.hud
+    halign = c_version ? ALIGN_CENTER : ALIGN_LEFT
+    text = GuidanceLockState.value <= GuidanceLockResult.RESULT_STANDBY ?
+    (BombingMode.value ? "CCRP" : (RocketMode.value || BombCCIPMode.value ? "CCIP" : (CannonMode.value ? "GUNS" : ""))) : "AIR-TO-AIR"
+  }
 }
 
-let shellCntText = @() {
-  watch = [CannonMode, ShellCnt, IlsColor]
-  rendObj = ROBJ_TEXT
-  pos = [pw(10), ph(77)]
-  size = flex()
-  color = IlsColor.value
-  fontSize = 30
-  font = Fonts.hud
-  text = CannonMode.value ? string.format("HEI/%d", ShellCnt.value) : ""
+function shellCntText(c_version) {
+  return @() {
+    watch = [CannonMode, ShellCnt, IlsColor, AirCannonMode]
+    rendObj = ROBJ_TEXT
+    pos = [0, c_version ? ph(65) : ph(77)]
+    size = c_version ? [pw(20), SIZE_TO_CONTENT] : SIZE_TO_CONTENT
+    color = IlsColor.value
+    fontSize = 30
+    font = Fonts.hud
+    text = CannonMode.get() || AirCannonMode.get() ? string.format(c_version ? (AirCannonMode.get() ? "MIG-29/%d" : "CM/%d") : "HEI/%d", ShellCnt.value) : ""
+    halign = ALIGN_RIGHT
+  }
 }
 
 let aamTargetMarker = @() {
@@ -345,7 +357,143 @@ let aamTargetMarker = @() {
   }
 }
 
-function KaiserA10(width, height) {
+let OverloadVal = Computed(@() (Overload.get() * 10.0).tointeger())
+let overload = @(){
+  watch = [OverloadVal, IlsColor]
+  rendObj = ROBJ_TEXT
+  size = SIZE_TO_CONTENT
+  pos = [pw(14), ph(20)]
+  color = IlsColor.get()
+  lineWidth = baseLineWidth * IlsLineScale.get()
+  font = Fonts.hud
+  fontSize = 35
+  text = string.format("%.1f", OverloadVal.get() * 0.1)
+}
+
+let localTime = @() {
+  watch = IlsColor
+  rendObj = ROBJ_TEXT
+  size = SIZE_TO_CONTENT
+  pos = [pw(80), ph(90)]
+  color = IlsColor.value
+  fontSize = 35
+  font = Fonts.hud
+  text = "11:22:33"
+  behavior = Behaviors.RtPropUpdate
+  function update() {
+    let time = unixtime_to_local_timetbl(get_local_unixtime())
+    return {
+      text = string.format("%02d:%02d:%02d", time.hour, time.min, time.sec)
+    }
+  }
+}
+
+let toiDistVisible = Watched(false)
+let aimLockDistVal = Computed(@() (AimLockDist.get() * metrToMile * 10.).tointeger())
+let toi = @(){
+  watch = [AimLockValid, IlsAtgmTrackerVisible]
+  size = flex()
+  children = AimLockValid.get() && !IlsAtgmTrackerVisible.get() ? @(){
+    watch = toiDistVisible
+    size = [pw(4), ph(4)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.get()
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.get()
+    commands = [
+      [VECTOR_RECTANGLE, -50, -50, 100, 100],
+      [VECTOR_LINE, 0, 0, 0, 0]
+    ]
+    children = toiDistVisible.get() ? @(){
+      watch = aimLockDistVal
+      rendObj = ROBJ_TEXT
+      pos = [pw(-100), ph(80)]
+      size = [pw(200), SIZE_TO_CONTENT]
+      color = IlsColor.get()
+      font = Fonts.hud
+      fontSize = 35
+      text = string.format("%.1f", aimLockDistVal.get() * 0.1)
+      halign = ALIGN_CENTER
+    } : null
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      local target = AimLockPos
+      let leftBorder = IlsPosSize[2] * 0.03
+      let rightBorder = IlsPosSize[2] * 0.97
+      let topBorder = IlsPosSize[3] * 0.04
+      let bottomBorder = IlsPosSize[3] * 0.93
+      if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
+        toiDistVisible.set(true)
+      else
+        toiDistVisible.set(false)
+      target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
+      return {
+        transform = {
+          translate = target
+        }
+      }
+    }
+  } : null
+}
+
+let stpt = @(){
+  watch = IlsColor
+  rendObj = ROBJ_TEXT
+  size = SIZE_TO_CONTENT
+  pos = [pw(12), ph(90)]
+  color = IlsColor.get()
+  font = Fonts.hud
+  fontSize = 35
+  text = "STPT"
+}
+
+let arm = @(){
+  watch = IlsColor
+  rendObj = ROBJ_TEXT
+  size = SIZE_TO_CONTENT
+  pos = [pw(14), ph(80)]
+  color = IlsColor.get()
+  font = Fonts.hud
+  fontSize = 35
+  text = "ARM"
+}
+
+let secondaryWeaponName = @(){
+  watch = [CannonMode, CurWeaponName, AirCannonMode]
+  size = flex()
+  children = !CannonMode.get() && !AirCannonMode.get() && CurWeaponName.get() ? @(){
+    watch = CurWeaponName
+    rendObj = ROBJ_TEXT
+    size = [pw(20), SIZE_TO_CONTENT]
+    pos = [pw(0), ph(65)]
+    color = IlsColor.get()
+    font = Fonts.hud
+    fontSize  = 35
+    text = loc_checked(string.format("%s/a_10c", CurWeaponName.value))
+    halign = ALIGN_RIGHT
+  } : null
+}
+
+let bulletsImpactLines = @(){
+  watch = AirCannonMode
+  size = flex()
+  children = AirCannonMode.get() ? bulletsImpactLine : null
+}
+
+let isCcrpInvalid = Computed(@() BombingMode.get() && TimeBeforeBombRelease.get() <= 0.0)
+let ccrpInvalid = @(){
+  watch = isCcrpInvalid
+  rendObj = ROBJ_TEXT
+  pos = [pw(38), ph(45)]
+  size = [pw(24), flex()]
+  color = IlsColor.get()
+  font = Fonts.hud
+  fontSize = 40
+  text = isCcrpInvalid.get() ? "INVALID" : null
+  halign = ALIGN_CENTER
+}
+
+function KaiserA10(width, height, c_version) {
   return {
     size = [width, height]
     children = [
@@ -353,7 +501,7 @@ function KaiserA10(width, height) {
       a10Altitude,
       a10Tangage,
       a10BarAltitude,
-      compassWrap(width, height, 0.85, generateCompassMarkShim, 1.0, 5.0, false, 20),
+      compassWrap(width, height, 0.85, generateCompassMarkShim, c_version ? 0.6 : 1.0, 5.0, false, 20),
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
@@ -366,20 +514,28 @@ function KaiserA10(width, height) {
         ]
       },
       KaiserTvvLinked(width, height),
-      modeTxt,
-      shellCntText,
+      modeTxt(c_version),
+      shellCntText(c_version),
       @() {
         watch = GuidanceLockState
         size = flex()
         children = GuidanceLockState.value <= GuidanceLockResult.RESULT_STANDBY ? [
           maverickAim,
           gunAimMark,
-          impactLine(width, height)
+          impactLine(width, height, c_version)
         ] : [
           aamTargetMarker,
           smallGunCrosshair
         ]
-      }
+      },
+      (c_version ? overload : null),
+      (c_version ? localTime : null),
+      (c_version ? toi : null),
+      (c_version ? stpt : null),
+      (c_version ? arm : null),
+      (c_version ? secondaryWeaponName : null),
+      (c_version ? bulletsImpactLines : null),
+      (c_version ? ccrpInvalid : null)
     ]
   }
 }

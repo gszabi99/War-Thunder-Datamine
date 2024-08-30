@@ -467,7 +467,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -495,8 +496,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1585,6 +1587,63 @@
             }
           }
         ]
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1741,6 +1800,15 @@
         "head": "bone_turret",
         "gun": "bone_gun_01",
         "gunnerDm": "gunner_dm",
+        "verDriveDm": [
+          "drive_turret_v_dm",
+          "fire_control_system_dm"
+        ],
+        "horDriveDm": [
+          "drive_turret_h_dm",
+          "fire_control_system_dm"
+        ],
+        "shootingDmPart": "fire_control_system_dm",
         "rotatedTurret": "bone_turret"
       },
       "limits": {
@@ -1759,8 +1827,6 @@
         "antenna_target_location",
         "antenna_target_tagging",
         "antenna_target_tagging_mount",
-        "bone_gun",
-        "bone_gun_01",
         "bone_roll_01",
         "bone_roll_02"
       ]
@@ -2533,6 +2599,7 @@
         },
         {
           "autoLoad": true,
+          "autoloader": "autoloader_dm",
           "ammo_body_04_dm": {
             "count": 1
           },
@@ -2679,12 +2746,19 @@
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
-        "dmPart": "antenna_target_location_dm"
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ]
       },
       {
         "blk": "gameData/sensors/de_roland_fr.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm"
+        "dmPart": [
+          "antenna_target_tagging_dm",
+          "electronic_equipment_dm"
+        ],
+        "powerButtonIdx": -1
       }
     ]
   }

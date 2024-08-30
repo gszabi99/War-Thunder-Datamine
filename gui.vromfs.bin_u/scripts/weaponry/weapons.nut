@@ -18,7 +18,7 @@ let DataBlock = require("DataBlock")
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
   isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
@@ -1317,7 +1317,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.checkResearchOperation(item))
       return
     if (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(this.air)) {
-      weaponryPresetsModal.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) //open modal menu for air and helicopter only
+      weaponryPresetsWnd.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) //open modal menu for air and helicopter only
       return
     }
     if (!this.canPerformAction(item, amount))
@@ -1700,14 +1700,16 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getHandlerRestoreData() {
     if (this.shouldBeRestoredOnMainMenu)
       return {}
+    let openData = {
+      curEdiff = this.curEdiff
+      needHideSlotbar = this.needHideSlotbar
+    }
     if (this.researchMode && (!this.setResearchManually || this.availableFlushExp))
-      return {
-        openData = {
-          researchMode = this.researchMode
-          researchBlock = this.researchBlock
-        }
-      }
-    return null
+      openData.__update({
+        researchMode = this.researchMode
+        researchBlock = this.researchBlock
+      })
+    return { openData }
   }
 
   function onEventUniversalSpareActivated(_p) {
@@ -1996,6 +1998,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.markSeenNightBattleIfNeed(item)
     this.markSeenModTutorialIfNeeded(item)
+  }
+
+  function onEventBeforeOpenWeaponryPresetsWnd(_) {
+    handlersManager.requestHandlerRestore(this)
   }
 }
 

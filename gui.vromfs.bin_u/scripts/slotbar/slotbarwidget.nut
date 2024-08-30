@@ -200,6 +200,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     this.headerObj = this.scene.findObject("header_countries")
     this.crewsObj =  this.scene.findObject("countries_crews")
+    this.crewsObj.needHugeFooter = this.needHugeFooter
 
     this.loadedCountries = {}
     this.isSceneLoaded = true
@@ -210,7 +211,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if (checkObj(slotbarHeaderNestObj))
         slotbarHeaderNestObj["offset"] = "yes"
     }
-    this.crewsObj.needHugeFooter = this.needHugeFooter
   }
 
   function setParams(params) {
@@ -252,7 +252,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       this.crewId = null
     if (this.ownerWeak) //!!FIX ME: Better to presets list self catch canChangeCrewUnits
       this.ownerWeak.setSlotbarPresetsListAvailable(this.needPresetsPanel && ::SessionLobby.canChangeCrewUnits())
-    this.crewsObj.needHugeFooter = this.needHugeFooter
   }
 
   function getForcedCountry() { //return null if you have countries choice

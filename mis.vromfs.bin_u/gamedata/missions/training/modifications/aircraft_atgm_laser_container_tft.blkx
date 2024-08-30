@@ -1255,17 +1255,11 @@
       },
       "conditions": {
         "gameWhenDifficulty": {
-          "difficulty": "simulator",
+          "difficulty": "arcade",
           "is": "equal"
         }
       },
       "actions": {
-        "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
-        }
-      },
-      "else_actions": {
         "hudElementSelectionShade": {
           "element": "curTarget",
           "targetName": "target_tank01"
@@ -1273,6 +1267,12 @@
         "playerEmulateShortcut": {
           "control": "ID_LOCK_TARGET",
           "holdTime": 1.0
+        }
+      },
+      "else_actions": {
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
         }
       }
     },
@@ -1351,7 +1351,7 @@
           "object_var_value": 0
         },
         "missionSetTimeSpeed": {
-          "speed": 0.0,
+          "speed": 0.5,
           "realtimeTriggers": true
         },
         "wait": {
@@ -1384,7 +1384,7 @@
         "playerWhenCursorIn": {
           "cursor": "crosshair",
           "element": "curTarget",
-          "targetName": "target_tank01"
+          "targetName": "target_tank02"
         },
         "playerWhenOptions": {
           "currentMode": "gunner"

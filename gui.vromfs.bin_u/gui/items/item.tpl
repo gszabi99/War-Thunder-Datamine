@@ -14,6 +14,10 @@ itemDiv {
   enableBackground:t='<<#enableBackground>>yes<</enableBackground>><<^enableBackground>>no<</enableBackground>>'
   <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
 
+  <<#isPrizeUnitBought>>
+  isPrizeUnitBought:t='yes'
+  <</isPrizeUnitBought>>
+
   <<#today>>
   today:t='yes'
   <</today>>

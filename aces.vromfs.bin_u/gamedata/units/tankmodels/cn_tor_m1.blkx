@@ -184,6 +184,14 @@
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
       },
+      "composite_armor_hull_05_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_06_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
       "body_back_dm": {},
       "body_bottom_dm": {},
       "body_dm": {},
@@ -487,7 +495,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -515,8 +524,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -818,6 +828,26 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_03_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_05_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_05_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_06_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_06_dm",
             "xrayTextThickness": 5.0
           }
         }
@@ -1615,6 +1645,63 @@
             }
           }
         ]
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1701,7 +1788,15 @@
         "turret": {
           "head": "bone_turret",
           "gun": "bone_gun_01",
-          "horDriveDm": "drive_turret_h_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
           "gunnerDm": "gunner_dm"
         },
         "limits": {
@@ -1796,7 +1891,16 @@
         "turret": {
           "head": "bone_gun",
           "gun": "bone_gun",
-          "gunnerDm": "gunner_dm"
+          "gunnerDm": "gunner_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -2724,12 +2828,19 @@
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
-        "dmPart": "antenna_target_location_dm"
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ]
       },
       {
         "blk": "gameData/sensors/su_9k_330_track.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm"
+        "dmPart": [
+          "antenna_target_tagging_dm",
+          "electronic_equipment_dm"
+        ],
+        "powerButtonIdx": -1
       }
     ]
   }

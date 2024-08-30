@@ -38,7 +38,7 @@ let g_difficulty = {
     clanDataEnding = ""
     clanRatingImage = "#ui/gameuiskin#lb_elo_rating.svg"
     contentAllowedPresetOption = USEROPT_CONTENT_ALLOWED_PRESET
-    contentAllowedPresetOptionDefVal = "semihistorical"
+    contentAllowedPresetOptionDefVal = "except_fictional"
     cdPresetValue = get_cd_preset(DIFFICULTY_CUSTOM)
     getEgdName = function(capital = true) { return get_name_by_gamemode(this.egdCode, capital) } //"none", "arcade", "historical", "simulation"
     getLocName = function() { return loc(this.locId) }
@@ -175,7 +175,6 @@ enumsAddTypes(g_difficulty, {
     clanReqOption = USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES
     clanDataEnding = "_sim"
     contentAllowedPresetOption = USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR
-    contentAllowedPresetOptionDefVal = "historical"
     cdPresetValue = get_cd_preset(DIFFICULTY_HARDCORE)
     abbreviation = "clan/shortFullRealBattles"
     choiceType = ["AirSB", "TankSB", "ShipSB"]

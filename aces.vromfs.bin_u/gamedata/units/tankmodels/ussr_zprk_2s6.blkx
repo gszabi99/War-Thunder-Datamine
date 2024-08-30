@@ -131,6 +131,18 @@
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
       },
+      "composite_armor_hull_04_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_05_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_06_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
       "ex_decor_r_06_dm": {
         "armorClass": "tank_structural_steel",
         "armorThickness": 5.0
@@ -213,6 +225,9 @@
         "armorThickness": 9.0
       },
       "turret_05_side_dm": {
+        "armorThickness": 9.0
+      },
+      "turret_05_back_dm": {
         "armorThickness": 9.0
       },
       "turret_01_side_dm": {
@@ -483,7 +498,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -521,8 +537,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -822,6 +839,36 @@
         "armorArrayText": {
           "layer": {
             "dmPart": "composite_armor_hull_03_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_04_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_04_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_05_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_05_dm",
+            "xrayTextThickness": 5.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_06_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_06_dm",
             "xrayTextThickness": 5.0
           }
         }
@@ -1596,6 +1643,63 @@
             }
           }
         ]
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1694,6 +1798,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_03_dm",
         "breechDP": "cannon_breech_02_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 80.0,
         "speedPitch": 80.0,
         "bullets": 484,
@@ -1716,8 +1824,15 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_01",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
           "selfDirectedPart": {
             "node": "antenna_target_tagging_mount",
             "limits": [
@@ -1825,6 +1940,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_02_dm",
         "breechDP": "cannon_breech_01_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 80.0,
         "speedPitch": 80.0,
         "bullets": 484,
@@ -1850,8 +1969,15 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_02",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1928,6 +2054,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_04_dm",
         "breechDP": "cannon_breech_02_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 80.0,
         "speedPitch": 80.0,
         "bullets": 484,
@@ -1953,8 +2083,15 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_03",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -2030,6 +2167,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
         "breechDP": "cannon_breech_01_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 80.0,
         "speedPitch": 80.0,
         "bullets": 484,
@@ -2054,8 +2195,15 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel_04",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -2147,6 +2295,9 @@
           "head": "bone_turret",
           "gun": "bone_gun_02",
           "gunnerDm": "gunner_dm",
+          "verDriveDm": "fire_control_system_dm",
+          "horDriveDm": "fire_control_system_dm",
+          "shootingDmPart": "fire_control_system_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -2215,15 +2366,20 @@
         "designationTurretIndex": 0,
         "dmPart": [
           "antenna_target_location_dm",
-          "antenna_target_location_01_dm"
+          "antenna_target_location_01_dm",
+          "electronic_equipment_dm"
         ],
         "radarParkingAzimuth": 180.0
       },
       {
         "blk": "gameData/sensors/su_1rl144_track.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm",
-        "radarParkingAzimuth": 180.0
+        "dmPart": [
+          "antenna_target_tagging_dm",
+          "electronic_equipment_dm"
+        ],
+        "radarParkingAzimuth": 180.0,
+        "powerButtonIdx": -1
       }
     ]
   },
@@ -3100,6 +3256,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_03_dm",
               "breechDP": "cannon_breech_02_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 80.0,
               "speedPitch": 80.0,
               "bullets": 484,
@@ -3122,8 +3282,15 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_01",
                 "gunnerDm": "gunner_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm",
                 "selfDirectedPart": {
                   "node": "antenna_target_tagging_mount",
                   "limits": [
@@ -3231,6 +3398,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_02_dm",
               "breechDP": "cannon_breech_01_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 80.0,
               "speedPitch": 80.0,
               "bullets": 484,
@@ -3256,8 +3427,15 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_02",
                 "gunnerDm": "gunner_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3334,6 +3512,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_04_dm",
               "breechDP": "cannon_breech_02_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 80.0,
               "speedPitch": 80.0,
               "bullets": 484,
@@ -3359,8 +3541,15 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_03",
                 "gunnerDm": "gunner_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3436,6 +3625,10 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_01_dm",
               "breechDP": "cannon_breech_01_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 80.0,
               "speedPitch": 80.0,
               "bullets": 484,
@@ -3460,8 +3653,15 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel_04",
                 "gunnerDm": "gunner_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3552,6 +3752,9 @@
                 "head": "bone_turret",
                 "gun": "bone_gun_02",
                 "gunnerDm": "gunner_dm",
+                "verDriveDm": "fire_control_system_dm",
+                "horDriveDm": "fire_control_system_dm",
+                "shootingDmPart": "fire_control_system_dm",
                 "rotatedTurret": "bone_turret"
               },
               "limits": {
@@ -3604,6 +3807,13 @@
               "antenna_target_tagging_mount"
             ]
           }
+        },
+        "engine": {
+          "horsePowers": 780.0,
+          "maxRPM": 2000.0,
+          "minRPM": 500.0,
+          "manufacturer": "chtz",
+          "model": "v_84_DT"
         },
         "nightVision": {
           "nightVisionDmPart": "fire_control_system_dm",

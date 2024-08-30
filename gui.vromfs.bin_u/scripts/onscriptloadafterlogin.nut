@@ -323,6 +323,7 @@ foreach (fn in [
   "%scripts/matching/serviceNotifications/mrpc.nut"
   "%scripts/matching/serviceNotifications/msquad.nut"
 
+  "%scripts/items/buyAndOpenChestWnd.nut"
   "%scripts/gamepadSceneSettings.nut"
 ]) {
   loadOnce(fn)

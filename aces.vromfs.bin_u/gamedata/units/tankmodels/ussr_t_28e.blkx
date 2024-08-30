@@ -1172,84 +1172,78 @@
   },
   "class_tags": {},
   "PhysSys": {
-    "find": "^suspension_(._\\d\\d)$",
+    "find": "^bone_suspension_(\\w)_(\\d+)$",
     "points": {
-      "suspension": {
-        "name": "suspension_$1",
+      "lever": {
         "limitMin": [
           0.0,
-          -1.0,
+          -0.5,
           0.0
         ],
         "limitMax": [
           0.0,
-          1.0,
-          0.0
-        ]
-      },
-      "rocker": {
-        "name": "suspension_rocker_$1",
-        "limitMin": [
-          0.0,
-          -1.0,
+          0.5,
           0.0
         ],
-        "limitMax": [
-          0.0,
-          1.0,
-          0.0
-        ]
-      },
-      "bone_rocker": {
-        "name": "bone_suspension_rocker_$1"
+        "name": "bone_suspension_$1_$2"
       },
       "wheel_01": {
         "searchChildren": {
-          "parent": "bone_rocker",
-          "find": "bone_wheel_.*",
+          "occurence": 1,
           "limitMin": [
             -1.0,
-            0.0,
+            -1.0,
             0.0
           ],
           "limitMax": [
             1.0,
-            0.0,
+            1.0,
             0.0
-          ]
+          ],
+          "parent": "lever",
+          "find": "bone_wheel_"
         }
       },
       "wheel_02": {
         "searchChildren": {
-          "parent": "bone_rocker",
-          "find": "bone_wheel_.*",
+          "occurence": 2,
           "limitMin": [
             -1.0,
-            0.0,
+            -1.0,
             0.0
           ],
           "limitMax": [
             1.0,
-            0.0,
+            1.0,
             0.0
           ],
-          "occurence": 2
+          "parent": "lever",
+          "find": "bone_wheel_"
         }
       }
     },
     "constraints": {
+      "direction": {
+        "point": "lever",
+        "from": "wheel_02",
+        "to": "wheel_01",
+        "moveNodes": true,
+        "movePoint": true,
+        "moveEdge": true,
+        "moveEdgeNodes": true
+      },
       "edge": [
         {
-          "from": "suspension",
-          "to": "rocker"
+          "from": "lever",
+          "to": "wheel_01",
+          "point": "wheel_02",
+          "moveSecond": false
         },
         {
-          "from": "rocker",
-          "to": "wheel_01"
-        },
-        {
-          "from": "rocker",
-          "to": "wheel_02"
+          "moveSecond": false,
+          "point": "wheel_01",
+          "to": "wheel_02",
+          "from": "lever"
         }
       ]
     }
@@ -2566,8 +2560,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {

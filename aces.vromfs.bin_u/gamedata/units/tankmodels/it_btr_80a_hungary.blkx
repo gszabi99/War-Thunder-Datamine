@@ -53,7 +53,6 @@
     true,
     true
   ],
-  "rearmTimeOnField": 60.0,
   "controlDevices": {
     "device": [
       {
@@ -530,8 +529,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2190,7 +2190,7 @@
     }
   },
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)$",
+    "find": "bone_suspension_(\\w)_(\\d+)$",
     "points": {
       "lever": {
         "limitMin": [
@@ -2203,63 +2203,67 @@
           0.0,
           0.0
         ],
-        "name": "bone_suspension_$1"
+        "name": "bone_suspension_$1_$2"
+      },
+      "suspension_01_01": {
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "name": "bone_suspension_$1_$2_01"
       },
       "suspension_01_02": {
         "limitMin": [
-          0.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          0.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ],
-        "name": "bone_suspension_$1_02"
+        "name": "bone_suspension_$1_$2_02"
       },
       "wheel": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_wheel_$1"
-      },
-      "suspension_01_03": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_03"
+        "searchChildren": {
+          "occurence": 1,
+          "limitMin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "limitMax": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent": "lever",
+          "find": "bone_wheel_"
+        }
       }
     },
     "constraints": {
-      "edge": {
-        "to": "wheel",
-        "from": "lever"
-      },
-      "projection": [
+      "edge": [
         {
-          "to": "wheel",
-          "from": "lever",
-          "point": "suspension_01_02"
-        },
-        {
-          "point": "suspension_01_03",
           "from": "lever",
           "to": "wheel"
+        },
+        {
+          "from": "suspension_01_02",
+          "to": "wheel",
+          "moveNodes": false
+        },
+        {
+          "from": "suspension_01_01",
+          "to": "wheel",
+          "moveNodes": false
         }
       ]
     }

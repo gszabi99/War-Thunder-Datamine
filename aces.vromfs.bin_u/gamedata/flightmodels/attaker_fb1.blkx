@@ -19,6 +19,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2520,10 +2521,17 @@
   "modifications": {
     "cd_98": {},
     "CdMin_Fuse": {},
-    "new_cover": {},
+    "new_cover": {
+      "tier": 3
+    },
     "structure_str": {},
     "hp_105_jet": {},
     "g_suit": {},
+    "air_extinguisher": {
+      "tier": 4,
+      "modClass": "armor",
+      "invertEnableLogic": false
+    },
     "new_compressor_jet": {},
     "hispano_universal": {},
     "hispano_air_targets": {},

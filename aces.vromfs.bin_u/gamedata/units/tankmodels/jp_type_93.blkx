@@ -546,8 +546,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2069,7 +2070,7 @@
         0.0,
         0.5
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 40.0,
       "engineInertialMass": 400.0
     },
@@ -2192,13 +2193,13 @@
       },
       "suspension_01_01": {
         "limitMin": [
-          0.0,
-          0.0,
+          -1.0,
+          -1.0,
           0.0
         ],
         "limitMax": [
-          0.0,
-          0.0,
+          1.0,
+          1.0,
           0.0
         ],
         "name": "bone_suspension_$1_$2_01"
@@ -2225,7 +2226,8 @@
       "edge": [
         {
           "to": "wheel",
-          "from": "lever"
+          "from": "lever",
+          "moveNodes": false
         },
         {
           "to": "wheel",

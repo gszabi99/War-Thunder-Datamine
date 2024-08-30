@@ -5,10 +5,10 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { register_command } = require("console")
-let { set_gui_option, get_gui_option } = require("guiOptions")
+let { set_gui_option, get_gui_option, setGuiOptionsMode } = require("guiOptions")
 let { set_game_mode } = require("mission")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { USEROPT_DIFFICULTY, USEROPT_WEAPONS, USEROPT_AIRCRAFT
+let { USEROPT_DIFFICULTY, USEROPT_WEAPONS, USEROPT_AIRCRAFT, OPTIONS_MODE_TRAINING
 } = require("%scripts/options/optionsExtNames.nut")
 let DataBlock = require("DataBlock")
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
@@ -64,9 +64,11 @@ function startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon = 
   ::aircraft_for_weapons = unit.name
   set_last_called_gui_testflight(handlersManager.getLastBaseHandlerStartParams())
 
+  setGuiOptionsMode(OPTIONS_MODE_TRAINING)
   set_game_mode(GM_TRAINING)
   set_gui_option(USEROPT_AIRCRAFT, unit.name)
   set_gui_option(USEROPT_WEAPONS, tutorialMissionWeapon ?? "")
+  ::UnitBulletsManager(unit).updateBulletCountOptions()
 
   let missInfoOvr = DataBlock()
   missInfoOvr.setFrom(misInfo)

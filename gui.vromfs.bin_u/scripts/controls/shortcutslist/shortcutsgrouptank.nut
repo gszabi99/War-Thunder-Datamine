@@ -512,6 +512,12 @@ return [
     id = "ID_UNLIMITED_CONTROL"
     checkAssign = false
   }
+  //
+
+
+
+
+
   {
     id = "ID_TOGGLE_STEALTH"
     checkAssign = false
@@ -556,5 +562,9 @@ return [
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     showFunc = hasXInputDevice
     checkAssign = @() isXInputDevice()
+  }
+  {
+    id = "ID_TANK_SWITCH_FUSE_MODE"
+    checkAssign = false
   }
 ]

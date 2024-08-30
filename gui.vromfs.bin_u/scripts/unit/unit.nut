@@ -19,7 +19,6 @@ let { getLastWeapon, isWeaponEnabled,
   isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { unitClassType, getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { GUI } = require("%scripts/utils/configs.nut")
 let { getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
 let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers,
   getWeaponImage
@@ -33,7 +32,7 @@ let { get_charserver_time_sec } = require("chard")
 let { isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
-  get_modifications_blk } = require("blkGetters")
+  get_modifications_blk, get_ranks_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
@@ -319,7 +318,7 @@ local Unit = class {
     if (releaseDate == null)
       return this._endRecentlyReleasedTime
 
-    let recentlyReleasedUnitsDays = GUI.get()?.markRecentlyReleasedUnitsDays ?? 0
+    let recentlyReleasedUnitsDays = get_ranks_blk()?.recentlyReleasedUnitConsideredNewDays ?? 0
     if (recentlyReleasedUnitsDays == 0)
       return this._endRecentlyReleasedTime
 

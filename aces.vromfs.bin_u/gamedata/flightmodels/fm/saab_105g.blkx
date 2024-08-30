@@ -176,7 +176,28 @@
     "hasChutes": false,
     "hasParkingBrake": true
   },
-  "FlyByWire": {},
+  "FlyByWire": {
+    "ModePreset0": {
+      "Mode": "Separate",
+      "AileronsMode": "Manual",
+      "ElevatorMode": "Manual",
+      "RudderMode": "Manual",
+      "ThrottleMode": "Manual",
+      "PropulsorMode": "Manual",
+      "VtolMode": "Manual",
+      "allowOverrideByForcedStabilization": true
+    },
+    "ModePreset1": {
+      "Mode": "Separate",
+      "AileronsMode": "Manual",
+      "ElevatorMode": "Manual",
+      "RudderMode": "Rate",
+      "ThrottleMode": "Manual",
+      "PropulsorMode": "Manual",
+      "VtolMode": "Manual",
+      "allowOverrideByForcedStabilization": true
+    }
+  },
   "MouseAim": {
     "PreciseRotStopDetection": false
   },
@@ -1441,8 +1462,8 @@
     },
     "Yaw": {
       "RateMax": [
-        0.0,
-        0.0
+        -60.0,
+        60.0
       ],
       "LateralLoadFactorTimeMult": 1.0,
       "AosTimeMult": 1.0,
@@ -1455,9 +1476,9 @@
         ]
       },
       "RatePID": {
-        "Kp": 0.0,
+        "Kp": 1.0,
         "Ki": 0.0,
-        "Imax": 0.0,
+        "Imax": 1.0,
         "Kd": 0.0,
         "dTau": 0.0208333,
         "Lim": [

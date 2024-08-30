@@ -25,7 +25,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
   EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
-  EII_MISSION_SUPPORT_PLANE
+  EII_MISSION_SUPPORT_PLANE, EII_BUILDING
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -127,6 +127,23 @@ let guidanceModesCaptions =
   ]
 ]
 
+function getHudKillStreakShortcutId() {
+  let hudUnitType = getHudUnitType()
+  if (hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
+    return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
+  if (hudUnitType == HUD_UNIT_TYPE.SHIP)
+    return "ID_SHIP_KILLSTREAK_WHEEL_MENU"
+  if (hudUnitType == HUD_UNIT_TYPE.AIRCRAFT)
+    return "ID_PLANE_KILLSTREAK_WHEEL_MENU"
+  //
+
+
+
+  if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
+    return "ID_HUMAN_KILLSTREAK_WHEEL_MENU"
+  return "ID_KILLSTREAK_WHEEL_MENU"
+}
+
 g_hud_action_bar_type.template <- {
   code = -1
   backgroundImage = ""
@@ -187,19 +204,8 @@ g_hud_action_bar_type.template <- {
 
     if (this.isForMFM)
       return "ID_SHOW_MULTIFUNC_WHEEL_MENU"
-    if (hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
-      return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
-    if (hudUnitType == HUD_UNIT_TYPE.SHIP)
-      return "ID_SHIP_KILLSTREAK_WHEEL_MENU"
-    if (hudUnitType == HUD_UNIT_TYPE.AIRCRAFT)
-      return "ID_PLANE_KILLSTREAK_WHEEL_MENU"
-    //
 
-
-
-    if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
-      return "ID_HUMAN_KILLSTREAK_WHEEL_MENU"
-    return "ID_KILLSTREAK_WHEEL_MENU"
+    return getHudKillStreakShortcutId()
   }
 }
 
@@ -898,7 +904,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_SUPPORT_PLANE_GROUP_RETURN
     _name = "support_plane_group_return"
     _icon = "#ui/gameuiskin#stealth_camo"
-    _title = loc("hotkeys/ID_SUPPORT_PLANE_GROUP_RETURN_SHIP")
+    _title = loc("actionBarItem/support_plane_group_return")
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SUPPORT_PLANE_GROUP_RETURN_SHIP"
   }
@@ -1209,6 +1215,15 @@ enumsAddTypes(g_hud_action_bar_type, {
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_ACTION_BAR_ITEM_9"
   }
+  //
+
+
+
+
+
+
+
+
 
 })
 
@@ -1222,4 +1237,5 @@ g_hud_action_bar_type.getByActionItem <- function getByActionItem(actionItem) {
 
 return {
   g_hud_action_bar_type
+  getHudKillStreakShortcutId
 }

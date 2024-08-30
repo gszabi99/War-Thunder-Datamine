@@ -415,8 +415,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2220,17 +2221,14 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "removeLoadedAmmo": false,
       "weaponTrigger": "gunner0",
       "fatalFire": true,
       "fatalExplosion": true,
-      "replenishmentDelay": 1.0,
-      "replenishmentTime": 3.0,
       "shells": [
         {
+          "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
-          "autoLoad": true,
           "ammo_turret_01_dm": {
             "count": 1
           },
@@ -2248,6 +2246,9 @@
           }
         },
         {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
           "ammo_turret_06_dm": {
             "count": 1
           },

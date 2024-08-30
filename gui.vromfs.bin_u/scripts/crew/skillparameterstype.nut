@@ -6,8 +6,9 @@ let { fabs } = require("math")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
+
 ::g_skill_parameters_type <- {
   types = []
 }
@@ -94,11 +95,11 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
 
   getProgressBarValue = function(parametersByRequestType, params = null) {
     let currentParameterValue = this.getValue(
-      ::g_skill_parameters_request_type.CURRENT_VALUES, parametersByRequestType, params)
+      skillParametersRequestType.CURRENT_VALUES, parametersByRequestType, params)
     let maxParameterValue = this.getValue(
-      ::g_skill_parameters_request_type.MAX_VALUES, parametersByRequestType, params)
+      skillParametersRequestType.MAX_VALUES, parametersByRequestType, params)
     let baseParameterValue = this.getValue(
-      ::g_skill_parameters_request_type.BASE_VALUES, parametersByRequestType, params)
+      skillParametersRequestType.BASE_VALUES, parametersByRequestType, params)
     let curDiff = fabs(currentParameterValue - baseParameterValue)
     let maxDiff = fabs(maxParameterValue - baseParameterValue)
     if (maxDiff > 0.0)

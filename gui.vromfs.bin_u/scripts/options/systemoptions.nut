@@ -9,7 +9,7 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
-let { get_available_monitors, get_monitor_info } = require("graphicsOptions")
+let { get_available_monitors, get_monitor_info, has_broken_recreate_image } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -131,13 +131,14 @@ local mUiStruct = [
     container = "sysopt_bottom_right"
     items = [
       "mirrorQuality"
+      "motionBlurStrength"
+      "motionBlurCancelCamera"
       "rendinstGlobalShadows"
       "staticShadowsOnEffects"
       "advancedShore"
       "haze"
       "lastClipSize"
       "lenseFlares"
-      "enableSuspensionAnimation"
       "alpha_to_coverage"
       "jpegShots"
       "compatibilityMode"
@@ -145,6 +146,17 @@ local mUiStruct = [
       "enableVr"
       "vrMirror"
       "vrStreamerMode"
+      "rayTracing"
+      "rtao"
+      "rtaoRes"
+      "rtsm"
+      "rtr"
+      "rtrShadows"
+      "rtrFOM"
+      "rtrRes"
+      "rtrWater"
+      "rtrWaterRes"
+      "rtrTranslucent"
     ]
   }
 ]
@@ -860,7 +872,7 @@ mSettings = {
   dlssSharpness = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/dlssSharpness" restart = false
     enabled = @() getGuiValue("dlss", "off") != "off"
   }
-  anisotropy = { widgetType = "list" def = "2X" blk = "graphics/anisotropy" restart = true
+  anisotropy = { widgetType = "list" def = "2X" blk = "graphics/anisotropy" restart = false
     values = [ "off", "2X", "4X", "8X", "16X" ]
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 2)
@@ -948,7 +960,7 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
   }
-  texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = true
+  texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = has_broken_recreate_image()
     init = function(_blk, desc) {
       let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
       let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
@@ -1044,8 +1056,6 @@ mSettings = {
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
   }
-  enableSuspensionAnimation = { widgetType = "checkbox" def = false blk = "graphics/enableSuspensionAnimation" restart = true
-  }
   alpha_to_coverage = { widgetType = "checkbox" def = false blk = "video/alpha_to_coverage" restart = false
   }
   tireTracksQuality = { widgetType = "list" def = "none" blk = "graphics/tireTracksQuality" restart = false
@@ -1090,6 +1100,14 @@ mSettings = {
   }
   mirrorQuality = { widgetType = "slider" def = 5 min = 0 max = 10 blk = "graphics/mirrorQuality" restart = false
   }
+  motionBlurStrength = { widgetType = "slider" def = 0 min = 0 max = 10 blk = "graphics/motionBlurStrength" restart = false
+    isVisible = @() hasFeature("optionMotionBlur")
+    enabled = @() !getGuiValue("compatibilityMode")
+  }
+  motionBlurCancelCamera = { widgetType = "checkbox" def = false blk = "graphics/motionBlurCancelCamera" restart = false
+    isVisible = @() hasFeature("optionMotionBlur")
+    enabled = @() !getGuiValue("compatibilityMode")
+  }
   haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
   }
   lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
@@ -1127,6 +1145,38 @@ mSettings = {
   staticShadowsOnEffects = { widgetType = "checkbox" def = false blk = "render/staticShadowsOnEffects" restart = false
   }
   riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
+  }
+  rayTracing = { widgetType = "checkbox" def = false blk = "graphics/enableBVH" restart = false isVisible = @() hasFeature("optionRT")
+  }
+  rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false isVisible = @() hasFeature("optionRT")
+    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false
+  }
+  rtaoRes = { widgetType = "list" def = "normal"  blk = "graphics/RTAORes" restart = false isVisible = @() hasFeature("optionRT")
+    values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtao", "off") != "off"
+  }
+  rtsm = { widgetType = "list" def = "off" blk = "graphics/enableRTSM" restart = false values = [ "off", "sun", "sun_and_dynamic" ]
+    enabled = @() getGuiValue("rayTracing", false) != false isVisible = @() hasFeature("optionRT")
+  }
+  rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false isVisible = @() hasFeature("optionRT")
+    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false
+  }
+  rtrShadows = { widgetType = "checkbox" def = false blk = "graphics/RTRShadows" restart = false isVisible = @() hasFeature("optionRT")
+    enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
+  }
+  rtrFOM = { widgetType = "checkbox" def = false blk = "graphics/RTRFom" restart = false isVisible = @() hasFeature("optionRT")
+    enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
+  }
+  rtrRes = { widgetType = "list" def = "normal"  blk = "graphics/RTRRes" restart = false isVisible = @() hasFeature("optionRT")
+    values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
+  }
+  rtrWater = { widgetType = "checkbox" def = true  blk = "graphics/RTRWater" restart = false isVisible = @() hasFeature("optionRT")
+    enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off" && getGuiValue("rtsm", "off") != "off"
+  }
+  rtrWaterRes = { widgetType = "list" def = "normal"  blk = "graphics/RTRWaterRes" restart = false isVisible = @() hasFeature("optionRT")
+    values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtrWater", false) != false && getGuiValue("rtr", "off") != "off" && getGuiValue("rtsm", "off") != "off"
+  }
+  rtrTranslucent = { widgetType = "list" def = "shadow"  blk = "graphics/RTRTranslucent" restart = false isVisible = @() hasFeature("optionRT")
+    values = ["off", "half", "normal", "shadow"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
   }
 }
 //------------------------------------------------------------------------------

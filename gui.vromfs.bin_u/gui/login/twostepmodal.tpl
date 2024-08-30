@@ -92,7 +92,9 @@ root {
 
             btnText{
               normalBoldFont:t='yes'
-              text:t = '#msgbox/btn_signIn'
+              text:t = '#msgbox/btn_confirm'
+              position:t='relative';
+              pos:t='pw/2-w/2, ph/2-h/2';
             }
             btnName:t='X'
             ButtonImg{}

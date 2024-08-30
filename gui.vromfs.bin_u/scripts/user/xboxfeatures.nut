@@ -4,7 +4,7 @@ let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { crossNetworkPlayStatus } = require("%scripts/social/crossplay.nut")
 let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/xbox/permissions.nut")
-let { crossnetworkPrivilege } = require("%scripts/xbox/crossnetwork.nut")
+let { crossnetworkPrivilege } = require("%xboxLib/crossnetwork.nut")
 
 let isMultiplayerPrivilegeAvailable = mkWatched(persist, "isMultiplayerPrivilegeAvailable", true)
 

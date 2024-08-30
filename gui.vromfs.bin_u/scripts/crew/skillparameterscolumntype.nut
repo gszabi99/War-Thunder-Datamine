@@ -9,6 +9,7 @@ let { getCrewSkillValue } = require("%scripts/crew/crew.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCachedCrewId, getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 
 enum skillColumnOrder {
   TOTAL
@@ -135,7 +136,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     sortOrder = skillColumnOrder.BASE
     headerLocId = "crewSkillParameterTable/baseValueText"
     previousParametersRequestType = null
-    currentParametersRequestType = ::g_skill_parameters_request_type.BASE_VALUES
+    currentParametersRequestType = skillParametersRequestType.BASE_VALUES
     addSignChar = false
 
     checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
@@ -148,8 +149,8 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
    */
   SKILLS = {
     sortOrder = skillColumnOrder.SKILLS
-    previousParametersRequestType = ::g_skill_parameters_request_type.BASE_VALUES
-    currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
+    previousParametersRequestType = skillParametersRequestType.BASE_VALUES
+    currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
     textColor = "goodTextColor"
     imageName = "#ui/gameuiskin#skill_star_1.svg"
     imageSize = 27
@@ -162,8 +163,8 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
    */
   SPECIALIZATION = {
     sortOrder = skillColumnOrder.SPECIALIZATION
-    previousParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
-    currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_LEADERSHIP
+    previousParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
+    currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_LEADERSHIP
     textColor = "goodTextColor"
     imageSize = 27
 
@@ -182,8 +183,8 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
    */
   LEADERSHIP = {
     sortOrder = skillColumnOrder.LEADERSHIP
-    previousParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_LEADERSHIP
-    currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES
+    previousParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_LEADERSHIP
+    currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES
     textColor = "goodTextColor"
     imageName = "#ui/gameuiskin#leaderBonus.svg"
     imageSize = 27
@@ -234,8 +235,8 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
    */
   GUNNERS = {
     sortOrder = skillColumnOrder.GUNNERS
-    previousParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES_NO_LEADERSHIP
-    currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES
+    previousParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_LEADERSHIP
+    currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES
     textColor = "badTextColor"
     imageName = "#ui/gameuiskin#gunnerBonus.svg"
     imageSize = 27
@@ -256,7 +257,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     sortOrder = skillColumnOrder.MAX
     headerLocId = "crewSkillParameterTable/maxValueText"
     previousParametersRequestType = null
-    currentParametersRequestType = ::g_skill_parameters_request_type.MAX_VALUES
+    currentParametersRequestType = skillParametersRequestType.MAX_VALUES
     addSignChar = false
     addMeasureUnits = true
   }
@@ -301,7 +302,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     addMeasureUnits = true
     headerLocId = "crewSkillParameterTable/currentValueText"
     previousParametersRequestType = null
-    currentParametersRequestType = ::g_skill_parameters_request_type.CURRENT_VALUES
+    currentParametersRequestType = skillParametersRequestType.CURRENT_VALUES
     addSignChar = false
   }
 }, null, "id")

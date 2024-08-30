@@ -54,14 +54,14 @@ def handle_label_name(value)
 def call_macro_label_name(mod,value)
     return "call-macro-{module_name(mod)}-{value}"
 
-def public function_file_name(value:FunctionPtr)
+def public function_file_name(value:FunctionPtr|Function?)
     var mn = string(value.name)
     mn = mn |> replace_multiple([{auto
         "?" => "_qm_";
     }])
     return mn
 
-def function_label_name(value:FunctionPtr)
+def function_label_name(value:FunctionPtr|Function?)
     var mn = get_mangled_name(value)
     mn = mn |> replace_multiple([{auto
         " " => "_";
@@ -328,6 +328,15 @@ def document_variant(doc_file:file; value:TypeDeclPtr)
         emplace(tab,line)
     fwrite(doc_file,make_table(tab))
 
+def document_tuple(doc_file:file; value:TypeDeclPtr)
+    var tab : array<array<string>>
+    for an,at in value.argNames,value.argTypes
+        var line : array<string>
+        push(line,string(an))
+        push(line,describe_type(at))
+        emplace(tab,line)
+    fwrite(doc_file,make_table(tab))
+
 def document_typedef(doc_file:file;mod:Module?;name:string implicit;value)
     fwrite(doc_file,make_label(alias_label_name(value)))
     fwrite(doc_file,make_domain("das:attribute"))
@@ -338,6 +347,9 @@ def document_typedef(doc_file:file;mod:Module?;name:string implicit;value)
     elif value.baseType==Type tVariant
         fwrite(doc_file," is a variant type\n\n")
         document_variant(doc_file,value)
+    elif value.baseType==Type tTuple
+        fwrite(doc_file," is a tuple type\n\n")
+        document_tuple(doc_file,value)
     else
         var tp = describe(value,false,false,false)
         tp = replace(tp,"$::","")
@@ -764,7 +776,7 @@ def function_name ( name : string )
             return "operator {name}"
     return name
 
-def document_function(doc_file:file;mod:Module?;func:FunctionPtr)
+def document_function(doc_file:file;mod:Module?;func:FunctionPtr|Function?)
     let argNames <- [{for arg in func.arguments; string(arg.name)}]
     let argTypes <- [{for arg in func.arguments; get_ptr(arg._type)}]
     fwrite(doc_file,make_label(function_label_name(func)))
@@ -792,15 +804,15 @@ def document_functions(doc_file:file;mod:Module?;groups:array<DocGroup>)
                     document_warning(doc_file,"This group of functions is hidden. It will not be in the final documentation.")
                 for func in grp.func
                     if !key_exists(tab,func)
-                        let descr = describe_function_short(FunctionPtr(func))
-                        var labn = function_label_name(FunctionPtr(func))
+                        let descr = describe_function_short(func)
+                        var labn = function_label_name(func)
                         fwrite(doc_file,"  * {make_ref(labn,descr)}\n")
                 fwrite(doc_file,"\n")
                 for func in grp.func
                     if tab[func]
                         continue
                     tab[func] = true
-                    document_function(doc_file,mod,FunctionPtr(func))
+                    document_function(doc_file,mod,func)
     var first_function = true
     for_each_function(mod, "") <| $(func)
         if !function_needs_documenting(func)
@@ -834,7 +846,7 @@ struct public DocGroup
 def debug_group(var group:DocGroup)
     to_log(LOG_DEBUG, "Group {group.name}\n")
     for func in group.func
-        to_log(LOG_DEBUG, "\t{describe_function_short(FunctionPtr(func))}\n")
+        to_log(LOG_DEBUG, "\t{describe_function_short(func)}\n")
     return <- group
 
 def append_to_group_by_regex(var group:DocGroup; mod:Module?; var reg:Regex)

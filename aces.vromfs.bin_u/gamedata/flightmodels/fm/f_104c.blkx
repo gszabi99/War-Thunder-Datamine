@@ -72,8 +72,8 @@
     0.5,
     0.005
   ],
-  "MaxSpeedNearGround": 932.997,
-  "MaxSpeedAtAltitude": 930.0,
+  "MaxSpeedNearGround": 950.0,
+  "MaxSpeedAtAltitude": 1000.0,
   "CriticalSpeed": 50.0,
   "ArcadeHelpersSensitivity": 1.0,
   "AllowModsToChangeLongidutialBalance": true,
@@ -143,7 +143,7 @@
     },
     "ModePreset1": {
       "Mode": "Separate",
-      "AileronsMode": "AutoRate",
+      "AileronsMode": "Rate",
       "ElevatorMode": "Rate",
       "RudderMode": "Rate",
       "ThrottleMode": "Manual",
@@ -161,9 +161,6 @@
       "VtolMode": "Manual",
       "allowOverrideByForcedStabilization": true
     }
-  },
-  "MouseAim": {
-    "PreciseRotStopDetection": false
   },
   "Aerodynamics": {
     "GearCd": 0.015,
@@ -250,7 +247,7 @@
         "Arm": [
           0.12,
           0.55,
-          1.6
+          1.5
         ],
         "SineAosMultiplier": -0.2,
         "VFocusMultiplier": 0.0,
@@ -275,7 +272,7 @@
       },
       "FlapsPolar0": {
         "Flaps": 0.0,
-        "OswaldsEfficiencyNumber": 0.72,
+        "OswaldsEfficiencyNumber": 0.47,
         "lineClCoeff": 0.067,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.002,
@@ -307,7 +304,7 @@
         "MachCrit5": 0.8,
         "MachMax5": 1.08,
         "MultMachMax5": 1.02,
-        "MultLineCoeff5": -0.1,
+        "MultLineCoeff5": -0.2,
         "MultLimit5": 0.0,
         "MachCrit6": 0.92,
         "MachMax6": 1.2,
@@ -333,7 +330,7 @@
       },
       "FlapsPolar1": {
         "Flaps": 1.0,
-        "OswaldsEfficiencyNumber": 0.72,
+        "OswaldsEfficiencyNumber": 0.47,
         "lineClCoeff": 0.067,
         "AfterCritParabAngle": 2.0,
         "AfterCritDeclineCoeff": 0.002,
@@ -365,7 +362,7 @@
         "MachCrit5": 0.8,
         "MachMax5": 1.08,
         "MultMachMax5": 1.02,
-        "MultLineCoeff5": -0.1,
+        "MultLineCoeff5": -0.2,
         "MultLimit5": 0.0,
         "MachCrit6": 0.92,
         "MachMax6": 1.2,
@@ -391,8 +388,8 @@
       },
       "Strength": {
         "CritOverload": [
-          -220000.0,
-          560000.0
+          -200000.0,
+          390000.0
         ],
         "VNE": 1555.0,
         "MNE": 2.3
@@ -544,7 +541,7 @@
       "Angle": 0.0,
       "Arm": [
         -3.0,
-        0.8,
+        0.5,
         0.0
       ],
       "FlowInertia": 0.08,
@@ -669,6 +666,135 @@
       "AnglesMultiplierPitch": [
         1.0,
         0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D0": 10000.0,
+      "AnglesMultiplierPitch2D00": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D01": [
+        500.0,
+        0.99,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D02": [
+        700.0,
+        0.95,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D03": [
+        900.0,
+        0.9,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D04": [
+        1100.0,
+        0.95,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D05": [
+        1400.0,
+        0.9,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D06": [
+        1900.0,
+        0.8,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D1": 6000.0,
+      "AnglesMultiplierPitch2D10": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D11": [
+        500.0,
+        0.99,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D12": [
+        700.0,
+        0.99,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D13": [
+        900.0,
+        0.75,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D14": [
+        1100.0,
+        0.85,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D15": [
+        1400.0,
+        0.9,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D16": [
+        1900.0,
+        0.75,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D2": 1000.0,
+      "AnglesMultiplierPitch2D20": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D21": [
+        500.0,
+        0.99,
+        0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D22": [
+        700.0,
+        0.99,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D23": [
+        900.0,
+        0.9,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D24": [
+        1100.0,
+        0.8,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D25": [
+        1400.0,
+        0.75,
+        -0.0,
+        1.0
+      ],
+      "AnglesMultiplierPitch2D26": [
+        1900.0,
+        0.7,
+        -0.0,
         1.0
       ],
       "AnglesYaw": [
@@ -2099,11 +2225,86 @@
       ]
     }
   },
+  "Instructor": {
+    "critMult": [
+      0.9,
+      0.9
+    ],
+    "limitOverload": true,
+    "overloadMult": [
+      0.7,
+      0.77,
+      0.85,
+      0.92
+    ],
+    "overloadTimeRange": [
+      0.9,
+      1.0
+    ],
+    "overloadTimeRate": 0.045,
+    "limitLoadfactor": false,
+    "loadFactorLimit": [
+      -5.0,
+      12.0
+    ],
+    "MouseAim": {
+      "forceAdvanced": true,
+      "preciseRotStopDetection": false,
+      "localDirYawPitchRotYZMax0": 0.125,
+      "autoBankLevelMultToLocalDirYawPitchRotYZMax": 0.3,
+      "rollAndPullUpWishDirYMin": -0.7,
+      "rollandPullUpWishDirMin": 0.3,
+      "allowedRollRateCoeff": [
+        0.17,
+        0.3,
+        0.4,
+        1.5
+      ],
+      "rollTimeMult": 0.44,
+      "rollPidKpMult": 1.25,
+      "dirXZFactorPitch0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorPitchMin": 0.02,
+      "dirXZFactorYaw0": [
+        0.15,
+        2.0,
+        0.35,
+        0.06
+      ],
+      "dirXZFactorYawMin": 0.02,
+      "dirXZToRollRateLim": [
+        0.0,
+        0.0
+      ],
+      "rollRateLimToDirXZFactorMin": [
+        0.7,
+        1000000.0
+      ],
+      "rollRateLimToDirXZFactorMax": [
+        0.7,
+        1000000.0
+      ]
+    }
+  },
   "Autopilot": {
     "Roll": {
       "RateMax": [
+        -190.0,
+        190.0
+      ],
+      "RateMax0": [
+        500.0,
         -120.0,
         120.0
+      ],
+      "RateMax1": [
+        800.0,
+        -180.0,
+        180.0
       ],
       "AngleMax": [
         -60.0,

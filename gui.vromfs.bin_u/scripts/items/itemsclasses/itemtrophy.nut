@@ -160,6 +160,8 @@ let Trophy = class (BaseItem) {
          : base.getSeenId()
   }
 
+  isPrizeUnitBought = @() getAircraftByName(this.getTopPrize()?.unit)?.isBought() ?? false
+
   function needUnseenAlarmIcon() {
     let t = this.getRemainingLifetime()
     if (t == -1)
@@ -167,10 +169,7 @@ let Trophy = class (BaseItem) {
     if ((get_trophy_info(this.id)?.openCount ?? 0) == 0)
       return false
 
-    if (!(getAircraftByName(this.getTopPrize()?.unit)?.isBought() ?? false))
-      return false
-
-    return t <= TIME_WEEK_IN_SECONDS
+    return this.isPrizeUnitBought() && t <= TIME_WEEK_IN_SECONDS
   }
 
   function getViewData(params = {}) {
@@ -409,6 +408,14 @@ let Trophy = class (BaseItem) {
   function doMainAction(cb, handler, params = null) {
     if (!this.isInventoryItem && this.needOpenTrophyGroupOnBuy())
       return handlersManager.loadHandler(gui_handlers.TrophyGroupShopWnd, { trophy = this })
+
+
+    if (this.isPrizeUnitBought()) {
+      scene_msg_box("prize_unit_bought", null, loc(this.getLocIdsList().vehicleAlreadyBought),
+        [["ok"]], "ok")
+      return
+    }
+
     return base.doMainAction(cb, handler, params)
   }
 

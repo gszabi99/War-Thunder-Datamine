@@ -28,6 +28,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2759,6 +2760,10 @@
         "blk": "gameData/FlightModels/weaponPresets/sea_harrier_fa2_rocket_matra_sneb.blk"
       },
       {
+        "name": "sea_harrier_fa2_bomb_540lbs",
+        "blk": "gameData/FlightModels/weaponPresets/sea_harrier_fa2_bomb_540lbs.blk"
+      },
+      {
         "name": "sea_harrier_fa2_bomb_1000lbs",
         "blk": "gameData/FlightModels/weaponPresets/sea_harrier_fa2_bomb_1000lbs.blk"
       },
@@ -3092,6 +3097,26 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "540lbs_slot1",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_l",
+                "pylon_e_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "emitter": "1000lbs_gp_004",
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "1000lbs_slot1",
             "reqModification": "uk_mk_10_1000lb",
@@ -3153,6 +3178,26 @@
               "external": true,
               "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "matra_155_pod_b002"
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "540lbs_slot2",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_l",
+                "pylon_i_l_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "emitter": "1000lbs_gp_001",
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3259,6 +3304,26 @@
         "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
+          {
+            "iconType": "bombs_middle",
+            "name": "540lbs_slot4",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_c",
+                "pylon_c_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "emitter": "1000lbs_gp_002",
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs_slot4",
@@ -3377,6 +3442,26 @@
               "external": true,
               "blk": "gameData/Weapons/containers/fr_matra_type_155_sneb_type23.blk",
               "emitter": "matra_155_pod_b003"
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "540lbs_slot6",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_i_r",
+                "pylon_i_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "emitter": "1000lbs_gp_003",
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -3668,6 +3753,26 @@
             }
           },
           {
+            "iconType": "bombs_middle",
+            "name": "540lbs_slot7",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": [
+                "pylon_e_r",
+                "pylon_e_r_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "emitter": "1000lbs_gp_005",
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "1000lbs_slot7",
             "reqModification": "uk_mk_10_1000lb",
@@ -3900,9 +4005,14 @@
     "aden_belt_pack": {
       "tier": 1
     },
+    "uk_mk_n1_540lb": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "uk_mk_10_1000lb": {
       "modClass": "weapon",
-      "tier": 2
+      "tier": 2,
+      "reqModification": "uk_mk_n1_540lb"
     },
     "fr_matra_sneb": {
       "tier": 4,

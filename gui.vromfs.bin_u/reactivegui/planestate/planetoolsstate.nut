@@ -62,6 +62,7 @@ let CustomPages = Watched({})
 let HmdGunTargeting = Watched(false)
 let MfdRwrColor = Watched(Color(0, 255, 0, 240))
 let IsLightsOn = Watched(false)
+let HmdBrightnessMult = Watched(1.0)
 
 let planeState = {
   BlkFileName,
@@ -113,6 +114,7 @@ let planeState = {
   HmdPitch,
   HmdVisible,
   HmdBlockIls,
+  HmdBrightnessMult,
   RwrBlkName,
   AimLockYaw,
   AimLockPitch,

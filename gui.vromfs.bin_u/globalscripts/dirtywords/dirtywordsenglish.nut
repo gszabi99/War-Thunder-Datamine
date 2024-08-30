@@ -520,7 +520,6 @@ fouldata =
       "^reggin",
       "^reipu",
       "^retard",
-      "^reet",
       "^ricchione",
       "^rimjob",
       "^rizzape",
@@ -688,6 +687,7 @@ fouldata =
 badphrases =
 [
   "h[i1İl]tl[e3]r"
+  "n[il1][qg6]([qg6]?[e3]r|[qg6]a)"
 ]
 
 badcombination =
@@ -723,6 +723,7 @@ badcombination =
   "porch monkey",
   "porche monkey",
   "red tube",
+  "s[i1l][e3]g[\\s]*h[ae][i1l]l",
   "sofa king",
   "suck my",
   "succhia cazzi",

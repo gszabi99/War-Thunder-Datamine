@@ -163,7 +163,7 @@ extraInfoBlock {
               img {
                 pos:t='0, ph/2-h/2+@sf/@pf'
                 position:t='relative'
-                background-image:t='#ui/gameuiskin#cursor_drag_n_drop.svg'
+                background-image:t='#ui/gameuiskin#dnd_icon.svg'
                 size:t='1@tIco, 1@tIco'
                 background-svg-size:t='1@tIco, 1@tIco'
               }

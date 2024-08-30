@@ -9,7 +9,7 @@ let { tws } = require("tws.nut")
 let { IsMlwsLwsHudVisible, CollapsedIcon } = require("twsState.nut")
 let sightIndicators = require("hud/tankSightIndicators.nut")
 let activeProtectionSystem = require("%rGui/hud/activeProtectionSystem.nut")
-let { isVisibleDmgIndicator, dmgIndicatorStates, isPlayingReplay } = require("%rGui/hudState.nut")
+let { needShowDmgIndicator, dmgIndicatorStates, isPlayingReplay } = require("%rGui/hudState.nut")
 let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 let { bw, bh } = require("style/screenState.nut")
@@ -18,6 +18,7 @@ let { PI } = require("%sqstd/math.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { mkCollapseButton } = require("airHudComponents.nut")
+let mkTankSight = require("%rGui/tankSight.nut")
 //
 
 
@@ -46,9 +47,9 @@ let xraydoll = {
 }
 
 function tankDmgIndicator() {
-  if (!isVisibleDmgIndicator.value)
+  if (!needShowDmgIndicator.get())
     return {
-      watch = isVisibleDmgIndicator
+      watch = needShowDmgIndicator
       children = xraydoll
     }
 
@@ -72,7 +73,7 @@ function tankDmgIndicator() {
     }))
   return {
     rendObj = ROBJ_IMAGE
-    watch = [ IsMlwsLwsHudVisible, isVisibleDmgIndicator, dmgIndicatorStates ]
+    watch = [ IsMlwsLwsHudVisible, needShowDmgIndicator, dmgIndicatorStates ]
     pos = dmgIndicatorStates.value?.pos ?? [0, 0]
     size = dmgIndicatorStates.value.size
     halign = ALIGN_CENTER
@@ -85,7 +86,7 @@ function tankDmgIndicator() {
         eventbus_send("update_damage_panel_state", {
           pos = [elem.getScreenPosX(), elem.getScreenPosY()]
           size = [elem.getWidth(), elem.getHeight()]
-          visible = isVisibleDmgIndicator.value
+          visible = needShowDmgIndicator.get()
         })
       }
       else
@@ -126,6 +127,7 @@ function Root() {
       tankDmgIndicator
       actionBarTopPanel
       sensorViewIndicators
+      mkTankSight()
       //
 
 

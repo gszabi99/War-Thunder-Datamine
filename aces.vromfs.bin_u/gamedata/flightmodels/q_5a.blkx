@@ -23,6 +23,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2245,6 +2246,10 @@
       {
         "name": "q_5a_type130ap",
         "blk": "gameData/FlightModels/weaponPresets/q_5a_type130ap.blk"
+      },
+      {
+        "name": "q_5a_4x250kg_incendiary_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/q_5a_4x250kg_incendiary_bombs.blk"
       }
     ]
   },
@@ -2462,6 +2467,45 @@
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "china_gp_250_3_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
+          },
+          {
+            "iconType": "napalm_middle_group_x4",
+            "name": "gp250_4_x4_inc",
+            "reqModification": "cn_q5_type_250",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+                "emitter": "china_gp_250_3_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+                "emitter": "china_gp_250_3_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+                "emitter": "china_gp_250_3_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
                 "emitter": "china_gp_250_3_004",
                 "bullets": 1,
                 "external": true,

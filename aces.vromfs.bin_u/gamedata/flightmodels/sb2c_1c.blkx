@@ -17,6 +17,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2235,6 +2236,22 @@
         "reqModification": "btd_mbc"
       },
       {
+        "name": "sb2c_1c_2x1000lbs_ap",
+        "blk": "gameData/FlightModels/weaponPresets/sb2c_1c_2x1000lbs_ap.blk",
+        "reqModification": "btd_mbc",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "sb2c_1c_1x1600lbs",
+        "blk": "gameData/FlightModels/weaponPresets/sb2c_1c_1x1600lbs.blk",
+        "reqModification": "an_mk1",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "sb2c_1c_1x_mine_mk13_mod0",
         "blk": "gameData/FlightModels/weaponPresets/sb2c_1c_1x_mine_mk13_mod0.blk",
         "reqModification": "us_mine_mk13_mod0",
@@ -2526,8 +2543,13 @@
     },
     "btd_mbc": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 3,
       "reqModification": "btd_sbc"
+    },
+    "an_mk1": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "btd_mbc"
     }
   },
   "user_skin": {

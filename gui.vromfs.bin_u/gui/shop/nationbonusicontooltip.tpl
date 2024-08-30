@@ -23,8 +23,9 @@ tdiv {
       flow:t='horizontal'
       textareaNoTab {
         smallFont:t='yes'
-        text:t='<<bonusAmount>>'
+        text:t='<<bonusText>>'
       }
+      <<^isRecentlyReleased>>
       img {
         background-image:t='#ui/gameuiskin#nation_bonus_icon.svg'
         size:t='14@sf/@pf, 18@sf/@pf'
@@ -34,6 +35,7 @@ tdiv {
         text:t='<<rangNum>>'
         smallFont:t='yes'
       }
+      <</isRecentlyReleased>>
     }
 
     textareaNoTab {

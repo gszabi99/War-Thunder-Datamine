@@ -646,8 +646,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2063,76 +2064,31 @@
     }
   },
   "PhysSys": {
-    "group": [
-      {
-        "find": "^bone_suspension_(._\\d\\d)$",
-        "points": {
-          "suspension": {
-            "name": "bone_suspension_$1"
-          },
-          "wheel": {
-            "name": "bone_wheel_$1",
-            "limitMin": [
-              -1000.0,
-              0.0,
-              0.0
-            ],
-            "limitMax": [
-              1000.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "constraints": {
-          "edge": {
-            "from": "suspension",
-            "to": "wheel"
-          }
-        }
+    "find": "^bone_suspension_(._\\d\\d)$",
+    "points": {
+      "suspension": {
+        "name": "bone_suspension_$1"
       },
-      {
-        "find": "^suspension_(\\w)$",
-        "points": {
-          "suspension": {
-            "limitMin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "name": "bone_suspension_$1_back"
-          },
-          "wheelBack": {
-            "searchChildren": {
-              "occurence": 1,
-              "limitMin": [
-                -1.0,
-                0.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                0.0,
-                0.0
-              ],
-              "parent": "suspension",
-              "find": "wheel_"
-            }
-          }
-        },
-        "constraints": {
-          "edge": {
-            "from": "suspension",
-            "to": "wheelBack"
-          }
-        }
+      "wheel": {
+        "name": "bone_wheel_$1",
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
-    ]
+    },
+    "constraints": {
+      "edge": {
+        "from": "suspension",
+        "to": "wheel"
+      }
+    }
   },
   "ammo": {
     "combustionTime": 7.0,

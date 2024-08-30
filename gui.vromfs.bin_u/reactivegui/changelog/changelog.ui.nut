@@ -20,7 +20,7 @@ let { blurPanel } = require("%rGui/components/blurPanel.nut")
 let spinner = require("%rGui/components/spinner.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { format } = require("string")
-let { steam_get_app_id = @() 236390 } = require_optional("steam")
+let { steam_get_app_id } = require("steam")
 
 let tabStyle = {
   fillColor = {

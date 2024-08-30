@@ -9,6 +9,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { eventbus_subscribe } = require("eventbus")
 let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
@@ -17,7 +18,7 @@ let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_d
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let stdMath = require("%sqstd/math.nut")
+let { fabs, round, roundToDigits, round_by_value } = require("%sqstd/math.nut")
 let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText, getUnitClassColor,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
@@ -77,6 +78,7 @@ let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%sc
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
+let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -705,7 +707,7 @@ function getFontIconByBattleType(battleType) {
 function getTopCharacteristicValue(unit, item, diff) {
   let { crewMemberTopSkill, prepareTextFunc } = item
   let { crewMember, skill, parameter } = crewMemberTopSkill
-  let params = ::g_skill_parameters_request_type.MAX_VALUES.getParameters(-1, unit)
+  let params = skillParametersRequestType.MAX_VALUES.getParameters(-1, unit)
   let topValue = params?[diff][crewMember][skill][parameter]
   return topValue != null ? prepareTextFunc(topValue) : topValue
 }
@@ -729,7 +731,7 @@ function getTopCharacteristicValue(unit, item, diff) {
   let weaponModValue = air?.secondaryWeaponMods.effect[modeName][characteristicName[1]] ?? 0
   local weaponModText = ""
   if (weaponModValue != 0)
-    weaponModText = "<color=@badTextColor>" + (weaponModValue > 0 ? " + " : " - ") + prepareTextFunc(stdMath.fabs(weaponModValue)) + "</color>"
+    weaponModText = "<color=@badTextColor>" + (weaponModValue > 0 ? " + " : " - ") + prepareTextFunc(fabs(weaponModValue)) + "</color>"
   return [text, weaponModText, vMin, vMax, value, air.shop[characteristicName[0]], showReferenceText]
 }
 
@@ -1270,7 +1272,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       let textParts = []
       local countOutputValue = min(armorPiercing.len(), 3)
       for (local i = 0; i < countOutputValue; i++)
-        textParts.append(stdMath.round(armorPiercing[i]).tointeger())
+        textParts.append(round(armorPiercing[i]).tointeger())
       holderObj.findObject("aircraft-armorPiercing").setValue(format("%s %s", " / ".join(textParts, true), loc("measureUnits/mm")))
       let armorPiercingDist = currentParams.armorPiercingDist;
       textParts.clear()
@@ -1285,21 +1287,22 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
 
     let shotFreq = ("shotFreq" in currentParams && currentParams.shotFreq > 0) ? currentParams.shotFreq : null;
-    local reloadTime = ("reloadTime" in currentParams && currentParams.reloadTime > 0) ? currentParams.reloadTime : null;
-    if ((currentParams?.reloadTimeByDiff?[diffCode] ?? 0) > 0)
-      reloadTime = currentParams.reloadTimeByDiff[diffCode]
+
+    let loader = skillParametersRequestType.CURRENT_VALUES.getParameters(crew?.id ?? -1, air)[difficulty.crewSkillName]["loader"]
+    let reloadTime = loader?["loading_time_mult"]["tankLoderReloadingTime"]
+
     let visibilityFactor = ("visibilityFactor" in currentParams && currentParams.visibilityFactor > 0) ? currentParams.visibilityFactor : null;
 
     holderObj.findObject("aircraft-shotFreq-tr").show(shotFreq);
     holderObj.findObject("aircraft-reloadTime-tr").show(reloadTime);
     holderObj.findObject("aircraft-visibilityFactor-tr").show(visibilityFactor);
     if (shotFreq) {
-      let val = stdMath.roundToDigits(shotFreq * 60, 3).tostring()
+      let val = roundToDigits(shotFreq * 60, 3).tostring()
       holderObj.findObject("aircraft-shotFreq").setValue(format("%s %s", val, loc("measureUnits/shotPerMinute")))
     }
     if (reloadTime) {
       let prepareTextFunc = @(value) format("%.1f %s", value, loc("measureUnits/seconds"))
-      let reloadTimeTxt = prepareTextFunc(reloadTime)
+      let reloadTimeTxt = prepareTextFunc(round_by_value(reloadTime, 0.1))
       holderObj.findObject("aircraft-reloadTime").setValue(reloadTimeTxt)
 
       let crewMemberTopSkill = {
@@ -1345,9 +1348,9 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     holderObj.findObject("ship-citadelArmor-tr").show(armorThicknessCitadel != null)
     if (armorThicknessCitadel != null) {
       let val = [
-        stdMath.round(armorThicknessCitadel.x).tointeger(),
-        stdMath.round(armorThicknessCitadel.y).tointeger(),
-        stdMath.round(armorThicknessCitadel.z).tointeger(),
+        round(armorThicknessCitadel.x).tointeger(),
+        round(armorThicknessCitadel.y).tointeger(),
+        round(armorThicknessCitadel.z).tointeger(),
       ]
       holderObj.findObject("ship-citadelArmor-title").setValue(loc("info/ship/citadelArmor") + loc("ui/colon"))
       holderObj.findObject("ship-citadelArmor-value").setValue(
@@ -1359,9 +1362,9 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     holderObj.findObject("ship-mainFireTower-tr").show(armorThicknessMainFireTower != null)
     if (armorThicknessMainFireTower != null) {
       let val = [
-        stdMath.round(armorThicknessMainFireTower.x).tointeger(),
-        stdMath.round(armorThicknessMainFireTower.y).tointeger(),
-        stdMath.round(armorThicknessMainFireTower.z).tointeger(),
+        round(armorThicknessMainFireTower.x).tointeger(),
+        round(armorThicknessMainFireTower.y).tointeger(),
+        round(armorThicknessMainFireTower.z).tointeger(),
       ]
       holderObj.findObject("ship-mainFireTower-title").setValue(loc("info/ship/mainFireTower") + loc("ui/colon"))
       holderObj.findObject("ship-mainFireTower-value").setValue(
@@ -1937,13 +1940,15 @@ local __types_for_coutries = null //for avoid recalculations
   return hangar_is_high_quality()
 }
 
-::get_units_list <- function get_units_list(filterFunc) {
+function get_units_list(filterFunc) {
   let res = []
   foreach (unit in getAllUnits())
     if (filterFunc(unit))
       res.append(unit)
   return res
 }
+
+::get_units_list <- get_units_list
 
 function isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought) {
   // Keep this in sync with getUnitsCountAtRank() in chard
@@ -1981,6 +1986,11 @@ function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
     }
     return unitCacheBlk
   }
+
+  eventbus_subscribe("clearCacheForBullets", function clear_unit_blk_cache(_) {
+    unitCacheName = null
+    unitCacheBlk = null
+  })
 }
 
 ::get_fm_file <- function get_fm_file(unitId, unitBlkData = null) {
@@ -2001,4 +2011,5 @@ return {
   showAirInfo
   getBattleTypeByUnit
   getFontIconByBattleType
+  get_units_list
 }

@@ -281,11 +281,6 @@
         "armorThickness": 5.0,
         "hp": 50.0
       },
-      "gun_barrel_02_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
       "gun_barrel_03_dm": {
         "armorThrough": 10.0,
         "armorThickness": 5.0,
@@ -448,8 +443,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1085,9 +1081,42 @@
     "part": [
       {
         "name": [
-          "ammo_turret_01_dm",
-          "ammo_turret_02_dm",
-          "ammo_body_01_dm"
+          "ammo_body_01_dm",
+          "ammo_body_02_dm",
+          "ammo_body_03_dm",
+          "ammo_body_04_dm",
+          "ammo_body_05_dm",
+          "ammo_body_06_dm",
+          "ammo_body_07_dm",
+          "ammo_body_08_dm",
+          "ammo_body_09_dm",
+          "ammo_body_10_dm",
+          "ammo_body_11_dm",
+          "ammo_body_12_dm",
+          "ammo_body_13_dm",
+          "ammo_body_14_dm",
+          "ammo_body_15_dm",
+          "ammo_body_16_dm",
+          "ammo_body_17_dm",
+          "ammo_body_18_dm",
+          "ammo_body_19_dm",
+          "ammo_body_20_dm",
+          "ammo_body_21_dm",
+          "ammo_body_22_dm",
+          "ammo_body_23_dm",
+          "ammo_body_24_dm",
+          "ammo_body_25_dm",
+          "ammo_body_26_dm",
+          "ammo_body_27_dm",
+          "ammo_body_28_dm",
+          "ammo_body_29_dm",
+          "ammo_body_30_dm",
+          "ammo_body_31_dm",
+          "ammo_body_32_dm",
+          "ammo_body_33_dm",
+          "ammo_body_34_dm",
+          "ammo_body_35_dm",
+          "ammo_body_36_dm"
         ],
         "onHit": [
           {
@@ -1169,9 +1198,42 @@
       },
       {
         "name": [
-          "ammo_body_03_dm",
-          "ammo_body_04_dm",
-          "ammo_body_02_dm"
+          "ammo_turret_01_dm",
+          "ammo_turret_02_dm",
+          "ammo_turret_03_dm",
+          "ammo_turret_04_dm",
+          "ammo_turret_05_dm",
+          "ammo_turret_06_dm",
+          "ammo_turret_07_dm",
+          "ammo_turret_08_dm",
+          "ammo_turret_09_dm",
+          "ammo_turret_10_dm",
+          "ammo_turret_11_dm",
+          "ammo_turret_12_dm",
+          "ammo_turret_13_dm",
+          "ammo_turret_14_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_16_dm",
+          "ammo_turret_17_dm",
+          "ammo_turret_18_dm",
+          "ammo_turret_19_dm",
+          "ammo_turret_20_dm",
+          "ammo_turret_21_dm",
+          "ammo_turret_22_dm",
+          "ammo_turret_23_dm",
+          "ammo_turret_24_dm",
+          "ammo_turret_25_dm",
+          "ammo_turret_26_dm",
+          "ammo_turret_27_dm",
+          "ammo_turret_28_dm",
+          "ammo_turret_29_dm",
+          "ammo_turret_30_dm",
+          "ammo_turret_31_dm",
+          "ammo_turret_32_dm",
+          "ammo_turret_33_dm",
+          "ammo_turret_34_dm",
+          "ammo_turret_35_dm",
+          "ammo_turret_36_dm"
         ],
         "onHit": [
           {
@@ -1503,8 +1565,28 @@
     },
     "tracks": {
       "animationMultiplier": 0.58,
-      "height": 0.013,
-      "width": 0.61
+      "height": 0.07,
+      "width": 0.7,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.7,
+        0.3
+      ],
+      "fricFrontal": [
+        1.0,
+        0.8
+      ],
+      "tracksTensionK": [
+        3.0,
+        10.0,
+        2.0
+      ],
+      "trackMesh": "ussr_kv_wide_phys_track_line",
+      "trackLen": 0.155,
+      "trackCount": 90,
+      "trackFadeTime": 1.2,
+      "trackMaxHeight": 1.32
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -1541,11 +1623,12 @@
         0.14
       ],
       "defaultGearRadius": 0.305,
-      "topGearRadius": 0.15,
+      "topGearRadius": 0.19,
       "defaultDampeningForce": [
         170000.0,
         170000.0
       ],
+      "frontBackGearRadius": 0.332,
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
     }

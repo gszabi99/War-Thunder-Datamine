@@ -49,6 +49,7 @@ let modeNames = [[string
   "hud/PD HDN search";
   "hud/PD HDN acquisition";
   "hud/PD HDN ACM";
+  "hud/PD HDN HMD";
   "hud/PD HDN BST";
   "hud/PD HDN VSL";
   "hud/PD HDN track";
@@ -580,8 +581,8 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
   if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min() && !data.hideHorAngle
     ctx |> set_color(data.horAngleColor)
     ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
-    let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
-    let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+    let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
+    let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
     let deg = loc("measureUnits/deg")
     let text = "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : " ")
     let strBox = get_str_bbox(text, text |> length(), fctx)
@@ -602,7 +603,7 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
   if get_radar_hud_has_azimuth_scale() && !data.hideVerAngle
     ctx |> set_color(data.verAngleColor)
     ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.scaleColor), get_font_fx_factor(data.scaleColor, ctx))
-    let textMin = format("%.f", rad_to_deg(get_radar_hud_elevation_min())) + loc("measureUnits/deg")
+    let textMin = fmt(":.0f", rad_to_deg(get_radar_hud_elevation_min())) + loc("measureUnits/deg")
     let strBoxMin = get_str_bbox(textMin, textMin |> length(), fctx)
     let azimuthMin = get_radar_hud_azimuth_min()
     let elevationScanMin = get_radar_hud_elevation_min() * elevMaxInv * elevMaxScreenRelSize + 0.5
@@ -611,7 +612,7 @@ def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos
     ctx |> goto_xy(posX, posY)
     ctx |> draw_str_scaled(1.0, textMin, textMin |> length())
 
-    let textMax = format("%.f", rad_to_deg(get_radar_hud_elevation_max())) + loc("measureUnits/deg")
+    let textMax = fmt(":.0f", rad_to_deg(get_radar_hud_elevation_max())) + loc("measureUnits/deg")
     let strBoxMax = get_str_bbox(textMax, textMax |> length(), fctx)
     let elevationScanMax = get_radar_hud_elevation_max() * elevMaxInv * elevMaxScreenRelSize + 0.5
     let posX2 = origin.x + elevationScanMax * sin(azimuthMin) * size.x * 0.5 - strBoxMax.width.x
@@ -701,10 +702,10 @@ def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let radiusMax = (distRel + halfDistGateWidthRel) * 0.5
 
   let color = is_color_or_white(data.lineColor) //remove color_is_white if use is_color on scope_sector
-  let lcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMin) * size.x,-radiusMin * cos(cueAzimuthMin) * size.y);
+  let lcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMin) * size.x, -radiusMin * cos(cueAzimuthMin) * size.y);
    origin + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y); ]])
   ctx |> render_line_aa(lcoord, false, 2. * data.lineWidth, float2(0, 0), color)
-  let rcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMax) * size.x,-radiusMin * cos(cueAzimuthMax) * size.y);
+  let rcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMax) * size.x, -radiusMin * cos(cueAzimuthMax) * size.y);
    origin + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y); ]])
   ctx |> render_line_aa(rcoord, false, 2. * data.lineWidth, float2(0, 0), color)
 
@@ -748,7 +749,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   var vertOffset2 = 0.
   var bottomOffset = 0.
 
-  let azRanText = !data.hideHorAngle ? format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg") : ""
+  let azRanText = !data.hideHorAngle ? fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg") : ""
   let strBoxAz = get_str_bbox(azRanText, azRanText |> length(), fctx)
   if get_radar_hud_has_azimuth_scale() && !data.hideHorAngle
     horOffset += strBoxAz.width.x
@@ -786,8 +787,8 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
     if get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
       ctx |> set_color(data.horAngleColor)
       ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.horAngleColor), get_font_fx_factor(data.horAngleColor, ctx))
-      let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
-      let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+      let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
+      let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
       let deg = loc("measureUnits/deg")
       let text = "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : " ")
       let strBoxScan = get_str_bbox(text, text |> length(), fctx)
@@ -836,10 +837,10 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
       ctx |> set_color(data.verAngleColor)
       ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.verAngleColor), get_font_fx_factor(data.verAngleColor, ctx))
 
-      let elvMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + loc("measureUnits/deg")
+      let elvMaxText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + loc("measureUnits/deg")
       let strBoxElMax = get_str_bbox(elvMaxText, elvMaxText |> length(), fctx)
 
-      let elvMinText = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + loc("measureUnits/deg")
+      let elvMinText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + loc("measureUnits/deg")
       let strBoxElMin = get_str_bbox(elvMinText, elvMinText |> length(), fctx)
 
       horOffset = max(horOffset, max(strBoxElMax.width.x, strBoxElMin.width.x))
@@ -863,12 +864,12 @@ def b_scope_square_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos
   ctx |> set_color(color)
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(color), get_font_fx_factor(color, ctx))
 
-  let azMinText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
+  let azMinText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMin = get_str_bbox(azMinText, azMinText |> length(), fctx)
   ctx |> goto_xy(pos.x + ctx |> hdpx(4.), pos.y + strBoxAzMin.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMinText, azMinText |> length())
 
-  let azMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_max()) + 0.5)) + loc("measureUnits/deg")
+  let azMaxText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_max()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMax = get_str_bbox(azMaxText, azMaxText |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x - strBoxAzMax.width.x - ctx |> hdpx(4.), pos.y + strBoxAzMax.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMaxText, azMaxText |> length())
@@ -1061,20 +1062,20 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
       let distanceOuter = distanceRel + distanceGateHalfWidthRel
 
       if target.isDetected
-        let lcoord <- to_array_move([[float2[2] float2(pos.x + angleGateLeftRel * size.x, pos.y + (1.- distanceInner) * size.y);
+        let lcoord <- to_array_move([[float2[2] float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceInner) * size.y);
          float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
         ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-        let rcoord <- to_array_move([[float2[2] float2(pos.x + angleGateRightRel * size.x, pos.y + (1.- distanceInner) * size.y);
+        let rcoord <- to_array_move([[float2[2] float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceInner) * size.y);
          float2(pos.x + angleGateRightRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
         ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
       if !target.isEnemy
         let iffMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel
-        let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1.- iffMarkDistRel) * size.y);
+        let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1. - iffMarkDistRel) * size.y);
          float2(pos.x + angleRight * size.x, pos.y + (1. - iffMarkDistRel) * size.y)]])
         ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
       if target.isAttacked
         let attackMarkDistRel = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + attackDistRelMult) * radialWidthRel
-        let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1.- attackMarkDistRel) * size.y);
+        let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1. - attackMarkDistRel) * size.y);
          float2(pos.x + angleRel * size.x, pos.y + (1. - attackMarkDistRel + attackHeightRel) * size.y)]])
         ctx |> render_line_aa(coord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
       //animation
@@ -1091,13 +1092,13 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
           float2(p.x + size.x * 0.02, p.y + size.y * 0.015 * sign)]])
           ctx |> render_line_aa(coord, true, 1., float2(0, 0), e3dColor)
         if target.losSpeed < 3000.
-          let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1.- distanceRel) * size.y);
+          let coord <- to_array_move([[float2[2] float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y);
            float2(pos.x + (angleRel - target.losHorSpeed * 0.0002) * size.x, pos.y + (1. - (distanceRel + target.losSpeed * 0.0002)) * size.y)]])
           ctx |> render_line_aa(coord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), e3dColor)
       else
         let angleCenter = (angleRight + angleLeft) * 0.5
         if data.targetFormType == 0
-          let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1.- distanceRel) * size.y);
+          let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel) * size.y);
            float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel) * size.y)]])
           ctx |> render_line_aa(coord, false, ctx |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
         elif data.targetFormType == 1
@@ -1147,10 +1148,10 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   let cueDistWidthRel =  get_radar_hud_cue_dist_width_rel()
   let cuePos = pos + float2((get_radar_hud_cue_azimuth() * (get_radar_hud_target_azimuth_width() / azimuthRange - cueAzimuthHwr) + 0.5) * size.x,
           (1. - (0.5 * cueDistWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueDistWidthRel))) * size.y)
-  let lcoord <- to_array_move([[float2[2] float2(cuePos.x- cueAzimuthHwr * size.x, cuePos.y- cueDistWidthRel * size.y * 0.5);
+  let lcoord <- to_array_move([[float2[2] float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y - cueDistWidthRel * size.y * 0.5);
    float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
   ctx |> render_line_aa(lcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
-  let rcoord <- to_array_move([[float2[2] float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y- cueDistWidthRel * size.y * 0.5);
+  let rcoord <- to_array_move([[float2[2] float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y - cueDistWidthRel * size.y * 0.5);
    float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
   ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
 
@@ -1164,8 +1165,8 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
     let hmin = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_min() - 0.5f * scanElevationWidth)) * metrToThsFeet
     let hmax = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_max() + 0.5f * scanElevationWidth)) * metrToThsFeet
 
-    let hmaxText = format("%d", roundi(hmax))
-    let hminText = format("%d", roundi(hmin))
+    let hmaxText = fmt(":d", roundi(hmax))
+    let hminText = fmt(":d", roundi(hmin))
     var fctx : StdGuiFontContext
     get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
     ctx |> set_color(data.cueTopHeiColor)
@@ -1219,8 +1220,8 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   let deg = loc("measureUnits/deg")
   let text270 = "270{deg}"
   let strBox270 = get_str_bbox(text270, text270 |> length(), fctx)
-  let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
-  let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+  let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
+  let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
   let textMeasures = !hideMeasures ? "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : "") : ""
   let strBoxMeas = get_str_bbox(textMeasures, textMeasures |> length(), fctx)
   leftOffset = data.hasTxtBlock ? strBox270.width.x : max(strBox270.width.x, strBoxMeas.width.x)
@@ -1321,10 +1322,10 @@ def b_scope_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size 
   let cueAzimuthMin = turretAzimuth + cueAzimuth - cueAzimuthHalfWidthRel * azimuthRange
   let cueAzimuthMax = turretAzimuth + cueAzimuth + cueAzimuthHalfWidthRel * azimuthRange
 
-  let lcoord <- to_array_move([[float2[2] pos + float2(radiusMin * sin(cueAzimuthMin) * size.x,-radiusMin * cos(cueAzimuthMin) * size.y);
+  let lcoord <- to_array_move([[float2[2] pos + float2(radiusMin * sin(cueAzimuthMin) * size.x, -radiusMin * cos(cueAzimuthMin) * size.y);
    pos + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y)]])
   ctx |> render_line_aa(lcoord, false, ctx |> hdpx(2.), float2(0, 0), data.color)
-  let rcoord <- to_array_move([[float2[2] pos + float2(radiusMin * sin(cueAzimuthMax) * size.x,-radiusMin * cos(cueAzimuthMax) * size.y);
+  let rcoord <- to_array_move([[float2[2] pos + float2(radiusMin * sin(cueAzimuthMax) * size.x, -radiusMin * cos(cueAzimuthMax) * size.y);
    pos + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y)]])
   ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2.), float2(0, 0), data.color)
 
@@ -1351,9 +1352,9 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
   let deg = loc("measureUnits/deg")
 
-  let textElevMax = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + deg
+  let textElevMax = fmt(":.0f", floor(rad_to_deg(get_radar_hud_elevation_max()) + 0.5)) + deg
   let strBoxElMax = get_str_bbox(textElevMax, textElevMax |> length(), fctx)
-  let textElevMin = format("%.f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + deg
+  let textElevMin = fmt(":.0f", floor(rad_to_deg(get_radar_hud_elevation_min()) + 0.5)) + deg
   let strBoxElMin = get_str_bbox(textElevMin, textElevMin |> length(), fctx)
   let textElev0 = "0{deg}"
   let strBoxEl0 = get_str_bbox(textElev0, textElev0 |> length(), fctx)
@@ -1363,8 +1364,8 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
     var textScanRange = ""
     var textVel = ""
     if get_radar_hud_has_azimuth_scale() && get_radar_hud_scan_azimuth_max() > get_radar_hud_scan_azimuth_min()
-      let azText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
-      let elText = format("%.f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+      let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
+      let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
       textScanRange = "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : "")
       let strBoxScan = get_str_bbox(textScanRange, textScanRange |> length(), fctx)
       topOffset = strBoxScan.width.y
@@ -1568,12 +1569,12 @@ def c_scope_inner_labels(var ctx : GuiContext&; data : CanvasParams&; pos : floa
   ctx |> set_color(data.color)
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
 
-  let azMinText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
+  let azMinText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMin = get_str_bbox(azMinText, azMinText |> length(), fctx)
   ctx |> goto_xy(pos.x + ctx |> hdpx(4.), pos.y + strBoxAzMin.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMinText, azMinText |> length())
 
-  let azMaxText = format("%.f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
+  let azMaxText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_azimuth_min()) + 0.5)) + loc("measureUnits/deg")
   let strBoxAzMax = get_str_bbox(azMaxText, azMaxText |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x - strBoxAzMax.width.x - ctx |> hdpx(4.), pos.y + strBoxAzMax.width.y + ctx |> hdpx(4.))
   ctx |> draw_str_scaled(1.0, azMaxText, azMaxText |> length())

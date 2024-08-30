@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { get_wpcost_blk } = require("blkGetters")
-let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
+let {TrophyMultiAward, isPrizeMultiAward }= require("%scripts/items/trophyMultiAward.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 function getGiftSparesCount(unit) {
@@ -16,7 +16,7 @@ function getGiftSparesCount(unit) {
   local content = trophy.getContent()
   local spare_count = 0
   foreach(item in content) {
-    if(::PrizesView.isPrizeMultiAward(item)) {
+    if(isPrizeMultiAward(item)) {
       let multiAward = TrophyMultiAward(item)
       let awardsType = multiAward.getAwardsType()
       if(awardsType == "spare")

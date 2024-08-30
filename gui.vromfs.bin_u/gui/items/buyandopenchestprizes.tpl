@@ -1,33 +1,4 @@
-tdiv {
-  pos:t='pw/2 - w/2, ph/2 - h/2'
-  width:t='0'
-  height:t='0'
-  position:t='absolute'
-  background-image:t='!#ui/images/chests/prizes_bg.avif'
-  background-color:t='#FFFFFF'
-  re-type:t='9rect'
-  background-position:t='18, 25, 18, 50'
-  background-svg-size:t='246@sf/@pf, 160@sf/@pf'
-  background-repeat:t='expand'
-  color-factor:t="0"
-  behaviour:t='basicSize'
-  min-width:t='192@sf/@pf'
-  width-base:t='0'
-  height-base:t='140'
-  width-end:t='110'
-  height-end:t='140'
-  size-func:t='linear'
-  size-scale:t='parent'
-  size-time:t='300'
-  size-delay:t='<<bgDelay>>'
 
-  behaviour:t='basicTransparency'
-  transp-base:t='0'
-  transp-func:t='linear'
-  transp-end:t='191'
-  transp-time:t='150'
-  transp-delay:t='<<bgDelay>>'
-}
 
 <<#prizes>>
 tdiv {
@@ -46,6 +17,7 @@ tdiv {
 
     <<#customImageData>>
     layeredIconContainer {
+      id:t='bg_icon_layer'
       height:t='<<chestItemWidth>>'
       position:t='absolute'
       effectType:t='blackOutline'
@@ -54,6 +26,7 @@ tdiv {
     <</customImageData>>
     <<^customImageData>>
     layeredIconContainer {
+      id:t='bg_icon_layer'
       size:t='<<chestItemWidth>>, <<chestItemWidth>>'
       position:t='absolute'
       effectType:t='blackOutline'

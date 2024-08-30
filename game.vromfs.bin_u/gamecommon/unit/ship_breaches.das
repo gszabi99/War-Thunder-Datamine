@@ -31,7 +31,7 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
                        ship_compartments__coverPartsRange : IPoint2List;
                        ship_cover_parts__innerPartsId : PartIdList;
                        ship_cover_parts__innerPartsCriticalWater : FloatList
-                     >) : float
+                       >) : float
   assume unit_dm = *unit.visual
   let compartment_id = add_compartment ? length(v.ship_compartments__coverPartsRange) : -1
   let cover_parts_start = length(v.ship_cover_parts__partId)
@@ -146,7 +146,7 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
                                       ship_compartments__coverPartsRange : IPoint2List;
                                       ship_cover_parts__innerPartsId : PartIdList;
                                       ship_cover_parts__innerPartsCriticalWater : FloatList
-                                    >) : void
+                                      >) : void
   let unit = get_unit(uid)
   assert(unit != null)
   if unit == null
@@ -266,7 +266,7 @@ def has_any_repairable_breaches(unit : Unit?; v : tuple<
                                   ship_breaches__amountToRepair : FloatList;
                                   ship_breaches__coverId : IntList;
                                   ship_cover_parts__partId : PartIdList
-                                >) : bool
+                                  >) : bool
   assume dmData = unit.dmData
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
     if amount_to_repair > 0.0f && !is_cover_part_dead_cover_id(unit, cover_id) <| v
@@ -279,7 +279,7 @@ def calc_repair_speed_mult(unit : Unit?; v : tuple<
                              ship__modernDamageControl : bool;
                              ship_damage_control__repairSpeedMult : float;
                              ship_damage_control__unwateringSpeedMult : float
-                           >) : float
+                             >) : float
   let ship = as_ship(unit)
   var repair_speed_mult = (ship != null ? ship.crewAliveMult : 1.0f) * ship.shipProps.breachRepairSpeed
   if v.ship__modernDamageControl
@@ -296,7 +296,7 @@ def calc_time_to_repair_breaches(unit : Unit?; repair_speed_mult : float;
                                    ship_breaches__amountToRepair : FloatList;
                                    ship_breaches__coverId : IntList;
                                    ship_cover_parts__partId : PartIdList
-                                 >) : float
+                                   >) : float
   var time = 0.0f
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
     if !is_cover_part_dead_cover_id(unit, cover_id) <| v
@@ -311,7 +311,7 @@ def calc_pump_mass_vel(unit : Unit?;
                          ship_cover_parts__water : Point4List;
                          ship_damage_control__unwateringSpeedMult : float;
                          ship__waterMassVelMult : float
-                       >) : float
+                         >) : float
   let ship = as_ship(unit)
   if ship == null
     return 0.0f
@@ -348,7 +348,7 @@ def calc_time_to_unwater(unit : Unit?;
                            ship_cover_parts__partId : PartIdList;
                            ship_damage_control__unwateringSpeedMult : float;
                            ship__waterMassVelMult : float
-                         >) : float
+                           >) : float
   let pump_water_mass_vel = abs(calc_pump_mass_vel(unit) <| v)
 
   var res_time = 0.0f
@@ -371,19 +371,19 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                    v : tuple<
                                      ship__modernDamageControl : bool;
                                      ship_cover_parts__disableDeadParts : bool;
-                                     ship__repairBreachesRemainingTime : float-const;
+                                     ship__repairBreachesRemainingTime : float -const;
                                      repair_system_remaining_repair_time : float;
                                      ship_damage_control__unwateringSpeedMult : float;
                                      ship_damage_control__repairSpeedMult : float;
                                      ship_breaches__id : IntList;
-                                     ship_breaches__amountToRepair : FloatList- const;
+                                     ship_breaches__amountToRepair : FloatList -const;
                                      ship_breaches__coverId : IntList;
                                      ship_cover_parts__water : Point4List;
                                      ship_cover_parts__partId : PartIdList;
                                      ship__pumpsPartId : IntList;
                                      ship__waterMassVelMult : float;
-                                     ship__unwateringRemainingTime : float-const
-                                   >) : void
+                                     ship__unwateringRemainingTime : float -const
+                                     >) : void
   let unit = get_unit(uid)
   let ship = unit |> as_ship()
   if ship == null || unit.isDelayed
@@ -584,8 +584,8 @@ def ship_unwatering_update_es(info : UpdateStageInfoAct;
                                 ship_cover_parts__partId : PartIdList;
                                 ship_damage_control__unwateringSpeedMult : float;
                                 ship__waterMassVelMult : float;
-                                ship__unwateringRemainingTime : float-const
-                              >)
+                                ship__unwateringRemainingTime : float -const
+                                >)
   if v.ship__unwateringRemainingTime > 0.0f
     let unit = get_unit(uid)
     if unit == null || unit.isDelayed
@@ -605,17 +605,17 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
                                            v : tuple<
                                              ship_cover_parts__disableDeadParts : bool;
                                              ship__modernDamageControl : bool;
-                                             ship__repairBreachesRemainingTime : float-const;
+                                             ship__repairBreachesRemainingTime : float -const;
                                              ship_damage_control__repairSpeedMult : float;
                                              ship_damage_control__unwateringSpeedMult : float;
                                              ship_breaches__amountToRepair : FloatList;
                                              ship_breaches__coverId : IntList;
-                                             ship__unwateringRemainingTime : float-const;
+                                             ship__unwateringRemainingTime : float -const;
                                              ship__pumpsPartId : IntList;
                                              ship_cover_parts__water : Point4List;
                                              ship_cover_parts__partId : PartIdList;
                                              ship__waterMassVelMult : float
-                                           >)
+                                             >)
   if evt.repair
     if v.ship__repairBreachesRemainingTime <= 0.0f && v.ship__unwateringRemainingTime <= 0.0f
       let unit = get_unit(uid)
@@ -753,11 +753,11 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
                                        uid : int;
                                        v : tuple<
                                          ship_cover_parts__disableDeadParts : bool;
-                                         ship_phys_proxy__additionalWater : float-const;
-                                         ship_phys_proxy__waterLeaking : bool- const;
-                                         ship_phys_proxy__avgBreachPos : float3- const;
+                                         ship_phys_proxy__additionalWater : float -const;
+                                         ship_phys_proxy__waterLeaking : bool -const;
+                                         ship_phys_proxy__avgBreachPos : float3 -const;
                                          ship_cover_parts__partId : PartIdList;
-                                         ship_cover_parts__water : Point4List- const;
+                                         ship_cover_parts__water : Point4List -const;
                                          ship_cover_parts__pos : Point3List;
                                          ship_cover_parts__compartmentId : IntList;
                                          ship_cover_parts__innerPartsRange : IPoint2List;
@@ -767,9 +767,9 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
                                          ship_damage_control__unwateringSpeedMult : float;
                                          ship__waterMassVelMult : float;
                                          ship__unwateringRemainingTime : float;
-                                         ship_flooding__waterLeftSide : float-const;
-                                         ship_flooding__waterRightSide : float-const
-                                       >)
+                                         ship_flooding__waterLeftSide : float -const;
+                                         ship_flooding__waterRightSide : float -const
+                                         >)
   // we will not pump water if the process was stopped
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed

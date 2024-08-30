@@ -375,35 +375,6 @@
         "armorThrough": 15.0
       }
     },
-    "cannon_breech": {
-      "armorClass": "tank_structural_steel",
-      "hp": 150.0,
-      "armorThickness": 150.0,
-      "fireProtectionHp": 5.0,
-      "hidableInViewer": false,
-      "cannon_breech_dm": {
-        "restrainDamage": 0.5
-      },
-      "cannon_breech_01_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_02_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_03_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_04_dm": {
-        "armorThickness": 10.0
-      },
-      "cannon_breech_05_dm": {
-        "armorThickness": 10.0
-      },
-      "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
-      }
-    },
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
@@ -666,6 +637,16 @@
         "armorThickness": 10.0,
         "hp": 100.0
       }
+    },
+    "cannon_breech": {
+      "armorClass": "tank_structural_steel",
+      "hp": 150.0,
+      "armorThickness": 150.0,
+      "fireProtectionHp": 5.0,
+      "hidableInViewer": false,
+      "restrainDamage": 0.5,
+      "cannon_breech_01_dm": {},
+      "cannon_breech_02_dm": {}
     }
   },
   "sound": {
@@ -1478,7 +1459,8 @@
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": "commander",
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
@@ -1873,7 +1855,7 @@
           ],
           "pitch": [
             -10.0,
-            50.0
+            22.0
           ]
         }
       },
@@ -2158,61 +2140,6 @@
           "count": 40
         }
       }
-    }
-  },
-  "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)_01$",
-    "points": {
-      "suspension_01": {
-        "name": "bone_suspension_$1_01"
-      },
-      "wheel_01": {
-        "searchChildren": {
-          "parent": "suspension_01",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "suspension_02": {
-        "name": "bone_suspension_$1_02"
-      },
-      "wheel_02": {
-        "searchChildren": {
-          "parent": "suspension_02",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
-          ]
-        }
-      }
-    },
-    "constraints": {
-      "edge": [
-        {
-          "from": "suspension_01",
-          "to": "wheel_01"
-        },
-        {
-          "from": "suspension_02",
-          "to": "wheel_02"
-        }
-      ]
     }
   },
   "ammo": {

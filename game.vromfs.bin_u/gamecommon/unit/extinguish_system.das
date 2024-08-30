@@ -329,7 +329,7 @@ def can_unit_be_extinguished_with_extinguisher(eid : EntityId)
   query(eid) <| $ [block_with_bundle(v), es] (v : tuple<
                                                 fire_data__startTime : FloatList;
                                                 fire_data__fireParamsId : IntList
-                                              >)
+                                                >)
     res = can_be_extinguished_with_extinguisher(v)
   return res
 
@@ -407,7 +407,7 @@ def extinguish_system_stop_burn_with_extinguisher_handle_es(evt : EventExtinguis
                                                             fire_data__startTime : FloatList;
                                                             fire_data__radius : Point2List;
                                                             fire_data__initiatorId : UInt32List
-                                                          >)
+                                                            >)
       if with_penalty
         var fireId = -1
         var maxSeverity : float = 0.0f
@@ -488,7 +488,7 @@ def extinguish_system_extinguish_by_ally_handle_es(evt : EventExtinguishSystemEx
 
                                                      fire_data__fireParamsId : IntList;
                                                      fire_data__startTime : FloatList
-                                                   >)
+                                                     >)
   let unit = get_unit(uid)
   if unit == null || unit.isDelayed
     return

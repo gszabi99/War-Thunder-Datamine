@@ -616,8 +616,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2437,7 +2438,8 @@
     "engine": {
       "horsePowers": 1200.0,
       "maxRPM": 2300.0,
-      "minRPM": 600.0
+      "minRPM": 600.0,
+      "model": "8va_34twk"
     },
     "mechanics": {
       "steerType": "clutch_braking",
@@ -3690,10 +3692,10 @@
     "120mm_NATO_HEAT_FS": {},
     "120mm_NATO_APDS_FS": {},
     "120mm_NATO_APDS_FS_ammo_pack": {
-      "tier": 3
+      "tier": 2
     },
     "laser_rangefinder_lws": {
-      "tier": 2,
+      "tier": 3,
       "modClass": "firepower",
       "effects": {
         "rangefinderMounted": true,

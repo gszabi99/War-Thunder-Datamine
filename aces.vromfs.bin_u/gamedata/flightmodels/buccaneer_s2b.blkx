@@ -28,6 +28,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2790,6 +2791,10 @@
       {
         "name": "buccaneer_s2b_lgbu_13",
         "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2b_lgbu_13.blk"
+      },
+      {
+        "name": "buccaneer_s2b_500lb_drag_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2b_500lb_drag_bombs.blk"
       }
     ]
   },
@@ -3223,6 +3228,20 @@
               "slot": 2,
               "preset": "pave_spike"
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_001"
+            }
           }
         ]
       },
@@ -3372,6 +3391,20 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/ter_uk_1000lbs_mk_n1_x2_left_wing.blk",
               "emitter": "ter_002"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_002"
             }
           },
           {
@@ -3708,6 +3741,20 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_003"
+            }
+          },
+          {
             "iconType": "rls",
             "name": "data_link_pod",
             "reqModification": "fr_aj_168",
@@ -3932,6 +3979,20 @@
             "DependentWeaponPreset": {
               "slot": 2,
               "preset": "pave_spike"
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x6",
+            "name": "500lbs_drag_mer",
+            "ShowNodes": {
+              "node": "pylon_late4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/mer_us_500lb_mk_82_x6_air.blk",
+              "emitter": "mer_004"
             }
           }
         ]

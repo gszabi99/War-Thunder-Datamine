@@ -543,8 +543,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2136,19 +2137,19 @@
       "maxBrakeForce": 195000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 5.42,
-      "sideGearRatio": 1.0,
+      "sideGearRatio": 1.07,
       "neutralGearRatio": 9.0,
       "gearRatios": {
         "ratio": [
-          -6.89,
+          -4.2,
           -8.4,
           0.0,
           6.0,
           4.5,
           3.0,
-          2.16,
-          1.62,
-          1.145
+          2.06,
+          1.52,
+          1.08
         ]
       }
     },
@@ -3463,6 +3464,15 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "rsa_camo_gray_earth_stone*"
+      }
+    },
+    {
+      "name": "us_camo_modern_green",
+      "nameLocId": "skin/us_camo_modern_green",
+      "descLocId": "skin/us_camo_modern_green/desc",
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "us_camo_modern_green*"
       }
     }
   ]

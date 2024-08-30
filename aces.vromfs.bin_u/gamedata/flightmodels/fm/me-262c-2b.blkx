@@ -41,6 +41,18 @@
     0.19,
     0.1
   ],
+  "flapsLimByMach": [
+    0.85,
+    0.9,
+    1.0,
+    1.0
+  ],
+  "flapsLimByIas": [
+    370.0,
+    600.0,
+    1.0,
+    0.05
+  ],
   "SweptWingAngle": 17.0,
   "WingTaperRatio": 3.0,
   "Wingspan": 12.5,
@@ -1683,21 +1695,87 @@
   },
   "Gear": {
     "SinkFactor": 500.0,
+    "SinkRateMult": 1.0869,
     "WaterFriction": 1.0,
-    "RetractableTailStrut": true,
+    "WaterFrictionDefault": 2.5,
+    "GearOffset": 0.0,
     "UseCenterOfGravity": true,
-    "FrontalSpringsHeight": 0.6,
-    "TailSpringsHeight": 0.6,
-    "FrontalSpringsCoeff": 351977.0,
-    "TailSpringsCoeff": 351977.0,
+    "HasGear": true,
     "HasWheels": true,
-    "LeftWheelRadius": 0.385,
-    "RightWheelRadius": 0.385,
-    "CenterWheelRadius": 0.303,
     "Height": 1.82,
     "Pitch": 0.0,
-    "Floats": false,
-    "FullBrakeSlidingFrictionMult": 0.45
+    "WaterSpeedPropCheckVal": [
+      0.1,
+      0.1
+    ],
+    "WaterWaveHeightForCheck": [
+      0.0,
+      100.0
+    ],
+    "WaterRudderSpeedRange": [
+      8.33333,
+      13.8889
+    ],
+    "StrutL": {
+      "SpringHeight": 0.6,
+      "SpringCoeff": 351977.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
+      "WheelRadus": 0.385,
+      "Retractable": true,
+      "LeftBrake": true,
+      "RightBrake": false,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
+      "SteerType": "Fixed"
+    },
+    "StrutR": {
+      "SpringHeight": 0.6,
+      "SpringCoeff": 351977.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
+      "WheelRadus": 0.385,
+      "Retractable": true,
+      "LeftBrake": false,
+      "RightBrake": true,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
+      "SteerType": "Fixed"
+    },
+    "StrutC": {
+      "SpringHeight": 0.6,
+      "SpringCoeff": 351977.0,
+      "SpringDampCoeff": 1.0,
+      "SpringDampForceMaxMult": 1.0,
+      "WheelRestitutionCoeff": 0.0,
+      "WheelRadus": 0.303,
+      "Retractable": true,
+      "LeftBrake": true,
+      "RightBrake": true,
+      "FullBrakeSlidingFrictionMult": [
+        0.0,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "WaterFriction": 1.0,
+      "BreakTresholdMult": 1.0,
+      "SteerType": "ManualSteering"
+    }
   },
   "Passport": {
     "mass": 0.0,

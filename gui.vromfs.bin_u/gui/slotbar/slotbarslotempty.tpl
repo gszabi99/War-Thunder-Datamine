@@ -94,6 +94,7 @@ shopItem {
       position:t='relative'
       top:t='50%ph-50%h'
       flow:t='horizontal'
+      margin-right:t='0.5@blockInterval'
       text {
         text:t=' ('
         smallFont:t='yes'
@@ -102,7 +103,7 @@ shopItem {
         position:t='relative'
         top:t='50%ph-50%h'
         size:t='1@tIco, 1@tIco'
-        background-image:t='#ui/gameuiskin#cursor_drag_n_drop.svg'
+        background-image:t='#ui/gameuiskin#dnd_icon.svg'
         background-svg-size:t='@tIco, @tIco'
         background-color:t='@buttonFontColor'
       }

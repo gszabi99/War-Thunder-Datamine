@@ -7,11 +7,11 @@ let interopGet = require("interopGen.nut")
 
 
 let shellHitDamageEvents = {
-  hitEventsCount = 0
+  hitEventsCount = Watched(0)
   crewDamageEventCount = 0
   partDestroyedEventCount = 0
-  armorPiercesEventCount = 0
-  armorBlockedEventCount = 0
+  armorPiercesEventCount = Watched(0)
+  armorBlockedEventCount = Watched(0)
 }
 
 let gunStatesFirstRow = []
@@ -111,11 +111,11 @@ interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTim
 }
 
 interop.updateShellHitDamageEventCounts <- function(hit, crew, part, pierce, blocked) {
-  shellHitDamageEvents.hitEventsCount = hit
+  shellHitDamageEvents.hitEventsCount.set(hit)
   shellHitDamageEvents.crewDamageEventCount = crew
   shellHitDamageEvents.partDestroyedEventCount = part
-  shellHitDamageEvents.armorPiercesEventCount = pierce
-  shellHitDamageEvents.armorBlockedEventCount = blocked
+  shellHitDamageEvents.armorPiercesEventCount.set(pierce)
+  shellHitDamageEvents.armorBlockedEventCount.set(blocked)
 }
 
 

@@ -15,7 +15,6 @@
       "level": "levels/avg_africa_desert.bin",
       "environment": "16",
       "weather": "clear",
-      "forbiddenDifficulty": "hardcore",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
@@ -77,32 +76,6 @@
       },
       "conditions": {},
       "actions": {
-        "unitMoveTo": {
-          "target": "player_respawn_pt",
-          "follow_target": false,
-          "teleportHeightType": "target",
-          "useUnitHeightForTele": false,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 0.0,
-          "horizontalDirectionForTeleport": false,
-          "object_marking": 0,
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
-          "object": "player",
-          "move_type": "teleport",
-          "speed": 200.0,
-          "lookat": "player_lock_pt",
-          "velocity": 450.0
-        },
         "unitSetProperties": [
           {
             "object": "target_tank01",
@@ -133,9 +106,13 @@
               "ID_LOCK_TARGETING_AT_POINT",
               "ID_LOCK_TARGET",
               "ID_TOGGLE_LASER_DESIGNATOR",
+              "ID_LOCK_TARGETING",
               "AXIS_TURRET_X",
               "AXIS_TURRET_Y",
-              "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+              "ID_SHOW_MULTIFUNC_WHEEL_MENU",
+              "ID_GUIDED_BOMBS_LOCK",
+              "ID_GUIDED_BOMBS",
+              "ID_TOGGLE_VIEW"
             ]
           }
         ],
@@ -143,11 +120,95 @@
           "control": "ID_LOCK_TARGET",
           "holdTime": 1.0
         },
-        "triggerEnable": {
-          "target": "check_agm_btn_bounded"
+        "triggerEnable": [
+          {
+            "target": "spawn_difficulty"
+          },
+          {
+            "target": "check_agm_btn_bounded"
+          }
+        ],
+        "wait": {
+          "time": 0.5
         }
       },
       "else_actions": {}
+    },
+    "spawn_difficulty": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "player_respawn_pt_sim",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "player",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "lookat": "player_lock_pt_sim",
+          "velocity": 450.0
+        }
+      },
+      "else_actions": {
+        "unitMoveTo": {
+          "target": "player_respawn_pt",
+          "follow_target": false,
+          "teleportHeightType": "target",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 0.0,
+          "horizontalDirectionForTeleport": false,
+          "object_marking": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "object": "player",
+          "move_type": "teleport",
+          "speed": 200.0,
+          "lookat": "player_lock_pt",
+          "velocity": 450.0
+        }
+      }
     },
     "check_agm_btn_bounded": {
       "is_enabled": false,
@@ -408,20 +469,12 @@
           "object": "target_tank01",
           "forceVisibleOnMap": true
         },
-        "playerControls": {
+        "__playerControls": {
           "setStatus": "enable",
           "control": [
             "AXIS_MOUSE_AIM_Y",
-            "AXIS_ELEVATOR",
-            "ID_TOGGLE_LASER_DESIGNATOR"
+            "AXIS_ELEVATOR"
           ]
-        },
-        "missionSetTimeSpeed": {
-          "speed": 1.0,
-          "realtimeTriggers": true
-        },
-        "wait": {
-          "time": 0.1
         },
         "triggerEnable": {
           "target": "start_msg"
@@ -581,11 +634,23 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "notEqual"
+        }
+      },
       "actions": {
         "missionSetTimeSpeed": {
           "speed": 0.3,
           "realtimeTriggers": true
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_MOUSE_AIM_Y",
+            "AXIS_ELEVATOR"
+          ]
         },
         "playHint": {
           "hintType": "standard",
@@ -608,14 +673,90 @@
           "target": "aim_starts"
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "missionSetTimeSpeed": [
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        ],
+        "wait": {
+          "time": 3.0
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "AXIS_MOUSE_AIM_Y",
+            "AXIS_ELEVATOR"
+          ]
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/sim_down",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "hudElementSelectionShade": {
+          "element": "mouseJoy_bottom",
+          "targetName": "target_tank02"
+        },
+        "triggerEnable": {
+          "target": [
+            "aim_starts",
+            "aim_sim"
+          ]
+        }
+      }
+    },
+    "aim_sim": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenCursorIn": {
+          "cursor": "mouseJoy",
+          "element": "mouseJoy_bottom"
+        }
+      },
+      "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        }
+      },
+      "else_actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        }
+      }
     },
     "aim_starts": {
       "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
@@ -631,6 +772,9 @@
         }
       },
       "actions": {
+        "triggerDisable": {
+          "target": "aim_sim"
+        },
         "__missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
@@ -649,15 +793,45 @@
           "speed": 0.0,
           "realtimeTriggers": true
         },
-        "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
-        },
         "triggerEnable": {
-          "target": "activate_spi1"
+          "target": [
+            "check_spi_button",
+            "aim_difficulty"
+          ]
         }
       },
       "else_actions": {}
+    },
+    "aim_difficulty": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "hudElementSelectionShade": {
+          "element": ""
+        }
+      },
+      "else_actions": {
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        }
+      }
     },
     "check_spi_button": {
       "is_enabled": false,
@@ -703,16 +877,10 @@
       },
       "conditions": {},
       "actions": {
-        "missionSetTimeSpeed": [
-          {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          },
-          {
-            "speed": 0.3,
-            "realtimeTriggers": true
-          }
-        ],
+        "missionSetTimeSpeed": {
+          "speed": 0.0,
+          "realtimeTriggers": true
+        },
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/spi1",
@@ -729,6 +897,10 @@
         },
         "wait": {
           "time": 0.5
+        },
+        "__missionSetTimeSpeed": {
+          "speed": 0.3,
+          "realtimeTriggers": true
         },
         "triggerEnable": {
           "target": [
@@ -803,7 +975,7 @@
       "actions": {
         "missionSetTimeSpeed": [
           {
-            "speed": 0.5,
+            "speed": 0.3,
             "realtimeTriggers": true
           },
           {
@@ -946,7 +1118,7 @@
           "target": "time_out_timer_rocket"
         },
         "missionSetTimeSpeed": {
-          "speed": 1.0,
+          "speed": 0.3,
           "realtimeTriggers": true
         },
         "wait": {
@@ -1163,22 +1335,17 @@
             "realtimeTriggers": true
           },
           {
-            "speed": 0.0,
+            "speed": 0.1,
             "realtimeTriggers": true
           }
         ],
-        "playerControls": [
-          {
-            "setStatus": "disable",
-            "control": "ID_TOGGLE_VIEW"
-          },
-          {
-            "setStatus": "enable",
-            "control": "ID_ZOOM_TOGGLE"
-          }
-        ],
+        "__playerControls": {
+          "setStatus": "disable",
+          "control": "ID_TOGGLE_VIEW"
+        },
         "hudElementSelectionShade": {
-          "element": ""
+          "element": "curTarget",
+          "targetName": "target_tank02"
         },
         "unitSetProperties": {
           "object": "target_tank01",
@@ -1186,8 +1353,15 @@
           "forceVisibleOnMap": true,
           "forceLockTarget": true
         },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": [
+            "ID_ZOOM_TOGGLE",
+            "ID_GUIDED_BOMBS"
+          ]
+        },
         "triggerEnable": {
-          "target": "check_zoom"
+          "target": "zoom"
         }
       },
       "else_actions": {}
@@ -1246,14 +1420,9 @@
       },
       "conditions": {},
       "actions": {
-        "__wait": [
-          {
-            "time": 1.5
-          },
-          {
-            "time": 2.0
-          }
-        ],
+        "__wait": {
+          "time": 1.5
+        },
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/view_target",
@@ -1267,9 +1436,12 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "missionSetTimeSpeed": {
+        "__missionSetTimeSpeed": {
           "speed": 0.1,
           "realtimeTriggers": true
+        },
+        "wait": {
+          "time": 2.0
         },
         "varSetBool": {
           "value": true,
@@ -1299,9 +1471,26 @@
           "cursor": "crosshair",
           "element": "curTarget",
           "targetName": "target_tank01"
+        },
+        "playerWhenOptions": {
+          "currentMode": "gunner"
         }
       },
       "actions": {
+        "__playerControls": {
+          "setStatus": "enable",
+          "control": "ALL"
+        },
+        "playerControls": [
+          {
+            "setStatus": "disable",
+            "control": "ID_TOGGLE_VIEW"
+          },
+          {
+            "setStatus": "enable",
+            "control": "ID_GUIDED_BOMBS_LOCK"
+          }
+        ],
         "missionSetTimeSpeed": [
           {
             "speed": 1.0,
@@ -1313,11 +1502,7 @@
           }
         ],
         "wait": {
-          "time": 2.0
-        },
-        "playerControls": {
-          "setStatus": "enable",
-          "control": "ID_GUIDED_BOMBS_LOCK"
+          "time": 0.5
         },
         "triggerEnable": {
           "target": [
@@ -1860,7 +2045,7 @@
         "playerOptions": {
           "currentView": "default"
         },
-        "missionSetTimeSpeed": {
+        "__missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
         },
@@ -1872,8 +2057,7 @@
               "AXIS_MOUSE_AIM_X",
               "AXIS_ELEVATOR",
               "AXIS_AILERONS",
-              "AXIS_RUDDER",
-              "ID_TOGGLE_LASER_DESIGNATOR"
+              "AXIS_RUDDER"
             ]
           },
           {
@@ -1881,7 +2065,7 @@
             "control": "ID_TOGGLE_VIEW"
           }
         ],
-        "playHint": {
+        "__playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/view_target_after",
           "action": "show",
@@ -1894,8 +2078,11 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "wait": {
+        "__wait": {
           "time": 2.0
+        },
+        "hudElementSelectionShade": {
+          "element": ""
         },
         "triggerEnable": {
           "target": "rocket_start"
@@ -1916,13 +2103,22 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "notEqual"
+        }
+      },
       "actions": {
+        "missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
         "playHint": [
           {
             "hintType": "standard",
-            "name": "",
-            "action": "hide",
+            "name": "hints/aircraft_modifications/view_target_after",
+            "action": "show",
             "shouldFadeOut": false,
             "isOverFade": false,
             "time": -1.0,
@@ -1947,12 +2143,8 @@
             "item": "@fire_shortcut_id"
           }
         ],
-        "hudElementSelectionShade": {
-          "element": ""
-        },
-        "missionSetTimeSpeed": {
-          "speed": 1.0,
-          "realtimeTriggers": true
+        "wait": {
+          "time": 2.0
         },
         "triggerEnable": {
           "target": [
@@ -1962,7 +2154,37 @@
           ]
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "missionSetTimeSpeed": {
+          "speed": 0.5,
+          "realtimeTriggers": true
+        },
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_guided_bombs_tv/target_sim",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "@fire_shortcut_id"
+        },
+        "triggerEnable": {
+          "target": [
+            "check_rocket",
+            "time_out_timer_rocket",
+            "activate_fire_button"
+          ]
+        }
+      }
     },
     "time_out_timer_rocket": {
       "is_enabled": false,
@@ -2189,13 +2411,16 @@
         "hudElementSelectionShade": {
           "element": ""
         },
-        "wait": {
-          "time": 1.0
-        },
-        "__missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": true
-        },
+        "missionSetTimeSpeed": [
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        ],
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/after_bomb",
@@ -2209,13 +2434,69 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
+        "wait": {
+          "time": 2.0
+        },
         "triggerEnable": {
           "target": [
             "target_missed",
             "target_hit",
-            "boomb_view_info"
+            "boomb_view_info",
+            "after_bomb_sim"
           ]
         }
+      },
+      "else_actions": {}
+    },
+    "after_bomb_sim": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "simulator",
+          "is": "equal"
+        }
+      },
+      "actions": {
+        "wait": [
+          {
+            "time": 1.0
+          },
+          {
+            "time": 2.0
+          }
+        ],
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/sim_up",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": 2.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "hudElementSelectionShade": [
+          {
+            "element": "mouseJoy_top"
+          },
+          {
+            "element": ""
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -2234,10 +2515,6 @@
       },
       "conditions": {},
       "actions": {
-        "missionSetTimeSpeed": {
-          "speed": 1.0,
-          "realtimeTriggers": true
-        },
         "__playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/boomb_view",
@@ -2952,6 +3229,64 @@
           2247.78,
           896.058,
           3737.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "player_respawn_pt_sim": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.72705,
+          -4.73915,
+          8.63468
+        ],
+        [
+          0.591485,
+          8.80049,
+          4.71185
+        ],
+        [
+          -9.83196,
+          -0.303028,
+          1.8002
+        ],
+        [
+          1460.5,
+          3380.75,
+          421.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "player_lock_pt_sim": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.72705,
+          -4.73915,
+          8.63468
+        ],
+        [
+          0.591485,
+          8.80049,
+          4.71185
+        ],
+        [
+          -9.83196,
+          -0.303028,
+          1.8002
+        ],
+        [
+          2118.05,
+          3397.8,
+          3102.65
         ]
       ],
       "objLayer": 0,

@@ -16,7 +16,7 @@ let { getEntitlementConfig, getEntitlementName,
 let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
-let TrophyMultiAward = require("%scripts/items/trophyMultiAward.nut")
+let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getFullUnlockDescByName, getUnlockNameText,
@@ -187,6 +187,158 @@ let prizeViewConfig = {
   }
 }
 
+function getItemTypeName(item) {
+  return item ? item.getTypeName() : ""
+}
+
+function getPrizeText(prize, colored = true, v_typeName = false,
+    showCount = true, full = false, forcedColor = ""
+) {
+  if (!prize)
+    return ""
+
+  local name = ""
+  local color = "activeTextColor"
+  if (isPrizeMultiAward(prize)) {
+    if (full) {
+      name = TrophyMultiAward(prize).getDescription(true)
+      color = ""
+    }
+    else
+      name = TrophyMultiAward(prize).getName()
+  }
+  else if (prize?.unit) {
+    if (v_typeName)
+      name = loc("trophy/unlockables_names/aircraft")
+    else {
+      name = getUnitName(prize.unit, true)
+      color = getUnitClassColor(prize.unit)
+    }
+  }
+  else if (prize?.rentedUnit) {
+    if (v_typeName)
+      name = loc("shop/unitRent")
+    else {
+      let unitName = prize.rentedUnit
+      let unitColor = getUnitClassColor(unitName)
+      name = loc("shop/rentUnitFor", {
+        unit = colorize(unitColor, getUnitName(unitName, true))
+        time = colorize("userlogColoredText", time.hoursToString(prize?.timeHours ?? 0))
+      })
+    }
+  }
+  else if (prize?.item || prize?.trophy) {
+    let id = prize?.item || prize?.trophy
+    local item = findItemById(id)
+    if (v_typeName) {
+      name = getItemTypeName(item)
+      color = item ? "activeTextColor" : "red"
+    }
+    else {
+      if (!item)
+        name = id
+      else {
+        if (shouldDisguiseItem(item)) {
+          item = item.makeEmptyInventoryItem()
+          item.setDisguise(true)
+        }
+        name = item.getPrizeDescription(prize?.count ?? 1, colored)
+        if (name)
+          showCount = false
+        else
+          name = item.getShortDescription(colored)
+      }
+      color = item ? "activeTextColor" : "red"
+    }
+  }
+  else if (prize?.premium_in_hours) {
+    name = loc("charServer/entitlement/PremiumAccount") + loc("ui/colon") + time.hoursToString(prize.premium_in_hours)
+    color = "userlogColoredText"
+  }
+  else if (prize?.entitlement) {
+    name = getEntitlementName(getEntitlementConfig(prize.entitlement))
+    color = "userlogColoredText"
+  }
+  else if (prize?.unlock) {
+    let unlockId = prize.unlock
+    let unlockType = getUnlockType(unlockId)
+    let typeValid = unlockType >= 0
+
+    local unlockTypeName = isLoadingBgUnlock(unlockId)
+      ? loc("loading_bg")
+      : loc($"trophy/unlockables_names/{typeValid ? get_name_by_unlock_type(unlockType) : "unknown"}")
+    unlockTypeName = colored ? colorize(typeValid ? "activeTextColor" : "red", unlockTypeName) : unlockTypeName
+
+    name = unlockTypeName
+    if (!v_typeName) {
+      local nameText = getUnlockNameText(unlockType, unlockId)
+      if (colored)
+        nameText = colorize(typeValid ? "userlogColoredText" : "red", nameText)
+      if (unlockType != UNLOCKABLE_SLOT && nameText != "")
+        name += loc("ui/colon") + nameText
+    }
+    if (full)
+      name += "\n" + getFullUnlockDescByName(unlockId)
+    color = "commonTextColor"
+  }
+  else if (prize?.unlockType)
+    name = loc($"trophy/unlockables_names/{prize.unlockType}")
+  else if (prize?.resource) {
+    if (prize?.resourceType) {
+      let decoratorType = getTypeByResourceType(prize.resourceType)
+      let locName = decoratorType.getLocName(prize.resource, true)
+      let valid = decoratorType != decoratorTypes.UNKNOWN
+      let decorator = getDecorator(prize.resource, decoratorType)
+      name = locName
+
+      if (colored) {
+        let nameColor = !valid ? "badTextColor"
+          : forcedColor != "" ? forcedColor
+          : decorator ? decorator.getRarityColor()
+          : "activeTextColor"
+        name = colorize(nameColor, name)
+      }
+    }
+  }
+  else if (prize?.resourceType)
+    name = loc($"trophy/unlockables_names/{prize.resourceType}")
+  else if (prize?.gold)
+    name = Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, isColored = colored })
+  else if (prize?.warpoints)
+    name = Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, isColored = colored })
+  else if (prize?.exp)
+    name = Cost().setFrp(prize.exp).toStringWithParams({ isColored = colored })
+  else if (prize?.warbonds) {
+    let wb = ::g_warbonds.findWarbond(prize.warbonds)
+    name = wb && prize?.count ? wb.getPriceText(prize.count, true, false) : ""
+    showCount = false
+  }
+  else if (prize?.unlockAddProgress) {
+    let viewProgressConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
+    name = viewProgressConfig?.getText(prize, v_typeName) ?? ""
+    showCount = viewProgressConfig?.showCount ?? true
+  }
+  else {
+    name = loc("item/unknown")
+    color = "red"
+  }
+
+  local countText = ""
+  if (showCount) {
+    let count = prize?.count ?? 1
+    countText = (!v_typeName && count > 1) ? " x" + count : ""
+    if (colored)
+      countText = colorize("commonTextColor", countText)
+  }
+
+  let commentText = prize?.commentText ?? ""
+
+  if (forcedColor != "")
+    color = forcedColor
+  name = colored && color.len() ? colorize(color, name) : name
+  return $"{name}{countText}{commentText}"
+}
+
 ::PrizesView <- {
 
   function getTrophyOpenCountTillPrize(content, trophyInfo) {
@@ -200,7 +352,7 @@ let prizeViewConfig = {
       let isReceived = prizeType == PRIZE_TYPE.UNIT && ::isUnitBought(getAircraftByName(prize.unit))
       let locId = isReceived ? "trophy/prizeAlreadyReceived" : "trophy/openCountTillPrize"
       res.append(loc(locId, {
-        prizeText = this.getPrizeText(prize, false, false, !isReceived)
+        prizeText = getPrizeText(prize, false, false, !isReceived)
         trophiesCount = prize.till
       }))
       if (!isReceived)
@@ -417,7 +569,7 @@ let prizeViewConfig = {
         if (detailed)
           name = st.item.getStackName(st.params)
         else
-          name = colorize("activeTextColor", this._getItemTypeName(st.item))
+          name = colorize("activeTextColor", getItemTypeName(st.item))
 
         local countText = ""
         if (showCount && st.countMax > 1)
@@ -466,7 +618,7 @@ let prizeViewConfig = {
   }
 
   getViewDataUnlockProgress = @(prize, _showCount, _params = null) {
-    title = this.getPrizeText(prize)
+    title = getPrizeText(prize)
     icon = this.getPrizeTypeIcon(prize)
   }
 
@@ -554,7 +706,7 @@ let prizeViewConfig = {
 }
 
 ::PrizesView.getPrizeType <- function getPrizeType(prize) {
-  if (this.isPrizeMultiAward(prize))
+  if (isPrizeMultiAward(prize))
     return PRIZE_TYPE.MULTI_AWARD
   if (prize?.item)
     return PRIZE_TYPE.ITEM
@@ -603,165 +755,14 @@ let prizeViewConfig = {
 }
 
 ::PrizesView.getPrizeTypeName <- function getPrizeTypeName(prize, colored = true) {
-  return this.getPrizeText(prize, colored, true)
+  return getPrizeText(prize, colored, true)
 }
 
-::PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, v_typeName = false,
-    showCount = true, full = false, forcedColor = ""
-) {
-  if (!prize)
-    return ""
-
-  local name = ""
-  local color = "activeTextColor"
-  if (this.isPrizeMultiAward(prize)) {
-    if (full) {
-      name = TrophyMultiAward(prize).getDescription(true)
-      color = ""
-    }
-    else
-      name = TrophyMultiAward(prize).getName()
-  }
-  else if (prize?.unit) {
-    if (v_typeName)
-      name = loc("trophy/unlockables_names/aircraft")
-    else {
-      name = getUnitName(prize.unit, true)
-      color = getUnitClassColor(prize.unit)
-    }
-  }
-  else if (prize?.rentedUnit) {
-    if (v_typeName)
-      name = loc("shop/unitRent")
-    else {
-      let unitName = prize.rentedUnit
-      let unitColor = getUnitClassColor(unitName)
-      name = loc("shop/rentUnitFor", {
-        unit = colorize(unitColor, getUnitName(unitName, true))
-        time = colorize("userlogColoredText", time.hoursToString(prize?.timeHours ?? 0))
-      })
-    }
-  }
-  else if (prize?.item || prize?.trophy) {
-    let id = prize?.item || prize?.trophy
-    local item = findItemById(id)
-    if (v_typeName) {
-      name = this._getItemTypeName(item)
-      color = item ? "activeTextColor" : "red"
-    }
-    else {
-      if (!item)
-        name = id
-      else {
-        if (shouldDisguiseItem(item)) {
-          item = item.makeEmptyInventoryItem()
-          item.setDisguise(true)
-        }
-        name = item.getPrizeDescription(prize?.count ?? 1, colored)
-        if (name)
-          showCount = false
-        else
-          name = item.getShortDescription(colored)
-      }
-      color = item ? "activeTextColor" : "red"
-    }
-  }
-  else if (prize?.premium_in_hours) {
-    name = loc("charServer/entitlement/PremiumAccount") + loc("ui/colon") + time.hoursToString(prize.premium_in_hours)
-    color = "userlogColoredText"
-  }
-  else if (prize?.entitlement) {
-    name = getEntitlementName(getEntitlementConfig(prize.entitlement))
-    color = "userlogColoredText"
-  }
-  else if (prize?.unlock) {
-    let unlockId = prize.unlock
-    let unlockType = getUnlockType(unlockId)
-    let typeValid = unlockType >= 0
-
-    local unlockTypeName = isLoadingBgUnlock(unlockId)
-      ? loc("loading_bg")
-      : loc($"trophy/unlockables_names/{typeValid ? get_name_by_unlock_type(unlockType) : "unknown"}")
-    unlockTypeName = colored ? colorize(typeValid ? "activeTextColor" : "red", unlockTypeName) : unlockTypeName
-
-    name = unlockTypeName
-    if (!v_typeName) {
-      local nameText = getUnlockNameText(unlockType, unlockId)
-      if (colored)
-        nameText = colorize(typeValid ? "userlogColoredText" : "red", nameText)
-      if (unlockType != UNLOCKABLE_SLOT && nameText != "")
-        name += loc("ui/colon") + nameText
-    }
-    if (full)
-      name += "\n" + getFullUnlockDescByName(unlockId)
-    color = "commonTextColor"
-  }
-  else if (prize?.unlockType)
-    name = loc($"trophy/unlockables_names/{prize.unlockType}")
-  else if (prize?.resource) {
-    if (prize?.resourceType) {
-      let decoratorType = getTypeByResourceType(prize.resourceType)
-      let locName = decoratorType.getLocName(prize.resource, true)
-      let valid = decoratorType != decoratorTypes.UNKNOWN
-      let decorator = getDecorator(prize.resource, decoratorType)
-      name = locName
-
-      if (colored) {
-        let nameColor = !valid ? "badTextColor"
-          : forcedColor != "" ? forcedColor
-          : decorator ? decorator.getRarityColor()
-          : "activeTextColor"
-        name = colorize(nameColor, name)
-      }
-    }
-  }
-  else if (prize?.resourceType)
-    name = loc($"trophy/unlockables_names/{prize.resourceType}")
-  else if (prize?.gold)
-    name = Cost(0, prize.gold).toStringWithParams({ isGoldAlwaysShown = true, isColored = colored })
-  else if (prize?.warpoints)
-    name = Cost(prize.warpoints).toStringWithParams({ isWpAlwaysShown = true, isColored = colored })
-  else if (prize?.exp)
-    name = Cost().setFrp(prize.exp).toStringWithParams({ isColored = colored })
-  else if (prize?.warbonds) {
-    let wb = ::g_warbonds.findWarbond(prize.warbonds)
-    name = wb && prize?.count ? wb.getPriceText(prize.count, true, false) : ""
-    showCount = false
-  }
-  else if (prize?.unlockAddProgress) {
-    let viewProgressConfig = getUnlockAddProgressViewConfig(prize.unlockAddProgress)
-    name = viewProgressConfig?.getText(prize, v_typeName) ?? ""
-    showCount = viewProgressConfig?.showCount ?? true
-  }
-  else {
-    name = loc("item/unknown")
-    color = "red"
-  }
-
-  local countText = ""
-  if (showCount) {
-    let count = prize?.count ?? 1
-    countText = (!v_typeName && count > 1) ? " x" + count : ""
-    if (colored)
-      countText = colorize("commonTextColor", countText)
-  }
-
-  let commentText = prize?.commentText ?? ""
-
-  if (forcedColor != "")
-    color = forcedColor
-  name = colored && color.len() ? colorize(color, name) : name
-  return $"{name}{countText}{commentText}"
-}
-
-::PrizesView._getItemTypeName <- function _getItemTypeName(item) {
-  return item ? item.getTypeName() : ""
-}
 
 ::PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = false) {
   if (!prize || prize?.noIcon)
     return ""
-  if (this.isPrizeMultiAward(prize))
+  if (isPrizeMultiAward(prize))
     return TrophyMultiAward(prize).getTypeIcon()
   if (prize?.unit)
     return unitImage ? ::image_for_air(prize.unit) : ::getUnitClassIco(prize.unit)
@@ -807,10 +808,6 @@ let prizeViewConfig = {
   return "#ui/gameuiskin#item_type_placeholder.svg"
 }
 
-::PrizesView.isPrizeMultiAward <- function isPrizeMultiAward(prize) {
-  return prize?.multiAwardsOnWorthGold != null
-         || prize?.modsForBoughtUnit != null
-}
 
 ::PrizesView._getContentFixedAmount <- function _getContentFixedAmount(content) {
   local res = -1
@@ -1027,7 +1024,7 @@ let prizeViewConfig = {
   let listMarker = nbsp + colorize("grayOptionColor", loc("ui/mdash")) + nbsp
   foreach (st in stacksList) {
     if (st.level == prizesStack.NOT_STACKED)
-      list.append(listMarker + this.getPrizeText(st.prize, true, false, showCount))
+      list.append(listMarker + getPrizeText(st.prize, true, false, showCount))
     else if (st.stackType == STACK_TYPE.ITEM) { //onl stack by items atm, so this only to do last check.
       let detailed = st.level == prizesStack.DETAILED
 
@@ -1035,7 +1032,7 @@ let prizeViewConfig = {
       if (detailed)
         name = st.item.getStackName(st.params)
       else
-        name = colorize("activeTextColor", this._getItemTypeName(this.item))
+        name = colorize("activeTextColor", getItemTypeName(this.item))
 
       local countText = ""
       if (showCount && st.countMax > 1)
@@ -1200,7 +1197,7 @@ let prizeViewConfig = {
 
   return {
     icon  = decoratorType.prizeTypeIcon
-    title = this.getPrizeText(prize)
+    title = getPrizeText(prize)
     tooltipId = showTooltip ? getTooltipType("DECORATION").getTooltipId(id, decoratorType.unlockedItemType, params) : null
     commentText = !isReceivedPrizes && isHave ?  colorize("badTextColor", loc(receiveOnce)) : null
     buttons = buttons
@@ -1237,7 +1234,7 @@ function getMarkingPreset(item) {
     color = markingPreset?.color
     icon2 = primaryIcon ? itemIcon : null
     title = (params?.needShowItemName ?? true)
-      ? this.getPrizeText(prize, !params?.isLocked, false, showCount, true)
+      ? getPrizeText(prize, !params?.isLocked, false, showCount, true)
       : prize?.commentText ?? ""
     tooltipId = showTooltip ? getTooltipType("ITEM").getTooltipId(prize?.item) : null
     buttons = buttons
@@ -1277,7 +1274,7 @@ function getMarkingPreset(item) {
     }
   }
 
-  let title = this.getPrizeText(prize, true, false, showCount, needShowFullTitle)
+  let title = getPrizeText(prize, true, false, showCount, needShowFullTitle)
   let icon = needShowIcon ? this.getPrizeTypeIcon(prize) : null
 
   return {
@@ -1290,7 +1287,7 @@ function getMarkingPreset(item) {
 }
 
 ::PrizesView.getPrizesViewData <- function getPrizesViewData(prize, showCount = true, params = null) {
-  if (this.isPrizeMultiAward(prize))
+  if (isPrizeMultiAward(prize))
     return this.getViewDataMultiAward(prize, params)
 
   let unitName = prize?.unit
@@ -1420,4 +1417,8 @@ function getMarkingPreset(item) {
   }
 
   return view
+}
+
+return {
+  getPrizeText
 }

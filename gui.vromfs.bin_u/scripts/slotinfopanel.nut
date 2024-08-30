@@ -183,11 +183,6 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       ::dmViewer.showExternalPartsArmor(obj.getValue())
   }
 
-  function onShowHiddenXrayPartsChange(obj) {
-    if (checkObj(obj))
-      ::dmViewer.showExternalPartsXray(obj.getValue())
-  }
-
   function onShowExtendedHintsChange(obj) {
     saveLocalAccountSettings("dmViewer/needShowExtHints", obj.getValue())
     ::dmViewer.resetXrayCache()

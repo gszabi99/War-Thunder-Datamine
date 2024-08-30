@@ -533,6 +533,20 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
     }
   }
 
+  local iffMark = null
+  if (targetType != null && !target.enemy) {
+    iffMark = @() {
+      watch = [colorWatched]
+      color = isColorOrWhite(colorWatched.value)
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = hdpx(1)
+      fillColor = Color(0, 0, 0, 0)
+      size = flex()
+      pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
+      commands = [[VECTOR_LINE, 40, 35, 60, 35]]
+    }
+  }
+
   return @() {
     watch = [targetOpacityRwr]
     size = flex()
@@ -552,7 +566,8 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
           newTarget
         ]
       },
-      targetType
+      targetType,
+      iffMark
     ]
   }
 }

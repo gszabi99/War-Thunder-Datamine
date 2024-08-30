@@ -440,8 +440,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1690,6 +1691,7 @@
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/dummy_weapon.blk",
         "emitter": "bone_gun",
+        "circleAim": true,
         "aimForOperatedShell": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1838,12 +1840,10 @@
     "animatedBones": {
       "node": [
         "antenna_target_location",
-        "antenna_target_tagging",
-        "antenna_target_tagging_mount",
-        "bone_gun",
-        "bone_gun_01",
+        "bone_roll_02",
         "bone_roll_01",
-        "bone_roll_02"
+        "antenna_target_tagging",
+        "antenna_target_tagging_mount"
       ]
     }
   },
@@ -3121,7 +3121,8 @@
               "dmPart": [
                 "antenna_target_tagging_dm",
                 "electronic_equipment_dm"
-              ]
+              ],
+              "powerButtonIdx": -1
             },
             {
               "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
@@ -3155,6 +3156,7 @@
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
               "emitter": "bone_gun",
+              "circleAim": true,
               "aimForOperatedShell": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3356,12 +3358,10 @@
           "animatedBones": {
             "node": [
               "antenna_target_location",
-              "antenna_target_tagging",
-              "antenna_target_tagging_mount",
-              "bone_gun",
-              "bone_gun_01",
+              "bone_roll_02",
               "bone_roll_01",
-              "bone_roll_02"
+              "antenna_target_tagging",
+              "antenna_target_tagging_mount"
             ]
           }
         }

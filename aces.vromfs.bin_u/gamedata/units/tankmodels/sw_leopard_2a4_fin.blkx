@@ -228,16 +228,6 @@
       "turret_03_top_dm": {
         "armorThickness": 20.0
       },
-      "turret_07_side_dm": {
-        "armorThickness": 160.0,
-        "armorClass": "CHA_tank_modern",
-        "armorEffectiveThicknessMax": 160.0
-      },
-      "turret_05_back_dm": {
-        "armorThickness": 250.0,
-        "armorClass": "CHA_tank_modern",
-        "armorEffectiveThicknessMax": 250.0
-      },
       "turret_05_front_dm": {
         "armorThickness": 40.0
       },
@@ -282,11 +272,6 @@
         "armorThickness": 35.0,
         "armorClass": "RHAHH_tank",
         "createSecondaryShatters": false
-      },
-      "turret_09_front_dm": {
-        "armorThickness": 250.0,
-        "armorEffectiveThicknessMax": 250.0,
-        "armorClass": "CHA_tank_modern"
       },
       "turret_09_back_dm": {
         "armorThickness": 35.0,
@@ -421,7 +406,10 @@
       "hp": 10000.0,
       "gun_mask_dm": {
         "armorThickness": 16.0,
-        "armorClass": "RHAHH_tank"
+        "armorClass": "RHAHH_tank",
+        "ignoreSolidDimension": true,
+        "genericArmorQuality": 0.5,
+        "cumulativeArmorQuality": 0.5
       },
       "gun_mask_01_dm": {
         "armorThickness": 30.0,
@@ -725,8 +713,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {

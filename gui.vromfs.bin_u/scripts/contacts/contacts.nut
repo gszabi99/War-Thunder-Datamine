@@ -267,6 +267,7 @@ foreach (fn in [
               unit = unitName
               icon = ::getUnitClassIco(unit)
               even = id % 2 == 0
+              isWideIco = ["ships", "helicopters", "boats"].contains(unit.unitType.armyId)
             })
           }
         }

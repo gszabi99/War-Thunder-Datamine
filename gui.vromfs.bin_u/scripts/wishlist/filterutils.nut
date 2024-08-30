@@ -57,7 +57,7 @@ function getUnitAvailabilityForBuyType(unit, isFriendWishList = false) {
   let isResearchableVehicle = unitBuyTypes.contains("researchable")
 
   let res = []
-  let hasDiscount = ::g_discount.getUnitDiscountByName(unit.name) > 0
+  let hasDiscount = ::g_discount.getUnitDiscount(unit) > 0
   if(((isSquadronVehicle && ::isUnitResearched(unit)) || !isSquadronVehicle) && hasDiscount)
     res.append("discount")
 

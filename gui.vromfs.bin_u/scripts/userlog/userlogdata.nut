@@ -20,6 +20,7 @@ let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
 let { disableSeenUserlogs, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
 let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
+let { showUnlockWnd } = require("%scripts/unlocks/showUnlock.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
@@ -42,6 +43,7 @@ let { guiStartModTierResearched } = require("%scripts/modificationsTierResearche
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
+let { isPrizeMultiAward }= require("%scripts/items/trophyMultiAward.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -151,6 +153,7 @@ local logNameByType = {
   [EULT_WW_CREATE_OPERATION]           = "ww_create_operation",
   [EULT_CLAN_UNITS]                    = "clan_units",
   [EULT_WW_AWARD]                      = "ww_award",
+  [EULT_COMPLAINT_UPHELD]              = "complaints",
 }
 
 ::getLogNameByType <- @(logType) logNameByType?[logType] ?? "unknown"
@@ -235,6 +238,7 @@ local logNameByType = {
   let total = get_user_logs_count()
   local unlocksNeedsPopupWnd = false
   let popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
+  local complaintsCount = 0
 
   for (local i = 0; i < total; i++) {
     let blk = DataBlock()
@@ -358,7 +362,7 @@ local logNameByType = {
 
       let config = ::build_log_unlock_data(unlock)
       config.disableLogId <- blk.id
-      ::showUnlockWnd(config)
+      showUnlockWnd(config)
       ::shown_userlog_notifications.append(blk.id)
       continue
     }
@@ -583,6 +587,10 @@ local logNameByType = {
     else if (blk?.type == EULT_WW_END_OPERATION && (blk.body?.wp ?? 0) > 0) {
       ::g_world_war.openOperationRewardPopup(blk)
     }
+    else if (blk?.type == EULT_COMPLAINT_UPHELD) {
+      complaintsCount++
+      markDisabled = true
+    }
 
     if (markDisabled)
       seenIdsArray.append(blk.id)
@@ -614,22 +622,35 @@ local logNameByType = {
   entitlementRewards.each(
     @(_, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
   unlockUnits.each(@(logObj) handler.doWhenActive(
-    @() ::showUnlockWnd(::build_log_unlock_data(logObj))))
+    @() showUnlockWnd(::build_log_unlock_data(logObj))))
   handler.doWhenActive(@() showUnlocks(unlocksRewards))
 
   rentsTable.each(function(config, key) {
     if (!isInArray(key, ignoreRentItems)) {
       if (onStartAwards)
-        handler.doWhenActive(@() ::showUnlockWnd(config))
+        handler.doWhenActive(@() showUnlockWnd(config))
       else
-        ::showUnlockWnd(config)
+        showUnlockWnd(config)
     }
   })
 
-  specialOffers.each(@(config) handler.doWhenActive(@() ::showUnlockWnd(config)))
+  specialOffers.each(@(config) handler.doWhenActive(@() showUnlockWnd(config)))
 
   foreach (_name, table in combinedUnitTiersUserLogs) {
     guiStartModTierResearched(table)
+  }
+
+  if (complaintsCount > 0) {
+    let locId = "userlog/complaints/popup_message"
+    let config = {
+      name = loc($"{locId}/title")
+      desc = " ".concat(loc($"{locId}/{complaintsCount > 1 ? "several": "single"}"),
+        loc($"{locId}/thank"))
+      descAlign = "left"
+      popupImage = "#ui/images/new_rank_usa?P1"
+      ratioHeight = 0.5
+    }
+    showUnlockWnd(config)
   }
 }
 
@@ -740,7 +761,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
       //can be 2 aircrafts with the same name (cant foreach)
       //trophyMultiAward logs have spare in body too. they no need strange format hacks.
       if (name == "aircrafts"
-          || (name == "spare" && !::PrizesView.isPrizeMultiAward(blk.body))) {
+          || (name == "spare" && !isPrizeMultiAward(blk.body))) {
         if (!(name in logObj))
           logObj[name] <- []
 

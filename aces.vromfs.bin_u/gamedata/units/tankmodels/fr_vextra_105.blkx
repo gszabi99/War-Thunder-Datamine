@@ -336,22 +336,6 @@
       "turret_02_side_dm": {
         "armorThickness": 10.0
       },
-      "ex_decor_l_05_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "ex_decor_r_05_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "ex_decor_l_06_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "ex_decor_r_06_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
-      },
       "ex_decor_turret_02_dm": {
         "armorThickness": 10.0
       },
@@ -387,6 +371,17 @@
       "wheel_l_04_dm": {},
       "wheel_r_04_dm": {},
       "wheel_support_dm": {}
+    },
+    "body_shields": {
+      "armorClass": "tank_structural_steel",
+      "hp": 1000.0,
+      "armorThickness": 5.0,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "ex_decor_l_05_dm": {},
+      "ex_decor_r_05_dm": {},
+      "ex_decor_l_06_dm": {},
+      "ex_decor_r_06_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -568,8 +563,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2086,6 +2082,12 @@
       "dampeningRelaxationRatio": 0.15,
       "dampeningCompressionRatio": 0.05,
       "brokenWheelSteeringDeflection": -15.0,
+      "steeringNodes": {
+        "wheel_r_01": "bone_wheel_r_01",
+        "wheel_l_01": "bone_wheel_l_01",
+        "wheel_r_02": "bone_wheel_r_02",
+        "wheel_l_02": "bone_wheel_l_02"
+      },
       "steeringDeflection": {
         "wheel_l_01": 30.0,
         "wheel_r_01": 30.0,
@@ -2234,6 +2236,113 @@
         }
       ]
     }
+  },
+  "PhysSys": {
+    "group": [
+      {
+        "find": "^bone_suspension_(\\w)_(\\d+)$",
+        "points": {
+          "lever": {
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "name": "bone_suspension_$1_$2"
+          },
+          "wheel": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          }
+        },
+        "constraints": {
+          "edge": {
+            "from": "lever",
+            "to": "wheel"
+          }
+        }
+      },
+      {
+        "find": "^bone_suspension_(\\w)_cen_(\\d+)$",
+        "points": {
+          "lever": {
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "name": "bone_suspension_$1_cen_$2"
+          },
+          "suspension": {
+            "limitMin": [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              1.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_$1_cen_$2_01"
+          },
+          "wheel": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "moveNodes": false,
+              "from": "lever",
+              "to": "wheel"
+            },
+            {
+              "moveNodes": false,
+              "from": "suspension",
+              "to": "wheel"
+            }
+          ]
+        }
+      }
+    ]
   },
   "chainIK": {
     "points": [
@@ -3277,15 +3386,6 @@
           "ammo_body_03_dm": {
             "count": 1
           },
-          "ammo_body_04_dm": {
-            "count": 1
-          },
-          "ammo_body_05_dm": {
-            "count": 1
-          },
-          "ammo_body_06_dm": {
-            "count": 1
-          },
           "ammo_body_07_dm": {
             "count": 1
           },
@@ -3293,15 +3393,6 @@
             "count": 1
           },
           "ammo_body_09_dm": {
-            "count": 1
-          },
-          "ammo_body_10_dm": {
-            "count": 1
-          },
-          "ammo_body_11_dm": {
-            "count": 1
-          },
-          "ammo_body_12_dm": {
             "count": 1
           },
           "ammo_body_13_dm": {
@@ -3313,15 +3404,6 @@
           "ammo_body_15_dm": {
             "count": 1
           },
-          "ammo_body_16_dm": {
-            "count": 1
-          },
-          "ammo_body_17_dm": {
-            "count": 1
-          },
-          "ammo_body_18_dm": {
-            "count": 1
-          },
           "ammo_body_19_dm": {
             "count": 1
           },
@@ -3329,6 +3411,33 @@
             "count": 1
           },
           "ammo_body_21_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_10_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
+            "count": 1
+          },
+          "ammo_body_12_dm": {
+            "count": 1
+          },
+          "ammo_body_16_dm": {
+            "count": 1
+          },
+          "ammo_body_17_dm": {
+            "count": 1
+          },
+          "ammo_body_18_dm": {
             "count": 1
           },
           "ammo_body_22_dm": {
@@ -3759,7 +3868,7 @@
     }
   },
   "supportPlane": {
-    "supportPlaneClass": "ucav_recon_micro_flir",
+    "supportPlaneClass": "ucav_recon_micro",
     "behTreeName": "recon_micro",
     "planeStartSpeed": 80.0,
     "count": 1

@@ -44,12 +44,8 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "rearmTimeOnField": 120.0,
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
   "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -464,8 +460,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1994,7 +1991,20 @@
     "tracks": {
       "animationMultiplier": -0.6,
       "height": 0.045,
-      "width": 0.58
+      "width": 0.58,
+      "tracksTensionK": [
+        6.0,
+        8.0,
+        2.0
+      ],
+      "trackMesh": "fr_bat_chat_25t_phys_track_line",
+      "trackLen": 0.137,
+      "trackCount": 86,
+      "trackFadeTime": 0.5,
+      "trackCntPeriod": 2,
+      "trackMaxSinking": 0.1,
+      "trackStartOffset": 0.29,
+      "trackMaxHeight": 1.28
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2008,7 +2018,7 @@
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 140000.0,
-      "driveGearRadius": 0.268,
+      "driveGearRadius": 0.26,
       "mainGearRatio": 4.66,
       "sideGearRatio": 1.0,
       "neutralGearRatio": 10.0,
@@ -2040,15 +2050,17 @@
         -0.11,
         0.09
       ],
-      "defaultGearRadius": 0.26,
-      "topGearRadius": 0.13,
+      "defaultGearRadius": 0.28,
+      "topGearRadius": 0.15,
       "defaultDampeningForce": [
         150000.0,
         150000.0
       ],
-      "frontBackGearRadius": 0.265,
+      "frontBackGearRadius": 0.285,
       "dampeningRelaxationRatio": 0.2,
-      "dampeningCompressionRatio": 0.65
+      "dampeningCompressionRatio": 0.65,
+      "wheel_r_drive": 0.31,
+      "wheel_l_drive": 0.31
     }
   },
   "PhysSys": {

@@ -80,7 +80,7 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> render_line_aa(to_array_move([[float2[2] float2(lt.x, rb.y); float2(lt.x + 0.1 * targetOnScreenWidth, rb.y)]]), false, ctx |> hdpx(4.), float2(0, 0), data.color)
       ctx |> render_line_aa(to_array_move([[float2[2] float2(lt.x, rb.y); float2(lt.x, lt.y + 0.9 * targetOnScreenWidth)]]), false, ctx |> hdpx(4.), float2(0, 0), data.color)
 
-    if get_radar_hud_has_distance_scale()
+    if get_radar_hud_targeting_indicator_has_distance_scale()
       let distText = get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, target.dist, true, 0.1)
       let strBox = get_str_bbox(distText, distText |> length(), fctx)
       ctx |> goto_xy(rb.x + ctx |> hdpx(5.), lt.y + strBox.width.y)

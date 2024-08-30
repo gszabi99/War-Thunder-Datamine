@@ -28,6 +28,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2478,6 +2479,10 @@
       {
         "name": "jaguar_is_rocket_matra155",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_is_rocket_matra155.blk"
+      },
+      {
+        "name": "jaguar_is_phimat",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_is_phimat.blk"
       }
     ]
   },
@@ -3147,6 +3152,30 @@
         "tier": 2,
         "order": 2,
         "WeaponPreset": [
+          {
+            "iconType": "ltc",
+            "name": "phimat_container",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "jaguar_gr1_pylon_1_r",
+                "phimat_container",
+                "phimat_container_cap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+              "external": true,
+              "separate": false,
+              "emitter": "phimat_container",
+              "bullets": 216,
+              "bulletsCartridge": 1,
+              "CustomBombHolder": {
+                "node": "phimat_container_cap"
+              }
+            }
+          },
           {
             "iconType": "bombs_middle",
             "name": "uk_540lbs",

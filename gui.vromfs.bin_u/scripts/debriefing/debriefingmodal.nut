@@ -710,8 +710,6 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function getKickReasonLocText() {
-    if (this.debriefingResult?.exp.eacKickMessage != null)
-      return loc("MISSION_ABORTED_BY_KICK/EAC")
     return loc("MISSION_ABORTED_BY_KICK/AC")
   }
 

@@ -32,7 +32,7 @@ let { showResource, canStartPreviewScene,
   showDecoratorAccessRestriction } = require("%scripts/customization/contentPreview.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let weaponryPresetsModal = require("%scripts/weaponry/weaponryPresetsModal.nut")
+let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let { canBuyNotResearched,
         isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -574,15 +574,17 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isUnitOwn || (!this.isUnitTank && !this.isUnitShipOrBoat))
       return
 
-    let skinIndex = this.skinList?.values.indexof(this.previewSkinId) ?? 0
+    let skinIndex = this.skinList?.values.indexof(this.previewSkinId ?? get_last_skin(this.unit.name)) ?? 0
+
     let skinDecorator = this.skinList?.decorators[skinIndex]
     let curUserSkin = getCurUserSkin()
 
+    let needDisableEditing = skinDecorator?.blk.needDisableEditing ?? false
     let have_premium = havePremium.value
     let hasSkinCondition = curUserSkin?.condition != null
-    let canScale = curUserSkin?.scale == null && skinDecorator?.getCouponItemdefId() == null
-    let canRotate = curUserSkin?.rotation == null && skinDecorator?.getCouponItemdefId() == null
-    let canChangeCondition = have_premium && !hasSkinCondition
+    let canScale = curUserSkin?.scale == null && skinDecorator?.getCouponItemdefId() == null && !needDisableEditing
+    let canRotate = curUserSkin?.rotation == null && skinDecorator?.getCouponItemdefId() == null && !needDisableEditing
+    let canChangeCondition = have_premium && !hasSkinCondition && !needDisableEditing
 
     local option = null
 
@@ -591,13 +593,13 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tscTrObj = this.scene.findObject("tr_" + tscId)
     if (checkObj(tscTrObj)) {
       tscTrObj.inactiveColor = canChangeCondition ? "no" : "yes"
-      tscTrObj.tooltip = hasSkinCondition ?  loc("guiHints/not_available_on_this_camo")
+      tscTrObj.tooltip = (hasSkinCondition || needDisableEditing) ? loc("guiHints/not_available_on_this_camo")
         : !have_premium ? loc("mainmenu/onlyWithPremium")
         : ""
       let sliderObj = this.scene.findObject(tscId)
       let value = canChangeCondition ? option.value : option.defVal
       sliderObj.setValue(value)
-      sliderObj.enable(!hasSkinCondition)
+      sliderObj.enable(canChangeCondition)
       this.updateSkinConditionValue(value, sliderObj)
     }
 
@@ -2003,7 +2005,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSecWeaponsInfo(_obj) {
-    weaponryPresetsModal.open({ unit = this.unit })
+    weaponryPresetsWnd.open({ unit = this.unit })
   }
 
   function getTwoSidedState() {

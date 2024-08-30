@@ -532,8 +532,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1799,7 +1800,8 @@
       {
         "blk": "gameData/sensors/us_m_247_track.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm"
+        "dmPart": "antenna_target_tagging_dm",
+        "powerButtonIdx": -1
       }
     ]
   },
@@ -2132,9 +2134,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 48600.0,
+      "Empty": 53650.0,
       "Fuel": 750.0,
-      "TakeOff": 49350.0,
+      "TakeOff": 54400.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -2184,19 +2186,19 @@
       "maxBrakeForce": 195000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 5.42,
-      "sideGearRatio": 1.0,
+      "sideGearRatio": 1.07,
       "neutralGearRatio": 9.0,
       "gearRatios": {
         "ratio": [
-          -6.89,
+          -4.2,
           -8.4,
           0.0,
           6.0,
           4.5,
           3.0,
-          2.16,
-          1.62,
-          1.145
+          2.06,
+          1.52,
+          1.08
         ]
       }
     },
@@ -2969,7 +2971,8 @@
             {
               "blk": "gameData/sensors/us_m_247_track.blk",
               "turretIndex": 0,
-              "dmPart": "antenna_target_tagging_dm"
+              "dmPart": "antenna_target_tagging_dm",
+              "powerButtonIdx": -1
             },
             {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"

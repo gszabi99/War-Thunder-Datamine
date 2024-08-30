@@ -477,6 +477,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       }
     if (countryIdx == -1 || !countryCrews.len())
       return false
+
     let unitsList = {}
     local selUnitId = ""
     local selCrewIdx = 0
@@ -612,6 +613,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     let blk = loadLocalByAccount("slotbar_presets/" + countryId)
     if (blk) {
       let presetsBlk = blk % "preset"
+      let countryCrews = getCrewsList().findvalue(@(crews) crews.country == countryId)?.crews.map(@(c) c.id) ?? []
       foreach (idx, strPreset in presetsBlk) {
         let data = split(strPreset, "|")
         if (data.len() < 3)
@@ -623,8 +625,15 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
           preset.title = title
         preset.gameModeId = getTblValue(4, data, "")
 
-        if(data.len() > 5 && data[5] != "")
+        if(data.len() > 5 && data[5] != "") {
           preset.crewInSlots = data[5].split(",").map(@(v) to_integer_safe(v, 0, false))
+          if(preset.crewInSlots.findvalue(@(crewId) countryCrews.indexof(crewId) == null) != null) {
+            preset.crewInSlots.replace(countryCrews)
+            let presetTitle = preset.title // -declared-never-used
+            debug_dump_stack()
+            logerr("the list of crews does not match the crews in the preset")
+          }
+        }
 
         let canHaveEmptyPresets = this.canHaveEmptyPresets(countryId)
         let unitNames = data[2] != "" ? split(data[2], ",") : []

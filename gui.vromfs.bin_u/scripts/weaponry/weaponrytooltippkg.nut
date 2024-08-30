@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
+let { getPresetRewardMul, getWeaponDamage } = require("%appGlobals/econWeaponUtils.nut")
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -9,6 +10,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { format } = require("string")
 let { isEqual } = require("%sqstd/underscore.nut")
+let { eachBlock, isDataBlock } = require("%sqstd/datablock.nut")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
@@ -31,6 +33,8 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
+const UI_BASE_REWARD_DECORATION = 10
+
 function updateModType(unit, mod) {
   if ("type" in mod)
     return
@@ -208,6 +212,48 @@ function getReqTextWorldWarArmy(unit, item) {
   return text
 }
 
+function getBasesEstimatedDamageRewardText(unit, item) {
+  local res = ""
+  // {<presetName> = <weaponCount>, ...} - {"fab500" = 2, "fab100_internal" = 1}
+  local itemPresetList = {}
+
+  // {<weaponName> = <weaponCount>, ...} - {"bombguns_su_fab500x" = 2, "bombguns_su_fab250x" = 1}
+  local customPresetWeaponTable = {}
+
+  if (isDataBlock(item?.weaponsBlk) && unit.hasWeaponSlots) {
+    foreach (w in item.weaponsBlk % "Weapon") {
+      let {preset = null} = w
+      if (preset != null)
+        itemPresetList[preset] <- (itemPresetList?[preset] ?? 0) + 1
+    }
+    let customPresets = unit.getUnitWpCostBlk()?.weapons.custom_presets
+    if (isDataBlock(customPresets)) {
+      eachBlock(customPresets, function(slotBlk) {
+        eachBlock(slotBlk, function(val, key) {
+          if (key not in itemPresetList)
+            return
+          local weaponKey = val.paramCount() == 0 ? "" : val.getParamName(0)
+          if (weaponKey != "") {
+            customPresetWeaponTable[weaponKey] <- itemPresetList[key]
+          }
+        })
+      })
+    }
+  }
+
+  let estimatedDamageToBase = getWeaponDamage(unit.name, item.name, customPresetWeaponTable)
+
+  if (estimatedDamageToBase == 0)
+    return res
+
+  let rewardMultiplierForBases = format("%.1f", getPresetRewardMul(unit.name, estimatedDamageToBase) * UI_BASE_REWARD_DECORATION)
+
+  res = "".concat(loc("shop/estimated_damage_to_base"), " ", estimatedDamageToBase, "\n",
+    loc("shop/reward_multiplier_for_base"), " ", rewardMultiplierForBases, "\n")
+
+  return res
+}
+
 function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null) {
   let res = { name = "", desc = "", delayed = false }
   let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight()
@@ -262,9 +308,12 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
       let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, item.name, true, true))
       addArmorPiercingToDesc(bulletsData, res)
     }
-
-    if (effect)
+    if (effect) {
       addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
+      let estimatedDamageAndMultiplier = getBasesEstimatedDamageRewardText(unit, item)
+      if (estimatedDamageAndMultiplier != "")
+        addDesc = "".concat(estimatedDamageAndMultiplier, addDesc)
+    }
     if (!effect && updateEffectFunc)
       res.delayed = calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
         updateEffectFunc, null) ?? true

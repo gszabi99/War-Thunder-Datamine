@@ -4,9 +4,7 @@ from "%scripts/dagui_natives.nut" import set_allowed_controls_mask
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF,
-  get_current_weapon_preset = @() null,
+let { get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
  COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode} = require("weaponSelector")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -88,11 +86,11 @@ let class HudAirWeaponSelector {
 
   function selectUnit(unit) {
     this.unit = unit
-    if (unit == null) {
+    if (unit == null || !unit.hasWeaponSlots) {
       this.close()
       return
     }
-    let presetName = get_current_weapon_preset()?.presetName ?? getLastWeapon(unit.name)
+    let presetName = get_current_weapon_preset()?.presetName ?? ""
     this.selectPresetByName(presetName)
   }
 
@@ -172,7 +170,7 @@ let class HudAirWeaponSelector {
       || getMfmHandler()?.isActive)
       return
     this.updateUnitAndPreset()
-    if (this.unit == null)
+    if (this.unit == null || !this.unit.hasWeaponSlots)
       return
 
     this.nestObj.show(true)

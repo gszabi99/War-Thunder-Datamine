@@ -783,8 +783,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2387,7 +2388,13 @@
       "trackFadeTime": 1.5,
       "trackConnector": true,
       "trackStartOffset": 0.08,
-      "trackMaxHeight": 1.17
+      "trackMaxHeight": 1.17,
+      "fricSideRot": [
+        5.0,
+        0.0,
+        0.6,
+        0.3
+      ]
     },
     "collisionProps": {
       "cls_turret": "convex_hull",

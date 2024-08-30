@@ -4,8 +4,6 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { rnd } = require("dagor.random")
 let { isIPoint2 } = u
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
@@ -592,4 +590,12 @@ let class TrophyMultiAward {
   }
 }
 
-return TrophyMultiAward
+function isPrizeMultiAward(prize) {
+  return prize?.multiAwardsOnWorthGold != null
+         || prize?.modsForBoughtUnit != null
+}
+
+return {
+  TrophyMultiAward
+  isPrizeMultiAward
+}

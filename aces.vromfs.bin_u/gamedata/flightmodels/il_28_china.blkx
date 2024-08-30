@@ -19,6 +19,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2314,44 +2315,6 @@
     ],
     "head": "turret1"
   },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "il_28_12xfab100",
-        "blk": "gameData/FlightModels/weaponPresets/il_28_12xfab100.blk",
-        "tags": {
-          "free": true
-        }
-      },
-      {
-        "name": "il_28_8xfab250",
-        "blk": "gameData/FlightModels/weaponPresets/il_28_8xfab250.blk",
-        "reqModification": "kd-3_bc"
-      },
-      {
-        "name": "il_28_4xfab500",
-        "blk": "gameData/FlightModels/weaponPresets/il_28_4xfab500.blk",
-        "reqModification": "kd-3_bc"
-      },
-      {
-        "name": "il_28_2xfab1500",
-        "blk": "gameData/FlightModels/weaponPresets/il_28_2xfab1500.blk",
-        "reqModification": "bd-4_bc"
-      },
-      {
-        "name": "il_28_1xfab3000",
-        "blk": "gameData/FlightModels/weaponPresets/il_28_1xfab3000.blk",
-        "reqModification": "bd-4_bc",
-        "weaponConfig": {
-          "Weapon": {
-            "blk": "gameData/Weapons/BombGuns/su_fab_3000m_46.blk",
-            "amountPerTier": 1.0,
-            "iconType": "bombs_heavy"
-          }
-        }
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2916,6 +2879,46 @@
         "emitter": "rocket_engine_2",
         "bullets": 1,
         "external": true
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "il_28_china_12xfab100",
+        "blk": "gameData/FlightModels/weaponPresets/il_28_china_12xfab100.blk"
+      },
+      {
+        "name": "il_28_china_8xfab250",
+        "blk": "gameData/FlightModels/weaponPresets/il_28_china_8xfab250.blk",
+        "reqModification": "kd-3_bc"
+      },
+      {
+        "name": "il_28_china_4xfab500",
+        "blk": "gameData/FlightModels/weaponPresets/il_28_china_4xfab500.blk",
+        "reqModification": "kd-3_bc"
+      },
+      {
+        "name": "il_28_china_2xfab1500",
+        "blk": "gameData/FlightModels/weaponPresets/il_28_china_2xfab1500.blk",
+        "reqModification": "bd-4_bc"
+      },
+      {
+        "name": "il_28_china_1xfab3000",
+        "blk": "gameData/FlightModels/weaponPresets/il_28_china_1xfab3000.blk",
+        "reqModification": "bd-4_bc",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/cn_gp_3000_2.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_heavy"
+          }
+        }
+      },
+      {
+        "name": "il_28_china_8x250_2_incendiary",
+        "blk": "gameData/FlightModels/weaponPresets/il_28_china_8x250_2_incendiary.blk",
+        "reqModification": "kd-3_bc"
       }
     ]
   },

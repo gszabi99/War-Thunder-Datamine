@@ -27,7 +27,7 @@ def push_stowage(var v : tuple<
                    ammo_stowages__clustersRange : IPoint2List;
                    ammo_stowages__weaponTriggersRange : IPoint2List;
                    ammo_stowage__weaponTriggers : IntList
-                 >) : int
+                   >) : int
   let stowage_id = v.ammo_stowages__state |> length()
   v.ammo_stowages__state |> push(uint(AmmoStowageState REMOVE_LOADED_AMMO))
   v.ammo_stowages__bulletsCartridge |> push(1)
@@ -86,7 +86,7 @@ def reserve_clusters(cluster_count : int; var v : tuple<
                        ammo_clusters__slotsRange : IPoint2List;
                        ammo_clusters__wreckageRange : IPoint2List;
                        ammo_clusters__relatedPartsRange : IPoint2List
-                     >) : void
+                       >) : void
   v.ammo_clusters__typeAndStage |> reserve(cluster_count)
   v.ammo_clusters__state |> reserve(cluster_count)
   v.ammo_clusters__fireEvtId |> reserve(cluster_count)
@@ -120,7 +120,7 @@ def push_cluster(cluster_type : int; cluster_stage : int; def_cluster : DefaultA
                    ammo_stowage__wreckageIds : IntList;
                    ammo_stowage__relatedPartsIds : PartIdList;
                    ammo_slots__state : UInt32List
-                 >) : int
+                   >) : int
   let cluster_id = v.ammo_clusters__typeAndStage |> length()
   v.ammo_clusters__typeAndStage |> push(uint16(cluster_type | (cluster_stage << 8)))
   v.ammo_clusters__state |> push(def_cluster.ammo_clusters__state)
@@ -250,7 +250,7 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
                    ammo_slots__partId : PartIdList;
                    ammo_slots__numAmmo : IPoint2List;
                    ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
-                 >) : void
+                   >) : void
   if blk.blockCount == 0u || unit.visual == null
     return
 
@@ -495,7 +495,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
                            ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
 
                            ammo_stowage__splashProperties : SplashProps
-                         >)
+                           >)
 
   v.ammo_stowage__partIdRemap |> clear()
   v.ammo_stowage__wreckageIds |> clear()
@@ -548,7 +548,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
       v.ammo_stowage__combustionTime = 1.0f
     v.ammo_stowage__detonateProb = ammo_blk |> datablock_getReal("detonateProb", v.ammo_stowage__detonateProb)
     v.ammo_stowage__fatalDetonatePortion = ammo_blk |> datablock_getPoint2("detonatePortion", v.ammo_stowage__fatalDetonatePortion)
-    v.ammo_stowage__nonFatalDetonatePortion = ammo_blk |> datablock_getPoint2("ammoStowageDetonatePortion",  get_dm_params().ammoStowageDetonatePortion)
+    v.ammo_stowage__nonFatalDetonatePortion = ammo_blk |> datablock_getPoint2("ammoStowageDetonatePortion",  get_wt_dm_params().ammoStowageDetonatePortion)
     v.ammo_stowage__explosiveProperties |> explosive_props_load(ammo_blk, 1.f)
     v.ammo_stowage__splashProperties |> splash_props_load(ammo_blk)
 
@@ -614,7 +614,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
         v.ammo_stowages__powderMassToSplash[stowage_id].damage |> read_interpolate_tab_float_p2(
           *datablock_get_block_by_name_ex(*mass_to_splash_blk, "gunpowderMassToDamage"))
       else
-        v.ammo_stowages__powderMassToSplash[stowage_id] := get_dm_params().gunpowderToSplash
+        v.ammo_stowages__powderMassToSplash[stowage_id] := get_wt_dm_params().gunpowderToSplash
 
       var num_ammo_in_storage = 0
       var num_ammo_in_cartridge = 1
@@ -795,23 +795,23 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                          uid : int;
                          v : tuple<
                            ammo_stowage__ammoState : uint;
-                           ammo_stowage__ammoTypeToMask : UInt32List- const;
-                           ammo_stowage__ammoTypeRemap : IPoint4List- const;
+                           ammo_stowage__ammoTypeToMask : UInt32List -const;
+                           ammo_stowage__ammoTypeRemap : IPoint4List -const;
                            ammo_stowage__weaponTriggers : IntList;
-                           ammo_stowage__weaponsRemap : Int16List- const;
-                           ammo_stowage__weaponsIds : IntList- const;
-                           ammo_stowages__state : UInt32List- const;
+                           ammo_stowage__weaponsRemap : Int16List -const;
+                           ammo_stowage__weaponsIds : IntList -const;
+                           ammo_stowages__state : UInt32List -const;
                            ammo_stowages__clustersRange : IPoint2List;
                            ammo_stowages__weaponTriggersRange : IPoint2List;
                            ammo_clusters__typeAndStage : UInt16List;
-                           ammo_clusters__ammoClassConstraints : UInt32List- const;
+                           ammo_clusters__ammoClassConstraints : UInt32List -const;
                            ammo_clusters__slotsRange : IPoint2List;
                            ammo_slots__ammoMaskAndType : UInt32List;
 
-                           ammo_per_type_data__state : UInt32List- const;
-                           ammo_per_type_data__numAmmoFs : IntList- const;
-                           ammo_per_type_data__numAmmoFsSync : IntList- const
-                         >)
+                           ammo_per_type_data__state : UInt32List -const;
+                           ammo_per_type_data__numAmmoFs : IntList -const;
+                           ammo_per_type_data__numAmmoFsSync : IntList -const
+                           >)
   var unit = get_unit(uid)
   assert(unit != null)
   if v.ammo_stowages__clustersRange |> length() == 0

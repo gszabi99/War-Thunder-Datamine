@@ -8,11 +8,11 @@ let { get_skills_blk } = require("blkGetters")
 let { cacheCrewData, getCachedCrewData } = require("%scripts/crew/crewShortCache.nut")
 let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 
-::g_skill_parameters_request_type <- {
+let skillParametersRequestType = {
   types = []
 }
 
-::g_skill_parameters_request_type._getParameters <- function _getParameters(crewId, unit) {
+skillParametersRequestType._getParameters <- function _getParameters(crewId, unit) {
   if (unit == null)
     return null
 
@@ -27,11 +27,11 @@ let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
   return res
 }
 
-::g_skill_parameters_request_type._getValues <- function _getValues() {
+skillParametersRequestType._getValues <- function _getValues() {
   return {}
 }
 
-::g_skill_parameters_request_type._getSelectedParameters <- function _getSelectedParameters(crewId, unit) {
+skillParametersRequestType._getSelectedParameters <- function _getSelectedParameters(crewId, unit) {
   if (unit == null)
     return null
   let cacheUid = this.getCachePrefix() + "Selected"
@@ -59,19 +59,18 @@ let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
   return res
 }
 
-::g_skill_parameters_request_type._getCachePrefix <- function _getCachePrefix() {
+skillParametersRequestType._getCachePrefix <- function _getCachePrefix() {
   return "skillParamRqst" + this.typeName
 }
 
-::g_skill_parameters_request_type.template <- {
-  getParameters = ::g_skill_parameters_request_type._getParameters
-  getValues = ::g_skill_parameters_request_type._getValues
-  getSelectedParameters = ::g_skill_parameters_request_type._getSelectedParameters
-
-  getCachePrefix = ::g_skill_parameters_request_type._getCachePrefix
+skillParametersRequestType.template <- {
+  getParameters = skillParametersRequestType._getParameters
+  getValues = skillParametersRequestType._getValues
+  getSelectedParameters = skillParametersRequestType._getSelectedParameters
+  getCachePrefix = skillParametersRequestType._getCachePrefix
 }
 
-enums.addTypesByGlobalName("g_skill_parameters_request_type", {
+enums.addTypes(skillParametersRequestType, {
 
   CURRENT_VALUES = {}
 
@@ -152,3 +151,7 @@ enums.addTypesByGlobalName("g_skill_parameters_request_type", {
     }
   }
 }, null, "typeName")
+
+return {
+  skillParametersRequestType
+}

@@ -1,7 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { dmgIndicatorStates, missionProgressHeight,
-  isVisibleDmgIndicator, isSpectatorMode } = require("%rGui/hudState.nut")
+  needShowDmgIndicator, isSpectatorMode
+} = require("%rGui/hudState.nut")
 let { safeAreaSizeHud } = require("style/screenState.nut")
 let activeOrder = require("activeOrder.nut")
 let voiceChat = require("chat/voiceChat.nut")
@@ -14,7 +15,7 @@ let xraydoll = {
 }
 
 let xrayIndicator = @() {
-  watch = [dmgIndicatorStates, isVisibleDmgIndicator]
+  watch = [dmgIndicatorStates, needShowDmgIndicator]
   size = SIZE_TO_CONTENT
   behavior = Behaviors.RecalcHandler
   function onRecalcLayout(_initial, elem) {
@@ -22,13 +23,13 @@ let xrayIndicator = @() {
       eventbus_send("update_damage_panel_state", {
         pos = [elem.getScreenPosX(), elem.getScreenPosY()]
         size = [elem.getWidth(), elem.getHeight()]
-        visible = isVisibleDmgIndicator.value
+        visible = needShowDmgIndicator.get()
       })
     }
     else
       eventbus_send("update_damage_panel_state", {})
   }
-  children = isVisibleDmgIndicator.value
+  children = needShowDmgIndicator.get()
     ? {
         rendObj = ROBJ_XRAYDOLL
         rotateWithCamera = true

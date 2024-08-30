@@ -174,6 +174,9 @@
             "value": "fill battleship spawn string"
           },
           {
+            "value": "fill submarine spawn string"
+          },
+          {
             "value": "fill battleareas strings"
           },
           {
@@ -223,6 +226,16 @@
           },
           {
             "value": "",
+            "var": "t1_submarine_spawn_name",
+            "input_var": "modename"
+          },
+          {
+            "value": "",
+            "var": "t2_submarine_spawn_name",
+            "input_var": "modename"
+          },
+          {
+            "value": "",
             "var": "battle_area_name",
             "input_var": "modename"
           }
@@ -267,6 +280,16 @@
             "value": "t2_battleships_spawn",
             "digits": 0,
             "var": "t2_battleship_spawn_name"
+          },
+          {
+            "value": "t1_submarine_spawn",
+            "digits": 0,
+            "var": "t1_submarine_spawn_name"
+          },
+          {
+            "value": "t2_submarine_spawn",
+            "digits": 0,
+            "var": "t2_submarine_spawn_name"
           },
           {
             "value": "battle_area",
@@ -327,7 +350,8 @@
               "type_light_cruiser": false,
               "type_heavy_cruiser": false,
               "type_battlecruiser": false,
-              "type_battleship": false
+              "type_battleship": false,
+              "type_submarine": false
             }
           },
           {
@@ -360,7 +384,8 @@
               "type_light_cruiser": false,
               "type_heavy_cruiser": false,
               "type_battlecruiser": false,
-              "type_battleship": false
+              "type_battleship": false,
+              "type_submarine": false
             }
           },
           {
@@ -393,7 +418,8 @@
               "type_light_cruiser": false,
               "type_heavy_cruiser": false,
               "type_battlecruiser": false,
-              "type_battleship": false
+              "type_battleship": false,
+              "type_submarine": false
             }
           },
           {
@@ -426,7 +452,8 @@
               "type_light_cruiser": false,
               "type_heavy_cruiser": false,
               "type_battlecruiser": false,
-              "type_battleship": false
+              "type_battleship": false,
+              "type_submarine": false
             }
           },
           {
@@ -459,7 +486,8 @@
               "type_light_cruiser": true,
               "type_heavy_cruiser": true,
               "type_battlecruiser": true,
-              "type_battleship": true
+              "type_battleship": true,
+              "type_submarine": false
             }
           },
           {
@@ -492,7 +520,8 @@
               "type_light_cruiser": true,
               "type_heavy_cruiser": true,
               "type_battlecruiser": true,
-              "type_battleship": true
+              "type_battleship": true,
+              "type_submarine": false
             }
           },
           {
@@ -525,7 +554,8 @@
               "type_light_cruiser": true,
               "type_heavy_cruiser": true,
               "type_battlecruiser": true,
-              "type_battleship": true
+              "type_battleship": true,
+              "type_submarine": false
             }
           },
           {
@@ -558,7 +588,76 @@
               "type_light_cruiser": true,
               "type_heavy_cruiser": true,
               "type_battlecruiser": true,
-              "type_battleship": true
+              "type_battleship": true,
+              "type_submarine": false
+            }
+          },
+          {
+            "loc_name": "missions/spawn_submarine",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": -1.0,
+            "target": "@t1_submarine_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "A",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": false,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false,
+              "type_submarine": true
+            }
+          },
+          {
+            "loc_name": "missions/spawn_submarine",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": -1.0,
+            "target": "@t2_submarine_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "B",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": false,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false,
+              "type_submarine": true
             }
           }
         ]
@@ -612,6 +711,8 @@
     "t2_cruiser_spawn_name": "",
     "t1_battleship_spawn_name": "",
     "t2_battleship_spawn_name": "",
+    "t1_submarine_spawn_name": "",
+    "t2_submarine_spawn_name": "",
     "battle_area_name": "",
     "spawn_num": 15
   },

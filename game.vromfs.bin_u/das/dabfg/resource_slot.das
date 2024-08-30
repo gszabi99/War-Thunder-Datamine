@@ -1,6 +1,6 @@
 module resource_slot shared
 
-require daBfg public
+require daBfg.daBfg public
 require ResourceSlotCore public
 
 let DEFAULT_READ_PRIORITY : int = INT_MAX

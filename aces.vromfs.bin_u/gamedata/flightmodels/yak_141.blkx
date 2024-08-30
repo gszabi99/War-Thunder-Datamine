@@ -61,6 +61,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -276,18 +277,18 @@
         "hp": 20.0
       }
     },
-    "steel_tank_armor": {
+    "steel_tank_m": {
       "tank1_dm": {
-        "hp": 120.5
+        "hp": 75.5
       },
       "tank2_dm": {
-        "hp": 120.5
+        "hp": 75.5
       },
       "tank3_dm": {
-        "hp": 120.5
+        "hp": 75.5
       },
       "tank4_dm": {
-        "hp": 120.5
+        "hp": 75.5
       }
     }
   },
@@ -1207,30 +1208,26 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1248,30 +1245,26 @@
         "name": "tank2_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1289,30 +1282,26 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1330,30 +1319,26 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "fire": 0.0001,
-            "leak": 0.3
-          },
-          {
-            "damage": 3.0,
-            "fire": 0.001,
-            "leak": 0.5
+            "fire": 0.01,
+            "leak": 0.7
           },
           {
             "damage": 20.0,
-            "fire": 0.005,
-            "leak": 0.7
+            "fire": 0.6,
+            "leak": 0.8
           },
           {
             "damage": 80.0,
             "expl": 0.5,
-            "fire": 0.01,
+            "fire": 0.9,
             "leak": 0.9
           }
         ],
         "onKill": [
           {
-            "fire": 0.01,
-            "leak": 9.99
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,

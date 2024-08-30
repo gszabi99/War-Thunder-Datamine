@@ -1,0 +1,4499 @@
+{
+  "hasQualityModels": true,
+  "model": "type40k_vedette",
+  "subclass": "warShip",
+  "dustFx": "water_units_dust",
+  "useBotForAi": true,
+  "harmonizationSuffix": "_tomoe",
+  "moveType": "ship",
+  "maxFwdSpeed": 80.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 15.0,
+  "maxAccel": 20.0,
+  "maxDecel": 5.0,
+  "maxAngAccel": 15.0,
+  "maxAngAccel0": 2.0,
+  "maxAngAccelV": 15.0,
+  "groundNormSmoothViscosity": 0.1,
+  "customUpdateDiv": 5,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 10.0,
+  "ikPilotMaxUpdateDistance": 80.0,
+  "ikPilotMaxRenderDistance": 80.0,
+  "useSimpleDeathConditionsAndEffects": false,
+  "type": "typeTorpedoBoat",
+  "expClass": "exp_torpedo_boat",
+  "timeToFire": 40.0,
+  "timeToSmoke": 300.0,
+  "hasExpl": false,
+  "exhaustFx": "ship_exhaust_small",
+  "xplosionFx": "explosion_ship_small",
+  "decorCutProps": "boat",
+  "smokeScreenActivateTime": 2.5,
+  "smokeScreenEffectTime": 20.0,
+  "smokeScreenRad": 20.0,
+  "smokeScreenOffset": [
+    -12.0,
+    1.0,
+    0.0
+  ],
+  "smokeScreenFx": "smokescreen_ship_no_therm_big",
+  "shipsDisableDeadCoverParts": false,
+  "canReloadNonGuns": true,
+  "supportsCombinedPriSecTriggers": true,
+  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
+  "customImage": "!#ui/unitskin#image_in_progress",
+  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "hideNodesInDmg": {
+    "node": "flag"
+  },
+  "default_skin_tomoe": {
+    "replace_tex": [
+      {
+        "from": "flag_ussr_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      },
+      {
+        "from": "flag_ussr_03_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      },
+      {
+        "from": "flag_usa_01_c*",
+        "to": "flag_usa_01_c_tomoe*"
+      },
+      {
+        "from": "flag_usa_02_c*",
+        "to": "flag_usa_01_c_tomoe*"
+      },
+      {
+        "from": "flag_uk_01_c*",
+        "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_poland_01_c*",
+        "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_japan_01_c*",
+        "to": "flag_japan_01_c_tomoe*"
+      },
+      {
+        "from": "flag_japan_02_c*",
+        "to": "flag_japan_01_c_tomoe*"
+      },
+      {
+        "from": "flag_italy_01_c*",
+        "to": "flag_italy_01_c_tomoe*"
+      },
+      {
+        "from": "flag_italy_02_c*",
+        "to": "flag_italy_01_c_tomoe*"
+      },
+      {
+        "from": "flag_italy_03_c*",
+        "to": "flag_italy_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_01_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_02_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_03_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_04_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_germany_05_c*",
+        "to": "flag_germany_01_c_tomoe*"
+      },
+      {
+        "from": "flag_ireland_01_c*",
+        "to": "flag_uk_01_c_tomoe*"
+      },
+      {
+        "from": "flag_france_01_c*",
+        "to": "flag_france_01_c_tomoe*"
+      },
+      {
+        "from": "flag_egypt_01_c*",
+        "to": "flag_ussr_01_c_tomoe*"
+      },
+      {
+        "from": "airplane_ger_ar196_c*",
+        "to": "airplane_ger_ar196_c_tomoe*"
+      },
+      {
+        "from": "airplane_japan_e7k2_c*",
+        "to": "airplane_japan_e7k2_c_tomoe*"
+      },
+      {
+        "from": "airplane_japan_e13a1_c*",
+        "to": "airplane_japan_e13a1_c_tomoe*"
+      },
+      {
+        "from": "airplane_usa_curtiss_sc_seahawk_c*",
+        "to": "airplane_usa_curtiss_sc_seahawk_c_tomoe*"
+      },
+      {
+        "from": "airplane_uk_vought_os2u_kingfisher_usa_c*",
+        "to": "airplane_uk_vought_os2u_kingfisher_usa_c_tomoe*"
+      }
+    ]
+  },
+  "ikGunner": [
+    {
+      "model": "french_sailor_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        -0.5,
+        -0.5,
+        0.4
+      ],
+      "suffix": "1",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "french_officer_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "2",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "french_sailor_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "3",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "french_sailor_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "4",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "french_sailor_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "5",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    }
+  ],
+  "attach": {
+    "Bip01 Pelvis_1": "french_sailor_standing",
+    "Bip01 Pelvis_2": "french_officer_standing",
+    "Bip01 Pelvis_3": "french_sailor_standing",
+    "Bip01 Pelvis_4": "french_sailor_standing",
+    "Bip01 Pelvis_5": "french_sailor_standing"
+  },
+  "controlDevices": {
+    "device": [
+      {
+        "type": "turretTurnH",
+        "turnSpeed": 0.6,
+        "node": "bone_roll_turret_h",
+        "node_handle": "bone_roll_turret_h_handle"
+      },
+      {
+        "type": "turretTurnV",
+        "turnSpeed": -1.0,
+        "node": "bone_roll_turret_v",
+        "node_handle": "bone_roll_turret_v_handle"
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -3.0,
+        "node": "bone_roll_driver",
+        "absoluteValue": true
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_01"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_02"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_03"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_04"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_05"
+      },
+      {
+        "type": "engineFan",
+        "turnSpeed": 1.0,
+        "node": "bone_roll_engine_06"
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": -1.7,
+        "node": "body_shutter_l",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "waterJetShutter",
+        "turnSpeed": 1.5,
+        "maxValue": 1.7,
+        "node": "body_shutter_r",
+        "absoluteValue": true,
+        "progressive": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_l_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_l_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.5,
+        "node": "bone_roll_driver_r_01",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": -0.2,
+        "node": "bone_roll_driver_r_02",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_03",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
+      }
+    ]
+  },
+  "DamageParts": {
+    "formatVersion": 2,
+    "createSecondaryShatters": false,
+    "compartments": {
+      "fireParamsPreset": "ship_cover_boats",
+      "stopChanceOnDeadPart": 0.75,
+      "armorClass": "ship_wood",
+      "armorThickness": 40.0,
+      "fireProtectionHp": 3.0,
+      "napalmDamageMult": 1.0,
+      "pressureDamageMult": 2.0,
+      "compartment_01_dm": {
+        "hp": 500.0
+      },
+      "compartment_02_dm": {
+        "hp": 573.0
+      },
+      "compartment_03_dm": {
+        "hp": 500.0
+      }
+    },
+    "control_compartments": {
+      "fireParamsPreset": "ship_cover_boats",
+      "stopChanceOnDeadPart": 0.75,
+      "armorClass": "ship_wood",
+      "armorThickness": 25.0,
+      "fireProtectionHp": 3.0,
+      "napalmDamageMult": 1.0,
+      "bridge_dm": {
+        "pressureDamageMult": 2.0,
+        "hp": 250.0
+      },
+      "radio_station_dm": {
+        "hp": 105.0
+      }
+    },
+    "superstructures": {
+      "fireParamsPreset": "ship_superstructure_boat",
+      "stopChanceOnDeadPart": 0.2,
+      "armorClass": "ship_wood",
+      "armorThickness": 15.0,
+      "fireProtectionHp": 3.0,
+      "superstructure_dm": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 4.0,
+        "hp": 255.0
+      }
+    },
+    "construction": {
+      "stopChanceOnDeadPart": 0.2,
+      "armorClass": "ship_wood",
+      "armorThickness": 15.0
+    },
+    "bulkheads": {
+      "stopChanceOnDeadPart": 0.1,
+      "armorClass": "ship_wood",
+      "armorThickness": 25.0,
+      "bulkhead_01_dm": {
+        "hp": 500.0
+      },
+      "bulkhead_02_dm": {
+        "hp": 500.0
+      },
+      "bulkhead_03_dm": {
+        "hp": 500.0
+      },
+      "bulkhead_04_dm": {
+        "hp": 500.0
+      },
+      "bulkhead_05_dm": {
+        "hp": 500.0
+      },
+      "bulkhead_06_dm": {
+        "hp": 500.0
+      },
+      "bulkhead_07_dm": {
+        "hp": 500.0
+      },
+      "bulkhead_08_dm": {
+        "hp": 500.0
+      }
+    },
+    "masts": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 10.0,
+      "mast_01_dm": {
+        "hp": 200.0
+      }
+    },
+    "hydrofoils": {
+      "genericDamageMult": 0.1,
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 4.0
+    },
+    "engine": {
+      "armorThrough": 50.0,
+      "genericDamageMult": 1.5,
+      "fireParamsPreset": "ship_engine",
+      "armorClass": "armor_tank_engine",
+      "armorThickness": 2.0,
+      "fireProtectionHp": 8.0,
+      "engine_01_dm": {
+        "hp": 250.0
+      },
+      "engine_02_dm": {
+        "hp": 250.0
+      },
+      "engine_03_dm": {
+        "hp": 250.0
+      },
+      "engine_04_dm": {
+        "hp": 250.0
+      }
+    },
+    "transmission": {
+      "armorThrough": 50.0,
+      "genericDamageMult": 1.5,
+      "fireParamsPreset": "ship_engine",
+      "armorClass": "armor_tank_engine",
+      "armorThickness": 2.0,
+      "fireProtectionHp": 8.0,
+      "transmission_01_dm": {
+        "hp": 380.0
+      },
+      "transmission_02_dm": {
+        "hp": 380.0
+      }
+    },
+    "funnel": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 4.0
+    },
+    "steering_gear": {
+      "genericDamageMult": 1.0,
+      "shatterDamageMult": 0.3,
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 10.0,
+      "fireProtectionHp": 30.0,
+      "steering_gear_01_dm": {
+        "hp": 156.0
+      }
+    },
+    "pumps": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 5.0,
+      "fireProtectionHp": 10.0,
+      "pump_01_dm": {
+        "hp": 150.0
+      }
+    },
+    "hull_armor": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 10.0,
+      "ex_armor_01_dm": {
+        "hp": 100.0
+      },
+      "ex_armor_02_dm": {
+        "hp": 100.0
+      },
+      "ex_armor_04_dm": {
+        "hp": 100.0
+      },
+      "ex_armor_05_dm": {
+        "hp": 100.0
+      },
+      "ex_armor_06_dm": {
+        "hp": 100.0
+      }
+    },
+    "turret_armor": {
+      "armorClass": "ship_structural_steel",
+      "fireProtectionHp": 60.0,
+      "armorThickness": 15.0
+    },
+    "gun_masks": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 5.0
+    },
+    "turrets": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0
+    },
+    "turrets_main_caliber": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 1.0,
+      "napalmDamageMult": 1.0,
+      "pressureDamageMult": 4.0,
+      "main_caliber_turret_01_dm": {
+        "hp": 115.0
+      }
+    },
+    "turrets_aux_caliber": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 1.0,
+      "napalmDamageMult": 1.0,
+      "pressureDamageMult": 2.5,
+      "auxiliary_caliber_turret_01_dm": {
+        "hp": 80.0
+      }
+    },
+    "turrets_aa_caliber": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 1.0,
+      "napalmDamageMult": 1.0,
+      "pressureDamageMult": 1.0
+    },
+    "gun_main_caliber": {
+      "armorClass": "tank_barrel",
+      "armorThickness": 5.0,
+      "main_caliber_gun_01_dm": {
+        "hp": 150.0
+      }
+    },
+    "gun_aux_caliber": {
+      "armorClass": "tank_barrel",
+      "armorThickness": 4.0,
+      "auxiliary_caliber_gun_01_dm": {
+        "hp": 100.0
+      }
+    },
+    "gun_aa_caliber": {
+      "armorClass": "tank_barrel",
+      "armorThickness": 4.0
+    },
+    "gun_barrels": {
+      "armorClass": "tank_barrel",
+      "armorThickness": 4.0
+    },
+    "explosives_mounts": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 10.0,
+      "tt_01_dm": {
+        "napalmDamageMult": 1.0,
+        "fireParamsPreset": "ship_turrets",
+        "hp": 150.0
+      },
+      "tt_02_dm": {
+        "napalmDamageMult": 1.0,
+        "fireParamsPreset": "ship_turrets",
+        "hp": 150.0
+      }
+    },
+    "fuel_tanks": {
+      "fireParamsPreset": "ship_fuel_tank",
+      "armorClass": "ships_oil_fuel_tank",
+      "armorThickness": 3.0,
+      "fuel_tank_01_dm": {
+        "hp": 153.0
+      }
+    },
+    "ammo": {
+      "fireParamsPreset": "ship_ammo_fire",
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 5.0,
+      "fireProtectionHp": 8.0,
+      "ammunition_storage_01_dm": {
+        "hp": 400.0
+      }
+    },
+    "depth_charges": {
+      "fireProtectionHp": 20.0,
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 2.0
+    },
+    "mines": {
+      "fireProtectionHp": 15.0,
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 2.0
+    },
+    "torpedos": {
+      "fireProtectionHp": 20.0,
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 2.0,
+      "torpedo_01_dm": {
+        "hp": 153.0
+      },
+      "torpedo_02_dm": {
+        "hp": 153.0
+      }
+    }
+  },
+  "tank_crew": {
+    "minCrewMemberRepairCount": 3,
+    "minCrewMemberAliveCount": 3,
+    "sailor1": {
+      "dmPart": "bridge_dm",
+      "role": "sailor",
+      "crew": 1
+    },
+    "sailor2": {
+      "dmPart": "compartment_01_dm",
+      "role": "sailor",
+      "crew": 3
+    },
+    "sailor3": {
+      "dmPart": "compartment_02_dm",
+      "role": "sailor",
+      "crew": 3
+    },
+    "sailor4": {
+      "dmPart": "compartment_03_dm",
+      "role": "sailor",
+      "crew": 3
+    }
+  },
+  "MetaParts": {
+    "bridge": {
+      "part": "bridge_dm",
+      "effect": [
+        {
+          "pressureOpen": true
+        },
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 415.0,
+          "kill": true,
+          "killEffect": "destruction"
+        },
+        {
+          "conditionDamageType": "generic",
+          "conditionDamage": 3500.0,
+          "kill": true,
+          "killEffect": "destruction"
+        }
+      ]
+    },
+    "cover": [
+      {
+        "part": "compartment_01_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 415.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 3500.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_02_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 415.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 3500.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_03_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 415.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 3500.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_04_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 415.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 3500.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      },
+      {
+        "part": "compartment_05_dm",
+        "effect": [
+          {
+            "pressureOpen": true
+          },
+          {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 415.0,
+            "kill": true,
+            "killEffect": "destruction"
+          },
+          {
+            "conditionDamageType": "generic",
+            "conditionDamage": 3500.0,
+            "kill": true,
+            "killEffect": "destruction"
+          }
+        ]
+      }
+    ],
+    "open_mounts": {
+      "part": [
+        "main_caliber_turret_01_dm",
+        "main_caliber_turret_02_dm",
+        "main_caliber_turret_03_dm",
+        "main_caliber_turret_04_dm",
+        "main_caliber_turret_05_dm",
+        "main_caliber_turret_06_dm",
+        "main_caliber_turret_07_dm",
+        "main_caliber_turret_08_dm",
+        "main_caliber_turret_09_dm",
+        "main_caliber_turret_10_dm",
+        "auxiliary_caliber_turret_01_dm",
+        "auxiliary_caliber_turret_02_dm",
+        "auxiliary_caliber_turret_03_dm",
+        "auxiliary_caliber_turret_04_dm",
+        "auxiliary_caliber_turret_05_dm",
+        "auxiliary_caliber_turret_06_dm",
+        "auxiliary_caliber_turret_07_dm",
+        "auxiliary_caliber_turret_08_dm",
+        "auxiliary_caliber_turret_09_dm",
+        "auxiliary_caliber_turret_10_dm",
+        "aa_turret_01_dm",
+        "aa_turret_02_dm",
+        "aa_turret_03_dm",
+        "aa_turret_04_dm",
+        "aa_turret_05_dm",
+        "aa_turret_06_dm",
+        "aa_turret_07_dm",
+        "aa_turret_08_dm",
+        "aa_turret_09_dm",
+        "aa_turret_10_dm",
+        "rangefinder_01_dm",
+        "rangefinder_02_dm",
+        "rangefinder_03_dm",
+        "rangefinder_04_dm",
+        "rangefinder_05_dm",
+        "fire_director_01_dm",
+        "fire_director_02_dm"
+      ],
+      "effect": {
+        "pressureOpen": true
+      }
+    }
+  },
+  "DamageEffects": {
+    "ammunition_storage": {
+      "onKill": {
+        "expl": 1.0,
+        "fHitCritical": false
+      }
+    },
+    "ammunition_storage_fixed": {
+      "onKill": {
+        "expl": 1.0,
+        "fHitCritical": false
+      },
+      "onHit": {
+        "damageType": "fire",
+        "expl": 1.0,
+        "damage": 200.0,
+        "fHitCritical": false
+      }
+    },
+    "ammunition_first_stage": {
+      "onKill": {
+        "fire": 1.0,
+        "fHitCritical": false
+      },
+      "onHit": [
+        {
+          "damageType": "fire",
+          "fire": 1.0,
+          "damage": 200.0,
+          "fHitCritical": false
+        },
+        {
+          "damageType": "explosion",
+          "expl": 0.11,
+          "fire": 1.0,
+          "damage": 300.0,
+          "fHitCritical": false
+        }
+      ]
+    },
+    "ammunition_torpedoes": {
+      "onKill": {
+        "expl": 0.01,
+        "nothing": 0.99
+      },
+      "onHit": [
+        {
+          "damageType": "explosion",
+          "expl": 0.05,
+          "damage": 400.0,
+          "fHitCritical": false
+        },
+        {
+          "damageType": "fire",
+          "expl": 0.1,
+          "damage": 50.0,
+          "fHitCritical": false
+        }
+      ]
+    },
+    "ammunition_depth_charges": {
+      "onKill": {
+        "expl": 0.05,
+        "nothing": 0.95
+      },
+      "onHit": [
+        {
+          "damageType": "fire",
+          "damage": 150.0,
+          "expl": 0.1
+        },
+        {
+          "damageType": "explosion",
+          "expl": 0.05,
+          "damage": 250.0,
+          "fHitCritical": false
+        }
+      ]
+    },
+    "ammunition_mines": {
+      "onKill": {
+        "expl": 0.1,
+        "nothing": 0.9
+      },
+      "onHit": [
+        {
+          "damageType": "fire",
+          "damage": 100.0,
+          "expl": 0.1
+        },
+        {
+          "damageType": "explosion",
+          "expl": 0.15,
+          "damage": 250.0,
+          "fHitCritical": false
+        }
+      ]
+    },
+    "ammunition_rockets": {
+      "onKill": {
+        "expl": 0.05,
+        "nothing": 0.95
+      },
+      "onHit": {
+        "damageType": "explosion",
+        "damage": 200.0,
+        "expl": 0.1
+      }
+    },
+    "part": [
+      {
+        "name": [
+          "ammunition_storage_01_dm",
+          "ammunition_storage_02_dm",
+          "ammunition_storage_03_dm",
+          "ammunition_storage_04_dm",
+          "ammunition_storage_05_dm",
+          "ammunition_storage_06_dm",
+          "ammunition_storage_07_dm",
+          "ammunition_storage_08_dm",
+          "ammunition_storage_09_dm",
+          "ammunition_storage_10_dm"
+        ],
+        "onKill": {
+          "expl": 1.0,
+          "fHitCritical": false
+        }
+      },
+      {
+        "name": [
+          "torpedo_01_dm",
+          "torpedo_02_dm",
+          "torpedo_03_dm",
+          "torpedo_04_dm",
+          "torpedo_05_dm",
+          "torpedo_06_dm"
+        ],
+        "onKill": {
+          "expl": 0.01,
+          "nothing": 0.99
+        },
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "expl": 0.05,
+            "damage": 400.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.1,
+            "damage": 50.0,
+            "fHitCritical": false
+          }
+        ]
+      },
+      {
+        "name": [
+          "depth_charge_01_dm",
+          "depth_charge_02_dm",
+          "depth_charge_03_dm",
+          "depth_charge_04_dm",
+          "depth_charge_05_dm",
+          "depth_charge_06_dm",
+          "depth_charge_07_dm",
+          "depth_charge_08_dm",
+          "depth_charge_09_dm",
+          "depth_charge_10_dm",
+          "depth_charge_11_dm",
+          "depth_charge_12_dm",
+          "depth_charge_13_dm",
+          "depth_charge_14_dm",
+          "depth_charge_15_dm",
+          "depth_charge_16_dm",
+          "depth_charge_17_dm",
+          "depth_charge_18_dm",
+          "depth_charge_19_dm",
+          "depth_charge_20_dm",
+          "depth_charge_31_dm",
+          "depth_charge_32_dm",
+          "depth_charge_33_dm",
+          "depth_charge_34_dm",
+          "depth_charge_35_dm",
+          "depth_charge_36_dm",
+          "depth_charge_37_dm",
+          "depth_charge_38_dm",
+          "depth_charge_39_dm",
+          "depth_charge_40_dm",
+          "depth_charge_41_dm",
+          "depth_charge_42_dm",
+          "depth_charge_43_dm",
+          "depth_charge_44_dm",
+          "depth_charge_45_dm",
+          "depth_charge_46_dm",
+          "depth_charge_47_dm",
+          "depth_charge_48_dm",
+          "depth_charge_49_dm",
+          "depth_charge_50_dm",
+          "depth_charge_61_dm",
+          "depth_charge_62_dm",
+          "depth_charge_63_dm",
+          "depth_charge_64_dm",
+          "depth_charge_65_dm",
+          "depth_charge_66_dm",
+          "depth_charge_67_dm",
+          "depth_charge_68_dm",
+          "depth_charge_69_dm",
+          "depth_charge_l_01_dm",
+          "depth_charge_l_02_dm",
+          "depth_charge_l_03_dm",
+          "depth_charge_l_04_dm",
+          "depth_charge_l_05_dm",
+          "depth_charge_l_06_dm",
+          "depth_charge_l_07_dm",
+          "depth_charge_l_08_dm",
+          "depth_charge_r_01_dm",
+          "depth_charge_r_02_dm",
+          "depth_charge_r_03_dm",
+          "depth_charge_r_04_dm",
+          "depth_charge_r_05_dm",
+          "depth_charge_r_06_dm",
+          "depth_charge_r_07_dm",
+          "depth_charge_r_08_dm"
+        ],
+        "onKill": {
+          "expl": 0.05,
+          "nothing": 0.95
+        },
+        "onHit": [
+          {
+            "damageType": "fire",
+            "damage": 150.0,
+            "expl": 0.1
+          },
+          {
+            "damageType": "explosion",
+            "expl": 0.05,
+            "damage": 250.0,
+            "fHitCritical": false
+          }
+        ]
+      },
+      {
+        "name": [
+          "fuel_tank_dm",
+          "fuel_tank_01_dm",
+          "fuel_tank_02_dm",
+          "fuel_tank_03_dm",
+          "fuel_tank_04_dm",
+          "fuel_tank_05_dm",
+          "fuel_tank_r_01_dm",
+          "fuel_tank_r_02_dm",
+          "fuel_tank_r_03_dm",
+          "fuel_tank_r_04_dm",
+          "fuel_tank_r_05_dm",
+          "fuel_tank_l_01_dm",
+          "fuel_tank_l_02_dm",
+          "fuel_tank_l_03_dm",
+          "fuel_tank_l_04_dm",
+          "fuel_tank_l_05_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "fHitCritical": false
+        },
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "fire": 0.5,
+            "damage": 50.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.00375,
+            "damage": 10.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.03
+          }
+        ]
+      },
+      {
+        "name": [
+          "engine_dm",
+          "engine_01_dm",
+          "engine_02_dm",
+          "engine_03_dm",
+          "engine_04_dm",
+          "engine_room_01_dm",
+          "engine_room_02_dm",
+          "engine_room_03_dm",
+          "engine_room_04_dm"
+        ],
+        "onKill": {
+          "fire": 0.15,
+          "fHitCritical": false
+        },
+        "onHit": [
+          {
+            "damageType": "generic",
+            "fire": 0.00125,
+            "damage": 20.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "fire",
+            "damage": 15.0,
+            "fire": 0.05
+          }
+        ]
+      },
+      {
+        "name": [
+          "compartment_01_dm",
+          "compartment_02_dm",
+          "compartment_03_dm",
+          "compartment_04_dm",
+          "compartment_05_dm",
+          "compartment_06_dm",
+          "bridge_dm",
+          "radio_station_dm"
+        ],
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "fire": 0.05,
+            "damage": 80.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.07,
+            "damage": 100.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.2,
+            "damage": 200.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.03,
+            "damage": 5.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.15,
+            "damage": 15.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.00025,
+            "damage": 10.0,
+            "fHitCritical": false
+          }
+        ]
+      },
+      {
+        "name": [
+          "superstructure_dm",
+          "superstructure_back_dm",
+          "superstructure_front_dm",
+          "superstructure_bottom_dm",
+          "superstructure_side_dm",
+          "superstructure_top_dm"
+        ],
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "fire": 0.03,
+            "damage": 80.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.05,
+            "damage": 100.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.25,
+            "damage": 200.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01,
+            "damage": 5.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.8,
+            "damage": 15.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "shatter",
+            "fire": 0.001,
+            "damage": 10.0,
+            "fHitCritical": false
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.00025,
+            "damage": 10.0,
+            "fHitCritical": false
+          }
+        ]
+      },
+      {
+        "name": [
+          "compartment_01_dm",
+          "compartment_02_dm",
+          "compartment_03_dm",
+          "compartment_04_dm",
+          "compartment_05_dm",
+          "compartment_06_dm",
+          "compartment_07_dm",
+          "compartment_08_dm",
+          "compartment_09_dm",
+          "compartment_10_dm"
+        ],
+        "onHit": [
+          {
+            "damageType": "explosion",
+            "damage": 15.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.15,
+              "fxEventName": "fire_after_hit_med"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 35.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.15,
+              "fxEventName": "fire_after_hit_med"
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.5,
+              "fxEventName": "fire_after_hit_big"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 90.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.5,
+              "fxEventName": "fire_after_hit_big"
+            }
+          },
+          {
+            "damageType": "generic",
+            "damage": 800.0,
+            "action": {
+              "type": "fxEvent",
+              "probability": 0.6,
+              "fxEventName": "fire_after_hit_huge"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "ShipPhys": {
+    "mass": {
+      "Empty": 48000.0,
+      "momentOfInertia": [
+        10.0,
+        28.0,
+        23.0
+      ],
+      "CenterOfGravity": [
+        -0.8,
+        -0.6,
+        0.0
+      ],
+      "AdvancedMass": false
+    },
+    "engines": {
+      "maxSpeed": 20.58,
+      "maxReverseSpeed": 7.0,
+      "speedToTime": {
+        "row": [
+          [
+            3.0,
+            5.0
+          ],
+          [
+            5.6,
+            9.4
+          ],
+          [
+            20.58,
+            15.9
+          ]
+        ]
+      },
+      "reverseSpeedToTime": {
+        "row": [
+          [
+            1.0,
+            2.1
+          ],
+          [
+            1.5,
+            4.1
+          ],
+          [
+            7.0,
+            7.5
+          ]
+        ]
+      },
+      "engine": [
+        {
+          "pos": [
+            -9.4,
+            -0.8,
+            0.8
+          ],
+          "outputParam": "propeller_rotate_01:CRS",
+          "engineDmPart": [
+            "engine_01_dm",
+            "engine_03_dm"
+          ],
+          "transmissionDmPart": "transmission_01_dm",
+          "propeller": "propeller_01"
+        },
+        {
+          "pos": [
+            -9.4,
+            -0.8,
+            -0.8
+          ],
+          "outputParam": "propeller_rotate_02:CRS",
+          "engineDmPart": [
+            "engine_02_dm",
+            "engine_04_dm"
+          ],
+          "transmissionDmPart": "transmission_02_dm",
+          "propeller": "propeller_02"
+        }
+      ]
+    },
+    "collisionProps": {
+      "cls_body_01": "convex_hull",
+      "cls_body_02": "convex_hull",
+      "cls_mast_01": "convex_hull"
+    },
+    "hydrodynamics": {
+      "bodyArea": 0.0,
+      "mulReaction": 0.55,
+      "rudder": [
+        {
+          "pos": [
+            -10.0,
+            -0.2,
+            -0.8
+          ],
+          "area": 1.0,
+          "deflection": 38.0,
+          "dmPart": "steering_gear_01_dm"
+        },
+        {
+          "pos": [
+            -10.0,
+            -0.42,
+            0.8
+          ],
+          "area": 1.0,
+          "deflection": 38.0,
+          "dmPart": "steering_gear_01_dm"
+        }
+      ]
+    }
+  },
+  "unitFx": {
+    "event": [
+      {
+        "name": "engine_fire",
+        "fx": [
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_engine_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_small",
+            "emitter": "emtr_fire_engine_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_small",
+            "emitter": "emtr_fire_engine_03",
+            "isFireBurnMark": false
+          }
+        ]
+      },
+      {
+        "name": "compartment_fire",
+        "fx": {
+          "name": "ship_fire_small",
+          "centerDmgPart": true,
+          "isFireBurnMark": false
+        }
+      },
+      {
+        "name": "superstructure_fire",
+        "fx": {
+          "name": "ship_fire_small",
+          "centerDmgPart": true,
+          "isFireBurnMark": false
+        }
+      },
+      {
+        "name": "turret_fire",
+        "fx": {
+          "name": "ship_fire_small",
+          "centerDmgPart": true,
+          "isFireBurnMark": false
+        }
+      },
+      {
+        "name": "fuel_tank_fire",
+        "fx": {
+          "name": "ship_fire_small",
+          "centerDmgPart": true,
+          "isFireBurnMark": false
+        }
+      },
+      {
+        "name": "ammo_fire",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo",
+            "emitter": "emtr_fire_ammo_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_fire_ammo_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_small_ammo",
+            "emitter": "emtr_fire_ammo_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_fire_ammo_04",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "water_explosion_small",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "water_explosion_small",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "water_explosion_small",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "water_explosion_small",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        ]
+      },
+      {
+        "name": "light_smoke",
+        "fx": [
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_01"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_02"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_03"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        ]
+      },
+      {
+        "name": "total_smoke",
+        "fx": [
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "ship_smoke_small",
+            "emitter": "emtr_smoke_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "total_fire",
+        "fx": [
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_dmg_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_medium",
+            "emitter": "emtr_fire_dmg_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_04",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_05",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_06",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_07",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_08",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_09",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_10",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_11",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_12",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_13",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_14",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_15",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "ship_fire_tiny",
+            "emitter": "emtr_fire_small_dmg_16",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "underwater_ship_engine_fire",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "underwater_bubbles",
+            "emitter": "emtr_smoke_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "attached_fire",
+        "lifetime": 15.0,
+        "fx": [
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_01"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_02"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_03"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_05"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_06"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_07"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_08"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_09"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_10"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_11"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_12"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_13"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_14"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_15"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_smoke_small_dmg_16"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_dmg_01"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_dmg_02"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_01"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_02"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_03"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_06"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_07"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_08"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_09"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_10"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_11"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_12"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_13"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_14"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_15"
+          },
+          {
+            "name": "fire_base_napalm_tiny",
+            "emitter": "emtr_fire_small_dmg_16"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "fx": [
+          {
+            "name": "explosion_ship_small",
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_small_second",
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_small_second",
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": {
+          "count": 7,
+          "speed": 25.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "big_bang",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo",
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": {
+          "count": 10,
+          "speed": 25.0,
+          "angle": 70.0,
+          "fxName": "fire_trails_explosion_smal"
+        }
+      },
+      {
+        "name": "ammo_fire_1",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_fire_ammo_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire_2",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_fire_ammo_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_02"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire_3",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_fire_ammo_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_03"
+          }
+        ]
+      },
+      {
+        "name": "ammo_fire_4",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo_second",
+            "emitter": "emtr_fire_ammo_04",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_1",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo",
+            "emitter": "emtr_fire_ammo_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_01"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_2",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo",
+            "emitter": "emtr_fire_ammo_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_02"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_3",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo",
+            "emitter": "emtr_fire_ammo_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_03"
+          }
+        ]
+      },
+      {
+        "name": "ammo_explosion_4",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo",
+            "emitter": "emtr_fire_ammo_04",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_fire_ammo_04"
+          }
+        ]
+      },
+      {
+        "name": "torpedo_fire",
+        "fx": {
+          "name": "ship_fire_medium",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "torpedo_explosion",
+        "fx": [
+          {
+            "name": "explosion_ship_small_ammo",
+            "centerDmgPart": false,
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "centerDmgPart": false
+          }
+        ]
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
+        }
+      }
+    ],
+    "procedural": {
+      "name": "default",
+      "fx": {
+        "name": "ship_fire_tiny",
+        "isFireBurnMark": false
+      }
+    }
+  },
+  "Effects": {
+    "waterSplashFx": "water_splash_small",
+    "sideSplashSpeedMult": 0.5,
+    "sideSplashUpDirMult": 0.4,
+    "sideSplashSpawnRate": 2.0,
+    "sideSplashNormalMult": 0.8,
+    "sideSplashemissionCurve": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "waterSplashFxBow": "water_splash_small_bow",
+    "bowSplashSpeedMult": 0.8,
+    "bowSplashUpDirMult": 0.5,
+    "bowSplashSpawnRate": 1.0,
+    "bowSplashNormalMult": 4.0
+  },
+  "optics": {
+    "binoculars": "navy_binoculars"
+  },
+  "commonWeapons": {
+    "HideDmParts": {
+      "hide": [
+        "main_caliber_turret_02_dm",
+        "main_caliber_gun_02_dm"
+      ]
+    },
+    "hideIkGunner": {
+      "hide": "Bip01 Pelvis_5"
+    },
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_01",
+        "flash": "emtr_gun_flame_01",
+        "useEmitter": true,
+        "barrelDP": "main_caliber_gun_01_dm",
+        "breechDP": "main_caliber_gun_01_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "speedYaw": 75.0,
+        "speedPitch": 65.0,
+        "bullets": 1800,
+        "useGunnerTargetingQuality": false,
+        "turret": {
+          "head": "main_caliber_turret_01",
+          "gun": "main_caliber_gun_01",
+          "barrel": "gun_barrel_01",
+          "gunnerDm": "main_caliber_turret_01_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_radius_foot_01",
+            "verLimits": [
+              0.0,
+              10.0
+            ],
+            "verOriginLimits": [
+              0.0,
+              60.0
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            70.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -170.0,
+            20.0,
+            70.0
+          ],
+          "lim2": [
+            -170.0,
+            -150.0,
+            10.0,
+            70.0
+          ],
+          "lim3": [
+            -150.0,
+            -135.0,
+            -5.0,
+            70.0
+          ],
+          "lim4": [
+            -135.0,
+            135.0,
+            -10.0,
+            70.0
+          ],
+          "lim5": [
+            135.0,
+            150.0,
+            -5.0,
+            70.0
+          ],
+          "lim6": [
+            150.0,
+            170.0,
+            10.0,
+            70.0
+          ],
+          "lim7": [
+            170.0,
+            180.0,
+            20.0,
+            70.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 120.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 120.0
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/navalModels_weapons/13_2mm_hotchkiss_naval_user_machinegun.blk",
+        "emitter": "emtr_gun_flame_02",
+        "flash": "emtr_gun_flame_02",
+        "useEmitter": true,
+        "barrelDP": "auxiliary_caliber_gun_01_dm",
+        "breechDP": "auxiliary_caliber_gun_01_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "speedYaw": 75.0,
+        "speedPitch": 65.0,
+        "bullets": 1800,
+        "useGunnerTargetingQuality": false,
+        "turret": {
+          "head": "auxiliary_caliber_turret_01",
+          "gun": "auxiliary_caliber_gun_01",
+          "barrel": "gun_barrel_02",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            70.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -165.0,
+            0.0,
+            70.0
+          ],
+          "lim2": [
+            -165.0,
+            -140.0,
+            -5.0,
+            70.0
+          ],
+          "lim3": [
+            -140.0,
+            175.0,
+            -10.0,
+            70.0
+          ],
+          "lim4": [
+            175.0,
+            180.0,
+            -5.0,
+            70.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 120.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 120.0
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/navalModels_weapons/13_2mm_hotchkiss_naval_user_machinegun.blk",
+        "emitter": "emtr_gun_flame_03",
+        "flash": "emtr_gun_flame_03",
+        "useEmitter": true,
+        "barrelDP": "auxiliary_caliber_gun_01_dm",
+        "breechDP": "auxiliary_caliber_gun_01_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "speedYaw": 75.0,
+        "speedPitch": 65.0,
+        "bullets": 1800,
+        "useGunnerTargetingQuality": false,
+        "turret": {
+          "head": "auxiliary_caliber_turret_01",
+          "gun": "auxiliary_caliber_gun_01",
+          "barrel": "gun_barrel_03",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            70.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -165.0,
+            0.0,
+            70.0
+          ],
+          "lim2": [
+            -165.0,
+            -140.0,
+            -5.0,
+            70.0
+          ],
+          "lim3": [
+            -140.0,
+            175.0,
+            -10.0,
+            70.0
+          ],
+          "lim4": [
+            175.0,
+            180.0,
+            -5.0,
+            70.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 120.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 120.0
+        }
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "torpedoes",
+        "blk": "gameData/units/ships/weaponPresets/fr_type40k_vedette_torpedoes.blk",
+        "reqModification": "ship_torpedoes"
+      },
+      {
+        "name": "default",
+        "blk": "gameData/units/ships/weaponPresets/fr_type40k_vedette_default.blk"
+      }
+    ]
+  },
+  "cockpit": {
+    "headPos": [
+      0.0,
+      6.0,
+      -16.0
+    ],
+    "headPosOnShooting": [
+      -2.8,
+      5.1,
+      0.0
+    ],
+    "detectinHeigh": 5.3
+  },
+  "sound": {
+    "EngineName": "engine_shiplight01",
+    "EngineNameAi": "engine_shiplight_ai",
+    "TrackSoundPath": "ships/engines_ships",
+    "TrackSoundPathStudio": "naval/engines",
+    "TrackSoundName": "tracks_light",
+    "TrackSoundNameCockpit": "tracks_light_interior",
+    "TrackSoundNameAi": "tracks_ai_light"
+  },
+  "modifications": {
+    "new_ship_hull": {},
+    "new_ship_rudder": {},
+    "new_ship_screw": {},
+    "new_ship_engine": {},
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {},
+    "ship_smoke_screen_system_mod": {},
+    "new_ship_pumps": {},
+    "20mm_oerlikon_universal": {},
+    "20mm_oerlikon_navy_he_ammo_pack": {},
+    "20mm_oerlikon_navy_he": {},
+    "20mm_oerlikon_navy_ap_ammo_pack": {
+      "prevModification": "20mm_oerlikon_navy_he_ammo_pack"
+    },
+    "20mm_oerlikon_navy_ap": {},
+    "13mm_type93_naval_universal": {},
+    "13mm_type93_naval_heit": {},
+    "13mm_type93_naval_heit_ammo_pack": {},
+    "13mm_type93_naval_apt": {},
+    "13mm_type93_naval_apt_ammo_pack": {
+      "prevModification": "13mm_type93_naval_heit_ammo_pack"
+    },
+    "ship_torpedoes": {},
+    "new_aux_caliber_turrets": {},
+    "new_main_caliber_turrets": {
+      "prevModification": "new_aux_caliber_turrets"
+    },
+    "ship_main_caliber_support": {},
+    "torpedoes_movement_mode": {
+      "effects": {
+        "distToLive": 1000.0,
+        "maxSpeedInWater": -4.36
+      }
+    }
+  },
+  "breaches": {
+    "repairSpeed": 21.0,
+    "waterMassVel": -5500.0,
+    "waterMassMult": 55.0,
+    "sizeToRepair": [
+      0.01,
+      3.0,
+      10.0,
+      370.0
+    ],
+    "additionalWaterDeathThreshold": 140000.0,
+    "additionalWaterShouldDiePercent": 0.35,
+    "fatalBreachDrownTime": 35.0,
+    "maxHeelingAngle": 37.0,
+    "maxHeelingTime": 9.0,
+    "criticalHeelingAnglePercent": 0.5,
+    "maxCriticalHeelingTime": 2.0,
+    "heelingDeathHeightOffsetMult": 1.0,
+    "sideCenterOfMassOffsetPercent": 0.25
+  },
+  "shipCover": {
+    "cover": [
+      {
+        "part": "compartment_01_dm",
+        "weight": 0.15,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": {
+            "partNo": "ammunition_storage_aux_01_dm",
+            "critWaterLevel": 0.8
+          }
+        }
+      },
+      {
+        "part": "compartment_02_dm",
+        "weight": 1.0,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": [
+            {
+              "partNo": "engine_room_01_dm",
+              "critWaterLevel": 0.6
+            },
+            {
+              "partNo": "engine_room_02_dm",
+              "critWaterLevel": 0.6
+            },
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.8
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.8
+            }
+          ]
+        }
+      },
+      {
+        "part": "compartment_03_dm",
+        "weight": 1.0,
+        "maxWaterAlive": 1.0,
+        "innerParts": {
+          "part": [
+            {
+              "partNo": "transmission_01_dm",
+              "critWaterLevel": 0.6
+            },
+            {
+              "partNo": "transmission_02_dm",
+              "critWaterLevel": 0.6
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ammo": {
+    "explodeTreshold": 0.0001,
+    "explodeArmorPower": 50.0,
+    "explodeRadius": [
+      50.0,
+      100.0
+    ],
+    "explodeHitPower": 50.0
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": [
+        "gunner0",
+        "gunner1"
+      ],
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_01_dm": {
+          "count": 5400
+        }
+      }
+    }
+  },
+  "winch": {
+    "length": 90.0
+  },
+  "difficulty": {
+    "arcade": {
+      "tankRearmOnCaptureZone": true
+    }
+  },
+  "wreckedParts": {
+    "part": [
+      {
+        "node": "main_caliber_turret_01",
+        "idx": 1,
+        "mass": 500.0,
+        "cutDamage": 350.0,
+        "deviation": 0.6,
+        "rotation": 2.1,
+        "collisionNode": "main_caliber_turret_01_dm"
+      },
+      {
+        "node": "ex_armor_04",
+        "idx": 2,
+        "mass": 500.0,
+        "cutDamage": 350.0,
+        "deviation": 0.6,
+        "rotation": 2.1,
+        "collisionNode": "ex_armor_04_dm"
+      },
+      {
+        "node": "auxiliary_caliber_turret_01",
+        "idx": 3,
+        "mass": 400.0,
+        "cutDamage": 350.0,
+        "deviation": 0.6,
+        "rotation": 2.1,
+        "collisionNode": "auxiliary_caliber_turret_01_dm"
+      }
+    ]
+  },
+  "skin": [
+    {
+      "name": "fr_camo_navy_ground",
+      "nameLocId": "skin/fr_camo_navy_ground",
+      "descLocId": "skin/fr_camo_navy_ground/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_navy_ground*"
+      }
+    },
+    {
+      "name": "fr_camo_multicolor_spots",
+      "nameLocId": "skin/fr_camo_multicolor_spots",
+      "descLocId": "skin/fr_camo_multicolor_spots/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_multicolor_spots*"
+      }
+    },
+    {
+      "name": "fr_camo_twocolors_lines",
+      "nameLocId": "skin/fr_camo_twocolors_lines",
+      "descLocId": "skin/fr_camo_twocolors_lines/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "fr_camo_twocolors_lines*"
+      }
+    }
+  ],
+  "defaultShipFlag": {
+    "name": "default",
+    "modelFlagTexture": "flag_c*",
+    "defaultShipFlag": "ship_flag_france_01",
+    "hangarFlagCam": [
+      271.22,
+      -12.56,
+      0.48
+    ]
+  },
+  "availableShipFlags": {
+    "ship_flag_germany_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_01",
+      "nameLocId": "ship_flag_germany_01/name",
+      "texture": "flag_germany_01_c*"
+    },
+    "ship_flag_germany_02": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_02",
+      "nameLocId": "ship_flag_germany_02/name",
+      "texture": "flag_germany_02_c*"
+    },
+    "ship_flag_germany_03": {
+      "category": "national",
+      "unlockId": "ship_flag_germany_03",
+      "nameLocId": "ship_flag_germany_03/name",
+      "texture": "flag_germany_03_c*"
+    },
+    "ship_flag_germany_04": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_04",
+      "nameLocId": "ship_flag_germany_04/name",
+      "texture": "flag_germany_04_c*"
+    },
+    "ship_flag_germany_05": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_05",
+      "nameLocId": "ship_flag_germany_05/name",
+      "texture": "flag_germany_05_c*"
+    },
+    "ship_flag_germany_06": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_06",
+      "nameLocId": "ship_flag_germany_06/name",
+      "texture": "flag_germany_06_c*"
+    },
+    "ship_flag_germany_08": {
+      "category": "naval",
+      "unlockId": "ship_flag_germany_08",
+      "nameLocId": "ship_flag_germany_08/name",
+      "texture": "flag_germany_08_c*"
+    },
+    "ship_flag_ireland_01": {
+      "category": "national",
+      "unlockId": "ship_flag_ireland_01",
+      "nameLocId": "ship_flag_ireland_01/name",
+      "texture": "flag_ireland_01_c*"
+    },
+    "ship_flag_uk_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_01",
+      "nameLocId": "ship_flag_uk_01/name",
+      "texture": "flag_uk_01_c*"
+    },
+    "ship_flag_uk_02": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_02",
+      "nameLocId": "ship_flag_uk_02/name",
+      "texture": "flag_uk_02_c*"
+    },
+    "ship_flag_egypt_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_egypt_01",
+      "nameLocId": "ship_flag_egypt_01/name",
+      "texture": "flag_egypt_01_c*"
+    },
+    "ship_flag_japan_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_japan_01",
+      "nameLocId": "ship_flag_japan_01/name",
+      "texture": "flag_japan_01_c*"
+    },
+    "ship_flag_ussr_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_ussr_01",
+      "nameLocId": "ship_flag_ussr_01/name",
+      "texture": "flag_ussr_01_c*"
+    },
+    "ship_flag_ussr_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_ussr_03",
+      "nameLocId": "ship_flag_ussr_03/name",
+      "texture": "flag_ussr_03_c*"
+    },
+    "ship_flag_poland_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_poland_01",
+      "nameLocId": "ship_flag_poland_01/name",
+      "texture": "flag_poland_01_c*"
+    },
+    "ship_flag_south_vietnam_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_south_vietnam_01",
+      "nameLocId": "ship_flag_south_vietnam_01/name",
+      "texture": "flag_south_vietnam_01_c*"
+    },
+    "ship_flag_china_01": {
+      "category": "national",
+      "unlockId": "ship_flag_china_01",
+      "nameLocId": "ship_flag_china_01/name",
+      "texture": "flag_china_01_c*"
+    },
+    "ship_flag_france_01": {
+      "category": "national",
+      "unlockId": "ship_flag_france_01",
+      "nameLocId": "ship_flag_france_01/name",
+      "texture": "flag_france_01_c*"
+    },
+    "ship_flag_japan_02": {
+      "category": "national",
+      "unlockId": "ship_flag_japan_02",
+      "nameLocId": "ship_flag_japan_02/name",
+      "texture": "flag_japan_02_c*"
+    },
+    "ship_flag_usa_01": {
+      "category": "national",
+      "unlockId": "ship_flag_usa_01",
+      "nameLocId": "ship_flag_usa_01/name",
+      "texture": "flag_usa_01_c*"
+    },
+    "ship_flag_usa_02": {
+      "category": "national",
+      "unlockId": "ship_flag_usa_02",
+      "nameLocId": "ship_flag_usa_02/name",
+      "texture": "flag_usa_02_c*"
+    },
+    "ship_flag_italy_01": {
+      "category": "naval",
+      "unlockId": "ship_flag_italy_01",
+      "nameLocId": "ship_flag_italy_01/name",
+      "texture": "flag_italy_01_c*"
+    },
+    "ship_flag_italy_02": {
+      "category": "naval",
+      "unlockId": "ship_flag_italy_02",
+      "nameLocId": "ship_flag_italy_02/name",
+      "texture": "flag_italy_02_c*"
+    },
+    "ship_flag_italy_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_italy_03",
+      "nameLocId": "ship_flag_italy_03/name",
+      "texture": "flag_italy_03_c*"
+    },
+    "ship_flag_ussr_02": {
+      "category": "national",
+      "unlockId": "ship_flag_ussr_02",
+      "nameLocId": "ship_flag_ussr_02/name",
+      "texture": "flag_ussr_02_c*"
+    },
+    "ship_flag_germany_07": {
+      "category": "national",
+      "unlockId": "ship_flag_germany_07",
+      "nameLocId": "ship_flag_germany_07/name",
+      "texture": "flag_germany_07_c*"
+    },
+    "ship_flag_great_britain_01": {
+      "category": "national",
+      "unlockId": "ship_flag_great_britain_01",
+      "nameLocId": "ship_flag_great_britain_01/name",
+      "texture": "flag_great_britain_01_c*"
+    },
+    "ship_flag_italy_04": {
+      "category": "national",
+      "unlockId": "ship_flag_italy_04",
+      "nameLocId": "ship_flag_italy_04/name",
+      "texture": "flag_italy_04_c*"
+    },
+    "ship_flag_france_02": {
+      "category": "naval",
+      "unlockId": "ship_flag_france_02",
+      "nameLocId": "ship_flag_france_02/name",
+      "descLocId": "ship_flag_france_02/desc",
+      "texture": "flag_france_02_c*"
+    },
+    "ship_flag_afganistan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_afganistan_01",
+      "nameLocId": "ship_flag_afganistan_01/name",
+      "texture": "flag_afganistan_01_c*"
+    },
+    "ship_flag_albania_01": {
+      "category": "national",
+      "unlockId": "ship_flag_albania_01",
+      "nameLocId": "ship_flag_albania_01/name",
+      "texture": "flag_albania_01_c*"
+    },
+    "ship_flag_algeria_01": {
+      "category": "national",
+      "unlockId": "ship_flag_algeria_01",
+      "nameLocId": "ship_flag_algeria_01/name",
+      "texture": "flag_algeria_01_c*"
+    },
+    "ship_flag_andorra_01": {
+      "category": "national",
+      "unlockId": "ship_flag_andorra_01",
+      "nameLocId": "ship_flag_andorra_01/name",
+      "texture": "flag_andorra_01_c*"
+    },
+    "ship_flag_angola_01": {
+      "category": "national",
+      "unlockId": "ship_flag_angola_01",
+      "nameLocId": "ship_flag_angola_01/name",
+      "texture": "flag_angola_01_c*"
+    },
+    "ship_flag_antigua_and_barbuda_01": {
+      "category": "national",
+      "unlockId": "ship_flag_antigua_and_barbuda_01",
+      "nameLocId": "ship_flag_antigua_and_barbuda_01/name",
+      "texture": "flag_antigua_and_barbuda_01_c*"
+    },
+    "ship_flag_argentina_01": {
+      "category": "national",
+      "unlockId": "ship_flag_argentina_01",
+      "nameLocId": "ship_flag_argentina_01/name",
+      "texture": "flag_argentina_01_c*"
+    },
+    "ship_flag_armenia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_armenia_01",
+      "nameLocId": "ship_flag_armenia_01/name",
+      "texture": "flag_armenia_01_c*"
+    },
+    "ship_flag_australia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_australia_01",
+      "nameLocId": "ship_flag_australia_01/name",
+      "texture": "flag_australia_01_c*"
+    },
+    "ship_flag_austria_01": {
+      "category": "national",
+      "unlockId": "ship_flag_austria_01",
+      "nameLocId": "ship_flag_austria_01/name",
+      "texture": "flag_austria_01_c*"
+    },
+    "ship_flag_azerbadjan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_azerbadjan_01",
+      "nameLocId": "ship_flag_azerbadjan_01/name",
+      "texture": "flag_azerbadjan_01_c*"
+    },
+    "ship_flag_bahamas_01": {
+      "category": "national",
+      "unlockId": "ship_flag_bahamas_01",
+      "nameLocId": "ship_flag_bahamas_01/name",
+      "texture": "flag_bahamas_01_c*"
+    },
+    "ship_flag_bahrain_01": {
+      "category": "national",
+      "unlockId": "ship_flag_bahrain_01",
+      "nameLocId": "ship_flag_bahrain_01/name",
+      "texture": "flag_bahrain_01_c*"
+    },
+    "ship_flag_bangladesh_01": {
+      "category": "national",
+      "unlockId": "ship_flag_bangladesh_01",
+      "nameLocId": "ship_flag_bangladesh_01/name",
+      "texture": "flag_bangladesh_01_c*"
+    },
+    "ship_flag_barbados_01": {
+      "category": "national",
+      "unlockId": "ship_flag_barbados_01",
+      "nameLocId": "ship_flag_barbados_01/name",
+      "texture": "flag_barbados_01_c*"
+    },
+    "ship_flag_belarus_01": {
+      "category": "national",
+      "unlockId": "ship_flag_belarus_01",
+      "nameLocId": "ship_flag_belarus_01/name",
+      "texture": "flag_belarus_01_c*"
+    },
+    "ship_flag_belgium_01": {
+      "category": "national",
+      "unlockId": "ship_flag_belgium_01",
+      "nameLocId": "ship_flag_belgium_01/name",
+      "texture": "flag_belgium_01_c*"
+    },
+    "ship_flag_belize_01": {
+      "category": "national",
+      "unlockId": "ship_flag_belize_01",
+      "nameLocId": "ship_flag_belize_01/name",
+      "texture": "flag_belize_01_c*"
+    },
+    "ship_flag_benin_01": {
+      "category": "national",
+      "unlockId": "ship_flag_benin_01",
+      "nameLocId": "ship_flag_benin_01/name",
+      "texture": "flag_benin_01_c*"
+    },
+    "ship_flag_bhutan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_bhutan_01",
+      "nameLocId": "ship_flag_bhutan_01/name",
+      "texture": "flag_bhutan_01_c*"
+    },
+    "ship_flag_bolivia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_bolivia_01",
+      "nameLocId": "ship_flag_bolivia_01/name",
+      "texture": "flag_bolivia_01_c*"
+    },
+    "ship_flag_bosnia_and_herzegovina_01": {
+      "category": "national",
+      "unlockId": "ship_flag_bosnia_and_herzegovina_01",
+      "nameLocId": "ship_flag_bosnia_and_herzegovina_01/name",
+      "texture": "flag_bosnia_and_herzegovina_01_c*"
+    },
+    "ship_flag_botsvana_01": {
+      "category": "national",
+      "unlockId": "ship_flag_botsvana_01",
+      "nameLocId": "ship_flag_botsvana_01/name",
+      "texture": "flag_botsvana_01_c*"
+    },
+    "ship_flag_brazil_01": {
+      "category": "national",
+      "unlockId": "ship_flag_brazil_01",
+      "nameLocId": "ship_flag_brazil_01/name",
+      "texture": "flag_brazil_01_c*"
+    },
+    "ship_flag_brunei_darussalam_01": {
+      "category": "national",
+      "unlockId": "ship_flag_brunei_darussalam_01",
+      "nameLocId": "ship_flag_brunei_darussalam_01/name",
+      "texture": "flag_brunei_darussalam_01_c*"
+    },
+    "ship_flag_bulgaria_01": {
+      "category": "national",
+      "unlockId": "ship_flag_bulgaria_01",
+      "nameLocId": "ship_flag_bulgaria_01/name",
+      "texture": "flag_bulgaria_01_c*"
+    },
+    "ship_flag_burkina_faso_01": {
+      "category": "national",
+      "unlockId": "ship_flag_burkina_faso_01",
+      "nameLocId": "ship_flag_burkina_faso_01/name",
+      "texture": "flag_burkina_faso_01_c*"
+    },
+    "ship_flag_burundi_01": {
+      "category": "national",
+      "unlockId": "ship_flag_burundi_01",
+      "nameLocId": "ship_flag_burundi_01/name",
+      "texture": "flag_burundi_01_c*"
+    },
+    "ship_flag_cabo_verde_01": {
+      "category": "national",
+      "unlockId": "ship_flag_cabo_verde_01",
+      "nameLocId": "ship_flag_cabo_verde_01/name",
+      "texture": "flag_cabo_verde_01_c*"
+    },
+    "ship_flag_cambodia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_cambodia_01",
+      "nameLocId": "ship_flag_cambodia_01/name",
+      "texture": "flag_cambodia_01_c*"
+    },
+    "ship_flag_cameroon_01": {
+      "category": "national",
+      "unlockId": "ship_flag_cameroon_01",
+      "nameLocId": "ship_flag_cameroon_01/name",
+      "texture": "flag_cameroon_01_c*"
+    },
+    "ship_flag_canada_01": {
+      "category": "national",
+      "unlockId": "ship_flag_canada_01",
+      "nameLocId": "ship_flag_canada_01/name",
+      "texture": "flag_canada_01_c*"
+    },
+    "ship_flag_central_african_republic_01": {
+      "category": "national",
+      "unlockId": "ship_flag_central_african_republic_01",
+      "nameLocId": "ship_flag_central_african_republic_01/name",
+      "texture": "flag_central_african_republic_01_c*"
+    },
+    "ship_flag_chad_01": {
+      "category": "national",
+      "unlockId": "ship_flag_chad_01",
+      "nameLocId": "ship_flag_chad_01/name",
+      "texture": "flag_chad_01_c*"
+    },
+    "ship_flag_chile_01": {
+      "category": "national",
+      "unlockId": "ship_flag_chile_01",
+      "nameLocId": "ship_flag_chile_01/name",
+      "texture": "flag_chile_01_c*"
+    },
+    "ship_flag_colombia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_colombia_01",
+      "nameLocId": "ship_flag_colombia_01/name",
+      "texture": "flag_colombia_01_c*"
+    },
+    "ship_flag_comoros_01": {
+      "category": "national",
+      "unlockId": "ship_flag_comoros_01",
+      "nameLocId": "ship_flag_comoros_01/name",
+      "texture": "flag_comoros_01_c*"
+    },
+    "ship_flag_congo_01": {
+      "category": "national",
+      "unlockId": "ship_flag_congo_01",
+      "nameLocId": "ship_flag_congo_01/name",
+      "texture": "flag_congo_01_c*"
+    },
+    "ship_flag_costa_rica_01": {
+      "category": "national",
+      "unlockId": "ship_flag_costa_rica_01",
+      "nameLocId": "ship_flag_costa_rica_01/name",
+      "texture": "flag_costa_rica_01_c*"
+    },
+    "ship_flag_cote_divoire_01": {
+      "category": "national",
+      "unlockId": "ship_flag_cote_divoire_01",
+      "nameLocId": "ship_flag_cote_divoire_01/name",
+      "texture": "flag_cote_divoire_01_c*"
+    },
+    "ship_flag_croatia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_croatia_01",
+      "nameLocId": "ship_flag_croatia_01/name",
+      "texture": "flag_croatia_01_c*"
+    },
+    "ship_flag_cuba_01": {
+      "category": "national",
+      "unlockId": "ship_flag_cuba_01",
+      "nameLocId": "ship_flag_cuba_01/name",
+      "texture": "flag_cuba_01_c*"
+    },
+    "ship_flag_cyprus_01": {
+      "category": "national",
+      "unlockId": "ship_flag_cyprus_01",
+      "nameLocId": "ship_flag_cyprus_01/name",
+      "texture": "flag_cyprus_01_c*"
+    },
+    "ship_flag_czech_republic_01": {
+      "category": "national",
+      "unlockId": "ship_flag_czech_republic_01",
+      "nameLocId": "ship_flag_czech_republic_01/name",
+      "texture": "flag_czech_republic_01_c*"
+    },
+    "ship_flag_democratic_peoples_republic_of_korea_01": {
+      "category": "national",
+      "unlockId": "ship_flag_democratic_peoples_republic_of_korea_01",
+      "nameLocId": "ship_flag_democratic_peoples_republic_of_korea_01/name",
+      "texture": "flag_democratic_peoples_republic_of_korea_01_c*"
+    },
+    "ship_flag_democratic_republic_of_the_congo_01": {
+      "category": "national",
+      "unlockId": "ship_flag_democratic_republic_of_the_congo_01",
+      "nameLocId": "ship_flag_democratic_republic_of_the_congo_01/name",
+      "texture": "flag_democratic_republic_of_the_congo_01_c*"
+    },
+    "ship_flag_denmark_01": {
+      "category": "national",
+      "unlockId": "ship_flag_denmark_01",
+      "nameLocId": "ship_flag_denmark_01/name",
+      "texture": "flag_denmark_01_c*"
+    },
+    "ship_flag_djibouti_01": {
+      "category": "national",
+      "unlockId": "ship_flag_djibouti_01",
+      "nameLocId": "ship_flag_djibouti_01/name",
+      "texture": "flag_djibouti_01_c*"
+    },
+    "ship_flag_dominica_01": {
+      "category": "national",
+      "unlockId": "ship_flag_dominica_01",
+      "nameLocId": "ship_flag_dominica_01/name",
+      "texture": "flag_dominica_01_c*"
+    },
+    "ship_flag_dominican_republic_01": {
+      "category": "national",
+      "unlockId": "ship_flag_dominican_republic_01",
+      "nameLocId": "ship_flag_dominican_republic_01/name",
+      "texture": "flag_dominican_republic_01_c*"
+    },
+    "ship_flag_ecuador_01": {
+      "category": "national",
+      "unlockId": "ship_flag_ecuador_01",
+      "nameLocId": "ship_flag_ecuador_01/name",
+      "texture": "flag_ecuador_01_c*"
+    },
+    "ship_flag_egypt_02": {
+      "category": "national",
+      "unlockId": "ship_flag_egypt_02",
+      "nameLocId": "ship_flag_egypt_02/name",
+      "texture": "flag_egypt_02_c*"
+    },
+    "ship_flag_el_salvador_01": {
+      "category": "national",
+      "unlockId": "ship_flag_el_salvador_01",
+      "nameLocId": "ship_flag_el_salvador_01/name",
+      "texture": "flag_el_salvador_01_c*"
+    },
+    "ship_flag_england_01": {
+      "category": "national",
+      "unlockId": "ship_flag_england_01",
+      "nameLocId": "ship_flag_england_01/name",
+      "texture": "flag_england_01_c*"
+    },
+    "ship_flag_equatorial_guinea_01": {
+      "category": "national",
+      "unlockId": "ship_flag_equatorial_guinea_01",
+      "nameLocId": "ship_flag_equatorial_guinea_01/name",
+      "texture": "flag_equatorial_guinea_01_c*"
+    },
+    "ship_flag_eritrea_01": {
+      "category": "national",
+      "unlockId": "ship_flag_eritrea_01",
+      "nameLocId": "ship_flag_eritrea_01/name",
+      "texture": "flag_eritrea_01_c*"
+    },
+    "ship_flag_estonia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_estonia_01",
+      "nameLocId": "ship_flag_estonia_01/name",
+      "texture": "flag_estonia_01_c*"
+    },
+    "ship_flag_ethiopia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_ethiopia_01",
+      "nameLocId": "ship_flag_ethiopia_01/name",
+      "texture": "flag_ethiopia_01_c*"
+    },
+    "ship_flag_federated_states_of_micronesia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_federated_states_of_micronesia_01",
+      "nameLocId": "ship_flag_federated_states_of_micronesia_01/name",
+      "texture": "flag_federated_states_of_micronesia_01_c*"
+    },
+    "ship_flag_fiji_01": {
+      "category": "national",
+      "unlockId": "ship_flag_fiji_01",
+      "nameLocId": "ship_flag_fiji_01/name",
+      "texture": "flag_fiji_01_c*"
+    },
+    "ship_flag_finland_01": {
+      "category": "national",
+      "unlockId": "ship_flag_finland_01",
+      "nameLocId": "ship_flag_finland_01/name",
+      "texture": "flag_finland_01_c*"
+    },
+    "ship_flag_gabon_01": {
+      "category": "national",
+      "unlockId": "ship_flag_gabon_01",
+      "nameLocId": "ship_flag_gabon_01/name",
+      "texture": "flag_gabon_01_c*"
+    },
+    "ship_flag_gambia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_gambia_01",
+      "nameLocId": "ship_flag_gambia_01/name",
+      "texture": "flag_gambia_01_c*"
+    },
+    "ship_flag_georgia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_georgia_01",
+      "nameLocId": "ship_flag_georgia_01/name",
+      "texture": "flag_georgia_01_c*"
+    },
+    "ship_flag_ghana_01": {
+      "category": "national",
+      "unlockId": "ship_flag_ghana_01",
+      "nameLocId": "ship_flag_ghana_01/name",
+      "texture": "flag_ghana_01_c*"
+    },
+    "ship_flag_greece_01": {
+      "category": "national",
+      "unlockId": "ship_flag_greece_01",
+      "nameLocId": "ship_flag_greece_01/name",
+      "texture": "flag_greece_01_c*"
+    },
+    "ship_flag_grenada_01": {
+      "category": "national",
+      "unlockId": "ship_flag_grenada_01",
+      "nameLocId": "ship_flag_grenada_01/name",
+      "texture": "flag_grenada_01_c*"
+    },
+    "ship_flag_guatemala_01": {
+      "category": "national",
+      "unlockId": "ship_flag_guatemala_01",
+      "nameLocId": "ship_flag_guatemala_01/name",
+      "texture": "flag_guatemala_01_c*"
+    },
+    "ship_flag_guinea_01": {
+      "category": "national",
+      "unlockId": "ship_flag_guinea_01",
+      "nameLocId": "ship_flag_guinea_01/name",
+      "texture": "flag_guinea_01_c*"
+    },
+    "ship_flag_guinea_bissau_01": {
+      "category": "national",
+      "unlockId": "ship_flag_guinea_bissau_01",
+      "nameLocId": "ship_flag_guinea_bissau_01/name",
+      "texture": "flag_guinea_bissau_01_c*"
+    },
+    "ship_flag_guyana_01": {
+      "category": "national",
+      "unlockId": "ship_flag_guyana_01",
+      "nameLocId": "ship_flag_guyana_01/name",
+      "texture": "flag_guyana_01_c*"
+    },
+    "ship_flag_haiti_01": {
+      "category": "national",
+      "unlockId": "ship_flag_haiti_01",
+      "nameLocId": "ship_flag_haiti_01/name",
+      "texture": "flag_haiti_01_c*"
+    },
+    "ship_flag_honduras_01": {
+      "category": "national",
+      "unlockId": "ship_flag_honduras_01",
+      "nameLocId": "ship_flag_honduras_01/name",
+      "texture": "flag_honduras_01_c*"
+    },
+    "ship_flag_hungary_01": {
+      "category": "national",
+      "unlockId": "ship_flag_hungary_01",
+      "nameLocId": "ship_flag_hungary_01/name",
+      "texture": "flag_hungary_01_c*"
+    },
+    "ship_flag_iceland_01": {
+      "category": "national",
+      "unlockId": "ship_flag_iceland_01",
+      "nameLocId": "ship_flag_iceland_01/name",
+      "texture": "flag_iceland_01_c*"
+    },
+    "ship_flag_india_01": {
+      "category": "national",
+      "unlockId": "ship_flag_india_01",
+      "nameLocId": "ship_flag_india_01/name",
+      "texture": "flag_india_01_c*"
+    },
+    "ship_flag_indonesia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_indonesia_01",
+      "nameLocId": "ship_flag_indonesia_01/name",
+      "texture": "flag_indonesia_01_c*"
+    },
+    "ship_flag_iran_01": {
+      "category": "national",
+      "unlockId": "ship_flag_iran_01",
+      "nameLocId": "ship_flag_iran_01/name",
+      "texture": "flag_iran_01_c*"
+    },
+    "ship_flag_iraq_01": {
+      "category": "national",
+      "unlockId": "ship_flag_iraq_01",
+      "nameLocId": "ship_flag_iraq_01/name",
+      "texture": "flag_iraq_01_c*"
+    },
+    "ship_flag_israel_01": {
+      "category": "national",
+      "unlockId": "ship_flag_israel_01",
+      "nameLocId": "ship_flag_israel_01/name",
+      "texture": "flag_israel_01_c*"
+    },
+    "ship_flag_jamaica_01": {
+      "category": "national",
+      "unlockId": "ship_flag_jamaica_01",
+      "nameLocId": "ship_flag_jamaica_01/name",
+      "texture": "flag_jamaica_01_c*"
+    },
+    "ship_flag_jordan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_jordan_01",
+      "nameLocId": "ship_flag_jordan_01/name",
+      "texture": "flag_jordan_01_c*"
+    },
+    "ship_flag_kazahkstan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_kazahkstan_01",
+      "nameLocId": "ship_flag_kazahkstan_01/name",
+      "texture": "flag_kazahkstan_01_c*"
+    },
+    "ship_flag_kenya_01": {
+      "category": "national",
+      "unlockId": "ship_flag_kenya_01",
+      "nameLocId": "ship_flag_kenya_01/name",
+      "texture": "flag_kenya_01_c*"
+    },
+    "ship_flag_kiribati_01": {
+      "category": "national",
+      "unlockId": "ship_flag_kiribati_01",
+      "nameLocId": "ship_flag_kiribati_01/name",
+      "texture": "flag_kiribati_01_c*"
+    },
+    "ship_flag_kuwait_01": {
+      "category": "national",
+      "unlockId": "ship_flag_kuwait_01",
+      "nameLocId": "ship_flag_kuwait_01/name",
+      "texture": "flag_kuwait_01_c*"
+    },
+    "ship_flag_kyrgyzstan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_kyrgyzstan_01",
+      "nameLocId": "ship_flag_kyrgyzstan_01/name",
+      "texture": "flag_kyrgyzstan_01_c*"
+    },
+    "ship_flag_lao_peoples_democratic_republic_01": {
+      "category": "national",
+      "unlockId": "ship_flag_lao_peoples_democratic_republic_01",
+      "nameLocId": "ship_flag_lao_peoples_democratic_republic_01/name",
+      "texture": "flag_lao_peoples_democratic_republic_01_c*"
+    },
+    "ship_flag_latvia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_latvia_01",
+      "nameLocId": "ship_flag_latvia_01/name",
+      "texture": "flag_latvia_01_c*"
+    },
+    "ship_flag_lebanon_01": {
+      "category": "national",
+      "unlockId": "ship_flag_lebanon_01",
+      "nameLocId": "ship_flag_lebanon_01/name",
+      "texture": "flag_lebanon_01_c*"
+    },
+    "ship_flag_lesotho_01": {
+      "category": "national",
+      "unlockId": "ship_flag_lesotho_01",
+      "nameLocId": "ship_flag_lesotho_01/name",
+      "texture": "flag_lesotho_01_c*"
+    },
+    "ship_flag_liberia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_liberia_01",
+      "nameLocId": "ship_flag_liberia_01/name",
+      "texture": "flag_liberia_01_c*"
+    },
+    "ship_flag_libya_01": {
+      "category": "national",
+      "unlockId": "ship_flag_libya_01",
+      "nameLocId": "ship_flag_libya_01/name",
+      "texture": "flag_libya_01_c*"
+    },
+    "ship_flag_liechtenstein_01": {
+      "category": "national",
+      "unlockId": "ship_flag_liechtenstein_01",
+      "nameLocId": "ship_flag_liechtenstein_01/name",
+      "texture": "flag_liechtenstein_01_c*"
+    },
+    "ship_flag_lithuania_01": {
+      "category": "national",
+      "unlockId": "ship_flag_lithuania_01",
+      "nameLocId": "ship_flag_lithuania_01/name",
+      "texture": "flag_lithuania_01_c*"
+    },
+    "ship_flag_luxembourg_01": {
+      "category": "national",
+      "unlockId": "ship_flag_luxembourg_01",
+      "nameLocId": "ship_flag_luxembourg_01/name",
+      "texture": "flag_luxembourg_01_c*"
+    },
+    "ship_flag_macedonia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_macedonia_01",
+      "nameLocId": "ship_flag_macedonia_01/name",
+      "texture": "flag_macedonia_01_c*"
+    },
+    "ship_flag_madagaskar_01": {
+      "category": "national",
+      "unlockId": "ship_flag_madagaskar_01",
+      "nameLocId": "ship_flag_madagaskar_01/name",
+      "texture": "flag_madagaskar_01_c*"
+    },
+    "ship_flag_malawi_01": {
+      "category": "national",
+      "unlockId": "ship_flag_malawi_01",
+      "nameLocId": "ship_flag_malawi_01/name",
+      "texture": "flag_malawi_01_c*"
+    },
+    "ship_flag_malaysia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_malaysia_01",
+      "nameLocId": "ship_flag_malaysia_01/name",
+      "texture": "flag_malaysia_01_c*"
+    },
+    "ship_flag_maldives_01": {
+      "category": "national",
+      "unlockId": "ship_flag_maldives_01",
+      "nameLocId": "ship_flag_maldives_01/name",
+      "texture": "flag_maldives_01_c*"
+    },
+    "ship_flag_mali_01": {
+      "category": "national",
+      "unlockId": "ship_flag_mali_01",
+      "nameLocId": "ship_flag_mali_01/name",
+      "texture": "flag_mali_01_c*"
+    },
+    "ship_flag_malta_01": {
+      "category": "national",
+      "unlockId": "ship_flag_malta_01",
+      "nameLocId": "ship_flag_malta_01/name",
+      "texture": "flag_malta_01_c*"
+    },
+    "ship_flag_marshall_islands_01": {
+      "category": "national",
+      "unlockId": "ship_flag_marshall_islands_01",
+      "nameLocId": "ship_flag_marshall_islands_01/name",
+      "texture": "flag_marshall_islands_01_c*"
+    },
+    "ship_flag_mauritania_01": {
+      "category": "national",
+      "unlockId": "ship_flag_mauritania_01",
+      "nameLocId": "ship_flag_mauritania_01/name",
+      "texture": "flag_mauritania_01_c*"
+    },
+    "ship_flag_mauritius_01": {
+      "category": "national",
+      "unlockId": "ship_flag_mauritius_01",
+      "nameLocId": "ship_flag_mauritius_01/name",
+      "texture": "flag_mauritius_01_c*"
+    },
+    "ship_flag_mexico_01": {
+      "category": "national",
+      "unlockId": "ship_flag_mexico_01",
+      "nameLocId": "ship_flag_mexico_01/name",
+      "texture": "flag_mexico_01_c*"
+    },
+    "ship_flag_monaco_01": {
+      "category": "national",
+      "unlockId": "ship_flag_monaco_01",
+      "nameLocId": "ship_flag_monaco_01/name",
+      "texture": "flag_monaco_01_c*"
+    },
+    "ship_flag_mongolia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_mongolia_01",
+      "nameLocId": "ship_flag_mongolia_01/name",
+      "texture": "flag_mongolia_01_c*"
+    },
+    "ship_flag_montenegro_01": {
+      "category": "national",
+      "unlockId": "ship_flag_montenegro_01",
+      "nameLocId": "ship_flag_montenegro_01/name",
+      "texture": "flag_montenegro_01_c*"
+    },
+    "ship_flag_morocco_01": {
+      "category": "national",
+      "unlockId": "ship_flag_morocco_01",
+      "nameLocId": "ship_flag_morocco_01/name",
+      "texture": "flag_morocco_01_c*"
+    },
+    "ship_flag_mozambique_01": {
+      "category": "national",
+      "unlockId": "ship_flag_mozambique_01",
+      "nameLocId": "ship_flag_mozambique_01/name",
+      "texture": "flag_mozambique_01_c*"
+    },
+    "ship_flag_myanmar_01": {
+      "category": "national",
+      "unlockId": "ship_flag_myanmar_01",
+      "nameLocId": "ship_flag_myanmar_01/name",
+      "texture": "flag_myanmar_01_c*"
+    },
+    "ship_flag_namibia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_namibia_01",
+      "nameLocId": "ship_flag_namibia_01/name",
+      "texture": "flag_namibia_01_c*"
+    },
+    "ship_flag_nauru_01": {
+      "category": "national",
+      "unlockId": "ship_flag_nauru_01",
+      "nameLocId": "ship_flag_nauru_01/name",
+      "texture": "flag_nauru_01_c*"
+    },
+    "ship_flag_nepal_01": {
+      "category": "national",
+      "unlockId": "ship_flag_nepal_01",
+      "nameLocId": "ship_flag_nepal_01/name",
+      "texture": "flag_nepal_01_c*"
+    },
+    "ship_flag_netherlands_01": {
+      "category": "national",
+      "unlockId": "ship_flag_netherlands_01",
+      "nameLocId": "ship_flag_netherlands_01/name",
+      "texture": "flag_netherlands_01_c*"
+    },
+    "ship_flag_new_zealand_01": {
+      "category": "national",
+      "unlockId": "ship_flag_new_zealand_01",
+      "nameLocId": "ship_flag_new_zealand_01/name",
+      "texture": "flag_new_zealand_01_c*"
+    },
+    "ship_flag_nicaragua_01": {
+      "category": "national",
+      "unlockId": "ship_flag_nicaragua_01",
+      "nameLocId": "ship_flag_nicaragua_01/name",
+      "texture": "flag_nicaragua_01_c*"
+    },
+    "ship_flag_niger_01": {
+      "category": "national",
+      "unlockId": "ship_flag_niger_01",
+      "nameLocId": "ship_flag_niger_01/name",
+      "texture": "flag_niger_01_c*"
+    },
+    "ship_flag_nigeria_01": {
+      "category": "national",
+      "unlockId": "ship_flag_nigeria_01",
+      "nameLocId": "ship_flag_nigeria_01/name",
+      "texture": "flag_nigeria_01_c*"
+    },
+    "ship_flag_norway_01": {
+      "category": "national",
+      "unlockId": "ship_flag_norway_01",
+      "nameLocId": "ship_flag_norway_01/name",
+      "texture": "flag_norway_01_c*"
+    },
+    "ship_flag_oman_01": {
+      "category": "national",
+      "unlockId": "ship_flag_oman_01",
+      "nameLocId": "ship_flag_oman_01/name",
+      "texture": "flag_oman_01_c*"
+    },
+    "ship_flag_pakistan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_pakistan_01",
+      "nameLocId": "ship_flag_pakistan_01/name",
+      "texture": "flag_pakistan_01_c*"
+    },
+    "ship_flag_palau_01": {
+      "category": "national",
+      "unlockId": "ship_flag_palau_01",
+      "nameLocId": "ship_flag_palau_01/name",
+      "texture": "flag_palau_01_c*"
+    },
+    "ship_flag_panama_01": {
+      "category": "national",
+      "unlockId": "ship_flag_panama_01",
+      "nameLocId": "ship_flag_panama_01/name",
+      "texture": "flag_panama_01_c*"
+    },
+    "ship_flag_papua_new_guinea_01": {
+      "category": "national",
+      "unlockId": "ship_flag_papua_new_guinea_01",
+      "nameLocId": "ship_flag_papua_new_guinea_01/name",
+      "texture": "flag_papua_new_guinea_01_c*"
+    },
+    "ship_flag_paraguay_01": {
+      "category": "national",
+      "unlockId": "ship_flag_paraguay_01",
+      "nameLocId": "ship_flag_paraguay_01/name",
+      "texture": "flag_paraguay_01_c*"
+    },
+    "ship_flag_peru_01": {
+      "category": "national",
+      "unlockId": "ship_flag_peru_01",
+      "nameLocId": "ship_flag_peru_01/name",
+      "texture": "flag_peru_01_c*"
+    },
+    "ship_flag_philippines_01": {
+      "category": "national",
+      "unlockId": "ship_flag_philippines_01",
+      "nameLocId": "ship_flag_philippines_01/name",
+      "texture": "flag_philippines_01_c*"
+    },
+    "ship_flag_poland_02": {
+      "category": "national",
+      "unlockId": "ship_flag_poland_02",
+      "nameLocId": "ship_flag_poland_02/name",
+      "texture": "flag_poland_02_c*"
+    },
+    "ship_flag_portugal_01": {
+      "category": "national",
+      "unlockId": "ship_flag_portugal_01",
+      "nameLocId": "ship_flag_portugal_01/name",
+      "texture": "flag_portugal_01_c*"
+    },
+    "ship_flag_qatar_01": {
+      "category": "national",
+      "unlockId": "ship_flag_qatar_01",
+      "nameLocId": "ship_flag_qatar_01/name",
+      "texture": "flag_qatar_01_c*"
+    },
+    "ship_flag_republic_of_korea_01": {
+      "category": "national",
+      "unlockId": "ship_flag_republic_of_korea_01",
+      "nameLocId": "ship_flag_republic_of_korea_01/name",
+      "texture": "flag_republic_of_korea_01_c*"
+    },
+    "ship_flag_republic_of_moldova_01": {
+      "category": "national",
+      "unlockId": "ship_flag_republic_of_moldova_01",
+      "nameLocId": "ship_flag_republic_of_moldova_01/name",
+      "texture": "flag_republic_of_moldova_01_c*"
+    },
+    "ship_flag_romania_01": {
+      "category": "national",
+      "unlockId": "ship_flag_romania_01",
+      "nameLocId": "ship_flag_romania_01/name",
+      "texture": "flag_romania_01_c*"
+    },
+    "ship_flag_russian_federation_01": {
+      "category": "national",
+      "unlockId": "ship_flag_russian_federation_01",
+      "nameLocId": "ship_flag_russian_federation_01/name",
+      "texture": "flag_russian_federation_01_c*"
+    },
+    "ship_flag_rwanda_01": {
+      "category": "national",
+      "unlockId": "ship_flag_rwanda_01",
+      "nameLocId": "ship_flag_rwanda_01/name",
+      "texture": "flag_rwanda_01_c*"
+    },
+    "ship_flag_saint_kitts_and_nevis_01": {
+      "category": "national",
+      "unlockId": "ship_flag_saint_kitts_and_nevis_01",
+      "nameLocId": "ship_flag_saint_kitts_and_nevis_01/name",
+      "texture": "flag_saint_kitts_and_nevis_01_c*"
+    },
+    "ship_flag_saint_lucia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_saint_lucia_01",
+      "nameLocId": "ship_flag_saint_lucia_01/name",
+      "texture": "flag_saint_lucia_01_c*"
+    },
+    "ship_flag_saint_vincent_and_the_grenadines_01": {
+      "category": "national",
+      "unlockId": "ship_flag_saint_vincent_and_the_grenadines_01",
+      "nameLocId": "ship_flag_saint_vincent_and_the_grenadines_01/name",
+      "texture": "flag_saint_vincent_and_the_grenadines_01_c*"
+    },
+    "ship_flag_samoa_01": {
+      "category": "national",
+      "unlockId": "ship_flag_samoa_01",
+      "nameLocId": "ship_flag_samoa_01/name",
+      "texture": "flag_samoa_01_c*"
+    },
+    "ship_flag_san_marino_01": {
+      "category": "national",
+      "unlockId": "ship_flag_san_marino_01",
+      "nameLocId": "ship_flag_san_marino_01/name",
+      "texture": "flag_san_marino_01_c*"
+    },
+    "ship_flag_sao_tome_and_principe_01": {
+      "category": "national",
+      "unlockId": "ship_flag_sao_tome_and_principe_01",
+      "nameLocId": "ship_flag_sao_tome_and_principe_01/name",
+      "texture": "flag_sao_tome_and_principe_01_c*"
+    },
+    "ship_flag_saudi_arabia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_saudi_arabia_01",
+      "nameLocId": "ship_flag_saudi_arabia_01/name",
+      "texture": "flag_saudi_arabia_01_c*"
+    },
+    "ship_flag_scotland_01": {
+      "category": "national",
+      "unlockId": "ship_flag_scotland_01",
+      "nameLocId": "ship_flag_scotland_01/name",
+      "texture": "flag_scotland_01_c*"
+    },
+    "ship_flag_senegal_01": {
+      "category": "national",
+      "unlockId": "ship_flag_senegal_01",
+      "nameLocId": "ship_flag_senegal_01/name",
+      "texture": "flag_senegal_01_c*"
+    },
+    "ship_flag_serbia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_serbia_01",
+      "nameLocId": "ship_flag_serbia_01/name",
+      "texture": "flag_serbia_01_c*"
+    },
+    "ship_flag_seychelles_01": {
+      "category": "national",
+      "unlockId": "ship_flag_seychelles_01",
+      "nameLocId": "ship_flag_seychelles_01/name",
+      "texture": "flag_seychelles_01_c*"
+    },
+    "ship_flag_sierra_leone_01": {
+      "category": "national",
+      "unlockId": "ship_flag_sierra_leone_01",
+      "nameLocId": "ship_flag_sierra_leone_01/name",
+      "texture": "flag_sierra_leone_01_c*"
+    },
+    "ship_flag_singapore_01": {
+      "category": "national",
+      "unlockId": "ship_flag_singapore_01",
+      "nameLocId": "ship_flag_singapore_01/name",
+      "texture": "flag_singapore_01_c*"
+    },
+    "ship_flag_slovakia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_slovakia_01",
+      "nameLocId": "ship_flag_slovakia_01/name",
+      "texture": "flag_slovakia_01_c*"
+    },
+    "ship_flag_slovenia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_slovenia_01",
+      "nameLocId": "ship_flag_slovenia_01/name",
+      "texture": "flag_slovenia_01_c*"
+    },
+    "ship_flag_solomon_islands_01": {
+      "category": "national",
+      "unlockId": "ship_flag_solomon_islands_01",
+      "nameLocId": "ship_flag_solomon_islands_01/name",
+      "texture": "flag_solomon_islands_01_c*"
+    },
+    "ship_flag_somalia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_somalia_01",
+      "nameLocId": "ship_flag_somalia_01/name",
+      "texture": "flag_somalia_01_c*"
+    },
+    "ship_flag_south_africa_01": {
+      "category": "national",
+      "unlockId": "ship_flag_south_africa_01",
+      "nameLocId": "ship_flag_south_africa_01/name",
+      "texture": "flag_south_africa_01_c*"
+    },
+    "ship_flag_south_sudan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_south_sudan_01",
+      "nameLocId": "ship_flag_south_sudan_01/name",
+      "texture": "flag_south_sudan_01_c*"
+    },
+    "ship_flag_spain_01": {
+      "category": "national",
+      "unlockId": "ship_flag_spain_01",
+      "nameLocId": "ship_flag_spain_01/name",
+      "texture": "flag_spain_01_c*"
+    },
+    "ship_flag_sri_lanka_01": {
+      "category": "national",
+      "unlockId": "ship_flag_sri_lanka_01",
+      "nameLocId": "ship_flag_sri_lanka_01/name",
+      "texture": "flag_sri_lanka_01_c*"
+    },
+    "ship_flag_sudan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_sudan_01",
+      "nameLocId": "ship_flag_sudan_01/name",
+      "texture": "flag_sudan_01_c*"
+    },
+    "ship_flag_suriname_01": {
+      "category": "national",
+      "unlockId": "ship_flag_suriname_01",
+      "nameLocId": "ship_flag_suriname_01/name",
+      "texture": "flag_suriname_01_c*"
+    },
+    "ship_flag_swaziland_01": {
+      "category": "national",
+      "unlockId": "ship_flag_swaziland_01",
+      "nameLocId": "ship_flag_swaziland_01/name",
+      "texture": "flag_swaziland_01_c*"
+    },
+    "ship_flag_sweden_01": {
+      "category": "national",
+      "unlockId": "ship_flag_sweden_01",
+      "nameLocId": "ship_flag_sweden_01/name",
+      "texture": "flag_sweden_01_c*"
+    },
+    "ship_flag_switzerland_01": {
+      "category": "national",
+      "unlockId": "ship_flag_switzerland_01",
+      "nameLocId": "ship_flag_switzerland_01/name",
+      "texture": "flag_switzerland_01_c*"
+    },
+    "ship_flag_syrian_arab_republic_01": {
+      "category": "national",
+      "unlockId": "ship_flag_syrian_arab_republic_01",
+      "nameLocId": "ship_flag_syrian_arab_republic_01/name",
+      "texture": "flag_syrian_arab_republic_01_c*"
+    },
+    "ship_flag_taiwan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_taiwan_01",
+      "nameLocId": "ship_flag_taiwan_01/name",
+      "texture": "flag_taiwan_01_c*"
+    },
+    "ship_flag_tajikistan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_tajikistan_01",
+      "nameLocId": "ship_flag_tajikistan_01/name",
+      "texture": "flag_tajikistan_01_c*"
+    },
+    "ship_flag_thailand_01": {
+      "category": "national",
+      "unlockId": "ship_flag_thailand_01",
+      "nameLocId": "ship_flag_thailand_01/name",
+      "texture": "flag_thailand_01_c*"
+    },
+    "ship_flag_timor_leste_01": {
+      "category": "national",
+      "unlockId": "ship_flag_timor_leste_01",
+      "nameLocId": "ship_flag_timor_leste_01/name",
+      "texture": "flag_timor_leste_01_c*"
+    },
+    "ship_flag_togo_01": {
+      "category": "national",
+      "unlockId": "ship_flag_togo_01",
+      "nameLocId": "ship_flag_togo_01/name",
+      "texture": "flag_togo_01_c*"
+    },
+    "ship_flag_tonga_01": {
+      "category": "national",
+      "unlockId": "ship_flag_tonga_01",
+      "nameLocId": "ship_flag_tonga_01/name",
+      "texture": "flag_tonga_01_c*"
+    },
+    "ship_flag_trinidad_and_tobago_01": {
+      "category": "national",
+      "unlockId": "ship_flag_trinidad_and_tobago_01",
+      "nameLocId": "ship_flag_trinidad_and_tobago_01/name",
+      "texture": "flag_trinidad_and_tobago_01_c*"
+    },
+    "ship_flag_tunisia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_tunisia_01",
+      "nameLocId": "ship_flag_tunisia_01/name",
+      "texture": "flag_tunisia_01_c*"
+    },
+    "ship_flag_turkey_01": {
+      "category": "national",
+      "unlockId": "ship_flag_turkey_01",
+      "nameLocId": "ship_flag_turkey_01/name",
+      "texture": "flag_turkey_01_c*"
+    },
+    "ship_flag_turkmenistan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_turkmenistan_01",
+      "nameLocId": "ship_flag_turkmenistan_01/name",
+      "texture": "flag_turkmenistan_01_c*"
+    },
+    "ship_flag_tuvalu_01": {
+      "category": "national",
+      "unlockId": "ship_flag_tuvalu_01",
+      "nameLocId": "ship_flag_tuvalu_01/name",
+      "texture": "flag_tuvalu_01_c*"
+    },
+    "ship_flag_uae_01": {
+      "category": "national",
+      "unlockId": "ship_flag_uae_01",
+      "nameLocId": "ship_flag_uae_01/name",
+      "texture": "flag_uae_01_c*"
+    },
+    "ship_flag_uganda_01": {
+      "category": "national",
+      "unlockId": "ship_flag_uganda_01",
+      "nameLocId": "ship_flag_uganda_01/name",
+      "texture": "flag_uganda_01_c*"
+    },
+    "ship_flag_ukraine_01": {
+      "category": "national",
+      "unlockId": "ship_flag_ukraine_01",
+      "nameLocId": "ship_flag_ukraine_01/name",
+      "texture": "flag_ukraine_01_c*"
+    },
+    "ship_flag_united_republic_of_tanzania_01": {
+      "category": "national",
+      "unlockId": "ship_flag_united_republic_of_tanzania_01",
+      "nameLocId": "ship_flag_united_republic_of_tanzania_01/name",
+      "texture": "flag_united_republic_of_tanzania_01_c*"
+    },
+    "ship_flag_uruguay_01": {
+      "category": "national",
+      "unlockId": "ship_flag_uruguay_01",
+      "nameLocId": "ship_flag_uruguay_01/name",
+      "texture": "flag_uruguay_01_c*"
+    },
+    "ship_flag_uzbekistan_01": {
+      "category": "national",
+      "unlockId": "ship_flag_uzbekistan_01",
+      "nameLocId": "ship_flag_uzbekistan_01/name",
+      "texture": "flag_uzbekistan_01_c*"
+    },
+    "ship_flag_vanuatu_01": {
+      "category": "national",
+      "unlockId": "ship_flag_vanuatu_01",
+      "nameLocId": "ship_flag_vanuatu_01/name",
+      "texture": "flag_vanuatu_01_c*"
+    },
+    "ship_flag_venezuela_01": {
+      "category": "national",
+      "unlockId": "ship_flag_venezuela_01",
+      "nameLocId": "ship_flag_venezuela_01/name",
+      "texture": "flag_venezuela_01_c*"
+    },
+    "ship_flag_vietnam_01": {
+      "category": "national",
+      "unlockId": "ship_flag_vietnam_01",
+      "nameLocId": "ship_flag_vietnam_01/name",
+      "texture": "flag_vietnam_01_c*"
+    },
+    "ship_flag_wales_01": {
+      "category": "national",
+      "unlockId": "ship_flag_wales_01",
+      "nameLocId": "ship_flag_wales_01/name",
+      "texture": "flag_wales_01_c*"
+    },
+    "ship_flag_yemen_01": {
+      "category": "national",
+      "unlockId": "ship_flag_yemen_01",
+      "nameLocId": "ship_flag_yemen_01/name",
+      "texture": "flag_yemen_01_c*"
+    },
+    "ship_flag_zambia_01": {
+      "category": "national",
+      "unlockId": "ship_flag_zambia_01",
+      "nameLocId": "ship_flag_zambia_01/name",
+      "texture": "flag_zambia_01_c*"
+    },
+    "ship_flag_zimbabwe_01": {
+      "category": "national",
+      "unlockId": "ship_flag_zimbabwe_01",
+      "nameLocId": "ship_flag_zimbabwe_01/name",
+      "texture": "flag_zimbabwe_01_c*"
+    },
+    "ship_flag_northern_ireland_01": {
+      "category": "national",
+      "unlockId": "ship_flag_northern_ireland_01",
+      "nameLocId": "ship_flag_northern_ireland_01/name",
+      "texture": "flag_northern_ireland_01_c*"
+    },
+    "flag_italy_05": {
+      "category": "national",
+      "unlockId": "flag_italy_05",
+      "nameLocId": "flag_italy_05/name",
+      "texture": "flag_italy_05_c*"
+    },
+    "ship_flag_pirate_01": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_01",
+      "nameLocId": "ship_flag_pirate_01/name",
+      "texture": "flag_pirate_01_c*"
+    },
+    "ship_flag_pirate_02": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_02",
+      "nameLocId": "ship_flag_pirate_02/name",
+      "texture": "flag_pirate_02_c*"
+    },
+    "ship_flag_pirate_03": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_03",
+      "nameLocId": "ship_flag_pirate_03/name",
+      "texture": "flag_pirate_03_c*"
+    },
+    "ship_flag_pirate_04": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_04",
+      "nameLocId": "ship_flag_pirate_04/name",
+      "texture": "flag_pirate_04_c*"
+    },
+    "ship_flag_pirate_05": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_05",
+      "nameLocId": "ship_flag_pirate_05/name",
+      "texture": "flag_pirate_05_c*"
+    },
+    "ship_flag_pirate_06": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_06",
+      "nameLocId": "ship_flag_pirate_06/name",
+      "texture": "flag_pirate_06_c*"
+    },
+    "ship_flag_pirate_07": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_07",
+      "nameLocId": "ship_flag_pirate_07/name",
+      "texture": "flag_pirate_07_c*"
+    },
+    "ship_flag_pirate_08": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_08",
+      "nameLocId": "ship_flag_pirate_08/name",
+      "texture": "flag_pirate_08_c*"
+    },
+    "ship_flag_pirate_09": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_09",
+      "nameLocId": "ship_flag_pirate_09/name",
+      "texture": "flag_pirate_09_c*"
+    },
+    "ship_flag_pirate_10": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_10",
+      "nameLocId": "ship_flag_pirate_10/name",
+      "texture": "flag_pirate_10_c*"
+    },
+    "ship_flag_pirate_11": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_11",
+      "nameLocId": "ship_flag_pirate_11/name",
+      "texture": "flag_pirate_11_c*"
+    },
+    "ship_flag_pirate_12": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_12",
+      "nameLocId": "ship_flag_pirate_12/name",
+      "texture": "flag_pirate_12_c*"
+    },
+    "ship_flag_pirate_13": {
+      "category": "pirate",
+      "unlockId": "ship_flag_pirate_13",
+      "nameLocId": "ship_flag_pirate_13/name",
+      "texture": "flag_pirate_13_c*"
+    },
+    "ship_flag_cardsuit_01": {
+      "category": "other",
+      "unlockId": "ship_flag_cardsuit_01",
+      "nameLocId": "ship_flag_cardsuit_01/name",
+      "texture": "flag_cardsuit_01_c*"
+    },
+    "ship_flag_cardsuit_02": {
+      "category": "other",
+      "unlockId": "ship_flag_cardsuit_02",
+      "nameLocId": "ship_flag_cardsuit_02/name",
+      "texture": "flag_cardsuit_02_c*"
+    },
+    "ship_flag_cardsuit_03": {
+      "category": "other",
+      "unlockId": "ship_flag_cardsuit_03",
+      "nameLocId": "ship_flag_cardsuit_03/name",
+      "texture": "flag_cardsuit_03_c*"
+    },
+    "ship_flag_cardsuit_04": {
+      "category": "other",
+      "unlockId": "ship_flag_cardsuit_04",
+      "nameLocId": "ship_flag_cardsuit_04/name",
+      "texture": "flag_cardsuit_04_c*"
+    },
+    "ship_flag_racing_01": {
+      "category": "other",
+      "unlockId": "ship_flag_racing_01",
+      "nameLocId": "ship_flag_racing_01/name",
+      "texture": "flag_racing_01_c*"
+    },
+    "ship_flag_arkansas_01": {
+      "category": "other",
+      "unlockId": "ship_flag_arkansas_01",
+      "nameLocId": "ship_flag_arkansas_01/name",
+      "descLocId": "ship_flag_arkansas_01/desc",
+      "texture": "flag_arkansas_01_c*"
+    },
+    "ship_flag_petropavlovsk_01": {
+      "category": "other",
+      "unlockId": "ship_flag_petropavlovsk_01",
+      "nameLocId": "ship_flag_petropavlovsk_01/name",
+      "descLocId": "ship_flag_petropavlovsk_01/desc",
+      "texture": "flag_petropavlovsk_01_c*"
+    },
+    "ship_flag_kyoto_01": {
+      "category": "other",
+      "unlockId": "ship_flag_kyoto_01",
+      "nameLocId": "ship_flag_kyoto_01/name",
+      "descLocId": "ship_flag_kyoto_01/desc",
+      "texture": "flag_kyoto_01_c*"
+    },
+    "ship_flag_duke_01": {
+      "category": "other",
+      "unlockId": "ship_flag_duke_01",
+      "nameLocId": "ship_flag_duke_01/name",
+      "descLocId": "ship_flag_duke_01/desc",
+      "texture": "flag_duke_01_c*"
+    },
+    "ship_flag_christmas_01": {
+      "category": "other",
+      "unlockId": "ship_flag_christmas_01",
+      "nameLocId": "ship_flag_christmas_01/name",
+      "descLocId": "ship_flag_christmas_01/desc",
+      "texture": "flag_christmas_01_c*"
+    },
+    "ship_flag_christmas_02": {
+      "category": "other",
+      "unlockId": "ship_flag_christmas_02",
+      "nameLocId": "ship_flag_christmas_02/name",
+      "descLocId": "ship_flag_christmas_02/desc",
+      "texture": "flag_christmas_02_c*"
+    },
+    "flag_ussr_victory_01": {
+      "category": "other",
+      "unlockId": "flag_ussr_victory_01",
+      "nameLocId": "flag_ussr_victory_01/name",
+      "descLocId": "flag_ussr_victory_01/desc",
+      "texture": "flag_ussr_victory_01_c*"
+    },
+    "flag_d_day_anniversary_01": {
+      "category": "other",
+      "unlockId": "flag_d_day_anniversary_01",
+      "nameLocId": "flag_d_day_anniversary_01/name",
+      "descLocId": "flag_d_day_anniversary_01/desc",
+      "texture": "flag_d_day_anniversary_01_c*"
+    }
+  }
+}

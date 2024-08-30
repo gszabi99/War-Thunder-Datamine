@@ -9,6 +9,13 @@ root {
     size:t='1@swOrRwInVr, sh'
     background-color:t='#CC111821'
     flow:t='vertical'
+
+    tdiv {
+      pos:t='0, 0'
+      position:t='absolute'
+      size:t='pw, ph'
+      bgcolor:t='#18202a'
+    }
     img { //top content
       width:t='pw'
       height:t='<<headerBackgroundImageHeight>>'
@@ -16,32 +23,31 @@ root {
       background-image:t='<<headerBackgroundImage>>'
       background-repeat:t='aspect-ratio'
 
-      tdiv{
-        position:t='absolute'
-        pos:t='pw -w/2, 0'
-        size:t='<<bgCornersShadowSize>>'
-        background-image:t='!ui/gameuiskin#debriefing_bg_grad@@ss'
-        bgcolor:t='#111823'
-      }
-      tdiv{
-        position:t='absolute'
-        pos:t='-w/2, 0'
-        size:t='<<bgCornersShadowSize>>'
-        background-image:t='!ui/gameuiskin#debriefing_bg_grad@@ss'
-        bgcolor:t='#111823'
-      }
-      <<#needTopGradient>>
+      <<#hasCornerGradient>>
       tdiv {
-        size:t='2@buttonCloseHeight + 2@bh + 180@sf/@pf, sw'
-        pos:t='h/2 - w/2, - h/2 - 60@sf/@pf'
+        re-type:t='9rect'
         position:t='absolute'
-        background-image:t='!ui/gameuiskin#debriefing_bg_grad@@ss'
-        background-svg-size:t='144@sf/@pf, 4@sf/@pf'
+        pos:t='pw/2-w/2, 0'
+        size:t='pw + 4@sf/@pf - 1*(<<bgCornersShadowSize>>), ph'
+        background-image:t='!#ui/images/chests/square_gradient_9rect.svg'
+        bgcolor:t='#18202a'
+        background-svg-size:t='620@sf/@pf, 560@sf/@pf'
         background-repeat:t='expand-svg'
-        bgcolor:t='#111823'
-        rotation:t='90'
+        background-position:t='272@sf/@pf, 134@sf/@pf, 272@sf/@pf, 418@sf/@pf'
       }
-      <</needTopGradient>>
+      <</hasCornerGradient>>
+      <<^hasCornerGradient>>
+      tdiv {
+        position:t='absolute'
+        pos:t='pw/2-w/2, 0'
+        size:t='pw, ph'
+        background-image:t='!#ui/images/chests/top_bottom_gradient.svg'
+        bgcolor:t='#18202a'
+        background-svg-size:t='32@sf/@pf, 560@sf/@pf'
+        background-repeat:t='expand-svg'
+      }
+      <</hasCornerGradient>>
+
       tdiv {
         width:t='1@rw'
         pos:t='0.5pw-0.5w, 1@bh'
@@ -146,13 +152,13 @@ root {
       tdiv {
         id:t='chest_preview'
         size:t='0.7ph, 0.7ph'
-        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
+        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h + 60@sf/@pf'
         position:t='absolute'
       }
 
       tdiv {
         id:t='prizes_list'
-        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
+        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h + 60@sf/@pf'
         position:t='absolute'
         display:t='hide'
       }
@@ -160,7 +166,7 @@ root {
       tdiv {
         id:t='chest_out_anim'
         size:t='0.7ph, 0.7ph'
-        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h'
+        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h + 60@sf/@pf'
         position:t='absolute'
       }
     }

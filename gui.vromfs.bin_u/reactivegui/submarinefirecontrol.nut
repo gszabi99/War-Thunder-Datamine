@@ -8,8 +8,9 @@ let { greenColor } = require("style/airHudStyle.nut")
 let { IsRadarVisible } = require("radarState.nut")
 let { OpticsWidth, StaticFov, CalcProgress, IsVisible, IsTargetSelected, IsTargetDataAvailable,
   IsForestallVisible, IsForestallCalculating, TargetSpeed, TargetAzimuth, TargetType, TargetLength,
-  TargetHeight, TargetDistance, TorpedoDistToLive, BearingAngle, HeroAzimuthAngle
+  TargetHeight, TargetDistance, TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular
 } = require("%rGui/fcsState.nut")
+let { drawArrow } = require("fcsComponent.nut")
 
 
 let compassSize = [hdpx(500), hdpx(32)]
@@ -19,6 +20,9 @@ let fcsBarColor1 = 0x7F007F00
 let fcsBarColor2 = 0x19323232
 let textColor = Color(0, 0, 0, 255)
 let textPadding = hdpx(5)
+let greyColor = Color(15, 25, 25, 255)
+let highlightColor = Color(255, 255, 255, 180)
+let highlightScale = 2.5
 
 let compassComponent = {
   pos = compassPos
@@ -169,17 +173,26 @@ let calculatingBlock = @() {
   ]
 }
 
+let crosshairZeroMark = {
+  children = [
+    drawArrow(sw(50), sh(50), 0, 1.6, highlightColor, false, highlightScale)
+    drawArrow(sw(50), sh(50), 0, 1.6, greyColor)
+  ]
+}
+
 let isProcessing = Computed(@() !IsForestallCalculating.get() && IsTargetSelected.get() && IsTargetDataAvailable.get() && !IsForestallVisible.get())
 
 return @() {
-  watch = [ IsVisible, isProcessing, IsForestallCalculating ]
+  watch = [ IsVisible, isProcessing, IsForestallCalculating, IsBinocular ]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = [sw(100), sh(100)]
   children = IsVisible.get() ? [
-    !IsRadarVisible.value ? compassComponent : null
-    isProcessing.get() ? processingHint : null
-    IsForestallCalculating.get() ? calculatingBlock
-      : isProcessing.get() ? processingBlock : null
-  ] : null
+      !IsRadarVisible.value ? compassComponent : null
+      isProcessing.get() ? processingHint : null
+      IsForestallCalculating.get() ? calculatingBlock
+        : isProcessing.get() ? processingBlock : null
+    ]
+    : IsBinocular.value ? crosshairZeroMark
+    : null
 }

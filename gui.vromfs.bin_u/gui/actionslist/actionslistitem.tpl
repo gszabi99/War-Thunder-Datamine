@@ -61,7 +61,7 @@ actionListItem {
       text:t=' ('
     }
     icon {
-      background-image:t='#ui/gameuiskin#cursor_drag_n_drop.svg'
+      background-image:t='#ui/gameuiskin#dnd_icon.svg'
     }
     text {
       text:t=')'

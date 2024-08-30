@@ -29,6 +29,7 @@
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
@@ -2429,8 +2430,8 @@
       "angularLimits": [
         -90.0,
         90.0,
-        -160.0,
-        15.0
+        -150.0,
+        30.0
       ],
       "opticType": "targeting",
       "turretNo": 0
@@ -2466,6 +2467,10 @@
         "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1a_bomb_uk_540lbs_gp.blk"
       },
       {
+        "name": "jaguar_gr1a_bomb_uk_540lbs_retarded",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1a_bomb_uk_540lbs_retarded.blk"
+      },
+      {
         "name": "jaguar_gr1a_bomb_uk_1000lbs_gp",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1a_bomb_uk_1000lbs_gp.blk"
       },
@@ -2488,6 +2493,10 @@
       {
         "name": "jaguar_gr1a_gbu_8",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1a_gbu_8.blk"
+      },
+      {
+        "name": "jaguar_gr1a_phimat",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_gr1a_phimat.blk"
       }
     ]
   },
@@ -2629,6 +2638,23 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "uk_540lbs_retarded",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_1_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
+              "emitter": "uk_1000lbs_gp_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "uk_1000lbs",
             "reqModification": "uk_mk_10_1000lb",
@@ -2707,6 +2733,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/containers/mer_uk_540lbs_x2.blk",
+              "emitter": "jaguar_gr1_mer_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "uk_540lbs_retarded_x2",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_2_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_uk_540lbs_retarded_x2.blk",
               "emitter": "jaguar_gr1_mer_1",
               "external": true,
               "separate": true,
@@ -2869,6 +2911,34 @@
             ]
           },
           {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "uk_540lbs_retarded_x2_fuse",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_3"
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
+                "emitter": "uk_1000lbs_gp_007",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
+                "emitter": "uk_1000lbs_gp_008",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
             "iconType": "bombs_large_group_x2",
             "name": "uk_1000lbs_x2_fuse",
             "reqModification": "uk_mk_10_1000lb",
@@ -3015,6 +3085,22 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "uk_540lbs_retarded_x2",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_2_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/mer_uk_540lbs_retarded_x2.blk",
+              "emitter": "jaguar_gr1_mer_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large_group_x2",
             "name": "uk_1000lbs_x2",
             "reqModification": "uk_mk_10_1000lb",
@@ -3120,6 +3206,30 @@
         "order": 2,
         "WeaponPreset": [
           {
+            "iconType": "ltc",
+            "name": "phimat_container",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "jaguar_gr1_pylon_1_r",
+                "phimat_container",
+                "phimat_container_cap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+              "external": true,
+              "separate": false,
+              "emitter": "phimat_container",
+              "bullets": 216,
+              "bulletsCartridge": 1,
+              "CustomBombHolder": {
+                "node": "phimat_container_cap"
+              }
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "uk_540lbs",
             "reqModification": "uk_mk_n1_540lb",
@@ -3129,6 +3239,23 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_540lbs.blk",
+              "emitter": "uk_1000lbs_gp_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "uk_540lbs_retarded",
+            "reqModification": "uk_mk_n1_540lb",
+            "ShowNodes": {
+              "node": "jaguar_gr1_pylon_1_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_540lb_mc_mk2_retarded.blk",
               "emitter": "uk_1000lbs_gp_002",
               "bullets": 1,
               "external": true,

@@ -482,8 +482,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -1836,8 +1837,8 @@
     "suspension": {
       "suspensionOffsets": [
         -0.16,
-        -0.16,
-        0.11
+        -0.06,
+        0.002
       ],
       "defaultGearRadius": 0.25,
       "topGearRadius": 0.13,
@@ -1851,59 +1852,385 @@
     }
   },
   "PhysSys": {
-    "find": "^bone_suspension_(._\\d\\d)_01$",
+    "find": "^bone_suspension_(._\\d\\d)$",
     "points": {
-      "suspension_01": {
-        "name": "bone_suspension_$1_01"
+      "suspension": {
+        "name": "bone_suspension_$1"
       },
-      "wheel_01": {
-        "searchChildren": {
-          "parent": "suspension_01",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "suspension_02": {
-        "name": "bone_suspension_$1_02"
-      },
-      "wheel_02": {
-        "searchChildren": {
-          "parent": "suspension_02",
-          "find": "bone_wheel_.*",
-          "limitMin": [
-            -1000.0,
-            0.0,
-            0.0
-          ],
-          "limitMax": [
-            1000.0,
-            0.0,
-            0.0
-          ]
-        }
+      "wheel": {
+        "name": "bone_wheel_$1",
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
       }
     },
     "constraints": {
-      "edge": [
-        {
-          "from": "suspension_01",
-          "to": "wheel_01"
-        },
-        {
-          "from": "suspension_02",
-          "to": "wheel_02"
-        }
-      ]
+      "edge": {
+        "from": "suspension",
+        "to": "wheel"
+      }
     }
+  },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_29_01"
+          },
+          {
+            "nameTemplate": "bone_roll_29_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_30_01"
+          },
+          {
+            "nameTemplate": "bone_roll_30_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_31_01"
+          },
+          {
+            "nameTemplate": "bone_roll_31_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_32_01"
+          },
+          {
+            "nameTemplate": "bone_roll_32_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_33_01"
+          },
+          {
+            "nameTemplate": "bone_roll_33_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_34_01"
+          },
+          {
+            "nameTemplate": "bone_roll_34_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_35_01"
+          },
+          {
+            "nameTemplate": "bone_roll_35_02"
+          }
+        ]
+      }
+    ]
   },
   "ammo": {
     "combustionTime": 10.0,

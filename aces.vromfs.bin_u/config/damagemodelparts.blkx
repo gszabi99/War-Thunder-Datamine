@@ -16,7 +16,8 @@
     "splashPenetrationToArmorThreshold": 0.33,
     "pressureDamageMult": 0.0,
     "napalmDamageMult": 0.0,
-    "sonicDamageMult": 0.0
+    "sonicDamageMult": 0.0,
+    "genericFirearmDamageMult": 1.0
   },
   "default_v1": {
     "useSimpleDm": true,
@@ -533,13 +534,13 @@
         "genName": "tank_machine_gunner",
         "vital": true
       }
-    },
-    "bridge": {
-      "hitTestType": "inner",
-      "bridge": {},
-      "bridge_01": {},
-      "bridge_02": {}
     }
+  },
+  "bridge": {
+    "hitTestType": "inner",
+    "bridge": {},
+    "bridge_01": {},
+    "bridge_02": {}
   },
   "ammo": {
     "vital": true,
@@ -566,16 +567,14 @@
   "optic_gun": {
     "useForSeriousHit": false
   },
-  "optic_gun_NN": [
-    {
-      "useForSeriousHit": false,
-      "template": "optic_gun_#2#"
-    },
-    {
-      "useForSeriousHit": false,
-      "template": "optic_gun_#05#"
-    }
-  ],
+  "optic_gun_N": {
+    "useForSeriousHit": false,
+    "template": "optic_gun_#2#"
+  },
+  "optic_gun_NN": {
+    "useForSeriousHit": false,
+    "template": "optic_gun_#05#"
+  },
   "optic_turret": {
     "useForSeriousHit": false
   },
@@ -686,7 +685,9 @@
     },
     "handling_room_NN": {
       "template": "handling_room_#20#"
-    },
+    }
+  },
+  "catapult": {
     "catapult_NN": {
       "hitTestType": "inner",
       "template": "catapult_#05#"
@@ -1235,6 +1236,22 @@
   },
   "rotor01_N": {
     "template": "rotor01_#6#",
+    "hitTestType": "inner"
+  },
+  "optic_blockN": {
+    "template": "optic_block#1:16#",
+    "hitTestType": "inner"
+  },
+  "cockpit_countrolN": {
+    "template": "cockpit_countrol#1:16#",
+    "hitTestType": "inner"
+  },
+  "electronic_blockN": {
+    "template": "electronic_block#1:16#",
+    "hitTestType": "inner"
+  },
+  "ircmN": {
+    "template": "ircm#1:16#",
     "hitTestType": "inner"
   },
   "passive_propeller": {

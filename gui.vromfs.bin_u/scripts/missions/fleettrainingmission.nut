@@ -2,11 +2,9 @@ from "%scripts/dagui_natives.nut" import save_profile, enable_bullets_modificati
 from "%scripts/dagui_library.nut" import *
 let { get_meta_mission_info_by_name, select_training_mission } = require("guiMission")
 let { set_game_mode } = require("mission")
-let { set_unit_option, set_gui_option, setGuiOptionsMode } = require("guiOptions")
+let { set_gui_option, setGuiOptionsMode } = require("guiOptions")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_BULLET_COUNT0,
-  USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_BULLETS_WEAPON0
+let { OPTIONS_MODE_TRAINING, USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
 } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -68,30 +66,6 @@ function canStartFleetTrainingMission() {
   return true
 }
 
-function updateBulletCountOptions(unit) {
-  local bulIdx = 0
-  let bulletsManager = ::UnitBulletsManager(unit)
-  let bulletGroups = bulletsManager.getBulletsGroups()
-  foreach (idx, bulGroup in bulletGroups) {
-    bulIdx = idx
-    let name = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
-    let count = bulGroup.active ? bulGroup.bulletsCount : 0
-    set_option(USEROPT_BULLETS0 + bulIdx, name)
-    set_unit_option(unit.name, USEROPT_BULLETS0 + bulIdx, name)
-    set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
-    set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, bulGroup.getWeaponName())
-  }
-  ++bulIdx
-
-  while (bulIdx < BULLETS_SETS_QUANTITY) {
-    set_option(USEROPT_BULLETS0 + bulIdx, "")
-    set_unit_option(unit.name, USEROPT_BULLETS0 + bulIdx, "")
-    set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
-    set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, "")
-    ++bulIdx
-  }
-}
-
 function startFleetTrainingMission() {
   local unit = getPlayerCurUnit()
   if (!unit || !unit.isShipOrBoat())
@@ -118,7 +92,7 @@ function startFleetTrainingMission() {
   set_gui_option(USEROPT_AIRCRAFT, unit.name)
   set_gui_option(USEROPT_WEAPONS, "")
   set_gui_option(USEROPT_SKIN, "default")
-  updateBulletCountOptions(unit)
+  ::UnitBulletsManager(unit).updateBulletCountOptions()
 
   enable_bullets_modifications(::aircraft_for_weapons)
   ::enable_current_modifications(::aircraft_for_weapons)

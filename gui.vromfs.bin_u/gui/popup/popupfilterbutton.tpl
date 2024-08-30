@@ -10,9 +10,14 @@ tdiv {
     noMargin:t='yes'
     width:t='<<btnWidth>>'
     visualStyle:t='<<visualStyle>>'
-    on_click:t='<<on_click>>'
+    _on_click:t='<<on_click>>'
+    <<#btnName>>
     btnName:t='<<btnName>>'
     ButtonImg{}
+    <</btnName>>
+    <<^btnName>>
+    btnName:t=''
+    <</btnName>>
     img {
       background-image:t='#ui/gameuiskin#filter_icon.svg'
     }

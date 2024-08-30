@@ -676,8 +676,9 @@
         "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
@@ -2058,7 +2059,7 @@
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.1,
-        "barrelDP": "gun_barrel_01_dm",
+        "barrelDP": "gun_barrel_02_dm",
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2190,7 +2191,34 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": [
+        "turret_cable_hydra",
+        "gun_barrel_01",
+        "gun_barrel_03",
+        "cls_gun_03",
+        "ammo_turret_09",
+        "ammo_turret_10",
+        "ammo_turret_11",
+        "ammo_turret_12",
+        "ammo_turret_13",
+        "ammo_turret_14",
+        "ammo_turret_15",
+        "ammo_turret_16",
+        "ammo_turret_17",
+        "ammo_turret_18",
+        "ammo_turret_19",
+        "ammo_turret_20",
+        "ammo_turret_21",
+        "ammo_turret_22",
+        "ammo_turret_23",
+        "ammo_turret_24",
+        "ammo_turret_25",
+        "ammo_turret_26",
+        "ammo_turret_27"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -3580,46 +3608,18 @@
                 ]
               }
             }
-          ]
-        },
-        "hideNodes": {
-          "node": [
-            "turret_cable_stinger",
-            "cls_gun_02",
-            "gun_barrel_02",
-            "ammo_turret_05",
-            "ammo_turret_06",
-            "ammo_turret_07",
-            "ammo_turret_08"
-          ]
-        }
-      },
-      "disableModEffects": {
-        "hideNodes": {
-          "node": [
-            "turret_cable_hydra",
-            "gun_barrel_03",
-            "cls_gun_03",
-            "ammo_turret_09",
-            "ammo_turret_10",
-            "ammo_turret_11",
-            "ammo_turret_12",
-            "ammo_turret_13",
-            "ammo_turret_14",
-            "ammo_turret_15",
-            "ammo_turret_16",
-            "ammo_turret_17",
-            "ammo_turret_18",
-            "ammo_turret_19",
-            "ammo_turret_20",
-            "ammo_turret_21",
-            "ammo_turret_22",
-            "ammo_turret_23",
-            "ammo_turret_24",
-            "ammo_turret_25",
-            "ammo_turret_26",
-            "ammo_turret_27"
-          ]
+          ],
+          "hideNodes": {
+            "node": [
+              "turret_cable_stinger",
+              "cls_gun_02",
+              "gun_barrel_02",
+              "ammo_turret_05",
+              "ammo_turret_06",
+              "ammo_turret_07",
+              "ammo_turret_08"
+            ]
+          }
         }
       }
     },

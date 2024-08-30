@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
 
 gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
   scene = null
@@ -24,6 +24,10 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
       multiplayerScoreObj.setValue(stashBhvValueConfig([{
         watch = getHasCompassObservable()
         updateFunc = @(obj, value) obj.top = value ? "0.065@scrn_tgt" : "0.015@scrn_tgt"
+      },
+      {
+        watch = isInKillerCamera
+        updateFunc = @(obj, value) obj.show(!value)
       }]))
     }
   }

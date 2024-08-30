@@ -1,12 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_send } = require("eventbus")
 let { get_time_msec } = require("dagor.time")
 let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { resetTimeout } = require("dagor.workcycle")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { showBuyAndOpenChestWndById } = require("%scripts/items/buyAndOpenChestWnd.nut")
 
 //this module collect all prizes from userlogs if chest has prizes with auto consume prizes and show trophy window
 
@@ -48,13 +46,9 @@ function showTrophyWnd(config) {
   hideWaitingProgressBox()
   let { trophyItemDefId, rewardWndConfig, receivedPrizes = null, expectedPrizes } = config
 
-  let rewardsHandler = showBuyAndOpenChestWndById(trophyItemDefId)
-  if (rewardsHandler != null)
-    rewardsHandler.showReceivedPrizes(receivedPrizes ?? expectedPrizes)
-  else
-    eventbus_send("guiStartOpenTrophy", rewardWndConfig.__merge({
-      [ trophyItemDefId ] = receivedPrizes ?? expectedPrizes
-    }))
+  broadcastEvent("openChestWndOrTrophy", {
+    rewardWndConfig, chestId = trophyItemDefId, receivedPrizes, expectedPrizes
+  })
   removeUserstatItemRewardToShow(trophyItemDefId)
 }
 

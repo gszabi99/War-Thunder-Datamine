@@ -4,6 +4,20 @@
   "weaponTargetsMax": 1,
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
+  "scopeRangeSets": {
+    "acm": {
+      "range1": 10000.0
+    },
+    "hmd": {
+      "range1": 20000.0
+    },
+    "common": {
+      "range1": 50000.0,
+      "range2": 100000.0,
+      "range3": 10000.0,
+      "range4": 25000.0
+    }
+  },
   "fsms": {
     "main": {
       "stateInit": "init",
@@ -474,8 +488,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
+            "pos": 10000.0,
+            "width": 20000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -687,12 +701,12 @@
           "clearTargetsOfInterest": {},
           "setScanPatternSet": {},
           "resetScanPhase": {},
-          "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
-          },
           "setFsmActive": {
             "fsm": "helmetDesignation",
             "active": true
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "hmd"
           }
         },
         "resetHmdStandbyMode": {
@@ -720,7 +734,7 @@
             }
           ],
           "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
+            "scopeRangeSet": "hmd"
           }
         },
         "resetHmdLockMode": {
@@ -741,7 +755,7 @@
             "transiver": "mprf"
           },
           "setSignal": {
-            "signal": "acmLock"
+            "signal": "hmdLock"
           }
         },
         "setRadarHmdLockCommon": {
@@ -769,8 +783,8 @@
           "setRadarHmdLockCommon": {},
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
+            "pos": 10000.0,
+            "width": 20000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -803,8 +817,8 @@
           "setRadarHmdLockCommon": {},
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 5000.0,
-            "width": 10000.0
+            "pos": 10000.0,
+            "width": 20000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -2958,11 +2972,11 @@
       "antenna": {
         "azimuth": {
           "angleHalfSens": 4.0,
-          "sideLobesSensitivity": -80.0
+          "sideLobesSensitivity": -120.0
         },
         "elevation": {
           "angleHalfSens": 0.3,
-          "sideLobesSensitivity": -80.0
+          "sideLobesSensitivity": -120.0
         }
       }
     }
@@ -3423,6 +3437,26 @@
         "width": 24.0
       }
     },
+    "hmdLock": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "mainBeamNotchWidth": 40.0,
+      "distance": {
+        "presents": true,
+        "minValue": 250.0,
+        "maxValue": 20000.0,
+        "width": 250.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -900.0,
+        "maxValue": 900.0,
+        "signalWidthMin": 2.0,
+        "width": 24.0
+      }
+    },
     "acmTrack": {
       "groundClutter": false,
       "aircraftAsTarget": true,
@@ -3487,17 +3521,6 @@
     },
     "irstHmdLock": {
       "scanPattern1": "irstHmdLock"
-    }
-  },
-  "scopeRangeSets": {
-    "common": {
-      "range1": 50000.0,
-      "range2": 100000.0,
-      "range3": 10000.0,
-      "range4": 25000.0
-    },
-    "acm": {
-      "range1": 10000.0
     }
   }
 }
