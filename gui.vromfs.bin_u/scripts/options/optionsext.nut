@@ -20,7 +20,7 @@ let { getLocalLanguage } = require("language")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_unit_option, set_unit_option, set_gui_option, get_gui_option,
@@ -96,8 +96,6 @@ let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
   set_option_chat_messages_filter } = require("chat")
 let { get_game_mode } = require("mission")
 let { get_mp_session_info, get_mission_set_difficulty_int } = require("guiMission")
-let { crosshairColorOpt, isHeliPuilotHudDisabled, isVisibleTankGunsAmmoIndicator
-} = require("%scripts/options/dargOptionsSync.nut")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
@@ -137,6 +135,44 @@ let { isEnabledCustomSoundMods, setCustomSoundMods
 } = require("%scripts/options/customSoundMods.nut")
 let { set_xray_parts_filter } = require("hangar")
 let { getTankXrayFilter, getShipXrayFilter } = require("%scripts/weaponry/dmgModel.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+
+function mkUseroptHardWatched(id, defValue = null) {
+  let opt = hardPersistWatched(id, defValue)
+  opt.subscribe(@(v) updateExtWatched({ [id] = v }))
+  return opt
+}
+
+let crosshairColorOpt = mkUseroptHardWatched("crosshairColorOpt", 0xFFFFFFFF)
+let isHeliPuilotHudDisabled = mkUseroptHardWatched("heliPilotHudDisabled", false)
+let isVisibleTankGunsAmmoIndicator = mkUseroptHardWatched("isVisibleTankGunsAmmoIndicator", false)
+
+let crosshair_colors = persist("crosshair_colors", @() [])
+
+local get_option
+
+function getCrosshairColor() {
+  let opt = get_option(USEROPT_CROSSHAIR_COLOR)
+  let colorIdx = opt.values[opt.value]
+  return color4ToInt(crosshair_colors[colorIdx].color)
+}
+
+let getHeliPuilotHudDisabled = @() get_option(USEROPT_HELI_COCKPIT_HUD_DISABLED)
+
+function getIsVisibleTankGunsAmmoIndicatorValue() {
+  return ::get_gui_option_in_mode(USEROPT_HUD_SHOW_TANK_GUNS_AMMO, OPTIONS_MODE_GAMEPLAY, false)
+}
+
+function initOptions() {
+  crosshairColorOpt(getCrosshairColor())
+  isHeliPuilotHudDisabled(getHeliPuilotHudDisabled().value)
+  isVisibleTankGunsAmmoIndicator(getIsVisibleTankGunsAmmoIndicatorValue())
+}
+
+addListenersWithoutEnv({
+  InitConfigs = @(_) initOptions()
+})
 
 const BOMB_ASSAULT_FUSE_TIME_OPT_VALUE = -1
 const SPEECH_COUNTRY_UNIT_VALUE = 2
@@ -151,7 +187,6 @@ setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 ::bullets_locId_by_caliber <- []
 ::modifications_locId_by_caliber <- []
 ::crosshair_icons <- []
-::crosshair_colors <- []
 ::thermovision_colors <- []
 
 let clanRequirementsRankDescId = {
@@ -176,7 +211,7 @@ function image_for_air(air) {
 registerPersistentData("OptionsExtGlobals", getroottable(),
   [
     "bullets_locId_by_caliber", "modifications_locId_by_caliber",
-    "crosshair_icons", "crosshair_colors", "thermovision_colors"
+    "crosshair_icons", "thermovision_colors"
   ])
 
 ::check_aircraft_tags <- function(airtags, filtertags) {
@@ -388,7 +423,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   },
   get_volume_limits(sndType))
 
-local get_option
 
 ::get_current_wnd_difficulty <- function get_current_wnd_difficulty() {
   let diffCode = loadLocalByAccount("wnd/diffMode", getCurrentShopDifficulty().diffCode)
@@ -3442,9 +3476,9 @@ let optionsMap = {
     descr.items = []
     descr.values = []
     let c = get_hud_crosshair_color()
-    for (local nc = 0; nc < ::crosshair_colors.len(); nc++) {
+    for (local nc = 0; nc < crosshair_colors.len(); nc++) {
       descr.values.append(nc)
-      let config = ::crosshair_colors[nc]
+      let config = crosshair_colors[nc]
       let item = { text = "#crosshairColor/" + config.name }
       if (config.color)
         item.hueColor <- color4ToDaguiString(config.color)
@@ -4647,7 +4681,7 @@ let optionsSetMap = {
   [USEROPT_CROSSHAIR_COLOR] = function(value, descr, _optionId) {
     let curVal = descr.values[value]
     set_hud_crosshair_color(curVal)
-    let color = color4ToInt(::crosshair_colors[curVal].color)
+    let color = color4ToInt(crosshair_colors[curVal].color)
     crosshairColorOpt(color)
   },
   [USEROPT_CROSSHAIR_DEFLECTION] = @(value, _descr, _optionId) set_option_deflection(value),
@@ -5214,6 +5248,6 @@ return {
   create_option_switchbox
   create_options_container
   create_option_combobox
-  crosshair_colors = ::crosshair_colors
+  crosshair_colors
   image_for_air
 }

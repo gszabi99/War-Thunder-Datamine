@@ -2064,6 +2064,10 @@
         "blk": "gameData/FlightModels/weaponPresets/jf_17_hydra70_x2.blk"
       },
       {
+        "name": "jf_17_brm1",
+        "blk": "gameData/FlightModels/weaponPresets/jf_17_brm1.blk"
+      },
+      {
         "name": "jf_17_mk82_x2",
         "blk": "gameData/FlightModels/weaponPresets/jf_17_mk82_x2.blk"
       },
@@ -2269,6 +2273,22 @@
                 "machLimit": 1.01
               }
             ]
+          },
+          {
+            "iconType": "nar_he_large",
+            "name": "brm_1",
+            "reqModification": "cn_fire_snake_90a",
+            "ShowNodes": {
+              "node": "bomb_pylon_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/cn_90a_fire_snake_pod.blk",
+              "emitter": "aero_7a_007",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           },
           {
             "iconType": "missile_type_b_air_to_air",
@@ -2535,6 +2555,22 @@
               "blk": "gameData/Weapons/containers/m261_hydra_70_m247.blk",
               "emitter": "aero_7a_001",
               "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "nar_he_large",
+            "name": "brm_1",
+            "reqModification": "cn_fire_snake_90a",
+            "ShowNodes": {
+              "node": "bomb_pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/cn_90a_fire_snake_pod.blk",
+              "emitter": "aero_7a_001",
+              "external": true,
+              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -2836,6 +2872,22 @@
             }
           },
           {
+            "iconType": "nar_he_large",
+            "name": "brm_1",
+            "reqModification": "cn_fire_snake_90a",
+            "ShowNodes": {
+              "node": "bomb_pylon_4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/cn_90a_fire_snake_pod.blk",
+              "emitter": "aero_7a_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "mk82",
             "reqModification": "us_500lb_mk82",
@@ -3044,6 +3096,22 @@
                 "machLimit": 1.01
               }
             ]
+          },
+          {
+            "iconType": "nar_he_large",
+            "name": "brm_1",
+            "reqModification": "cn_fire_snake_90a",
+            "ShowNodes": {
+              "node": "bomb_pylon_5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/cn_90a_fire_snake_pod.blk",
+              "emitter": "aero_7a_008",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           },
           {
             "iconType": "missile_type_b_air_to_air",
@@ -3625,17 +3693,22 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "us_500lb_mk82": {
+    "cn_fire_snake_90a": {
       "reqModification": "us_hydra_70",
       "modClass": "weapon",
       "tier": 2
     },
-    "us_1000lb_mk83": {
-      "reqModification": "us_500lb_mk82",
+    "us_500lb_mk82": {
       "modClass": "weapon",
       "tier": 3
     },
+    "us_1000lb_mk83": {
+      "reqModification": "us_500lb_mk82",
+      "modClass": "weapon",
+      "tier": 4
+    },
     "us_2000lb_mk84": {
+      "prevModification": "cn_sd10",
       "reqModification": "us_1000lb_mk83",
       "modClass": "weapon",
       "tier": 4
@@ -3647,7 +3720,7 @@
     "cn_sd10": {
       "reqModification": "cn_pl5e2",
       "modClass": "weapon",
-      "tier": 4
+      "tier": 3
     }
   },
   "user_skin": {

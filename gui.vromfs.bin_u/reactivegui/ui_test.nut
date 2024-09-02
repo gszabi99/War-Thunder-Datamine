@@ -1,0 +1,1 @@
+require("%darg/test_ui.nut").test()

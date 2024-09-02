@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
+let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -335,7 +336,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
         tdData += format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
       else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
-        let txt = isEmpty ? "" : ::g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
+        let txt = isEmpty ? "" : g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData += format("activeText { text:t='%s' halign:t='center' } ", txt)
         let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
         if (width != "")
@@ -688,7 +689,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
         objTd.getChild(0).setValue(item)
       }
       else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
-        let paramType = ::g_mplayer_param_type.getTypeById(hdr)
+        let paramType = g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)
         objText.setValue(txt)

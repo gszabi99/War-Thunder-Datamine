@@ -2,6 +2,7 @@
 from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
 
+let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -156,14 +157,14 @@ let g_hud_live_stats = {
 
     foreach (id in this.curColumnsOrder)
       if (!(id in state.player))
-        state.player[id] <- ::g_mplayer_param_type.getTypeById(id).getVal(state.player)
+        state.player[id] <- g_mplayer_param_type.getTypeById(id).getVal(state.player)
 
     if (diffState) {
       let p1 = diffState.player
       let p2 = state.player
       foreach (id in this.curColumnsOrder)
         if (id in p1)
-          p2[id] = ::g_mplayer_param_type.getTypeById(id).diffFunc(p1[id], p2[id])
+          p2[id] = g_mplayer_param_type.getTypeById(id).diffFunc(p1[id], p2[id])
 
       if (diffState.streaks.len())
         state.streaks = state.streaks.slice(min(diffState.streaks.len(), state.streaks.len()))
@@ -197,7 +198,7 @@ let g_hud_live_stats = {
       let misObjs = this.missionObjectives
       let gt = this.gameType
       this.curColumnsOrder = this.curColumnsOrder.filter(@(id)
-        ::g_mplayer_param_type.getTypeById(id).isVisible(misObjs, gt, get_game_mode()))
+        g_mplayer_param_type.getTypeById(id).isVisible(misObjs, gt, get_game_mode()))
 
       this.fill()
     }
@@ -242,7 +243,7 @@ let g_hud_live_stats = {
     }
 
     foreach (id in this.curColumnsOrder) {
-      let param = ::g_mplayer_param_type.getTypeById(id)
+      let param = g_mplayer_param_type.getTypeById(id)
       let value = state.player?[id] ?? param.defVal
       let lableName = param.getName(value)
       view.player.append({
@@ -280,7 +281,7 @@ let g_hud_live_stats = {
     let state = this.getState(this.curViewPlayerId, isCompareStates ? hudLiveStatsState.spawnStartState : null)
 
     foreach (id in this.curColumnsOrder) {
-      let param = ::g_mplayer_param_type.getTypeById(id)
+      let param = g_mplayer_param_type.getTypeById(id)
 
       let value = getTblValue(id, state.player, param.defVal)
       let visValue = this.visState ? getTblValue(id, this.visState.player, param.defVal) : param.defVal

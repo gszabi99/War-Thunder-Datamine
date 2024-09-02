@@ -1,9 +1,9 @@
-//-file:plus-string
-from "%scripts/dagui_natives.nut" import get_race_checkpioints_count, get_race_laps_count
+from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_race_laps_count
 from "%scripts/dagui_library.nut" import *
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let time = require("%scripts/time.nut")
-let stdMath = require("%sqstd/math.nut")
+import "%scripts/time.nut" as time
+import "%sqstd/math.nut" as stdMath
+
+let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
@@ -29,22 +29,22 @@ let expEventLocIds = {
   [EXP_EVENT_SEVERE_DAMAGE]      = "expEventScore/severeDamage"
 }
 
-::g_mplayer_param_type <- {
+let g_mplayer_param_type = {
   types = []
   cache = {
     byId = {}
   }
 }
 
-::g_mplayer_param_type._substract <- function _substract(old, new) {
+g_mplayer_param_type._substract <- function _substract(old, new) {
   return to_integer_safe(new) - to_integer_safe(old)
 }
 
-::g_mplayer_param_type._newer <- function _newer(_old, new) {
+g_mplayer_param_type._newer <- function _newer(_old, new) {
   return new
 }
 
-::g_mplayer_param_type.template <- {
+g_mplayer_param_type.template <- {
   id = ""
   fontIcon = null
   tooltip = ""
@@ -61,7 +61,7 @@ let expEventLocIds = {
     return defText
   }
   getName = @(_val = 0) loc(this.tooltip)
-  diffFunc = ::g_mplayer_param_type._substract
+  diffFunc = g_mplayer_param_type._substract
 
   width = null
   relWidth = 10
@@ -91,7 +91,7 @@ let expEventLocIds = {
   isVisibleByGameMode = @(_gm) true
 }
 
-enums.addTypesByGlobalName("g_mplayer_param_type", {
+enumsAddTypes(g_mplayer_param_type, {
   UNKNOWN = {
   }
 
@@ -102,7 +102,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     printFunc = function(_val, player) {
       return ::build_mplayer_name(player, false)
     }
-    diffFunc = ::g_mplayer_param_type._newer
+    diffFunc = g_mplayer_param_type._newer
     width = "1@nameWidth + 1@tablePad"
     pareText = true
     updateSpecificMarkupParams = function(markupTbl) {
@@ -120,7 +120,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     printFunc = function(val, _player) {
       return getUnitName(val)
     }
-    diffFunc = ::g_mplayer_param_type._newer
+    diffFunc = g_mplayer_param_type._newer
   }
 
   AIRCRAFT = {
@@ -176,7 +176,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
       foreach (row in rows) {
         let rowVal = player?[row.id] ?? 0
         if (rowVal)
-          res.append(loc(row.label) + loc("ui/colon") + rowVal)
+          res.append("".concat(loc(row.label), loc("ui/colon"), rowVal))
       }
       return "\n".join(res, true)
     }
@@ -285,7 +285,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
       foreach (row in rows) {
         let rowVal = player?[row.id] ?? 0
         if (rowVal)
-          res.append(loc(row.label) + loc("ui/colon") + rowVal)
+          res.append("".concat(loc(row.label), loc("ui/colon"), rowVal))
       }
       return "\n".join(res, true)
     }
@@ -319,7 +319,7 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     id = "rowNo"
     fontIcon = "#icon/mpstats/rowNo"
     tooltip = "multiplayer/place"
-    diffFunc = ::g_mplayer_param_type._newer
+    diffFunc = g_mplayer_param_type._newer
   }
 
   RACE_LAST_CHECKPOINT = {
@@ -328,13 +328,13 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     tooltip = "multiplayer/raceLastCheckpoint"
     relWidth = 15
     printFunc = function(val, _player) {
-      let total = get_race_checkpioints_count()
+      let total = get_race_checkpoints_count()
       let laps = get_race_laps_count()
       if (total && laps)
         val = (max(val, 0) % (total / laps))
       return val.tostring()
     }
-    diffFunc = ::g_mplayer_param_type._newer
+    diffFunc = g_mplayer_param_type._newer
   }
 
   RACE_LAST_CHECKPOINT_TIME = {
@@ -346,14 +346,14 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     printFunc = function(val, _player) {
       return time.getRaceTimeFromSeconds(val)
     }
-    diffFunc = ::g_mplayer_param_type._newer
+    diffFunc = g_mplayer_param_type._newer
   }
 
   RACE_LAP = {
     id = "raceLap"
     fontIcon = "#icon/mpstats/raceLap"
     tooltip = "multiplayer/raceLap"
-    diffFunc = ::g_mplayer_param_type._newer
+    diffFunc = g_mplayer_param_type._newer
   }
 
   RACE_BEST_LAP_TIME = {
@@ -377,13 +377,13 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
     isForceUpdate = true // Because it shows race completion percentage.
     printFunc = function(val, player) {
       if (val < 0) {
-        let total = get_race_checkpioints_count()
+        let total = get_race_checkpoints_count()
         if (total)
-          return (100 * getTblValue("raceLastCheckpoint", player, 0) / total).tointeger() + "%"
+          return "".concat((100 * getTblValue("raceLastCheckpoint", player, 0) / total).tointeger(), "%")
       }
       return time.getRaceTimeFromSeconds(val)
     }
-    diffFunc = ::g_mplayer_param_type._newer
+    diffFunc = g_mplayer_param_type._newer
   }
 
   RACE_SAME_CHECKPOINT_TIME = {
@@ -462,7 +462,8 @@ enums.addTypesByGlobalName("g_mplayer_param_type", {
   }
 })
 
-::g_mplayer_param_type.getTypeById <- function getTypeById(id) {
-  return enums.getCachedType("id", id, ::g_mplayer_param_type.cache.byId,
-    ::g_mplayer_param_type, ::g_mplayer_param_type.UNKNOWN)
+g_mplayer_param_type.getTypeById <- function getTypeById(id) {
+  return getCachedType("id", id, g_mplayer_param_type.cache.byId,
+    g_mplayer_param_type, g_mplayer_param_type.UNKNOWN)
 }
+return {g_mplayer_param_type}

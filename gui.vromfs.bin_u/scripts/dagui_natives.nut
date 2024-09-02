@@ -422,7 +422,7 @@ return freeze({
   get_premium_reward_wp = r["get_premium_reward_wp"]
   get_premium_reward_xp = r["get_premium_reward_xp"]
   get_preset_by_skin_tags = r["get_preset_by_skin_tags"]
-  get_race_checkpioints_count = r["get_race_checkpioints_count"]
+  get_race_checkpoints_count = r["get_race_checkpoints_count"]
   get_race_laps_count = r["get_race_laps_count"]
   get_race_winners_count = r["get_race_winners_count"]
   get_replay_status = r["get_replay_status"]

@@ -20,6 +20,8 @@
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
   "useSimpleDeathConditionsAndEffects": false,
+  "radarAnimVar": "radar_drive",
+  "radarAntenaSpeed": 720.0,
   "radarDeployTime": 3.0,
   "subclass": "heavyVehicle",
   "onRadarAs": "tracked",
@@ -249,16 +251,20 @@
     "hp": 10000.0,
     "hull": {
       "armorClass": "tank_structural_steel",
-      "armorThickness": 5.0,
+      "armorThickness": 4.0,
       "turret_01_side_dm": {},
       "body_top_dm": {},
       "body_front_dm": {},
-      "turret_01_front_dm": {},
+      "turret_01_front_dm": {
+        "armorThickness": 1.0
+      },
       "body_back_dm": {},
       "gun_mask_dm": {},
       "superstructure_top_dm": {},
       "superstructure_back_dm": {},
-      "superstructure_bottom_dm": {},
+      "superstructure_bottom_dm": {
+        "armorThickness": 30.0
+      },
       "turret_back_dm": {},
       "turret_top_dm": {},
       "turret_front_dm": {},
@@ -274,13 +280,7 @@
       "ex_armor_04_dm": {},
       "ex_armor_05_dm": {},
       "ex_armor_06_dm": {},
-      "ex_armor_07_dm": {},
-      "turret_01_top_dm": {
-        "armorClass": "armored_glass",
-        "armorThickness": 10.0
-      },
       "turret_02_back_dm": {},
-      "turret_02_side_dm": {},
       "turret_02_top_dm": {},
       "turret_03_back_dm": {},
       "turret_03_front_dm": {},
@@ -288,32 +288,47 @@
       "turret_05_front_dm": {},
       "turret_06_side_dm": {},
       "turret_07_side_dm": {},
-      "turret_06_top_dm": {}
+      "turret_06_top_dm": {},
+      "turret_bottom_dm": {},
+      "body_bottom_dm": {},
+      "turret_02_side_dm": {}
+    },
+    "body_shields": {
+      "armorClass": "tank_structural_steel",
+      "hp": 1000.0,
+      "armorThickness": 4.0,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "ex_decor_r_04_dm": {},
+      "ex_decor_l_04_dm": {},
+      "ex_decor_r_02_dm": {},
+      "ex_decor_l_02_dm": {},
+      "turret_02_front_dm": {}
+    },
+    "body_side_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 100.0,
+      "hidableInViewer": true,
+      "armorThickness": 8.0,
+      "createSecondaryShatters": false,
+      "ex_decor_r_05_dm": {},
+      "ex_decor_l_05_dm": {},
+      "ex_decor_l_08_dm": {},
+      "ex_decor_r_08_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
       "hp": 50.0,
       "armorThickness": 25.0,
       "gun_barrel_dm": {
-        "armorThickness": 10.0,
-        "armorClass": "RHA_tank"
-      },
-      "gun_barrel_01_dm": {
-        "armorThickness": 10.0,
-        "hp": 100.0
-      },
-      "gun_barrel_02_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
+        "armorThickness": 10.0
       }
     },
     "sensor": {
       "armorClass": "tank_structural_steel",
       "armorThickness": 15.0,
       "hp": 200.0,
-      "antenna_target_location_dm": {},
-      "antenna_target_tagging_dm": {}
+      "antenna_target_location_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -358,6 +373,7 @@
       "wheel_l_03_dm": {},
       "wheel_l_04_dm": {},
       "wheel_r_04_dm": {},
+      "ex_armor_07_dm": {},
       "wheel_support_dm": {}
     },
     "crew": {
@@ -1627,26 +1643,6 @@
         "commander"
       ]
     }
-  },
-  "radarAnimations": {
-    "anim": [
-      {
-        "animatedRadarIdx": 0,
-        "radarAnimVar": "radar_drive",
-        "radarAntenaSpeed": 720.0
-      },
-      {
-        "animatedRadarIdx": 0,
-        "radarElevationScan": true,
-        "pitchByTurret": true,
-        "pitchLimits": [
-          -10.0,
-          85.0
-        ],
-        "radarAntenaSpeed": 50.0,
-        "radarAnimPitchVar": "target_tagging_pitch_rotate"
-      }
-    ]
   },
   "xray_viewer_data": {
     "armorArrayHull": {

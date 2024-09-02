@@ -1,9 +1,10 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_race_checkpioints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
+from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 
+let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -310,7 +311,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.gameType & GT_COOPERATIVE) {
       tblData = showAirIcons ? [ "unitIcon", "name" ] : [ "name" ]
       foreach (id in tblData)
-        markupData.columns[id] <- ::g_mplayer_param_type.getTypeById(id).getMarkupData()
+        markupData.columns[id] <- g_mplayer_param_type.getTypeById(id).getMarkupData()
 
       if ("name" in markupData.columns)
         markupData.columns["name"].width = "fw"
@@ -321,7 +322,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         : this.defaultRowHeaders
 
       foreach (id in sourceHeaders)
-        if (::g_mplayer_param_type.getTypeById(id).isVisible(this.missionObjectives, this.gameType, this.gameMode))
+        if (g_mplayer_param_type.getTypeById(id).isVisible(this.missionObjectives, this.gameType, this.gameMode))
           tblData.append(id)
 
       if (!showUnits)
@@ -330,7 +331,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         u.removeFrom(tblData, "squad")
 
       foreach (name in tblData)
-        markupData.columns[name] <- ::g_mplayer_param_type.getTypeById(name).getMarkupData()
+        markupData.columns[name] <- g_mplayer_param_type.getTypeById(name).getMarkupData()
 
       if ("name" in markupData.columns) {
         let col = markupData.columns["name"]
@@ -619,7 +620,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.checkRaceDataOnStart && is_race_started()) {
       let chObj = this.scene.findObject("gc_race_checkpoints")
       if (checkObj(chObj)) {
-        let totalCheckpointsAmount = get_race_checkpioints_count()
+        let totalCheckpointsAmount = get_race_checkpoints_count()
         local text = ""
         if (totalCheckpointsAmount > 0)
           text = ::getCompoundedText(loc("multiplayer/totalCheckpoints") + loc("ui/colon"), totalCheckpointsAmount, "activeTextColor")

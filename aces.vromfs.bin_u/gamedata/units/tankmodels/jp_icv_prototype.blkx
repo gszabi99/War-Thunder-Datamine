@@ -171,8 +171,11 @@
     "hp": 10000.0,
     "hull": {
       "turret_04_front_dm": {
-        "armorThickness": 5.0,
-        "hidableInViewer": true
+        "armorThickness": 30.0,
+        "armorClass": "hull_side_special_armor",
+        "cumulativeArmorQuality": 1.0,
+        "genericArmorQuality": 1.0,
+        "explosionArmorQuality": 0.5
       },
       "body_front_dm": {
         "armorThickness": 35.0
@@ -2060,7 +2063,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Mk52_user_machinegun.blk",
         "emitter": "bone_mg_gun_twin",
         "flash": "emtr_mg_flame",
         "defaultYaw": 0.0,
@@ -2073,7 +2076,7 @@
           1.0,
           15.0
         ],
-        "bullets": 3000,
+        "bullets": 2000,
         "isBulletBelt": true,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 3.0,
@@ -3597,7 +3600,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L94A1_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Mk52_user_machinegun.blk",
               "emitter": "bone_mg_gun_twin",
               "flash": "emtr_mg_flame",
               "defaultYaw": 0.0,
@@ -3610,7 +3613,7 @@
                 1.0,
                 15.0
               ],
-              "bullets": 3000,
+              "bullets": 2000,
               "isBulletBelt": true,
               "ChainfireTime": 3.0,
               "DelayAfterShoot": 3.0,

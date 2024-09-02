@@ -236,7 +236,7 @@ function debug_dump_mpstatistics_save(filename) {
     "get_current_mission_info_cached"
     "get_multiplayer_time_left"
     "is_race_started"
-    "get_race_checkpioints_count"
+    "get_race_checkpoints_count"
     "get_race_winners_count"
   ])
   return "Saved " + filename
@@ -306,7 +306,7 @@ function debug_dump_respawn_save(filename) {
     "get_mission_difficulty_int"
     "get_multiplayer_time_left"
     "is_race_started"
-    "get_race_checkpioints_count"
+    "get_race_checkpoints_count"
     "get_race_winners_count"
     {id = "g_mis_loading_state.curState", value = g_mis_loading_state.getCurState()}
     "HudBattleLog.battleLog"

@@ -129,8 +129,11 @@ let getBaseCustomPresetConfig = @(presetName, presetBlk) {
 function initCustomPreset(unit) {
   let presetConfig = getCustomPresetsConfig(unit)
   let weapons = []
-  foreach (presetName, preset in presetConfig)
-    weapons.append(getBaseCustomPresetConfig(presetName, preset))
+  foreach (presetName, preset in presetConfig) {
+    let presetClone = DataBlock()
+    presetClone.setFrom(preset)
+    weapons.append(getBaseCustomPresetConfig(presetName, presetClone))
+  }
 
   initUnitCustomPresetsWeapons(unit, weapons)
   customPresetsByUnit.mutate(@(val) val[unit.name] <- weapons)

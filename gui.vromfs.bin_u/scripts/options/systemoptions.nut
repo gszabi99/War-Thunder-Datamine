@@ -148,12 +148,12 @@ local mUiStruct = [
       "vrStreamerMode"
       "rayTracing"
       "rtao"
-      "rtaoRes"
+      //"rtaoRes"
       "rtsm"
       "rtr"
       "rtrShadows"
       "rtrFOM"
-      "rtrRes"
+      //"rtrRes"
       "rtrWater"
       "rtrWaterRes"
       "rtrTranslucent"
@@ -681,6 +681,38 @@ mShared = {
       mShared.setCompatibilityMode()
   }
 
+  rtaoClick = function() {
+    enableGuiOption("rtaoRes", getGuiValue("rtao") != "off" && getGuiValue("rayTracing"))
+  }
+
+  rtrClick = function() {
+    enableGuiOption("rtrShadows", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+    enableGuiOption("rtrFOM", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+    enableGuiOption("rtrWater", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+  }
+
+  rtrWaterClick = function() {
+    enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
+    enableGuiOption("rtrTranslucent", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
+  }
+
+  rayTracingClick = function() {
+    enableGuiOption("rtr", getGuiValue("rayTracing"))
+    enableGuiOption("rtao", getGuiValue("rayTracing"))
+    enableGuiOption("rtsm", getGuiValue("rayTracing"))
+
+    enableGuiOption("rtaoRes", getGuiValue("rtao") != "off" && getGuiValue("rayTracing"))
+
+    enableGuiOption("rtrShadows", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+    enableGuiOption("rtrFOM", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+    enableGuiOption("rtrWater", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
+
+    enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
+    enableGuiOption("rtrTranslucent", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
+  }
+
   getVideoModes = function(curResolution = null, isNeedAuto = true) {
     let minW = 1024
     let minH = 720
@@ -1147,9 +1179,10 @@ mSettings = {
   riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
   }
   rayTracing = { widgetType = "checkbox" def = false blk = "graphics/enableBVH" restart = false isVisible = @() hasFeature("optionRT")
+    onChanged = "rayTracingClick"
   }
   rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false
+    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false onChanged = "rtaoClick"
   }
   rtaoRes = { widgetType = "list" def = "normal"  blk = "graphics/RTAORes" restart = false isVisible = @() hasFeature("optionRT")
     values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtao", "off") != "off"
@@ -1158,7 +1191,7 @@ mSettings = {
     enabled = @() getGuiValue("rayTracing", false) != false isVisible = @() hasFeature("optionRT")
   }
   rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false
+    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false onChanged = "rtrClick"
   }
   rtrShadows = { widgetType = "checkbox" def = false blk = "graphics/RTRShadows" restart = false isVisible = @() hasFeature("optionRT")
     enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
@@ -1171,8 +1204,9 @@ mSettings = {
   }
   rtrWater = { widgetType = "checkbox" def = true  blk = "graphics/RTRWater" restart = false isVisible = @() hasFeature("optionRT")
     enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off" && getGuiValue("rtsm", "off") != "off"
+    onChanged = "rtrWaterClick"
   }
-  rtrWaterRes = { widgetType = "list" def = "normal"  blk = "graphics/RTRWaterRes" restart = false isVisible = @() hasFeature("optionRT")
+  rtrWaterRes = { widgetType = "list" def = "half"  blk = "graphics/RTRWaterRes" restart = false isVisible = @() hasFeature("optionRT")
     values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtrWater", false) != false && getGuiValue("rtr", "off") != "off" && getGuiValue("rtsm", "off") != "off"
   }
   rtrTranslucent = { widgetType = "list" def = "shadow"  blk = "graphics/RTRTranslucent" restart = false isVisible = @() hasFeature("optionRT")

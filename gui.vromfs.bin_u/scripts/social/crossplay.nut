@@ -71,7 +71,7 @@ let setCrossNetworkPlayStatus = function(val) {
 }
 
 let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
-  if (!needOverrideValue && crossNetworkChatStatus.value != null)
+  if (!isPlatformXboxOne && !needOverrideValue && crossNetworkChatStatus.value != null)
     return
 
   if (isPlatformXboxOne)

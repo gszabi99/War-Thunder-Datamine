@@ -329,7 +329,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "power_block": {
@@ -1428,6 +1429,63 @@
             }
           }
         ]
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1514,6 +1572,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
         "breechDP": "cannon_breech_01_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 70.0,
         "speedPitch": 60.0,
         "bullets": 500,
@@ -1535,8 +1597,15 @@
           "gun": "bone_gun_01",
           "barrel": "bone_gun_barrel_01",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": {
             "verNode": "gun_mask_top_anim",
             "verLimits": [
@@ -1619,6 +1688,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_02_dm",
         "breechDP": "cannon_breech_02_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 70.0,
         "speedPitch": 60.0,
         "bullets": 500,
@@ -1642,8 +1715,15 @@
           "gun": "bone_gun_01",
           "barrel": "bone_gun_barrel_02",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1715,6 +1795,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_03_dm",
         "breechDP": "cannon_breech_03_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 70.0,
         "speedPitch": 60.0,
         "bullets": 500,
@@ -1739,8 +1823,15 @@
           "gun": "bone_gun_02",
           "barrel": "bone_gun_barrel_03",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1812,6 +1903,10 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_04_dm",
         "breechDP": "cannon_breech_04_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 70.0,
         "speedPitch": 60.0,
         "bullets": 500,
@@ -1836,8 +1931,15 @@
           "gun": "bone_gun_02",
           "barrel": "bone_gun_barrel_04",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1927,6 +2029,9 @@
           "head": "bone_turret",
           "gun": "bone_gun_03",
           "gunnerDm": "gunner_dm",
+          "verDriveDm": "fire_control_system_dm",
+          "horDriveDm": "fire_control_system_dm",
+          "shootingDmPart": "fire_control_system_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -1993,7 +2098,10 @@
       "turretIndex": 0,
       "designationFromBody": true,
       "designationTurretIndex": 0,
-      "dmPart": "antenna_target_tagging_dm"
+      "dmPart": [
+        "antenna_target_tagging_dm",
+        "electronic_equipment_dm"
+      ]
     }
   },
   "VehiclePhys": {

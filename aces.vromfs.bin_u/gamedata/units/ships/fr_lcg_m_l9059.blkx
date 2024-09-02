@@ -880,7 +880,16 @@
       "fireParamsPreset": "ship_ammo_fire",
       "armorClass": "ship_structural_steel",
       "armorThickness": 5.0,
-      "fireProtectionHp": 15.0
+      "fireProtectionHp": 15.0,
+      "ammunition_storage_01_dm": {
+        "hp": 500.0
+      },
+      "ammunition_storage_02_dm": {
+        "hp": 500.0
+      },
+      "ammunition_storage_03_dm": {
+        "hp": 500.0
+      }
     },
     "ammo_first_stage": {
       "armorClass": "ship_structural_steel",
@@ -1982,8 +1991,8 @@
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "barrelDP": "main_caliber_gun_02_dm",
-        "breechDP": "main_caliber_gun_02_dm",
+        "barrelDP": "auxiliary_caliber_gun_01_dm",
+        "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "allowableDelta": 2.0,
@@ -3212,23 +3221,15 @@
         "innerParts": {
           "part": [
             {
-              "partNo": "ammunition_storage_aux_01_dm",
-              "critWaterLevel": 0.8
+              "partNo": "ammunition_storage_01_dm",
+              "critWaterLevel": 0.3
             },
             {
-              "partNo": "ammunition_storage_charges_01_dm",
-              "critWaterLevel": 0.8
+              "partNo": "ammunition_storage_02_dm",
+              "critWaterLevel": 0.5
             },
             {
-              "partNo": "ammunition_storage_charges_02_dm",
-              "critWaterLevel": 0.8
-            },
-            {
-              "partNo": "ammunition_storage_shells_01_dm",
-              "critWaterLevel": 0.8
-            },
-            {
-              "partNo": "ammunition_storage_shells_02_dm",
+              "partNo": "ammunition_storage_03_dm",
               "critWaterLevel": 0.8
             }
           ]
@@ -3242,11 +3243,11 @@
           "part": [
             {
               "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.3
             },
             {
               "partNo": "engine_room_02_dm",
-              "critWaterLevel": 0.6
+              "critWaterLevel": 0.5
             },
             {
               "partNo": "transmission_01_dm",
@@ -3254,7 +3255,7 @@
             },
             {
               "partNo": "transmission_02_dm",
-              "critWaterLevel": 0.8
+              "critWaterLevel": 0.9
             }
           ]
         }
@@ -3278,27 +3279,47 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
-      "shells": {
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "fireEvent": "ammo_fire_1",
-        "explosionEvent": "ammo_explosion_1",
-        "ammunition_storage_01_dm": {
-          "count": 150
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "fireEvent": "ammo_fire_1",
+      "explosionEvent": "ammo_explosion_1",
+      "shells": [
+        {
+          "entityMunition": "first_stage",
+          "firstStage": true,
+          "ammo_turret_01_dm": {
+            "count": 20
+          }
+        },
+        {
+          "reloadTimeMult": 1.2,
+          "ammunition_storage_01_dm": {
+            "count": 130
+          }
         }
-      }
+      ]
     },
     "ammo2": {
       "weaponTrigger": "gunner1",
-      "shells": {
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "fireEvent": "ammo_fire_2",
-        "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_03_dm": {
-          "count": 150
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "fireEvent": "ammo_fire_1",
+      "explosionEvent": "ammo_explosion_1",
+      "shells": [
+        {
+          "entityMunition": "first_stage",
+          "firstStage": true,
+          "ammo_turret_02_dm": {
+            "count": 20
+          }
+        },
+        {
+          "reloadTimeMult": 1.2,
+          "ammunition_storage_02_dm": {
+            "count": 130
+          }
         }
-      }
+      ]
     },
     "ammo3": {
       "weaponTrigger": [
@@ -3309,9 +3330,9 @@
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
-        "fireEvent": "ammo_fire_2",
-        "explosionEvent": "ammo_explosion_2",
-        "ammunition_storage_04_dm": {
+        "fireEvent": "ammo_fire_1",
+        "explosionEvent": "ammo_explosion_1",
+        "ammunition_storage_03_dm": {
           "count": 5600
         }
       }

@@ -1,14 +1,13 @@
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
 
 let compass = require("compass.nut")
 let { format } = require("string")
 let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
-let { PI, cos, sin, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
+let { PI, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
 let { get_mission_time } = require("mission")
 let { CompassValue } = require("compassState.nut")
 let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
-let { fwdAngle, fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow, gunStatesSecondRow, artilleryType } = require("shipState.nut")
+let { fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow, gunStatesSecondRow, artilleryType } = require("shipState.nut")
 let { IsRadarVisible } = require("radarState.nut")
 let fcsState = require("%rGui/fcsState.nut")
 let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.nut")
@@ -47,8 +46,6 @@ let highlightColor = Color(255, 255, 255, 180)
 let highlightScale = 2.5
 let compassSize = [hdpx(500), hdpx(32)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
-let fcsWidth = sh(28)
-let isExtraElementVisible = false
 let rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
 let rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
 
@@ -85,134 +82,9 @@ let gunState = {
 }
 
 
-let background = {
-  rendObj = ROBJ_VECTOR_CANVAS
-  size = [fcsWidth, fcsWidth]
-  color = greenColorGrid
-  fillColor = Color(0, 32, 0, 120)
-  lineWidth = hdpx(LINE_WIDTH)
-  commands = [
-    [VECTOR_ELLIPSE, 50, 50, 50, 50]
-  ]
-}
-
-function mkDashes(width, centerX, centerY, radius, angleStart, angleFinish, length, count) {
-  let dashCommands = []
-
-  let startRad = angleStart * PI / 180.0;
-  let finishRad = angleFinish * PI / 180.0;
-  let dAngle = (finishRad - startRad) / (count + 1)
-
-  for (local i = 0; i < count; ++i) {
-    let angle = startRad + (i + 1) * dAngle
-    let cosA = cos(angle)
-    let sinA = sin(angle)
-    let dashStartX = centerX + (radius - length) * cosA
-    let dashStartY = centerY + (radius - length) * sinA
-    let dashFinishX = centerX + (radius) * cosA
-    let dashFinishY = centerY + (radius) * sinA
-    dashCommands.append([VECTOR_LINE, dashStartX, dashStartY, dashFinishX, dashFinishY])
-  }
-
-  return {
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [width, width]
-    color = greenColorGrid
-    lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
-    commands = dashCommands
-  }
-}
-
-let centerX1 = 50
-let centerY1 = 80
-let centerX2 = 50
-let centerY2 = -3
-let radius1 = 25
-let radius2 = 60
-let angle1 = 140.0
-let angle2 = 250.0
-let angle3 = 290.0
-let angle4 = 400.0
-let angle5 = 38.0
-let angle6 = 142.0
-
 let shipFireControlCachedPos = mkWatched(persist, "shipFireControlCachedPos", [0,0])
 shipFireControlCachedPos.subscribe(@(v) eventbus_send("update_ship_fire_control_panel", {pos = v}))
 
-let fcsMarkers = {
-  rendObj = ROBJ_VECTOR_CANVAS
-  size = [fcsWidth, fcsWidth]
-  color = greenColorGrid
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = max(hdpx(LINE_WIDTH), LINE_WIDTH)
-  commands = [
-    [VECTOR_SECTOR, centerX1, centerY1, radius1, radius1, angle1, angle2],
-    [VECTOR_SECTOR, centerX1, centerY1, radius1, radius1, angle3, angle4],
-    [VECTOR_SECTOR, centerX2, centerY2, radius2, radius2, angle5, angle6]
-  ]
-  children = [
-    mkDashes(fcsWidth, centerX1, centerY1, radius1, angle1, angle2, 2, 5)
-    mkDashes(fcsWidth, centerX1, centerY1, radius1, angle3, angle4, 2, 5)
-    mkDashes(fcsWidth, centerX2, centerY2, radius2, angle5, angle6, 2, 9)
-  ]
-}
-
-function drawShipIcon(iconSize, iconPos, iconColor, absBearing) {
-  return {
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = iconSize
-    pos = iconPos
-    color = iconColor
-    transform = {
-      pivot = [0.5, 0.5]
-      rotate = absBearing.value - fcsState.TargetAzimuth.value
-    }
-    lineWidth = hdpx(LINE_WIDTH)
-    commands = [
-      [VECTOR_LINE, 40, 100, 40, 10],
-      [VECTOR_LINE, 40, 10, 50, 0],
-      [VECTOR_LINE, 50, 0, 60, 10],
-      [VECTOR_LINE, 60, 10, 60, 100],
-      [VECTOR_LINE, 60, 100, 40, 100]
-    ]
-  }
-}
-
-let targetSpeed = @() {
-  watch = fcsState.TargetSpeed
-  rendObj = ROBJ_TEXT
-  text = cross_call.measureTypes.SPEED.getMeasureUnitsText(fcsState.TargetSpeed.value)
-  font = Fonts.tiny_text_hud
-  pos = [0, sh(1)]
-  color = greenColorGrid
-  margin = [0, 0, 0, sh(1)]
-}
-
-let progress = @() {
-  watch = [fcsState.CalcProgress, fcsState.IsTargetDataAvailable]
-  rendObj = ROBJ_VECTOR_CANVAS
-  size = [fcsWidth, fcsWidth]
-  color = greenColorGrid
-  fillColor =  Color(0, 0, 0, 0)
-  lineWidth = hdpx(LINE_WIDTH) * (fcsState.IsTargetDataAvailable.value ? 1.5 : 3)
-  commands = [
-    [VECTOR_SECTOR, 50, 50, 50, 50, -90, -90 + fcsState.CalcProgress.value * 360],
-  ]
-}
-
-let roundIndicator = @() {
-  pos = [sh(4), sh(18)]
-  halign = ALIGN_CENTER
-  watch = [fcsState.TargetAzimuth, fwdAngle, fcsState.IsTargetSelected, fcsState.IsTargetDataAvailable, fcsState.TargetFwdDir]
-  children = [
-    background
-    fcsState.IsTargetSelected.value ? progress : null
-    fcsMarkers
-    drawShipIcon([sh(8), sh(8)], [0, sh(18)], greenColorGrid, fwdAngle)
-    fcsState.IsTargetDataAvailable.value ? drawShipIcon([sh(14), sh(14)], [0, sh(1)], Color(255, 128, 32, 255), fcsState.TargetFwdDir) : null
-    fcsState.IsTargetDataAvailable.value ? targetSpeed : null
-  ]
-}
 
 let progressBar = @() {
   watch = [fcsState.OpticsWidth, fcsState.StaticFov]
@@ -310,6 +182,7 @@ function drawForestallIndicator(
   showVertical,
   showHorizontal,
   showMarker,
+  showProgress,
   showCentral) {
 
   let circleSize = sh(4)
@@ -333,16 +206,17 @@ function drawForestallIndicator(
       fillColor =  Color(0, 0, 0, 0)
       commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
     },
-    @() {
-      watch = fcsState.CalcProgress
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [circleSize * 0.7, circleSize * 0.7]
-      pos = [forestallX - circleSize * 0.35, forestallY - circleSize * 0.35]
-      color = greenColorGrid
-      fillColor =  Color(0, 0, 0, 0)
-      commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90, -90 + fcsState.CalcProgress.value * 360]]
-    },
     drawDashLineToCircle(targetX, targetY, forestallX, forestallY, circleSize))
+    if (showProgress)
+      indicatorElements.append(
+        @() {
+          watch = fcsState.CalcProgress
+          rendObj = ROBJ_VECTOR_CANVAS
+          size = [circleSize * 0.7, circleSize * 0.7]
+          pos = [forestallX - circleSize * 0.35, forestallY - circleSize * 0.35]
+          color = greenColorGrid
+          fillColor =  Color(0, 0, 0, 0)
+          commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90, -90 + fcsState.CalcProgress.value * 360]]})
   }
   if (showHorizontal) {
     indicatorElements.append(drawArrow(forestallX, sh(50), 0, -1, isYawMatch ? greenColorGrid : redColor))
@@ -381,6 +255,7 @@ let forestallIndicator = @() {
     fcsState.IsBinocular.value && fcsState.IsHorizontalAxisVisible.value,
     fcsState.IsBinocular.value && fcsState.IsVerticalAxisVisible.value,
     fcsState.IsForestallMarkerVisible.value,
+    !fcsState.IsBinocular.value,
     fcsState.IsBinocular.value)
 }
 
@@ -584,8 +459,7 @@ let root = @() {
     !IsRadarVisible.value ? compassComponent : null
     fcsState.IsForestallVisible.value ? forestallIndicator
         : (fcsState.IsBinocular.value ? crosshairZeroMark : null)
-    isExtraElementVisible ? roundIndicator : null
-    fcsState.IsBinocular.value && fcsState.IsTargetSelected.value && (!fcsState.IsForestallVisible.value || !fcsState.IsForestallMarkerVisible.value) ? progressBar : null
+    fcsState.IsBinocular.value && fcsState.IsTargetSelected.value ? progressBar : null
   ]
 }
 

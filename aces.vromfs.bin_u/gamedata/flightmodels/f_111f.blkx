@@ -2776,11 +2776,11 @@
       ],
       "oil_pressure": [
         0.0,
-        100.0
+        200.0
       ],
       "oil_pressure1": [
         0.0,
-        100.0
+        200.0
       ],
       "water_temperature": [
         0.0,
@@ -2844,11 +2844,40 @@
             0.5,
             0.5
           ],
-          "page": {
-            "type": "radar_b_round",
-            "scale": 1.15,
-            "hideBackground": true
-          }
+          "page": [
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.75,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                0
+              ],
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
+            },
+            {
+              "type": "map"
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2861,6 +2890,48 @@
             "type": "rwr",
             "scale": 1.0
           }
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "map"
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.75,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                0
+              ],
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2962,6 +3033,10 @@
       {
         "name": "f_111f_mk82_snakeye_bru_supersonic",
         "blk": "gameData/FlightModels/weaponPresets/f_111f_mk82_snakeye_bru_supersonic.blk"
+      },
+      {
+        "name": "f_111f_mk84_air",
+        "blk": "gameData/FlightModels/weaponPresets/f_111f_mk84_air.blk"
       },
       {
         "name": "f_111f_agm_65d",
@@ -3266,6 +3341,26 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "us_mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot1_lapa",
+                "pylon_pivot1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
+              "emitter": "pylon_bru_3a_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          },
+          {
             "iconType": "guided_bomb_middle_laser",
             "name": "us_gbu_12_slot1",
             "reqModification": "us_gbu_12",
@@ -3555,6 +3650,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "pylon_bru_3a_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "us_mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot2_lapa",
+                "pylon_pivot2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
               "emitter": "pylon_bru_3a_4",
               "bullets": 1,
               "external": true,
@@ -3923,6 +4038,26 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "us_mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot3_lapa",
+                "pylon_pivot3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
+              "emitter": "pylon_bru_3a_5",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          },
+          {
             "iconType": "guided_bomb_middle_laser",
             "name": "us_gbu_12_slot3",
             "reqModification": "us_gbu_12",
@@ -4176,6 +4311,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "pylon_bru_3a_6",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "us_mk84_air",
+            "reqModification": "us_2000lb_mk84",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot4_lapa",
+                "pylon_pivot4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp_air.blk",
               "emitter": "pylon_bru_3a_6",
               "bullets": 1,
               "external": true,

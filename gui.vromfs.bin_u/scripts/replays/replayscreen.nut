@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "app" import is_dev_version
 
+let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -451,7 +452,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     let rowHeader = []
     let headerArray = []
     foreach (id in columnsOrder) {
-      let paramType = ::g_mplayer_param_type.getTypeById(id)
+      let paramType = g_mplayer_param_type.getTypeById(id)
       if (!paramType.isVisible(missionObjectivesMask, gameType, gameMode))
         continue
 

@@ -9,6 +9,7 @@ let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 let { get_replay_info } = require("replays")
 let DataBlock = require("DataBlock")
 let { get_mplayers_list } = require("mission")
+let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 
 let buildReplayMpTable = function(replayPath) {
   let res = []
@@ -57,8 +58,8 @@ let buildReplayMpTable = function(replayPath) {
     if (mplayer?.isBot && mplayer?.name.indexof("/") != null)
       mplayer.name = loc(mplayer.name)
 
-    foreach (p in ::g_mplayer_param_type.types)
-      if (!(p.id in mplayer) && p != ::g_mplayer_param_type.UNKNOWN)
+    foreach (p in g_mplayer_param_type.types)
+      if (!(p.id in mplayer) && p != g_mplayer_param_type.UNKNOWN)
         mplayer[p.id] <- b?[p.id] ?? p?.defVal
 
     res.append(mplayer)

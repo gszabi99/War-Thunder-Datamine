@@ -169,12 +169,16 @@
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
         "hidableInXrayViewer": true
+      },
+      "turret_06_side_dm": {
+        "armorThickness": 12.7
       }
     },
     "glass": {
       "armorClass": "armored_glass",
       "armorThickness": 40.0,
-      "turret_01_front_dm": {}
+      "turret_01_front_dm": {},
+      "turret_06_front_dm": {}
     },
     "hull_turret_ex_shields": {
       "armorClass": "tank_structural_steel",
@@ -1341,7 +1345,7 @@
         "recoilMultiplier": 0.1,
         "stopForFire": true,
         "maxSpeedForFire": 12.0,
-        "barrelDP": "gun_barrel_dm",
+        "barrelDP": "gun_barrel_02_dm",
         "createGunEffects": true,
         "staticElevation": 0.4,
         "defaultYaw": 0.0,
@@ -2393,7 +2397,7 @@
               "recoilMultiplier": 0.1,
               "stopForFire": true,
               "maxSpeedForFire": 12.0,
-              "barrelDP": "gun_barrel_dm",
+              "barrelDP": "gun_barrel_02_dm",
               "createGunEffects": true,
               "staticElevation": 0.4,
               "defaultYaw": 0.0,
@@ -2510,6 +2514,59 @@
               "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
+              "emitter": "emtr_mortart_flame_01",
+              "emitterGenRange": [
+                1,
+                8
+              ],
+              "emitterGenFmt": "emtr_mortart_flame_%02d",
+              "ignoreLoaderPenalty": true,
+              "createGunEffects": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "allowableDelta": 360.0,
+              "salvo": 4,
+              "salvoDelay": 0.5,
+              "speedYaw": 24.0,
+              "speedPitch": 15.0,
+              "fireConeAngle": 1.0,
+              "bullets": 8,
+              "salvoAmount": 100.0,
+              "ChainfireTime": 0.0,
+              "DelayAfterShoot": 5.0,
+              "AttackMaxDistance": 1000.0,
+              "AttackMaxRadius": 1000.0,
+              "AttackMaxHeight": 1000.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 1.5,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_grenade",
+                "gun": "bone_grenade"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner5",
+              "triggerGroup": "smoke",
+              "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
+              "weaponType": "rockets",
+              "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
               "emitterGenRange": [
                 1,
@@ -2543,8 +2600,8 @@
               "errTargetting": 3.0,
               "errExplTime": 0.0,
               "turret": {
-                "head": "bone_grenade",
-                "gun": "bone_grenade"
+                "head": "bone_grenade_01",
+                "gun": "bone_grenade_01"
               },
               "limits": {
                 "yaw": [

@@ -22,6 +22,7 @@ let { get_shop_blk } = require("blkGetters")
 let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
 let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank } = require("%scripts/ranks.nut")
 let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
+let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 
 let allUnits = getAllUnits()
 //remap all units to new class on scripts reload
@@ -113,7 +114,7 @@ local usageAmountCounted = false
     ::tribunal.init()
     clearMapsCache() //to refreash maps on demand
     ::crosshair_icons.clear()
-    ::crosshair_colors.clear()
+    crosshair_colors.clear()
     ::thermovision_colors.clear()
   }
 
@@ -142,7 +143,7 @@ local usageAmountCounted = false
         ::crosshair_icons.append(crosshair)
       let colors = blk.crosshair % "crosshairColor"
       foreach (colorBlk in colors)
-        ::crosshair_colors.append({
+        crosshair_colors.append({
           name = colorBlk.name
           color = colorBlk.color
         })

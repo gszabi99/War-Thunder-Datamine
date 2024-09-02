@@ -2776,11 +2776,11 @@
       ],
       "oil_pressure": [
         0.0,
-        100.0
+        200.0
       ],
       "oil_pressure1": [
         0.0,
-        100.0
+        200.0
       ],
       "water_temperature": [
         0.0,
@@ -2844,11 +2844,40 @@
             0.5,
             0.5
           ],
-          "page": {
-            "type": "radar_b_round",
-            "scale": 1.15,
-            "hideBackground": true
-          }
+          "page": [
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.75,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                0
+              ],
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
+            },
+            {
+              "type": "map"
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2861,6 +2890,48 @@
             "type": "rwr",
             "scale": 1.0
           }
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "map"
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "fontScale": 0.65,
+              "scale": 0.75,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "hasAviaHorizont": true,
+              "hideBackground": true,
+              "hideScale": false,
+              "hideHorAngle": false,
+              "hideVerAngle": false,
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                0
+              ],
+              "hideWeaponIndication": true,
+              "modeColor": [
+                0,
+                255,
+                0
+              ],
+              "centerRadar": true
+            }
+          ]
         },
         {
           "textureArea": [
