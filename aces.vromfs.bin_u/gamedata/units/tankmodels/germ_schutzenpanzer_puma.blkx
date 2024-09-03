@@ -698,6 +698,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -3825,5 +3829,90 @@
         "to": "ger_camo_modern_threecolor*"
       }
     }
-  ]
+  ],
+  "ActiveProtectionSystem": {
+    "rearmTime": 45.0,
+    "model": "muss",
+    "verAngles": [
+      -15.0,
+      35.0
+    ],
+    "horAngles": [
+      -180.0,
+      180.0
+    ],
+    "reactionTime": 0.3,
+    "reloadTime": 1.5,
+    "targetSpeed": [
+      70.0,
+      1000.0
+    ],
+    "shotCount": 0,
+    "IRCM": {
+      "sensorPos": [
+        0.0,
+        0.5,
+        1.5
+      ],
+      "horAngles": [
+        -180.0,
+        180.0
+      ],
+      "emitter": "bone_countermeasure_01_h",
+      "turretNodeName": "bone_countermeasure_01_h",
+      "verAngles": [
+        -15.0,
+        35.0
+      ],
+      "distance": 20.0,
+      "sensorDistance": 250.0,
+      "reloadTime": 1.5,
+      "shotCount": 0,
+      "blastDistance": 0.5,
+      "additionalHeight": 4.0,
+      "aiming": true,
+      "shotFx": "muzzle_ground_8mm_cmps_fx",
+      "explosionFx": "hit_28_38mm_metal_he",
+      "mountNode": "bone_turret",
+      "reactionTime": 0.3,
+      "targets": {
+        "lowspeed": {
+          "speed": [
+            70.0,
+            1000.0
+          ],
+          "size": [
+            0.07,
+            0.5
+          ],
+          "self": false,
+          "ally": false
+        }
+      },
+      "ammo": {
+        "mass": 1.2,
+        "explosiveType": "comp_b",
+        "explosiveMass": 0.5,
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.75,
+            "segment": {
+              "radiusScale": 2.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                0.5
+              ],
+              "countPortion": 0.25
+            }
+          },
+          "shatterDamage": {
+            "breachConeAngle": 45.0
+          }
+        }
+      }
+    }
+  }
 }

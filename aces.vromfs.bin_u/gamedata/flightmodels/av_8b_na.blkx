@@ -50,9 +50,6 @@
   ],
   "canTakeoffWithoutGear": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2610,8 +2607,8 @@
         "blk": "gameData/FlightModels/weaponPresets/av_8b_na_agm_65e.blk"
       },
       {
-        "name": "av_8b_plus_mk77",
-        "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_mk77.blk"
+        "name": "av_8b_na_mk77",
+        "blk": "gameData/FlightModels/weaponPresets/av_8b_na_mk77.blk"
       },
       {
         "name": "av_8b_plus_italy_agm_65g",
@@ -2898,7 +2895,7 @@
           },
           {
             "iconType": "napalm_large",
-            "name": "us_mk_77",
+            "name": "us_mk_77_slot1",
             "reqModification": "us_mk_77",
             "Weapon": {
               "trigger": "bombs",
@@ -2908,6 +2905,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "ffar_left_wing"
             }
           }
         ]
@@ -3354,7 +3355,25 @@
             "traceOffset": 1,
             "counterIndex": 1,
             "external": true
-          }
+          },
+          "BannedWeaponPreset": [
+            {
+              "slot": 5,
+              "preset": "ter_mk81_x2"
+            },
+            {
+              "slot": 5,
+              "preset": "ter_mk81_snakeye_x2"
+            },
+            {
+              "slot": 5,
+              "preset": "ter_mk82_x2"
+            },
+            {
+              "slot": 5,
+              "preset": "ter_mk82_snakeye_x2"
+            }
+          ]
         }
       },
       {
@@ -3941,7 +3960,7 @@
           },
           {
             "iconType": "napalm_large",
-            "name": "us_mk_77",
+            "name": "us_mk_77_slot9",
             "reqModification": "us_mk_77",
             "Weapon": {
               "trigger": "bombs",
@@ -3951,6 +3970,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 8,
+              "preset": "ffar_right_wing"
             }
           }
         ]

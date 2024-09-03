@@ -702,6 +702,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -2421,7 +2425,6 @@
         "trigger": "gunner5",
         "triggerGroup": "special",
         "blk": "gameData/Weapons/groundModels_weapons/110mm_mells_rocket_launchr_user_cannon.blk",
-        "weaponType": "rockets",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
         "emitter": "bone_rocket_01",
@@ -2431,6 +2434,7 @@
         ],
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "skipAxisEmitterCheck": true,
         "recoilMultiplier": 0.1,
         "staticElevation": 7.5,
         "barrelDP": "gun_barrel_02_dm",
@@ -2470,8 +2474,8 @@
             0.0
           ],
           "pitch": [
-            -19.0,
-            29.0
+            0.0,
+            5.0
           ]
         }
       },
@@ -3332,6 +3336,7 @@
     "30mm_173_AHEAD_ammo_pack": {},
     "30mm_173_APDS_FS": {},
     "30mm_173_APDS_FS_ammo_pack": {},
+    "110mm_spike_lr": {},
     "airstrike": {},
     "improved_optics": {},
     "laser_rangefinder_lws": {
@@ -3669,7 +3674,6 @@
               "trigger": "gunner5",
               "triggerGroup": "special",
               "blk": "gameData/Weapons/groundModels_weapons/110mm_mells_rocket_launchr_user_cannon.blk",
-              "weaponType": "rockets",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
               "emitter": "bone_rocket_01",
@@ -3679,6 +3683,7 @@
               ],
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
+              "skipAxisEmitterCheck": true,
               "recoilMultiplier": 0.1,
               "staticElevation": 7.5,
               "barrelDP": "gun_barrel_02_dm",
@@ -3718,8 +3723,8 @@
                   0.0
                 ],
                 "pitch": [
-                  -19.0,
-                  29.0
+                  0.0,
+                  5.0
                 ]
               }
             },

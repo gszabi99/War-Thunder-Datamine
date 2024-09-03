@@ -2007,7 +2007,7 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 500000.0,
+      "Empty": 550000.0,
       "momentOfInertia": [
         43.0,
         170.0,
@@ -2105,7 +2105,26 @@
       }
     }
   },
+  "sensors": {
+    "fireDirecting": {
+      "dmPartMain": "bridge_dm",
+      "dmPart": "rangfinder_01_dm",
+      "measureAccuracy": 0.85,
+      "targetLockTime": 20.0,
+      "calcTime": 12.0,
+      "rotationSpeed": 20.0,
+      "shipIndicationOn": true,
+      "triggerGroupUse": {
+        "primary": true,
+        "secondary": true,
+        "machinegun": false
+      }
+    }
+  },
   "commonWeapons": {
+    "animatedBones": {
+      "node": "rangefinder_01"
+    },
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -2398,21 +2417,21 @@
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
         "salvoRndK": 0.1,
-        "allowableDelta": 1.0,
+        "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 20.0,
-        "aimMaxDist": 7000.0,
+        "aimMaxDist": 4500.0,
         "randomAngle": 0.0,
-        "accuracyBotMultAir": 0.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
         "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
+        "errMeasureVelFast": 100.0,
         "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
@@ -3009,7 +3028,7 @@
       -44.0
     ],
     "headPosOnShooting": [
-      8.0,
+      13.0,
       11.5,
       0.0
     ],

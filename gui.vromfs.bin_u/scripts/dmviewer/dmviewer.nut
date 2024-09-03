@@ -658,7 +658,8 @@ dmViewer = {
         else
           broadcastEvent("UpdateFiltersCount") //update filter count after validate option value
         set_xray_parts_filter(xrayFilterOption.value)
-      }
+      } else if (this.view_mode == DM_VIEWER_XRAY && hasLoadedModel())
+        set_xray_parts_filter(0)
     }
 
     obj = handler.scene.findObject("dmviewer_show_extended_hints")

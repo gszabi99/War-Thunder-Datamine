@@ -490,6 +490,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
@@ -1180,7 +1184,7 @@
   "xray_viewer_data": {
     "armorArrayHull": {
       "xrayDmPart": "composite_armor_hull_01_dm",
-      "titleLoc": "RHA_tank_modern",
+      "titleLoc": "aluminum_armor_AA_7017",
       "armorArrayText": {
         "layer": {
           "dmPart": "composite_armor_hull_01_dm"
@@ -1255,9 +1259,9 @@
         "openHatchTime": 0.0,
         "shellCasingLifeTime": 3.0,
         "shellCasingImpulse": [
-          0.5,
-          -4.0,
-          -4.0
+          2.5,
+          0.0,
+          2.0
         ],
         "linkShellCasingToGun": true,
         "aimingFromBoneGun": true,
@@ -1417,8 +1421,9 @@
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
-        "emitter": "bone_mg_h_01",
+        "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
+        "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
@@ -1466,9 +1471,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 13000.0,
+      "Empty": 11300.0,
       "Fuel": 500.0,
-      "TakeOff": 13500.0,
+      "TakeOff": 11800.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -1570,6 +1575,18 @@
         "from": "suspension",
         "to": "wheel"
       }
+    }
+  },
+  "chainIK": {
+    "points": {
+      "point": [
+        {
+          "nameTemplate": "bone_piston"
+        },
+        {
+          "nameTemplate": "bone_piston_01"
+        }
+      ]
     }
   },
   "ammo": {
@@ -2180,16 +2197,6 @@
       }
     }
   },
-  "commanderView": {
-    "aimModeAvailable": true,
-    "optics": "commander_optics_square",
-    "zoomOutFov": 80.0,
-    "zoomInFov": 7.37,
-    "sightSize": [
-      1.775,
-      1.25
-    ]
-  },
   "cockpit": {
     "zoomOutFov": 7.37,
     "zoomInFov": 1.88,
@@ -2307,9 +2314,9 @@
               "openHatchTime": 0.0,
               "shellCasingLifeTime": 3.0,
               "shellCasingImpulse": [
-                0.5,
-                -4.0,
-                -4.0
+                2.5,
+                0.0,
+                2.0
               ],
               "linkShellCasingToGun": true,
               "aimingFromBoneGun": true,
@@ -2469,8 +2476,9 @@
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
               "blk": "gameData/Weapons/groundModels_weapons/7_62mm_L3A1_user_machinegun.blk",
-              "emitter": "bone_mg_h_01",
+              "emitter": "emtr_mg_flame_01",
               "flash": "emtr_mg_flame_01",
+              "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_01_dm",
@@ -2525,7 +2533,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 360.0,
-              "salvo": 4,
+              "salvo": 2,
               "salvoDelay": 0.5,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
@@ -2578,7 +2586,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "allowableDelta": 360.0,
-              "salvo": 4,
+              "salvo": 2,
               "salvoDelay": 0.5,
               "speedYaw": 24.0,
               "speedPitch": 15.0,
@@ -2636,19 +2644,10 @@
           "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
-              1200,
-              800
+              500,
+              300
             ],
-            "noiseFactor": 0.04
-          },
-          "commanderViewIr": {
-            "resolution": [
-              1600,
-              1200
-            ],
-            "lightMult": 9.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
+            "noiseFactor": 0.05
           },
           "driverIr": {
             "resolution": [

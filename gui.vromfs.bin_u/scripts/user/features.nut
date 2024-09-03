@@ -282,6 +282,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   Wishlist = false
   optionMotionBlur = true
   optionRT = has_ray_query()
+  amdfsr = true
 })
 
 let override = Watched({})

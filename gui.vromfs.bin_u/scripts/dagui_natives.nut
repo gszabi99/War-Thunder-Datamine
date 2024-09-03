@@ -91,6 +91,7 @@ return freeze({
   is_low_latency_available = r["is_low_latency_available"]
   is_xess_quality_available_at_resolution = r["is_xess_quality_available_at_resolution"]
   is_dlss_quality_available_at_resolution = r["is_dlss_quality_available_at_resolution"]
+  get_available_amd_fsr_modes = r["get_available_amd_fsr_modes"]
   epic_is_running = r["epic_is_running"]
   get_cur_circuit_name = r["get_cur_circuit_name"]
   is_online_available = r["is_online_available"]

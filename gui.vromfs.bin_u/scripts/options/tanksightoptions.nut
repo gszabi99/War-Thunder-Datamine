@@ -6,7 +6,8 @@ let { TSI_RANGE_TEXT_COLOR, TSI_RANGE_BACK_COLOR, TSI_RANGE_NV_TEXT_COLOR, TSI_R
   TSI_TURRET_NV_COLOR, TSI_FOV_VISIBLE, TSI_FOV_COLOR, TSI_FOV_LIGHT_COLOR, TSI_FOV_NV_COLOR, TSI_GUN_READY_VISIBLE,
   TSI_GUN_READY_TEXT_SIZE, TSI_GUN_READY_COLOR, TSI_GUN_READY_LIGHT_COLOR, TSI_GUN_READY_NV_COLOR, TSO_RANGEFINDER,
   TSO_TURRET, TSO_FOV, TSO_GUN_READY, TSI_RANGE_TH_TEXT_COLOR, TSI_RANGE_TH_BACK_COLOR, TSI_TURRET_TH_COLOR,
-  TSI_FOV_THERMAL_COLOR, TSI_GUN_READY_TH_COLOR, TSI_CROSSHAIR, TSO_CROSSHAIR, TSI_RANGEFINDER_VISIBLE, TSI_RANGEFINDER_FONT
+  TSI_FOV_THERMAL_COLOR, TSI_GUN_READY_TH_COLOR, TSI_CROSSHAIR, TSO_CROSSHAIR, TSI_RANGEFINDER_VISIBLE, TSI_RANGEFINDER_FONT,
+  TSI_CROSSHAIR_COLOR, TSI_CROSSHAIR_L_COLOR, TSI_CROSSHAIR_NV_COLOR, TSI_CROSSHAIR_TH_COLOR
 } = require("tankSightSettings")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
@@ -18,7 +19,8 @@ let tankSightOptionsSections = [
   {
     id = TSO_CROSSHAIR
     title = "#tankSight/sight"
-    options = [TSI_CROSSHAIR]
+    options = [TSI_CROSSHAIR,
+     TSI_CROSSHAIR_COLOR, TSI_CROSSHAIR_L_COLOR, TSI_CROSSHAIR_NV_COLOR, TSI_CROSSHAIR_TH_COLOR]
   }
   {
     id = TSO_RANGEFINDER
@@ -79,6 +81,10 @@ let getColorOpts = @(options, text = "", idx = 9) { idx, options = options.map(@
 
 let mkTankSightOptionsMap = @(params) {
   [TSI_CROSSHAIR]             = getCrosshairOpts(),
+  [TSI_CROSSHAIR_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/crosshairColor"),
+  [TSI_CROSSHAIR_L_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/crosshairLightColor"),
+  [TSI_CROSSHAIR_NV_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/crosshairNvColor"),
+  [TSI_CROSSHAIR_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/crosshairThColor"),
 
   [TSI_RANGEFINDER_VISIBLE]   = getVisibilityOpts(),
   [TSI_RANGE_TEXT_COLOR]      = getColorOpts(params.colorOpts, "#options/show_indicators_type"),

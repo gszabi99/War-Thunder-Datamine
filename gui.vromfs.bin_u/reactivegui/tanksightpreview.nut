@@ -4,7 +4,7 @@ let mkTankSight = require("%rGui/tankSight.nut")
 let extWatched = require("globals/extWatched.nut")
 
 const BG_IMAGES_COUNT = 4
-const BG_IMAGE_SRC_TEMPLATE = "ui/images/tank_sight_preview_%d_%s.avif:0:P"
+const BG_IMAGE_SRC_TEMPLATE = "ui/images/sight_menu_bg/tank_sight_preview_%d_%s.avif:0:P"
 
 let bgImageIdx = Watched(0)
 let isNightVision = extWatched("isTankSightNightVisionPreview", false)

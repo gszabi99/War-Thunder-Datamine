@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_xess_quality_available_at_resolution, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_xess_quality_available_at_resolution, get_available_amd_fsr_modes, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -21,6 +21,7 @@ let { stripTags } = require("%sqstd/string.nut")
 let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -64,6 +65,8 @@ let compModeGraphicsOptions = {
     xess              = { compMode = false }
     dlss              = { compMode = false }
     dlssSharpness     = { compMode = false }
+    amdfsr            = { compMode = false }
+    amdfsrSharpness   = { compMode = false }
   }
 }
 //------------------------------------------------------------------------------
@@ -97,6 +100,8 @@ local mUiStruct = [
       "xess"
       "dlss"
       "dlssSharpness"
+      "amdfsr"
+      "amdfsrSharpness"
       "anisotropy"
       "msaa"
       "antialiasing"
@@ -152,7 +157,6 @@ local mUiStruct = [
       "rtsm"
       "rtr"
       "rtrShadows"
-      "rtrFOM"
       //"rtrRes"
       "rtrWater"
       "rtrWaterRes"
@@ -415,6 +419,11 @@ function getAvailableXessModes() {
   return values;
 }
 
+function getAvailableAmdFsrModes() {
+  let modesString = get_available_amd_fsr_modes()
+  return modesString.split(";")
+}
+
 function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
@@ -561,12 +570,23 @@ mShared = {
   modeClick = @() enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
 
   dlssClick = function() {
-    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
+    setGuiValue("xess", "off")
+    setGuiValue("amdfsr", "off")
+    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness", "amdfsr", "amdfsrSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
   xessClick = function() {
-    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
+    setGuiValue("dlss", "off")
+    setGuiValue("amdfsr", "off")
+    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness", "amdfsr", "amdfsrSharpness" ])
+      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
+  }
+
+  amdfsrClick = function() {
+    setGuiValue("dlss", "off")
+    setGuiValue("xess", "off")
+    foreach (id in [ "antialiasing", "xess", "dlss", "ssaa", "dlssSharpness", "amdfsrSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -687,7 +707,6 @@ mShared = {
 
   rtrClick = function() {
     enableGuiOption("rtrShadows", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-    enableGuiOption("rtrFOM", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
     enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
     enableGuiOption("rtrWater", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
   }
@@ -705,7 +724,6 @@ mShared = {
     enableGuiOption("rtaoRes", getGuiValue("rtao") != "off" && getGuiValue("rayTracing"))
 
     enableGuiOption("rtrShadows", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-    enableGuiOption("rtrFOM", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
     enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
     enableGuiOption("rtrWater", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
 
@@ -884,6 +902,25 @@ mSettings = {
     configValueToGuiValue = function(val) {
       return (val == 0) ? "performance" : (val == 1) ? "balanced" : (val == 2) ? "quality" : (val == 3) ? "ultra_quality" : "off"
     }
+  }
+  amdfsr = { widgetType = "list" def = "off" blk = "video/amdfsr" restart = false isVisible = @() hasFeature("amdfsr")
+    init = function(_blk, desc) {
+      desc.values <- getAvailableAmdFsrModes()
+    }
+    onChanged = "amdfsrClick"
+    getValueFromConfig = function(blk, desc) {
+      return getBlkValueByPath(blk, desc.blk, "off")
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let quality = val
+      setBlkValueByPath(blk, desc.blk, quality)
+    }
+    configValueToGuiValue = function(val) {
+      return val
+    }
+  }
+  amdfsrSharpness = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/amdfsrSharpness" restart = false
+    isVisible = @() hasFeature("amdfsr") enabled = @() getGuiValue("amdfsr", "off") != "off"
   }
   dlss = { widgetType = "list" def = "off" blk = "video/dlssQuality" restart = false
     init = function(_blk, desc) {
@@ -1194,9 +1231,6 @@ mSettings = {
     values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false onChanged = "rtrClick"
   }
   rtrShadows = { widgetType = "checkbox" def = false blk = "graphics/RTRShadows" restart = false isVisible = @() hasFeature("optionRT")
-    enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
-  }
-  rtrFOM = { widgetType = "checkbox" def = false blk = "graphics/RTRFom" restart = false isVisible = @() hasFeature("optionRT")
     enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
   }
   rtrRes = { widgetType = "list" def = "normal"  blk = "graphics/RTRRes" restart = false isVisible = @() hasFeature("optionRT")
@@ -1680,14 +1714,21 @@ function fillGuiOptions(containerObj, handler) {
   onGuiLoaded()
 }
 
-function setQualityPreset(presetName) {
+function setQualityPreset(presetName, force = false) {
   if (mCfgInitial.len() == 0)
     configRead()
 
   setGuiValue("graphicsQuality", presetName, mHandler == null)
   getOptionDesc("graphicsQuality")?.onChanged(true)
   updateGuiNavbar(true)
+  if (force)
+    configWrite()
 }
+
+eventbus_subscribe("on_force_graphics_preset", function(event) {
+  let {graphicsPreset} = event
+  setQualityPreset(graphicsPreset, true)
+})
 
 //------------------------------------------------------------------------------
 init()

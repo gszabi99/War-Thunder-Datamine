@@ -39,17 +39,7 @@ let configSteamReviewWnd = {
     wndTimeSaveId = RATE_WND_TIME_SAVE_ID
     showRateFromPromoBlockSaveId = "seen/showRateWnd"
     feedbackRateSaveId = "seen/feedbackRateWnd"
-    bqKey = "SteamRateCats_A"
-    feature = "SteamRateGame"
-    descLocId = "msgbox/steam/rate_review"
-    backgroundImg = "#ui/images/cat_fix"
-    backgroundImgRatio = 752.0/1584
-  }
-  SteamRateGameB = {
-    wndTimeSaveId = RATE_WND_TIME_SAVE_ID
-    showRateFromPromoBlockSaveId = "seen/showRateWnd"
-    feedbackRateSaveId = "seen/feedbackRateWnd"
-    bqKey = "SteamRateCats_B"
+    bqKey = "SteamRateGame"
     feature = "SteamRateGame"
     descLocId = "msgbox/steam/rate_review"
     backgroundImg = "#ui/images/kittens"
@@ -61,15 +51,8 @@ let configSteamReviewWnd = {
     feedbackRateSaveId = "seen/feedbackAfterImprovementRateWnd"
     feature = "SteamRateImprove"
     descLocId = "msgbox/steam/rate_review_after_improve"
-    backgroundImg = "#ui/images/cat_fix"
-    backgroundImgRatio = 752.0/1584
-  }
-  SteamRateImproveB = {
-    wndTimeSaveId = "seen/afterImprovementRateWndBTime"
-    showRateFromPromoBlockSaveId = "seen/showAfterImprovementRateWndB"
-    feedbackRateSaveId = "seen/feedbackAfterImprovementRateWndB"
-    feature = "SteamRateImproveB"
-    descLocId = "msgbox/steam/rate_review_after_improve"
+    backgroundImg = "#ui/images/kittens"
+    backgroundImgRatio = 1080.0/1920
   }
   SteamRateMoreImprove = {
     wndTimeSaveId = "seen/moreImprovementRateWndTime"
@@ -77,20 +60,18 @@ let configSteamReviewWnd = {
     feedbackRateSaveId = "seen/feedbackMoreImprovementRateWnd"
     feature = "SteamRateMoreImprove"
     descLocId = "msgbox/steam/rate_review_more_improvement"
-    backgroundImg = "#ui/images/cat_fix"
-    backgroundImgRatio = 752.0/1584
+    backgroundImg = "#ui/images/kittens"
+    backgroundImgRatio = 1080.0/1920
   }
 }
 
 let regularSteamRateReview = [
   configSteamReviewWnd.SteamRateGame,
-  configSteamReviewWnd.SteamRateGameB,
 ]
 
 let sortedAdditionalSteamRateReview = [
   configSteamReviewWnd.SteamRateMoreImprove,
   configSteamReviewWnd.SteamRateImprove,
-  configSteamReviewWnd.SteamRateImproveB
 ]
 
 local isConfigInited = false

@@ -8,8 +8,8 @@ let user = require("%scripts/xbox/user.nut")
 let achievements = require("%xboxLib/impl/achievements.nut")
 let store = require("%xboxLib/impl/store.nut")
 let presence = require("%xboxLib/impl/presence.nut")
+let crossnetwork = require("%xboxLib/impl/crossnetwork.nut")
 let relationships = require("%xboxLib/impl/relationships.nut")
-let {init_crossnetwork, shutdown_crossnetwork} = require("%xboxLib/crossnetwork.nut")
 let {loading_is_in_progress} = require("loading")
 let { debounce } = require("%sqstd/timers.nut")
 
@@ -30,7 +30,6 @@ function update_relationships(fire_events, callback) {
 
 
 function do_login(callback) {
-  init_crossnetwork()
   achievements.synchronize(function(asucc) {
     logX($"Achievements synchromized: {asucc}")
     presence.subscribe_to_changes()
@@ -40,6 +39,7 @@ function do_login(callback) {
       update_relationships(false, function() {
         logX("Relationships updated")
         relationships.subscribe_to_changes()
+        crossnetwork.update_state()
         callback?()
       })
     })
@@ -51,7 +51,6 @@ function do_logout(callback) {
   store.shutdown()
   relationships.unsubscribe_from_changes()
   presence.unsubscribe_from_changes()
-  shutdown_crossnetwork()
   user.shutdown(function() {
     callback?()
   })
@@ -95,6 +94,7 @@ function update_states_if_logged_in() {
   if (!is_any_user_active())
     return
 
+  crossnetwork.update_state()
   update_relationships(true, function() {
     logX("Relationships updated")
   })

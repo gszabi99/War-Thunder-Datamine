@@ -7,7 +7,7 @@ let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/xbox/permissions.nut")
-let { crossnetworkPrivilege } = require("%xboxLib/crossnetwork.nut")
+let { crossnetworkPrivilege } = require("%scripts/xbox/crossnetwork.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD
 } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -71,7 +71,7 @@ let setCrossNetworkPlayStatus = function(val) {
 }
 
 let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
-  if (!isPlatformXboxOne && !needOverrideValue && crossNetworkChatStatus.value != null)
+  if (!needOverrideValue && crossNetworkChatStatus.value != null)
     return
 
   if (isPlatformXboxOne)
