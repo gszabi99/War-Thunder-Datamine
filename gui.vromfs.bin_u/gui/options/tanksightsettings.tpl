@@ -59,6 +59,22 @@ frame {
     flow:t='vertical'
     overflow-y:t='auto'
 
+    tdiv {
+      width='pw'
+      flow:t='vertical'
+
+      textAreaCentered {
+        text:t="#tankSight/choosePreset"
+      }
+
+      ComboBox {
+        id:t= 'select_preset_combobox'
+        width:t='pw'
+        margin:t='2@sf/@pf'
+        <<@presetsComboboxMarkup>>
+      }
+    }
+
     <<#presetSettings>>
       tankSightOptions {
         id:t='<<id>>'

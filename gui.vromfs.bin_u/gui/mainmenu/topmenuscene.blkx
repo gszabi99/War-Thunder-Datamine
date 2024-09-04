@@ -110,41 +110,40 @@
               "position": "absolute",
               "input-transparent": "yes",
               "css-hier-invalidate": "yes",
-              "discount_notification": {
-                "type": "down",
-                "id": "topmenu_research_discount",
-                "display": "hide"
-              },
-              "remainingTimeIconDown": {
-                "behavior": "bhvUpdater",
-                "value": "{\"viewId\": \"SHOP_REMAINING_TIME_UNIT\"}",
-                "display": "hide",
-                "tooltip": "",
-                "remainingTimeTimerIcon": {
-                  "id": "remainingTimeTimerIcon",
-                  "display": "hide"
+              "infoMarker": [
+                {
+                  "type": "remainingTimeMarker",
+                  "place": "topMenu",
+                  "value": "{\"viewId\": \"SHOP_REMAINING_TIME_UNIT\"}",
+                  "tooltip": ""
+                },
+                {
+                  "type": "unlockMarker",
+                  "place": "topMenu",
+                  "value": "unlock_markers"
+                },
+                {
+                  "type": "nationBonusMarker",
+                  "place": "topMenu",
+                  "value": "{\"viewId\": \"SHOP_NATION_BONUS_MARKER\"}",
+                  "tooltip": "$tooltipObj",
+                  "tooltipObj": {
+                    "tooltipId": "{\"id\":\"nationBonus\", \"ttype\":\"NATIONBONUSES\"}",
+                    "on_tooltip_open": "onGenericTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
+                  }
+                },
+                {
+                  "type": "discountNotificationMarker",
+                  "place": "topMenu",
+                  "value": "{\"viewId\": \"SHOP_DISCOUNT_MARKER\"}"
                 }
-              },
+              ],
               "squadronExpIcon": {
                 "value": "{\"viewId\": \"SHOP_SQUADRON_EXP_ICON\"}",
                 "type": "down",
                 "display": "hide"
-              },
-              "unlockMarker": {
-                "type": "down",
-                "value": "unlock_markers"
-              },
-              "nationBonusMarker": {
-                "behavior": "bhvUpdater",
-                "value": "{\"viewId\": \"SHOP_NATION_BONUS_MARKER\"}",
-                "display": "hide",
-                "tooltip": "$tooltipObj",
-                "tooltipObj": {
-                  "tooltipId": "{\"id\":\"nationBonus\", \"ttype\":\"NATIONBONUSES\"}",
-                  "on_tooltip_open": "onGenericTooltipOpen",
-                  "on_tooltip_close": "onTooltipObjClose",
-                  "display": "hide"
-                }
               }
             }
           }

@@ -4,8 +4,10 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { tankSightOptionsMap, tankSightOptionsSections,
   getSightOptionValueIdx, getCrosshairOpts, initTankSightOptions } = require("%scripts/options/tankSightOptions.nut")
 let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
-let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, save_tank_sight_settings,
-   switch_tank_sight_settings_mode, TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR } = require("tankSightSettings")
+let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings,
+  save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset, switch_tank_sight_settings_mode,
+  TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings
+} = require("tankSightSettings")
 let { create_option_combobox } = require("%scripts/options/optionsExt.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
@@ -16,12 +18,24 @@ let getOptionsSectionObjId = @(tankSightObjType) $"tso_options_{tankSightObjType
 let getOptionControlObjId = @(sightOptionType) $"sight_option_{sightOptionType}"
 let getTankSightObjType = @(sectionId) sectionId.split("_").top().tointeger()
 
+let modeToBgImageModePostfix = {
+  [TSM_SIMPLE] = "day",
+  [TSM_NIGHT_VISION] = "nightvision",
+  [TSM_LIGHT] = "night",
+  [TSM_THERMAL] = "thermal"
+}
+
+let customPresetOption = {value = "", text = "#tankSight/customPreset"}
+let predefinedPresetsOptions = get_tank_sight_presets().map(@(preset) {value = preset, text = preset})
+
 local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName = "%gui/options/tankSightSettings.tpl"
   widgetsList = [ { widgetId = DargWidgets.TANK_SIGHT_SETTINGS } ]
 
   isSightPreviewMode = false
+  isSettingsApplying = false
   sightMode = persist("tankSightSettingsMode", @() { value = TSM_SIMPLE })
+  tankSightPresets = [customPresetOption].extend(predefinedPresetsOptions)
 
   getSceneTplView = @() {
     presetSettings = tankSightOptionsSections.map(@(section, idx) {
@@ -38,7 +52,14 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
       id = t.id
       markup = t.getControlMarkup()
     })
+
+    presetsComboboxMarkup =
+      create_option_combobox("select_preset_combobox_options", this.tankSightPresets, 0, "onChangePreset", false)
   }
+
+  resetCurPresetOption = @() !this.isSettingsApplying
+    ? this.scene.findObject("select_preset_combobox_options").setValue(0)
+    : null
 
   function initScreen() {
     unitOptions.init(this, this.scene)
@@ -48,6 +69,10 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     this.updateCrosshairOptions()
   }
 
+  function onDestroy() {
+    on_exit_from_tank_sight_settings()
+  }
+
   function onChangeUnitOption(obj) {
     if (!obj?.isValid())
       return
@@ -55,6 +80,16 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     this.updateCrosshairOptions()
     this.applySettingsForSelectedUnit()
     initTankSightOptions()
+    this.resetCurPresetOption()
+  }
+
+  function onChangePreset(obj) {
+    let { value } = this.tankSightPresets[obj.getValue()]
+    if ( value == "" || this.isSettingsApplying)
+      return
+    apply_tank_sight_preset(value)
+    let curSettings = get_tank_sight_settings()
+    this.updateTankSightsOptions(curSettings)
   }
 
   function updateCrosshairOptions() {
@@ -66,9 +101,13 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function applySettingsForSelectedUnit() {
-    let settings =
-      load_tank_sight_settings(unitOptions.UNIT.value, unitOptions.COUNTRY.value, unitOptions.RANK.value)
+    let settings
+      = load_tank_sight_settings(unitOptions.UNIT.value, unitOptions.COUNTRY.value, unitOptions.RANK.value)
+    this.updateTankSightsOptions(settings)
+  }
 
+  function updateTankSightsOptions(settings) {
+    this.isSettingsApplying = true
     this.guiScene.setUpdatesEnabled(false, false)
     foreach (optType, optValue in settings) {
       let controlObj = this.scene.findObject(getOptionControlObjId(optType))
@@ -78,6 +117,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
       controlObj.setValue(value)
     }
     this.guiScene.setUpdatesEnabled(true, true)
+    this.isSettingsApplying = false
   }
 
   onSave = @()
@@ -107,6 +147,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     if (value == null)
       return
     set_tank_sight_setting({param, value})
+    this.resetCurPresetOption()
   }
 
   function onToggleSightPreviewMode() {
@@ -155,8 +196,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
       : loc("hotkeys/thermalVersionPreview")
 
     switch_tank_sight_settings_mode(this.sightMode.value)
-    updateExtWatched({ isTankSightNightVisionPreview = isNv })
-    updateExtWatched({ isTankSightThermalPreview = isThermal })
+    updateExtWatched({ tankSightBgImageModePostfix = modeToBgImageModePostfix[this.sightMode.value] })
     this.scene.findObject("btn_toggle_lighting").setValue(lightBtnToggleText)
     this.scene.findObject("btn_toggle_nv").setValue(nvBtnToggleText)
     this.scene.findObject("btn_toggle_thermal").setValue(thermalBtnToggleText)

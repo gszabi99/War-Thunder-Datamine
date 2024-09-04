@@ -67,9 +67,6 @@
       "body_side_dm": {
         "armorThickness": 10.0
       },
-      "superstructure_side_dm": {
-        "armorThickness": 6.0
-      },
       "superstructure_back_dm": {
         "armorThickness": 20.0
       },
@@ -89,7 +86,7 @@
         "armorThickness": 20.0
       },
       "turret_01_side_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 60.0
       },
       "ex_armor_04_dm": {
         "armorThickness": 20.0
@@ -104,13 +101,16 @@
         "armorThickness": 20.0
       },
       "turret_02_top_dm": {
-        "armorThickness": 6.0
+        "armorThickness": 8.0
       },
       "turret_01_top_dm": {
         "armorThickness": 10.0
       },
       "turret_02_front_dm": {
         "armorThickness": 20.0
+      },
+      "turret_07_front_dm": {
+        "armorThickness": 6.0
       },
       "ex_armor_07_dm": {
         "armorThickness": 5.0
@@ -120,6 +120,9 @@
       },
       "turret_02_side_dm": {
         "armorThickness": 10.0
+      },
+      "turret_07_side_dm": {
+        "armorThickness": 8.0
       },
       "turret_06_top_dm": {
         "armorThickness": 5.0
@@ -178,6 +181,7 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
+      "variableThickness": true,
       "ex_armor_01_dm": {},
       "ex_armor_03_dm": {},
       "ex_armor_02_dm": {},
@@ -192,10 +196,11 @@
     },
     "side_pro_armor": {
       "armorClass": "side_pro_additional_armor",
-      "armorThickness": 25.0,
+      "armorThickness": 40.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
+      "variableThickness": true,
       "ex_armor_l_09_dm": {},
       "ex_armor_l_10_dm": {},
       "ex_armor_l_11_dm": {},
@@ -206,14 +211,12 @@
       "ex_armor_r_12_dm": {},
       "turret_04_front_dm": {},
       "turret_04_top_dm": {},
-      "turret_05_front_dm": {},
-      "turret_02_bottom_dm": {},
-      "turret_06_back_dm": {
-        "armorThickness": 50.0
+      "turret_05_front_dm": {
+        "armorThickness": 20.0
       },
-      "turret_06_bottom_dm": {
-        "armorThickness": 50.0
-      }
+      "turret_02_bottom_dm": {},
+      "turret_06_back_dm": {},
+      "turret_06_bottom_dm": {}
     },
     "body_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
@@ -297,7 +300,7 @@
         "armorThickness": 60.0
       },
       "turret_08_back_dm": {
-        "armorThickness": 60.0
+        "armorThickness": 8.0
       },
       "turret_08_top_dm": {
         "armorThickness": 60.0
@@ -3068,17 +3071,8 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
-              "turretIndex": 0,
-              "designationTurretIndex": 0,
-              "dmPart": [
-                "optic_gun_dm",
-                "electronic_equipment_dm"
-              ]
-            },
-            {
-              "blk": "gameData/sensors/LaserBeamRidingSensor.blk",
-              "dmPart": "electronic_equipment_dm"
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "dmPart": "fire_control_system_dm"
             },
             {
               "blk": "gameData/sensors/it_ralm-101.blk",

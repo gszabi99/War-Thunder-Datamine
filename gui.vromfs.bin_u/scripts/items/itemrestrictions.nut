@@ -22,6 +22,12 @@ function hasLegalRestictions(restrictedInCountries) {
   return restrictedInCountries.findindex(@(c) c == userCountry) != null
 }
 
+function isHiddenByCountry(hiddenInCountries) {
+  if (hiddenInCountries.len() == 0)
+    return false
+  return hiddenInCountries.contains(getCountryCode())
+}
+
 function showLegalRestrictionsNotice() {
   scene_msg_box("legalRestrictionsNotice", null, loc("msgbox/legalRestrictionsNotice"),
     [["ok"]], "ok")
@@ -81,4 +87,5 @@ subscriptions.addListenersWithoutEnv({
 
 return {
   checkLegalRestrictions
+  isHiddenByCountry
 }

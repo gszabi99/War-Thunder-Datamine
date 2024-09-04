@@ -1,4 +1,6 @@
 //pseudo-module for native code
+//ATTENTION! This file cannot be increased. Need to remove functions from root of dagui VM, not add them.
+//shouldDecreaseSize, allowedSizeIncrease = 5
 
 let r = getroottable()
 

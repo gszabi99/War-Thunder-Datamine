@@ -41,24 +41,35 @@ shopFilter {
     position:t='absolute'
     size:t='pw, ph'
 
-    remainingTimeIconInSlotbar {
-      behavior:t='bhvUpdater'
+    infoMarker {
+      type:t='remainingTimeMarker'
+      place:t='slotbarCountry'
       countryId:t='<<country>>'
       value:t='{"viewId": "COUNTRY_REMAINING_TIME_UNIT"}'
       display:t='hide'
       tooltip:t=''
-      remainingTimeTimerIcon {
-        id:t='remainingTimeTimerIcon'
-        halign:t='center'
-        display:t='hide'
-      }
     }
 
-    nationBonusMarker {
+    <<#seenIconCfg>>
+    tdiv {
       behavior:t='bhvUpdater'
       countryId:t='<<country>>'
+      value:t='{"viewId": "COUNTRY_UNLOCK_MARKER"}'
+      display:t='hide'
+
+      infoMarker {
+        type:t='unlockMarker'
+        place:t='slotbarCountry'
+        value:t='<<seenIconCfg>>'
+      }
+    }
+    <</seenIconCfg>>
+
+    infoMarker {
+      type:t='nationBonusMarker'
+      place:t='slotbarCountry'
+      countryId:t='<<country>>'
       value:t='{"viewId": "COUNTRY_NATION_BONUS_MARKER"}'
-      type:t='slotbarCountry'
       tooltip:t='$tooltipObj'
       tooltipObj {
         tooltipId:t='{"id":"nationBonus", "ttype":"NATIONBONUSES", "countryId": "<<country>>"}'
@@ -68,12 +79,13 @@ shopFilter {
       }
     }
 
-    discountIcon {
+    infoMarker {
+      type:t='discountNotificationMarker'
+      place:t='slotbarCountry'
+      value:t='{"viewId": "COUNTRY_DISCOUNT_MARKER"}'
       countryId:t='<<country>>'
-      value:t='{"viewId": "COUNTRY_DISCOUN_ICON"}'
       text:t='#measureUnits/percent'
       tooltip:t='#discount/notification'
-      type:t='slotbarCountry'
     }
 
     squadronExpIcon {
@@ -82,20 +94,7 @@ shopFilter {
       type:t='slotbarCountry'
       display:t='hide'
     }
-    <<#seenIconCfg>>
-    tdiv {
-      behavior:t='bhvUpdater'
-      countryId:t='<<country>>'
-      value:t='{"viewId": "COUNTRY_UNLOCK_MARKER"}'
-      display:t='hide'
-      size:t='fw, ph'
 
-      unlockMarker {
-        type:t='slotbarCountry'
-        value:t='<<seenIconCfg>>'
-      }
-    }
-    <</seenIconCfg>>
   }
   <</hasNotificationIcon>>
 }

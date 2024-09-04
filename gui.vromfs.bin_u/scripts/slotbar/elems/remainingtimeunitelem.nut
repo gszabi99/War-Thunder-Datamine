@@ -34,13 +34,7 @@ elemViewType.addTypes({
       obj.show(isVisible)
       if (!isVisible)
         return
-
-      let haveDicsount = ::g_discount.haveAnyUnitDiscount()
-      let tooltipText = haveDicsount
-        ? $"{loc("mainmenu/promoteUnit")}\n{loc("discount/notification")}"
-        : loc("mainmenu/promoteUnit")
-      obj.tooltip = tooltipText
-      obj.findObject("remainingTimeTimerIcon").show(haveDicsount)
+      obj.tooltip = loc("mainmenu/promoteUnit")
     }
   }
 
@@ -59,14 +53,8 @@ elemViewType.addTypes({
       obj.show(havePromoteUnitCountry)
       if (!havePromoteUnitCountry)
         return
-      let discountsList = ::g_discount.getUnitDiscountList(countryId)
-      let haveDicsountAndRemUnit = havePromoteUnitCountry && discountsList.len() != 0
-      let tooltipText = haveDicsountAndRemUnit
-        ? $"{loc("mainmenu/promoteUnit")}\n{::g_discount.generateDiscountInfo(discountsList)?.discountTooltip}"
-        : loc("mainmenu/promoteUnit")
 
-      obj.tooltip = loc(tooltipText)
-      obj.findObject("remainingTimeTimerIcon").show(haveDicsountAndRemUnit)
+      obj.tooltip = loc("mainmenu/promoteUnit")
     }
   }
 
@@ -83,6 +71,7 @@ elemViewType.addTypes({
       foreach (promUnit in promoteUnits.value) {
         if (promUnit.unit.shopCountry == obj.countryId && promUnit.unit.unitType.armyId == obj.armyId) {
           obj.show(true)
+          obj.tooltip = loc("mainmenu/promoteUnit")
           return
         }
       }
@@ -136,7 +125,7 @@ elemViewType.addTypes({
 
     function updateView(obj, params) {
       obj.show(promoteUnits.value?[params?.unitName].isActive)
-
+      obj.tooltip = loc("mainmenu/promoteUnit")
     }
   }
 })

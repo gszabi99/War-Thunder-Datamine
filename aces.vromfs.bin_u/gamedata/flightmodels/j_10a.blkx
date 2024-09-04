@@ -2860,7 +2860,7 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 9,
+              "bullets": 18,
               "bulletsCartridge": 1,
               "external": true,
               "separate": true
@@ -2869,14 +2869,14 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare3",
-              "bullets": 9,
+              "bullets": 18,
               "bulletsCartridge": 1,
               "external": true,
               "separate": true
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare4",
               "bullets": 18,
               "bulletsCartridge": 1,
@@ -2885,7 +2885,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 18,
               "bulletsCartridge": 1,
@@ -4190,7 +4190,6 @@
       "modClass": "lth"
     },
     "countermeasures_launcher_chaff_large": {},
-    "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
       "turn_it_off": false,
@@ -4299,6 +4298,18 @@
     "seat": "seat_01",
     "fxEmitter": "blister2",
     "fxType": "catapult_expl_ejection"
+  },
+  "parachutes": {
+    "emitterRange": [
+      1,
+      1
+    ],
+    "emitterName": "emtr_chute",
+    "chuteModel": "chute_ptk_char",
+    "chuteAnimVarName": "chute_state_switch",
+    "chuteFlapVarName": "fire_chute",
+    "chuteTimeScaleParam": "chute_time_scale",
+    "chuteFallSpeed": 1.0
   },
   "cutting": {
     "_emtr_break_wing0_l_from": [

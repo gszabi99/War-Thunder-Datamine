@@ -60,35 +60,40 @@
       "id": "talisman",
       "incomplete": "no"
     },
-    "remainingTimeUnitCellMarker": {
-      "behavior": "bhvUpdater",
-      "id": "remainingMarker",
-      "display": "hide"
-    },
     "markerContainer": {
       "id": "marker_container",
       "position": "relative",
       "flow": "horizontal",
       "cursor": "normal",
-      "nationBonusMarker": {
-        "id": "nation_bonus_marker",
-        "title": "$tooltipObj",
-        "display": "hide",
-        "tooltipObj": {
-          "id": "bonus_tooltip",
-          "tooltipId": "",
+      "infoMarker": [
+        {
+          "id": "remainingMarker",
+          "type": "remainingTimeMarker",
+          "place": "unitCell"
+        },
+        {
+          "id": "nation_bonus_marker",
+          "type": "nationBonusMarker",
+          "place": "unitCell",
+          "title": "$tooltipObj",
+          "tooltipObj": {
+            "id": "bonus_tooltip",
+            "tooltipId": "",
+            "display": "hide",
+            "on_tooltip_open": "onGenericTooltipOpen",
+            "on_tooltip_close": "onTooltipObjClose"
+          }
+        },
+        {
+          "id": "unlockMarker",
+          "type": "unlockMarker",
+          "place": "unitCell",
           "display": "hide",
-          "on_tooltip_open": "onGenericTooltipOpen",
-          "on_tooltip_close": "onTooltipObjClose"
+          "behaviour": "button",
+          "holderId": "",
+          "on_click": "onUnitMarkerClick"
         }
-      },
-      "unlockUnitCellMarker": {
-        "id": "unlockMarker",
-        "display": "hide",
-        "behaviour": "button",
-        "holderId": "",
-        "on_click": "onUnitMarkerClick"
-      },
+      ],
       "discount_notification": {
         "id": "unitDiscount",
         "type": "box_down",

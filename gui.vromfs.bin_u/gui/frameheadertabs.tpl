@@ -47,31 +47,27 @@ shopFilter {
     text:t='<<tabName>>'
   }
 
-  <<#squadronExpIconId>>
-  squadronExpIcon {
-    id:t='<<squadronExpIconId>>'
-    type:t='inTab'
-    value:t='{"viewId": "SHOP_PAGES_SQUADRON_EXP_ICON"}'
-    display:t='hide'
-  }
-  <</squadronExpIconId>>
-
-  <<#remainingTimeUnitPageMarker>>
-  remainingTimeUnitPageMarker {
-    behavior:t='bhvUpdater'
+  infoMarker {
     id:t='remainingPageMarker'
+    type:t='remainingTimeMarker'
+    place:t='inTab'
     countryId:t='<<countryId>>'
     armyId:t='<<armyId>>'
     value:t='{"viewId": "SHOP_PAGES_REMAINING_TIME_UNIT"}'
-    display:t='hide'
   }
-  <</remainingTimeUnitPageMarker>>
 
-  nationBonusMarker {
-    behavior:t='bhvUpdater'
+  <<#seenIconCfg>>
+  infoMarker {
+    type:t='unlockMarker'
+    place:t='inTab'
+    value:t='<<seenIconCfg>>'
+  }
+  <</seenIconCfg>>
+
+  infoMarker {
+    type:t='nationBonusMarker'
+    place:t='inTab'
     value:t='{"viewId": "SHOP_PAGES_NATION_BONUS_MARKER"}'
-    type:t='inTab'
-    display:t='hide'
     countryId:t='<<countryId>>'
     armyId:t='<<armyId>>'
     tooltip:t='$tooltipObj'
@@ -84,21 +80,24 @@ shopFilter {
     }
   }
 
-  <<#seenIconCfg>>
-  unlockMarker {
-    type:t='inTab'
-    value:t='<<seenIconCfg>>'
-  }
-  <</seenIconCfg>>
-
   <<#discount>>
-  discount {
+  infoMarker {
+    type:t='discountNotificationMarker'
+    place:t='inTab'
     id:t='<<#discountId>><<discountId>><</discountId>><<^discountId>><<id>>_discount<</discountId>>'
-    type:t='inTab'
     text:t='<<text>>'
     tooltip:t='<<tooltip>>'
   }
-  <</discount>>
+ <</discount>>
+
+  <<#squadronExpIconId>>
+  squadronExpIcon {
+    id:t='<<squadronExpIconId>>'
+    type:t='inTab'
+    value:t='{"viewId": "SHOP_PAGES_SQUADRON_EXP_ICON"}'
+    display:t='hide'
+  }
+  <</squadronExpIconId>>
 
   <<#cornerImg>>
   cornerImg {

@@ -18,13 +18,10 @@ weaponryPreset {
   tdiv {
     width:t='pw'
     position:t='absolute'
-    <<#isShowConsoleBtn>>
-    pos:t='@cIco, 0'
-    <</isShowConsoleBtn>>
     <<#weaponryItem>>
     DummyButton {
       presetId:t='<<presetId>>'
-      size:t='pw-@cIco, @tierIconSize'
+      size:t='pw, @tierIconSize'
       position:t='absolute'
       skip-navigation:t='yes'
       on_click:t='onPresetSelect'

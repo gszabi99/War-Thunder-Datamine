@@ -7,13 +7,12 @@ const BG_IMAGES_COUNT = 4
 const BG_IMAGE_SRC_TEMPLATE = "ui/images/sight_menu_bg/tank_sight_preview_%d_%s.avif:0:P"
 
 let bgImageIdx = Watched(0)
-let isNightVision = extWatched("isTankSightNightVisionPreview", false)
-let isThermal = extWatched("isTankSightThermalPreview", false)
+let bgImagePostfix = extWatched("tankSightBgImageModePostfix", "day")
 
-let getBgImageSrc = @(imageIdx, isNv, isTh)
-  format(BG_IMAGE_SRC_TEMPLATE, imageIdx + 1, isNv || isTh ? "night" : "day")
+let getBgImageSrc = @(imageIdx, postfix)
+  format(BG_IMAGE_SRC_TEMPLATE, imageIdx + 1, postfix)
 
-let bgImageSrc = Computed(@() getBgImageSrc(bgImageIdx.get(), isNightVision.get(), isThermal.get()))
+let bgImageSrc = Computed(@() getBgImageSrc(bgImageIdx.get(), bgImagePostfix.get()))
 
 function mkPreviewImg(imgIdx) {
   let stateFlags = Watched(0)
@@ -34,13 +33,13 @@ function mkPreviewImg(imgIdx) {
     onClick = @() bgImageIdx.set(imgIdx)
 
     children = @() {
-      watch = [stateFlags, isNightVision, isCurImgBg]
+      watch = [stateFlags, isCurImgBg, bgImagePostfix]
       size = flex()
       opacity = isCurImgBg.get() ? 1
         : stateFlags.get() & S_HOVER ? 0.8
         : 0.5
       rendObj = ROBJ_IMAGE
-      image = Picture(getBgImageSrc(imgIdx, isNightVision.get(), isThermal.get()))
+      image = Picture(getBgImageSrc(imgIdx, bgImagePostfix.get()))
       transitions = [{ prop = AnimProp.opacity, duration = 0.15, easing = OutCubic }]
     }
   }

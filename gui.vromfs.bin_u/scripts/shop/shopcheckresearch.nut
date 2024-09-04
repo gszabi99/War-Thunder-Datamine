@@ -206,7 +206,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
           return
         this.showRankRestrictionMsgBox()
       })
-      return
+      return unit
     }
 
     this.destroyGroupChoose(isGroupPart(unit) ? unit.group : "")
@@ -219,6 +219,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       })
 
     this.selectCellByUnitName(unit.name)
+    return unit
   }
 
   function showResearchUnitTutorial() {
@@ -433,8 +434,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       return
     }
 
-    this.selectRequiredUnit()
-    let unit = this.getCurAircraft(true, true)
+    let unit = this.selectRequiredUnit()
     if (unit == null) {
       this.onCloseShop()
       return

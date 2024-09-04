@@ -2436,7 +2436,7 @@
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "skipAxisEmitterCheck": true,
         "recoilMultiplier": 0.1,
-        "staticElevation": 7.5,
+        "staticElevation": 4.9125,
         "barrelDP": "gun_barrel_02_dm",
         "brokenBarrelAllowShoot": false,
         "createGunEffects": true,
@@ -3311,6 +3311,80 @@
       ]
     }
   },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "removeLoadedAmmo": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "replenishmentDelay": 15.0,
+      "replenishmentTime": 0.5,
+      "shells": [
+        {
+          "fireParamsPreset": "turret_bustle_small",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "firstStage": true,
+          "autoloader": "autoloader_dm",
+          "ammo_turret_06_dm": {
+            "count": 40
+          },
+          "ammo_turret_07_dm": {
+            "count": 40
+          },
+          "ammo_turret_03_dm": {
+            "count": 40
+          },
+          "ammo_turret_04_dm": {
+            "count": 40
+          },
+          "ammo_turret_05_dm": {
+            "count": 40
+          }
+        },
+        {
+          "fatalFire": true,
+          "fatalExplosion": true,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "reloadTimeMult": 30.0,
+          "ammo_body_01_dm": {
+            "count": 200
+          }
+        }
+      ]
+    },
+    "ammo2": {
+      "weaponTrigger": "gunner5",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": [
+        {
+          "ammoLoadedInGun": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "wreckedPartId": 0,
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          }
+        },
+        {
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "ammo_body_03_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          }
+        }
+      ]
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -3685,7 +3759,7 @@
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "skipAxisEmitterCheck": true,
               "recoilMultiplier": 0.1,
-              "staticElevation": 7.5,
+              "staticElevation": 4.9125,
               "barrelDP": "gun_barrel_02_dm",
               "brokenBarrelAllowShoot": false,
               "createGunEffects": true,

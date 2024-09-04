@@ -18,15 +18,19 @@ root {
     tdiv{
       height:t='ph'
       flow:t='horizontal'
-      padding:t='1@blockInterval, 0'
       css-hier-invalidate:t='yes'
-      tdiv {
-        id:t='presetNest'
-        width:t='<<presetsWidth>>'
-        flow:t='vertical'
-        overflow-y:t='auto'
 
-        include "%gui/weaponry/weaponryPreset.tpl"
+      tdiv {
+        height:t='ph'
+        overflow-y:t='auto'
+        tdiv {
+          id:t='presetNest'
+          width:t='<<presetsWidth>>'
+          margin-right:t='1@scrollBarSize'
+          flow:t='vertical'
+
+          include "%gui/weaponry/weaponryPreset.tpl"
+        }
       }
       blockSeparator{}
       tdiv{

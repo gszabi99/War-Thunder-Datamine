@@ -42,6 +42,7 @@
   "canReloadNonGuns": true,
   "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
+  "isPrimaryAutoAimersActive": false,
   "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
   "customImage": "!#ui/unitskin#image_in_progress",
   "customTooltipImage": "ui/aircrafts/image_in_progress",
@@ -2007,14 +2008,14 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 550000.0,
+      "Empty": 750000.0,
       "momentOfInertia": [
-        43.0,
-        170.0,
-        120.0
+        35.0,
+        380.0,
+        210.0
       ],
       "CenterOfGravity": [
-        0.0,
+        1.0,
         0.6,
         0.0
       ]
@@ -2108,7 +2109,7 @@
   "sensors": {
     "fireDirecting": {
       "dmPartMain": "bridge_dm",
-      "dmPart": "rangfinder_01_dm",
+      "dmPart": "rangefinder_01_dm",
       "measureAccuracy": 0.85,
       "targetLockTime": 20.0,
       "calcTime": 12.0,
@@ -2405,8 +2406,8 @@
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "barrelDP": "auxiliary_caliber_turret_01_dm",
-        "breechDP": "auxiliary_caliber_turret_01_dm",
+        "barrelDP": "auxiliary_caliber_gun_01_dm",
+        "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": false,
@@ -2578,8 +2579,8 @@
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
-        "barrelDP": "aa_turret_01_dm",
-        "breechDP": "aa_turret_01_dm",
+        "barrelDP": "aa_gun_01_dm",
+        "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
@@ -2744,8 +2745,8 @@
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
-        "barrelDP": "aa_turret_02_dm",
-        "breechDP": "aa_turret_02_dm",
+        "barrelDP": "aa_gun_02_dm",
+        "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
@@ -2910,8 +2911,8 @@
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
-        "barrelDP": "aa_turret_03_dm",
-        "breechDP": "aa_turret_03_dm",
+        "barrelDP": "aa_gun_03_dm",
+        "breechDP": "aa_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
@@ -3903,8 +3904,8 @@
   },
   "breaches": {
     "repairSpeed": 21.0,
-    "waterMassVel": -45000.0,
-    "waterMassMult": 100.0,
+    "waterMassVel": -8000.0,
+    "waterMassMult": 23.0,
     "sizeToRepair": [
       0.01,
       3.0,
@@ -3934,14 +3935,10 @@
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.8,
+        "weight": 0.6,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
-            {
-              "partNo": "ammunition_storage_aux_01_dm",
-              "critWaterLevel": 0.5
-            },
             {
               "partNo": "ammunition_storage_shells_01_dm",
               "critWaterLevel": 0.8
@@ -3955,7 +3952,7 @@
       },
       {
         "part": "cover_03_dm",
-        "weight": 0.6,
+        "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -3977,10 +3974,6 @@
         "innerParts": {
           "part": [
             {
-              "partNo": "ammunition_storage_aux_02_dm",
-              "critWaterLevel": 0.4
-            },
-            {
               "partNo": "ammunition_storage_shells_02_dm",
               "critWaterLevel": 0.8
             },
@@ -4001,7 +3994,7 @@
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.65,
+        "weight": 0.6,
         "maxWaterAlive": 1.0
       },
       {

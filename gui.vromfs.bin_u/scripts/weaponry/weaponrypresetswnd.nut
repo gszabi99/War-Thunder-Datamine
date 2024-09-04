@@ -81,13 +81,10 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getSceneTplView() {
     this.weaponryByPresetInfo = getWeaponryByPresetInfo(this.unit, this.chooseMenuList)
-    let tiersWidth = to_pixels("".concat(this.weaponryByPresetInfo.weaponsSlotCount, "@tierIconSize"))
-    let tiersFramePaddingWidth = to_pixels("1@scrollBarSize+2@frameHeaderPad")
-    let iconWidth = showConsoleButtons.value ? to_pixels("1@cIco") : 0
-    let tiersWidthWithoutText = tiersFramePaddingWidth + tiersWidth + iconWidth
-    let freeWidthForText = to_pixels("1@srw - 1@weaponsPresetDescriptionWidth") - tiersWidthWithoutText
+    let tiersWidth = to_pixels($"{this.weaponryByPresetInfo.weaponsSlotCount}@tierIconSize")
+    let freeWidthForText = to_pixels("1@srw - 1@weaponsPresetDescriptionWidth - 1@scrollBarSize") - tiersWidth
     this.presetTextWidth = min(freeWidthForText, to_pixels("1@modPresetTextMaxWidth"))
-    this.chapterPos = this.presetTextWidth + 0.5 * tiersWidth + iconWidth
+    this.chapterPos = this.presetTextWidth + 0.5 * tiersWidth
     this.presets = this.weaponryByPresetInfo.presets
     this.favoriteArr = this.weaponryByPresetInfo.favoriteArr
     let unitName = this.unit.name
@@ -99,7 +96,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.lastWeapon = this.initLastWeapon ?? getLastWeapon(this.unit.name)
     this.presetsMarkup = this.getPresetsMarkup(this.presets)
     return {
-      presetsWidth = tiersWidthWithoutText + this.presetTextWidth
+      presetsWidth = tiersWidth + this.presetTextWidth
       chapterPos = this.chapterPos
       presets = this.presetsMarkup
     }
@@ -512,7 +509,6 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let data = handyman.renderCached("%gui/weaponry/weaponryPreset.tpl", {
       chapterPos = this.chapterPos
       presets = this.presetsMarkup
-      isShowConsoleBtn = showConsoleButtons.value
     })
     this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
     // Select chosen or first preset

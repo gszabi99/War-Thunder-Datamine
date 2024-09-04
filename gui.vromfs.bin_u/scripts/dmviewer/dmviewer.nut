@@ -2572,9 +2572,12 @@ dmViewer = {
       shotFreqRPM = round_by_value(shotFreqRPM, shotFreqRPM > 600 ? 10
         : shotFreqRPM < 10 ? 0.1
         : 1)
+      shotFreqRPMTop = round_by_value(shotFreqRPMTop, shotFreqRPMTop > 600 ? 10
+        : shotFreqRPMTop < 10 ? 0.1
+        : 1)
       let res = { value = " ".concat(loc("shop/shotFreq"), shotFreqRPM, loc("measureUnits/rounds_per_min")) }
       if (shotFreqRPM < shotFreqRPMTop)
-        res.topValue <- " ".concat(round(shotFreqRPMTop), loc("measureUnits/rounds_per_min"))
+        res.topValue <- " ".concat(shotFreqRPMTop, loc("measureUnits/rounds_per_min"))
       desc.append(res)
     }
     if (reloadTimeS) {

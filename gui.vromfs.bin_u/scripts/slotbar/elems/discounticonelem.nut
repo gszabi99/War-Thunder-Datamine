@@ -10,7 +10,7 @@ let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 
 
 elemModelType.addTypes({
-  COUNTRY_DISCOUN_ICON = {
+  DISCOUNT_MARKER = {
     init = @() subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
 
     onEventDiscountsDataUpdated = @(_p) this.notify([])
@@ -21,8 +21,18 @@ elemModelType.addTypes({
 
 
 elemViewType.addTypes({
-  COUNTRY_DISCOUN_ICON = {
-    model = elemModelType.COUNTRY_DISCOUN_ICON
+  SHOP_DISCOUNT_MARKER = {
+    model = elemModelType.DISCOUNT_MARKER
+
+    updateView = function(obj, _params) {
+      let haveDicsount = ::g_discount.haveAnyUnitDiscount()
+      obj.tooltip = loc("discount/notification")
+      obj.show(haveDicsount)
+    }
+  }
+
+  COUNTRY_DISCOUNT_MARKER = {
+    model = elemModelType.DISCOUNT_MARKER
 
     updateView = function(obj, _params) {
       let discountData = ::g_discount.generateDiscountInfo(

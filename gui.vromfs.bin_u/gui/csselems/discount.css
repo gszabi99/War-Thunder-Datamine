@@ -1,11 +1,12 @@
-@const unlockMarkerWidth: 29@sf/@pf;
-@const unlockMarkerHeight: 35@sf/@pf;
-@const remainingkMarkerWidth: 20@sf/@pf;
-@const remainingMarkerHeight: 20@sf/@pf;
+@const markerWidth: 29@sf/@pf;
+@const markerHeight: 36@sf/@pf;
+@const nationBonusIconHeight: 33@sf/@pf;
+@const nationBonusIconWidth: 23@sf/@pf;
+@const discountMarkerWidth: 60@sf/@pf;
+
 @const unlockMarkerColor: #FEAD4D;
 @const unlockMarkerColorLight: #FED5A5;
 
-discountIcon,
 discount {
   re-type:text;
   height:ph;
@@ -18,16 +19,6 @@ discount {
   background-color:@white;
   background-svg-size:1.5h+2@discountBoxPadding, ph;
   input-transparent:yes;
-}
-
-discountIcon {
-  behavior:bhvUpdater;
-}
-
-discountIcon[type=slotbarCountry] {
-  min-width:0;
-  pos:1@slotsHeaderBoxPadding + 0.5(1@cIco-w), -h + 1@blockInterval;
-  position:relative;
 }
 
 discount[type=new] {
@@ -44,13 +35,6 @@ discount[type=new] {
   background-position:6@sf/@pf,2@sf/@pf,2@sf/@pf,2@sf/@pf;
 }
 
-discount[type=inTab] {
-  pos:0, 50%ph-50%h;
-  margin-left: 1@blockInterval;
-  position:relative;
-  rotation:0;
-}
-
 discount_notification {
   background-color:@discountBGColor;
   background-repeat:expand-svg;
@@ -60,26 +44,127 @@ discount_notification {
   textShade:yes;
 }
 
-nationBonusMarker {
-  background-image:#ui/gameuiskin#nation_bonus_marker.svg;
-  background-color:#FFFFFF;
-  size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
-  background-svg-size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
-  not-input-transparent:yes;
+infoMarker {
+  size: 1@markerWidth, 1@markerHeight;
+  background-svg-size: 1@markerWidth, 1@markerHeight;
+  background-color: @white;
 }
 
-nationBonusMarker[isOver=yes] {
-  background-image:#ui/gameuiskin#nation_bonus_over_marker.svg;
-  background-color:#66666666;
+infoMarker[place=slotbarCountry] {
+  position: relative;
+  pos: 0, -h + 1@blockInterval;
 }
 
-nationBonusMarker[isOver=yes]:hover {
-  background-color:#FFFFFFFF;
+infoMarker[place=inTab] {
+  position: relative;
+  pos: 0, 50%ph-50%h;
+  margin-left: 1@blockInterval;
 }
 
-nationBonusMarker[type=slotbarCountry] {
-  position:relative;
-  pos:0, -h + 1@blockInterval + 3@sf/@pf;
+infoMarker[type=nationBonusMarker] {
+  background-image: #ui/gameuiskin#nation_bonus_marker.svg;
+}
+
+infoMarker[type=nationBonusMarker][isOver=yes] {
+  background-image: #ui/gameuiskin#nation_bonus_over_marker.svg;
+}
+
+infoMarker[type=nationBonusMarker][place=topMenu],
+infoMarker[type=nationBonusMarker][place=slotbarCountry],
+infoMarker[type=nationBonusMarker][place=inTab] {
+  behavior: bhvUpdater;
+}
+
+infoMarker[type=nationBonusMarker][place=inTab] {
+  background-image: #ui/gameuiskin#nation_bonus_icon.svg;
+  size: 1@nationBonusIconWidth, 1@nationBonusIconHeight;
+  background-svg-size: 1@nationBonusIconWidth, 1@nationBonusIconHeight;
+  pos: 0, ph/2-h/2;
+}
+
+infoMarker[type=unlockMarker] {
+  background-image: #ui/gameuiskin#unlock_marker.svg;
+  tooltip:#mainmenu/objectiveAvailable;
+  display:hide;
+}
+
+infoMarker[type=unlockMarker][isActive=yes] {
+  display:show;
+}
+
+infoMarker[type=unlockMarker][place=topMenu],
+infoMarker[type=unlockMarker][place=slotbarCountry],
+infoMarker[type=unlockMarker][place=inTab] {
+  behavior: bhvUnseen;
+}
+
+infoMarker[type=unlockMarker][place=unitCell] {
+  behavior: button;
+  not-input-transparent: yes;
+}
+
+infoMarker[type=unlockMarker][place=inTab] {
+  size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  background-image:#ui/gameuiskin#unlock_icon.svg;
+  background-svg-size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  pos: 0, ph/2-h/2;
+}
+
+infoMarker[type=unlockMarker][place=unitCell]:hover {
+  background-position:0, -2@dp, 0, 2@dp;
+}
+
+infoMarker[type=unlockMarker][place=unitCell]:pushed {
+  background-position:0;
+}
+
+infoMarker[type=remainingTimeMarker] {
+  behavior:bhvUpdater;
+  background-image: #ui/gameuiskin#remaining_color_icon_down.svg;
+}
+
+infoMarker[type=remainingTimeMarker][place=inTab] {
+  size: 1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  background-image: #ui/gameuiskin#timer_icon.svg;
+  background-svg-size: 1@newWidgetIconHeight, 1@newWidgetIconHeight;
+  pos:0, ph/2-h/2;
+}
+
+infoMarker[type=discountNotificationMarker] {
+  background-image: #ui/gameuiskin#discount_color_icon_down.svg;
+}
+
+infoMarker[type=discountNotificationMarker][place=topMenu],
+infoMarker[type=discountNotificationMarker][place=slotbarCountry] {
+  behavior: bhvUpdater;
+}
+
+infoMarker[type=discountNotificationMarker][place=slotbarCountry] {
+  re-type: text;
+  min-width: 1@discountMarkerWidth;
+  size: w, 1@markerHeight;
+  background-image: #ui/gameuiskin#discount_box_down_bg.svg;
+  background-svg-size: w, 1@markerHeight;
+  background-color: @discountBGColor;
+  background-repeat: expand-svg;
+  background-position: 21@sf/@pf,2@sf/@pf,2@sf/@pf,10@sf/@pf;
+  padding: 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
+  color: @discountTextColor;
+  font: @fontSmall;
+  textShade: yes;
+}
+
+infoMarker[type=discountNotificationMarker][place=inTab] {
+  re-type: text;
+  size: 2.37@newWidgetIconHeight, @newWidgetIconHeight;
+  background-image: #ui/gameuiskin#discount_box_thin_bg.svg;
+  background-svg-size: 2.37@newWidgetIconHeight, @newWidgetIconHeight;
+  background-color: @discountBGColor;
+  background-repeat: expand-svg;
+  padding: 4@discountBoxPadding, 1@discountBoxPadding, 2@discountBoxPadding, 1@discountBoxPadding;
+  color: @discountTextColor;
+  font: @fontNormal;
+  textShade: yes;
 }
 
 nationBonusRankIcon > img {
@@ -94,33 +179,6 @@ nationBonusRankIcon[isNationBonusOver=yes] > img {
   background-image:#ui/gameuiskin#nation_bonus_over_icon.svg;
 }
 
-unlockUnitCellMarker {
-  background-image:#ui/gameuiskin#unlock_marker.svg;
-  background-color:#FFFFFF;
-  size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
-  background-svg-size:1@unlockMarkerWidth, 1@unlockMarkerHeight;
-  not-input-transparent:yes;
-  tooltip:#mainmenu/objectiveAvailable;
-}
-
-remainingTimeUnitCellMarker {
-  size:1@remainingkMarkerWidth, 1@remainingMarkerHeight;
-  background-svg-size:1@remainingkMarkerWidth, 1@remainingMarkerHeight;
-  background-image:#ui/gameuiskin#timer_icon.svg;
-  background-color:#FFFFFF;
-  input-transparent:yes;
-  tooltip:#mainmenu/promoteUnit;
-}
-
-unlockUnitCellMarker:hover {
-  background-position:0, -2@dp, 0, 2@dp;
-}
-
-unlockUnitCellMarker:pushed {
-  background-position:0;
-}
-
-unlockMarker,
 squadronExpIcon {
   size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
   background-image:#ui/gameuiskin#new_icon_not_colored.svg;
@@ -134,99 +192,23 @@ squadronExpIcon {
   background-color:@squadronExpIconColor;
 }
 
-unlockMarker {
-  behaviour:bhvUnseen;
-  background-color:@unlockMarkerColor;
-  tooltip:#mainmenu/objectiveAvailable;
-  display:hide;
-}
-
-unlockMarker[isActive=yes] {
-  display:show;
-}
-
-unlockMarker[type=inTab],
-nationBonusMarker[type=inTab],
 squadronExpIcon[type=inTab] {
   position:relative;
   pos:0, 50%ph-50%h;
   margin-left: 1@blockInterval;
 }
 
-nationBonusMarker[type=inTab] {
-  background-image:#ui/gameuiskin#nation_bonus_icon.svg;
-  size:0.69@newWidgetIconHeight, 1@newWidgetIconHeight;
-  background-svg-size:0.69@newWidgetIconHeight, 1@newWidgetIconHeight;
-}
-
-unlockMarker[type=slotbarCountry],
 squadronExpIcon[type=slotbarCountry] {
   position:relative;
   pos:pw - w - 1@blockInterval + 3@sf/@pf, -h + 1@blockInterval + 3@sf/@pf;
 }
 
-unlockMarker[type=slotbarCountry] {
-  background-image:#ui/gameuiskin#discount_icon_down.svg;
-  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-}
-
-unlockMarker[type=down],
 squadronExpIcon[type=down] {
   background-image:#ui/gameuiskin#discount_icon_down.svg;
   background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
   size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
   margin-right: 1@blockInterval;
   not-input-transparent:yes;
-}
-
-remainingTimeIconInSlotbar {
-  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  position:relative;
-  pos:0, -h + 1@blockInterval + 3@sf/@pf;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  background-color:#FFFFFF;
-  background-image:#ui/gameuiskin#discount_color_icon_down.svg;
-}
-
-remainingTimeUnitPageMarker {
-  size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
-  position:relative;
-  pos:0, ph/2-h/2;
-  margin-left: 1@blockInterval;
-  background-svg-size:1@newWidgetIconHeight, 1@newWidgetIconHeight;
-  background-color:#FFFFFF;
-  background-image:#ui/gameuiskin#timer_icon.svg;
-  tooltip:#mainmenu/promoteUnit;
-}
-
-remainingTimeIconDown {
-  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  background-image:#ui/gameuiskin#discount_color_icon_down.svg;
-  margin-right: 1@blockInterval;
-  background-color:#FFFFFF;
-  not-input-transparent:yes;
-}
-
-remainingTimeIconDown:hover,
-:hover > additionalIconsDiv > remainingTimeIconDown,
-[show_console_buttons=yes] [selected=yes] > remainingTimeIconDown,
-[show_console_buttons=yes] [selected=yes] > additionalIconsDiv > remainingTimeIconDown {
-  background-color:@unlockMarkerColorLight;
-}
-
-:pushed > additionalIconsDiv > remainingTimeIconDown {
-  background-color:@unlockMarkerColor;
-}
-
-remainingTimeTimerIcon {
-  position:absolute;
-  pos:0.5pw-0.5w, 0;
-  size:1@remainingkMarkerWidth + 5@sf/@pf, 1@remainingkMarkerWidth + 5@sf/@pf;
-  background-svg-size:1@remainingkMarkerWidth + 5@sf/@pf, 1@remainingkMarkerWidth + 5@sf/@pf;
-  background-image:#ui/gameuiskin#timer_icon.svg;
-  background-color:#FFFFFF;
 }
 
 squadronExpIcon[type=down]:hover,
@@ -236,19 +218,8 @@ squadronExpIcon[type=down]:hover,
   background-color:@hoverSquadronExpIconColor;
 }
 
-unlockMarker[type=down]:hover,
-:hover > additionalIconsDiv > unlockMarker[type=down],
-[show_console_buttons=yes] [selected=yes] > unlockMarker[type=down],
-[show_console_buttons=yes] [selected=yes] > additionalIconsDiv > unlockMarker[type=down] {
-  background-color:@unlockMarkerColorLight;
-}
-
 :pushed > additionalIconsDiv > squadronExpIcon[type=down] {
   background-color:@squadronExpIconColor;
-}
-
-:pushed > additionalIconsDiv > unlockMarker[type=down] {
-  background-color:@unlockMarkerColor;
 }
 
 discount_notification:hover,
@@ -268,15 +239,6 @@ HorizontalListBox > shopFilter[selected=yes] > discount_notification {
   display:hide;
 }
 
-discount_notification[type=down] {
-  background-image:#ui/gameuiskin#discount_icon_down.svg;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  tooltip:"#discount/notification";
-  margin-right: 1@blockInterval;
-  not-input-transparent:yes;
-}
-
 discount_notification[type=up] {
   background-image:#ui/gameuiskin#discount_icon_up.svg;
   background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
@@ -286,7 +248,6 @@ discount_notification[type=up] {
   tooltip:"#discount/notification";
 }
 
-discountIcon[type=slotbarCountry],
 discount[type=weaponryItem] {
   re-type:text;
   min-width:0;
@@ -409,6 +370,7 @@ bonus[bonusType=wp], bonusNoFrame[bonusType=wp]     { background-color:@WPMultip
 bonus[bonusType=exp], bonusNoFrame[bonusType=exp]    { background-color:@ExpMultiplierColor; }
 bonus[bonusType=wp_exp], bonusNoFrame[bonusType=wp_exp] { background-color:@BothMultiplierColor; }
 
-discount[text=""], discount_notification[showDiscount=no], bonus[background-image=""], bonusNoFrame[background-image=""] {
+discount[text=""], discount_notification[showDiscount=no], bonus[background-image=""], bonusNoFrame[background-image=""],
+infoMarker[type=discountNotificationMarker][place=inTab][text=""] {
   display:hide;
 }

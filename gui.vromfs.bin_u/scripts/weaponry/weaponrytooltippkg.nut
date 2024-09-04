@@ -7,7 +7,7 @@ let { getPresetRewardMul, getWeaponDamage } = require("%appGlobals/econWeaponUti
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentShopDifficulty, getCurrentGameMode, getRequiredUnitTypes } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { format } = require("string")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { eachBlock, isDataBlock } = require("%sqstd/datablock.nut")
@@ -214,6 +214,11 @@ function getReqTextWorldWarArmy(unit, item) {
 
 function getBasesEstimatedDamageRewardText(unit, item) {
   local res = ""
+
+  let reqUnitTypes = getRequiredUnitTypes(getCurrentGameMode())
+  if (reqUnitTypes.len() == 0 || !reqUnitTypes.contains(ES_UNIT_TYPE_AIRCRAFT))
+    return res
+
   // {<presetName> = <weaponCount>, ...} - {"fab500" = 2, "fab100_internal" = 1}
   local itemPresetList = {}
 

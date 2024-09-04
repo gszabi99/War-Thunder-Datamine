@@ -11,7 +11,7 @@ tdiv {
     id:t='presets_nest'
     position:t='absolute'
     pos:t='0.5pw-0.5w, sh -1@bottomBarHeight -1@blockInterval -h'
-    size:t='<<presetsWidth>> + 1@weaponsPresetDescriptionWidth, 7@tierIconSize'
+    size:t='<<presetsWidth>> + 1@weaponsPresetDescriptionWidth + 1@scrollBarSize + 1@dp  + 2@framePadding, 7@tierIconSize'
     overflow:t='hidden'
 
     bgrStyle:t='fullScreenWnd'
@@ -28,14 +28,18 @@ tdiv {
         size:t='pw, ph'
         flow:t='horizontal'
         css-hier-invalidate:t='yes'
-
         tdiv {
-          id:t='presetNest'
           size:t='fw, fh'
-          flow:t='vertical'
           overflow-y:t='auto'
 
-          include "%gui/weaponry/weaponryPreset.tpl"
+          tdiv {
+            id:t='presetNest'
+            size:t='<<presetsWidth>>, ph'
+            margin-right:t='1@scrollBarSize'
+            flow:t='vertical'
+
+            include "%gui/weaponry/weaponryPreset.tpl"
+          }
         }
         blockSeparator{}
         tdiv{

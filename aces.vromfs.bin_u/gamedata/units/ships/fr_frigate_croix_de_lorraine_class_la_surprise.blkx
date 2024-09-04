@@ -160,9 +160,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        -0.5,
-        -1.0,
-        0.4
+        0.7,
+        -0.6,
+        0.0
       ],
       "suffix": "1",
       "deadHeadAttitudeMin": -55.0,
@@ -223,8 +223,8 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
+        0.7,
+        -0.6,
         0.0
       ],
       "suffix": "2",
@@ -286,8 +286,8 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
+        0.7,
+        -0.6,
         0.0
       ],
       "suffix": "3",
@@ -475,9 +475,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        0.65,
+        -0.8,
+        -0.05
       ],
       "suffix": "6",
       "deadHeadAttitudeMin": -55.0,
@@ -538,9 +538,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        0.65,
+        -0.8,
+        -0.05
       ],
       "suffix": "7",
       "deadHeadAttitudeMin": -55.0,
@@ -727,9 +727,9 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
+        0.65,
+        -0.7,
+        -0.03
       ],
       "suffix": "10",
       "deadHeadAttitudeMin": -55.0,
@@ -916,8 +916,8 @@
       "pelvisNode": "Bip01 Pelvis",
       "pelvisTargetNode": "Bip01 Pelvis_",
       "crouchDelta": [
-        0.0,
-        0.0,
+        0.65,
+        -0.65,
         0.0
       ],
       "suffix": "13",
@@ -3373,7 +3373,7 @@
       },
       {
         "trigger": "gunner4",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
@@ -3382,7 +3382,7 @@
         "barrelDP": "aa_gun_01_dm",
         "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
+        "defaultPitch": 27.0,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -3462,7 +3462,7 @@
       },
       {
         "trigger": "gunner5",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
@@ -3557,7 +3557,7 @@
       },
       {
         "trigger": "gunner6",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
@@ -3652,7 +3652,7 @@
       },
       {
         "trigger": "gunner7",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
@@ -3757,7 +3757,7 @@
       },
       {
         "trigger": "gunner8",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
@@ -3862,7 +3862,7 @@
       },
       {
         "trigger": "gunner9",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_11",
         "flash": "emtr_gun_flame_11",
@@ -3921,33 +3921,21 @@
         },
         "limitsTable": {
           "lim1": [
-            -180.0,
-            -140.0,
-            40.0,
-            65.0
-          ],
-          "lim2": [
-            -140.0,
+            -113.0,
             -10.0,
             -5.0,
             65.0
           ],
-          "lim3": [
+          "lim2": [
             -10.0,
             10.0,
             0.0,
             65.0
           ],
-          "lim4": [
+          "lim3": [
             10.0,
-            140.0,
+            113.0,
             -5.0,
-            65.0
-          ],
-          "lim5": [
-            140.0,
-            180.0,
-            40.0,
             65.0
           ]
         },
@@ -3963,7 +3951,7 @@
       },
       {
         "trigger": "gunner10",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_13",
         "flash": "emtr_gun_flame_13",
@@ -6268,7 +6256,7 @@
       {
         "node": "main_caliber_turret_01",
         "idx": 1,
-        "mass": 1200.0,
+        "mass": 900.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
@@ -6277,7 +6265,7 @@
       {
         "node": "main_caliber_turret_02",
         "idx": 2,
-        "mass": 1200.0,
+        "mass": 900.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
@@ -6285,8 +6273,8 @@
       },
       {
         "node": "ex_armor_02",
-        "idx": 4,
-        "mass": 2100.0,
+        "idx": 3,
+        "mass": 1100.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,

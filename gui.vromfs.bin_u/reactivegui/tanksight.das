@@ -73,7 +73,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
     if get_difficulty_config().hudShowTankDistance && get_targeting_gun_intersect()
       dist = get_targeting_dist()
     elif gm.rangefinder != null && get_difficulty_config().hudUseRangefinder
-      if gm.rangefinder.ready
+      if gm.rangefinder.ready || gm.rangefinder.progress < 0.
         dist = gm.rangefinder.distance
         isOver = gm.rangefinder.isOverDistance
       else
@@ -86,7 +86,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
   let textColor = (is_thermal ? settings.rangefinderThTextColor :
    (is_night_vision ? settings.rangefinderNvTextColor :
    (get_crosshair_light_on() ? settings.rangefinderLightTextColor : settings.rangefinderTextColor)))
-  if dist >= 0.
+  if dist > 0.
     ctx |> set_font(fontId, 0, 0)
     ctx |> set_font_ht(settings.rangefinderTextSize)
 

@@ -3165,6 +3165,10 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_29smt_9_19_fab_500sh.blk"
       },
       {
+        "name": "mig_29smt_9_19_kab500s",
+        "blk": "gameData/FlightModels/weaponPresets/mig_29smt_9_19_kab500s.blk"
+      },
+      {
         "name": "mig_29smt_9_19_kab500kr_e",
         "blk": "gameData/FlightModels/weaponPresets/mig_29smt_9_19_kab500kr_e.blk"
       },
@@ -3758,7 +3762,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_001",
@@ -3778,7 +3782,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62t",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_001",
@@ -3798,7 +3802,7 @@
           {
             "iconType": "bombs_large_m54",
             "name": "fab_500_m54",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_001",
@@ -3828,6 +3832,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab_500m_62_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "bdz_umk2a_001",
+                "bdz_umk2a_001_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
               "emitter": "fab_500m_62_001",
               "bullets": 1,
               "external": true,
@@ -4139,7 +4163,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_002",
@@ -4159,7 +4183,7 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_x2",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": "mbd3_u2t_1_pylon_002"
             },
@@ -4175,7 +4199,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62t",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_002",
@@ -4195,7 +4219,7 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500_m62_x2",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": "mbd3_u2t_1_pylon_002"
             },
@@ -4211,7 +4235,7 @@
           {
             "iconType": "bombs_large_m54",
             "name": "fab_500_m54",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_002",
@@ -4231,7 +4255,7 @@
           {
             "iconType": "bombs_large_group_x2_m54",
             "name": "fab_500_m54_x2",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": "mbd3_u2t_1_pylon_002"
             },
@@ -4257,6 +4281,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab_500m_62_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "bdz_umk2a_002",
+                "bdz_umk2a_002_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
@@ -4619,7 +4663,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_003",
@@ -4639,7 +4683,7 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_x2",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": "mbd3_u2t_1_pylon_003"
             },
@@ -4655,7 +4699,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62t",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_003",
@@ -4675,7 +4719,7 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500_m62_x2",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": "mbd3_u2t_1_pylon_003"
             },
@@ -4691,7 +4735,7 @@
           {
             "iconType": "bombs_large_m54",
             "name": "fab_500_m54",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_003",
@@ -4711,7 +4755,7 @@
           {
             "iconType": "bombs_large_group_x2_m54",
             "name": "fab_500_m54_x2",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": "mbd3_u2t_1_pylon_003"
             },
@@ -4737,6 +4781,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab_500m_62_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "bdz_umk2a_003",
+                "bdz_umk2a_003_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
               "emitter": "fab_500m_62_003",
               "bullets": 1,
               "external": true,
@@ -5005,7 +5069,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_004",
@@ -5025,7 +5089,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62t",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_004",
@@ -5045,7 +5109,7 @@
           {
             "iconType": "bombs_large_m54",
             "name": "fab_500_m54",
-            "reqModification": "mi_24_fab_500",
+            "reqModification": "su_fab_500_kab_500s",
             "ShowNodes": {
               "node": [
                 "bdz_umk2a_004",
@@ -5075,6 +5139,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab_500m_62_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "kab_500s",
+            "reqModification": "su_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "bdz_umk2a_004",
+                "bdz_umk2a_004_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
               "emitter": "fab_500m_62_004",
               "bullets": 1,
               "external": true,
@@ -5515,14 +5599,14 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "mi_24_fab_500": {
+    "su_fab_500_kab_500s": {
       "modClass": "weapon",
       "reqModification": "mi_24_fab_250",
       "tier": 3
     },
     "mig_27_kab_500": {
       "modClass": "weapon",
-      "reqModification": "mi_24_fab_500",
+      "reqModification": "su_fab_500_kab_500s",
       "tier": 4
     }
   },

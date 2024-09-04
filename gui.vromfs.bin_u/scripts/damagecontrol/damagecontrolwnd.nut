@@ -6,7 +6,6 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { getUnitExtraData, saveUnitExtraData } = require("chard")
 let DataBlock = require("DataBlock")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 register_command(
   function () {
@@ -44,7 +43,6 @@ gui_handlers.DamageControlWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getSceneTplView() {
     return {
-      isShowConsoleBtn = showConsoleButtons.value
       fixedPresetView = this.createFixedPresets()
       buttons = this.createSelectButtons()
       currentPresetView = this.createCurrentPresets()

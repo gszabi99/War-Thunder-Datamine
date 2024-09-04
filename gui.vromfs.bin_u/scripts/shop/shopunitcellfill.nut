@@ -247,7 +247,7 @@ function updateCardStatus(obj, _id, statusTbl) {
   ))
 
   let markerContainer = obj.findObject("marker_container")
-  showInObj(markerContainer, "unlockMarker", hasObjective)
+  markerContainer.findObject("unlockMarker")["isActive"] = hasObjective? "yes" : "no"
 
   let nationBonus = showInObj(markerContainer, "nation_bonus_marker", hasNationBonus)
   let isNationBonusOver = nationBonusBattlesRemain <= 0

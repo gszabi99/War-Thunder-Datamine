@@ -1429,7 +1429,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
             getUnlockIdsByArmyId(this.curCountry, name, ediff))
           navImagesText = ::get_navigation_images_text(idx, countryData.pages.len())
-          remainingTimeUnitPageMarker = true
           countryId = countryData.name
           armyId = name
         })
