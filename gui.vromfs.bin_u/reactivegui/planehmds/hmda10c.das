@@ -252,7 +252,7 @@ def draw_plane_marks(var ctx : GuiContext&; rdata : ElemRenderData& const; data 
           let strBox = get_str_bbox(number, number |> length(), fctx)
           ctx |> goto_xy(screenPos.x - strBox.width.x * 0.5, screenPos.y + rdata.size.y * 0.02 + strBox.width.y + ctx |> hdpx(5.))
           ctx |> draw_str_scaled(1.0, number, number |> length())
-        elif unit.isTank
+        elif unit.isTank || unit.isShip
           let halfSize = rdata.size.y * 0.01
           ctx |> draw_line(screenPos.x - halfSize, screenPos.y - halfSize, screenPos.x + halfSize, screenPos.y + halfSize, ctx |> hdpx(data.lineWidth))
           ctx |> draw_line(screenPos.x - halfSize, screenPos.y + halfSize, screenPos.x + halfSize, screenPos.y - halfSize, ctx |> hdpx(data.lineWidth))

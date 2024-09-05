@@ -9,7 +9,7 @@ require %game.events
 
 
 [es]
-def unit_fx_updater_es(info : ParallelUpdateFrameDelayed;
+def unit_fx_updater_es(info : UpdateStageInfoAct;
                        uid : int;
                        active : bool;
                        var unit_fx : UnitFx)

@@ -2587,6 +2587,14 @@
         "blk": "gameData/FlightModels/weaponPresets/f_14b_lau_10a.blk"
       },
       {
+        "name": "f_14b_gbu31",
+        "blk": "gameData/FlightModels/weaponPresets/f_14b_gbu31.blk"
+      },
+      {
+        "name": "f_14b_gbu38",
+        "blk": "gameData/FlightModels/weaponPresets/f_14b_gbu38.blk"
+      },
+      {
         "name": "f_14b_mk84_air",
         "blk": "gameData/FlightModels/weaponPresets/f_14b_mk84_air.blk"
       }
@@ -3135,7 +3143,7 @@
           {
             "iconType": "bombs_middle_group_x6",
             "name": "us_mk82_x6",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -3241,7 +3249,7 @@
           {
             "iconType": "bombs_heavy_middle_group",
             "name": "us_mk84_x2",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -3272,9 +3280,75 @@
             ]
           },
           {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_x2_slot4",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix3",
+                "pylon_phoenix5",
+                "pylon_mk84_3",
+                "pylon_mk84_4"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usnavy.blk",
+                "emitter": "2000lb_mk_84_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usnavy.blk",
+                "emitter": "2000lb_mk_84_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_x2_slot4",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix3",
+                "pylon_phoenix5",
+                "pylon_mk84_3",
+                "pylon_mk84_4"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usnavy.blk",
+                "emitter": "2000lb_mk_84_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usnavy.blk",
+                "emitter": "2000lb_mk_84_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "us_mk84_air_x2",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -3381,7 +3455,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "us_mk82_air_x6",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix3",
@@ -3600,7 +3674,7 @@
           {
             "iconType": "bombs_middle_group_x8",
             "name": "us_mk82_x8",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -3726,7 +3800,7 @@
           {
             "iconType": "bombs_heavy_middle_group",
             "name": "us_mk84_x2",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -3757,9 +3831,75 @@
             ]
           },
           {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_x2_slot5",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix2",
+                "pylon_phoenix4",
+                "pylon_mk84_1",
+                "pylon_mk84_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usnavy.blk",
+                "emitter": "2000lb_mk_84_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usnavy.blk",
+                "emitter": "2000lb_mk_84_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_x2_slot5",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_phoenix2",
+                "pylon_phoenix4",
+                "pylon_mk84_1",
+                "pylon_mk84_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usnavy.blk",
+                "emitter": "2000lb_mk_84_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usnavy.blk",
+                "emitter": "2000lb_mk_84_002",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "us_mk84_air_x2",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -3903,7 +4043,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x8",
             "name": "us_mk82_air_x8",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": [
                 "pylon_phoenix2",
@@ -4670,7 +4810,7 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "us_500lb_mk82": {
+    "us_500lb_mk82_gbu38_jdam": {
       "modClass": "weapon",
       "tier": 2,
       "prevModification": "f4c_zuni"
@@ -4678,9 +4818,9 @@
     "us_1000lb_mk83": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModification": "us_500lb_mk82"
+      "reqModification": "us_500lb_mk82_gbu38_jdam"
     },
-    "us_2000lb_mk84": {
+    "us_2000lb_mk84_gbu31_jdam": {
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "us_1000lb_mk83"

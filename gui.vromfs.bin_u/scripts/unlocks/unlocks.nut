@@ -321,17 +321,22 @@ let getEmptyConditionsConfig = @() {
 }
 
 ::fill_unlock_block <- function fill_unlock_block(obj, config, isForTooltip = false) {
-  if (isForTooltip) {
-    let icoSize = config?.tooltipImageSize ?? "@profileUnlockIconSize, @profileUnlockIconSize"
-    obj.findObject("award_image_sizer").size = icoSize
+  let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, isForTooltip)
+
+  if (image != "") {
+    if (isForTooltip) {
+      let icoSize = config?.tooltipImageSize ?? "@profileUnlockIconSize, @profileUnlockIconSize"
+      obj.findObject("award_image_sizer").size = icoSize
+    }
+
+    let icoObj = obj.findObject("award_image")
+    if (config?.isLocked)
+      icoObj.effectType = "desaturated"
+
+    LayersIcon.replaceIcon(icoObj, iconStyle, image, ratio, null, iconParams, iconConfig)
   }
 
-  let icoObj = obj.findObject("award_image")
-  if (config?.isLocked)
-    icoObj.effectType = "desaturated"
-
-  let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, isForTooltip)
-  LayersIcon.replaceIcon(icoObj, iconStyle, image, ratio, null, iconParams, iconConfig)
+  obj.findObject("award_image_sizer").show(image != "")
 
   let tObj = obj.findObject("award_title_text")
   tObj.setValue("title" in config ? config.title : "")

@@ -2494,6 +2494,22 @@
       {
         "name": "f_16a_block_15_belgium_gbu_8_pids",
         "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_belgium_gbu_8_pids.blk"
+      },
+      {
+        "name": "f_16a_block_15_belgium_gbu_38",
+        "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_belgium_gbu_38.blk"
+      },
+      {
+        "name": "f_16a_block_15_belgium_gbu_31",
+        "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_belgium_gbu_31.blk"
+      },
+      {
+        "name": "f_16a_block_15_belgium_gbu_38_pids",
+        "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_belgium_gbu_38_pids.blk"
+      },
+      {
+        "name": "f_16a_block_15_belgium_gbu_31_pids",
+        "blk": "gameData/FlightModels/weaponPresets/f_16a_block_15_belgium_gbu_31_pids.blk"
       }
     ]
   },
@@ -2786,7 +2802,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -2802,7 +2818,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon2",
@@ -2822,7 +2838,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -2838,7 +2854,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "us_mk84_air",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon2",
@@ -2925,7 +2941,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_500lb_mk82"
+                "reqModification": "us_500lb_mk82_gbu38_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -2957,7 +2973,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_2000lb_mk84"
+                "reqModification": "us_2000lb_mk84_gbu31_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -2985,7 +3001,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_500lb_mk82"
+                "reqModification": "us_500lb_mk82_gbu38_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -3017,7 +3033,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_2000lb_mk84"
+                "reqModification": "us_2000lb_mk84_gbu31_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -3094,6 +3110,100 @@
                 "reqModification": "countermeasures_belt_pack"
               }
             ]
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_x2_slot3",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_57_gbu_38.blk",
+              "emitter": "ter_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_slot3",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_x2_pids_slot3",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_l"
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/bru_57_gbu_38.blk",
+                "emitter": "ter_001",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 90,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false,
+                "reqModification": "countermeasures_belt_pack"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_pids_slot3",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_l"
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+                "emitter": "bomb_2000lb_001",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare3",
+                "bullets": 90,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false,
+                "reqModification": "countermeasures_belt_pack"
+              }
+            ]
           }
         ]
       },
@@ -3127,7 +3237,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -3143,7 +3253,7 @@
           {
             "iconType": "bombs_middle_group_x6",
             "name": "mer_mk82_x6",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -3159,7 +3269,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon4",
@@ -3179,7 +3289,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -3195,7 +3305,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -3211,7 +3321,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "us_mk84_air",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon4",
@@ -3298,7 +3408,7 @@
           {
             "iconType": "bombs_middle",
             "name": "mer_mk82_x1",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon_gpu_5a"
             },
@@ -3315,7 +3425,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "mer_mk82_snakeye_x1",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon_gpu_5a"
             },
@@ -3361,7 +3471,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -3377,7 +3487,7 @@
           {
             "iconType": "bombs_middle_group_x6",
             "name": "mer_mk82_x6",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -3393,7 +3503,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon5",
@@ -3413,7 +3523,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -3429,7 +3539,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x6",
             "name": "mer_mk82_snakeye_x6",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -3445,7 +3555,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "us_mk84_air",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon5",
@@ -3601,7 +3711,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon6"
             },
@@ -3617,7 +3727,7 @@
           {
             "iconType": "bombs_heavy_middle",
             "name": "us_mk84",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon6",
@@ -3637,7 +3747,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
               "node": "pylon6"
             },
@@ -3653,7 +3763,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "us_mk84_air",
-            "reqModification": "us_2000lb_mk84",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
               "node": [
                 "pylon6",
@@ -3740,7 +3850,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_500lb_mk82"
+                "reqModification": "us_500lb_mk82_gbu38_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -3769,7 +3879,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_2000lb_mk84"
+                "reqModification": "us_2000lb_mk84_gbu31_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -3797,7 +3907,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_500lb_mk82"
+                "reqModification": "us_500lb_mk82_gbu38_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -3826,7 +3936,7 @@
                 "external": true,
                 "separate": true,
                 "machLimit": 1.01,
-                "reqModification": "us_2000lb_mk84"
+                "reqModification": "us_2000lb_mk84_gbu31_jdam"
               },
               {
                 "trigger": "countermeasures",
@@ -3885,6 +3995,100 @@
                 "separate": true,
                 "machLimit": 1.01,
                 "reqModification": "us_blu27_b"
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 90,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false,
+                "reqModification": "countermeasures_belt_pack"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_x2_slot7",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_57_gbu_38.blk",
+              "emitter": "ter_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_slot7",
+            "reqModification": "us_2000lb_mk84_gbu31_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "bomb_2000lb_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_x2_pids_slot7",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_r"
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/containers/bru_57_gbu_38.blk",
+                "emitter": "ter_004",
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_add_pod.blk",
+                "emitter": "emtr_flare4",
+                "bullets": 90,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false,
+                "reqModification": "countermeasures_belt_pack"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_31_pids_slot7",
+            "ShowNodes": {
+              "node": "pylon_terma_mlu_pids_r"
+            },
+            "Weapon": [
+              {
+                "trigger": "guided bombs",
+                "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+                "emitter": "bomb_2000lb_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
               },
               {
                 "trigger": "countermeasures",
@@ -4150,20 +4354,20 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "us_500lb_mk82": {
+    "us_500lb_mk82_gbu38_jdam": {
       "modClass": "weapon",
       "tier": 2,
       "prevModification": "us_blu27_b"
     },
-    "us_2000lb_mk84": {
+    "us_2000lb_mk84_gbu31_jdam": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModification": "us_500lb_mk82"
+      "reqModification": "us_500lb_mk82_gbu38_jdam"
     },
     "us_gbu_8": {
       "modClass": "weapon",
       "tier": 4,
-      "reqModification": "us_2000lb_mk84"
+      "reqModification": "us_2000lb_mk84_gbu31_jdam"
     },
     "us_2_75_in_ffar_lau_3a": {
       "tier": 2,

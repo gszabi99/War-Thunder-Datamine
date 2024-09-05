@@ -123,6 +123,8 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   onSave = @()
     save_tank_sight_settings(unitOptions.UNIT.value, unitOptions.COUNTRY.value, unitOptions.RANK.value)
 
+  onReset = @() this.applySettingsForSelectedUnit()
+
   function onOptionsTitleClick(obj) {
     let parentObj = obj?.getParent()
     if (!parentObj?.isValid())

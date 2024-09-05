@@ -1,6 +1,6 @@
 frame {
   id:t='select_unit_pane'
-  size:t='400@sf/@pf, 350@sf/@pf'
+  size:t='380@sf/@pf, 350@sf/@pf'
   position:t='absolute'
   top='40@sf/@pf'
   right:t='pw-w'
@@ -28,7 +28,12 @@ frame {
   }
 
   navBar {
-    navRight {
+    navMiddle {
+      Button_text {
+        text:t='#mainmenu/btnReset'
+        ButtonImg {}
+        on_click='onReset'
+      }
       Button_text {
         text:t='#save/btnSave'
         ButtonImg {}

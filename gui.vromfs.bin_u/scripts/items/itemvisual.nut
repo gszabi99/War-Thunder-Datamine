@@ -140,6 +140,7 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
       addItemName = !shopDesc
     }
     item.setIcon(obj, iconSetParams)
+    obj["isPrizeUnitBought"] = item?.isPrizeUnitBought() ? "yes" : "no"
   }
 
   if (item && item?.getDescTimers)

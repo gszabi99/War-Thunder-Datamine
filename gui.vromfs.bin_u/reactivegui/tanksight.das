@@ -28,8 +28,11 @@ def setup_data(props : Properties&; var storage : CanvasParams&)
   storage.isPreviewMode = props |> getBool("isPreviewMode", false)
 
 [export]
-def draw_sight_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
+def draw_rangefinder_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !is_custom_tank_sight_enabled()
+    return
+  let settings = get_tank_sight_settings()
+  if settings == null || !settings.rangefinderVisible
     return
   if !data.isPreviewMode
     let hero = get_controlled_hero()
@@ -47,23 +50,13 @@ def draw_sight_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
     let isNightVision = hero.curNightVisionRenderMode == 1
     let isThermal = hero.curNightVisionRenderMode == 2
     draw_rangefinder(ctx, rdata.pos, rdata.size, data, gm, isNightVision, isThermal)
-    draw_turret_orientation(ctx, rdata.pos, rdata.size, data, hero, isNightVision, isThermal)
-    draw_reload_progress(ctx, rdata.pos, rdata.size, data, hero, isNightVision, isThermal)
-    draw_inner_fov(ctx, rdata.pos, rdata.size, data, isNightVision, isThermal)
   else
-    let settings = get_tank_sight_settings()
     let isNightVision = settings != null && settings.currentMode == TankSettingMode TSM_NIGHT_VISION
     let isThermal = settings != null && settings.currentMode == TankSettingMode TSM_THERMAL
     draw_rangefinder(ctx, rdata.pos, rdata.size, data, null, isNightVision, isThermal)
-    draw_turret_orientation(ctx, rdata.pos, rdata.size, data, null, isNightVision, isThermal)
-    draw_reload_progress(ctx, rdata.pos, rdata.size, data, null, isNightVision, isThermal)
-    draw_inner_fov(ctx, rdata.pos, rdata.size, data, isNightVision, isThermal)
 
 def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; gm : IGroundModel?; is_night_vision : bool;
                      is_thermal : bool)
-  let settings = get_tank_sight_settings()
-  if settings == null || !settings.rangefinderVisible
-    return
   var dist = data.isPreviewMode ? 1234. : -1.
   var progress = -1.
   var isOver = false
@@ -80,9 +73,9 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
         progress = gm.rangefinder.progress
 
   var fctx : StdGuiFontContext
+  let settings = get_tank_sight_settings()
   let fontId = settings.rangefinderFontId != -1 ? settings.rangefinderFontId : get_font_id("digital")
   get_font_context(fctx, fontId, 0, 0, settings.rangefinderTextSize)
-  let origin = float2(pos.x + size.x * 0.5, pos.y + size.y * 0.2)
   let textColor = (is_thermal ? settings.rangefinderThTextColor :
    (is_night_vision ? settings.rangefinderNvTextColor :
    (get_crosshair_light_on() ? settings.rangefinderLightTextColor : settings.rangefinderTextColor)))
@@ -98,14 +91,14 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
       ctx |> set_color(backColor)
       let tc = float2(0., 0.)
       let fullStrBox = get_str_bbox("8888", 4, fctx)
-      let backPos = float2(origin.x - fullStrBox.width.x * 0.5 - ctx |> hdpx(10.), origin.y - fullStrBox.width.y - ctx |> hdpx(5.))
-      let backBR = float2(origin.x + fullStrBox.width.x * 0.5 + ctx |> hdpx(10.), origin.y + ctx |> hdpx(5.))
+      let backPos = float2(pos.x - fullStrBox.width.x * 0.5 - ctx |> hdpx(10.), pos.y - fullStrBox.width.y - ctx |> hdpx(5.))
+      let backBR = float2(pos.x + fullStrBox.width.x * 0.5 + ctx |> hdpx(10.), pos.y + ctx |> hdpx(5.))
       ctx |> render_rect(backPos.x, backPos.y, backBR.x, backBR.y, tc, tc, tc)
 
     ctx |> set_color(textColor)
     let distText = isOver ? ">{fmt(":.0f", dist)}" : fmt(":.0f", dist)
     let strBox = get_str_bbox(distText, distText |> length(), fctx)
-    let textPos = float2(origin.x - strBox.width.x * 0.5, origin.y)
+    let textPos = float2(pos.x + size.x * 0.5 - strBox.width.x * 0.5, pos.y + strBox.width.y)
     ctx |> goto_xy(textPos.x, textPos.y)
     ctx |> draw_str_scaled(1.0, distText, distText |> length())
 
@@ -115,9 +108,9 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
       textPos.x + strBox.width.x + ctx |> hdpx(10.), textPos.y + ctx |> hdpx(5.), ctx |> hdpx(data.lineWidth))
   elif progress >= 0.
     let strBox = get_str_bbox("8888", 4, fctx)
-    let framePos = float2(origin.x - strBox.width.x * 0.7, origin.y - strBox.width.y * 1.1)
-    let frameRB = float2(origin.x + strBox.width.x * 0.7, origin.y + strBox.width.y * 0.1)
-    let progressRb = float2(origin.x + strBox.width.x * lerp(-0.7, 0.7, progress), origin.y + strBox.width.y * 0.1)
+    let framePos = float2(pos.x + size.x * 0.5 - strBox.width.x * 0.7, pos.y - strBox.width.y * 0.1)
+    let frameRB = float2(pos.x + size.x * 0.5 + strBox.width.x * 0.7, pos.y + strBox.width.y * 1.1)
+    let progressRb = float2(pos.x + size.x * 0.5 + strBox.width.x * lerp(-0.7, 0.7, progress), pos.y + strBox.width.y * 1.1)
     let tc = float2(0., 0.)
     ctx |> set_color(black)
     ctx |> render_frame(framePos.x, framePos.y, frameRB.x, frameRB.y, ctx |> hdpx(data.lineWidth))
@@ -131,11 +124,33 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
 def deg_to_rad(rad : float)
   return rad * PI / 180.
 
-def draw_turret_orientation(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; unit : Unit?; is_night_vision : bool;
-                            is_thermal : bool)
+[export]
+def draw_turret_orient_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
+  if !is_custom_tank_sight_enabled()
+    return
   let settings = get_tank_sight_settings()
   if settings == null || !settings.turretOriVisible
     return
+  if !data.isPreviewMode
+    let hero = get_controlled_hero()
+    if hero == null || hero.isDelayed
+      return
+    let app = get_app()
+    if app == null || app.flightControlMode == null
+      return
+    let camera = app.flightControlMode.cameraControl.cur
+    if camera == null || camera.camtype != FlightCameraType FLIGHT_CAMERA_TYPE_TURRET_VIRTUAL_FPS
+      return
+    let isNightVision = hero.curNightVisionRenderMode == 1
+    let isThermal = hero.curNightVisionRenderMode == 2
+    draw_turret_orientation(ctx, rdata.pos, rdata.size, data, hero, isNightVision, isThermal)
+  else
+    let isNightVision = settings != null && settings.currentMode == TankSettingMode TSM_NIGHT_VISION
+    let isThermal = settings != null && settings.currentMode == TankSettingMode TSM_THERMAL
+    draw_turret_orientation(ctx, rdata.pos, rdata.size, data, null, isNightVision, isThermal)
+
+def draw_turret_orientation(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; unit : Unit?; is_night_vision : bool;
+                            is_thermal : bool)
   var yaw = 0.
   if !data.isPreviewMode
     if unit == null || unit.weap == null
@@ -148,11 +163,12 @@ def draw_turret_orientation(var ctx : GuiContext&; pos : float2; size : float2; 
     else
       return
 
+  let settings = get_tank_sight_settings()
   let textColor = (is_thermal ? settings.turretOriThColor :
    (is_night_vision ? settings.turretOriNvColor :
    (get_crosshair_light_on() ? settings.turretOriLightColor : settings.turretOriColor)))
   ctx |> set_color(textColor)
-  let position = pos + float2(size.x * 0.3, size.y * 0.5)
+  let position = pos + float2(size.x * 0.5, 0.)
   let tankCoord <- to_array_move([[float2[5]
    position;
    position + float2(ctx |> hdpx(20.), ctx |> hdpx(10.));
@@ -176,11 +192,33 @@ def draw_turret_orientation(var ctx : GuiContext&; pos : float2; size : float2; 
     ctx |> render_frame(position.x - ctx |> hdpx(30.), position.y - ctx |> hdpx(40.),
      position.x + ctx |> hdpx(30.), position.y + ctx |> hdpx(85.), ctx |> hdpx(data.lineWidth))
 
-def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; unit : Unit?; is_night_vision : bool;
-                         is_thermal : bool)
+[export]
+def draw_reload_progress_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
+  if !is_custom_tank_sight_enabled()
+    return
   let settings = get_tank_sight_settings()
   if settings == null || !settings.gunReadyVisible
     return
+  if !data.isPreviewMode
+    let hero = get_controlled_hero()
+    if hero == null || hero.isDelayed
+      return
+    let app = get_app()
+    if app == null || app.flightControlMode == null
+      return
+    let camera = app.flightControlMode.cameraControl.cur
+    if camera == null || camera.camtype != FlightCameraType FLIGHT_CAMERA_TYPE_TURRET_VIRTUAL_FPS
+      return
+    let isNightVision = hero.curNightVisionRenderMode == 1
+    let isThermal = hero.curNightVisionRenderMode == 2
+    draw_reload_progress(ctx, rdata.pos, rdata.size, data, hero, isNightVision, isThermal)
+  else
+    let isNightVision = settings != null && settings.currentMode == TankSettingMode TSM_NIGHT_VISION
+    let isThermal = settings != null && settings.currentMode == TankSettingMode TSM_THERMAL
+    draw_reload_progress(ctx, rdata.pos, rdata.size, data, null, isNightVision, isThermal)
+
+def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; unit : Unit?; is_night_vision : bool;
+                         is_thermal : bool)
   var timeToShot = 1.2
   var isInoperable = false
   if !data.isPreviewMode
@@ -196,8 +234,9 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
     else
       return
 
+  let settings = get_tank_sight_settings()
   var fctx : StdGuiFontContext
-  get_font_context(fctx, data.fontId, 0, 0, 30)
+  get_font_context(fctx, data.fontId, 0, 0, settings.gunReadyTextSize)
 
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(settings.gunReadyTextSize)
@@ -206,21 +245,42 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
    (get_crosshair_light_on() ? settings.gunReadyLightColor : settings.gunReadyColor)))
   ctx |> set_color(color)
   let timeText = isInoperable ? loc("tankSight/broken") : (timeToShot > 0. ? fmt(":.1f", timeToShot) : loc("tankSight/ready"))
-  let textPos = float2(pos.x + size.x * 0.40, pos.y + size.y * 0.2)
-  ctx |> goto_xy(textPos.x, textPos.y)
+  let strBox = get_str_bbox(timeText, timeText |> length(), fctx)
+  ctx |> goto_xy(pos.x + ctx |> hdpx(10.), pos.y + strBox.width.y)
   ctx |> draw_str_scaled(1.0, timeText, timeText |> length())
 
   if data.isPreviewMode && settings.highlightedObject == TankSettingObj TSO_GUN_READY
     ctx |> set_color(highlightColor)
-    let strBox = get_str_bbox(timeText, timeText |> length(), fctx)
-    ctx |> render_frame(textPos.x - ctx |> hdpx(10.), textPos.y - strBox.width.y - ctx |> hdpx(5.),
-    textPos.x + strBox.width.x + ctx |> hdpx(10.), textPos.y + ctx |> hdpx(10.), ctx |> hdpx(data.lineWidth))
+    ctx |> render_frame(pos.x, pos.y - ctx |> hdpx(5.),
+    pos.x + strBox.width.x + ctx |> hdpx(20.), pos.y + strBox.width.y + ctx |> hdpx(10.), ctx |> hdpx(data.lineWidth))
 
-def draw_inner_fov(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; is_night_vision : bool;
-                   is_thermal : bool)
+[export]
+def draw_inner_fov_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
+  if !is_custom_tank_sight_enabled()
+    return
   let settings = get_tank_sight_settings()
   if settings == null || !settings.fovVisible
     return
+  if !data.isPreviewMode
+    let hero = get_controlled_hero()
+    if hero == null || hero.isDelayed
+      return
+    let app = get_app()
+    if app == null || app.flightControlMode == null
+      return
+    let camera = app.flightControlMode.cameraControl.cur
+    if camera == null || camera.camtype != FlightCameraType FLIGHT_CAMERA_TYPE_TURRET_VIRTUAL_FPS
+      return
+    let isNightVision = hero.curNightVisionRenderMode == 1
+    let isThermal = hero.curNightVisionRenderMode == 2
+    draw_inner_fov(ctx, rdata.pos, rdata.size, data, isNightVision, isThermal)
+  else
+    let isNightVision = settings != null && settings.currentMode == TankSettingMode TSM_NIGHT_VISION
+    let isThermal = settings != null && settings.currentMode == TankSettingMode TSM_THERMAL
+    draw_inner_fov(ctx, rdata.pos, rdata.size, data, isNightVision, isThermal)
+
+def draw_inner_fov(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; is_night_vision : bool;
+                   is_thermal : bool)
   var minFov = 2.
   var curFov = 1.
   if !data.isPreviewMode
@@ -232,6 +292,7 @@ def draw_inner_fov(var ctx : GuiContext&; pos : float2; size : float2; data : Ca
       return
     minFov = camera.minMaxFov.y
     curFov = camera.viewData.fov
+  let settings = get_tank_sight_settings()
   let newSize = size * (curFov / minFov)
   let newPos = pos + size * 0.5 - newSize * 0.5
   let color = (is_thermal ? settings.fovThColor : (is_night_vision ? settings.fovNvColor : (get_crosshair_light_on() ? settings.fovLightColor : settings.fovColor)))

@@ -2214,8 +2214,8 @@
         360.0
       ],
       "rpm": [
-        4005.0,
-        13350.0
+        0.0,
+        8360.0
       ],
       "water_temperature": [
         300.0,
@@ -2676,7 +2676,8 @@
         "blk": "gameData/sensors/cn_kj8602a.blk"
       },
       {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk"
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",
@@ -2743,6 +2744,14 @@
       {
         "name": "j_10a_500_guided_bomb",
         "blk": "gameData/FlightModels/weaponPresets/j_10a_500_guided_bomb.blk"
+      },
+      {
+        "name": "j_10a_250_glide_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/j_10a_250_glide_bomb.blk"
+      },
+      {
+        "name": "j_10a_500_glide_bomb",
+        "blk": "gameData/FlightModels/weaponPresets/j_10a_500_glide_bomb.blk"
       }
     ]
   },
@@ -3061,7 +3070,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_001"
             },
@@ -3078,7 +3087,7 @@
           {
             "iconType": "bombs_large",
             "name": "500_3",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_001"
             },
@@ -3095,7 +3104,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_001"
             },
@@ -3112,7 +3121,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "500_4",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_001"
             },
@@ -3156,6 +3165,46 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "lgb_ls_500j_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_missile_air_to_surface",
+            "name": "ls6_250",
+            "reqModification": "cn_type_250_ls_6",
+            "ShowNodes": {
+              "node": "gdj_6_pylon_001"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250.blk",
+              "emitter": "lgb_ls_500j_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_missile_air_to_surface",
+            "name": "ls6_500",
+            "reqModification": "cn_type_500_ls_6",
+            "ShowNodes": {
+              "node": "gdj_6_pylon_001"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
               "emitter": "lgb_ls_500j_001",
               "bullets": 1,
               "external": true,
@@ -3261,7 +3310,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "twin_pylon_003"
             },
@@ -3278,7 +3327,7 @@
           {
             "iconType": "bombs_large",
             "name": "500_3",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "twin_pylon_003"
             },
@@ -3295,7 +3344,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "twin_pylon_003"
             },
@@ -3312,7 +3361,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "500_4",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "twin_pylon_003"
             },
@@ -3336,7 +3385,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_003"
             },
@@ -3353,7 +3402,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_003"
             },
@@ -3377,7 +3426,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_001"
             },
@@ -3394,7 +3443,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_001"
             },
@@ -3419,7 +3468,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": [
                 "central_pylon_001",
@@ -3439,7 +3488,7 @@
           {
             "iconType": "bombs_large",
             "name": "500_3",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": [
                 "central_pylon_001",
@@ -3459,7 +3508,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": [
                 "central_pylon_001",
@@ -3479,7 +3528,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "500_4",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": [
                 "central_pylon_001",
@@ -3526,7 +3575,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_002"
             },
@@ -3543,7 +3592,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_002"
             },
@@ -3567,7 +3616,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_004"
             },
@@ -3584,7 +3633,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "fuse_pylon_004"
             },
@@ -3693,7 +3742,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_004"
             },
@@ -3710,7 +3759,7 @@
           {
             "iconType": "bombs_large",
             "name": "500_3",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_004"
             },
@@ -3727,7 +3776,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_004"
             },
@@ -3744,7 +3793,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "500_4",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_004"
             },
@@ -3882,7 +3931,7 @@
           {
             "iconType": "bombs_middle",
             "name": "250_3",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_002"
             },
@@ -3899,7 +3948,7 @@
           {
             "iconType": "bombs_large",
             "name": "500_3",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_002"
             },
@@ -3916,7 +3965,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "250_4",
-            "reqModification": "cn_q5_type_250",
+            "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_002"
             },
@@ -3933,7 +3982,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "500_4",
-            "reqModification": "cn_q5_type_500",
+            "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
               "node": "gdj_6_pylon_002"
             },
@@ -3977,6 +4026,46 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "lgb_ls_500j_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_missile_air_to_surface",
+            "name": "ls6_250",
+            "reqModification": "cn_type_250_ls_6",
+            "ShowNodes": {
+              "node": "gdj_6_pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_250.blk",
+              "emitter": "lgb_ls_500j_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_missile_air_to_surface",
+            "name": "ls6_500",
+            "reqModification": "cn_type_500_ls_6",
+            "ShowNodes": {
+              "node": "gdj_6_pylon_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
               "emitter": "lgb_ls_500j_002",
               "bullets": 1,
               "external": true,
@@ -4241,12 +4330,12 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "cn_q5_type_250": {
+    "cn_type_250_ls_6": {
       "modClass": "weapon",
       "tier": 1
     },
-    "cn_q5_type_500": {
-      "reqModification": "cn_q5_type_250",
+    "cn_type_500_ls_6": {
+      "reqModification": "cn_type_250_ls_6",
       "modClass": "weapon",
       "tier": 3
     },

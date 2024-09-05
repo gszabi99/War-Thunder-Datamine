@@ -13,7 +13,7 @@ let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitShopPriceText } = require("unitCardPkg.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
+let { hasMarkerByUnitName, getUnlockIdByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
@@ -32,6 +32,7 @@ let { get_ranks_blk } = require("blkGetters")
 let { get_charserver_time_sec } = require("chard")
 let { getUtcMidnight, secondsToString } = require("%scripts/time.nut")
 let timeBase = require("%appGlobals/timeLoc.nut")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -216,6 +217,7 @@ function updateCardStatus(obj, _id, statusTbl) {
     unitTypeName              = "",
     hasNationBonus            = false,
     nationBonusBattlesRemain  = 0
+    markerHolderId = ""
   } = statusTbl
   let isLongPriceText = isUnitPriceTextLong(priceText)
 
@@ -247,7 +249,14 @@ function updateCardStatus(obj, _id, statusTbl) {
   ))
 
   let markerContainer = obj.findObject("marker_container")
-  markerContainer.findObject("unlockMarker")["isActive"] = hasObjective? "yes" : "no"
+  let unlockMarker = markerContainer.findObject("unlockMarker")
+  unlockMarker["isActive"] = hasObjective? "yes" : "no"
+  if(hasObjective) {
+    let holderId = isGroup ? markerHolderId : unitName
+    let unlockName = getUnlockNameText(-1, getUnlockIdByUnitName(holderId, getCurrentGameModeEdiff()))
+    unlockMarker.tooltip = loc("mainmenu/objectiveNameAvailable", { unlockName })
+    unlockMarker.holderId = holderId
+  }
 
   let nationBonus = showInObj(markerContainer, "nation_bonus_marker", hasNationBonus)
   let isNationBonusOver = nationBonusBattlesRemain <= 0

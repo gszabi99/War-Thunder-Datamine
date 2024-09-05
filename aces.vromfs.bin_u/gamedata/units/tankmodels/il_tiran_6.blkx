@@ -1963,17 +1963,19 @@
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_twin_02",
         "flash": "bone_mg_gun_twin",
+        "useEmitter": true,
         "barrelDP": "gun_barrel_04_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "useAnimFlashNode": true,
-        "speedYaw": 5.5,
-        "speedPitch": 4.0,
+        "parkInDeadzone": false,
+        "speedYaw": 30.0,
+        "speedPitch": 20.0,
         "fireConeAngle": [
           1.0,
           15.0
         ],
-        "bullets": 1500,
+        "bullets": 6000,
+        "isBulletBelt": true,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 3.0,
         "accuracyAir": 0.0,
@@ -1985,10 +1987,14 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
+        "showBulletsInHud": false,
         "turret": {
           "head": "bone_mg_twin_02",
           "gun": "bone_mg_twin_02",
-          "gunnerDm": "gunner_dm"
+          "gunnerDm": "gunner_dm",
+          "secondGunnerDm": "commander_dm",
+          "verDriveDm": "drive_turret_v_dm",
+          "horDriveDm": "drive_turret_h_dm"
         },
         "limits": {
           "yaw": [
@@ -2055,6 +2061,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame",
+        "useEmitter": true,
         "barrelDP": "gun_barrel_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2062,6 +2069,7 @@
         "speedYaw": 90.0,
         "speedPitch": 90.0,
         "bullets": 1500,
+        "isBulletBelt": true,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
@@ -2148,6 +2156,7 @@
         "speedYaw": 90.0,
         "speedPitch": 90.0,
         "bullets": 1500,
+        "isBulletBelt": true,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,

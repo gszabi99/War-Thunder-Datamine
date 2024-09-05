@@ -48,9 +48,7 @@
   "rearmSmokeTimeOnField": 60.0,
   "rearmTimeOnField": 120.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "drowningCheckHeightMultiplier": 0.3,
   "ikGunner": [
     {
       "model": "chinese_gunner_char",
@@ -1848,8 +1846,8 @@
       ],
       "suspensionOffsets": [
         -0.07,
-        -0.06,
-        0.07
+        -0.02,
+        0.02
       ],
       "defaultGearRadius": 0.33,
       "defaultDampeningForce": [
@@ -1906,22 +1904,35 @@
   "PhysSys": {
     "group": [
       {
-        "find": "bone_suspension_c_01",
+        "find": "bone_suspension_(\\w)_(\\d+)$",
         "points": {
           "lever": {
             "limitMin": [
               0.0,
-              -1.0,
+              0.0,
               0.0
             ],
             "limitMax": [
               0.0,
+              0.0,
+              0.0
+            ],
+            "name": "bone_suspension_$1_$2"
+          },
+          "suspension_01": {
+            "limitMin": [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              1.0,
               1.0,
               0.0
             ],
-            "name": "bone_suspension_c_01"
+            "name": "bone_suspension_$1_$2_01"
           },
-          "wheel_r_01": {
+          "wheel": {
             "searchChildren": {
               "occurence": 1,
               "limitMin": [
@@ -1937,157 +1948,21 @@
               "parent": "lever",
               "find": "bone_wheel_"
             }
-          },
-          "wheel_l_01": {
-            "searchChildren": {
-              "occurence": 2,
-              "limitMin": [
-                -1.0,
-                -1.0,
-                0.0
-              ],
-              "limitMax": [
-                1.0,
-                1.0,
-                0.0
-              ],
-              "parent": "lever",
-              "find": "bone_wheel_"
-            }
-          },
-          "bone_suspension_l_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_l_02"
-          },
-          "bone_suspension_r_02": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_r_02"
-          },
-          "bone_suspension_l_03": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_l_03"
-          },
-          "bone_suspension_r_03": {
-            "limitMin": [
-              0.0,
-              -1.0,
-              -1.0
-            ],
-            "limitMax": [
-              0.0,
-              1.0,
-              1.0
-            ],
-            "name": "bone_suspension_r_03"
-          },
-          "bone_suspension_l_04": {
-            "limitMin": [
-              -1.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              1.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_l_04"
-          },
-          "bone_suspension_r_04": {
-            "limitMin": [
-              -1.0,
-              -1.0,
-              0.0
-            ],
-            "limitMax": [
-              1.0,
-              1.0,
-              0.0
-            ],
-            "name": "bone_suspension_r_04"
           }
         },
         "constraints": {
           "edge": [
             {
-              "to": "wheel_r_01",
-              "from": "lever"
-            },
-            {
               "from": "lever",
-              "to": "wheel_l_01"
+              "to": "wheel",
+              "moveNodes": false
             },
             {
-              "to": "wheel_l_01",
-              "from": "bone_suspension_r_02",
-              "point": "wheel_r_01"
-            },
-            {
-              "point": "wheel_l_01",
-              "from": "bone_suspension_l_02",
-              "to": "wheel_r_01"
-            },
-            {
-              "rotateSecond": true,
-              "moveSecond": false,
-              "to": "bone_suspension_r_04",
-              "from": "bone_suspension_r_03"
-            },
-            {
-              "rotateSecond": true,
-              "moveSecond": false,
-              "to": "bone_suspension_l_04",
-              "from": "bone_suspension_l_03"
-            },
-            {
-              "rotateSecond": true,
-              "moveSecond": false,
-              "from": "bone_suspension_r_03",
-              "to": "bone_suspension_r_02"
-            },
-            {
-              "rotateSecond": true,
-              "moveSecond": false,
-              "from": "bone_suspension_l_03",
-              "to": "bone_suspension_l_02"
+              "to": "wheel",
+              "from": "suspension_01",
+              "moveNodes": false
             }
-          ],
-          "slider": {
-            "moveNodes": true,
-            "rotateSecond": false,
-            "moveSecond": true,
-            "moveOnly": false,
-            "point": "lever",
-            "from": "wheel_l_01",
-            "to": "wheel_r_01"
-          }
+          ]
         }
       },
       {
@@ -2104,7 +1979,7 @@
               1.0,
               0.0
             ],
-            "name": "bone_suspension_c_back_$2"
+            "name": "bone_suspension_$1_back_$2"
           },
           "wheel_r_01": {
             "searchChildren": {
@@ -2144,8 +2019,8 @@
         "constraints": {
           "edge": [
             {
-              "to": "wheel_r_01",
-              "from": "lever"
+              "from": "lever",
+              "to": "wheel_r_01"
             },
             {
               "from": "lever",
@@ -2157,9 +2032,9 @@
             "rotateSecond": false,
             "moveSecond": true,
             "moveOnly": false,
-            "point": "lever",
+            "to": "wheel_r_01",
             "from": "wheel_l_01",
-            "to": "wheel_r_01"
+            "point": "lever"
           }
         }
       }
@@ -3190,7 +3065,32 @@
     },
     "airstrike": {},
     "improved_optics": {},
-    "127mm_tc_1_aam": {}
+    "127mm_tc_1_aam": {},
+    "night_vision_system": {
+      "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "effects": {
+        "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
+          "gunnerThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          },
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    }
   },
   "user_skin": {
     "name": "antelope_tc_1l_ads",

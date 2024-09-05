@@ -9,7 +9,6 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { hangar_get_current_unit_name } = require("hangar")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { create_option_combobox, image_for_air } = require("%scripts/options/optionsExt.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -143,11 +142,10 @@ sightUnitOptions.addTypes({
 })
 
 sightUnitOptions.init <- function(handler, scene) {
-  let unitName = hangar_get_current_unit_name()
-  let unit = getAircraftByName(unitName) ?? getPlayerCurUnit()
+  let unit = getPlayerCurUnit()
   let canSelectCurUnit = unit?.esUnitType == ES_UNIT_TYPE_TANK
   if (canSelectCurUnit) {
-    this.UNIT.value = unitName
+    this.UNIT.value = unit.name
     this.COUNTRY.value = unit.shopCountry
     this.RANK.value = unit.rank
   }

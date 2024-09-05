@@ -461,7 +461,7 @@ let arm = @(){
 let secondaryWeaponName = @(){
   watch = [CannonMode, CurWeaponName, AirCannonMode]
   size = flex()
-  children = !CannonMode.get() && !AirCannonMode.get() && CurWeaponName.get() ? @(){
+  children = !CannonMode.get() && !AirCannonMode.get() && CurWeaponName.get() != "" ? @(){
     watch = CurWeaponName
     rendObj = ROBJ_TEXT
     size = [pw(20), SIZE_TO_CONTENT]

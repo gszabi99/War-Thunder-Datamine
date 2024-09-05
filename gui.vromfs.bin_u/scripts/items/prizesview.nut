@@ -17,7 +17,7 @@ let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
 let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getFullUnlockDescByName, getUnlockNameText,
   getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -33,6 +33,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
 let { getMarkingPresetsById, shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -338,6 +339,36 @@ function getPrizeText(prize, colored = true, v_typeName = false,
   name = colored && color.len() ? colorize(color, name) : name
   return $"{name}{countText}{commentText}"
 }
+
+addTooltipTypes({
+  PRIZE = {
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, prize, _params) {
+      if (!(obj?.isValid() ?? false))
+        return false
+      obj.getScene().replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
+
+      let prizeTitle = getPrizeText(prize)
+      if (prizeTitle != "")
+        obj.findObject("item_name").setValue(prizeTitle)
+
+      let prizeImage = ::trophyReward.getImageByConfig(prize)
+      if (prizeImage != "") {
+        obj.getScene().replaceContentFromText(obj.findObject("item_icon"), prizeImage, prizeImage.len(), null)
+        obj.findObject("item_icon").doubleSize = "no"
+      }
+
+      let prizeDescription = ::PrizesView.getPrizeDescription(prize)
+      if (prizeDescription != "")
+        obj.findObject("item_desc_under_div").setValue(prizeDescription)
+
+      // !!FIX ME: the shop window of selected trophy updates this object istead of trophy description
+      obj.findObject("item_desc_under_table").show(false)
+
+      return true
+    }
+  }
+})
 
 ::PrizesView <- {
 
@@ -1258,9 +1289,9 @@ function getMarkingPreset(item) {
   local needShowFullTitle = true
   local needShowIcon = true
   let tooltipId = !showTooltip ? null
-    : prize?.trophy ? getTooltipType("UNLOCK").getTooltipId(prize.trophy)
+    : prize?.trophy ? getTooltipType("UNLOCK").getTooltipId(prize.trophy, {type = UNLOCKABLE_TROPHY})
     : prize?.unlock ? getTooltipType("SUBTROPHY").getTooltipId(prize.unlock, params)
-    : null
+    : getTooltipType("PRIZE").getTooltipId(convertBlk(prize))
 
   local previewImage = null
   local commentText = null

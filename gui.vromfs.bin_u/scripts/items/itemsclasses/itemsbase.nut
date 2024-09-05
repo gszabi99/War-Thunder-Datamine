@@ -554,14 +554,15 @@ let BaseItem = class {
   }
 
   function getMainActionData(isShort = false, _params = {}) {
-    if (this.isCanBuy())
+    if (this.isCanBuy()) {
+      let isPrizeUnitBought = this?.isPrizeUnitBought() ?? false
       return {
         btnName = this.getBuyText(false, isShort)
         btnColoredName = this.getBuyText(true, isShort)
-        isInactive = this.hasReachedMaxAmount()
-        btnStyle = this?.isPrizeUnitBought() ? "" : null
+        isInactive = this.hasReachedMaxAmount() || isPrizeUnitBought
+        btnStyle = isPrizeUnitBought ? "" : null
       }
-
+    }
     return null
   }
 

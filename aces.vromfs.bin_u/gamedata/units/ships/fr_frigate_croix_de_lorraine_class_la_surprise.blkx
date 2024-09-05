@@ -2797,7 +2797,27 @@
       }
     ]
   },
+  "radarAnimations": {
+    "anim": [
+      {
+        "radarAnimVar": "radar_target_yaw_rotate",
+        "animatedRadarIdx": 0
+      },
+      {
+        "radarAnimVar": "target_tagging_yaw_rotate",
+        "radarAntenaSpeed": 30.0,
+        "animatedRadarIdx": 1,
+        "radarAnimPitchVar": "target_tagging_pitch_rotate"
+      }
+    ]
+  },
   "commonWeapons": {
+    "animatedBones": {
+      "node": [
+        "antenna_target_location_01",
+        "antenna_target_location_02"
+      ]
+    },
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -3378,7 +3398,6 @@
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
-        "isBulletBelt": true,
         "barrelDP": "aa_gun_01_dm",
         "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
@@ -3467,7 +3486,6 @@
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
-        "isBulletBelt": true,
         "barrelDP": "aa_gun_02_dm",
         "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
@@ -3562,7 +3580,6 @@
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
-        "isBulletBelt": true,
         "barrelDP": "aa_gun_03_dm",
         "breechDP": "aa_gun_03_dm",
         "defaultYaw": 0.0,
@@ -3657,7 +3674,6 @@
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
-        "isBulletBelt": true,
         "barrelDP": "aa_gun_04_dm",
         "breechDP": "aa_gun_04_dm",
         "defaultYaw": 0.0,
@@ -3762,7 +3778,6 @@
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
-        "isBulletBelt": true,
         "barrelDP": "aa_gun_05_dm",
         "breechDP": "aa_gun_05_dm",
         "defaultYaw": 0.0,
@@ -3867,7 +3882,6 @@
         "emitter": "emtr_gun_flame_11",
         "flash": "emtr_gun_flame_11",
         "useEmitter": true,
-        "isBulletBelt": true,
         "barrelDP": "aa_gun_06_dm",
         "breechDP": "aa_gun_06_dm",
         "defaultYaw": 0.0,
@@ -3956,7 +3970,6 @@
         "emitter": "emtr_gun_flame_13",
         "flash": "emtr_gun_flame_13",
         "useEmitter": true,
-        "isBulletBelt": true,
         "barrelDP": "aa_gun_07_dm",
         "breechDP": "aa_gun_07_dm",
         "defaultYaw": 0.0,
@@ -4089,13 +4102,23 @@
         "reqModification": "ship_bomb_mortar"
       },
       {
-        "name": "hedgehog_board_mortars",
+        "name": "board_mortars",
         "blk": "gameData/units/ships/weaponPresets/fr_frigate_croix_de_lorraine_class_la_surprise_mortar_board_mortar.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
-        "name": "hedgehog_mortar_stern_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/fr_frigate_croix_de_lorraine_class_la_surprise_mortar_board_mortar.blk",
+        "name": "hedgehog_mortar_stern_and_board_depth_charges",
+        "blk": "gameData/units/ships/weaponPresets/fr_frigate_croix_de_lorraine_class_la_surprise_stern_and_board_depth_charges.blk",
+        "reqModification": "ship_bomb_mortar"
+      },
+      {
+        "name": "hedgehog_mortar_mortar_and_stern_depth_charges",
+        "blk": "gameData/units/ships/weaponPresets/fr_frigate_croix_de_lorraine_class_la_surprise_mortar_stern_depth_charges.blk",
+        "reqModification": "ship_bomb_mortar"
+      },
+      {
+        "name": "hedgehog_mortar_and_board_depth_charges",
+        "blk": "gameData/units/ships/weaponPresets/fr_frigate_croix_de_lorraine_class_la_surprise_mortar_and_stern_depth_charges.blk",
         "reqModification": "ship_bomb_mortar"
       },
       {
@@ -5206,10 +5229,7 @@
     "ship_rangefinder": {
       "prevModification": "102mm_uk_mkxvi_navy_he_dist_fuse_ammo_pack"
     },
-    "new_aa_caliber_turrets": {},
-    "new_aux_caliber_turrets": {
-      "prevModification": "new_aa_caliber_turrets"
-    },
+    "new_aux_caliber_turrets": {},
     "new_main_caliber_turrets": {
       "prevModification": "new_aux_caliber_turrets"
     },

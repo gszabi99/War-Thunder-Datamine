@@ -47,9 +47,6 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -101,7 +98,8 @@
         "armorThickness": 20.0
       },
       "turret_02_top_dm": {
-        "armorThickness": 8.0
+        "armorThickness": 20.0,
+        "armorClass": "roof_pro_additional_armor"
       },
       "turret_01_top_dm": {
         "armorThickness": 10.0
@@ -138,9 +136,6 @@
       "armorClass": "RHAHH_tank",
       "hidableInViewer": true,
       "createSecondaryShatters": false,
-      "turret_09_top_dm": {
-        "armorThickness": 10.0
-      },
       "turret_12_back_dm": {
         "armorThickness": 10.0
       },
@@ -192,7 +187,8 @@
       "turret_05_top_dm": {},
       "turret_09_front_dm": {},
       "turret_08_front_dm": {},
-      "turret_05_bottom_dm": {}
+      "turret_05_bottom_dm": {},
+      "turret_09_top_dm": {}
     },
     "side_pro_armor": {
       "armorClass": "side_pro_additional_armor",
@@ -3389,15 +3385,15 @@
           "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
-              800,
-              600
+              1200,
+              800
             ],
             "noiseFactor": 0.04
           },
           "commanderViewThermal": {
             "resolution": [
-              800,
-              600
+              1200,
+              800
             ],
             "noiseFactor": 0.04
           },

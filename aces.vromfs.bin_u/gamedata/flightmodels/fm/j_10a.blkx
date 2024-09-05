@@ -89,7 +89,7 @@
   "CriticalSpeed": 50.0,
   "ArcadeHelpersSensitivity": 1.0,
   "AllowModsToChangeLongidutialBalance": false,
-  "ConvertAoa": false,
+  "ConvertAoa": true,
   "ConvertAoaAI": false,
   "ArcadeRollCorrectionMultiplier": 80.0,
   "RollLeveling": false,
@@ -313,9 +313,9 @@
         "ClAfterCritLow": -1.4,
         "MachFactor": 3,
         "MachCrit1": 0.92,
-        "MachMax1": 1.03,
+        "MachMax1": 1.05,
         "MultMachMax1": 1.85,
-        "MultLineCoeff1": -0.05,
+        "MultLineCoeff1": -0.01,
         "MultLimit1": 0.8,
         "MachCrit2": 0.5,
         "MachMax2": 1.02,
@@ -361,7 +361,7 @@
         "ClToCmByMach2": [
           0.8,
           0.0,
-          0.1
+          0.102
         ],
         "Cl0": 0.02,
         "alphaCritHigh": 35.0,
@@ -382,9 +382,9 @@
         "ClAfterCritLow": -0.8,
         "MachFactor": 3,
         "MachCrit1": 0.92,
-        "MachMax1": 1.03,
+        "MachMax1": 1.05,
         "MultMachMax1": 1.85,
-        "MultLineCoeff1": -0.05,
+        "MultLineCoeff1": -0.01,
         "MultLimit1": 0.8,
         "MachCrit2": 0.5,
         "MachMax2": 1.02,
@@ -430,7 +430,7 @@
         "ClToCmByMach2": [
           0.8,
           0.0,
-          0.1
+          0.102
         ],
         "Cl0": 0.35,
         "alphaCritHigh": 35.0,
@@ -441,11 +441,11 @@
       },
       "Strength": {
         "CritOverload": [
-          -240000.0,
-          630000.0
+          -210000.0,
+          540000.0
         ],
         "VNE": 1543.0,
-        "MNE": 2.0
+        "MNE": 2.1
       }
     },
     "FuselagePlane": {
@@ -470,7 +470,7 @@
         "ClAfterCritLow": -0.02,
         "MachFactor": 3,
         "MachCrit1": 0.92,
-        "MachMax1": 1.05,
+        "MachMax1": 1.1,
         "MultMachMax1": 2.85,
         "MultLineCoeff1": -0.01,
         "MultLimit1": 1.0,
@@ -514,7 +514,7 @@
         "alphaCritLow": -20.0,
         "ClCritHigh": 0.2,
         "ClCritLow": -0.2,
-        "CdMin": 0.0072
+        "CdMin": 0.0073
       }
     },
     "HorStabPlane": {
@@ -543,8 +543,8 @@
         "MachFactor": 3,
         "MachCrit1": 0.89,
         "MachMax1": 0.97,
-        "MultMachMax1": 1.9,
-        "MultLineCoeff1": -0.1,
+        "MultMachMax1": 1.7,
+        "MultLineCoeff1": -0.05,
         "MultLimit1": 1.0,
         "MachCrit2": 0.8,
         "MachMax2": 1.02,
@@ -615,8 +615,8 @@
         "MachFactor": 3,
         "MachCrit1": 0.92,
         "MachMax1": 1.0,
-        "MultMachMax1": 1.9,
-        "MultLineCoeff1": -0.1,
+        "MultMachMax1": 1.7,
+        "MultLineCoeff1": -0.05,
         "MultLimit1": 0.5,
         "MachCrit2": 0.874,
         "MachMax2": 1.0,
@@ -916,7 +916,7 @@
       "AnglesMultiplierPitch2D2": 2000.0,
       "AnglesMultiplierPitch2D20": [
         150.0,
-        1.97,
+        1.2,
         0.0,
         1.0
       ],
@@ -1122,10 +1122,10 @@
         "Velocity_9": 1800.0,
         "Velocity_10": 2000.0,
         "Velocity_11": 2400.0,
-        "ThrustMax0": 7680.0,
-        "ThrustMaxCoeff_0_0": 0.96,
+        "ThrustMax0": 7720.0,
+        "ThrustMaxCoeff_0_0": 0.95,
         "ThrAftMaxCoeff_0_0": 1.04,
-        "TorqueMaxCoeff_0_0": 0.96,
+        "TorqueMaxCoeff_0_0": 0.95,
         "ThrustMaxCoeff_0_1": 0.93,
         "ThrAftMaxCoeff_0_1": 1.06,
         "TorqueMaxCoeff_0_1": 0.93,
@@ -1424,7 +1424,7 @@
       "Mode5": {
         "Throttle": 1.1,
         "RPM": 1.0,
-        "ThrustMult": 1.35,
+        "ThrustMult": 1.37,
         "TorqueMultMinRpm": 3.0,
         "TorqueMultMaxRpm": 1.0,
         "ConsumptionMult": 2.37,
@@ -2123,8 +2123,8 @@
   },
   "Instructor": {
     "critMult": [
-      0.77,
-      0.77
+      0.89,
+      0.89
     ],
     "limitOverload": true,
     "overloadMult": [
@@ -2297,18 +2297,18 @@
       ],
       "RateMax2": [
         900.0,
-        -50.0,
-        50.0
-      ],
-      "RateMax3": [
-        1100.0,
         -40.0,
         40.0
       ],
-      "RateMax4": [
-        1300.0,
+      "RateMax3": [
+        1100.0,
         -30.0,
         30.0
+      ],
+      "RateMax4": [
+        1300.0,
+        -20.0,
+        20.0
       ],
       "AngleMax": [
         -50.0,
@@ -2336,7 +2336,7 @@
       ],
       "AoaLimits": [
         -15.0,
-        25.0
+        27.0
       ],
       "AoaLimitsMult0": [
         0.5,
