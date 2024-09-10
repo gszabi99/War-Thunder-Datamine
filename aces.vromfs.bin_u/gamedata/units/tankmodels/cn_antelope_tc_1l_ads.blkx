@@ -326,7 +326,7 @@
       "armorClass": "tank_structural_steel",
       "armorThickness": 15.0,
       "hp": 200.0,
-      "antenna_target_location_dm": {}
+      "antenna_target_tagging_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -1689,9 +1689,8 @@
       ],
       "emitterGenFmt": "bone_rocket_%02d",
       "ammoDpGenFmt": "ammo_turret_%02d_dm",
-      "recoilMultiplier": 0.1,
-      "stopForFire": true,
-      "maxSpeedForFire": 5.0,
+      "recoilMultiplier": 0.0,
+      "maxSpeedForFire": 10.0,
       "staticElevation": 0.875,
       "circleAim": false,
       "barrelDP": "gun_barrel_dm",
@@ -3043,6 +3042,13 @@
           "fatalExplosion": false
         }
       }
+    }
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/cn_antelope_ads_track.blk",
+      "turretIndex": 0,
+      "dmPart": "antenna_target_tagging_dm"
     }
   },
   "modifications": {

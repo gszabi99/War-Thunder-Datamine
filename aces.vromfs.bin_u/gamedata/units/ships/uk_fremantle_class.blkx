@@ -37,9 +37,6 @@
   "xplosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "shipsDisableDeadCoverParts": false,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -145,7 +142,7 @@
   },
   "ikGunner": [
     {
-      "model": "uk_sailor_char",
+      "model": "uk_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -208,7 +205,7 @@
       ]
     },
     {
-      "model": "uk_sailor_char",
+      "model": "uk_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -271,7 +268,7 @@
       ]
     },
     {
-      "model": "uk_sailor_char",
+      "model": "uk_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -334,7 +331,7 @@
       ]
     },
     {
-      "model": "uk_officer_char",
+      "model": "uk_officer_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -397,7 +394,7 @@
       ]
     },
     {
-      "model": "uk_sailor_char",
+      "model": "uk_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -460,7 +457,7 @@
       ]
     },
     {
-      "model": "uk_sailor_char",
+      "model": "uk_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -523,7 +520,7 @@
       ]
     },
     {
-      "model": "uk_sailor_char",
+      "model": "uk_sailor_modern_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -587,13 +584,13 @@
     }
   ],
   "attach": {
-    "Bip01 Pelvis_1": "uk_sailor_standing",
-    "Bip01 Pelvis_2": "uk_sailor_standing",
-    "Bip01 Pelvis_3": "uk_sailor_standing",
-    "Bip01 Pelvis_4": "uk_officer_standing",
-    "Bip01 Pelvis_5": "uk_sailor_standing",
-    "Bip01 Pelvis_6": "uk_sailor_standing",
-    "Bip01 Pelvis_7": "uk_sailor_standing"
+    "Bip01 Pelvis_1": "uk_sailor_modern_standing",
+    "Bip01 Pelvis_2": "uk_sailor_modern_standing",
+    "Bip01 Pelvis_3": "uk_sailor_modern_standing",
+    "Bip01 Pelvis_4": "uk_officer_modern_standing",
+    "Bip01 Pelvis_5": "uk_sailor_modern_standing",
+    "Bip01 Pelvis_6": "uk_sailor_modern_standing",
+    "Bip01 Pelvis_7": "uk_sailor_modern_standing"
   },
   "controlDevices": {
     "device": [
@@ -2116,101 +2113,6 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
-        "emitter": "emtr_gun_flame_05",
-        "flash": "emtr_gun_flame_05",
-        "useEmitter": true,
-        "barrelDP": "aa_gun_05_dm",
-        "breechDP": "aa_gun_05_dm",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "speedYaw": [
-          20.0,
-          75.0
-        ],
-        "speedPitch": [
-          45.0,
-          65.0
-        ],
-        "isBulletBelt": true,
-        "bullets": 2000,
-        "useGunnerTargetingQuality": false,
-        "allowableDelta": 2.0,
-        "ChainfireTime": 60.0,
-        "DelayAfterShoot": 0.0,
-        "aimMinDist": 20.0,
-        "aimMaxDist": 4500.0,
-        "randomAngle": 0.0,
-        "accuracyBotMultAir": 0.55,
-        "accuracyAir": 1.0,
-        "accuracyGnd": 0.8,
-        "errMeasureVel": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 100.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 3.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "numWeaponsInSlot": 1,
-        "turret": {
-          "head": "auxiliary_caliber_turret_01",
-          "gun": "auxiliary_caliber_gun_01",
-          "gunnerDm": "auxiliary_caliber_turret_01_dm",
-          "linkedAnimPart": {
-            "verNode": "bone_radius_foot_04",
-            "verLimits": [
-              0.0,
-              6.0
-            ],
-            "verOriginLimits": [
-              12.0,
-              80.0
-            ]
-          }
-        },
-        "limits": {
-          "yaw": [
-            -160.0,
-            160.0
-          ],
-          "pitch": [
-            -5.0,
-            40.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -160.0,
-            -120.0,
-            0.0,
-            40.0
-          ],
-          "lim2": [
-            -120.0,
-            120.0,
-            -5.0,
-            40.0
-          ],
-          "lim3": [
-            120.0,
-            160.0,
-            0.0,
-            40.0
-          ]
-        },
-        "gunStabilizer": {
-          "hasVerticalGunFreeMode": true,
-          "hasHorizontal": true,
-          "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 120.0,
-          "hasVertical": true,
-          "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 120.0
-        }
-      },
-      {
-        "trigger": "gunner4",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/81mm_mk_2_mortar_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
@@ -2296,6 +2198,100 @@
               ]
             ]
           }
+        }
+      },
+      {
+        "trigger": "gunner4",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/12_7mm_m2_browning_naval_user_machinegun.blk",
+        "emitter": "emtr_gun_flame_05",
+        "flash": "emtr_gun_flame_05",
+        "useEmitter": true,
+        "barrelDP": "aa_gun_05_dm",
+        "breechDP": "aa_gun_05_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": [
+          20.0,
+          75.0
+        ],
+        "speedPitch": [
+          45.0,
+          65.0
+        ],
+        "bullets": 2000,
+        "useGunnerTargetingQuality": false,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyBotMultAir": 0.55,
+        "accuracyAir": 1.0,
+        "accuracyGnd": 0.8,
+        "errMeasureVel": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errMeasureVelFast": 100.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 3.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "numWeaponsInSlot": 1,
+        "turret": {
+          "head": "auxiliary_caliber_turret_01",
+          "gun": "auxiliary_caliber_gun_01",
+          "gunnerDm": "auxiliary_caliber_turret_01_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_radius_foot_04",
+            "verLimits": [
+              0.0,
+              6.0
+            ],
+            "verOriginLimits": [
+              12.0,
+              80.0
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            -160.0,
+            160.0
+          ],
+          "pitch": [
+            -5.0,
+            40.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -160.0,
+            -120.0,
+            0.0,
+            40.0
+          ],
+          "lim2": [
+            -120.0,
+            120.0,
+            -5.0,
+            40.0
+          ],
+          "lim3": [
+            120.0,
+            160.0,
+            0.0,
+            40.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 120.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 120.0
         }
       }
     ]
@@ -3336,64 +3332,34 @@
       "name": "uk_camo_navy_brown",
       "nameLocId": "skin/uk_camo_navy_brown",
       "descLocId": "skin/uk_camo_navy_brown/desc",
-      "replace_tex": [
-        {
-          "from": "camo_flatgullgrey*",
-          "to": "uk_camo_navy_brown*"
-        },
-        {
-          "from": "camo_lightadmiraltygrey*",
-          "to": "uk_camo_navy_brown*"
-        },
-        {
-          "from": "camo_b15*",
-          "to": "uk_camo_navy_brown*"
-        }
-      ]
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_navy_brown*"
+      }
     },
     {
-      "name": "uk_camo_bluewhite_geometry",
-      "nameLocId": "skin/uk_camo_bluewhite_geometry",
-      "descLocId": "skin/uk_camo_bluewhite_geometry/desc",
-      "replace_tex": [
-        {
-          "from": "camo_flatgullgrey*",
-          "to": "uk_camo_bluewhite_geometry*"
-        },
-        {
-          "from": "camo_lightadmiraltygrey*",
-          "to": "uk_camo_bluewhite_geometry*"
-        },
-        {
-          "from": "camo_b15*",
-          "to": "uk_camo_bluewhite_geometry*"
-        }
-      ]
+      "name": "uk_camo_desert_geometry",
+      "nameLocId": "skin/uk_camo_desert_geometry",
+      "descLocId": "skin/uk_camo_desert_geometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_desert_geometry*"
+      }
     },
     {
-      "name": "uk_camo_multicolor_spots",
-      "nameLocId": "skin/uk_camo_multicolor_spots",
-      "descLocId": "skin/uk_camo_multicolor_spots/desc",
-      "replace_tex": [
-        {
-          "from": "camo_flatgullgrey*",
-          "to": "uk_camo_multicolor_spots*"
-        },
-        {
-          "from": "camo_lightadmiraltygrey*",
-          "to": "uk_camo_multicolor_spots*"
-        },
-        {
-          "from": "camo_b15*",
-          "to": "uk_camo_multicolor_spots*"
-        }
-      ]
+      "name": "uk_camo_gray_geometry",
+      "nameLocId": "skin/uk_camo_gray_geometry",
+      "descLocId": "skin/uk_camo_gray_geometry/desc",
+      "replace_tex": {
+        "from": "camo_flatgullgrey*",
+        "to": "uk_camo_gray_geometry*"
+      }
     }
   ],
   "defaultShipFlag": {
     "name": "default",
     "modelFlagTexture": "flag_c*",
-    "defaultShipFlag": "ship_flag_uk_01",
+    "defaultShipFlag": "ship_flag_uk_ran_03",
     "hangarFlagCam": [
       183.5,
       -15.27,
@@ -3460,6 +3426,12 @@
       "unlockId": "ship_flag_uk_02",
       "nameLocId": "ship_flag_uk_02/name",
       "texture": "flag_uk_02_c*"
+    },
+    "ship_flag_uk_ran_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_ran_03",
+      "nameLocId": "ship_flag_uk_ran_03/name",
+      "texture": "flag_uk_modern_ran_ensign_c*"
     },
     "ship_flag_egypt_01": {
       "category": "naval",
@@ -4885,6 +4857,13 @@
       "nameLocId": "flag_d_day_anniversary_01/name",
       "descLocId": "flag_d_day_anniversary_01/desc",
       "texture": "flag_d_day_anniversary_01_c*"
+    },
+    "ship_flag_tairyo_bata": {
+      "category": "other",
+      "unlockId": "ship_tairyo_bata_01",
+      "nameLocId": "ship_tairyo_bata_01/name",
+      "descLocId": "ship_tairyo_bata_01/desc",
+      "texture": "flag_tairyo_bata_c*"
     }
   }
 }

@@ -19,6 +19,7 @@ function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
     setupFunc = "setup_radar_data"
     color = color_watched.value
     font = Fonts.hud
+    fontSize = hudFontHgt
     hasTxtBlock = has_txt_block
   }
 }

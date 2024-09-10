@@ -479,10 +479,12 @@ enum bulletsAmountState {
         continue
       }
 
+      let isBulletBelt = gInfo?.isBulletBelt ?? true
       let isPairBulletsGroup = bulGroup.isPairBulletsGroup()
-      if (isPairBulletsGroup && !bulGroup.canChangePairBulletsCount()) {
-        bulGroup.setBulletsCount(gInfo.unallocated)
-        gInfo.unallocated = 0
+      if (isBulletBelt || (isPairBulletsGroup && !bulGroup.canChangePairBulletsCount())) {
+        let setCount = min(gInfo.unallocated, bulGroup.maxBulletsCount)
+        bulGroup.setBulletsCount(setCount)
+        gInfo.unallocated = gInfo.unallocated - setCount
         continue
       }
 

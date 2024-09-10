@@ -33,6 +33,7 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { hasInWishlist } = require("%scripts/wishlist/wishlistManager.nut")
+let { getPrizeActionButtonsView } = require("%scripts/items/prizesView.nut")
 
 let offerTypes = {
   unit = @(_c) loc("shop/section/premium")
@@ -102,7 +103,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
       local firstInBlock = false
 
       let localConfig = copyParamsToTable(config)
-      let button = ::PrizesView.getPrizeActionButtonsView(localConfig, { shopDesc = true })
+      let button = getPrizeActionButtonsView(localConfig, { shopDesc = true })
       local offerType = ::trophyReward.getType(localConfig)
       offerType = offerType != "resourceType" ? offerType : localConfig.resourceType
       local group = this.groups.findvalue(@(value) value?.type == offerType)

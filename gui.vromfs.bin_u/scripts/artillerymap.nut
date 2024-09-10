@@ -15,6 +15,8 @@ let { format } = require("string")
 let { getArtilleryDispersion, callArtillery, onArtilleryClose, artilleryCancel,
   getMapRelativePlayerPos, getArtilleryRange } = require("guiArtillery")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+let { getArtilleryAxisWatch, getAxisStuck, getAxisData,
+  getMaxDeviatedAxisInfo, getPositionDelta}  = require("%scripts/joystickInterface.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
@@ -86,7 +88,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    this.watchAxis = ::joystickInterface.getArtilleryAxisWatch()
+    this.watchAxis = getArtilleryAxisWatch()
     this.isGamepadMouse = ::g_gamepad_cursor_controls.getValue()
     this.pointingDevice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN
       : isXInputDevice() && !this.isGamepadMouse ? POINTING_DEVICE.GAMEPAD
@@ -106,7 +108,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let isStick = this.pointingDevice == POINTING_DEVICE.GAMEPAD || this.pointingDevice == POINTING_DEVICE.JOYSTICK
     this.prevMousePos = isStick ? get_dagui_mouse_cursor_pos() : [-1, -1]
     this.mapCoords = isStick ? [0.5, 0.5] : null
-    this.stuckAxis = ::joystickInterface.getAxisStuck(this.watchAxis)
+    this.stuckAxis = getAxisStuck(this.watchAxis)
 
     this.scene.findObject("update_timer").setUserData(this)
     this.update(null, 0.0)
@@ -124,8 +126,8 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local curPointingice = this.pointingDevice
     let mousePos = get_dagui_mouse_cursor_pos()
-    let axisData = ::joystickInterface.getAxisData(this.watchAxis, this.stuckAxis)
-    let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData)
+    let axisData = getAxisData(this.watchAxis, this.stuckAxis)
+    let joystickData = getMaxDeviatedAxisInfo(axisData)
 
     if (mousePos[0] != this.prevMousePos[0] || mousePos[1] != this.prevMousePos[1]) {
       curPointingice = useTouchscreen ? POINTING_DEVICE.TOUCHSCREEN : POINTING_DEVICE.MOUSE
@@ -133,7 +135,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     else if (!this.isGamepadMouse && (joystickData.x || joystickData.y)) {
       curPointingice = isXInputDevice() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
-      let displasement = ::joystickInterface.getPositionDelta(dt, 3, joystickData)
+      let displasement = getPositionDelta(dt, 3, joystickData)
       let prevMapCoords = this.mapCoords || [0.5, 0.5]
       this.mapCoords = [
         clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),

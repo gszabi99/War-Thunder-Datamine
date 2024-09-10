@@ -10,7 +10,7 @@ function hmd(width, height, is_metric_units) {
     script = dasScript
     drawFunc = "draw_hmd"
     setupFunc = "setup_hmd_data"
-    font = Fonts.hud
+    font = Fonts.mirage_ils
     fontSize = 20
     color = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
     isMetricUnits = is_metric_units

@@ -14,16 +14,16 @@
     "length": 1.85,
     "distFromCmToStab": 0.125,
     "dragCx": 0.025,
-    "CxK": 1.25,
+    "CxK": 1.125,
     "WdK": [
-      2.5,
-      2.5,
-      2.5
+      2.0,
+      2.0,
+      2.0
     ],
-    "wingAreaMult": 2.25,
-    "finsAoaHor": 0.25,
-    "finsAoaVer": 0.25,
-    "finsLatAccel": 2.5,
+    "wingAreaMult": 2.5,
+    "finsAoaHor": 0.1278,
+    "finsAoaVer": 0.1278,
+    "finsLatAccel": 2.45,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -49,6 +49,7 @@
       5.0,
       5.0
     ],
+    "timeLife": 60.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -139,18 +140,42 @@
         "filterBetta": 0.2
       },
       "guidanceAutopilot": {
+        "timeToGain0": [
+          10.0,
+          0.05
+        ],
+        "timeToGain1": [
+          15.0,
+          0.6
+        ],
+        "timeToGain2": [
+          20.0,
+          0.85
+        ],
+        "timeToGain3": [
+          25.0,
+          1.0
+        ],
+        "timeToGain4": [
+          60.0,
+          1.0
+        ],
+        "timeToGain5": [
+          60.1,
+          0.0
+        ],
         "loftEnabled": true,
-        "loftElevation": 7.5,
-        "loftTargetElevation": -40.0,
-        "loftAngleToAccelMult": 0.35,
+        "loftElevation": -2.5,
+        "loftTargetElevation": -50.0,
+        "loftAngleToAccelMult": 1.25,
         "loftTargetOmegaMax": 1.75,
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 5.0,
-        "accelControlProp": 0.0656,
+        "reqAccelMax": 2.45,
+        "accelControlProp": 0.0821,
         "accelControlIntg": 0.0,
         "accelControlIntgLim": 0.0,
-        "accelControlDiff": 0.0013
+        "accelControlDiff": 0.0015
       }
     },
     "arcadeProp": {

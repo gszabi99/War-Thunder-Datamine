@@ -225,9 +225,9 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
       this.updateWeightCapacityText()
       this.updateSweepRangeLimit()
       move_mouse_on_obj(this.presetNest.findObject($"tier_{tierId}"))
+      set_weapon_visual_custom_blk(this.unit.name, convertPresetToBlk(this.preset))
     }, this)
     editSlotInPreset(this.preset, tierId, presetId, this.availableWeapons, this.unit, this.favoriteArr, cb, isForced)
-    set_weapon_visual_custom_blk(this.unit.name, convertPresetToBlk(this.preset))
   }
 
   onWeaponChoose = @(obj) this.chooseWeapon(obj.holderId.tointeger(), obj.id)

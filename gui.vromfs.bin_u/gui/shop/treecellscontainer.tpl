@@ -170,6 +170,7 @@ shopRankTable {
           background-svg-size:t='@cIco, @cIco'
           bgcolor:t='#FFFFFFFF'
         }
+        halign:t='center';
       }
 
       CheckBox {
@@ -180,9 +181,9 @@ shopRankTable {
         value:t='yes'
         inactiveColor:t='no'
         text:t='#shop/show_nation_bonus_in_tab'
-        tooltip:t='#shop/show_nation_bonus_in_tab'
         on_change_value:t='onShowNationBonusChange'
         CheckBoxImg{}
+        halign:t='center';
       }
     }
 

@@ -10,7 +10,7 @@ let { isPlayingReplay } = require("hudState.nut")
 
 
 let rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
-let rwrPicDamaged = Picture("!ui/gameuiskin#dot_hole")
+let rwrPicDamaged = Picture("!ui/gameuiskin#rwr_stby_icon")
 let collapseIconSize = sh(3)
 let collapsePicUp = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{collapseIconSize}:{collapseIconSize}")
 function mkCollapseButton(position, direction){
@@ -58,7 +58,7 @@ let twsElement = @(colorWatch, posWatched, size) function() {
 }
 
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
-let radarPicDamaged = Picture("!ui/gameuiskin#dot_hole")
+let radarPicDamaged = Picture("!ui/gameuiskin#radar_stby_icon")
 
 //radar posX is watched because it use safeAreaSize on aircraftHud
 let radarElement = @(colorWatch, position) function() {

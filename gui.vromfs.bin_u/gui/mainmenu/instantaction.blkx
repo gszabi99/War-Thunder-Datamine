@@ -8,26 +8,24 @@
         "height": "fh - 1@wndWithSlotbarBottomOffset",
         "width": "1@promoButtonWidth + 1@scrollBarSize",
         "flow": "vertical",
-        "tdiv": [
-          {
-            "id": "promo_mainmenu_place_top",
-            "position": "relative",
-            "pos": "pw-w, 0",
-            "css-hier-invalidate": "yes",
-            "height": "fh",
-            "width": "pw",
-            "flow": "vertical",
-            "overflow-y": "auto",
-            "behavior": "PosOptionsNavigator",
-            "navigatorShortcuts": "yes"
-          },
-          {
-            "id": "promo_mainmenu_place_bottom",
-            "position": "relative",
-            "pos": "0, 0.01@scrn_tgt",
-            "flow": "vertical"
-          }
-        ]
+        "mainMenuPromoScrollBar": {
+          "id": "promo_mainmenu_place_top",
+          "position": "relative",
+          "pos": "pw-w, 0",
+          "css-hier-invalidate": "yes",
+          "height": "fh",
+          "width": "pw",
+          "flow": "vertical",
+          "overflow-y": "auto",
+          "behavior": "PosOptionsNavigator",
+          "navigatorShortcuts": "yes"
+        },
+        "tdiv": {
+          "id": "promo_mainmenu_place_bottom",
+          "position": "relative",
+          "pos": "0, 0.01@scrn_tgt",
+          "flow": "vertical"
+        }
       },
       {
         "pos": "0.5sw-0.5w, 2@topBarHeight + 0.018@sf - @bh",

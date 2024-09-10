@@ -18,6 +18,7 @@
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
   "ilsASG23": true,
+  "isBwOpticSight": true,
   "viewDistKInSight": 6.0,
   "tpsCameraTargetOffsetAtZoom": [
     30.0,
@@ -48,9 +49,6 @@
   "autopilotImpl": "FBW",
   "laserDesignator": true,
   "paratrooper": "usa_f_111_ejection_cabin_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2989,6 +2987,23 @@
     }
   },
   "gunnerOpticFps": {
+    "TV": {
+      "pos": [
+        1.5,
+        0.0,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0
+    },
     "Target": {
       "pos": [
         0.7,
@@ -2998,10 +3013,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -90.0,
-        90.0,
-        -160.0,
-        15.0
+        -89.0,
+        89.0,
+        -159.0,
+        14.0
       ],
       "opticType": "targeting",
       "turretNo": 0
@@ -3194,10 +3209,38 @@
               }
             },
             {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -38.0,
+                  38.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 26,
+              "bullets": 60,
               "bulletsCartridge": 1,
               "external": true,
               "separate": true
@@ -3206,7 +3249,25 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 26,
+              "bullets": 60,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 30,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 30,
               "bulletsCartridge": 1,
               "external": true,
               "separate": true
@@ -3384,7 +3445,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
               "emitter": "bomb3_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -3408,7 +3469,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
               "emitter": "bomb3_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -3432,13 +3493,9 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
               "emitter": "bomb3_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
-              "machLimit": 1.01,
-              "sweepRange": [
-                0.0,
-                0.75
-              ]
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -3701,7 +3758,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
               "emitter": "bomb4_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -3725,7 +3782,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
               "emitter": "bomb4_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -3749,7 +3806,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
               "emitter": "bomb4_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -3773,7 +3830,7 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
               "emitter": "bomb4_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01,
               "sweepRange": [
@@ -3906,8 +3963,10 @@
               "node": [
                 "hatch1",
                 "hatch2",
+                "hatch6",
                 "hatch7",
-                "hatch8"
+                "hatch8",
+                "hatch12"
               ]
             },
             "ShowDmParts": {
@@ -4081,7 +4140,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
               "emitter": "bomb5_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -4105,7 +4164,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
               "emitter": "bomb5_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -4129,7 +4188,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
               "emitter": "bomb5_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -4153,7 +4212,7 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
               "emitter": "bomb5_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01,
               "sweepRange": [
@@ -4362,7 +4421,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
               "emitter": "bomb6_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -4386,7 +4445,7 @@
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
               "emitter": "bomb6_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
               "machLimit": 1.01
             },
@@ -4410,13 +4469,9 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_24.blk",
               "emitter": "bomb6_gbu",
               "bullets": 1,
-              "external": true,
+              "external": false,
               "separate": true,
-              "machLimit": 1.01,
-              "sweepRange": [
-                0.0,
-                0.75
-              ]
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 4,
@@ -4842,6 +4897,7 @@
       "tier": 3,
       "modClass": "lth"
     },
+    "countermeasures_launcher_chaff_large": {},
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",

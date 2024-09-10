@@ -130,7 +130,6 @@ foreach (fn in [
   "%scripts/controls/aircraftHelpers.nut"
   "%scripts/controls/gamepadCursorControlsSplash.nut"
   "%scripts/help/helpInfoHandlerModal.nut"
-  "%scripts/joystickInterface.nut"
 
   "%scripts/loading/loadingHangar.nut"
   "%scripts/loading/loadingBrief.nut"

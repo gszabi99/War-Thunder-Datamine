@@ -23,7 +23,7 @@ let {
   aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
   laserPointComponent, bombSightComponent, laserDesignatorStatusComponent } = require("airSight.nut")
 let { radarElement, twsElement } = require("airHudComponents.nut")
-let { IsMlwsLwsHudVisible } = require("twsState.nut")
+let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("twsState.nut")
 let { crosshairColorOpt } = require("options/options.nut")
 let { maxLabelWidth, maxLabelHeight } = require("radarComponent.nut")
 let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
@@ -32,7 +32,7 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let compassSize = [hdpx(420), hdpx(40)]
 let { isPlayingReplay } = require("hudState.nut")
-let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
+let { isCollapsedRadarInReplay, IsRadarDamaged } = require("%rGui/radarState.nut")
 
 let paramsTableWidthAircraft = hdpx(600)
 let arbiterParamsTableWidthAircraft = hdpx(200)
@@ -187,7 +187,7 @@ return {
   valign = ALIGN_TOP
   size = [sw(100), sh(100)]
   children = @() {
-    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, isCollapsedRadarInReplay]
+    watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, isCollapsedRadarInReplay, IsRadarDamaged, IsTwsDamaged]
     size = flex()
     children = [
       mkAircraftMainHud()
@@ -196,8 +196,8 @@ return {
       aircraftArbiterHud
       leftPanel
       actionBarTopPanel
-      twsElement(HudColor, twsPosWatched, twsSize)
-      radarElement(HudColor, radarPosWatched.value)
+      twsElement(IsTwsDamaged.value ? AlertColorHigh : HudColor, twsPosWatched, twsSize)
+      radarElement(IsRadarDamaged.value ? AlertColorHigh : HudColor, radarPosWatched.value)
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
       mkAgmAimIndicator(crosshairColorOpt, AlertColorHigh)
       weaponHud

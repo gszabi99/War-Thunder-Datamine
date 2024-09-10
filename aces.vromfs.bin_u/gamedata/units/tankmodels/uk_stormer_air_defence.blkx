@@ -49,6 +49,7 @@
     35.0,
     35.0
   ],
+  "radarCanLockTargetFromTPV": false,
   "radarAnimVar": "radar_drive",
   "radarAntenaSpeed": 7200.0,
   "rearmSmokeTimeOnField": 60.0,
@@ -1241,7 +1242,6 @@
   },
   "class_tags": {},
   "commonWeapons": {
-    "maxMissileSalvoTimeInterval": 2.0,
     "Weapon": [
       {
         "trigger": "gunner0",
@@ -1299,7 +1299,7 @@
           ],
           "pitch": [
             -8.0,
-            65.0
+            55.0
           ]
         },
         "gunStabilizer": {
@@ -1343,11 +1343,8 @@
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
         "recoilMultiplier": 0.1,
-        "stopForFire": true,
-        "maxSpeedForFire": 12.0,
         "barrelDP": "gun_barrel_02_dm",
         "createGunEffects": true,
-        "staticElevation": 0.4,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 70.0,
@@ -1382,8 +1379,8 @@
             180.0
           ],
           "pitch": [
-            -10.0,
-            65.0
+            -8.0,
+            55.0
           ]
         },
         "gunStabilizer": {
@@ -1457,7 +1454,10 @@
           ]
         }
       }
-    ]
+    ],
+    "animatedBones": {
+      "node": "antenna_target_location"
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2194,10 +2194,10 @@
     }
   },
   "cockpit": {
-    "zoomOutFov": 7.37,
-    "zoomInFov": 1.88,
-    "sightFov": 3.58,
-    "sightName": "stormer_sight",
+    "zoomOutFov": 28.6268,
+    "zoomInFov": 9.21719,
+    "sightFov": 12.723,
+    "sightName": "an_vsg_2",
     "headPos": [
       0.0,
       3.9,
@@ -2286,7 +2286,79 @@
     "art_support": {},
     "manual_extinguisher": {},
     "tank_tool_kit": {},
-    "modern_tank_laser_rangefinder": {},
+    "modern_tank_laser_rangefinder": {
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/uk_esd_ra_20_s_search.blk",
+              "turretIndex": 0,
+              "designationFromBody": true,
+              "designationTurretIndex": 0,
+              "dmPart": [
+                "antenna_target_location_dm",
+                "electronic_equipment_dm"
+              ]
+            },
+            {
+              "blk": "gameData/sensors/sam_tv_ir_track.blk",
+              "turretIndex": 0,
+              "dmPart": [
+                "optic_gun_dm",
+                "electronic_equipment_dm"
+              ]
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "dmPart": "electronic_equipment_dm"
+            }
+          ]
+        }
+      }
+    },
     "tank_medical_kit": {
       "image": "#ui/gameuiskin#tank_reinforcement_uk"
     },
@@ -2297,7 +2369,6 @@
       "tier": 2,
       "effects": {
         "commonWeapons": {
-          "maxMissileSalvoTimeInterval": 2.0,
           "Weapon": [
             {
               "trigger": "gunner0",
@@ -2355,7 +2426,7 @@
                 ],
                 "pitch": [
                   -8.0,
-                  65.0
+                  55.0
                 ]
               },
               "gunStabilizer": {
@@ -2399,11 +2470,8 @@
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
               "recoilMultiplier": 0.1,
-              "stopForFire": true,
-              "maxSpeedForFire": 12.0,
               "barrelDP": "gun_barrel_02_dm",
               "createGunEffects": true,
-              "staticElevation": 0.4,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 70.0,
@@ -2438,8 +2506,8 @@
                   180.0
                 ],
                 "pitch": [
-                  -10.0,
-                  65.0
+                  -8.0,
+                  55.0
                 ]
               },
               "gunStabilizer": {
@@ -2619,7 +2687,10 @@
                 ]
               }
             }
-          ]
+          ],
+          "animatedBones": {
+            "node": "antenna_target_location"
+          }
         }
       }
     },
@@ -2715,19 +2786,22 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/uk_thales_adad_search.blk",
+        "blk": "gameData/sensors/uk_esd_ra_20_s_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
-        "dmPart": "antenna_target_location_dm"
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ]
       },
       {
-        "blk": "gameData/sensors/uk_thales_adad_track.blk",
+        "blk": "gameData/sensors/sam_tv_ir_track.blk",
         "turretIndex": 0,
-        "dmPart": "optic_gun_dm"
-      },
-      {
-        "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+        "dmPart": [
+          "optic_gun_dm",
+          "electronic_equipment_dm"
+        ]
       }
     ]
   }

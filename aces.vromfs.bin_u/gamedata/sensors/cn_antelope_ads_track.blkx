@@ -1,0 +1,765 @@
+{
+  "type": "radar",
+  "name": "Antelope",
+  "designationSourceType": 0,
+  "transivers": {
+    "radarTrack": {
+      "pulsePower": 100000.0,
+      "pulseWidth": 2.5e-7,
+      "prf": 3750.0,
+      "band": 9,
+      "rcs": 1.0,
+      "range": 10000.0,
+      "rangeMax": 16000.0,
+      "antenna": {
+        "angleHalfSens": 2.0,
+        "sideLobesSensitivity": -30.0
+      }
+    },
+    "irstTrack": {
+      "power": 200.0,
+      "band": -1,
+      "rcs": 8000.0,
+      "range": 9000.0,
+      "rangeMax": 10000.0,
+      "visibilityType": "infraRed",
+      "range0": 0.0,
+      "range1": 100000.0,
+      "range2": 0.0,
+      "range3": 0.0,
+      "range4": 0.0,
+      "range5": 0.0,
+      "range6": 0.0,
+      "range7": 0.0,
+      "antenna": {
+        "angleHalfSens": 0.4,
+        "sideLobesSensitivity": -120.0
+      }
+    }
+  },
+  "scanPatterns": {
+    "radarLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -35.0,
+        35.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        75.0
+      ],
+      "yawStabLimit": 30.0,
+      "pitchStabLimit": 87.0,
+      "rollStabLimit": 10.0,
+      "period": 0.25,
+      "width": 7.5,
+      "barHeight": 2.0,
+      "barsCount": 3,
+      "rowMajor": false,
+      "indicate": true
+    },
+    "radarLosLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -35.0,
+        35.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        75.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 87.0,
+      "rollStabLimit": 10.0,
+      "period": 0.25,
+      "width": 1.0,
+      "barHeight": 2.0,
+      "barsCount": 1,
+      "rowMajor": false,
+      "indicate": true
+    },
+    "radarTrack": {
+      "type": "no",
+      "azimuthLimits": [
+        -35.0,
+        35.0
+      ],
+      "elevationLimits": [
+        -15.0,
+        75.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 87.0,
+      "rollStabLimit": 10.0
+    },
+    "irstLosLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -15.0,
+        15.0
+      ],
+      "elevationLimits": [
+        -8.0,
+        90.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 84.0,
+      "rollStabLimit": 10.0,
+      "period": 0.25,
+      "width": 0.4,
+      "barHeight": 0.4,
+      "barsCount": 2,
+      "rowMajor": false,
+      "indicate": true
+    },
+    "irstTrack": {
+      "type": "no",
+      "azimuthLimits": [
+        -15.0,
+        15.0
+      ],
+      "elevationLimits": [
+        -8.0,
+        90.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 80.0,
+      "rollStabLimit": 10.0
+    }
+  },
+  "signals": {
+    "radarTrack": {
+      "showBScope": false,
+      "groundClutter": false,
+      "angularAccuracy": 0.07,
+      "distanceAccuracy": 10.0,
+      "absDopplerSpeed": true,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 75.0,
+        "maxValue": 20000.0,
+        "maxUnambiguousValue": 160000.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 15.0,
+        "maxValue": 1000.0,
+        "signalWidthMin": 5.0,
+        "width": 0.0
+      }
+    },
+    "irstTrack": {
+      "showBScope": false,
+      "groundClutter": false,
+      "rangeFinder": false,
+      "angularAccuracy": 0.006,
+      "distanceAccuracy": 2.0,
+      "targetRadiusMin": 0.2,
+      "distance": {
+        "presents": true,
+        "minValue": 30.0,
+        "maxValue": 9000.0
+      },
+      "dopplerSpeed": {
+        "presents": false
+      }
+    }
+  },
+  "fsms": {
+    "main": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTargetDesignationRange": {}
+        },
+        "setStandbyModeCommon": {
+          "setEnabled": {
+            "value": false
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "clearTargetsOfInterest": {},
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": false
+          },
+          "resetTrackMode": {}
+        },
+        "setRadarStandbyMode": {
+          "setStandbyModeCommon": {},
+          "setModeName": {
+            "name": "standby"
+          },
+          "setScanPattern": {
+            "scanPattern": "radarLock"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 7.5
+          }
+        },
+        "setIrstStandbyMode": {
+          "setStandbyModeCommon": {},
+          "setModeName": {
+            "name": "IRST standby"
+          },
+          "setScanPattern": {
+            "scanPattern": "irstLosLock"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 9.0
+          }
+        },
+        "setLockModeCommon": {
+          "setWeaponDetectionAllowance": {
+            "source": "const",
+            "value": true
+          },
+          "setDesignatedTarget": {
+            "set": true
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "resetScanPhase": {},
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "clearTargetsOfInterest": {},
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          }
+        },
+        "setRadarLockMode": {
+          "setLockModeCommon": {},
+          "setModeName": {
+            "name": "acquisition"
+          },
+          "setScanPattern": {
+            "scanPattern": "radarLock"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 7.5
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 1000.0
+          }
+        },
+        "setLosVisualPreLockModeCommon": {
+          "setEnabled": {
+            "value": true
+          },
+          "resetScanPhase": {},
+          "clearTargetsOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
+          "setFsmActive": {
+            "fsm": "lock",
+            "active": true
+          }
+        },
+        "setRadarLosVisualPreLockMode": {
+          "setScanPattern": {
+            "scanPattern": "radarLosLock"
+          },
+          "setLosVisualPreLockModeCommon": {}
+        },
+        "setIrstLosVisualPreLockMode": {
+          "setScanPattern": {
+            "scanPattern": "irstLosLock"
+          },
+          "setLosVisualPreLockModeCommon": {}
+        },
+        "setLosLockModeCommon": {
+          "setEnabled": {
+            "value": true
+          },
+          "setWeaponDetectionAllowance": {
+            "source": "targetDesignation"
+          },
+          "setDesignatedTarget": {
+            "set": false
+          }
+        },
+        "setRadarLosLockMode": {
+          "setLosLockModeCommon": {},
+          "setModeName": {
+            "name": "acquisition"
+          },
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 10000.0,
+            "width": 20000.0
+          }
+        },
+        "setIrstLosLockMode": {
+          "setLosLockModeCommon": {},
+          "setModeName": {
+            "name": "IRST acquisition"
+          },
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 4500.0,
+            "width": 9000.0
+          }
+        },
+        "setVisualLockModeCommon": {
+          "setModeName": {
+            "name": "acquisition"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "setWeaponDetectionAllowance": {
+            "source": "const",
+            "value": true
+          },
+          "setDesignatedTarget": {
+            "set": true
+          }
+        },
+        "setRadarVisualLockMode": {
+          "setVisualLockModeCommon": {},
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 1000.0
+          }
+        },
+        "setIrstVisualLockMode": {
+          "setVisualLockModeCommon": {},
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 100.0
+          }
+        },
+        "setTrackModeCommon": {
+          "setEnabled": {
+            "value": true
+          },
+          "setWeaponDetectionAllowance": {
+            "source": "const",
+            "value": true
+          },
+          "setDesignatedTarget": {
+            "set": false
+          },
+          "clearTargetsOfInterest": {},
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "track",
+            "active": true
+          }
+        },
+        "setRadarTrackMode": {
+          "setTrackModeCommon": {},
+          "setModeName": {
+            "name": "track"
+          },
+          "setScanPattern": {
+            "scanPattern": "radarTrack"
+          }
+        },
+        "setIrstTrackMode": {
+          "setTrackModeCommon": {},
+          "setModeName": {
+            "name": "IRST track"
+          },
+          "setScanPattern": {
+            "scanPattern": "irstTrack"
+          }
+        },
+        "resetTrackMode": {
+          "setFsmActive": {
+            "fsm": "track",
+            "active": false
+          }
+        },
+        "setRadar": {
+          "setTransiver": {
+            "transiver": "radarTrack"
+          },
+          "setSignal": {
+            "signal": "radarTrack"
+          }
+        },
+        "setIrst": {
+          "setTransiver": {
+            "transiver": "irstTrack"
+          },
+          "setSignal": {
+            "signal": "irstTrack"
+          }
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "radarStandby",
+          "actions": {
+            "init": {},
+            "setRadarStandbyMode": {},
+            "setRadar": {}
+          }
+        },
+        "radarCheckLockType0": {
+          "stateFrom": "radarStandby",
+          "command": "designateTarget",
+          "stateTo": "radarCheckLockType0",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 0
+            }
+          }
+        },
+        "radarLock": {
+          "stateFrom": "radarCheckLockType0",
+          "event": "designationTypeEquals",
+          "stateTo": "radarLock",
+          "actions": {
+            "setRadarLockMode": {}
+          }
+        },
+        "radarCheckLockType1": {
+          "stateFrom": "radarCheckLockType0",
+          "event": "designationTypeNotEquals",
+          "stateTo": "radarCheckLockType1",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 1
+            }
+          }
+        },
+        "radarLosLock": {
+          "stateFrom": "radarCheckLockType1",
+          "event": "designationTypeEquals",
+          "stateTo": "radarLosLock",
+          "actions": {
+            "setRadarLosVisualPreLockMode": {},
+            "setRadarLosLockMode": {}
+          }
+        },
+        "radarCheckLockType2": {
+          "stateFrom": "radarCheckLockType1",
+          "event": "designationTypeNotEquals",
+          "stateTo": "radarCheckLockType2",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 2
+            }
+          }
+        },
+        "radarVisualLock": {
+          "stateFrom": "radarCheckLockType2",
+          "event": "designationTypeEquals",
+          "stateTo": "radarVisualLock",
+          "actions": {
+            "setRadarLosVisualPreLockMode": {},
+            "setRadarVisualLockMode": {}
+          }
+        },
+        "radarFinishLockTypeCheck": {
+          "stateFrom": "radarCheckLockType2",
+          "event": "designationTypeNotEquals",
+          "stateTo": "radarStandby"
+        },
+        "radarTrack": {
+          "stateFrom": [
+            "radarLock",
+            "radarLosLock",
+            "radarVisualLock"
+          ],
+          "event": "targetDetected",
+          "stateTo": "radarTrack",
+          "actions": {
+            "setRadarTrackMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            }
+          }
+        },
+        "radarFailedLock": {
+          "stateFrom": [
+            "radarLock",
+            "radarLosLock",
+            "radarVisualLock"
+          ],
+          "event": "scanFinished",
+          "stateTo": "radarStandby",
+          "actions": {
+            "setRadarStandbyMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            }
+          }
+        },
+        "radarFinishedTrack": {
+          "stateFrom": "radarTrack",
+          "event": "targetsOfInterestCleanup",
+          "command": [
+            "selectTarget",
+            "designateTarget"
+          ],
+          "stateTo": "radarStandby",
+          "actions": {
+            "setRadarStandbyMode": {},
+            "resetTrackMode": {}
+          }
+        },
+        "irstCheckLockType1": {
+          "stateFrom": "irstStandby",
+          "command": "designateTarget",
+          "stateTo": "irstCheckLockType1",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 1
+            }
+          }
+        },
+        "irstLosLock": {
+          "stateFrom": "irstCheckLockType1",
+          "event": "designationTypeEquals",
+          "stateTo": "irstLosLock",
+          "actions": {
+            "setIrstLosVisualPreLockMode": {},
+            "setIrstLosLockMode": {}
+          }
+        },
+        "irstCheckLockType2": {
+          "stateFrom": "irstCheckLockType1",
+          "event": "designationTypeNotEquals",
+          "stateTo": "irstCheckLockType2",
+          "actions": {
+            "checkDesignationTypeEquals": {
+              "value": 2
+            }
+          }
+        },
+        "irstVisualLock": {
+          "stateFrom": "irstCheckLockType2",
+          "event": "designationTypeEquals",
+          "stateTo": "irstVisualLock",
+          "actions": {
+            "setIrstLosVisualPreLockMode": {},
+            "setIrstVisualLockMode": {}
+          }
+        },
+        "irstFinishLockTypeCheck": {
+          "stateFrom": "irstCheckLockType2",
+          "event": "designationTypeNotEquals",
+          "stateTo": "irstStandby"
+        },
+        "irstTrack": {
+          "stateFrom": [
+            "irstLosLock",
+            "irstVisualLock"
+          ],
+          "event": "targetDetected",
+          "stateTo": "irstTrack",
+          "actions": {
+            "setIrstTrackMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            }
+          }
+        },
+        "irstFailedLock": {
+          "stateFrom": [
+            "irstLosLock",
+            "irstVisualLock"
+          ],
+          "event": "scanFinished",
+          "stateTo": "irstStandby",
+          "actions": {
+            "setIrstStandbyMode": {},
+            "setFsmActive": {
+              "fsm": "lock",
+              "active": false
+            }
+          }
+        },
+        "irstFinishedTrack": {
+          "stateFrom": "irstTrack",
+          "event": "targetsOfInterestCleanup",
+          "command": [
+            "selectTarget",
+            "designateTarget"
+          ],
+          "stateTo": "irstStandby",
+          "actions": {
+            "setIrstStandbyMode": {},
+            "resetTrackMode": {}
+          }
+        },
+        "radarToIrstStandby": {
+          "stateFrom": "radarStandby",
+          "command": "typeSwitch",
+          "stateTo": "irstStandby",
+          "actions": {
+            "setIrstStandbyMode": {},
+            "setIrst": {}
+          }
+        },
+        "irstToRadarStandby": {
+          "stateFrom": "irstStandby",
+          "command": "typeSwitch",
+          "stateTo": "radarStandby",
+          "actions": {
+            "setRadarStandbyMode": {},
+            "setRadar": {}
+          }
+        },
+        "radarToIrstTrack": {
+          "stateFrom": "radarTrack",
+          "command": "typeSwitch",
+          "stateTo": "irstTrack",
+          "actions": {
+            "setScanPattern": {
+              "scanPattern": "irstTrack"
+            },
+            "setModeName": {
+              "name": "IRST track"
+            },
+            "setIrst": {}
+          }
+        },
+        "irstToRadarTrack": {
+          "stateFrom": "irstTrack",
+          "command": "typeSwitch",
+          "stateTo": "radarTrack",
+          "actions": {
+            "setScanPattern": {
+              "scanPattern": "radarTrack"
+            },
+            "setModeName": {
+              "name": "track"
+            },
+            "setRadar": {}
+          }
+        }
+      }
+    },
+    "lock": {
+      "stateInit": "lock",
+      "transitions": {
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": {}
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        }
+      }
+    },
+    "track": {
+      "stateInit": "track",
+      "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {},
+              "dopplerSpeedFilter": {}
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 2.0,
+              "dirRateLim": 0.78
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -127,23 +127,35 @@ def draw_altitude(var ctx : GuiContext&; data : CanvasParams&; pos : float2; siz
   let startMark = roundi(alt / 250.) * 250
   for i in range(-2, 3)
     let val = float(startMark + i * 250)
-    if val < 0.
+    if (val <= 500.)
       continue
-    let linePos = (alt - val) * step + markPos.y
     let withText = val % 500. == 0.
-    ctx |> draw_line(markPos.x + 2., linePos, markPos.x + size.x * (withText ? 0.01 : 0.003) + 2., linePos, ctx |> hdpx(data.lineWidth))
+    draw_altitude_line(ctx, data, fctx, size, step, markPos, val, alt, withText)
 
-    if !withText
+  for i in range(0, 6)
+    let val = float(100 * i)
+    if (val < alt - 625.)
       continue
-    let text = fmt(":d", roundi(val))
-    let strBox = get_str_bbox(text, text |> length(), fctx)
-    ctx |> goto_xy(markPos.x + size.x * 0.01 + 5., linePos + strBox.width.y * 0.5)
-    ctx |> draw_str_scaled(1.0, text, text |> length())
+    draw_altitude_line(ctx, data, fctx, size, step, markPos, val, alt, true)
 
   let rtext = "RALT"
   let altBox = get_str_bbox(rtext, rtext |> length(), fctx)
   ctx |> goto_xy(markPos.x + 5., markPos.y + altBox.width.y + size.y * 0.12)
   ctx |> draw_str_scaled(1.0, rtext, rtext |> length())
+
+def draw_altitude_line(var ctx : GuiContext&; data : CanvasParams&; fctx : StdGuiFontContext; size : float2; step : float; mark_pos : float2; val : float; current_alt : float; with_text : bool)
+  if val < 0.
+    return
+
+  let linePos = (current_alt - val) * step + mark_pos.y
+  ctx |> draw_line(mark_pos.x + 2., linePos, mark_pos.x + size.x * (with_text ? 0.01 : 0.003) + 2., linePos, ctx |> hdpx(data.lineWidth))
+
+  if !with_text
+    return
+  let text = fmt(":d", roundi(val))
+  let strBox = get_str_bbox(text, text |> length(), fctx)
+  ctx |> goto_xy(mark_pos.x + size.x * 0.01 + 5., linePos + strBox.width.y * 0.5)
+  ctx |> draw_str_scaled(1.0, text, text |> length())
 
 def draw_marker_with_dist(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; hero : Unit?; dist : float)
   let center = pos + size * 0.5

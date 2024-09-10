@@ -39,9 +39,7 @@
   ],
   "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "isPrimaryAutoAimersActive": false,
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1452,15 +1450,15 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 34080.0,
+      "Empty": 38000.0,
       "momentOfInertia": [
-        6.0,
-        21.0,
-        11.0
+        8.0,
+        31.0,
+        15.0
       ],
       "CenterOfGravity": [
         -0.8,
-        -0.6,
+        0.7,
         0.0
       ],
       "AdvancedMass": false
@@ -1475,15 +1473,15 @@
         "row": [
           [
             2.0,
-            2.0
+            3.0
           ],
           [
             4.3,
-            3.5
+            7.0
           ],
           [
             9.0,
-            7.8
+            12.8
           ]
         ]
       },
@@ -1495,7 +1493,7 @@
           ],
           [
             2.1,
-            2.4
+            3.0
           ],
           [
             3.5,
@@ -1536,14 +1534,14 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 0.55,
+      "mulReaction": 0.7,
       "rudder": {
         "pos": [
           -10.58,
           -0.32,
           0.0
         ],
-        "area": 0.9,
+        "area": 2.5,
         "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }
@@ -1552,12 +1550,12 @@
   "cockpit": {
     "headPos": [
       0.0,
-      10.0,
-      -25.0
+      6.0,
+      -20.0
     ],
     "headPosOnShooting": [
-      8.2,
-      9.1,
+      5.4,
+      7.2,
       0.0
     ],
     "detectionHeight": 9.0,
@@ -1588,7 +1586,6 @@
         "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "isBulletBelt": true,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -2841,6 +2838,12 @@
       "unlockId": "ship_flag_uk_02",
       "nameLocId": "ship_flag_uk_02/name",
       "texture": "flag_uk_02_c*"
+    },
+    "ship_flag_uk_ran_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_ran_03",
+      "nameLocId": "ship_flag_uk_ran_03/name",
+      "texture": "flag_uk_modern_ran_ensign_c*"
     },
     "ship_flag_egypt_01": {
       "category": "naval",
@@ -4266,6 +4269,13 @@
       "nameLocId": "flag_d_day_anniversary_01/name",
       "descLocId": "flag_d_day_anniversary_01/desc",
       "texture": "flag_d_day_anniversary_01_c*"
+    },
+    "ship_flag_tairyo_bata": {
+      "category": "other",
+      "unlockId": "ship_tairyo_bata_01",
+      "nameLocId": "ship_tairyo_bata_01/name",
+      "descLocId": "ship_tairyo_bata_01/desc",
+      "texture": "flag_tairyo_bata_c*"
     }
   }
 }

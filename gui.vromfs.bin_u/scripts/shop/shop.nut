@@ -28,7 +28,7 @@ let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, 
 let { ShopLines } = require("shopLines.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
-let { findChildIndex, show_obj } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
 let { hasMarkerByUnitName, getUnlockIdByUnitName,
@@ -1425,7 +1425,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           discount = {
             discountId = this.getDiscountIconTabId(countryData.name, name)
           }
-          squadronExpIconId = this.curCountry + ";" + name
           seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
             getUnlockIdsByArmyId(this.curCountry, name, ediff))
           navImagesText = ::get_navigation_images_text(idx, countryData.pages.len())
@@ -2365,7 +2364,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             let hasObjective = isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(groupUnit) hasMarkerByUnitName(groupUnit.name, curEdiff))) != null
               : u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
-            show_obj(unitObj.findObject("unlockMarker"), hasObjective)
+            unitObj.findObject("unlockMarker")["isActive"] = hasObjective ? "yes" : "no"
           }
         }
       }

@@ -82,8 +82,8 @@ def find_adjacent_slot_in_cluster(cluster_id : int; slot_id : int; adjacent_clus
   // try slot with same index in adjacent cluster
   if true
     let rel_slot_id = slot_id - v.ammo_clusters__slotsRange[cluster_id].x + slots_range.x
-    assert(rel_slot_id >= slots_range.x && rel_slot_id < slots_range.y)
-    if get_ammo_slot_type(rel_slot_id, v) == ammo_type && v.ammo_slots__numAmmo[rel_slot_id].x == num_ammo.x
+    assert(rel_slot_id >= slots_range.x)
+    if rel_slot_id < slots_range.y && get_ammo_slot_type(rel_slot_id, v) == ammo_type && v.ammo_slots__numAmmo[rel_slot_id].x == num_ammo.x
       return rel_slot_id
   // search other slots
   for adjacent_slot_id in slots_range.x..slots_range.y
@@ -141,9 +141,7 @@ def gather_adjacent_slots(stowage_id : int; cluster_id : int; slot_id : int;
 [with_bundle(v)]
 def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id : int; slot_id : int; effect : AmmoSlotEffectType;
                                   v : tuple<
-                                    ammo_stowages__weaponTriggersRange : IPoint2List;
                                     ammo_stowage__ammoState : uint;
-                                    ammo_stowage__weaponTriggers : IntList;
                                     ammo_stowage__ammoTypeRemap : IPoint4List;
                                     ammo_stowage__weaponsIds : IntList;
                                     ammo_slots__state : UInt32List -const;
@@ -154,7 +152,6 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
                                     ammo_stowages__state : UInt32List -const;
                                     ammo_stowages__clustersRange : IPoint2List;
                                     ammo_clusters__typeAndStage : UInt16List;
-                                    ammo_clusters__state : UInt32List;
                                     ammo_clusters__slotsRange : IPoint2List
                                     >) : void
   // resolve combined effects
@@ -224,15 +221,12 @@ def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
                                       v : tuple<
                                         ammo_stowage__ammoState : uint;
                                         ammo_stowage__partIdRemap : IPoint4List;
-                                        ammo_stowage__weaponTriggers : IntList;
                                         ammo_stowage__ammoLost : int -const;
                                         ammo_stowage__ammoTypeRemap : IPoint4List;
                                         ammo_stowage__weaponsIds : IntList;
                                         ammo_stowages__state : UInt32List -const;
                                         ammo_stowages__clustersRange : IPoint2List;
-                                        ammo_stowages__weaponTriggersRange : IPoint2List;
                                         ammo_clusters__typeAndStage : UInt16List;
-                                        ammo_clusters__state : UInt32List;
                                         ammo_clusters__slotsRange : IPoint2List;
                                         ammo_slots__state : UInt32List -const;
                                         ammo_slots__numAmmo : IPoint2List -const;
@@ -487,14 +481,11 @@ def ammo_stowage_disable_affected_slots(var unit : Unit?; stowage_id : int; clus
                                         v : tuple<
                                           ammo_stowage__ammoState : uint;
                                           ammo_stowage__ammoLost : int -const;
-                                          ammo_stowage__weaponTriggers : IntList;
                                           ammo_stowage__ammoTypeRemap : IPoint4List;
                                           ammo_stowage__weaponsIds : IntList;
-                                          ammo_stowages__weaponTriggersRange : IPoint2List;
                                           ammo_stowages__state : UInt32List -const;
                                           ammo_stowages__clustersRange : IPoint2List;
                                           ammo_clusters__typeAndStage : UInt16List;
-                                          ammo_clusters__state : UInt32List;
                                           ammo_clusters__slotsRange : IPoint2List;
                                           ammo_slots__state : UInt32List -const;
                                           ammo_slots__ammoMaskAndType : UInt32List;
@@ -523,12 +514,10 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_stowage__nonFatalDetonatePortion : float2;
                                       ammo_stowage__ammoLost : int -const;
                                       ammo_stowage__delayedOffender : OffenderData -const;
-                                      ammo_stowage__weaponTriggers : IntList;
                                       ammo_stowage__ammoTypeRemap : IPoint4List;
                                       ammo_stowage__weaponsIds : IntList;
                                       ammo_stowages__state : UInt32List -const;
                                       ammo_stowages__clustersRange : IPoint2List;
-                                      ammo_stowages__weaponTriggersRange : IPoint2List;
                                       ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                                       ammo_clusters__fireParamsId : IntList;
                                       ammo_clusters__fireEvtId : IntList;

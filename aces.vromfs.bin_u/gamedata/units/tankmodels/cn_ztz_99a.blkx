@@ -70,17 +70,20 @@
       },
       "superstructure_front_dm": {
         "armorThickness": 20.0,
-        "createSecondaryShatters": false
+        "createSecondaryShatters": false,
+        "ignoreSolidDimension": true
       },
       "turret_02_side_dm": {
-        "armorThickness": 50.0
+        "armorThickness": 50.0,
+        "ignoreSolidDimension": true
       },
       "composite_armor_hull_01_dm": {
         "armorClass": "leopard_2a5_turret_nera",
-        "armorThickness": 125.0,
+        "armorThickness": 215.0,
         "genericArmorQuality": 1.0,
         "cumulativeArmorQuality": 1.02,
-        "createSecondaryShatters": false
+        "createSecondaryShatters": false,
+        "ignoreSolidDimension": true
       },
       "turret_04_back_dm": {
         "armorThickness": 30.0
@@ -167,6 +170,7 @@
         "armorThickness": 10.0
       },
       "turret_09_side_dm": {
+        "armorClass": "CHA_tank_modern",
         "armorThickness": 60.0
       }
     },
@@ -2371,7 +2375,9 @@
     "hideNodes": {
       "node": [
         "ex_decor_l_05",
-        "ex_decor_r_05"
+        "ex_decor_r_05",
+        "ex_decor_l_05_dm",
+        "ex_decor_r_05_dm"
       ]
     }
   },
@@ -3896,7 +3902,9 @@
           "hideNodes": {
             "node": [
               "ex_decor_l_05",
-              "ex_decor_r_05"
+              "ex_decor_r_05",
+              "ex_decor_l_05_dm",
+              "ex_decor_r_05_dm"
             ]
           }
         }

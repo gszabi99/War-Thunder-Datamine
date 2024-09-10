@@ -245,7 +245,7 @@ let cfg = {
       { section = "gunners_ship" }
       null
       { section = "weapons_ship" }
-      null
+      { shortcut = [ "ID_SHIP_ACTION_BAR_ITEM_10" ] }
       null
       null
       voiceMessagesMenuFunc

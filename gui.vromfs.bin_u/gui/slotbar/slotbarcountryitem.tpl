@@ -87,14 +87,6 @@ shopFilter {
       text:t='#measureUnits/percent'
       tooltip:t='#discount/notification'
     }
-
-    squadronExpIcon {
-      countryId:t='<<country>>'
-      value:t='{"viewId": "COUNTRY_SQUADRON_EXP_ICON"}'
-      type:t='slotbarCountry'
-      display:t='hide'
-    }
-
   }
   <</hasNotificationIcon>>
 }

@@ -33,11 +33,13 @@ frame {
         text:t='#mainmenu/btnReset'
         ButtonImg {}
         on_click='onReset'
+        btnName:t='Y'
       }
       Button_text {
         text:t='#save/btnSave'
         ButtonImg {}
         on_click='onSave'
+        btnName:t='X'
       }
     }
   }
@@ -78,6 +80,14 @@ frame {
         margin:t='2@sf/@pf'
         <<@presetsComboboxMarkup>>
       }
+
+      Button_text {
+        width:t='pw'
+        margin-top:t='1@blockInterval'
+        text:t='#tankSight/savePreset'
+        ButtonImg {}
+        on_click='onSaveCustomPreset'
+      }
     }
 
     <<#presetSettings>>
@@ -94,10 +104,8 @@ frame {
         expanded='no'
         <</initiallyExpand>>
 
-        tankSightOptionsTitle {
+        button {
           width='pw'
-          flow:t='horizontal'
-          behavior:t='button'
           on_click:t='onOptionsTitleClick'
 
           textAreaCentered {
@@ -132,9 +140,9 @@ tdiv {
   Button_text {
     id:t='btn_toggle_preview'
     text:t='#mainmenu/btnPreview'
-    btnName:t=''
     ButtonImg {}
     on_click='onToggleSightPreviewMode'
+    btnName:t='L3'
   }
 
   Button_text {
@@ -142,6 +150,7 @@ tdiv {
     text:t=''
     ButtonImg {}
     on_click='onToggleLightingMode'
+    btnName:t='LB'
   }
 
   Button_text {
@@ -149,6 +158,7 @@ tdiv {
     text:t=''
     ButtonImg {}
     on_click='onToggleNightVisionMode'
+    btnName:t='LT'
   }
 
   Button_text {
@@ -156,6 +166,7 @@ tdiv {
     text:t=''
     ButtonImg {}
     on_click='onToggleThermalMode'
+    btnName:t='RB'
   }
 
   Button_text {

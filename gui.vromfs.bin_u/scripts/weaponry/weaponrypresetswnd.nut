@@ -42,10 +42,13 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
+let { round_by_value } = require("%sqstd/math.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
 let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
+
+let predifineWndHeightsInTiers = [3.0, 7.0, 13.0]
 
 gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.BASE
@@ -78,10 +81,13 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   customIdx            = 0
   presetNest           = null
   availableWeapons     = null
+  presetsHeightInTiers = 0
+  tierSize             = 0
 
   function getSceneTplView() {
     this.weaponryByPresetInfo = getWeaponryByPresetInfo(this.unit, this.chooseMenuList)
-    let tiersWidth = to_pixels($"{this.weaponryByPresetInfo.weaponsSlotCount}@tierIconSize")
+    this.tierSize = to_pixels("1@tierIconSize")
+    let tiersWidth = this.weaponryByPresetInfo.weaponsSlotCount * this.tierSize
     let freeWidthForText = to_pixels("1@srw - 1@weaponsPresetDescriptionWidth - 1@scrollBarSize") - tiersWidth
     this.presetTextWidth = min(freeWidthForText, to_pixels("1@modPresetTextMaxWidth"))
     this.chapterPos = this.presetTextWidth + 0.5 * tiersWidth
@@ -95,8 +101,10 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.lastWeapon = this.initLastWeapon ?? getLastWeapon(this.unit.name)
     this.presetsMarkup = this.getPresetsMarkup(this.presets)
+    this.presetsHeightInTiers = loadLocalAccountSettings("weaponryPrestWndHeightInTiers") ?? 7.0
     return {
       presetsWidth = tiersWidth + this.presetTextWidth
+      presetsHeightInTiers = this.presetsHeightInTiers
       chapterPos = this.chapterPos
       presets = this.presetsMarkup
     }
@@ -137,6 +145,8 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       && !isInFlight()
       && this.unit.isUsable()
       && !this.isCustomPresetsEditAvailable(), this.scene)
+    this.scene.findObject("timer_update")?.setUserData(this)
+    this.updateChangeWndHeightButtons()
   }
 
   function updateCustomIdx() {
@@ -323,8 +333,10 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function doItemAction(item) {
     this.guiScene.playSound("check")
-    if (this.onChangeValueCb)
+    if (this.onChangeValueCb) {
       this.onChangeValueCb(item)
+      this.updateChoosenWeapon()
+    }
     else {
       let amount = getItemAmount(this.unit, item)
       if (getLastWeapon(this.unit.name) == item.name || !amount) {
@@ -342,7 +354,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       ::check_secondary_weapon_mods_recount(this.unit)
       this.checkSaveBulletsAndDo()
     }
-    this.afterItemAction()
+    this.guiScene.performDelayed(this, @()this.goBack())
   }
 
   function onBuy(item) {
@@ -840,8 +852,66 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     secondary_weapon_camera_mode(false)
   }
 
-  afterItemAction = @() null
   loadHangarModel = @() loadModel(this.unit.name)
+
+  getHeightInTiers = @(height) round_by_value(height.tofloat()/this.tierSize, 0.01)
+
+  function saveWindowHeight(heightInTiers = null) {
+    if (heightInTiers == null) {
+      let height = this.scene.findObject("presets_nest").getSize()[1]
+      heightInTiers = this.getHeightInTiers(height)
+    }
+    if (this.presetsHeightInTiers == heightInTiers)
+      return
+    this.presetsHeightInTiers = heightInTiers
+    saveLocalAccountSettings("weaponryPrestWndHeightInTiers", heightInTiers)
+    this.updateChangeWndHeightButtons(heightInTiers)
+  }
+
+  onUpdate = @(_obj, _dt) this.saveWindowHeight()
+
+  function changeWndHeight(isInc) {
+    let presetsNest = this.scene.findObject("presets_nest")
+    let curSize = presetsNest.getSize()
+    let curHeightInTier = this.getHeightInTiers(curSize[1])
+    local newHeightInTier = null
+    if (isInc)
+      newHeightInTier = predifineWndHeightsInTiers.findvalue(@(v) v > curHeightInTier)
+    else {
+      let suitableHeigthsInTier = predifineWndHeightsInTiers.filter(@(v) v < curHeightInTier)
+      if (suitableHeigthsInTier.len() > 0)
+        newHeightInTier = suitableHeigthsInTier.top()
+    }
+    if (newHeightInTier == null)
+      return
+
+    presetsNest.size = $"{curSize[0]}, {newHeightInTier * this.tierSize}"
+    this.saveWindowHeight(newHeightInTier)
+  }
+
+  function moveMouseToVisibleObj(obj, objIdFallback) {
+    this.guiScene.applyPendingChanges(false)
+    if (!obj.isVisible())
+      obj = this.scene.findObject(objIdFallback)
+    move_mouse_on_obj(obj)
+  }
+
+  function onDecreaseWndHeight(obj) {
+    this.changeWndHeight(false)
+    this.moveMouseToVisibleObj(obj, "increaseWndHeightBtn")
+  }
+
+  function onIncreaseWndHeightBtn(obj) {
+    this.changeWndHeight(true)
+    this.moveMouseToVisibleObj(obj, "decreaseWndHeightBtn")
+  }
+
+  function updateChangeWndHeightButtons(heightInTiers = null) {
+    if (heightInTiers == null)
+      heightInTiers = this.getHeightInTiers(this.scene.findObject("presets_nest").getSize()[1])
+    showObjById("increaseWndHeightBtn", predifineWndHeightsInTiers.findindex(@(v) v > heightInTiers) != null, this.scene)
+    showObjById("decreaseWndHeightBtn", predifineWndHeightsInTiers.findindex(@(v) v < heightInTiers) != null, this.scene)
+  }
 }
 
 gui_handlers.weaponryPresetsModal <- class (gui_handlers.weaponryPresetsWnd) {
@@ -855,8 +925,8 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.weaponryPresetsWnd) {
     })
   }
 
-  afterItemAction = @() this.guiScene.performDelayed(this, @()this.goBack())
   loadHangarModel = @() null
+  updateChangeWndHeightButtons= @(_ = null) null
 }
 
 return {

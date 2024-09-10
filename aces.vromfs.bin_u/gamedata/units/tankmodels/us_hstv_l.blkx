@@ -45,6 +45,7 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
+  "radarCanLockTargetFromTPV": false,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
   "DamageParts": {
@@ -2784,6 +2785,14 @@
       }
     }
   },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": "optic_gun_dm"
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -2806,7 +2815,61 @@
     "airstrike": {},
     "improved_optics": {},
     "modern_tank_laser_rangefinder": {
-      "tier": 3
+      "tier": 3,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "rangefinderDmPart": "fire_control_system_dm",
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          14999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          14999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          14999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          14999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": {
+            "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+            "turretIndex": 0,
+            "designationTurretIndex": 0,
+            "dmPart": "optic_gun_01_dm"
+          }
+        }
+      }
     },
     "75mm_usa_APDSFS": {},
     "75mm_usa_HE_VT": {},

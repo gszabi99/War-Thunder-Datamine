@@ -397,7 +397,7 @@
         "armorThickness": 15.0
       },
       "ex_armor_l_03_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 10.0
       },
       "ex_armor_l_06_dm": {},
       "ex_armor_l_08_dm": {},
@@ -408,7 +408,7 @@
         "armorThickness": 15.0
       },
       "ex_armor_r_03_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 10.0
       }
     },
     "chassis": {
@@ -436,6 +436,23 @@
       "createSecondaryShatters": false,
       "ex_decor_l_10_dm": {},
       "ex_decor_r_10_dm": {}
+    },
+    "hull_spall_liner": {
+      "armorClass": "armour_aramide_fabric",
+      "hp": 200.0,
+      "armorThickness": 20.0,
+      "stopChanceOnDeadPart": 0.0,
+      "spall_liner_01_dm": {},
+      "spall_liner_02_dm": {},
+      "spall_liner_03_dm": {},
+      "spall_liner_04_dm": {},
+      "spall_liner_05_dm": {},
+      "spall_liner_06_dm": {},
+      "spall_liner_07_dm": {},
+      "spall_liner_08_dm": {},
+      "spall_liner_09_dm": {},
+      "spall_liner_10_dm": {},
+      "spall_liner_11_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -1947,8 +1964,9 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
-        "speedYaw": 30.0,
-        "speedPitch": 8.0,
+        "jammedReloadTime": 8.0,
+        "speedYaw": 53.0,
+        "speedPitch": 28.0,
         "fireConeAngle": 1.0,
         "bullets": 360,
         "recoilMultiplier": 0.3,
@@ -2054,20 +2072,12 @@
                 0.0
               ],
               [
-                25.0,
+                45.0,
                 0.015
               ],
               [
-                35.0,
+                80.0,
                 0.02
-              ],
-              [
-                45.0,
-                0.1
-              ],
-              [
-                50.0,
-                0.3
               ]
             ]
           }
@@ -2261,6 +2271,12 @@
       "dampeningRelaxationRatio": 0.15,
       "dampeningCompressionRatio": 0.05,
       "brokenWheelSteeringDeflection": -15.0,
+      "steeringNodes": {
+        "wheel_r_01": "bone_wheel_r_01",
+        "wheel_l_01": "bone_wheel_l_01",
+        "wheel_r_02": "bone_wheel_r_02",
+        "wheel_l_02": "bone_wheel_l_02"
+      },
       "steeringDeflection": {
         "wheel_l_01": 25.0,
         "wheel_l_02": 15.0,
@@ -2339,51 +2355,34 @@
         ],
         "name": "bone_suspension_$1_$2_01"
       },
-      "suspension_01_02": {
-        "limitMin": [
-          -1.0,
-          -1.0,
-          0.0
-        ],
-        "limitMax": [
-          1.0,
-          1.0,
-          0.0
-        ],
-        "name": "bone_suspension_$1_$2_02"
-      },
       "wheel": {
         "searchChildren": {
           "occurence": 1,
           "limitMin": [
-            0.0,
-            0.0,
+            -1.0,
+            -1.0,
             0.0
           ],
           "limitMax": [
-            0.0,
-            0.0,
+            1.0,
+            1.0,
             0.0
           ],
-          "parent": "lever",
-          "find": "bone_wheel_"
+          "find": "bone_wheel_",
+          "parent": "lever"
         }
       }
     },
     "constraints": {
       "edge": [
         {
-          "from": "lever",
-          "to": "wheel"
-        },
-        {
-          "from": "suspension_01_02",
           "to": "wheel",
+          "from": "lever",
           "moveNodes": false
         },
         {
-          "from": "suspension_01_01",
           "to": "wheel",
+          "from": "suspension_01_01",
           "moveNodes": false
         }
       ]
@@ -3484,8 +3483,9 @@
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
-              "speedYaw": 30.0,
-              "speedPitch": 8.0,
+              "jammedReloadTime": 8.0,
+              "speedYaw": 53.0,
+              "speedPitch": 28.0,
               "fireConeAngle": 1.0,
               "bullets": 360,
               "recoilMultiplier": 0.3,
@@ -3591,20 +3591,12 @@
                       0.0
                     ],
                     [
-                      25.0,
+                      45.0,
                       0.015
                     ],
                     [
-                      35.0,
+                      80.0,
                       0.02
-                    ],
-                    [
-                      45.0,
-                      0.1
-                    ],
-                    [
-                      50.0,
-                      0.3
                     ]
                   ]
                 }

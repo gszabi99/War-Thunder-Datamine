@@ -17,7 +17,8 @@
   "hasPointOfInterestMemory": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
-  "hmdF16c": true,
+  "hmdShelZoom": true,
+  "mfdCamTads": true,
   "ilsJ8HK": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
@@ -67,9 +68,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2419,7 +2417,8 @@
             },
             {
               "type": "rwr",
-              "scale": 1.0
+              "scale": 1.0,
+              "centralMark": "cross"
             },
             {
               "type": "ils_on_camera"
@@ -2646,10 +2645,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -90.0,
-        90.0,
-        -155.0,
-        35.0
+        -89.0,
+        89.0,
+        -154.0,
+        34.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
@@ -2766,6 +2765,10 @@
         "rocket_pylon_002",
         "rocket_pylon_003",
         "rocket_pylon_004",
+        "twin_bomb_pylon_001",
+        "twin_bomb_pylon_002",
+        "twin_bomb_adapter_001",
+        "twin_bomb_adapter_002",
         "twin_pylon_001",
         "twin_pylon_002",
         "twin_pylon_003",
@@ -3085,6 +3088,37 @@
             }
           },
           {
+            "iconType": "bombs_middle_group_x2",
+            "name": "250_3_x2",
+            "reqModification": "cn_type_250_ls_6",
+            "ShowNodes": {
+              "node": [
+                "twin_bomb_pylon_001",
+                "twin_bomb_adapter_001"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+                "emitter": "bomb_gp_250_3_010",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+                "emitter": "bomb_gp_250_3_011",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
             "iconType": "bombs_large",
             "name": "500_3",
             "reqModification": "cn_type_500_ls_6",
@@ -3117,6 +3151,37 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "250_4_x2",
+            "reqModification": "cn_type_250_ls_6",
+            "ShowNodes": {
+              "node": [
+                "twin_bomb_pylon_001",
+                "twin_bomb_adapter_001"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "bomb_gp_250_3_010",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "bomb_gp_250_3_011",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
           },
           {
             "iconType": "bombs_large_high_drag",
@@ -3176,7 +3241,7 @@
             }
           },
           {
-            "iconType": "guided_missile_air_to_surface",
+            "iconType": "glide_bombs_middle",
             "name": "ls6_250",
             "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
@@ -3185,6 +3250,7 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_6_250.blk",
+              "machLimit": 1.01,
               "emitter": "lgb_ls_500j_001",
               "bullets": 1,
               "external": true,
@@ -3196,7 +3262,7 @@
             }
           },
           {
-            "iconType": "guided_missile_air_to_surface",
+            "iconType": "glide_bombs_large",
             "name": "ls6_500",
             "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
@@ -3205,6 +3271,7 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "machLimit": 1.01,
               "emitter": "lgb_ls_500j_001",
               "bullets": 1,
               "external": true,
@@ -3373,6 +3440,31 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "twin_pylon_003",
+                "800l_fyx800_drop_tank_001"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank6_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/cn_800l_fyx800_j_10_drop_tank_1.blk",
+              "emitter": "800l_fyx800_drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 9,
+              "preset": "ptb_slot9"
             }
           }
         ]
@@ -3806,6 +3898,31 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot9",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "gdj_6_pylon_004",
+                "800l_fyx800_drop_tank_002"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/cn_800l_fyx800_j_10_drop_tank_2.blk",
+              "emitter": "800l_fyx800_drop_tank_002",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_slot3"
+            }
           }
         ]
       },
@@ -3946,6 +4063,37 @@
             }
           },
           {
+            "iconType": "bombs_middle_group_x2",
+            "name": "250_3_x2",
+            "reqModification": "cn_type_250_ls_6",
+            "ShowNodes": {
+              "node": [
+                "twin_bomb_pylon_002",
+                "twin_bomb_adapter_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+                "emitter": "bomb_gp_250_3_012",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_3.blk",
+                "emitter": "bomb_gp_250_3_013",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
+          },
+          {
             "iconType": "bombs_large",
             "name": "500_3",
             "reqModification": "cn_type_500_ls_6",
@@ -3978,6 +4126,37 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "250_4_x2",
+            "reqModification": "cn_type_250_ls_6",
+            "ShowNodes": {
+              "node": [
+                "twin_bomb_pylon_002",
+                "twin_bomb_adapter_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "bomb_gp_250_3_012",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/cn_gp_250_4.blk",
+                "emitter": "bomb_gp_250_3_013",
+                "bullets": 1,
+                "external": true,
+                "separate": true,
+                "machLimit": 1.01
+              }
+            ]
           },
           {
             "iconType": "bombs_large_high_drag",
@@ -4037,7 +4216,7 @@
             }
           },
           {
-            "iconType": "guided_missile_air_to_surface",
+            "iconType": "glide_bombs_middle",
             "name": "ls6_250",
             "reqModification": "cn_type_250_ls_6",
             "ShowNodes": {
@@ -4046,6 +4225,7 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_6_250.blk",
+              "machLimit": 1.01,
               "emitter": "lgb_ls_500j_002",
               "bullets": 1,
               "external": true,
@@ -4057,7 +4237,7 @@
             }
           },
           {
-            "iconType": "guided_missile_air_to_surface",
+            "iconType": "glide_bombs_large",
             "name": "ls6_500",
             "reqModification": "cn_type_500_ls_6",
             "ShowNodes": {
@@ -4066,6 +4246,7 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/cn_ls_6_500.blk",
+              "machLimit": 1.01,
               "emitter": "lgb_ls_500j_002",
               "bullets": 1,
               "external": true,
@@ -4394,7 +4575,7 @@
       1
     ],
     "emitterName": "emtr_chute",
-    "chuteModel": "chute_ptk_char",
+    "chuteModel": "chute_ptk_green_char",
     "chuteAnimVarName": "chute_state_switch",
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",

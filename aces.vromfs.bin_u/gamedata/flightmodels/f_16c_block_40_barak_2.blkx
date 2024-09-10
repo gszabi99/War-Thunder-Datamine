@@ -77,9 +77,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2598,10 +2595,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -90.0,
-        90.0,
-        -155.0,
-        35.0
+        -89.0,
+        89.0,
+        -154.0,
+        34.0
       ],
       "opticType": "targeting",
       "turretNo": 0
@@ -2637,6 +2634,10 @@
       {
         "name": "f_16c_block_40_barak_2_aim_9m",
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_40_barak_2_aim_9m.blk"
+      },
+      {
+        "name": "f_16c_block_40_barak_2_derby",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_40_barak_2_derby.blk"
       },
       {
         "name": "f_16c_block_40_barak_2_aim_120",
@@ -2675,8 +2676,8 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_40_barak_2_gbu_10.blk"
       },
       {
-        "name": "f_16d_block_40_barak_2_gbu_31",
-        "blk": "gameData/FlightModels/weaponPresets/f_16d_block_40_barak_2_gbu_31.blk"
+        "name": "f_16c_block_40_barak_2_gbu_31",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_40_barak_2_gbu_31.blk"
       }
     ]
   },
@@ -2787,7 +2788,7 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 30,
+              "bullets": 60,
               "external": true,
               "separate": false,
               "bulletsCartridge": 1
@@ -2796,7 +2797,7 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 30,
+              "bullets": 60,
               "external": true,
               "separate": false,
               "bulletsCartridge": 1
@@ -2851,6 +2852,22 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+              "emitter": "aim_9e_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "derby_slot1",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": "launcher_aim9_1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
               "emitter": "aim_9e_001",
               "bullets": 1,
               "external": true,
@@ -2922,6 +2939,25 @@
             }
           },
           {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "derby_slot2",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": [
+                "pylon1",
+                "launcher_aim9_2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby_default.blk",
+              "emitter": "aim_9e_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "aim_120a_default",
             "ShowNodes": {
@@ -2978,6 +3014,25 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9e_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "derby_slot3",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": [
+                "pylon3",
+                "launcher_aim9_3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
               "emitter": "aim_9e_003",
               "bullets": 1,
               "external": true,
@@ -3218,7 +3273,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_large_jdam",
+            "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot3",
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
@@ -3822,6 +3877,25 @@
             }
           },
           {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "derby_slot8",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": [
+                "pylon7",
+                "launcher_aim9_4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
+              "emitter": "aim_9e_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "aim_120a",
             "reqModification": "us_aim_120a",
@@ -4055,7 +4129,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_large_jdam",
+            "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot8",
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
@@ -4120,6 +4194,25 @@
             }
           },
           {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "derby_slot9",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": [
+                "pylon8",
+                "launcher_aim9_5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby_default.blk",
+              "emitter": "aim_9e_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "aim_120a_default",
             "ShowNodes": {
@@ -4168,6 +4261,22 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
+              "emitter": "aim_9e_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air_midrange",
+            "name": "derby_slot10",
+            "reqModification": "il_derby",
+            "ShowNodes": {
+              "node": "launcher_aim9_6"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/il_derby.blk",
               "emitter": "aim_9e_006",
               "bullets": 1,
               "external": true,
@@ -4392,16 +4501,6 @@
       "tier": 4,
       "reqModification": "us_1000lb_mk83"
     },
-    "M60_air_targets": {},
-    "M60_armor_targets": {},
-    "M60_stealth": {},
-    "M60_belt_pack": {
-      "tier": 1
-    },
-    "M60_new_gun": {
-      "reqModification": "M60_belt_pack",
-      "tier": 3
-    },
     "gr_litening_pod": {
       "modClass": "weapon",
       "tier": 1
@@ -4433,6 +4532,21 @@
     "us_aim_120a": {
       "reqModification": "us_aim_9m",
       "tier": 4,
+      "modClass": "weapon"
+    },
+    "M60_air_targets": {},
+    "M60_armor_targets": {},
+    "M60_stealth": {},
+    "M60_belt_pack": {
+      "tier": 1
+    },
+    "M60_new_gun": {
+      "reqModification": "M60_belt_pack",
+      "tier": 2
+    },
+    "il_derby": {
+      "reqModification": "us_aim_9m",
+      "tier": 3,
       "modClass": "weapon"
     }
   },

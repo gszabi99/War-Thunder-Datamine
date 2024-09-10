@@ -2005,15 +2005,15 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 750000.0,
+      "Empty": 810000.0,
       "momentOfInertia": [
-        35.0,
-        380.0,
-        210.0
+        32.0,
+        330.0,
+        180.0
       ],
       "CenterOfGravity": [
         1.0,
-        0.6,
+        0.1,
         0.0
       ]
     },
@@ -2040,15 +2040,15 @@
         "row": [
           [
             1.0,
-            2.1
+            1.9
           ],
           [
             1.5,
-            4.1
+            3.0
           ],
           [
-            3.32,
-            7.5
+            2.32,
+            5.5
           ]
         ]
       },
@@ -2091,13 +2091,14 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
+      "mulReaction": 0.9,
       "rudder": {
         "pos": [
           -34.7,
           1.0,
           0.0
         ],
-        "area": 5.0,
+        "area": 20.0,
         "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }
@@ -3022,12 +3023,12 @@
   "cockpit": {
     "headPos": [
       0.0,
-      10.0,
-      -44.0
+      14.0,
+      -50.0
     ],
     "headPosOnShooting": [
       13.0,
-      11.5,
+      14.5,
       0.0
     ],
     "detectionHeight": 22.0
@@ -4508,6 +4509,12 @@
       "nameLocId": "ship_flag_uk_02/name",
       "texture": "flag_uk_02_c*"
     },
+    "ship_flag_uk_ran_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_ran_03",
+      "nameLocId": "ship_flag_uk_ran_03/name",
+      "texture": "flag_uk_modern_ran_ensign_c*"
+    },
     "ship_flag_egypt_01": {
       "category": "naval",
       "unlockId": "ship_flag_egypt_01",
@@ -5932,6 +5939,13 @@
       "nameLocId": "flag_d_day_anniversary_01/name",
       "descLocId": "flag_d_day_anniversary_01/desc",
       "texture": "flag_d_day_anniversary_01_c*"
+    },
+    "ship_flag_tairyo_bata": {
+      "category": "other",
+      "unlockId": "ship_tairyo_bata_01",
+      "nameLocId": "ship_tairyo_bata_01/name",
+      "descLocId": "ship_tairyo_bata_01/desc",
+      "texture": "flag_tairyo_bata_c*"
     }
   }
 }

@@ -10,8 +10,7 @@ let soundDevice = require("soundDevice")
 let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions } = require("%scripts/options/systemOptions.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
-let { is_xboxone_X } = require("%sqstd/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 //
 
 
@@ -46,10 +45,6 @@ function getPrivacyOptionsList() {
     [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS, "spinner", hasPrivacyFeature],
     [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS, "spinner", hasPrivacyFeature && is_platform_pc]
   ]
-}
-
-function hasConsolePresets() {
-  return is_xboxone_X || isPlatformXboxScarlett
 }
 
 let otherOptionsList = @() [
@@ -89,7 +84,6 @@ let getMainOptions = function() {
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
       [USEROPT_POSTFX_SETTINGS, "button", !is_compatibility_mode()],
       [USEROPT_HDR_SETTINGS, "button", is_hdr_enabled()],
-      [USEROPT_CONSOLE_GFX_PRESET, "combobox", hasConsolePresets()],
 
       ["options/header/commonBattleParameters"],
       [USEROPT_DAMAGE_INDICATOR_SIZE, "slider"],
@@ -100,7 +94,7 @@ let getMainOptions = function() {
       [USEROPT_AUTO_SQUAD, "spinner"],
       [USEROPT_QUEUE_JIP, "spinner"],
       [USEROPT_ORDER_AUTO_ACTIVATE, "spinner", hasFeature("OrderAutoActivate")],
-      [USEROPT_TANK_ALT_CROSSHAIR, "spinner", can_add_tank_alt_crosshair()
+      [USEROPT_TANK_ALT_CROSSHAIR, "spinner", can_add_tank_alt_crosshair() && !hasFeature("enableCustomTankSights")
                                                 && (hasFeature("TankAltCrosshair")
                                                     || get_user_alt_crosshairs("", "").len()
                                                    )],

@@ -20,8 +20,6 @@
   "customUpdateDiv": 5,
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
-  "ikPilotMaxUpdateDistance": 80.0,
-  "ikPilotMaxRenderDistance": 80.0,
   "useSimpleDeathConditionsAndEffects": false,
   "type": "typeGunBoat",
   "expClass": "exp_gun_boat",
@@ -1955,11 +1953,11 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 300000.0,
+      "Empty": 240000.0,
       "momentOfInertia": [
-        43.0,
-        170.0,
-        120.0
+        33.0,
+        110.0,
+        80.0
       ],
       "CenterOfGravity": [
         -2.0,
@@ -1973,16 +1971,16 @@
       "speedToTime": {
         "row": [
           [
-            3.0,
-            5.0
+            4.0,
+            4.8
           ],
           [
-            5.6,
-            9.4
+            7.6,
+            9.1
           ],
           [
             11.83,
-            15.9
+            16.1
           ]
         ]
       },
@@ -2041,7 +2039,7 @@
             -0.9,
             1.2
           ],
-          "area": 5.0,
+          "area": 4.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         },
@@ -2051,7 +2049,7 @@
             -0.9,
             -1.2
           ],
-          "area": 5.0,
+          "area": 4.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         }
@@ -2524,26 +2522,8 @@
           ],
           "lim3": [
             -28.0,
-            83.0,
+            75.0,
             -10.0,
-            70.0
-          ],
-          "lim4": [
-            83.0,
-            94.0,
-            -6.0,
-            70.0
-          ],
-          "lim5": [
-            94.0,
-            110.0,
-            9.0,
-            70.0
-          ],
-          "lim6": [
-            110.0,
-            118.0,
-            -8.0,
             70.0
           ]
         },
@@ -2664,15 +2644,15 @@
   "cockpit": {
     "headPos": [
       0.0,
-      10.0,
-      -33.0
+      9.0,
+      -34.0
     ],
     "headPosOnShooting": [
-      8.0,
-      11.5,
+      5.6,
+      9.7,
       0.0
     ],
-    "detectionHeight": 17.0
+    "detectionHeight": 11.4
   },
   "sound": {
     "EngineName": "engine_shiplight01",
@@ -3699,30 +3679,30 @@
   },
   "skin": [
     {
-      "name": "usa_camo_blackwhite_net",
-      "nameLocId": "skin/usa_camo_blackwhite_net",
-      "descLocId": "skin/usa_camo_blackwhite_net/desc",
+      "name": "fr_camo_navy_ground",
+      "nameLocId": "skin/fr_camo_navy_ground",
+      "descLocId": "skin/fr_camo_navy_ground/desc",
       "replace_tex": {
         "from": "camo_flatgullgrey*",
-        "to": "usa_camo_blackwhite_net*"
+        "to": "fr_camo_navy_ground*"
       }
     },
     {
-      "name": "usa_camo_modern_cubes",
-      "nameLocId": "skin/usa_camo_modern_cubes",
-      "descLocId": "skin/usa_camo_modern_cubes/desc",
+      "name": "fr_camo_modern_geometry",
+      "nameLocId": "skin/fr_camo_modern_geometry",
+      "descLocId": "skin/fr_camo_modern_geometry/desc",
       "replace_tex": {
         "from": "camo_flatgullgrey*",
-        "to": "usa_camo_modern_cubes*"
+        "to": "fr_camo_modern_geometry*"
       }
     },
     {
-      "name": "usa_camo_blackblue_geometry",
-      "nameLocId": "skin/usa_camo_blackblue_geometry",
-      "descLocId": "skin/usa_camo_blackblue_geometry/desc",
+      "name": "fr_camo_blackblue_brokenglass",
+      "nameLocId": "skin/fr_camo_blackblue_brokenglass",
+      "descLocId": "skin/fr_camo_blackblue_brokenglass/desc",
       "replace_tex": {
         "from": "camo_flatgullgrey*",
-        "to": "usa_camo_blackblue_geometry*"
+        "to": "fr_camo_blackblue_brokenglass*"
       }
     }
   ],
@@ -3796,6 +3776,12 @@
       "unlockId": "ship_flag_uk_02",
       "nameLocId": "ship_flag_uk_02/name",
       "texture": "flag_uk_02_c*"
+    },
+    "ship_flag_uk_ran_03": {
+      "category": "naval",
+      "unlockId": "ship_flag_uk_ran_03",
+      "nameLocId": "ship_flag_uk_ran_03/name",
+      "texture": "flag_uk_modern_ran_ensign_c*"
     },
     "ship_flag_egypt_01": {
       "category": "naval",
@@ -5221,6 +5207,13 @@
       "nameLocId": "flag_d_day_anniversary_01/name",
       "descLocId": "flag_d_day_anniversary_01/desc",
       "texture": "flag_d_day_anniversary_01_c*"
+    },
+    "ship_flag_tairyo_bata": {
+      "category": "other",
+      "unlockId": "ship_tairyo_bata_01",
+      "nameLocId": "ship_tairyo_bata_01/name",
+      "descLocId": "ship_tairyo_bata_01/desc",
+      "texture": "flag_tairyo_bata_c*"
     }
   }
 }

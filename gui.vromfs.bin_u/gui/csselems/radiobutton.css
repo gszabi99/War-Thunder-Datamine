@@ -1,4 +1,4 @@
-@const promoRadiobuttonSize: 8@sf/@pf;
+@const promoRadiobuttonH: 4@sf/@pf;
 @const promoRadiobuttonBgColor: #3D3D3D3D;
 @const promoRadiobuttonBgColorHover: #99999999;
 
@@ -54,22 +54,25 @@ RadioButton:current:hover >    RadioButtonImg { background-image:#ui/gameuiskin#
 RadioButton:current:pushed >   RadioButtonImg { background-image:#ui/gameuiskin#radiobutton_checked_active.svg; }
 
 RadioButtonList.promo {
-  itemInterval:3@promoRadiobuttonSize;
   left:pw/2-w/2;
   top:0;
+  itemInterval:0;
+  size:pw, 4@promoRadiobuttonH;
 }
 
 .promo > RadioButton {
-  min-width: @promoRadiobuttonSize;
-  height: @promoRadiobuttonSize;
+  width: fw;
   padding: 0;
+  height:ph;
 }
 
 .promo > RadioButton > RadioButtonImg {
-  size:@promoRadiobuttonSize, @promoRadiobuttonSize;
+  size:pw - 8@sf/@pf, @promoRadiobuttonH;
+  top:@promoRadiobuttonH;
+  left:(pw-w)/2;
   background-color:@promoRadiobuttonBgColor;
-  background-image:#ui/gameuiskin#radiobutton_promo.svg;
-  background-svg-size:@promoRadiobuttonSize, @promoRadiobuttonSize;
+  background-image:"";
+  position:absolute;
 }
 
 .promo > RadioButton:hover > RadioButtonImg {

@@ -12,7 +12,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
-let { getPrizeText } = require("%scripts/items/prizesView.nut")
+let { getPrizeText, getPrizeCurrencyCfg, getDescriptonView, getPrizeTooltipConfig } = require("%scripts/items/prizesView.nut")
 
 function rewardsSortComparator(a, b) {
   if (!a || !b)
@@ -194,7 +194,7 @@ function rewardsSortComparator(a, b) {
   if (!imageAsItem)
     return resultImage
 
-  let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
+  let tooltipConfig = getPrizeTooltipConfig(config)
   return handyman.renderCached(("%gui/items/reward_item.tpl"), { items = [tooltipConfig.__update({
     layered_image = resultImage,
     hasFocusBorder = true })] })
@@ -225,7 +225,7 @@ function rewardsSortComparator(a, b) {
 }
 
 ::trophyReward.getMoneyLayer <- function getMoneyLayer(config) {
-  let currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
+  let currencyCfg = getPrizeCurrencyCfg(config)
   if (!currencyCfg)
     return  ""
 
@@ -312,7 +312,7 @@ function rewardsSortComparator(a, b) {
   local currencies = {}
 
   foreach (config in configsArray) {
-    let currencyCfg = ::PrizesView.getPrizeCurrencyCfg(config)
+    let currencyCfg = getPrizeCurrencyCfg(config)
     if (currencyCfg) {
       if (!(currencyCfg.type in currencies))
         currencies[currencyCfg.type] <- currencyCfg
@@ -429,8 +429,8 @@ function rewardsSortComparator(a, b) {
   let view = {
     textTitle = this.getRewardText(prizeConfig, false)
     prizeImg = this.getImageByConfig(prizeConfig, true)
-    textDesc = ::PrizesView.getDescriptonView(prizeConfig).textDesc
-    markupDesc = ::PrizesView.getDescriptonView(prizeConfig).markupDesc
+    textDesc = getDescriptonView(prizeConfig).textDesc
+    markupDesc = getDescriptonView(prizeConfig).markupDesc
   }
 
   return handyman.renderCached("%gui/items/trophyRewardDesc.tpl", view)

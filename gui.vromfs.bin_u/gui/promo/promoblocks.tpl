@@ -79,24 +79,6 @@ promoButton {
       textareaFade {
         position:t='relative'
         pos:t='0, 0.5@arrowButtonHeight-0.5h'
-        <<#isMultiblock>>
-        RadioButtonList {
-          id:t='multiblock_radiobuttons_list'
-          blockId:t='<<id>>'
-          position:t='absolute'
-          pos:t='0.5pw-0.5w, ph+1@framePadding'
-          on_select:t='switchBlock'
-          on_click:t='manualSwitchBlock'
-          highlightSelected:t='yes'
-          class:t='promo'
-          <<#radiobuttons>>
-            RadioButton {
-              <<#selected>>selected:t='yes'<</selected>>
-              RadioButtonImg {}
-            }
-          <</radiobuttons>>
-        }
-        <</isMultiblock>>
 
         <<^showTextShade>>display:t='hide'<</showTextShade>>
         tdiv {
@@ -135,6 +117,24 @@ promoButton {
           }
         }
       }
+      <<#isMultiblock>>
+        RadioButtonList {
+          id:t='multiblock_radiobuttons_list'
+          blockId:t='<<id>>'
+          position:t='absolute'
+          pos:t='0.5pw-0.5w, ph-h'
+          on_select:t='switchBlock'
+          on_click:t='manualSwitchBlock'
+          highlightSelected:t='yes'
+          class:t='promo'
+          <<#radiobuttons>>
+            RadioButton {
+              <<#selected>>selected:t='yes'<</selected>>
+              RadioButtonImg {}
+            }
+          <</radiobuttons>>
+        }
+      <</isMultiblock>>
       <<^showTextShade>>
       <<#notifyNew>>
       newIconWidget {

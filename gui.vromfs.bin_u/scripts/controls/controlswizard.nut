@@ -29,7 +29,7 @@ let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 let { steam_is_overlay_active } = require("steam")
 
-::aircraft_controls_wizard_config <- [
+let aircraft_controls_wizard_config = [
   { id = "helpers_mode"
     type = CONTROL_TYPE.LISTBOX
     optionType = USEROPT_HELPERS_MODE
@@ -252,7 +252,7 @@ let { steam_is_overlay_active } = require("steam")
   { id = "msg/wizard_done_msg", type = CONTROL_TYPE.MSG_BOX }
 ]
 
-::tank_controls_wizard_config <- [
+let tank_controls_wizard_config = [
   { id = "helpers_mode"
     type = CONTROL_TYPE.LISTBOX
     optionType = USEROPT_HELPERS_MODE_GM
@@ -1512,9 +1512,9 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
   function startManualSetupForUnitType(esUnitType) {
     if (esUnitType == ES_UNIT_TYPE_TANK)
-      this.controls_wizard_config = ::tank_controls_wizard_config
+      this.controls_wizard_config = tank_controls_wizard_config
     else if (esUnitType == ES_UNIT_TYPE_AIRCRAFT)
-      this.controls_wizard_config = ::aircraft_controls_wizard_config
+      this.controls_wizard_config = aircraft_controls_wizard_config
     else
       script_net_assert_once("unsupported unit type", "Given unit type has not wizard config")
 

@@ -13,6 +13,7 @@ let { register_command } = require("console")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
+let { getPrizeTooltipConfig } = require("%scripts/items/prizesView.nut")
 
 register_command(
   function () {
@@ -244,7 +245,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getImageLayer(unlock, config) {
     let imageLayer = LayersIcon.getIconData(unlock?.iconStyle ?? "", unlock?.descrImage ?? "")
-    let tooltipConfig = ::PrizesView.getPrizeTooltipConfig(config)
+    let tooltipConfig = getPrizeTooltipConfig(config)
 
     return handyman.renderCached(("%gui/items/item.tpl"), { items = [tooltipConfig.__update({
       layered_image = imageLayer,

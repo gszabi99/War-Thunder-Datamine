@@ -3906,6 +3906,131 @@
       }
     },
     {
+      "id": "2024_09_07_meteor_fmk8_reaper_fab_prates",
+      "locDescId": "2024_09_07_meteor_fmk8_reaper_fab_prates/desc",
+      "userLogId": "2024_09_07_meteor_fmk8_reaper_fab_prates",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "moments_of_valor_brazil",
+      "shouldMarkUnits": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "meteor_fmk8_reaper",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-07 11:00:00",
+            "endDate": "2024-09-16 09:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_09_07_amx_a_1a_title_wings_that_protect",
+      "locDescId": "2024_09_07_amx_a_1a_title_wings_that_protect/desc",
+      "userLogId": "2024_09_07_amx_a_1a_title_wings_that_protect",
+      "icon": "https://static-ggc.gaijin.net/items/belt.png",
+      "lockStyle": "lock",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "moments_of_valor_brazil",
+      "shouldMarkUnits": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "amx_a_1a_brazil",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-07 11:00:00",
+            "endDate": "2024-09-16 09:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_09_06_he_fs_gold",
+      "locDescId": "2024_09_06_he_fs_gold/desc",
+      "userLogId": "2024_09_06_he_fs_gold",
+      "costGold": 499,
+      "type": "trophy",
+      "lockStyle": "lock",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "tankers_day",
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation",
+              "tank_random_battles_simulation_1"
+            ],
+            "hideValue": "tank_random_battles_simulation_1",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_ussr"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-06 11:00:00",
+            "endDate": "2024-09-09 07:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2024_09_02_victory_over_japan_day_decal",
       "locDescId": "2024_09_02_victory_over_japan_day_decal/desc",
       "userLogId": "2024_09_02_victory_over_japan_day_decal",
@@ -3915,6 +4040,7 @@
       "group": "victory_over_japan",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -11232,6 +11358,12 @@
     },
     {
       "id": "title_true_action_hero",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_wings_that_protect",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -30982,7 +31114,7 @@
       "battlePassSeason": 16,
       "chapter": "battlepass_season16",
       "mode": {
-        "type": "killedPlayersScore",
+        "type": "killedGroundScore",
         "num": 10,
         "condition": [
           {
@@ -31002,6 +31134,10 @@
           {
             "type": "offenderUnitRank",
             "minRank": 3
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
           },
           {
             "type": "weaponType",
@@ -31968,7 +32104,7 @@
       "group": "battlepass_season_16_challenge_11",
       "locId": "mainmenu/fleet",
       "mode": {
-        "type": "killedPlayersScore",
+        "type": "killedGroundScore",
         "inRow": false,
         "num": 5,
         "condition": [
@@ -31989,6 +32125,10 @@
           {
             "type": "offenderUnitRank",
             "minRank": 3
+          },
+          {
+            "type": "targetIsPlayer",
+            "includeBots": true
           },
           {
             "type": "timeRange",

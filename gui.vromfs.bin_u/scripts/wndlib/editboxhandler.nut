@@ -6,12 +6,14 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-::gui_modal_editbox_wnd <- function gui_modal_editbox_wnd(params) {
+function gui_modal_editbox_wnd(params) {
   if (!params?.okFunc)
     return
 
   loadHandler(gui_handlers.EditBoxHandler, params)
 }
+
+::gui_modal_editbox_wnd <- gui_modal_editbox_wnd
 
 gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
@@ -37,6 +39,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   validateFunc = null //function(value)  return true if valid
   checkButtonFunc = null
   checkWarningFunc = null
+  performChecksOnChange = false
 
   editBoxObj = null
   needOpenIMEonInit = true
@@ -84,8 +87,11 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
     let curVal = obj.getValue() || ""
     if (this.validateFunc) {
       let newVal = this.validateFunc(curVal)
-      if (newVal != curVal)
-        return obj.setValue(newVal)
+      if (newVal != curVal) {
+        obj.setValue(newVal)
+        if (!this.performChecksOnChange)
+          return
+      }
     }
     this.updateBtnByValue(curVal)
     this.updateWarningByValue(obj, curVal)
@@ -133,3 +139,5 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
       ::call_for_handler(this.owner, this.cancelFunc)
   }
 }
+
+return gui_modal_editbox_wnd

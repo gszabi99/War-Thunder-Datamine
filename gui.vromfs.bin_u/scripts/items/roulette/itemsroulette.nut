@@ -12,6 +12,8 @@ let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
 let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getContentFixedAmount } = require("%scripts/items/prizesView.nut")
+
 /*
 ItemsRoulette API:
   resetData() - rewrite params for future usage;
@@ -154,8 +156,7 @@ function generateItemsArray(trophyName) {
 
   let debug = { trophy = trophyName }
   let content = trophy.getContentNoRecursion()
-  //!!FIX ME: do not use _getContentFixedAmount outside of prizes list. it very specific for prizes stacks description
-  let countContent = ::PrizesView._getContentFixedAmount(content)
+  let countContent = getContentFixedAmount(content)
   let shouldOnlyImage = countContent > 1
   foreach (block in content) {
     if (block?.trophy) {

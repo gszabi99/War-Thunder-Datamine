@@ -238,6 +238,10 @@ function getSubunlockOrUnlockName(id) {
   return loc($"{id}/name")
 }
 
+let unlockTypeToGetShortNameFunc = {
+  [UNLOCKABLE_SKIN] = @(id) getDecoratorById(id)?.getName() ?? ""
+}
+
 let unlockTypeToGetNameFunc = {
   [UNLOCKABLE_AIRCRAFT] = @(id) getUnitName(id),
   [UNLOCKABLE_SKIN] = function(id) {
@@ -322,20 +326,22 @@ let unlockTypeToGetNameFunc = {
 }
 
 // unlockType = -1 finds type by id, so better to use correct unlock type if it's already known
-function getUnlockNameText(unlockType, id) {
+function getUnlockNameText(unlockType, id, params = null) {
   if (::g_battle_tasks.isBattleTask(id))
     return ::g_battle_tasks.getBattleTaskNameById(id)
 
   if (unlockType == -1)
     unlockType = getUnlockType(id)
 
-  return unlockTypeToGetNameFunc?[unlockType](id) ?? loc($"{id}/name")
+  return params?.needShortName && unlockTypeToGetShortNameFunc?[unlockType]
+    ? unlockTypeToGetShortNameFunc[unlockType](id)
+    : unlockTypeToGetNameFunc?[unlockType](id) ?? loc($"{id}/name")
 }
 
-function getUnlockTitle(unlockConfig) {
+function getUnlockTitle(unlockConfig, params = null) {
   local name = unlockConfig.useSubUnlockName ? getSubUnlockLocName(unlockConfig)
     : unlockConfig.locId != "" ? getUnlockLocName(unlockConfig)
-    : getUnlockNameText(unlockConfig.unlockType, unlockConfig.id)
+    : getUnlockNameText(unlockConfig.unlockType, unlockConfig.id, params)
   if (name == "")
     name = getUnlockTypeText(unlockConfig.unlockType, unlockConfig.id)
 
@@ -1325,7 +1331,7 @@ addTooltipTypes({
 
       obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
 
-      let header = getUnlockTitle(config)
+      let header = getUnlockTitle(config, {needShortName = true})
       obj.findObject("header").setValue(header)
 
       if (params?.showChapter ?? false)

@@ -5,19 +5,28 @@
   "shotFreq": 10.0,
   "external": true,
   "sound": "weapon.bombgun",
-  "mesh": "us_2000lb_gbu31",
+  "mesh": "us_2000lb_gbu31_v1b_usnavy",
   "tags": {
     "antiTankBomb": true,
     "antiShipBomb": true
   },
   "bomb": {
-    "bulletName": "us_2000lb_mk_84_ldgp",
+    "bulletName": "us_2000lb_gbu31_v1b_usnavy",
     "mass": 893.6,
     "mass_lbs": 1970.0,
     "caliber": 0.457,
     "length": 3.848,
-    "distFromCmToStab": 1.3,
+    "distFromCmToStab": 0.9,
     "dragCx": 0.0793,
+    "CxK": 1.075,
+    "WdK": [
+      5.5,
+      5.5,
+      5.5
+    ],
+    "wingAreaMult": 1.05,
+    "finsAoaHor": 0.320692,
+    "finsAoaVer": 0.320692,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -145,10 +154,10 @@
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 2.75,
-        "accelControlProp": 0.0356,
-        "accelControlIntg": 0.199999,
+        "accelControlProp": 0.1736,
+        "accelControlIntg": 0.0355,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0005
+        "accelControlDiff": 0.0001
       }
     },
     "arcadeProp": {

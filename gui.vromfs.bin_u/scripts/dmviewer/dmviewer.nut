@@ -184,6 +184,13 @@ let armorPartsIds = {
   ex_era_turret = true
 }
 
+let avionicsPartsIds = {
+  electronic_block = true
+  optic_block = true
+  cockpit_countrol = true
+  ircm = true
+}
+
 eventbus_subscribe("on_check_protection", @(p) broadcastEvent("ProtectionAnalysisResult", p))
 
 function isViewModeTutorAvailableForUser() {
@@ -2030,6 +2037,16 @@ dmViewer = {
       }
       desc.append(loc($"armor_class/desc/{partId}", { partsList = "\n".join(partsList, true) }))
     }
+    else if (partId in avionicsPartsIds) {
+      desc.append(loc($"armor_class/desc/{partId}"))
+      let avionicsParts = this.unitBlk.damagePartsToAvionicsPartsMap % "avionics"
+      let parts = []
+      foreach (part in avionicsParts)
+        if (part.health.dm == partName)
+          parts.append(loc($"xray/{part.avionics}"))
+
+      desc.append("\n".join(parts, true))
+    }
 
     if (this.isDebugMode)
       desc.append("\n" + colorize("badTextColor", partName))
@@ -2369,9 +2386,10 @@ dmViewer = {
           let mainTurretSpeed = unitModificators?[a.modifName] ?? 0
           let value = weaponInfoBlk?[a.blkName] ?? 0
           let weapons = this.getUnitWeaponList()
-          let mainTurretValue = weapons?[0]?[a.blkName] ?? 0
-          speedMul = value / mainTurretValue
-          speed = mainTurretValue ? (mainTurretSpeed * speedMul) : mainTurretSpeed
+          let mainTurretValue = weapons[0]?[a.blkName] ?? 0
+          if (mainTurretValue != 0)
+            speedMul = value / mainTurretValue
+          speed = mainTurretSpeed * speedMul
         }
         else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
           let modId   = status.isPrimary    ? "new_main_caliber_turrets"
@@ -2470,12 +2488,8 @@ dmViewer = {
       if (status.isPrimary) {
         let mainWeaponInfoBlk = this.getUnitWeaponList()?[0]
         if (mainWeaponInfoBlk != null) {
-          local mainGunReloadTime = this.unit?.modificators?[this.difficulty.crewSkillName]?.reloadTime ?? 0.0
-          if (!mainGunReloadTime && this.crew) {
-            let crewSkillParams = getParametersByCrewId(this.crew.id, this.unit.name)
-            let crewSkill = crewSkillParams?[this.difficulty.crewSkillName]?.loader
-            mainGunReloadTime = crewSkill?.loading_time_mult?.tankLoderReloadingTime ?? 0.0
-          }
+          let crewSkillParams = skillParametersRequestType.CURRENT_VALUES.getParameters(this.crew?.id ?? -1, this.unit)
+          let mainGunReloadTime = crewSkillParams[this.difficulty.crewSkillName]["loader"]["loading_time_mult"]["tankLoderReloadingTime"]
 
           if (weaponInfoBlk.blk == mainWeaponInfoBlk.blk) {
             reloadTimeS = mainGunReloadTime
@@ -2581,6 +2595,8 @@ dmViewer = {
       desc.append(res)
     }
     if (reloadTimeS) {
+      reloadTimeS = round_by_value(reloadTimeS, 0.1)
+      topValue = round_by_value(topValue, 0.1)
       reloadTimeS = (reloadTimeS % 1) ? format("%.1f", reloadTimeS) : format("%d", reloadTimeS)
       let res = { value = " ".concat(loc("shop/reloadTime"), reloadTimeS, loc("measureUnits/seconds")) }
       if (topValue != 0 && topValue < to_float_safe(reloadTimeS, 0))

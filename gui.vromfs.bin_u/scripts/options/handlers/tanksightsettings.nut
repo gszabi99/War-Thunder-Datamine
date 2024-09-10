@@ -6,10 +6,18 @@ let { tankSightOptionsMap, tankSightOptionsSections,
 let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
 let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings,
   save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset, switch_tank_sight_settings_mode,
-  TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings
+  TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings,
+  reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair
 } = require("tankSightSettings")
 let { create_option_combobox } = require("%scripts/options/optionsExt.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
+let { doesLocTextExist } = require("dagor.localize")
+let { eventbus_subscribe } = require("eventbus")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+
+const SELECT_PRESET_COMBOBOX_ID = "select_preset_combobox_options"
 
 let createSelectControl = @(settingId, options, idx = 0)
   create_option_combobox(settingId, options, idx, "onChangeSightOption", false)
@@ -26,7 +34,13 @@ let modeToBgImageModePostfix = {
 }
 
 let customPresetOption = {value = "", text = "#tankSight/customPreset"}
-let predefinedPresetsOptions = get_tank_sight_presets().map(@(preset) {value = preset, text = preset})
+let getPresetsOptions = @() [customPresetOption]
+  .extend(
+    get_tank_sight_presets().map(@(preset) {
+      value = preset
+      text = doesLocTextExist($"tankSight/{preset}") ? loc($"tankSight/{preset}") : preset
+    })
+  )
 
 local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName = "%gui/options/tankSightSettings.tpl"
@@ -35,7 +49,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   isSightPreviewMode = false
   isSettingsApplying = false
   sightMode = persist("tankSightSettingsMode", @() { value = TSM_SIMPLE })
-  tankSightPresets = [customPresetOption].extend(predefinedPresetsOptions)
+  tankSightPresets = []
 
   getSceneTplView = @() {
     presetSettings = tankSightOptionsSections.map(@(section, idx) {
@@ -53,20 +67,22 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
       markup = t.getControlMarkup()
     })
 
-    presetsComboboxMarkup =
-      create_option_combobox("select_preset_combobox_options", this.tankSightPresets, 0, "onChangePreset", false)
+    presetsComboboxMarkup = this.getPresetsComboboxMarkup()
   }
 
   resetCurPresetOption = @() !this.isSettingsApplying
-    ? this.scene.findObject("select_preset_combobox_options").setValue(0)
+    ? this.scene.findObject(SELECT_PRESET_COMBOBOX_ID).setValue(0)
     : null
+
+  getPresetsComboboxMarkup = @(idx = 0) create_option_combobox(SELECT_PRESET_COMBOBOX_ID, this.tankSightPresets, idx, "onChangePreset", false)
 
   function initScreen() {
     unitOptions.init(this, this.scene)
-    this.applySettingsForSelectedUnit()
     set_tank_sight_highlight_obj(tankSightOptionsSections[0].id)
     this.updateSightMode()
     this.updateCrosshairOptions()
+    this.updatePresetsOptions()
+    this.applySettingsForSelectedUnit()
   }
 
   function onDestroy() {
@@ -90,6 +106,30 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     apply_tank_sight_preset(value)
     let curSettings = get_tank_sight_settings()
     this.updateTankSightsOptions(curSettings)
+  }
+
+  function onSaveCustomPreset() {
+    let presetNames = this.tankSightPresets.map(@(p) p.value)
+    openEditBoxDialog({
+      title = loc("tankSight/savePreset")
+      label = loc("tankSight/enterPresetName")
+      editboxWarningTooltip = loc("tankSight/presetAlreadyExists")
+      okFunc = function(presetName) {
+        save_user_tank_sight_preset(presetName)
+        this.updatePresetsOptions(presetName)
+      }
+      checkWarningFunc = @(presetName) !presetNames.contains(presetName)
+      checkButtonFunc = @(presetName) !presetNames.contains(presetName)
+      performChecksOnChange = true
+      owner = this
+    })
+  }
+
+  function updatePresetsOptions(presetToSet = customPresetOption.value) {
+    this.tankSightPresets = getPresetsOptions()
+    let idx = this.tankSightPresets.findindex(@(p) p.value == presetToSet) ?? 0
+    let markup = this.getPresetsComboboxMarkup(idx)
+    this.guiScene.replaceContentFromText(this.scene.findObject(SELECT_PRESET_COMBOBOX_ID), markup, markup.len(), this)
   }
 
   function updateCrosshairOptions() {
@@ -120,10 +160,29 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     this.isSettingsApplying = false
   }
 
-  onSave = @()
+  function onSave() {
     save_tank_sight_settings(unitOptions.UNIT.value, unitOptions.COUNTRY.value, unitOptions.RANK.value)
 
-  onReset = @() this.applySettingsForSelectedUnit()
+    if (unitOptions.UNIT.value != "")
+      return
+
+    let nonDefaultSightUnits = unitOptions.UNIT.options
+      .map(@(opt) opt.value)
+      .filter(@(uName) get_tank_alt_crosshair(uName) != "")
+      .map(@(uName) getUnitName(uName))
+
+    if (nonDefaultSightUnits.len() > 0)
+      scene_msg_box(
+        "non_default_sight_notification", null,
+        loc("tankSight/nonDefaultSightNotification", { nonDefUnits = ", ".join(nonDefaultSightUnits) }),
+        [["ok", @() null ]], "ok"
+      )
+  }
+
+  function onReset() {
+    reset_tank_sight_settings()
+    this.updateTankSightsOptions(get_tank_sight_settings())
+  }
 
   function onOptionsTitleClick(obj) {
     let parentObj = obj?.getParent()
@@ -158,7 +217,6 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     let toggleBtnText = this.isSightPreviewMode ? loc("tankSight/showSettings") : loc("mainmenu/btnPreview")
     let toggleBtnObj = this.scene.findObject("btn_toggle_preview")
 
-    toggleBtnObj.btnName = this.isSightPreviewMode ? "A" : ""
     toggleBtnObj.setValue(toggleBtnText)
     this.updateObjectsVisibilities()
   }
@@ -210,8 +268,27 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
       select_unit_pane = !this.isSightPreviewMode
     })
   }
+
+  function onEventTankSightObjectClick(tso) {
+    set_tank_sight_highlight_obj(tso)
+
+    let { scene } = this
+    tankSightOptionsSections
+      .filter(@(section) section.id != tso)
+      .map(@(section) getOptionsSectionObjId(section.id))
+      .each(@(id) scene.findObject(id).expanded = "no")
+
+    let sectionObjToExpand = scene.findObject((getOptionsSectionObjId(tso)))
+    if (sectionObjToExpand?.isValid())
+      sectionObjToExpand.expanded = "yes"
+  }
 }
+
+eventbus_subscribe("TankSightObjectClick", @(tso) broadcastEvent("TankSightObjectClick", tso))
 
 gui_handlers.TankSightSettings <- TankSightSettings
 
-return @() handlersManager.loadHandler(TankSightSettings)
+return function() {
+  initTankSightOptions()
+  handlersManager.loadHandler(TankSightSettings)
+}

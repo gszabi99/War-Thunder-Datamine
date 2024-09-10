@@ -12,24 +12,25 @@
   },
   "bomb": {
     "bulletName": "cn_ls_6_250",
-    "mass": 508.3,
-    "caliber": 0.45,
+    "mass": 630.0,
+    "caliber": 0.377,
     "dragCx": 0.097,
-    "length": 2.4,
-    "distFromCmToStab": 1.05,
-    "CxK": 1.15,
+    "length": 3.08,
+    "distFromCmToStab": 0.7,
+    "CxK": 1.05,
     "WdK": [
       2.5,
       2.5,
       2.5
     ],
-    "wingAreaMult": 1.8,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
+    "wingAreaMult": 3.0,
+    "finsAoaHor": 0.294517,
+    "finsAoaVer": 0.294517,
     "brakeTime": [
       0.5,
       0.7
     ],
+    "brakeCxK": 0.1,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -48,9 +49,9 @@
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
     "explosiveType": "tnt",
-    "explosiveMass": 325.0,
+    "explosiveMass": 220.0,
     "guidanceType": "sns",
-    "timeLife": 150.0,
+    "timeLife": 300.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -134,9 +135,9 @@
       "constantDesignationSourceTypeMask": 1,
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 5.0,
+        "loftElevation": -2.5,
         "loftTargetElevation": -65.0,
-        "loftAngleToAccelMult": 0.35,
+        "loftAngleToAccelMult": 0.5,
         "loftTargetOmegaMax": 1.25,
         "timeToGain0": [
           0.3,
@@ -147,18 +148,18 @@
           1.0
         ],
         "timeToGain2": [
-          150.0,
+          300.0,
           1.0
         ],
         "timeToGain3": [
-          150.1,
+          300.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 2.75,
-        "accelControlProp": 0.0356,
-        "accelControlIntg": 0.199999,
+        "reqAccelMax": 5.0,
+        "accelControlProp": 0.0451,
+        "accelControlIntg": 0.045,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0005
       }

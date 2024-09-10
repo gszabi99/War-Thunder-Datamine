@@ -90,15 +90,6 @@ shopFilter {
   }
  <</discount>>
 
-  <<#squadronExpIconId>>
-  squadronExpIcon {
-    id:t='<<squadronExpIconId>>'
-    type:t='inTab'
-    value:t='{"viewId": "SHOP_PAGES_SQUADRON_EXP_ICON"}'
-    display:t='hide'
-  }
-  <</squadronExpIconId>>
-
   <<#cornerImg>>
   cornerImg {
     <<#cornerImgId>>id:t='<<cornerImgId>>'<</cornerImgId>>

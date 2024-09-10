@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { hangar_load_model, hangar_get_current_unit_name, hangar_get_loaded_unit_name } = require("hangar")
+let { hangar_load_model, hangar_get_current_unit_name, hangar_get_loaded_unit_name, hangar_is_model_loaded } = require("hangar")
 
 enum HangarModelLoadState {
   LOADING
@@ -16,7 +16,7 @@ let hangarUnitName = Watched(hangar_get_current_unit_name())
 function getLoadState() {
   // First check covers case when model was loaded from within C++.
   // Flag "isLoading" covers model loading from Squirrel.
-  return hangar_get_loaded_unit_name() == "" || isLoading.value
+  return hangar_get_loaded_unit_name() == "" || isLoading.value || !hangar_is_model_loaded()
     ? HangarModelLoadState.LOADING
     : HangarModelLoadState.LOADED
 }

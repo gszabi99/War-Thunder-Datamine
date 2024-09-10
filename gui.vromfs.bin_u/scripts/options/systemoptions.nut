@@ -65,8 +65,6 @@ let compModeGraphicsOptions = {
     xess              = { compMode = false }
     dlss              = { compMode = false }
     dlssSharpness     = { compMode = false }
-    amdfsr            = { compMode = false }
-    amdfsrSharpness   = { compMode = false }
   }
 }
 //------------------------------------------------------------------------------
@@ -100,8 +98,6 @@ local mUiStruct = [
       "xess"
       "dlss"
       "dlssSharpness"
-      "amdfsr"
-      "amdfsrSharpness"
       "anisotropy"
       "msaa"
       "antialiasing"
@@ -152,16 +148,6 @@ local mUiStruct = [
       "enableVr"
       "vrMirror"
       "vrStreamerMode"
-      "rayTracing"
-      "rtao"
-      //"rtaoRes"
-      "rtsm"
-      "rtr"
-      "rtrShadows"
-      //"rtrRes"
-      "rtrWater"
-      "rtrWaterRes"
-      "rtrTranslucent"
     ]
   }
 ]
@@ -420,26 +406,15 @@ function getAvailableXessModes() {
   return values;
 }
 
-function getAvailableAmdFsrModes() {
-  let modesString = get_available_amd_fsr_modes()
-  return modesString.split(";")
-}
-
 function getAvailableDlssModes() {
   let values = ["off"]
   let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
-  if (is_dlss_quality_available_at_resolution(5, selectedResolution.w, selectedResolution.h))
-    values.append("dlaa")
-  if (is_dlss_quality_available_at_resolution(4, selectedResolution.w, selectedResolution.h))
-    values.append("ultra_quality")
   if (is_dlss_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
     values.append("quality")
   if (is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
     values.append("balanced")
   if (is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
     values.append("performance")
-  if (is_dlss_quality_available_at_resolution(3, selectedResolution.w, selectedResolution.h))
-    values.append("ultra_performance")
 
   return values;
 }
@@ -578,22 +553,13 @@ mShared = {
 
   dlssClick = function() {
     setGuiValue("xess", "off")
-    setGuiValue("amdfsr", "off")
-    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness", "amdfsr", "amdfsrSharpness" ])
+    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
   xessClick = function() {
     setGuiValue("dlss", "off")
-    setGuiValue("amdfsr", "off")
-    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness", "amdfsr", "amdfsrSharpness" ])
-      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
-  }
-
-  amdfsrClick = function() {
-    setGuiValue("dlss", "off")
-    setGuiValue("xess", "off")
-    foreach (id in [ "antialiasing", "xess", "dlss", "ssaa", "dlssSharpness", "amdfsrSharpness" ])
+    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
       enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
@@ -706,36 +672,6 @@ mShared = {
     }
     else
       mShared.setCompatibilityMode()
-  }
-
-  rtaoClick = function() {
-    enableGuiOption("rtaoRes", getGuiValue("rtao") != "off" && getGuiValue("rayTracing"))
-  }
-
-  rtrClick = function() {
-    enableGuiOption("rtrShadows", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-    enableGuiOption("rtrWater", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-  }
-
-  rtrWaterClick = function() {
-    enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
-    enableGuiOption("rtrTranslucent", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
-  }
-
-  rayTracingClick = function() {
-    enableGuiOption("rtr", getGuiValue("rayTracing"))
-    enableGuiOption("rtao", getGuiValue("rayTracing"))
-    enableGuiOption("rtsm", getGuiValue("rayTracing"))
-
-    enableGuiOption("rtaoRes", getGuiValue("rtao") != "off" && getGuiValue("rayTracing"))
-
-    enableGuiOption("rtrShadows", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-    enableGuiOption("rtrWater", getGuiValue("rtr") != "off" && getGuiValue("rayTracing"))
-
-    enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
-    enableGuiOption("rtrTranslucent", getGuiValue("rtrWater") && getGuiValue("rayTracing"))
   }
 
   getVideoModes = function(curResolution = null, isNeedAuto = true) {
@@ -910,25 +846,6 @@ mSettings = {
       return (val == 0) ? "performance" : (val == 1) ? "balanced" : (val == 2) ? "quality" : (val == 3) ? "ultra_quality" : "off"
     }
   }
-  amdfsr = { widgetType = "list" def = "off" blk = "video/amdfsr" restart = false isVisible = @() hasFeature("amdfsr")
-    init = function(_blk, desc) {
-      desc.values <- getAvailableAmdFsrModes()
-    }
-    onChanged = "amdfsrClick"
-    getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, "off")
-    }
-    setGuiValueToConfig = function(blk, desc, val) {
-      let quality = val
-      setBlkValueByPath(blk, desc.blk, quality)
-    }
-    configValueToGuiValue = function(val) {
-      return val
-    }
-  }
-  amdfsrSharpness = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/amdfsrSharpness" restart = false
-    isVisible = @() hasFeature("amdfsr") enabled = @() getGuiValue("amdfsr", "off") != "off"
-  }
   dlss = { widgetType = "list" def = "off" blk = "video/dlssQuality" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailableDlssModes()
@@ -938,11 +855,11 @@ mSettings = {
       return getBlkValueByPath(blk, desc.blk, -1)
     }
     setGuiValueToConfig = function(blk, desc, val) {
-      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : (val == "ultra_performance") ? 3 : (val == "ultra_quality") ? 4 : (val == "dlaa") ? 5 : -1
+      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
       setBlkValueByPath(blk, desc.blk, quality)
     }
     configValueToGuiValue = function(val) {
-      return (val == 0) ? "performance" : (val == 1) ? "balanced" : (val == 2) ? "quality" : (val == 3) ? "ultra_performance" : (val == 4) ? "ultra_quality" : (val == 5) ? "dlaa" : "off"
+      return (val == 0) ? "performance" : (val == 1) ? "balanced" : (val == 2) ? "quality" : "off"
     }
   }
   dlssSharpness = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/dlssSharpness" restart = false
@@ -984,7 +901,7 @@ mSettings = {
   }
     onChanged = "antiAliasingClick"
     values = [ "none", "fxaa", "high_fxaa", "low_taa"]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off" && getGuiValue("amdfsr", "off") == "off"
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
   }
   taau_ratio = { widgetType = "slider" def = 100 min = 50 max = 100 blk = "video/temporalResolutionScale" restart = false
     enabled = @() !getGuiValue("compatibilityMode")
@@ -1222,37 +1139,6 @@ mSettings = {
   staticShadowsOnEffects = { widgetType = "checkbox" def = false blk = "render/staticShadowsOnEffects" restart = false
   }
   riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
-  }
-  rayTracing = { widgetType = "checkbox" def = false blk = "graphics/enableBVH" restart = false isVisible = @() hasFeature("optionRT")
-    onChanged = "rayTracingClick"
-  }
-  rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false onChanged = "rtaoClick"
-  }
-  rtaoRes = { widgetType = "list" def = "normal"  blk = "graphics/RTAORes" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtao", "off") != "off"
-  }
-  rtsm = { widgetType = "list" def = "off" blk = "graphics/enableRTSM" restart = false values = [ "off", "sun", "sun_and_dynamic" ]
-    enabled = @() getGuiValue("rayTracing", false) != false isVisible = @() hasFeature("optionRT")
-  }
-  rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["off", "performance", "quality"] enabled = @() getGuiValue("rayTracing", false) != false onChanged = "rtrClick"
-  }
-  rtrShadows = { widgetType = "checkbox" def = false blk = "graphics/RTRShadows" restart = false isVisible = @() hasFeature("optionRT")
-    enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
-  }
-  rtrRes = { widgetType = "list" def = "normal"  blk = "graphics/RTRRes" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
-  }
-  rtrWater = { widgetType = "checkbox" def = true  blk = "graphics/RTRWater" restart = false isVisible = @() hasFeature("optionRT")
-    enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off" && getGuiValue("rtsm", "off") != "off"
-    onChanged = "rtrWaterClick"
-  }
-  rtrWaterRes = { widgetType = "list" def = "half"  blk = "graphics/RTRWaterRes" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["half", "normal"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtrWater", false) != false && getGuiValue("rtr", "off") != "off" && getGuiValue("rtsm", "off") != "off"
-  }
-  rtrTranslucent = { widgetType = "list" def = "shadow"  blk = "graphics/RTRTranslucent" restart = false isVisible = @() hasFeature("optionRT")
-    values = ["off", "half", "normal", "shadow"] enabled = @() getGuiValue("rayTracing", false) != false && getGuiValue("rtr", "off") != "off"
   }
 }
 //------------------------------------------------------------------------------

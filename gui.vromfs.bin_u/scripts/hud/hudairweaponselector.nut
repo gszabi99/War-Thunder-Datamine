@@ -16,6 +16,7 @@ let { abs } = require("math")
 let { isXInputDevice } = require("controls")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { getAxisStuck, getMaxDeviatedAxisInfo, getAxisData } = require("%scripts/joystickInterface.nut")
 
 function getCurrentHandler() {
   let airHandler = handlersManager.findHandlerClassInScene(gui_handlers.HudAir)?.airWeaponSelector
@@ -76,7 +77,7 @@ let class HudAirWeaponSelector {
   }
 
   constructor(unit, nestObj) {
-    this.stuckAxis = ::joystickInterface.getAxisStuck(this.watchAxis)
+    this.stuckAxis = getAxisStuck(this.watchAxis)
     this.currentBtnsFloor = this.buttonsFloors.weapons
     this.nestObj = nestObj
     this.guiScene = nestObj.getScene()
@@ -491,8 +492,8 @@ let class HudAirWeaponSelector {
   }
 
   function onVisualSelectorAxisInputTimer(_obj = null, _dt = null) {
-    let axisData = ::joystickInterface.getAxisData(this.watchAxis, this.stuckAxis)
-    let joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, 0.25)
+    let axisData = getAxisData(this.watchAxis, this.stuckAxis)
+    let joystickData = getMaxDeviatedAxisInfo(axisData, 0.25)
     if (joystickData == null || joystickData.normLength == 0) {
       this.currentJoystickDirection = null
       return

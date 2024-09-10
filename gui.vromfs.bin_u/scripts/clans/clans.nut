@@ -1272,7 +1272,4 @@ function getSeasonName(blk) {
   return char_send_clan_oneway_blk("cln_clan_set_membership_requirements", blk)
 }
 
-// Independent Modules
-require("%scripts/slotbar/elems/squadronExpIconElem.nut")
-
 subscribe_handler(::g_clans, g_listener_priority.DEFAULT_HANDLER)

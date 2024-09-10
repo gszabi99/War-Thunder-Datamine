@@ -24,9 +24,9 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let { isHeliPilotHudDisabled } = require("options/options.nut")
 let planeHmd = require("planeHmd.nut")
 let { isPlayingReplay } = require("hudState.nut")
-let { IsMlwsLwsHudVisible } = require("twsState.nut")
+let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("twsState.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
-let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
+let { isCollapsedRadarInReplay, IsRadarDamaged } = require("%rGui/radarState.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
@@ -153,15 +153,15 @@ function helicopterArbiterHud() {
 
 function mkHelicopterIndicators() {
   return @() {
-    watch = [IsMfdEnabled, HudColor, IsRadarVisible, IsRadar2Visible, isCollapsedRadarInReplay]
+    watch = [IsMfdEnabled, HudColor, IsRadarVisible, IsRadar2Visible, isCollapsedRadarInReplay, IsRadarDamaged, IsTwsDamaged]
     children = [
       helicopterMainHud()
       helicopterSightHud()
       helicopterGunnerHud()
       helicopterArbiterHud()
       pilotHud
-      !IsMfdEnabled.value ? twsElement(MfdColor, twsPosComputed, twsSize) : null
-      !IsMfdEnabled.value ? radarElement(MfdColor, radarPosWatched.value) : null
+      !IsMfdEnabled.value ? twsElement(IsTwsDamaged.value ? AlertColorHigh : MfdColor, twsPosComputed, twsSize) : null
+      !IsMfdEnabled.value ? radarElement(IsRadarDamaged.value ? AlertColorHigh : MfdColor, radarPosWatched.value) : null
       compassElem(MfdColor, compassSize, [sw(50) - 0.5 * compassSize[0], sh(15)])
       bombSightComponent(sh(10.0), sh(10.0), HudColor)
       !isCollapsedRadarInReplay.value && (IsRadarVisible.value || IsRadar2Visible.value) ? radarHud(sh(33), sh(33), radarPosWatched.value[0], radarPosWatched.value[1], HudColor) : null
