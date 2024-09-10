@@ -1,3 +1,25 @@
 tankSightOptions[expanded=yes] > tankSightOptionsList {
   display: show;
 }
+
+tankSightOptions[expanded=no] > button > textAreaCentered {
+  color: @gray60;
+}
+
+tankSightOptions[expanded=yes] > button > textAreaCentered,
+tankSightOptions > button:hover > textAreaCentered  {
+  color: @white;
+}
+
+tankSightOptions[expanded=no] > button > img {
+  background-color: @gray60;
+}
+
+tankSightOptions[expanded=yes] > button > img {
+  background-color: @white;
+  rotation: 180;
+}
+
+tankSightOptions > button:hover > img {
+  background-color: @white;
+}

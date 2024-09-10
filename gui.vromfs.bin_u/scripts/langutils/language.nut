@@ -5,14 +5,13 @@ from "%scripts/dagui_library.nut" import *
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { eventbus_subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
+let { getCurrentLanguage } = require("dagor.localize")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { split_by_chars } = require("string")
 let { register_command } = require("console")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
-let { get_default_lang } = require("platform")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { get_settings_blk } = require("blkGetters")
 let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
@@ -176,8 +175,7 @@ function saveLanguage(langName) {
   onChangeLanguage()
 }
 
-saveLanguage(get_settings_blk()?.language ?? get_settings_blk()?.game_start?.language ?? get_default_lang())
-
+saveLanguage(getCurrentLanguage())
 
 function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false) {
   if (langId == currentLanguage && !isForced)

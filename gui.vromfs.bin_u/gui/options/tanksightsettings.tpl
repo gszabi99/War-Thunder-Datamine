@@ -16,38 +16,42 @@ frame {
 
   tdiv {
     size:t='pw,ph'
+    padding:t='12@sf/@pf, 1@blockInterval'
     flow:t='vertical'
 
     <<#unitSettings>>
     ComboBox {
       width:t='pw'
-      margin:t='2@sf/@pf'
+      margin-top:t='2@blockInterval'
       <<@markup>>
     }
     <</unitSettings>>
-  }
 
-  navBar {
-    navMiddle {
-      Button_text {
-        text:t='#mainmenu/btnReset'
-        ButtonImg {}
-        on_click='onReset'
-        btnName:t='Y'
-      }
-      Button_text {
-        text:t='#save/btnSave'
-        ButtonImg {}
-        on_click='onSave'
-        btnName:t='X'
-      }
+    rowSeparator { margin-top:t='4@blockInterval' }
+
+    Button_text {
+      width:t='pw'
+      margin-top:t='4@blockInterval'
+      text:t='#save/btnSave'
+      ButtonImg {}
+      on_click='onSave'
+      btnName:t='X'
+    }
+
+    Button_text {
+      width:t='pw'
+      margin-top:t='2@blockInterval'
+      text:t='#mainmenu/btnReset'
+      ButtonImg {}
+      on_click='onReset'
+      btnName:t='Y'
     }
   }
 }
 
 frame {
   id:t='settings_pane'
-  size:t='400@sf/@pf, 650@sf/@pf'
+  width:t='400@sf/@pf'
   position:t='absolute'
   top='40@sf/@pf'
   left:t='pw-w'
@@ -62,9 +66,9 @@ frame {
   }
 
   tdiv {
-    size:t='pw,ph'
+    width='pw'
+    padding:t='12@sf/@pf, 1@blockInterval'
     flow:t='vertical'
-    overflow-y:t='auto'
 
     tdiv {
       width='pw'
@@ -77,20 +81,28 @@ frame {
       ComboBox {
         id:t= 'select_preset_combobox'
         width:t='pw'
-        margin:t='2@sf/@pf'
         <<@presetsComboboxMarkup>>
       }
 
       Button_text {
         width:t='pw'
-        margin-top:t='1@blockInterval'
+        margin-top:t='2@blockInterval'
         text:t='#tankSight/savePreset'
         ButtonImg {}
         on_click='onSaveCustomPreset'
+        btnName:t='R3'
       }
     }
 
-    <<#presetSettings>>
+    rowSeparator {
+      margin-top:t='4@blockInterval'
+      margin-bottom:t='2@blockInterval'
+    }
+
+    tdiv {
+      width:t='pw'
+      flow:t='vertical'
+      <<#presetSettings>>
       tankSightOptions {
         id:t='<<id>>'
         width:t='pw'
@@ -106,10 +118,20 @@ frame {
 
         button {
           width='pw'
+          margin-top:t='1@blockInterval'
           on_click:t='onOptionsTitleClick'
 
           textAreaCentered {
-            text:t="<<title>>"
+            text:t='<<title>>'
+          }
+
+          img {
+            position:t='absolute'
+            pos:t='pw-w-8@sf/@pf, ph/2-h/2'
+            background-image:t='#ui/gameuiskin#drop_menu_icon.svg'
+            size:t='20@sf/@pf, 20@sf/@pf'
+            background-svg-size:t='20@sf/@pf, 20@sf/@pf'
+            background-repeat:t='aspect-ratio'
           }
         }
 
@@ -123,13 +145,14 @@ frame {
           ComboBox {
             id:t= '<<controlId>>'
             width:t='pw'
-            margin:t='2@sf/@pf'
+            margin-top:t='1@blockInterval'
             <<@markup>>
           }
           <</controls>>
         }
       }
     <</presetSettings>>
+    }
   }
 }
 
