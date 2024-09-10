@@ -471,9 +471,9 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   onOpenGpuBenchmark = showGpuBenchmarkWnd
-  onPreloaderSettings = preloaderOptionsModal
+  onPreloaderSettings = @() preloaderOptionsModal()
   onTankSightSettings = openTankSightSettings
-  onDialogAddRadio = openAddRadioWnd
+  onDialogAddRadio = @() openAddRadioWnd()
 
   function onPostFxSettings(_obj) {
     this.applyFunc = guiStartPostfxSettings

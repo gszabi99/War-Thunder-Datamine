@@ -33,7 +33,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
 let { getMarkingPresetsById, shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
+let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
 //content - array of prizes (better to rename it)
@@ -1354,7 +1354,7 @@ function getMarkingPreset(item) {
   let tooltipId = !showTooltip ? null
     : prize?.trophy ? getTooltipType("UNLOCK").getTooltipId(prize.trophy, {type = UNLOCKABLE_TROPHY})
     : prize?.unlock ? getTooltipType("SUBTROPHY").getTooltipId(prize.unlock, params)
-    : getTooltipType("PRIZE").getTooltipId(convertBlk(prize))
+    : getTooltipType("PRIZE").getTooltipId(isDataBlock(prize) ? convertBlk(prize) : prize)
 
   local previewImage = null
   local commentText = null

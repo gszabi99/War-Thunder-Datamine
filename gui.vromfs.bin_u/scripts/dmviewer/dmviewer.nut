@@ -2039,7 +2039,8 @@ dmViewer = {
     }
     else if (partId in avionicsPartsIds) {
       desc.append(loc($"armor_class/desc/{partId}"))
-      let avionicsParts = this.unitBlk.damagePartsToAvionicsPartsMap % "avionics"
+      let damagePartsToAvionicsPartsMap = this.unitBlk?.damagePartsToAvionicsPartsMap
+      let avionicsParts = damagePartsToAvionicsPartsMap == null ? [] : (damagePartsToAvionicsPartsMap % "avionics")
       let parts = []
       foreach (part in avionicsParts)
         if (part.health.dm == partName)
