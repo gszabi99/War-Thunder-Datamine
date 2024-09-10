@@ -102,9 +102,11 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let cbTestProjectileObj = showObjById("checkboxTestProjectileProps", true)
-    let testProjectileProps = loadLocalAccountSettings(CB_TEST_PROJECTILE, false)
-    cbTestProjectileObj.setValue(testProjectileProps)
-    set_test_projectile_props(testProjectileProps)
+    if (cbTestProjectileObj?.isValid()) {
+      let testProjectileProps = loadLocalAccountSettings(CB_TEST_PROJECTILE, false)
+      cbTestProjectileObj.setValue(testProjectileProps)
+      set_test_projectile_props(testProjectileProps)
+    }
 
     let isSimulationEnabled = this.unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
     let obj = showObjById("switch_damage", isSimulationEnabled, this.scene)

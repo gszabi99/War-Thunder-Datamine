@@ -121,6 +121,8 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
       checkWarningFunc = @(presetName) !presetNames.contains(presetName)
       checkButtonFunc = @(presetName) !presetNames.contains(presetName)
       performChecksOnChange = true
+      charMask = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
+      maxLen = 50
       owner = this
     })
   }

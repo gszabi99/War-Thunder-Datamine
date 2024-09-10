@@ -839,6 +839,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.presets = this.weaponryByPresetInfo.presets
     this.updatePresetsByRanks()
     if (this.chosenPresetIdx == presetIdx) {
+      this.curPresetIdx = null
       setLastWeapon(this.unit.name, this.presets[0].weaponPreset.name)
       ::check_secondary_weapon_mods_recount(this.unit)
       this.checkSaveBulletsAndDo()

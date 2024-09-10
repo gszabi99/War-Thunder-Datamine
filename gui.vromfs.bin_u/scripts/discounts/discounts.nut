@@ -12,7 +12,8 @@ let { canUseIngameShop, haveDiscount, getShopItemsTable, needEntStoreDiscountIco
 } = require("%scripts/onlineShop/entitlementsShopData.nut")
 
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { getEntitlementConfig, discountUnitsBundles } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
+let { discountUnitsBundles } = require("%scripts/onlineShop/discountBundles.nut")
 
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch
 let topMenuOnlineShopId = Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")

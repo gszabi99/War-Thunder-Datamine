@@ -98,44 +98,48 @@ let transparentColorOption = {
   value = Color4(0, 0, 0, 0)
 }
 
-let mkTankSightOptionsMap = @(params) {
-  [TSI_CROSSHAIR]             = getCrosshairOpts(),
-  [TSI_CROSSHAIR_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/crosshairColor"),
-  [TSI_CROSSHAIR_L_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/crosshairLightColor"),
-  [TSI_CROSSHAIR_NV_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/crosshairNvColor"),
-  [TSI_CROSSHAIR_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/crosshairThColor"),
+function mkTankSightOptionsMap(params) {
+  let bgColorOpts = [].extend(params.colorOpts, [transparentColorOption])
 
-  [TSI_RANGEFINDER_VISIBLE]   = getVisibilityOpts(),
-  [TSI_RANGE_TEXT_COLOR]      = getColorOpts(params.colorOpts, "#options/show_indicators_type"),
-  [TSI_RANGE_BACK_COLOR]      = getColorOpts([].extend(params.colorOpts, [transparentColorOption]), "#tankSight/bgColor"),
-  [TSI_RANGE_NV_TEXT_COLOR]   = getColorOpts(params.colorOpts, "#tankSight/nightVisionTextColor"),
-  [TSI_RANGE_NV_BACK_COLOR]   = getColorOpts(params.colorOpts, "#tankSight/nightVisionBgColor"),
-  [TSI_RANGE_LTEXT_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/backlightTextColor"),
-  [TSI_RANGE_LBACK_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/backlightBgColor"),
-  [TSI_RANGE_TH_TEXT_COLOR]   = getColorOpts(params.colorOpts, "#tankSight/thermalTextColor"),
-  [TSI_RANGE_TH_BACK_COLOR]   = getColorOpts(params.colorOpts, "#tankSight/thermalBgColor"),
-  [TSI_RANGE_TEXT_SIZE]       = getTextSizeOpts(1),
-  [TSI_RANGEFINDER_FONT]      = getFontOpts(),
+  return {
+    [TSI_CROSSHAIR]             = getCrosshairOpts(),
+    [TSI_CROSSHAIR_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/crosshairColor"),
+    [TSI_CROSSHAIR_L_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/crosshairLightColor"),
+    [TSI_CROSSHAIR_NV_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/crosshairNvColor"),
+    [TSI_CROSSHAIR_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/crosshairThColor"),
 
-  [TSI_TURRET_VISIBLE]        = getVisibilityOpts(1),
-  [TSI_TURRET_COLOR]          = getColorOpts(params.colorOpts, "#tankSight/color"),
-  [TSI_TURRET_LIGHT_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
-  [TSI_TURRET_NV_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
-  [TSI_TURRET_TH_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/thermalColor"),
+    [TSI_RANGEFINDER_VISIBLE]   = getVisibilityOpts(),
+    [TSI_RANGE_TEXT_COLOR]      = getColorOpts(params.colorOpts, "#options/show_indicators_type"),
+    [TSI_RANGE_BACK_COLOR]      = getColorOpts(bgColorOpts, "#tankSight/bgColor"),
+    [TSI_RANGE_NV_TEXT_COLOR]   = getColorOpts(params.colorOpts, "#tankSight/nightVisionTextColor"),
+    [TSI_RANGE_NV_BACK_COLOR]   = getColorOpts(bgColorOpts, "#tankSight/nightVisionBgColor"),
+    [TSI_RANGE_LTEXT_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/backlightTextColor"),
+    [TSI_RANGE_LBACK_COLOR]     = getColorOpts(bgColorOpts, "#tankSight/backlightBgColor"),
+    [TSI_RANGE_TH_TEXT_COLOR]   = getColorOpts(params.colorOpts, "#tankSight/thermalTextColor"),
+    [TSI_RANGE_TH_BACK_COLOR]   = getColorOpts(bgColorOpts, "#tankSight/thermalBgColor"),
+    [TSI_RANGE_TEXT_SIZE]       = getTextSizeOpts(1),
+    [TSI_RANGEFINDER_FONT]      = getFontOpts(),
 
-  [TSI_FOV_VISIBLE]           = getVisibilityOpts(1),
-  [TSI_FOV_COLOR]             = getColorOpts(params.colorOpts, "#tankSight/color"),
-  [TSI_FOV_LIGHT_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
-  [TSI_FOV_NV_COLOR]          = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
-  [TSI_FOV_THERMAL_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/thermalColor"),
+    [TSI_TURRET_VISIBLE]        = getVisibilityOpts(1),
+    [TSI_TURRET_COLOR]          = getColorOpts(params.colorOpts, "#tankSight/color"),
+    [TSI_TURRET_LIGHT_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
+    [TSI_TURRET_NV_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
+    [TSI_TURRET_TH_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/thermalColor"),
 
-  [TSI_GUN_READY_VISIBLE]     = getVisibilityOpts(1),
-  [TSI_GUN_READY_TEXT_SIZE]   = getTextSizeOpts(1),
-  [TSI_GUN_READY_FONT]        = getFontOpts(),
-  [TSI_GUN_READY_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/color"),
-  [TSI_GUN_READY_LIGHT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
-  [TSI_GUN_READY_NV_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
-  [TSI_GUN_READY_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/thermalColor")
+    [TSI_FOV_VISIBLE]           = getVisibilityOpts(1),
+    [TSI_FOV_COLOR]             = getColorOpts(params.colorOpts, "#tankSight/color"),
+    [TSI_FOV_LIGHT_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
+    [TSI_FOV_NV_COLOR]          = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
+    [TSI_FOV_THERMAL_COLOR]     = getColorOpts(params.colorOpts, "#tankSight/thermalColor"),
+
+    [TSI_GUN_READY_VISIBLE]     = getVisibilityOpts(1),
+    [TSI_GUN_READY_TEXT_SIZE]   = getTextSizeOpts(1),
+    [TSI_GUN_READY_FONT]        = getFontOpts(),
+    [TSI_GUN_READY_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/color"),
+    [TSI_GUN_READY_LIGHT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
+    [TSI_GUN_READY_NV_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
+    [TSI_GUN_READY_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/thermalColor")
+  }
 }
 
 
