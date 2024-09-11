@@ -71,8 +71,12 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
         isOver = get_current_dist_correction_over()
     elif gm.rangefinder != null && get_difficulty_config().hudUseRangefinder
       if gm.rangefinder.ready || gm.rangefinder.progress < 0.
-        dist = max(0., get_current_dist_correction())
-        isOver = get_current_dist_correction_over()
+        dist = gm.rangefinder.distance
+        isOver = gm.rangefinder.isOverDistance
+        let corDist = get_current_dist_correction()
+        if corDist > 0.
+          dist = corDist
+          isOver = get_current_dist_correction_over()
       else
         progress = gm.rangefinder.progress
 
@@ -83,7 +87,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
   let textColor = (is_thermal ? settings.rangefinderThTextColor :
    (is_night_vision ? settings.rangefinderNvTextColor :
    (get_crosshair_light_on() ? settings.rangefinderLightTextColor : settings.rangefinderTextColor)))
-  if dist >= 0.
+  if dist > 0.
     ctx |> set_font(fontId, 0, 0)
     ctx |> set_font_ht(settings.rangefinderTextSize)
 
