@@ -741,13 +741,17 @@ eventbus_subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
   loginWnd.proceedGetTwoStepCode(p)
 })
 
-eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(_) {
+eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(p) {
   let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
   if (loginWnd == null)
     return
   let no_dump_login = getObjValue(loginWnd.scene, "loginbox_username", "")
-  loginWnd.finishLogin(no_dump_login)
-  load_local_settings()
+  if (p.status == YU2_OK) {
+    loginWnd.finishLogin(no_dump_login)
+    load_local_settings()
+  }
+  else
+    loginWnd.proceedAuthorizationResult(p.status, no_dump_login)
 })
 
 eventbus_subscribe(webauth_completion_event, function ProceedWebAuth(p) {

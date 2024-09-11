@@ -322,8 +322,9 @@ let getEmptyConditionsConfig = @() {
 
 ::fill_unlock_block <- function fill_unlock_block(obj, config, isForTooltip = false) {
   let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, isForTooltip)
-
-  if (image != "") {
+  let hasImage = iconConfig != null || iconStyle != "" || image != ""
+  obj.findObject("award_image_sizer").show(hasImage)
+  if (hasImage) {
     if (isForTooltip) {
       let icoSize = config?.tooltipImageSize ?? "@profileUnlockIconSize, @profileUnlockIconSize"
       obj.findObject("award_image_sizer").size = icoSize
@@ -335,8 +336,6 @@ let getEmptyConditionsConfig = @() {
 
     LayersIcon.replaceIcon(icoObj, iconStyle, image, ratio, null, iconParams, iconConfig)
   }
-
-  obj.findObject("award_image_sizer").show(image != "")
 
   let tObj = obj.findObject("award_title_text")
   tObj.setValue("title" in config ? config.title : "")

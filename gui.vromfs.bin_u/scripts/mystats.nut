@@ -7,8 +7,9 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
-let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
+let { broadcastEvent, addListenersWithoutEnv
 } = require("%sqStdLibs/helpers/subscriptions.nut")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
 let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -524,7 +525,7 @@ addListenersWithoutEnv({
   InitConfigs = onEventInitConfigs
   ScriptsReloaded = onEventInitConfigs
   CrewTakeUnit = onEventCrewTakeUnit
-}, CONFIG_VALIDATION)
+}, g_listener_priority.LOGIN_PROCESS)
 
 return {
   getTitles

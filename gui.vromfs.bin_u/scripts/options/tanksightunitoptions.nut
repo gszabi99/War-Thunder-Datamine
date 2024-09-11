@@ -76,7 +76,7 @@ sightUnitOptions.addTypes({
           text = loc(country)
           image = getCountryIcon(country)
         })
-      if (this.value == null) {
+      if (this.value == null || !this.options.contains(this.value)) {
         let curCountry = profileCountrySq.value
         let isCurCountryAvailable = this.options.findvalue(@(opt) opt.value == curCountry) != null
 
