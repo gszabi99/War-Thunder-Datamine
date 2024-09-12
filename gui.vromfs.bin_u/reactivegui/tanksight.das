@@ -77,7 +77,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
         dist = max(0., get_current_dist_correction())
         isOver = get_current_dist_correction_over()
         isCorrection = true
-        if gm.rangefinder.hideTime > float(get_total_time()) || dist <= 0. || dist == gm.rangefinder.distance
+        if gm.rangefinder.hideTime > float(get_total_time()) || dist == gm.rangefinder.distance
           dist = gm.rangefinder.distance
           isOver = gm.rangefinder.isOverDistance
           isCorrection = false
