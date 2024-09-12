@@ -174,6 +174,8 @@ def rad_to_deg(rad : float)
 def deg_to_rad(rad : float)
   return rad * PI / 180.
 
+let angularWidthMin = deg_to_rad(5.0)
+
 def calc_angular_gate_width_polar(distance_rel : float; azimuth_half_width)
   if azimuth_half_width > 0.17
     return 2.
@@ -474,7 +476,7 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
     var angularWidth = azimuthRange
     if get_radar_hud_has_azimuth_scale()
       angle = get_radar_hud_azimuth_min() + azimuthRange * target.azimuthRel - PI * 0.5
-      angularWidth = azimuthRange * target.azimuthWidthRel
+      angularWidth = max(azimuthRange * target.azimuthWidthRel, angularWidthMin)
 
     let sina = sin(angle)
     let cosa = cos(angle)
