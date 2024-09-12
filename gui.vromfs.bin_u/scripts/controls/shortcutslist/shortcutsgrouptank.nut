@@ -563,8 +563,10 @@ return [
     showFunc = hasXInputDevice
     checkAssign = @() isXInputDevice()
   }
-  {
-    id = "ID_TANK_SWITCH_FUSE_MODE"
-    checkAssign = false
-  }
+  //
+
+
+
+
+
 ]
