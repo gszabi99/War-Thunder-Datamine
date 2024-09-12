@@ -29,8 +29,8 @@
       "power": 1000.0,
       "band": 8,
       "rcs": 3.0,
-      "range": 70000.0,
-      "rangeMax": 90000.0,
+      "range": 85000.0,
+      "rangeMax": 120000.0,
       "multipathEffect": [
         0.0,
         1.0,
@@ -394,6 +394,9 @@
     },
     "acm": {
       "range1": 10000.0
+    },
+    "hmd": {
+      "range1": 18500.0
     }
   },
   "fsms": {
@@ -828,9 +831,6 @@
             "pos": 0.0,
             "width": 3000.0
           },
-          "setScopeRangeSet": {
-            "scopeRangeSet": "acm"
-          },
           "setFsmActive": {
             "fsm": "helmetDesignation",
             "active": true
@@ -843,6 +843,9 @@
           },
           "setModeName": {
             "name": "PD HMD"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "hmd"
           }
         },
         "resetHmdStandbyMode": {

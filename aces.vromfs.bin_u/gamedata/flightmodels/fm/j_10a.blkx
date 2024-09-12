@@ -99,7 +99,7 @@
     3.0
   ],
   "ArcadePitchModificators": [
-    0.2,
+    0.08,
     1.0
   ],
   "AileronMaxDv": 8.0,
@@ -994,11 +994,11 @@
       ],
       "ArcadeSensitivityMultiplier2": [
         0.8,
-        1.3
+        1.6
       ],
       "ArcadeSensitivityMultiplier3": [
         1.0,
-        1.5
+        1.6
       ],
       "SensitivityCl": [
         0.015,
@@ -1751,7 +1751,7 @@
   },
   "Mass": {
     "EmptyMass": 8300.0,
-    "MaxFuelMass0": 4228.0,
+    "MaxFuelMass0": 5945.0,
     "FuelAccumulatorCapacity0": 60.0,
     "MinimalLoadFactor0": -2.2,
     "FuelAccumulatorFlowRate0": 15.0,
@@ -1802,10 +1802,22 @@
       "tank6_system": 0,
       "tank6_external": true,
       "tank6_priority": 0,
-      "tank7_capacity": 664.0,
-      "tank7_system": 0,
-      "tank7_external": true,
-      "tank7_priority": 0,
+      "tank7_capacity": [
+        1328.0,
+        1328.0
+      ],
+      "tank7_system": [
+        0,
+        0
+      ],
+      "tank7_external": [
+        true,
+        true
+      ],
+      "tank7_priority": [
+        0,
+        0
+      ],
       "engine1_dm": 1250.0
     },
     "PartsWithSurface": {
@@ -1858,7 +1870,7 @@
     "tank5_dm": true,
     "tank6_dm": false,
     "tank7_dm": false,
-    "tank8_dm": true,
+    "tank8_dm": false,
     "tank9_dm": true,
     "tank10_dm": true,
     "tank11_dm": true,
