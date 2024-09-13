@@ -290,6 +290,7 @@ function mkProgressCircle(size, startTime, endTime, curTime, color) {
     : lerpClamped(startTime, endTime, 0.0, 1.0, curTime)
 
   return {
+    key = {}
     size = [size, size]
     rendObj = ROBJ_PROGRESS_CIRCULAR
     vplace = ALIGN_CENTER
