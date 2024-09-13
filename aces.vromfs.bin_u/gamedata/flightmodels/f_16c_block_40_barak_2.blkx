@@ -14,6 +14,7 @@
   "ilsElbit967": true,
   "mfdCamTads": true,
   "hmdF16c": true,
+  "laserDesignator": true,
   "hasMissileCommandLine": false,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
@@ -2082,8 +2083,12 @@
     }
   },
   "cockpit": {
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
+    "targetingPodFov": [
+      18.0,
+      1.5
+    ],
+    "sightInFov": 1.5,
+    "sightOutFov": 18.0,
     "sightFov": 1.0,
     "isDoubleBulletImpactLine": true,
     "hmdBlockIlsArea": [
@@ -2592,7 +2597,7 @@
         -0.2,
         0.0
       ],
-      "head": "optic1_turret",
+      "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -89.0,
@@ -2612,6 +2617,13 @@
       },
       {
         "blk": "gameData/sensors/us_an_alr_56m.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic2_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       }
     ]
   },
@@ -2761,7 +2773,7 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
+              "emitter": "optic2_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 200.0,
@@ -2769,8 +2781,8 @@
               "parkInDeadzone": true,
               "aimForOperatedShell": true,
               "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
                 "mainTurret": true
               },
               "limits": {
