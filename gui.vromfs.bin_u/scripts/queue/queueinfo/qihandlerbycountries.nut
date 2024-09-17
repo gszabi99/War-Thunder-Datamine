@@ -140,4 +140,6 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
     if (this.queue && this.isStatsCreated)
       this.updateStats()
   }
+
+  onEventQueueStatsClusterAdded = @(_) this.createClustersList()
 }

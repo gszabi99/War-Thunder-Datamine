@@ -44,6 +44,7 @@ local unitTypes = {
     missionSettingsAvailabilityFlag = ""
     isUsedInKillStreaks = false
     isPresentOnMatching = true
+    isWideUnitIco = false
 
     firstChosenTypeUnlockName = null
     crewUnitType = CUT_INVALID

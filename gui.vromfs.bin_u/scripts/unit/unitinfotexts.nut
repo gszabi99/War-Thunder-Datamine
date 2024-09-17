@@ -278,6 +278,8 @@ function getUnitClassColor(unit) {
   return $"{role}Color"
 }
 
+let getUnitClassIco = @(unit) unit.customClassIco ?? $"#ui/gameuiskin#{unit.name}_ico.svg"
+
 return {
   getUnitRole
   getUnitBasicRole
@@ -290,4 +292,5 @@ return {
   getUnitItemStatusText
   getUnitRarity
   getUnitClassColor
+  getUnitClassIco
 }

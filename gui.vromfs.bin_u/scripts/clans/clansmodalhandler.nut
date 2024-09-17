@@ -14,7 +14,7 @@ let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getBlkValueByPath, convertBlk } = require("%sqstd/datablock.nut")
-let { clearBorderSymbols, cutPrefix } = require("%sqstd/string.nut")
+let { clearBorderSymbols, cutPrefix, trim } = require("%sqstd/string.nut")
 let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage
 } = require("%scripts/clans/clanTablesConfig.nut")
 let time = require("%scripts/time.nut")
@@ -490,11 +490,12 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   }
 
   function generateRowTableData(rowBlk, rowIdx) {
-    let slogan = rowBlk.slogan == "" ? "" : rowBlk.slogan == " " ? "" : rowBlk.slogan
-    let desc = rowBlk.desc == "" ? "" : rowBlk.desc == " " ? "" : rowBlk.desc
-    let rowName = "row_" + rowIdx
+    local { slogan = "", desc = "" } = rowBlk
+    slogan = trim(slogan).len() == 0 ? "" : slogan
+    desc = trim(desc).len() == 0 ? "" : desc
+    let rowName = $"row_{rowIdx}"
 
-    let clanType = g_clan_type.getTypeByName(getTblValue("type", rowBlk, ""))
+    let clanType = g_clan_type.getTypeByName(rowBlk?.type ?? "")
     let highlightRow = this.myClanLbData != null && this.myClanLbData._id == rowBlk._id ? true : false
     this.rowsTexts[rowName] <- {
       txt_name = this.colorizeClanText(clanType, rowBlk.name, highlightRow)

@@ -5,14 +5,75 @@ from "%scripts/dagui_library.nut" import *
 let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { deferOnce } = require("dagor.workcycle")
 
-::queue_stats_versions.StatsVer2 <- class (::queue_stats_versions.Base) {
-  neutralTeamId = get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
-  static fullTeamNamesList = [
-    get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
-    get_team_name_by_mp_team(MP_TEAM_A)
-    get_team_name_by_mp_team(MP_TEAM_B)
-  ]
+const MULTICLUSTER_NAME = "multi"
+
+let neutralTeamName = get_team_name_by_mp_team(MP_TEAM_NEUTRAL)
+let teamAName = get_team_name_by_mp_team(MP_TEAM_A)
+let teamBName = get_team_name_by_mp_team(MP_TEAM_B)
+
+let fullTeamNamesList = [neutralTeamName, teamAName, teamBName]
+let teamNamesList = [teamAName, teamBName]
+
+let callEventQueueStatsClusterAdded = @() broadcastEvent("QueueStatsClusterAdded")
+
+class QueueStats {
+  isClanStats = false
+  isSymmetric = false
+  isMultiCluster = false
+  myRankInQueue = 0
+  source = null
+
+  isStatsCounted = false
+  maxClusterName = ""
+
+  teamsQueueTable = null
+  /*
+  teamsQueueTable = {
+    [cluster] = {
+      playersCount = <total players>
+      TeamA = { "<rank>" = <players>, playersCount = <total team players> }
+      TeamB = { "<rank>" = <players>, playersCount = <total team players> }
+    }
+  }
+  */
+
+  countriesQueueTable = null
+  /*
+  countriesQueueTable = {
+    [cluster] = {
+      <country name> = {
+        "<rank>" = <players>
+      }
+    }
+  }
+  */
+
+  myClanQueueTable = null
+  /*
+  myClanQueueTable = { "<rank>" = <players> }
+  */
+
+  clansQueueTable = null
+  /*
+  myClanQueueTable = { "<rank>" = <clans>, clansCount = <total clans> }
+  */
+
+  constructor(queue) {
+    local queueEvent = ::queues.getQueueEvent(queue)
+    this.isClanStats = ::queues.isClanQueue(queue)
+    this.isMultiCluster = this.isClanStats || ::events.isMultiCluster(queueEvent)
+    this.isSymmetric = this.isClanStats
+    this.myRankInQueue = ::queues.getMyRankInQueue(queue)
+
+    this.source = {}
+  }
+
+  /*************************************************************************************************/
+  /*************************************PUBLIC FUNCTIONS *******************************************/
+  /*************************************************************************************************/
 
   function applyQueueInfo(queueInfo) {
     if (!("queueId" in queueInfo) || !("cluster" in queueInfo))
@@ -22,14 +83,88 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
         || (this.isClanStats && !("byClans" in queueInfo)))
       return false
 
+    local needEventClusterAdded = false
     let cluster = queueInfo.cluster
-    if (!(cluster in this.source))
+    if (!(cluster in this.source)) {
+      needEventClusterAdded = true
       this.source[cluster] <- {}
+    }
 
     this.source[cluster][queueInfo.queueId] <- queueInfo
     this.resetCache()
+    if (needEventClusterAdded)
+      deferOnce(callEventQueueStatsClusterAdded)
     return true
   }
+
+  function getMaxClusterName() {
+    this.recountQueueOnce()
+    return this.maxClusterName
+  }
+
+  function getTeamsQueueTable(cluster = null) {
+    this.recountQueueOnce()
+    if (this.isMultiCluster)
+      cluster = MULTICLUSTER_NAME
+    return getTblValue(cluster || this.maxClusterName, this.teamsQueueTable)
+  }
+
+  function getQueueTableByTeam(teamName, cluster = null) {
+    return getTblValue(teamName, this.getTeamsQueueTable(cluster))
+  }
+
+  function getPlayersCountByTeam(teamName, cluster = null) {
+    return getTblValue("playersCount", this.getQueueTableByTeam(teamName, cluster), 0)
+  }
+
+  function getPlayersCountOfAllRanks(cluster = null) {
+    local res = 0
+    let teamQueueTable = this.getQueueTableByTeam("teamA", cluster)
+    for (local i = 1; i <= MAX_COUNTRY_RANK; i++)
+      res += teamQueueTable?[i.tostring()] ?? 0
+
+    return res
+  }
+
+  function getPlayersCountOfMyRank(cluster = null) {
+    this.recountQueueOnce()
+    let rankStr = this.myRankInQueue.tostring()
+    if (this.isSymmetric)
+      return getTblValue(rankStr, this.getQueueTableByTeam("teamA", cluster), 0)
+
+    local res = 0
+    foreach (teamName in teamNamesList)
+      res += getTblValue(rankStr, this.getQueueTableByTeam(teamName, cluster), 0)
+    return res
+  }
+
+  function getCountriesQueueTable(cluster = null) {
+    this.recountQueueOnce()
+    if (this.isMultiCluster)
+      cluster = MULTICLUSTER_NAME
+    return getTblValue(cluster || this.maxClusterName, this.countriesQueueTable)
+  }
+
+  //for clans queues
+  function getClansCount() {
+    return getTblValue("clansCount", this.getClansQueueTable(), 0)
+  }
+
+  function getMyClanQueueTable() {
+    this.recountQueueOnce()
+    return this.myClanQueueTable
+  }
+
+  function getClansQueueTable() {
+    this.recountQueueOnce()
+    return this.clansQueueTable
+  }
+
+  getClusters = @() this.source != null ? this.source.keys() : []
+
+  /*************************************************************************************************/
+  /************************************PRIVATE FUNCTIONS *******************************************/
+  /*************************************************************************************************/
 
   function calcQueueTable() {
     this.teamsQueueTable = {}
@@ -72,7 +207,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
   }
 
   function mergeToDataByTeams(dataByTeams, stats) {
-    let neutralTeamStats = getTblValue(this.neutralTeamId, stats)
+    let neutralTeamStats = stats?[neutralTeamName]
     if (neutralTeamStats) {
       let playersCount = this.getCountByRank(neutralTeamStats, this.myRankInQueue)
       if (playersCount <= dataByTeams.playersCount)
@@ -122,7 +257,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
   }
 
   function mergeToDataByCountries(dataByCountries, stats) {
-    foreach (teamName in this.fullTeamNamesList)
+    foreach (teamName in fullTeamNamesList)
       if (teamName in stats)
         foreach (country, countryStats in stats[teamName]) {
           if (!(country in dataByCountries)) {
@@ -177,4 +312,22 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
     this.clansQueueTable.clansCount <- statsByClans.len()
     return true
   }
+
+  function resetCache() {
+    this.isStatsCounted = false
+  }
+
+  function recountQueueOnce() {
+    if (this.isStatsCounted)
+      return
+
+    this.isStatsCounted = true
+    if (this.isClanStats)
+      this.calcClanQueueTable()
+    else
+      this.calcQueueTable()
+  }
+
 }
+
+return QueueStats

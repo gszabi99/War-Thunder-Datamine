@@ -110,7 +110,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
                 onFinishCallback = function() {
                   log("Login completed")
                   xbox_complete_login()
-                }.bindenv(this)
+                }
               })
         }
         else {

@@ -21,6 +21,7 @@ let { checkMatchingError, matchingErrorString, matchingRpcSubscribe } = require(
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isEventForClan } = require("%scripts/events/eventInfo.nut")
+let QueueStats = require("%scripts/queue/queueStats.nut")
 
 let hiddenMatchingError = {
   SERVER_ERROR_NOT_IN_QUEUE = true
@@ -33,9 +34,6 @@ foreach (fn in [
                  "queue/queueBase.nut"
                  "queue/queueEvent.nut"
                  "queue/queueWwBattle.nut" //FIX ME: must be in WW folder also with ww queue type
-                 "queueStatsBase.nut"
-                 "queueStatsVer1.nut"
-                 "queueStatsVer2.nut"
                  "queueInfo/qiHandlerBase.nut"
                  "queueInfo/qiHandlerByTeams.nut"
                  "queueInfo/qiHandlerByCountries.nut"
@@ -76,8 +74,7 @@ let QueueManager = class {
 
     local queue = this.findQueue(params)
     if (queue) {
-      if (queue.addQueueByParams(params))
-        broadcastEvent("QueueClustersChanged", queue)
+      queue.addQueueByParams(params)
       return queue
     }
 
@@ -477,7 +474,7 @@ let QueueManager = class {
   }
 
   function getQueueClusters(queue) {
-    return "clusters" in queue.params ? queue.params.clusters : []
+    return queue?.queueStats.getClusters() ?? []
   }
 
   function getQueueSlots(queue) {
@@ -556,17 +553,11 @@ let QueueManager = class {
   }
 
   function onEventQueueInfoRecived(params) {
-    local haveChanges = false
-    let queueInfo = getTblValue("queue_info", params)
+    let queueInfo = params?.queue_info
+    if (!u.isTable(queueInfo))
+      return
 
-    if (u.isTable(queueInfo))
-      haveChanges = this.applyQueueInfo(queueInfo, ::queue_stats_versions.StatsVer2)
-    else if (u.isArray(queueInfo)) //queueInfo ver1
-      foreach (qi in queueInfo)
-        if (this.applyQueueInfo(qi, ::queue_stats_versions.StatsVer1))
-          haveChanges = true
-
-    if (haveChanges)
+    if (this.applyQueueInfo(queueInfo, QueueStats))
       this.pushQueueInfoUpdatedEvent()
   }
 

@@ -1474,10 +1474,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let discountData = this.getDiscountByCountryAndArmyId(this.curCountry, page.name)
 
         let maxDiscount = discountData?.maxDiscount ?? 0
-        let discountTooltip = getTblValue("discountTooltip", discountData, "")
-        tabObj.tooltip = discountTooltip
         discountObj.setValue(maxDiscount > 0 ? ("-" + maxDiscount + "%") : "")
-        discountObj.tooltip = discountTooltip
       }
       break
     }

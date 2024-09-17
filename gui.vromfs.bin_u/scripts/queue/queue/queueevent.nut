@@ -41,18 +41,11 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     if ("mrank" in qParams)
       this.params.mrank <- qParams.mrank
 
-    if (!("cluster" in qParams))
-      return false
-
-    let cluster = qParams.cluster
-    local isClusterAdded = false
-    if (!isInArray(cluster, this.params.clusters)) {
+    let cluster = qParams?.cluster
+    if (cluster != null && !isInArray(cluster, this.params.clusters))
       this.params.clusters.append(cluster)
-      isClusterAdded = true
-    }
 
     this.addQueueByUid(qParams?.queueId, this.getQueueData(qParams))
-    return isClusterAdded
   }
 
   function removeQueueByParams(leaveData) {
@@ -67,16 +60,6 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
     this.removeQueueByUid(queueUid)
     return true
-  }
-
-  function removeQueueByUid(queueUid) {
-    let cluster = this.queueUidsList[queueUid].cluster
-    if (this.queueUidsList.filter(@(q) q.cluster == cluster).len() <= 1) {
-      let idx = this.params.clusters.indexof(cluster)
-      if (idx != null)
-        this.params.clusters.remove(idx)
-    }
-    base.removeQueueByUid(queueUid)
   }
 
   function clearAllQueues() {
@@ -244,7 +227,6 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function getQueueData(qParams) {
     return {
-      cluster = qParams.cluster
       gameModeId = getTblValue("gameModeId", qParams, -1)
     }
   }

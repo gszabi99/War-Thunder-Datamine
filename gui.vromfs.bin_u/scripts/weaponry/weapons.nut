@@ -1690,8 +1690,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       prepareUnitsForPurchaseMods.checkUnboughtMods()
   }
 
+  needRestoreResearchMode = @() this.researchMode && (!this.setResearchManually || this.availableFlushExp)
+
   function onDestroy() {
-    if ((this.researchMode && findAnyNotResearchedMod(this.air)) || this.shouldBeRestoredOnMainMenu)
+    if (this.needRestoreResearchMode() || this.shouldBeRestoredOnMainMenu)
       handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
 
     this.sendModPurchasedStatistic(this.air)
@@ -1704,7 +1706,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       curEdiff = this.curEdiff
       needHideSlotbar = this.needHideSlotbar
     }
-    if (this.researchMode && (!this.setResearchManually || this.availableFlushExp))
+    if (this.needRestoreResearchMode())
       openData.__update({
         researchMode = this.researchMode
         researchBlock = this.researchBlock

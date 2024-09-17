@@ -362,12 +362,27 @@ g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
   return newDiscountsList
 }
 
-discountUnitsBundles.subscribe(@(_) g_discount.updateDiscountData())
+function getUnitsDiscounts(countryId = "", armyId = "") {
+  if (!g_discount.haveAnyUnitDiscount())
+    return {}
 
-// Independent Modules
-require("%scripts/slotbar/elems/discountIconElem.nut")
+  let newDiscountsList = []
+  foreach (unit in getAllUnits())
+    if ((countryId == "" || unit.shopCountry == countryId) && (armyId == "" || unit.unitType.armyId == armyId)) {
+      let discount = g_discount.getUnitDiscount(unit)
+      if (discount > 0)
+        newDiscountsList.append({ unit, discount })
+    }
+
+  return newDiscountsList
+}
+
+discountUnitsBundles.subscribe(@(_) g_discount.updateDiscountData())
 
 subscribe_handler(g_discount, g_listener_priority.CONFIG_VALIDATION)
 
 ::g_discount <- g_discount
-return { g_discount }
+return {
+  g_discount
+  getUnitsDiscounts
+}

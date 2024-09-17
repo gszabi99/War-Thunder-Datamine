@@ -39,10 +39,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
   function init() {}
 
-  // return <is somethind in queue parameters changed>
-  function addQueueByParams(_qParams) {
-    return false
-  }
+  function addQueueByParams(_qParams) {}
 
   //return true if queue changed
   function removeQueueByParams(_leaveData) {

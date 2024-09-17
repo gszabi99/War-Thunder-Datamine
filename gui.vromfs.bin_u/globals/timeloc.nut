@@ -90,7 +90,7 @@ local function secondsToString(value, useAbbreviations = true, dontShowZeroParam
     )
   }
 
-  if (!dontShowZeroParam || secondsNum != 0 || res.len() == 0) {
+  if ((!dontShowZeroParam || secondsNum != 0 || res.len() == 0)) {
     let symbolsNum = res.len() ? 2 : 1
     let fStr = secondsFraction > 0
       ? $"%0{secondsFraction + 1 + symbolsNum}.{secondsFraction}f%s"

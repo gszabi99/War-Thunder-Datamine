@@ -27,8 +27,8 @@
     "finsAoaHor": 0.294517,
     "finsAoaVer": 0.294517,
     "brakeTime": [
-      0.5,
-      0.7
+      1.0,
+      1.2
     ],
     "brakeCxK": 0.1,
     "normalizationPreset": "heat",
@@ -52,6 +52,8 @@
     "explosiveMass": 220.0,
     "guidanceType": "sns",
     "timeLife": 300.0,
+    "rollStabilization": true,
+    "rollStabilizationDelay": 1.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -127,6 +129,7 @@
       "damageType": "pressure"
     },
     "guidance": {
+      "angleMax": 180.0,
       "permanentlyActivated": true,
       "warmUpTime": 1.0,
       "acquisitionTime": 0.1,
@@ -140,11 +143,11 @@
         "loftAngleToAccelMult": 0.5,
         "loftTargetOmegaMax": 1.25,
         "timeToGain0": [
-          0.3,
+          1.5,
           0.0
         ],
         "timeToGain1": [
-          0.31,
+          1.51,
           1.0
         ],
         "timeToGain2": [

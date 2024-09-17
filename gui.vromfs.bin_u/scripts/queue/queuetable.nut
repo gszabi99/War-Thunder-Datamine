@@ -440,14 +440,6 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateScene()
   }
 
-  function onEventQueueClustersChanged(queue) {
-    if (!::queues.isQueuesEqual(queue, this.getCurQueue()))
-      return
-
-    this.build_IA_shop_filters = true
-    this.updateScene()
-  }
-
   function onEventMyStatsUpdated(_params) {
     this.updateScene()
   }
@@ -480,4 +472,6 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let markup = getQueueWaitIconImageMarkup()
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
+
+  onEventQueueStatsClusterAdded = @(_) this.fullUpdate()
 }

@@ -7,7 +7,7 @@ let { isEqualSimple } = require("%sqstd/underscore.nut")
 let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getUnlockConditions, getTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
@@ -177,6 +177,12 @@ function getUnlockIdsByArmyId(country, armyId, ediff) {
   return cache(ediff)?.countries[country][armyId] ?? []
 }
 
+function getUnitsWithUnlock(ediff) {
+  return (cache(ediff)?.unitNameToUnlockId ?? {})
+    .map(@(unlockId, unitName) { unit = getAircraftByName(unitName), endDate = getTimeRangeCondition(getUnlockById(unlockId))?.endDate })
+    .values()
+}
+
 seenList.setListGetter(@() getUnlockIds(getShopDiffCode()))
 
 addListenersWithoutEnv({
@@ -194,4 +200,5 @@ return {
   getUnlockIds
   getUnlockIdsByCountry
   getUnlockIdsByArmyId
+  getUnitsWithUnlock
 }

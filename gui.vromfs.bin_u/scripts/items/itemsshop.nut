@@ -482,8 +482,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let value = this.findLastValue(prevValue)
     if (value >= 0)
       listObj.setValue(value)
-
-    this.updateItemInfo()
+    else
+      this.updateItemInfo()
 
     ::generatePaginator(this.scene.findObject("paginator_place"), this,
       this.curPage, ceil(this.itemsList.len().tofloat() / this.itemsPerPage) - 1, null, true /*show last page*/ )
@@ -558,12 +558,18 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   moveMouseToMainList = @() move_mouse_on_child_by_value(this.getItemsListObj())
 
-  function getCurItem() {
+  function getItemIndexByList() {
     let obj = this.getItemsListObj()
     if (!checkObj(obj))
-      return null
+      return -1
+    let listIndex = obj.getValue()
+    return listIndex >= 0
+      ? listIndex + this.curPage * this.itemsPerPage
+      : -1
+  }
 
-    return this.itemsList?[obj.getValue() + this.curPage * this.itemsPerPage]
+  function getCurItem() {
+    return this.itemsList?[this.getItemIndexByList()]
   }
 
   function getCurItemObj() {
@@ -587,10 +593,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateItemInfo() {
-    let obj = this.getItemsListObj()
-    if (obj?.isValid())
-      this.currentSelectedId = obj.getValue() + this.curPage * this.itemsPerPage
-
+    this.currentSelectedId = this.getItemIndexByList()
     let item = this.getCurItem()
     this.markItemSeen(item)
     this.infoHandler?.updateHandlerData(item, true, true)

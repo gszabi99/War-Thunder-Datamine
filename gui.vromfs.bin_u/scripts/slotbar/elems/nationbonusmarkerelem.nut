@@ -11,6 +11,8 @@ let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_ranks_blk } = require("blkGetters")
+let { createMoreText, maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()
 
@@ -91,25 +93,32 @@ elemViewType.addTypes({
 })
 
 addTooltipTypes({
-  NATIONBONUSES = {
+  NATION_BONUSES = {
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, _id, params) {
       let { countryId = "" } = params
       let { units } = getUnitsWithNationBonuses()
+
       let bonuses = countryId == "" ? units : units.filter(@(b) b.unit.shopCountry == countryId)
       let unitsWithBonus = bonuses
         .filter(@(b) getNationBonusMarkState(b.unit.shopCountry, b.unit.unitType.armyId))
         .map(@(b, idx) {
           hasCountry = countryId == ""
-          unitName = getUnitName(b.unit.name, true)
-          unitTypeIco = b.unit?.customClassIco ?? $"#ui/gameuiskin#{b.unit.name}_ico.svg"
-          isWideIco = ["ships", "helicopters", "boats"].contains(b.unit.unitType.armyId)
           countryIcon = getUnitCountryIcon(b.unit)
-          battlesRemain = $"{b.battlesRemainCount}/{expNewNationBonusDailyBattleCount}"
+          isWideIco = b.unit.unitType.isWideUnitIco
+          unitTypeIco = getUnitClassIco(b.unit)
+          unitName = getUnitName(b.unit.name, true)
+          value = $"{b.battlesRemainCount}/{expNewNationBonusDailyBattleCount}"
           even = idx % 2 == 0
         })
 
-      let data = handyman.renderCached("%gui/nationBonus/nationBonusesTooltip.tpl", { units = unitsWithBonus })
+      let view = {
+        header = "#shop/unit_nation_bonus_tooltip/header"
+        units = unitsWithBonus.slice(0, maxElementsInSimpleTooltip)
+        hasMoreVehicles = unitsWithBonus.len() > maxElementsInSimpleTooltip
+        moreVehicles = createMoreText(unitsWithBonus.len() - maxElementsInSimpleTooltip)
+      }
+      let data = handyman.renderCached("%gui/markers/markersTooltipSimple.tpl", view)
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true
     }

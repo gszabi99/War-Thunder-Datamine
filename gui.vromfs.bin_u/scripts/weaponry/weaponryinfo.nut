@@ -120,8 +120,7 @@ function isWeaponEnabled(unit, weapon) {
   return shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
          //temporary hack: check ammo amount for forced units by mission,
          //because shop_is_weapon_available function work incorrect with them
-         && (!::is_game_mode_with_spendable_weapons()
-             || getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
+         && (getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
              || !getAmmoMaxAmount(unit, weapon.name, AMMO.WEAPON)
             )
          && (!isInFlight() || getCurMissionRules().isUnitWeaponAllowed(unit, weapon))

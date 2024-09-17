@@ -54,7 +54,7 @@ let { minValuesToShowRewardPremium, MAX_COUNTRY_RANK
 } = require("%scripts/ranks.nut")
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
   gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
-  updateDebriefingResultGiftItemsInfo
+  updateDebriefingResultGiftItemsInfo, setDebriefingResult
 } = require("%scripts/debriefing/debriefingFull.nut")
 let { locCurrentMissionName, isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions,
@@ -2959,6 +2959,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       setNeedShowRate(this.debriefingResult, this.getMyPlace())
 
     this.debriefingResult = null
+    setDebriefingResult(null)
     this.playCountSound(false)
     this.isInProgress = false
 
@@ -3295,7 +3296,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function onEventProfileUpdated(_p) {
-    if (this.giftItems != null)
+    if (this.debriefingResult == null || this.giftItems != null)
       return
 
     updateDebriefingResultGiftItemsInfo()

@@ -101,6 +101,7 @@ return {
     missionSettingsAvailabilityFlag = "isShipsAllowed"
     crewUnitType = CUT_SHIP
     hasAiGunners = true
+    isWideUnitIco = true
     isAvailable = @() true
     isAvailableForFirstChoice = function(country = null) {
       if (!this.isAvailable() || !hasFeature("ShipsFirstChoice"))
@@ -134,6 +135,7 @@ return {
     missionSettingsAvailabilityFlag = "isHelicoptersAllowed"
     isUsedInKillStreaks = true
     crewUnitType = CUT_AIRCRAFT
+    isWideUnitIco = true
     isAvailable = @() true
     isAvailableForFirstChoice = @(_country = null) false
     canUseSeveralBulletsForGun = true
@@ -160,6 +162,7 @@ return {
     isPresentOnMatching = false
     crewUnitType = CUT_SHIP
     hasAiGunners = true
+    isWideUnitIco = true
     isAvailable = @() true
     isAvailableForFirstChoice = function(country = null) {
       if (!this.isAvailable() || !hasFeature("BoatsFirstChoice"))

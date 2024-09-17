@@ -37,7 +37,7 @@ function getUnitsWithNationBonuses() {
     let currentMaxRank = maxRanks[shopCountry]?[unitType.armyId] ?? 0
     maxRanks[shopCountry][unitType.armyId] <- max(currentMaxRank, rank)
 
-    if(!::isUnitInResearch(unit))
+    if(!::isUnitInResearch(unit) || unit.isRecentlyReleased())
       continue
 
     let countryBonusesData = getBonusesCountryData(shopCountry)

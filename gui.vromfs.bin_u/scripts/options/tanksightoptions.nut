@@ -90,12 +90,34 @@ function getCrosshairOpts() {
 
 let getVisibilityOpts = @(idx = 0) { idx, options = visibilityOpts }
 let getTextSizeOpts = @(idx = 0) { idx, options = textSizeOpts }
-let getFontOpts = @(idx = 0) { idx, options = mkFontOpts() }
-let getColorOpts = @(options, text = "", idx = 9) { idx, options = options.map(@(opt) opt.__merge({ text })) }
+let getFontOpts = @(idx = 0)
+  { idx, options = mkFontOpts(), handleUnknownValue = @(_val) { newIdx = 0 } }
 
 let transparentColorOption = {
   hueColor = "00000000"
   value = Color4(0, 0, 0, 0)
+}
+
+let defaultColor = Color4(0, 0, 0, 1)
+let getDefaultColorIdx = @(opts) opts.findindex(@(opt) isEqual(opt.value, defaultColor))
+
+function handleUnknownColor(color4, options, optText) {
+  let isDefaultValue = color4.a == 0
+  if (isDefaultValue)
+    return { newIdx = getDefaultColorIdx(options) }
+
+  let newOption = { text = optText value = color4, hueColor = color4ToDaguiString(color4) }
+  options.insert(options.len(), newOption)
+  return { newIdx = options.len() - 1, shouldUpdateView = true }
+}
+
+function getColorOpts(options, text = "", idx = 9) {
+  let opts = options.map(@(opt) opt.__merge({ text }))
+  return {
+    idx
+    options = opts
+    handleUnknownValue = @(color) handleUnknownColor(color, opts, text)
+  }
 }
 
 function mkTankSightOptionsMap(params) {
@@ -157,10 +179,15 @@ function initTankSightOptions() {
 let getSightOptionValueIdx = @(optType, value)
   tankSightOptionsMap?[optType].options.findindex(@(opt) isEqual(opt.value, value))
 
+function updateTankSightCrosshairOpts() {
+  tankSightOptionsMap[TSI_CROSSHAIR].clear()
+  tankSightOptionsMap[TSI_CROSSHAIR].__update(getCrosshairOpts())
+}
+
 return {
   tankSightOptionsMap,
   tankSightOptionsSections,
   getSightOptionValueIdx,
-  getCrosshairOpts
   initTankSightOptions
+  updateTankSightCrosshairOpts
 }

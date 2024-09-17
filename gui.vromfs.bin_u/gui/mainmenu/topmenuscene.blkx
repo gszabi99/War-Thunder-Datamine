@@ -115,17 +115,37 @@
                   "type": "remainingTimeMarker",
                   "place": "topMenu",
                   "value": "{\"viewId\": \"SHOP_REMAINING_TIME_UNIT\"}",
-                  "tooltip": ""
+                  "tooltip": "$tooltipObj",
+                  "tooltipObj": {
+                    "tooltipId": "{\"id\":\"remainingTimeUnit\", \"ttype\":\"REMAINING_TIME_UNIT\"}",
+                    "on_tooltip_open": "onGenericTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
+                  }
                 },
                 {
                   "type": "discountNotificationMarker",
                   "place": "topMenu",
-                  "value": "{\"viewId\": \"SHOP_DISCOUNT_MARKER\"}"
+                  "value": "{\"viewId\": \"SHOP_DISCOUNT_MARKER\"}",
+                  "tooltip": "$tooltipObj",
+                  "tooltipObj": {
+                    "tooltipId": "{\"id\":\"discountsMarker\", \"ttype\":\"DISCOUNTS\"}",
+                    "on_tooltip_open": "onGenericTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
+                  }
                 },
                 {
                   "type": "unlockMarker",
                   "place": "topMenu",
-                  "value": "unlock_markers"
+                  "value": "unlock_markers",
+                  "tooltip": "$tooltipObj",
+                  "tooltipObj": {
+                    "tooltipId": "{\"id\":\"unlockMarker\", \"ttype\":\"UNLOCK_MARKER\"}",
+                    "on_tooltip_open": "onGenericTooltipOpen",
+                    "on_tooltip_close": "onTooltipObjClose",
+                    "display": "hide"
+                  }
                 },
                 {
                   "type": "nationBonusMarker",
@@ -133,7 +153,7 @@
                   "value": "{\"viewId\": \"SHOP_NATION_BONUS_MARKER\"}",
                   "tooltip": "$tooltipObj",
                   "tooltipObj": {
-                    "tooltipId": "{\"id\":\"nationBonus\", \"ttype\":\"NATIONBONUSES\"}",
+                    "tooltipId": "{\"id\":\"nationBonus\", \"ttype\":\"NATION_BONUSES\"}",
                     "on_tooltip_open": "onGenericTooltipOpen",
                     "on_tooltip_close": "onTooltipObjClose",
                     "display": "hide"

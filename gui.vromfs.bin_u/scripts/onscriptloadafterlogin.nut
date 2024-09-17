@@ -331,6 +331,7 @@ foreach (fn in [
 require("%scripts/controls/controlsFootballNy2021Hack.nut")
 require("%scripts/slotbar/elems/unlockMarkerElem.nut")
 require("%scripts/slotbar/elems/nationBonusMarkerElem.nut")
+require("%scripts/slotbar/elems/discountIconElem.nut")
 require("%scripts/items/trophyShowTime.nut")
 require("%scripts/dlcontent/dlContent.nut")
 require("%scripts/dynamic/mainMissionGenerator.nut")

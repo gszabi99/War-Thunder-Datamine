@@ -1,8 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { tankSightOptionsMap, tankSightOptionsSections,
-  getSightOptionValueIdx, getCrosshairOpts, initTankSightOptions } = require("%scripts/options/tankSightOptions.nut")
+let { tankSightOptionsMap, tankSightOptionsSections, getSightOptionValueIdx, initTankSightOptions,
+  updateTankSightCrosshairOpts } = require("%scripts/options/tankSightOptions.nut")
 let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
 let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings,
   save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset, switch_tank_sight_settings_mode,
@@ -95,7 +95,6 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     unitOptions[obj.id].onChange(this, this.scene, obj)
     this.updateCrosshairOptions()
     this.applySettingsForSelectedUnit()
-    initTankSightOptions()
     this.resetCurPresetOption()
   }
 
@@ -135,9 +134,10 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateCrosshairOptions() {
+    updateTankSightCrosshairOpts()
+    let opts = tankSightOptionsMap[TSI_CROSSHAIR]
     let id = getOptionControlObjId(TSI_CROSSHAIR)
     let control = this.scene.findObject(id)
-    let opts = getCrosshairOpts()
     let markup = createSelectControl(id, opts.options, opts.idx)
     this.guiScene.replaceContentFromText(control, markup, markup.len(), this)
   }
@@ -153,13 +153,36 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(false, false)
     foreach (optType, optValue in settings) {
       let controlObj = this.scene.findObject(getOptionControlObjId(optType))
-      let value = getSightOptionValueIdx(optType, optValue)
-      if (!controlObj?.isValid() || value == null)
+      let valueIdx = getSightOptionValueIdx(optType, optValue)
+
+      if (!controlObj?.isValid())
         continue
-      controlObj.setValue(value)
+
+      if (valueIdx == null) {
+        this.trySetUnknownSightOption(controlObj, optType, optValue)
+        continue
+      }
+
+      controlObj.setValue(valueIdx)
     }
+
     this.guiScene.setUpdatesEnabled(true, true)
     this.isSettingsApplying = false
+  }
+
+  function trySetUnknownSightOption(controlObj, optType, optValue) {
+    let { handleUnknownValue = null } = tankSightOptionsMap[optType]
+    if (!handleUnknownValue)
+      return
+    let { shouldUpdateView = false, newIdx } = handleUnknownValue(optValue)
+    if (!shouldUpdateView) {
+      controlObj.setValue(newIdx)
+      return
+    }
+
+    let { options } = tankSightOptionsMap[optType]
+    let controlMarkup = createSelectControl(controlObj.id, options, newIdx)
+    this.guiScene.replaceContentFromText(controlObj, controlMarkup, controlMarkup.len(), this)
   }
 
   function onSave() {
@@ -183,6 +206,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
 
   function onReset() {
     reset_tank_sight_settings()
+    this.resetCurPresetOption()
     this.updateTankSightsOptions(get_tank_sight_settings())
   }
 
