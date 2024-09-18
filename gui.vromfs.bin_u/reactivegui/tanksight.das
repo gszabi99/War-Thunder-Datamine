@@ -12,6 +12,7 @@ require Weapon
 require WTCamera
 require hud
 require DagorTexture3D
+require Mission
 
 let black = E3DCOLOR(Color4(float4(0, 0, 0, 1)))
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
@@ -60,6 +61,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
   var dist = data.isPreviewMode ? 1234. : -1.
   var progress = -1.
   var isOver = false
+  var isCorrection = false
   if !data.isPreviewMode && gm == null
     return
   if !data.isPreviewMode
@@ -69,14 +71,16 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
       if corDist > 0.
         dist = corDist
         isOver = get_current_dist_correction_over()
+        isCorrection = true
     elif gm.rangefinder != null && get_difficulty_config().hudUseRangefinder
       if gm.rangefinder.ready || gm.rangefinder.progress < 0.
-        dist = gm.rangefinder.distance
-        isOver = gm.rangefinder.isOverDistance
-        let corDist = get_current_dist_correction()
-        if corDist > 0.
-          dist = corDist
-          isOver = get_current_dist_correction_over()
+        dist = max(0., get_current_dist_correction())
+        isOver = get_current_dist_correction_over()
+        isCorrection = true
+        if gm.rangefinder.hideTime > float(get_total_time()) || dist == gm.rangefinder.distance
+          dist = gm.rangefinder.distance
+          isOver = gm.rangefinder.isOverDistance
+          isCorrection = false
       else
         progress = gm.rangefinder.progress
 
@@ -87,7 +91,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
   let textColor = (is_thermal ? settings.rangefinderThTextColor :
    (is_night_vision ? settings.rangefinderNvTextColor :
    (get_crosshair_light_on() ? settings.rangefinderLightTextColor : settings.rangefinderTextColor)))
-  if dist > 0.
+  if dist >= 0.
     ctx |> set_font(fontId, 0, 0)
     ctx |> set_font_ht(settings.rangefinderTextSize)
 
@@ -109,6 +113,14 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
     let textPos = float2(pos.x + size.x * 0.5 - strBox.width.x * 0.5, pos.y + strBox.width.y)
     ctx |> goto_xy(textPos.x, textPos.y)
     ctx |> draw_str_scaled(1.0, distText, distText |> length())
+
+    if isCorrection
+      ctx |> set_font(0, 0, 0)
+      ctx |> set_font_ht(settings.rangefinderTextSize)
+      let correctionSymbol = "*"
+      let symBox = get_str_bbox(correctionSymbol, correctionSymbol |> length(), fctx)
+      ctx |> goto_xy(textPos.x - symBox.width.x, textPos.y)
+      ctx |> draw_str_scaled(1.0, correctionSymbol, correctionSymbol |> length())
 
     if data.isPreviewMode && settings.highlightedObject == TankSettingObj TSO_RANGEFINDER
       ctx |> set_color(highlightColor)

@@ -3906,6 +3906,50 @@
       }
     },
     {
+      "id": "2024_09_18_us_air_force_day_decal",
+      "locDescId": "2024_09_18_us_air_force_day_decal/desc",
+      "userLogId": "2024_09_18_us_air_force_day_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "us_air_forces_day",
+      "costGold": 199,
+      "hidden": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_usa"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-18 11:00:00",
+            "endDate": "2024-09-23 07:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2024_09_13_battle_of_britain_decal",
       "locDescId": "2024_09_13_battle_of_britain_decal/desc",
       "userLogId": "2024_09_13_battle_of_britain_decal",
@@ -3914,6 +3958,7 @@
       "chapter": "holidays",
       "group": "battle_of_britain",
       "costGold": 199,
+      "hidden": true,
       "manualOpen": true,
       "mode": {
         "type": "missionsPlayedScore",
@@ -3958,6 +4003,7 @@
       "group": "moments_of_valor_brazil",
       "shouldMarkUnits": true,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -3995,6 +4041,7 @@
       "group": "moments_of_valor_brazil",
       "shouldMarkUnits": true,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -11402,6 +11449,12 @@
     },
     {
       "id": "title_true_action_hero",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_above_all",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
