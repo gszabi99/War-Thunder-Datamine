@@ -3914,7 +3914,6 @@
       "chapter": "holidays",
       "group": "us_air_forces_day",
       "costGold": 199,
-      "hidden": true,
       "manualOpen": true,
       "mode": {
         "type": "missionsPlayedScore",
@@ -3940,6 +3939,46 @@
           {
             "type": "playerCountry",
             "country": "country_usa"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-09-18 11:00:00",
+            "endDate": "2024-09-23 07:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_09_18_above_all_title",
+      "locDescId": "2024_09_18_above_all_title/desc",
+      "userLogId": "2024_09_18_above_all_title",
+      "icon": "https://static-ggc.gaijin.net/items/belt.png",
+      "lockStyle": "lock",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "us_air_forces_day",
+      "shouldMarkUnits": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": [
+              "p-51d-10",
+              "p-47m-1-re"
+            ],
+            "inSession": true,
+            "inSessionAnd": false
           },
           {
             "type": "timeRange",
