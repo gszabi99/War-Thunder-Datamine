@@ -822,7 +822,7 @@ addListenersWithoutEnv({
 
     let id = getUserGameModeId()
     if (id && id != "")
-      setCurrentGameModeById(id, true)
+      setCurrentGameModeById(id)
   }
 }, CONFIG_VALIDATION)
 
