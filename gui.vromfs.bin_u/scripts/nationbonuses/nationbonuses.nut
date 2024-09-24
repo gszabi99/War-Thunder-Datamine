@@ -60,9 +60,6 @@ function getUnitsWithNationBonuses() {
   return unitsWithBonusData
 }
 
-let hasNationBonus = @(country, armyId) getUnitsWithNationBonuses().units
-  .findindex(@(item) item.unit.shopCountry == country && item.unit.unitType.armyId == armyId) != null
-
 function loadNationBonusMarksState() {
   nationBonusMarkState = convertBlk(loadLocalAccountSettings("nationBonusMarkState", DataBlock()))
 }
@@ -99,7 +96,6 @@ addListenersWithoutEnv({
 
 return {
   getUnitsWithNationBonuses
-  hasNationBonus
   getNationBonusMarkState
   setNationBonusMarkState
 }
