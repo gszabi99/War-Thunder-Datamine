@@ -46,6 +46,7 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "radarCanLockTargetFromTPV": false,
   "controlDevices": {
     "device": [
       {
@@ -369,10 +370,6 @@
       "hp": 1000.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
-      "ex_decor_l_07_dm": {},
-      "ex_decor_l_08_dm": {},
-      "ex_decor_r_08_dm": {},
-      "ex_decor_r_09_dm": {},
       "ex_armor_04_dm": {},
       "turret_01_back_dm": {},
       "ex_armor_l_02_dm": {},
@@ -452,7 +449,11 @@
       "spall_liner_08_dm": {},
       "spall_liner_09_dm": {},
       "spall_liner_10_dm": {},
-      "spall_liner_11_dm": {}
+      "spall_liner_11_dm": {},
+      "spall_liner_12_dm": {},
+      "spall_liner_13_dm": {},
+      "spall_liner_14_dm": {},
+      "spall_liner_15_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -3367,6 +3368,17 @@
       0.35
     ],
     "detectionHeight": 2.87
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/su_bmp_auto_target_tracker.blk",
+      "turretIndex": 0,
+      "designationTurretIndex": 0,
+      "dmPart": [
+        "optic_gun_01_dm",
+        "electronic_equipment_dm"
+      ]
+    }
   },
   "modifications": {
     "new_wheels": {},
