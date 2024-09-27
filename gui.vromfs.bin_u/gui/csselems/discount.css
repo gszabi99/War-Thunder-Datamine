@@ -55,9 +55,7 @@ infoMarker[place=topMenu] {
 }
 
 infoMarker[place=slotbarCountry] {
-  position: relative;
-  pos: 0, -h + 1@blockInterval;
-  margin-right: 0.5@blockInterval;
+  position: absolute;
 }
 
 infoMarker[place=inTab] {
@@ -149,19 +147,18 @@ infoMarker[type=discountNotificationMarker][place=slotbarCountry] {
   behavior: bhvUpdater;
 }
 
-infoMarker[type=discountNotificationMarker][place=slotbarCountry] {
+infoMarker[type=discountNotificationMarker][place=slotbarCountry],
+infoMarker[type=discountNotificationMarker][place=unitCell] {
   re-type: text;
-  min-width: 1@discountMarkerWidth;
-  size: w, 1@markerHeight;
+  size: 1@discountMarkerWidth, 1@markerHeight;
   background-image: #ui/gameuiskin#discount_box_down_bg.svg;
-  background-svg-size: w, 1@markerHeight;
+  background-svg-size: 1@discountMarkerWidth, 1@markerHeight;
   background-color: @discountBGColor;
-  background-repeat: expand-svg;
-  background-position: 21@sf/@pf,2@sf/@pf,2@sf/@pf,10@sf/@pf;
-  padding: 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
+  padding: 1@discountBoxPadding, 0.5@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
   color: @discountTextColor;
   font: @fontSmall;
   textShade: yes;
+  not-input-transparent: yes;
 }
 
 infoMarker[type=discountNotificationMarker][place=inTab] {
@@ -177,20 +174,12 @@ infoMarker[type=discountNotificationMarker][place=inTab] {
   textShade: yes;
 }
 
-infoMarker[type=discountNotificationMarker][place=unitCell] {
-  re-type: text;
-  min-width: 1@discountMarkerWidth;
-  size: w, 1@markerHeight;
-  background-image: #ui/gameuiskin#discount_box_down_bg.svg;
-  background-svg-size: w, 1@markerHeight;
-  background-color: @discountBGColor;
-  background-repeat: expand-svg;
-  background-position: 21@sf/@pf,2@sf/@pf,2@sf/@pf,10@sf/@pf;
-  padding: 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxPadding, 1@discountBoxDownArrowHeight;
-  color: @discountTextColor;
-  font: @fontSmall;
-  textShade: yes;
-  not-input-transparent: yes;
+infoMarker[type=discountNotificationMarker][stacked=yes] {
+  background-image: #ui/gameuiskin#discount_color_icon_down.svg;
+  size: 1@markerWidth, 1@markerHeight;
+  background-svg-size: 1@markerWidth, 1@markerHeight;
+  background-color: @white;
+  text: "";
 }
 
 nationBonusRankIcon > img {

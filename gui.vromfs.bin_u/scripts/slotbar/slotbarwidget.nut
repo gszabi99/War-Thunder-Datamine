@@ -56,6 +56,9 @@ let { startSlotbarUnitDnD } = require("%scripts/slotbar/slotbarUnitDnDHandler.nu
 let swapCrewHandler = require("%scripts/slotbar/swapCrewHandler.nut")
 let swapCrewsBegin = require("%scripts/slotbar/swapCrewsDnDHandler.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
+let { getCountryMarkersWidth } = require("%scripts/markers/markerUtils.nut")
+let { floor } = require("math")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -176,6 +179,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   showAlwaysFullSlotbar = false
   needCheckUnitUnlock = false
   slotbarHintText = ""
+
+  initialCountriesWidths = null
 
   static function create(params) {
     let nest = params?.scene
@@ -575,6 +580,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let needUpdateCountryContent = this.headerObj.getValue() == selCountryIdx
     this.headerObj.setValue(selCountryIdx)
+    this.updateMarkers()
     if (needUpdateCountryContent)
       this.onHeaderCountry(this.headerObj)
 
@@ -965,6 +971,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     else {
       this.switchSlotbarCountry(this.headerObj, countryData)
     }
+
+    this.updateMarkers()
   }
 
   function onCountriesListDblClick() {
@@ -1007,6 +1015,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         this.skipCheckCountrySelect = true
         this.skipCheckAirSelect = true
         this.headerObj.setValue(idx)
+        this.updateMarkers()
         break
       }
   }
@@ -1073,8 +1082,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let curValue = this.headerObj.getValue()
     let value = getNearestSelectableChildIndex(this.headerObj, curValue, way)
-    if (value != curValue)
+    if (value != curValue) {
       this.headerObj.setValue(value)
+      this.updateMarkers()
+    }
   }
 
   function onSlotChangeAircraft(obj = null) {
@@ -1711,6 +1722,62 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hideAllPopups()
   }
 
+  function updateMarkers() {
+    if (!this.hasResearchesBtn || this.singleCountry != null)
+      return
+    this.guiScene.applyPendingChanges(false)
+    let shopVisibleCountries = getShopVisibleCountries()
+    let countriesCount = shopVisibleCountries.len()
+    if (!topMenuShopActive.get()) {
+      if (this.initialCountriesWidths != null) {
+        for (local i = 0; i < countriesCount; i++)
+          this.headerObj.findObject($"header_country{i}")["width"] = this.initialCountriesWidths[shopVisibleCountries[i]]
+      }
+      return
+    }
+
+    if (this.initialCountriesWidths == null) {
+      this.initialCountriesWidths = {}
+      for (local i = 0; i < countriesCount; i++)
+        this.initialCountriesWidths[shopVisibleCountries[i]] <- this.headerObj.findObject($"header_country{i}").getSize()[0]
+    }
+
+    let countryIndex = this.headerObj.getValue()
+    for (local i = 0; i < countriesCount; i++) {
+      let countryObj = this.headerObj.findObject($"header_country{i}")
+      let countryId = countryObj.countryId
+      let countryMarkersWidth = getCountryMarkersWidth(countryId)
+      let needStack = (countryIndex != i) && this.initialCountriesWidths[countryId] * 0.95 < countryMarkersWidth
+      let markersHolder = countryObj.findObject("markersHolder")
+      let markersCount = markersHolder.childrenCount() - 1
+      local counter = 0;
+
+      for (local j = 0; j < markersCount; j++) {
+        local markerObj = markersHolder.getChild(j)
+        if (markerObj?.id == "unlockMarkerDiv")
+          markerObj = markerObj.getChild(0)
+        if (!markerObj.isVisible())
+          continue
+
+        markerObj["stacked"] = needStack ? "yes" : "no"
+        markerObj["left"] = needStack ? $"{counter * 0.5}@markerWidth"
+          : $"{counter}@markerWidth + {counter * 0.5}@blockInterval"
+
+        counter++
+      }
+
+      countryObj["width"] = needStack ? $"{this.initialCountriesWidths[countryId]}"
+        : $"{max(this.initialCountriesWidths[countryId], floor(countryMarkersWidth / 0.95))}"
+
+      let tooltipArea = markersHolder.findObject("tooltipArea")
+      tooltipArea["enable"] = needStack ? "yes" : "no"
+      if (needStack)
+        tooltipArea["width"] = $"{1 + 0.5 * (counter - 1)}@markerWidth"
+    }
+  }
+
+  onEventShopWndSwitched = @(_p) this.updateMarkers()
+  onEventCountryMarkersInvalidate = @(_p) this.updateMarkers()
   onUnitCellDrop = @() null
   onUnitCellMove = @() null
   onCrewDropFinish = @() null

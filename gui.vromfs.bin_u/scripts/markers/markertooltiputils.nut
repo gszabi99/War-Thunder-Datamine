@@ -92,4 +92,5 @@ return {
   prepareForTooltip
   createMoreText
   maxElementsInSimpleTooltip = 25
+  maxTooltipUnitsCount
 }

@@ -364,7 +364,7 @@ g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
 
 function getUnitsDiscounts(countryId = "", armyId = "") {
   if (!g_discount.haveAnyUnitDiscount())
-    return {}
+    return []
 
   let newDiscountsList = []
   foreach (unit in getAllUnits())

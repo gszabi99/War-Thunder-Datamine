@@ -47,22 +47,6 @@ shopFilter {
     text:t='<<tabName>>'
   }
 
-  infoMarker {
-    id:t='remainingPageMarker'
-    type:t='remainingTimeMarker'
-    place:t='inTab'
-    countryId:t='<<countryId>>'
-    armyId:t='<<armyId>>'
-    value:t='{"viewId": "SHOP_PAGES_REMAINING_TIME_UNIT"}'
-    tooltip:t='$tooltipObj'
-    tooltipObj {
-      tooltipId:t='{"id":"remainingTimeUnit", "ttype":"REMAINING_TIME_UNIT", "countryId": "<<countryId>>", "armyId": "<<armyId>>"}'
-      on_tooltip_open:t='onGenericTooltipOpen'
-      on_tooltip_close:t='onTooltipObjClose'
-      display:t='hide'
-    }
-  }
-
   <<#seenIconCfg>>
   infoMarker {
     type:t='unlockMarker'
@@ -88,6 +72,22 @@ shopFilter {
     tooltipObj {
       id:t='nationBonusMarkerTooltip'
       tooltipId:t=''
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+      display:t='hide'
+    }
+  }
+
+  infoMarker {
+    id:t='remainingPageMarker'
+    type:t='remainingTimeMarker'
+    place:t='inTab'
+    countryId:t='<<countryId>>'
+    armyId:t='<<armyId>>'
+    value:t='{"viewId": "SHOP_PAGES_REMAINING_TIME_UNIT"}'
+    tooltip:t='$tooltipObj'
+    tooltipObj {
+      tooltipId:t='{"id":"remainingTimeUnit", "ttype":"REMAINING_TIME_UNIT", "countryId": "<<countryId>>", "armyId": "<<armyId>>"}'
       on_tooltip_open:t='onGenericTooltipOpen'
       on_tooltip_close:t='onTooltipObjClose'
       display:t='hide'

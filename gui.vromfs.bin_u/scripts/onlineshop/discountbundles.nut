@@ -38,7 +38,7 @@ function updateDiscountUnitsBundles(bundlesShopInfoV) {
     minTimeLeft = min(minTimeLeft ?? timeLeft, timeLeft)
     foreach (unitName in unitsList) {
       let unit = getAircraftByName(unitName)
-      if (unit == null || !isAvailableBuyUnitOnline(unit))
+      if (unit == null || !isAvailableBuyUnitOnline(unit) || !unit.isVisibleInShop() || unit.isBought())
         continue
       res[unitName] <- calcPercent(1 - discount_mul)
     }

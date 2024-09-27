@@ -13,7 +13,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { createMoreText, maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()
 
 elemModelType.addTypes({
@@ -96,6 +95,9 @@ addTooltipTypes({
   NATION_BONUSES = {
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, _id, params) {
+      if (obj.getParent()?["stacked"] == "yes")
+        return false
+
       let { countryId = "" } = params
       let { units } = getUnitsWithNationBonuses()
 
@@ -118,7 +120,7 @@ addTooltipTypes({
         hasMoreVehicles = unitsWithBonus.len() > maxElementsInSimpleTooltip
         moreVehicles = createMoreText(unitsWithBonus.len() - maxElementsInSimpleTooltip)
       }
-      let data = handyman.renderCached("%gui/markers/markersTooltipSimple.tpl", view)
+      let data = handyman.renderCached("%gui/markers/markersTooltipSimple.tpl", { blocks = [view] })
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true
     }

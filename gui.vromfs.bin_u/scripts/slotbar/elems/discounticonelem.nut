@@ -57,6 +57,9 @@ addTooltipTypes({
   DISCOUNTS = {
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, _id, params) {
+      if (obj.getParent()?["stacked"] == "yes")
+        return false
+
       let { countryId = "", armyId = "" } = params
       let discountUnits = getSortedDiscountUnits(getUnitsDiscounts(countryId, armyId))
       let { tooltipUnits, tooltipUnitsCount } = prepareForTooltip(discountUnits)

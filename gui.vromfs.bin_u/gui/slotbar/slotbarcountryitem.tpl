@@ -37,27 +37,15 @@ shopFilter {
   }
 
   <<#hasNotificationIcon>>
-  tdiv {
+  markersHolder {
+    id:t='markersHolder'
     position:t='absolute'
+    top:t='-h + 1@blockInterval'
     size:t='pw, ph'
-
-    infoMarker {
-      type:t='remainingTimeMarker'
-      place:t='slotbarCountry'
-      countryId:t='<<country>>'
-      value:t='{"viewId": "COUNTRY_REMAINING_TIME_UNIT"}'
-      display:t='hide'
-      tooltip:t='$tooltipObj'
-      tooltipObj {
-        tooltipId:t='{"id":"remainingTimeUnit", "ttype":"REMAINING_TIME_UNIT", "countryId": "<<country>>"}'
-        on_tooltip_open:t='onGenericTooltipOpen'
-        on_tooltip_close:t='onTooltipObjClose'
-        display:t='hide'
-      }
-    }
 
     <<#seenIconCfg>>
     tdiv {
+      id:t="unlockMarkerDiv"
       behavior:t='bhvUpdater'
       countryId:t='<<country>>'
       value:t='{"viewId": "COUNTRY_UNLOCK_MARKER"}'
@@ -93,6 +81,21 @@ shopFilter {
     }
 
     infoMarker {
+      type:t='remainingTimeMarker'
+      place:t='slotbarCountry'
+      countryId:t='<<country>>'
+      value:t='{"viewId": "COUNTRY_REMAINING_TIME_UNIT"}'
+      display:t='hide'
+      tooltip:t='$tooltipObj'
+      tooltipObj {
+        tooltipId:t='{"id":"remainingTimeUnit", "ttype":"REMAINING_TIME_UNIT", "countryId": "<<country>>"}'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+        display:t='hide'
+      }
+    }
+
+    infoMarker {
       type:t='discountNotificationMarker'
       place:t='slotbarCountry'
       value:t='{"viewId": "COUNTRY_DISCOUNT_MARKER"}'
@@ -101,6 +104,19 @@ shopFilter {
       tooltip:t='$tooltipObj'
       tooltipObj {
         tooltipId:t='{"id":"discountsMarker", "ttype":"DISCOUNTS", "countryId": "<<country>>"}'
+        on_tooltip_open:t='onGenericTooltipOpen'
+        on_tooltip_close:t='onTooltipObjClose'
+        display:t='hide'
+      }
+    }
+
+    tooltipArea {
+      id:t='tooltipArea'
+      position:t='absolute'
+      height:t='ph'
+      tooltip:t='$tooltipObj'
+      tooltipObj {
+        tooltipId:t='{"id":"stackedMarkers", "ttype":"STACKEDMARKERS", "countryId": "<<country>>"}'
         on_tooltip_open:t='onGenericTooltipOpen'
         on_tooltip_close:t='onTooltipObjClose'
         display:t='hide'

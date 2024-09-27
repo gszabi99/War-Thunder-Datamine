@@ -1,7 +1,14 @@
 tdiv {
   flow:t='vertical'
   width:t=<<#isTooltipWide>>'460@sf/@pf'<</isTooltipWide>><<^isTooltipWide>>'360@sf/@pf'<</isTooltipWide>>
-
+  <<#blocks>>
+  <<#hasBlocksSeparator>>
+    tdiv {
+    size:t='pw, 2@sf/@pf'
+    background-color:t='@separatorBlockColor'
+    margin:t='0, 0.5@blockInterval, 0, 2@blockInterval'
+  }
+  <</hasBlocksSeparator>>
   textareaNoTab {
     text:t='<<header>>'
     smallFont:t='yes'
@@ -44,6 +51,8 @@ tdiv {
         width:t='fw'
       }
       textareaNoTab {
+        id:t='<<id>>'
+        endDate:t='<<endDate>>'
         text:t='<<value>>'
         smallFont:t='yes'
         min-width:t='50@sf/@pf'
@@ -52,13 +61,7 @@ tdiv {
     }
     <</units>>
   }
-
   <<#hasMoreVehicles>>
-  tdiv {
-    size:t='pw, 2@sf/@pf'
-    background-color:t='@separatorBlockColor'
-    margin:t='0, 0.5@blockInterval, 0, 0.5@blockInterval'
-  }
   textareaNoTab {
     width:t='pw'
     tinyFont:t='yes'
@@ -66,4 +69,13 @@ tdiv {
     text:t='<<moreVehicles>>'
   }
   <</hasMoreVehicles>>
+  <</blocks>>
+  <<#needTimer>>
+  timer {
+    id:t='timeLeftTimer'
+    unitsCount:t='<<unitsCount>>'
+    timer_interval_msec:t='1000'
+    timer_handler_func:t='updateTimeLeft'
+  }
+  <</needTimer>>
 }

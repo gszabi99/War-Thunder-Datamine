@@ -179,7 +179,7 @@ function getUnlockIdsByArmyId(country, armyId, ediff) {
 
 function getUnitsWithUnlock(ediff) {
   return (cache(ediff)?.unitNameToUnlockId ?? {})
-    .map(@(unlockId, unitName) { unit = getAircraftByName(unitName), endDate = getTimeRangeCondition(getUnlockById(unlockId))?.endDate })
+    .map(@(unlockId, unitName) { unit = getAircraftByName(unitName), unlockId, endDate = getTimeRangeCondition(getUnlockById(unlockId))?.endDate })
     .values()
 }
 

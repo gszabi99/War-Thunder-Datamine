@@ -10,22 +10,10 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { TIME_DAY_IN_SECONDS, buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { secondsToString } = require("%appGlobals/timeLoc.nut")
-let { get_charserver_time_sec } = require("chard")
+let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { getSortedUnits, prepareForTooltip, createMoreText } = require("%scripts/markers/markerTooltipUtils.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-
-function buildTimeTextValue(timeEnd) {
-  if(timeEnd == null || timeEnd == "")
-    return ""
-
-  timeEnd = timeEnd.tointeger()
-  let t = timeEnd - get_charserver_time_sec()
-  return t < 0 ? loc("shop/tasksExpired") : t < TIME_DAY_IN_SECONDS
-    ? loc("mainmenu/timeForBuyVehicleShort", { time = secondsToString(t) })
-    : loc("mainmenu/dataRemaningTimeShort", { time = buildDateTimeStr(timeEnd, false, false) })
-}
+let { buildTimeTextValue } = require("%scripts/markers/markerUtils.nut")
 
 elemModelType.addTypes({
   UNLOCK_MARKER = {
@@ -58,6 +46,9 @@ addTooltipTypes({
     }
 
     fillTooltip = function(obj, handler, _id, params) {
+      if (obj.getParent()?["stacked"] == "yes")
+        return false
+
       let { countryId = "", armyId = "" } = params
       let sortedUnits = getSortedUnits(getUnitsWithUnlock(getCurrentGameModeEdiff()))
       let unlockUnits = (countryId == "" && armyId == "") ? sortedUnits

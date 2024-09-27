@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import clearTimer, setTimeout
 let u = require("%sqStdLibs/helpers/u.nut")
 let { TIME_DAY_IN_SECONDS, buildDateStr } = require("%scripts/time.nut")
-let timeBase = require("%appGlobals/timeLoc.nut")
+let { hoursToString } = require("%appGlobals/timeLoc.nut")
 let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 let { get_charserver_time_sec } = require("chard")
@@ -66,7 +66,7 @@ function fillPromUnitInfo(holderObj, unit, needShowExpiredMessage) {
   let locStr = (t <= 0)
     ? loc("mainmenu/dataExpiredTime", { time = buildDateStr(timeEnd) })
     : t < TIME_DAY_IN_SECONDS
-      ? loc("mainmenu/timeForBuyVehicle", { time = timeBase.secondsToString(t) })
+      ? loc("mainmenu/timeForBuyVehicle", { time = hoursToString(t / 3600.0, true, true) })
       : loc("mainmenu/dataRemaningTime", { time = buildDateStr(timeEnd) })
 
   let remTimeBuyText = colorize(color, locStr)
