@@ -254,7 +254,9 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
 
   if get_radar_hud_is_c_scope_visible()
     let size = float2(rdata.size.x, rdata.size.y * 0.42)
-    let pos = rdata.pos + float2(0., rdata.size.y * 0.58)
+    var pos = rdata.pos + float2(0., rdata.size.y * 0.58)
+    if data.enableByMfd
+      pos += get_radar_hud_mfd_radar_offset()
     c_scope(ctx, data, pos, size)
 
 def mfd_radar_background(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
