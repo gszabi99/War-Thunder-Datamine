@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -63,7 +62,7 @@ gui_handlers.UniversalSpareApplyWnd <- class (ItemsListWndBase) {
   }
 
   function updateText() {
-    this.amountTextObj.setValue(this.curAmount + loc("icon/universalSpare"))
+    this.amountTextObj.setValue("".concat(this.curAmount, loc("icon/universalSpare")))
     this.scene.findObject("buttonMax").enable(this.curAmount != this.maxAmount)
   }
 

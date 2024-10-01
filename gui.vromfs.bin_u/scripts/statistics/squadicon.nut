@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
 let listLabelsSquad = {}
@@ -28,7 +28,7 @@ function updateListLabelsSquad() {
     label.count = 0;
   local team = ""
   foreach (_uid, member in getPlayersInfo()) {
-    team = "team" + member.team
+    team = $"team{member.team}"
     if (!(team in nextLabel))
       continue
 

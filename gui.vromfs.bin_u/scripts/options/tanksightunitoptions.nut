@@ -70,7 +70,7 @@ sightUnitOptions.addTypes({
 
     function updateOptions() {
       this.options = shopCountriesList
-        .filter(@(c) hasUnitAtRank(0, ES_UNIT_TYPE_TANK, c, false))
+        .filter(@(c) hasUnitAtRank(0, ES_UNIT_TYPE_TANK, c, false, false))
         .map(@(country) {
           value = country
           text = loc(country)
@@ -96,7 +96,7 @@ sightUnitOptions.addTypes({
       let country = sightUnitOptions.COUNTRY.value
       this.options = array(MAX_COUNTRY_RANK)
         .map(@(_, idx) idx + 1)
-        .filter(@(rank) hasUnitAtRank(rank, ES_UNIT_TYPE_TANK, country, true, true))
+        .filter(@(rank) hasUnitAtRank(rank, ES_UNIT_TYPE_TANK, country, true, false))
         .map(@(rank) {
           value = rank
           text = format(loc("conditions/unitRank/format"), get_roman_numeral(rank))

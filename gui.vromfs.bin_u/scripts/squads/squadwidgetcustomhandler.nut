@@ -90,18 +90,18 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateMemberView(mebmerObjIndex, member) {
     let indexStr = mebmerObjIndex.tostring()
     let isVisible = member != null
-    let memberObj = showObjById("member_" + indexStr, isVisible, this.scene)
+    let memberObj = showObjById($"member_{indexStr}", isVisible, this.scene)
     if (!isVisible || !checkObj(memberObj))
       return
 
-    showObjById("member_waiting_" + indexStr, !member.isActualData(), this.scene)
-    showObjById("member_state_block_" + indexStr, member.isActualData(), this.scene)
+    showObjById($"member_waiting_{indexStr}", !member.isActualData(), this.scene)
+    showObjById($"member_state_block_{indexStr}", member.isActualData(), this.scene)
 
     memberObj["uid"] = member.uid
     memberObj["isMe"] = member.isMe() ? "yes" : "no"
     memberObj.setUserData(member)
-    memberObj.findObject("member_icon_" + indexStr).setValue(member.pilotIcon)
-    memberObj.findObject("member_tooltip_" + indexStr)["uid"] = member.uid
+    memberObj.findObject($"member_icon_{indexStr}").setValue(member.pilotIcon)
+    memberObj.findObject($"member_tooltip_{indexStr}")["uid"] = member.uid
 
     if (member.isActualData()) {
       let contact = ::getContact(member.uid)
@@ -111,19 +111,19 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let status = g_squad_manager.getPlayerStatusInMySquad(member.uid)
       memberObj["status"] = getTblValue(status, this.squadStateToString, "")
-      memberObj.findObject("member_country_" + indexStr)["background-image"] = countryIcon
+      memberObj.findObject($"member_country_{indexStr}")["background-image"] = countryIcon
 
-      let memberVoipObj = memberObj.findObject("member_voip_" + indexStr)
+      let memberVoipObj = memberObj.findObject($"member_voip_{indexStr}")
       memberVoipObj["isVoipActive"] = contact.voiceStatus == voiceChatStats.talking ? "yes" : "no"
       let needShowVoice = chatStatesCanUseVoice()
         && get_option_voicechat()
         && !platformModule.isXBoxPlayerName(member.name)
       memberVoipObj.show(needShowVoice)
 
-      let memberCrossPlayObj = memberObj.findObject("member_crossplay_active_" + indexStr)
+      let memberCrossPlayObj = memberObj.findObject($"member_crossplay_active_{indexStr}")
       memberCrossPlayObj["isEnabledCrossPlay"] = member.crossplay ? "yes" : "no"
 
-      let speakingMemberNickTextObj = memberObj.findObject("speaking_member_nick_text_" + indexStr)
+      let speakingMemberNickTextObj = memberObj.findObject($"speaking_member_nick_text_{indexStr}")
       speakingMemberNickTextObj.setValue(getPlayerName(member.name))
     }
   }

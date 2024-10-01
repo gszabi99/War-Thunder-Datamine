@@ -691,7 +691,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let tdData = handyman.renderCached(("%gui/statistics/statTableHeaderCell.tpl"), view)
-    let trId = "team-header" + teamNum
+    let trId =$"team-header{teamNum}"
     let trSize = getTblValue("tr_size", markupData, "0,0")
     let trData = format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
     return trData

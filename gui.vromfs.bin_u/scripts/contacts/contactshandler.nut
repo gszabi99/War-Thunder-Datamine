@@ -333,8 +333,8 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let shortName = loc($"mainmenu/{gId}Short", "")
     return {
-      name = shortName == "" ? "#mainmenu/" + gId : shortName
-      tooltip = "#mainmenu/" + gId
+      name = shortName == "" ? $"#mainmenu/{gId}" : shortName
+      tooltip = $"#mainmenu/{gId}"
       icon = gIcon
       callback = callback
     }
@@ -537,7 +537,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function getGroupByName(group_name) {
     let contactsGroupsObj = this.scene.findObject("contacts_groups")
     if (checkObj(contactsGroupsObj)) {
-      let groupListObject = contactsGroupsObj.findObject("group_" + group_name)
+      let groupListObject = contactsGroupsObj.findObject($"group_{group_name}")
       return groupListObject.getParent()
     }
     return null
@@ -673,9 +673,9 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       local activateEvent = "onPlayerMsg"
       if (showConsoleButtons.value || !isChatEnabled())
         activateEvent = "onPlayerMenu"
-      data += format(this.groupFormat, "#contacts/" + gName,
+      data += format(this.groupFormat,$"#contacts/{gName}",
         gName == EPLX_SEARCH ? this.searchGroupActiveTextInclude : "",
-        "group_" + gName, activateEvent, this.buildPlayersListInfo(gName))
+        $"group_{gName}", activateEvent, this.buildPlayersListInfo(gName))
     }
     this.guiScene.replaceContentFromText(gObj, data, data.len(), this)
     let selected = [-1, -1]
@@ -836,7 +836,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     else if (this.curHoverObjId == "search_edit_box")
       this.doSearch()
     else {
-      let groupObj = this.scene.findObject("group_" + this.curGroup)
+      let groupObj = this.scene.findObject($"group_{this.curGroup}")
       if (groupObj?.isValid())
         this.onPlayerMenu(groupObj)
     }
@@ -850,7 +850,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.curGroup = groups[value]
 
-    let listObj = obj.findObject("group_" + this.curGroup)
+    let listObj = obj.findObject($"group_{this.curGroup}")
     if (!checkObj(listObj))
       return
 
@@ -959,7 +959,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         curContactGroup = this.curGroup
         onClose = function(isActionActivate) {
           if (!isActionActivate && this.checkScene())
-            move_mouse_on_child_by_value(this.scene.findObject("group_" + this.curGroup))
+            move_mouse_on_child_by_value(this.scene.findObject($"group_{this.curGroup}"))
         }.bindenv(this)
       })
   }
@@ -1014,7 +1014,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let groupObject = this.scene.findObject("contacts_groups")
-    let listObject = groupObject.findObject("group_" + this.curGroup)
+    let listObject = groupObject.findObject($"group_{this.curGroup}")
     listObject.setValue(idx)
   }
 
@@ -1164,7 +1164,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateSearchList()
     if (showConsoleButtons.value && this.curGroup == EPLX_SEARCH && !is_mouse_last_time_used() && this.checkScene())
-      move_mouse_on_child_by_value(this.scene.findObject("group_" + EPLX_SEARCH))
+      move_mouse_on_child_by_value(this.scene.findObject($"group_{EPLX_SEARCH}"))
   }
 
   function updateSearchList() {
@@ -1172,7 +1172,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let gObj = this.scene.findObject("contacts_groups")
-    let listObj = gObj.findObject("group_" + EPLX_SEARCH)
+    let listObj = gObj.findObject($"group_{EPLX_SEARCH}")
     if (!listObj)
       return
 

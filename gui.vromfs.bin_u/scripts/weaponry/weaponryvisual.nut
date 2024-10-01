@@ -688,10 +688,10 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
   if (itemsData != "")
     this.guiScene.appendWithBlk(itemsObj, itemsData, this)
 
-  itemsObj.width = cols + "@modCellWidth"
-  itemsObj.height = rows + "@modCellHeight"
+  itemsObj.width =$"{cols}@modCellWidth"
+  itemsObj.height =$"{rows}@modCellHeight"
 
-  hoverObj.width = cols + "@modCellWidth"
+  hoverObj.width =$"{cols}@modCellWidth"
   let rootSize = guiScene.getRoot().getSize()
   let rightSide = bundleObj.getPosRC()[0] < 0.7 * rootSize[0] //better to use width const here, but need const calculator from dagui for that
   if (rightSide)

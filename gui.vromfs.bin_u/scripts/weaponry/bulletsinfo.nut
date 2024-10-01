@@ -593,12 +593,12 @@ function getFakeBulletName(bulletIdx) {
 }
 
 function getBulletAnnotation(name, addName = null) {
-  local txt = loc(name + "/name/short")
+  local txt = loc($"{name}/name/short")
   if (addName)
-    txt = $"{txt}{loc(addName + "/name/short")}"
-  txt = $"{txt} - {loc(name + "/name")}"
+    txt = $"{txt}{loc($"{addName}/name/short")}"
+  txt = $"{txt} - {loc($"{name}/name")}"
   if (addName)
-    txt = $"{txt} {loc(addName + "/name")}"
+    txt = $"{txt} {loc($"{addName}/name")}"
   return txt
 }
 
@@ -699,7 +699,7 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
 
     res.desc = loc("modification/" + locId + ending, "")
     if (res.desc == "" && isShortDesc && limitedName)
-      res.desc = loc("modification/" + locId, "")
+      res.desc = loc($"modification/{locId}", "")
 
     if (!isShortDesc) {
       let nvdDescs = air.getNVDSights(modifName).map(@(s) getNVDSightText(s)).filter(@(s) s != "")
@@ -718,9 +718,9 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
           break
         }
 
-      locId = "modification/" + locId
+      locId = $"modification/{locId}"
       if (isCaliberCannon(caliber))
-        res.desc = ::locEnding(locId + "/cannon", ending, "")
+        res.desc = ::locEnding($"{locId}/cannon", ending, "")
       if (res.desc == "")
         res.desc = ::locEnding(locId, ending)
       if (caliber > 0)
@@ -740,7 +740,7 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
 
   if (!set) {
     if (res.desc == "")
-      res.desc = modifName + " not found bullets"
+      res.desc =$"{modifName} not found bullets"
     return res
   }
 
@@ -754,9 +754,9 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
         break
       }
     if (limitedName)
-      shortDescr = loc(locId + "/name/short", "")
+      shortDescr = loc($"{locId}/name/short", "")
     if (shortDescr == "")
-      shortDescr = loc(locId + "/name")
+      shortDescr = loc($"{locId}/name")
     if (set?.bulletNames?[0] && set.weaponType != WEAPON_TYPE.COUNTERMEASURES
       && (set.weaponType != WEAPON_TYPE.GUNS || !set.isBulletBelt ||
       (isCaliberCannon(caliber) && air.unitType.canUseSeveralBulletsForGun))) {

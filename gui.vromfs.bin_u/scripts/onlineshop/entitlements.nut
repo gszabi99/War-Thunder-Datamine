@@ -153,7 +153,7 @@ function getEntitlementName(ent) {
   local name = getEntitlementShortName(ent)
   let timeText = getEntitlementTimeText(ent)
   if (timeText != "")
-    name += " " + timeText
+    name += $" {timeText}"
   return name
 }
 
@@ -173,7 +173,7 @@ function getEntitlementPrice(ent) {
       return doesLocTextExist(locId) ? loc(locId, { price = shop_price }) : $"{shop_price} {utf8ToUpper(shop_price_curr)}"
     }
 
-    let priceText = loc("price/" + ent.name, "")
+    let priceText = loc($"price/{ent.name}", "")
     if (priceText == "")
       return ""
 

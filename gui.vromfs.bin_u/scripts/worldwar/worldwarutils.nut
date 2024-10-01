@@ -57,6 +57,7 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -373,7 +374,7 @@ g_world_war = {
   }
 
   function openJoinOperationByIdWnd() {
-    ::gui_modal_editbox_wnd({
+    openEditBoxDialog({
       title = loc("mainmenu/operationsMap")
       charMask = "1234567890"
       allowEmpty = false

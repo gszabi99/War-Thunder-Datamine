@@ -189,7 +189,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     }
     else if (action == "repair") {
       let repairCost = wp_get_repair_cost(unit.name)
-      actionText = loc("mainmenu/btnRepair") + ": " + Cost(repairCost).getTextAccordingToBalance()
+      actionText = "".concat(loc("mainmenu/btnRepair"), ": ", Cost(repairCost).getTextAccordingToBalance())
       icon       = "#ui/gameuiskin#slot_repair.svg"
       haveWarning = true
       showAction = inMenu && isUsable && repairCost > 0 && ::SessionLobby.canChangeCrewUnits()
@@ -210,10 +210,10 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         let price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
         priceText = price.getTextAccordingToBalance()
         if (priceText.len())
-          priceText = loc("ui/colon") + priceText
+          priceText = "".concat(loc("ui/colon"), priceText)
       }
 
-      actionText = loc("mainmenu/btnOrder") + priceText
+      actionText = "".concat(loc("mainmenu/btnOrder"), priceText)
 
       if (isGift && canUseIngameShop()) {
         if (getShopItemsTable().len() == 0) {
@@ -265,13 +265,13 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       let squadronExpText = Cost().setSap(squadronExp).tostring()
 
       actionText = needToFlushExp || (isSquadronResearchMode && needChosenResearchOfSquadron)
-        ? format(loc("mainmenu/btnResearch")
-          + (needToFlushExp || canFlushSquadronExp ? " (%s)" : ""),
+        ? format("".concat(loc("mainmenu/btnResearch"),
+          (needToFlushExp || canFlushSquadronExp ? " (%s)" : "")),
           isSquadronVehicle
             ? squadronExpText
             : Cost().setRp(getReqExp).tostring())
         : canFlushSquadronExp && (isInResearch || isSquadronResearchMode)
-          ? format(loc("mainmenu/btnInvestSquadronExp") + " (%s)", squadronExpText)
+          ? format("".concat(loc("mainmenu/btnInvestSquadronExp"), " (%s)"), squadronExpText)
             : isInResearch && setResearchManually && !isSquadronVehicle
               ? loc("mainmenu/btnConvert")
               : loc("mainmenu/btnResearch")
@@ -320,7 +320,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         if (hasFeature("WikiUnitInfo"))
           openUrl(format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), unit.name), false, false, "unit_actions")
         else
-          showInfoMsgBox(colorize("activeTextColor", getUnitName(unit, false)) + "\n" + loc("profile/wiki_link"))
+          showInfoMsgBox("".concat(colorize("activeTextColor", getUnitName(unit, false)), "\n", loc("profile/wiki_link")))
       }
     }
     else if (action == "find_in_market") {

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -18,10 +17,10 @@ let saveVersion = function(ver = null) {
 
 let getVersion =  @() loadLocalByAccount("tutor/tutorialVersion", 0)
 
-let needShowTutorial = @(id, tutorVersion) !loadLocalByAccount("tutor/" + id)
+let needShowTutorial = @(id, tutorVersion) !loadLocalByAccount($"tutor/{id}")
   && (isMeNewbie() || getVersion() >= tutorVersion)
 
-let saveShowedTutorial = @(id) saveLocalByAccount("tutor/" + id, true)
+let saveShowedTutorial = @(id) saveLocalByAccount($"tutor/{id}", true)
 
 subscriptions.addListenersWithoutEnv({
   AccountReset = function(_p) {

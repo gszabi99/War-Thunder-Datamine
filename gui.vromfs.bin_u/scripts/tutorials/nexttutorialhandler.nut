@@ -66,7 +66,7 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
       if ("canSkipByFeature" in tutorialBlock)
         this.canSkipTutorial = hasFeature(tutorialBlock.canSkipByFeature)
       if (!this.canSkipTutorial)
-        this.canSkipTutorial = loadLocalByAccount("firstRunTutorial_" + this.tutorialMission.name, false)
+        this.canSkipTutorial = loadLocalByAccount($"firstRunTutorial_{this.tutorialMission.name}", false)
     }
     foreach (name in ["skip_tutorial", "btn_close_tutorial"]) {
       let obj = this.scene.findObject(name)
@@ -85,7 +85,7 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onStart(obj = null) {
     this.sendTutorialChoiceStatisticOnce("start", obj)
     saveTutorialToCheckReward(this.tutorialMission)
-    saveLocalByAccount("firstRunTutorial_" + this.tutorialMission.name, true)
+    saveLocalByAccount($"firstRunTutorial_{this.tutorialMission.name}", true)
     this.setLaunchedTutorialQuestions()
     ::destroy_session_scripted("on start tutorial")
 

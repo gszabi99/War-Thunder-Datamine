@@ -390,7 +390,7 @@ function getPrizeText(prize, colored = true, v_typeName = false,
   local countText = ""
   if (showCount) {
     let count = prize?.count ?? 1
-    countText = (!v_typeName && count > 1) ? " x" + count : ""
+    countText = (!v_typeName && count > 1) ? $" x{count}" : ""
     if (colored)
       countText = colorize("commonTextColor", countText)
   }
@@ -653,7 +653,7 @@ function getPrizeActionButtonsView(prize, params = null) {
       let gcb = globalCallbacks.ITEM_LINK
       view.append({
         image = "#ui/gameuiskin#gc.svg"
-        tooltip = "#" + item.linkActionLocId
+        tooltip =$"#{item.linkActionLocId}"
         funcName = gcb.cbName
         actionParamsMarkup = gcb.getParamsMarkup({ itemId = item.id })
       })
@@ -755,7 +755,7 @@ function getViewDataSpare(unitName, count, params) {
   local title = colorize("activeTextColor", getUnitName(unitName, true)) + loc("ui/colon")
               + colorize("userlogColoredText", loc("spare/spare"))
   if (count && count > 1)
-    title += colorize("activeTextColor", " x" + count)
+    title += colorize("activeTextColor",$" x{count}")
   return {
     icon = "#ui/gameuiskin#item_type_spare.svg"
     icon2 = getUnitCountryIcon(unit)
@@ -776,7 +776,7 @@ function getViewDataSpecialization(prize, params) {
   let crew = getCrewById(prize?.crew ?? 0)
   let title = colorize("userlogColoredText", getCrewName(crew)) + loc("ui/colon")
               + colorize("activeTextColor", getUnitName(unit))
-              + ", " + colorize("userlogColoredText", loc("crew/qualification/" + specLevel))
+              + ", " + colorize("userlogColoredText", loc($"crew/qualification/{specLevel}"))
   return {
     icon = (specLevel == 2) ? "#ui/gameuiskin#item_type_crew_aces.svg" : "#ui/gameuiskin#item_type_crew_experts.svg"
     icon2 = getUnitCountryIcon(unit)
@@ -1079,7 +1079,7 @@ addTooltipTypes({
 
         local countText = ""
         if (showCount && st.countMax > 1)
-          countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : (" x" + st.countMax)
+          countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : ($" x{st.countMax}")
 
         let kinds = detailed ? "" : colorize("fadedTextColor", loc("ui/parentheses/space", { text = loc("trophy/item_type_different_kinds") }))
         data = {
@@ -1291,7 +1291,7 @@ addTooltipTypes({
 
       local countText = ""
       if (showCount && st.countMax > 1)
-        countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : (" x" + st.countMax)
+        countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : ($" x{st.countMax}")
 
       let kinds = detailed ? "" : colorize("fadedTextColor", loc("ui/parentheses/space", { text = loc("trophy/item_type_different_kinds") }))
       list.append(listMarker + name + countText + kinds)

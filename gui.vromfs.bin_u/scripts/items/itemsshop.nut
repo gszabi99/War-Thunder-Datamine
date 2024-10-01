@@ -717,7 +717,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   function onItemAction(buttonObj) {
     let id = to_integer_safe(buttonObj?.holderId, -1)
     let item = this.itemsList?[id]
-    let obj = this.scene.findObject("shop_item_" + id)
+    let obj = this.scene.findObject($"shop_item_{id}")
 
     // Need to change list object current index because of
     // we can click on action button in non selected item

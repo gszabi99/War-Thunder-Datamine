@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -23,9 +22,10 @@ let { GUI } = require("%scripts/utils/configs.nut")
     let title = ("title" in item) ? loc(item.title) : ""
     let desc = ("desc" in item) ? loc(item.desc) : ""
     let margin_bottom = ((i < set.len() - 1) && ("margin_bottom" in item)) ? item.margin_bottom : "16%h"
-    let tooltipData = format("title:t='$tooltipObj' tooltipObj { display:t='hide' on_tooltip_open:t='onProjectawardTooltipOpen' on_tooltip_close:t='onTooltipObjClose'" +
-      " img:t='%s' title:t='%s' desc:t='%s' }", img, title, desc)
-    data += format("img { background-image:t='%s'; margin-bottom:t='%s' %s }", img, margin_bottom, tooltipData)
+    let tstr = "".concat("title:t='$tooltipObj' tooltipObj { display:t='hide' on_tooltip_open:t='onProjectawardTooltipOpen' on_tooltip_close:t='onTooltipObjClose'",
+      " img:t='%s' title:t='%s' desc:t='%s' }")
+    let tooltipData = format(tstr, img, title, desc)
+    data = "".concat(data, format("img { background-image:t='%s'; margin-bottom:t='%s' %s }", img, margin_bottom, tooltipData))
   }
   guiScene.replaceContentFromText(awardsObj, data, data.len(), handler)
 }

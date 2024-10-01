@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 // warning disable: -file:forbidden-function
@@ -23,7 +22,7 @@ function debug_fonts_list(isActiveColor = true, needBorder = true) {
   let getColor = @() isActiveColor ? "activeTextColor" : "commonTextColor"
 
   let view = {
-    color = "@" + getColor()
+    color = "".concat("@", getColor())
     isActiveColor = isActiveColor
     needBorder = needBorder
     fontsAdditionalText = fontsAdditionalText
@@ -64,8 +63,8 @@ function debug_fonts_list(isActiveColor = true, needBorder = true) {
 
     function onTextChange(obj) {
       let text = obj.getValue()
-      fontsAdditionalText = text.len() ? "\n" + text : ""
-      this.updateAllObjs(function(o) { o.setValue(o.id + fontsAdditionalText) })
+      fontsAdditionalText = text.len() ? $"\n{text}" : ""
+      this.updateAllObjs(function(o) { o.setValue("".concat(o.id, fontsAdditionalText)) })
     }
   }
 

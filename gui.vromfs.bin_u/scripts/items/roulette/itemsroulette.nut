@@ -138,7 +138,7 @@ function getRewardLayout(block, shouldOnlyImage = false) {
 function generateItemsArray(trophyName) {
   let trophy = findItemById(trophyName) || ItemGenerators.get(trophyName)
   if (!trophy) {
-    log("ItemsRoulette: Cannot find trophy by name " + trophyName)
+    log($"ItemsRoulette: Cannot find trophy by name {trophyName}")
     return {}
   }
 
@@ -235,7 +235,7 @@ function fillDropChances(trophyBlock) {
         continue
 
       trophyBlock.rewardsCount++
-      let dbgTrophyId = "trophy_" + trophyBlock.trophyId
+      let dbgTrophyId =$"trophy_{trophyBlock.trophyId}"
       if (!(dbgTrophyId in debugData.itemsLens))
         debugData.itemsLens[dbgTrophyId] <- 0
 
@@ -256,7 +256,7 @@ function fillDropChances(trophyBlock) {
   if (isSingleReward || !isTrophy)
     return
 
-  let dbgTrophyNewId = "trophy_" + trophyBlock.trophyId
+  let dbgTrophyNewId =$"trophy_{trophyBlock.trophyId}"
 
   let trophyBlockItemsCount = trophyBlock.rewardsCount + trophyBlock.trophiesCount
   let slots = trophyBlockItemsCount * itemRouletteParams.items_roulette_multiplier_slots - trophyBlock.rewardsCount
@@ -432,8 +432,8 @@ function createItemsMarkup(completeArray) {
     local width = 1
     if (slot.len() > 1)
       width += offset * (slot.len() - 1)
-    layerCfg.w <- width + "@itemWidth"
-    layerCfg.id <- "roulette_slot_" + idx
+    layerCfg.w <-$"{width}@itemWidth"
+    layerCfg.id <-$"roulette_slot_{idx}"
 
     result += LayersIcon.genDataFromLayer(layerCfg, "".join(slotRes, true))
   }

@@ -89,8 +89,8 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.guiScene.replaceContentFromText(roleListObj, roleOptions, roleOptions.len(), this)
     foreach (idx, role in this.roles) {
-      let option = this.scene.findObject("role_" + idx)
-      option.findObject("text").setValue(loc("clan/" + role.name))
+      let option = this.scene.findObject($"role_{idx}")
+      option.findObject("text").setValue(loc($"clan/{role.name}"))
       option.tooltip = (role.current ? (loc("clan/currentRole") + "\n\n") : "") + lbDataType.ROLE.getPrimaryTooltipText(role.id)
     }
     roleListObj.setValue(curIdx)

@@ -104,7 +104,7 @@ function debug_dump_debriefing_save(filename) {
   let mods  = []
   let exp = getTblValue("expDump", debriefingResult, {})
   foreach (ut in unitTypes.types) {
-    let unitId = getTblValue("investUnitName" + ut.name, exp, "")
+    let unitId = getTblValue($"investUnitName{ut.name}", exp, "")
     if (unitId != "")
       units.append([ unitId ])
   }
@@ -194,7 +194,7 @@ function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   })
   ::checkNonApprovedResearches(true)
   broadcastEvent("SessionDestroyed")
-  return "Debriefing result loaded from " + filename
+  return $"Debriefing result loaded from {filename}"
 }
 
 function debug_dump_debriefing_batch_load() {
@@ -239,12 +239,12 @@ function debug_dump_mpstatistics_save(filename) {
     "get_race_checkpoints_count"
     "get_race_winners_count"
   ])
-  return "Saved " + filename
+  return $"Saved {filename}"
 }
 
 function debug_dump_mpstatistics_load(filename) {
   if (!dbg_dump.load(filename))
-    return "File not found: " + filename
+    return $"File not found: {filename}"
   dbg_dump.loadFuncs({
     get_current_mission_desc = @(outBlk) outBlk.setFrom(getroottable()?._fake_get_current_mission_desc)
     get_mplayers_list = function(team, _full) {
@@ -340,7 +340,7 @@ function debug_dump_respawn_save(filename) {
   }
 
   dbg_dump.save(filename, list)
-  return "Saved " + filename
+  return $"Saved {filename}"
 }
 
 function debug_dump_respawn_load(filename) {
@@ -376,7 +376,7 @@ function debug_dump_userlogs_save(filename) {
   dbg_dump.save(filename, [
     { id = "_fake_userlogs", value = userlogs }
   ])
-  return "Saved " + filename
+  return $"Saved {filename}"
 }
 
 function debug_dump_userlogs_load(filename) {

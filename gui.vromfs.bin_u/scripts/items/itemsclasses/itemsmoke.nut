@@ -21,6 +21,7 @@ let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
+let DataBlock = require("DataBlock")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -142,8 +143,8 @@ let Smoke = class (BaseItem) {
       ::set_gui_option_in_mode(idx, val, OPTIONS_MODE_TRAINING)
 
     let misName = "aerobatic_smoke_preview"
-    let misInfo = get_meta_mission_info_by_name(misName)
-    if (!misInfo)
+    let misBlkBase = get_meta_mission_info_by_name(misName)
+    if (!misBlkBase)
       return script_net_assert_once("Wrong testflight mission",
         "ItemSmoke: No meta info for aerobatic_smoke_preview")
 
@@ -153,6 +154,8 @@ let Smoke = class (BaseItem) {
       return script_net_assert_once("Wrong smoke option value",
         "ItemSmoke: No option has such index")
 
+    let misInfo = DataBlock()
+    misInfo.setFrom(misBlkBase)
     mergeToBlk({
       isPersistentSmoke = true
       persistentSmokeId = smokeId

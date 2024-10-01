@@ -289,7 +289,7 @@ function getDefaultBulletName(unit) {
 
     let bData = getBulletsSetData(unit, modifName)
     if (!bData || bData?.useDefaultBullet)
-      return groupName + "_default"
+      return $"{groupName}_default"
 
     ignoreGroups.append(groupName)
   }

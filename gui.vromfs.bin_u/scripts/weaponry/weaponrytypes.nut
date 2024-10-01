@@ -152,7 +152,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //********************** SPARE *************************************************
   SPARE = {
     type = weaponsItem.spare
-    getLocName = function(_unit, item, ...) { return loc("spare/" + item.name) }
+    getLocName = function(_unit, item, ...) { return loc($"spare/{item.name}") }
     getCost = function(unit, ...) { return Cost(
       wp_get_spare_cost(unit.name),
       wp_get_spare_cost_gold(unit.name)
@@ -197,7 +197,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //********************** NEXT UNIT *********************************************
   NEXTUNIT = {
     type = weaponsItem.nextUnit
-    getLocName = function(_unit, item, ...) { return loc("elite/" + item.name) }
+    getLocName = function(_unit, item, ...) { return loc($"elite/{item.name}") }
   }
 }, null, "typeName")
 

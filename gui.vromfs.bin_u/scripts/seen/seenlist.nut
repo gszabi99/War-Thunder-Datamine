@@ -162,7 +162,7 @@ local SeenList = class {
       this.save()
   }
 
-  getSaveId = @() "seen/" + this.id
+  getSaveId = @() $"seen/{this.id}"
 
   function save() {
     local saveBlk = null

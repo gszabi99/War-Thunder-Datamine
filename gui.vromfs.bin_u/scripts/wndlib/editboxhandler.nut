@@ -6,15 +6,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-function gui_modal_editbox_wnd(params) {
-  if (!params?.okFunc)
-    return
-
-  loadHandler(gui_handlers.EditBoxHandler, params)
-}
-
-::gui_modal_editbox_wnd <- gui_modal_editbox_wnd
-
 gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/editBoxWindow.blk"
@@ -140,4 +131,4 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   }
 }
 
-return gui_modal_editbox_wnd
+return @(params) params?.okFunc ? loadHandler(gui_handlers.EditBoxHandler, params) : null

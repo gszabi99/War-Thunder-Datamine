@@ -411,7 +411,7 @@ let getEmptyConditionsConfig = @() {
     let show = amount > 1
     awMultObj.show(show)
     if (show)
-      awMultObj.findObject("amount_text").setValue("x" + amount)
+      awMultObj.findObject("amount_text").setValue($"x{amount}")
   }
 }
 
@@ -508,7 +508,7 @@ let getEmptyConditionsConfig = @() {
   }
 
   else if ( uType == UNLOCKABLE_CHALLENGE) {
-    let challengeDescription = loc(id + "/desc", "")
+    let challengeDescription = loc($"{id}/desc", "")
     if (challengeDescription && challengeDescription != "")
       res.desc = challengeDescription
     res.image = "#ui/gameuiskin#unlock_challenge"
@@ -520,7 +520,7 @@ let getEmptyConditionsConfig = @() {
   }
 
   else if ( uType == UNLOCKABLE_TITLE || uType == UNLOCKABLE_ACHIEVEMENT) {
-    let challengeDescription = loc(id + "/desc", "")
+    let challengeDescription = loc($"{id}/desc", "")
     if (challengeDescription && challengeDescription != "")
       res.desc = challengeDescription
     if (unlockBlk?.battlePassSeason != null) {
@@ -544,9 +544,9 @@ let getEmptyConditionsConfig = @() {
   }
 
   else if ( uType == UNLOCKABLE_STREAK) {
-    local name = loc("streaks/" + id)
+    local name = loc($"streaks/{id}")
     local desc = loc($"streaks/{id}/desc", "")
-    local iconStyle = "streak_" + id
+    local iconStyle = $"streak_{id}"
 
     if (isMultiStage && stage >= 0 && unlockBlk?.stage.param != null) {
       res.stage = stage
@@ -559,8 +559,8 @@ let getEmptyConditionsConfig = @() {
       }
       else if (hasMultiStageLocId(id)) {
         let stageId = getMultiStageLocId(id, maxStreak)
-        name = loc("streaks/" + stageId)
-        iconStyle = "streak_" + stageId
+        name = loc($"streaks/{stageId}")
+        iconStyle = $"streak_{stageId}"
       }
 
       name = format(name, maxStreak)

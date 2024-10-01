@@ -9,6 +9,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
 let regexp2 = require("regexp2")
 let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const CUSTOM_NICKS_SAVE_ID = "contacts/custom_nicks"
 const CUSTOM_NICK_MARKER = "*"
@@ -65,7 +66,7 @@ function getCustomNick(contact) {
     : null
 }
 
-let openNickEditBox = @(contact) ::gui_modal_editbox_wnd({
+let openNickEditBox = @(contact) openEditBoxDialog({
   title = loc("mainmenu/chooseName")
   label = loc("choose_nickname_req")
   maxLen = MAX_NICK_LENGHT

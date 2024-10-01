@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -68,7 +68,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
       foreach (_i, country in shopCountriesList)
         row.columns.append({
-          id = country + "_" + rank
+          id = $"{country}_{rank}"
           text = ::events.isCountryAvailable(event, country) ? "0" : "-"
           overlayTextColor = (country == myCountry && rank == myRank) ? "mainPlayer"
                            : country in canMeetCountries ? null
@@ -98,7 +98,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
       let ranksQueueTable = countriesQueueTable?[countryName]
       for (local rank = 1; rank <= MAX_COUNTRY_RANK; ++rank) {
-        let tdTextObj = nestObj.findObject(countryName + "_" + rank)
+        let tdTextObj = nestObj.findObject($"{countryName}_{rank}")
         if (!checkObj(tdTextObj))
           continue
         let val = ranksQueueTable?[rank.tostring()] ?? 0
@@ -109,8 +109,8 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
   else {
     let totalTextObj = nestObj.findObject("total_in_queue")
     if (checkObj(totalTextObj))
-      totalTextObj.setValue(loc("multiplayer/playersInQueue") + loc("ui/colon")
-        + queueStats.getPlayersCountOfAllRanks())
+      totalTextObj.setValue("".concat(loc("multiplayer/playersInQueue"), loc("ui/colon"),
+        queueStats.getPlayersCountOfAllRanks()))
   }
 }
 

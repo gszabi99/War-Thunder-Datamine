@@ -303,11 +303,11 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (selection == this.joystickSelection && !isForced)
       return
 
-    local bObj = this.joystickSelection && this.scene.findObject("wheelmenuItem" + this.joystickSelection)
+    local bObj = this.joystickSelection && this.scene.findObject($"wheelmenuItem{this.joystickSelection}")
     if (bObj)
       bObj.selected = "no"
 
-    bObj = selection && this.scene.findObject("wheelmenuItem" + selection)
+    bObj = selection && this.scene.findObject($"wheelmenuItem{selection}")
     if (bObj)
       bObj.selected = "yes"
 
@@ -323,7 +323,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (! this.joystickSelection)
       return
 
-    let bObj = this.scene.findObject("wheelmenuItem" + this.joystickSelection)
+    let bObj = this.scene.findObject($"wheelmenuItem{this.joystickSelection}")
     let index = bObj && bObj.index.tointeger()
     this.sendAvailableAnswerDelayed(index)
   }

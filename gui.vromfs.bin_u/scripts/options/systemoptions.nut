@@ -260,7 +260,7 @@ function setValue(id, value, skipUI = false) {
 function enableGuiOption(id, state) {
   if (mSkipUI)
     return
-  let rowObj = checkObj(mContainerObj) ? mContainerObj.findObject(id + "_tr") : null
+  let rowObj = checkObj(mContainerObj) ? mContainerObj.findObject($"{id}_tr") : null
   if (checkObj(rowObj))
     rowObj.enable(state)
 }
@@ -1540,7 +1540,7 @@ function fillGuiOptions(containerObj, handler) {
       if (!(desc?.isVisible() ?? true))
         continue
 
-      desc.widgetId = "sysopt_" + id
+      desc.widgetId = $"sysopt_{id}"
       local option = ""
       let { widgetType } = desc
       if ( widgetType == "checkbox" ) {

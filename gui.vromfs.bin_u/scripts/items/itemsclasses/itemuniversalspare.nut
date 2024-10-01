@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -34,14 +33,14 @@ let UniversalSpare = class (BaseItemModClass) {
   function getDescriptionIntroArray() {
     let res = [loc("items/universalSpare/description/uponActivation")]
     if (this.numSpares > 1)
-      res.append(loc("items/universalSpare/numSpares") + loc("ui/colon") + colorize("activeTextColor", this.numSpares))
+      res.append("".concat(loc("items/universalSpare/numSpares"), loc("ui/colon"), colorize("activeTextColor", this.numSpares)))
     return res
   }
 
   getDescriptionOutroArray = @() [ colorize("fadedTextColor", loc("items/universalSpare/description")) ]
 
   function getName(colored = true) {
-    return base.getName(colored) + " " + this.getRankText()
+    return "".concat(base.getName(colored), " ", this.getRankText())
   }
 
   function canActivateOnUnit(unit) {
@@ -95,7 +94,7 @@ let UniversalSpare = class (BaseItemModClass) {
   function _getuUnitTypesLayer() {
     if (!this.unitTypes || this.unitTypes.len() != 1)
       return LayersIcon.findLayerCfg("universal_spare_all")
-    return LayersIcon.findLayerCfg("universal_spare_" + this.unitTypes[0])
+    return LayersIcon.findLayerCfg("".concat("universal_spare_", this.unitTypes[0]))
   }
 
   function _getRankLayer() {

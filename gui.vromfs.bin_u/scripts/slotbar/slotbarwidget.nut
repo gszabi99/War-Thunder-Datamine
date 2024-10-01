@@ -605,7 +605,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       && ((this.curSlotCountryId >= 0 && this.curSlotCountryId != this.selectedCrewData.idCountry)
         || (this.curSlotIdInCountry >= 0 && this.curSlotIdInCountry != this.selectedCrewData.idInCountry))
     if (needEvent) {
-      let cObj = this.scene.findObject("airs_table_" + this.selectedCrewData.idCountry)
+      let cObj = this.scene.findObject($"airs_table_{this.selectedCrewData.idCountry}")
       if (checkObj(cObj)) {
         this.skipCheckAirSelect = true
         this.onSlotbarSelect(cObj)
@@ -657,7 +657,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!countryData)
       return
 
-    this.fillCountryContent(countryData, this.scene.findObject("airs_table_" + countryData.id))
+    this.fillCountryContent(countryData, this.scene.findObject($"airs_table_{countryData.id}"))
   }
 
   function getCurSlotUnit() {
@@ -683,7 +683,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurrentAirsTable() {
-    return this.scene.findObject("airs_table_" + this.curSlotCountryId)
+    return this.scene.findObject($"airs_table_{this.curSlotCountryId}")
   }
 
   function getCurrentCrewSlot() {
@@ -861,7 +861,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
    * as if player clicked slot himself.
    */
   function selectCrew(crewIdInCountry) {
-    let objId = "airs_table_" + this.curSlotCountryId
+    let objId =$"airs_table_{this.curSlotCountryId}"
     let obj = this.scene.findObject(objId)
     if (checkObj(obj))
       this.selectTblAircraft(obj, crewIdInCountry)
@@ -879,7 +879,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function getSlotIdxBySlotIdInCountry(tblObj, slotIdInCountry) {
     if (!tblObj.childrenCount())
       return -1
-    if (tblObj?.id != "airs_table_" + this.curSlotCountryId) {
+    if (tblObj?.id != $"airs_table_{this.curSlotCountryId}") {
       let tblObjId = tblObj?.id         // warning disable: -declared-never-used
       let countryId = this.curSlotCountryId  // warning disable: -declared-never-used
       script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
@@ -928,7 +928,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkCreateCrewsNest(countryData) {
     let countriesCount = this.crewsObj.childrenCount()
-    let animBlockId = "crews_anim_" + countryData.idx
+    let animBlockId =$"crews_anim_{countryData.idx}"
     for (local i = 0; i < countriesCount; i++) {
       let animObj = this.crewsObj.getChild(i)
       animObj.animation = animObj?.id == animBlockId ? "show" : "hide"
@@ -1053,10 +1053,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       switchProfileCountry(countryData.country)
       if (isCrewListOverrided.get() && !this.slotbarOninit && !this.skipCheckCountrySelect)
         selectCountryForCurrentOverrideSlotbar(countryData.country)
-      this.onSlotbarSelect(this.crewsObj.findObject("airs_table_" + countryData.idx))
+      this.onSlotbarSelect(this.crewsObj.findObject($"airs_table_{countryData.idx}"))
     }
     else
-      this.onSlotbarSelect(this.crewsObj.findObject("airs_table_" + countryData.idx))
+      this.onSlotbarSelect(this.crewsObj.findObject($"airs_table_{countryData.idx}"))
 
     this.skipActionWithEmptySlot = false
     this.onSlotbarCountryChanged()
@@ -1197,7 +1197,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   //return GuiBox of visible slotbar units
   function getBoxOfUnits() {
-    let obj = this.scene.findObject("airs_table_" + this.curSlotCountryId)
+    let obj = this.scene.findObject($"airs_table_{this.curSlotCountryId}")
     if (!checkObj(obj))
       return null
 
@@ -1372,11 +1372,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         toBattleBtnObj["showAboveInfoBlock"] = hasAllMissionBlocksEmpty ? "no" : "yes"
     }
 
-    let crewNestObj = this.scene.findObject("crew_nest_" + this.curSlotCountryId)
+    let crewNestObj = this.scene.findObject($"crew_nest_{this.curSlotCountryId}")
     if (crewNestObj?.isValid())
       crewNestObj["noMissionBlock"] = hasAllMissionBlocksEmpty ? "yes" : "no"
 
-    let slotbarTableObj = this.scene.findObject("airs_table_" + this.curSlotCountryId)
+    let slotbarTableObj = this.scene.findObject($"airs_table_{this.curSlotCountryId}")
     if (slotbarTableObj?.isValid())
       slotbarTableObj["noMissionBlock"] = hasAllMissionBlocksEmpty ? "yes" : "no"
 

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -53,7 +52,7 @@ let { wwGetPlayerSide } = require("worldwar")
     }
     else if (this.logBlk.type == WW_LOG_TYPES.ARMY_DIED)
       this.detailedInfoText = loc("ui/parentheses",
-        { text = loc("worldwar/log/army_died_" + this.logBlk.reason) })
+        { text = loc($"worldwar/log/army_died_{this.logBlk.reason}") })
 
     local wwArmyId = ""
     if ("army" in this.logBlk) {
@@ -128,9 +127,9 @@ let { wwGetPlayerSide } = require("worldwar")
       }
     }
 
-    local str = loc("worldwar/log/" + this.logTypeKey) + " "
+    local str = "".concat(loc($"worldwar/log/{this.logTypeKey}"), " ")
     if (this.logEndKey && this.logEndKey.len())
-      str += loc("worldwar/log/" + this.logEndKey) + " "
+      str = "".concat(str, loc($"worldwar/log/{this.logEndKey}"), " ")
 
     this.textInfoTable = {
       text = colorize(this.logColor, str),
@@ -195,7 +194,7 @@ let { wwGetPlayerSide } = require("worldwar")
   function getObjectiveName(statBlk) {
     let mySideName = ww_side_val_to_name(wwGetPlayerSide())
     let objectiveType = ::g_ww_objective_type.getTypeByTypeName(statBlk.type)
-    return "\"" + objectiveType.getName(statBlk, DataBlock(), mySideName) + "\""
+    return "".concat("\"", objectiveType.getName(statBlk, DataBlock(), mySideName), "\"")
   }
 
   function getZoneName() {
@@ -262,7 +261,7 @@ let { wwGetPlayerSide } = require("worldwar")
   }
 
   function getIconImage() {
-    return "#ui/gameuiskin#" + this.logType.iconImage
+    return $"#ui/gameuiskin#{this.logType.iconImage}"
   }
 
   function getIconColor() {

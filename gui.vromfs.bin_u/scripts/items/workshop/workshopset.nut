@@ -111,8 +111,8 @@ local WorkshopSet = class {
   isItemDefAlwaysVisible    = @(itemdef) itemdef in this.alwaysVisibleItemdefs
   getItemdefs               = @() this.itemdefsSorted
   getLocName                = @() loc(this.locId)
-  getShopTabId              = @() "WORKSHOP_SET_" + this.uid
-  getSeenId                 = @() "##workshop_set_" + this.uid
+  getShopTabId              = @() $"WORKSHOP_SET_{this.uid}"
+  getSeenId                 = @() $"##workshop_set_{this.uid}"
   isVisibleSubset           = @(subset) !subset.reqFeature || hasFeature(subset.reqFeature)
   isVisibleSubsetId         = @(subsetId) this.subsetsList?[subsetId] != null && this.isVisibleSubset(this.subsetsList[subsetId])
 

@@ -179,7 +179,7 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
 
         let isActive = is_aircraft_active(this.units[i]);
         if (isActive != this.unitsActive[i]) {
-          let trObj = this.scene.findObject("pilot_name" + i)
+          let trObj = this.scene.findObject($"pilot_name{i}")
           trObj.enable = isActive ? "yes" : "no";
           trObj.inactive = isActive ? null : "yes"
           this.unitsActive[i] = isActive;
@@ -225,8 +225,8 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
 
         log("pilot " + i + " name = " + pilotFullName + " (id = " + pilotId.tostring() + ")")
 
-        this.scene.findObject("pilot_text" + i).setValue(pilotFullName)
-        let objTr = this.scene.findObject("pilot_name" + i)
+        this.scene.findObject($"pilot_text{i}").setValue(pilotFullName)
+        let objTr = this.scene.findObject($"pilot_name{i}")
         let isActive = is_aircraft_active(this.units[i])
 
         objTr.mainPlayer = (this.wasPlayer == i) ? "yes" : "no"
@@ -267,11 +267,11 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
   //        if ((focus < 0) && is_aircraft_player(units[i]))
   //          focus = i
 
-          this.scene.findObject("pilot_name" + i).selected = (this.focus == i) ? "yes" : "no"
+          this.scene.findObject($"pilot_name{i}").selected = (this.focus == i) ? "yes" : "no"
         }
 
     //    scene.findObject("dmg_hud").tag = "" + units[focus]
-        let obj = this.scene.findObject("pilot_name" + this.focus)
+        let obj = this.scene.findObject($"pilot_name{this.focus}")
         if (obj)
           obj.scrollToView()
       }

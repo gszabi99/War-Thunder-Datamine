@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -48,7 +47,7 @@ elemViewType.addTypes({
       obj.show(isVisible)
       if (!isVisible)
         return
-      obj.text = "-" + maxDiscount + "%"
+      obj.text = $"-{maxDiscount}%"
     }
   }
 })

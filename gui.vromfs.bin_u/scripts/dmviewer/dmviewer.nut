@@ -685,8 +685,8 @@ dmViewer = {
     let modeNameCur  = this.modes[ this.view_mode  ]
     let modeNameNext = this.modes[ (this.view_mode + 1) % this.modes.len() ]
 
-    obj.tooltip = loc("mainmenu/viewDamageModel/tooltip_" + modeNameNext)
-    obj.setValue(loc("mainmenu/btn_dm_viewer_" + modeNameNext))
+    obj.tooltip = loc($"mainmenu/viewDamageModel/tooltip_{modeNameNext}")
+    obj.setValue(loc($"mainmenu/btn_dm_viewer_{modeNameNext}"))
 
     let objIcon = obj.findObject("btn_dm_viewer_icon")
     if (checkObj(objIcon))
@@ -1231,23 +1231,23 @@ dmViewer = {
       radarType = "radar"
     if (isIrst) {
       if (radarType != "")
-        radarType = radarType + "_"
-      radarType = radarType + "irst"
+        radarType =$"{radarType}_"
+      radarType =$"{radarType}irst"
     }
     if (isTv) {
       if (radarType != "")
-        radarType = radarType + "_"
-      radarType = radarType + "tv"
+        radarType =$"{radarType}_"
+      radarType =$"{radarType}tv"
     }
     if (isSearchRadar && isTrackRadar)
       radarType = "" + radarType
     else if (isSearchRadar)
-      radarType = "search_" + radarType
+      radarType = $"search_{radarType}"
     else if (isTrackRadar) {
       if (anglesFinder)
-        radarType = "track_" + radarType
+        radarType = $"track_{radarType}"
       else
-        radarType = radarType + "_range_finder"
+        radarType =$"{radarType}_range_finder"
     }
     desc.append("".concat(indent, loc("plane_engine_type"), loc("ui/colon"), loc(radarType)))
     if (isRadar)
@@ -1371,7 +1371,7 @@ dmViewer = {
           if (engineType != "")
             engineConfig.append(loc($"engine_type/{engineType}"))
           if (infoBlk?.configuration)
-            engineConfig.append(loc("engine_configuration/" + infoBlk.configuration))
+            engineConfig.append(loc($"engine_configuration/{infoBlk.configuration}"))
           let typeText = loc("ui/comma").join(engineConfig, true)
           if (typeText != "")
             desc.append("".concat(loc("plane_engine_type"), loc("ui/colon"), typeText))
@@ -1408,7 +1408,7 @@ dmViewer = {
             local engineBlk = fmBlk?[engineTypeId] ?? fmBlk?[enginePartId]
             if (!engineBlk) { // try to find booster
               local numEngines = 0
-              while (("Engine" + numEngines) in fmBlk)
+              while (($"Engine{numEngines}") in fmBlk)
                 numEngines ++
               let boosterPartIndex = partIndex - numEngines //engine3_dm -> Booster0
               engineBlk = fmBlk?[$"Booster{boosterPartIndex}"]
@@ -1436,7 +1436,7 @@ dmViewer = {
                   && "IsWaterCooled" in engineMainBlk) {           // Plane : Engine : Cooling
                 let coolingKey = engineMainBlk?.IsWaterCooled ? "water" : "air"
                 desc.append(loc("plane_engine_cooling_type") + loc("ui/colon")
-                + loc("plane_engine_cooling_type_" + coolingKey))
+                + loc($"plane_engine_cooling_type_{coolingKey}"))
               }
 
               if (!this.isSecondaryModsValid) {
@@ -1488,7 +1488,7 @@ dmViewer = {
                 }
                 else if (engineType == "rocket") {
                   let sources = [infoBlk, engineMainBlk]
-                  let boosterMainBlk = fmBlk?["Booster" + partIndex].Main
+                  let boosterMainBlk = fmBlk?[$"Booster{partIndex}"].Main
                   if (boosterMainBlk)
                     sources.insert(1, boosterMainBlk)
                   thrustTakeoff = this.getFirstFound(sources, @(b) b?.Thrust ?? b?.thrust, 0)
@@ -1554,11 +1554,11 @@ dmViewer = {
       let info = this.unitBlk?.VehiclePhys?.mechanics
       if (info) {
         let manufacturer = info?.manufacturer
-          ? loc("transmission_manufacturer/" + info.manufacturer,
-            loc("engine_manufacturer/" + info.manufacturer, ""))
+          ? loc($"transmission_manufacturer/{info.manufacturer}",
+            loc($"engine_manufacturer/{info.manufacturer}", ""))
           : ""
-        let model = info?.model ? loc("transmission_model/" + info.model, "") : ""
-        let props = info?.type ? utf8ToLower(loc("transmission_type/" + info.type, "")) : ""
+        let model = info?.model ? loc($"transmission_model/{info.model}", "") : ""
+        let props = info?.type ? utf8ToLower(loc($"transmission_type/{info.type}", "")) : ""
         desc.append(" ".join([ manufacturer, model ], true) +
           (props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
@@ -2408,7 +2408,7 @@ dmViewer = {
 
         if (speed) {
           let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", round(speed))
-          let res = { value = "".concat(loc("crewSkillParameter/" + a.modifName), loc("ui/colon"), speedTxt, loc("measureUnits/deg_per_sec")) }
+          let res = { value = "".concat(loc($"crewSkillParameter/{a.modifName}"), loc("ui/colon"), speedTxt, loc("measureUnits/deg_per_sec")) }
           local topValue = this.maxValuesParams?[this.difficulty.crewSkillName][a.crewMemberTopSkill.crewMember][a.crewMemberTopSkill.skill][a.modifName]
           topValue = topValue ? topValue * speedMul : topValue
           if (topValue != null && topValue > speed) {

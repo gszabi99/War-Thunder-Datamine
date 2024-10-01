@@ -9,6 +9,7 @@ let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const PRESET_MIN_USAGE = 2
 
@@ -114,7 +115,7 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     let validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
     let oldName = this.masterPresetId
-    ::gui_modal_editbox_wnd({
+    openEditBoxDialog({
       title = loc("customization/decorLayout/layoutName")
       maxLen = 16
       value = oldName

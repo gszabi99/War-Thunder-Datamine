@@ -214,7 +214,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
 
       view.items.append({
         itemIcon = iconName
-        id = "replay_" + i
+        id = $"replay_{i}"
         isSelected = i == selItem
         isNeedOnHover = showConsoleButtons.value
       })
@@ -231,7 +231,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     let defaultReplayNameMask =
       regexp2(@"2\d\d\d\.[0-3]\d\.[0-3]\d [0-2]\d\.[0-5]\d\.[0-5]\d*");
     for (local i = firstIdx; i < lastIdx; i++) {
-      let obj = this.scene.findObject("txt_replay_" + i);
+      let obj = this.scene.findObject($"txt_replay_{i}");
       local name = this.replays[i].name;
       let hasDateInName = startsWith(name, autosaveReplayPrefix) || defaultReplayNameMask.match(name)
       if (!hasDateInName && !isCorruptedReplay(this.replays[i])) {
@@ -327,7 +327,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       text += loc("options/time") + loc("ui/colon") + getMissionTimeText(replayInfo.environment) + "\n"
       text += loc("options/weather") + loc("ui/colon") + getWeatherLocName(replayInfo.weather) + "\n"
-      text += loc("options/difficulty") + loc("ui/colon") + loc("difficulty" + replayInfo.difficulty) + "\n"
+      text += loc("options/difficulty") + loc("ui/colon") + loc($"difficulty{replayInfo.difficulty}") + "\n"
 
 /*      local limits = ""
       if (replayInfo.isLimitedFuel && replayInfo.isLimitedAmmo)
@@ -409,7 +409,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (name == "timePlayed")
         value = time.secondsToString(value)
-      data.addDescr += (loc("options/" + name) + loc("ui/colon") + value + "\n")
+      data.addDescr += (loc($"options/{name}") + loc("ui/colon") + value + "\n")
     }
 
     let mplayersList = replayMetadata.buildReplayMpTable(this.replays?[this.getCurrentReplayIndex()]?.path ?? "")

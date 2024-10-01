@@ -139,7 +139,7 @@ gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
           msgObj.setValue(link.text)
       }
       if (objBlock && (link?.highlight ?? true))
-        highlightList.append(objBlock.__merge({ id = "lightObj_" + idx }))
+        highlightList.append(objBlock.__merge({ id = $"lightObj_{idx}" }))
     }
 
     this.guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions

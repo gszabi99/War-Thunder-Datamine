@@ -229,7 +229,7 @@ function initConfigs() {
   foreach (cfg in rewardsConfig) {
     let id = cfg.id
     if (!("locId" in cfg))
-      cfg.locId = "reward/" + id
+      cfg.locId = $"reward/{id}"
     if (!("getValue" in cfg))
       cfg.getValue = @(blk) blk?[id]
     if (!("getIconStyle" in cfg))
@@ -374,14 +374,14 @@ function isRewardReceived(reward_blk, eventEconomicName) {
 
   //field_number rewards does not contain condition name
   if (conditionId != "field_number")
-    ending += conditionId + "_"
+    ending +=$"{conditionId}_"
 
   //every reward has field number
-  ending += reward_blk.fieldName + "_"
+  ending +=$"{reward_blk.fieldName}_"
 
   //handlind rewards with range
   if ("valueMin" in reward_blk)
-    ending += reward_blk.valueMin + "-"
+    ending +=$"{reward_blk.valueMin}-"
 
   //and every raward has value
   ending += reward_blk.value

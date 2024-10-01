@@ -58,15 +58,15 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
       local medal = ""
       if (reward.rType == CLAN_SEASON_MEDAL_TYPE.PLACE) {
         title = loc($"clan/season_award/place/place{reward.place}")
-        medal = "place" + reward.place
+        medal =$"place{reward.place}"
       }
       if (reward.rType == CLAN_SEASON_MEDAL_TYPE.TOP) {
         title = loc("clan/season_award/place/top", { top = reward.place })
-        medal = "top" + reward.place
+        medal =$"top{reward.place}"
       }
       if (reward.rType == CLAN_SEASON_MEDAL_TYPE.RATING) {
         title = loc("clan/season_award/rating", { ratingValue = reward.rating })
-        medal = reward.rating + "rating"
+        medal =$"{reward.rating}rating"
       }
       let medalIconMarkup = LayersIcon.getIconData(format("clan_medal_%s_%s", medal, diff.egdLowercaseName),
         null, null, null, { season_title = { text = seasonName } })

@@ -332,7 +332,7 @@ let Booster = class (BaseItem) {
         layersArray.append(clone plusLayer)
 
       foreach (_idx, int in numsArray) {
-        let layer = LayersIcon.findLayerCfg("item_num_" + int)
+        let layer = LayersIcon.findLayerCfg($"item_num_{int}")
         if (!layer)
           continue
         layersArray.append(clone layer)
@@ -522,7 +522,7 @@ let Booster = class (BaseItem) {
   }
 
   function getStackName(stackParams) {
-    local res = colorize("activeTextColor", loc("item/" + this.defaultLocId))
+    local res = colorize("activeTextColor", loc($"item/{this.defaultLocId}"))
     let effects = []
     foreach (efType in boosterEffectType) {
       let valTbl = getTblValue(efType.name, stackParams)

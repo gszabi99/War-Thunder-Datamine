@@ -1,10 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 let { subscribe, send, eventbus_subscribe, eventbus_send} = require("eventbus")
 let { resetTimeout } = require("dagor.workcycle")
+let extWatched = require("%rGui/globals/extWatched.nut")
 
 let isActionBarCollapsed = Watched(false)
 let isActionBarCollapsable = Watched(false)
-let isCollapseBtnHided = Watched(false)
+let isCollapseBtnHidden = extWatched("isActionBarCollapseBtnHidden", false)
 let isCollapseHintVisible = Watched(false)
 let isActionBarVisible = Watched(false)
 let actionBarPos = Watched(null)
@@ -12,8 +13,8 @@ let actionBarSize = Watched(null)
 let actionBarCollapseShText = Watched("")
 let collapseBtnPressedTime = Watched(0)
 
-let hintShowTime = 3
-let preesTimeForHideBtn = 1.5
+const HINT_SHOW_TIME = 3
+const HIDE_BTN_PRESS_TIME = 1.5
 
 function hideCollapseBtnHint() {
   isCollapseHintVisible.set(false)
@@ -21,28 +22,27 @@ function hideCollapseBtnHint() {
 
 function showCollapseBtnHint() {
   isCollapseHintVisible.set(true)
-  resetTimeout(hintShowTime, hideCollapseBtnHint)
+  resetTimeout(HINT_SHOW_TIME, hideCollapseBtnHint)
 }
 
 local isCollapseTimerComplete = false
 
 function updateCollapsePressTime() {
-  let progressTime = collapseBtnPressedTime.get() + 0.1 / preesTimeForHideBtn
+  let progressTime = collapseBtnPressedTime.get() + 0.1 / HIDE_BTN_PRESS_TIME
   collapseBtnPressedTime.set(progressTime)
-  if (progressTime > 1) {
-    gui_scene.clearTimer(updateCollapsePressTime)
-    collapseBtnPressedTime.set(0)
-    isCollapseTimerComplete = true
+  if (progressTime <= 1)
+    return
 
-    if (isCollapseBtnHided.get()) {
-      isCollapseBtnHided.set(false)
-      eventbus_send("collapseActionBar")
-    } else {
-      if (!isActionBarCollapsed.get())
-        eventbus_send("collapseActionBar")
-      isCollapseBtnHided.set(true)
-    }
-  }
+  gui_scene.clearTimer(updateCollapsePressTime)
+  collapseBtnPressedTime.set(0)
+  isCollapseTimerComplete = true
+
+  let isHidden = !isCollapseBtnHidden.get()
+  isCollapseBtnHidden.set(isHidden)
+  eventbus_send("ActionBarCollapseBtnHidden", isHidden)
+
+  if (!isHidden || !isActionBarCollapsed.get())
+    eventbus_send("collapseActionBar")
 }
 
 function onCollapseShortcutPress(v) {
@@ -58,7 +58,7 @@ function onCollapseShortcutPress(v) {
       if (!isActionBarCollapsed.get())
         showCollapseBtnHint()
       eventbus_send("collapseActionBar")
-      isCollapseBtnHided.set(false)
+      isCollapseBtnHidden.set(false)
     }
     isCollapseTimerComplete = false
   }
@@ -81,7 +81,7 @@ send("getActionBarState", {})
 return {
   collapseBtnPressedTime
   isActionBarCollapsed
-  isCollapseBtnHided
+  isCollapseBtnHidden
   isActionBarCollapsable
   isActionBarVisible
   isCollapseHintVisible

@@ -474,7 +474,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     foreach (idx, group in this.controlsGroupsIdList)
       view.tabs.append({
         id = group
-        tabName = "#hotkeys/" + group
+        tabName = $"#hotkeys/{group}"
         navImagesText = ::get_navigation_images_text(idx, this.controlsGroupsIdList.len())
       })
 
@@ -543,7 +543,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           if (isSectionShowed)
             navigationItems.append({
               id = entry.id
-              text = "#hotkeys/" + entry.id
+              text =$"#hotkeys/{entry.id}"
             })
         }
         if (!isSectionShowed)
@@ -583,7 +583,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let sectionId = navItem.id
     this.shouldUpdateNavigationSection = false
     let rowIdx = this.getRowIdxBYId(sectionId)
-    let rowId = "table_row_" + rowIdx
+    let rowId = $"table_row_{rowIdx}"
     let rowObj = this.scene.findObject(rowId)
 
     rowObj.scrollToView(true)
@@ -677,7 +677,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function updateAxisShortcuts(item) {
-    let itemObj = this.scene.findObject("sc_" + item.id)
+    let itemObj = this.scene.findObject($"sc_{item.id}")
     if (!checkObj(itemObj))
       return
 
@@ -861,7 +861,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (!checkObj(controlTblObj) || idx < 0)
       return
 
-    let id = "table_row_" + idx
+    let id = $"table_row_{idx}"
     for (local i = 0; i < controlTblObj.childrenCount(); i++) {
       let child = controlTblObj.getChild(i)
       if (child.id == id)
@@ -1224,7 +1224,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       if (item.type == CONTROL_TYPE.HEADER) {
         let isHeaderVisible = !("showFunc" in item) || item.showFunc.call(this)
         if (isHeaderVisible)
-          currentHeader = "hotkeys/" + item.id
+          currentHeader =$"hotkeys/{item.id}"
         else
           currentHeader = null
       }
@@ -1294,13 +1294,13 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       if (item.type == CONTROL_TYPE.SHORTCUT)
         unmappedGroup.list.append("hotkeys/" + this.shortcutNames[item.shortcutId])
       else if (item.type == CONTROL_TYPE.AXIS)
-        unmappedGroup.list.append("controls/" + item.axisName)
+        unmappedGroup.list.append($"controls/{item.axisName}")
     }
     return unmappedList
   }
 
   function updateSliderValue(item) {
-    let valueObj = this.scene.findObject(item.id + "_value")
+    let valueObj = this.scene.findObject($"{item.id}_value")
     if (!valueObj)
       return
     let vlObj = this.scene.findObject(item.id)
@@ -1699,7 +1699,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 
 ::buildHotkeyItem <- function buildHotkeyItem(rowIdx, shortcuts, item, params, even, rowParams = "") {
   let hotkeyData = {
-    id = "table_row_" + rowIdx
+    id = $"table_row_{rowIdx}"
     markup = ""
     text = ""
   }
@@ -1710,10 +1710,10 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   let trAdd = format("id:t='%s'; even:t='%s'; %s", hotkeyData.id, even ? "yes" : "no", rowParams)
   local res = ""
   local elemTxt = ""
-  local elemIdTxt = "controls/" + item.id
+  local elemIdTxt =$"controls/{item.id}"
 
   if (item.type == CONTROL_TYPE.SECTION) {
-    let hotkeyId = "hotkeys/" + item.id
+    let hotkeyId =$"hotkeys/{item.id}"
     res = format("tr { %s inactive:t='yes';" +
                    "td { width:t='@controlsLeftRow'; overflow:t='visible';" +
                      "optionBlockHeader { text:t='#%s'; }}\n" +
@@ -1742,7 +1742,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
       trAdd = trAdd
       trName = $"#controls/{item.id}"
     })
-    hotkeyData.text = utf8ToLower(loc("controls/" + item.id))
+    hotkeyData.text = utf8ToLower(loc($"controls/{item.id}"))
     hotkeyData.markup = res
   }
   else if (item.type == CONTROL_TYPE.SPINNER || item.type == CONTROL_TYPE.DROPRIGHT) {
@@ -1754,7 +1754,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 
     if ("optionType" in item) {
       let config = ::get_option(item.optionType)
-      elemIdTxt = "options/" + config.id
+      elemIdTxt =$"options/{config.id}"
       elemTxt = createOptFunc(item.id, config.items, config.value, callBack, true)
     }
     else if ("options" in item && (item.options.len() > 0)) {
@@ -1767,7 +1767,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   else if (item.type == CONTROL_TYPE.SLIDER) {
     if ("optionType" in item) {
       let config = ::get_option(item.optionType)
-      elemIdTxt = "options/" + config.id
+      elemIdTxt =$"options/{config.id}"
       elemTxt = ::create_option_slider(item.id, config.value, "onSliderChange", true, "slider", config)
     }
     else {
@@ -1775,13 +1775,13 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
       elemTxt = ::create_option_slider(item.id, value.tointeger(), "onSliderChange", true, "slider", item)
     }
 
-    elemTxt += format("activeText{ id:t='%s'; margin-left:t='0.01@sf' } ", item.id + "_value")
+    elemTxt += format("activeText{ id:t='%s'; margin-left:t='0.01@sf' } ",$"{item.id}_value")
   }
   else if (item.type == CONTROL_TYPE.SWITCH_BOX) {
     local config = null
     if ("optionType" in item) {
       config = ::get_option(item.optionType)
-      elemIdTxt = "options/" + config.id
+      elemIdTxt =$"options/{config.id}"
       config.id = item.id
     }
     else {
@@ -1809,13 +1809,13 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     elemIdTxt = "";
     elemTxt = handyman.renderCached("%gui/commonParts/button.tpl", {
       id = item.id
-      text = "#controls/" + item.id
+      text =$"#controls/{item.id}"
       funcName = "onActionButtonClick"
     })
   }
   else {
     res = "tr { display:t='hide'; td {} td { tdiv{} } }"
-    log("Error: wrong shortcut - " + item.id)
+    log($"Error: wrong shortcut - {item.id}")
   }
 
   if (elemTxt != "") {
@@ -1823,7 +1823,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
                    "td { width:t='@controlsLeftRow'; overflow:t='hidden'; optiontext { text:t ='%s'; }} " +
                    "td { width:t='pw-1@controlsLeftRow'; cellType:t='right'; padding-left:t='@optPad'; %s } " +
                  "}\n",
-                 trAdd, elemIdTxt != "" ? "#" + elemIdTxt : "", elemTxt)
+                 trAdd, elemIdTxt != "" ? $"#{elemIdTxt}" : "", elemTxt)
     hotkeyData.text = utf8ToLower(loc(elemIdTxt))
     hotkeyData.markup = res
   }
@@ -1911,11 +1911,11 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   if (locText != "")
     return locText
 
-  locText = loc("joystick/" + text, "")
+  locText = loc($"joystick/{text}", "")
   if (locText != "")
     return locText
 
-  locText = loc("key/" + text, "")
+  locText = loc($"key/{text}", "")
   if (locText != "")
     return locText
 

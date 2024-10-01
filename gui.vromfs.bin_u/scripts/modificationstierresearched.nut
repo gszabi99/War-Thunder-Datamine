@@ -61,7 +61,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
 
     let nameObj = this.scene.findObject("award_name")
     if (checkObj(nameObj))
-      nameObj.setValue(loc(locTextId + "/header"))
+      nameObj.setValue(loc($"{locTextId}/header"))
 
     let imgObj = this.scene.findObject("award_image")
     if (checkObj(imgObj)) {
@@ -120,7 +120,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
 
       this.postCustomConfig = {
         requireLocalization = ["unitName", "country"]
-        unitName = this.unit.name + "_shop"
+        unitName =$"{this.unit.name}_shop"
         rank = get_roman_numeral(this.unit?.rank ?? -1)
         country = getUnitCountry(this.unit)
         link = format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), this.unit.name)

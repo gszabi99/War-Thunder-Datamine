@@ -91,7 +91,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       view.tabs.append({
         id = gr.name
         visualDisable = gr.name == "voicechat" && !isCrossNetworkChatEnabled()
-        tabName = "#options/" + gr.name
+        tabName =$"#options/{gr.name}"
         navImagesText = ::get_navigation_images_text(idx, this.optGroups.len())
       })
 
@@ -439,7 +439,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
         containerCb = "onChangeOptionValue"
       }
 
-    this.currentContainerName = "options_" + config.name
+    this.currentContainerName =$"options_{config.name}"
     let container = create_options_container(this.currentContainerName, config.options, true, this.columnsRatio,
       true, this.optionsConfig)
     this.optionsContainers = [container.descr]

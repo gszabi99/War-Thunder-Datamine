@@ -374,7 +374,7 @@ let ItemExternal = class (BaseItem) {
     let locEnding = !canSell ? "no"
       : noTradeableSec > 0 ? "afterTime"
       : "yes"
-    let text = loc("item/marketable/" + locEnding,
+    let text = loc($"item/marketable/{locEnding}",
       { name = this.getTypeNameForMarketableDesc()
         time = noTradeableSec > 0
           ? colorize("badTextColor",

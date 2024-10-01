@@ -95,7 +95,7 @@ foreach (i, v in ::cssColorsMapDark)
 
 local current_wait_screen_txt = ""
 ::show_wait_screen <- function show_wait_screen(txt) {
-  log("GuiManager: show_wait_screen " + txt)
+  log($"GuiManager: show_wait_screen {txt}")
   if (checkObj(::current_wait_screen)) {
     if (current_wait_screen_txt == txt)
       return log("already have this screen, just ignore")
@@ -410,7 +410,7 @@ local last_update_entitlements_time = get_time_msec()
     let config = (haveParams ? cell : {}).__merge({
       params = haveParams
       display = (cell?.show ?? true) ? "show" : "hide"
-      id = getTblValue("id", cell, "td_" + idx)
+      id = getTblValue("id", cell,$"td_{idx}")
       rawParam = getTblValue("rawParam", cell, "")
       needText = getTblValue("needText", cell, true)
       textType = getTblValue("textType", cell, "activeText")
@@ -449,8 +449,8 @@ local last_update_entitlements_time = get_time_msec()
 ::get_number_of_units_by_years <- function get_number_of_units_by_years(country, years) {
   let result = {}
   foreach (year in years) {
-    result["year" + year] <- 0
-    result["beforeyear" + year] <- 0
+    result[$"year{year}"] <- 0
+    result[$"beforeyear{year}"] <- 0
   }
 
   foreach (air in getAllUnits()) {
@@ -561,7 +561,7 @@ local last_update_entitlements_time = get_time_msec()
 
 ::on_have_to_start_chard_op <- function on_have_to_start_chard_op(message) {
 //  dlog("GP: on have to start char op message! = " +message)
-  log("on_have_to_start_chard_op " + message)
+  log($"on_have_to_start_chard_op {message}")
 
   if (message == "sync_clan_vs_profile") {
     let taskId = clan_request_sync_profile()
@@ -804,7 +804,7 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
     if (unitNameLoc == "") {
       let unitId = player.aircraftName
       if (unitId != "")
-        unitNameLoc = loc(unitId + "_1")
+        unitNameLoc = loc($"{unitId}_1")
     }
     if (unitNameLoc != "")
       unitName = loc("ui/parentheses", { text = unitNameLoc })

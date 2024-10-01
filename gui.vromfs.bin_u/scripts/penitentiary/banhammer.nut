@@ -78,7 +78,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let clanTag = getTblValue("clanTag", this.player, "")
     let targetObj = this.scene.findObject("complain_target")
     if (checkObj(targetObj))
-      targetObj.setValue((clanTag.len() > 0 ? (clanTag + " ") : "") + getPlayerName(this.playerName))
+      targetObj.setValue((clanTag.len() > 0 ? ($"{clanTag} ") : "") + getPlayerName(this.playerName))
 
     let options = [
       USEROPT_COMPLAINT_CATEGORY,
@@ -100,7 +100,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       else
         optRow = objForClones.getClone(optionsBox, this)
 
-      optRow.findObject("option_name").setValue(loc("options/" + opt.id))
+      optRow.findObject("option_name").setValue(loc($"options/{opt.id}"))
       let typeObj = optRow.findObject("option_list")
       let data = ::create_option_list(opt.id, opt.items, opt.value, null, false)
       this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
@@ -171,7 +171,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))
       this.afterSlotOp = function() {
-          log("[IRC] sending /reauth " + this.playerName)
+          log($"[IRC] sending /reauth {this.playerName}")
           ::gchat_raw_command("reauth " + gchat_escape_target(this.playerName))
           this.goBack()
         }
@@ -201,7 +201,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if ("roomId" in this.pInfo && "roomName" in this.pInfo && this.pInfo.roomName != "")
         this.location = "Main Chat, Channel = " + this.pInfo.roomName + " (" + this.pInfo.roomId + ")"
       else
-        this.location = "In-game Chat; " + gameMode
+        this.location =$"In-game Chat; {gameMode}"
     }
     else
       this.chatLog = {}

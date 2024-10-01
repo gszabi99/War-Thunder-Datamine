@@ -19,6 +19,7 @@ let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/langu
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { steam_is_running } = require("steam")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
 
@@ -134,7 +135,7 @@ function sendXboxEmailBind(val) {
 }
 
 function launchXboxEmailRegistration(override = {}) {
-  ::gui_modal_editbox_wnd({
+  openEditBoxDialog({
     leftAlignedLabel = true
     title = loc("mainmenu/XboxOneEmailRegistration")
     label = loc("mainmenu/XboxOneEmailRegistration/desc")

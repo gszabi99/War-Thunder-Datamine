@@ -44,7 +44,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
 
     let titleObj = this.scene.findObject("axis_title")
     if (checkObj(titleObj))
-      titleObj.setValue(loc("controls/" + this.axisItem.id))
+      titleObj.setValue(loc($"controls/{this.axisItem.id}"))
 
     this.reinitScreen()
     this.dontCheckControlsDupes = ::refillControlsDupes()
@@ -169,7 +169,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   }
 
   function onSliderChange(obj) {
-    let textObj = obj?.id && obj.getParent().findObject(obj.id + "_value")
+    let textObj = obj?.id && obj.getParent().findObject($"{obj.id}_value")
     if (!checkObj(textObj))
       return
 

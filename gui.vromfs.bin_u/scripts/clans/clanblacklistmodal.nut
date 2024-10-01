@@ -63,7 +63,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let startIdx = this.curPage * this.rowsPerPage
     let lastIdx = min((this.curPage + 1) * this.rowsPerPage, this.blacklistData.len())
     for (local i = startIdx; i < lastIdx; i++) {
-      let rowName = "row_" + i
+      let rowName = $"row_{i}"
       let rowData = []
 
       foreach (item in this.blacklistRow) {
@@ -90,14 +90,14 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function fillRow(tblObj, i) {
     let block = this.blacklistData[i]
-    let rowObj = tblObj.findObject("row_" + i)
+    let rowObj = tblObj.findObject($"row_{i}")
     if (rowObj) {
       let comments = ("comments" in block) ? block.comments : ""
       rowObj.tooltip = comments.len()
         ? loc("clan/blacklistRowTooltip", { comments = comments }) : ""
 
       foreach (item in clanBlackList) {
-        let vObj = rowObj.findObject("txt_" + item.id)
+        let vObj = rowObj.findObject($"txt_{item.id}")
         let itemValue = (item.id in block) ? block[item.id] : 0
         if (vObj)
           vObj.setValue(item.type.getShortTextByValue(itemValue))

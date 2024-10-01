@@ -237,7 +237,7 @@ let BaseItem = class {
   function getIcon(_addItemName = true) {
     if (this.lottieAnimation != null)
       return LayersIcon.getIconData(null, this.getLottieImage())
-    return LayersIcon.getIconData(this.iconStyle + "_shop", this.defaultIcon, 1.0, this.defaultIconStyle)
+    return LayersIcon.getIconData($"{this.iconStyle}_shop", this.defaultIcon, 1.0, this.defaultIconStyle)
   }
 
   function getSmallIconName() {
@@ -272,7 +272,7 @@ let BaseItem = class {
   }
 
   function getName(_colored = true) {
-    local name = loc("item/" + this.id, loc("item/" + this.defaultLocId))
+    local name = loc($"item/{this.id}", loc($"item/{this.defaultLocId}"))
     if (this.locId != null)
       name = loc(this.locId, name)
     return name

@@ -343,9 +343,9 @@ enums.addTypesByGlobalName("g_shortcut_type", {
     transformHalfAxisToShortcuts = function (shortcutId) {
       let fullAxisId = this.getAxisName(shortcutId)
       if (shortcutId.indexof("=max") != null)
-        return fullAxisId + "_rangeMax"
+        return $"{fullAxisId}_rangeMax"
       if (shortcutId.indexof("=min") != null)
-        return fullAxisId + "_rangeMin"
+        return $"{fullAxisId}_rangeMin"
 
       //actualy imposible situation if isAssigned used befor expand
       return ""

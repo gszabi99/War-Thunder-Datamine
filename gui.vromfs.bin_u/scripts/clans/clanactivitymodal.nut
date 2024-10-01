@@ -119,7 +119,7 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
             : ""
         })
       }
-      rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowParams, null, "")
+      rowBlock += ::buildTableRowNoPad($"row_{rowIdx}", rowParams, null, "")
       rowIdx++
     }
     this.guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)

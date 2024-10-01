@@ -47,6 +47,7 @@ let { userName } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -505,7 +506,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       roomTab.show(!room.hidden && !is_concealed && roomVisible)
     })
     roomTab.tooltip = room.type.getTooltip(room.id)
-    let textObj = roomTab.findObject("room_txt_" + idx)
+    let textObj = roomTab.findObject($"room_txt_{idx}")
     textObj.colorTag = room.type.getRoomColorTag(room.id)
     textObj.setValue(room.getRoomName())
   }
@@ -620,7 +621,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
             getPlayerName(user.name),
             ::clanUserTable?[user.name] ?? ""
           )
-          listObj.findObject("user_name_" + idx).setValue(fullName)
+          listObj.findObject($"user_name_{idx}").setValue(fullName)
         }
       }
     }
@@ -675,7 +676,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function updateUserPresence(listObj, idx, contact) {
-    let obj = listObj.findObject("user_name_" + idx)
+    let obj = listObj.findObject($"user_name_{idx}")
     if (obj) {
       let inMySquad = contact && g_squad_manager.isInMySquad(contact.name, false)
       let inMyClan = contact && ::is_in_my_clan(contact.name)
@@ -866,9 +867,9 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       local roomIdx = 0
       if (chatRooms != null) {
         let storedRooms = []
-        for (roomIdx = 0; chatRooms?["room" + roomIdx]; roomIdx++)
-          storedRooms.append(this.loadRoomParams(chatRooms?["room" + roomIdx],
-                                             chatRooms?["params" + roomIdx]))
+        for (roomIdx = 0; chatRooms?[$"room{roomIdx}"]; roomIdx++)
+          storedRooms.append(this.loadRoomParams(chatRooms?[$"room{roomIdx}"],
+                                             chatRooms?[$"params{roomIdx}"]))
 
         foreach (it in storedRooms) {
           let roomType = g_chat_room_type.getRoomType(it.roomName)
@@ -891,9 +892,9 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     let chatRoomsBlk = DataBlock()
     foreach (room in ::g_chat.rooms)
       if (!room.hidden && room.type.needSave()) {
-        chatRoomsBlk["room" + saveIdx] = gchat_escape_target(room.id)
+        chatRoomsBlk[$"room{saveIdx}"] = gchat_escape_target(room.id)
         if (room.joinParams != "")
-          chatRoomsBlk["params" + saveIdx] = room.joinParams
+          chatRoomsBlk[$"params{saveIdx}"] = room.joinParams
         saveIdx++
       }
     saveLocalAccountSettings(CHAT_ROOMS_LIST_SAVE_ID, chatRoomsBlk)
@@ -1564,7 +1565,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
           okFunc = Callback(@(pass) this.joinRoom(roomId, pass), ::menu_chat_handler)
         }
 
-        ::gui_modal_editbox_wnd(params)
+        openEditBoxDialog(params)
         return
       }
 
@@ -1585,7 +1586,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       let locParams = {}
       let errParamCount = db.error?.errorParamCount || db.error.getInt("paramCount", 0) //"paramCount" is a support old client
       for (local i = 0; i < errParamCount; i++) {
-        let key = "param" + i
+        let key = $"param{i}"
         local value = db.error?[key]
         if (!value)
           continue
@@ -1599,7 +1600,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         locParams[key] <- value
       }
 
-      let errMsg = loc("chat/error/" + errorName, locParams)
+      let errMsg = loc($"chat/error/{errorName}", locParams)
       local roomToSend = roomId
       if (!::g_chat.getRoomById(roomToSend))
         roomToSend = this.lastActionRoom
@@ -1838,12 +1839,12 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   function checkCmd(msg) {
     if (msg.slice(0, 1) == "\\" || msg.slice(0, 1) == "/")
       foreach (cmd in ::available_cmd_list)
-        if ((msg.len() > (cmd.len() + 2) && msg.slice(1, cmd.len() + 2) == (cmd + " "))
+        if ((msg.len() > (cmd.len() + 2) && msg.slice(1, cmd.len() + 2) == ($"{cmd} "))
             || (msg.len() == (cmd.len() + 1) && msg.slice(1, cmd.len() + 1) == cmd)) {
           let hasParam = msg.len() > cmd.len() + 2;
 
           if (cmd == "help" || cmd == "shelp")
-            this.addRoomMsg(this.curRoom.id, "", loc("menuchat/" + cmd))
+            this.addRoomMsg(this.curRoom.id, "", loc($"menuchat/{cmd}"))
           else if (cmd == "edit")
             ::g_chat.openModifyThreadWndByRoomId(this.curRoom.id)
           else if (cmd == "msg")
@@ -1873,7 +1874,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
               let spaceidx = paramStr.indexof(" ")
               local roomName = spaceidx ? paramStr.slice(0, spaceidx) : paramStr
               if (roomName.slice(0, 1) != "#")
-                roomName = "#" + roomName
+                roomName = $"#{roomName}"
               let pass = spaceidx ? paramStr.slice(spaceidx + 1) : ""
 
               this.addChatJoinParams(gchat_escape_target(roomName), pass)
@@ -2407,7 +2408,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (this.searchRoomList.len() > 0) {
       for (local i = 0; i < total; i++) {
         local rName = this.searchRoomList[i]
-        rName = (rName.slice(0, 1) == "#") ? rName.slice(1) : loc("chat/channel/" + rName, rName)
+        rName = (rName.slice(0, 1) == "#") ? rName.slice(1) : loc($"chat/channel/{rName}", rName)
         data += format("text { id:t='search_room_txt_%d'; text:t='%s'; tooltip:t='%s'; }",
                     i, stripTags(rName), stripTags(rName))
       }
@@ -2537,7 +2538,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function showRoomPopup(msgBlock, roomId) {
     if (::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY))
-      addPopup(msgBlock.fullName && msgBlock.fullName.len() ? (msgBlock.fullName + ":") : null,
+      addPopup(msgBlock.fullName && msgBlock.fullName.len() ? ($"{msgBlock.fullName}:") : null,
         msgBlock.msgs.top(),
         @() ::g_chat.openChatRoom(roomId)
       )

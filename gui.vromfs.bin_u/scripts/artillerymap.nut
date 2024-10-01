@@ -296,7 +296,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
         else
           data.append(handyman.renderCached("%gui/commonParts/button.tpl", {
             id = info?.buttonId ?? ""
-            text = "#" + info.title
+            text =$"#{info.title}"
             funcName = info.buttonCb
             actionParamsMarkup = info?.buttonExtraMarkup
           }))

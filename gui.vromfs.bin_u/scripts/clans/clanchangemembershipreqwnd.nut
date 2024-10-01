@@ -105,12 +105,12 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
       if (!unitType.isAvailable())
         continue
 
-      let obj = this.scene.findObject("rankReq" + unitType.name)
+      let obj = this.scene.findObject($"rankReq{unitType.name}")
       if (!checkObj(obj))
         continue
 
       local ranksRequired = 0
-      let req = rawRanksCond.getBlockByName("rank_" + unitType.name)
+      let req = rawRanksCond.getBlockByName($"rank_{unitType.name}")
       if (req?.type == "rank" && req?.unitType == unitType.name)
         ranksRequired = req.getInt("rank", 0)
 
@@ -126,7 +126,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
       if (!unitType.isAvailable())
         continue
 
-      let obj = this.scene.findObject("rankReq" + unitType.name)
+      let obj = this.scene.findObject($"rankReq{unitType.name}")
       if (!checkObj(obj))
         continue
 
@@ -207,7 +207,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
       if (!unitType.isAvailable())
         continue
 
-      let obj = this.scene.findObject("rankReq" + unitType.name)
+      let obj = this.scene.findObject($"rankReq{unitType.name}")
       if (!checkObj(obj))
         continue
 
@@ -218,7 +218,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
           ranksSubBlk.setStr("type", rankCondType)
         }
 
-        let condBlk = ranksSubBlk.addNewBlock("rank_" + unitType.name)
+        let condBlk = ranksSubBlk.addNewBlock($"rank_{unitType.name}")
         condBlk.setStr("type", "rank")
         condBlk.setInt("rank", rankVal)
         condBlk.setInt("count", 1)

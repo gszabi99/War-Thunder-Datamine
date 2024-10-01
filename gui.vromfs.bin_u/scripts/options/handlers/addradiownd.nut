@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import edit_internet_radio_station, get_internet_radio_stations, get_internet_radio_path, add_internet_radio_station
 from "%scripts/dagui_library.nut" import *
 
@@ -18,7 +17,7 @@ gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     select_editbox(this.scene.findObject("newradio_name"))
-    let nameRadio = loc("options/internet_radio_" + ((this.editStationName == "") ? "add" : "edit"))
+    let nameRadio = loc("".concat("options/internet_radio_", ((this.editStationName == "") ? "add" : "edit")))
     let titleRadio = this.scene.findObject("internet_radio_title")
     titleRadio.setValue(nameRadio)
     let btnAddRadio = this.scene.findObject("btn_add_radio")
@@ -42,8 +41,8 @@ gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getMsgByEditbox(name) {
-    let isEmpty = is_chat_message_empty(this.scene.findObject("newradio_" + name).getValue())
-    return isEmpty ? loc("options/no_" + name + "_radio") : ""
+    let isEmpty = is_chat_message_empty(this.scene.findObject($"newradio_{name}").getValue())
+    return isEmpty ? loc($"options/no_{name}_radio") : ""
   }
 
   onFocusUrl = @() select_editbox(this.scene.findObject("newradio_url"))

@@ -7,7 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { Point2 } = require("dagor.math")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
-let { get_current_mission_name } = require("mission")
+let { get_current_mission_name, get_game_mode } = require("mission")
 let { set_last_weapon } = require("unitCustomization")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -33,6 +33,7 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
+let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -120,7 +121,8 @@ function isWeaponEnabled(unit, weapon) {
   return shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
          //temporary hack: check ammo amount for forced units by mission,
          //because shop_is_weapon_available function work incorrect with them
-         && (getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
+         && (!isGameModeVersus(get_game_mode())
+             || getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
              || !getAmmoMaxAmount(unit, weapon.name, AMMO.WEAPON)
             )
          && (!isInFlight() || getCurMissionRules().isUnitWeaponAllowed(unit, weapon))

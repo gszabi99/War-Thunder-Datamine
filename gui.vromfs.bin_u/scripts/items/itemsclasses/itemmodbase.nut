@@ -67,7 +67,7 @@ let ModificationBase = class (BaseItem) {
     }
 
     if (this.countries) {
-      let locCountries = this.countries.map(@(country) loc("unlockTag/" + country))
+      let locCountries = this.countries.map(@(country) loc($"unlockTag/{country}"))
       textParts.append(loc("trophy/unlockables_names/country") + loc("ui/colon")
           + colorize("activeTextColor", ", ".join(locCountries, true)))
     }

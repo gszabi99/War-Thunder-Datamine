@@ -218,7 +218,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     foreach (taskId, _w in this.newIconWidgetByTaskId) {
-      let newIconWidgetContainer = listBoxObj.findObject("new_icon_widget_" + taskId)
+      let newIconWidgetContainer = listBoxObj.findObject($"new_icon_widget_{taskId}")
       if (!checkObj(newIconWidgetContainer))
         continue
 
@@ -258,7 +258,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         let rowData = [{ textType = "textareaNoTab", text = text, tooltip = text, width = "65%pw", textRawParam = "pare-text:t='yes'; width:t='pw'; max-height:t='ph'" },
                          { textType = "textarea", text = timeStr, tooltip = timeStr, tdalign = "right", width = "35%pw" }]
 
-        view.doneTasksTable.rows += ::buildTableRow("tr_" + idx, rowData, idx % 2 == 0)
+        view.doneTasksTable.rows += ::buildTableRow($"tr_{idx}", rowData, idx % 2 == 0)
       }
     }
 

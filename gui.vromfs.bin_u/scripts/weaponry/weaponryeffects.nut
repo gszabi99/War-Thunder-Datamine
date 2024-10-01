@@ -50,7 +50,7 @@ let presetsList = {
       if (!this.canShowForUnit(unit))
         return ""
       let value = this.getValue(unit, effects, modeId)
-      local value2 = effects?[modeId]?[this.id + "_base"]
+      local value2 = effects?[modeId]?[$"{this.id}_base"]
       if (value2 != null)
         value2 = this.validateValue(value2)
       if (value != null && value2 != null)
@@ -109,7 +109,7 @@ let effectTypeTemplate = {
     }
 
     if (value > 0 || (needAdditionToZero && value == 0))
-      res = "+" + res
+      res =$"+{res}"
     if (value != 0)
       res = colorize(
         !this.shouldColorByValue ? NEUTRAL_COLOR

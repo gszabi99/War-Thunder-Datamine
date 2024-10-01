@@ -83,7 +83,7 @@ function getFavoriteVoiceMessagesVariants() {
     }
     indexInCategory++;
 
-    result.append("" + categoryIndex + "-" + indexInCategory + ": " + format(loc(record.name + "_0"),
+    result.append("" + categoryIndex + "-" + indexInCategory + ": " + format(loc($"{record.name}_0"),
       loc("voice_message_target_placeholder")));
   }
   return result;
@@ -105,7 +105,7 @@ function getVoiceMessageListLine(index, is_category, name, squad, targetName, _m
 
   return {
     shortcutText = scText
-    name = is_category ? getCategoryLoc(name) : format(loc(name + "_0"), targetName)
+    name = is_category ? getCategoryLoc(name) : format(loc($"{name}_0"), targetName)
     chatMode = squad ? "squad" : "team"
   }
 }

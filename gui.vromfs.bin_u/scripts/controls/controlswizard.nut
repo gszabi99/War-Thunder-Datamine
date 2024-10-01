@@ -463,19 +463,19 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if ("text" in item)
       return item.text
     if (item.type == CONTROL_TYPE.AXIS)
-      return "controls/" + item.id
+      return $"controls/{item.id}"
     else if ("optionType" in item)
       return "options/" + ::get_option(item.optionType).id
 
-    return "hotkeys/" + item.id
+    return $"hotkeys/{item.id}"
   }
 
   function getItemName(item) {
     if ("name" in item)
       return item.name
     else if (item.type == CONTROL_TYPE.AXIS)
-      return "controls/" + item.id
-    return "hotkeys/" + item.id
+      return $"controls/{item.id}"
+    return $"hotkeys/{item.id}"
   }
 
   function nextItem() {
@@ -1012,9 +1012,9 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     this.lastNumButtons = 0
 
     for (local i = 0; i < 3; i++) {
-      if (obj["device" + i] != "" && obj["button" + i] != "") {
-        let devId = obj["device" + i].tointeger()
-        let btnId = obj["button" + i].tointeger()
+      if (obj[$"device{i}"] != "" && obj[$"button{i}"] != "") {
+        let devId = obj[$"device{i}"].tointeger()
+        let btnId = obj[$"button{i}"].tointeger()
         res.dev.append(devId)
         res.btn.append(btnId)
         this.lastNumButtons++
@@ -1027,8 +1027,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   function clearShortcutInfo() {
     let obj = this.scene.findObject("input-listener")
     for (local i = 0; i < 3; i++) {
-      obj["device" + i] = ""
-      obj["button" + i] = ""
+      obj[$"device{i}"] = ""
+      obj[$"button{i}"] = ""
     }
   }
 
@@ -1345,7 +1345,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.scene.findObject("msgBox_text").setValue(loc(msgText))
       local data = ""
       foreach (idx, btn in this.msgButtons) {
-        let text = (btn.len() > 0 && btn.slice(0, 1) != "#") ? "#" + btn : btn
+        let text = (btn.len() > 0 && btn.slice(0, 1) != "#") ? $"#{btn}" : btn
         data += format("Button_text { id:t='%d'; text:t='%s'; on_click:t='onMsgButton'; }",
                   idx, text)
       }
@@ -1363,12 +1363,12 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
           text = btn
 
         if (this.getStrSymbol(text, 0) != "#")
-          text = "#" + text
+          text = $"#{text}"
 
         view.items.append({
           id = idx.tostring()
           text = text
-          tooltip = text + "/tooltip"
+          tooltip =$"{text}/tooltip"
         })
       }
 
@@ -1581,8 +1581,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     local showAxis = false
     if (config && ("min" in config) && ("max" in config)) {
       let name = this.isAxisVertical ? "msg-real-box-vert" : "msg-real-box"
-      this.moveTestItem(config.min, this.scene.findObject(name + "1"))
-      this.moveTestItem(config.max, this.scene.findObject(name + "2"))
+      this.moveTestItem(config.min, this.scene.findObject($"{name}1"))
+      this.moveTestItem(config.max, this.scene.findObject($"{name}2"))
       showAxis = true
     }
     this.scene.findObject("msg-axis").show(showAxis && !this.isAxisVertical)

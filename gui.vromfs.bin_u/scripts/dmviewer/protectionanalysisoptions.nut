@@ -556,7 +556,7 @@ options.addTypes({
 
     getControlMarkup = function() {
       return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
-        containerId = "container_" + this.id
+        containerId =$"container_{this.id}"
         id = this.id
         min = 0
         max = 0
@@ -590,7 +590,7 @@ options.addTypes({
 
     afterChangeFunc = function(obj) {
       let parentObj = obj.getParent().getParent()
-      parentObj.findObject("value_" + this.id).setValue(this.value + loc("measureUnits/meters_alt"))
+      parentObj.findObject($"value_{this.id}").setValue(this.value + loc("measureUnits/meters_alt"))
       enableObjsByTable(parentObj, {
         buttonInc = this.value < this.maxValue
         buttonDec = this.value > this.minValue

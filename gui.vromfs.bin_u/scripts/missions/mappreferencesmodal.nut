@@ -189,7 +189,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateMapsListParams()
     this.updateProfile(paramName, value, this.mapsList[mapId].map)
 
-    let iconObj = this.scene.findObject("icon_" + mapId)
+    let iconObj = this.scene.findObject($"icon_{mapId}")
     if (!checkObj(iconObj))
       return
 
@@ -239,7 +239,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let cbNestObj = this.scene.findObject("cb_nest_" + mapId)
+    let cbNestObj = this.scene.findObject($"cb_nest_{mapId}")
     if (objType == "banned") {
       if (this.mapsList[mapId]["liked"])
         cbNestObj.findObject("liked").setValue(false)
@@ -264,7 +264,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function refreshMapsCheckBox() {
     for (local i = 0; i < this.mapsList.len(); i++) {
-      let iconObj = this.scene.findObject("icon_" + i)
+      let iconObj = this.scene.findObject($"icon_{i}")
       if (!checkObj(iconObj))
         continue
 
@@ -331,7 +331,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let params = this.counters.filter(@(c) c.curCounter > c.maxCounter).keys()
     if (params.len() > 0) {
       this.resetCounters(params)
-      scene_msg_box("reset_preferences", null, loc(POPUP_PREFIX_LOC_ID + "resetPreferences"),
+      scene_msg_box("reset_preferences", null, loc($"{POPUP_PREFIX_LOC_ID}resetPreferences"),
         [["ok", this.updateScreen.bindenv(this)]], "ok")
     }
   }
@@ -339,7 +339,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function getBanList() {
     let list = this.mapsList.filter(@(inst) inst.disliked || inst.banned || inst.liked).map(@(inst)
       {
-        id = "cb_" + inst.mapId
+        id =$"cb_{inst.mapId}"
         text = $"[{inst.brRangeText}] {inst.title}"
         value = true
         funcName = "onUpdateIcon"
@@ -398,12 +398,12 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let mlistObj = this.scene.findObject("maps_list")
     foreach (inst in this.mapsList)
-      mlistObj.findObject("nest_" + inst.mapId)?.show(visibleMapsList.indexof(inst) != null)
+      mlistObj.findObject($"nest_{inst.mapId}")?.show(visibleMapsList.indexof(inst) != null)
 
     let isFound = visibleMapsList.len() != 0
     this.currentMapId = isFound ? visibleMapsList[0].mapId : -1
     showObjById("empty_list_label", !isFound, this.scene)
-    mlistObj.findObject("nest_" + this.currentMapId)?.scrollToView()
+    mlistObj.findObject($"nest_{this.currentMapId}")?.scrollToView()
     this.updateMapPreview()
   }
 
@@ -412,7 +412,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
     mlistObj?.setValue(mapId)
     move_mouse_on_child_by_value(mlistObj)
     this.guiScene.performDelayed(this, @() this.guiScene.performDelayed(this,
-      @() mlistObj?.findObject("nest_" + mapId).scrollToView()))
+      @() mlistObj?.findObject($"nest_{mapId}").scrollToView()))
   }
 
   function updatePaginator() {

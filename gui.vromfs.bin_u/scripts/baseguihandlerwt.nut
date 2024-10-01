@@ -720,7 +720,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     if (!isInArray(id, this.GCDropdownsList))
       return
 
-    let btnObj = obj.findObject(id + "_btn")
+    let btnObj = obj.findObject($"{id}_btn")
     if (checkObj(btnObj))
       this.onDropDownToggle(btnObj)
   }
@@ -781,8 +781,8 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   onBackDropdownMenu   = @(obj) move_mouse_on_obj(this.getObj($"{obj?.sectionId}_btn"))
-  getCurGCDropdownBtn  = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_btn") : null
-  getCurGCDropdownMenu = @() this.curGCDropdown != null ? this.getObj(this.curGCDropdown + "_focus") : null
+  getCurGCDropdownBtn  = @() this.curGCDropdown != null ? this.getObj($"{this.curGCDropdown}_btn") : null
+  getCurGCDropdownMenu = @() this.curGCDropdown != null ? this.getObj($"{this.curGCDropdown}_focus") : null
 
   function setSceneTitle(text, placeObj = null, name = "gc_title") {
     if (!placeObj)

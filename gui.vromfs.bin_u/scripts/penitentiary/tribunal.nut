@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_player_complaint_counts
 from "%scripts/dagui_library.nut" import *
 
@@ -76,10 +75,10 @@ let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "B
       return
 
     let textReasons = "\n".join(reasonsList, true)
-    local text = loc("charServer/complaintToYou"
-      + (complaintsCount >= this.maxComplaintCount ? "MoreThen" : ""))
+    local text = loc("".concat("charServer/complaintToYou",
+      (complaintsCount >= this.maxComplaintCount ? "MoreThen" : "")))
 
-    text = format(text, min(complaintsCount, this.maxComplaintCount)) + "\n" + textReasons
+    text = "".concat(format(text, min(complaintsCount, this.maxComplaintCount)),"\n", textReasons)
 
     showInfoMsgBox(text, "tribunal_msg_box")
   }

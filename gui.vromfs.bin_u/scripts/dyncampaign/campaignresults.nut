@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_session_warpoints
 from "%scripts/dagui_library.nut" import *
 
@@ -40,10 +39,10 @@ gui_handlers.CampaignResults <- class (gui_handlers.BaseGuiHandlerWT) {
     let sides = ["ally", "enemy"]
     for (local i = 0; i < stats.len(); i++) {
       for (local j = 0; j < sides.len(); j++) {
-        local value = info.getInt("loss_" + sides[j] + "_" + stats[i], 0)
+        local value = info.getInt("".concat("loss_", sides[j], "_", stats[i]), 0)
         if (value > 10000)
-          value = "" + ((value / 1000).tointeger()).tostring() + "K"
-        this.guiScene["info-" + stats[i] + j.tostring()].text = value
+          value = "".concat(((value / 1000).tointeger()).tostring(), "K")
+        this.guiScene["".concat("info-", stats[i], j)].text = value
       }
     }
 

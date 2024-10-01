@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -18,7 +17,7 @@ gui_handlers.FramedOptionsWnd <- class (gui_handlers.GenericOptions) {
     let tableObj = this.scene.findObject("optionslist")
     tableObj.width = this.menuWidth
     if (this.options) {
-      tableObj.height = this.options.len() + "@baseTrHeight"
+      tableObj.height = "".concat(this.options.len(), "@baseTrHeight")
       if (this.options.len() <= 1)
         tableObj.invisibleSelection = "yes"
     }
@@ -52,7 +51,7 @@ gui_handlers.FramedOptionsWnd <- class (gui_handlers.GenericOptions) {
     let scaleAxis = isVertical ? 1 : 0
 
     animObj[scaleId] = "1"
-    animObj[scaleId + "-base"] = "1"
-    animObj[scaleId + "-end"] = size[scaleAxis].tostring()
+    animObj[$"{scaleId}-base"] = "1"
+    animObj[$"{scaleId}-end"] = size[scaleAxis].tostring()
   }
 }

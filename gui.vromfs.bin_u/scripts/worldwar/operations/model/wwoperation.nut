@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_start_war, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -67,9 +66,9 @@ enum WW_OPERATION_PRIORITY { //bit enum
   }
 
   static function getNameTextByIdAndMapName(operationId, mapName = null) {
-    local res = loc("ui/number_sign") + operationId
+    local res = "".concat(loc("ui/number_sign"), operationId)
     if (mapName)
-      res = mapName + " " + res
+      res =  " ".concat(mapName, res)
     return res
   }
 
@@ -134,9 +133,9 @@ enum WW_OPERATION_PRIORITY { //bit enum
       }
 
       if (!u.isEmpty(summaryCantJoinReasonText))
-        summaryCantJoinReasonText += "\n"
+        summaryCantJoinReasonText = $"{summaryCantJoinReasonText}\n"
 
-      summaryCantJoinReasonText += loc(country) + loc("ui/colon") + reasonData.reasonText
+      summaryCantJoinReasonText = "".concat(loc(country), loc("ui/colon"), reasonData.reasonText)
     }
 
     if (summaryCantJoinReasonText.len() > 0)

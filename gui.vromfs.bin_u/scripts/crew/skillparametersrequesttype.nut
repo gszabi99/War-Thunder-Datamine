@@ -60,7 +60,7 @@ skillParametersRequestType._getSelectedParameters <- function _getSelectedParame
 }
 
 skillParametersRequestType._getCachePrefix <- function _getCachePrefix() {
-  return "skillParamRqst" + this.typeName
+  return $"skillParamRqst{this.typeName}"
 }
 
 skillParametersRequestType.template <- {

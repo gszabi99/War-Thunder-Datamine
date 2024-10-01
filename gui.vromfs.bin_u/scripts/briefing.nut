@@ -232,7 +232,7 @@ function get_mission_desc_text(missionBlk) {
   let sm_location = missionBlk.getStr("locationName",
                             map_to_location(missionBlk.getStr("level", "")))
   if (sm_location != "")
-    descrAdd += (loc("options/location") + loc("ui/colon") + loc("location/" + sm_location))
+    descrAdd += (loc("options/location") + loc("ui/colon") + loc($"location/{sm_location}"))
 
   let sm_time = missionBlk.getStr("time", missionBlk.getStr("environment", ""))
   if (sm_time != "")
@@ -574,7 +574,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
       let option = ::get_option(opt)
       let obj = this.scene.findObject(option.id)
       if (obj)
-        ::mission_settings[option.sideTag + "_bitmask"] <- obj.getValue()
+        ::mission_settings[$"{option.sideTag}_bitmask"] <- obj.getValue()
     }
 
     value = this.getOptValue(USEROPT_BIT_UNIT_TYPES, false)

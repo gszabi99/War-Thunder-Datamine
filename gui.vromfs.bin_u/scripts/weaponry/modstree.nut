@@ -459,7 +459,7 @@ let modsTree = {
         debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0})") // warning disable: -forbidden-function
       else if (type(item) == "array") { //branch
         debugLog($"{addStr}[") // warning disable: -forbidden-function
-        this.debugTree(item, addStr + "  ")
+        this.debugTree(item,$"{addStr}  ")
         debugLog($"{addStr}]") // warning disable: -forbidden-function
       }
       else if (type(item) == "string")
@@ -470,7 +470,7 @@ let modsTree = {
     if (notInTreeMods.len() == 0)
       return
 
-    log("incorrect modification requirements for air " + this.air.name)
+    log($"incorrect modification requirements for air {this.air.name}")
     debugTableData(notInTreeMods)
     foreach (mod in notInTreeMods) {
       local prevName = ""
@@ -490,7 +490,7 @@ let modsTree = {
         res = "have another incorrect requirement"
       log("modification " + prevName + " required for " + mod.name + " " + res)
     }
-    assert(false, "Error: found incorrect modifications requirement for air " + this.air.name)
+    assert(false,$"Error: found incorrect modifications requirement for air {this.air.name}")
   }
 }
 

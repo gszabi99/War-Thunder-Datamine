@@ -115,8 +115,8 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function countSize(ratio, reduceSize = false) {
     let mult = reduceSize ? "0.5" : "1"
-    let height = ratio.h * this.guiScene.calcString(mult + "@itemHeight + 1@itemSpacing", null)
-    let width = ratio.w * this.guiScene.calcString(mult + "@itemWidth + 1@itemSpacing", null)
+    let height = ratio.h * this.guiScene.calcString($"{mult}@itemHeight + 1@itemSpacing", null)
+    let width = ratio.w * this.guiScene.calcString($"{mult}@itemWidth + 1@itemSpacing", null)
 
     return { width = width, height = height, smallItems = reduceSize ? "yes" : "no" }
   }

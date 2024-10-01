@@ -207,7 +207,7 @@ let Discount = class (BaseItem) {
     let nameId = this.isSpecialOffer ? "specialOffer" : "discount"
     local locId = $"item/{nameId}/description/{dataItem.category}"
     if ("type" in dataItem)
-      locId += "/" + dataItem.type
+      locId +=$"/{dataItem.type}"
     let locParams = this.getLocParamsDescription(dataItem)
     return loc(locId, locParams)
   }

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_online_available, disable_network, shop_get_premium_account_ent_name, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
@@ -85,10 +84,11 @@ function updateAircraftWarpoints(maxCallTimeMsec = 0) {
 
   //update discounts info
   let ws = get_warpoints_blk()
-  foreach (name, _value in discounts)
-    if (ws?[name + "DiscountMul"] != null)
-      discounts[name] = (100.0 * (1.0 - ws[name + "DiscountMul"]) + 0.5).tointeger()
-
+  foreach (name, _value in discounts) {
+    let k = $"{name}DiscountMul"
+    if (ws?[k] != null)
+      discounts[name] = (100.0 * (1.0 - ws[k]) + 0.5).tointeger()
+  }
   //update bonuses info
   foreach (name, _value in eventMuls)
     if (ws?[name] != null)

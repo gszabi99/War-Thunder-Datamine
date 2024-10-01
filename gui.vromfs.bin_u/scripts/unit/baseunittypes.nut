@@ -46,7 +46,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "AircraftsInFirstCountryChoice")
+      return hasFeature($"{countryShort}AircraftsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     bulletSetsQuantity = BULLETS_SETS_QUANTITY
@@ -77,7 +77,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "TanksInFirstCountryChoice")
+      return hasFeature($"{countryShort}TanksInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["mobility", "protection", "firepower"]
@@ -109,7 +109,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "ShipsInFirstCountryChoice")
+      return hasFeature($"{countryShort}ShipsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["seakeeping", "unsinkability", "firepower"]
@@ -170,7 +170,7 @@ return {
       if (!country)
         return true
       let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
-      return hasFeature(countryShort + "BoatsInFirstCountryChoice")
+      return hasFeature($"{countryShort}BoatsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
     modClassOrder = ["seakeeping", "unsinkability", "firepower"]

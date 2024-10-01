@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import set_bind_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -34,15 +33,17 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.dev = [];
     this.btn = [];
     for (local i = 0; i < 4; i++) {
-      if (obj["device" + i] != "" && obj["button" + i] != "") {
-        let devId = obj["device" + i].tointeger();
-        let btnId = obj["button" + i].tointeger();
+      let devicestr = $"device{i}"
+      let buttonstr = $"button{i}"
+      if (obj[devicestr] != "" && obj[buttonstr] != "") {
+        let devId = obj[devicestr].tointeger();
+        let btnId = obj[buttonstr].tointeger();
 
         // Ignore zero scancode from XBox keyboard driver
         if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
-        log("onButtonEntered " + i + " " + devId + " " + btnId);
+        log("onButtonEntered", i, devId, btnId);
         this.dev.append(devId);
         this.btn.append(btnId);
       }
@@ -59,8 +60,8 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     local numButtons = 0
     let curPreset = ::g_controls_manager.getCurPreset()
     for (local i = 0; i < 4; i++) {
-      local devId = obj["device" + i]
-      local btnId = obj["button" + i]
+      local devId = obj[$"device{i}"]
+      local btnId = obj[$"button{i}"]
       if (devId != "" && btnId != "") {
         devId = devId.tointeger()
         btnId = btnId.tointeger()
@@ -70,14 +71,14 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
           continue
 
         if (numButtons != 0)
-          curBtnText += " + "
+          curBtnText = $"{curBtnText} + "
 
-        curBtnText += getLocalizedControlName(curPreset, devId, btnId)
+        curBtnText = "".concat(curBtnText, getLocalizedControlName(curPreset, devId, btnId))
         numButtons++
       }
     }
     curBtnText = ::hackTextAssignmentForR2buttonOnPS4(curBtnText)
-    this.scene.findObject("txt_current_button").setValue(curBtnText + ((numButtons < 3) ? " + ?" : ""));
+    this.scene.findObject("txt_current_button").setValue("".concat(curBtnText, ((numButtons < 3) ? " + ?" : "")))
   }
 
   function afterModalDestroy() {

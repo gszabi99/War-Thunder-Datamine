@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { addTypes } = require("%sqStdLibs/helpers/enums.nut")

@@ -310,7 +310,7 @@ function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
     : value.tostring()
 
   let row = [
-    { id = textId, text = "#" + config.name, tdalign = "left" },
+    { id = textId, text = $"#{config.name}", tdalign = "left" },
     { text = s, tooltip = diff.getLocName() }
   ]
 
@@ -329,7 +329,7 @@ function fillProfileSummary(sObj, summary, diff) {
       continue
 
     if (item.header)
-      data += ::buildTableRowNoPad("", ["#" + item.name], null,
+      data += ::buildTableRowNoPad("", [$"#{item.name}"], null,
                   format("headerRow:t='%s'; ", idx ? "yes" : "first"))
     else if (item.separateRowsByFm)
       for (local i = 0; i < statsFm.len(); i++) {
@@ -340,7 +340,7 @@ function fillProfileSummary(sObj, summary, diff) {
           continue
 
         data += row
-        textsToSet["txt_" + rowId] <- loc(item.name) + " (" + loc("mainmenu/type_" + statsFm[i].tolower()) + ")"
+        textsToSet[$"txt_{rowId}"] <- loc(item.name) + " (" + loc("mainmenu/type_" + statsFm[i].tolower()) + ")"
       }
     else {
       let row = buildProfileSummaryRowData(item, summary, diff)
@@ -469,7 +469,7 @@ function getProfileInfo() {
   currentUserProfile.pilotId = info.pilotId
   currentUserProfile.icon = avatars.getIconById(info.pilotId)
   currentUserProfile.medals = getNumUnlocked(UNLOCKABLE_MEDAL, true)
-  //dagor.debug("unlocked medals: "+currentUserProfile.medals)
+  //dagor.debug($"unlocked medals: {currentUserProfile.medals}")
 
   //Show the current country in the game when you select an outcast.
   if (currentUserProfile.country == "country_0") {

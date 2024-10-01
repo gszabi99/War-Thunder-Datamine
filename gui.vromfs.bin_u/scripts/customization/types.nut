@@ -68,7 +68,7 @@ let decoratorTypes = {
     getSmallIcon = @(decorator) decorator ? this.prizeTypeIcon : ""
 
     getLocName = function(decoratorName, _addUnitName = false) { return loc(decoratorName) }
-    getLocDesc = function(decoratorName) { return loc(decoratorName + "/desc", "") }
+    getLocDesc = function(decoratorName) { return loc($"{decoratorName}/desc", "") }
     hasLocations = @(_decoratorName) false
     getLocParamsDesc = @(_decorator) ""
 
@@ -236,7 +236,7 @@ enums.addTypes(decoratorTypes, {
     getRatio = function(decorator) { return decorator?.aspect_ratio ?? 1 }
     getImageSize = function(decorator) { return format("256@sf/@pf, %d@sf/@pf", floor(256.0 / this.getRatio(decorator) + 0.5)) }
 
-    getLocName = function(decoratorName, ...) { return loc("decals/" + decoratorName) }
+    getLocName = function(decoratorName, ...) { return loc($"decals/{decoratorName}") }
     getLocDesc = function(decoratorName) { return loc($"decals/{decoratorName}/desc", "") }
 
     getCost = function(decorator) {
@@ -326,7 +326,7 @@ enums.addTypes(decoratorTypes, {
         : ""
     getImageSize = function(...) { return "128@sf/@pf, 128@sf/@pf" }
 
-    getLocName = function(decoratorName, ...) { return loc("attachables/" + decoratorName) }
+    getLocName = function(decoratorName, ...) { return loc($"attachables/{decoratorName}") }
     getLocDesc = function(decoratorName) { return loc($"attachables/{decoratorName}/desc", "") }
     getLocParamsDesc = function(decorator) {
       let paramPathPrefix = "attachables/param/"
@@ -334,7 +334,7 @@ enums.addTypes(decoratorTypes, {
       if (!angle)
         return ""
 
-      return loc(paramPathPrefix + "maxSurfaceAngle", { value = angle })
+      return loc($"{paramPathPrefix}maxSurfaceAngle", { value = angle })
     }
 
     getCost = function(decorator) {
@@ -422,7 +422,7 @@ enums.addTypes(decoratorTypes, {
 
       if (name == "") {
         if (isDefaultSkin(decoratorName))
-          decoratorName = loc(unitName + "/default", loc("default_skin_loc"))
+          decoratorName = loc($"{unitName}/default", loc("default_skin_loc"))
 
         name = loc(decoratorName)
       }
@@ -444,7 +444,7 @@ enums.addTypes(decoratorTypes, {
       }
 
       let defaultLocId = guidParser.isGuid(decoratorName) ? "default_live_skin_loc/desc" : "default_skin_loc/desc"
-      return loc(decoratorName + "/desc", loc(defaultLocId))
+      return loc($"{decoratorName}/desc", loc(defaultLocId))
     }
 
     hasLocations = function(decoratorName) {

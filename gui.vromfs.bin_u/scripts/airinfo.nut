@@ -1117,11 +1117,11 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     if (!showLocalState && !needCrewModificators)
       continue
 
-    let wmodObj = holderObj.findObject("aircraft-weaponmod-" + item.id)
+    let wmodObj = holderObj.findObject($"aircraft-weaponmod-{item.id}")
     if (wmodObj)
       wmodObj.setValue(characteristicArr[1])
 
-    let progressObj = holderObj.findObject("aircraft-progress-" + item.id)
+    let progressObj = holderObj.findObject($"aircraft-progress-{item.id}")
     setReferenceMarker(progressObj, characteristicArr[2], characteristicArr[3], characteristicArr[5], difficulty.crewSkillName)
     fillAirCharProgress(progressObj, characteristicArr[2], characteristicArr[3], characteristicArr[4])
     showReferenceText = showReferenceText || characteristicArr[6]
@@ -1551,7 +1551,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       let avgRepairMul = wBlk?.avgRepairMul ?? 1.0
       let avgCost = (avgRepairMul * wp_get_repair_cost_by_mode(air.name, egdCode, showLocalState)).tointeger()
       let modeName = get_name_by_gamemode(egdCode, false)
-      discountsList[modeName] <- modeName + "-discount"
+      discountsList[modeName] <-$"{modeName}-discount"
       repairCostData += format("tdiv { " +
                                  "textareaNoTab {smallFont:t='yes' text:t='%s' }" +
                                  "discount { id:t='%s'; text:t=''; pos:t='-1*@scrn_tgt/100.0, 0.5ph-0.55h'; position:t='relative'; rotation:t='8' }" +
@@ -2001,7 +2001,7 @@ function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
   if (nodes.len())
     nodes.pop()
   let unitDir = "/".join(nodes, true)
-  let fmPath = unitDir + "/" + (unitBlkData?.fmFile ?? ("fm/" + unitId))
+  let fmPath = unitDir + "/" + (unitBlkData?.fmFile ?? ($"fm/{unitId}"))
   return blkFromPath(fmPath)
 }
 

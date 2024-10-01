@@ -1,7 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
 //to correct scale prefer to set 1080p before using this function.
 //size:
 //   int - image size on 1080p big fonts
@@ -39,11 +38,11 @@ function debug_svg(image, size = null, bgColor = "#808080") {
       screenHeights.insert(0, smallestFont.sizeMultiplier * 720)
     let sizes = ["@sIco", "@cIco", "@dIco", "@lIco"]
     foreach (sf in screenHeights) {
-      let block = { header = "screen height " + sf, sizeList = [] }
+      let block = { header = $"screen height {sf}", sizeList = [] }
       view.blocks.append(block)
       foreach (s in sizes) {
         local px = to_pixels(s)
-        block.sizeList.append({ name = " " + s + " ", size = (px.tofloat() * sf / baseHeight + 0.5).tointeger() })
+        block.sizeList.append({ name = $" {s} ", size = (px.tofloat() * sf / baseHeight + 0.5).tointeger() })
       }
     }
   }
@@ -70,7 +69,7 @@ function debug_svg_list(fileMask = null, size = null, bgColor = null) {
   filesList.sort()
 
   let view = {
-    title = "debug_svg_list(\"" + fileMask + "\")"
+    title = $"debug_svg_list(\"{fileMask}\")"
     size = u.isString(size) ? to_pixels(size) : size
     bgColor = bgColor
     files = []
@@ -79,7 +78,7 @@ function debug_svg_list(fileMask = null, size = null, bgColor = null) {
   foreach (filename in filesList)
     view.files.append({
       name = slice(filename, 0, -4)
-      image = "!ui/gameuiskin/" + filename
+      image = $"!ui/gameuiskin/{filename}"
     })
 
   local handler = {

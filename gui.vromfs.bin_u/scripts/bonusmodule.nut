@@ -93,9 +93,9 @@ function getBonus(exp, wp, imgType, placeType = "", airName = "") {
   local tooltipText = ""
   let locEnd = (type(airName) == "string") ? "/tooltip" : "/group/tooltip"
   if (imgColor != "") {
-    tooltipText += exp <= 1.0 ? "" : format(loc("bonus/" + (imgColor == "wp_exp" ? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + exp)
+    tooltipText += exp <= 1.0 ? "" : format(loc("bonus/" + (imgColor == "wp_exp" ? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd),$"x{exp}")
     if (wp > 1)
-      tooltipText += ((tooltipText == "") ? "" : "\n") + format(loc("bonus/" + (imgColor == "wp_exp" ? "wp" : imgColor) + imgType + placeType + "Mul" + locEnd), "x" + wp)
+      tooltipText += ((tooltipText == "") ? "" : "\n") + format(loc("bonus/" + (imgColor == "wp_exp" ? "wp" : imgColor) + imgType + placeType + "Mul" + locEnd),$"x{wp}")
   }
 
   return {

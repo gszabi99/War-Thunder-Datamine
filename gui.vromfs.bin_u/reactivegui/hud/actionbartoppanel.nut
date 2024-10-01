@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let tankGunsAmmo = require("%rGui/hud/tankGunsAmmo.nut")
 let { actionBarSize, actionBarPos, isActionBarVisible, collapseBtnPressedTime,
-  isActionBarCollapsed, isActionBarCollapsable, actionBarCollapseShText, isCollapseBtnHided,
+  isActionBarCollapsed, isActionBarCollapsable, actionBarCollapseShText, isCollapseBtnHidden,
   isCollapseHintVisible
 } = require("%rGui/hud/actionBarState.nut")
 let { eventbus_send } = require("eventbus")
@@ -101,7 +101,7 @@ let panelWidth = Computed(@() (isActionBarVisible.get() && actionBarSize.get() !
   : 0)
 
 let isCollapsButtonVisible = Computed(@() isActionBarVisible.get() && isActionBarCollapsable.get()
-  && (!isCollapseBtnHided.get() || !isActionBarCollapsed.get()))
+  && (!isCollapseBtnHidden.get() || !isActionBarCollapsed.get()))
 
 function actionBarTopPanel() {
   let canShowTankGunsAmmo = isTank() && isVisibleTankGunsAmmoIndicator.get() && !isActionBarCollapsed.get()

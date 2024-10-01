@@ -133,8 +133,8 @@ const TITOR_STEP_TIMEOUT_SEC  = 30
 ::guiTutor.blockToView <- function blockToView(block) {
   let box = block.box
   for (local i = 0; i < 2; i++) {
-    block["pos" + i] <- box.c1[i]
-    block["size" + i] <- box.c2[i] - box.c1[i]
+    block[$"pos{i}"] <- box.c1[i]
+    block[$"size{i}"] <- box.c2[i] - box.c1[i]
   }
   return block
 }

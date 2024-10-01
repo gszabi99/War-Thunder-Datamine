@@ -15,6 +15,10 @@ selected:t='no'
 
 hasSelectedState:t='no'
 
+<<#isCrewRecruit>>
+isCrewRecruit:t='yes'
+<</isCrewRecruit>>
+
 unhoverDiv {
   size:t='pw, ph'
   display:t='hide'

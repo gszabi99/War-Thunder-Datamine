@@ -140,7 +140,6 @@ foreach (fn in [
 
   "%scripts/webRPC.nut"
 
-  "%scripts/wndLib/editBoxHandler.nut"
   "%scripts/wndLib/rightClickMenu.nut"
   "%scripts/actionsList.nut"
   "%scripts/eulaWnd.nut"

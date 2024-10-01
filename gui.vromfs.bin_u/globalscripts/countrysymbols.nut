@@ -1,5 +1,3 @@
-//-file:plus-string
-
 let countrySymbols = [
   "\u22E0",
   "\u2415",

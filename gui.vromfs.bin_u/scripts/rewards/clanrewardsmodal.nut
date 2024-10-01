@@ -1,10 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, char_send_custom_action, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
@@ -50,13 +49,13 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let myClanRights = ::g_clans.getMyClanRights()
     this.canEditBestRewards = this.clanId == clan_get_my_clan_id() && isInArray("CHANGE_INFO", myClanRights)
     return {
-      width = blocksCount + "@unlockBlockWidth + " + (blocksCount - 1) + "@framePadding"
+      width = "".concat(blocksCount, "@unlockBlockWidth + ", (blocksCount - 1), "@framePadding")
       isEditable = this.canEditBestRewards
 
       rewards = this.rewards.map(@(reward, idx) {
         rewardImage = LayersIcon.getIconData(reward.iconStyle, null, null, null,
           reward.iconParams, reward.iconConfig)
-        rewardId = "reward_" + idx
+        rewardId = $"reward_{idx}"
         award_title_text = reward.name
         desc_text = reward.desc
         isChecked = isRewardBest(reward, ::my_clan_info) ? "yes" : "no"
@@ -132,7 +131,7 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (idx < 0 || idx >= childrenCount)
       return
 
-    let checkBoxObj = obj.getChild(idx).findObject("reward_" + idx)
+    let checkBoxObj = obj.getChild(idx).findObject($"reward_{idx}")
     if (!checkObj(checkBoxObj))
       return
 

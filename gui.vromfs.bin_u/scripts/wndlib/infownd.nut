@@ -100,7 +100,7 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
         if ("onClick" in btn)
           cb = Callback(btn.onClick, this.buttonsContext)
 
-        let cbName = "onClickBtn" + idx
+        let cbName = $"onClickBtn{idx}"
         this.buttonsCbs[cbName] <- function() {
           if (cb)
             cb()

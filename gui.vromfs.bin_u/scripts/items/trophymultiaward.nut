@@ -110,7 +110,7 @@ let class TrophyMultiAward {
       if (skipUnconditional)
         return ""
 
-      let uTypes = (awardBlk % "type").map(function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
+      let uTypes = (awardBlk % "type").map(function(t) { return colorize(this.goodsColor, loc($"multiAward/type/{t}")) }.bindenv(this))
       return this.listDiv.join(uTypes, true)
     }
 
@@ -127,7 +127,7 @@ let class TrophyMultiAward {
       if (skipUnconditional)
         return ""
 
-      let uTypes = (awardBlk % "resourceType").map(function(t) { return colorize(this.goodsColor, loc("multiAward/type/" + t)) }.bindenv(this))
+      let uTypes = (awardBlk % "resourceType").map(function(t) { return colorize(this.goodsColor, loc($"multiAward/type/{t}")) }.bindenv(this))
       return this.listDiv.join(uTypes, true)
     }
 
@@ -135,8 +135,8 @@ let class TrophyMultiAward {
     if (!skipUnconditional && this.haveCount()) {
       let count = awardBlk?.count ?? 1
       res = "".concat(
-        colorize(this.goodsColor, loc("multiAward/type/" + curAwardType)),
-        colorize(this.condColor, " x" + count))
+        colorize(this.goodsColor, loc($"multiAward/type/{curAwardType}")),
+        colorize(this.condColor,$" x{count}"))
     }
 
     local conditions = this.getConditionsText(awardBlk)
@@ -262,13 +262,13 @@ let class TrophyMultiAward {
       return
 
     for (local i = 0; ; i++) {
-      let unlockName = unlocksBlk?["unlock" + i]
+      let unlockName = unlocksBlk?[$"unlock{i}"]
       if (!unlockName)
         break
 
       resList.append(DataBlockAdapter({
         unlock = unlockName
-        gold = unlocksBlk?["gold" + i] ?? 0
+        gold = unlocksBlk?[$"gold{i}"] ?? 0
       }))
     }
   }
@@ -283,15 +283,15 @@ let class TrophyMultiAward {
       return
 
     for (local i = 0; ; i++) {
-      let unitName = resModBlk?["unit" + i]
-      let modName = resModBlk?["mod" + i]
+      let unitName = resModBlk?[$"unit{i}"]
+      let modName = resModBlk?[$"mod{i}"]
       if (!unitName || !modName)
         break
 
       resList.append(DataBlockAdapter({
         unit = unitName
         mod = modName
-        gold = resModBlk?["gold" + i] ?? 0
+        gold = resModBlk?[$"gold{i}"] ?? 0
       }))
     }
   }
@@ -303,14 +303,14 @@ let class TrophyMultiAward {
 
     local list = []
     for (local i = 0; ; i++) {
-      let unitName = spareBlk?["unit" + i]
+      let unitName = spareBlk?[$"unit{i}"]
       if (!unitName)
         break
 
       list.append({
         spare = unitName
-        gold = spareBlk?["gold" + i] ?? 0
-        count = spareBlk?["count" + i] ?? 1
+        gold = spareBlk?[$"gold{i}"] ?? 0
+        count = spareBlk?[$"count{i}"] ?? 1
       })
     }
 
@@ -356,7 +356,7 @@ let class TrophyMultiAward {
 
     let list = {}
     for (local i = 0; ; i++) {
-      let unitName = qBlk?["unit" + i]
+      let unitName = qBlk?[$"unit{i}"]
       if (!unitName)
         break
       let unit = getAircraftByName(unitName)
@@ -368,10 +368,10 @@ let class TrophyMultiAward {
         list[country] <- []
 
       list[country].append({
-        specialization = qBlk?["spec" + i] ?? 2
+        specialization = qBlk?[$"spec{i}"] ?? 2
         unitName = unitName
-        crew = qBlk?["crew" + i] ?? 0
-        gold = qBlk?["gold" + i] ?? 0
+        crew = qBlk?[$"crew{i}"] ?? 0
+        gold = qBlk?[$"gold{i}"] ?? 0
       })
     }
 
@@ -409,14 +409,14 @@ let class TrophyMultiAward {
       return
 
     for (local i = 0; ; i++) {
-      let resName = resourcesBlk?["resource" + i]
+      let resName = resourcesBlk?[$"resource{i}"]
       if (!resName)
         break
 
       resList.append(DataBlockAdapter({
         resource = resName
-        resourceType = resourcesBlk?["resourceType" + i] ?? ""
-        gold = resourcesBlk?["gold" + i] ?? 0
+        resourceType = resourcesBlk?[$"resourceType{i}"] ?? ""
+        gold = resourcesBlk?[$"gold{i}"] ?? 0
       }))
     }
   }

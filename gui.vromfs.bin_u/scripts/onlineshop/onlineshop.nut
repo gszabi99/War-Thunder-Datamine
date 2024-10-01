@@ -154,7 +154,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             let view = {
               itemTag = "chapter_item_unlocked"
               id = curChapter
-              itemText = "#charServer/chapter/" + curChapter
+              itemText = $"#charServer/chapter/{curChapter}"
             }
             data += handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
           }
@@ -180,7 +180,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.guiScene.setUpdatesEnabled(false, false)
 
       this.scene.findObject("wnd_update").setUserData(this)
-      this.scene.findObject("wnd_title").setValue(loc("charServer/chapter/" + this.chapter))
+      this.scene.findObject("wnd_title").setValue(loc($"charServer/chapter/{this.chapter}"))
 
       let rootObj = this.scene.findObject("wnd_frame")
       rootObj["class"] = "wnd"
@@ -207,7 +207,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.guiScene.replaceContentFromText(this.scene.findObject("items_list"), data, data.len(), this)
 
       foreach (name, item in this.goods) {
-        let obj = listObj.findObject("txt_" + name)
+        let obj = listObj.findObject($"txt_{name}")
         if (obj) {
           local text = getEntitlementName(item)
           let priceText = this.getItemPriceText(name)

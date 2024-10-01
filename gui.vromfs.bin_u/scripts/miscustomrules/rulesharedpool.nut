@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -33,7 +33,7 @@ let SharedPool = class (RuleBase) {
       return res
 
     let limitText = this.getExpClassLimitTextByUnit(unit)
-    return res + ((res.len() && limitText.len()) ? loc("ui/comma") : "") + limitText
+    return "".concat(res, ((res.len() && limitText.len()) ? loc("ui/comma") : ""), limitText)
   }
 
   function getSpecialCantRespawnMessage(unit) {
@@ -204,7 +204,7 @@ let SharedPool = class (RuleBase) {
       return res
 
     res = this.minRespawns(res, getTblValue(expClassName, activeLimitsBlk, ::RESPAWNS_UNLIMITED))
-    let percent = getTblValue(expClassName + "_perc", activeLimitsBlk, -1)
+    let percent = getTblValue($"{expClassName}_perc", activeLimitsBlk, -1)
     if (percent >= 0)
       res = this.minRespawns(res, this.getAmountByTeamPercent(percent))
     return res

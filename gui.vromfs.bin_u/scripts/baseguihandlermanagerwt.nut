@@ -101,15 +101,15 @@ function generateColorConstantsConfig() {
     cssConfig.append(
       {
         name = "mainPlayerColor"
-        value = "#" + allyTeamColor
+        value = $"#{allyTeamColor}"
       },
       {
         name = "chatSenderMeColor"
-        value = "#" + allyTeamColor
+        value = $"#{allyTeamColor}"
       },
       {
         name = "hudColorHero"
-        value = "#" + allyTeamColor
+        value = $"#{allyTeamColor}"
       }
     )
   }
@@ -142,7 +142,7 @@ function generateColorConstantsConfig() {
     foreach (name in cfg.names)
       cssConfig.append({
         name = name,
-        value = "#" + color
+        value = $"#{color}"
       })
   }
 

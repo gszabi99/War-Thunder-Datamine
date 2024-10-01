@@ -38,6 +38,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
+let DataBlock = require("DataBlock")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 
@@ -352,15 +353,17 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
   function startTestFlight() {
     let misName = this.getTestFlightMisName(this.unit.testFlight)
-    let misBlk = get_meta_mission_info_by_name(misName)
-    if (!misBlk)
-      return assert(false, "Error: wrong testflight mission " + misName)
+    let misBlkBase = get_meta_mission_info_by_name(misName)
+    if (!misBlkBase)
+      return assert(false,$"Error: wrong testflight mission {misName}")
 
     setCurrentCampaignMission(misName)
 
     this.saveAircraftOptions()
     setCurSkinToHangar(this.unit.name)
 
+    let misBlk = DataBlock()
+    misBlk.setFrom(misBlkBase)
     mergeToBlk({
         _gameMode = GM_TEST_FLIGHT
         name      = misName

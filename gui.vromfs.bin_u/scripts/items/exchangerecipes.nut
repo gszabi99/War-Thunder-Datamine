@@ -567,7 +567,7 @@ local ExchangeRecipes = class {
       return loc(path + (this.isFake ? "fake" : "true"))
 
     if (curMark == MARK_RECIPE.BY_USER)
-      return loc(path + "fakeByUser")
+      return loc($"{path}fakeByUser")
 
     return ""
   }
@@ -807,7 +807,7 @@ local ExchangeRecipes = class {
 
   getRecipeStr = @() ",".join(
     this.initedComponents.map(@(component) component.itemdefid.tostring()
-      + (component.quantity > 1 ? ("x" + component.quantity) : "")),
+      + (component.quantity > 1 ? ($"x{component.quantity}") : "")),
     true)
 
   getLocIdsList = function() {

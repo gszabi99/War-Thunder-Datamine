@@ -630,7 +630,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
         continue
       let isShow = !!(allowedUnitTypesMask & unitType.bit)
-      let itemObj = optionTrObj.findObject("bit_" + unitType.tag)
+      let itemObj = optionTrObj.findObject($"bit_{unitType.tag}")
       if (!checkObj(itemObj))
         continue
       itemObj.show(isShow)
@@ -676,7 +676,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateOptionValueText(option, value) {
-    let obj = this.scene.findObject("value_" + option.id)
+    let obj = this.scene.findObject($"value_{option.id}")
     if (checkObj(obj))
       obj.setValue(option.getValueLocText(value))
   }

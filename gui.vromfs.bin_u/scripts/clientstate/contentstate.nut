@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ps4_get_chunk_progress_percent, ps4_is_chunk_available
 from "%scripts/dagui_library.nut" import *
 
@@ -29,10 +28,10 @@ function getSonyTotalProgress(chunks) {
 
 function getSonyProgressText(chunks) {
   let percent = getSonyTotalProgress(chunks)
-  local text = loc("msgbox/downloadPercent", { percent = percent })
+  local text = [loc("msgbox/downloadPercent", { percent = percent })]
   if (percent >= 100)
-    text += "\n" + loc("msgbox/relogin_required")
-  return text
+    text.append("\n", loc("msgbox/relogin_required"))
+  return "".join(text)
 }
 
 
@@ -67,7 +66,7 @@ else if (platformModule.isPlatformPS5) {
 else if (platformModule.isPlatformXboxOne) {
   isConsoleClientFullyDownloaded = @() getContentPackStatus("pkg_main") == ContentPackStatus.OK
   getClientDownloadProgressText = @() isConsoleClientFullyDownloaded()
-      ? (loc("download/finished") + "\n" + loc("msgbox/relogin_required"))
+      ? ("".concat(loc("download/finished"), "\n", loc("msgbox/relogin_required")))
       : loc("download/inProgress")
 }
 

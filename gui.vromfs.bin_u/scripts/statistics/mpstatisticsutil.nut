@@ -132,9 +132,9 @@ function get_mp_country_by_team(team) {
   if (!info)
     return ""
   if (team == 1 && ("alliesCountry" in info))
-    return "country_" + info.alliesCountry
+    return $"country_{info.alliesCountry}"
   if (team == 2 && ("axisCountry" in info))
-    return "country_" + info.axisCountry
+    return $"country_{info.axisCountry}"
   return "country_0"
 }
 
@@ -348,7 +348,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
         local txtParams = "pare-text:t='yes'; max-width:t='pw'; halign:t='center';"
         if (!isEmpty && "numPlayersTotal" in table[i]) {
           let maxVal = table[i].numPlayersTotal
-          txt += "/" + maxVal
+          txt += $"/{maxVal}"
           if (item >= maxVal)
             txtParams += "overlayTextColor:t='warning';"
         }
@@ -603,7 +603,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
               let maxBRDifference = 2.0 // Hardcoded till switch to new matching.
               let rankCalcMode = ::SessionLobby.getRankCalcMode()
               if (rankCalcMode)
-                tooltip += "\n" + loc("multiplayer/lowBattleRatingPrompt/" + rankCalcMode, { maxBRDifference = format("%.1f", maxBRDifference) })
+                tooltip += "\n" + loc($"multiplayer/lowBattleRatingPrompt/{rankCalcMode}", { maxBRDifference = format("%.1f", maxBRDifference) })
             }
           }
         }
@@ -709,11 +709,11 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
         let squadScore = needSquadIcon ? getTblValue("squadScore", table[i], 0) : 0
         let isTopSquad = needSquadIcon && squadScore && squadId != INVALID_SQUAD_ID && squadId == getTopSquadId(squadInfo.teamId)
 
-        let cellText = objTd.findObject("txt_" + hdr)
+        let cellText = objTd.findObject($"txt_{hdr}")
         if (checkObj(cellText))
           cellText.setValue(needSquadIcon && !isTopSquad ? labelSquad : "")
 
-        let cellIcon = objTd.findObject("icon_" + hdr)
+        let cellIcon = objTd.findObject($"icon_{hdr}")
         if (checkObj(cellIcon)) {
           cellIcon.show(needSquadIcon)
           if (needSquadIcon) {
@@ -732,7 +732,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
         local txt = item.tostring()
         if (txt.len() > 0 && txt[0] == '#')
           txt = loc(txt.slice(1))
-        let objText = objTd.findObject("txt_" + hdr)
+        let objText = objTd.findObject($"txt_{hdr}")
         if (objText) {
           objText.setValue(txt)
           objText.tooltip = txt

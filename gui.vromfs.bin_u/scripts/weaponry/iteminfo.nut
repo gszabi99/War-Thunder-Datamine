@@ -256,7 +256,7 @@ function getItemUpgradesStatus(unit, item) {
 
 function getRepairCostCoef(item) {
   let modeName = getCurrentShopDifficulty().getEgdName(true)
-  return item?["repairCostCoef" + modeName] ?? item?.repairCostCoef ?? 0
+  return item?[$"repairCostCoef{modeName}"] ?? item?.repairCostCoef ?? 0
 }
 
 function getDiscountPath(unit, item, discountType) {

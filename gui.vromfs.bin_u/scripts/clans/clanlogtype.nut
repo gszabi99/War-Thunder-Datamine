@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
@@ -14,10 +14,10 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 let isSelfLog = @(logEntry) logEntry?.uN == logEntry?.nick
 let getColoredNick = @(logEntry)
-  "<Link=uid_" + logEntry.uid + ">" + colorize(
+  "".concat("<Link=uid_", logEntry.uid, ">", colorize(
     logEntry.uid == userIdStr.value ? "mainPlayerColor" : "userlogColoredText",
     getPlayerName(logEntry.nick)
-  ) + "</Link>"
+  ), "</Link>")
 
 ::g_clan_log_type.template <- {
   name = ""
@@ -46,7 +46,7 @@ let getColoredNick = @(logEntry)
     let color = logEntry?.uId == userIdStr.value ? "mainPlayerColor" : "userlogColoredText"
 
     name = colorize(color, getPlayerName(name))
-    name = "<Link=uid_" + uId + ">" + name + "</Link>"
+    name = $"<Link=uid_{uId}>{name}</Link>"
 
     return loc(locId, { nick = name })
   }
@@ -130,7 +130,7 @@ enums.addTypesByGlobalName("g_clan_log_type", {
     function getLogHeader(logEntry) {
       return loc("clan/log/change_role_log", {
         nick = getColoredNick(logEntry),
-        role = colorize("@userlogColoredText", loc("clan/" + (logEntry?.new ?? "")))
+        role = colorize("@userlogColoredText", loc("".concat("clan/", (logEntry?.new ?? ""))))
       })
     }
   }

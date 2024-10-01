@@ -101,7 +101,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSliderValue(name, value) {
-    let valueObj = this.scene.findObject(name + "_value")
+    let valueObj = this.scene.findObject($"{name}_value")
     if (!valueObj)
       return
     let valueText = value.tostring();
@@ -111,15 +111,15 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   function createRowMarkup(name, controlMarkup) {
     let controlCell = format("td { width:t='%.3fpw'; padding-left:t='@optPad'; %s }", 1.0 - firstColumnWidth, controlMarkup)
     let res = format("tr{ id:t='%s'; td { width:t='%.3fpw'; overflow:t='hidden'; optiontext {text:t='%s'; } } %s }",
-      name, firstColumnWidth, "#options/" + name, controlCell)
+      name, firstColumnWidth,$"#options/{name}", controlCell)
     return res
   }
 
   function createOneSlider(name, value, cb, params, showValue) {
     params.step <- params?.step ?? max(1, round((params.max - params.min) / maxSliderSteps).tointeger())
-    local markup = ::create_option_slider("postfx_settings_" + name, value.tointeger(), cb, true, "slider", params)
+    local markup = ::create_option_slider($"postfx_settings_{name}", value.tointeger(), cb, true, "slider", params)
     if (showValue)
-      markup += format(" optionValueText { id:t='%s' } ", name + "_value");
+      markup += format(" optionValueText { id:t='%s' } ",$"{name}_value");
     markup = this.createRowMarkup(name, markup)
 
     let dObj = this.scene.findObject("postfx_table")
@@ -130,7 +130,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createOneSpinner(name, list, value, cb) {
-    local markup = ::create_option_list("postfx_settings_" + name, list, value, cb, true)
+    local markup = ::create_option_list($"postfx_settings_{name}", list, value, cb, true)
     markup = this.createRowMarkup(name, markup)
     let dObj = this.scene.findObject("postfx_table")
     this.guiScene.appendWithBlk(dObj, markup, this)
@@ -138,7 +138,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function createOneCheckbox(name, defaultValue, cb) {
     local markup = create_option_switchbox({
-      id = "postfx_settings_" + name
+      id = $"postfx_settings_{name}"
       value = defaultValue
       textChecked = "On"
       textUnchecked = "Off"

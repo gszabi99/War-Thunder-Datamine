@@ -191,8 +191,8 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     animObj[scaleId] = "1"
-    animObj[scaleId + "-base"] = "1"
-    animObj[scaleId + "-end"] = size[scaleAxis].tostring()
+    animObj[$"{scaleId}-base"] = "1"
+    animObj[$"{scaleId}-end"] = size[scaleAxis].tostring()
   }
 
   function onChangeValue(obj) {

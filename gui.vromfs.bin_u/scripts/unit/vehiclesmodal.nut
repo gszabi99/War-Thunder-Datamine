@@ -161,7 +161,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     foreach (unit in this.units) {
-      let placeObj = listObj.findObject("cont_" + unit.name)
+      let placeObj = listObj.findObject($"cont_{unit.name}")
       if (!placeObj)
         continue
 
@@ -220,7 +220,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
 
-    this.updateUnitItem(unit, this.scene.findObject("cont_" + unit.name))
+    this.updateUnitItem(unit, this.scene.findObject($"cont_{unit.name}"))
     ::updateAirAfterSwitchMod(unit)
   }
 
@@ -235,12 +235,12 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateAdditionalProp(unit, placeObj) {
     fillUnitSlotTimers(placeObj.findObject(unit.name), unit)
-    showUnitDiscount(placeObj.findObject(unit.name + "-discount"), unit)
+    showUnitDiscount(placeObj.findObject($"{unit.name}-discount"), unit)
 
     local bonusData = unit.name
     if (isUnitGroup(unit))
       bonusData = unit.airsGroup.map(@(unt) unt.name)
-    showAirExpWpBonus(placeObj.findObject(unit.name + "-bonus"), bonusData)
+    showAirExpWpBonus(placeObj.findObject($"{unit.name}-bonus"), bonusData)
   }
 
   function getCurSlotObj() {

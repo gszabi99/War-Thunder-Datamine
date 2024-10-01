@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
@@ -72,38 +71,38 @@ enumsAddTypes(g_url_type, {
   ONLINE_SHOP = {
     isOnlineShop = true
     urlRegexpList = [
-      regexp(@"^https?:\/\/store\.gaijin\.net" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/online\.gaijin\.ru" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/online\.gaijinent\.com" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/trade\.gaijin\.net" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/inventory-test-01\.gaijin\.lan" + URL_ANY_ENDING),
+      regexp("".concat(@"^https?:\/\/store\.gaijin\.net", URL_ANY_ENDING)),
+      regexp("".concat(@"^https?:\/\/online\.gaijin\.ru", URL_ANY_ENDING)),
+      regexp("".concat(@"^https?:\/\/online\.gaijinent\.com", URL_ANY_ENDING)),
+      regexp("".concat(@"^https?:\/\/trade\.gaijin\.net", URL_ANY_ENDING)),
+      regexp("".concat(@"^https?:\/\/inventory-test-01\.gaijin\.lan", URL_ANY_ENDING)),
     ]
   }
 
   GAIJIN_PASS = {
     langParamName = "lang"
     urlRegexpList = [
-      regexp(@"^https?:\/\/login\.gaijin\.net" + URL_ANY_ENDING)
+      regexp("".concat(@"^https?:\/\/login\.gaijin\.net", URL_ANY_ENDING))
     ]
   }
 
   WARTHUNDER_RU = {
     urlRegexpList = [
-      regexp(@"^https?:\/\/warthunder\.ru" + URL_ANY_ENDING),
+      regexp("".concat(@"^https?:\/\/warthunder\.ru", URL_ANY_ENDING)),
     ]
   }
 
   WARTHUNDER_COM = {
     supportedLangs = ["ru", "en", "pl", "de", "cz", "fr", "es", "tr", "pt"] //ru - forward to warthunder.ru
     urlRegexpList = [
-      regexp(@"^https?:\/\/warthunder\.com" + URL_ANY_ENDING),
+      regexp("".concat(@"^https?:\/\/warthunder\.com", URL_ANY_ENDING)),
     ]
     applyLangKey = @(url, langKey) applyCurLangAfterSlash(url, langKey, ".com/", this.supportedLangs)
   }
 
   LEGAL = {
     urlRegexpList = [
-      regexp(@"^https?:\/\/legal\.gaijin\.net" + URL_ANY_ENDING),
+      regexp("".concat(@"^https?:\/\/legal\.gaijin\.net", URL_ANY_ENDING)),
     ]
     applyLangKey = @(url, langKey) applyCurLangAfterSlash(url, langKey, ".net/", this.supportedLangs)
   }

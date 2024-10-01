@@ -22,11 +22,12 @@ let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { set_weapon_visual_custom_blk } = require("unitCustomization")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const MASS_KG_PRESIZE = 0.1
 
 function openEditPresetName(name, okFunc) {
-  ::gui_modal_editbox_wnd({
+  openEditBoxDialog({
     title = loc("mainmenu/newPresetName")
     maxLen = 40
     value = name

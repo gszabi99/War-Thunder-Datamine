@@ -219,7 +219,7 @@ let ShopLines = class {
                        "horizontal",  //type
                        (abs(c1 - c0) - 0.5) + "@shop_width + " + interval1, //width
                        "1@modArrowWidth", //height
-                       (c1 > c0 ? (c0 + 0.5) : c0) + "@shop_width" + (c1 > c0 ? "" : (" - " + interval1)), //posX
+                       (c1 > c0 ? (c0 + 0.5) : c0) + "@shop_width" + (c1 > c0 ? "" : ($" - {interval1}")), //posX
                        (r1 + 0.5) + "@shop_height - 0.5@modArrowWidth", // posY
                        (c0 > c1) ? "180" : "0")
       lines += format(angleFormat,

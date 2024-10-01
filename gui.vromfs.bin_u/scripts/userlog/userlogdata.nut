@@ -281,8 +281,8 @@ local logNameByType = {
           let item = ::ItemsManager.findItemById(itemId)
           if (item != null) {
             msg = isInArray(rewardType, ["WagerStageWin", "WagerStageFail"])
-              ? loc("userlog/" + rewardType) + loc("ui/colon") + colorize("userlogColoredText", item.getName())
-              : loc("userlog/" + rewardType, { wagerName = colorize("userlogColoredText", item.getName()) })
+              ? loc($"userlog/{rewardType}") + loc("ui/colon") + colorize("userlogColoredText", item.getName())
+              : loc($"userlog/{rewardType}", { wagerName = colorize("userlogColoredText", item.getName()) })
           }
         }
         else
@@ -375,7 +375,7 @@ local logNameByType = {
       let config = {
         unitName = unitName
         name = loc($"mainmenu/rent/{logName}")
-        desc = loc("userlog/" + logName, { unitName = getUnitName(unit, false) })
+        desc = loc($"userlog/{logName}", { unitName = getUnitName(unit, false) })
         descAlign = "center"
         popupImage = ""
         disableLogId = blk.id
@@ -751,7 +751,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     for (local j = 0, c = blk.body.paramCount(); j < c; j++) {
       local key = blk.body.getParamName(j)
       if (key in logObj)
-        key = "body_" + key
+        key = $"body_{key}"
       logObj[key] <- blk.body.getParamValue(j)
     }
     local hasVisibleItem = false

@@ -93,7 +93,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = startIdx; i < lastIdx; i++) {
       let row = this.rowTexts[i]
       foreach (item, itemValue in row)
-        tblObj.findObject("row_" + i).findObject("txt_" + item).setValue(itemValue.text);
+        tblObj.findObject($"row_{i}").findObject($"txt_{item}").setValue(itemValue.text);
     }
 
     tblObj.setValue(1) //after header

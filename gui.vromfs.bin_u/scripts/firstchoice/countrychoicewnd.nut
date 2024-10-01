@@ -140,7 +140,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           let uType = unitType
           let countriesList = this.countries.filter(function(c) {
             return this.isCountryAvailable(c, uType) }.bindenv(this)
-          ).map(@(c) loc("unlockTag/" + c))
+          ).map(@(c) loc($"unlockTag/{c}"))
           let armyName = unitType.armyId
 
           items.append({
@@ -413,7 +413,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       blk.unlock <- country
     }
 
-    blk.unlock <- "chosen_" + presetsData.selectedCountry
+    blk.unlock <-$"chosen_{presetsData.selectedCountry}"
 
     if (getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID)
       if (this.selectedUnitType.firstChosenTypeUnlockName)

@@ -1,7 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
-
 
 let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -37,7 +35,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       view.headerData <- {
         difficultyImage = ::events.getDifficultyImg(mgm.name)
         difficultyTooltip = ::events.getDifficultyTooltip(mgm.name)
-        headerText = ::events.getEventNameText(mgm) + " " + ::events.getRespawnsText(mgm)
+        headerText = "".concat(::events.getEventNameText(mgm), " ", ::events.getRespawnsText(mgm))
       }
 
     if (showConsoleButtons.value)
@@ -81,7 +79,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let countTbl = SessionLobby.getMembersCountByTeams(this.room)
     let countTblReady = SessionLobby.getMembersCountByTeams(this.room, true)
     foreach (team in this.teams) {
-      let teamObj = headerNest.findObject("num_team" + team.id)
+      let teamObj = headerNest.findObject($"num_team{team.id}")
       if (!checkObj(teamObj))
         continue
 

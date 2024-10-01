@@ -83,6 +83,7 @@ let { showMsgboxIfEacInactive } = require("%scripts/penitentiary/antiCheat.nut")
 let { isMeBanned } = require("%scripts/penitentiary/penalties.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 /*
 SessionLobby API
@@ -575,7 +576,7 @@ SessionLobby = {
       }
       else if (countriesType == misCountries.SYMMETRIC || countriesType == misCountries.CUSTOM) {
         let bitMaskKey = (countriesType == misCountries.SYMMETRIC) ? "country_allies" : name
-        countries = ::get_array_by_bit_value(getTblValue(bitMaskKey + "_bitmask", missionSettings, 0), shopCountriesList)
+        countries = ::get_array_by_bit_value(getTblValue($"{bitMaskKey}_bitmask", missionSettings, 0), shopCountriesList)
       }
       _settings[name] <- (countries && countries.len()) ? countries : fullCountriesList
     }
@@ -936,7 +937,7 @@ SessionLobby = {
         ? loc("not_available_aircraft/byBR", {
             gameModeName = ::events.getEventNameText(mGameMode),
             lockedUnitType = colorize("userlogColoredText",
-              loc("mainmenu/type_" + unit.unitType.lowerName)),
+              loc($"mainmenu/type_{unit.unitType.lowerName}")),
             battleRatingDiff = colorize("userlogColoredText", format("%.1f", MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS)),
             reqUnitType = colorize("userlogColoredText", loc("mainmenu/type_ship_and_boat"))
           })
@@ -1133,7 +1134,7 @@ SessionLobby = {
     //debugTableData(missionBlk)
 
     let blkData = base64.encodeBlk(missionBlk)
-    //dlog("GP: data = " + blkData)
+    //dlog($"GP: data = {blkData}")
     //debugTableData(blkData)
     if (!blkData || !("result" in blkData) || !blkData.result.len()) {
       showInfoMsgBox(loc("msg/cant_load_user_mission"))
@@ -1731,8 +1732,8 @@ SessionLobby = {
     }
 
     set_last_session_debug_info(
-      ("roomId" in join_params) ? ("room:" + join_params.roomId) :
-      ("battleId" in join_params) ? ("battle:" + join_params.battleId) :
+      ("roomId" in join_params) ? ($"room:{join_params.roomId}") :
+      ("battleId" in join_params) ? ($"battle:{join_params.battleId}") :
       ""
     )
 
@@ -1792,7 +1793,7 @@ SessionLobby = {
       return
     }
 
-    ::gui_modal_editbox_wnd({
+    openEditBoxDialog({
       value = prevPass
       title = loc("mainmenu/password")
       label = wasEntered ? loc("matching/SERVER_ERROR_ROOM_PASSWORD_MISMATCH") : ""

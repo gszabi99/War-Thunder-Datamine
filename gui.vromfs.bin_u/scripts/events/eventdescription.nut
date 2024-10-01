@@ -295,7 +295,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, this.room)
     let tierText = ::events.getBrTextByRules(reqUnits)
     if (tierText.len())
-      res += tierText + " "
+      res +=$"{tierText} "
 
     res += ::SessionLobby.getMissionNameLoc(this.room)
 
@@ -455,7 +455,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.newSelfRowRequest)
       return ""
 
-    let rowName = "row_" + rowIdx
+    let rowName = $"row_{rowIdx}"
     let forClan = ::events.isClanLbRequest(this.newSelfRowRequest)
 
     let name = getPlayerName(row?.name ?? "")

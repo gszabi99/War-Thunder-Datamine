@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
@@ -47,21 +46,23 @@ elemModelType.addTypes({
       local delayedText = ""
       let filesDelayed = this.curStat?.filesDelayed ?? 0
       if (filesDelayed > 0)
-        delayedText = loc("ui/comma") +
+        delayedText = "".concat(loc("ui/comma"),
           colorize("newTextBrightColor", loc("loadDlDataStat/delayed",
           { filesDelayed = filesDelayed
             filesDelayedSizeKB = this.curStat?.filesDelayedSizeKB ?? 0 }))
+        )
 
 
       local failedText = ""
       let filesFailed = (this.curStat?.filesFailed ?? 0) - (this.prevStat?.filesFailed ?? 0)
       let filesFailedSizeKB = (this.curStat?.filesFailedSizeKB ?? 0) - (this.prevStat?.filesFailedSizeKB ?? 0)
       if (filesFailed > 0)
-        failedText = loc("ui/comma") +
+        failedText = "".concat(loc("ui/comma"),
           colorize("badTextColor", loc("loadDlDataStat/failed",
           { filesFailed, filesFailedSizeKB }))
+        )
 
-      this.statText = inFlightText + delayedText + failedText
+      this.statText = "".concat(inFlightText, delayedText, failedText)
       return this.statText
     }
 

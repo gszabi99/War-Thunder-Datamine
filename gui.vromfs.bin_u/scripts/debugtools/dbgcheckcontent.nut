@@ -41,11 +41,11 @@ function debug_check_unlocalized_resources() {
       foreach (suffix in ["_shop", "_0", "_1", "_2"]) {
         local localeId = unit.name + suffix
         if (loc(localeId, "") == "") {
-          log("    " + localeId)
+          log($"    {localeId}")
           count++
         }
       }
-  dlog(count + " units")
+  dlog($"{count} units")
 
   // Unit Descriptions
   log("UNITDESC")
@@ -56,11 +56,11 @@ function debug_check_unlocalized_resources() {
       local localeId = "encyclopedia/" + unit.name + "/desc"
       local text = loc(localeId, "")
       if (text == "" || text == placeholder) {
-        log("    " + localeId)
+        log($"    {localeId}")
         count++
       }
     }
-  dlog(count + " unitdescs")
+  dlog($"{count} unitdescs")
 
   // Skins
   log("SKINS")
@@ -74,12 +74,12 @@ function debug_check_unlocalized_resources() {
         if (skin.name.len()) {
           local localeId = unit.name + "/" + skin.name
           if (loc(localeId, "") == "") {
-            log("    " + localeId)
+            log($"    {localeId}")
             count++
           }
         }
     }
-  dlog(count + " skins")
+  dlog($"{count} skins")
 
   // Decals
   log("DECALS")
@@ -91,11 +91,11 @@ function debug_check_unlocalized_resources() {
     local dblk = blk.getBlock(i)
     local localeId = "decals/" + dblk.getBlockName()
     if (loc(localeId, "") == "") {
-      log("    " + localeId)
+      log($"    {localeId}")
       count++
     }
   }
-  dlog(count + " decals")
+  dlog($"{count} decals")
 }
 
 function debug_check_unit_naming() {
@@ -139,7 +139,7 @@ function debug_check_unit_naming() {
         }
         names[c][suffix].append(locName)
       }
-  brief.append(count + " unlocalized unit names")
+  brief.append($"{count} unlocalized unit names")
   log(brief[brief.len() - 1])
   total += count
 
@@ -153,7 +153,7 @@ function debug_check_unit_naming() {
             unitIds[i], unitIds[j], names[c]._shop[i]))
           count++
         }
-  brief.append(count + " name_shop conflicts:")
+  brief.append($"{count} name_shop conflicts:")
   log(brief[brief.len() - 1])
   total += count
 
@@ -167,7 +167,7 @@ function debug_check_unit_naming() {
             unitIds[i], unitIds[j], names[c]._0[i]))
           count++
         }
-  brief.append(count + " name_0 conflicts")
+  brief.append($"{count} name_0 conflicts")
   log(brief[brief.len() - 1])
   total += count
 
@@ -181,7 +181,7 @@ function debug_check_unit_naming() {
           unitIds[i], names[c]._shop[i], unitIds[i], names[c]._0[i]))
         count++
       }
-  brief.append(count + " _shop and _0 names mixed-up")
+  brief.append($"{count} _shop and _0 names mixed-up")
   log(brief[brief.len() - 1])
   total += count
 
@@ -195,7 +195,7 @@ function debug_check_unit_naming() {
           unitIds[i], names[c]._1[i], unitIds[i], names[c]._shop[i]))
         count++
       }
-  brief.append(count + " _shop and _1 names mixed-up")
+  brief.append($"{count} _shop and _1 names mixed-up")
   log(brief[brief.len() - 1])
   total += count
 
@@ -212,7 +212,7 @@ function debug_check_unit_naming() {
           count++
         }
       }
-  brief.append(count + " names with wasted space")
+  brief.append($"{count} names with wasted space")
   log(brief[brief.len() - 1])
   total += count
 
@@ -257,11 +257,11 @@ function debug_check_unit_naming() {
         count++
       }
   }
-  brief.append(count + " names with suspicious characters")
+  brief.append($"{count} names with suspicious characters")
   log(brief[brief.len() - 1])
   total += count
 
-  brief.append("TOTAL: " + total)
+  brief.append($"TOTAL: {total}")
   log(brief[brief.len() - 1])
   foreach (str in brief)
     dlog(str)

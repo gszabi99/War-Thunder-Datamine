@@ -51,7 +51,7 @@ let Ticket = class (BaseItem) {
 
     this.eventEconomicNamesArray = params != null ? params % "tournamentName" : []
     if (!this.eventEconomicNamesArray.len())
-      log("Item Ticket: empty tournamentTicketParams", "Items: missing any tournamentName in ticket tournamentTicketParams, " + this.id)
+      log("Item Ticket: empty tournamentTicketParams",$"Items: missing any tournamentName in ticket tournamentTicketParams, {this.id}")
     else {
       let tournamentBlk = get_tournaments_blk()
       this.clanTournament = this.clanTournament || getBlkValueByPath(tournamentBlk, this.eventEconomicNamesArray[0] + "/clanTournament", false)
@@ -138,7 +138,7 @@ let Ticket = class (BaseItem) {
     local unitsString = ""
     foreach (unitType in unitTypes.types)
       if (unitType.bit & unitTypeMask)
-        unitsString += "_" + unitType.name
+        unitsString +=$"_{unitType.name}"
 
     return unitsString
   }
@@ -190,11 +190,11 @@ let Ticket = class (BaseItem) {
   }
 
   function _getNameForLayer(_event, eventEconomicName = "") {
-    local text = this.locId ? loc(this.locId + "/short", loc(this.locId, "")) : ""
+    local text = this.locId ? loc($"{this.locId}/short", loc(this.locId, "")) : ""
     if (text == "")
       text = ::events.getNameByEconomicName(eventEconomicName)
     if (text == "")
-      text = loc("item/" + this.id, loc("item/" + this.defaultLocId, ""))
+      text = loc($"item/{this.id}", loc($"item/{this.defaultLocId}", ""))
     return text
   }
 
@@ -211,18 +211,18 @@ let Ticket = class (BaseItem) {
   }
 
   function getName(colored = true) {
-    local name = this.locId ? loc(this.locId + "/short", loc(this.locId, "")) : ""
+    local name = this.locId ? loc($"{this.locId}/short", loc(this.locId, "")) : ""
     if (name == "" && this.eventEconomicNamesArray.len()) {
       if (this.eventEconomicNamesArray.len() > 1)
         name = loc($"item/{this.defaultLocId}/multipleEvents")
       else {
         local eventName = ::events.getNameByEconomicName(this.eventEconomicNamesArray[0])
         eventName = colored ? colorize("userlogColoredText", eventName) : eventName
-        name = loc("item/" + this.defaultLocId, { name = eventName })
+        name = loc($"item/{this.defaultLocId}", { name = eventName })
       }
     }
     if (name == "")
-      name = loc("item/" + this.id, "")
+      name = loc($"item/{this.id}", "")
     return name
   }
 

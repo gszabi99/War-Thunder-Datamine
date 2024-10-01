@@ -139,8 +139,8 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
     let iconSetParams = {
       addItemName = !shopDesc
     }
-    item.setIcon(obj, iconSetParams)
     obj["isPrizeUnitBought"] = item?.isPrizeUnitBought() ? "yes" : "no"
+    item.setIcon(obj, iconSetParams)
   }
 
   if (item && item?.getDescTimers)

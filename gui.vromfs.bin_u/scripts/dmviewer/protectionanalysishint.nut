@@ -1,9 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let results = require("%scripts/dmViewer/protectionAnalysisHintResults.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -71,20 +69,20 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
     parts = function(val) {
       if (u.isEmpty(val))
         return ""
-      let prefix = loc("ui/bullet") + " "
-      let partNames = [ loc("protection_analysis/hint/parts/list") + loc("ui/colon") ]
+      let prefix = "".concat(loc("ui/bullet"), " ")
+      let partNames = [ "".concat(loc("protection_analysis/hint/parts/list"), loc("ui/colon")) ]
       foreach (partId, isShow in val)
         if (isShow)
-          partNames.append(prefix + loc("dmg_msg_short/" + partId))
+          partNames.append("".concat(prefix, loc($"dmg_msg_short/{partId}")))
       return "\n".join(partNames, true)
     }
     angle = function(val) {
-      return loc("bullet_properties/hitAngle") + loc("ui/colon") +
-        colorize("activeTextColor", round(val)) + loc("measureUnits/deg")
+      return "".concat(loc("bullet_properties/hitAngle"), loc("ui/colon"),
+        colorize("activeTextColor", round(val)), loc("measureUnits/deg"))
     }
     headingAngle = function(val) {
-      return loc("protection_analysis/hint/headingAngle") + loc("ui/colon") +
-        colorize("activeTextColor", round(val)) + loc("measureUnits/deg")
+      return "".concat(loc("protection_analysis/hint/headingAngle"), loc("ui/colon"),
+        colorize("activeTextColor", round(val)), loc("measureUnits/deg"))
     }
   }
 

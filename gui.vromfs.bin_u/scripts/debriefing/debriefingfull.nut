@@ -130,7 +130,7 @@ let debriefingRowDefault = {
     return (isDebriefingFull || !this.showOnlyWhenFullResult) && (isTooltip || !this.isShowOnlyInTooltips)
   }
   isVisibleWhenEmpty = function() { return this.showEvenEmpty }
-  getName = function() { return loc(getTblValue("text", this, "debriefing/" + this.id)) }
+  getName = function() { return loc(getTblValue("text", this,$"debriefing/{this.id}")) }
   getNameIcon = null
 }
 
@@ -1083,8 +1083,8 @@ function debriefingApplyFirstWinInDayMul(exp, debrResult) {
     let keys = [ "expTotal", "expFree", "expInvestUnit", "expInvestUnitTotal" ]
     foreach (ut in unitTypes.types)
       keys.append(
-        "expInvestUnit" + ut.name,
-        "expInvestUnitTotal" + ut.name
+        $"expInvestUnit{ut.name}",
+        $"expInvestUnitTotal{ut.name}"
       )
     foreach (key in keys)
       if ((key in exp) && exp[key] > 0)
@@ -1133,7 +1133,7 @@ function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   let victoryStageTime = getTblValue("pveTimeAwardWinVisual", warpoints, 1)
   let stagesTime = []
   for (local i = 0; i <= getTblValue("pveTrophyMaxStage", warpoints, -1); i++) {
-    let time = getTblValue("pveTimeAwardStage" + i, warpoints, -1)
+    let time = getTblValue($"pveTimeAwardStage{i}", warpoints, -1)
     if (time > 0 && time < victoryStageTime)
       stagesTime.append(time)
   }
@@ -1366,7 +1366,7 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
     let list = isRoot ? [ "expFree" ] : [ "expInvestModuleTotal", "expInvestUnitTotal", "expModsTotal", "expUnitTotal" ]
     if (isRoot)
       foreach (ut in unitTypes.types)
-        list.append([ "expInvestUnitTotal" + ut.name])
+        list.append([$"expInvestUnitTotal{ut.name}"])
     foreach (id in list)
       if (getTblValue(id, data, 0) > 0)
         data[id] += totalVirtPremAccExp
@@ -1375,12 +1375,12 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
   if (isRoot)
     foreach (ut in unitTypes.types) {
       let typeName = ut.name
-      let unitId = getTblValue("investUnitName" + typeName, data, "")
+      let unitId = getTblValue($"investUnitName{typeName}", data, "")
       if (u.isEmpty(unitId))
         continue
       let unitVirtPremAccExp = data?.aircrafts[unitId].tblTotal.virtPremAccExp ?? 0
-      if (unitVirtPremAccExp > 0 && getTblValue("expInvestUnit" + typeName, data, 0) > 0)
-        data["expInvestUnit" + typeName] += unitVirtPremAccExp
+      if (unitVirtPremAccExp > 0 && getTblValue($"expInvestUnit{typeName}", data, 0) > 0)
+        data[$"expInvestUnit{typeName}"] += unitVirtPremAccExp
     }
 
   foreach (row in debriefingRows) {
@@ -1390,15 +1390,15 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
     if ((rowTbl?.len() ?? 0) == 0)
       continue
     foreach (suffix in [ "Exp", "Wp" ]) {
-      let virtPremAcc = getTblValue("virtPremAcc" + suffix, rowTbl, 0)
+      let virtPremAcc = getTblValue($"virtPremAcc{suffix}", rowTbl, 0)
       if (virtPremAcc <= 0)
         continue
-      rowTbl["premAcc" + suffix] <- virtPremAcc
+      rowTbl[$"premAcc{suffix}"] <- virtPremAcc
 
       let precalcResultId = suffix.tolower() + row.getRewardId()
       let origFinal = getTblValue(precalcResultId, data, 0)
       if (origFinal >= 0) {
-        data["noPremAcc" + suffix] <- origFinal
+        data[$"noPremAcc{suffix}"] <- origFinal
         data[precalcResultId] += virtPremAcc
       }
     }

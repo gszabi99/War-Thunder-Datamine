@@ -120,7 +120,7 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.selMissionsMap[mission.id] <- isSelected
-    let checkBoxObj = this.misListObj.findObject("checkbox_" + mission.id)
+    let checkBoxObj = this.misListObj.findObject($"checkbox_{mission.id}")
     if (checkObj(checkBoxObj) && checkBoxObj.getValue() != isSelected)
       checkBoxObj.setValue(isSelected)
   }

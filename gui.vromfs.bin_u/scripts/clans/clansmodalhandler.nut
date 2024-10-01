@@ -110,7 +110,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     foreach (idx, sheet in this.pages) {
       view.tabs.append({
         id = sheet
-        tabName = "#clan/" + sheet
+        tabName = $"#clan/{sheet}"
         navImagesText = ::get_navigation_images_text(idx, this.pages.len())
       })
       if (this.startPage == sheet)
@@ -744,7 +744,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let objTopMedal = this.scene.findObject("clan_battle_season_logo_medal")
     if (checkObj(objTopMedal) && showAttributes) {
       objTopMedal.show(true)
-      let iconStyle = "clan_season_logo_" + diff.egdLowercaseName
+      let iconStyle =$"clan_season_logo_{diff.egdLowercaseName}"
       let iconParams = { season_title = { text = seasonName } }
       LayersIcon.replaceIcon(objTopMedal, iconStyle, null, null, null, iconParams)
     }
@@ -767,7 +767,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       let rowData = []
       foreach (reward in rewards) {
         let placeText = (reward.place >= 1 && reward.place <= 3) ?
-          loc("clan/season_award/place/place" + reward.place) :
+          loc($"clan/season_award/place/place{reward.place}") :
           loc("clan/season_award/place/placeN", { placeNum = reward.place })
 
         rowData.append({
@@ -844,7 +844,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     local rowBlock = ""
     let rowData = []
     for (local i = 1; i <= 3; i++) {
-      rowData.append({ text = loc("clan/battle_season/place_" + i), active = false, tdalign = "right" })
+      rowData.append({ text = loc($"clan/battle_season/place_{i}"), active = false, tdalign = "right" })
       rowData.append({
         needText = false,
         rawParam = "text { text-align:t='right'; text:t='" +

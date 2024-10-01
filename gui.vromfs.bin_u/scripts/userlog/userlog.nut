@@ -212,11 +212,11 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (getTblValue("reqFeature", page) && !hasFeature(page.reqFeature))
         continue
       view.tabs.append({
-        id = "page_" + idx
+        id = $"page_{idx}"
         cornerImg = "#ui/gameuiskin#new_icon.svg"
-        cornerImgId = "img_new_" + page.id
+        cornerImgId =$"img_new_{page.id}"
         cornerImgSmall = true
-        tabName = "#userlog/page/" + page.id
+        tabName =$"#userlog/page/{page.id}"
         navImagesText = ::get_navigation_images_text(idx, ::userlog_pages.len())
       })
     }
@@ -303,7 +303,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillLog(logObj) {
-    let rowName = "row" + logObj.idx
+    let rowName =$"row{logObj.idx}"
     let rowObj = this.listObj.findObject(rowName)
     let rowData = ::get_userlog_view_data(logObj)
     if ((rowData?.descriptionBlk ?? "") != "")
@@ -320,7 +320,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function addNextButton(logObj) {
-    let rowName = "row" + logObj.idx
+    let rowName =$"row{logObj.idx}"
     local rowObj = this.listObj.findObject(rowName)
     if (!rowObj) {
       let data = format("expandable { id:t='%s' } ", rowName)

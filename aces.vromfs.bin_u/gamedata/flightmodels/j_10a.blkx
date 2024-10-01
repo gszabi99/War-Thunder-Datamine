@@ -251,10 +251,19 @@
       }
     },
     "steel_tank_s": {
+      "tank10_dm": {
+        "hp": 80.5
+      },
       "tank6_dm": {
         "hp": 80.5
       },
       "tank7_dm": {
+        "hp": 80.5
+      },
+      "tank8_dm": {
+        "hp": 80.5
+      },
+      "tank9_dm": {
         "hp": 80.5
       }
     }
@@ -955,6 +964,48 @@
         "name": "tailcontrol_dm"
       },
       {
+        "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "tank1_dm",
         "onHit": [
           {
@@ -1203,6 +1254,90 @@
       },
       {
         "name": "tank7_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
         "onHit": [
           {
             "fire": 0.05,
@@ -2769,6 +2904,7 @@
         "twin_bomb_pylon_002",
         "twin_bomb_adapter_001",
         "twin_bomb_adapter_002",
+        "twin_bomb_adapter_003",
         "twin_pylon_001",
         "twin_pylon_002",
         "twin_pylon_003",
@@ -2814,13 +2950,18 @@
         "pl12_launcher_005",
         "pl12_launcher_006",
         "pl12_launcher_007",
-        "pl12_launcher_008"
+        "pl12_launcher_008",
+        "1600l_drop_tank_pylon_001",
+        "1600l_drop_tank_pylon_002"
       ]
     },
     "HideDmParts": {
       "node": [
         "tank6_dm",
-        "tank7_dm"
+        "tank7_dm",
+        "tank8_dm",
+        "tank9_dm",
+        "tank10_dm"
       ]
     },
     "WeaponSlot": [
@@ -3448,17 +3589,17 @@
             "showInWeaponMenu": true,
             "ShowNodes": {
               "node": [
-                "twin_pylon_003",
-                "800l_fyx800_drop_tank_001"
+                "1600l_drop_tank_pylon_001",
+                "1600l_drop_tank_001"
               ]
             },
             "ShowDmParts": {
-              "node": "tank6_dm"
+              "node": "tank9_dm"
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/cn_800l_fyx800_j_10_drop_tank_1.blk",
-              "emitter": "800l_fyx800_drop_tank_001",
+              "blk": "gameData/Weapons/drop_tank/cn_1600l_drop_tank_1.blk",
+              "emitter": "1600l_drop_tank_001",
               "bullets": 1,
               "external": true
             },
@@ -3635,6 +3776,24 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot6",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "central_pylon_001"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/cn_800l_fyx800_j_10_drop_tank_2.blk",
+              "emitter": "800l_fyx800_drop_tank_003",
+              "bullets": 1,
+              "external": true
             }
           }
         ]
@@ -3905,17 +4064,17 @@
             "showInWeaponMenu": true,
             "ShowNodes": {
               "node": [
-                "gdj_6_pylon_004",
-                "800l_fyx800_drop_tank_002"
+                "1600l_drop_tank_pylon_002",
+                "1600l_drop_tank_002"
               ]
             },
             "ShowDmParts": {
-              "node": "tank7_dm"
+              "node": "tank10_dm"
             },
             "Weapon": {
               "trigger": "fuel tanks",
-              "blk": "gameData/Weapons/drop_tank/cn_800l_fyx800_j_10_drop_tank_2.blk",
-              "emitter": "800l_fyx800_drop_tank_002",
+              "blk": "gameData/Weapons/drop_tank/cn_1600l_drop_tank_2.blk",
+              "emitter": "1600l_drop_tank_002",
               "bullets": 1,
               "external": true
             },

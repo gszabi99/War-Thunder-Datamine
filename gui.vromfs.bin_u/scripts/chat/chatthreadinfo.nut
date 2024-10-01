@@ -61,7 +61,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
        )
       return
 
-    gchat_raw_command("xtmeta " + this.roomId)
+    gchat_raw_command($"xtmeta {this.roomId}")
   }
 
   function updateInfo(dataBlk) {
@@ -216,7 +216,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     if (updateActionBtn)
       this.setObjValueById(obj, "action_btn", this.getJoinText())
 
-    this.setObjValueById(obj, "ownerName_" + this.roomId, this.getOwnerText())
+    this.setObjValueById(obj,$"ownerName_{this.roomId}", this.getOwnerText())
     this.setObjValueById(obj, "thread_title", this.getTitle())
     this.setObjValueById(obj, "thread_members", this.getMembersAmountText())
     if (::g_chat.canChooseThreadsLang())

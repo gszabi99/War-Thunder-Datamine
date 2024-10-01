@@ -140,7 +140,7 @@ crewSpecTypes = {
           if (item.isVisible(crewUnitType) && item.useSpecializations) {
             let skillCrewLevel = getSkillCrewLevel(item, specMul * getCrewMaxSkillValue(item))
             let skillText = loc($"crew/{item.name}") + " "
-              + colorize("goodTextColor", "+" + skillCrewLevel)
+              + colorize("goodTextColor",$"+{skillCrewLevel}")
             textsArray.append(::stringReplace(skillText, " ", nbsp))
           }
 

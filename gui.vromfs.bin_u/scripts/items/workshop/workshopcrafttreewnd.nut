@@ -967,7 +967,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function findItemObj(itemId) {
-    return this.scene.findObject("shop_item_" + itemId)
+    return this.scene.findObject($"shop_item_{itemId}")
   }
 
   function onItemAction(buttonObj) {

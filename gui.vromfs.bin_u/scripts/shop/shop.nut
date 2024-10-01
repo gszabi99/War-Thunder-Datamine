@@ -1202,7 +1202,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function findCloneGroupObjById(id) {
     if (checkObj(this.groupChooseObj))
-      return this.groupChooseObj.findObject("clone_td_" + id)
+      return this.groupChooseObj.findObject($"clone_td_{id}")
 
     return null
   }
@@ -1421,7 +1421,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let name = page.name
         view.tabs.append({
           id = name
-          tabName = "#mainmenu/" + name
+          tabName = $"#mainmenu/{name}"
           discount = {
             discountId = this.getDiscountIconTabId(countryData.name, name)
           }
@@ -1491,7 +1491,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           && unit.shopCountry == country) {
         let discount = ::g_discount.getUnitDiscount(unit)
         if (discount > 0)
-          discountsList[unit.name + "_shop"] <- discount
+          discountsList[$"{unit.name}_shop"] <- discount
       }
 
     return ::g_discount.generateDiscountInfo(discountsList)

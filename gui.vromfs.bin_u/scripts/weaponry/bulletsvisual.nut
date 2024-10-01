@@ -347,7 +347,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
 
   let explosiveType = bulletsData?.explosiveType
   if (explosiveType)
-    addProp(p, loc("bullet_properties/explosiveType"), loc("explosiveType/" + explosiveType))
+    addProp(p, loc("bullet_properties/explosiveType"), loc($"explosiveType/{explosiveType}"))
   let explosiveMass = bulletsData?.explosiveMass
   if (explosiveMass)
     addProp(p, loc("bullet_properties/explosiveMass"),

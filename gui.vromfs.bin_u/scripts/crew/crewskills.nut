@@ -168,7 +168,7 @@ function getMinSkillsUnitRepairRank(unitRank) {
   if (!repairRanksBlk)
     return -1
   for (local i = 1; ; i++) {
-    let rankValue = repairRanksBlk?["rank" + i]
+    let rankValue = repairRanksBlk?[$"rank{i}"]
     if (!rankValue)
       break
     if (rankValue >= unitRank)

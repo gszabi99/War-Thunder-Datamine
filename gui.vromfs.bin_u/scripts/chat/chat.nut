@@ -335,7 +335,7 @@ g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk) {
     }
   }
 
-  log("ChatProgressCapsChanged: " + this.userCapsGen)
+  log($"ChatProgressCapsChanged: {this.userCapsGen}")
   debugTableData(this.userCaps);
   broadcastEvent("ChatProgressCapsChanged")
 }
@@ -359,7 +359,7 @@ g_chat.joinThread <- function joinThread(roomId) {
     return this.systemMessage(loc(this.CHAT_ERROR_NO_CHANNEL))
 
   if (!this.isRoomJoined(roomId))
-    gchat_raw_command("xtjoin " + roomId)
+    gchat_raw_command($"xtjoin {roomId}")
   else if (::menu_chat_handler)
     ::menu_chat_handler.switchCurRoom(roomId)
 }
@@ -538,8 +538,8 @@ g_chat.showPlayerRClickMenu <- function showPlayerRClickMenu(playerName, roomId 
 
 g_chat.generatePlayerLink <- function generatePlayerLink(name, uid = null) {
   if (uid)
-    return "PLU_" + uid
-  return "PL_" + name
+    return $"PLU_{uid}"
+  return $"PL_{name}"
 }
 
 g_chat.onEventInitConfigs <- function onEventInitConfigs(_p) {
@@ -600,7 +600,7 @@ g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message) {
 
   let res = systemMsg.jsonStringToLang(jsonString, null, "\n   ")
   if (!res)
-    log("Chat: failed to localize json message: " + message)
+    log($"Chat: failed to localize json message: {message}")
   return res || ""
 }
 

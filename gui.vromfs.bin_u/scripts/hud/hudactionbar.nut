@@ -32,7 +32,7 @@ let { get_game_type, get_mission_time } = require("mission")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
 } = require("%scripts/options/optionsExtNames.nut")
-let { eventbus_send } = require("eventbus")
+let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
@@ -40,6 +40,7 @@ let { guiStartWheelmenu, closeCurWheelmenu } = require("%scripts/wheelmenu/wheel
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { openHudAirWeaponSelector, isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { getExtraActionItemsView } = require("%scripts/hud/hudActionBarExtraActions.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -80,6 +81,14 @@ let getSecondActionBarObjId = @(itemId) $"{SECOND_ACTION_ID_PREFIX}{itemId}"
 const COLLAPSE_ACTION_BAR_SH_ID = "ID_COLLAPSE_ACTION_BAR"
 const SECOND_ACTIONS_MENU_LIFETIME = 15
 
+enum ActionBarVsisbility {
+  COLLAPSED,
+  EXPANDED,
+  HIDDEN
+}
+
+local isCollapseBtnHidden = false
+
 function getCollapseShText() {
   let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
   return shType.getFirstInput(COLLAPSE_ACTION_BAR_SH_ID)
@@ -88,6 +97,13 @@ function getCollapseShText() {
 function hasCollapseShortcut() {
   let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
   return shType.isAssigned(COLLAPSE_ACTION_BAR_SH_ID)
+}
+
+function getVisibilityStateProfilePath() {
+  let hudType = handlersManager.getActiveBaseHandler()?.getclass().getHudType()
+  if (hudType == null)
+    return null
+  return $"actionBar/isCollapsed/{hudType}"
 }
 
 let class ActionBar {
@@ -117,6 +133,10 @@ let class ActionBar {
   currentActionWithMenu = null
   extraActionsCount = 0
 
+  getActionBarVisibility = @() isCollapseBtnHidden ? ActionBarVsisbility.HIDDEN
+    : this.isCollapsed ? ActionBarVsisbility.COLLAPSED
+    : ActionBarVsisbility.EXPANDED
+
   constructor(nestObj) {
     if (!checkObj(nestObj))
       return
@@ -131,8 +151,12 @@ let class ActionBar {
 
     this.isFootballMission = (get_game_type() & GT_FOOTBALL) != 0
 
-    if (::g_login.isProfileReceived())
-      this.isCollapsed = loadLocalByAccount("actionBar/isCollapsed", false)
+    let savedVisibilityPath = getVisibilityStateProfilePath()
+    if (::g_login.isProfileReceived() && savedVisibilityPath != null) {
+      let savedVisibility = loadLocalByAccount(savedVisibilityPath, ActionBarVsisbility.EXPANDED)
+      this.isCollapsed = savedVisibility != ActionBarVsisbility.EXPANDED
+      updateExtWatched({ isActionBarCollapseBtnHidden = savedVisibility == ActionBarVsisbility.HIDDEN })
+    }
 
     this.updateVisibility()
 
@@ -172,8 +196,11 @@ let class ActionBar {
       return
 
     this.isCollapsed = !this.isCollapsed
+    if (!this.isCollapsed)
+      isCollapseBtnHidden = false
+
     if (::g_login.isProfileReceived())
-      saveLocalByAccount("actionBar/isCollapsed", this.isCollapsed)
+      saveLocalByAccount(getVisibilityStateProfilePath(), this.getActionBarVisibility())
 
     if (!this.isCollapsed)
       updateActionBar()
@@ -920,6 +947,15 @@ let class ActionBar {
   }
 
 }
+
+eventbus_subscribe("ActionBarCollapseBtnHidden", function(isHidden) {
+  isCollapseBtnHidden = isHidden
+  let path = getVisibilityStateProfilePath()
+  if (path == null)
+    return
+  saveLocalByAccount(path, isHidden ? ActionBarVsisbility.HIDDEN : ActionBarVsisbility.EXPANDED)
+})
+
 
 return {
   ActionBar

@@ -32,8 +32,8 @@ let createDefaultOption = function() {
   return {
     type = -1
     id = ""
-    title = null //"options/" + descr.id
-    hint = null  //"guiHints/" + descr.id
+    title = null //$"options/{descr.id}"
+    hint = null  //$"guiHints/{descr.id}"
     value = null
     controlType = optionControlType.LIST
     hasWarningIcon = false
@@ -48,9 +48,9 @@ let createDefaultOption = function() {
     defaultValue = null
     prevValue = null
 
-    getTrId = @() this.id + "_tr"
+    getTrId = @() $"{this.id}_tr"
 
-    getTitle = @() this.title || loc("options/" + this.id)
+    getTitle = @() this.title || loc($"options/{this.id}")
 
     getCurrentValueLocText = @() this.getValueLocText(this.value)
 
@@ -225,7 +225,7 @@ let fillDynMapOption = function(descr) {
       if (skip)
         continue
     }
-    descr.items.append("#dynamic/" + layout.name)
+    descr.items.append($"#dynamic/{layout.name}")
     let map = layout.mis_file
     descr.values.append(map)
     if (map == curMap)

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import disable_network, shop_get_premium_account_ent_name, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
@@ -63,7 +62,7 @@ function isRanksAllowed(tbl) {
   if ("unlock" in tbl)
     if (!isUnlockOpened(tbl.unlock, UNLOCKABLE_SINGLEMISSION) && !::is_debug_mode_enabled) {
       if (!silent) {
-        let msg = loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(tbl.unlock, 1)
+        let msg = "".concat(loc("charServer/needUnlock"), "\n\n", getFullUnlockDescByName(tbl.unlock, 1))
         showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false

@@ -1,8 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { format } = require("string")
 let { fabs } = require("math")
 let time = require("%scripts/time.nut")
@@ -25,7 +23,7 @@ let WwMap = class {
   }
 
   function _tostring() {
-    return "WwMap(" + this.name + ", " + toString(this.data) + ")"
+    return "".concat("WwMap(",this.name, ", ", toString(this.data), ")")
   }
 
   function getId() {
@@ -46,7 +44,7 @@ let WwMap = class {
 
   function getChapterText() {
     let chapterId = this.getChapterId()
-    return loc(chapterId != "" ? ("ww_operation_chapter/" + chapterId) : "chapters/test")
+    return loc(chapterId != "" ? ($"ww_operation_chapter/{chapterId}") : "chapters/test")
   }
 
   function isDebugChapter() {
@@ -62,7 +60,7 @@ let WwMap = class {
   }
 
   function getNameLocId() {
-    return "worldWar/map/" + this.name
+    return $"worldWar/map/{this.name}"
   }
 
   function getImage() {
@@ -70,11 +68,11 @@ let WwMap = class {
     if (u.isEmpty(mapImageName))
       return ""
 
-    return "@" + mapImageName + "*"
+    return $"@{mapImageName}*"
   }
 
   function getDescription(needShowGroupInfo = true) {
-    let baseDesc = loc("worldWar/map/" + this.name + "/desc", "")
+    let baseDesc = loc($"worldWar/map/{this.name}/desc", "")
     if (!needShowGroupInfo)
       return baseDesc
 
@@ -136,8 +134,8 @@ let WwMap = class {
     if (changeStateTimeStamp >= 0) {
       let secToChangeState = changeStateTimeStamp - get_charserver_time_sec()
       if (secToChangeState > 0) {
-        let changeStateLocId = "worldwar/operation/" +
-          (this.isActive() ? "beUnavailableIn" : "beAvailableIn")
+        let changeStateLocId ="".concat("worldwar/operation/",
+          (this.isActive() ? "beUnavailableIn" : "beAvailableIn"))
         let changeStateTime = time.hoursToString(
           time.secondsToHours(secToChangeState), false, true)
         text = loc(changeStateLocId, { time = changeStateTime })
@@ -281,8 +279,8 @@ let WwMap = class {
     let maxNumb = getTblValue("maxClanCount", this.data, 0)
     local prefix = isSideInfo ? "side_" : ""
     return minNumb == maxNumb ?
-      loc("worldwar/operation/" + prefix + "clans_number", { numb = maxNumb }) :
-      loc("worldwar/operation/" + prefix + "clans_limits", { min = minNumb, max = maxNumb })
+      loc($"worldwar/operation/{prefix}clans_number", { numb = maxNumb }) :
+      loc($"worldwar/operation/{prefix}clans_limits", { min = minNumb, max = maxNumb })
   }
 
   function getClansNumberInQueueText() {

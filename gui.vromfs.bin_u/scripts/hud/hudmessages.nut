@@ -118,7 +118,7 @@ enumsAddTypes(g_hud_messages, {
     }
 
     getMsgObjId = function(messageData) {
-      return "main_msg_" + messageData.id
+      return $"main_msg_{messageData.id}"
     }
 
     createMessage = function(messageData) {
@@ -631,7 +631,7 @@ enumsAddTypes(g_hud_messages, {
         if (!eventData.isRaceFinishedByPlayer) {
           text = loc("HUD_RACE_CHECKPOINT") + " "
           text += eventData.passedCheckpointsInLap + loc("ui/slash")
-          text += eventData.checkpointsPerLap + "  "
+          text +=$"{eventData.checkpointsPerLap}  "
           text += loc("HUD_RACE_LAP") + " "
           text += eventData.currentLap + loc("ui/slash") + eventData.totalLaps
         }

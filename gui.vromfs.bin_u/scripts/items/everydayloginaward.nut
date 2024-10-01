@@ -73,7 +73,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(titleObj))
       return
 
-    local text = loc(this.userlog.body.rewardType + "/name")
+    local text = loc($"{this.userlog.body.rewardType}/name")
 
     let itemId = this.getTrophyIdName(this.getAwardName())
     let item = ::ItemsManager.findItemById(itemId)
@@ -152,7 +152,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     let value = block[week.tostring()]
     let checkFunc = getTblValue("checkFunc", params)
     if (checkFunc && !checkFunc(value)) {
-      log("Every Day Login Award: wrong name " + name)
+      log($"Every Day Login Award: wrong name {name}")
       debugTableData(data)
       return
     }
@@ -222,7 +222,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       })
     }
 
-    log("Every Day Login Award: not found item by id = " + id)
+    log($"Every Day Login Award: not found item by id = {id}")
     debugTableData(this.userlog)
     return LayersIcon.getIconData("default_chest_debug")
   }
@@ -297,7 +297,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
     let bgImage = curentRewardData?.trophy
     if (u.isEmpty(bgImage)) {
-      assert(isDefault, "Every Day Login Award: empty trophy param for config for period " + period)
+      assert(isDefault,$"Every Day Login Award: empty trophy param for config for period {period}")
       debugTableData(cfg)
       return
     }
@@ -306,7 +306,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(imgObj))
       return
 
-    imgObj["background-image"] = "@!" + bgImage
+    imgObj["background-image"] =$"@!{bgImage}"
     pawObj.show(true)
 
     let animObj = pawObj.findObject("periodic_reward_animation")
@@ -489,7 +489,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     let progress = getTblValue("progress", this.userlog.body, 0)
 
     for (local i = 0; i < loopLen; i++) {
-      let offset = getTblValue("daysForStat" + i, this.userlog.body)
+      let offset = getTblValue($"daysForStat{i}", this.userlog.body)
       if (offset == null) //can be 0
         break
 
@@ -502,11 +502,11 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       let today = offset == 0
       let tomorrow = offset == 1
       let previousAwards = offset < 0
-      let periodRewardDays = getTblValue("awardPeriodStat" + i, this.userlog.body, -1)
+      let periodRewardDays = getTblValue($"awardPeriodStat{i}", this.userlog.body, -1)
 
       let item = this.prepairViewItem({
         type = this.userlog.type,
-        itemId = getTblValue("awardTrophyStat" + i, this.userlog.body),
+        itemId = getTblValue($"awardTrophyStat{i}", this.userlog.body),
         today = today,
         tomorrow = tomorrow,
         dayNum = progress + offset,
@@ -601,7 +601,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
     let view = { item = [] }
     for (local i = 0; i < maxVal; i++) {
-      let param = "awardPeriodLin" + i
+      let param = $"awardPeriodLin{i}"
       if (!(param in this.userlog.body) || (value != progress && value == maxVal))
         continue
 

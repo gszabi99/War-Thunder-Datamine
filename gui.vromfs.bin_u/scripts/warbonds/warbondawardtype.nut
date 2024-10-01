@@ -1,6 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import player_have_attachable, player_have_decal, warbonds_can_buy_battle_task, warbond_get_type_by_name, get_warbond_item_bought_count_with_amount, char_send_blk, get_warbond_item_bought_count_with_name
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { isHardTaskIncomplete } = require("%scripts/unlocks/battleTasks.nut")
 let DataBlock = require("DataBlock")
@@ -75,10 +75,10 @@ local getBoughtCountByAmount = @(warbond, blk)
   getUserlogBuyText = function(blk, priceText) {
     if (priceText != "")
       priceText = loc("ui/parentheses/space", { text = priceText })
-    return this.getUserlogBuyTextBase(blk) + priceText
+    return "".concat(this.getUserlogBuyTextBase(blk), priceText)
   }
   getUserlogBuyTextBase = function(blk) {
-    return format(loc("userlog/buy_resource/" + this.userlogResourceTypeText), this.getNameText(blk))
+    return format("".concat(loc("userlog/buy_resource/", this.userlogResourceTypeText)), this.getNameText(blk))
   }
 }
 
@@ -132,7 +132,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getLayeredImage = function(blk, _warbond) {
       let unit = getAircraftByName(blk.name)
       let unitType = getEsUnitType(unit)
-      let style = "reward_unit_" + ::getUnitTypeText(unitType).tolower()
+      let style = "".concat("reward_unit_", ::getUnitTypeText(unitType).tolower())
       return LayersIcon.getIconData(style)
     }
     getContentIconData = function(blk) {

@@ -210,8 +210,8 @@ function loadCrewSkills() {
       let costBlk = itemBlk?.skill_level_exp
       local idx = 1
       local totalCost = 0
-      while (costBlk?["level" + idx] != null) {
-        totalCost += costBlk["level" + idx]
+      while (costBlk?[$"level{idx}"] != null) {
+        totalCost += costBlk[$"level{idx}"]
         item.costTbl.append(totalCost)
         idx++
       }
@@ -241,11 +241,11 @@ function loadCrewSkills() {
     local tIdx = 0
     do {
       tIdx++
-      costBlk = typeBlk?["train" + tIdx]
+      costBlk = typeBlk?[$"train{tIdx}"]
       if (costBlk) {
         trainReq.append([])
         for (local idx = 0; idx <= MAX_COUNTRY_RANK; idx++)
-          trainReq[tIdx - 1].append(costBlk?["rank" + idx] ?? 0)
+          trainReq[tIdx - 1].append(costBlk?[$"rank{idx}"] ?? 0)
       }
     }
     while (costBlk != null)

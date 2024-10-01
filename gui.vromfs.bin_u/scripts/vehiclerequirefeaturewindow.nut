@@ -61,21 +61,21 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
       if (this.unit.unitType == unitTypes.TANK)
         locPrefix += "USATanks/" //here is usual tanks texts
       else
-        locPrefix += this.unit.unitType.name + "/"
+        locPrefix +=$"{this.unit.unitType.name}/"
 
     local text = ""
     if (this.featureLockAction == CheckFeatureLockAction.BUY)
-      text += loc(locPrefix + "warning/buy")
+      text += loc($"{locPrefix}warning/buy")
     else // CheckFeatureLockAction.RESEARCH
-      text += loc(locPrefix + "warning/research")
+      text += loc($"{locPrefix}warning/research")
     let mainLocParams = {
       specialPackPart = this.getPurchaseAvailable()
-        ? loc(locPrefix + "warning/specialPackPart")
+        ? loc($"{locPrefix}warning/specialPackPart")
         : ""
     }
-    text += " " + loc(locPrefix + "warning/main", mainLocParams)
+    text += " " + loc($"{locPrefix}warning/main", mainLocParams)
     if (this.getPurchaseAvailable())
-      text += "\n" + colorize("userlogColoredText", loc(locPrefix + "advise"))
+      text += "\n" + colorize("userlogColoredText", loc($"{locPrefix}advise"))
     return text
   }
 
@@ -139,7 +139,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function getEntitlementPrice(entitlementItem) {
-    let priceText = loc("price/" + entitlementItem.name, "")
+    let priceText = loc($"price/{entitlementItem.name}", "")
     // Empty string is valid and means we won't show price at all.
     if (priceText == "")
       return ""

@@ -423,7 +423,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let newModName = getModificationName(this.air, this.items[newIdx].name, true)
     let steps = [
       {
-        obj = ["item_" + newIdx]
+        obj = [$"item_{newIdx}"]
         text = loc("help/newModification", { modName = newModName })
         nextActionShortcut = "help/OBJ_CLICK"
         actionType = tutorAction.OBJ_CLICK
@@ -446,7 +446,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let finModName = getModificationName(this.air, this.items[finIdx].name, true)
       steps.insert(0,
         {
-          obj = ["item_" + finIdx]
+          obj = [$"item_{finIdx}"]
           text = loc("help/finishedModification", { modName = finModName })
           nextActionShortcut = "help/OBJ_CLICK"
           actionType = tutorAction.OBJ_CLICK
@@ -577,7 +577,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     item.guiPosIdx <- idx
 
     this.items.append(item)
-    return "item_" + idx
+    return $"item_{idx}"
   }
 
   function createItem(item, iType, holderObj, posX, posY) {
@@ -650,7 +650,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getItemObj(idx) {
-    return this.scene.findObject("item_" + idx)
+    return this.scene.findObject($"item_{idx}")
   }
 
   function updateItem(idx) {
@@ -866,7 +866,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function createTreeArrows(obj, arrowsList, treeOffsetY) {
     local data = ""
     foreach (idx, a in arrowsList) {
-      let id = "arrow_" + idx
+      let id = $"arrow_{idx}"
 
       if (a.from[0] != a.to[0]) //hor arrow
         data += format("modArrow { id:t='%s'; type:t='right'; " +
@@ -1068,7 +1068,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isUnitHaveSecondaryWeapons(this.air)) {
       let secondaryWeapons = getSecondaryWeaponsList(this.air)
       this.lastWeapon = validateLastWeapon(this.airName) //real weapon or ..._default
-      log("initial set lastWeapon " + this.lastWeapon)
+      log($"initial set lastWeapon {this.lastWeapon}")
       if (needSecondaryWeaponsWnd(this.air)) {
         let selWeapon = secondaryWeapons.findvalue((@(w) w.name == this.lastWeapon).bindenv(this))
           ?? secondaryWeapons?[0]
@@ -1170,7 +1170,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     let val = this.mainModsObj.getValue() - 1
-    let itemObj = this.mainModsObj.findObject("item_" + val)
+    let itemObj = this.mainModsObj.findObject($"item_{val}")
     return checkObj(itemObj) ? itemObj : null
   }
 
@@ -2043,7 +2043,7 @@ gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("item_name_header").setValue(getModItemName(this.unit, this.item))
 
     this.updateSlider()
-    createModItem("mod_" + this.item.name, this.unit, this.item, this.item.type, this.scene.findObject("icon"), this, {
+    createModItem($"mod_{this.item.name}", this.unit, this.item, this.item.type, this.scene.findObject("icon"), this, {
       canShowStatusImage = false
     })
 

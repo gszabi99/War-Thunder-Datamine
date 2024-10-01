@@ -335,7 +335,7 @@ function addNickToEdit(sceneData, user) {
   if (!inputObj)
     return
 
-  ::add_text_to_editbox(inputObj, user + " ")
+  ::add_text_to_editbox(inputObj,$"{user} ")
   selectChatEditbox(inputObj)
 }
 

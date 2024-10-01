@@ -1,6 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_objectives_list
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -88,7 +88,7 @@ gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local text = loc(objective.text)
     if (!u.isEmpty(objective.mapSquare))
-      text += "  " + objective.mapSquare
+      text = "".concat(text, "  ", objective.mapSquare)
     obj.findObject("obj_text").setValue(text)
 
     broadcastEvent("MissionObjectiveUpdated")
@@ -97,7 +97,7 @@ gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getMisObjObject(idx) {
-    let id = "objective_" + idx
+    let id = $"objective_{idx}"
     local obj = this.scene.findObject(id)
     if (checkObj(obj))
       return obj

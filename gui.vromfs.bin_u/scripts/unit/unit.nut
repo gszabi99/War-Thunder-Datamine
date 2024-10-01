@@ -366,8 +366,8 @@ local Unit = class {
 
     let isSpecial = isUnitSpecial(this)
     let premPart = isSpecial ? warpoints?.rewardMulVisual?.premRewardMulVisualPart ?? 0.5 : 0.0
-    let mul = (uWpCost?["rewardMul" + mode] ?? 1.0) *
-      (warpoints?.rewardMulVisual?["rewardMulVisual" + mode] ?? 1.0)
+    let mul = (uWpCost?[$"rewardMul{mode}"] ?? 1.0) *
+      (warpoints?.rewardMulVisual?[$"rewardMulVisual{mode}"] ?? 1.0)
     let timedAward = uWpCost?[$"timedAward{mode}"] ?? 0
 
     return {

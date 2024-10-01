@@ -327,7 +327,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function playChapterVideo(chapterName, checkSeen = false) {
-    let videoName = "video/" + chapterName
+    let videoName = $"video/{chapterName}"
     if (checkSeen && was_video_seen(videoName))
       return
 
@@ -424,7 +424,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getFavoritesSaveId() {
-    return "wnd/isOnlyFavoriteMissions/" + this.misListType.id
+    return $"wnd/isOnlyFavoriteMissions/{this.misListType.id}"
   }
 
   function updateFavorites() {
@@ -671,7 +671,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
         let obj = listObj.getChild(idx)
         if (obj) {
           obj.collapsed = collapsed ? "yes" : "no"
-          let collapseBtnObj = obj.findObject("btn_" + obj.id)
+          let collapseBtnObj = obj.findObject($"btn_{obj.id}")
           if (checkObj(collapseBtnObj))
             collapseBtnObj.show(!isFilteredMissions)
         }

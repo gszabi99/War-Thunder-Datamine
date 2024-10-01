@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, set_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
 
@@ -9,7 +8,7 @@ let MAX_VOICE_MESSAGE_BUTTONS = 8
 
 function getIdVoiceMessageOption(index) {
   return {
-    id = "ID_VOICE_MESSAGE_" + index
+    id = $"ID_VOICE_MESSAGE_{index}"
     checkAssign = false
   }
 }
@@ -62,7 +61,7 @@ groupList.append(
 
 function getFavoriteVoiceMessageOption(index) {
   return {
-    id = "favorite_voice_message_" + index
+    id = $"favorite_voice_message_{index}"
     type = CONTROL_TYPE.SPINNER
     options = getFavoriteVoiceMessagesVariants()
     value =  function(_joyParams) { return get_option_favorite_voice_message(index - 1) + 1 }
@@ -72,7 +71,7 @@ function getFavoriteVoiceMessageOption(index) {
 
 function getFastVoiceMessageOption(index) {
   return {
-    id = "ID_FAST_VOICE_MESSAGE_" + index
+    id = $"ID_FAST_VOICE_MESSAGE_{index}"
     checkAssign = false
   }
 }

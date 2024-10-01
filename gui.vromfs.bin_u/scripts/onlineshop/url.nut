@@ -180,7 +180,7 @@ function validateLink(link) {
   if (localizedLink != "")
     return localizedLink
 
-  log("CHECK LINK: Not found any localization string for link: " + link)
+  log($"CHECK LINK: Not found any localization string for link: {link}")
   return null
 }
 

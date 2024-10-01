@@ -23,9 +23,9 @@ function getBonus(exp, wp) {
   wp = roundToDigits(wp, 2)
   let texts = []
   if(exp > 1.0)
-    texts.append(format(loc("bonus/expMulPlainText"), "x" + exp))
+    texts.append(format(loc("bonus/expMulPlainText"),$"x{exp}"))
   if (wp > 1.0)
-    texts.append(format(loc("bonus/wpMulPlainText"), "x" + wp))
+    texts.append(format(loc("bonus/wpMulPlainText"),$"x{wp}"))
   return "\n".join(texts)
 }
 
@@ -261,12 +261,12 @@ function get_userlog_plain_text(logObj) {
     local descMods = ""
 
     local idx = 0
-    while (("aname" + idx) in logObj.rpEarned) {
-      let unitId = logObj.rpEarned["aname" + idx]
-      let modId = (("mname" + idx) in logObj.rpEarned) ? logObj.rpEarned["mname" + idx] : null
-      let mrp = logObj.rpEarned["mrp" + idx]
+    while (($"aname{idx}") in logObj.rpEarned) {
+      let unitId = logObj.rpEarned[$"aname{idx}"]
+      let modId = (($"mname{idx}") in logObj.rpEarned) ? logObj.rpEarned[$"mname{idx}"] : null
+      let mrp = logObj.rpEarned[$"mrp{idx}"]
 
-      let fromExcessRP = ("merp" + idx) in logObj.rpEarned ? logObj.rpEarned["merp" + idx] : 0
+      let fromExcessRP = ($"merp{idx}") in logObj.rpEarned ? logObj.rpEarned[$"merp{idx}"] : 0
       rp += mrp + fromExcessRP
 
       local modText = ""

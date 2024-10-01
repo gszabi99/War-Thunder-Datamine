@@ -203,12 +203,12 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.curRecipe.markRecipe(true)
-    let recipeObj = this.scene.findObject("id_" + this.curRecipe.uid)
+    let recipeObj = this.scene.findObject($"id_{this.curRecipe.uid}")
     if (!checkObj(recipeObj))
       return
 
     recipeObj.isRecipeLocked = this.curRecipe.isRecipeLocked() ? "yes" : "no"
-    let markImgObj = recipeObj.findObject("img_" + this.curRecipe.uid)
+    let markImgObj = recipeObj.findObject($"img_{this.curRecipe.uid}")
     markImgObj["background-image"] = this.curRecipe.getMarkIcon()
     markImgObj.tooltip = this.curRecipe.getMarkTooltip()
     this.updateCurRecipeInfo()

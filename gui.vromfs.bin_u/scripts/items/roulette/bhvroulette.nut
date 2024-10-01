@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound
 from "%scripts/dagui_library.nut" import *
 
@@ -13,7 +12,7 @@ let BhvRoulette = class {
   function onAttach(obj) {
     if (obj?.value) {
       try { this.setValue(obj, obj.value) }
-      catch(e) { script_net_assert_once("bad bhvRoulette value", "BhvRoulette: bad value on attach: '" + obj.value + "'") }
+      catch(e) { script_net_assert_once("bad bhvRoulette value", $"BhvRoulette: bad value on attach: '{obj.value}'") }
     }
     return RETCODE_NOTHING
   }

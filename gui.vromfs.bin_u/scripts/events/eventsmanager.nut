@@ -1311,7 +1311,7 @@ let Events = class {
       let unitType = this.getBaseUnitTypefromRule(rule, false)
       if (unitType != ES_UNIT_TYPE_INVALID && unitType != this.getMatchingUnitType(unit))
         continue
-      if (("type" in rule) && (getWpcostUnitClass(unit.name) != "exp_" + rule.type))
+      if (("type" in rule) && (getWpcostUnitClass(unit.name) != $"exp_{rule.type}"))
         continue
 
       return true
@@ -1795,7 +1795,7 @@ let Events = class {
       diffName = __game_events[eventId].mission_decl.difficulty
 
     if (this.isDifficultyCustom(__game_events[eventId]) && !baseOnly)
-      diffName = "custom_" + diffName
+      diffName = $"custom_{diffName}"
 
     return diffName
   }
@@ -1811,7 +1811,7 @@ let Events = class {
 
     foreach (name, flag in __game_events[eventId].mission_decl.customDifficulty) {
       diffChanges += diffChanges.len() ? "\n" : ""
-      diffChanges += format("%s - %s", loc("options/" + name), loc("options/" + (flag ? "enabled" : "disabled")))
+      diffChanges += format("%s - %s", loc($"options/{name}"), loc("options/" + (flag ? "enabled" : "disabled")))
     }
 
     return diffChanges
@@ -2056,7 +2056,7 @@ let Events = class {
         allowText = toUpper(allowText, 1)
       }
     }
-    allowText = allowText == "" ? loc("events/" + allowId) : allowText
+    allowText = allowText == "" ? loc($"events/{allowId}") : allowText
     allowedUnitTypesObj.findObject("allowed_unit_types_text").setValue(allowText)
   }
 
@@ -2100,7 +2100,7 @@ let Events = class {
 
       if (air && checkObj(ruleObj)) {
         let airNameObj = ruleObj.findObject("air_name")
-        airNameObj.setValue(loc(rule.name + "_shop"))
+        airNameObj.setValue(loc($"{rule.name}_shop"))
 
         if (::isUnitUsable(air))
           airNameObj.airBought = "yes"
@@ -2534,12 +2534,12 @@ let Events = class {
    * you first time took part in this tournamnet you was in.
    */
   function checkClan(event) {
-    let clanTournament = getBlkValueByPath(get_tournaments_blk(), event.name + "/clanTournament", false)
+    let clanTournament = getBlkValueByPath(get_tournaments_blk(),$"{event.name}/clanTournament", false)
     if (!clanTournament)
       return true
     if (!::is_in_clan())
       return false
-    if (getBlkValueByPath(get_tournaments_blk(), event.name + "/allowToSwitchClan"))
+    if (getBlkValueByPath(get_tournaments_blk(),$"{event.name}/allowToSwitchClan"))
       return true
     let tournamentBlk = getTournamentInfoBlk(getEventEconomicName(event))
     return tournamentBlk?.clanId ? clan_get_my_clan_id() == tournamentBlk.clanId.tostring() : true

@@ -68,8 +68,8 @@ let InternalItem = class (ItemCouponBase) {
     let quantity = count * (this.metaBlk?.count ?? 1)
     let quantityText = quantity == 1
       ? ""
-      : $"x{quantity}"
-    return  $"{itemText} {quantityText}"
+      : $" x{quantity}"
+    return  $"{itemText}{quantityText}"
   }
 
   getShortDescription = @(colored = true) this.showAsContentItem()

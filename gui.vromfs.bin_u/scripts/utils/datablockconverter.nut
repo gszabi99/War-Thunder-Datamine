@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -27,9 +26,9 @@ let { startsWith, slice } = require("%sqstd/string.nut")
 let keyToStr = function(key) {
   let t = type(key)
   return t == "string" ? key
-    : t == "integer"   ? "__int_"   + key
-    : t == "float"     ? "__float_" + key
-    : t == "bool"      ? "__bool_"  + (key ? 1 : 0)
+    : t == "integer"   ? $"__int_{key}"
+    : t == "float"     ? $"__float_{key}"
+    : t == "bool"      ? $"__bool_{key ? 1 : 0}"
     : "__unsupported"
 }
 
@@ -82,7 +81,7 @@ function blkToData(blk) {
   if (blk?.__array) {
     let res = []
     for (local i = 0; i < blk.blockCount() + blk.paramCount() - 1; i++)
-      res.append(blkToData(blk["array" + i]))
+      res.append(blkToData(blk[$"array{i}"]))
     return res
   }
   let res = {}

@@ -64,7 +64,8 @@
     "explosiveMass": 0.013,
     "caliber": 0.057,
     "speed": 1000.0,
-    "maxDistance": 10000.0,
+    "Cx": 0.377,
+    "maxDistance": 16000.0,
     "normalizationPreset": "apbc",
     "ricochetPreset": "apbc",
     "groundRicochetPreset": "apbc_ground",
@@ -89,6 +90,7 @@
       300.0,
       1000.0
     ],
+    "checkIntegrityAfterExplosion": true,
     "fuseDelayDist": 1.2,
     "explodeTreshold": 9.0,
     "relativeVelArmorShift": [
@@ -148,7 +150,6 @@
     },
     "testProperties": {
       "checkIntegrityAfterExplosion": true,
-      "secondaryShattersPreset": "ap_large_caliber",
       "damage": {
         "shatter": {
           "useRealShatters": true,
@@ -324,7 +325,8 @@
       "explosiveMass": 0.013,
       "caliber": 0.057,
       "speed": 1000.0,
-      "maxDistance": 10000.0,
+      "Cx": 0.377,
+      "maxDistance": 16000.0,
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "groundRicochetPreset": "apbc_ground",
@@ -349,6 +351,7 @@
         300.0,
         1000.0
       ],
+      "checkIntegrityAfterExplosion": true,
       "fuseDelayDist": 1.2,
       "explodeTreshold": 9.0,
       "relativeVelArmorShift": [
@@ -408,7 +411,6 @@
       },
       "testProperties": {
         "checkIntegrityAfterExplosion": true,
-        "secondaryShattersPreset": "ap_large_caliber",
         "damage": {
           "shatter": {
             "useRealShatters": true,
@@ -586,7 +588,8 @@
       "caliber": 0.057,
       "speed": 1000.0,
       "selfDestructionInAir": true,
-      "maxDistance": 10000.0,
+      "Cx": 0.377,
+      "maxDistance": 14000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -1293,11 +1296,15 @@
       },
       "proximityFuse": {
         "radius": 6.0,
-        "armDistance": 500.0,
+        "armDistance": 200.0,
         "detectAirUnits": true,
         "detectGroundUnits": false,
         "detectGround": false,
-        "detectShells": true
+        "detectShells": true,
+        "shellCaliberRange": [
+          0.08,
+          0.2
+        ]
       },
       "hitpower": {
         "HitPower0m": [

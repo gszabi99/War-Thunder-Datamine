@@ -123,7 +123,7 @@ function rewardsSortComparator(a, b) {
     return ""
 
   let rewardValue = config[rewardType]
-  local style = "reward_" + rewardType
+  local style = $"reward_{rewardType}"
 
   if (rewardType == "multiAwardsOnWorthGold" || rewardType == "modsForBoughtUnit") {
     let trophyMultiAward = TrophyMultiAward(DataBlockAdapter(config))
@@ -161,7 +161,7 @@ function rewardsSortComparator(a, b) {
     }
   }
   else if (rewardType == "unlockType") {
-    style = "reward_" + rewardValue
+    style = $"reward_{rewardValue}"
     if (!LayersIcon.findStyleCfg(style))
       style = "reward_unlock"
   }
@@ -216,7 +216,7 @@ function rewardsSortComparator(a, b) {
   }
 
   if (res.image == "") {
-    res.style = "reward_" + config.resourceType
+    res.style =$"reward_{config.resourceType}"
     if (!LayersIcon.findStyleCfg(res.style))
       res.style = "reward_unlock"
   }

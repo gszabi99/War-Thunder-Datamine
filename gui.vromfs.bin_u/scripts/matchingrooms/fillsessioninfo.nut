@@ -127,7 +127,7 @@ return function(scene, sessionInfo) {
   let difObj = scene.findObject("session_difficulty")
   if (checkObj(difObj)) {
     let diff = getTblValue("difficulty", missionInfo)
-    setTextToObj(difObj, loc("multiplayer/difficultyShort") + loc("ui/colon"), loc("options/" + diff))
+    setTextToObj(difObj, loc("multiplayer/difficultyShort") + loc("ui/colon"), loc($"options/{diff}"))
     local diffTooltip = ""
     if (diff == "custom") {
       let custDiff = getTblValue("custDifficulty", missionInfo, null)

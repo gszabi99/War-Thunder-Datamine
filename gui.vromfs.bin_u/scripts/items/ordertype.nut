@@ -82,7 +82,7 @@ let orderTypes = {
     /** Returns localized text to show as score header in order status. */
     function getScoreHeaderText() {
       let locPrefix = "items/order/scoreTable/scoreHeader/"
-      return loc(locPrefix + this.name, loc(locPrefix + "default"))
+      return loc(locPrefix + this.name, loc($"{locPrefix}default"))
     }
 
     /** Returns localized text to form proper award mode description. */

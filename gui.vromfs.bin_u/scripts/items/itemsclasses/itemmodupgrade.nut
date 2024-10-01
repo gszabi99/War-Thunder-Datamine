@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, get_modification_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -33,7 +32,7 @@ let ModUpgrade = class (BaseItemModClass) {
 
   function getDescriptionIntroArray() {
     if (this.level)
-      return [ loc("multiplayer/level") + loc("ui/colon") + colorize("activeTextColor", this.level) ]
+      return [ "".concat(loc("multiplayer/level"), loc("ui/colon"), colorize("activeTextColor", this.level)) ]
     return null
   }
 

@@ -267,7 +267,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContent(queueBoxObj, "%gui/events/eventQueue.blk", this)
 
     foreach (team in ::events.getSidesList())
-      queueBoxObj.findObject(team + "_block").show(team == Team.A) //clan queue always symmetric
+      queueBoxObj.findObject($"{team}_block").show(team == Team.A) //clan queue always symmetric
   }
 
   function updateTabContent() {
@@ -323,7 +323,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!queueStats)
       return
 
-    let statsObj = tblObj.findObject(Team.A + "_block")
+    let statsObj = tblObj.findObject($"{Team.A}_block")
     let teamData = ::events.getTeamData(::queues.getQueueEvent(queue), Team.A)
     let playersCountText = loc("events/clans_count") + loc("ui/colon") + queueStats.getClansCount()
     let tableMarkup = this.getClanQueueTableMarkup(queueStats)

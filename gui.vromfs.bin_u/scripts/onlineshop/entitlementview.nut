@@ -191,7 +191,7 @@ let getDecoratorLayeredIcon = @(giftArray, decoratorType) (giftArray ?? []).map(
     image = LayersIcon.genDataFromLayer(cfg)
 
   if (image == "")
-    image = LayersIcon.getIconData("reward_" + decoratorType.resourceType)
+    image = LayersIcon.getIconData($"reward_{decoratorType.resourceType}")
 
   return image
 })

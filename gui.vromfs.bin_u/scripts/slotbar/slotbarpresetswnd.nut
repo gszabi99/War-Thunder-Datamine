@@ -61,7 +61,7 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
 
       view.items.append({
         itemTag = preset.enabled ? "mission_item_unlocked" : "mission_item_locked"
-        id = "preset" + idx
+        id = $"preset{idx}"
         isSelected = idx == this.chosenValue
         itemText = title
         isNeedOnHover = showConsoleButtons.value

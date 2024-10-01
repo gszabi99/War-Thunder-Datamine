@@ -386,7 +386,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
         })
         if (hotkeys.len())
           hotkeys = "<color=@hotkeyColor>" + loc("ui/parentheses/space", { text = hotkeys }) + "</color>"
-        obj.tooltip = loc("hotkeys/" + obj.id) + hotkeys
+        obj.tooltip = loc($"hotkeys/{obj.id}") + hotkeys
       }
     }
 

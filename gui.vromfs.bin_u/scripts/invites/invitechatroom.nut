@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
@@ -15,7 +14,7 @@ let ChatRoom = class (BaseInvite) {
   roomType = g_chat_room_type.DEFAULT_ROOM
 
   static function getUidByParams(params) {
-    return "CR_" + getTblValue("inviterName", params, "") + "/" + getTblValue("roomId", params, "")
+    return "".concat("CR_", getTblValue("inviterName", params, ""), "/", getTblValue("roomId", params, ""))
   }
 
   function updateCustomParams(params, initial = false) {
@@ -49,7 +48,7 @@ let ChatRoom = class (BaseInvite) {
   }
 
   function getChatInviteText() {
-    let nameF = "<Link=%s><Color=" + this.inviteActiveColor + ">%s</Color></Link>"
+    let nameF = "".concat("<Link=%s><Color=", this.inviteActiveColor, ">%s</Color></Link>")
 
     let clickNameText = this.roomType.getInviteClickNameText(this.roomId)
     return loc(this.roomType.inviteLocIdFull,

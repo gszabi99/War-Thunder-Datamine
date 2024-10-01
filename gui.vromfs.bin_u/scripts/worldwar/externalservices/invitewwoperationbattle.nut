@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -21,7 +20,7 @@ let WwOperationBattle = class (BaseInvite) {
   inviteActiveColor = "userlogColoredText"
 
   static function getUidByParams(params) {
-    return "WW_" + (params?.operationId ?? "null") + "_" + (params?.battleId ?? "null")
+    return "".concat("WW_", (params?.operationId ?? "null"), "_", (params?.battleId ?? "null"))
   }
 
   function updateCustomParams(params, initial = false) {

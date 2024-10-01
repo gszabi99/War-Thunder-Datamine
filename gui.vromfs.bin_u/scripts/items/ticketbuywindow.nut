@@ -1,5 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -78,12 +78,12 @@ gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     local captionText = ticket.getAvailableDefeatsText(getEventEconomicName(this.event))
     let limitText = ticket.getGlobalLimitText()
     if (limitText.len() > 0)
-      captionText += "\n" + limitText
+      captionText = "".concat(captionText, "\n", limitText)
     return captionText
   }
 
   function getTicketCaptionId(ticketIndex) {
-    return "ticket_caption_" + ticketIndex.tostring()
+    return "".concat("ticket_caption_", ticketIndex.tostring())
   }
 
   function onItemAction(obj) {
@@ -122,7 +122,7 @@ gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     let itemsListObj = this.getItemsListObj()
     for (local i = 0; i < this.tickets.len(); ++i) {
       let itemObj = itemsListObj.getChild(i)
-      let captionObj = this.scene.findObject("ticket_caption_" + i.tostring())
+      let captionObj = this.scene.findObject($"ticket_caption_{i}")
       this.updateTicketCaptionPosition(captionObj, itemObj)
     }
   }
@@ -150,20 +150,20 @@ gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   function createMainText() {
     local text = loc("ticketBuyWindow/mainText")
     if (this.tickets.len() > 1)
-      text += "\n" + loc("ticketBuyWindow/optionalText")
+      text = "".concat(text, "\n", loc("ticketBuyWindow/optionalText"))
     return text
   }
 
   function createActiveTicketText() {
     if (this.activeTicket == null)
       return ""
-    local text = loc("ticketBuyWindow/activeTicketText") + "\n"
+    local text = "".concat(loc("ticketBuyWindow/activeTicketText"), "\n")
     let tournamentData = this.activeTicket.getTicketTournamentData(getEventEconomicName(this.event))
     let textParts = []
     textParts.append(loc("ticketBuyWindow/unfinishedSessions", tournamentData))
     textParts.append(this.activeTicket.getDefeatCountText(tournamentData))
     textParts.append(this.activeTicket.getSequenceDefeatCountText(tournamentData))
-    text += "\n".join(textParts, true)
+    text = "".concat(text, "\n".join(textParts, true))
     return text
   }
 }

@@ -121,7 +121,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
         misDescr.unlocks.country[countryId] <- isCountryUnlocked
       }
 
-      let nameId = "dynamic/" + misDescr.id
+      let nameId =$"dynamic/{misDescr.id}"
       misDescr.unlockText <- lockReason
       misDescr.progress <- isAnyCountryUnlocked ? get_mission_progress(nameId) : -1
 
@@ -161,7 +161,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
         itemIcon = medalIcon
         id = mission.id
         isSelected = idx == 0
-        itemText = "#" + nameId
+        itemText = $"#{nameId}"
         isNeedOnHover = showConsoleButtons.value
       })
     }
@@ -205,7 +205,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
     let missionBlock = this.missions[this.getSelectedMission()]
     let countryId = missionBlock.id + "_" + country
     if (!(countryId in missionBlock.unlocks.country)) {
-      assert(false, "Not found unlock " + countryId)
+      assert(false,$"Not found unlock {countryId}")
       debugTableData(missionBlock.countries)
       return false
     }
@@ -392,7 +392,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   foreach (cTag in ["country_allies", "country_axis"]) {
     local c = mBlk?[cTag] ?? "ussr"
     if (!checkDynamic || ::is_dynamic_country_allowed(c))
-      c = "country_" + c
+      c = $"country_{c}"
     else
       c = null
     res.append(c)

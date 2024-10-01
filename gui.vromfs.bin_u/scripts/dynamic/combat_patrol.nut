@@ -206,49 +206,49 @@ function genCombatPatrolMission(_isFreeFlight) {
       allySpeed = ally3FighterSpeed
     }
 
-    mgSetupArea("battle_point_wp0" + j, "waypoint0" + j, "waypoint0" + (j + 1), 0, dist, 0)
-    mgSetupArea("forAttack_wp0" + j + "_moveTo", "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(-30, 30),
+    mgSetupArea($"battle_point_wp0{j}", "waypoint0" + j, "waypoint0" + (j + 1), 0, dist, 0)
+    mgSetupArea("forAttack_wp0" + j + "_moveTo",$"battle_point_wp0{j}", "waypoint0" + (j + 1), rndRange(-30, 30),
       30000, rndRange(-500, 0))
-    mgSetupArea("headOnCourse_wp0" + j, "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(-60, 60),
+    mgSetupArea($"headOnCourse_wp0{j}", "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(-60, 60),
       enemySpeed * time, rndRange(-500, 500))
-    mgSetupArea("fromBack_wp0" + j, "waypoint0" + j, "waypoint0" + (j - 1), rndRange(-30, 30),
+    mgSetupArea($"fromBack_wp0{j}", "waypoint0" + j, "waypoint0" + (j - 1), rndRange(-30, 30),
       enemySpeed * 0.2, 3000)
-    mgSetupArea("battle_enemy_wp0" + j, "battle_point_wp0" + j, "waypoint0" + (j + 1), 90,
+    mgSetupArea($"battle_enemy_wp0{j}", "battle_point_wp0" + j, "waypoint0" + (j + 1), 90,
       enemySpeed * 20 / 60, rndRange(-500, 500))
-    mgSetupArea("battle_ally_wp0" + j, "battle_point_wp0" + j, "waypoint0" + (j + 1), -90,
+    mgSetupArea($"battle_ally_wp0{j}", "battle_point_wp0" + j, "waypoint0" + (j + 1), -90,
       allySpeed * 20 / 60, rndRange(-500, 500))
-    mgSetupArea("reinforsment_enemy_wp0" + j, "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(45, 135),
+    mgSetupArea($"reinforsment_enemy_wp0{j}", "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(45, 135),
       enemySpeed * rndRange(30, 90) / 60.0, rndRange(-500, 500))
-    mgSetupArea("reinforsment_ally_wp0" + j, "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(-45, -135),
+    mgSetupArea($"reinforsment_ally_wp0{j}", "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(-45, -135),
       allySpeed * rndRange(30, 90) / 60.0, rndRange(-500, 500))
 
     let k = event
 
     if (k == 1) {
-      point = "headOnCourse_wp0" + j
-      lookAt = "waypoint0" + j
-      squad = "#enemy_attack_player_wp0" + j
+      point = $"headOnCourse_wp0{j}"
+      lookAt = $"waypoint0{j}"
+      squad = $"#enemy_attack_player_wp0{j}"
     }
     else if ( k == 2 ) {
-      point = "battle_point_wp0" + j
+      point = $"battle_point_wp0{j}"
       lookAt = "waypoint0" + (j + 1)
-      squad = "#enemy_move_wp0" + j
+      squad = $"#enemy_move_wp0{j}"
     }
     else if ( k == 3 ) {
-      point = "fromBack_wp0" + j
-      lookAt = "waypoint0" + j
-      squad = "#enemy_attack_player_wp0" + j
+      point = $"fromBack_wp0{j}"
+      lookAt = $"waypoint0{j}"
+      squad = $"#enemy_attack_player_wp0{j}"
     }
     else if ( k == 4 ) {
-      point = "battle_enemy_wp0" + j
-      lookAt = "battle_point_wp0" + j
-      squad = "#enemy_battle_wp0" + j
-      mgSetupArmada("#ally0" + j + ".fighter", "battle_ally_wp0" + j, Point3(0, 0, 0), "waypoint0" + j,
-        "#ally_battle_wp0" + j, allyWpCount, allyWpCount, allyPlane)
+      point = $"battle_enemy_wp0{j}"
+      lookAt = $"battle_point_wp0{j}"
+      squad = $"#enemy_battle_wp0{j}"
+      mgSetupArmada("#ally0" + j + ".fighter",$"battle_ally_wp0{j}", Point3(0, 0, 0), "waypoint0" + j,
+        $"#ally_battle_wp0{j}", allyWpCount, allyWpCount, allyPlane)
     }
     else if ( k == 5 ) {
-      mgSetupArmada("#ally0" + j + ".fighter", "fromBack_wp0" + j, Point3(0, 0, 0), "waypoint0" + j,
-        "#ally_move_wp0" + j, allyWpCount, allyWpCount, allyPlane)
+      mgSetupArmada("#ally0" + j + ".fighter",$"fromBack_wp0{j}", Point3(0, 0, 0), "waypoint0" + j,
+        $"#ally_move_wp0{j}", allyWpCount, allyWpCount, allyPlane)
     }
     else if ( k == 6 ) {
       allyWpCount = 0
@@ -262,11 +262,11 @@ function genCombatPatrolMission(_isFreeFlight) {
         squad, enemyWpCount, enemyWpCount, enemyPlane)
       let reinf = rndRange(0, 1)
       if (reinf > 0.75 && reinf < 0.90 && enemyReinfCount >= 3)
-        mgSetupArmada("#enemy0" + (j + 3) + ".fighter", "reinforsment_enemy_wp0" + j, Point3(0, 0, 0), lookAt,
-          "#enemy_reinforcements0" + j, enemyReinfCount, enemyReinfCount, enemyPlane)
+        mgSetupArmada("#enemy0" + (j + 3) + ".fighter",$"reinforsment_enemy_wp0{j}", Point3(0, 0, 0), lookAt,
+          $"#enemy_reinforcements0{j}", enemyReinfCount, enemyReinfCount, enemyPlane)
       if (reinf > 0.85 && allyReinfCount >= 4)
-        mgSetupArmada("#ally0" + (j + 3) + ".fighter", "reinforsment_ally_wp0" + j, Point3(0, 0, 0), lookAt,
-          "#ally_reinforcements0" + j, allyReinfCount, allyReinfCount, allyPlane)
+        mgSetupArmada("#ally0" + (j + 3) + ".fighter",$"reinforsment_ally_wp0{j}", Point3(0, 0, 0), lookAt,
+          $"#ally_reinforcements0{j}", allyReinfCount, allyReinfCount, allyPlane)
     }
     else
       enemyWpCount = 0

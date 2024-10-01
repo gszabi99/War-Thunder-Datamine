@@ -152,7 +152,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         id = countryItem
         disabled = !isCountryAvailable(countryItem)
         image = getCountryIcon(countryItem)
-        tooltip = "#" + countryItem
+        tooltip = $"#{countryItem}"
         discountNotification = true
       })
 
@@ -166,7 +166,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     countriesObj.setValue(curValue)
 
     foreach (c in shopCountriesList)
-      showDiscount(countriesObj.findObject(c + "_discount"), "exp_to_gold_rate", c)
+      showDiscount(countriesObj.findObject($"{c}_discount"), "exp_to_gold_rate", c)
   }
 
   function fillUnitList() {

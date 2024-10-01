@@ -100,8 +100,10 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
   function cloneSlotbarTable() {
     let itemsCount = this.airsTableSource.childrenCount()
 
-    for (local i = 0; i < itemsCount - 1; i++) {
+    for (local i = 0; i < itemsCount; i++) {
       let originalItem = this.airsTableSource.getChild(i)
+      if (originalItem?.isCrewRecruit == "yes")
+        continue
       let originalItemPos = originalItem.getPosRC()
       this.fixedPositions.append(originalItemPos[0])
       if (originalItem.id == this.draggedObj.id) {

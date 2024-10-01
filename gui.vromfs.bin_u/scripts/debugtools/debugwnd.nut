@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_file_modify_time_sec, is_existing_file
 from "%scripts/dagui_library.nut" import *
 
@@ -54,12 +53,13 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
 
     let obj = this.scene.findObject("debug_wnd_content_box")
     if (!this.isExist) {
-      let txt = (this.blkName == null ? "No file specified." :
-        ("File not found: \"" + colorize("userlogColoredText", this.blkName) + "\""))
-        + "~nUsage examples:"
-        + "~ndebug_wnd(\"%gui/debriefing/debriefing.blk\")"
-        + "~ndebug_wnd(\"%gui/menuButton.tpl\", {buttonText=\"Test\"})" // warning disable: -forgot-subst
-      let data = "textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2' position:t='absolute' text='" + txt + "' }"
+      let ptxt = this.blkName == null ? "No file specified." :
+          "".concat("File not found: \"", colorize("userlogColoredText", this.blkName), "\"")
+      let txt = "".concat(ptxt
+          ,"~nUsage examples:"
+          ,"~ndebug_wnd(\"%gui/debriefing/debriefing.blk\")"
+          ,"~ndebug_wnd(\"%gui/menuButton.tpl\", {buttonText=\"Test\"})") // warning disable: -forgot-subst
+      let data = "".concat("textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2' position:t='absolute' text='", txt, "' }")
       return this.guiScene.replaceContentFromText(obj, data, data.len(), this.callbacksContext)
     }
 

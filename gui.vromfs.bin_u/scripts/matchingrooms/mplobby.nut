@@ -152,7 +152,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let event = SessionLobby.getRoomEvent()
     foreach (team in this.tableTeams) {
-      let teamObj = teamsNest.findObject("num_team" + team.id)
+      let teamObj = teamsNest.findObject($"num_team{team.id}")
       if (!checkObj(teamObj))
         continue
 
@@ -227,7 +227,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let titleObj = mainObj.findObject("player_title")
     if (checkObj(titleObj))
-      titleObj.setValue((player.title != "") ? (loc("title/title") + loc("ui/colon") + loc("title/" + player.title)) : "")
+      titleObj.setValue((player.title != "") ? (loc("title/title") + loc("ui/colon") + loc($"title/{player.title}")) : "")
 
     let spectatorObj = mainObj.findObject("player_spectator")
     if (checkObj(spectatorObj)) {
@@ -399,7 +399,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     if (needTeamStatus)
       countTbl = SessionLobby.getMembersCountByTeams()
     foreach (_idx, team in this.tableTeams) {
-      let teamObj = showObjById("team_status_" + team.id, needTeamStatus, this.scene)
+      let teamObj = showObjById($"team_status_{team.id}", needTeamStatus, this.scene)
       if (!teamObj || !needTeamStatus)
         continue
 

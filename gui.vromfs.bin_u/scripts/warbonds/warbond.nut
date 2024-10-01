@@ -84,7 +84,7 @@ let Warbond = class {
     this.awardsList.clear()
 
     let pBlk = get_price_blk()
-    let config = getBlkValueByPath(pBlk, this.blkListPath + "/shop")
+    let config = getBlkValueByPath(pBlk,$"{this.blkListPath}/shop")
     if (!u.isDataBlock(config))
       return
 

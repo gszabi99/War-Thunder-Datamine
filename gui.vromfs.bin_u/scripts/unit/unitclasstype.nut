@@ -1,6 +1,4 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
-
 
 let { getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -72,7 +70,7 @@ enums.addTypes(unitClassType, {
     unitTypeCode = ES_UNIT_TYPE_TANK
     checkOrder = checkOrder++
 
-    getName = @() loc("mainmenu/type_medium_tank") + loc("ui/slash") + loc("mainmenu/type_light_tank")
+    getName = @() "".concat(loc("mainmenu/type_medium_tank"), loc("ui/slash"), loc("mainmenu/type_light_tank"))
     getFontIcon = @() getUnitRoleIcon("medium_tank")
   }
 

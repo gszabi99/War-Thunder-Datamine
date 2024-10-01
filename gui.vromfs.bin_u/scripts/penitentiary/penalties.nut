@@ -58,7 +58,7 @@ function getDevoiceMessage(activeColor = "chatActiveInfoColor") {
   }
 
   txt += loc("charServer/ban/reason") + loc("ui/colon") + " " +
-    colorize(activeColor, loc("charServer/ban/reason/" + st.category)) + "\n" +
+    colorize(activeColor, loc($"charServer/ban/reason/{st.category}")) + "\n" +
     loc("charServer/ban/comment") + "\n" + st.comment
   return txt
 }

@@ -1487,7 +1487,7 @@
       "ballisticCaliber": 0.08,
       "Cx": 0.63402,
       "speed": 1410.0,
-      "maxDistance": 8500.0,
+      "maxDistance": 12700.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
       "groundRicochetPreset": "heat_fs",
@@ -1598,11 +1598,15 @@
       },
       "proximityFuse": {
         "radius": 10.0,
-        "armDistance": 400.0,
+        "armDistance": 200.0,
         "detectAirUnits": true,
         "detectGroundUnits": false,
         "detectGround": false,
-        "detectShells": false
+        "detectShells": true,
+        "shellCaliberRange": [
+          0.08,
+          0.2
+        ]
       },
       "cumulativeDamage": {
         "armorPower": 350.0,

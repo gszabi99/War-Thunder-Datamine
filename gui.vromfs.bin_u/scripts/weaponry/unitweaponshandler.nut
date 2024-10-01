@@ -52,7 +52,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let sizes = countSizeInItems(this.scene, "@modCellWidth", "@modCellHeight", 0, 0)
     this.modsInRow = sizes.itemsCountX
-    this.scene.width = this.modsInRow + "@modCellWidth"
+    this.scene.width =$"{this.modsInRow}@modCellWidth"
     this.needRecountWidth = false
   }
 

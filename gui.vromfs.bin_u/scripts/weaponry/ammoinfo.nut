@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import wp_get_cost2, wp_get_cost_gold2, wp_get_modification_cost, wp_get_weapon_max_count, shop_is_weapon_purchased, shop_get_weapon_baseval, wp_get_modification_max_count, shop_get_modification_baseval, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING
@@ -79,7 +78,7 @@ function getAmmoAmountData(unit, ammoName, ammoType) {
   if (text == "")
     return res
 
-  let fullText = "(" + text + ")"
+  let fullText = $"({text})"
   let amountWarning = getAmmoWarningMinimum(ammoType, unit, maxAmount)
   if (res.amount < amountWarning) {
     res.text = $"<color=@weaponWarning>{fullText}</color>"

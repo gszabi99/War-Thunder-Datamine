@@ -746,8 +746,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       let totalKey = getCountedResultId(this.totalRow, this.state, currency)
       this.totalCurValues[currency] <- getTblValue(currency, this.totalCurValues, 0)
       this.totalTarValues[currency] <- getTblValue(totalKey, this.debriefingResult.counted_result_by_debrState, 0)
-      this.totalCurValues[currency + "Teaser"] <- getTblValue(currency + "Teaser", this.totalCurValues, 0)
-      this.totalTarValues[currency + "Teaser"] <- premTeaser[currency]
+      this.totalCurValues[$"{currency}Teaser"] <- getTblValue($"{currency}Teaser", this.totalCurValues, 0)
+      this.totalTarValues[$"{currency}Teaser"] <- premTeaser[currency]
     }
 
     let canSuggestPrem = this.canSuggestBuyPremium()
@@ -1110,7 +1110,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function showTab(tabName) {
     foreach (name in this.tabsList) {
-      let obj = this.scene.findObject(name + "_tab")
+      let obj = this.scene.findObject($"{name}_tab")
       if (!obj)
         continue
       let isShow = name == tabName
@@ -1125,7 +1125,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function animShowTab(tabName) {
-    let obj = this.scene.findObject(tabName + "_tab")
+    let obj = this.scene.findObject($"{tabName}_tab")
     if (!obj)
       return
 
@@ -1266,8 +1266,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       let tblTotal = getTblValue("tblTotal", this.debriefingResult.exp, {})
       let bonusesTotal = []
       foreach (bonusType in [ "premAcc", "premMod", "booster" ]) {
-        let bonusExp = getTblValue(bonusType + "Exp", tblTotal, 0)
-        let bonusWp  = getTblValue(bonusType + "Wp",  tblTotal, 0)
+        let bonusExp = getTblValue($"{bonusType}Exp", tblTotal, 0)
+        let bonusWp  = getTblValue($"{bonusType}Wp",  tblTotal, 0)
         if (!bonusExp && !bonusWp)
           continue
         bonusesTotal.append(loc(getTblValue(bonusType, bonusNames, "")) + loc("ui/colon") +
@@ -1403,7 +1403,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function updateStat(row, tblObj, dt, needScroll) {
     local finished = true
     local justCreated = false
-    let rowId = "row_" + row.id
+    let rowId =$"row_{row.id}"
     local rowObj = tblObj.findObject(rowId)
 
     if (!("curValues" in row) || !checkObj(rowObj))
@@ -1412,7 +1412,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       this.guiScene.setUpdatesEnabled(false, false)
       rowObj = this.guiScene.createElementByObject(tblObj, "%gui/debriefing/statRow.blk", "tr", this)
       rowObj.id = rowId
-      rowObj.findObject("tooltip_").id = "tooltip_" + row.id
+      rowObj.findObject("tooltip_").id =$"tooltip_{row.id}"
       rowObj.findObject("name").setValue(row.getName())
       if (row.getNameIcon) {
         rowObj.findObject("name_icon")["background-image"] = row.getNameIcon()
@@ -1623,11 +1623,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function getResearchUnitInfo(unitTypeName) {
-    let unitId = this.debriefingResult?.exp["investUnitName" + unitTypeName] ?? ""
+    let unitId = this.debriefingResult?.exp[$"investUnitName{unitTypeName}"] ?? ""
     let unit = getAircraftByName(unitId)
     if (!unit)
       return null
-    local expInvest = this.debriefingResult?.exp["expInvestUnit" + unitTypeName] ?? 0
+    local expInvest = this.debriefingResult?.exp[$"expInvestUnit{unitTypeName}"] ?? 0
     expInvest = this.applyItemExpMultiplicator(expInvest)
     if (expInvest <= 0)
       return null
@@ -1693,7 +1693,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let obj = holderObj.findObject(unitId)
 
     if (mod) {
-      let modObj = obj.findObject("mod_" + unitId)
+      let modObj = obj.findObject($"mod_{unitId}")
       updateModItem(unit, mod, modObj, false, this, this.getParamsForModItem(diffExp))
     }
     else {
@@ -1729,7 +1729,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
 
     let obj = this.scene.findObject("research_list")
-    let modObj = checkObj(obj) ? obj.findObject("mod_" + unitId) : null
+    let modObj = checkObj(obj) ? obj.findObject($"mod_{unitId}") : null
     if (!checkObj(modObj))
       return
     let diffExp = this.getModExp(airData)
@@ -2076,7 +2076,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     foreach (row in debriefingRows)
       if (!row.show)
-        showObjById("row_" + row.id, row.show, this.scene)
+        showObjById($"row_{row.id}", row.show, this.scene)
 
     this.updateBuyPremiumAwardButton()
     this.reinitTotal()
@@ -2638,9 +2638,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     local tabValue = 0
     let defaultTabName = this.is_show_ww_casualties() ? "ww_casualties" : ""
     foreach (idx, tabName in this.tabsList) {
-      let checkName = "is_show_" + tabName
+      let checkName = $"is_show_{tabName}"
       if (!(checkName in this) || this[checkName]()) {
-        let title = getTblValue(tabName, this.tabsTitles, "#debriefing/" + tabName)
+        let title = getTblValue(tabName, this.tabsTitles,$"#debriefing/{tabName}")
         view.items.append({
           id = tabName
           text = title

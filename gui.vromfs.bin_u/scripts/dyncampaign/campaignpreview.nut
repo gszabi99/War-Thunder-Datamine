@@ -104,7 +104,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let country = (playerSide == 2) ? this.info.getStr("country_axis", "germany") : this.info.getStr("country_allies", "usa")
     //wtf??
-    log("2 country = " + country)
+    log($"2 country = {country}")
     if (country != "")
       this.guiScene["briefing-flag"]["background-image"] = getCountryFlagImg($"bgflag_country_{country}")
 
@@ -312,19 +312,19 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
 
     for (local i = (this.logObj.len() - 1); i >= 0; i--) {
       data += format("textareaNoTab { id:t='%s'; width:t='pw'; sideLogIcon { background-image:t='%s'} } \n",
-                "logtext_" + i, this.logObj[i].sideIcon)
-      logTextsToSet["logtext_" + i] <- this.logObj[i].main
+                $"logtext_{i}", this.logObj[i].sideIcon)
+      logTextsToSet[$"logtext_{i}"] <- this.logObj[i].main
 
       if (this.logObj[i].ally_loses.len() > 0) {
         data += format("tdiv { text{ id:t='%s'; text-align:t='left'} %s } \n",
-                  "ally_loses_" + i, this.logObj[i].ally_loses);
-        logTextsToSet["ally_loses_" + i] <- loc("log/losses_ally") + ": "
+                  $"ally_loses_{i}", this.logObj[i].ally_loses);
+        logTextsToSet[$"ally_loses_{i}"] <- loc("log/losses_ally") + ": "
       }
 
       if (this.logObj[i].enemy_loses.len() > 0) {
         data += format("tdiv { margin-bottom:t='0.03sh'; text{ id:t='%s'; text-align:t='left'} %s } \n",
-                  "enemy_loses_" + i, this.logObj[i].enemy_loses);
-        logTextsToSet["enemy_loses_" + i] <- loc("log/losses_enemy") + ": "
+                  $"enemy_loses_{i}", this.logObj[i].enemy_loses);
+        logTextsToSet[$"enemy_loses_{i}"] <- loc("log/losses_enemy") + ": "
       }
       else
         data += "tdiv { margin-bottom:t='0.03sh';} \n";

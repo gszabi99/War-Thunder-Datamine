@@ -16,20 +16,21 @@ let extraction = require("extraction.nut")
 let getNoRespTextSize = @() fpx(22)
 
 let timerComponent = @() {
-  watch = [timeLeft, isInRespawnWnd]
+  watch = timeLeft
   rendObj = ROBJ_TEXT
   font = Fonts.medium_text_hud
   color = Color(255, 255, 255)
-  pos = [0, isInRespawnWnd.get() ? 0 : hdpx(40)]
-  text = secondsToTimeSimpleString(timeLeft.value)
+  pos = [0, hdpx(40)]
+  text = secondsToTimeSimpleString(timeLeft.get())
 }
 
-let hasTimerComponent = Computed(@() timeLimitWarn.value > 0 && timeLeft.value < timeLimitWarn.value)
+let hasTimerComponent = Computed(@() !isInRespawnWnd.get()
+  && timeLimitWarn.get() > 0 && timeLeft.get() < timeLimitWarn.get())
 
 let customHudNameToComp = { deathmatch, convoyHunting, po2OpMission, extraction }
 
 function getScoreBoardChildren() {
-  if ((gameType.value & GT_FOOTBALL) != 0)
+  if ((gameType.get() & GT_FOOTBALL) != 0)
     return football
 
   if (customHUD.get() == "battleMission")
@@ -39,7 +40,7 @@ function getScoreBoardChildren() {
   if (customHudComp)
     return customHudComp
 
-  if (hasTimerComponent.value)
+  if (hasTimerComponent.get())
     return timerComponent
 
   return null

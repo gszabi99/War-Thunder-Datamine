@@ -30,6 +30,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -337,7 +338,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       return
 
     let oldName = slotbarPresets[countryId][idx].title
-    ::gui_modal_editbox_wnd({
+    openEditBoxDialog({
                       title = loc("mainmenu/newPresetName"),
                       maxLen = 16,
                       value = oldName,
@@ -382,7 +383,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       countryId = profileCountrySq.value
     if (!this.canEditCountryPresets(countryId) || !(countryId in slotbarPresets))
       return false
-    let cfgBlk = loadLocalByAccount("slotbar_presets/" + countryId)
+    let cfgBlk = loadLocalByAccount($"slotbar_presets/{countryId}")
     local blk = null
     if (slotbarPresets[countryId].len() > 0) {
       let curPreset = getTblValue(slotbarPresetsSeletected[countryId], slotbarPresets[countryId])
@@ -418,7 +419,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (u.isEqual(blk, cfgBlk))
       return false
 
-    saveLocalByAccount("slotbar_presets/" + countryId, blk, shouldSaveProfile ? forceSaveProfile : @() null)
+    saveLocalByAccount($"slotbar_presets/{countryId}", blk, shouldSaveProfile ? forceSaveProfile : @() null)
     return true
   }
 
@@ -610,7 +611,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
   function getPresetsList(countryId) {
     let res = []
-    let blk = loadLocalByAccount("slotbar_presets/" + countryId)
+    let blk = loadLocalByAccount($"slotbar_presets/{countryId}")
     if (blk) {
       let presetsBlk = blk % "preset"
       let countryCrews = getCrewsList().findvalue(@(crews) crews.country == countryId)?.crews.map(@(c) c.id) ?? []

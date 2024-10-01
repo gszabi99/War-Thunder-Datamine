@@ -429,7 +429,7 @@ function needAutoStartBattle() {
       if ((type(skin) == "string") && (skin != "") && (skin.indexof("template") == null)) {
         anyUG = true
         statsd.send_counter("sq.ug.useus", 1)
-        log("statsd_on_login ug.useus " + skin)
+        log($"statsd_on_login ug.useus {skin}")
         break;
       }
     }
@@ -441,7 +441,7 @@ function needAutoStartBattle() {
       foreach (file in files)
         if (file.indexof("usr_") != null) {
           anyUG = true
-          log("statsd_on_login ug.langum " + file)
+          log($"statsd_on_login ug.langum {file}")
           statsd.send_counter("sq.ug.langum", 1)
           break
         }

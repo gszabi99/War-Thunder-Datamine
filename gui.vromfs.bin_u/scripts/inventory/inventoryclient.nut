@@ -204,7 +204,7 @@ function _validate(data, name) {
           foreach (key, _val in keys)
             if (key in item)
               itemDebug.append(key + "=" + item[key])
-      itemDebug.append(isItemValid ? ("err=" + itemErrors) : "INVALID")
+      itemDebug.append(isItemValid ? ($"err={itemErrors}") : "INVALID")
       itemDebug.append(u.isTable(item) ? ("len=" + item.len()) : ("var=" + type(item)))
 
       itemsBroken.append(",".join(itemDebug, true))
@@ -458,7 +458,7 @@ let class InventoryClient {
       return requestData.fireCb()
 
     let itemdefidsString = ",".join(itemdefidsRequest, true)
-    log("Request itemdefs " + itemdefidsString)
+    log($"Request itemdefs {itemdefidsString}")
 
     this.lastItemdefsRequestTime = get_time_msec()
     let steamLanguage = getCurrentSteamLanguage()

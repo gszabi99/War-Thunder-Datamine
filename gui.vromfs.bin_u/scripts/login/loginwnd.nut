@@ -38,6 +38,7 @@ let { steam_is_running } = require("steam")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { bqSendNoAuth, bqSendNoAuthWeb } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { webauth_start, webauth_stop, webauth_get_url, webauth_completion_event } = require("webauth")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -464,7 +465,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     this.isLoginRequestInprogress = true
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam" })
-    log("Steam Login: check_login_pass with code " + steamSpecCode)
+    log($"Steam Login: check_login_pass with code {steamSpecCode}")
     let result = check_login_pass("", "", "steam", steamSpecCode, false, false)
     this.proceedAuthorizationResult(result, "")
   }
@@ -713,7 +714,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       return
     }
 
-    ::gui_modal_editbox_wnd({
+    openEditBoxDialog({
       title = loc("mainmenu/chooseName")
       label = loc("choose_nickname_req")
       maxLen = 16

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -46,7 +45,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
       }
 
       if (needMemberName)
-        parameterView.descriptionLabel += format(" (%s)", loc("crew/" + value.memberName))
+        parameterView.descriptionLabel = "".concat(parameterView.descriptionLabel, format(" (%s)", loc($"crew/{value.memberName}")))
 
       let params = {
         idx = idx
@@ -130,7 +129,7 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
           errorText = measureType.ALTITUDE.getMeasureUnitsText(parameterTable.error, true, true)
         }
         let parameterView = {
-          descriptionLabel = loc("crewSkillParameter/" + paramData.name, descriptionLocParams)
+          descriptionLabel = loc($"crewSkillParameter/{paramData.name}", descriptionLocParams)
           valueItems = []
         }
         let params = {

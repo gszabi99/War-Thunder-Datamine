@@ -245,7 +245,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function showSheetDiv(name) {
     foreach (div in ["profile", "stats"]) {
       let show = div == name
-      let divObj = this.scene.findObject(div + "-container")
+      let divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
         divObj.show(show)
         if (show)
@@ -339,11 +339,11 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.scene))
       return
 
-    let nameObj = this.scene.findObject("profile-currentUser-" + link)
+    let nameObj = this.scene.findObject($"profile-currentUser-{link}")
     if (!checkObj(nameObj))
       return
 
-    nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : loc("profile/" + link)}{name}")
+    nameObj.setValue(name == "" ? "" : $"{link == "title" ? "" : loc($"profile/{link}")}{name}")
   }
 
   function fillClanInfo(playerData) {
@@ -439,7 +439,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       view.items.append({
         id = countryId
         image = getCountryIcon(countryId)
-        tooltip = "#" + countryId
+        tooltip = $"#{countryId}"
         objects = format(countFmt, pl.countryStats[countryId].medalsCount)
       })
 
@@ -817,7 +817,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         headerRow.append({
           id = item.id
           image = "#ui/gameuiskin#" + (("icon" in item) ? item.icon : "lb_" + item.id) + ".svg"
-          tooltip = ("text" in item) ? "#" + item.text : "#multiplayer/" + item.id
+          tooltip = ("text" in item) ? $"#{item.text}" : "#multiplayer/" + item.id
           callback = "onStatsCategory"
           active = this.statsSortBy == item.id
           needText = false
@@ -835,7 +835,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let airData = this.airStatsList[idx]
       let unitTooltipId = getTooltipType("UNIT").getTooltipId(airData.name)
 
-      let rowName = "row_" + idx
+      let rowName = $"row_{idx}"
       let rowData = [
         { text = (idx + 1).tostring(), width = posWidth }
         { id = "rank", width = rcWidth, text = airData.rank.tostring(), tdalign = "right", cellType = "splitRight", active = this.statsSortBy == "rank" }
@@ -942,7 +942,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     foreach (row in rows) {
-      let rowName = "row_" + rowIdx
+      let rowName = $"row_{rowIdx}"
       let rowData = [{ text = row.text, tdalign = "left" }]
       local res = {}
 

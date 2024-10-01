@@ -460,7 +460,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   if (newCandidatesNicknames.len())
     addPopup(null,
       loc("clan/requestReceived") + loc("ui/colon") + ", ".join(newCandidatesNicknames, true) +
-      " " + extraText,
+      $" {extraText}",
       function() {
         if (this.getMyClanCandidates().len())
           openClanRequestsWnd(this.getMyClanCandidates(), clan_get_my_clan_id(), null)
@@ -793,9 +793,9 @@ registerPersistentData("ClansGlobals", getroottable(),
 ];
 
 ::empty_rating <- {
-  [(::ranked_column_prefix + "_arc")]   = 0,
-  [(::ranked_column_prefix + "_hist")]  = 0,
-  [(::ranked_column_prefix + "_sim")]   = 0
+  [($"{::ranked_column_prefix}_arc")]   = 0,
+  [($"{::ranked_column_prefix}_hist")]  = 0,
+  [($"{::ranked_column_prefix}_sim")]   = 0
 }
 
 ::empty_activity <- {
@@ -937,7 +937,7 @@ registerPersistentData("ClansGlobals", getroottable(),
     //get members activity
     let memberActivityInfo = clanActivityInfo.getBlockByName(memberItem.uid) || DataBlock()
     foreach (key, value in ::empty_activity)
-      memberItem[key + "Activity"] <- memberActivityInfo.getInt(key, value)
+      memberItem[$"{key}Activity"] <- memberActivityInfo.getInt(key, value)
     let history = memberActivityInfo.getBlockByName("history")
     memberItem["activityHistory"] <- u.isDataBlock(history) ? convertBlk(history) : {}
     memberItem["curPeriodActivity"] <- memberActivityInfo?.activity ?? 0
@@ -1174,7 +1174,7 @@ function getSeasonName(blk) {
     let bg_img = "clan_medal_ww_bg"
     let path = this.isWinner() ? this.place : "rating"
     let bin_img = "clan_medal_ww_" + this.seasonTag + "_bin_" + path
-    local place_img = "clan_medal_ww_" + this.place
+    local place_img =$"clan_medal_ww_{this.place}"
     return ";".join([bg_img, bin_img, place_img], true)
   }
 

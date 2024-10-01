@@ -1,9 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 gui_handlers.teamUnitsLeftView <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -67,7 +65,7 @@ gui_handlers.teamUnitsLeftView <- class (gui_handlers.BaseGuiHandlerWT) {
       let enemyData = this.missionRules.getFullEnemyUnitLimitsData()
       if (enemyData.len()) {
         let enemyTextsList = enemyData.unitLimits.map(this.getRespTextByUnitLimit)
-        textsList.append("\n" + colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsEnemyListHeaderLocId)))
+        textsList.append("".concat("\n", colorize("activeTextColor", loc(this.missionRules.customUnitRespawnsEnemyListHeaderLocId))))
         textsList.extend(enemyTextsList)
       }
     }
@@ -82,7 +80,7 @@ gui_handlers.teamUnitsLeftView <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isCollapsed)
       this.updateCollapsedInfoText(isJustSwitched)
     else
-      this.scene.findObject(this.blockId + "_text").setValue(this.getFullUnitsText())
+      this.scene.findObject($"{this.blockId}_text").setValue(this.getFullUnitsText())
   }
 
   function updateCollapsedInfoByUnitLimit(unitLimit, needAnim = true) {

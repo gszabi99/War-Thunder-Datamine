@@ -84,7 +84,7 @@ function gen_all_unlocks_desc(showCost = false) {
 
 function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = false, showValue = false) {
   let fullPath = format("%s/unlocks%s.blk", path, getLocalLanguage())
-  dlog("GP: gen all unlocks description to " + fullPath)
+  dlog($"GP: gen all unlocks description to {fullPath}")
 
   let res = DataBlock()
   let params = {

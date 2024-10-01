@@ -292,11 +292,11 @@ let g_hud_live_stats = {
       let text = isValid ? param.printFunc(value, state.player) : ""
       let doShow = text != ""
 
-      let plateObj = this.scene.findObject("plate_" + id)
+      let plateObj = this.scene.findObject($"plate_{id}")
       if (checkObj(plateObj) && plateObj.isVisible() != doShow)
         plateObj.show(doShow)
 
-      local txtObj = this.scene.findObject("txt_" + id)
+      local txtObj = this.scene.findObject($"txt_{id}")
       if (checkObj(txtObj) && txtObj.getValue() != text)
         txtObj.setValue(text)
 
@@ -326,8 +326,8 @@ let g_hud_live_stats = {
         let view = { awards = [] }
         foreach (award in awardsList)
           view.awards.append({
-            iconLayers = LayersIcon.getIconData("streak_" + award.unlockId)
-            amount = award.amount > 1 ? "x" + award.amount : null
+            iconLayers = LayersIcon.getIconData($"streak_{award.unlockId}")
+            amount = award.amount > 1 ? $"x{award.amount}" : null
           })
         let markup = handyman.renderCached(("%gui/statistics/statAwardIcon.tpl"), view)
         this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)

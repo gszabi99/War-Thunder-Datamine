@@ -311,9 +311,9 @@ function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null) {
     return false
 
   local msgText = loc((diff == 2) ? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
-  msgText += "\n\n" + format(loc("msgbox/req_tutorial_for_mode"), loc("difficulty" + diff))
+  msgText += "\n\n" + format(loc("msgbox/req_tutorial_for_mode"), loc($"difficulty{diff}"))
 
-  msgText += "\n<color=@userlogColoredText>" + loc("missions/" + mData.mission.name) + "</color>"
+  msgText += "\n<color=@userlogColoredText>" + loc($"missions/{mData.mission.name}") + "</color>"
 
   if (needMsgBox)
     scene_msg_box("req_tutorial_msgbox", null, msgText,

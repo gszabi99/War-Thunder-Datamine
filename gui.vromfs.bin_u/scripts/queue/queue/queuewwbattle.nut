@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { request_matching } = require("%scripts/matching/api.nut")
@@ -36,7 +35,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
   }
 
   static function getName(params) {
-    return getTblValue("operationId", params, "") + "_" + getTblValue("battleId", params, "")
+    return "".concat(getTblValue("operationId", params, ""), "_", getTblValue("battleId", params, ""))
   }
 
   function getBattleName() {

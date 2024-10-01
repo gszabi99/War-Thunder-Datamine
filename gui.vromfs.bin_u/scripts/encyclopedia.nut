@@ -86,7 +86,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, chapter in persistent.encyclopediaData)
       view.tabs.append({
         id = chapter.id
-        tabName = "#encyclopedia/" + chapter.id
+        tabName =$"#encyclopedia/{chapter.id}"
         navImagesText = ::get_navigation_images_text(idx, persistent.encyclopediaData.len())
       })
 
@@ -100,7 +100,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let canShowLinkButtons = !isChineseHarmonized() && hasFeature("AllowExternalLink")
     foreach (btn in ["faq", "support", "wiki"])
-      showObjById("button_" + btn, canShowLinkButtons, this.scene)
+      showObjById($"button_{btn}", canShowLinkButtons, this.scene)
     move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
@@ -144,7 +144,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
     let txtDescr = loc($"encyclopedia/{article.id}/desc")
     let objDesc = this.scene.findObject("item_desc")
     objDesc.findObject("item_desc_text").setValue(txtDescr)
-    objDesc.findObject("item_name").setValue(loc("encyclopedia/" + article.id))
+    objDesc.findObject("item_name").setValue(loc($"encyclopedia/{article.id}"))
 
     let objImgDiv = this.scene.findObject("div_before_text")
     local data = ""

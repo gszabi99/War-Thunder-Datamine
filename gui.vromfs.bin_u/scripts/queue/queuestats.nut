@@ -278,7 +278,7 @@ class QueueStats {
   function remapCountries(statsByCountries) {
     let res = {}
     foreach (country, data in statsByCountries)
-      res["country_" + country] <- data
+      res[$"country_{country}"] <- data
     return res
   }
 

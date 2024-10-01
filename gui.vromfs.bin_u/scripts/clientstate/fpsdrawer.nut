@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_hud_visible
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
@@ -59,7 +58,7 @@ function validateObjects(objects, guiScene) {
     return false
 
   foreach (param in paramsList)
-    objects[param] <- holderObj.findObject(objIdPrefix + param)
+    objects[param] <- holderObj.findObject($"{objIdPrefix}{param}")
   objects.show <- true
   return true
 }
@@ -103,8 +102,8 @@ function updateTexts(objects, params) {
       latencyText = format("%s:%5.1fms", loc("latency", "Latency"), latency)
   }
   if (ping >= 0) {
-    pingText = colorize(getPingColor(ping), "Ping: " + ping)
-    plText = colorize(getPacketlossColor(pl), "PL: " + pl + "%")
+    pingText = colorize(getPingColor(ping), $"Ping: {ping}")
+    plText = colorize(getPacketlossColor(pl), $"PL: {pl}%")
     sidText = sessionId
   }
   objects.latency.setValue(latencyText)

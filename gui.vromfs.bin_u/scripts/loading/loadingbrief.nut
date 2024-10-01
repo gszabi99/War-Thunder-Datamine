@@ -121,7 +121,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
 
       this.music = this.briefing.getStr("music", "action_01")
       if ((get_game_type() & GT_DYNAMIC) && country != "")
-        this.music = country + "_main_theme"
+        this.music =$"{country}_main_theme"
 
       local prevSlide = ""
 
@@ -219,7 +219,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         let helpId = parts != null
           ? parts.len() >= 2 ? parts[parts.len() - 2] : ""
           : controlHelpName
-        let cfgPath = "seen/help_mission_type/" + helpId
+        let cfgPath = $"seen/help_mission_type/{helpId}"
         let isSeen = loadLocalByAccount(cfgPath, 0)
         if (!isSeen) {
           this.onHelp()
@@ -253,7 +253,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!(this.gt & GT_VERSUS)) {
         let m_location = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
         if (m_location != "")
-          m_condition += loc("location/" + m_location)
+          m_condition += loc($"location/{m_location}")
         let m_time = blk.getStr("time", blk.getStr("environment", ""))
         if (m_time != "")
           m_condition += (m_condition != "" ? "; " : "") + getMissionTimeText(m_time)

@@ -1173,7 +1173,7 @@ enums.addTypes(g_hud_hints, {
         let color = "@" + ::get_mplayer_color(participantPlayer)
         let pStr = this.makeSmallImageStr(icon, color)
         if (playerTeam == participantPlayer.team) {
-          participantsAStr += pStr + " "
+          participantsAStr +=$"{pStr} "
           ++reservedSlotsCountA
         }
         else {
@@ -1186,7 +1186,7 @@ enums.addTypes(g_hud_hints, {
       let freeSlotIconColor = "@minorTextColor"
       let freeSlotIconStr = this.makeSmallImageStr(freeSlotIconName, freeSlotIconColor, "small")
       for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountA; ++i)
-        participantsAStr += freeSlotIconStr + " "
+        participantsAStr +=$"{freeSlotIconStr} "
 
       for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountB; ++i)
         participantsBStr = " " + freeSlotIconStr + participantsBStr

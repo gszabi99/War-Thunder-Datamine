@@ -113,7 +113,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(false, false)
 
     foreach (name in this.descItems)
-      this.getObj("descr-" + name).setValue((name in config) ? config[name] : "")
+      this.getObj($"descr-{name}").setValue((name in config) ? config[name] : "")
 
     this.getObj("descr-flag")["background-image"] = ("flag" in config && this.gm != GM_BENCHMARK) ? config.flag : ""
     this.getObj("descr-chapterImg")["background-image"] = ("chapterImg" in config) ? config.chapterImg : ""
@@ -144,7 +144,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     config.name <- loc((mission.isCampaign ? "campaigns/" : "chapters/") + mission.id)
     config.maintext <- loc((mission.isCampaign ? "campaigns/" : "chapters/") + mission.id + "/desc", "")
     if (mission.id in this.chapterImgList)
-      config.chapterImg <- "ui/chapters/" + mission.id
+      config.chapterImg <-$"ui/chapters/{mission.id}"
     return config
   }
 
@@ -207,7 +207,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if ((config.condition == "") && (this.gm != GM_TEAMBATTLE) && (this.gm != GM_DOMINATION) && (this.gm != GM_SKIRMISH)) {
       local sm_location = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
       if (sm_location != "")
-        sm_location = loc("location/" + sm_location)
+        sm_location = loc($"location/{sm_location}")
 
       local sm_time = blk.getStr("time", blk.getStr("environment", ""))
       if (sm_time != "")

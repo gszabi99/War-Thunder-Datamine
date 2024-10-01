@@ -90,7 +90,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(listObj, viewBlk, viewBlk.len(), this)
     local i = 0
     foreach (memberData in playersList) {
-      let inviteObjId = "squad_invite_" + memberData.uid
+      let inviteObjId =$"squad_invite_{memberData.uid}"
       let inviteObj = listObj.findObject(inviteObjId)
       if (checkObj(inviteObj)) {
         if (u.isEqual(selectedObjId, inviteObjId) && isFocused)
@@ -127,7 +127,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isAvailable)
       return
 
-    let sizes = g_squad_manager.getSquadSizesList().map(@(s) "".concat(s.value, loc("ui/comma"), loc("squadSize/" + s.name)))
+    let sizes = g_squad_manager.getSquadSizesList().map(@(s) "".concat(s.value, loc("ui/comma"), loc($"squadSize/{s.name}")))
     let curValue = g_squad_manager.getMaxSquadSize()
     let curIdx = g_squad_manager.getSquadSizesList().findindex(@(s) s.value == curValue) ?? 0
 

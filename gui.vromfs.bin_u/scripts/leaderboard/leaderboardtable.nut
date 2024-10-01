@@ -87,7 +87,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (rowIdx < this.rowsInPage) {
         for (local i = rowIdx; i < this.rowsInPage; i++)
-          data += ::buildTableRow("row_" + i, [], i % 2 == 0, "inactive:t='yes';")
+          data += ::buildTableRow($"row_{i}", [], i % 2 == 0, "inactive:t='yes';")
         this.isLastPage = true
       }
 
@@ -140,7 +140,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     let clanId = needAddClanTag && clanTag == "" ? (row?.clanId ?? "") : ""
     let rowParamsText = $"clanId:t='{clanId}';{isMainPlayer ? "mainPlayer:t='yes';" : ""}"
-    let data = ::buildTableRow("row_" + rowIdx, rowData, rowIdx % 2 == 0, rowParamsText)
+    let data = ::buildTableRow($"row_{rowIdx}", rowData, rowIdx % 2 == 0, rowParamsText)
 
     return data
   }
@@ -189,7 +189,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!selfRow || selfRow.len() <= 0)
       return ""
 
-    let emptyRow = ::buildTableRow("row_" + this.rowsInPage, ["..."], null,
+    let emptyRow = ::buildTableRow($"row_{this.rowsInPage}", ["..."], null,
       "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;'; ")
 
     return "".concat(emptyRow, this.getTableRowMarkup(selfRow[0], this.rowsInPage + 1, selfRow[0].pos))

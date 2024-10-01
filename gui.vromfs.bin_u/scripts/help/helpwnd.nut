@@ -318,7 +318,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       local scText = ""
 
       if (isHeader) {
-        scTextFull.append([colorize("activeTextColor", loc("hotkeys/" + name))])
+        scTextFull.append([colorize("activeTextColor", loc($"hotkeys/{name}"))])
       }
       else {
         if (isAxis) {
@@ -449,7 +449,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateGamepadIcons() {
     foreach (name, _val in gamepadIcons.fullIconsList) {
-      let obj = this.scene.findObject("ctrl_img_" + name)
+      let obj = this.scene.findObject($"ctrl_img_{name}")
       if (checkObj(obj))
         obj["background-image"] = gamepadIcons.getTexture(name)
     }
@@ -513,13 +513,13 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let bullet = "-" + nbsp
+    let bullet =$"-{nbsp}"
     foreach (btnId, actions in joystickButtons) {
       let idSuffix = gamepadIcons.getButtonNameByIdx(btnId)
       if (idSuffix == "")
         continue
 
-      let tObj = this.scene.findObject("joy_" + idSuffix)
+      let tObj = this.scene.findObject($"joy_{idSuffix}")
       if (checkObj(tObj)) {
         local title = ""
         local tooltip = ""
@@ -564,11 +564,11 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         let actionIdX = actionsX.len() ? actionsX[0] : null
         let isIgnoredX = actionIdX && isInArray(actionIdX, ignoreAxis)
-        let titleX = (actionIdX && !isIgnoredX) ? loc("controls/" + actionIdX) : "---"
+        let titleX = (actionIdX && !isIgnoredX) ? loc($"controls/{actionIdX}") : "---"
 
         let actionIdY = actionsY.len() ? actionsY[0] : null
         let isIgnoredY = actionIdY && isInArray(actionIdY, ignoreAxis)
-        let titleY = (actionIdY && !isIgnoredY) ? loc("controls/" + actionIdY) : "---"
+        let titleY = (actionIdY && !isIgnoredY) ? loc($"controls/{actionIdY}") : "---"
 
         local tooltipX = ""
         for (local a = 0; a < actionsX.len(); a++)

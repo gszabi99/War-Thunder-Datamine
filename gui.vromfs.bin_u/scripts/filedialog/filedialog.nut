@@ -853,8 +853,8 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
           showInfoMsgBox(loc("filesystem/folderDeleted", { path = folderPath }))
         else {
           if (!this.isExists(file) && this.extension
-            && !endsWith(this.finallySelectedPath, "." + this.extension))
-            this.finallySelectedPath += "." + this.extension
+            && !endsWith(this.finallySelectedPath,$".{this.extension}"))
+            this.finallySelectedPath +=$".{this.extension}"
           this.executeSelectCallback()
         }
       }
@@ -953,11 +953,11 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         if (pathPart == "")
           continue
 
-        let id = "dir_path_part_" + idx
+        let id = $"dir_path_part_{idx}"
         this.cachedPathByPathPartId[id] <- combinedPath
         view.items.append({
           id = id
-          text = pathPart != "/" ? pathPart + " / " : " / "
+          text = pathPart != "/" ? $"{pathPart} / " : " / "
           tooltip = combinedPath
           onClick = "onDirPathPartClick"
         })
@@ -1023,7 +1023,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     this.cachedColumnNameByTableColumnId.clear()
     foreach (visibleColumn in this.visibleColumns) {
-      let id = "file_col_" + visibleColumn.column.name
+      let id =$"file_col_{visibleColumn.column.name}"
       this.cachedColumnNameByTableColumnId[id] <- visibleColumn.column.name
       headerRowView.cells.append({
         id = id
@@ -1038,7 +1038,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     this.cachedFileNameByTableRowId.clear()
     this.cachedTableRowIdxByFileName.clear()
     foreach (idx, fileData in filesTableData) {
-      let rowId = "file_row_" + idx
+      let rowId = $"file_row_{idx}"
       let filename = fileData[fileNameMetaAttr]
       this.cachedFileNameByTableRowId[rowId] <- filename
       this.cachedTableRowIdxByFileName[filename] <- idx + 1
@@ -1131,7 +1131,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     let view = { items = [] }
     this.cachedPathByNavItemId.clear()
     foreach (idx, navData in navListData) {
-      let id = "nav_item_" + idx
+      let id = $"nav_item_{idx}"
       if ("path" in navData)
         this.cachedPathByNavItemId[id] <- navData.path
       view.items.append({
@@ -1161,7 +1161,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     local selectedIdx = 0
     foreach (idx, filter in this.filters) {
       view.items.append({
-        id = "filter_" + idx
+        id = $"filter_{idx}"
         isAllFiles = filter == this.allFilesFilter
         fileExtension = filter
         fileExtensionUpper = filter.toupper()

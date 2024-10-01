@@ -140,9 +140,9 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (obj?["class"] != "dropDown")
       obj = obj.getParent()
 
-    let hover = obj.findObject(obj.id + "_list_hover")
+    let hover = obj.findObject($"{obj.id}_list_hover")
     if (checkObj(hover)) {
-      let menu = obj.findObject(obj.id + "_focus")
+      let menu = obj.findObject($"{obj.id}_focus")
       menu.getScene().applyPendingChanges(true)
       hover["height-end"] = menu.getSize()[1] + this.guiScene.calcString("@dropDownMenuBottomActivityGap", null)
     }

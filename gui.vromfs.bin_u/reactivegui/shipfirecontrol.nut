@@ -2,7 +2,6 @@ from "%rGui/globals/ui_library.nut" import *
 
 let compass = require("compass.nut")
 let { format } = require("string")
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
 let { PI, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
 let { get_mission_time } = require("mission")
 let { CompassValue } = require("compassState.nut")
@@ -14,32 +13,6 @@ let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.n
 let { eventbus_send } = require("eventbus")
 let { drawArrow } = require("fcsComponent.nut")
 
-function mkCirclePicture(radius, thickness) {
-  let getDistance = @(x, y) sqrt(x * x + y * y)
-  return  mkBitmapPicture(radius * 2, radius * 2,
-  function(_, bmp) {
-    for (local y = 0; y < radius * 2; y++)
-      for (local x = 0; x < radius * 2; x++) {
-        let distance = getDistance(x - radius, y - radius)
-        let pixelColor = distance <= radius && distance >= (radius - thickness) ? 0xFFFFFFFF : 0x00000000
-        bmp.setPixel(x, y, pixelColor)
-      }
-    })
-}
-
-function mkFilledCirclePicture(radius) {
-  let getDistance = @(x, y) sqrt(x * x + y * y)
-  return  mkBitmapPicture(radius * 2, radius * 2,
-  function(_, bmp) {
-    for (local y = 0; y < radius * 2; y++)
-      for (local x = 0; x < radius * 2; x++) {
-        let distance = getDistance(x - radius, y - radius)
-        let pixelColor = distance <= radius ? 0xFFFFFFFF : 0x00000000
-        bmp.setPixel(x, y, pixelColor)
-      }
-    })
-}
-
 let redColor = Color(255, 109, 108, 255)
 let greyColor = Color(15, 25, 25, 255)
 let highlightColor = Color(255, 255, 255, 180)
@@ -48,6 +21,7 @@ let compassSize = [hdpx(500), hdpx(32)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
 let rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
 let rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
+let reloadCircleSize = hdpx(76)
 
 let gunStatusColors = {
   ready = Color(0, 255, 0, 255)
@@ -63,10 +37,8 @@ let gunStatusColors = {
   empty = Color(0, 0, 0, 0)
 }
 
-let bitmapCircles = {
-  empty = mkCirclePicture(hdpx(38), hdpx(4))
-  filled = mkFilledCirclePicture(hdpx(38))
-}
+let emptyCircleImg = Picture($"ui/gameuiskin#ship_weapon_status_circle.svg:{reloadCircleSize}:{reloadCircleSize}:P")
+let filledCircleImg = Picture($"ui/gameuiskin#dmg_ship_status_bg.svg:{reloadCircleSize}:{reloadCircleSize}:P")
 
 let compassComponent = {
   pos = compassPos
@@ -265,7 +237,7 @@ function mkFilledCircle(size, color) {
     rendObj = ROBJ_IMAGE
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    image = bitmapCircles.filled
+    image = filledCircleImg
     color = color
     fValue = 1
   }
@@ -277,7 +249,7 @@ function mkCircle(size, color, fValue = 1) {
     rendObj = ROBJ_PROGRESS_CIRCULAR
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    image = bitmapCircles.empty
+    image = emptyCircleImg
     color = color
     fgColor = color
     fValue = fValue
@@ -295,7 +267,7 @@ function mkProgressCircle(size, startTime, endTime, curTime, color) {
     rendObj = ROBJ_PROGRESS_CIRCULAR
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    image = bitmapCircles.empty
+    image = emptyCircleImg
     fgColor = color
     fValue = 1
     animations = timeLeft <= 0 ? null :
