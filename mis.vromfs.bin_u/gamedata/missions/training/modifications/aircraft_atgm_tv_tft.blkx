@@ -25,7 +25,7 @@
       "date_loc": "",
       "objective_loc": "",
       "music": "action_01",
-      "viewAreaScale": 3.0,
+      "viewAreaScale": 1.0,
       "part": {
         "event": "",
         "minTime": 0,
@@ -33,12 +33,12 @@
           "map": true,
           "minTime": 4,
           "picture": "",
-          "showAirMap": true,
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "player",
             "point": [
-              "player",
+              "player_map",
               "target_tank01"
             ]
           },
@@ -46,7 +46,7 @@
             {
               "icontype": "fighter",
               "side": "player",
-              "target": "player",
+              "target": "player_map",
               "lookAt": "target_tank01"
             },
             {
@@ -54,7 +54,10 @@
               "side": "enemy",
               "target": "target_tank01"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "area_01"
+          }
         }
       }
     }
@@ -2582,6 +2585,62 @@
       "props": {
         "forceReplication": true
       }
+    },
+    "player_map": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.72705,
+          -4.73915,
+          8.63468
+        ],
+        [
+          0.591485,
+          8.80049,
+          4.71185
+        ],
+        [
+          -9.83196,
+          -0.303028,
+          1.8002
+        ],
+        [
+          1699.1,
+          332.089,
+          -754.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          2801.64,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          55.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2017.19
+        ],
+        [
+          1462.25,
+          22.45,
+          -242.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {

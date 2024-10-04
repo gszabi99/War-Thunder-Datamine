@@ -25,7 +25,7 @@
       "date_loc": "",
       "objective_loc": "",
       "music": "action_01",
-      "viewAreaScale": 3.0,
+      "viewAreaScale": 1.0,
       "part": {
         "event": "",
         "minTime": 0,
@@ -33,12 +33,12 @@
           "map": true,
           "minTime": 4,
           "picture": "",
-          "showAirMap": true,
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "player",
             "point": [
-              "player",
+              "player_map",
               "target_tank01"
             ]
           },
@@ -46,7 +46,7 @@
             {
               "icontype": "fighter",
               "side": "player",
-              "target": "player",
+              "target": "player_map",
               "lookAt": "target_tank01"
             },
             {
@@ -54,7 +54,10 @@
               "side": "enemy",
               "target": "target_tank01"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "area_01"
+          }
         }
       }
     }
@@ -63,7 +66,7 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "init": {
+    "start_init": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -166,12 +169,12 @@
           "holdTime": 1.0
         },
         "triggerEnable": {
-          "target": "check_agm_btn_bounded"
+          "target": "start_check_agm_btn_bounded"
         }
       },
       "else_actions": {}
     },
-    "check_agm_btn_bounded": {
+    "start_check_agm_btn_bounded": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -191,7 +194,7 @@
       },
       "actions": {
         "triggerEnable": {
-          "target": "player_lock_control"
+          "target": "start_player_lock_control"
         }
       },
       "else_actions": {
@@ -203,11 +206,11 @@
           "realtimeTriggers": true
         },
         "triggerEnable": {
-          "target": "check_fire_secondary_btn_bounded"
+          "target": "start_check_fire_secondary_btn_bounded"
         }
       }
     },
-    "check_fire_secondary_btn_bounded": {
+    "start_check_fire_secondary_btn_bounded": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -227,16 +230,16 @@
       },
       "actions": {
         "triggerEnable": {
-          "target": "check_agm_trigget_current"
+          "target": "start_check_agm_trigget_current"
         }
       },
       "else_actions": {
         "triggerEnable": {
-          "target": "need_to_bound_fire_btn"
+          "target": "start_need_to_bound_fire_btn"
         }
       }
     },
-    "check_agm_trigget_current": {
+    "start_check_agm_trigget_current": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -256,7 +259,7 @@
       },
       "actions": {
         "triggerEnable": {
-          "target": "player_lock_control"
+          "target": "start_player_lock_control"
         },
         "varSetString": {
           "value": "ID_FIRE_SECONDARY",
@@ -265,11 +268,11 @@
       },
       "else_actions": {
         "triggerEnable": {
-          "target": "check_switch_cycle_btn_bounded"
+          "target": "start_check_switch_cycle_btn_bounded"
         }
       }
     },
-    "check_switch_cycle_btn_bounded": {
+    "start_check_switch_cycle_btn_bounded": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -293,16 +296,16 @@
           "control": "ID_SWITCH_SHOOTING_CYCLE_SECONDARY"
         },
         "triggerEnable": {
-          "target": "need_to_choose_agm"
+          "target": "start_need_to_choose_agm"
         }
       },
       "else_actions": {
         "triggerEnable": {
-          "target": "need_to_bound_fire_btn"
+          "target": "start_need_to_bound_fire_btn"
         }
       }
     },
-    "need_to_choose_agm": {
+    "start_need_to_choose_agm": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -330,10 +333,10 @@
           "var": "fire_shortcut_id"
         },
         "triggerEnable": {
-          "target": "player_lock_control"
+          "target": "start_player_lock_control"
         },
         "triggerDisable": {
-          "target": "need_to_choose_agm"
+          "target": "start_need_to_choose_agm"
         }
       },
       "else_actions": {
@@ -353,7 +356,7 @@
         }
       }
     },
-    "need_to_bound_fire_btn": {
+    "start_need_to_bound_fire_btn": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -389,7 +392,7 @@
       },
       "else_actions": {}
     },
-    "player_lock_control": {
+    "start_player_lock_control": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -575,7 +578,7 @@
           "control": "ID_LOCK_TARGET",
           "holdTime": 0.5
         },
-        "hudElementSelectionShade": {
+        "__hudElementSelectionShade": {
           "element": "curTarget",
           "targetName": "target_tank02"
         },
@@ -628,12 +631,12 @@
           "item": "ID_CONTINUE"
         },
         "triggerEnable": {
-          "target": "view_on_target1"
+          "target": "aim_view_on_target1"
         }
       },
       "else_actions": {}
     },
-    "view_on_target1": {
+    "aim_view_on_target1": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -670,12 +673,12 @@
           "time": 0.5
         },
         "triggerEnable": {
-          "target": "view_on_target2"
+          "target": "aim_view_on_target3"
         }
       },
       "else_actions": {}
     },
-    "view_on_target2": {
+    "aim_view_on_target2": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -712,12 +715,12 @@
           "time": 0.5
         },
         "triggerEnable": {
-          "target": "view_on_target3"
+          "target": "aim_view_on_target3"
         }
       },
       "else_actions": {}
     },
-    "view_on_target3": {
+    "aim_view_on_target3": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -738,92 +741,50 @@
       "actions": {
         "playHint": {
           "hintType": "standard",
-          "name": "hints/aircraft_atgm_laser_fixed_beam/target3",
+          "name": "hints/aircraft_modifications/find_target",
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,
-          "time": 1.0,
+          "time": -1.0,
           "priority": 0,
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "item": "ID_CONTINUE"
+          "object_var_value": 0
         },
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
         },
+        "missionMarkAsWaypoint": [
+          {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "target_area",
+            "team": "B"
+          },
+          {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "target_area"
+          }
+        ],
         "wait": {
           "time": 3.0
         },
         "triggerEnable": {
-          "target": [
-            "check_view",
-            "view_timer"
-          ]
+          "target": "rocket_check_laser"
         }
       },
       "else_actions": {}
     },
-    "check_view": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "triggerDisable": {
-          "target": "view_timer"
-        },
-        "triggerEnable": {
-          "target": "check_laser"
-        }
-      },
-      "else_actions": {}
-    },
-    "view_timer": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "wait": {
-          "time": 8.0
-        },
-        "triggerActivate": {
-          "target": "target_missed",
-          "activate_type": "ignoreConditions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
-        },
-        "triggerDisable": {
-          "target": [
-            "check_view",
-            "check_rocket"
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "check_laser": {
+    "rocket_check_laser": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -842,11 +803,8 @@
         }
       },
       "actions": {
-        "__triggerEnable": {
-          "target": "activate_rocket_msg"
-        },
         "triggerActivate": {
-          "target": "activate_rocket_msg",
+          "target": "rocket_activate_msg",
           "activate_type": "ignoreConditions",
           "check_trigger_status": false,
           "after_activation": "disable"
@@ -854,11 +812,11 @@
       },
       "else_actions": {
         "triggerEnable": {
-          "target": "laser_activate_1"
+          "target": "rocket_laser_activate_1"
         }
       }
     },
-    "laser_activate_1": {
+    "rocket_laser_activate_1": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -900,12 +858,12 @@
           "control": "ID_TOGGLE_LASER_DESIGNATOR"
         },
         "triggerEnable": {
-          "target": "laser_activate_2"
+          "target": "rocket_laser_activate_2"
         }
       },
       "else_actions": {}
     },
-    "laser_activate_2": {
+    "rocket_laser_activate_2": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -952,12 +910,12 @@
           "item": "ID_CONTINUE"
         },
         "triggerEnable": {
-          "target": "activate_rocket_msg"
+          "target": "rocket_activate_msg"
         }
       },
       "else_actions": {}
     },
-    "activate_rocket_msg": {
+    "rocket_activate_msg": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1035,12 +993,12 @@
           ]
         },
         "triggerEnable": {
-          "target": "check_rocket_start"
+          "target": "rocket_activate"
         }
       },
       "else_actions": {}
     },
-    "check_rocket_start": {
+    "rocket_activate": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1092,12 +1050,12 @@
           "time": 2.0
         },
         "triggerEnable": {
-          "target": "activate_rocket_msg2"
+          "target": "rocket_activate_msg2"
         }
       },
       "else_actions": {}
     },
-    "activate_rocket_msg2": {
+    "rocket_activate_msg2": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1166,10 +1124,16 @@
         }
       },
       "actions": {
-        "missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": true
-        },
+        "missionSetTimeSpeed": [
+          {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          },
+          {
+            "speed": 0.1,
+            "realtimeTriggers": true
+          }
+        ],
         "playerControls": {
           "setStatus": "enable",
           "control": [
@@ -1177,8 +1141,9 @@
             "ID_FIRE_SECONDARY"
           ]
         },
-        "__hudElementSelectionShade": {
-          "element": ""
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
         },
         "playHint": {
           "hintType": "standard",
@@ -1195,43 +1160,12 @@
           "item": "@fire_shortcut_id"
         },
         "triggerEnable": {
-          "target": "target_start_control"
+          "target": "rocket_check_exist"
         }
       },
       "else_actions": {}
     },
-    "target_start_control": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "missionSetTimeSpeed": {
-          "speed": 0.1,
-          "realtimeTriggers": true
-        },
-        "__hudElementSelectionShade": {
-          "element": ""
-        },
-        "triggerEnable": {
-          "target": [
-            "check_rocket",
-            "view_timer"
-          ]
-        }
-      },
-      "else_actions": {}
-    },
-    "check_rocket": {
+    "rocket_check_exist": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1258,9 +1192,6 @@
         }
       },
       "actions": {
-        "triggerDisable": {
-          "target": "view_timer"
-        },
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
@@ -1272,16 +1203,33 @@
             "ID_FIRE_SECONDARY"
           ]
         },
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_atgm_laser_fixed_beam/hold_on_target1",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "wait": {
+          "time": 1.0
+        },
         "triggerEnable": {
           "target": [
-            "rocket_launched",
-            "check_aim"
+            "target_missed",
+            "target_hit",
+            "rocket_check_zoom"
           ]
         }
       },
       "else_actions": {}
     },
-    "check_aim": {
+    "rocket_check_zoom": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1334,12 +1282,12 @@
           "element": ""
         },
         "triggerEnable": {
-          "target": "check_zoom"
+          "target": "rocket_zoom"
         }
       },
       "else_actions": {}
     },
-    "check_zoom": {
+    "rocket_zoom": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1366,49 +1314,6 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0
-        }
-      },
-      "else_actions": {}
-    },
-    "rocket_launched": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {},
-      "actions": {
-        "__hudElementSelectionShade": {
-          "element": ""
-        },
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/aircraft_atgm_laser_fixed_beam/hold_on_target1",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
-        "wait": {
-          "time": 1.0
-        },
-        "triggerEnable": {
-          "target": [
-            "target_missed",
-            "target_hit"
-          ]
         }
       },
       "else_actions": {}
@@ -1441,8 +1346,7 @@
         "triggerDisable": {
           "target": [
             "target_missed",
-            "time_out_timer",
-            "rocket_launched",
+            "target_missed_timer",
             "debug_respawn"
           ]
         },
@@ -1472,7 +1376,7 @@
       },
       "else_actions": {}
     },
-    "time_out_timer": {
+    "target_missed_timer": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1545,8 +1449,7 @@
         "triggerDisable": {
           "target": [
             "target_hit",
-            "time_out_timer",
-            "rocket_launched"
+            "target_missed_timer"
           ]
         },
         "missionSetTimeSpeed": {
@@ -1631,11 +1534,11 @@
           "item": "ID_CONTINUE"
         },
         "triggerEnable": {
-          "target": "timer"
+          "target": "mission_timer"
         }
       }
     },
-    "timer": {
+    "mission_timer": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1686,7 +1589,7 @@
         "triggerDisable": {
           "target": [
             "mission_end_timer",
-            "timer"
+            "mission_timer"
           ]
         },
         "missionSetTimeSpeed": {
@@ -2068,6 +1971,91 @@
           2659.4,
           391.961,
           939.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "target_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.72705,
+          -4.73915,
+          8.63468
+        ],
+        [
+          0.591485,
+          8.80049,
+          4.71185
+        ],
+        [
+          -9.83196,
+          -0.303028,
+          1.8002
+        ],
+        [
+          2659.4,
+          98.5,
+          827.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          -1542.95,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          13.3643,
+          0.0
+        ],
+        [
+          0.0,
+          -0.0000918482,
+          -984.766
+        ],
+        [
+          2657.0,
+          22.7,
+          876.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "player_map": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.72705,
+          -4.73915,
+          8.63468
+        ],
+        [
+          0.591485,
+          8.80049,
+          4.71185
+        ],
+        [
+          -9.83196,
+          -0.303028,
+          1.8002
+        ],
+        [
+          2659.4,
+          98.5,
+          508.95
         ]
       ],
       "objLayer": 0,

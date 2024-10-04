@@ -25,20 +25,20 @@
       "date_loc": "",
       "objective_loc": "",
       "music": "action_01",
-      "viewAreaScale": 3.0,
+      "viewAreaScale": 1.0,
       "part": {
         "event": "",
         "minTime": 0,
         "slide": {
           "map": true,
-          "minTime": 4,
+          "minTime": 1,
           "picture": "",
-          "showAirMap": true,
+          "showAirMap": false,
           "arrow": {
             "width": 1,
             "side": "player",
             "point": [
-              "player",
+              "player_map",
               "target_tank01"
             ]
           },
@@ -46,7 +46,7 @@
             {
               "icontype": "fighter",
               "side": "player",
-              "target": "player",
+              "target": "player_map",
               "lookAt": "target_tank01"
             },
             {
@@ -54,7 +54,10 @@
               "side": "enemy",
               "target": "target_tank01"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "area_01"
+          }
         }
       }
     }
@@ -2569,9 +2572,9 @@
           -0.793354
         ],
         [
-          93.7996,
-          23.9905,
-          -1161.78
+          1266.81,
+          23.9906,
+          971.539
         ]
       ],
       "unit_class": "germ_apc_m113",
@@ -2626,9 +2629,9 @@
           7.6071
         ],
         [
-          2209.54,
+          3382.55,
           1406.14,
-          -1903.27
+          230.05
         ]
       ],
       "unit_class": "a_10a_late",
@@ -2688,9 +2691,9 @@
           -0.793354
         ],
         [
-          93.7996,
-          16.0,
-          -1161.78
+          1266.81,
+          16.0001,
+          971.539
         ]
       ],
       "unit_class": "tank_target_25_char",
@@ -2750,9 +2753,9 @@
           1.8002
         ],
         [
-          2585.5,
+          3758.51,
           1965.67,
-          -5730.66
+          -3597.34
         ]
       ],
       "objLayer": 0,
@@ -2779,9 +2782,65 @@
           1.8002
         ],
         [
-          108.45,
+          1281.46,
           1608.52,
-          -1179.3
+          954.019
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_01": {
+      "type": "Box",
+      "tm": [
+        [
+          -2306.55,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          24.75,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -2258.25
+        ],
+        [
+          2015.58,
+          38.4,
+          971.025
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "player_map": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1.72705,
+          -4.73915,
+          8.63468
+        ],
+        [
+          0.591485,
+          8.80049,
+          4.71185
+        ],
+        [
+          -9.83196,
+          -0.303028,
+          1.8002
+        ],
+        [
+          2387.65,
+          1608.52,
+          954.019
         ]
       ],
       "objLayer": 0,
