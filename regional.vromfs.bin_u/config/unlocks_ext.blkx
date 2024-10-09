@@ -3915,6 +3915,7 @@
       "group": "german_unity_day",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -3953,6 +3954,7 @@
       "chapter": "holidays",
       "group": "national_day_of_prc",
       "costGold": 199,
+      "hidden": true,
       "manualOpen": true,
       "mode": {
         "type": "missionsPlayedScore",
@@ -3995,6 +3997,7 @@
       "group": "national_day_of_prc",
       "shouldMarkUnits": true,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -4035,6 +4038,7 @@
       "group": "national_day_of_prc",
       "shouldMarkUnits": true,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -14219,6 +14223,64 @@
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
+    },
+    {
+      "id": "decor_dakimakura_anime_omaneko_trophy_gift",
+      "userLogId": "decor_dakimakura_anime_omaneko_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "decor_dakimakura_anime_dmm",
+          "decor_dakimakura_anime_scej"
+        ]
+      }
+    },
+    {
+      "id": "decor_dakimakura_anime_omaneko_b_trophy_gift",
+      "userLogId": "decor_dakimakura_anime_omaneko_b_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "decor_dakimakura_anime_dmm",
+          "decor_dakimakura_anime_scej"
+        ]
+      }
+    },
+    {
+      "id": "decor_dakimakura_anime_dmm",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2024-09-11 07:00:00",
+        "endDate": "2024-12-31 14:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "DMMAccount"
+        }
+      }
+    },
+    {
+      "id": "decor_dakimakura_anime_scej",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2024-09-11 07:00:00",
+        "endDate": "2024-12-31 14:00:00",
+        "condition": {
+          "type": "char_player_has_entitlement",
+          "entitlement": "scej_account"
+        }
+      }
     },
     {
       "id": "gift_ship_tairyo_bata_01_trophy",

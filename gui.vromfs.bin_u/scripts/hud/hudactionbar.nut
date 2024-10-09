@@ -25,7 +25,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
 let { getHudUnitType } = require("hudState")
-let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
+let { HUD_UNIT_TYPE, hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { get_game_type, get_mission_time } = require("mission")
@@ -100,7 +100,7 @@ function hasCollapseShortcut() {
 }
 
 function getVisibilityStateProfilePath() {
-  let hudType = handlersManager.getActiveBaseHandler()?.getclass().getHudType()
+  let hudType = hudTypeByHudUnitType?[getHudUnitType()]
   if (hudType == null)
     return null
   return $"actionBar/isCollapsed/{hudType}"
