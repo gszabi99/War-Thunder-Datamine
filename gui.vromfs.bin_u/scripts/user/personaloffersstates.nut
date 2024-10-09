@@ -51,8 +51,8 @@ function getReceivedOfferContent(offerContent) {
   let res = []
   foreach(offer in offerContent) {
     let contentType = ::trophyReward.getType(offer)
-    if(contentType == "unit") {
-      let unitName = offer.unit
+    if (contentType == "unit" || contentType == "rentedUnit") {
+      let unitName = offer?.unit ?? offer.rentedUnit
       if (shop_is_aircraft_purchased(unitName))
         res.append($"{contentType}:{unitName}")
       continue
