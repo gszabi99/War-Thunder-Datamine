@@ -391,7 +391,7 @@ local logNameByType = {
         config.desc = colorize("activeTextColor", config.desc)
       }
 
-      rentsTable[unitName + "_" + logTypeName] <- config
+      rentsTable[$"{unitName}_{logTypeName}"] <- config
       markDisabled = true
     }
     else if (blk?.type == EULT_OPEN_ALL_IN_TIER) {

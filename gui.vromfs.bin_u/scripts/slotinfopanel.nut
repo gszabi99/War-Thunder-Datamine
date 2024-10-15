@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
@@ -358,7 +357,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
     let discountInfo = getCrewDiscountInfo(crewCountryId, crewIdInCountry)
     let maxDiscount = getCrewMaxDiscountByInfo(discountInfo)
-    let discountText = maxDiscount > 0 ? ("-" + maxDiscount + "%") : ""
+    let discountText = maxDiscount > 0 ? ($"-{maxDiscount}%") : ""
     let discountTooltip = getCrewDiscountsTooltipByInfo(discountInfo)
 
     if (checkObj(this.listboxObj)) {
@@ -375,8 +374,13 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     let isMaxLevel = isCrewMaxLevel(crewData, unit, country, crewUnitType)
     local crewLevelText = getCrewLevel(crewData, unit, crewUnitType)
     if (isMaxLevel)
-      crewLevelText += colorize("@commonTextColor",
-                                  loc("ui/parentheses/space", { text = loc("options/quality_max") }))
+      crewLevelText = "".concat(
+        crewLevelText,
+        colorize(
+          "@commonTextColor",
+          loc("ui/parentheses/space", { text = loc("options/quality_max") })
+        )
+      )
     let needCurPoints = !isMaxLevel
 
     let view = {
@@ -385,7 +389,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       needCurPoints = needCurPoints
       crewPoints = needCurPoints && getCrewSpText(getCrewPoints(crewData))
       crewStatus = getCrewStatus(crewData, unit)
-      crewSpecializationLabel = loc("crew/trained") + loc("ui/colon")
+      crewSpecializationLabel = "".concat(loc("crew/trained"), loc("ui/colon"))
       crewSpecializationIcon = specType.trainedIcon
       crewSpecialization = specType.getName()
       categoryRows = getSkillCategoryView(crewData, unit)
@@ -411,9 +415,15 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       this.favUnlocksHandlerWeak.onSceneActivate(true)
 
     let cur = getFavoriteUnlocksNum()
-    let text = loc("mainmenu/btnFavoritesUnlockAchievement") + loc("ui/parentheses/space", {
-      text = colorize(canAddFavorite() ? "" : "warningTextColor", cur + loc("ui/slash") + FAVORITE_UNLOCKS_LIMIT)
-    })
+    let text = "".concat(
+      loc("mainmenu/btnFavoritesUnlockAchievement"),
+      loc("ui/parentheses/space", {
+        text = colorize(
+          canAddFavorite() ? "" : "warningTextColor",
+          "".concat(cur, loc("ui/slash"), FAVORITE_UNLOCKS_LIMIT)
+        )
+      })
+    )
 
     this.updateHeader(text)
   }
@@ -468,7 +478,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(this.listboxObj)) {
       let obj = this.listboxObj.findObject("unit_lb_discount")
       if (checkObj(obj)) {
-        obj.setValue(discount > 0 ? ("-" + discount + "%") : "")
+        obj.setValue(discount > 0 ? ($"-{discount}%") : "")
         obj.tooltip = format(loc("discount/mods/tooltip"), discount.tostring())
       }
     }

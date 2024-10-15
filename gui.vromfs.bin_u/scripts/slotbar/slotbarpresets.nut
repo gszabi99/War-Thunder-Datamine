@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount
@@ -130,7 +129,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
   function initCountry(countryId) {
     slotbarPresets[countryId] <- this.getPresetsList(countryId)
-    local selPresetId = loadLocalByAccount("slotbar_presets/" + countryId + "/selected", null)
+    local selPresetId = loadLocalByAccount($"slotbar_presets/{countryId}/selected", null)
     let slotbarPreset = this.createPresetFromSlotbar(countryId)
     if (selPresetId != null && (selPresetId in slotbarPresets[countryId])
         && isEqualPreset(slotbarPresets[countryId][selPresetId], slotbarPreset)) {

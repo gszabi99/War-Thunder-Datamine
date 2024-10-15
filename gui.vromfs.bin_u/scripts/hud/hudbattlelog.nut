@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *

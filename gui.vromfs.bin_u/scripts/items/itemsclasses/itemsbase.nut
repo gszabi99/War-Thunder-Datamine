@@ -622,7 +622,7 @@ let BaseItem = class {
       return loc(this.itemExpiredLocId)
     }
     let resStr = loc("icon/hourglass") + nbsp +
-      ::stringReplace(hoursToString(secondsToHours(deltaSeconds), false, true, true), " ", nbsp)
+      hoursToString(secondsToHours(deltaSeconds), false, true, true).replace(" ", nbsp)
     let expireTimeColor = this.getExpireType()?.color
     return expireTimeColor ? colorize(expireTimeColor, resStr) : resStr
   }
@@ -651,7 +651,7 @@ let BaseItem = class {
     }
 
     return "".concat(loc("currency/gc/sign"), nbsp,
-      ::stringReplace(hoursToString(secondsToHours(seconds), false, true, true), " ", nbsp))
+    hoursToString(secondsToHours(seconds), false, true, true).replace(" ", nbsp))
   }
 
   function getTableData() {

@@ -103,7 +103,7 @@ function getFilledFeedTextByLang(locIdsArray, customFeedParams = {}) {
 
     captions.append({
       abbreviation = lang
-      text = ::stringReplace(string.subst(localizationTable), "\t", "")
+      text = string.subst(localizationTable).replace("\t", "")
     })
   }
 

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -183,7 +182,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getFlyTimeText(timeInSeconds) {
-    return time.hoursToString(time.secondsToHours(timeInSeconds), false, true) + " " + loc("icon/timer")
+    return $"{time.hoursToString(time.secondsToHours(timeInSeconds), false, true)} {loc("icon/timer")}"
   }
 
   function getHeaderTabs() {
@@ -260,7 +259,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let selUnitsInfo = this.getSelectedUnitsInfo()
     foreach (_idx, unitTable in this.unitsList) {
-      let unitSliderObj = showObjById(unitTable.unitName + "_" + unitTable.armyGroupIdx,
+      let unitSliderObj = showObjById($"{unitTable.unitName}_{unitTable.armyGroupIdx}",
         unitTable.armyGroupIdx == this.selectedGroupIdx, this.scene)
 
       this.setUnitSliderEnable(unitSliderObj, selUnitsInfo, unitTable)
@@ -423,7 +422,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
           armyInfoText += loc("ui/parentheses/space", { text = maxValueText })
         }
         armyTypeTextObj.tooltip = loc(
-          "worldwar/airfield/" + formedArmyId + "_armies_hint", this.getAirsTypeViewParams(), "")
+          $"worldwar/airfield/{formedArmyId}_armies_hint", this.getAirsTypeViewParams(), "")
       }
       armyTypeTextObj.setValue(armyInfoText)
     }
@@ -431,7 +430,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateFormedArmyInfo (formedArmyMask, selUnitsInfo, needFullUpdate) {
     foreach (classMask, _bitsList in this.currentOperation.getUnitsFlyoutRange()) {
-      let unitClassBlockObj = this.scene.findObject("unit_class_" + classMask)
+      let unitClassBlockObj = this.scene.findObject($"unit_class_{classMask}")
       if (!checkObj(unitClassBlockObj))
         continue
 
@@ -459,7 +458,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
       return loc("worldwar/airfield/selectedZero")
 
     let color = (amount >= range.x && amount <= range.y) ? "goodTextColor" : "badTextColor"
-    let text = colorize(color, amount + " " + this.iconAir)
+    let text = colorize(color, $"{amount} {this.iconAir}")
 
     return loc("worldwar/airfield/selected", { amountText = text })
   }
@@ -501,7 +500,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (unitTable in this.unitsList)
       if (unitTable.armyGroupIdx == this.selectedGroupIdx) {
-        let unitSliderObj = blockObj.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
+        let unitSliderObj = blockObj.findObject($"{unitTable.unitName}_{unitTable.armyGroupIdx}")
         if (!checkObj(unitSliderObj))
           return
 
@@ -547,7 +546,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSlider(unitTable, selUnitsInfo) {
-    let blockObj = this.scene.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
+    let blockObj = this.scene.findObject($"{unitTable.unitName}_{unitTable.armyGroupIdx}")
     if (!checkObj(blockObj))
       return
 
@@ -644,7 +643,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!weapon)
       return
 
-    let blockObj = this.scene.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
+    let blockObj = this.scene.findObject($"{unitTable.unitName}_{unitTable.armyGroupIdx}")
     if (!checkObj(blockObj))
       return
     let containerObj = blockObj.findObject("secondary_weapon")
@@ -686,7 +685,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     unitTable.unitClass = unitClassData.flyOutUnitClass
     this.updateSlider(unitTable, selectedUnitsInfo)
     let unitClass = unitClassData.unitClass
-    let unitBlockObj = this.scene.findObject(unitTable.unitName + "_" + unitTable.armyGroupIdx)
+    let unitBlockObj = this.scene.findObject($"{unitTable.unitName}_{unitTable.armyGroupIdx}")
     let unitClassObj = unitBlockObj.findObject("unit_class_icon_text")
     unitClassObj.unitType = wwUnitClassParams.getText(unitClass)
     unitClassObj.tooltip = loc(unitClassData.tooltipTextLocId)
@@ -749,7 +748,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
       if (unitTable.armyGroupIdx == this.selectedGroupIdx && unitTable.value > 0)
         minTime = minTime <= 0 ? unitTable.maxFlyTime : min(minTime, unitTable.maxFlyTime)
 
-    return loc("worldwar/airfield/army_fly_time") + loc("ui/colon") + this.getFlyTimeText(minTime)
+    return "".concat(loc("worldwar/airfield/army_fly_time"), loc("ui/colon"), this.getFlyTimeText(minTime))
   }
 
   function getUnitClassMaxValue(unitClass) {

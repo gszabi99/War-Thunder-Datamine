@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
@@ -122,12 +121,12 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.wasSelIdx = -1
     let params = { posX = 0, posY = 0 }
-    local weaponryListMarkup = ""
+    let weaponryListMarkup = []
     foreach (idx, config in this.list) {
       let weaponryItem = getTblValue("weaponryItem", config)
       if (!weaponryItem) {
         script_net_assert_once("cant load weaponry",
-                                "Error: empty weaponryItem for WeaponrySelectModal. unit = " + (this.unit && this.unit.name))
+          $"Error: empty weaponryItem for WeaponrySelectModal. unit = {this.unit?.name}")
         this.list = null //goback
         return null
       }
@@ -137,12 +136,12 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
       params.posX = rows ? (idx / rows) : 0
       params.posY = rows ? (idx % rows) : 0
-      weaponryListMarkup += createModItemLayout(idx, this.unit, weaponryItem, weaponryItem.type, params)
+      weaponryListMarkup.append(createModItemLayout(idx, this.unit, weaponryItem, weaponryItem.type, params))
     }
 
     this.selIdx = max(this.wasSelIdx, 0)
     let res = {
-      weaponryList = weaponryListMarkup
+      weaponryList = "".join(weaponryListMarkup)
       columns = cols
       rows = rows
       value = this.selIdx

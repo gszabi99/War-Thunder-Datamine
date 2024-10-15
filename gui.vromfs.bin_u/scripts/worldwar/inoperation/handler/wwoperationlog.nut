@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_update_hover_battle_id, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -180,7 +179,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function fillLogDamagedArmiesObject(bodyObj, dmgArmiesData) {
     for (local i = 0; i < WW_LOG_BATTLE.MAX_DAMAGED_ARMIES; i++) {
-      let damagedArmyObj = bodyObj.findObject("damaged_army_" + i)
+      let damagedArmyObj = bodyObj.findObject($"damaged_army_{i}")
       if (!checkObj(damagedArmyObj))
         continue
 
@@ -199,7 +198,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
       let armyCasualtiesObj = damagedArmyObj.findObject("army_casualties")
       if (checkObj(armyCasualtiesObj))
         armyCasualtiesObj.setValue(
-          loc("worldWar/iconStrike") + colorize(textColor, textValue)
+          $"{loc("worldWar/iconStrike")}{colorize(textColor, textValue)}"
         )
 
       let armyContainerObj = damagedArmyObj.findObject("army_container")
@@ -227,7 +226,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
       tooltipObj.tooltipId = tooltipId
 
     foreach (side in ::g_world_war.getCommonSidesOrder()) {
-      let armyContainerObj = battleObj.findObject("army_side_" + side + "_container")
+      let armyContainerObj = battleObj.findObject($"army_side_{side}_container")
       if (!checkObj(armyContainerObj))
         continue
 
@@ -249,8 +248,8 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!armyTextObj || !wwArmy)
       return
 
-    armyTextObj.width = amount + "@wwArmySmallIconWidth"
-    let armyContainerObj = armyTextObj.findObject(armyObjId + "_container")
+    armyTextObj.width = $"{amount}@wwArmySmallIconWidth"
+    let armyContainerObj = armyTextObj.findObject($"{armyObjId}_container")
     if (!checkObj(armyContainerObj))
       return
     if (idx >= armyContainerObj.childrenCount())
@@ -418,8 +417,8 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let hiddenQuantity = ::g_ww_logs.loaded.len() - ::g_ww_logs.filtered.len()
-    hidedObj.setValue(hiddenQuantity ?
-      loc("worldWar/hided_logs") + loc("ui/colon") + hiddenQuantity : "")
+    hidedObj.setValue(
+      hiddenQuantity ? loc("ui/colon").concat(loc("worldWar/hided_logs"), hiddenQuantity) : "")
   }
 
   function configShowPrevLogsBlock() {

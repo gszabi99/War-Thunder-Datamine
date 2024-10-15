@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_mark_zones_as_outlined_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
@@ -147,7 +146,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
       headers++
     if (objectivesCount.y > 0)
       headers++
-    let reservedHeight = guiScene.calcString("1@frameHeaderHeight + " + headers + "@objectiveBlockHeaderHeight", null)
+    let reservedHeight = guiScene.calcString($"1@frameHeaderHeight + {headers}@objectiveBlockHeaderHeight", null)
 
     let availObjectivesHeight = blockHeight - reservedHeight
 
@@ -207,10 +206,10 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     if (objectivesCount.y > 0)
       headers++
 
-    let reservedHeight = guiScene.calcString("1@frameHeaderHeight + "
-      + headers + "@objectiveBlockHeaderHeight", null)
+    let reservedHeight = guiScene.calcString(
+      $"1@frameHeaderHeight + {headers}@objectiveBlockHeaderHeight", null)
     let objectivesHeight = guiScene.calcString(
-      (objectivesCount.x + objectivesCount.y) + "@objectiveHeight", null)
+      $"{objectivesCount.x + objectivesCount.y}@objectiveHeight", null)
 
     this.setTopPosition(content1BlockHeight - busyHeight - reservedHeight - objectivesHeight)
   }

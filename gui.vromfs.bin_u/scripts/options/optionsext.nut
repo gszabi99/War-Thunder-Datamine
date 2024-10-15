@@ -310,7 +310,7 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
   if (!checkArgument(id, value, "integer"))
     return ""
 
-  local data = "id:t = '" + id + "'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "")
+  local data = $"id:t = '{id}'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "")
   data += "on_dbl_click:t = 'onOptionsListboxDblClick'; "
   data += "class:t='" + listClass + "'; "
 
@@ -387,7 +387,7 @@ function create_option_vlistbox(id, items, value, cb, isFull) {
     ++itemNo
   }
 
-  data = "id:t = '" + id + "'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "") + data
+  data = $"id:t = '{id}'; " + (cb != null ? "on_select:t = '" + cb + "'; " : "") + data
 
   if (isFull)
     data = "VericalListBox { " + data + " }"
@@ -842,7 +842,7 @@ function useropt_mp_team_country_rand(optionId, descr, _context) {
       local tooltip = ""
 
       if (get_game_mode() == GM_DYNAMIC && ::current_campaign) {
-        let countryId = ::current_campaign.id + "_" + ::current_campaign.countries[i]
+        let countryId = $"{::current_campaign.id}_" + ::current_campaign.countries[i]
         let unlock = getUnlockById(countryId)
         if (unlock == null)
           assert(false, ($"Not found unlock {countryId}"))
@@ -1898,7 +1898,7 @@ let optionsMap = {
       }
 
       descr.items.append({
-                          text = "#presets/" + suffix + name
+                          text = $"#presets/{suffix}{name}"
                           image = $"#ui/gameuiskin#{imageName}"
                         })
     }
@@ -2967,7 +2967,7 @@ let optionsMap = {
       descr.values.append(unitType.esUnitType)
       descr.items.append({
         id =$"bit_{unitType.tag}"
-        text = unitType.fontIcon + " " + armyLocName
+        text = $"{unitType.fontIcon} {armyLocName}"
         enabled = isVisible
         isVisible = isVisible
       })
@@ -3178,7 +3178,7 @@ let optionsMap = {
     descr.optionCb = "onSectorChange"
     let dynamic_zones = dynamicGetZones()
     for (local i = 0; i < dynamic_zones.len(); i++) {
-      descr.items.append(::mission_settings.layoutName + "/" + dynamic_zones[i])
+      descr.items.append($"{::mission_settings.layoutName}/" + dynamic_zones[i])
       descr.values.append(dynamic_zones[i])
     }
   },
@@ -4444,10 +4444,10 @@ function set_useropt_cd(value, descr, optionId) {
       setCdOption(optionId, optionValue)
     }
     else
-      assert(false, "[ERROR] Value '" + value + "' is out of range in type " + optionId)
+      assert(false, $"[ERROR] Value '{value}' is out of range in type {optionId}")
   }
   else
-    assert(false, "[ERROR] No values set for type '" + optionId + "'")
+    assert(false, $"[ERROR] No values set for type '{optionId}'")
   if (optionValue != null && descr.onChangeCb)
     descr.onChangeCb(optionId, optionValue, value)
 }
@@ -4768,10 +4768,10 @@ let optionsSetMap = {
         setLastSkin(air, isAutoSkin ? null : descr.values[value])
       }
       else
-        print("[ERROR] value '" + value + "' is out of range")
+        print($"[ERROR] value '{value}' is out of range")
     }
     else
-      print("[ERROR] No values set for type '" + optionId + "'")
+      print($"[ERROR] No values set for type '{optionId}'")
   },
   [USEROPT_USER_SKIN] = function(value, descr, _optionId) {
     let cdb = get_user_skins_profile_blk()

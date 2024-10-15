@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_is_weapon_purchased
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
@@ -48,7 +47,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
   p = WEAPON_TEXT_PARAMS.__merge(p)
   let unitType = getEsUnitType(unit)
   if (u.isEmpty(weapons) && p.needTextWhenNoWeapons)
-    text += getTextNoWeapons(unit, p.isPrimary)
+    text = $"{text}{getTextNoWeapons(unit, p.isPrimary)}"
   let stackableWeapons = [WEAPON_TYPE.TURRETS]
   foreach (weaponType, triggers in (weapons?.weaponsByTypes ?? {})) {
     triggers.sort(@(a, b) b.caliber <=> a.caliber)
@@ -103,7 +102,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
 
       foreach (weaponName, weapon in newWeaponBlocks) {
         if (tText != "" && weapTypeCount == 0)
-          tText += p.newLine
+          tText = $"{tText}{p.newLine}"
 
         if (isInArray(weaponType, CONSUMABLE_TYPES) || weaponType == WEAPON_TYPE.CONTAINER_ITEM) {
           if (isShortDesc) {
@@ -119,15 +118,15 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
               if (weapon.dropSpeedRange) {
                 let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
                 let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-                tText += "\n" + format(loc("weapons/drop_speed_range"),
-                  "{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps })))
+                tText = "".concat(tText, "\n", format(loc("weapons/drop_speed_range"),
+                  "{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps }))))
               }
               if (weapon.dropHeightRange)
-                tText += "\n" + format(loc("weapons/drop_height_range"),
-                  countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y]))
+                tText = "".concat(tText, "\n", format(loc("weapons/drop_height_range"),
+                  countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y])))
             }
             if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
-              tText += getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, p.newLine + nbsp + nbsp + nbsp + nbsp)
+              tText = "".concat(tText, getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, $"{p.newLine}{nbsp}{nbsp}{nbsp}{nbsp}"))
           }
         }
         else {
@@ -136,9 +135,9 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
               gunNames[weaponName] <- weapon.num
           }
           else {
-            tText += loc($"weapons/{weaponName}")
+            tText = $"{tText}{loc($"weapons/{weaponName}")}"
             if (weapon.num > 1)
-              tText += format(loc("weapons/counter"), weapon.num)
+              tText = $"{tText}{format(loc("weapons/counter"), weapon.num)}"
 
             if (!p.isSingle && weapon.ammo > 0)
               tText = "".concat(tText, " (", loc("shop/ammo"), loc("ui/colon"), weapon.ammo, ")")
@@ -153,7 +152,7 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
                   if (speedK)
                     rTime = round_by_value(rTime / speedK, 1.0).tointeger()
                 }
-                tText += " " + loc("bullet_properties/cooldown") + " " + secondsToString(rTime, true, true)
+                tText = " ".concat(tText, loc("bullet_properties/cooldown"), secondsToString(rTime, true, true))
               }
             }
           }
@@ -165,14 +164,14 @@ local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
       else {
         if (TRIGGER_TYPE.TURRETS in trigger) { // && !unit.unitType.canUseSeveralBulletsForGun)
           if (trigger[TRIGGER_TYPE.TURRETS] > 1)
-            tText = format(loc("weapons/turret_number"), trigger[TRIGGER_TYPE.TURRETS]) + tText
+            tText = "".concat(format(loc("weapons/turret_number"), trigger[TRIGGER_TYPE.TURRETS]), tText)
           else
-            tText = utf8ToUpper(loc("weapons_types/turrets"), 1) + loc("ui/colon") + tText
+            tText = "".concat(utf8ToUpper(loc("weapons_types/turrets"), 1), loc("ui/colon"), tText)
         }
       }
 
       if (tText != "")
-        text += ((text != "") ? p.newLine : "") + tText
+        text = $"{text}{(text != "") ? p.newLine : ""}{tText}"
     }
     if (weapTypeCount == 0 && gunNames.len() == 0)
       continue
@@ -301,16 +300,15 @@ function getModItemName(unit, item, limitedName = true) {
 }
 
 function getReqModsText(unit, item) {
-  local reqText = ""
+  let reqText = []
   foreach (rp in ["reqWeapon", "reqModification"])
       if (rp in item)
         foreach (req in item[rp])
           if (rp == "reqWeapon" && !shop_is_weapon_purchased(unit.name, req))
-            reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
+            reqText.append("".concat(loc(rp), loc("ui/colon"), getWeaponNameText(unit.name, false, req, ", ")))
           else if (rp == "reqModification" && !shopIsModificationPurchased(unit.name, req))
-            reqText += ((reqText == "") ? "" : "\n") + loc(rp) + loc("ui/colon")
-              + getModificationName(unit, req)
-  return reqText
+            reqText.append("".concat(loc(rp), loc("ui/colon"), getModificationName(unit, req)))
+  return "\n".join(reqText)
 }
 
 function getBulletsListHeader(unit, bulletsList) {
@@ -336,19 +334,19 @@ function getBulletsListHeader(unit, bulletsList) {
 
 //include spawn score cost
 function getFullItemCostText(unit, item, spawnScoreOnly = false) {
-  local res = ""
+  let res = []
   let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
   let misRules = getCurMissionRules()
 
   if ((!isInFlight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
-    res = wType.getCost(unit, item).tostring()
+    res.append(wType.getCost(unit, item).tostring())
 
   if (isInFlight() && misRules.isScoreRespawnEnabled) {
     let scoreCostText = wType.getScoreCostText(unit, item)
     if (scoreCostText.len())
-      res += (res.len() ? ", " : "") + scoreCostText
+      res.append(scoreCostText)
   }
-  return res
+  return ", ".join(res)
 }
 
 return {

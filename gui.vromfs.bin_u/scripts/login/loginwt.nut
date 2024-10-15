@@ -413,7 +413,7 @@ function needAutoStartBattle() {
         if (folder.indexof("template") == null) {
           haveUserSkin = true
           anyUG = true
-          log("statsd_on_login ug.haveus " + folder + " for " + air.getBlockName())
+          log($"statsd_on_login ug.haveus {folder} for " + air.getBlockName())
           break
         }
       }

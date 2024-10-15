@@ -212,14 +212,14 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let clanData = this.pInfo.clanData
       clanTag = ("tag" in clanData) ? clanData.tag : null
 
-      this.clanInfo = ("id" in clanData ? "clan id = " + clanData.id + "\n" : "") +
-                ("tag" in clanData ? "clan tag = " + clanData.tag + "\n" : "") +
-                ("name" in clanData ? "clan name = " + clanData.name + "\n" : "") +
-                ("slogan" in clanData ? "clan slogan = " + clanData.slogan + "\n" : "") +
-                ("desc" in clanData ? "clan description = " + clanData.desc : "")
+      this.clanInfo = ("id" in clanData ? $"clan id = {clanData.id}" + "\n" : "") +
+                ("tag" in clanData ? $"clan tag = {clanData.tag}" + "\n" : "") +
+                ("name" in clanData ? $"clan name = {clanData.name}" + "\n" : "") +
+                ("slogan" in clanData ? $"clan slogan = {clanData.slogan}" + "\n" : "") +
+                ("desc" in clanData ? $"clan description = {clanData.desc}" : "")
     }
     clanTag = clanTag || (("clanTag" in this.pInfo && this.pInfo.clanTag != "") ? this.pInfo.clanTag : null)
-    pName = clanTag ? (clanTag + " " + pName) : pName
+    pName = clanTag ? ($"{clanTag} {pName}") : pName
 
     let titleObj = this.scene.findObject("complaint_title")
     if (checkObj(titleObj))
@@ -318,7 +318,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.chatLog.clanInfo <- this.clanInfo
     let strChatLog = chatLogToString(this.chatLog)
 
-    log("Send complaint " + this.compliantCategory + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
+    log($"Send complaint {this.compliantCategory}" + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
     log("pInfo:")
     debugTableData(this.pInfo)
 

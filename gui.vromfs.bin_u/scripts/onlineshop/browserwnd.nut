@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import browser_reload_page, browser_go, browser_get_current_url, browser_go_back
 from "%scripts/dagui_library.nut" import *
 

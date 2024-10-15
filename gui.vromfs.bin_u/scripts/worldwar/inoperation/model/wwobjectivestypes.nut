@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_get_zone_capture_time_sec, ww_side_val_to_name, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -39,7 +38,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
     needStopTimer = function(_statusBlk, _tm) { return true }
     isDefender = function(blk, side) {
       if (blk?.defenderSide && type(side) != type(blk.defenderSide))
-        script_net_assert_once("invalid operation objective data", "Func isDefender: " + blk.defenderSide + " never be equal " + side)
+        script_net_assert_once("invalid operation objective data", $"Func isDefender: {blk.defenderSide} never be equal {side}")
 
       return blk?.defenderSide == side
     }
@@ -74,18 +73,19 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
     getLocText = function(blk, side, prefix = "", postfix = "", spec = "", name = "", params = null) {
       if (name != "" && name == this.currentStateParam)
         return loc("wwar_obj/params/currentState/name")
-      local locText = loc(prefix + name + postfix, "", params)
+      local locText = loc($"{prefix}{name}{postfix}", "", params)
       if (blk?.type == null)
         return locText
 
+      let typePrefix = $"{prefix}{blk.type}"
       if (locText == "")
-        locText = loc(prefix + blk.type + "/" + name + postfix, "", params)
+        locText = loc($"{typePrefix}/{name}{postfix}", "", params)
       if (locText == "")
-        locText = loc(prefix + blk.type + "/" + this.getActionString(blk, side) + postfix, "", params)
+        locText = loc($"{typePrefix}/{this.getActionString(blk, side)}{postfix}", "", params)
       if (locText == "")
-        locText = loc(prefix + blk.type + "/" + this.getActionString(blk, side) + "/" + name + postfix + spec, "", params)
+        locText = loc($"{typePrefix}/{this.getActionString(blk, side)}/{name}{postfix}{spec}", "", params)
       if (locText == "")
-        locText = loc(prefix + blk.type + postfix, "", params)
+        locText = loc($"{typePrefix}{postfix}", "", params)
       return locText
     }
     getTitleLocId = function(dataBlk, _statusBlk) { return dataBlk?.id }
@@ -117,7 +117,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
       zonesPercent = @(value, _blk)
         getMeasureTypeByName("percent", true).getMeasureUnitsText(value)
       unitCount = @(value, blk)
-        value + g_ww_unit_type.getUnitTypeByTextCode(blk?.unitType).fontIcon
+        $"{value}{g_ww_unit_type.getUnitTypeByTextCode(blk?.unitType).fontIcon}"
       advantage = @(value, _blk)
         loc("wwar_obj/params/advantage/value", { advantageFactor = round_by_value(value, 0.01) })
     }
@@ -140,7 +140,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
       return value
     }
 
-    getParamId = function(blk, paramName) { return blk.getBlockName() + "_" + this.typeName + "_" + paramName }
+    getParamId = function(blk, paramName) { return "_".concat(blk.getBlockName(), this.typeName, paramName) }
     getParamsArray = function(blk, side) {
       let res = []
       foreach (paramName in this.paramsArray)
@@ -175,7 +175,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 
       let res = []
       foreach (paramName in this.updateArray) {
-        let checkName = paramName in statusBlk ? paramName : paramName + side
+        let checkName = paramName in statusBlk ? paramName : $"{paramName}{side}"
         if (checkName in statusBlk) {
           let val = statusBlk?[checkName]
 
@@ -278,7 +278,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     getTitleLocId = function(dataBlk, statusBlk) {
       let hasAmount = dataBlk?.num != null
       let hasTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec() > 0
-      return (hasAmount ? "Amount" : "Specified") + (hasTime ? "" : "Timeless")
+      return $"{(hasAmount ? "Amount" : "Specified")}{(hasTime ? "" : "Timeless")}"
     }
 
     timersArrayByParamName = {
@@ -374,7 +374,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
           zonesArray.append({
             id = zoneName
-            text = zoneName + (zoneName != lastZoneName ? ", " : "")
+            text = $"{zoneName}{zoneName != lastZoneName ? ", " : ""}"
             team = teamName
             mapLayer = mapLayer
           })
@@ -402,14 +402,14 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         return ""
 
       local speedupText = loc("worldwar/valueWithPercent", { percent = speedupPerc })
-      speedupText = colorize("goodTextColor", loc("keysPlus") + speedupText)
-      speedupText = loc("worldWar/iconReinforcement") + speedupText
+      speedupText = colorize("goodTextColor", $"{loc("keysPlus")}{speedupText}")
+      speedupText = $"{loc("worldWar/iconReinforcement")}{speedupText}"
       return loc("ui/parentheses", { text = speedupText })
     }
 
     getReinforcementSpeedupPercent = function(_dataBlk, statusBlk, side) {
       let sideIdx = ww_side_name_to_val(side)
-      let paramName = "rSpeedMulStatus" + sideIdx + "New"
+      let paramName = $"rSpeedMulStatus{sideIdx}New"
       let speedupFactor = statusBlk?[paramName] ?? 1
       return round(max(speedupFactor - 1, 0) * 100)
     }
@@ -435,7 +435,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     getNameId = function(dataBlk, _side) { return this.getParamId(dataBlk, "timeSecScaled") }
     getTitleLocId = function(_dataBlk, statusBlk) {
       let hasTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec() > 0
-      return "Percentage" + (hasTime ? "" : "Timeless")
+      return $"Percentage{hasTime ? "" : "Timeless"}"
     }
 
     timersArrayByParamName = {
@@ -462,7 +462,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
         let attackerSide = ::g_world_war.getOppositeSide(ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
         let zonesPercent = dataBlk?.zonesPercent ?? 0
-        let capturedPercent = statusBlk?["zonePercent_" + attackerSide] ?? 0
+        let capturedPercent = statusBlk?[$"zonePercent_{attackerSide}"] ?? 0
 
         let isVisible = zonesPercent <= capturedPercent
         nestObj.show(isVisible)
@@ -479,7 +479,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     invertUpdateValue = true
 
     specificClassParamConvertion = {
-      num = function(value, blk, _side, _t) { return value + g_ww_unit_type.getUnitTypeByTextCode(blk?.unitType).fontIcon }
+      num = function(value, blk, _side, _t) { return $"{value}{g_ww_unit_type.getUnitTypeByTextCode(blk?.unitType).fontIcon}" }
     }
   }
 

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_clan_id, clan_validate_membership_requirements
 from "%scripts/dagui_library.nut" import *
 

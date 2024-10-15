@@ -1,7 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, switch_voice_message_list_in_squad
 from "%scripts/dagui_library.nut" import *
-
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -33,10 +31,10 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   function updateChannelInfo() {
     let objTitle = this.scene.findObject("wheel_menu_category")
     if (checkObj(objTitle)) {
-      local text = loc(this.squadMsg ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD" : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST")
-        + loc("ui/colon")
+      local text = "".concat(loc(this.squadMsg ? "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST_SQUAD" : "hotkeys/ID_SHOW_VOICE_MESSAGE_LIST"),
+        loc("ui/colon"))
       if (this.category != "")
-        text += getCategoryLoc(this.category)
+        text = "".concat(text, getCategoryLoc(this.category))
 
       objTitle.chatMode = this.getChatMode()
       objTitle.setValue(text)
@@ -60,7 +58,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
       if (messageIndex < 0)
         continue
 
-      let fastShortcutId = "ID_FAST_VOICE_MESSAGE_" + (i + 1)
+      let fastShortcutId = $"ID_FAST_VOICE_MESSAGE_{i + 1}"
 
       let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(fastShortcutId)
       if (!shortcutType.isAssigned(fastShortcutId))
@@ -68,7 +66,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
 
       let cells = [
         { id = "name", textType = "text", textRawParam = textRawParam,
-         text = format(loc(getVoiceMessageNames()[messageIndex].name + "_0"),
+         text = format(loc($"{getVoiceMessageNames()[messageIndex].name}_0"),
                          loc("voice_message_target_placeholder")) }
       ]
 

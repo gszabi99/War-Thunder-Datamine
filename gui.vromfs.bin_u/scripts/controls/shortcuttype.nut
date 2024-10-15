@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let regexp2 = require("regexp2")
@@ -87,7 +86,7 @@ function transformAxisToShortcuts(axisId) {
   let result = []
   let axisShortcutPostfixes = ["rangeMin", "rangeMax"]
   foreach (postfix in axisShortcutPostfixes)
-    result.append(axisId + "_" + postfix)
+    result.append($"{axisId}_{postfix}")
 
   return result
 }
@@ -320,7 +319,7 @@ enums.addTypesByGlobalName("g_shortcut_type", {
       let axisShortcutPostfixes = ["rangeMin", "rangeMax"]
       foreach (postfix in axisShortcutPostfixes)
         result.append({
-          shortcut = shortcutId + "_" + postfix
+          shortcut = $"{shortcutId}_{postfix}"
           axisDirection = shortcutDirection
           postfix = postfix
         })

@@ -205,7 +205,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
           let regalia = this.getRagalia(rewardsData, place)
           let isNewItem = regalia == "" || regalia != prevRegalia
           if (isNewItem) {
-            let gold = rewardsData?["place" + place + "Gold"] ?? 0
+            let gold = rewardsData?[$"place{place}Gold"] ?? 0
 
             let hasAnyRewards = gold > 0 || this.getRegaliaPrizes(regalia).len() > 0
             if (hasAnyRewards) {
@@ -312,7 +312,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
 
 
   function getRagalia(rewardsData, place = 0) {
-    let placeRegaliaId = "place" + place + "Regalia"
+    let placeRegaliaId = $"place{place}Regalia"
     if (place != 0 && (placeRegaliaId in rewardsData))
       return rewardsData[placeRegaliaId]
 

@@ -143,7 +143,7 @@ function getEntitlementShortName(ent) {
     name = loc($"charServer/entitlement/{ent.group}")
     let amountStr = decimalFormat(getEntitlementAmount(ent))
     if (name.indexof("%d") != null)
-      return ::stringReplace(name, "%d", amountStr)
+      return name.replace("%d", amountStr)
     return loc($"charServer/entitlement/{ent.group}", { amount = amountStr })
   }
   return loc($"charServer/entitlement/{getEntitlementLocId(ent)}")

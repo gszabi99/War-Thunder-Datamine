@@ -1079,7 +1079,7 @@ addTooltipTypes({
 
         local countText = ""
         if (showCount && st.countMax > 1)
-          countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : ($" x{st.countMax}")
+          countText = (st.countMin < st.countMax) ? ($" x{st.countMin}-x{st.countMax}") : ($" x{st.countMax}")
 
         let kinds = detailed ? "" : colorize("fadedTextColor", loc("ui/parentheses/space", { text = loc("trophy/item_type_different_kinds") }))
         data = {
@@ -1291,7 +1291,7 @@ addTooltipTypes({
 
       local countText = ""
       if (showCount && st.countMax > 1)
-        countText = (st.countMin < st.countMax) ? (" x" + st.countMin + "-x" + st.countMax) : ($" x{st.countMax}")
+        countText = (st.countMin < st.countMax) ? ($" x{st.countMin}-x{st.countMax}") : ($" x{st.countMax}")
 
       let kinds = detailed ? "" : colorize("fadedTextColor", loc("ui/parentheses/space", { text = loc("trophy/item_type_different_kinds") }))
       list.append(listMarker + name + countText + kinds)
@@ -1352,7 +1352,7 @@ function getMarkingPreset(item) {
   local needShowFullTitle = true
   local needShowIcon = true
   let tooltipId = !showTooltip ? null
-    : prize?.trophy ? getTooltipType("UNLOCK").getTooltipId(prize.trophy, {type = UNLOCKABLE_TROPHY})
+    : prize?.trophy ? getTooltipType("ITEM").getTooltipId(prize.trophy)
     : prize?.unlock ? getTooltipType("SUBTROPHY").getTooltipId(prize.unlock, params)
     : getTooltipType("PRIZE").getTooltipId(isDataBlock(prize) ? convertBlk(prize) : prize)
 

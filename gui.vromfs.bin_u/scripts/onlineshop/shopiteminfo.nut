@@ -29,7 +29,7 @@ function requestMultipleItems(guids, onSuccess, onFailure = null) {
 
         try {
           let body = response.body.as_string()
-          log($"shopItemInfo: requested [{",".join(guids)}], got\n{body}")
+          log($"shopItemInfo: requested successfully")
 
           if (body.len() > 6 && body.slice(0, 6) == "<html>") { //error 404 and other html pages
             log(ONLINE_STORE_API_URL,
@@ -45,7 +45,7 @@ function requestMultipleItems(guids, onSuccess, onFailure = null) {
             onFailure?()
         }
         catch(e) {
-          log($"shopTimeInfo: failed getting [{",".join(guids)}]: {e}")
+          log($"shopTimeInfo: failed getting: {e}")
           onFailure?()
         }
       }

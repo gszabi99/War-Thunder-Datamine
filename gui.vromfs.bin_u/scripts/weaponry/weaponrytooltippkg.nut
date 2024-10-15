@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
@@ -203,11 +202,11 @@ function getReqTextWorldWarArmy(unit, item) {
   let isEnabledByMission = misRules.isUnitWeaponAllowed(unit, item)
   let isEnabledForUnit = isWeaponEnabled(unit, item)
   if (!isEnabledByMission)
-    text = "<color=@badTextColor>" + loc("worldwar/weaponry/inArmyIsDisabled") + "</color>"
+    text = $"<color=@badTextColor>{loc("worldwar/weaponry/inArmyIsDisabled")}</color>"
   else if (isEnabledByMission && !isEnabledForUnit)
-    text = "<color=@badTextColor>" + loc("worldwar/weaponry/inArmyIsEnabled/weaponRequired") + "</color>"
+    text = $"<color=@badTextColor>{loc("worldwar/weaponry/inArmyIsEnabled/weaponRequired")}</color>"
   else if (isEnabledByMission && isEnabledForUnit)
-    text = "<color=@goodTextColor>" + loc("worldwar/weaponry/inArmyIsEnabled") + "</color>"
+    text = $"<color=@goodTextColor>{loc("worldwar/weaponry/inArmyIsEnabled")}</color>"
 
   return text
 }
@@ -271,7 +270,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         return self(unit_, item_, params, effect, updateEffectFunc)
       }, res)
 
-  local name = "<color=@activeTextColor>" + getModItemName(unit, item, false) + "</color>"
+  local name = $"<color=@activeTextColor>{getModItemName(unit, item, false)}</color>"
   if (isBulletsWithoutTracer(unit, item)) {
     let noTracerText = loc("ui/parentheses/space", {
       text = $"{loc("weapon/noTracer/icon")} {loc("weapon/noTracer")}"
@@ -330,18 +329,19 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let upgradesList = getItemUpgradesList(item)
     if (upgradesList) {
       let upgradesCount = countWeaponsUpgrade(unit, item)
+      let addDescArr = []
       if (upgradesCount?[1])
-        addDesc = "\n" + loc("weaponry/weaponsUpgradeInstalled",
-                               { current = upgradesCount[0], total = upgradesCount[1] })
+        addDescArr.append(loc("weaponry/weaponsUpgradeInstalled",
+          { current = upgradesCount[0], total = upgradesCount[1] }))
       foreach (arr in upgradesList)
         foreach (upgrade in arr) {
           if (upgrade == null)
             continue
-          addDesc += "\n" + (isModificationEnabled(unit.name, upgrade)
-            ? "<color=@goodTextColor>"
-            : "<color=@commonTextColor>")
-              + getModificationName(unit, upgrade) + "</color>"
+          addDescArr.append("".concat(
+            isModificationEnabled(unit.name, upgrade) ? "<color=@goodTextColor>" : "<color=@commonTextColor>",
+            getModificationName(unit, upgrade), "</color>"))
         }
+      addDesc = "\n".join(addDescArr)
     }
   }
   else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) {
@@ -385,12 +385,12 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let amountText = ::getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount)
     if (amountText != "") {
       let color = statusTbl.amount < statusTbl.amountWarningValue ? "badTextColor" : ""
-      res.amountText <- colorize(color, loc("options/count") + loc("ui/colon") + amountText)
+      res.amountText <- colorize(color, $"{loc("options/count")}{loc("ui/colon")}{amountText}")
 
       if (isInFlight() && item.type == weaponsItem.weapon) {
         let respLeft = getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
         if (respLeft >= 0)
-          res.amountText += loc("ui/colon") + loc("respawn/leftRespawns", { num = respLeft })
+          res.amountText = "".concat(res.amountText, loc("ui/colon"), loc("respawn/leftRespawns", { num = respLeft }))
       }
     }
     if (statusTbl.showMaxAmount && statusTbl.amount < statusTbl.amountWarningValue)
@@ -424,19 +424,19 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let rCost = wp_get_repair_cost_by_mode(unit.name, egdCode, false)
     let avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
     if (avgCost)
-      addDesc += "\n" + loc("shop/avg_repair_cost") + nbsp
-        + (avgCost > 0 ? "+" : "")
-        + Cost(avgCost).toStringWithParams({ isWpAlwaysShown = true, isColored = false })
+      addDesc = "".concat(addDesc, "\n", loc("shop/avg_repair_cost"), nbsp,
+        (avgCost > 0 ? "+" : ""),
+        Cost(avgCost).toStringWithParams({ isWpAlwaysShown = true, isColored = false }))
   }
 
   if (hasPlayerInfo) {
     if (!statusTbl.amount && !needShowWWSecondaryWeapons) {
       let reqMods = getReqModsText(unit, item)
       if (reqMods != "")
-        reqText += (reqText == "" ? "" : "\n") + reqMods
+        reqText = "\n".join([reqText, reqMods], true)
     }
     if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item) && !isInFlight())
-      reqText += ((reqText == "") ? "" : "\n") + loc("msg/weaponSelectRequired")
+      reqText = "\n".join([reqText, loc("msg/weaponSelectRequired")], true)
     reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
 
     if (needShowWWSecondaryWeapons)
@@ -469,17 +469,17 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
     if ((("reqExp" in item) && item.reqExp > curExp) || is_paused) {
       local expText = ""
       if (is_researching || is_paused)
-        expText = loc("currency/researchPoints/name") + loc("ui/colon") +
+        expText = "".concat(loc("currency/researchPoints/name"), loc("ui/colon"),
           colorize("activeTextColor",
-            Cost().setRp(curExp).toStringWithParams({ isRpAlwaysShown = true }) +
-            loc("ui/slash") + Cost().setRp(item.reqExp).tostring())
+            "".concat(Cost().setRp(curExp).toStringWithParams({ isRpAlwaysShown = true }),
+              loc("ui/slash"), Cost().setRp(item.reqExp).tostring())))
       else
-        expText = loc("shop/required_rp") + " " + "<color=@activeTextColor>" +
-          Cost().setRp(item.reqExp).tostring() + "</color>"
+        expText = "".concat(loc("shop/required_rp"), " ", "<color=@activeTextColor>",
+          Cost().setRp(item.reqExp).tostring(), "</color>")
 
       let diffExp = Cost().setRp(getTblValue("diffExp", params, 0)).tostring()
       if (diffExp.len())
-        expText += " (+" + diffExp + ")"
+        expText = $"{expText} (+{diffExp})"
       descTbl.expText <- expText
     }
   }

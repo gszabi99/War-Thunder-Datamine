@@ -290,22 +290,6 @@ let optionsModeByGameMode = {
   return mode == GM_DOMINATION || mode == GM_TOURNAMENT
 }
 
-::stringReplace <- function stringReplace(str, replstr, value) {
-  local findex = 0;
-  local s = str;
-
-  while (true) {
-    findex = s.indexof(replstr, findex);
-    if (findex != null) {
-      s = s.slice(0, findex) + value + s.slice(findex + replstr.len());
-      findex += value.len();
-    }
-    else
-      break;
-  }
-  return s;
-}
-
 local last_update_entitlements_time = get_time_msec()
 ::get_update_entitlements_timeout_msec <- function get_update_entitlements_timeout_msec() {
   return last_update_entitlements_time - get_time_msec() + 20000
@@ -560,7 +544,7 @@ local last_update_entitlements_time = get_time_msec()
 }
 
 ::on_have_to_start_chard_op <- function on_have_to_start_chard_op(message) {
-//  dlog("GP: on have to start char op message! = " +message)
+//  dlog($"GP: on have to start char op message! = {message}")
   log($"on_have_to_start_chard_op {message}")
 
   if (message == "sync_clan_vs_profile") {

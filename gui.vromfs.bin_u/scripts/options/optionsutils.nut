@@ -20,7 +20,7 @@ let checkArgument = function(id, arg, varType) {
   if (type(arg) == varType)
     return true
 
-  local msg = "[ERROR] Wrong argument type supplied for option item '" + id + ".\n"
+  local msg = $"[ERROR] Wrong argument type supplied for option item '{id}" + ".\n"
   msg += "Value = " + toString(arg) + ".\n"
   msg += "Expected '" + varType + "' found '" + type(arg) + "'."
 
@@ -218,7 +218,7 @@ let fillDynMapOption = function(descr) {
           }
         if (!found) {
           skip = true
-          log("SKIP " + layout.name + " because of tag " + tag)
+          log($"SKIP {layout.name} because of tag {tag}")
           break
         }
       }

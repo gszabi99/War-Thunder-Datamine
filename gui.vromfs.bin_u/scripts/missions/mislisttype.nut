@@ -61,7 +61,7 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
         continue
     if (misBlk?.hideInSingleMissionList)
       continue
-    let unlock = misBlk?.chapter ? getUnlockById(misBlk.chapter + "/" + missionId) : null
+    let unlock = misBlk?.chapter ? getUnlockById($"{misBlk.chapter}/{missionId}") : null
     if (unlock && !isUnlockVisible(unlock))
       continue
     if (misBlk?.reqFeature && !hasFeature(misBlk.reqFeature))
@@ -102,7 +102,7 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
     }
 
     if (gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION || gm == GM_TRAINING) {
-      let missionFullName = campaignName + "/" + (misDescr?.id ?? "")
+      let missionFullName = $"{campaignName}/" + (misDescr?.id ?? "")
       misDescr.progress <- get_mission_progress(missionFullName)
       if (!is_user_mission(misBlk))
         misDescr.isUnlocked = misDescr?.progress != 4

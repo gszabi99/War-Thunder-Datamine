@@ -1,7 +1,9 @@
 //-file:plus-string
+// warning disable: -file:forbidden-function
+
 from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
 from "%scripts/dagui_library.nut" import *
-// warning disable: -file:forbidden-function
+
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { getLocalLanguage } = require("language")
@@ -51,7 +53,7 @@ function debug_change_resolution(shouldIncrease = true) {
   let curIdx = list.indexof(curResolution) || 0
   let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   let newResolution = list[newIdx]
-  let done = @() dlog("Set resolution: " + newResolution +
+  let done = @() dlog($"Set resolution: {newResolution}" +
     " (" + screen_width() + "x" + screen_height() + ")")
   if (newResolution == curResolution)
     return done()

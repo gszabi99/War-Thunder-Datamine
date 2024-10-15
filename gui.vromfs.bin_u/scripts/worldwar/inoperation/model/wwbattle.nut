@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world, ww_side_name_to_val, ww_battle_status_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -280,7 +279,7 @@ let WwBattle = class {
 
           let army = ::g_world_war.getArmyByName(armyName)
           if (!army) {
-            script_net_assert_once("WW can't find army", "ww: can't find army " + armyName)
+            script_net_assert_once("WW can't find army", $"ww: can't find army {armyName}")
             continue
           }
 
@@ -388,7 +387,7 @@ let WwBattle = class {
 
     if (!team.country) {
       script_net_assert_once("WW can't get country",
-                               "ww: can't get country for team " + team.name)
+        $"ww: can't get country for team {team.name}")
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_COUNTRY_IN_TEAM
       res.reasonText = loc("msgbox/internal_error_header")
       return res
@@ -401,7 +400,7 @@ let WwBattle = class {
         let text = ",".join(tArr, true)
         res.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_MEMBERS_NO_WW_ACCESS
         res.reasonText = loc("worldwar/squad/notAllowedMembers")
-        res.fullReasonText = loc("worldwar/squad/notAllowedMembers") + loc("ui/colon") + "\n" + text
+        res.fullReasonText = "".concat(loc("worldwar/squad/notAllowedMembers"), loc("ui/colon"), "\n", text)
         return res
       }
     }
@@ -425,7 +424,7 @@ let WwBattle = class {
     let countryName = this.getCountryNameBySide(side)
     if (!countryName) {
       script_net_assert_once("WW can't get country",
-                  "ww: can't get country for team " + team.name + " from " + team.country)
+        $"ww: can't get country for team {team.name} from {team.country}")
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_COUNTRY_BY_SIDE
       res.reasonText = loc("msgbox/internal_error_header")
       return res
@@ -434,7 +433,7 @@ let WwBattle = class {
     let teamName = this.getTeamNameBySide(side)
     if (!teamName) {
       script_net_assert_once("WW can't get team",
-              "ww: can't get team for team " + team.name + " for battle " + this.id)
+        $"ww: can't get team for team {team.name} for battle {this.id}")
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_TEAM_NAME_BY_SIDE
       res.reasonText = loc("msgbox/internal_error_header")
       return res
@@ -613,8 +612,8 @@ let WwBattle = class {
     let countryName = this.getCountryNameBySide(side)
     let teamName = this.getTeamNameBySide(side)
 
-    log("ww: join ww battle op:" + opId.tostring() + ", battle:" + this.id +
-                ", country:" + countryName + ", team:" + teamName)
+    log("ww: join ww battle op:", opId.tostring(), ", battle:", this.id,
+      ", country:", countryName, ", team:", teamName)
 
     WwBattleJoinProcess(this, side)
     wwEvent("JoinBattle", { battleId = this.id })
@@ -752,7 +751,7 @@ let WwBattle = class {
   }
 
   function getQueueId() {
-    return wwGetOperationId() + "_" + this.id
+    return $"{wwGetOperationId()}_{this.id}"
   }
 
   function getAvailableUnitTypes() {
@@ -834,7 +833,7 @@ let WwBattle = class {
         else
           enemySideNumber += team.players
 
-    return friendlySideNumber + " " + loc("country/VS") + " " + enemySideNumber
+    return " ".concat(friendlySideNumber, loc("country/VS"), enemySideNumber)
   }
 
   function getTotalPlayersInQueueInfo(side) {
@@ -1293,7 +1292,7 @@ WwBattleView = class  {
 
   function getAutoBattleWinChancePercentText() {
     let percent = this.battle.getTeamBySide(this.playerSide)?.autoBattleWinChancePercent
-    return percent != null ? percent + loc("measureUnits/percent") : ""
+    return percent != null ? $"{percent}{loc("measureUnits/percent")}" : ""
   }
 
   function needShowWinChance() {
@@ -1305,7 +1304,7 @@ WwBattleView = class  {
   }
 
   function getBattleStatusDescText() {
-    return this.battle.isValid() ? loc(this.getBattleStatusTextLocId() + "/desc") : ""
+    return this.battle.isValid() ? loc($"{this.getBattleStatusTextLocId()}/desc") : ""
   }
 
   function getCanJoinText() {
@@ -1333,7 +1332,7 @@ WwBattleView = class  {
     local text = this.getBattleStatusText()
     let durationText = this.getBattleDurationTime()
     if (!u.isEmpty(durationText))
-      text += loc("ui/colon") + durationText
+      text = loc("ui/colon").concat(text, durationText)
 
     return text
   }
@@ -1345,7 +1344,7 @@ WwBattleView = class  {
     local text = this.getBattleStatusText()
     let canJoinText = this.getCanJoinText()
     if (!u.isEmpty(canJoinText))
-      text += loc("ui/dot") + " " + canJoinText
+      text = $"{text}{loc("ui/dot")} {canJoinText}"
 
     return text
   }
@@ -1397,13 +1396,13 @@ WwBattleView = class  {
   }
 
   function getTotalPlayersInfoText() {
-    return loc("worldwar/totalPlayers") + loc("ui/colon") +
-      colorize("newTextColor", this.battle.getTotalPlayersInfo(this.playerSide))
+    return loc("ui/colon").concat(loc("worldwar/totalPlayers"),
+      colorize("newTextColor", this.battle.getTotalPlayersInfo(this.playerSide)))
   }
 
   function getTotalQueuePlayersInfoText() {
-    return loc("worldwar/totalInQueue") + loc("ui/colon") +
-      colorize("newTextColor", this.battle.getTotalPlayersInQueueInfo(this.playerSide))
+    return loc("ui/colon").concat(loc("worldwar/totalInQueue"),
+      colorize("newTextColor", this.battle.getTotalPlayersInQueueInfo(this.playerSide)))
   }
   needShowTimer = @() !this.battle.isFinished()
 

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui, ps4_is_circle_selected_as_enter_button
 from "%scripts/dagui_library.nut" import *
 

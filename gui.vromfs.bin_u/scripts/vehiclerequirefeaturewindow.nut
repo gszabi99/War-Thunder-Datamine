@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_online_available, is_app_active, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "%scripts/airInfo.nut" import CheckFeatureLockAction
@@ -59,23 +58,23 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
     local locPrefix = "shop/featureLock/"
     if (this.unit)
       if (this.unit.unitType == unitTypes.TANK)
-        locPrefix += "USATanks/" //here is usual tanks texts
+        locPrefix = $"{locPrefix}USATanks/" //here is usual tanks texts
       else
-        locPrefix +=$"{this.unit.unitType.name}/"
+        locPrefix = $"{locPrefix}{this.unit.unitType.name}/"
 
     local text = ""
     if (this.featureLockAction == CheckFeatureLockAction.BUY)
-      text += loc($"{locPrefix}warning/buy")
+      text = "".concat(text, loc($"{locPrefix}warning/buy"))
     else // CheckFeatureLockAction.RESEARCH
-      text += loc($"{locPrefix}warning/research")
+      text = "".concat(text, loc($"{locPrefix}warning/research"))
     let mainLocParams = {
       specialPackPart = this.getPurchaseAvailable()
         ? loc($"{locPrefix}warning/specialPackPart")
         : ""
     }
-    text += " " + loc($"{locPrefix}warning/main", mainLocParams)
+    text = " ".concat(text, loc($"{locPrefix}warning/main", mainLocParams))
     if (this.getPurchaseAvailable())
-      text += "\n" + colorize("userlogColoredText", loc($"{locPrefix}advise"))
+      text = "\n".concat(text, colorize("userlogColoredText", loc($"{locPrefix}advise")))
     return text
   }
 
@@ -83,7 +82,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
     local res = "#ui/images/usa_tanks_locked?P1"
     let clearedCountry = cutPrefix(getUnitCountry(this.unit), "country_")
     if (clearedCountry)
-      res = "#ui/images/" + clearedCountry + "_" + this.unit.unitType.tag + "_locked?P1"
+      res = $"#ui/images/{clearedCountry}_{this.unit.unitType.tag}_locked?P1"
     return res
   }
 
@@ -92,8 +91,10 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
       return ""
 
     let country = getUnitCountry(this.unit)
-    let locTag = toUpper(cutPrefix(country, "country_", ""), 1)
-                   + this.unit.unitType.name
+    let locTag = "".concat(
+      toUpper(cutPrefix(country, "country_", ""), 1),
+      this.unit.unitType.name
+    )
     return format("#shop/featureLock/%s/header", locTag)
   }
 
@@ -163,7 +164,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
     let value = this.getDiscountValue(entitlementItem)
     if (value == 0)
       return ""
-    return value.tostring() + "%"
+    return $"{value}%"
   }
 
   function getDiscountValue(entitlementItem) {

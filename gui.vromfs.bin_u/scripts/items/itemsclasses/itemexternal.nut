@@ -378,7 +378,7 @@ let ItemExternal = class (BaseItem) {
       { name = this.getTypeNameForMarketableDesc()
         time = noTradeableSec > 0
           ? colorize("badTextColor",
-              ::stringReplace(time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true), " ", nbsp))
+          time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true).replace(" ", nbsp))
           : ""
       })
     return loc("currency/gc/sign/colored", "") + " " +
@@ -727,7 +727,7 @@ let ItemExternal = class (BaseItem) {
 
       headerText = loc("items/exchangeTo", { currency = icon })
       buttonText = loc("items/btnExchange")
-      getValueText = @(value) value + " x " + warbondItem.getWarbondsAmount() + icon
+      getValueText = @(value) $"{value} x " + warbondItem.getWarbondsAmount() + icon
         + " = " + value * warbondItem.getWarbondsAmount() + icon
 
       onAcceptCb = @(value) item.convertToWarbondsImpl(recipe, warbondItem, value)
@@ -968,7 +968,7 @@ let ItemExternal = class (BaseItem) {
       return colorize(this.craftColor, loc(this.craftFinishedLocId))
     }
     return colorize(this.craftColor, loc("icon/hourglass") + nbsp +
-      ::stringReplace(time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true), " ", nbsp))
+      time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true).replace(" ", nbsp))
   }
 
   function getCraftTimeText() {
@@ -1042,7 +1042,7 @@ let ItemExternal = class (BaseItem) {
 
     // prevent infinite recursion on incorrectly configured delayedexchange
     if (craftingItem == this) {
-      logerr("Inventory: delayedexchange " + this.id + " instance has type " +
+      logerr($"Inventory: delayedexchange {this.id} instance has type " +
         getEnumValName("itemType", itemType, this.iType) + " which does not implement cancelCrafting()")
       return false
     }

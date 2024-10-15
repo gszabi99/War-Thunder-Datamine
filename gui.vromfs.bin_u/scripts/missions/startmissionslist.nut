@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_system_ui_active, d3d_get_vsync_enabled, d3d_enable_vsync, get_game_mode_name, play_movie, set_context_to_player
+from "%scripts/dagui_natives.nut" import d3d_get_vsync_enabled, d3d_enable_vsync, get_game_mode_name, play_movie, set_context_to_player
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
 from "mission" import get_game_mode, get_game_type
@@ -236,7 +236,7 @@ function guiStartCdOptions(afterApplyFunc, owner = null) {
 function guiStartBriefing() {
   //FIX ME: Check below really can be in more easier way.
   let startParams = handlersManager.getLastBaseHandlerStartParams()
-  if (startParams != null && !isInArray(handlersManager.lastLoadedBaseHandlerName,
+  if (startParams != null && !isInArray(startParams?.handlerName ?? "",
       ["MPLobby", "SessionsList", "DebriefingModal"]))
     backFromBriefingParams(startParams)
 
@@ -256,12 +256,12 @@ function guiStartBriefing() {
 eventbus_subscribe("guiStartSkirmish", guiStartSkirmish)
 eventbus_subscribe("guiStartMislist", @(_) guiStartMislist())
 eventbus_subscribe("guiStartDynamicSummary", guiStartDynamicSummary)
-eventbus_subscribe("gui_start_briefing", guiStartBriefing)
+eventbus_subscribe("gui_start_briefing", @(_) guiStartBriefing())
 
 function guiStartCampaignNoPack() {
   guiStartMislist(true, GM_CAMPAIGN)
 
-  if (needCheckForVictory.value && ! is_system_ui_active()) {
+  if (needCheckForVictory.value) {
     needCheckForVictory(false)
     play_movie("video/victory", false, true, true)
   }

@@ -26,6 +26,10 @@ let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isUsedCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
+let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { needShowGameModesNotLoadedMsg } = require("%scripts/matching/matchingGameModes.nut")
 
 class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -59,6 +63,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateCustomLangInfo()
     this.updateCustomSoundModsBtn()
+    this.initModesNotLoadedBtn()
   }
 
   function reinitScreen(_params = null) {
@@ -606,6 +611,21 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
         battlePassHint["margin-left"] = $"{battlePassRect.pos[0] + battlePassRect.size[0] - gcButtonsContainerRect.pos[0]} - w"
       }
     }
+  }
+
+  function initModesNotLoadedBtn() {
+    let buttonObj = this.scene.findObject("game_modes_not_loaded_suppot_link")
+    if (!buttonObj?.isValid())
+      return
+
+    let lang = getCurLangShortName() == "ru" ? "ru" : "en-us"
+    let link = getCurCircuitOverride("knowledgebaseModesNotLoaded", $"auto_login https://support.gaijin.net/hc/{lang}/articles/201705251")
+    buttonObj.link = link
+
+    buttonObj.setValue(stashBhvValueConfig([{
+      watch = needShowGameModesNotLoadedMsg
+      updateFunc = @(obj, value) obj.show(value)
+    }]))
   }
 
 }

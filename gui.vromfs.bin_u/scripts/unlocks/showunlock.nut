@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity
 
@@ -136,7 +135,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (rewardText != "") {
       let rewObj = this.scene.findObject("award_reward")
       if (checkObj(rewObj))
-        rewObj.setValue(loc("challenge/reward") + " " + this.config.rewardText)
+        rewObj.setValue(" ".concat(loc("challenge/reward"), this.config.rewardText))
     }
 
     let nObj = this.scene.findObject("next_award")

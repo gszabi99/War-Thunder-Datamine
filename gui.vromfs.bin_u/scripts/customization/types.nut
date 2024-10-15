@@ -229,7 +229,7 @@ enums.addTypes(decoratorTypes, {
 
     getImage = function(decorator) {
       return decorator
-        ? ("@!" + decorator.tex + "*")
+        ? ($"@!{decorator.tex}" + "*")
         : ""
     }
 

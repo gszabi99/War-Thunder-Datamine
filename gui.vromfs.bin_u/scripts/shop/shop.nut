@@ -1450,7 +1450,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getDiscountIconTabId(country, unitType) {
-    return country + "_" + unitType + "_discount"
+    return $"{country}_{unitType}_discount"
   }
 
   function updateDiscountIconsOnTabs() {
@@ -1474,7 +1474,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let discountData = this.getDiscountByCountryAndArmyId(this.curCountry, page.name)
 
         let maxDiscount = discountData?.maxDiscount ?? 0
-        discountObj.setValue(maxDiscount > 0 ? ("-" + maxDiscount + "%") : "")
+        discountObj.setValue(maxDiscount > 0 ? ($"-{maxDiscount}%") : "")
       }
       break
     }

@@ -127,7 +127,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
         blk.getInt("dataDD", 1),
         blk.getInt("dataMM", 1),
         blk.getInt("dataYYYY", 1941),
-        loc("dynamic/" + this.layout + "/" + blk.getStr("sectorName", "")),
+        loc($"dynamic/{this.layout}/" + blk.getStr("sectorName", "")),
         loc(blk.getStr("description", ""))
         )
     }

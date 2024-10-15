@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueType.nut" import g_queue_type
 
@@ -110,7 +109,7 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillQueueSideInfo(containerObj, battleQueueInfo, battle, side) {
-    let teamName = "team" + battle.getTeamNameBySide(side)
+    let teamName = $"team{battle.getTeamNameBySide(side)}"
 
     let sideInfoClanPlayers = containerObj.findObject("players_in_clans_count")
     sideInfoClanPlayers.setValue(

@@ -34,9 +34,9 @@ function fetchClusterHosts() {
       isFetching = false
 
       if (result.error == OPERATION_COMPLETE) {
-        logCH($"Fetched hosts:", result)
         failedFetches = 0
         let hosts = result.filter(@(_, ip) reIP.match(ip))
+        logCH($"Fetched hosts count: {hosts.len()}")
         clusterHosts(hosts)
         return
       }
@@ -71,8 +71,8 @@ function tryApplyChangedHosts() {
 isInBattleState.subscribe(@(_) tryApplyChangedHosts())
 
 matchingRpcSubscribe("hmanager.notify_hosts_list_changed", function(result) {
-  logCH($"Changed hosts:", result)
   let hosts = result.filter(@(_, ip) reIP.match(ip))
+  logCH($"Changed hosts count: {hosts.len()}")
   clusterHostsChangePending(hosts)
   tryApplyChangedHosts()
 })

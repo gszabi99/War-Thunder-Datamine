@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
 

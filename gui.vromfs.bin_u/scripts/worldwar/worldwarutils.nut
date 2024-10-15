@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war, ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name, ww_select_player_side_for_regular_user, ww_get_operation_objectives, ww_send_operation_request, ww_select_player_side_for_army_group_member, clan_get_my_clan_id, ww_get_sides_info, ww_get_rear_zones
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -935,8 +934,8 @@ g_world_war = {
 
     let params = DataBlock()
     for (local i = 0; i < armies.len(); i++) {
-      params.addStr("army" + i, armies[i].name)
-      params.addInt("targetCellIdx" + i, cellIdx)
+      params.addStr($"army{i}", armies[i].name)
+      params.addInt($"targetCellIdx{i}", cellIdx)
     }
 
     if (appendPath)
@@ -1037,7 +1036,7 @@ g_world_war = {
 
     let params = DataBlock()
     foreach (idx, army in filteredArray)
-      params.addStr("army" + idx, army.name)
+      params.addStr($"army{idx}", army.name)
     ww_send_operation_request("cln_ww_stop_armies", params)
   }
 
@@ -1052,7 +1051,7 @@ g_world_war = {
 
     let params = DataBlock()
     foreach (idx, army in entrenchedArmies)
-      params.addStr("army" + idx, army.name)
+      params.addStr($"army{idx}", army.name)
     get_cur_gui_scene()?.playSound("ww_unit_entrench")
     ww_send_operation_request("cln_ww_entrench_armies", params)
   }
@@ -1077,9 +1076,9 @@ g_world_war = {
       if (unitTable.count == 0)
         continue
 
-      params.addStr("unitName" + i, unitName)
-      params.addInt("unitCount" + i, getTblValue("count", unitTable, 0))
-      params.addStr("unitWeapon" + i, getTblValue("weapon", unitTable, ""))
+      params.addStr($"unitName{i}", unitName)
+      params.addInt($"unitCount{i}", unitTable?.count ?? 0)
+      params.addStr($"unitWeapon{i}", unitTable?.weapon ?? "")
       i++
     }
 
@@ -1150,7 +1149,7 @@ g_world_war = {
     if (!unit)
       return ""
 
-    let weaponName = loadLocalByAccount(WW_UNIT_WEAPON_PRESET_PATH + unitName, "")
+    let weaponName = loadLocalByAccount($"{WW_UNIT_WEAPON_PRESET_PATH}{unitName}", "")
     let weapons = unit.getWeapons()
     foreach (weapon in weapons)
       if (weapon.name == weaponName)
@@ -1160,7 +1159,7 @@ g_world_war = {
   }
 
   function set_last_weapon_preset(unitName, weaponName) {
-    saveLocalByAccount(WW_UNIT_WEAPON_PRESET_PATH + unitName, weaponName)
+    saveLocalByAccount($"{WW_UNIT_WEAPON_PRESET_PATH}{unitName}", weaponName)
   }
 
   function collectUnitsData(unitsArray, isViewStrengthList = true) {
@@ -1177,7 +1176,7 @@ g_world_war = {
   }
 
   function getSaveOperationLogId() {
-    return WW_LAST_OPERATION_LOG_SAVE_ID + wwGetOperationId()
+    return $"{WW_LAST_OPERATION_LOG_SAVE_ID}{wwGetOperationId()}"
   }
 
   function updateUserlogsAccess() {
@@ -1210,7 +1209,7 @@ g_world_war = {
     if (errorMsgId == "WRONG_REINFORCEMENT_NAME")
       return
 
-    let popupText = loc("worldwar/charError/" + errorMsgId,
+    let popupText = loc($"worldwar/charError/{errorMsgId}",
       loc("worldwar/charError/defaultError", ""))
     if (popupText.len() || titleText.len())
       addPopup(titleText, popupText, null, null, null, groupName)

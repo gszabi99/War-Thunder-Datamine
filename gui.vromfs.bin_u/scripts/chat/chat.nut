@@ -19,7 +19,7 @@ let penalties = require("%scripts/penitentiary/penalties.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
-let { clearBorderSymbolsMultiline, endsWith, cutPrefix  } = require("%sqstd/string.nut")
+let { clearBorderSymbolsMultiline, endsWith, cutPrefix } = require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -103,13 +103,13 @@ g_chat.filterMessageText <- function filterMessageText(text, isMyMessage) {
 g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg) {
   //space work as close link. but non-breakable space - work as other symbols.
   //rnd for duplicate blocked messages
-  return format("BL_%02d_%s", rnd() % 99, ::stringReplace(msg, " ", nbsp))
+  return format("BL_%02d_%s", rnd() % 99, msg.replace(" ", nbsp))
 }
 
 
 g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link) {
   let prefixLen = 6 // Prefix is "BL_NN_", where NN are digits.
-  return ::stringReplace(link.slice(prefixLen), nbsp, " ")
+  return link.slice(prefixLen).replace(nbsp, " ")
 }
 
 
@@ -128,7 +128,7 @@ g_chat.checkBlockedLink <- function checkBlockedLink(link) {
 
 
 g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link) {
-  let start = text.indexof("<Link=" + link)
+  let start = text.indexof($"<Link={link}")
   if (start == null)
     return text
 
@@ -348,7 +348,7 @@ g_chat.createThread <- function createThread(title, categoryName, langTags = nul
     langTags = ::g_chat_thread_tag.LANG.prefix + getCurLangInfo().chatId
   let categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
   let tagsList = ",".join([langTags, categoryTag], true)
-  gchat_raw_command("xtjoin " + tagsList + " :" + this.prepareThreadTitleToSend(title))
+  gchat_raw_command($"xtjoin {tagsList} :" + this.prepareThreadTitleToSend(title))
   broadcastEvent("ChatThreadCreateRequested")
 }
 
@@ -370,15 +370,15 @@ g_chat.validateRoomName <- function validateRoomName(name) {
 
 g_chat.validateChatMessage <- function validateChatMessage(text, multilineAllowed = false) {
   //do not allow players to use tag.  <color=#000000>...
-  text = ::stringReplace(text, "<", "[")
-  text = ::stringReplace(text, ">", "]")
+  text = text.replace("<", "[")
+  text = text.replace(">", "]")
   if (!multilineAllowed)
-    text = ::stringReplace(text, "\\n", " ")
+    text = text.replace("\\n", " ")
   return text
 }
 
 g_chat.validateThreadTitle <- function validateThreadTitle(title) {
-  local res = ::stringReplace(title, "\\n", "\n")
+  local res = title.replace("\\n", "\n")
   res = clearBorderSymbolsMultiline(res)
   res = this.validateChatMessage(res, true)
   return res
@@ -386,12 +386,12 @@ g_chat.validateThreadTitle <- function validateThreadTitle(title) {
 
 g_chat.prepareThreadTitleToSend <- function prepareThreadTitleToSend(title) {
   let res = this.validateThreadTitle(title)
-  return ::stringReplace(res, "\n", "<br>")
+  return res.replace("\n", "<br>")
 }
 
 g_chat.restoreReceivedThreadTitle <- function restoreReceivedThreadTitle(title) {
-  local res = ::stringReplace(title, "\\n", "\n")
-  res = ::stringReplace(res, "<br>", "\n")
+  local res = title.replace("\\n", "\n")
+  res = res.replace("<br>", "\n")
   res = clearBorderSymbolsMultiline(res)
   res = this.validateChatMessage(res, true)
   return res
@@ -450,18 +450,18 @@ g_chat.modifyThread <- function modifyThread(threadInfo, modifyTable) {
   local isChanged = false
   if (threadInfo.title != curTitle) {
     let title = g_chat.prepareThreadTitleToSend(threadInfo.title)
-    gchat_raw_command("xtmeta " + threadInfo.roomId + " topic :" + title)
+    gchat_raw_command($"xtmeta {threadInfo.roomId} topic :{title}")
     isChanged = true
   }
 
   let newTagsString = threadInfo.getFullTagsString()
   if (newTagsString != curTagsString) {
-    gchat_raw_command("xtmeta " + threadInfo.roomId + " tags " + newTagsString)
+    gchat_raw_command($"xtmeta {threadInfo.roomId} tags {newTagsString}")
     isChanged = true
   }
 
   if (curTimeStamp != threadInfo.timeStamp) {
-    gchat_raw_command("xtmeta " + threadInfo.roomId + " stamp " + threadInfo.timeStamp)
+    gchat_raw_command($"xtmeta {threadInfo.roomId} stamp {threadInfo.timeStamp}")
     isChanged = true
   }
 
@@ -584,7 +584,7 @@ g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig,
 
     if (!res && needAssert) {
       let partsAmount = u.isArray(langConfig) ? langConfig.len() : 1
-      script_net_assert_once("too long json message", "Too long json message to chat. partsAmount = " + partsAmount)
+      script_net_assert_once("too long json message", $"Too long json message to chat. partsAmount = {partsAmount}")
     }
     return res
   }

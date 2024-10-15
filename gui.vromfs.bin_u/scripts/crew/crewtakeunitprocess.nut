@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
@@ -306,7 +305,7 @@ let CrewTakeUnitProcess = class {
 
     let curStepFunc = getTblValue(this.curProgress, this.stepsList)
     if (!curStepFunc) {
-      script_net_assert_once("missing take unit step", "Missing take unit step = " + this.curProgress)
+      script_net_assert_once("missing take unit step", $"Missing take unit step = {this.curProgress}")
       return this.remove()
     }
 

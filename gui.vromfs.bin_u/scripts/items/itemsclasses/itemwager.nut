@@ -574,7 +574,7 @@ let Wager = class (BaseItem) {
     local desc = this.getName(colored)
     let descVars = []
     if (this.isActive())
-      descVars.append(this.numWins + "/" + this.maxWins)
+      descVars.append($"{this.numWins}/{this.maxWins}")
 
     if (this.numBattles != null)
       descVars.append(colorize("badTextColor", (this.numBattles - this.numWins) + "/" + this.maxFails))

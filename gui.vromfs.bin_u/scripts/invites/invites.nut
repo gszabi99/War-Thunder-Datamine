@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, periodic_task_unregister, get_user_logs_count, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
@@ -258,7 +257,7 @@ let setNewInvitesAmount = @(val) invitesAmount.val = val
                                                  this._timedInvitesUpdate,
                                                  triggerDelay)
 
-  log("Rescheduled refreshInvitesTask " + this.refreshInvitesTask + " with delay " + triggerDelay);
+  log($"Rescheduled refreshInvitesTask {this.refreshInvitesTask} with delay {triggerDelay}");
 }
 
 ::g_invites.registerInviteUserlogHandler <- @(logType, addFn)

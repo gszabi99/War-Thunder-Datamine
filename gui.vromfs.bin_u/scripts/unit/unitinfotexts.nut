@@ -217,7 +217,7 @@ function getShipMaterialTexts(unitId) {
     let thickness = blk?[$"{part}Thickness"] ?? 0.0
     if (thickness && material) {
       res[$"{part}Label"] <- loc($"info/ship/part/{part}")
-      res[$"{part}Value"] <- loc("armor_class/" + material + "/short", loc($"armor_class/{material}")) +
+      res[$"{part}Value"] <- loc($"armor_class/{material}/short", loc($"armor_class/{material}")) +
         loc("ui/comma") + round(thickness) + " " + loc("measureUnits/mm")
     }
   }

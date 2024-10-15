@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_global_stats_blk, disable_network, gather_and_build_aircrafts_list
 from "%scripts/dagui_library.nut" import *
 

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, shop_enable_modifications, set_char_cb, utf8_strlen, shop_set_researchable_unit_module, set_auto_buy_modifications, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import *
@@ -343,7 +342,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           function() {
             this.updateAllItems()
             let guiPosIdx = getTblValue("guiPosIdx", modForResearch, -1)
-            assert(guiPosIdx >= 0, "missing guiPosIdx, mod - " + getTblValue("name", modForResearch, "none") + "; unit - " + this.air.name)
+            assert(guiPosIdx >= 0, $"missing guiPosIdx, mod - {modForResearch?.name ?? "none"}; unit - {this.air.name}")
             this.selectResearchModule(guiPosIdx >= 0 ? guiPosIdx : 0)
           })
       }
@@ -372,7 +371,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(titleObj))
       return
 
-    local titleText = loc("mainmenu/btnWeapons") + " " + loc("ui/mdash") + " " + getUnitName(this.air)
+    local titleText = " ".concat(loc("mainmenu/btnWeapons"), loc("ui/mdash"), getUnitName(this.air))
     if (this.researchMode) {
       let modifName = this.researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       titleText = loc("modifications/finishResearch",
@@ -622,9 +621,9 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let titleObj = blockObj.findObject("nextResearch_title")
     titleObj.setValue(this.researchMode ? loc("mainmenu/nextResearch/title") : "")
 
-    local position = (posX + 0.5).tostring() + "@modCellWidth-0.5w, " + (posY + 0.5).tostring() + "@modCellHeight-0.5h"
+    local position = $"{posX + 0.5}@modCellWidth-0.5w, {posY + 0.5}@modCellHeight-0.5h"
     if (this.researchMode)
-      position = (posX + 0.5).tostring() + "@modCellWidth-0.5w, 1@framePadding+ 1@fadedImageFramePad"
+      position = $"{posX + 0.5}@modCellWidth-0.5w, 1@framePadding+ 1@fadedImageFramePad"
 
     blockObj.pos = position
     local unitObj = blockObj.findObject("next_unit")
@@ -641,7 +640,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createBundle(itemsList, itemsType, subType, holderObj, posX, posY) {
-    createModBundle("bundle_" + this.items.len(), this.air, itemsList, itemsType, holderObj, this,
+    createModBundle($"bundle_{this.items.len()}", this.air, itemsList, itemsType, holderObj, this,
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5, createItemLayoutFunc = this.createItemLayoutForBundle
         cellSizeObj = this.scene.findObject("cell_size")
@@ -850,7 +849,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
 
       if (needTierArrows) {
-        row.id <- blockIdPrefix + i
+        row.id <- $"{blockIdPrefix}{i}"
         row.needTierArrow <- i > 1
         row.tierText <- get_roman_numeral(i)
       }
@@ -864,27 +863,27 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createTreeArrows(obj, arrowsList, treeOffsetY) {
-    local data = ""
+    let data = []
     foreach (idx, a in arrowsList) {
       let id = $"arrow_{idx}"
 
       if (a.from[0] != a.to[0]) //hor arrow
-        data += format("modArrow { id:t='%s'; type:t='right'; " +
-                         "pos:t='%.1f@modCellWidth-0.5@modArrowLen, %.1f@modCellHeight-0.5h'; " +
-                         "width:t='@modArrowLen + %.1f@modCellWidth' " +
-                       "}",
+        data.append(format("".concat("modArrow { id:t='%s'; type:t='right'; ",
+                         "pos:t='%.1f@modCellWidth-0.5@modArrowLen, %.1f@modCellHeight-0.5h'; ",
+                         "width:t='@modArrowLen + %.1f@modCellWidth' ",
+                       "}"),
                        id, a.from[0] + 1, a.from[1] - 0.5 + treeOffsetY, a.to[0] - a.from[0] - 1
-                      )
+                      ))
       else if (a.from[1] != a.to[1]) //vert arrow
-        data += format("modArrow { id:t='%s'; type:t='down'; " +
-                         "pos:t='%.1f@modCellWidth-0.5w, %.1f@modCellHeight-0.5@modArrowLen'; " +
-                         "height:t='@modArrowLen + %.1f@modCellHeight' " +
-                       "}",
+        data.append(format("".concat("modArrow { id:t='%s'; type:t='down'; ",
+                         "pos:t='%.1f@modCellWidth-0.5w, %.1f@modCellHeight-0.5@modArrowLen'; ",
+                         "height:t='@modArrowLen + %.1f@modCellHeight' ",
+                       "}"),
                        id, a.from[0] + 0.5, a.from[1] + treeOffsetY, a.to[1] - a.from[1] - 1
-                      )
+                      ))
     }
-    if (data != "")
-      this.guiScene.appendWithBlk(obj, data, this)
+    if (data.len() > 0)
+      this.guiScene.appendWithBlk(obj, "".join(data), this)
   }
 
   function fillModsTree() {
@@ -938,18 +937,19 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       let unlocked = isWeaponTierAvailable(this.air, i)
       let owned = (tiersArray[i - 1].notResearched == 0)
-      this.scene.findObject(this.tierIdPrefix + i).type = owned ? "owned" : unlocked ? "unlocked" : "locked"
+      this.scene.findObject($"{this.tierIdPrefix}{i}").type = owned ? "owned" : unlocked ? "unlocked" : "locked"
 
-      let jObj = this.scene.findObject(this.tierIdPrefix + (i + 1).tostring())
+      let tierIdStr = $"{this.tierIdPrefix}{i + 1}"
+      let jObj = this.scene.findObject(tierIdStr)
       if (checkObj(jObj)) {
-        let modsCountObj = jObj.findObject(this.tierIdPrefix + (i + 1).tostring() + "_txt")
+        let modsCountObj = jObj.findObject($"{tierIdStr}_txt")
         let countMods = tiersArray[i - 1].researched
         let reqMods = this.air.needBuyToOpenNextInTier[i - 1]
         if (countMods >= reqMods)
           if (!unlocked) {
-            modsCountObj.setValue(countMods.tostring() + loc("weapons_types/short/separator") + reqMods.tostring())
-            let tooltipText = "<color=@badTextColor>" + loc("weaponry/unlockTier/reqPrevTiers") + "</color>"
-            modsCountObj.tooltip = loc("weaponry/unlockTier/countsBlock/startText") + "\n" +  tooltipText
+            modsCountObj.setValue($"{countMods}{loc("weapons_types/short/separator")}{reqMods}")
+            let tooltipText = $"<color=@badTextColor>{loc("weaponry/unlockTier/reqPrevTiers")}</color>"
+            modsCountObj.tooltip = $"{loc("weaponry/unlockTier/countsBlock/startText")}\n{tooltipText}"
             jObj.tooltip = tooltipText
           }
           else {
@@ -958,13 +958,13 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             jObj.tooltip = ""
           }
         else {
-          modsCountObj.setValue(countMods.tostring() + loc("weapons_types/short/separator") + reqMods.tostring())
+          modsCountObj.setValue($"{countMods}{loc("weapons_types/short/separator")}{reqMods}")
           let req = reqMods - countMods
 
           let tooltipText = loc("weaponry/unlockTier/tooltip",
             { amount = req, tier = get_roman_numeral(i + 1) })
           jObj.tooltip = tooltipText
-          modsCountObj.tooltip = loc("weaponry/unlockTier/countsBlock/startText") + "\n" + tooltipText
+          modsCountObj.tooltip = $"{loc("weaponry/unlockTier/countsBlock/startText")}\n{tooltipText}"
         }
       }
     }
@@ -1237,7 +1237,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
                           loc("weaponry/unlockModTierReq",
                                 { tier = ::roman_numerals[item.tier], amount = (reqTierMods).tostring() }))
       else if (reqMods.len() > 0)
-        reason = format(loc("weaponry/action_not_allowed"), loc("weaponry/unlockModsReq") + "\n" + reqMods)
+        reason = format(loc("weaponry/action_not_allowed"), $"{loc("weaponry/unlockModsReq")}\n{reqMods}")
     }
 
     if (reason != null) {
@@ -1636,7 +1636,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         }
     }
     if (isUnitHaveSecondaryWeapons(this.air) && this.lastWeapon != "" && this.lastWeapon != getLastWeapon(this.airName)) {
-      log("force cln_update due lastWeapon '" + this.lastWeapon + "' != " + getLastWeapon(this.airName))
+      log($"force cln_update due lastWeapon '{this.lastWeapon}' != {getLastWeapon(this.airName)}")
       needSave = true;
       this.lastWeapon = getLastWeapon(this.airName)
     }
@@ -1928,14 +1928,14 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       hint_progressBonus = {
         objName = "mods_frame"
         hintName = "hint_progressBonus"
-        shiftX = $"+ 2@shopWidthMax - 1@bw + 2@helpInterval"
-        posY = $"sh - 1@bh - h - 2@helpInterval"
+        shiftX = "+ 2@shopWidthMax - 1@bw + 2@helpInterval"
+        posY = "sh - 1@bh - h - 2@helpInterval"
         sizeMults = [0,1]
       }
       hint_item_spare = {
         hintName = "hint_item_spare"
-        shiftX = $"+ 1.8@modItemWidth - w - 1@bw -1@helpInterval"
-        shiftY = $"- h - 2@helpInterval - 1@bh"
+        shiftX = "+ 1.8@modItemWidth - w - 1@bw -1@helpInterval"
+        shiftY = "- h - 2@helpInterval - 1@bh"
       }
     }
 
@@ -1947,13 +1947,13 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         spechialHintsParams.hint_weapons <- {
           objName = "main_modifications"
           hintName = "hint_weapons"
-          shiftX = $"+ 1@modItemWidth - w-  1@bw"
-          shiftY = $"- 1@bh + 1@helpInterval"
+          shiftX = "+ 1@modItemWidth - w-  1@bw"
+          shiftY = "- 1@bh + 1@helpInterval"
         }
       } else {
         let hintObj = handler.scene.findObject("hint_weapons")
         if (hintObj?.isValid()) {
-          hintObj.pos = $"sw - w - 2@bw - 2@helpInterval, sh - 2@bh -h  - 2@helpInterval"
+          hintObj.pos = "sw - w - 2@bw - 2@helpInterval, sh - 2@bh -h  - 2@helpInterval"
         }
       }
     }
@@ -2123,7 +2123,7 @@ gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("oldSkillProgress").setValue(this.minValue)
     this.scene.findObject("newSkillProgress").setValue(this.curValue)
     let buyValue = this.curValue - this.minValue
-    let buyValueText = buyValue == 0 ? "" : ("+" + buyValue.tostring())
+    let buyValueText = buyValue == 0 ? "" : $"+{buyValue}"
     this.scene.findObject("text_buyingValue").setValue(buyValueText)
     this.scene.findObject("buttonInc").enable(this.curValue < this.maxUserValue)
     this.scene.findObject("buttonMax").enable(this.curValue != this.maxUserValue)

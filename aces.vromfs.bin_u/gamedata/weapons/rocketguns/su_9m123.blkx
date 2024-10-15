@@ -11,30 +11,31 @@
     "statType": "hydra",
     "caliber": 0.155,
     "length": 2.04,
-    "CxK": 1.85,
-    "wingAreaMult": 1.1,
-    "finsAoaHor": 0.1,
-    "finsAoaVer": 0.1,
-    "distFromCmToStab": 0.05,
+    "CxK": 1.5,
+    "wingAreaMult": 1.3,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "distFromCmToStab": 0.045,
     "mass": 46.0,
-    "massEnd": 36.6,
-    "massEnd1": 30.0,
+    "massEnd": 37.5,
+    "massEnd1": 28.0,
     "fireDelay": 0.05,
     "timeFire": 1.0,
-    "timeFire1": 6.0,
-    "force": 19130.0,
-    "force1": 2365.0,
-    "timeLife": 20.0,
+    "timeFire1": 14.0,
+    "force": 13000.0,
+    "force1": 1700.0,
+    "timeLife": 30.0,
     "thrustDeviation": 0.01,
     "useStartSpeed": true,
     "startSpeed": 100.0,
-    "maxSpeed": 550.0,
+    "maxSpeed": 400.0,
     "endSpeed": 0.0,
-    "maxDistance": 6000.0,
+    "maxDistance": 10000.0,
+    "guaranteedRange": 9000.0,
     "minDistance": 30.0,
-    "operatedDist": 6000.0,
+    "operatedDist": 10000.0,
     "visRotationFreqX": 5.0,
-    "autoAimingMaxAngle": 1.0,
+    "autoAimingMaxAngle": 2.5,
     "guidanceType": "saclos",
     "launchZoneDistance": 100.0,
     "maxDeltaAngle": 0.02,
@@ -108,22 +109,22 @@
       "controlConeFov": 25.0,
       "beamRider": true,
       "timeTableCorrection": [
-        0.662,
-        0.779
+        0.895,
+        0.636
       ],
       "breakLockMaxTime": 3.0,
       "lineOfSightAutopilot": {
         "timeOut": 0.0,
-        "crossDistToReqCrossVelMult": 6.5,
-        "reqCrossVelRationMax": 0.75,
-        "velDiffToReqAccelMult": 3.5,
+        "crossDistToReqCrossVelMult": 3.0,
+        "reqCrossVelRationMax": 0.2,
+        "velDiffToReqAccelMult": 5.0,
         "accelControl": {
           "velFrameReference": true,
           "baseIndSpeed": 1800.0,
           "reqAccelMax": 10.0,
-          "accelControlProp": 0.0456,
+          "accelControlProp": 0.0411,
           "accelControlIntg": 0.0,
-          "accelControlDiff": 0.0023,
+          "accelControlDiff": 0.0004,
           "accelControlIntgLim": 0.0
         }
       },
@@ -139,30 +140,30 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          423.347,
-          400.077,
-          391.459,
-          379.584
+          847.311,
+          649.543,
+          646.354,
+          647.806
         ],
         "rangeMax": [
-          6000.0,
-          6000.0,
-          6000.0,
-          6000.0
+          8887.28,
+          9067.32,
+          9158.87,
+          9332.81
         ],
         "rangeMaxAltDiff": [
-          50.0,
+          100.0,
           0.0
         ],
         "timeMax": [
-          16.8456,
-          16.1366,
-          15.8105,
-          15.1586
+          26.4377,
+          26.4689,
+          26.484,
+          26.5002
         ],
         "timeMaxAltDiff": [
-          50.0,
-          -0.00427151
+          100.0,
+          0.0
         ]
       },
       "table1": {
@@ -177,30 +178,30 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          443.604,
-          420.54,
-          411.621,
-          399.972
+          4509.64,
+          4365.35,
+          4314.79,
+          3208.6
         ],
         "rangeMax": [
-          6000.0,
-          6000.0,
-          6000.0,
-          6000.0
+          9908.54,
+          9998.22,
+          9998.22,
+          9998.22
         ],
         "rangeMaxAltDiff": [
-          1000.0,
+          2000.0,
           0.0
         ],
         "timeMax": [
-          14.6159,
-          13.9751,
-          13.6576,
-          13.0775
+          29.292,
+          28.5166,
+          27.9944,
+          27.0154
         ],
         "timeMaxAltDiff": [
-          1000.0,
-          -1.4876
+          2000.0,
+          0.0
         ]
       }
     },

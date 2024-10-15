@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
@@ -61,10 +60,7 @@ let WwReinforcementArmy = class (WwFormation) {
   }
 
   function getFullName() {
-    local fullName = this.getName()
-    fullName += loc("ui/parentheses/space", { text = this.getDescription() })
-
-    return fullName
+    return "".concat(this.getName(), loc("ui/parentheses/space", { text = this.getDescription() }))
   }
 
   function getDescription() {
@@ -109,10 +105,7 @@ let WwReinforcementArmy = class (WwFormation) {
   }
 
   function getFullDescription() {
-    local desc = this.getFullName()
-    desc += "\n"
-    desc += "\n".join(this.getUnitsMapFullName(), true)
-    return desc
+    return "\n".concat(this.getFullName(), "\n".join(this.getUnitsMapFullName(), true))
   }
 
   function getUnitsMapFullName() {

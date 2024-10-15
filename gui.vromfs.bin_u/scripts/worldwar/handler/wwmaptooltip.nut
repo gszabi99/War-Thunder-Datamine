@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -126,7 +125,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
             maxTeamContentWidth = max(teamInfoObj.getSize()[0], maxTeamContentWidth)
         }
 
-        battleDescObj.width = (2 * maxTeamContentWidth) + "+4@framePadding"
+        battleDescObj.width = $"{(2 * maxTeamContentWidth)}+4@framePadding"
 
         let hoveredBattle = ::g_world_war.getBattleById(this.specs.currentId)
         this.destroyDescriptionTimer()
@@ -186,7 +185,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
       : hasActivateLeftTime ? battleView.getBattleActivateLeftTime()
       : timeStartAutoBattle
 
-    battleTimerDescObj.setValue(descText + loc("ui/colon"))
+    battleTimerDescObj.setValue($"{descText}{loc("ui/colon")}")
     battleTimerValueObj.setValue(descValue)
     battleTimerObj.show(hasDurationTime || hasActivateLeftTime || timeStartAutoBattle != "")
 
@@ -225,7 +224,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updatePos() {
     let cursorPos = get_dagui_mouse_cursor_pos_RC()
-    cursorPos[0] = cursorPos[0]  + "+1@wwMapTooltipOffset"
+    cursorPos[0] = $"{cursorPos[0]}+1@wwMapTooltipOffset"
     setObjPosition(this.scene, cursorPos, ["@bw", "@bh"])
   }
 }

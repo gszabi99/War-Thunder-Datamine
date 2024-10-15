@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -72,20 +71,20 @@ let WwBattleResultsView = class {
     let localizedName = this.getLocName()
     let missionTitle = (localizedName != "") ? localizedName : loc("worldwar/autoModeBattle")
     let battleName = loc("worldWar/battleName", { number = this.battleRes.ordinalNumber })
-    return battleName + " " + missionTitle
+    return $"{battleName} {missionTitle}"
   }
 
   function getBattleDescText() {
     let operationName = this.getOperation()?.getNameText() ?? ""
-    let zoneName = this.battleRes.zoneName != "" ? (loc("options/dyn_zone") + " " + this.battleRes.zoneName) : ""
-    let dateTime = time.buildDateStr(this.battleRes.time) + " " + time.buildTimeStr(this.battleRes.time)
+    let zoneName = this.battleRes.zoneName != "" ? ($"{loc("options/dyn_zone")} {this.battleRes.zoneName}") : ""
+    let dateTime = " ".concat(time.buildDateStr(this.battleRes.time), time.buildTimeStr(this.battleRes.time))
     return loc("ui/semicolon").join([ operationName, zoneName, dateTime ], true)
   }
 
   function getBattleResultText() {
     let isWinner = this.battleRes.isWinner()
     let color = isWinner ? "wwTeamAllyColor" : "wwTeamEnemyColor"
-    let result = loc("worldwar/log/battle_finished" + (isWinner ? "_win" : "_lose"))
+    let result = loc($"worldwar/log/battle_finished{isWinner ? "_win" : "_lose"}")
     return colorize(color, result)
   }
 
@@ -96,7 +95,7 @@ let WwBattleResultsView = class {
   function getArmyStateText(wwArmy, armyState) {
     local res = loc(getTblValue(armyState, this.armyStateTexts, ""))
     if (armyState == "EASAB_DEAD" && wwArmy.deathReason != "")
-      res += loc("ui/parentheses/space", { text = loc("worldwar/log/army_died_" + wwArmy.deathReason) })
+      res += loc("ui/parentheses/space", { text = loc($"worldwar/log/army_died_{wwArmy.deathReason}") })
     return res
   }
 
@@ -190,7 +189,7 @@ let WwBattleResultsView = class {
       let isShowInactiveCount = isInArray(wwUnitTypeCode, unitTypesInactive)
 
       res.unitTypes.append({
-        name = "#debriefing/ww_total_" + wwUnitType.name
+        name = $"#debriefing/ww_total_{wwUnitType.name}"
         row = this.getStatsRowView(stats, isShowInactiveCount)
       })
     }
@@ -214,8 +213,8 @@ let WwBattleResultsView = class {
 
       local tooltip = null
       if (isShowInactiveCount && values.len() == 2 && valuesSum > 0)
-          tooltip = loc("debriefing/destroyed") + loc("ui/colon") + values[0] +
-            "\n" + loc("debriefing/ww_inactive/Aircraft") + loc("ui/colon") + values[1]
+          tooltip = "".concat(loc("debriefing/destroyed"), loc("ui/colon"), values[0],
+            "\n", loc("debriefing/ww_inactive/Aircraft"), loc("ui/colon"), values[1])
 
       row.append({
         col = val

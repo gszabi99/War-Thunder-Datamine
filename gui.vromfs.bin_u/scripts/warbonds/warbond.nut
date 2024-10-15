@@ -40,7 +40,7 @@ let Warbond = class {
   constructor(wbId, wbListId) {
     this.id = wbId
     this.listId = wbListId
-    this.blkListPath = "warbonds/" + this.id + "/" + this.listId
+    this.blkListPath = $"warbonds/{this.id}/{this.listId}"
 
     this.awardsList = []
 

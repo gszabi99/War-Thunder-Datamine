@@ -438,7 +438,7 @@ local Unit = class {
     if (!this.previewSkinId) {
       this.previewSkinId = ""
       foreach (skin in this.getSkins())
-        if (getDecorator(this.name + "/" + skin.name, decoratorTypes.SKINS)?.blk?.useByDefault)
+        if (getDecorator($"{this.name}/{skin.name}", decoratorTypes.SKINS)?.blk?.useByDefault)
           this.previewSkinId = skin.name
     }
     return this.previewSkinId

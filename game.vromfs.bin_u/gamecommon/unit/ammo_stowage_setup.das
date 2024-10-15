@@ -131,6 +131,9 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
     var total_ammo_to_add = 0
 
     for ammo_info, stowage_ammo in ammo_info_arr, stowage_ammo_arr
+      // temporary hack in case unit has changed and entity has not (common case before units to ecs refactor)
+      if ammo_info.ammo_type >= length(v.ammo_stowage__ammoTypeToMask)
+        continue
       var total_ammo_count = ammo_info.count
       if get_flag(stowage_state, AmmoStowageState REMOVE_LOADED_AMMO) && can_load_to_breech
         total_ammo_count -= ammo_info.loaded_count

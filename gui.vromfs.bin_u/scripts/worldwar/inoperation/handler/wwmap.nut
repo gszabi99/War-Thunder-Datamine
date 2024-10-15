@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_charserver_time_millisec, ww_get_selected_armies_names, ww_highlight_zones_by_name, ww_update_popuped_armies_name, ww_get_sides_info, ww_side_val_to_name, ww_turn_on_sector_sprites, ww_get_operation_activation_time, ww_find_army_name_by_coordinates, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_turn_off_sector_sprites, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -255,18 +254,18 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(blockObj))
       return
 
-    let tabId = getTblValue("tabId", tab, "")
-    let tabObj = blockObj.findObject(tabId + "_text")
+    let { tabId = "", tabIcon = "", tabText = "" } = tab
+    let tabObj = blockObj.findObject($"{tabId}_text")
     if (!checkObj(tabObj))
       return
 
-    local tabName = loc(getTblValue("tabIcon", tab, ""))
+    local tabName = loc(tabIcon)
     if (this.currentReinforcementInfoTabType == tab)
-      tabName += " " + loc(getTblValue("tabText", tab, ""))
+      tabName = $"{tabName} {loc(tabText)}"
 
-    tabObj.setValue(tabName + tab.getTabTextPostfix())
+    tabObj.setValue($"{tabName}{tab.getTabTextPostfix()}")
 
-    let tabAlertObj = blockObj.findObject(tabId + "_alert")
+    let tabAlertObj = blockObj.findObject($"{tabId}_alert")
     if (!checkObj(tabAlertObj))
       return
 
@@ -1325,7 +1324,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       },
       { obj = "to_battle_button"
         msgId = "hint_to_battle_button"
-        text = loc("worldwar/help/map/" + (this.isInQueue() ? "leave_queue_btn" : "to_battle_btn"))
+        text = loc($"worldwar/help/map/{(this.isInQueue() ? "leave_queue_btn" : "to_battle_btn")}")
       },
       { obj = ["ww_army_controls_nest"]
         msgId = "hint_ww_army_controls_nest"
@@ -1335,21 +1334,19 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       },
       { obj = "selected_page_block"
         msgId = "hint_top_block"
-        text = loc("worldwar/help/map/"
-          + (tab1 == ::g_ww_map_info_type.OBJECTIVE ? "objective" : "log"))
+        text = loc($"worldwar/help/map/{tab1 == ::g_ww_map_info_type.OBJECTIVE ? "objective" : "log"}")
       },
       { obj = "reinforcement_block"
         msgId = "hint_reinforcement_block"
-        text = loc("worldwar/help/map/"
-          + (tab2 == ::g_ww_map_reinforcement_tab_type.COMMANDERS    ? "commanders"
+        text = loc("".concat("worldwar/help/map/",
+          (tab2 == ::g_ww_map_reinforcement_tab_type.COMMANDERS    ? "commanders"
             : tab2 == ::g_ww_map_reinforcement_tab_type.REINFORCEMENT ? "reinforcements"
             : tab2 == ::g_ww_map_reinforcement_tab_type.AIRFIELDS     ? "airfield"
-            : "armies"))
+            : "armies")))
       },
       { obj = "content_block_3"
         msgId = "hint_content_block_3"
-        text = loc("worldwar/help/map/"
-          + (this.isSelectedObjectInfoShown() ? "army_info" : "side_strength"))
+        text = loc($"worldwar/help/map/{this.isSelectedObjectInfoShown() ? "army_info" : "side_strength"}")
       },
       { obj = this.isRightPanelVisible ? null : "control_block_visibility_switch"
         msgId = "hint_show_right_panel_button"

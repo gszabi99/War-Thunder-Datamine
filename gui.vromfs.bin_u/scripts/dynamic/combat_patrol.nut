@@ -207,7 +207,7 @@ function genCombatPatrolMission(_isFreeFlight) {
     }
 
     mgSetupArea($"battle_point_wp0{j}", "waypoint0" + j, "waypoint0" + (j + 1), 0, dist, 0)
-    mgSetupArea("forAttack_wp0" + j + "_moveTo",$"battle_point_wp0{j}", "waypoint0" + (j + 1), rndRange(-30, 30),
+    mgSetupArea($"forAttack_wp0{j}_moveTo",$"battle_point_wp0{j}", "waypoint0" + (j + 1), rndRange(-30, 30),
       30000, rndRange(-500, 0))
     mgSetupArea($"headOnCourse_wp0{j}", "battle_point_wp0" + j, "waypoint0" + (j + 1), rndRange(-60, 60),
       enemySpeed * time, rndRange(-500, 500))
@@ -243,11 +243,11 @@ function genCombatPatrolMission(_isFreeFlight) {
       point = $"battle_enemy_wp0{j}"
       lookAt = $"battle_point_wp0{j}"
       squad = $"#enemy_battle_wp0{j}"
-      mgSetupArmada("#ally0" + j + ".fighter",$"battle_ally_wp0{j}", Point3(0, 0, 0), "waypoint0" + j,
+      mgSetupArmada($"#ally0{j}.fighter",$"battle_ally_wp0{j}", Point3(0, 0, 0), $"waypoint0{j}",
         $"#ally_battle_wp0{j}", allyWpCount, allyWpCount, allyPlane)
     }
     else if ( k == 5 ) {
-      mgSetupArmada("#ally0" + j + ".fighter",$"fromBack_wp0{j}", Point3(0, 0, 0), "waypoint0" + j,
+      mgSetupArmada($"#ally0{j}.fighter",$"fromBack_wp0{j}", Point3(0, 0, 0), $"waypoint0{j}",
         $"#ally_move_wp0{j}", allyWpCount, allyWpCount, allyPlane)
     }
     else if ( k == 6 ) {
@@ -258,7 +258,7 @@ function genCombatPatrolMission(_isFreeFlight) {
     let allyReinfCount = allyWpCount * rndRange(0, 0.25)
 
     if (event < 5) {
-      mgSetupArmada("#enemy0" + j + ".fighter", point, Point3(0, 0, 0), lookAt,
+      mgSetupArmada($"#enemy0{j}.fighter", point, Point3(0, 0, 0), lookAt,
         squad, enemyWpCount, enemyWpCount, enemyPlane)
       let reinf = rndRange(0, 1)
       if (reinf > 0.75 && reinf < 0.90 && enemyReinfCount >= 3)

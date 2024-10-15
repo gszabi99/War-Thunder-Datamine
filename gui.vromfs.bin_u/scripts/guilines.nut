@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 
@@ -107,7 +106,7 @@ enum lines_priorities { //lines intersect priority
 
   function _tostring() {
     return format("GuiBox((%d,%d), (%d,%d)%s)", this.c1[0], this.c1[1], this.c2[0], this.c2[1],
-      this.priority ? (", priority = " + this.priority) : "")
+      this.priority ? ($", priority = {this.priority}") : "")
   }
 
   function isIntersect(box) {
@@ -289,7 +288,7 @@ function getHelpDotMarkup(point /*Point2*/ , tag = "helpLineDot") {
   this.genDoubleLines(res, links, obstacles, interval, lineWidth, priority)
 
   //local _timer = get_time_msec()
-  //dlog("GP: after priority " + priority + ", links " + links.len() + ", obstacles = " + obstacles.len() + ", time = " + (get_time_msec() - _timer))
+  //dlog($"GP: after priority {priority}, links " + links.len() + ", obstacles = " + obstacles.len() + ", time = " + (get_time_msec() - _timer))
   if (links.len() && priority < lines_priorities.MAXIMUM) {
     let addRes = ::LinesGenerator.createLinkLines(links, obstacles, interval, lineWidth, priority + 1, false)
     foreach (key in ["lines", "dots0", "dots1"])

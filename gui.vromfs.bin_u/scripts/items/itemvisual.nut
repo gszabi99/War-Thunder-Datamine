@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")

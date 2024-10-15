@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
@@ -60,12 +59,12 @@ gui_handlers.WwRewards <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.rewardsListObj))
       return this.goBack()
 
-    let wndTitle = loc("ui/comma").join([
-      (this.lbMode ? loc("worldwar/leaderboard/" + this.lbMode) : ""),
+    let wndTitle = " ".concat(loc("ui/comma").join([
+      (this.lbMode ? loc($"worldwar/leaderboard/{this.lbMode}") : ""),
       (this.lbDay ? loc("enumerated_day", { number = this.lbDay }) : !this.isClanRewards ? loc("worldwar/allSeason") : ""),
       (this.lbMap ? this.lbMap.getNameText() : loc("worldwar/allMaps")),
       (this.lbCountry ? loc(this.lbCountry) : loc("worldwar/allCountries")),
-    ], true) + " " + loc("ui/mdash") + " " + loc("worldwar/btn_rewards")
+    ], true), loc("ui/mdash"), loc("worldwar/btn_rewards"))
     this.scene.findObject("wnd_title").setValue(wndTitle)
 
     showObjById("nav-help", true, this.scene)
@@ -119,8 +118,8 @@ gui_handlers.WwRewards <- class (gui_handlers.BaseGuiHandlerWT) {
   function getPlaceText(tillPlace, prevPlace, isClan = false) {
     if (!tillPlace)
       tillPlace = g_clan_type.NORMAL.maxMembers
-    return loc(isClan ? "multiplayer/clan_place" : "multiplayer/place") + loc("ui/colon")
-      + ((tillPlace - prevPlace == 1) ? tillPlace : (prevPlace + 1) + loc("ui/mdash") + tillPlace)
+    return loc("ui/colon").concat(loc(isClan ? "multiplayer/clan_place" : "multiplayer/place"),
+      ((tillPlace - prevPlace == 1) ? tillPlace : $"{(prevPlace + 1)}{loc("ui/mdash")}{tillPlace}"))
   }
 
   function getRewardTitle(tillPlace, prevPlace) {
@@ -187,8 +186,8 @@ gui_handlers.WwRewards <- class (gui_handlers.BaseGuiHandlerWT) {
     local text = ""
     let rewardsTime = rewardsTimeData?[this.day] ?? 0
     if (rewardsTime > 0)
-      text = loc("worldwar/rewards_start_time") + loc("ui/colon") +
-        time.buildDateTimeStr(rewardsTime, false, false)
+      text = loc("ui/colon").concat(loc("worldwar/rewards_start_time"),
+        time.buildDateTimeStr(rewardsTime, false, false))
     this.scene.findObject("statusbar_text").setValue(text)
   }
 

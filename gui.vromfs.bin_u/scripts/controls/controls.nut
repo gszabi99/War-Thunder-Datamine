@@ -2419,6 +2419,7 @@ function getWeaponFeatures(weaponsList) {
     if (isInArray(item.id, controls)) {
       if ((("filterHide" in item) && isInArray(helpersMode, item.filterHide))
         || (("filterShow" in item) && !isInArray(helpersMode, item.filterShow))
+        || (("showFunc" not in item) || !item.showFunc())
         || (shouldCheckRequirements && helpersMode == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim))
         continue
 
@@ -2454,7 +2455,7 @@ function getWeaponFeatures(weaponsList) {
           local shortcutsCount = 0
           foreach (modifier in modifiers) {
             if (!("hideAxisOptions" in item) || !isInArray(modifier, item.hideAxisOptions)) {
-              let shortcuts = ::get_shortcuts([ item.id + "_" + modifier ])
+              let shortcuts = ::get_shortcuts([ $"{item.id}_{modifier}" ])
               if (shortcuts.len() && isShortcutMapped(shortcuts[0]))
                 shortcutsCount++
             }

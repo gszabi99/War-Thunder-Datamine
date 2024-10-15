@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import is_system_ui_active, add_video_seen, was_video_seen, get_game_mode_name, is_mouse_last_time_used, play_movie
+from "%scripts/dagui_natives.nut" import add_video_seen, was_video_seen, get_game_mode_name, is_mouse_last_time_used, play_movie
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
@@ -316,7 +316,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       let locText = this.misListType.getMissionNameText(mission)
       let locString = utf8ToLower(locText)
       this.filterDataArray.append({
-        locString = ::stringReplace(locString, "\t", "") //for japan and china localizations
+        locString = locString.replace("\t", "") //for japan and china localizations
         misObject = listObj.getChild(idx)
         mission = mission
         isHeader = mission.isHeader
@@ -335,10 +335,8 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.guiScene.performDelayed(this, function(_obj) {
-      if (!is_system_ui_active()) {
-        play_movie(videoName, false, true, true)
-        add_video_seen(videoName)
-      }
+      play_movie(videoName, false, true, true)
+      add_video_seen(videoName)
     })
   }
 

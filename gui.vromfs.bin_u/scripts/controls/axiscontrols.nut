@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_axis_digital, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -116,7 +115,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
         addTrParams = "hiddenTr:t='yes'; inactive:t='yes';"
 
       let hotkeyData = ::buildHotkeyItem(idx, this.shortcuts, item, axis, idx % 2 == 0, addTrParams)
-      data += hotkeyData.markup
+      data = "".concat(data, hotkeyData.markup)
     }
 
     this.guiScene.replaceContentFromText(axisControlsTbl, data, data.len(), this)
@@ -182,7 +181,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if ("showValueMul" in reqItem)
       valueText = (reqItem.showValueMul * value).tostring()
     else
-      valueText = value * (reqItem?.showValuePercMul ?? 1) + "%"
+      valueText = "".concat(value * (reqItem?.showValuePercMul ?? 1), "%")
 
     textObj.setValue(valueText)
   }
@@ -198,8 +197,8 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
 
     local data = "option { id:t='axisopt_'; text:t='#joystick/axis_not_assigned' }\n"
     for (local i = 0; i < this.numAxisInList; i++)
-      data += format("option { id:t='axisopt_%d'; text:t='%s' }\n",
-              i, stripTags(::remapAxisName(curPreset, i)))
+      data = "".concat(data, format("option { id:t='axisopt_%d'; text:t='%s' }\n",
+              i, stripTags(::remapAxisName(curPreset, i))))
 
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
     listObj.setValue(curDevice ? (this.bindAxisNum + 1) : 0)
@@ -232,13 +231,13 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   function updateAutodetectButtonStyle() {
     let obj = this.scene.findObject("btn_axis_autodetect")
     if (checkObj(obj)) {
-      let text = loc("mainmenu/btn" + (this.autodetectAxis ? "StopAutodetect" : "AutodetectAxis"))
+      let text = "".conct(loc("mainmenu/btn", (this.autodetectAxis ? "StopAutodetect" : "AutodetectAxis")))
       obj.tooltip = text
       obj.text = text
 
       let imgObj = obj.findObject("autodetect_img")
       if (checkObj(imgObj))
-        imgObj["background-image"] = "#ui/gameuiskin#btn_autodetect_" + (this.autodetectAxis ? "off" : "on") + ".svg"
+        imgObj["background-image"] = "".concat("#ui/gameuiskin#btn_autodetect_", (this.autodetectAxis ? "off" : "on"), ".svg")
     }
   }
 
@@ -413,11 +412,11 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       return
     }
 
-    local actionText = ""
+    local actionTexts = []
     foreach (item in alreadyBindedAxes)
-      actionText += ((actionText == "") ? "" : ", ") + loc($"controls/{item.id}")
+      actionTexts.append(loc($"controls/{item.id}"))
     let msg = loc("hotkeys/msg/unbind_axis_question", {
-      action = actionText
+      action = ", ".join(actionTexts)
     })
     this.msgBox("controls_axis_bind_existing_axis", msg, [
       ["add", function() { this.doBindAxis() }],
@@ -520,7 +519,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if ("modifiersId" in reqItem)
       foreach (name, shortcutId in reqItem.modifiersId)
         if (shortcutId == reqNameId) {
-          reqName = (fullName ? reqItem.id + (name == "" ? "" : "_") : "") + name
+          reqName = "".concat((fullName ? "".concat(reqItem.id, (name == "" ? "" : "_")) : ""), name)
           break
         }
 
@@ -541,11 +540,11 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       if (curBinding[i][0] == item.shortcutId)
         return
 
-    local actions = ""
-    foreach (_idx, shortcut in curBinding)
-      actions += (actions == "" ? "" : ", ") + loc("hotkeys/" + this.getShortcutLocId(shortcut[0]))
+    let actions = []
+    foreach (shortcut in curBinding)
+      actions.append(loc("".concat("hotkeys/", this.getShortcutLocId(shortcut[0]))))
 
-    let msg = loc("hotkeys/msg/unbind_question", { action = actions })
+    let msg = loc("hotkeys/msg/unbind_question", { action = ", ".join(actions) })
 
     this.msgBox("controls_axis_bind_existing_shortcut", msg, [
       ["add", @() this.doBind(devs, btns, item)],

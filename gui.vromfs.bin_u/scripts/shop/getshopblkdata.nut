@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { Point2 } = require("dagor.math")
@@ -30,7 +29,7 @@ function genFakeUnitRanges(airBlk, country) {
       fakeUnitParams.rankPosXY <- fakeReqUnitsPosXY[idx]
     for (local i = 0; i < COUNT_REQ_FOR_FAKE_UNIT; i++) {
       let reqForFakeUnitParams = fakeUnitConfig.__merge({
-        name = fakeUnitParams.name + "_" + i
+        name = $"{fakeUnitParams.name}_{i}"
         image = fakeUnitParams.image
         rank = fakeUnitParams.rank - 1
         country = country

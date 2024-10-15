@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 
@@ -291,8 +290,8 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (_idx, info in showShortcuts)
       if (info?.show ?? true) {
         if (this.canUseShortcuts)
-          data.append(this.getShortcutFrameForHelp(info.primaryShortcut) +
-            format("controlsHelpHint { text:t='#%s' }", info.title))
+          data.append("".concat(this.getShortcutFrameForHelp(info.primaryShortcut),
+            format("controlsHelpHint { text:t='#%s' }", info.title)))
         else
           data.append(handyman.renderCached("%gui/commonParts/button.tpl", {
             id = info?.buttonId ?? ""
@@ -337,7 +336,9 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
             gamepadIcons.getTextureByButtonIdx(btnId))
       }
 
-      data += ((k != 0) ? "text { pos:t='0,0.5ph-0.5h';position:t='relative';text-align:t='center';text:t='+'}" : "") + buttonFrame;
+      data = "".concat(data,
+        ((k != 0) ? "text { pos:t='0,0.5ph-0.5h';position:t='relative';text-align:t='center';text:t='+'}" : ""),
+        buttonFrame)
     }
 
     return data;
@@ -428,8 +429,8 @@ function guiStartArtilleryMap(params = {}) {
     mapSizeMeters = params?.mapSizeMeters ?? 1400
     isSuperArtillery = getTblValue("useCustomSuperArtillery", params, false)
     superStrikeRadius = getTblValue("artilleryStrikeRadius", params, 0.0),
-    iconSuperArtilleryZone = "#ui/gameuiskin#" + getTblValue("iconSuperArtilleryZoneName", params, ""),
-    iconSuperArtilleryTarget = "#ui/gameuiskin#" + getTblValue("iconSuperArtilleryTargetName", params, "")
+    iconSuperArtilleryZone = "".concat("#ui/gameuiskin#", getTblValue("iconSuperArtilleryZoneName", params, "")),
+    iconSuperArtilleryTarget = "".concat("#ui/gameuiskin#", getTblValue("iconSuperArtilleryTargetName", params, ""))
   })
 }
 

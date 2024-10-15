@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, is_app_active
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
@@ -975,7 +974,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
       if (chapterItem.groups.len() > 0)
         foreach (groupName, groupItem in chapterItem.groups) {
-          let id = chapterName + "/" + groupName
+          let id = $"{chapterName}/{groupName}"
           if (isAchievementPage && id == this.curAchievementGroupName)
             curIndex = view.items.len()
 

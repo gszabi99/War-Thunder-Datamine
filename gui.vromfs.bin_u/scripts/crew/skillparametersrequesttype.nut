@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { calc_crew_parameters } = require("unitCalculcation")
@@ -16,7 +15,7 @@ skillParametersRequestType._getParameters <- function _getParameters(crewId, uni
   if (unit == null)
     return null
 
-  let cacheUid = this.getCachePrefix() + "Current"
+  let cacheUid = $"{this.getCachePrefix()}Current"
   local res = getCachedCrewData(crewId, unit, cacheUid)
   if (res)
     return res
@@ -34,7 +33,7 @@ skillParametersRequestType._getValues <- function _getValues() {
 skillParametersRequestType._getSelectedParameters <- function _getSelectedParameters(crewId, unit) {
   if (unit == null)
     return null
-  let cacheUid = this.getCachePrefix() + "Selected"
+  let cacheUid = $"{this.getCachePrefix()}Selected"
   local res = getCachedCrewData(crewId, unit, cacheUid)
   if (res)
     return res

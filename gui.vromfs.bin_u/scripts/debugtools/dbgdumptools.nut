@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_get_units_list_with_autoset_modules, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, copy_to_clipboard, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 let { eventbus_send } = require("eventbus")

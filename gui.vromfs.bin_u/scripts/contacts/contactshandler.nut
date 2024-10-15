@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
@@ -640,7 +639,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
     foreach (idx, contact_data in this.contactsArrByGroups[this.curGroup]) {
-      let contactObjectName = "player_" + this.curGroup + "_" + idx
+      let contactObjectName = $"player_{this.curGroup}_{idx}"
       let contactObject = this.scene.findObject(contactObjectName)
       if (!checkObj(contactObject))
         continue
@@ -673,9 +672,9 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       local activateEvent = "onPlayerMsg"
       if (showConsoleButtons.value || !isChatEnabled())
         activateEvent = "onPlayerMenu"
-      data += format(this.groupFormat,$"#contacts/{gName}",
+      data = "".concat(data, format(this.groupFormat, $"#contacts/{gName}",
         gName == EPLX_SEARCH ? this.searchGroupActiveTextInclude : "",
-        $"group_{gName}", activateEvent, this.buildPlayersListInfo(gName))
+        $"group_{gName}", activateEvent, this.buildPlayersListInfo(gName)))
     }
     this.guiScene.replaceContentFromText(gObj, data, data.len(), this)
     let selected = [-1, -1]

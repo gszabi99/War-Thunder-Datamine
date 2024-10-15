@@ -1687,7 +1687,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let skinNum = obj.getValue()
     if (!this.skinList || !(skinNum in this.skinList.values)) {
       debug_dump_stack()
-      assert(false, "Error: try to set incorrect skin " + this.skinList + ", value = " + skinNum)
+      assert(false, $"Error: try to set incorrect skin {this.skinList}, value = {skinNum}")
       return
     }
 

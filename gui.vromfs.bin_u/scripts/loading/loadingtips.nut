@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")

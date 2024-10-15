@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
 
@@ -90,7 +89,7 @@ local XboxShopPurchasableItem = class {
     let xboxShopBlk = GUI.get()?.xbox_ingame_shop
     let ingameShopImages = xboxShopBlk?.items
     if (ingameShopImages?[this.id] && xboxShopBlk?.mainPart && xboxShopBlk?.fileExtension)
-      this.imagePath = "!" + xboxShopBlk.mainPart + this.id + xboxShopBlk.fileExtension
+      this.imagePath = $"!{xboxShopBlk.mainPart}{this.id}{xboxShopBlk.fileExtension}"
   }
 
   getPriceText = function() {

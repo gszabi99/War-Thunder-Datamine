@@ -539,7 +539,7 @@ function isSameMapping(lhs, rhs) {
           presetPath = actualPresetPath
           blkBasePresetPaths[presetGroup] = presetPath
         }
-        log("ControlsPreset: BasePreset." + presetGroup + " = " + presetPath)
+        log($"ControlsPreset: BasePreset.{presetGroup} = {presetPath}")
         this.applyBasePreset(presetPath, presetGroup, presetChain)
       }, this)
     }

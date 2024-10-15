@@ -82,7 +82,7 @@ let class TrophyMultiAward {
     if (this.blk?.fromLastBattle) {
       local text = loc("multiAward/fromLastBattle")
       if (useBoldAsSmaller)
-        text = "<b>" + text + "</b>"
+        text = $"<b>{text}</b>"
       header += "\n" + text
     }
 
@@ -147,7 +147,7 @@ let class TrophyMultiAward {
       conditions = " (" + conditions + ")"
 
     if (useBoldAsSmaller)
-      conditions = "<b>" + conditions + "</b>"
+      conditions = $"<b>{conditions}</b>"
     return $"{res}{conditions}"
   }
 

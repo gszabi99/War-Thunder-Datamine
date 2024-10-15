@@ -242,7 +242,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(nestObj))
       return
 
-    let genCode = event.name + "_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
+    let genCode = $"{event.name}_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
     if (nestObj?._queueTableGenCode == genCode) {
       this.updateTabContent()
       return

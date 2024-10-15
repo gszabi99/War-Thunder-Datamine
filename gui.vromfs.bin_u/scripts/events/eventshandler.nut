@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
@@ -554,9 +553,11 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0) {
-      startText += format(" (%s)", battlePriceText)
-      uncoloredStartText += format(" (%s)", ::events.getEventBattleCostText(
-        event, "activeTextColor", true, false))
+      startText = "".concat(startText, format(" (%s)", battlePriceText))
+      uncoloredStartText = "".concat(
+        uncoloredStartText,
+        format(" (%s)", ::events.getEventBattleCostText(event, "activeTextColor", true, false))
+      )
     }
 
     setDoubleTextToButton(this.scene, "btn_join_event", uncoloredStartText, startText)
@@ -583,7 +584,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let packBtn = showObjById("btn_download_pack", needDownloadPack, this.scene)
     if (needDownloadPack && packBtn) {
       packBtn.tooltip = ::get_pkg_loc_name(pack)
-      packBtn.setValue(loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
+      packBtn.setValue(" ".concat(loc("msgbox/btn_download"), ::get_pkg_loc_name(pack, true)))
     }
 
     showObjById("btn_queue_options", isCurItemInFocus && isEvent

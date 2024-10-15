@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import wp_shop_get_aircraft_wp_rate, wp_shop_get_aircraft_xp_rate
 from "%scripts/dagui_library.nut" import *
 
@@ -38,7 +37,7 @@ function getBonusImage(bType, multiplier, useBy) {
   if (multiplier == null)
     return ""
 
-  multiplier = ::stringReplace(multiplier.tostring(), ".", "_")
+  multiplier = multiplier.tostring().replace(".", "_")
   return $"#ui/gameuiskin#{bType}_bonus_mult_{multiplier}"
 }
 
@@ -56,10 +55,10 @@ function showCurBonus(obj, value, tooltipLocName = "", isDiscount = true, fullUp
   local text = ""
 
   if ((isDiscount && value > 0) || (!isDiscount && value != 1)) {
-    text = isDiscount ? "-" + value + "%" : "x" + stdMath.roundToDigits(value, 2)
+    text = isDiscount ? $"-{value}%" : $"x{stdMath.roundToDigits(value, 2)}"
     if (!tooltip && tooltipLocName != "") {
       let prefix = isDiscount ? "discount/" : "bonus/"
-      tooltip = format(loc(prefix + tooltipLocName + "/tooltip"), value.tostring())
+      tooltip = format(loc($"{prefix}{tooltipLocName}/tooltip"), value.tostring())
     }
   }
 
@@ -93,9 +92,24 @@ function getBonus(exp, wp, imgType, placeType = "", airName = "") {
   local tooltipText = ""
   let locEnd = (type(airName) == "string") ? "/tooltip" : "/group/tooltip"
   if (imgColor != "") {
-    tooltipText += exp <= 1.0 ? "" : format(loc("bonus/" + (imgColor == "wp_exp" ? "exp" : imgColor) + imgType + placeType + "Mul" + locEnd),$"x{exp}")
+    tooltipText = exp <= 1.0
+      ? tooltipText
+      : "".concat(
+            tooltipText,
+            format(
+              loc($"bonus/{imgColor == "wp_exp" ? "exp" : imgColor}{imgType}{placeType}Mul{locEnd}"),
+              $"x{exp}"
+            )
+          )
     if (wp > 1)
-      tooltipText += ((tooltipText == "") ? "" : "\n") + format(loc("bonus/" + (imgColor == "wp_exp" ? "wp" : imgColor) + imgType + placeType + "Mul" + locEnd),$"x{wp}")
+      tooltipText = "".concat(
+        tooltipText,
+        tooltipText == "" ? "" : "\n",
+        format(
+          loc($"bonus/{imgColor == "wp_exp" ? "wp" : imgColor}{imgType}{placeType}Mul{locEnd}"),
+          $"x{wp}"
+        )
+      )
   }
 
   return {

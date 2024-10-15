@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_preview_operation_from_file
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -83,11 +82,11 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     local minSize = maxHeight
     let top = this.guiScene.calcString("2@blockInterval", mapNestObj) + itemDescHeight
     foreach (side in ::g_world_war.getCommonSidesOrder()) {
-      let sideStrenghtObj = this.scene.findObject("strenght_" + ww_side_val_to_name(side))
+      let sideStrenghtObj = this.scene.findObject($"strenght_{ww_side_val_to_name(side)}")
       if (checkObj(sideStrenghtObj)) {
         let curWidth = toPixels(
           this.guiScene,
-          "pw-2*(" + sideStrenghtObj.getSize()[0] + "+1@blockInterval+2@framePadding)",
+          $"pw-2*({sideStrenghtObj.getSize()[0]}+1@blockInterval+2@framePadding)",
           mapNestObj
         )
 
@@ -96,7 +95,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     }
 
     mapNestObj.width = minSize
-    mapNestObj.pos = "50%pw-50%w, 0.5*(" + maxHeight + "-" + minSize + ")+" + top
+    mapNestObj.pos = $"50%pw-50%w, 0.5*({maxHeight}-{minSize})+{top}"
 
     if (this.descItem)
       ::g_world_war.updateOperationPreviewAndDo(this.descItem.id, Callback(function() {
@@ -154,11 +153,11 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
       let sideName = ww_side_val_to_name(side)
       let isInvert = side == SIDE_2
 
-      let unitListObjPlace = this.scene.findObject("team_" + sideName + "_unit_info")
+      let unitListObjPlace = this.scene.findObject($"team_{sideName}_unit_info")
       let unitListBlk = handyman.renderCached(this.sceneTplTeamStrenght, this.getUnitsListViewBySide(side, isInvert))
       this.guiScene.replaceContentFromText(unitListObjPlace, unitListBlk, unitListBlk.len(), this)
 
-      let armyGroupObjPlace = this.scene.findObject("team_" + sideName + "_army_group_info")
+      let armyGroupObjPlace = this.scene.findObject($"team_{sideName}_army_group_info")
       let armyGroupViewData = this.getClanListViewDataBySide(side, isInvert, armyGroupObjPlace)
       let armyGroupsBlk = handyman.renderCached(this.sceneTplTeamArmyGroups, armyGroupViewData)
       this.guiScene.replaceContentFromText(armyGroupObjPlace, armyGroupsBlk, armyGroupsBlk.len(), this)
@@ -169,7 +168,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
           loc("worldwar/operation/participating_clans") :
           this.map.getClansConditionText(true))
 
-      let countryesObjPlace = this.scene.findObject("team_" + sideName + "_countryes_info")
+      let countryesObjPlace = this.scene.findObject($"team_{sideName}_countryes_info")
       let countryesMarkUpData = this.map.getCountriesViewBySide(side)
       this.guiScene.replaceContentFromText(countryesObjPlace, countryesMarkUpData, countryesMarkUpData.len(), this)
     }

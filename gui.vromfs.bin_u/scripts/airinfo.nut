@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, calculate_tank_parameters_async, wp_get_repair_cost, calculate_min_and_max_parameters, get_unit_elite_status, has_entitlement, get_name_by_gamemode, calculate_ship_parameters_async, shop_purchase_aircraft, wp_get_cost, char_send_blk, shop_get_unit_exp, clan_get_exp, get_global_stats_blk, shop_time_until_repair, remove_calculate_modification_effect_jobs, is_era_available, shop_unit_research_status, shop_get_full_repair_time_by_mode, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
@@ -724,14 +723,14 @@ function getTopCharacteristicValue(unit, item, diff) {
   let vMax = air.maxChars ? air.shop[characteristicName[0]] + air.maxChars[modeName][characteristicName[1]] : value
   local text = prepareTextFunc(value)
   if (air[modificators] && air[modificators][modeName][characteristicName[1]] == 0) {
-    text = "<color=@goodTextColor>" + text + "</color>*"
+    text = $"<color=@goodTextColor>{text}</color>*"
     showReferenceText = true
   }
 
   let weaponModValue = air?.secondaryWeaponMods.effect[modeName][characteristicName[1]] ?? 0
   local weaponModText = ""
   if (weaponModValue != 0)
-    weaponModText = "<color=@badTextColor>" + (weaponModValue > 0 ? " + " : " - ") + prepareTextFunc(fabs(weaponModValue)) + "</color>"
+    weaponModText = "".concat("<color=@badTextColor>", (weaponModValue > 0 ? " + " : " - "), prepareTextFunc(fabs(weaponModValue)), "</color>")
   return [text, weaponModText, vMin, vMax, value, air.shop[characteristicName[0]], showReferenceText]
 }
 
@@ -797,7 +796,7 @@ function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage 
       local value = ""
       if (show) {
         let timeStr = time.hoursToString(time.secondsToHours(sec), false, true, true)
-        value = colorize("goodTextColor", loc("mainmenu/unitRentTimeleft") + loc("ui/colon") + timeStr)
+        value = colorize("goodTextColor", "".concat(loc("mainmenu/unitRentTimeleft"), loc("ui/colon"), timeStr))
       }
       if (rentObj.isVisible() != show)
         rentObj.show(show)
@@ -914,7 +913,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       }
     }
     obj.show(typeText != "")
-    obj.setValue(colorize(getUnitClassColor(air), fonticon + " " + typeText))
+    obj.setValue(colorize(getUnitClassColor(air), $"{fonticon} { typeText}"))
   }
 
   obj = holderObj.findObject("player_country_exp")
@@ -936,7 +935,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
       let labelObj = obj.findObject("exp")
       if (checkObj(labelObj)) {
-        let statusText = isResearching ? loc("shop/in_research") + loc("ui/colon") : ""
+        let statusText = isResearching ? "".concat(loc("shop/in_research"), loc("ui/colon")) : ""
         let expCurText = isSquadronVehicle
           ? Cost().setSap(expCur).toStringWithParams({ isSapAlwaysShown = true })
           : Cost().setRp(expCur).toStringWithParams({ isRpAlwaysShown = true })
@@ -950,9 +949,9 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
           expText += colorize(isSquadronVehicle
             ? "cardProgressChangeSquadronColor"
             : "cardProgressTextBonusColor", loc("ui/parentheses/space",
-            { text = "+ " + (isSquadronVehicle
+            { text = "".concat("+ ", (isSquadronVehicle
               ? Cost().setSap(expInvest).tostring()
-              : Cost().setRp(expInvest).tostring()) }))
+              : Cost().setRp(expInvest).tostring())) }))
         labelObj.setValue(expText)
       }
     }
@@ -983,7 +982,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (checkObj(ageObj)) {
     let nameObj = ageObj.findObject("age_number")
     if (checkObj(nameObj))
-      nameObj.setValue(loc("shop/age") + loc("ui/colon"))
+      nameObj.setValue("".concat(loc("shop/age"), loc("ui/colon")))
     let yearsObj = ageObj.findObject("age_years")
     if (checkObj(yearsObj))
       yearsObj.setValue(get_roman_numeral(air.rank))
@@ -1126,7 +1125,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     fillAirCharProgress(progressObj, characteristicArr[2], characteristicArr[3], characteristicArr[4])
     showReferenceText = showReferenceText || characteristicArr[6]
 
-    let waitObj = holderObj.findObject("aircraft-" + item.id + "-wait")
+    let waitObj = holderObj.findObject($"aircraft-{item.id}-wait")
     if (waitObj)
       waitObj.show(!isSecondaryModsValid)
   }
@@ -1313,14 +1312,14 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
       let topValue = getTopCharacteristicValue(air, { crewMemberTopSkill, prepareTextFunc }, difficulty.crewSkillName)
       let hasTopValue = topValue != null && topValue != reloadTimeTxt
-      holderObj.findObject($"aircraft-reloadTime-topValueDiv").show(hasTopValue)
+      holderObj.findObject("aircraft-reloadTime-topValueDiv").show(hasTopValue)
       if(hasTopValue) {
-        holderObj.findObject($"aircraft-reloadTime-topValue").setValue(topValue)
+        holderObj.findObject("aircraft-reloadTime-topValue").setValue(topValue)
         topValueCount++
       }
     }
     if (visibilityFactor) {
-      holderObj.findObject("aircraft-visibilityFactor-title").setValue(loc("shop/visibilityFactor") + loc("ui/colon"))
+      holderObj.findObject("aircraft-visibilityFactor-title").setValue("".concat(loc("shop/visibilityFactor"), loc("ui/colon")))
       holderObj.findObject("aircraft-visibilityFactor-value").setValue(format("%d %%", visibilityFactor))
     }
   }
@@ -1333,7 +1332,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     holderObj.findObject("ship-displacement-tr").show(displacementKilos != null)
     if (displacementKilos != null) {
       let displacementString = measureType.SHIP_DISPLACEMENT_TON.getMeasureUnitsText(displacementKilos / 1000, true)
-      holderObj.findObject("ship-displacement-title").setValue(loc("info/ship/displacement") + loc("ui/colon"))
+      holderObj.findObject("ship-displacement-title").setValue("".concat(loc("info/ship/displacement"), loc("ui/colon")))
       holderObj.findObject("ship-displacement-value").setValue(displacementString)
     }
 
@@ -1341,7 +1340,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     let depthValue = unitTags?.Shop?.maxDepth ?? 0
     holderObj.findObject("aircraft-maxDepth-tr").show(depthValue > 0)
     if (depthValue > 0)
-      holderObj.findObject("aircraft-maxDepth").setValue(depthValue + loc("measureUnits/meters_alt"))
+      holderObj.findObject("aircraft-maxDepth").setValue("".concat(depthValue, loc("measureUnits/meters_alt")))
 
     // ship-citadelArmor
     let armorThicknessCitadel = unitTags?.Shop.armorThicknessCitadel
@@ -1352,7 +1351,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
         round(armorThicknessCitadel.y).tointeger(),
         round(armorThicknessCitadel.z).tointeger(),
       ]
-      holderObj.findObject("ship-citadelArmor-title").setValue(loc("info/ship/citadelArmor") + loc("ui/colon"))
+      holderObj.findObject("ship-citadelArmor-title").setValue("".concat(loc("info/ship/citadelArmor"), loc("ui/colon")))
       holderObj.findObject("ship-citadelArmor-value").setValue(
         format("%d / %d / %d %s", val[0], val[1], val[2], loc("measureUnits/mm")))
     }
@@ -1366,7 +1365,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
         round(armorThicknessMainFireTower.y).tointeger(),
         round(armorThicknessMainFireTower.z).tointeger(),
       ]
-      holderObj.findObject("ship-mainFireTower-title").setValue(loc("info/ship/mainFireTower") + loc("ui/colon"))
+      holderObj.findObject("ship-mainFireTower-title").setValue("".concat(loc("info/ship/mainFireTower"), loc("ui/colon")))
       holderObj.findObject("ship-mainFireTower-value").setValue(
         format("%d / %d / %d %s", val[0], val[1], val[2], loc("measureUnits/mm")))
     }
@@ -1389,7 +1388,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       let isShow = valueText != ""
       holderObj.findObject("ship-hullMaterial-tr").show(isShow)
       if (isShow) {
-        let labelText = (shipMaterials?.hullLabel ?? "") + loc("ui/colon")
+        let labelText = "".concat((shipMaterials?.hullLabel ?? ""), loc("ui/colon"))
         holderObj.findObject("ship-hullMaterial-title").setValue(labelText)
         holderObj.findObject("ship-hullMaterial-value").setValue(valueText)
       }
@@ -1401,7 +1400,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       let isShow = valueText != ""
       holderObj.findObject("ship-superstructureMaterial-tr").show(isShow)
       if (isShow) {
-        let labelText = (shipMaterials?.superstructureLabel ?? "") + loc("ui/colon")
+        let labelText = "".concat((shipMaterials?.superstructureLabel ?? ""), loc("ui/colon"))
         holderObj.findObject("ship-superstructureMaterial-title").setValue(labelText)
         holderObj.findObject("ship-superstructureMaterial-value").setValue(valueText)
       }
@@ -1536,7 +1535,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     let spareCount = showLocalState ? get_spare_aircrafts_count(air.name) : 0
     holderObj.findObject("aircraft-spare-tr").show(spareCount > 0)
     if (spareCount > 0)
-      holderObj.findObject("aircraft-spare").setValue(spareCount.tostring() + loc("icon/spare"))
+      holderObj.findObject("aircraft-spare").setValue("".concat(spareCount.tostring(), loc("icon/spare")))
   }
 
   let fullRepairTd = holderObj.findObject("aircraft-full_repair_cost-td")
@@ -1552,13 +1551,13 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       let avgCost = (avgRepairMul * wp_get_repair_cost_by_mode(air.name, egdCode, showLocalState)).tointeger()
       let modeName = get_name_by_gamemode(egdCode, false)
       discountsList[modeName] <-$"{modeName}-discount"
-      repairCostData += format("tdiv { " +
-                                 "textareaNoTab {smallFont:t='yes' text:t='%s' }" +
-                                 "discount { id:t='%s'; text:t=''; pos:t='-1*@scrn_tgt/100.0, 0.5ph-0.55h'; position:t='relative'; rotation:t='8' }" +
-                               "}\n",
-                          ((repairCostData != "") ? "/ " : "") + Cost(avgCost.tointeger()).getTextAccordingToBalance(),
+      repairCostData = "".concat(repairCostData, format("".concat("tdiv { ",
+                                 "textareaNoTab {smallFont:t='yes' text:t='%s' }",
+                                 "discount { id:t='%s'; text:t=''; pos:t='-1*@scrn_tgt/100.0, 0.5ph-0.55h'; position:t='relative'; rotation:t='8' }",
+                               "}\n"),
+                          "".concat(((repairCostData != "") ? "/ " : ""), Cost(avgCost.tointeger()).getTextAccordingToBalance()),
                           discountsList[modeName]
-                        )
+                        ))
     }
     holderObj.getScene().replaceContentFromText(fullRepairTd, repairCostData, repairCostData.len(), null)
     foreach (modeName, objName in discountsList)
@@ -1652,7 +1651,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (isInFlight()) {
     let missionRules = getCurMissionRules()
     if (missionRules.isWorldWarUnit(air.name)) {
-      addInfoTextsList.append(loc("icon/worldWar/colored") + colorize("activeTextColor", loc("worldwar/unit")))
+      addInfoTextsList.append("".concat(loc("icon/worldWar/colored"), colorize("activeTextColor", loc("worldwar/unit"))))
       addInfoTextsList.append(loc("worldwar/unit/desc"))
     }
     if (missionRules.hasCustomUnitRespawns()) {
@@ -1662,7 +1661,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       let respawnsleft = missionRules.getUnitLeftRespawns(air)
       if (respawnsleft == 0 || (respawnsleft > 0 && !disabledUnitByBRText)) {
         if (missionRules.isUnitAvailableBySpawnScore(air)) {
-          addInfoTextsList.append(loc("icon/star/white") + colorize("activeTextColor", loc("worldWar/unit/wwSpawnScore")))
+          addInfoTextsList.append("".concat(loc("icon/star/white"), colorize("activeTextColor", loc("worldWar/unit/wwSpawnScore"))))
           addInfoTextsList.append(loc("worldWar/unit/wwSpawnScore/desc"))
         }
         else {
@@ -1698,15 +1697,15 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     if(numSpares > 0)
       addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc, { num = numSpares, cost = Cost().setGold(spare_cost * numSpares) })))
     if (isOwn && !isReceivedPrizes) {
-      let text = loc("mainmenu/itemReceived") + loc("ui/dot") + " " +
-        loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce")
+      let text = "".concat(loc("mainmenu/itemReceived"), loc("ui/dot"), " ",
+        loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"))
       addInfoTextsList.append(colorize("badTextColor", text))
     }
   }
   else {
     if (::canBuyUnitOnline(air)) {
       addInfoTextsList.append(colorize("userlogColoredText",
-        format(loc("shop/giftAir/" + air.gift + "/info"), air.giftParam ? loc(air.giftParam) : "")))
+        format(loc($"shop/giftAir/{air.gift}/info"), air.giftParam ? loc(air.giftParam) : "")))
       if (showLocalState)
         if (!isSquadronVehicle && spare_count > 0)
           addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc,
@@ -1766,10 +1765,10 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
     obj = holderObj.findObject("aircraft-crew_level")
     if (checkObj(obj))
-      obj.setValue(loc("crew/usedSkills") + " " + crewLevel)
+      obj.setValue("".concat(loc("crew/usedSkills"), " ", crewLevel))
     obj = holderObj.findObject("aircraft-crew_spec-label")
     if (checkObj(obj))
-      obj.setValue(loc("crew/trained") + loc("ui/colon"))
+      obj.setValue("".concat(loc("crew/trained"), loc("ui/colon")))
     obj = holderObj.findObject("aircraft-crew_spec-icon")
     if (checkObj(obj))
       obj["background-image"] = crewSpecIcon
@@ -1781,7 +1780,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     if (checkObj(obj) && !isInFlight() && crewStatus != "") {
       let crewPointsText = colorize("white", getCrewSpText(getCrewPoints(crew)))
       obj.show(true)
-      obj.setValue(loc("crew/availablePoints/advice") + loc("ui/colon") + crewPointsText)
+      obj.setValue("".concat(loc("crew/availablePoints/advice"), loc("ui/colon"), crewPointsText))
       obj["crewStatus"] = crewStatus
     }
   }
@@ -1819,9 +1818,9 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       if (stats) {
         local survive = stats?.flyouts_deaths ?? 1.0
         survive = (survive == 0) ? 0 : 1.0 - 1.0 / survive
-        surviveText = (survive * 100).tointeger() + "%"
+        surviveText = "".concat((survive * 100).tointeger(), "%")
         let wins = stats?.wins_flyouts ?? 0.0
-        winsText = (wins * 100).tointeger() + "%"
+        winsText = "".concat((wins * 100).tointeger(), "%")
 
         let usage = stats?.flyouts_factor ?? 0.0
         if (usage >= 0.000001) {
@@ -1831,7 +1830,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
               rating++
           usageText = loc($"shop/usageRating/{rating}")
           if (has_entitlement("AccessTest"))
-            usageText += " (" + (usage * 100).tointeger() + "%)"
+            usageText = "".concat(usageText, " (", (usage * 100).tointeger(), "%)")
         }
       }
       holderObj.findObject("aircraft-surviveRating-tr").show(true)
@@ -1840,7 +1839,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       holderObj.findObject("aircraft-winsRating").setValue(winsText)
       holderObj.findObject("aircraft-usageRating-tr").show(true)
       if (rating >= 0)
-        holderObj.findObject("aircraft-usageRating").overlayTextColor = "usageRating" + rating;
+        holderObj.findObject("aircraft-usageRating").overlayTextColor = $"usageRating{rating}";
       holderObj.findObject("aircraft-usageRating").setValue(usageText)
     }
   }
@@ -1869,8 +1868,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (obj != null) {
     let minAge = getMinBestLevelingRank(air)
     let maxAge = getMaxBestLevelingRank(air)
-    let rangeText = (minAge == maxAge) ? (get_roman_numeral(minAge) + nbsp + loc("shop/age")) :
-        (get_roman_numeral(minAge) + nbsp + loc("ui/mdash") + nbsp + get_roman_numeral(maxAge) + nbsp + loc("mainmenu/ranks"))
+    let rangeText = (minAge == maxAge) ? ("".concat(get_roman_numeral(minAge), nbsp, loc("shop/age"))) :
+        "".concat(get_roman_numeral(minAge), nbsp, loc("ui/mdash"), nbsp, get_roman_numeral(maxAge), nbsp, loc("mainmenu/ranks"))
     obj.findObject("aircraft-research-efficiency").setValue(rangeText)
   }
 
@@ -2001,7 +2000,7 @@ function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
   if (nodes.len())
     nodes.pop()
   let unitDir = "/".join(nodes, true)
-  let fmPath = unitDir + "/" + (unitBlkData?.fmFile ?? ($"fm/{unitId}"))
+  let fmPath = "".concat(unitDir, "/", (unitBlkData?.fmFile ?? ($"fm/{unitId}")))
   return blkFromPath(fmPath)
 }
 

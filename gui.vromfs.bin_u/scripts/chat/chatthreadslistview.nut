@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
 
@@ -89,7 +88,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
     local tooltip = loc("mainmenu/btnRefresh")
     let timeLeft = ::g_chat_latest_threads.getTimeToRefresh()
     if (timeLeft > 0)
-      tooltip += " (" + time.secondsToString(0.001 * timeLeft, true, true) + ")"
+      tooltip = $"{tooltip} ({time.secondsToString(0.001 * timeLeft, true, true)})"
     btnObj.tooltip = tooltip
     this.guiScene.updateTooltip(btnObj)
   }

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_hud_visible, get_is_in_flight_menu, is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 
@@ -295,7 +294,7 @@ function updatePrompt(sceneData) {
     if (getTblValue("no_text", prompt, "no") != "yes")
       prompt.setValue(curMode.getNameText())
     if ("tooltip" in prompt)
-      prompt.tooltip = loc("chat/to") + loc("ui/colon") + curMode.getDescText()
+      prompt.tooltip = "".concat(loc("chat/to"), loc("ui/colon"), curMode.getDescText())
   }
 
   let input = scene.findObject("chat_input")
@@ -591,9 +590,9 @@ eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
   let value = obj.getValue()
   let pos = obj.getIntProp(dagui_propid_get_name_id(":behaviour_edit_position_pos"), -1)
   if (pos > 0 && pos < value.len()) // warning disable: -range-check
-    obj.setValue(value.slice(0, pos) + text + value.slice(pos))
+    obj.setValue("".concat(value.slice(0, pos), text, value.slice(pos)))
   else
-    obj.setValue(value + text)
+    obj.setValue($"{value}{text}")
 }
 
 ::add_tags_for_mp_players <- function add_tags_for_mp_players() {

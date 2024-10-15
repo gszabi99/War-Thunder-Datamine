@@ -702,7 +702,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getObjIdByChapterNameRoomId(chapterName, roomId) {
-    return chapterName + "/" + roomId
+    return $"{chapterName}/{roomId}"
   }
 
   _isDelayedCrewchangedStarted = false

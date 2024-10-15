@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
@@ -65,15 +64,19 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
 
     let imgObj = this.scene.findObject("award_image")
     if (checkObj(imgObj)) {
-      local imageId = getUnitCountry(this.unit) + "_" + getUnitTypeTextByUnit(this.unit).tolower()
+      local imageId = "_".concat(getUnitCountry(this.unit), getUnitTypeTextByUnit(this.unit).tolower())
       if (isLastResearchedModule)
-        imageId += "_unit"
+        imageId = $"{imageId}_unit"
       else
-        imageId += "_modification"
+        imageId = $"{imageId}_modification"
 
       local imagePath = getCountryFlagImg(imageId)
       if (imagePath == "")
-        imagePath = "#ui/images/elite_" + (this.unit?.isTank() ? "tank" : "vehicle") + "_revard?P1"
+        imagePath = "".concat(
+          "#ui/images/elite_",
+          this.unit?.isTank() ? "tank" : "vehicle",
+          "_revard?P1"
+        )
 
       imgObj["background-image"] = imagePath
     }
@@ -83,7 +86,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
       if (this.tier.len() == 1)
         tierText = this.tier.top()
       else if (this.tier.len() == 2)
-        tierText = get_roman_numeral(this.tier[0]) + loc("ui/comma") + get_roman_numeral(this.tier[1])
+        tierText = loc("ui/comma").concat(get_roman_numeral(this.tier[0]), get_roman_numeral(this.tier[1]))
       else {
         local maxTier = 0
         local minTier = this.tier.len()
@@ -91,7 +94,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
           maxTier = max(maxTier, t)
           minTier = min(minTier, t)
         }
-        tierText = get_roman_numeral(minTier) + loc("ui/mdash") + get_roman_numeral(maxTier)
+        tierText = loc("ui/mdash").concat(get_roman_numeral(minTier), get_roman_numeral(maxTier))
       }
     }
     else
@@ -99,10 +102,13 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
 
     local msgText = loc(locTextId, { tier = tierText, unitName = getUnitName(this.unit) })
     if (!this.expReward.isZero()) {
-      msgText += "\n" + loc("reward") + loc("ui/colon") + loc("userlog/open_all_in_tier/resName",
-                        { resUnitExpInvest = this.expReward.tostring(),
-                          resUnitName = getUnitName(this.unitInResearch)
-                        })
+      msgText = "".concat(
+        msgText, "\n", loc("reward"), loc("ui/colon"),
+        loc("userlog/open_all_in_tier/resName",
+          { resUnitExpInvest = this.expReward.tostring(),
+            resUnitName = getUnitName(this.unitInResearch)
+          })
+      )
     }
 
     let descObj = this.scene.findObject("award_desc")

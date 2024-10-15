@@ -705,7 +705,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
             script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format(
               "ERROR: FileDialog column " +
               getTblValue("name", column, "[UNDEFINED name]") +
-              " has not attribute " + attr + " but it is required!"))
+              $" has not attribute {attr} but it is required!"))
             return false
           }
       }
@@ -743,7 +743,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.pathTag)
       return
 
-    let settingName = this.FILEDIALOG_PATH_SETTING_ID + "/" + this.pathTag
+    let settingName = $"{this.FILEDIALOG_PATH_SETTING_ID}/{this.pathTag}"
     let loadBlk = loadLocalAccountSettings(settingName)
     this.dirPath  = getTblValue("dirPath",  loadBlk, this.dirPath)
     this.fileName = getTblValue("fileName", loadBlk, this.fileName)
@@ -761,7 +761,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.pathTag || this.dirPath == "")
       return
 
-    let settingName = this.FILEDIALOG_PATH_SETTING_ID + "/" + this.pathTag
+    let settingName = $"{this.FILEDIALOG_PATH_SETTING_ID}/{this.pathTag}"
     let saveBlk = DataBlock()
     saveBlk.dirPath = stdpath.parentPath(path)
     saveBlk.fileName = stdpath.fileName(path)

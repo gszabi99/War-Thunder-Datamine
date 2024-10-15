@@ -53,7 +53,7 @@ function debug_check_unlocalized_resources() {
   local placeholder = loc("encyclopedia/no_unit_description")
   foreach (unit in getAllUnits())
     if (unit.isInShop) {
-      local localeId = "encyclopedia/" + unit.name + "/desc"
+      local localeId = $"encyclopedia/{unit.name}/desc"
       local text = loc(localeId, "")
       if (text == "" || text == placeholder) {
         log($"    {localeId}")
@@ -72,7 +72,7 @@ function debug_check_unlocalized_resources() {
 
       foreach (skin in unit.skins)
         if (skin.name.len()) {
-          local localeId = unit.name + "/" + skin.name
+          local localeId = $"{unit.name}/{skin.name}"
           if (loc(localeId, "") == "") {
             log($"    {localeId}")
             count++

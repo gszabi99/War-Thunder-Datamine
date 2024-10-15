@@ -621,7 +621,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
       let progressImage = rewardConfig.progress
       if (u.isEmpty(progressImage)) {
-        assert(isDefault, "Every Day Login Award: empty progress param for config for period = " + period)
+        assert(isDefault, $"Every Day Login Award: empty progress param for config for period = {period}")
         debugTableData(rewardConfig)
         continue
       }

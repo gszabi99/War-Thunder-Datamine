@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
@@ -181,12 +180,12 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         top = bgBlock.rows.len()
       })
 
-      view.weaponryList += this.addItemsByCellsRow(cellsRow, lineOffset + line, itemWidth)
+      view.weaponryList = "".concat(view.weaponryList, this.addItemsByCellsRow(cellsRow, lineOffset + line, itemWidth))
     }
 
-    this.scene.height = (lineOffset + line) + "@modCellHeight"
+    this.scene.height = $"{lineOffset + line}@modCellHeight"
     if (!this.needRecountWidth)
-      this.scene.width = (itemWidth * columns.len()) + "@modCellWidth"
+      this.scene.width = $"{itemWidth * columns.len()}@modCellWidth"
     let data = handyman.renderCached("%gui/weaponry/weaponry.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
@@ -214,7 +213,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function addItemsByCellsRow(cellsRow, offsetY, itemWidth = 1) {
-    local res = ""
+    let res = []
     let params = {
       posX = 0
       posY = offsetY
@@ -234,13 +233,13 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         item = this.getCurBullet(cell.bulGroupIdx)
 
       if (item)
-        res += createModItemLayout(cell.id, this.unit, item, cell.itemType, params)
+        res.append(createModItemLayout(cell.id, this.unit, item, cell.itemType, params))
     }
-    return res
+    return "".join(res)
   }
 
   function getBulletsItemId(groupIdx) {
-    return this.bulletsIdPrefix + groupIdx
+    return $"{this.bulletsIdPrefix}{groupIdx}"
   }
 
   function getCellConfig(id = "", header = null, item_type = weaponsItem.unknown, bulGroupIdx = 0) {

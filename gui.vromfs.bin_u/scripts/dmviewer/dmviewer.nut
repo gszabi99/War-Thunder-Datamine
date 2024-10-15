@@ -690,7 +690,7 @@ dmViewer = {
 
     let objIcon = obj.findObject("btn_dm_viewer_icon")
     if (checkObj(objIcon))
-      objIcon["background-image"] = "#ui/gameuiskin#btn_dm_viewer_" + modeNameCur + ".svg"
+      objIcon["background-image"] = $"#ui/gameuiskin#btn_dm_viewer_{modeNameCur}.svg"
   }
 
   function clearHint() {
@@ -791,7 +791,7 @@ dmViewer = {
       info = this.xrayDescriptionCache[cacheId]
     else {
       info = this.getPartTooltipInfo(nameId, params)
-      info.title = ::stringReplace(info.title, " ", nbsp)
+      info.title = info.title.replace(" ", nbsp)
 
       if (isUseCache)
         this.xrayDescriptionCache[cacheId] <- info
@@ -1613,7 +1613,7 @@ dmViewer = {
         desc.append(loc("xray/ammo/constrained_inert"))
     }
     else if (partId == "drive_turret_h" || partId == "drive_turret_v") {
-      weaponPartName = ::stringReplace(partName, partId, "gun_barrel")
+      weaponPartName = partName.replace(partId, "gun_barrel")
       let weaponInfoBlk = this.getWeaponByXrayPartName(weaponPartName, partName)
       if (weaponInfoBlk != null) {
         let isHorizontal = partId == "drive_turret_h"
@@ -1798,7 +1798,7 @@ dmViewer = {
     }
     else if (partId in weaponPartsIds) {
       if (partId == "main_caliber_turret" || partId == "auxiliary_caliber_turret" || partId == "aa_turret") {
-        weaponPartName = ::stringReplace(partName, "turret", "gun")
+        weaponPartName = partName.replace("turret", "gun")
         foreach (weapon in this.getUnitWeaponList())
           if (weapon?.turret?.gunnerDm == partName && weapon?.breechDP) {
             weaponPartName = weapon.breechDP
@@ -2285,7 +2285,7 @@ dmViewer = {
         foreach (linkKeyFmt in partLinkSourcesGenFmt)
           if (weapon?[linkKeyFmt]) {
             if (weapon[linkKeyFmt].indexof("%02d") == null) {
-              assert(false, "Bad weapon param " + linkKeyFmt + "='" + weapon[linkKeyFmt] +
+              assert(false, $"Bad weapon param {linkKeyFmt}='" + weapon[linkKeyFmt] +
                 "' on " + this.unit.name)
               continue
             }
@@ -2742,9 +2742,9 @@ dmViewer = {
     }
     else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
       if (startsWith(partId, "main") && weaponInfoBlk?.triggerGroup == "secondary")
-        params.partLocId <- ::stringReplace(partId, "main", "auxiliary")
+        params.partLocId <- partId.replace("main", "auxiliary")
       if (startsWith(partId, "auxiliary") && weaponInfoBlk?.triggerGroup == "primary")
-        params.partLocId <- ::stringReplace(partId, "auxiliary", "main")
+        params.partLocId <- partId.replace("auxiliary", "main")
     }
     else if (this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER) {
       if (isInArray(partId, [ "gun", "cannon" ]))

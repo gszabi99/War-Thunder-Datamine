@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_repair_all, shop_purchase_modification, shop_repair_aircraft, wp_get_repair_cost, shop_purchase_weapon
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_WARNING

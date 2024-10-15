@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_log
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -28,7 +27,7 @@ let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
       value = WW_LOG_CATEGORIES.SYSTEM
       selected = false
       text = loc("worldwar/log/filter/show_system_message")
-      icon = "#ui/gameuiskin#" + WW_LOG_ICONS.SYSTEM
+      icon = $"#ui/gameuiskin#{WW_LOG_ICONS.SYSTEM}"
       color = WW_LOG_COLORS.SYSTEM
       size = "veryTiny"
     },
@@ -36,7 +35,7 @@ let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
       value = WW_LOG_CATEGORIES.EXISTING_BATTLES
       selected = false
       text = loc("worldwar/log/filter/show_existing_battles")
-      icon = "#ui/gameuiskin#" + WW_LOG_ICONS.EXISTING_BATTLES
+      icon = $"#ui/gameuiskin#{WW_LOG_ICONS.EXISTING_BATTLES}"
       color = WW_LOG_COLORS.EXISTING_BATTLES
       size = "veryTiny"
     },
@@ -44,7 +43,7 @@ let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
       value = WW_LOG_CATEGORIES.FINISHED_BATTLES
       selected = false
       text = loc("worldwar/log/filter/show_finished_battles")
-      icon = "#ui/gameuiskin#" + WW_LOG_ICONS.EXISTING_BATTLES
+      icon = $"#ui/gameuiskin#{WW_LOG_ICONS.EXISTING_BATTLES}"
       color = WW_LOG_COLORS.FINISHED_BATTLES
       size = "veryTiny"
     },
@@ -52,7 +51,7 @@ let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
       value = WW_LOG_CATEGORIES.ARMY_ACTIVITY
       selected = false
       text = loc("worldwar/log/filter/show_army_activity")
-      icon = "#ui/gameuiskin#" + WW_LOG_ICONS.ARMY_ACTIVITY
+      icon = $"#ui/gameuiskin#{WW_LOG_ICONS.ARMY_ACTIVITY}"
       color = WW_LOG_COLORS.ARMY_ACTIVITY
       size = "veryTiny"
     },
@@ -60,7 +59,7 @@ let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
       value = WW_LOG_CATEGORIES.ZONE_CAPTURE
       selected = false
       text = loc("worldwar/log/filter/show_zone_capture")
-      icon = "#ui/gameuiskin#" + WW_LOG_ICONS.ZONE_CAPTURE
+      icon = $"#ui/gameuiskin#{WW_LOG_ICONS.ZONE_CAPTURE}"
       color = WW_LOG_COLORS.ZONE_CAPTURE
       size = "veryTiny"
     }
@@ -215,7 +214,7 @@ let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 }
 
 ::g_ww_logs.getLogArmyId <- function getLogArmyId(logId, armyName) {
-  return "log_" + logId + "_" + armyName
+  return $"log_{logId}_{armyName}"
 }
 
 ::g_ww_logs.saveLastReadLogMark <- function saveLastReadLogMark() {

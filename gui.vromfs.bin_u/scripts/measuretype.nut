@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_option_unit_type
 from "%scripts/dagui_library.nut" import *
 
@@ -151,9 +150,10 @@ addTypes(measureType, {
 
   PERCENT_FLOAT = {
     name = "percent_float"
-    getMeasureUnitsText = function(value, addMeasureUnits = true, _forceMaxPrecise = false) {
-      return (100.0 * value + 0.5).tointeger() + (addMeasureUnits ? this.getMeasureUnitsName() : "")
-    }
+    getMeasureUnitsText = @(value, addMeasureUnits = true, _forceMaxPrecise = false) "".concat(
+      (100.0 * value + 0.5).tointeger(),
+      addMeasureUnits ? this.getMeasureUnitsName() : ""
+    )
     getMeasureUnitsLocKey = @() "measureUnits/percent"
   }
 
@@ -163,7 +163,10 @@ addTypes(measureType, {
     unitNamesList = ["KB", "MB", "GB", "TB"]
     function getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false) {
       if (forceMaxPrecise || !addMeasureUnits)
-        return ceil(value).tointeger() + (addMeasureUnits ? " " + this.getMeasureUnitsName() : "")
+        return "".concat(
+          ceil(value).tointeger(),
+          addMeasureUnits ? $" {this.getMeasureUnitsName()}" : ""
+        )
 
       // Start from kilobytes
       local sizeInUnits = ceil(value.tofloat() / this.unitFactorStep)

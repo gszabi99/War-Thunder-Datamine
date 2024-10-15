@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import tactical_map_set_team_for_briefing
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -317,7 +316,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     local maxSectorNameWidth = 0
     let sectorNameTextObjs = []
     foreach (item in view.items) {
-      let sectorNameTxtObj = this.scene.findObject("mission_item_prefix_text_" + item.id)
+      let sectorNameTxtObj = this.scene.findObject($"mission_item_prefix_text_{item.id}")
       if (checkObj(sectorNameTxtObj)) {
         sectorNameTextObjs.append(sectorNameTxtObj)
         maxSectorNameWidth = max(maxSectorNameWidth, sectorNameTxtObj.getSize()[0])
@@ -367,7 +366,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     let battleView = battleData.getView()
     let battleName = colorize("newTextColor", battleView.getShortBattleName())
     let sectorName = battleData.getSectorName()
-    return battleName + (!u.isEmpty(sectorName) ? " " + sectorName : "")
+    return "".concat(battleName, !u.isEmpty(sectorName) ? $" {sectorName}" : "")
   }
 
   function updateSlotbar() {
@@ -528,7 +527,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       misFileBlk.load(missionBlk.getStr("mis_file", ""))
     }
     else
-      log("Error: WWar: Battle with id=" + this.operationBattle.id + ": not found mission info for mission " + this.operationBattle.missionName)
+      log($"Error: WWar: Battle with id={this.operationBattle.id}: not found mission info for mission {this.operationBattle.missionName}")
 
     setMapPreview(tacticalMapObj, misFileBlk)
     let playerTeam = this.operationBattle.getTeamBySide(playerSide)
@@ -729,17 +728,17 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       local battleTimeText = ""
       let timeStartAutoBattle = battleView.getTimeStartAutoBattle()
       if (battleView.hasBattleDurationTime())
-        battleTimeText = loc("debriefing/BattleTime") + loc("ui/colon") +
-          battleView.getBattleDurationTime()
+        battleTimeText = "".concat(loc("debriefing/BattleTime"), loc("ui/colon"),
+          battleView.getBattleDurationTime())
       else if (battleView.hasBattleActivateLeftTime()) {
         this.isSelectedBattleActive = false
-        battleTimeText = loc("worldWar/can_join_countdown") + loc("ui/colon") +
-          battleView.getBattleActivateLeftTime()
+        battleTimeText = "".concat(loc("worldWar/can_join_countdown"), loc("ui/colon"),
+          battleView.getBattleActivateLeftTime())
       }
       else if (timeStartAutoBattle != "") {
         this.isSelectedBattleActive = false
-        battleTimeText = loc("worldWar/will_start_auto_battle") + loc("ui/colon")
-          + timeStartAutoBattle
+        battleTimeText = "".concat(loc("worldWar/will_start_auto_battle"), loc("ui/colon"),
+          timeStartAutoBattle)
       }
       battleTimeObj.setValue(battleTimeText)
 
@@ -1221,11 +1220,11 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let oldId = obj.id
     obj.id = newBattle.id
-    local childObj = obj.findObject("mission_item_prefix_text_" + oldId)
-    childObj.id = "mission_item_prefix_text_" +  newBattle.id
+    local childObj = obj.findObject($"mission_item_prefix_text_{oldId}")
+    childObj.id = $"mission_item_prefix_text_{newBattle.id}"
     childObj.setValue(newBattle.itemPrefixText)
-    childObj = obj.findObject("txt_" + oldId)
-    childObj.id = "txt_" +  newBattle.id
+    childObj = obj.findObject($"txt_{oldId}")
+    childObj.id = $"txt_{newBattle.id}"
     childObj.setValue(newBattle.itemText)
 
     let medalObj = obj.findObject("medal_icon")

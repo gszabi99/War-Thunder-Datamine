@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import set_option_favorite_voice_message, add_voice_message, get_player_unit_name, on_voice_message_button, get_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
 
@@ -83,28 +82,28 @@ function getFavoriteVoiceMessagesVariants() {
     }
     indexInCategory++;
 
-    result.append("" + categoryIndex + "-" + indexInCategory + ": " + format(loc($"{record.name}_0"),
-      loc("voice_message_target_placeholder")));
+    result.append("".concat(categoryIndex, "-", indexInCategory, ": ",
+      format(loc($"{record.name}_0"), loc("voice_message_target_placeholder"))));
   }
   return result;
 }
 
 function getVoiceMessageListLine(index, is_category, name, squad, targetName, _messageIndex = -1) {
-  local scText = ""
+  let scText = []
   if (!isPlatformSony) {
     let shortcutNames = [];
-    let key = "ID_VOICE_MESSAGE_" + (index + 1); //1based
+    let key = $"ID_VOICE_MESSAGE_{index + 1}" //1based
     shortcutNames.append(key);
 
     let shortcuts = ::get_shortcuts(shortcutNames)
 
     for (local sc = 0; sc < shortcuts.len(); sc++)
       if (shortcuts[sc].len())
-        scText += ((scText != "") ? "; " : "") + ::get_shortcut_text({ shortcuts = shortcuts, shortcutId = 0 })
+        scText.append(::get_shortcut_text({ shortcuts = shortcuts, shortcutId = 0 }))
   }
 
   return {
-    shortcutText = scText
+    shortcutText = "; ".join(scText, true)
     name = is_category ? getCategoryLoc(name) : format(loc($"{name}_0"), targetName)
     chatMode = squad ? "squad" : "team"
   }

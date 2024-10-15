@@ -190,7 +190,7 @@ let Discount = class (BaseItem) {
     return result
   }
 
-  function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return val + "%" }) {
+  function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return $"{val}%" }) {
     let value = getTblValue("discountValue", dataItem, 0)
     if (value)
       return toTextFunc(value)

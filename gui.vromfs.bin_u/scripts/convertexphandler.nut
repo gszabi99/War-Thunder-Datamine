@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import wp_get_cost, shop_get_researchable_unit_name, shop_get_free_exp, set_char_cb, shop_convert_free_exp_for_unit, wp_get_exp_convert_exp_for_gold_rate
 from "%scripts/dagui_library.nut" import *
 
@@ -232,7 +231,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (_idx, unitType in this.unitTypesList)
       view.items.append({
         id = unitType.armyId
-        text = unitType.fontIcon + " " + unitType.getArmyLocName()
+        text = " ".concat(unitType.fontIcon, unitType.getArmyLocName())
         tooltip = unitType.canSpendGold() ? null : loc("msgbox/unitTypeRestrictFromSpendGold")
       })
 
@@ -414,9 +413,9 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local newLeft = textObj.base_left
     if (leftEdge < boxPosX)
-      newLeft = textObj.base_left + " + " + (boxPosX - leftEdge).tostring()
+      newLeft = " + ".concat(textObj.base_left, boxPosX - leftEdge)
     else if (overdraft > 0)
-      newLeft = textObj.base_left + " - " + (overdraft).tostring()
+      newLeft = " - ".concat(textObj.base_left, overdraft)
 
     textObj.left = newLeft
   }

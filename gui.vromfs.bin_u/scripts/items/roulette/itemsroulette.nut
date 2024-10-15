@@ -325,8 +325,8 @@ function gatherItemsArray(trophyData, mainLength) {
     local insertIdx = insertRewardIdx + 1 // Interting teaser item next to reward.
     if (insertIdx >= mainLength)
       insertIdx = 0
-    log("ItemsRoulette: Top reward by key " + topRewardKey + " not founded." +
-         "Insert manually into " + insertIdx + ".")
+    log($"ItemsRoulette: Top reward by key {topRewardKey} not founded." +
+         $"Insert manually into {insertIdx}.")
 
     let slot = resultArray[insertIdx]
     if (slot.len() == 0)

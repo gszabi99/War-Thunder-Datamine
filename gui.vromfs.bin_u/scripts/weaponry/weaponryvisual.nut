@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -403,7 +402,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     if (statusTbl.goldUnlockable && !((params?.researchMode ?? false) && flushExp > 0))
       altBtnText = getItemUnlockCost(unit, item).tostring()
     if (altBtnText != "")
-      altBtnText = loc("mainmenu/btnBuy") + loc("ui/parentheses/space", { text = altBtnText })
+      altBtnText = "".concat(loc("mainmenu/btnBuy"), loc("ui/parentheses/space", { text = altBtnText }))
     else if (visualItem.type == weaponsItem.spare && isOwn) {
       if (getInventoryList(itemType.UNIVERSAL_SPARE).len() && statusTbl.canBuyMore) {
         altBtnText = loc("items/universalSpare/activate", { icon = loc("icon/universalSpare") })
@@ -447,7 +446,7 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
   // ensuring maximum visibility of the displayed text.
   let isSingleLine = !viewParams.hideBulletsChoiceBlock
   itemObj.findObject("name").setValue(isSingleLine
-    ? ::stringReplace(viewParams.nameText, " ", nbsp)
+    ? viewParams.nameText.replace(" ", nbsp)
     : viewParams.nameText)
   if (isTooltipByHold)
     itemObj.tooltipId = tooltipId

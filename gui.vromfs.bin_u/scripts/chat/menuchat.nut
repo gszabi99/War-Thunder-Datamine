@@ -115,7 +115,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         continue
     }
     if (!roomsList || isInArray(r.name, roomsList))
-      res.append(r.name + "_" + l)
+      res.append($"{r.name}_{l}")
   }
   return res
 }
@@ -833,7 +833,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function loadRoomParams(roomName, joinParams) {
     foreach (r in ::default_chat_rooms) //validate incorrect created default chat rooms by cur lang
-      if (roomName == "#" + r + "_" + ::cur_chat_lang)  {
+      if (roomName == $"#{r}_" + ::cur_chat_lang)  {
         let rList = ::getGlobalRoomsListByLang(::cur_chat_lang, [r])
         // default rooms should have empty joinParams
         return {  roomName = (rList.len() ? "#" + rList[0] : roomName)
@@ -1105,8 +1105,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       }
     }
     /* //!! For debug only!!
-    //dlog("GP: New event: " + event + ", " + taskId)
-    local msg = "New event: " + event + ", " + taskId
+    //dlog($"GP: New event: {event}, {taskId}")
+    local msg = $"New event: {event}, {taskId}"
     if (db)
     {
       foreach(name, param in db)

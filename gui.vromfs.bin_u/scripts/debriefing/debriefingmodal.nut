@@ -1068,7 +1068,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     }
 
     let layerId = "item_place_container"
-    local layerCfg = LayersIcon.findLayerCfg(trophyItem.iconStyle + "_" + layerId)
+    local layerCfg = LayersIcon.findLayerCfg($"{trophyItem.iconStyle}_{layerId}")
     if (!layerCfg)
       layerCfg = LayersIcon.findLayerCfg(layerId)
 
@@ -1678,7 +1678,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let view = {
       id = unitId
       unitImg = ::image_for_air(unit)
-      unitName = ::stringReplace(getUnitName(unit), nbsp, " ")
+      unitName = getUnitName(unit).replace(nbsp, " ")
       hasModItem = mod != null
       isCompleted = isCompleted
       unitTooltipId = getTooltipType("UNIT").getTooltipId(unit.name, { boosterEffects = this.getBoostersTotalEffects() })

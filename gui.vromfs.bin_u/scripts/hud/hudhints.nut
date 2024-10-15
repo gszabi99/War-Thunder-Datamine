@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_hint_enabled, get_hint_seen_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
@@ -105,7 +104,7 @@ g_hud_hints._buildText <- function _buildText(data) {
   if (shortcuts == null) {
     local res = loc(this.getLocId(data), this.getLocParams(data))
     if (this.image)
-      res = g_hint_tag.IMAGE.makeFullTag({ image = this.image }) + res
+      res = "".concat(g_hint_tag.IMAGE.makeFullTag({ image = this.image }), res)
     return res
   }
 
@@ -203,9 +202,9 @@ g_hud_hints._wrapShortsCutIdWithTags <- function _wrapShortsCutIdWithTags(shortN
   let separator = loc("hints/shortcut_separator")
   foreach (shortcutName in shortNamesArray) {
     if (result.len())
-      result += separator
+      result = "".concat(result, separator)
 
-    result += g_hints.hintTags[0] + shortcutName + g_hints.hintTags[1]
+    result = "".concat(result, g_hints.hintTags[0], shortcutName, g_hints.hintTags[1])
   }
   return result
 }
@@ -1101,7 +1100,7 @@ enums.addTypes(g_hud_hints, {
       local res = g_hud_hints._buildText.call(this, eventData)
       let timer = eventData?.timer
       if (timer)
-        res += " (" + timer + ")"
+        res = $"{res} ({timer})"
       return res
     }
   }
@@ -1142,10 +1141,12 @@ enums.addTypes(g_hud_hints, {
       if (!rawShortcutsArray.len())
         locId = eventData?.noKeyLocId ?? locId
 
-      res += loc(locId, {
-        player = player ? ::build_mplayer_name(player) : ""
-        time = time.secondsToString(eventData?.timeSeconds ?? 0, true, true)
-      })
+      res = "".concat(res,
+        loc(locId, {
+          player = player ? ::build_mplayer_name(player) : ""
+          time = time.secondsToString(eventData?.timeSeconds ?? 0, true, true)
+        })
+      )
 
       local participantsAStr = ""
       local participantsBStr = ""
@@ -1170,14 +1171,14 @@ enums.addTypes(g_hud_hints, {
 
         // Expected participant.image values are listed in "eventsIcons" block of hud.blk
         let icon = $"#ui/gameuiskin#{participant.image}"
-        let color = "@" + ::get_mplayer_color(participantPlayer)
+        let color = $"@{::get_mplayer_color(participantPlayer)}"
         let pStr = this.makeSmallImageStr(icon, color)
         if (playerTeam == participantPlayer.team) {
-          participantsAStr +=$"{pStr} "
+          participantsAStr = "".concat(participantsAStr, pStr, " ")
           ++reservedSlotsCountA
         }
         else {
-          participantsBStr = " " + pStr + participantsBStr
+          participantsBStr = $" {pStr}{participantsBStr}"
           ++reservedSlotsCountB
         }
       }
@@ -1186,16 +1187,14 @@ enums.addTypes(g_hud_hints, {
       let freeSlotIconColor = "@minorTextColor"
       let freeSlotIconStr = this.makeSmallImageStr(freeSlotIconName, freeSlotIconColor, "small")
       for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountA; ++i)
-        participantsAStr +=$"{freeSlotIconStr} "
+        participantsAStr = "".concat(participantsAStr, freeSlotIconStr, " ")
 
       for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountB; ++i)
-        participantsBStr = " " + freeSlotIconStr + participantsBStr
+        participantsBStr = $" {freeSlotIconStr}{participantsBStr}"
 
       if (participantsAStr.len() > 0 && participantsBStr.len() > 0)
-        res = participantsAStr
-        + spaceStr + loc("country/VS").tolower() + spaceStr
-        + participantsBStr
-        + "\n" + res
+        res = "".concat(participantsAStr, spaceStr,
+          loc("country/VS").tolower(), spaceStr, participantsBStr, "\n", res)
 
       return res
     }
@@ -1402,8 +1401,7 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:drowning:show"
     hideEvent = "hint:drowning:hide"
     buildText = function(eventData) {
-      let res = loc("hints/drowning_in") + " "
-      + time.secondsToString(eventData?.timeTo ?? 0, false)
+      let res = " ".concat(loc("hints/drowning_in"), time.secondsToString(eventData?.timeTo ?? 0, false))
       return res
     }
   }
@@ -1418,7 +1416,8 @@ enums.addTypes(g_hud_hints, {
     ]
     buildText = function(eventData) {
       local res = g_hud_hints._buildText.call(this, eventData)
-      res += eventData?.count ? " " + eventData.count : ""
+      if (eventData?.count)
+        res = $"{res} {eventData.count}"
       return res
     }
   }
@@ -1481,7 +1480,7 @@ enums.addTypes(g_hud_hints, {
       if (objType == OBJECTIVE_TYPE_SECONDARY)
         result = "hints/secondary_success"
       if (hintData.objectiveText != "")
-        result += "_extended"
+        result = $"{result}_extended"
       return result
     }
 
@@ -1507,7 +1506,7 @@ enums.addTypes(g_hud_hints, {
       if (objType == OBJECTIVE_TYPE_SECONDARY)
         result = "hints/secondary_fail"
       if (hintData.objectiveText != "")
-        result += "_extended"
+        result = $"{result}_extended"
       return result
     }
 
@@ -2606,7 +2605,7 @@ enums.addTypes(g_hud_hints, {
 
 },
 function() {
-  this.name = "hint_" + this.typeName.tolower()
+  this.name = $"hint_{this.typeName.tolower()}"
   if (this.lifeTime > 0)
     this.selfRemove = true
 

@@ -826,7 +826,7 @@ let Events = class {
       eventData.specialRequirements <- [eventData.specialRequirements]
 
     if (("loc_name" in eventData) && !u.isString(eventData.loc_name)) {
-      assert(false, "Bad event loc_name. eventName = " + eventData.name + ", " +
+      assert(false, $"Bad event loc_name. eventName = {eventData.name}, " +
                              "economicName = " + getEventEconomicName(eventData) + ", loc_name = " + toString(eventData.loc_name))
       eventData.$rawdelete("loc_name")
     }
@@ -2051,8 +2051,8 @@ let Events = class {
       if (masksArray && masksArray.len() == 2) {
         let allowUnitId = "events/allowed_units"
         allowText = loc(allowUnitId, {
-          unitType = loc(allowUnitId + "/" + masksArray[0].name),
-          unitType2 = loc(allowUnitId + "/" + masksArray[1].name) })
+          unitType = loc($"{allowUnitId}/" + masksArray[0].name),
+          unitType2 = loc($"{allowUnitId}/" + masksArray[1].name) })
         allowText = toUpper(allowText, 1)
       }
     }

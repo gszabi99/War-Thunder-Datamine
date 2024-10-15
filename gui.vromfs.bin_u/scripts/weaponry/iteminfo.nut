@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost, get_modification_level, shop_get_module_exp, wp_get_modification_max_count, shop_get_module_research_status
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem

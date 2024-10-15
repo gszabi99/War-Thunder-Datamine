@@ -1,5 +1,4 @@
-//-file:plus-string
-from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, select_save_device, get_auto_refill, update_entitlements, is_save_device_selected, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
+from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, get_auto_refill, update_entitlements, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
 from "app" import is_dev_version
@@ -230,55 +229,9 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function save(onlineSave = true) {
-    let handler = this
     log("save")
-    if (is_save_device_selected()) {
-      local saveRes = SAVELOAD_OK;
-      saveRes = ::save_profile(onlineSave && is_online_available())
-
-      if (saveRes != SAVELOAD_OK) {
-        log("saveRes = " + saveRes.tostring())
-        local txt = "x360/noSaveDevice"
-        if (saveRes == SAVELOAD_NO_SPACE)
-          txt = "x360/noSpace"
-        else if (saveRes == SAVELOAD_NOT_SELECTED)
-          txt = "xbox360/questionSelectDevice"
-        this.msgBox("no_save_device", loc(txt),
-        [
-          ["yes", function() {
-              log("performDelayed save")
-              handler.guiScene.performDelayed(handler, function() {
-                select_save_device(true)
-                this.save(onlineSave)
-                handler.afterSave()
-              })
-          }],
-          ["no", function() {
-            handler.afterSave()
-          }
-          ]
-        ], "yes")
-      }
-      else
-        handler.afterSave()
-    }
-    else {
-      this.msgBox("no_save_device", loc("xbox360/questionSelectDevice"),
-      [
-        ["yes", function() {
-
-            log("performDelayed save")
-            handler.guiScene.performDelayed(handler, function() {
-              select_save_device(true)
-              this.save(onlineSave)
-            })
-        }],
-        ["no", function() {
-          handler.afterSave()
-        }
-        ]
-      ], "yes")
-    }
+    save_profile(onlineSave && is_online_available())
+    this.afterSave()
   }
 
   function goForwardCheckEntitlement(start_func, entitlement) {

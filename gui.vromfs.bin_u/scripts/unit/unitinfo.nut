@@ -41,7 +41,7 @@ function getUnitName(unit, shopName = true) {
     : u.isString(unit) ? unit
     : ""
   let localized = loc($"{unitId}{shopName ? "_shop" : "_0"}", unitId)
-  return shopName ? ::stringReplace(localized, " ", nbsp) : localized
+  return shopName ? localized.replace(" ", nbsp) : localized
 }
 
 function isUnitDefault(unit) {

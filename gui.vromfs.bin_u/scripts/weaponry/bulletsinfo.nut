@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_tier_available, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
@@ -168,7 +167,7 @@ function getModificationBulletsEffect(modifName) {
 
 function getBulletsSetData(air, modifName, noModList = null) {
     //noModList!=null -> generate sets for fake bullets. return setsAmount
-    //id of thoose sets = modifName + setNum + "_default"
+    //id of thoose sets = $"{modifName}{setNum}_default"
   if ((modifName in air.bulletsSets) && !noModList)
     return air.bulletsSets[modifName] //all sets saved for no need analyze blk everytime when it need.
 
@@ -282,7 +281,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
       local bulletType = b?.bulletType ?? b.getBlockName()
       let _bulletType = bulletType
       if (paramsBlk?.selfDestructionInAir)
-        bulletType += "@s_d"
+        bulletType = $"{bulletType}@s_d"
       res.bullets.append(bulletType)
       res.bulletDataByType[_bulletType] <- {
         bulletAnimations
@@ -368,7 +367,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
       return 0
     })
     for (local i = 0; i < fakeBulletsSets.len(); i++)
-      air.bulletsSets[modifName + i + "_default"] <- fakeBulletsSets[i]
+      air.bulletsSets[$"{modifName}{i}_default"] <- fakeBulletsSets[i]
   }
 
   return noModList ? fakeBulletsSets.len() : res
@@ -589,7 +588,7 @@ function getLastFakeBulletsIndex(unit) {
 }
 
 function getFakeBulletName(bulletIdx) {
-  return ::fakeBullets_prefix + bulletIdx + "_default"
+  return $"{::fakeBullets_prefix}{bulletIdx}_default"
 }
 
 function getBulletAnnotation(name, addName = null) {
@@ -607,7 +606,7 @@ function getUniqModificationText(modifName, isShortDesc) {
     let value = measureType.PERCENT_FLOAT.getMeasureUnitsText(
       (get_ranks_blk()?.goldPlaneExpMul ?? 1.0) - 1.0, false)
     let ending = isShortDesc ? "" : "/desc"
-    return loc("modification/" + modifName + ending, "", { value = value })
+    return loc($"modification/{modifName}{ending}", "", { value = value })
   }
   return null
 }
@@ -697,7 +696,7 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
     local locId = modifName
     let ending = isShortDesc ? (limitedName ? "/short" : "") : "/desc"
 
-    res.desc = loc("modification/" + locId + ending, "")
+    res.desc = loc($"modification/{locId}{ending}", "")
     if (res.desc == "" && isShortDesc && limitedName)
       res.desc = loc($"modification/{locId}", "")
 
@@ -786,12 +785,12 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
   let { setText, annotation } = getBulletsNamesBySet(set)
 
   if (ammo_pack_len)
-    res.desc = shortDescr + "\n"
+    res.desc = $"{shortDescr}\n"
   if (set.weaponType == WEAPON_TYPE.COUNTERMEASURES)
-    res.desc += loc("countermeasures/desc") + "\n\n"
+    res.desc = $"{res.desc}{loc("countermeasures/desc")}\n\n"
   else if (set.bullets.len() > 1)
-    res.desc += format(loc("caliber_" + set.caliber + "/desc"), setText) + "\n\n"
-  res.desc += annotation
+    res.desc = "".concat(res.desc, format(loc($"caliber_{set.caliber}/desc"), setText), "\n\n")
+  res.desc = $"{res.desc}{annotation}"
   return res
 }
 

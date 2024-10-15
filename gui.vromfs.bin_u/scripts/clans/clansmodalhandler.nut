@@ -827,7 +827,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let curMode = this.getCurDMode()
     let topPlayersRewarded = getBlkValueByPath(blk, "clanDuel/reward/topPlayersRewarded", 10)
     let diff = g_difficulty.getDifficultyByDiffCode(curMode)
-    let rewardPath = "clanDuel/reward/" + diff.egdLowercaseName + "/era5"
+    let rewardPath = $"clanDuel/reward/{diff.egdLowercaseName}/era5"
     let rewards = getBlkValueByPath(blk, rewardPath)
     if (!rewards)
       return
@@ -848,7 +848,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       rowData.append({
         needText = false,
         rawParam = "text { text-align:t='right'; text:t='" +
-          Cost(0, getTblValue("place" + i + "Gold", rewards, 0)).tostring() +
+          Cost(0, getTblValue($"place{i}Gold", rewards, 0)).tostring() +
           "'; size:t='pw,ph'; style:t='re-type:textarea; behaviour:textarea;'; }",
         active = false
       })

@@ -10,6 +10,7 @@ let { fetchGameModesDigest, fetchGameModesInfo
 } = require("%scripts/matching/serviceNotifications/match.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { startswith }=require("string")
+let { clearTimer, resetTimeout } = require("dagor.workcycle")
 
 // -------------------------------------------------------
 // Matching game modes managment
@@ -27,6 +28,11 @@ local queueGameModesForRequest = []
 local fetching = false
 local fetchingInfo = false
 local fetch_counter = 0
+let needShowGameModesNotLoadedMsg = Watched(false)
+
+let hideModesNotLoadedHelpMessage = @() needShowGameModesNotLoadedMsg.set(false)
+
+let showModesNotLoadedHelpMessage = @() needShowGameModesNotLoadedMsg.set(true)
 
 function notifyGmChanged() {
   let gameEventsOldFormat = {}
@@ -86,17 +92,18 @@ function loadGameModesFromList(gm_list) {
         onGameModesUpdated(result.modes)
       if (queueGameModesForRequest.len() == 0) {
         notifyGmChanged()
+        clearTimer(showModesNotLoadedHelpMessage)
+        hideModesNotLoadedHelpMessage()
         return
       }
 
       self(getGmListFromQueue())
-    })
+  })
 }
 
 function fetchGameModes() {
   if (fetching)
     return
-
   gameModes.clear()
   fetching = true
   fetch_counter++
@@ -121,6 +128,7 @@ function fetchGameModes() {
       }
     }
   )
+  resetTimeout(30, showModesNotLoadedHelpMessage)
 }
 
 function forceUpdateGameModes() {
@@ -254,4 +262,5 @@ return {
   getGameModeWithTagContains
   NIGHT_GAME_MODE_TAG_PREFIX
   SMALL_TEAMS_GAME_MODE_TAG_PREFIX
+  needShowGameModesNotLoadedMsg
 }

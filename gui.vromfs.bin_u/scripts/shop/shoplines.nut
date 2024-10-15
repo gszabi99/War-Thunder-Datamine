@@ -210,7 +210,7 @@ let ShopLines = class {
     else if (lineType == "fakeUnitReq") { //special line for fake unit. Line is go to unit plate on side
       lines += "tdiv { " + idString
       lines += format(lineFormat,
-                       pad1 + " + " + (r1 - r0 - 0.5) + "@shop_height", //height
+                       $"{pad1} + " + (r1 - r0 - 0.5) + "@shop_height", //height
                        "1@modLineWidth", //width
                        (c0 + 0.5) + "@shop_width" + ((c0 > c1) ? "- 0.5@modLineWidth" : "+ 0.5@modLineWidth"), //posX
                        (r0 + 1) + "@shop_height - " + pad1 + ((c0 > c1) ? "+w" : ""), // posY
@@ -236,7 +236,7 @@ let ShopLines = class {
       let arrowOffset = c0 > c1 ? -offset : offset
       lines += "tdiv { " + idString
       lines += format(lineFormat,
-                       pad1 + " + " + lh + "@shop_height", //height
+                       $"{pad1} + {lh}@shop_height", //height
                        "1@modLineWidth", //width
                        (c0 + 0.5 + arrowOffset) + "@shop_width" + ((c0 > c1) ? "-" : "+") + " 0.5@modLineWidth", //posX
                        (r0 + 1) + "@shop_height - " + pad1 + ((c0 > c1) ? "+ w " : ""), // posY
@@ -257,7 +257,7 @@ let ShopLines = class {
       lines += format(arrowFormat, "",
                       "vertical",
                       "1@modArrowWidth",
-                      pad2 + " + " + (r1 - r0 - 1 - lh) + "@shop_height + 0.25@modArrowWidth",
+                      $"{pad2} + " + (r1 - r0 - 1 - lh) + "@shop_height + 0.25@modArrowWidth",
                       (c1 + 0.5) + "@shop_width - 0.5@modArrowWidth",
                       (lh + r0 + 1) + "@shop_height - 0.25@modLineWidth",
                       "0")

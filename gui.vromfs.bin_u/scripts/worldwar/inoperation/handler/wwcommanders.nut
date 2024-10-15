@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_update_popuped_armies_name, ww_get_armies_names_of_armygroup, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
@@ -92,7 +91,7 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
         teamText = teamText
         armyCountryImg = countryFlagsList
         army = sideGroupsView
-        customWidth = "pw/" + this.groupsInRowMax
+        customWidth = $"pw/{this.groupsInRowMax}"
       })
     }
 

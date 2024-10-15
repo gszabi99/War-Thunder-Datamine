@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import add_last_played, show_gui, string_to_restore_type, get_mission_progress, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
@@ -204,7 +203,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
     let chapterName = missionBlk.getStr("chapter", "")
     let name = missionBlk.getStr("name", "")
 
-    if (get_mission_progress(chapterName + "/" + name) < 3) // completed
+    if (get_mission_progress($"{chapterName}/{name}") < 3) // completed
       return true;
   }
   return false
@@ -232,27 +231,31 @@ function get_mission_desc_text(missionBlk) {
   let sm_location = missionBlk.getStr("locationName",
                             map_to_location(missionBlk.getStr("level", "")))
   if (sm_location != "")
-    descrAdd += (loc("options/location") + loc("ui/colon") + loc($"location/{sm_location}"))
+    descrAdd = "".concat(descrAdd, loc("options/location"), loc("ui/colon"), loc($"location/{sm_location}"))
 
   let sm_time = missionBlk.getStr("time", missionBlk.getStr("environment", ""))
   if (sm_time != "")
-    descrAdd += (descrAdd != "" ? "; " : "") + getMissionTimeText(sm_time)
+    descrAdd = "".concat(descrAdd, (descrAdd != "" ? "; " : ""), getMissionTimeText(sm_time))
 
   let sm_weather = missionBlk.getStr("weather", "")
   if (sm_weather != "")
-    descrAdd += (descrAdd != "" ? "; " : "") + getWeatherLocName(sm_weather)
+    descrAdd = "".concat(descrAdd, (descrAdd != "" ? "; " : ""), getWeatherLocName(sm_weather))
 
   let aircraft = missionBlk.getStr("player_class", "")
   if (aircraft != "") {
-    let sm_aircraft = loc("options/aircraft") + loc("ui/colon") +
-      getUnitName(aircraft) + "; " +
-      getWeaponNameText(aircraft, null, missionBlk.getStr("player_weapons", ""), ", ")
+    let sm_aircraft = "".concat(loc("options/aircraft"), loc("ui/colon"), getUnitName(aircraft), "; ",
+      getWeaponNameText(aircraft, null, missionBlk.getStr("player_weapons", ""), ", "))
 
-    descrAdd += "\n" + sm_aircraft
+    descrAdd = $"{descrAdd}\n{sm_aircraft}"
   }
 
   if (missionBlk.getStr("recommendedPlayers", "") != "")
-    descrAdd += ("\n" + format(loc("players_recommended"), missionBlk.getStr("recommendedPlayers", "1-4")) + "\n")
+    descrAdd = "".concat(
+      descrAdd,
+      "\n",
+      format(loc("players_recommended"), missionBlk.getStr("recommendedPlayers", "1-4")),
+      "\n"
+    )
 
   return descrAdd
 }
@@ -320,7 +323,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
 
     let descrAdd = get_mission_desc_text(this.missionBlk)
     if (descrAdd != "")
-      desc += (desc.len() ? "\n\n" : "") + descrAdd
+      desc = "".concat(desc, (desc.len() ? "\n\n" : ""), descrAdd)
 
     this.scene.findObject("mission_title").setValue(title)
     this.scene.findObject("mission_desc").setValue(desc)
@@ -332,7 +335,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     this.guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     if (optionItems.len() > 0) {
       let listObj = showObjById("optionslist", true, this.scene)
-      listObj.height = "" + optionItems.len() + "*@baseTrHeight" //bad solution, but freeheight doesn't work correct
+      listObj.height = $"{optionItems.len()}*@baseTrHeight" //bad solution, but freeheight doesn't work correct
     }
     this.optionsContainers.append(container.descr)
 

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -263,7 +262,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
     let airfieldUnitsText = "".concat(
       loc("".concat("worldwar/", airfield.airfieldType.objName, "_units")),
         loc("ui/colon"))
-    let airfieldInFlyText = loc("worldwar/airfield_in_fly") + loc("ui/colon")
+    let airfieldInFlyText = $"{loc("worldwar/airfield_in_fly")}{loc("ui/colon")}"
     let airfieldCapacityText = "".concat(
       loc("".concat("worldwar/", airfield.airfieldType.objName, "_capacity")),
         loc("ui/colon"))
@@ -275,21 +274,22 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
     let isFull = airfieldUnitsNumber + inFlyUnitsNumber >= airfieldCapacityNumber
 
     local airfieldInfoValue = airfieldUnitsNumber
-    local airfieldTooltip = airfieldUnitsText +
-      colorize("@white", airfieldUnitsNumber + " " + iconText)
+    local airfieldTooltip = "".concat(airfieldUnitsText,
+      colorize("@white", $"{airfieldUnitsNumber} {iconText}"))
     if (inFlyUnitsNumber > 0) {
-      airfieldInfoValue += "+" + inFlyUnitsNumber
-      airfieldTooltip += "\n" + airfieldInFlyText +
-        colorize("@white", inFlyUnitsNumber + " " + iconText)
+      airfieldInfoValue = $"{airfieldInfoValue}+{inFlyUnitsNumber}"
+      airfieldTooltip = "".concat(airfieldTooltip, "\n", airfieldInFlyText,
+        colorize("@white", $"{inFlyUnitsNumber} {iconText}"))
     }
-    airfieldInfoValue += "/" + airfieldCapacityNumber + " " + iconText
-    airfieldTooltip += "\n" + airfieldCapacityText +
-      colorize("@white", airfieldCapacityNumber + " " + iconText)
+    airfieldInfoValue = $"{airfieldInfoValue}/{airfieldCapacityNumber} {iconText}"
+    airfieldTooltip = "".concat(airfieldTooltip, "\n", airfieldCapacityText,
+      colorize("@white", $"{airfieldCapacityNumber} {iconText}"))
     if (isFull)
-      airfieldTooltip += "\n" + colorize("@badTextColor", loc("worldwar/airfield_is_full"))
+      airfieldTooltip = "".concat(airfieldTooltip, "\n",
+        colorize("@badTextColor", loc("worldwar/airfield_is_full")))
 
-    airfieldInfoObj.setValue(airfieldCapacityText +
-      colorize(isFull ? "@badTextColor" : "@white", airfieldInfoValue))
+    airfieldInfoObj.setValue("".concat(airfieldCapacityText,
+      colorize(isFull ? "@badTextColor" : "@white", airfieldInfoValue)))
     airfieldInfoObj.tooltip = airfieldTooltip
 
     let hasFormationUnits = this.hasFormationsForFly(airfield)
@@ -298,7 +298,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
     if (!checkObj(formationTextObj))
       return
 
-    let text = hasFormationUnits ? loc("worldwar/state/ready_to_fly") + loc("ui/colon")
+    let text = hasFormationUnits ? $"{loc("worldwar/state/ready_to_fly")}{loc("ui/colon")}"
       : hasCooldownUnits ? loc("worldwar/state/no_units_to_fly")
       : loc($"worldwar/state/{airfield.airfieldType.objName}_empty")
     formationTextObj.setValue(text)
@@ -318,7 +318,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
   }
 
   function getAirfieldId(index) {
-    return this.airfieldIdPrefix + index
+    return $"{this.airfieldIdPrefix}{index}"
   }
 
   function selectRadioButtonBlock(rbObj, idx) {

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import script_net_assert, in_flight_menu, is_online_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team

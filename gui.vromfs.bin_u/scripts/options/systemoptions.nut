@@ -1148,29 +1148,29 @@ function validateInternalConfigs() {
     let widgetType = getTblValue("widgetType", desc)
     if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "tabs"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '" + id + "' - 'widgetType' invalid or undefined."))
+        $"Option '{id}' - 'widgetType' invalid or undefined."))
     if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '" + id + "' - 'blk' invalid or undefined. It can be undefined only when both getValueFromConfig & setGuiValueToConfig are defined."))
+        $"Option '{id}" + "' - 'blk' invalid or undefined. It can be undefined only when both getValueFromConfig & setGuiValueToConfig are defined."))
     if (("onChanged" in desc) && type(desc.onChanged) != "function")
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '" + id + "' - 'onChanged' function not found in sysopt.shared."))
+        $"Option '{id}' - 'onChanged' function not found in sysopt.shared."))
 
     let def = getTblValue("def", desc)
     if (def == null)
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Option '" + id + "' - 'def' undefined."))
+        $"Option '{id}' - 'def' undefined."))
 
     let uiType = desc.uiType
     if ( widgetType == "checkbox" ) {
       if (def != null && uiType != "bool")
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Option '" + id + "' - 'widgetType'/'def' conflict."))
+          $"Option '{id}' - 'widgetType'/'def' conflict."))
     }
     else if ( widgetType == "slider" ) {
       if (def != null && uiType != "integer")
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Option '" + id + "' - 'widgetType'/'def' conflict."))
+          $"Option '{id}' - 'widgetType'/'def' conflict."))
       let invalidVal = -1
       let vMin = desc?.min ?? invalidVal
       let vMax = desc?.max ?? invalidVal
@@ -1178,28 +1178,28 @@ function validateInternalConfigs() {
       if (!("min" in desc) || !("max" in desc) || type(vMin) != uiType || type(vMax) != uiType
           || vMin > vMax || vMin > safeDef || safeDef > vMax)
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Option '" + id + "' - 'min'/'def'/'max' conflict."))
+          $"Option '{id}' - 'min'/'def'/'max' conflict."))
     }
     else if ( widgetType == "list" || widgetType ==  "tabs") {
       if (def != null && uiType != "string")
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Option '" + id + "' - 'widgetType'/'def' conflict."))
+          $"Option '{id}' - 'widgetType'/'def' conflict."))
       let values = getTblValue("values", desc, [])
       if (!values.len())
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Option '" + id + "' - 'values' is empty or undefined."))
+          $"Option '{id}' - 'values' is empty or undefined."))
       if (def != null && values.len() && !isInArray(def, values))
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Option '" + id + "' - 'def' is not listed in 'values'."))
+          $"Option '{id}' - 'def' is not listed in 'values'."))
     }
     else if ( widgetType == "editbox" ) {
       if (def != null && uiType != "integer" && uiType != "float" && uiType != "string")
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-                                   "Option '" + id + "' - 'widgetType'/'def' conflict."))
+                                   $"Option '{id}' - 'widgetType'/'def' conflict."))
       let maxlength = getTblValue("maxlength", desc, -1)
       if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Option '" + id + "' - 'maxlength'/'def' conflict."))
+          $"Option '{id}' - 'maxlength'/'def' conflict."))
     }
   }
 
@@ -1234,12 +1234,12 @@ function validateInternalConfigs() {
     let items = getTblValue("items", section)
     if (!container || (!id && !items))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        "Array uiStruct - Index " + sectIndex + " contains invalid data."))
+        $"Array uiStruct - Index {sectIndex} contains invalid data."))
     let ids = items ? items : id ? [ id ] : []
     foreach (itemId in ids)
       if (!(itemId in mSettings))
         errorsList.append(logError("sysopt.validateInternalConfigs()",
-          "Array uiStruct - Option '" + itemId + "' not found in 'settings' table."))
+          $"Array uiStruct - Option '{itemId}' not found in 'settings' table."))
   }
 
   mScriptValid = !errorsList.len()
@@ -1288,7 +1288,7 @@ function configWrite() {
   foreach (id, _ in mCfgCurrent) {
     let value = getGuiValue(id)
     if (mCfgInitial?[id] != value)
-      log("[sysopt] " + id + ": " + (mCfgInitial?[id] ?? "null") + " -> " + value)
+      log($"[sysopt] {id}: " + (mCfgInitial?[id] ?? "null") + " -> " + value)
     let desc = getOptionDesc(id)
     if ("setGuiValueToConfig" in desc)
       desc.setGuiValueToConfig(mBlk, desc, value)

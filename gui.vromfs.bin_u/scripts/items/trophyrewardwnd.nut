@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -449,7 +448,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return ""
 
     let layerId = "item_place_container"
-    local layerCfg = LayersIcon.findLayerCfg(trophyStyle + "_" + layerId)
+    local layerCfg = LayersIcon.findLayerCfg($"{trophyStyle}_{layerId}")
     if (!layerCfg)
       layerCfg = LayersIcon.findLayerCfg(layerId)
 

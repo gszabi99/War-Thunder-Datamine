@@ -1,11 +1,10 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_exp_boost
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { round } = require("math")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
@@ -59,8 +58,8 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
         let expBoost = clan_get_exp_boost() / 100.0
         let hasBoost = expBoost > 0
         let descrArray = this.clanData.nextRewardDayId != null
-          ? [loc("clan/activity_period_end", { date = colorize("activeTextColor",
-              time.buildDateTimeStr(this.clanData.nextRewardDayId, false, false)) }) + "\n"]
+          ? ["".concat( loc("clan/activity_period_end", { date = colorize("activeTextColor",
+              time.buildDateTimeStr(this.clanData.nextRewardDayId, false, false)) }), "\n")]
           : []
         if (hasBoost)
           descrArray.append(loc("clan/activity_reward/nowBoost",
@@ -123,7 +122,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
                   value = min(100 * myExp / limitClanActivity, 100) * 10
                   markerPos = markerPosMyExp
                   textType = "textAreaCentered"
-                  textPos = "0.5pw - 0.5w" + " + " + offsetMyExpText
+                  textPos = $"0.5pw - 0.5w + {offsetMyExpText}"
                   text = myExpShortText
                   tooltip = myExpFullText != myExpShortText
                     ? loc("leaderboards/exactValue") + loc("ui/colon") + myExpFullText

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_player_public_stats, get_cur_rank_info, clan_get_my_clan_name, clan_get_my_clan_id, clan_get_my_clan_tag, clan_get_my_clan_type, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
 
@@ -333,7 +332,7 @@ function fillProfileSummary(sObj, summary, diff) {
                   format("headerRow:t='%s'; ", idx ? "yes" : "first"))
     else if (item.separateRowsByFm)
       for (local i = 0; i < statsFm.len(); i++) {
-        let rowId = "row_" + idx + "_" + i
+        let rowId = $"row_{idx}_{i}"
         item.fm = statsFm[i]
         let row = buildProfileSummaryRowData(item, summary, diff, rowId)
         if (!row)

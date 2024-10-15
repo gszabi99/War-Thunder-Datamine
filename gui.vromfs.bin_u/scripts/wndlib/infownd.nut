@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -66,11 +65,11 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
   }
 
   static function canShowAgain(chkId) {
-    return !chkId || loadLocalAccountSettings(INFO_WND_SAVE_PATH + "/" + chkId, true)
+    return !chkId || loadLocalAccountSettings($"{INFO_WND_SAVE_PATH}/{chkId}", true)
   }
 
   static function setCanShowAgain(chkId, isCanShowAgain) {
-    saveLocalAccountSettings(INFO_WND_SAVE_PATH + "/" + chkId, isCanShowAgain)
+    saveLocalAccountSettings($"{INFO_WND_SAVE_PATH}/{chkId}", isCanShowAgain)
   }
 
   static function clearAllSaves() {
@@ -108,7 +107,7 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
             infoHandler.onButtonClick()
         }
         btn.funcName <- cbName
-        markup += handyman.renderCached("%gui/commonParts/button.tpl", btn)
+        markup = "".concat(markup, handyman.renderCached("%gui/commonParts/button.tpl", btn))
 
         hasBigButton = hasBigButton || getTblValue("isToBattle", btn, false)
       }

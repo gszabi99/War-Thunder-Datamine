@@ -269,7 +269,7 @@ let Ticket = class (BaseItem) {
     local text = ""
     if (this.maxDefeatCount)
       text = addToText(text, loc("ticket/defeat_count"),
-        tournamentData.defCount + "/" + this.maxDefeatCount, valueColor)
+        $"{tournamentData.defCount}/{this.maxDefeatCount}", valueColor)
     return text
   }
 
@@ -277,7 +277,7 @@ let Ticket = class (BaseItem) {
     local text = ""
     if (this.maxSequenceDefeatCount)
       text = addToText(text, loc("ticket/defeat_count_in_a_row"),
-        tournamentData.sequenceDefeatCount + "/" + this.maxSequenceDefeatCount, valueColor)
+        $"{tournamentData.sequenceDefeatCount}/{this.maxSequenceDefeatCount}", valueColor)
     return text
   }
 
@@ -285,7 +285,7 @@ let Ticket = class (BaseItem) {
     local text = ""
     if (this.battleLimit)
       text = addToText(text, loc("ticket/battle_count"),
-        tournamentData.battleCount + "/" + this.battleLimit, valueColor)
+        $"{tournamentData.battleCount}/{this.battleLimit}", valueColor)
     return text
   }
 

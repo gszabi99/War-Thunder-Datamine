@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
@@ -252,7 +251,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (id in this.collapsedChapters)
       if (!this.selMap || this.getChapterObjId(this.selMap) != id)
-        this.onCollapse(this.mapsListObj.findObject("btn_" + id))
+        this.onCollapse(this.mapsListObj.findObject($"btn_{id}"))
 
     this.isFillingList = false
   }
@@ -278,7 +277,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!trophyItem)
         continue
 
-      let progressDay = trophiesProgress?[trophy.getBlockName() + "Day"]
+      let progressDay = trophiesProgress?[$"{trophy.getBlockName()}Day"]
       let isActualProgressData = progressDay ? progressDay == curDay : false
 
       let progressCurValue = isActualProgressData ?
@@ -337,9 +336,9 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(rewardsObj, data, data.len(), this)
   }
 
-  getTrophyLocId = @(blk) blk?.locId ?? ("worldwar/" + blk.getBlockName())
+  getTrophyLocId = @(blk) blk?.locId ?? ($"worldwar/{blk.getBlockName()}")
   getTrophyDesc = @(blk) loc(this.getTrophyLocId(blk))
-  getTrophyTooltip = @(blk, timeText) loc(this.getTrophyLocId(blk) + "/desc", { time = timeText })
+  getTrophyTooltip = @(blk, timeText) loc($"{this.getTrophyLocId(blk)}/desc", { time = timeText })
 
   onEventItemsShopUpdate = @(_p) this.updateRewardsPanel()
   onEventWWUnlocksCacheInvalidate = @(_p) this.updateRewardsPanel()
@@ -623,14 +622,14 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let timeInQueue = get_charserver_time_sec() - this.queuesJoinTime
-    queueInfoobj.setValue(loc("worldwar/mapStatus/yourClanInQueue")
-      + loc("ui/colon") + time.secondsToString(timeInQueue, false))
+    queueInfoobj.setValue(loc("ui/colon").concat(loc("worldwar/mapStatus/yourClanInQueue"),
+      time.secondsToString(timeInQueue, false)))
   }
 
   function updateQueueElementsInList() {
     foreach (mapId, map in this.mapsTbl) {
-      showObjById("wait_icon_" + mapId, map.getQueue().isMyClanJoined(), this.mapsListObj)
-      let membersIconObj = this.scene.findObject("queue_members_" + mapId)
+      showObjById($"wait_icon_{mapId}", map.getQueue().isMyClanJoined(), this.mapsListObj)
+      let membersIconObj = this.scene.findObject($"queue_members_{mapId}")
       if (checkObj(membersIconObj))
         membersIconObj.show(map.getQueue().getArmyGroupsAmountTotal() > 0)
     }
@@ -660,7 +659,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getChapterObjId(map) {
-    return "chapter_" + map.getChapterId()
+    return $"chapter_{map.getChapterId()}"
   }
 
   function onClansQueue() {
@@ -945,7 +944,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
                            newClanOperation.id,
                            toString(newClanOperation.getMyClanGroup())
                           )
-      script_net_assert_once("badClanCountry/" + newClanOperation.id, msg)
+      script_net_assert_once($"badClanCountry/{newClanOperation.id}", msg)
     }
   }
 
@@ -994,7 +993,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     wwLeaderboardData.requestWwLeaderboardData(
       lbMode.mode,
       {
-        gameMode = lbMode.mode + "__" + params.id
+        gameMode = $"{lbMode.mode}__{params.id}"
         table    = "season"
         start = 0
         count = 2
@@ -1028,7 +1027,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       side_1 = 0
     }
     foreach (idx, country in statistics)
-      rowView["side_" + idx] <-
+      rowView[$"side_{idx}"] <-
         round((country?.operation_count ?? 0) * (country?.operation_winrate ?? 0))
     view.rows.append(rowView)
     if (rowView.side_0 + rowView.side_1 > 0)
@@ -1039,7 +1038,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     rowView = { text = "win_battles_count" }
     foreach (idx, country in statistics)
-      rowView["side_" + idx] <-
+      rowView[$"side_{idx}"] <-
         round((country?.battle_count ?? 0) * (country?.battle_winrate ?? 0))
     if (((rowView?.side_0 ?? 0) > 0) || ((rowView?.side_1 ?? 0) > 0))
       view.rows.append(rowView)
@@ -1048,7 +1047,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     {
       rowView = { text = lbCategoryTypes.getTypeByField(field).visualKey }
       foreach (idx, country in statistics)
-        rowView["side_" + idx] <- country?[field] ?? 0
+        rowView[$"side_{idx}"] <- country?[field] ?? 0
       if (((rowView?.side_0 ?? 0) > 0) || ((rowView?.side_1 ?? 0) > 0))
         view.rows.append(rowView)
     }

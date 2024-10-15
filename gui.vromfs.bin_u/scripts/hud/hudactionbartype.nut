@@ -555,7 +555,7 @@ enumsAddTypes(g_hud_action_bar_type, {
 
     getName = function (_actionItem, killStreakTag = null) {
       if (u.isString(killStreakTag))
-        return this._name + "_" + killStreakTag
+        return $"{this._name}_{killStreakTag}"
       return ""
     }
 

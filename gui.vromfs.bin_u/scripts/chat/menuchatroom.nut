@@ -57,7 +57,7 @@ local function colorMyNameInText(msg) {
     return msg
 
   local counter = 0;
-  msg = " " + msg + " "; //add temp spaces before name coloring
+  msg = $" {msg} "; //add temp spaces before name coloring
 
   while (counter + userName.value.len() <= msg.len()) {
     let nameStartPos = msg.indexof(userName.value, counter);

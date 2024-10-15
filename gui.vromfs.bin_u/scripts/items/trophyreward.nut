@@ -332,7 +332,7 @@ function rewardsSortComparator(a, b) {
       if (item) {
         rewData.subType <- item.iType
         rewData.item <- item
-        rewType = rewType + "_" + item.iType
+        rewType = $"{rewType}_{item.iType}"
       }
     }
     else

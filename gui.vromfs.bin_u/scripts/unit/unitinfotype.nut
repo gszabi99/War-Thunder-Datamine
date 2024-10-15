@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 

@@ -36,7 +36,7 @@ function getLeaderboardConditionText(rewardBlk, progress = null) {
   let valueMin = rewardBlk?.valueMin
   let txtValue = valueMin
     ? loc("conditions/position/from_to", { min = valueMin, max = value }) : value
-  local res = loc("conditions/" + conditionId + "/" + rewardBlk.fieldName, { value = txtValue })
+  local res = loc($"conditions/{conditionId}/{rewardBlk.fieldName}", { value = txtValue })
   let progressTxt = progress && valueMin
     ? $"{loc("ui/dot")} {loc("conditions/position/place")}{loc("ui/colon")} {progress}"
     : progress
@@ -190,7 +190,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       return value ? value.trophy.getSmallIconName() : ""
     }
     valueText = function(value) {
-      return value.count + "x " + value.trophy.getName()
+      return $"{value.count}x " + value.trophy.getName()
     }
     getTooltipId = function (value) {
       return value ? getTooltipType("ITEM").getTooltipId(value.trophy.id) : null
@@ -217,7 +217,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       return value ? value.item.getSmallIconName() : ""
     }
     valueText = function(value) {
-      return value.count + "x " + value.item.getName()
+      return $"{value.count}x " + value.item.getName()
     }
     getTooltipId = function (value) {
       return value ? getTooltipType("ITEM").getTooltipId(value.item.id) : null

@@ -167,7 +167,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           itemIcon = this.getItemIcon(name)
           id = name
           isSelected = first
-          discountText = discount > 0 ? ("-" + discount + "%") : null
+          discountText = discount > 0 ? ($"-{discount}%") : null
         }
         data += handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
       }
@@ -269,7 +269,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local discountText = ""
     let discount = ::g_discount.getEntitlementDiscount(product.name)
     if (product != null && discount > 0)
-      discountText = "-" + discount + "%"
+      discountText = $"-{discount}%"
     this.scene.findObject("buy_online-discount").setValue(discountText)
   }
 

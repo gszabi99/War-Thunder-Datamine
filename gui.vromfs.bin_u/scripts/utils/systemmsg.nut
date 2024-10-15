@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 //from "%scripts/teams.nut" import g_team
 
@@ -86,14 +85,14 @@ let getLocId = @(locTag) locTags?[locTag] ?? locTag
 
 function registerColors(colorsTable) { //tag = color
   foreach (tag, color in colorsTable) {
-    assert(!(tag in colors), "SystemMsg: Duplicate color tag: " + tag + " = " + color)
+    assert(!(tag in colors), $"SystemMsg: Duplicate color tag: {tag} = {color}")
     colors[tag] <- color
   }
 }
 
 function registerLocTags(locTagsTable) { //tag = locId
   foreach (tag, locId in locTagsTable) {
-    assert(!(tag in locTags), "SystemMsg: Duplicate locId tag: " + tag + " = " + locId)
+    assert(!(tag in locTags), $"SystemMsg: Duplicate locId tag: {tag} = {locId}")
     locTags[tag] <- locId
   }
 }

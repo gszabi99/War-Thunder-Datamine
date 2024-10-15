@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
 
@@ -119,7 +118,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     params.step <- params?.step ?? max(1, round((params.max - params.min) / maxSliderSteps).tointeger())
     local markup = ::create_option_slider($"postfx_settings_{name}", value.tointeger(), cb, true, "slider", params)
     if (showValue)
-      markup += format(" optionValueText { id:t='%s' } ",$"{name}_value");
+      markup = "".concat(markup, format(" optionValueText { id:t='%s' } ", $"{name}_value"))
     markup = this.createRowMarkup(name, markup)
 
     let dObj = this.scene.findObject("postfx_table")

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -90,7 +89,7 @@ let effectTypeTemplate = {
   isInverted = false //when isInverted, negative values are better than positive
   preset = null //set of parameter to override on type creation
 
-  getLocId = @(_unit, _effects) "modification/" + this.id + "_change"
+  getLocId = @(_unit, _effects) $"modification/{this.id}_change"
   validateValue = @(value) value  //return null if no need to show effect
   canShowForUnit = @(_unit) true
 
@@ -146,7 +145,7 @@ let effectTypeTemplate = {
     if (value == null)
       return ""
 
-    local res = format(loc(this.getLocId(unit, effects)), this.valueToString(value))
+    let res = format(loc(this.getLocId(unit, effects)), this.valueToString(value))
     if (!needToShowDiff)
       return res
 
@@ -155,15 +154,14 @@ let effectTypeTemplate = {
     foreach (key in upgradesKeys) {
       let addVal = this.getValuePart(unit, effects?[key], modeId) ?? 0.0
       hasAddValues = hasAddValues || addVal != 0
-      addValueText += " " + this.valueToString(addVal, true)
+      addValueText = $"{addValueText} {this.valueToString(addVal, true)}"
     }
     if (!hasAddValues)
       return res
 
-    addValueText = this.valueToString(this.getValuePart(unit, effects, modeId) ?? 0.0) + addValueText
-    res += loc("ui/parentheses/space", { text = addValueText })
+    addValueText = "".concat(this.valueToString(this.getValuePart(unit, effects, modeId) ?? 0.0), addValueText)
 
-    return res
+    return "".concat(res, loc("ui/parentheses/space", { text = addValueText }))
   }
 }
 
@@ -201,7 +199,7 @@ enums.addTypes(effectsType, [
     canShowForUnit = @(unit) !unit?.isTank() || hasFeature("TankModEffect")
     getLocId = function(_unit, effects) {
       let key = effects?.modifName == "new_tank_transmission" ? "horsePowersTransmission" : "horsePowers"
-      return "modification/" + key + "_change"
+      return $"modification/{key}_change"
     }
   }
   { id = "thrust",                 measureType = "kgf", presize = 0.1
@@ -318,12 +316,12 @@ effectTypeConstructor)
 
 /**************************************** FULL DESC GENERATION ******************************************************/
 
-let startTab = nbsp + nbsp + nbsp + nbsp
+let startTab = "".join(array(4, nbsp))
 local getEffectsStackFunc = function(unit, effectsConfig, modeId) {
   return function(res, eType) {
     let text = eType.getText(unit, effectsConfig, modeId)
     if (text.len())
-      res += "\n" + startTab + text
+      res = $"{res}\n{startTab}{text}"
     return res
   }
 }
@@ -371,7 +369,7 @@ function getDesc(unit, effects, p = DESC_PARAMS) {
   local res = ""
   local desc = effectsType.types.reduce(getEffectsStackFunc(unit, effects, modeId), "")
   if (desc != "")
-    res = "\n" + loc("modifications/specs_change") + loc("ui/colon") + desc
+    res = $"\n{loc("modifications/specs_change")}{loc("ui/colon")}{desc}"
 
   if ("weaponMods" in effects)
     foreach (idx, w in effects.weaponMods) {
@@ -380,11 +378,11 @@ function getDesc(unit, effects, p = DESC_PARAMS) {
 
       desc = weaponEffectsType.types.reduce(getEffectsStackFunc(unit, w, modeId), "")
       if (desc.len())
-        res += "\n" + loc(w.name) + loc("ui/colon") + desc
+        res = $"{res}\n{loc(w.name)}{loc("ui/colon")}{desc}"
     }
 
   if (p.needComment && res != "")
-    res += "\n" + "<color=@fadedTextColor>" + loc("weaponry/modsEffectsNotification") + "</color>"
+    res = $"{res}\n<color=@fadedTextColor>{loc("weaponry/modsEffectsNotification")}</color>"
   return res
 }
 

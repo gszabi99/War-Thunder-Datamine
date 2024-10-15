@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_light_dm
 from "%scripts/dagui_library.nut" import *
 
@@ -119,9 +118,9 @@ function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false
       for (local i = 0; i < count; i++) {
         let item = {
           image           = getBulletImage(bulletsSet, i % length)
-          posx            = (start + (itemWidth + separator) * i) + "%pw"
-          sizex           = itemWidth + "%pw"
-          sizey           = itemHeight + "%pw"
+          posx            = $"{start + (itemWidth + separator) * i}%pw"
+          sizex           = $"{itemWidth}%pw"
+          sizey           = $"{itemHeight}%pw"
           useTooltip      = tooltipId != null
           tooltipId       = tooltipId
           tooltipDelayed  = tooltipId != null && tooltipDelayed
@@ -168,13 +167,13 @@ function getArmorPiercingViewData(armorPiercing, dist) {
       angles.sort(@(a, b) a <=> b)
       let headRow = {
         text = ""
-        values = angles.map(function(v) { return { value = v + loc("measureUnits/deg") } })
+        values = angles.map(function(v) { return { value = $"{v}{loc("measureUnits/deg")}" } })
       }
       res.append(headRow)
     }
 
     let row = {
-      text = dist[ind] + loc("measureUnits/meters_alt")
+      text = $"{dist[ind]}{loc("measureUnits/meters_alt")}"
       values = []
     }
     foreach (angle in angles)
@@ -240,8 +239,8 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   if (bulletsData?.cumulativeDmg && bulletsData.cumulativeDmg > 0)
     addProp(p, loc("bullet_properties/cumulativeDmg"), round_by_value(bulletsData.cumulativeDmg, 10))
   if (bulletsData.caliber > 0)
-    addProp(p, loc("bullet_properties/caliber"), round_by_value(bulletsData.caliber,
-      isCaliberCannon(bulletsData.caliber) ? 1 : 0.01) + " " + loc("measureUnits/mm"))
+    addProp(p, loc("bullet_properties/caliber"), " ".concat(round_by_value(bulletsData.caliber,
+      isCaliberCannon(bulletsData.caliber) ? 1 : 0.01), loc("measureUnits/mm")))
   if (bulletsData.mass > 0)
     addProp(p, loc("bullet_properties/mass"),
       getMeasureTypeByName("kg", true).getMeasureUnitsText(bulletsData.mass))
@@ -370,23 +369,23 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   let explodeTreshold = roundToDigits(bulletsData.explodeTreshold, 2)
   if (explodeTreshold)
     addProp(p, loc("bullet_properties/explodeTreshold"),
-               explodeTreshold + " " + loc("measureUnits/mm"))
+               $"{explodeTreshold} {loc("measureUnits/mm")}")
 
   let proximityFuseArmDistance = round(bulletsData?.proximityFuseArmDistance ?? 0)
   if (proximityFuseArmDistance)
     addProp(p, loc("torpedo/armingDistance"),
-      proximityFuseArmDistance + " " + loc("measureUnits/meters_alt"))
+      $"{proximityFuseArmDistance} {loc("measureUnits/meters_alt")}")
   let proximityFuseRadius = round(bulletsData?.proximityFuseRadius ?? 0)
   if (proximityFuseRadius)
     addProp(p, loc("bullet_properties/proximityFuze/triggerRadius"),
-      proximityFuseRadius + " " + loc("measureUnits/meters_alt"))
+      $"{proximityFuseRadius} {loc("measureUnits/meters_alt")}")
 
   let ricochetData = !bulletsData.isCountermeasure && getRicochetData(bulletsData?.ricochetPreset)
   if (ricochetData)
     foreach (item in ricochetData.angleProbabilityMap)
       addProp(p, loc("bullet_properties/angleByProbability",
         { probability = roundToDigits(100.0 * item.probability, 2) }),
-          roundToDigits(item.angle, 2) + loc("measureUnits/deg"))
+          "".concat(roundToDigits(item.angle, 2), loc("measureUnits/deg")))
 
   if ("reloadTimes" in bulletsData) {
     let currentDiffficulty = isInFlight() ? get_mission_difficulty_int()
@@ -394,21 +393,21 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
     let reloadTime = bulletsData.reloadTimes[currentDiffficulty]
     if (reloadTime > 0)
       addProp(p, colorize("badTextColor", loc("bullet_properties/cooldown")),
-        colorize("badTextColor", roundToDigits(reloadTime, 2)
-          + " " + loc("measureUnits/seconds")))
+        colorize("badTextColor", " ".concat(roundToDigits(reloadTime, 2),
+          loc("measureUnits/seconds"))))
   }
 
   if ("smokeShellRad" in bulletsData)
     addProp(p, loc("bullet_properties/smokeShellRad"),
-      roundToDigits(bulletsData.smokeShellRad, 2) + " " + loc("measureUnits/meters_alt"))
+      " ".concat(roundToDigits(bulletsData.smokeShellRad, 2), loc("measureUnits/meters_alt")))
 
   if ("smokeActivateTime" in bulletsData)
     addProp(p, loc("bullet_properties/smokeActivateTime"),
-      roundToDigits(bulletsData.smokeActivateTime, 2) + " " + loc("measureUnits/seconds"))
+      " ".concat(roundToDigits(bulletsData.smokeActivateTime, 2), loc("measureUnits/seconds")))
 
   if ("smokeTime" in bulletsData)
     addProp(p, loc("bullet_properties/smokeTime"),
-               roundToDigits(bulletsData.smokeTime, 2) + " " + loc("measureUnits/seconds"))
+      " ".concat(roundToDigits(bulletsData.smokeTime, 2), loc("measureUnits/seconds")))
 
   let bTypeDesc = loc(bulletsData.bulletType, "")
   if (bTypeDesc != "")

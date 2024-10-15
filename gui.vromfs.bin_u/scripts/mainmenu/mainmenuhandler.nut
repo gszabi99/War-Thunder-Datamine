@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")

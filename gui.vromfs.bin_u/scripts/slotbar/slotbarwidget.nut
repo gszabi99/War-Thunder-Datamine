@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, get_player_unit_name, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen, get_spare_aircrafts_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
@@ -700,7 +699,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSlotIdByObjId(slotObjId, countryId) {
-    let prefix = "td_slot_" + countryId + "_"
+    let prefix = $"td_slot_{countryId}_"
     if (!startsWith(slotObjId, prefix))
       return -1
     return to_integer_safe(slotObjId.slice(prefix.len()), -1)
@@ -885,7 +884,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
       return -1
     }
-    let prefix = "td_slot_" + this.curSlotCountryId + "_"
+    let prefix = $"td_slot_{this.curSlotCountryId}_"
     for (local i = 0; i < tblObj.childrenCount(); i++) {
       let id = ::getObjIdByPrefix(tblObj.getChild(i), prefix)
       if (!id) {

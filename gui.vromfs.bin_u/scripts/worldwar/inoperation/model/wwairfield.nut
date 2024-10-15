@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
@@ -74,13 +73,13 @@ let WwAirfield = class {
         if (formation.isBelongsToMyClan()) {
           this.clanFormation = formation
           this.clanFormation.setFormationID(WW_ARMY_RELATION_ID.CLAN)
-          this.clanFormation.setName("formation_" + WW_ARMY_RELATION_ID.CLAN)
+          this.clanFormation.setName($"formation_{WW_ARMY_RELATION_ID.CLAN}")
         }
         else {
           if (!this.allyFormation) {
             this.allyFormation = WwCustomFormation(itemBlk, this)
             this.allyFormation.setFormationID(WW_ARMY_RELATION_ID.ALLY)
-            this.allyFormation.setName("formation_" + WW_ARMY_RELATION_ID.ALLY)
+            this.allyFormation.setName($"formation_{WW_ARMY_RELATION_ID.ALLY}")
             this.allyFormation.setUnitType(this.airfieldType.unitType.code)
             this.allyFormation.setMapObjectName(this.airfieldType.objName)
           }
@@ -92,7 +91,7 @@ let WwAirfield = class {
           let cdFormation = WwAirfieldCooldownFormation(cooldownsBlk.getBlock(j), this)
           cdFormation.owner = WwArmyOwner(itemBlk.getBlockByName("owner"))
           cdFormation.setFormationID(j)
-          cdFormation.setName("cooldown_" + j)
+          cdFormation.setName($"cooldown_{j}")
           this.cooldownFormations.append(cdFormation)
         }
       }
@@ -102,11 +101,11 @@ let WwAirfield = class {
   }
 
   function _tostring() {
-    local returnText = "AIRFIELD: index = " + this.index + ", side = " + this.side + ", size = " + this.size + ", pos = " + toString(this.pos) + ", airfieldType = " + this.airfieldType.name
+    local returnText = $"AIRFIELD: index = {this.index}, side = {this.side}, size = {this.size}, pos = {toString(this.pos)}, airfieldType = {this.airfieldType.name}"
     if (this.formations.len())
-      returnText += ", groups len = " + this.formations.len()
+      returnText = $"{returnText}, groups len = {this.formations.len()}"
     if (this.armies.len())
-      returnText += ", armies len = " + this.armies.len()
+      returnText = $"{returnText}, armies len = {this.armies.len()}"
     return returnText
   }
 

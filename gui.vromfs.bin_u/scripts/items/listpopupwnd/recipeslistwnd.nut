@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE
 

@@ -1,10 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let DataBlock  = require("DataBlock")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
@@ -122,7 +120,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
       this.lbModesList.append(modeData)
       let optionText = stripTags(
         loc($"worldwar/leaderboard/{modeData.mode}"))
-      data += "option {text:t='{0}'}".subst(optionText)
+      data = "".concat(data, "option {text:t='{0}'}".subst(optionText))
     }
 
     let curMod = this.beginningMode
@@ -146,7 +144,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     foreach (day in this.lbDaysList) {
       let optionText = stripTags(
         day ? loc("enumerated_day", { number = day }) : loc("worldwar/allSeason"))
-      data += format("option {text:t='%s'}", optionText)
+      data = "".concat(data, "option {text:t='{0}'}".subst(optionText))
     }
 
     let daysObj = showObjById("days_list", this.lbModeData.hasDaysData, this.scene)
@@ -162,7 +160,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     foreach (wwMap in this.lbMapsList) {
       let optionText = stripTags(
         wwMap ? wwMap.getNameTextByMapName(wwMap.getId()) : loc("worldwar/allMaps"))
-      data += format("option {text:t='%s'}", optionText)
+      data = "".concat(data, "option {text:t='{0}'}".subst(optionText))
     }
 
     let mapsObj = showObjById("maps_list", this.lbMapsList.len() > 1, this.scene)
@@ -184,7 +182,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     foreach (country in this.lbCountriesList) {
       let optionText = stripTags(
         country ? loc(country) : loc("worldwar/allCountries"))
-      data += format("option {text:t='%s'}", optionText)
+      data = "".concat(data, "option {text:t='{0}'}".subst(optionText))
     }
 
     let countriesObj = showObjById("countries_list", this.lbCountriesList.len() > 1, this.scene)
@@ -215,8 +213,8 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     this.requestData = newRequestData
 
     let requestParams = {
-      gameMode = this.requestData.modeName + this.requestData.modePostFix
-      table    = this.requestData.day && this.requestData.day > 0 ? "day" + this.requestData.day : "season"
+      gameMode = $"{this.requestData.modeName}{this.requestData.modePostFix}"
+      table    = this.requestData.day && this.requestData.day > 0 ? $"day{this.requestData.day}" : "season"
       category = this.lbField
       platformFilter = this.requestData.platformFilter
     }
@@ -345,13 +343,13 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     if (!this.lbModeData)
       return null
 
-    let mapId = this.lbMap && isInArray(this.lbMap, this.availableMapsList) ? "__" + this.lbMap.getId() : ""
+    let mapId = this.lbMap && isInArray(this.lbMap, this.availableMapsList) ? $"__{this.lbMap.getId()}" : ""
     let countryId = this.lbCountry && isInArray(this.lbCountry, this.availableCountriesList)
-      ? "__" + this.lbCountry : ""
+      ? $"__{this.lbCountry}" : ""
 
     return {
       modeName = this.lbModeData.mode
-      modePostFix = mapId + countryId
+      modePostFix = $"{mapId}{countryId}"
       day = this.lbModeData.hasDaysData ? this.lbDay : null
       platformFilter = this.lbModeData?.needShowConsoleFilter ? this.platformFilter : ""
     }
@@ -428,7 +426,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
       return null
 
     let day = this.lbDay ? wwLeaderboardData.getDayIdByNumber(this.lbDay) : "season"
-    let awardTableName = this.requestData.modeName + this.requestData.modePostFix
+    let awardTableName = $"{this.requestData.modeName}{this.requestData.modePostFix}"
 
     return this.rewardsBlk?[rewardTableName]?[day]?.awards?[awardTableName]
   }

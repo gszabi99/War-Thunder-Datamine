@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")

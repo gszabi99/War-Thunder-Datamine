@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -87,10 +86,10 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onArmiesByStatusTabChange(obj) {
     if (this.lastTabSelected != null)
-      showObjById("army_by_state_title_" + this.lastTabSelected.status, false, this.scene)
+      showObjById($"army_by_state_title_{this.lastTabSelected.status}", false, this.scene)
 
     this.lastTabSelected = ::g_ww_map_armies_status_tab_type.getTypeByStatus(obj.getValue())
-    showObjById("army_by_state_title_" + this.lastTabSelected.status, true, this.scene)
+    showObjById($"army_by_state_title_{this.lastTabSelected.status}", true, this.scene)
 
     this.currentPage = 0
     this.updateTabContent()
@@ -103,7 +102,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateTabs() {
     foreach (tab in this.tabOrder) {
-      let tabCountObj = this.scene.findObject("army_by_state_title_count_" + tab.status)
+      let tabCountObj = this.scene.findObject($"army_by_state_title_count_{tab.status}")
       if (checkObj(tabCountObj))
         tabCountObj.setValue(tab.getArmiesCountText())
     }

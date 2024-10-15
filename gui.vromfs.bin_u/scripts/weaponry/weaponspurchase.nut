@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
@@ -354,7 +353,7 @@ local class WeaponsPurchaseProcess {
   function getItemTextWithAmount(amount) {
     local text = getModItemName(this.unit, this.modItem, false)
     if (amount > 1)
-      text += " " + colorize("activeTextColor", format(loc("weapons/counter/right/short"), amount))
+      text = "".concat(text, " ", colorize("activeTextColor", format(loc("weapons/counter/right/short"), amount)))
 
     return colorize("userlogColoredText", text)
   }

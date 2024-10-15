@@ -1258,7 +1258,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       if (i == "uid")
         continue
       let val = (i == "state") ? this.playerStateToString(v) : v
-      extra.append(i + " = " + val)
+      extra.append($"{i} = {val}")
     }
     extra.sort()
     return "\n".join(extra, true)

@@ -307,7 +307,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
           let fullDetails = shortCommonDetails
           foreach (key, value in shortIndividualDetails) {
-            let fullKey = logEntryTable.ev + "_" + key
+            let fullKey = $"{logEntryTable.ev}_{key}"
             fullDetails[fullKey] <- value
           }
 
@@ -1164,7 +1164,7 @@ function getSeasonName(blk) {
   }
 
   function iconStyle() {
-    return "clan_medal_" + this.place + "_" + this.difficultyName
+    return $"clan_medal_{this.place}_{this.difficultyName}"
   }
 
   function iconConfig() {
@@ -1173,7 +1173,7 @@ function getSeasonName(blk) {
 
     let bg_img = "clan_medal_ww_bg"
     let path = this.isWinner() ? this.place : "rating"
-    let bin_img = "clan_medal_ww_" + this.seasonTag + "_bin_" + path
+    let bin_img = $"clan_medal_ww_{this.seasonTag}_bin_{path}"
     local place_img =$"clan_medal_ww_{this.place}"
     return ";".join([bg_img, bin_img, place_img], true)
   }

@@ -451,7 +451,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
           item.modifiersId[name] <- []
           foreach (a in item.axesList) {
             item.modifiersId[name].append(this.shortcutNames.len())
-            this.shortcutNames.append(a + "_" + name)
+            this.shortcutNames.append($"{a}_{name}")
             this.shortcutItems.append(item)
           }
         }

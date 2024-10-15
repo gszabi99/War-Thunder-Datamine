@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_charserver_time_millisec
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -238,7 +237,7 @@ local function processTimeStamps(text) {
       else {
         textTime = buildDateTimeStr(t)
       }
-      text = text.slice(0, startIdx - startTime.len()) + textTime + text.slice(endIdx + 1)
+      text = "".concat(text.slice(0, startIdx - startTime.len()), textTime, text.slice(endIdx + 1))
     }
   }
 
@@ -272,18 +271,29 @@ function getRaceTimeFromSeconds(value, zeroIsValid = false) {
 
 function getExpireText(expireMin) {
   if (expireMin < timeBase.TIME_MINUTE_IN_SECONDS)
-    return expireMin + loc("measureUnits/minutes")
+    return "".concat(expireMin, loc("measureUnits/minutes"))
 
   let showMin = expireMin < 3 * timeBase.TIME_MINUTE_IN_SECONDS
   let expireHours = math.floor(expireMin / timeBase.TIME_MINUTE_IN_SECONDS_F + (showMin ? 0.0 : 0.5))
   if (expireHours < 24)
-    return expireHours + loc("measureUnits/hours") +
-           (showMin ? " " + (expireMin - timeBase.TIME_MINUTE_IN_SECONDS * expireHours) + loc("measureUnits/minutes") : "")
+    return "".concat(
+      expireHours,
+      loc("measureUnits/hours"),
+      showMin
+        ? "".concat(" ", expireMin - timeBase.TIME_MINUTE_IN_SECONDS * expireHours, loc("measureUnits/minutes"))
+        : ""
+    )
+
 
   let showHours = expireHours < 3 * 24
   let expireDays = math.floor(expireHours / 24.0 + (showHours ? 0.0 : 0.5))
-  return expireDays + loc("measureUnits/days") +
-         (showHours ? " " + (expireHours - 24 * expireDays) + loc("measureUnits/hours") : "")
+  return "".concat(
+    expireDays,
+    loc("measureUnits/days"),
+    showHours
+      ? "".concat(" ", expireHours - 24 * expireDays, loc("measureUnits/hours"))
+      : ""
+  )
 }
 
 

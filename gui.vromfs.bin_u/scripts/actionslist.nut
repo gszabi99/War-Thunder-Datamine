@@ -83,13 +83,13 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
 
     local isIconed = false
     foreach (_idx, action in this.params.actions) {
-      let show = getTblValue("show", action, true)
+      let show = action?.show ?? true
       if (!("show" in action))
         action.show <- show
 
-      action.text <- ::stringReplace(getTblValue("text", action, ""), " ", nbsp)
+      action.text <- (action?.text ?? "").replace(" ", nbsp)
 
-      isIconed = isIconed || (show && getTblValue("icon", action) != null)
+      isIconed = isIconed || (show && action?.icon != null)
     }
     this.scene.iconed = isIconed ? "yes" : "no"
 

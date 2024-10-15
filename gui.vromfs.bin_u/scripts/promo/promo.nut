@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import set_cached_music, has_entitlement, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 let { isDataBlock, isEmpty, copy, isString, chooseRandom } = require("%sqStdLibs/helpers/u.nut")

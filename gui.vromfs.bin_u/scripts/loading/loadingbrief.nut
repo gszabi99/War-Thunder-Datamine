@@ -140,7 +140,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
               idx = part.event.indexof("/")
             }
           part.voiceLen <- loading_get_voice_len(part.event) //-1 if there's no sound
-          log("voice " + part.event + " len " + part.voiceLen.tostring())
+          log($"voice {part.event} len " + part.voiceLen.tostring())
 
           local totalSlidesTime = 0.0
           let freeTimeSlides = []

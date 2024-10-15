@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import close_ingame_gui, get_cur_unit_weapon_preset, is_respawn_screen, get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
@@ -70,7 +69,7 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
 
       this.units = get_player_group()
       this.numUnits = this.units?.len() ?? 0
-      log("numUnits = " + this.numUnits)
+      log($"numUnits = {this.numUnits}")
 
       this.initData()
 
@@ -90,8 +89,8 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
           }
         }
         if (isRespawn || this.forceTacticalControl) {
-          log("[TMAP] isRespawn = " + isRespawn)
-          log("[TMAP] 2 forceTacticalControl = " + this.forceTacticalControl)
+          log($"[TMAP] isRespawn = {isRespawn}")
+          log($"[TMAP] 2 forceTacticalControl = {this.forceTacticalControl}")
           this.isActiveTactical = true
         }
         else
@@ -173,7 +172,7 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
 
       for (local i = 0; i < this.numUnits; i++) {
         if (is_aircraft_delayed(this.units[i])) {
-          log("unit " + i + " is delayed");
+          log($"unit {i} is delayed");
           continue;
         }
 
@@ -221,9 +220,9 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
           }
         }
         else
-          pilotFullName = "Pilot " + (i + 1).tostring()
+          pilotFullName = $"Pilot {i + 1}"
 
-        log("pilot " + i + " name = " + pilotFullName + " (id = " + pilotId.tostring() + ")")
+        log($"pilot {i} name = {pilotFullName} (id = {pilotId})")
 
         this.scene.findObject($"pilot_text{i}").setValue(pilotFullName)
         let objTr = this.scene.findObject($"pilot_name{i}")
@@ -242,8 +241,10 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
     function fillPilotsTable() {
       local data = ""
       for (local k = 0; k < this.numUnits; k++)
-        data += format("tr { id:t = 'pilot_name%d'; css-hier-invalidate:t='all'; td { text { id:t = 'pilot_text%d'; }}}",
-                       k, k)
+        data = "".concat(
+          data,
+          format("tr { id:t = 'pilot_name%d'; css-hier-invalidate:t='all'; td { text { id:t = 'pilot_text%d'; }}}", k, k)
+        )
 
       let pilotsObj = this.scene.findObject("pilots_list")
       this.guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
@@ -282,7 +283,7 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
         let unit = getAircraftByName(fm)
         local text = getUnitName(fm)
         if (unit?.isAir() || unit?.isHelicopter?())
-          text += loc("ui/colon") + getWeaponShortTypeFromWpName(get_cur_unit_weapon_preset(), fm)
+          text = "".concat(text, loc("ui/colon"), getWeaponShortTypeFromWpName(get_cur_unit_weapon_preset(), fm))
         obj.setValue(text)
       }
     }
@@ -392,9 +393,9 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
   }
 
   ::addHideToObjStringById <- function addHideToObjStringById(data, objId) {
-    let pos = data.indexof("id:t = '" + objId + "';")
+    let pos = data.indexof($"id:t = '{objId}';")
     if (pos)
-      return data.slice(0, pos) + "display:t='hide'; " + data.slice(pos)
+      return "".concat(data.slice(0, pos), "display:t='hide'; ", data.slice(pos))
     return data
   }
 

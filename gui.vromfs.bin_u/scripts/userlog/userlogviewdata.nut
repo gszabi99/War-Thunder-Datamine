@@ -429,7 +429,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     if (!isMissionExtrLog) {
       res.tooltip = (logObj.type == EULT_SESSION_RESULT) ? loc("debriefing/total") : loc("userlog/interimResults");
       local totalText = res.tooltip
-      totalText = "<color=@userlogColoredText>" + totalText + loc("ui/colon") + "</color>"
+      totalText = $"<color=@userlogColoredText>{totalText}" + loc("ui/colon") + "</color>"
 
       let total = Cost(wp, gold, xp, rp).toStringWithParams({ isWpAlwaysShown = true })
       totalText += $"<color=@activeTextColor>{total}</color>"
@@ -778,7 +778,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
       sizeIncrease = getTblValue("sizeIncrease", logObj, -1)
     }
     let typeTxt = getClanActionName(info.action)
-    res.name = loc("userlog/" + logName + "/" + typeTxt, info) + priceText
+    res.name = loc($"userlog/{logName}/{typeTxt}", info) + priceText
 
     if ("comment" in logObj && logObj.comment != "") {
       res.description <- loc("clan/userlogComment") + "\n" + ::ps4CheckAndReplaceContentDisabledText(::g_chat.filterMessageText(logObj.comment, false))
@@ -857,7 +857,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
       if (blkExp) {
         let changeLightToXP = blk?.name == MSG_FREE_EXP_DENOMINATE_OLD
         blkReward += ((blkReward != "") ? ", " : "") + (changeLightToXP ?
-          (blkExp + " <color=@white>" + loc("mainmenu/experience/oldName") + "</color>")
+          ($"{blkExp} <color=@white>" + loc("mainmenu/experience/oldName") + "</color>")
           : Cost().setRp(blkExp.tointeger()).tostring())
       }
 
@@ -1006,7 +1006,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     let goldBalance = logObj?.goldBalance ?? 0
     let suffix = (goldAdd >= 0) ? "/positive" : "/negative"
 
-    res.name = loc("userlog/" + logName + suffix, {
+    res.name = loc($"userlog/{logName}{suffix}", {
       gold = Money(money_type.none, 0, abs(goldAdd)).toStringWithParams({ isGoldAlwaysShown = true }),
       balance = Balance(0, goldBalance).toStringWithParams({ isGoldAlwaysShown = true })
     })
@@ -1210,7 +1210,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_BUY_ITEM) {
     let itemId = getTblValue("id", logObj, "")
     let item = findItemById(itemId)
-    let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
+    let locId = $"userlog/{logName}" + ((logObj.count > 1) ? "/multiple" : "")
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
                      price = Cost(logObj.cost * logObj.count, logObj.costGold * logObj.count).tostring()
@@ -1222,7 +1222,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_NEW_ITEM) {
     let itemId = getTblValue("id", logObj, "")
     let item = findItemById(itemId)
-    let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
+    let locId = $"userlog/{logName}" + ((logObj.count > 1) ? "/multiple" : "")
     res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
@@ -1249,7 +1249,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
         wagerGold = logObj.wagerGold
 
       if (wager > 0 || wagerGold > 0)
-        res.description <- loc("userlog/" + logName + "_desc/wager") + " " +
+        res.description <- loc($"userlog/{logName}_desc/wager") + " " +
           Cost(wager, wagerGold).tostring()
     }
     res.descriptionBlk <- ::get_userlog_image_item(item)
@@ -1294,7 +1294,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     else if (itemTypeValue == "wager") {
       let earned = Cost(getTblValue("wpEarned", logObj, 0), getTblValue("goldEarned", logObj, 0))
       if (earned > ::zero_money)
-        res.description <- loc("userlog/" + logName + "_desc/wager") + " " + earned.tostring()
+        res.description <- loc($"userlog/{logName}_desc/wager") + " " + earned.tostring()
     }
     res.logImg = (item && item.getSmallIconName()) || BaseItem.typeIcon
   }
@@ -1397,7 +1397,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
   else if (logObj.type == EULT_SELL_BLUEPRINT) {
     let itemId = getTblValue("id", logObj, "")
     let item = findItemById(itemId)
-    let locId = "userlog/" + logName + ((logObj.count > 1) ? "/multiple" : "")
+    let locId = $"userlog/{logName}" + ((logObj.count > 1) ? "/multiple" : "")
     res.name = loc(locId, {
                      itemName = colorize("userlogColoredText", item ? item.getName() : "")
                      price = Cost(logObj.cost * logObj.count, logObj.costGold * logObj.count).tostring()

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_level_texture, map_to_location
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -63,7 +62,7 @@ function sortByLevel(list) {
 function getCurBattleTypeName(curEvent) {
   return !hasPreferences(curEvent)
     ? "" : (curEvent?.statistic_group && curEvent?.difficulty)
-      ? curEvent.statistic_group + "_" + curEvent.difficulty : curEvent.name
+      ? $"{curEvent.statistic_group}_{curEvent.difficulty}" : curEvent.name
 }
 
 function getProfileBanData(curEvent) {
@@ -217,7 +216,7 @@ function getMapsListImpl(curEvent) {
   }
 
   if (assertMisNames.len() > 0) {
-    let invalidMissions = assertMisNames.reduce(@(a, b) a + ", " + b) // warning disable: -declared-never-used
+    let invalidMissions = assertMisNames.reduce(@(a, b) $"{a}, {b}") // warning disable: -declared-never-used
     debug_dump_stack()
     logerr("".concat("MapPreferencesParams: Some missions have no level to show map preferences.",
       "Ask designers to check missions from invalidMissions callstack variable in matching configs"))

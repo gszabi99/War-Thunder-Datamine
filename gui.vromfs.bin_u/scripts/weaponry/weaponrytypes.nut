@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import wp_get_cost_gold2, wp_get_cost2, get_spare_aircrafts_count, wp_get_modification_cost, wp_get_weapon_max_count, wp_get_modification_open_cost_gold, shop_is_weapon_purchased, shop_get_spawn_score, wp_get_spare_cost_gold, wp_get_spare_cost, wp_get_modification_max_count, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem

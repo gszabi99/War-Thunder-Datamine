@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -101,8 +100,8 @@ gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
       this.imgObj.width = this.countProp(this.baseSize[0], this.maxSize[0], t)
       this.imgObj.height = this.countProp(this.baseSize[1], this.maxSize[1], t)
-      this.frameObj.left = this.countProp(this.basePos[0], this.lastPos[0], t) + "-50%w"
-      this.frameObj.top = this.countProp(this.basePos[1], this.lastPos[1], t) + "-50%h"
+      this.frameObj.left = "".concat(this.countProp(this.basePos[0], this.lastPos[0], t), "-50%w")
+      this.frameObj.top = "".concat(this.countProp(this.basePos[1], this.lastPos[1], t), "-50%h")
       this.shadeObj["transparent"] = (100 * t).tointeger().tostring()
     }
   }

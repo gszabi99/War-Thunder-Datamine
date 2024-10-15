@@ -143,7 +143,7 @@ let Trophy = class (BaseItem) {
     let res = "".concat(
       loc("icon/hourglass"),
       nbsp,
-      ::stringReplace(hoursToString(secondsToHours(t), false, true, true), " ", nbsp))
+      hoursToString(secondsToHours(t), false, true, true).replace(" ", nbsp))
 
     return t <= TIME_DAY_IN_SECONDS  ? colorize("@red", res)
          : t <= TIME_WEEK_IN_SECONDS ? colorize("@itemSoonExpireColor", res)
@@ -160,7 +160,24 @@ let Trophy = class (BaseItem) {
          : base.getSeenId()
   }
 
-  isPrizeUnitBought = @() getAircraftByName(this.getTopPrize()?.unit)?.isBought() ?? false
+  function isPrizeUnitBought() {
+    local res = false
+    let itemList = this.getContent()
+
+    if (itemList.len() == 0)
+      return res
+
+    foreach(item in itemList) {
+      if (!item?.unit)
+        continue
+
+      let unit = getAircraftByName(item.unit)
+      res = unit?.isBought() ?? false
+      if (!res)
+        break
+    }
+    return res
+  }
 
   function needUnseenAlarmIcon() {
     let t = this.getRemainingLifetime()
@@ -180,10 +197,10 @@ let Trophy = class (BaseItem) {
 
   function _unpackContent(recursionUsedIds, useRecursion = true) {
     if (isInArray(this.id, recursionUsedIds)) {
-      log("id = " + this.id)
+      log($"id = {this.id}")
       debugTableData(recursionUsedIds)
       script_net_assert_once("trophy recursion",
-                               "Infinite recursion detected in trophy: " + this.id + ". Array " + toString(recursionUsedIds))
+                               $"Infinite recursion detected in trophy: {this.id}. Array " + toString(recursionUsedIds))
       return null
     }
 
@@ -230,10 +247,10 @@ let Trophy = class (BaseItem) {
 
   function _extractTopPrize(recursionUsedIds) {
     if (isInArray(this.id, recursionUsedIds)) {
-      log("id = " + this.id)
+      log($"id = {this.id}")
       debugTableData(recursionUsedIds)
       script_net_assert_once("trophy recursion",
-                               "Infinite recursion detected in trophy: " + this.id + ". Array " + toString(recursionUsedIds))
+                               $"Infinite recursion detected in trophy: {this.id}. Array " + toString(recursionUsedIds))
       return
     }
 
