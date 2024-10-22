@@ -731,19 +731,6 @@
       },
       "conditions": {},
       "actions": {
-        "moAddMissionObjective": {
-          "target": "tutorial_mission1_groundControls",
-          "object_var_comp_op": "equal",
-          "object_var_name": ""
-        },
-        "wait": [
-          {
-            "time": 2.0
-          },
-          {
-            "time": 0.1
-          }
-        ],
         "triggerEnable": [
           {
             "target": "ps4_groundTest_skip"
@@ -755,6 +742,19 @@
             ]
           }
         ],
+        "wait": [
+          {
+            "time": 0.1
+          },
+          {
+            "time": 2.0
+          }
+        ],
+        "moAddMissionObjective": {
+          "target": "tutorial_mission1_groundControls",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_1",
           "subtitles": true
