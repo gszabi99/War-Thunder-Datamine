@@ -195,7 +195,7 @@ return function(logObj) {
   }
 
   let allRewardsWp = rewards.reduce(@(total, reward) total + reward.totalRewardWp, 0)
-  let allRewardsExp = rewards.reduce(@(total, reward) total + reward.totalRewardExp, 0)
+  let allRewardsExp = rewards.filter(@(reward) reward?.id != "nationResearchBonus").reduce(@(total, reward) total + reward.totalRewardExp, 0)
   let { wpEarned = 0, xpEarned = 0 } = logObj
   let totalRewardWp = wpEarned - allRewardsWp
   let totalRewardExp = xpEarned - allRewardsExp
