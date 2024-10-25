@@ -6,7 +6,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
+let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
 let regexp2 = require("regexp2")
 let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
@@ -72,12 +72,12 @@ let openNickEditBox = @(contact) openEditBoxDialog({
   maxLen = MAX_NICK_LENGHT
   validateFunc = @(nick) validateNickRegexp.replace("", nick)
   editboxWarningTooltip = loc("invalid_nickname")
-  checkWarningFunc = isPhrasePassing
+  checkWarningFunc = isNamePassing
   canCancel = true
   value = cutPlayerNamePrefix(cutPlayerNamePostfix(contact.name))
 
   function okFunc(nick) {
-    if (nick == "" || !isPhrasePassing(nick)) {
+    if (nick == "" || !isNamePassing(nick)) {
       showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
       return
     }

@@ -23,7 +23,7 @@ let { dgs_get_settings } = require("dagor.system")
 let { get_user_system_info } = require("sysinfo")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
-let { isPhrasePassing } = require("%scripts/dirtyWordsFilter.nut")
+let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { validateEmail } = require("%sqstd/string.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
@@ -719,11 +719,11 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       maxLen = 16
       validateFunc = @(nick) validateNickRegexp.replace("", nick)
       editboxWarningTooltip = loc("invalid_nickname")
-      checkWarningFunc = isPhrasePassing
+      checkWarningFunc = isNamePassing
       canCancel = true
       owner = this
       function okFunc(nick) {
-        if (!isPhrasePassing(nick)) {
+        if (!isNamePassing(nick)) {
           bqSendNoAuth("guest:bad_nick")
           showInfoMsgBox(loc("invalid_nickname"), "guest_login_invalid_nickname")
           return

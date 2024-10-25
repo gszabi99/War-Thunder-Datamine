@@ -15,7 +15,7 @@ let regexp2 = require("regexp2")
 let { get_time_msec, unixtime_to_utc_timetbl } = require("dagor.time")
 let time = require("%scripts/time.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
-let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
+let { isNamePassing, checkName } = require("%scripts/dirtyWordsFilter.nut")
 let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
@@ -1220,23 +1220,16 @@ function getSeasonName(blk) {
 }
 
 ::checkClanTagForDirtyWords <- function checkClanTagForDirtyWords(clanTag, returnString = true) {
-  if (isPlatformSony) {
-    if (returnString)
-      return dirtyWordsFilter.checkPhrase(clanTag)
-    else
-      return dirtyWordsFilter.isPhrasePassing(clanTag)
-  }
-
+  if (isPlatformSony)
+    return returnString ? checkName(clanTag) : isNamePassing(clanTag)
   return returnString ? clanTag : true
 }
 
-::ps4CheckAndReplaceContentDisabledText <- function ps4CheckAndReplaceContentDisabledText(processingString, forceReplace = false) {
-  if (!ps4_is_ugc_enabled() || forceReplace) {
-    let pattern = "[^ ]"
-    let replacement = "*"
+let ps4ContentDisabledRegExp = regexp2("[^ ]")
 
-    processingString = regexp2(pattern).replace(replacement, processingString)
-  }
+::ps4CheckAndReplaceContentDisabledText <- function ps4CheckAndReplaceContentDisabledText(processingString, forceReplace = false) {
+  if (!ps4_is_ugc_enabled() || forceReplace)
+    processingString = ps4ContentDisabledRegExp.replace("*", processingString)
   return processingString
 }
 

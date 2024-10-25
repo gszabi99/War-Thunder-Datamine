@@ -8,7 +8,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { clearBorderSymbols, slice } = require("%sqstd/string.nut")
-let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
+let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -87,11 +87,11 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local errorMsg = ""
 
     if ((this.clanData == null || this.newClanName != this.clanData.name) &&
-      !dirtyWordsFilter.isPhrasePassing(this.newClanName)) {
+      !isNamePassing(this.newClanName)) {
       errorMsg = "charServer/updateError/16"
     }
     else if ((this.clanData == null || this.newClanTag != this.clanData.tag) &&
-      !dirtyWordsFilter.isPhrasePassing(::g_clans.stripClanTagDecorators(this.newClanTag))) {
+      !isNamePassing(::g_clans.stripClanTagDecorators(this.newClanTag))) {
       errorMsg = "charServer/updateError/17"
     }
 
