@@ -144,7 +144,7 @@ let g_hud_display_timers = {
     },
     {
       id = "building_status"
-      color = "@white"
+      color = "#787878"
       icon = "#ui/gameuiskin#icon_building_in_progress.svg"
       needTimeText = true
     },

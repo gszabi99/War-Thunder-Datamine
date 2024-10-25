@@ -7,7 +7,6 @@ let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 loadOnce("%scripts/controls/controlsPresets.nut")
 let DataBlock  = require("DataBlock")
 let { copyParamsToTable, eachBlock, eachParam, blkFromPath } = require("%sqstd/datablock.nut")
-let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
@@ -834,9 +833,9 @@ function isSameMapping(lhs, rhs) {
     }
 
     if (name == null)
-      name = "?:" + buttonLocalized + (buttonId + 1).tostring()
+      name = "".concat("?:", buttonLocalized, buttonId + 1)
     if (!connected)
-      name += " (" + loc("composite/device_is_offline_short") + ")"
+      name = "".concat(name, " (", loc("composite/device_is_offline_short"), ")")
     return name
   }
 
@@ -865,9 +864,9 @@ function isSameMapping(lhs, rhs) {
     }
 
     if (name == null)
-      name = "?:" + axisLocalized + (axisId + 1).tostring()
+      name = "".concat("?:", axisLocalized, axisId + 1)
     if (!connected)
-      name += " (" + loc("composite/device_is_offline") + ")"
+      name = "".concat(name, " (", loc("composite/device_is_offline"), ")")
     return name
   }
 
@@ -970,14 +969,18 @@ function isSameMapping(lhs, rhs) {
   static compatibility = {
     function getActualPresetName(presetPath) {
       if (presetPath == "hotkey.gamepad.blk")
-        return "wt/config/hotkeys/hotkey.default.blk"
+        return "config/hotkeys/hotkey.default.blk"
       return presetPath
     }
 
     function getActualBasePresetPaths(presetPath) {
-      let indexConfigFolder = presetPath.indexof("config/hotkeys/hotkey")
-      if (indexConfigFolder == 0)
-        presetPath = $"{controlsPresetConfigPath.value}{presetPath}"
+      let legacyPerGamePrefix = "wt/"
+      let legacyPrefixPos = presetPath.indexof(legacyPerGamePrefix)
+      if (legacyPrefixPos == 0) {
+        let modernPath = presetPath.slice(legacyPerGamePrefix.len())
+        log($"[CTRL] legacy path '{presetPath}' corrected to '{modernPath}'")
+        return modernPath
+      }
 
       return presetPath
     }
@@ -992,7 +995,4 @@ function isSameMapping(lhs, rhs) {
       "helicopter_collective"
     ]
   }
-
-
-
 }

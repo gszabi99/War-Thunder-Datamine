@@ -5,7 +5,7 @@ let { wwGetOperationId } = require("worldwar")
 
 let getCustomAppearance = @(mapName) ::g_world_war.getSetting("mapCustomAppearance", null)?[mapName]
 
-local function getCustomViewCountryData(countryName, mapName = null, needIconId = false) {
+function getCustomViewCountryData(countryName, mapName = null, needIconId = false) {
   mapName = mapName ?? getOperationById(wwGetOperationId())?.getMapId() ?? ""
   let customAppearance = getCustomAppearance(mapName)?[countryName]
   let iconId = customAppearance?.flag ?? countryName

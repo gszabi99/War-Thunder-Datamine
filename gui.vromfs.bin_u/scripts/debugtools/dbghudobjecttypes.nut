@@ -7,8 +7,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { rnd, frnd } = require("dagor.random")
 let { HUD_MSG_DEATH_REASON } = require("hudMessages")
 let { format } = require("string")
-let { GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP
-} = require("guiMission")
+let { GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP,
+  OBJECTIVE_TYPE_PRIMARY } = require("guiMission")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { hud_message_objective_debug, hud_message_player_damage_debug, hud_message_kill_log_debug,
   hud_debug_streak

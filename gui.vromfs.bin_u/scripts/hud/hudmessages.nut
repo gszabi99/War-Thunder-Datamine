@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY, HUD_VIS_PART
@@ -288,6 +287,77 @@ enumsAddTypes(g_hud_messages, {
     clearStack = function () {
       this.stack.clear()
       if (!checkObj(this.nest))
+        return
+      this.nest.deleteChildren()
+    }
+  }
+
+  SHIP_HUD_NOTIFICATION = {
+    nestId = "hud_message_ship_notification"
+    showSec = 5
+    messagesMax = 3
+    messageEvent = "HudMessage"
+    hudEvents = {
+      LocalPlayerAlive  = @(_ed) this.clearStack()
+    }
+
+    onMessage = function (messageData) {
+      if (messageData.type != HUD_MSG_EVENT)
+        return
+      if (!this?.nest.isValid())
+        return
+      if (![HUD_UNIT_TYPE.SHIP, HUD_UNIT_TYPE.SHIP_EX].contains(getHudUnitType()))
+        return
+
+      let checkField = (messageData.id != -1) ? "id" : "text"
+      let oldMessage = u.search(this.stack, @(message) message.messageData[checkField] == messageData[checkField])
+      if (oldMessage)
+        this.refreshMessage(messageData, oldMessage)
+      else
+        this.addMessage(messageData)
+    }
+
+    addMessage = function (messageData) {
+      this.cleanUp()
+      let message = {
+        timer = null
+        messageData = messageData
+        obj = null
+      }
+      this.stack.append(message)
+      let view = {
+        text = messageData.text
+      }
+      let blk = handyman.renderCached("%gui/hud/messageStack/shipNotificationMessage.tpl", view)
+      this.guiScene.appendWithBlk(this.nest, blk, blk.len(), this)
+      message.obj = this.nest.getChild(this.nest.childrenCount() - 1)
+
+      if (this.nest.isVisible()) {
+        message.obj["height-end"] = message.obj.getSize()[1]
+        message.obj.setIntProp(heightPID, 0)
+        message.obj.slideDown = "yes"
+        this.guiScene.setUpdatesEnabled(true, true)
+      }
+
+      message.timer = this.timers.addTimer(this.showSec, function () {
+        if (message?.obj.isValid())
+          message.obj.remove = "yes"
+        this.removeMessage(message)
+      }.bindenv(this)).weakref()
+    }
+
+    refreshMessage = function (messageData, message) {
+      let updateText = message.messageData.text != messageData.text
+      message.messageData = messageData
+      if (message.timer)
+        this.timers.setTimerTime(message.timer, this.showSec)
+      if (updateText && checkObj(message.obj))
+        message.obj.findObject("text").setValue(messageData.text)
+    }
+
+    clearStack = function () {
+      this.stack.clear()
+      if (!this?.nest.isValid())
         return
       this.nest.deleteChildren()
     }
@@ -627,15 +697,17 @@ enumsAddTypes(g_hud_messages, {
 
       let statusObj = this.nest.findObject("race_status")
       if (checkObj(statusObj)) {
-        local text = loc("HUD_RACE_FINISH")
+        let text = [loc("HUD_RACE_FINISH")]
         if (!eventData.isRaceFinishedByPlayer) {
-          text = loc("HUD_RACE_CHECKPOINT") + " "
-          text += eventData.passedCheckpointsInLap + loc("ui/slash")
-          text +=$"{eventData.checkpointsPerLap}  "
-          text += loc("HUD_RACE_LAP") + " "
-          text += eventData.currentLap + loc("ui/slash") + eventData.totalLaps
+          text.clear()
+          text.append(loc("HUD_RACE_CHECKPOINT"), " ",
+            eventData.passedCheckpointsInLap, loc("ui/slash"),
+            eventData.checkpointsPerLap, "  ",
+            loc("HUD_RACE_LAP"), " ",
+            eventData.currentLap, loc("ui/slash"), eventData.totalLaps
+          )
         }
-        statusObj.setValue(text)
+        statusObj.setValue("".join(text))
       }
 
       let playerTime = getTblValue("time", getTblValue("player", eventData, {}), 0.0)
@@ -667,7 +739,7 @@ enumsAddTypes(g_hud_messages, {
                   if (adjustedTime > 0)
                     prefix = loc("keysPlus")
                 }
-                text = prefix + time.preciseSecondsToString(adjustedTime, isPlayerBlock)
+                text = "".concat(prefix, time.preciseSecondsToString(adjustedTime, isPlayerBlock))
               }
               else if (param == "place")
                 text = value > 0 ? value.tostring() : ""
@@ -779,11 +851,11 @@ enumsAddTypes(g_hud_messages, {
       let resultLocId = this.getMissionResultLocId(resultIdx, checkResending, noLives)
       local text = loc(resultLocId)
       if (place >= 0 && total >= 0)
-        text += "\n" + loc("HUD_RACE_PLACE", { place = place, total = total })
+        text = "".concat(text, "\n", loc("HUD_RACE_PLACE", { place, total }))
 
       this.stack = {
-        text = text
-        resultIdx = resultIdx
+        text
+        resultIdx
         useMoveOut = resultIdx == GO_WIN || resultIdx == GO_FAIL
       }
 

@@ -126,7 +126,7 @@
       "mesh": "rocket_rim24_tartar",
       "hasProximityFuse": true,
       "dragCx": 0.027,
-      "explosionEffect": "explosion_midair_big",
+      "explosionEffect": "explosion_midair_rocket_medium",
       "groundCollisionEffect": "bomb_expl_50kg",
       "ricochetEffect": "hit_59_80mm_metal_ap",
       "waterCollisionEffect": "hit_59_80mm_water",
@@ -532,6 +532,162 @@
           "fx": "hit_12_18mm_metal_ap"
         }
       },
+      "survivedEngineSmokeFx": {
+        "part": [
+          {
+            "fx": "smoke_rocket_survived_engine",
+            "lifeTime": 4.0,
+            "mass": 100.0,
+            "size": 0.1,
+            "stability": 1.1,
+            "turbulenceRadius": 6.0,
+            "angVelocity": 3.0,
+            "startAngle": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 150.0,
+            "maxVelocity": 200.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 3.0,
+            "mass": 10.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 2.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              -10.0,
+              -13.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 100.0,
+            "maxVelocity": 150.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 2.3,
+            "mass": 5.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 3.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              -10.0,
+              -10.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 100.0,
+            "maxVelocity": 150.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 3.2,
+            "mass": 10.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 2.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              10.0,
+              -10.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 100.0,
+            "maxVelocity": 150.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 2.0,
+            "mass": 2.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 3.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              10.0,
+              -5.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 100.0,
+            "maxVelocity": 150.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 2.8,
+            "mass": 5.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 2.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              10.0,
+              2.0
+            ],
+            "minVelocity": 100.0,
+            "maxVelocity": 150.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 3.2,
+            "mass": 4.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 2.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              10.0,
+              7.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 50.0,
+            "maxVelocity": 100.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 2.8,
+            "mass": 5.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 2.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              -10.0,
+              10.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 100.0,
+            "maxVelocity": 150.0
+          },
+          {
+            "fx": "smoke_rocket_survived_engine_small",
+            "lifeTime": 2.5,
+            "mass": 2.0,
+            "size": 0.1,
+            "stability": 0.1,
+            "turbulenceRadius": 2.0,
+            "angVelocity": 1.0,
+            "startAngle": [
+              0.0,
+              -10.0,
+              15.0
+            ],
+            "velocityMult": 1.0,
+            "minVelocity": 50.0,
+            "maxVelocity": 100.0
+          }
+        ]
+      },
       "armorpower": {
         "ArmorPower0m": [
           50.0,
@@ -652,7 +808,7 @@
         "mesh": "rocket_rim24_tartar",
         "hasProximityFuse": true,
         "dragCx": 0.027,
-        "explosionEffect": "explosion_midair_big",
+        "explosionEffect": "explosion_midair_rocket_medium",
         "groundCollisionEffect": "bomb_expl_50kg",
         "ricochetEffect": "hit_59_80mm_metal_ap",
         "waterCollisionEffect": "hit_59_80mm_water",
@@ -1057,6 +1213,162 @@
           "armorNPHiCal": {
             "fx": "hit_12_18mm_metal_ap"
           }
+        },
+        "survivedEngineSmokeFx": {
+          "part": [
+            {
+              "fx": "smoke_rocket_survived_engine",
+              "lifeTime": 4.0,
+              "mass": 100.0,
+              "size": 0.1,
+              "stability": 1.1,
+              "turbulenceRadius": 6.0,
+              "angVelocity": 3.0,
+              "startAngle": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 150.0,
+              "maxVelocity": 200.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 3.0,
+              "mass": 10.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 2.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                -10.0,
+                -13.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 100.0,
+              "maxVelocity": 150.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 2.3,
+              "mass": 5.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 3.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                -10.0,
+                -10.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 100.0,
+              "maxVelocity": 150.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 3.2,
+              "mass": 10.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 2.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                10.0,
+                -10.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 100.0,
+              "maxVelocity": 150.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 2.0,
+              "mass": 2.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 3.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                10.0,
+                -5.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 100.0,
+              "maxVelocity": 150.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 2.8,
+              "mass": 5.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 2.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                10.0,
+                2.0
+              ],
+              "minVelocity": 100.0,
+              "maxVelocity": 150.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 3.2,
+              "mass": 4.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 2.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                10.0,
+                7.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 50.0,
+              "maxVelocity": 100.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 2.8,
+              "mass": 5.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 2.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                -10.0,
+                10.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 100.0,
+              "maxVelocity": 150.0
+            },
+            {
+              "fx": "smoke_rocket_survived_engine_small",
+              "lifeTime": 2.5,
+              "mass": 2.0,
+              "size": 0.1,
+              "stability": 0.1,
+              "turbulenceRadius": 2.0,
+              "angVelocity": 1.0,
+              "startAngle": [
+                0.0,
+                -10.0,
+                15.0
+              ],
+              "velocityMult": 1.0,
+              "minVelocity": 50.0,
+              "maxVelocity": 100.0
+            }
+          ]
         },
         "armorpower": {
           "ArmorPower0m": [

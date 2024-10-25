@@ -275,6 +275,43 @@ let g_hud_hints_manager = {
           this.removeHint(hintData, hintData.hint.isInstantHide(eventData))
         }, this)
 
+      if (hint.toggleHint != null) {
+        for (local i = 0; i < hint.toggleHint.len(); i++) {
+          g_hud_event_manager.subscribe(hint.toggleHint[i], function (eventData) {
+            if (eventData.isVisible) {
+              let hintUid = this.getUidForSeenCount(hint, eventData)
+              if (eventData?.hidden) {
+                increaseHintShowCount(hintUid)
+                return
+              }
+
+              if (this.isHintShowCountExceeded(hint, { eventData })) {
+                return
+              }
+
+              if (isHintDisabledByUnitTags(hint))
+                return
+
+              if (hint.delayTime > 0)
+                this.showDelayed(hint, eventData)
+              else
+                this.onShowEvent(hint, eventData)
+            }
+            else {
+              if (!hint.isCurrent(eventData, true))
+                return
+
+              this.removeDelayedShowTimer(hint)
+
+              let hintData = this.findActiveHintFromSameGroup(hint)
+              if (!hintData)
+                return
+              this.removeHint(hintData, hintData.hint.isInstantHide(eventData))
+            }
+          }, this)
+        }
+      }
+
       if (hint.updateCbs)
         foreach (eventName, func in hint.updateCbs) {
           let cbFunc = func

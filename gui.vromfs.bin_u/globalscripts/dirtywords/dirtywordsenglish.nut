@@ -686,7 +686,7 @@ fouldata =
 
 badphrases =
 [
-  "h[i1İl]tl[e3]r"
+  "[hн][iіï1İl](tll?|ll?t)[eеσ3]r"
   "n[il1][qg6]([qg6]?[e3]r|[qg6]a)"
 ]
 
@@ -734,6 +734,8 @@ badcombination =
   "xbl pet",
   "8(=)+[d@]",
   "[d@](=)+8",
+  "卐",
+  "卍",
 ]
 
 }

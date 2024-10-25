@@ -168,6 +168,14 @@ function is_user_mission(missionBlk) {
   return missionBlk?.userMission == true //can be null
 }
 
+function getMissionName(missionId, config, locNameKey = "locName") {
+  let locNameValue = config?[locNameKey] ?? ""
+  if (locNameValue != "")
+    return getMissionLocName(config, locNameKey)
+
+  return loc($"missions/{missionId}")
+}
+
 return {
   getMissionLocIdsArray
   getMissionRewardsMarkup
@@ -177,4 +185,5 @@ return {
   isMissionComplete
   getCombineLocNameMission
   is_user_mission
+  getMissionName
 }

@@ -29,7 +29,7 @@ function lowLevelClientRequest(requestData, callback) {
   })
 }
 
-local function contacts_request(action, data, callback, auth_token = null) {
+function contacts_request(action, data, callback, auth_token = null) {
   if (!::g_login.isLoggedIn()) {
     logC("User is logout skip contacts_request")
     return

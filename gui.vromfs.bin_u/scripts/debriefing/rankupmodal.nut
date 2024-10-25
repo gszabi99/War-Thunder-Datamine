@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -17,17 +16,17 @@ let delayedRankUpWnd = []
 
 gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/rankUpWindow.blk";
+  sceneBlkName = "%gui/rankUpWindow.blk"
 
-  country = "country_0";
-  ranks = [];
+  country = "country_0"
+  ranks = []
   unlockData = null
 
   function initScreen() {
-    let aircraftTableObj = this.scene.findObject("rankup_aircraft_table");
+    let aircraftTableObj = this.scene.findObject("rankup_aircraft_table")
     let showAsUnlock = isInArray(0, this.ranks)
     local topRank = 0;
-    local airRow = "";
+    local airRow = ""
     let unitItems = []
 
     this.guiScene.playSound("new_rank")
@@ -35,7 +34,7 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.country.len() > 0 && (this.country.slice(0, 8) == "country_")) {
       let bgImage = this.scene.findObject("background_country");
       if (bgImage)
-        bgImage["background-image"] = "#ui/images/new_rank_" + this.country.slice(8) + "?P1"
+        bgImage["background-image"] = "".concat("#ui/images/new_rank_", this.country.slice(8), "?P1")
       this.scene.findObject("country_icon")["background-image"] = getCountryIcon(this.country)
     }
 
@@ -52,10 +51,10 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
           let rblk = pblk.getBlock(range)
           for (local aircraft = 0; aircraft < rblk.blockCount(); aircraft++) { //aircrafts
             let airBlk = rblk.getBlock(aircraft);
-            local air = getAircraftByName(airBlk.getBlockName());
+            local air = getAircraftByName(airBlk.getBlockName())
             if (air) {
               if (this.isShowUnit(air, showAsUnlock)) {
-                airRow += buildUnitSlot(air.name, air);
+                airRow = "".concat(airRow, buildUnitSlot(air.name, air))
                 unitItems.append({ id = air.name, unit = air })
               }
             }
@@ -79,11 +78,11 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let topRankStr = get_roman_numeral(topRank)
     local headerText = format(loc("userlog/new_rank/country"), topRankStr)
-    local rankText = loc("shop/age") + colorize("userlogColoredText", topRankStr)
+    local rankText = "".concat(loc("shop/age"), colorize("userlogColoredText", topRankStr))
     if (showAsUnlock) {
       let cText = loc(this.country)
-      headerText = loc("unlocks/country") + loc("ui/colon") + $"<color=@userlogColoredText>{cText}</color>"
-      rankText = cText + ((topRank > 0) ? ", " + rankText : "")
+      headerText = "".concat(loc("unlocks/country"), loc("ui/colon"), $"<color=@userlogColoredText>{cText}</color>")
+      rankText = "".concat(cText, ((topRank > 0) ? $", {rankText}" : ""))
     }
     this.scene.findObject("player_rank").setValue(rankText)
     this.scene.findObject("rankup_country_title").setValue(headerText)

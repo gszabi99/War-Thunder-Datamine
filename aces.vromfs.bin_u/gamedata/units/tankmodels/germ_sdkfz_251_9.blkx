@@ -477,6 +477,30 @@
         "turnSpeed": 0.2,
         "node": "bone_roll_driver_r_04",
         "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_05",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_06",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_07",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_08",
+        "absoluteValue": true
       }
     ]
   },
@@ -781,6 +805,10 @@
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
       },
@@ -2281,6 +2309,10 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "brokenWheelSteeringDeflection": -15.0,
+      "steeringNodes": {
+        "wheel_r_01": "bone_wheel_r_01",
+        "wheel_l_01": "bone_wheel_l_01"
+      },
       "steeringDeflection": {
         "wheel_r_01": 45.0,
         "wheel_l_01": 45.0,
@@ -2293,6 +2325,474 @@
         "wheel_l_01": true
       }
     }
+  },
+  "PhysSys": {
+    "group": [
+      {
+        "find": "^bone_suspension_(._\\d\\d)$",
+        "points": {
+          "suspension": {
+            "name": "bone_suspension_$1",
+            "limitMin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "wheel": {
+            "name": "bone_wheel_$1",
+            "limitMin": [
+              -1.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              1.0,
+              1.0,
+              0.0
+            ]
+          }
+        },
+        "constraints": {
+          "edge": {
+            "from": "suspension",
+            "to": "wheel"
+          }
+        }
+      },
+      {
+        "find": "^bone_suspension_cen_01",
+        "points": {
+          "lever": {
+            "limitMin": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "limitMax": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "name": "bone_suspension_cen_01"
+          },
+          "wheel_r_01": {
+            "searchChildren": {
+              "occurence": 1,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          },
+          "wheel_l_01": {
+            "searchChildren": {
+              "occurence": 2,
+              "limitMin": [
+                -1.0,
+                -1.0,
+                0.0
+              ],
+              "limitMax": [
+                1.0,
+                1.0,
+                0.0
+              ],
+              "parent": "lever",
+              "find": "bone_wheel_"
+            }
+          }
+        },
+        "constraints": {
+          "edge": [
+            {
+              "to": "wheel_r_01",
+              "from": "lever"
+            },
+            {
+              "to": "wheel_l_01",
+              "from": "lever"
+            }
+          ],
+          "slider": {
+            "moveNodes": true,
+            "rotateSecond": false,
+            "moveSecond": true,
+            "moveOnly": false,
+            "point": "lever",
+            "from": "wheel_l_01",
+            "to": "wheel_r_01"
+          }
+        }
+      }
+    ]
+  },
+  "chainIK": {
+    "points": [
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_01_01"
+          },
+          {
+            "nameTemplate": "bone_roll_01_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_02_01"
+          },
+          {
+            "nameTemplate": "bone_roll_02_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_03_01"
+          },
+          {
+            "nameTemplate": "bone_roll_03_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_04_01"
+          },
+          {
+            "nameTemplate": "bone_roll_04_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_05_01"
+          },
+          {
+            "nameTemplate": "bone_roll_05_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_06_01"
+          },
+          {
+            "nameTemplate": "bone_roll_06_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_07_01"
+          },
+          {
+            "nameTemplate": "bone_roll_07_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_08_01"
+          },
+          {
+            "nameTemplate": "bone_roll_08_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_09_01"
+          },
+          {
+            "nameTemplate": "bone_roll_09_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_10_01"
+          },
+          {
+            "nameTemplate": "bone_roll_10_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_11_01"
+          },
+          {
+            "nameTemplate": "bone_roll_11_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_12_01"
+          },
+          {
+            "nameTemplate": "bone_roll_12_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_13_01"
+          },
+          {
+            "nameTemplate": "bone_roll_13_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_14_01"
+          },
+          {
+            "nameTemplate": "bone_roll_14_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_15_01"
+          },
+          {
+            "nameTemplate": "bone_roll_15_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_16_01"
+          },
+          {
+            "nameTemplate": "bone_roll_16_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_17_01"
+          },
+          {
+            "nameTemplate": "bone_roll_17_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_18_01"
+          },
+          {
+            "nameTemplate": "bone_roll_18_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_19_01"
+          },
+          {
+            "nameTemplate": "bone_roll_19_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_20_01"
+          },
+          {
+            "nameTemplate": "bone_roll_20_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_21_01"
+          },
+          {
+            "nameTemplate": "bone_roll_21_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_22_01"
+          },
+          {
+            "nameTemplate": "bone_roll_22_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_23_01"
+          },
+          {
+            "nameTemplate": "bone_roll_23_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_24_01"
+          },
+          {
+            "nameTemplate": "bone_roll_24_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_25_01"
+          },
+          {
+            "nameTemplate": "bone_roll_25_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_26_01"
+          },
+          {
+            "nameTemplate": "bone_roll_26_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_27_01"
+          },
+          {
+            "nameTemplate": "bone_roll_27_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_28_01"
+          },
+          {
+            "nameTemplate": "bone_roll_28_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_29_01"
+          },
+          {
+            "nameTemplate": "bone_roll_29_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_30_01"
+          },
+          {
+            "nameTemplate": "bone_roll_30_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_31_01"
+          },
+          {
+            "nameTemplate": "bone_roll_31_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_32_01"
+          },
+          {
+            "nameTemplate": "bone_roll_32_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_33_01"
+          },
+          {
+            "nameTemplate": "bone_roll_33_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_34_01"
+          },
+          {
+            "nameTemplate": "bone_roll_34_02"
+          }
+        ]
+      },
+      {
+        "point": [
+          {
+            "nameTemplate": "bone_roll_35_01"
+          },
+          {
+            "nameTemplate": "bone_roll_35_02"
+          }
+        ]
+      }
+    ]
   },
   "repairParts": {
     "wheel_l_01_dm": {
@@ -2319,6 +2819,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2337,6 +2838,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2494,7 +2996,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2642,6 +3144,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2649,6 +3152,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2656,6 +3160,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2663,6 +3168,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2670,6 +3176,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2677,7 +3184,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2697,7 +3204,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2717,7 +3224,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2731,7 +3238,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2751,7 +3258,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2771,7 +3278,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -2849,6 +3356,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false

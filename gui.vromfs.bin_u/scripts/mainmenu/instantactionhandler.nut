@@ -1,8 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_value_missions_completed, is_online_available, set_presence_to_player, disable_network, sync_handler_simulate_signal, shop_get_unlock_crew_cost_gold, set_char_cb, get_invited_players_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -56,7 +57,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk } = require("blkGetters")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getEventEconomicName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
@@ -248,16 +249,17 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       let gameMode = getCurrentGameMode()
       let br = recentBR.value
       name = gameMode && gameMode?.text != ""
-        ? gameMode.text + (br > 0 ? loc("mainmenu/BR", { br = format("%.1f", br) }) : "") : ""
+        ? "".concat(gameMode.text, br > 0 ? loc("mainmenu/BR", { br = format("%.1f", br) }) : "")
+        : ""
 
       if (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady()) {
         let gameModeId = g_squad_manager.getLeaderGameModeId()
-        let event = ::events.getEvent(gameModeId)
+        let event = events.getEvent(gameModeId)
         let leaderBR = g_squad_manager.getLeaderBattleRating()
         if (event)
-          name = ::events.getEventNameText(event)
+          name = events.getEventNameText(event)
         if (leaderBR > 0)
-          name += loc("mainmenu/BR", { br = format("%.1f", leaderBR) })
+          name = "".concat(name, loc("mainmenu/BR", { br = format("%.1f", leaderBR) }))
       }
     }
     else
@@ -370,7 +372,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let multiSlotEnabled = this.isCurrentGameModeMultiSlotEnabled()
     this.setCurCountry(profileCountrySq.value)
     let countryEnabled = isCountryAvailable(this.getCurCountry())
-      && ::events.isCountryAvailable(
+      && events.isCountryAvailable(
           getGameModeEvent(currentGameMode),
           this.getCurCountry()
         )
@@ -469,12 +471,12 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT) {
       //No need to check broken units when set unready
       if (!g_squad_manager.isMeReady()) {
-        let leaderEvent = ::events.getEvent(g_squad_manager.getLeaderGameModeId())
+        let leaderEvent = events.getEvent(g_squad_manager.getLeaderGameModeId())
         if (leaderEvent == null) { //not found game mode of leader, skip check broken units
           g_squad_manager.setReadyFlag()
           return
         }
-        let repairInfo = ::events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
+        let repairInfo = events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
         ::checkBrokenAirsAndDo(repairInfo, this, @() g_squad_manager.setReadyFlag(), false)
         return
       }
@@ -539,7 +541,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isCrossPlayEventAvailable(event) {
-    return crossplayModule.isCrossPlayEnabled() || ::events.isEventPlatformOnlyAllowed(event)
+    return crossplayModule.isCrossPlayEnabled() || isEventPlatformOnlyAllowed(event)
   }
 
   function onStartAction() {
@@ -563,10 +565,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         return
 
       let event = getGameModeEvent(gameMode)
-      if (!::events.checkEventFeature(event))
+      if (!events.checkEventFeature(event))
         return
 
-      let countryGoodForMode = ::events.isCountryAvailable(event, this.getCurCountry())
+      let countryGoodForMode = events.isCountryAvailable(event, this.getCurCountry())
       let multiSlotEnabled = this.isCurrentGameModeMultiSlotEnabled()
       let requiredUnitsAvailable = this.checkRequiredUnits(this.getCurCountry())
       if (countryGoodForMode && this.startEnabled)
@@ -617,21 +619,21 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!event)
       return ""
 
-    foreach (team in ::events.getSidesList(event)) {
-      let teamData = ::events.getTeamData(event, team)
+    foreach (team in events.getSidesList(event)) {
+      let teamData = events.getTeamData(event, team)
       if (!teamData)
         continue
 
-      requirements = ::events.getRequiredCrafts(teamData)
+      requirements = events.getRequiredCrafts(teamData)
       if (requirements.len() > 0)
         break
     }
     if (requirements.len() == 0)
       return ""
 
-    local msgText = loc("events/no_required_crafts") + loc("ui/colon")
+    local msgText = "".concat(loc("events/no_required_crafts"), loc("ui/colon"))
     foreach (rule in requirements)
-      msgText += "\n" + ::events.generateEventRule(rule, true)
+      msgText = "\n".concat(msgText, events.generateEventRule(rule, true))
 
     return msgText
   }
@@ -663,7 +665,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (currentGameMode.type == RB_GM_TYPE.EVENT) {
       let event = getGameModeEvent(currentGameMode)
       foreach (unitType in unitTypes.types)
-        if (::events.isUnitTypeRequired(event, unitType.esUnitType)) {
+        if (events.isUnitTypeRequired(event, unitType.esUnitType)) {
           properUnitType = unitType
           break
         }
@@ -687,7 +689,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function isCurrentGameModeMultiSlotEnabled() {
     let gameMode = getCurrentGameMode()
-    return ::events.isEventMultiSlotEnabled(getTblValue("source", gameMode, null))
+    return events.isEventMultiSlotEnabled(getTblValue("source", gameMode, null))
   }
 
   function onCountryChoose(country) {
@@ -718,7 +720,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let gameMode = getCurrentGameMode()
     if (gameMode == null)
       return
-    if (::events.checkEventDisableSquads(this, gameMode.id))
+    if (events.checkEventDisableSquads(this, gameMode.id))
       return
     if (this.checkGameModeTutorial(gameMode))
       return
@@ -730,7 +732,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkGameModeTutorial(gameMode) {
     let checkTutorUnitType = (gameMode.unitTypes.len() == 1) ? gameMode.unitTypes[0] : null
-    let diffCode = ::events.getEventDiffCode(getGameModeEvent(gameMode))
+    let diffCode = events.getEventDiffCode(getGameModeEvent(gameMode))
     return checkDiffTutorial(diffCode, checkTutorUnitType)
   }
 
@@ -900,7 +902,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkRequiredUnits(country) {
     let gameMode = getCurrentGameMode()
-    return gameMode ? ::events.checkRequiredUnits(getGameModeEvent(gameMode), null, country) : true
+    return gameMode ? events.checkRequiredUnits(getGameModeEvent(gameMode), null, country) : true
   }
 
   function getIaBlockSelObj(obj) {
@@ -997,9 +999,9 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let steps = [
       {
         obj = [curSlotExtraInfoObj]
-        text = loc("tutorials/upg_crew/skill_points_info") + " " + loc("tutorials/upg_crew/press_to_crew")
+        text = " ".concat(loc("tutorials/upg_crew/skill_points_info"), loc("tutorials/upg_crew/press_to_crew"))
         actionType = tutorAction.OBJ_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
         cb = @() slotbar.onOpenCrewPopup(curSlotExtraInfoObj)
       },
@@ -1011,7 +1013,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         obj = [@() curSlotExtraInfoObj.findObject("open_crew_wnd_btn")]
         text = loc("tutorials/upg_crew/select_crew")
         actionType = tutorAction.OBJ_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
         cb = function() {
           ::gui_modal_crew({
@@ -1033,7 +1035,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       text = loc("tutor/battleButton")
       actionType = tutorAction.OBJ_CLICK
       nextActionShortcut = "help/OBJ_CLICK"
-      shortcut = ::SHORTCUT.GAMEPAD_X
+      shortcut = SHORTCUT.GAMEPAD_X
       cb = this.onStart
     }]
     ::gui_modal_tutor(steps, this)

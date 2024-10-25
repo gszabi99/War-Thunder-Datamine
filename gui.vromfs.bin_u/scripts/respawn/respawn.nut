@@ -54,7 +54,8 @@ let { onSpectatorMode, switchSpectatorTarget,
 } = require("guiSpectator")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
 let { quit_to_debriefing, get_mission_difficulty_int,
-  get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status } = require("guiMission")
+  get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status,
+  OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { setCurSkinToHangar, getRealSkin, getSkinsOption
 } = require("%scripts/customization/skins.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
@@ -100,6 +101,10 @@ function getCrewSlotReadyMask() {
     return 0
 
   return getWasReadySlotsMask() & ~getDisabledSlotsMask()
+}
+
+function getCompoundedText(firstPart, secondPart, color) {
+  return "".concat(firstPart, colorize(color, secondPart))
 }
 
 
@@ -757,7 +762,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (checkObj(balanceObj)) {
       local text = ""
       if (wpBalance != "")
-        text = ::getCompoundedText(loc("multiplayer/wp_header"), wpBalance, "activeTextColor")
+        text = getCompoundedText(loc("multiplayer/wp_header"), wpBalance, "activeTextColor")
       balanceObj.setValue(text)
     }
   }

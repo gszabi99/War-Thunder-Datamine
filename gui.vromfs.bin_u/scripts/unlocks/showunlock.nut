@@ -26,7 +26,7 @@ let { isPromoLinkVisible, getPromoLinkBtnText, launchPromoAction,
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, canBuyUnit, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
@@ -217,8 +217,8 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let buyObj = showObjById("btn_buy_unit", canBuy, this.scene)
     if (canBuy && checkObj(buyObj)) {
       let locText = loc("shop/btnOrderUnit", { unit = getUnitName(this.unit.name) })
-      let unitCost = canBuyOnline ? Cost() : ::getUnitCost(this.unit)
-      placePriceTextToButton(this.scene, "btn_buy_unit", locText, unitCost, 0, ::getUnitRealCost(this.unit))
+      let unitCost = canBuyOnline ? Cost() : getUnitCost(this.unit)
+      placePriceTextToButton(this.scene, "btn_buy_unit", locText, unitCost, 0, getUnitRealCost(this.unit))
     }
 
     let actionText = getLocTextFromConfig(this.config, "actionText", "")

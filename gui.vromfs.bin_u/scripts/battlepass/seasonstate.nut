@@ -11,7 +11,8 @@ let expStatId = "battlepass_exp"
 
 const LOGIN_UNLOCK_ID = "battlepass_login_streak_1"
 
-let season = Computed(@() userstatStats.value?.stats.seasons["$index"] ?? 0)
+let season = Computed(@() userstatStats.get()?.stats.seasons["$index"] ?? 0)
+let seasonEndsTime = Computed(@() userstatStats.get()?.stats.seasons["$endsAt"] ?? 0)
 
 local lastSeasonIndex = 0
 season.subscribe(function(seasonIndex) {
@@ -159,4 +160,5 @@ return {
   warbondsShopLevelByStages
   getLevelByExp
   hasBattlePassReward
+  seasonEndsTime
 }

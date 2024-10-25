@@ -1,7 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_max_unit_rank
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
+import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -96,7 +96,7 @@ let WarbondAward = class {
     if (level == 0)
       return ""
 
-    return ::g_warbonds_view.getLevelItemMarkUp(this.warbondWeak, level, "0")
+    return g_warbonds_view.getLevelItemMarkUp(this.warbondWeak, level, "0")
   }
 
   function getWarbondMedalImage() {
@@ -104,7 +104,7 @@ let WarbondAward = class {
     if (!this.warbondWeak || medals == 0)
       return ""
 
-    return ::g_warbonds_view.getSpecialMedalsMarkUp(this.warbondWeak, medals)
+    return g_warbonds_view.getSpecialMedalsMarkUp(this.warbondWeak, medals)
   }
 
   function getBuyText(isShort = true) {
@@ -114,7 +114,7 @@ let WarbondAward = class {
 
     let cost = this.getCost()
     let costText = this.warbondWeak ? this.warbondWeak.getPriceText(cost) : cost
-    return res + ((costText == "") ? "" : loc("ui/parentheses/space", { text = costText }))
+    return "".concat(res, (costText == "") ? "" : loc("ui/parentheses/space", { text = costText }))
   }
 
   function buy() {
@@ -322,7 +322,7 @@ let WarbondAward = class {
     return this.isAvailableByUnitsRank() || !colored ? text : colorize("badTextColor", text)
   }
 
-  getSeenId = @() (this.isValid() ? (this.warbondWeak.getSeenId() + "_") : "") + this.id
+  getSeenId = @() "".concat((this.isValid() ? ($"{this.warbondWeak.getSeenId()}_") : ""), this.id)
 
   /******************* params override to use in item.tpl ***********************************/
   function modActionName() { return this.canBuy() ? this.getBuyText(true) : null }

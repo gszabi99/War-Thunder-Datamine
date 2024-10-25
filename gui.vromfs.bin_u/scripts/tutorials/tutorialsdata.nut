@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
 from "%scripts/dagui_library.nut" import *
 
@@ -310,10 +309,9 @@ function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null) {
   if (!mData)
     return false
 
-  local msgText = loc((diff == 2) ? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist")
-  msgText += "\n\n" + format(loc("msgbox/req_tutorial_for_mode"), loc($"difficulty{diff}"))
-
-  msgText += "\n<color=@userlogColoredText>" + loc($"missions/{mData.mission.name}") + "</color>"
+  let msgText = "".concat(loc((diff == 2) ? "msgbox/req_tutorial_for_real" : "msgbox/req_tutorial_for_hist"),
+    "\n\n", format(loc("msgbox/req_tutorial_for_mode"), loc($"difficulty{diff}")),
+    "\n<color=@userlogColoredText>", loc($"missions/{mData.mission.name}"), "</color>")
 
   if (needMsgBox)
     scene_msg_box("req_tutorial_msgbox", null, msgText,

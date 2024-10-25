@@ -26,13 +26,13 @@ let DEBUG_TABLE_DATA_PARAMS = {
   printFn = null
 }
 
-function debugTableData(info, params = DEBUG_TABLE_DATA_PARAMS) {
-  let showBlockBrackets = params?.showBlockBrackets ?? true
-  let addStr = params?.addStr ?? ""
-  let silentMode = params?.silentMode ?? false
-  let recursionLevel = params?.recursionLevel ?? 4
-  local printFn = params?.printFn
-  let needUnfoldInstances = params?.needUnfoldInstances ?? false
+function debugTableData(info, parameters = DEBUG_TABLE_DATA_PARAMS) {
+  let showBlockBrackets = parameters?.showBlockBrackets ?? true
+  let addStr = parameters?.addStr ?? ""
+  let silentMode = parameters?.silentMode ?? false
+  let recursionLevel = parameters?.recursionLevel ?? 4
+  local printFn = parameters?.printFn
+  let needUnfoldInstances = parameters?.needUnfoldInstances ?? false
 
   if (printFn == null)
     printFn = println

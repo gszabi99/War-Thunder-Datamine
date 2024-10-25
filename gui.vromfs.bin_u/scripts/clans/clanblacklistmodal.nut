@@ -50,7 +50,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let headerRow = []
     foreach (item in this.blacklistRow) {
       let itemName = (type(item) != "table") ? item : item.id
-      let name = "#clan/" + (itemName == "date" ? "bannedDate" : itemName)
+      let name = "".concat("#clan/", (itemName == "date" ? "bannedDate" : itemName))
       headerRow.append({
         id = itemName,
         text = name,

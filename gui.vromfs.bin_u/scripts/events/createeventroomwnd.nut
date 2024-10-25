@@ -4,6 +4,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
@@ -145,7 +147,7 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function getCurrentEdiff() {
-    let ediff = ::events.getEDiffByEvent(this.mGameMode)
+    let ediff = events.getEDiffByEvent(this.mGameMode)
     return ediff != -1 ? ediff : getCurrentGameModeEdiff()
   }
 

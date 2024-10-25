@@ -171,7 +171,7 @@ function getControlsPresetBySelectedType(cType) {
   return preset
 }
 
-local function onJoystickDisconnected() {
+function onJoystickDisconnected() {
   updateExtWatched({ haveXinputDevice = hasXInputDevice() })
   add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
 }

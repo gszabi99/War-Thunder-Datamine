@@ -4,6 +4,8 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
 from "%scripts/queue/queueType.nut" import g_queue_type
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
@@ -444,21 +446,21 @@ let QueueManager = class {
     foreach (q in this.queuesList)
       if (this.isQueueActive(q)) {
         let event = this.getQueueEvent(q)
-        if (event && !::events.isEventMultiSlotEnabled(event))
+        if (event && !events.isEventMultiSlotEnabled(event))
           return false
       }
     return true
   }
 
   function isClanQueue(queue) {
-    let event = ::events.getEvent(queue.name)
+    let event = events.getEvent(queue.name)
     if (event == null)
       return false
     return isEventForClan(event)
   }
 
   function getQueueEvent(queue) {
-    return ::events.getEvent(queue.name)
+    return events.getEvent(queue.name)
   }
 
   function getQueueMode(queue) {
@@ -491,7 +493,7 @@ let QueueManager = class {
       return -1
 
     let country = this.getQueueCountry(queue)
-    return ::events.getSlotbarRank(event,
+    return events.getSlotbarRank(event,
                                    country,
                                    getTblValue(country, this.getQueueSlots(queue), 0)
                                   )
@@ -527,7 +529,7 @@ let QueueManager = class {
     let event = this.getQueueEvent(queue)
     if (!event)
       return defaultHandler
-    if (!isEventForClan(event) && ::events.isEventSymmetricTeams(event))
+    if (!isEventForClan(event) && events.isEventSymmetricTeams(event))
       return gui_handlers.QiHandlerByCountries
     return defaultHandler
   }

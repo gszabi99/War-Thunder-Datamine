@@ -1,9 +1,10 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_get_role_rank, myself_can_devoice, ps4_is_chat_enabled, clan_get_my_role, myself_can_ban, copy_to_clipboard, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 
-let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -138,7 +139,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 
   if (contact.inGameEx && contact.online && isInMenu()) {
     let eventId = contact.gameConfig?.eventId
-    let event = ::events.getEvent(eventId)
+    let event = events.getEvent(eventId)
     if (event && isEnableFriendsJoin(event)) {
       actions.append({
         text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("contacts/join_team"))
@@ -565,5 +566,6 @@ return {
   showMenu = showMenu
   showXboxPlayerMuted = showXboxPlayerMuted
   notifyPlayerAboutRestriction = notifyPlayerAboutRestriction
+  showBlockedPlayerPopup = showBlockedPlayerPopup
   showSquadMemberMenu
 }

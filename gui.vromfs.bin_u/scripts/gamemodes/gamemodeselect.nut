@@ -2,6 +2,8 @@ from "%scripts/dagui_natives.nut" import can_receive_pve_trophy
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -18,7 +20,7 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEventPVETrophyName, hasNightGameModes, hasSmallTeamsGameModes } = require("%scripts/events/eventInfo.nut")
+let { getEventPVETrophyName, hasNightGameModes, hasSmallTeamsGameModes, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 let smallTeamsOptionsWnd = require("%scripts/events/smallTeamsOptionsWnd.nut")
@@ -32,7 +34,9 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameM
   getClanBattlesGameModes, markShowingGameModeAsSeen, isGameModeSeen, getFeaturedModesConfig,
   getRequiredUnitTypes, getGameModeItemId, getGameModeEvent
 } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getGameModeStartFunction } = require("%scripts/gameModes/gameModeManagerView.nut")
+let { getGameModeStartFunction, getGameModeCrossplayTooltip, getGameModeUnlockTooltipText,
+   getGameModeDescrAndUnlockTooltipText, getGameModeUnlockFullText
+} = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
@@ -246,9 +250,9 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
         newIconWidgetContent = newIconWidgetContent
         inactiveColor = mode?.inactiveColor ?? @() false
         crossPlayRestricted = mode?.crossPlayRestricted ?? @() false
-        crossplayTooltip = mode?.crossplayTooltip
+        crossplayTooltip = getGameModeCrossplayTooltip(mode.modeId)
         isCrossPlayRequired = mode?.isCrossPlayRequired ?? @() false
-        tooltip = mode?.getTooltipText ?? @() ""
+        tooltip = mode?.inactiveColor() ? getGameModeUnlockTooltipText(mode) : ""
       })
       if (mode?.updateByTimeFunc)
         this.gameModesWithTimer[id] <- mode.updateByTimeFunc
@@ -309,7 +313,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
         settingsButtonTooltip = mapPreferencesParams.getPrefTitle(event)
         settingsButtonImg = "#ui/gameuiskin#btn_like_dislike.svg"
       })
-    if (!isLink && ::events.isEventNeedInfoButton(event))
+    if (!isLink && events.isEventNeedInfoButton(event))
       settingsButtons.append({
         settingsButtonClick = "onEventDescription"
         settingsButtonTooltip = loc("mainmenu/titleEventDescription")
@@ -325,7 +329,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       text = gameMode.text
       getEvent = gameMode?.getEvent
       textDescription = getTblValue("textDescription", gameMode, null)
-      tooltip = gameMode.getTooltipText()
+      tooltip = getGameModeDescrAndUnlockTooltipText(gameMode)
       hasCountries = countries.len() != 0
       countries = countries
       isCurrentGameMode = gameMode.id == getCurrentGameModeId()
@@ -344,8 +348,8 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       gameMode = gameMode
       inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
       crossPlayRestricted = crossPlayRestricted
-      crossplayTooltip = this.getRestrictionTooltipText(event)
-      isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
+      crossplayTooltip = getGameModeCrossplayTooltip(gameMode?.modeId ?? gameMode?.id) ?? this.getRestrictionTooltipText(event)
+      isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !isEventPlatformOnlyAllowed(event)
       eventTrophyImage = this.getTrophyMarkUpData(trophyName)
       isTrophyReceived = trophyName == "" ? false : !can_receive_pve_trophy(-1, trophyName)
       settingsButtons
@@ -365,7 +369,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       return loc("xbox/crossPlayEnabled")
 
     //If only platform - no need to notify
-    if (::events.isEventPlatformOnlyAllowed(event))
+    if (isEventPlatformOnlyAllowed(event))
       return null
 
     //Notify that crossplay is strongly required
@@ -374,7 +378,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function isCrossPlayEventAvailable(event) {
     return crossplayModule.isCrossPlayEnabled()
-           || ::events.isEventPlatformOnlyAllowed(event)
+           || isEventPlatformOnlyAllowed(event)
   }
 
   function getWidgetId(gameModeId) {
@@ -451,6 +455,10 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   function onGameModeSelect(obj) {
     this.markGameModeSeen(obj)
     let gameModeView = u.search(this.filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
+    if (gameModeView?.gameMode.inactiveColor()) {
+      showInfoMsgBox(getGameModeUnlockFullText(gameModeView.gameMode))
+      return
+    }
     this.performGameModeSelect(gameModeView.gameMode)
   }
 
@@ -559,7 +567,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     let event = getGameModeEvent(gameMode)
     if (event != null) {
       this.restoreFromModal = true
-      ::events.openEventInfo(event)
+      events.openEventInfo(event)
     }
   }
 

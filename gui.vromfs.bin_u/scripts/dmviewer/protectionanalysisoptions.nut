@@ -41,7 +41,13 @@ local options = {
   nestObj = null
   isSaved = false
   targetUnit = null
-  setParams = @(unit) this.targetUnit = unit
+  targetAmmo = null
+  targetDistance = null
+  setParams = function(unit, ammo = null, distance = null) {
+    this.targetUnit = unit
+    this.targetAmmo = ammo
+    this.targetDistance = distance
+  }
 }
 
 function updateParamsByUnit(unit, handler, scene) {
@@ -111,7 +117,7 @@ function updateArmorPiercingText(obj) {
 
     if (pMin && pMax) {
       let armor = stdMath.lerp(pMin.dist, pMax.dist, pMin.armor, pMax.armor, distance)
-      desc = stdMath.round(armor).tointeger() + " " + loc("measureUnits/mm")
+      desc =  " ".concat(stdMath.round(armor).tointeger(), loc("measureUnits/mm"))
     }
   }
 
@@ -306,7 +312,7 @@ options.addTypes({
       let threats = options.UNITTYPE.values
       let list = shopSearchCore.findUnitsByLocName(searchStr)
         .filter(@(unit) threats.contains(unit.esUnitType))
-        .map(@(unit) { unit, id = unit.name, unitType = unit.unitType,
+        .map(@(unit) { unit, id = unit.name, unitType = unit.unitType.esUnitType,
           br = unit.getBattleRating(getCurrentGameModeEdiff()) })
         .sort(@(a, b) a.unitType <=> b.unitType || a.br <=> b.br)
       this.values = list.map(@(v) v.unit)
@@ -371,6 +377,7 @@ options.addTypes({
       let bulletNamesSet = []
 
       local curGunIdx = -1
+      local selectedIndex = 0
       let groupsCount = getBulletsGroupCount(unit)
 
       // Offensive Armament
@@ -450,11 +457,15 @@ options.addTypes({
               addDiv = MODIFICATION.getMarkup(unit.name, value, { hasPlayerInfo = false })
 
             bulletNamesSet.append(locName)
+            let btName = bulletName || ""
             this.values.append({
-              bulletName = bulletName || ""
+              bulletName = btName
               weaponBlkName = weaponBlkName
               bulletParams = bulletParams
             })
+
+            if (btName == options.targetAmmo)
+              selectedIndex = this.values.len() - 1
 
             this.items.append({
               text = locName
@@ -500,12 +511,16 @@ options.addTypes({
 
         bulletNamesSet.append(locName)
         let bulletParams = calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
+        let btName = isBullet ? curBlk.bulletType : ""
         this.values.append({
-          bulletName = isBullet ? curBlk.bulletType : ""
+          bulletName = btName
           weaponBlkName = weaponBlkPath
           bulletParams
           sortVal = curBlk?.caliber ?? 0
         })
+
+        if (btName == options.targetAmmo)
+          selectedIndex = this.values.len() - 1
 
         local bSet
         if (isBullet)
@@ -532,7 +547,7 @@ options.addTypes({
         })
       }
 
-      this.value = this.values?[0]
+      this.value = this.values?[selectedIndex]
     }
 
     afterChangeFunc = function(obj) {
@@ -552,7 +567,7 @@ options.addTypes({
     minValue = -1
     maxValue = -1
     step = 0
-    valueWidth = "@dmInfoTextWidth"
+    valueWidth = "fw"
 
     getControlMarkup = function() {
       return handyman.renderCached("%gui/dmViewer/distanceSlider.tpl", {
@@ -573,7 +588,7 @@ options.addTypes({
       let res = [{
         valueId = "armorPiercingText"
         valueWidth = this.valueWidth
-        label = loc("bullet_properties/armorPiercing") + loc("ui/colon")
+        label = $"{loc("bullet_properties/armorPiercing")}{loc("ui/colon")}"
       }]
 
       if (measureType.DISTANCE.isMetricSystem() == false)
@@ -602,9 +617,9 @@ options.addTypes({
     updateParams = function(_handler, _scene) {
       this.minValue = 0
       this.maxValue = options.UNIT.value?.isShipOrBoat() ? 15000 : 2000
-      this.step     = 100
+      this.step     = options.targetDistance != null ? 1 : 100
       let preferredDistance = this.value >= 0 ? this.value
-        : (options.UNIT.value?.isShipOrBoat() ? 2000 : 500)
+        : options.targetDistance ?? (options.UNIT.value?.isShipOrBoat() ? 2000 : 500)
       this.value = clamp(preferredDistance, this.minValue, this.maxValue)
     }
 

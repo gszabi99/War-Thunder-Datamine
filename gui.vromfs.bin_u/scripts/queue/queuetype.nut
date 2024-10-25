@@ -7,6 +7,8 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { isNewbieEventId } = require("%scripts/myStats.nut")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 enum qTypeCheckOrder {
   COMMON
@@ -62,7 +64,7 @@ enumsAddTypes(g_queue_type,
 
     DOMINATION = {
       bit = QUEUE_TYPE_BIT.DOMINATION
-      isParamsCorresponds = @(params) ("mode" in params) && ::events.isEventRandomBattlesById(params.mode)
+      isParamsCorresponds = @(params) ("mode" in params) && events.isEventRandomBattlesById(params.mode)
     }
 
     WW_BATTLE = {

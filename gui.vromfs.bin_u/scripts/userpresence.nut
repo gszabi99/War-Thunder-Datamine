@@ -7,6 +7,8 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 ::g_user_presence <- {
   inited = false
@@ -36,7 +38,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
     this.setBattlePresence("in_game", ::SessionLobby.getRoomEvent())
   else if (::queues.isAnyQueuesActive()) {
     let queue = ::queues.findQueue({})
-    let event = ::events.getEvent(getTblValue("name", queue, null))
+    let event = events.getEvent(getTblValue("name", queue, null))
     this.setBattlePresence("in_queue", event)
   }
   else
@@ -50,7 +52,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
     this.setPresence({ status = {
       [presenceName] = {
         country = profileCountrySq.value
-        diff = ::events.getEventDiffCode(event)
+        diff = events.getEventDiffCode(event)
         eventId = event.name
       }
     } })

@@ -1,4 +1,4 @@
-from "%sqstd/frp.nut" import Watched, Computed, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug, make_all_observables_immutable, isObservable, isComputed
+from "%sqstd/frp.nut" import Watched, Computed, ComputedImmediate, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug, make_all_observables_immutable, isObservable, isComputed
 
 let {tostring_r} = require("%sqstd/string.nut")
 let logLib = require("%sqstd/log.nut")
@@ -33,6 +33,7 @@ let logs = {
 let frpExtras = {
   Watched
   Computed
+  ComputedImmediate
   isComputed
   isObservable
   FRP_INITIAL

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -206,10 +205,10 @@ function getTutorialData() {
   }
 }
 
-local function getTutorialButtonText(tutorialMission = null) {
+function getTutorialButtonText(tutorialMission = null) {
   tutorialMission = tutorialMission ?? getTutorialData()?.tutorialMission
   return tutorialMission != null
-    ? loc("missions/" + (tutorialMission?.name ?? "") + "/short", "")
+    ? loc($"missions/{tutorialMission?.name ?? ""}/short", "")
     : loc("mainmenu/btnTutorial")
 }
 

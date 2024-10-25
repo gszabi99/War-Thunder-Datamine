@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+
+let { zero_money } = require("%scripts/money.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -51,7 +53,7 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
     if (!this.prepareClanData())
       return
     let upgradeCost = this.clanData.getClanUpgradeCost()
-    if (upgradeCost <= ::zero_money)
+    if (upgradeCost <= zero_money)
       this.upgradeClan()
     else if (checkBalanceMsgBox(upgradeCost)) {
       let msgText = warningIfGold(

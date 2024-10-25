@@ -37,14 +37,6 @@
       }
     },
     "c_dural3": {
-      "aileron_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 14.5
-      },
-      "aileron_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 14.5
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 14.5
@@ -61,6 +53,14 @@
       },
       "flap_r_dm": {
         "hp": 30.5
+      },
+      "flaperon_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 14.5
+      },
+      "flaperon_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 14.5
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
@@ -202,88 +202,6 @@
   },
   "DamageEffects": {
     "part": [
-      {
-        "name": "aileron_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "aileron_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
       {
         "name": "cover1_dm"
       },
@@ -539,6 +457,88 @@
           },
           {
             "damage": 30.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
             "cut": 1.0
           }
         ]
@@ -1731,16 +1731,27 @@
       -0.045
     ],
     "lightPos": [
-      -0.561157,
-      0.477194,
-      0.243443
+      -0.406439,
+      0.41205,
+      0.258144
     ],
     "lightColor": [
-      0.15,
-      0.05,
-      0.01
+      0.04,
+      0.1,
+      0.31
     ],
-    "lightAttenuation": 12.0,
+    "lightRadius": 0.35,
+    "lightPos1": [
+      -0.493751,
+      0.435259,
+      -0.259903
+    ],
+    "lightColor1": [
+      0.04,
+      0.1,
+      0.31
+    ],
+    "lightRadius1": 0.4,
     "headMoveLimitRight": 0.4,
     "headMoveLimitUp": 0.5,
     "devices": {

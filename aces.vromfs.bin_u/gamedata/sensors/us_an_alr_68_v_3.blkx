@@ -47,6 +47,7 @@
   "band2": true,
   "band3": true,
   "override:targetSuperResolution": true,
+  "band10": true,
   "receivers": {
     "receiver": [
       {
@@ -68,511 +69,17 @@
   "groups": {
     "group": [
       {
-        "name": "Roland",
-        "detectLaunch": true,
-        "type": "Roland TA"
-      },
-      {
-        "name": "Naval",
-        "type": "AN-SPG-51"
-      },
-      {
-        "name": "2S6",
-        "detectLaunch": true,
-        "type": "1RL114 TA"
-      },
-      {
-        "name": "PG9",
-        "type": "PGZ-09 TA"
-      },
-      {
-        "name": "9K330",
-        "detectLaunch": true,
-        "type": "9K330 TA"
-      },
-      {
-        "name": "S1",
-        "detectLaunch": true,
-        "type": "1RS1"
-      },
-      {
-        "name": "AAA",
-        "type": [
-          "DR-VC-1A",
-          "Rooikat TA"
-        ]
-      },
-      {
-        "name": "Crotale",
-        "detectLaunch": true,
-        "type": "Crotale TA"
-      },
-      {
-        "name": "Santal",
-        "type": "Rodeo-2"
-      },
-      {
-        "name": "Naval",
-        "type": [
-          "Foot-N",
-          "Type 992Q",
-          "Type-275"
-        ]
-      },
-      {
-        "name": "MiG-19",
-        "type": [
-          "RP-1 TA",
-          "RP-1 TT",
-          "RP-5 TA",
-          "RP-5 TT"
-        ]
-      },
-      {
-        "name": "MiG-21",
-        "type": [
-          "CD-30",
-          "Sapphire-21"
-        ]
-      },
-      {
-        "name": "MiG-23",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "Sapphire-23d_tp_23",
-          "Sapphire-23ml_tp_23m",
-          "Sapphire-23mla_tp_23m",
-          "Sapphire-23mla-2_tp_23m"
-        ]
-      },
-      {
-        "name": "MiG-23 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "Sapphire-23d_tp_23",
-          "Sapphire-23ml_tp_23m",
-          "Sapphire-23mla_tp_23m",
-          "Sapphire-23mla-2_tp_23m"
-        ]
-      },
-      {
-        "name": "MiG-29",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "N019_S31",
-          "N010 Zhuk",
-          "N010M Zhuk-M"
-        ]
-      },
-      {
-        "name": "MiG-29 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "N019_S31",
-          "N010 Zhuk",
-          "N010M Zhuk-M"
-        ]
-      },
-      {
-        "name": "MiG-29",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "N019_S31",
-          "N010 Zhuk",
-          "N010M Zhuk-M",
-          "N001",
-          "N001VEP"
-        ]
-      },
-      {
-        "name": "MiG-29 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "N019_S31",
-          "N010 Zhuk",
-          "N010M Zhuk-M",
-          "N001",
-          "N001VEP"
-        ]
-      },
-      {
-        "name": "F-3",
-        "detectLaunch": true,
-        "search": true,
-        "track": true,
-        "launch": false,
-        "type": "AN/APQ-51"
-      },
-      {
-        "name": "F-3 CW",
-        "detectLaunch": true,
-        "search": false,
-        "track": false,
-        "launch": true,
-        "type": "AN/APQ-51"
-      },
-      {
-        "name": "F-8",
-        "type": [
-          "AN/APQ-94",
-          "AN/APQ-104"
-        ]
-      },
-      {
-        "name": "F-4",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "AN/APQ-72",
-          "AN/APQ-100",
-          "AN/APQ-120",
-          "AN/APG-59",
-          "AN/APG-59U"
-        ]
-      },
-      {
-        "name": "F-4 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "AN/APQ-72",
-          "AN/APQ-100",
-          "AN/APQ-120",
-          "AN/APG-59"
-        ]
-      },
-      {
-        "name": "F-104",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "AN/ASG-14",
-          "NASARR",
-          "US R21G M1"
-        ]
-      },
-      {
-        "name": "F-104 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "AN/ASG-14",
-          "NASARR",
-          "US R21G M1"
-        ]
-      },
-      {
-        "name": "F-5",
-        "type": "AN/APQ-159"
-      },
-      {
-        "name": "F-14",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "AN/AWG-9",
-          "AN/AWG-9 / AN/AXX-1 TCS"
-        ]
-      },
-      {
-        "name": "F-14 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "AN/AWG-9",
-          "AN/AWG-9 / AN/AXX-1 TCS"
-        ]
-      },
-      {
-        "name": "F-16",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "AN/APG-66",
-          "AN/APG-66(V)1",
-          "AN/APG-66(V)3",
-          "AN/APG-66J",
-          "AN/APG-68(V)5",
-          "AN/APG-68(V)7",
-          "AN/APG-68(V)9"
-        ]
-      },
-      {
-        "name": "F-16 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "AN/APG-66",
-          "AN/APG-66(V)1",
-          "AN/APG-66(V)3",
-          "AN/APG-66J"
-        ]
-      },
-      {
-        "name": "F-15",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "AN/APG-63",
-          "AN/APG-63(V)1",
-          "AN/APG-63 PSP",
-          "AN/APG-63 I-BAZ"
-        ]
-      },
-      {
-        "name": "F-15 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "AN/APG-63",
-          "AN/APG-63(V)1",
-          "AN/APG-63 PSP",
-          "AN/APG-63 I-BAZ"
-        ]
-      },
-      {
-        "name": "F-18",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "AN/APG-65GY",
-          "AN/APG-65Q",
-          "AN/APG-67"
-        ]
-      },
-      {
-        "name": "F-18 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "AN/APG-65GY",
-          "AN/APG-65Q",
-          "AN/APG-67"
-        ]
-      },
-      {
-        "name": "Tornado F",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "marconi_ai_mk24",
-          "marconi_ai_mk24z",
-          "AI.24 Foxhunter Stage 2G",
-          "AI.24 Foxhunter Stage 3G"
-        ]
-      },
-      {
-        "name": "Tornado F CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "marconi_ai_mk24",
-          "marconi_ai_mk24z",
-          "AI.24 Foxhunter Stage 2G",
-          "AI.24 Foxhunter Stage 3G"
-        ]
-      },
-      {
-        "name": "Harrier",
-        "type": "Ferranti Blue Fox"
-      },
-      {
-        "name": "Tornado Gr1",
-        "type": "ARI 23274"
-      },
-      {
-        "name": "Vautour",
-        "type": [
-          "DRAC-25A",
-          "DRAC-32A"
-        ]
-      },
-      {
-        "name": "Mirage-3",
-        "type": [
-          "Cyrano Ibis",
-          "Cyrano II"
-        ]
-      },
-      {
-        "name": "Mirage F1",
-        "type": "Cyrano-IV"
-      },
-      {
-        "name": "Mirage 2000",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "Thomson-CSF RDI",
-          "Thales RDY",
-          "Thomson-CSF RDM-3"
-        ]
-      },
-      {
-        "name": "Mirage 2000 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "Thomson-CSF RDI",
-          "Thales RDY",
-          "Thomson-CSF RDM-3"
-        ]
-      },
-      {
-        "name": "A-32",
-        "type": [
-          "PS-42 TA",
-          "PS-42 TT"
-        ]
-      },
-      {
-        "name": "J-35",
-        "type": "PS-03"
-      },
-      {
-        "name": "J-37",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "PS-37A",
-          "PS-371A",
-          "PS-46A"
-        ]
-      },
-      {
-        "name": "J-37 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "PS-37A",
-          "PS-371A",
-          "PS-46A"
-        ]
-      },
-      {
-        "name": "J-39",
-        "search": true,
-        "track": true,
-        "launch": false,
-        "detectLaunch": true,
-        "type": [
-          "PS-05A",
-          "Ferranti Blue Vixen"
-        ]
-      },
-      {
-        "name": "J-39 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "PS-05A",
-          "Ferranti Blue Vixen"
-        ]
-      },
-      {
-        "name": "J-7",
-        "type": "JL-7A"
-      },
-      {
-        "name": "J-8",
-        "search": true,
-        "track": true,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "Type 1492",
-          "Type 208A"
-        ]
-      },
-      {
-        "name": "J-8 CW",
-        "search": false,
-        "track": false,
-        "launch": true,
-        "detectLaunch": true,
-        "type": [
-          "Type 1492",
-          "Type 208A"
-        ]
-      },
-      {
         "name": "S-125",
         "detectLaunch": true,
         "type": "4R-90-Yatagan"
       },
       {
-        "name": "2S6",
-        "detectLaunch": true,
-        "type": "1RL114 TT"
-      },
-      {
-        "name": "PG9",
-        "type": "PGZ-09 TT"
-      },
-      {
         "name": "9K330",
         "detectLaunch": true,
-        "type": "9K330 TT"
-      },
-      {
-        "name": "ADATS",
-        "type": "ADATS TA"
+        "type": [
+          "9K330 TA",
+          "9K330 TT"
+        ]
       },
       {
         "name": "Roland",
@@ -580,30 +87,40 @@
         "type": "Roland TT"
       },
       {
-        "name": "Crotale",
+        "name": "Crotal",
         "detectLaunch": true,
-        "type": "Crotale TT"
-      },
-      {
-        "name": "ASRAD",
-        "type": "ASRAD TA"
+        "type": [
+          "Crotale TA",
+          "Crotale TT"
+        ]
       },
       {
         "name": "AAA",
         "type": [
-          "1RL33",
+          "1RL114 TA",
+          "Gepard TA",
+          "EDR 110",
+          "DR-VC-1A",
+          "PGZ-09 TA",
           "1RL34",
           "AN/VPS-2",
           "M-247 TA",
-          "Gepard TT",
+          "ESD RA-20 S",
+          "1RL33",
+          "1RL114 TT",
           "Marconi S-400",
+          "Gepard TT",
           "Antelope",
-          "ESD RA-20-S"
+          "PGZ-09 TT",
+          "Type-87 TT"
         ]
       },
       {
         "name": "Naval",
         "type": [
+          "Foot-N",
+          "Type 992Q",
+          "Type-275",
           "MR-103-Bars",
           "MR-123-176",
           "MR-102-Baklan",
@@ -619,54 +136,401 @@
         ]
       },
       {
+        "name": "Fighter",
+        "type": [
+          "AN/APG-30",
+          "AN/ASG-14",
+          "AN/ASG-19",
+          "SRD-1",
+          "SRD-5",
+          "AIDA 2",
+          "ARI.5820",
+          "ARI.5857",
+          "Marconi Type 226",
+          "ELTA EL/M-2001B",
+          "AN/APS-6",
+          "AN/APS-19",
+          "AN/APS-21",
+          "AN/APS-67",
+          "NASARR",
+          "US R21G M1",
+          "AN/APQ-72",
+          "AN/APQ-104",
+          "AN/APQ-120",
+          "AN/APQ-126",
+          "AN/APQ-159",
+          "AN/APQ-113",
+          "AN/APQ-50",
+          "AN/APQ-51",
+          "AN/APQ-94",
+          "AN/APG-26",
+          "AN/APG-33",
+          "Thorium",
+          "RP-1 TA",
+          "RP-1 TT",
+          "RP-5 TA",
+          "RP-5 TT",
+          "CD-30",
+          "Cyrano Ibis",
+          "Cyrano-IV",
+          "DRAC-25A",
+          "DRAC-32A",
+          "DRAA 3D AIDA",
+          "AI Mk.23",
+          "AI Mk.18",
+          "PS-03",
+          "PS-011A 71H IR",
+          "PS-42 TA",
+          "PS-42 TT",
+          "Type 1492",
+          "Type 208A",
+          "Sapphire-21",
+          "Sapphire-23",
+          "AN/APG-66",
+          "AN/APG-68",
+          "AN/APG-63",
+          "AN/APG-65",
+          "AN/APG-67",
+          "AN/APG-76 / AN/ASX-1",
+          "Thales RDY",
+          "N019",
+          "N001",
+          "N010",
+          "ELTA EL/M-2001B",
+          "PS-37",
+          "PS-05",
+          "Ferranti Blue Vixen",
+          "AN/APG-59",
+          "AN/AWG-9",
+          "Thomson-CSF RDI",
+          "AI.24 Foxhunter",
+          "weapon"
+        ]
+      },
+      {
+        "name": "Attacker",
+        "type": [
+          "Orion",
+          "AN/APQ-113",
+          "ARI 23274"
+        ]
+      },
+      {
+        "name": "MiG-21",
+        "type": [
+          "CD-30",
+          "Sapphire-21",
+          "JL-7A",
+          "Type 208A"
+        ]
+      },
+      {
+        "name": "MiG-23",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "detectLaunch": true,
+        "type": "Sapphire-23"
+      },
+      {
+        "name": "MiG-23 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "Sapphire-23"
+      },
+      {
+        "name": "MiG-29",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "detectLaunch": true,
+        "type": [
+          "N019",
+          "N001",
+          "N010"
+        ]
+      },
+      {
+        "name": "MiG-29 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "N019",
+          "N001",
+          "N010"
+        ]
+      },
+      {
+        "name": "F-4",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "AN/APQ-72",
+          "AN/APQ-120",
+          "AN/APG-59"
+        ]
+      },
+      {
+        "name": "F-4 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "AN/APQ-72",
+          "AN/APQ-120",
+          "AN/APG-59"
+        ]
+      },
+      {
+        "name": "F-5",
+        "type": "AN/APQ-159"
+      },
+      {
+        "name": "F-14",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "AN/AWG-9"
+      },
+      {
+        "name": "F-14 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "AN/AWG-9"
+      },
+      {
+        "name": "F-16",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "AN/APG-66",
+          "AN/APG-68",
+          "PS-37",
+          "Type 1492"
+        ]
+      },
+      {
+        "name": "F-16 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "AN/APG-66",
+          "AN/APG-68",
+          "PS-37",
+          "Type 1492"
+        ]
+      },
+      {
+        "name": "F-15",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "AN/APG-63"
+      },
+      {
+        "name": "F-15 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "AN/APG-63"
+      },
+      {
+        "name": "F-18",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "AN/APG-65",
+          "AN/APG-67"
+        ]
+      },
+      {
+        "name": "F-18 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "AN/APG-65",
+          "AN/APG-67"
+        ]
+      },
+      {
+        "name": "Tornado F",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "AI.24 Foxhunter"
+      },
+      {
+        "name": "Tornado F LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "AI.24 Foxhunter"
+      },
+      {
+        "name": "Harrier",
+        "type": "Ferranti Blue Fox"
+      },
+      {
+        "name": "Mirage 2000",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "Thomson-CSF RDI",
+          "Thales RDY"
+        ]
+      },
+      {
+        "name": "Mirage 2000 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "Thomson-CSF RDI",
+          "Thales RDY"
+        ]
+      },
+      {
+        "name": "J-39",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "PS-05",
+          "Ferranti Blue Vixen"
+        ]
+      },
+      {
+        "name": "J-39 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "PS-05",
+          "Ferranti Blue Vixen"
+        ]
+      },
+      {
+        "name": "JF-17",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "KLJ-7"
+      },
+      {
+        "name": "JF-17 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "KLJ-7"
+      },
+      {
+        "name": "Roland",
+        "detectLaunch": true,
+        "type": "Roland TA"
+      },
+      {
+        "name": "SAM",
+        "detectLaunch": true,
+        "type": [
+          "ADATS TA",
+          "ASRAD TA",
+          "TriAD TA"
+        ]
+      },
+      {
+        "name": "Naval",
+        "type": "AN-SPG-51"
+      },
+      {
         "name": "ARH",
         "detectTracking": true,
         "detectLaunch": true,
         "type": "weapon"
+      },
+      {
+        "name": "AH-64",
+        "type": "AN/APG-78"
+      },
+      {
+        "name": "Ka-52",
+        "type": "RN-01 Arbalet"
+      },
+      {
+        "name": "Mi-28",
+        "type": "N-025"
+      },
+      {
+        "name": "S1",
+        "detectLaunch": true,
+        "type": [
+          "1RS1",
+          "1RS2"
+        ]
       }
     ]
   },
   "targetsDirectionGroups": {
     "targetsDirectionGroup": [
       {
-        "text": "RLD",
-        "group": "Roland"
-      },
-      {
-        "text": "NVL",
-        "group": "Naval"
-      },
-      {
-        "text": "2S6",
-        "group": "2S6"
+        "text": "S125",
+        "group": "S-125"
       },
       {
         "text": "9K3",
         "group": "9K330"
       },
       {
-        "text": "S1",
-        "group": "S1"
+        "text": "RLD",
+        "group": "Roland"
       },
       {
-        "text": "AAA",
+        "text": "CRT",
+        "group": "Crotal"
+      },
+      {
+        "text": "hud/rwr_threat_aaa",
         "group": "AAA"
       },
       {
-        "text": "CRL",
-        "group": "Crotale"
-      },
-      {
-        "text": "SNL",
-        "group": "Santal"
-      },
-      {
-        "text": "NVL",
+        "text": "hud/rwr_threat_naval",
         "group": "Naval"
       },
       {
-        "text": "M19",
-        "group": "MiG-19"
+        "text": "F",
+        "group": "Fighter"
+      },
+      {
+        "text": "A",
+        "group": "Attacker"
       },
       {
         "text": "M21",
@@ -676,39 +540,21 @@
         "text": "M23",
         "group": [
           "MiG-23",
-          "MiG-23 CW"
+          "MiG-23 LAUNCH"
         ]
       },
       {
         "text": "M29",
         "group": [
           "MiG-29",
-          "MiG-29 CW"
+          "MiG-29 LAUNCH"
         ]
-      },
-      {
-        "text": "F3",
-        "group": [
-          "F-3",
-          "F-3 CW"
-        ]
-      },
-      {
-        "text": "F8",
-        "group": "F-8"
       },
       {
         "text": "F4",
         "group": [
           "F-4",
-          "F-4 CW"
-        ]
-      },
-      {
-        "text": "104",
-        "group": [
-          "F-104",
-          "F-104 CW"
+          "F-4 LAUNCH"
         ]
       },
       {
@@ -719,35 +565,35 @@
         "text": "F14",
         "group": [
           "F-14",
-          "F-14 CW"
+          "F-14 LAUNCH"
         ]
       },
       {
         "text": "F15",
         "group": [
           "F-15",
-          "F-15 CW"
+          "F-15 LAUNCH"
         ]
       },
       {
         "text": "F16",
         "group": [
           "F-16",
-          "F-16 CW"
+          "F-16 LAUNCH"
         ]
       },
       {
         "text": "F18",
         "group": [
           "F-18",
-          "F-18 CW"
+          "F-18 LAUNCH"
         ]
       },
       {
         "text": "TRF",
         "group": [
           "Tornado F",
-          "Tornado F CW"
+          "Tornado F LAUNCH"
         ]
       },
       {
@@ -755,195 +601,50 @@
         "group": "Harrier"
       },
       {
-        "text": "TRG",
-        "group": "Tornado Gr1"
-      },
-      {
-        "text": "4050",
-        "group": "Vautour"
-      },
-      {
-        "text": "M3",
-        "group": "Mirage-3"
-      },
-      {
-        "text": "MF1",
-        "group": "Mirage F1"
-      },
-      {
         "text": "M2K",
         "group": [
           "Mirage 2000",
-          "Mirage 2000 CW"
-        ]
-      },
-      {
-        "text": "A32",
-        "group": "A-32"
-      },
-      {
-        "text": "J35",
-        "group": "J-35"
-      },
-      {
-        "text": "J37",
-        "group": [
-          "J-37",
-          "J-37 CW"
+          "Mirage 2000 LAUNCH"
         ]
       },
       {
         "text": "J39",
         "group": [
           "J-39",
-          "J-39 CW"
+          "J-39 LAUNCH"
         ]
       },
       {
-        "text": "J7",
-        "group": "J-7"
-      },
-      {
-        "text": "J8",
+        "text": "J17",
         "group": [
-          "J-8",
-          "J-8 CW"
+          "JF-17",
+          "JF-17 LAUNCH"
         ]
       },
       {
-        "text": "S125",
-        "group": "S-125"
-      },
-      {
-        "text": "2S6",
-        "group": "2S6"
-      },
-      {
-        "text": "9K3",
-        "group": "9K330"
-      },
-      {
-        "text": "ADS",
-        "group": "ADATS"
-      },
-      {
-        "text": "RLD",
-        "group": "Roland"
-      },
-      {
-        "text": "CRTL",
-        "group": "Crotale"
-      },
-      {
-        "text": "ASD",
-        "group": "ASRAD"
-      },
-      {
-        "text": "AAA",
-        "group": "AAA"
-      },
-      {
-        "text": "NVL",
-        "group": "Naval"
+        "text": "SAM",
+        "group": "SAM"
       },
       {
         "text": "MSL",
         "group": "ARH"
-      }
-    ]
-  },
-  "targetsPresenceGroups": {
-    "targetsPresenceGroup": [
-      {
-        "text": "hud/rwr_threat_ai_track",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": [
-          "MiG-19",
-          "MiG-21",
-          "MiG-23",
-          "MiG-29",
-          "F-3",
-          "F-8",
-          "F-4",
-          "F-104",
-          "F-5",
-          "F-14",
-          "F-15",
-          "F-16",
-          "F-18",
-          "Tornado F",
-          "Tornado Gr1",
-          "Vautour",
-          "Mirage-3",
-          "Mirage F1",
-          "Mirage 2000",
-          "A-32",
-          "J-35",
-          "J-37",
-          "J-39",
-          "J-7",
-          "J-8",
-          "MiG-23 CW",
-          "MiG-29 CW",
-          "F-3 CW",
-          "F-4 CW",
-          "F-104 CW",
-          "F-14 CW",
-          "F-15 CW",
-          "F-16 CW",
-          "F-18 CW",
-          "J-37 CW",
-          "J-39 CW",
-          "Tornado F CW",
-          "Mirage 2000 CW",
-          "J-8 CW",
-          "ARH"
-        ]
       },
       {
-        "text": "hud/rwr_threat_aaa_track",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": "AAA"
+        "text": "A64",
+        "group": "AH-64"
       },
       {
-        "text": "hud/rwr_threat_sam_track",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": [
-          "S-125",
-          "2S6",
-          "9K330",
-          "ADATS",
-          "Roland",
-          "Crotale",
-          "ASRAD"
-        ]
+        "text": "K52",
+        "group": "Ka-52"
       },
       {
-        "text": "hud/rwr_threat_cw",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": [
-          "MiG-23 CW",
-          "MiG-29 CW",
-          "F-3 CW",
-          "F-4 CW",
-          "F-104 CW",
-          "F-14 CW",
-          "F-16 CW",
-          "F-18 CW",
-          "Tornado F CW",
-          "Mirage 2000 CW",
-          "J-37 CW",
-          "J-39 CW",
-          "J-8 CW"
-        ]
+        "text": "M28",
+        "group": "Mi-28"
+      },
+      {
+        "text": "S1",
+        "detectLaunch": true,
+        "group": "S1"
       }
     ]
   }

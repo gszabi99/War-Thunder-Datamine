@@ -181,7 +181,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
 
   function updateUnitRentInfo(unit) {
     let rentInfoObj = this.scene.findObject("rented_unit_info_text")
-    let messageTemplate = loc("mainmenu/unitRentTimeleft") + loc("ui/colon") + "%s"
+    let messageTemplate = "".concat(loc("mainmenu/unitRentTimeleft"), loc("ui/colon"), "%s")
     SecondsUpdater(rentInfoObj, function(obj, _params) {
       let isVisible = !!unit && unit.isRented()
       obj.show(isVisible)

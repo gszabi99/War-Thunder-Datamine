@@ -1,8 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -145,8 +146,8 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     let countTbl = SessionLobby.getMembersCountByTeams()
     let countTblReady = SessionLobby.getMembersCountByTeams(null, true)
     if (!this.isInfoByTeams) {
-      let totalNumPlayersTxt = loc("multiplayer/playerList")
-        + loc("ui/parentheses/space", { text = countTbl.total + "/" + maxMembers })
+      let totalNumPlayersTxt = "".concat(loc("multiplayer/playerList"),
+        loc("ui/parentheses/space", { text = $"{countTbl.total}/{maxMembers}" }))
       commonHeader.findObject("num_players").setValue(totalNumPlayersTxt)
     }
 
@@ -161,7 +162,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
         local locId = "multiplayer/teamPlayers"
         let locParams = {
           players = countTblReady[team.code]
-          maxPlayers = ::events.getMaxTeamSize(event)
+          maxPlayers = events.getMaxTeamSize(event)
           unready = countTbl[team.code] - countTblReady[team.code]
         }
         if (locParams.unready)
@@ -227,12 +228,12 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let titleObj = mainObj.findObject("player_title")
     if (checkObj(titleObj))
-      titleObj.setValue((player.title != "") ? (loc("title/title") + loc("ui/colon") + loc($"title/{player.title}")) : "")
+      titleObj.setValue((player.title != "") ? loc("ui/colon").concat(loc("title/title"), loc($"title/{player.title}")) : "")
 
     let spectatorObj = mainObj.findObject("player_spectator")
     if (checkObj(spectatorObj)) {
       let desc = g_player_state.getStateByPlayerInfo(player).getText(player)
-      spectatorObj.setValue((desc != "") ? (loc("multiplayer/state") + loc("ui/colon") + desc) : "")
+      spectatorObj.setValue((desc != "") ? loc("ui/colon").concat(loc("multiplayer/state"), desc) : "")
     }
 
     let myTeam = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? SessionLobby.getTeam() : get_mp_local_team()
@@ -255,7 +256,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       teamObj.team = teamStyle
       let teamIcoObj = teamObj.findObject("player_team_ico")
       teamIcoObj.show(teamTxt != "")
-      teamIcoObj.tooltip = loc("multiplayer/team") + loc("ui/colon") + teamTxt
+      teamIcoObj.tooltip = loc("ui/colon").concat(loc("multiplayer/team"), teamTxt)
     }
 
     let playerIcon = (!player || player.isBot) ? "cardicon_bot" : avatars.getIconById(player.pilotId)
@@ -315,7 +316,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       otherTeamCount =  countTbl[otherTeam]
       reqOtherteamCount = countTbl[myTeam] - maxDisbalance + 1
     }
-    let locKey = "multiplayer/enemyTeamTooLowMembers" + (isFullText ? "" : "/short")
+    let locKey = $"multiplayer/enemyTeamTooLowMembers{isFullText ? "" : "/short"}"
     return loc(locKey, params)
   }
 
@@ -356,8 +357,8 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     let spectatorBtnObj = this.scene.findObject("btn_spectator")
     if (checkObj(spectatorBtnObj)) {
       let isSpectator = SessionLobby.getIsSpectator()
-      let buttonText = loc("mainmenu/btnReferee")
-        + (isSpectator ? (loc("ui/colon") + loc("options/on")) : "")
+      let buttonText = "".concat(loc("mainmenu/btnReferee"),
+        isSpectator ? "".concat(loc("ui/colon"), loc("options/on")) : "")
       spectatorBtnObj.setValue(buttonText)
       spectatorBtnObj.active = isSpectator ? "yes" : "no"
     }
@@ -404,7 +405,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       local status = ""
-      let minSize = ::events.getMinTeamSize(mGameMode)
+      let minSize = events.getMinTeamSize(mGameMode)
       let teamSize = countTbl[team.code]
       if (teamSize < minSize)
         status = loc("multiplayer/playersTeamLessThanMin", { minSize = minSize })
@@ -539,7 +540,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     if (status.ableToStart) {
       buttons = [["#multiplayer/btnStart", function() { SessionLobby.startSession() }], ["cancel", function() {}]]
       defButton = "cancel"
-      msg += "\n" + loc("ask/startGameAnyway")
+      msg = "\n".concat(msg, loc("ask/startGameAnyway"))
     }
 
     this.msgBox("ask_start_session", msg, buttons, defButton, { cancel_fn = function() {} })

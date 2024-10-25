@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import SEEN
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -39,7 +41,7 @@ let { getTypeByUnlockedItemType, decoratorTypes, getTypeByResourceType
 } = require("%scripts/customization/types.nut")
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
@@ -568,7 +570,7 @@ function getUsualCondValueText(condType, v, condition) {
   if (condType in eraAndRnakCondType)
     return get_roman_numeral(v)
   if (condType == "events")
-    return ::events.getNameByEconomicName(v)
+    return events.getNameByEconomicName(v)
   if (["offenderIsSupportGun", "offenderIsStealthBelt"].contains(condType))
     return loc(v)
   if (condType == "operationMap")
@@ -763,7 +765,7 @@ function getUnlockCostText(cfg) {
     return ""
 
   let cost = getUnlockCost(cfg.id)
-  if (cost > ::zero_money)
+  if (cost > zero_money)
     return "".concat(
       loc("ugm/price"),
       loc("ui/colon"),

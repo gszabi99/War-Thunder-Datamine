@@ -71,6 +71,7 @@
   "tank_vision_grass_displacement_rad": 10.0,
   "bombingZoneHpToTntEquivalentTons": 0.000125,
   "maxDistForWatchXRayInSpectator": 50.0,
+  "isDmgIndicatorShowDamaged": true,
   "killZoneVisibilityDistance": 50.0,
   "detectionZoneVisibilityDistance": 100.0,
   "showEnemyAtKillZone": true,
@@ -362,8 +363,19 @@
   "useBurningDecals": true,
   "jetLightRadius": 40.0,
   "jetLightAttenuation": 0.8,
-  "jetLightBrightness": 5.0,
+  "jetLightBrightness": 25.0,
   "jetLightAngle": 0.8,
+  "jetLightColor": [
+    20,
+    49,
+    255,
+    255
+  ],
+  "jetLightIntensityNoiseStrength": 7.0,
+  "jetLightIntensityNoiseSpeed": 6.0,
+  "jetIgnitionTextureNoiseStrength": 1.0,
+  "jetIgnitionTextureNoiseSpeed": 6.0,
+  "jetIgnitionTextureIntensity": 0.5,
   "collapsedIconForRadarTws": true,
   "indicationForCollapsedRadar": false,
   "bulletCaliberForPlayHitEffectFromServerOnly": 0.0,
@@ -383,7 +395,7 @@
   "downloadLimitationInSingle": false,
   "digDustFx": "dust_tank_digging_shovel",
   "digDirtFx": "dust_tank_digging_ground",
-  "gmKillFxName": "tank_engine_fire",
+  "gmKillFxName": "fire_tank_napalm_smal",
   "battleTimeOffendingTimeout": 5.0,
   "battleTimeDamageTimeout": 5.0,
   "simulateTrackElasticity": false,
@@ -619,11 +631,15 @@
       "startTime": 0.0
     },
     "7mmRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -708,10 +724,14 @@
     },
     "12mmRed": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -795,11 +815,15 @@
       }
     },
     "20mmRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -883,11 +907,15 @@
       }
     },
     "30mmRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -971,11 +999,15 @@
       }
     },
     "37mmRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -1059,11 +1091,15 @@
       }
     },
     "50mmRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -1147,11 +1183,15 @@
       }
     },
     "76mmRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -1235,11 +1275,15 @@
       }
     },
     "100mmRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -1323,11 +1367,15 @@
       }
     },
     "152mmRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         15,
         15,
@@ -1534,11 +1582,15 @@
       "startTime": 0.025
     },
     "7mmDarkRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1577,10 +1629,14 @@
     },
     "12mmDarkRed": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1618,11 +1674,15 @@
       }
     },
     "20mmDarkRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1660,11 +1720,15 @@
       }
     },
     "30mmDarkRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1702,11 +1766,15 @@
       }
     },
     "37mmDarkRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1744,11 +1812,15 @@
       }
     },
     "50mmDarkRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1786,11 +1858,15 @@
       }
     },
     "76mmDarkRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1828,11 +1904,15 @@
       }
     },
     "100mmDarkRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1870,11 +1950,15 @@
       }
     },
     "152mmDarkRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         25,
         25,
@@ -1912,11 +1996,15 @@
       }
     },
     "7mmBrightRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -1955,10 +2043,14 @@
     },
     "12mmBrightRed": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -1996,11 +2088,15 @@
       }
     },
     "20mmBrightRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -2038,11 +2134,15 @@
       }
     },
     "30mmBrightRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -2080,11 +2180,15 @@
       }
     },
     "37mmBrightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -2122,11 +2226,15 @@
       }
     },
     "50mmBrightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -2164,11 +2272,15 @@
       }
     },
     "76mmBrightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -2206,11 +2318,15 @@
       }
     },
     "100mmBrightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -2248,11 +2364,15 @@
       }
     },
     "152mmBrightRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         54,
         71,
@@ -2290,11 +2410,15 @@
       }
     },
     "7mmWhite": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2333,10 +2457,14 @@
     },
     "12mmWhite": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2374,11 +2502,15 @@
       }
     },
     "20mmWhite": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2416,11 +2548,15 @@
       }
     },
     "30mmWhite": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2458,11 +2594,15 @@
       }
     },
     "37mmWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2500,11 +2640,15 @@
       }
     },
     "50mmWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2542,11 +2686,15 @@
       }
     },
     "76mmWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2584,11 +2732,15 @@
       }
     },
     "100mmWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2626,11 +2778,15 @@
       }
     },
     "152mmWhite": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2668,11 +2824,15 @@
       }
     },
     "7mmPaleWhite": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2711,10 +2871,14 @@
     },
     "12mmPaleWhite": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2752,11 +2916,15 @@
       }
     },
     "20mmPaleWhite": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2794,11 +2962,15 @@
       }
     },
     "30mmPaleWhite": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2836,11 +3008,15 @@
       }
     },
     "37mmPaleWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2878,11 +3054,15 @@
       }
     },
     "50mmPaleWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2920,11 +3100,15 @@
       }
     },
     "76mmPaleWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -2962,11 +3146,15 @@
       }
     },
     "100mmPaleWhite": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -3004,11 +3192,15 @@
       }
     },
     "152mmPaleWhite": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         255,
@@ -3046,11 +3238,15 @@
       }
     },
     "7mmLightRed": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3089,10 +3285,14 @@
     },
     "12mmLightRed": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3130,11 +3330,15 @@
       }
     },
     "20mmLightRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3172,11 +3376,15 @@
       }
     },
     "30mmLightRed": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3214,11 +3422,15 @@
       }
     },
     "37mmLightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3256,11 +3468,15 @@
       }
     },
     "50mmLightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3298,11 +3514,15 @@
       }
     },
     "76mmLightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3340,11 +3560,15 @@
       }
     },
     "100mmLightRed": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3382,11 +3606,15 @@
       }
     },
     "152mmLightRed": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3439,11 +3667,15 @@
       "halfSize": 1.5
     },
     "7mmGreenBlue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3528,10 +3760,14 @@
     },
     "12mmGreenBlue": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3615,11 +3851,15 @@
       }
     },
     "20mmGreenBlue": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3703,11 +3943,15 @@
       }
     },
     "30mmGreenBlue": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3791,11 +4035,15 @@
       }
     },
     "37mmGreenBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3879,11 +4127,15 @@
       }
     },
     "50mmGreenBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -3967,11 +4219,15 @@
       }
     },
     "76mmGreenBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -4055,11 +4311,15 @@
       }
     },
     "100mmGreenBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -4143,11 +4403,15 @@
       }
     },
     "152mmGreenBlue": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         212,
         247,
@@ -4323,11 +4587,15 @@
       }
     },
     "7mmYellow": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -4412,10 +4680,14 @@
     },
     "12mmYellow": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -4499,11 +4771,15 @@
       }
     },
     "20mmYellow": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -4587,11 +4863,15 @@
       }
     },
     "30mmYellow": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -4675,11 +4955,15 @@
       }
     },
     "37mmYellow": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -4763,11 +5047,15 @@
       }
     },
     "50mmYellow": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -4851,11 +5139,15 @@
       }
     },
     "76mmYellow": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -4939,11 +5231,15 @@
       }
     },
     "100mmYellow": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -5027,11 +5323,15 @@
       }
     },
     "152mmYellow": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         60,
         248,
@@ -5207,11 +5507,15 @@
       }
     },
     "7mmBlue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5250,10 +5554,14 @@
     },
     "12mmBlue": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5291,11 +5599,15 @@
       }
     },
     "20mmBlue": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5333,11 +5645,15 @@
       }
     },
     "30mmBlue": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5375,11 +5691,15 @@
       }
     },
     "37mmBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5417,11 +5737,15 @@
       }
     },
     "50mmBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5459,11 +5783,15 @@
       }
     },
     "76mmBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5501,11 +5829,15 @@
       }
     },
     "100mmBlue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5543,11 +5875,15 @@
       }
     },
     "152mmBlue": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5585,11 +5921,15 @@
       }
     },
     "7mmDark_Blue": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5628,10 +5968,14 @@
     },
     "12mmDark_Blue": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5669,11 +6013,15 @@
       }
     },
     "20mmDark_Blue": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5711,11 +6059,15 @@
       }
     },
     "30mmDark_Blue": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5753,11 +6105,15 @@
       }
     },
     "37mmDark_Blue": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5795,11 +6151,15 @@
       }
     },
     "50mmDark_Blue": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5837,11 +6197,15 @@
       }
     },
     "76mmDark_Blue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5879,11 +6243,15 @@
       }
     },
     "100mmDark_Blue": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5921,11 +6289,15 @@
       }
     },
     "152mmDark_Blue": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         255,
         231,
@@ -5963,11 +6335,15 @@
       }
     },
     "7mmPink": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6006,10 +6382,14 @@
     },
     "12mmPink": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6047,11 +6427,15 @@
       }
     },
     "20mmPink": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6089,11 +6473,15 @@
       }
     },
     "30mmPink": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6131,11 +6519,15 @@
       }
     },
     "37mmPink": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6173,11 +6565,15 @@
       }
     },
     "50mmPink": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6215,11 +6611,15 @@
       }
     },
     "76mmPink": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6257,11 +6657,15 @@
       }
     },
     "100mmPink": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6299,11 +6703,15 @@
       }
     },
     "152mmPink": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         248,
         236,
@@ -6341,11 +6749,15 @@
       }
     },
     "7mmOrange": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -6430,10 +6842,14 @@
     },
     "12mmOrange": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -6517,11 +6933,15 @@
       }
     },
     "20mmOrange": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -6605,11 +7025,15 @@
       }
     },
     "30mmOrange": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -6693,11 +7117,15 @@
       }
     },
     "37mmOrange": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -6781,11 +7209,15 @@
       }
     },
     "50mmOrange": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -6869,11 +7301,15 @@
       }
     },
     "76mmOrange": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -6957,11 +7393,15 @@
       }
     },
     "100mmOrange": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -7045,11 +7485,15 @@
       }
     },
     "152mmOrange": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         0,
         36,
@@ -7225,11 +7669,15 @@
       }
     },
     "7mmGreen": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7314,10 +7762,14 @@
     },
     "12mmGreen": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7401,11 +7853,15 @@
       }
     },
     "20mmGreen": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7489,11 +7945,15 @@
       }
     },
     "30mmGreen": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7577,11 +8037,15 @@
       }
     },
     "37mmGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7665,11 +8129,15 @@
       }
     },
     "50mmGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7753,11 +8221,15 @@
       }
     },
     "76mmGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7841,11 +8313,15 @@
       }
     },
     "100mmGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -7929,11 +8405,15 @@
       }
     },
     "152mmGreen": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         102,
         255,
@@ -8109,11 +8589,15 @@
       }
     },
     "7mmWhiteGreen": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8198,10 +8682,14 @@
     },
     "12mmWhiteGreen": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8285,11 +8773,15 @@
       }
     },
     "20mmWhiteGreen": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8373,11 +8865,15 @@
       }
     },
     "30mmWhiteGreen": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8461,11 +8957,15 @@
       }
     },
     "37mmWhiteGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8549,11 +9049,15 @@
       }
     },
     "50mmWhiteGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8637,11 +9141,15 @@
       }
     },
     "76mmWhiteGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8725,11 +9233,15 @@
       }
     },
     "100mmWhiteGreen": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8813,11 +9325,15 @@
       }
     },
     "152mmWhiteGreen": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         191,
         255,
@@ -8993,11 +9509,15 @@
       }
     },
     "7mmGold": {
-      "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 1500.0,
-      "distScale": 4.0,
-      "radius": 0.02,
+      "halfSize": 2.5,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1000.0,
+      "distScale": 2.0,
+      "radius": 0.03,
+      "hdrK": 8.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9036,10 +9556,14 @@
     },
     "12mmGold": {
       "halfSize": 3.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.5,
-      "radius": 0.035,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1200.0,
+      "distScale": 2.6,
+      "radius": 0.038,
+      "hdrK": 9.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9077,11 +9601,15 @@
       }
     },
     "20mmGold": {
-      "halfSize": 3.5,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 3.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
+      "distScaleEnd": 1500.0,
+      "distScale": 2.8,
       "radius": 0.04,
+      "hdrK": 7.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9119,11 +9647,15 @@
       }
     },
     "30mmGold": {
-      "halfSize": 3.5,
-      "distScaleStart": 100.0,
+      "halfSize": 3.3,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.05,
+      "distScale": 2.8,
+      "radius": 0.045,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9161,11 +9693,15 @@
       }
     },
     "37mmGold": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
+      "halfSize": 3.5,
+      "distScaleStart": 150.0,
       "distScaleEnd": 2000.0,
-      "distScale": 2.5,
-      "radius": 0.06,
+      "distScale": 2.8,
+      "radius": 0.05,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.7,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9203,11 +9739,15 @@
       }
     },
     "50mmGold": {
-      "halfSize": 4.0,
-      "distScaleStart": 50.0,
-      "distScaleEnd": 2000.0,
-      "distScale": 2.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 2500.0,
+      "distScale": 2.3,
       "radius": 0.08,
+      "hdrK": 5.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9245,11 +9785,15 @@
       }
     },
     "76mmGold": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
       "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.09,
+      "hdrK": 6.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.5,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9287,11 +9831,15 @@
       }
     },
     "100mmGold": {
-      "halfSize": 4.0,
-      "distScaleStart": 20.0,
-      "distScaleEnd": 4000.0,
+      "halfSize": 3.5,
+      "distScaleStart": 250.0,
+      "distScaleEnd": 3000.0,
       "distScale": 2.0,
       "radius": 0.12,
+      "hdrK": 10.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -9329,11 +9877,15 @@
       }
     },
     "152mmGold": {
-      "halfSize": 5.0,
-      "distScaleStart": 1000.0,
-      "distScaleEnd": 7000.0,
-      "distScale": 4.0,
-      "radius": 0.17,
+      "halfSize": 4.0,
+      "distScaleStart": 300.0,
+      "distScaleEnd": 3000.0,
+      "distScale": 2.5,
+      "radius": 0.14,
+      "hdrK": 12.0,
+      "minPixelSize": 0.0,
+      "headTaper": 0.4,
+      "amplifyScale": 1.0,
       "color1": [
         132,
         224,
@@ -10636,7 +11188,9 @@
         "shipThrustMultTorpedoGunBoat": 1.2,
         "shipThrustMultSubmarineChaser": 1.3,
         "shipThrustMultDestroyer": 1.05,
-        "shipThrustMultFerryBarge": 1.3
+        "shipThrustMultFerryBarge": 1.3,
+        "shipFireDirectingCalcTimeMul": 0.75,
+        "shipFireDirectingLockTimeMult": 0.15
       },
       "on": {
         "arcadeBoost": false,
@@ -11794,6 +12348,95 @@
       "microdetail_stone_generic_flat_a_tex_n*"
     ]
   },
+  "enviCoverMaterials": {
+    "ground": {
+      "materialParams": {
+        "dust": {
+          "name": "dust",
+          "color": [
+            0.25,
+            0.15,
+            0.11
+          ],
+          "metalness": 0.0,
+          "texScale": 7.0,
+          "maxLevel": 1.0,
+          "topProjScale": 0.3
+        },
+        "mud": {
+          "name": "mud",
+          "color": [
+            0.025,
+            0.022,
+            0.031
+          ],
+          "metalness": 0.0,
+          "texScale": 7.0,
+          "maxLevel": 1.0,
+          "topProjScale": 0.0
+        }
+      },
+      "materialTextures": {
+        "texName": [
+          "tank_sand_mask",
+          "mud_noise_n"
+        ]
+      }
+    },
+    "sand": {
+      "materialParams": {
+        "dust": {
+          "name": "dust",
+          "color": [
+            0.25,
+            0.15,
+            0.11
+          ],
+          "metalness": 0.0,
+          "texScale": 7.0,
+          "maxLevel": 1.0,
+          "topProjScale": 0.3
+        },
+        "mud": {
+          "name": "mud",
+          "color": [
+            0.025,
+            0.022,
+            0.031
+          ],
+          "metalness": 0.0,
+          "texScale": 7.0,
+          "maxLevel": 1.0,
+          "topProjScale": 0.0
+        }
+      },
+      "materialTextures": {
+        "texName": [
+          "tank_sand_mask",
+          "mud_noise_n"
+        ]
+      }
+    },
+    "snow": {
+      "materialParams": {
+        "snow": {
+          "name": "snow",
+          "color": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "metalness": 0.1,
+          "texScale": 7.4,
+          "maxLevel": 0.7,
+          "topProjScale": 0.97
+        }
+      },
+      "materialTextures": {
+        "texName": "tank_snow_mask"
+      }
+    }
+  },
   "tankFuelLeakFxParams": {
     "fuelLeakFxName": "fire_burning_fuel_smoke",
     "fuelLeakStayFxName": "fire_burning_fuel",
@@ -11819,7 +12462,9 @@
     "fuelLeakDecalSize": [
       0.6,
       1.0
-    ]
+    ],
+    "fuelLeakEmmiterPosNoiseSpeed": 10.0,
+    "fuelLeakEmmiterPosNoiseAmplitude": 7.0
   },
   "shipFuelLeakFxParams": {
     "fuelLeakFxName": "fire_burning_fuel_water_smoke",
@@ -11838,7 +12483,9 @@
       0.9,
       3.5
     ],
-    "shipFuelLeakSpeedForStay": 1.0
+    "shipFuelLeakSpeedForStay": 1.0,
+    "fuelLeakEmmiterPosNoiseSpeed": 13.0,
+    "fuelLeakEmmiterPosNoiseAmplitude": 10.0
   },
   "commonScenes": {
     "scene": "gameData/scenes/common_scene.blk"
@@ -21826,6 +22473,70 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "boxer_cockerill_3105"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "sppz2_luchs_a2"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_r_04_",
+          "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_l_04_",
+          "modelNames": "icv_ifv_prototype"
         }
       ]
     },
@@ -23018,6 +23729,13 @@
       "city_highway_overpass_b_high_skew"
     ]
   },
+  "rendinstExtraForceDisableShadow": {
+    "ri": [
+      "modern_mall_building_debris_glass_a",
+      "modern_mall_building_debris_glass_b",
+      "modern_mall_building_debris_glass_c"
+    ]
+  },
   "rendinstOpt": {
     "minLodForMode0": 3,
     "maxLodForMode0": 15,
@@ -23769,6 +24487,8 @@
         "modern_tg_dam_constructor_middle_b",
         "modern_tg_dam_constructor_middle_b_guides",
         "modern_tg_dam_constructor_right",
+        "af_loading_platform_farm_a",
+        "af_loading_platform_columns",
         "air_port_building_service_i",
         "air_port_building_service_h",
         "air_port_building_service_b",
@@ -23972,46 +24692,569 @@
     "woodMat": "wood"
   },
   "trackEffectsPresets": {
+    "legacyControl": false,
     "default": {
-      "effect": "track_dirt_back",
-      "effectFront": "track_dirt_front",
-      "effectTop": "",
-      "effectDust": "track_move_dirt",
-      "effectBack": "track_dirt_dust"
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_ground_frontdust",
+        "speedToSpawnRate": [
+          30.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          1.5
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_ground_front",
+        "speedToSpawnRate": [
+          8.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_ground_back",
+        "speedToSpawnRate": [
+          5.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          3.0,
+          5.0
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_ground_friction",
+        "speedToSpawnRate": [
+          -0.4,
+          -3.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          4.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_ground_top",
+        "speedToSpawnRate": [
+          2.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_ground_little_wheels",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      }
     },
-    "sand": {
-      "effect": "track_sand_back",
-      "effectFront": "track_sand_front",
-      "effectTop": "track_sand_top",
-      "effectDust": "track_move_sand",
-      "effectBack": "track_sand_dust"
-    },
-    "snow": {
-      "effect": "track_snow_back",
-      "effectFront": "track_snow_front",
-      "effectTop": "track_snow_top",
-      "effectDust": "track_move_snow",
-      "effectBack": "track_snow_dust"
+    "dirt": {
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_dirt_frontdust",
+        "speedToSpawnRate": [
+          30.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          0.5,
+          1.5
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_dirt_front",
+        "speedToSpawnRate": [
+          8.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_dirt_back",
+        "speedToSpawnRate": [
+          5.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          3.0,
+          5.0
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_dirt_friction",
+        "speedToSpawnRate": [
+          -0.4,
+          -3.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          4.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_dirt_top",
+        "speedToSpawnRate": [
+          2.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_dirt_little_wheels",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_dirt_trail",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      }
     },
     "soil": {
-      "effect": "track_dirt_back",
-      "effectFront": "track_dirt_front",
-      "effectTop": "track_dirt_top",
-      "effectDust": "track_move_dirt",
-      "effectBack": ""
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_soil_frontdust",
+        "speedToSpawnRate": [
+          25.0,
+          35.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_soil_front",
+        "speedToSpawnRate": [
+          8.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.5
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_soil_back",
+        "speedToSpawnRate": [
+          5.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          3.0,
+          6.5
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_soil_friction",
+        "speedToSpawnRate": [
+          -0.4,
+          -3.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          4.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_soil_top",
+        "speedToSpawnRate": [
+          2.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_soil_little_wheels",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_soil_trail",
+        "speedToSpawnRate": [
+          30.0,
+          45.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      }
     },
     "ground": {
-      "effect": "track_ground_back",
-      "effectFront": "track_ground_front",
-      "effectTop": "track_ground_top",
-      "effectDust": "track_move_ground",
-      "effectBack": "track_ground_dust"
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_ground_frontdust",
+        "speedToSpawnRate": [
+          30.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          3.0
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_ground_front",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          5.0
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_ground_back",
+        "speedToSpawnRate": [
+          15.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.5,
+          3.0
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_ground_friction",
+        "speedToSpawnRate": [
+          -0.1,
+          -5.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          10.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_ground_top",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_ground_little_wheels",
+        "speedToSpawnRate": [
+          15.0,
+          50.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          8.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_ground_trail",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      }
+    },
+    "snow": {
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_snow_frontdust",
+        "speedToSpawnRate": [
+          10.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.0
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_snow_front",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          5.0
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_snow_back",
+        "speedToSpawnRate": [
+          10.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          4.0
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_snow_friction",
+        "speedToSpawnRate": [
+          -0.1,
+          -5.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          10.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_snow_top",
+        "speedToSpawnRate": [
+          3.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          0.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_snow_little_wheels",
+        "speedToSpawnRate": [
+          7.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          3.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_snow_trail",
+        "speedToSpawnRate": [
+          20.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      }
+    },
+    "sand": {
+      "fxDust": {
+        "fx": "",
+        "speedToSpawnRate": [
+          0.0,
+          14.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          1.0
+        ]
+      },
+      "fxDustOnFront": {
+        "fx": "tank_track_sand_frontdust",
+        "speedToSpawnRate": [
+          5.0,
+          40.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          2.0
+        ]
+      },
+      "fxTopFront": {
+        "fx": "tank_track_sand_front",
+        "speedToSpawnRate": [
+          5.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          1.5,
+          3.5
+        ]
+      },
+      "fxDustOnBack": {
+        "fx": "tank_track_sand_back",
+        "speedToSpawnRate": [
+          8.0,
+          30.0
+        ],
+        "emitVelocityScale": [
+          3.5,
+          6.5
+        ]
+      },
+      "fxFriction": {
+        "fx": "tank_track_sand_friction",
+        "speedToSpawnRate": [
+          -0.1,
+          -5.0
+        ],
+        "emitVelocityScale": [
+          2.0,
+          10.0
+        ]
+      },
+      "fxTop": {
+        "fx": "tank_track_sand_top",
+        "speedToSpawnRate": [
+          3.0,
+          25.0
+        ],
+        "emitVelocityScale": [
+          0.0,
+          0.5
+        ]
+      },
+      "fxCenterOfWheel": {
+        "fx": "tank_track_sand_little_wheels",
+        "speedToSpawnRate": [
+          7.0,
+          20.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          3.0
+        ]
+      },
+      "fxCenterOfTank": {
+        "fx": "tank_track_sand_trail",
+        "speedToSpawnRate": [
+          15.0,
+          35.0
+        ],
+        "emitVelocityScale": [
+          1.0,
+          5.0
+        ]
+      }
     }
   },
+  "effectLodsPresets": {
+    "tank_track_dirt_fx_default": [
+      100.0,
+      300.0,
+      500.0
+    ],
+    "tank_track_dirt_fx_for_optics": [
+      700.0,
+      1500.0,
+      3000.0
+    ],
+    "tank_track_dirt_fx_for_video": [
+      2500.0,
+      5000.0,
+      7500.0
+    ]
+  },
   "treeDestractible": {
-    "heightThreshold": 7.0,
+    "heightThreshold": 3.0,
     "radiusThreshold": 0.5,
-    "impulseThresholdMult": 1000.0,
+    "impulseThresholdMult": 1.0,
     "canopyRestitution": 0.5,
     "canopyStiffnessMult": 1.0,
     "canopyAngularLimit": 0.3,
@@ -24046,6 +25289,18 @@
           10.0
         ]
       ]
+    },
+    "branchDestr": {
+      "enable": true,
+      "impulseMul": 2.0,
+      "impulseMaxLength": 2.5,
+      "branchSizeMax": 7.0,
+      "rotateSpeedMul": 2.0,
+      "rotateAngleSpread": 1.5,
+      "branchSizeSlowDown": 0.3,
+      "fallingSpeedMul": 0.25,
+      "fallingSpeedRnd": 0.25,
+      "horizontalSpeedMul": 0.5
     }
   },
   "ground_decals_detail": {
@@ -25806,6 +27061,15 @@
       "dust_pieces"
     ]
   },
+  "prefetchEffectsForcedSync": {
+    "name": [
+      "water_splash_small_bow",
+      "water_splash_medium_bow",
+      "water_splash_massive",
+      "water_splash_medium",
+      "water_splash_small"
+    ]
+  },
   "designationLimits": {
     "tank": 10000.0,
     "uav": 30000.0,
@@ -25827,15 +27091,54 @@
       "commander"
     ]
   },
+  "shipAimNodesNames": {
+    "node": [
+      "main_caliber_turret",
+      "aux_caliber_turret",
+      "aa_turret",
+      "bridge",
+      "funnel",
+      "fire_director",
+      "rangefinder",
+      "superstructure",
+      "superstructure_front",
+      "superstructure_bottom",
+      "superstructure_side",
+      "superstructure_back",
+      "superstructure_top"
+    ]
+  },
   "cfdWind": {
     "enabled": true
   },
+  "tankEnviCover": {
+    "enabled": true,
+    "snowEmitterIntensity": 0.005,
+    "velocitySheddingMult": 0.0005,
+    "impulseEmitterLifetime": 0.5,
+    "impulseEmitterCaliberMult": 30.0,
+    "impulseEmitterMinCaliber": 0.08
+  },
   "vapor": {
-    "lerxVaporCritAOA": 15.0,
-    "maxLerxVaporCritAOA": 3.0,
-    "lerxVaporCritAOS": 12.0,
-    "maxLerxVaporCritAOS": 3.0,
-    "lerxVaporTimeAccumulation": 0.33,
-    "minSpeedForLerxVapor": 50.0
+    "scrollingSpeed": 9.0,
+    "densityScrollingSpeed": 9.0,
+    "lerxVaporDensityNoiseAmplitude": 0.2,
+    "lerxVaporDensityNoiseStrength": 0.8,
+    "lerxVaporRadiusNoiseAmplitude": 0.5,
+    "radiusScrollingSpeed": 9.0,
+    "lerxVaporCritAOA": 5.0,
+    "maxLerxVaporCritAOA": 15.0,
+    "lerxVaporCritAOS": 5.0,
+    "maxLerxVaporCritAOS": 15.0,
+    "halfIntensityAltitude": 5000.0,
+    "zeroIntensityAltitude": 8000.0,
+    "lerxVaporTimeAccumulation": 0.0,
+    "minSpeedForLerxVapor": 51.0,
+    "intensityRampupEndSpeed": 77.16,
+    "intensityRampDownStartSpeed": 272.222,
+    "maxSpeedForLerxVapor": 325.0
+  },
+  "dx12": {
+    "asyncPresent": false
   }
 }

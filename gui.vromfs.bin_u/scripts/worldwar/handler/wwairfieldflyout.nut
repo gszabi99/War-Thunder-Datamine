@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
+let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -18,9 +19,7 @@ let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationU
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
-let { wwGetMapCellByCoords } = require("worldwar")
 let { addPopup } = require("%scripts/popups/popups.nut")
-
 
 let unitsTypesList = {
   [airfieldTypes.AT_HELIPAD] = [
@@ -57,6 +56,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
 
   position = null //receives as Point2()
   armyTargetName = null
+  cellIdx = -1
   onSuccessfullFlyoutCb = null
 
   airfield = null
@@ -80,7 +80,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
 
   unitsGroups = null
 
-  static function open(index, position, armyTargetName, onSuccessfullFlyoutCb = null) {
+  static function open(index, position, armyTargetName, cellIdx, onSuccessfullFlyoutCb = null) {
     let airfield = ::g_world_war.getAirfieldByIndex(index)
     let availableArmiesArray = airfield.getAvailableFormations()
     if (!availableArmiesArray.len())
@@ -92,6 +92,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
         availableArmiesArray = availableArmiesArray
         position = position,
         armyTargetName = armyTargetName,
+        cellIdx,
         onSuccessfullFlyoutCb = onSuccessfullFlyoutCb
       }
     )
@@ -223,7 +224,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
+    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
 
     this.sendButtonObj = this.scene.findObject("send_aircrafts_button")
     this.updateVisibleUnits()
@@ -419,7 +420,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
           let maxValue = this.currentOperation.maxUniqueUnitsOnFlyout
           let maxValueText = colorize("white", loc("worldwar/airfield/unit_various_limit",
             { types = maxValue }))
-          armyInfoText += loc("ui/parentheses/space", { text = maxValueText })
+          armyInfoText = "".concat(armyInfoText, loc("ui/parentheses/space", { text = maxValueText }))
         }
         armyTypeTextObj.tooltip = loc(
           $"worldwar/airfield/{formedArmyId}_armies_hint", this.getAirsTypeViewParams(), "")
@@ -631,7 +632,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
-    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
+    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
   }
 
   function fillUnitWeaponPreset(unitTable) {
@@ -786,9 +787,8 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let cellIdx = wwGetMapCellByCoords(this.position.x, this.position.y)
     let taskId = ::g_world_war.moveSelectedAircraftsToCell(
-      cellIdx, units, group.owner, this.armyTargetName)
+      this.cellIdx, units, group.owner, this.armyTargetName)
     if (this.onSuccessfullFlyoutCb)
       addBgTaskCb(taskId, this.onSuccessfullFlyoutCb)
     this.goBack()

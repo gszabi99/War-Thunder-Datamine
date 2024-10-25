@@ -2,6 +2,8 @@ from "%scripts/dagui_natives.nut" import is_online_available
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -37,13 +39,13 @@ let showModesNotLoadedHelpMessage = @() needShowGameModesNotLoadedMsg.set(true)
 function notifyGmChanged() {
   let gameEventsOldFormat = {}
   foreach (_gm_id, modeInfo in gameModes) {
-    if (::events.isCustomGameMode(modeInfo))
+    if (events.isCustomGameMode(modeInfo))
       continue
     if ("team" in modeInfo && !("teamA" in modeInfo) && !("teamB" in modeInfo))
       modeInfo.teamA <- modeInfo.team
     gameEventsOldFormat[modeInfo.name] <- modeInfo
   }
-  ::events.updateEventsData(gameEventsOldFormat)
+  events.updateEventsData(gameEventsOldFormat)
 }
 
 function onGameModesUpdated(modes_list) {

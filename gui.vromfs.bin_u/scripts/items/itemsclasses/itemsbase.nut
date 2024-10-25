@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -150,7 +150,7 @@ let BaseItem = class {
     this.isInventoryItem = invBlk != null
     this.purchaseFeature = blk?.purchase_feature ?? ""
     this.isDevItem = !this.isInventoryItem && this.purchaseFeature == "devItemShop"
-    this.canBuy = this.canBuy && !this.isInventoryItem && this.getCost(true) > ::zero_money
+    this.canBuy = this.canBuy && !this.isInventoryItem && this.getCost(true) > zero_money
     this.isHideInShop = blk?.hideInShop ?? false
     this.iconStyle = blk?.iconStyle ?? this.id
     this.lottieAnimation = blk?.lottieAnimation
@@ -290,11 +290,11 @@ let BaseItem = class {
     return loc($"item/{this.defaultLocId}")
   }
 
-  function getNameMarkup(count = 0, showTitle = true, hasPadding = false) {
+  function getNameMarkup(count = 0, showTitle = true, hasPadding = false, tooltipParams = {}) {
     return handyman.renderCached("%gui/items/itemString.tpl", {
       title = showTitle ? colorize("activeTextColor", this.getName()) : null
       icon = this.getSmallIconName()
-      tooltipId = getTooltipType("ITEM").getTooltipId(this.id, { isDisguised = this.isDisguised })
+      tooltipId = getTooltipType("ITEM").getTooltipId(this.id, tooltipParams.__merge({isDisguised = this.isDisguised}))
       count = count > 1 ? (colorize("activeTextColor", " x") + colorize("userlogColoredText", count)) : null
       hasPadding = hasPadding
     })
@@ -550,7 +550,7 @@ let BaseItem = class {
 
     cost = cost ?? this.getCost()
     let costText = colored ? cost.getTextAccordingToBalance() : cost.getUncoloredText()
-    return res + ((costText == "") ? "" : " (" + costText + ")")
+    return "".concat(res, ((costText == "") ? "" : " (" + costText + ")"))
   }
 
   function getMainActionData(isShort = false, _params = {}) {
@@ -608,7 +608,7 @@ let BaseItem = class {
 
     res = hoursToString(this.expiredTimeAfterActivationH, true, false, true)
     if (withTitle)
-      res = loc("items/expireTimeAfterActivation") + loc("ui/colon") + colorize("activeTextColor", res)
+      res = "".concat(loc("items/expireTimeAfterActivation"), loc("ui/colon"), colorize("activeTextColor", res))
     return res
   }
 
@@ -621,8 +621,8 @@ let BaseItem = class {
         this.onItemExpire()
       return loc(this.itemExpiredLocId)
     }
-    let resStr = loc("icon/hourglass") + nbsp +
-      hoursToString(secondsToHours(deltaSeconds), false, true, true).replace(" ", nbsp)
+    let resStr = "".concat(loc("icon/hourglass"), nbsp,
+      hoursToString(secondsToHours(deltaSeconds), false, true, true).replace(" ", nbsp))
     let expireTimeColor = this.getExpireType()?.color
     return expireTimeColor ? colorize(expireTimeColor, resStr) : resStr
   }
@@ -636,8 +636,8 @@ let BaseItem = class {
     let timeText = this.getExpireTimeTextShort()
     if (timeText != "") {
       let labelLocId = active ? "items/expireTimeLeft" : "items/expireTimeBeforeActivation"
-      res += ((res != "") ? "\n" : "") + loc(labelLocId) + loc("ui/colon") +
-        colorize("activeTextColor", timeText)
+      res = "".concat(res, ((res != "") ? "\n" : ""), loc(labelLocId), loc("ui/colon"),
+        colorize("activeTextColor", timeText))
     }
     return res
   }

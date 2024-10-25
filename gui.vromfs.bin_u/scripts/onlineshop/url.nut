@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import send_error_log, use_embedded_browser
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -160,7 +159,7 @@ function validateLink(link) {
     return null
 
   if (!u.isString(link)) {
-    log("CHECK LINK result: " + toString(link))
+    log($"CHECK LINK result: {toString(link)}")
     assert(false, "CHECK LINK: Link received not as text")
     return null
   }

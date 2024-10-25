@@ -99,7 +99,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
      (is_night_vision ? settings.rangefinderNvBackColor :
      (get_crosshair_light_on() ? settings.rangefinderLightBackColor : settings.rangefinderBackColor)))
     if Color4(backColor).a > 0.
-      ctx |> set_texture(BAD_TEXTUREID, false, false)
+      ctx |> reset_textures()
       ctx |> set_color(backColor)
       let tc = float2(0., 0.)
       let fullStrBox = get_str_bbox("8888", 4, fctx)

@@ -77,7 +77,7 @@
         "armorThickness": 52.0
       },
       "turret_01_side_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 10.0
       },
       "superstructure_top_dm": {
         "armorThickness": 40.0
@@ -119,21 +119,22 @@
     "turret": {
       "turret_side_dm": {
         "armorThickness": 100.0,
-        "armorClass": "CHA_tank"
+        "armorClass": "CHA_tank",
+        "variableThickness": true
       },
       "turret_front_dm": {
         "armorThickness": 82.0,
         "armorClass": "CHA_tank"
       },
       "turret_bottom_dm": {
-        "armorThickness": 82.0,
+        "armorThickness": 45.0,
         "armorClass": "CHA_tank"
       },
       "turret_01_top_dm": {
         "armorThickness": 82.0
       },
       "turret_back_dm": {
-        "armorThickness": 97.0,
+        "armorThickness": 95.0,
         "armorClass": "CHA_tank"
       },
       "turret_03_back_dm": {
@@ -141,6 +142,11 @@
         "armorClass": "CHA_tank"
       },
       "turret_01_front_dm": {
+        "armorThickness": 75.0,
+        "armorClass": "CHA_tank",
+        "variableThickness": true
+      },
+      "mg_mask_02_dm": {
         "armorThickness": 90.0,
         "armorClass": "CHA_tank"
       },
@@ -150,20 +156,22 @@
       },
       "gun_mask_dm": {
         "armorThickness": 90.0,
-        "armorClass": "CHA_tank"
+        "armorClass": "CHA_tank",
+        "variableThickness": true
       },
       "gun_mask_01_dm": {
-        "armorThickness": 90.0,
-        "armorClass": "CHA_tank"
+        "armorThickness": 45.0,
+        "armorClass": "CHA_tank",
+        "variableThickness": true
       },
       "turret_02_bottom_dm": {
-        "armorThickness": 45.0
+        "armorThickness": 5.0
       },
       "turret_top_dm": {
         "armorThickness": 30.0
       },
       "turret_commander_dm": {
-        "armorThickness": 30.0
+        "armorThickness": 10.0
       },
       "turret_03_top_dm": {
         "armorThickness": 30.0
@@ -1989,13 +1997,13 @@
     },
     "engine": {
       "horsePowers": 600.0,
-      "maxRPM": 1900.0,
+      "maxRPM": 2000.0,
       "minRPM": 650.0
     },
     "mechanics": {
       "maxBrakeForce": 200000.0,
       "driveGearRadius": 0.405,
-      "mainGearRatio": 2.54,
+      "mainGearRatio": 2.67,
       "sideGearRatio": 5.7,
       "gearRatios": {
         "ratio": [
@@ -2140,6 +2148,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2158,6 +2167,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2315,7 +2325,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2463,6 +2473,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2470,6 +2481,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2477,6 +2489,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2484,6 +2497,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2491,6 +2505,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2498,7 +2513,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2518,7 +2533,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2538,7 +2553,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2552,7 +2567,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2572,7 +2587,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2592,7 +2607,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -2670,6 +2685,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false

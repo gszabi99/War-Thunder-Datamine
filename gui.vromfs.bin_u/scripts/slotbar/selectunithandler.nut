@@ -2,6 +2,8 @@ from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { setTranspRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -472,11 +474,11 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function getGameModeNameFromParams(params) {
     //same order as in isUnitEnabledForSlotbar
-    local event = ::events.getEvent(params?.eventId)
+    local event = events.getEvent(params?.eventId)
     if (!event && params?.roomCreationContext)
       event = params.roomCreationContext.mGameMode
     if (event)
-      return ::events.getEventNameText(event)
+      return events.getEventNameText(event)
 
     if ((params?.gameModeName ?? "") != "")
       return params.gameModeName

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { sqrt } = require("math")
@@ -107,7 +106,9 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
     if (hasPrice) {
       canBuy = true
       if (checkObj(aObj))
-        aObj.setValue(loc("ugm/price") + loc("ui/colon") + colorize("white", cost.getTextAccordingToBalance()))
+        aObj.setValue(
+          "".concat(loc("ugm/price"), loc("ui/colon"), colorize("white", cost.getTextAccordingToBalance()))
+        )
     }
   }
   else
@@ -149,8 +150,10 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
     if (hasDecor) {
       obtainInfo = loc("mainmenu/itemReceived")
       if (isTrophyContent && !isReceivedPrizes)
-        obtainInfo += "\n" + colorize("badTextColor",
-          loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce"))
+        obtainInfo = "\n".concat(
+          obtainInfo,
+          colorize("badTextColor",
+            loc(params?.relatedItem ? "mainmenu/activateOnlyOnce" : "mainmenu/receiveOnlyOnce")))
     }
     else if (isTrophyContent)
       obtainInfo = loc("mainmenu/itemCanBeReceived")

@@ -22,7 +22,7 @@
     "wingAreaMult": 1.2,
     "finsAoaHor": 0.15,
     "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.1,
+    "distFromCmToStab": 0.15,
     "mass": 410.0,
     "massEnd": 320.0,
     "timeFire": 2.35,
@@ -67,11 +67,11 @@
     "dragCx": 0.025,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
-    "explosionEffect": "explosion_midair_big",
-    "groundCollisionEffect": "bomb_expl_100kg",
+    "explosionEffect": "explosion_midair_rocket_medium",
+    "groundCollisionEffect": "bomb_expl_50kg",
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
-    "explosionPatchRadius": 5.0,
+    "explosionPatchRadius": 4.5,
     "waterRicochetEffect": "hit_81_105mm_water_ap",
     "groundRicochetEffect": "hit_81_105mm_dirt_ap",
     "visualShattersWaterOffset": 1.2,
@@ -87,12 +87,6 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "price": 3000.0,
-    "hasTracerTrail": true,
-    "tracerTrailEmitter": [
-      0.0,
-      0.0,
-      0.0
-    ],
     "amountPerTier": 1.0,
     "iconType": "rockets_he_large_special_laser",
     "arcadeProp": {
@@ -107,6 +101,10 @@
       "launchAngleMax": [
         12.5,
         30.0
+      ],
+      "launchDistanceRange": [
+        1000.0,
+        8000.0
       ],
       "timeTableCorrection": [
         0.699,
@@ -134,10 +132,10 @@
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 8.0,
-        "accelControlProp": 0.0035,
-        "accelControlIntg": 0.058,
+        "accelControlProp": 0.008,
+        "accelControlIntg": 0.0635,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0016
+        "accelControlDiff": 0.0035
       },
       "table0": {
         "altitude": 500.0,
@@ -151,10 +149,10 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          999.134,
-          1003.12,
-          431.275,
-          784.795
+          1000.0,
+          1000.0,
+          1000.0,
+          1000.0
         ],
         "rangeMax": [
           7211.3,
@@ -164,7 +162,7 @@
         ],
         "rangeMaxAltDiff": [
           500.0,
-          1733.44
+          0.0
         ],
         "timeMax": [
           18.016,
@@ -174,7 +172,7 @@
         ],
         "timeMaxAltDiff": [
           500.0,
-          0.0287733
+          0.0
         ]
       },
       "table1": {
@@ -189,10 +187,10 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          1050.86,
-          1076.71,
-          769.624,
-          802.031
+          1000.0,
+          1000.0,
+          1000.0,
+          1000.0
         ],
         "rangeMax": [
           7492.07,
@@ -202,7 +200,7 @@
         ],
         "rangeMaxAltDiff": [
           2000.0,
-          2034.77
+          0.0
         ],
         "timeMax": [
           18.0187,
@@ -212,7 +210,7 @@
         ],
         "timeMaxAltDiff": [
           2000.0,
-          -0.00865078
+          0.0
         ]
       },
       "table2": {
@@ -227,10 +225,10 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          689.652,
-          1133.62,
-          1215.18,
-          781.019
+          1000.0,
+          1000.0,
+          1000.0,
+          1000.0
         ],
         "rangeMax": [
           8114.62,
@@ -240,7 +238,7 @@
         ],
         "rangeMaxAltDiff": [
           5000.0,
-          2240.42
+          0.0
         ],
         "timeMax": [
           18.0179,
@@ -250,7 +248,7 @@
         ],
         "timeMaxAltDiff": [
           5000.0,
-          -0.621832
+          0.0
         ]
       },
       "table3": {
@@ -265,10 +263,10 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          596.119,
-          585.265,
-          586.92,
-          600.145
+          1000.0,
+          1000.0,
+          1000.0,
+          1000.0
         ],
         "rangeMax": [
           8691.41,
@@ -278,7 +276,7 @@
         ],
         "rangeMaxAltDiff": [
           8000.0,
-          -178.915
+          0.0
         ],
         "timeMax": [
           18.0,
@@ -288,7 +286,7 @@
         ],
         "timeMaxAltDiff": [
           8000.0,
-          -100.0
+          0.0
         ]
       }
     },
@@ -506,14 +504,6 @@
       },
       "armorNPHiCal": {
         "fx": "hit_12_18mm_metal_ap"
-      }
-    },
-    "tracerTrail": {
-      "smokeEffect": "",
-      "visual": {
-        "traceFreq": 1,
-        "tracer": "tracers_rocket_med_red_sparks",
-        "trail": "noTrail"
       }
     }
   }

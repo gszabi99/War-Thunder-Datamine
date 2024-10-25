@@ -71,7 +71,7 @@ function makeMenuView(cfg) {
 }
 
 
-local function openMenu(cfg) {
+function openMenu(cfg) {
   let joyParams = ::joystick_get_cur_settings()
   let params = {
     menu = makeMenuView(cfg)

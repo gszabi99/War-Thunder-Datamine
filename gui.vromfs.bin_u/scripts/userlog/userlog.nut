@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, copy_to_clipboard, set_char_cb, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -286,8 +285,8 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local data = ""
     for (local i = this.nextLogId; i < showTo; i++)
       if (i != this.nextLogId || !this.haveNext) {
-        let rowName = "row" + this.logs[i].idx
-        data += format("expandable { id:t='%s' } ", rowName)
+        let rowName = $"row{this.logs[i].idx}"
+        data = "".concat(data, format("expandable { id:t='%s' } ", rowName))
       }
     this.guiScene.appendWithBlk(this.listObj, data, this)
 
@@ -386,7 +385,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let newMsgs = this.getNewMessagesByPages()
     foreach (idx, count in newMsgs) {
-      let obj = this.scene.findObject("img_new_" + ::userlog_pages[idx].id)
+      let obj = this.scene.findObject($"img_new_{::userlog_pages[idx].id}")
       if (checkObj(obj))
         obj.show(count > 0)
     }

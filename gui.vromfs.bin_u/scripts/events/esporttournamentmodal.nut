@@ -1,7 +1,9 @@
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
+
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -32,7 +34,7 @@ function getActiveTicketTxt(event) {
   if (!event)
     return ""
 
-  let ticket = ::events.getEventActiveTicket(event)
+  let ticket = events.getEventActiveTicket(event)
   if (!ticket)
     return ""
 
@@ -178,16 +180,16 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
     fetchLbData(
       getEventByDay(this.tournament.id, this.curTourParams.dayNum, false),
       @(lbData) this.updateLbObjects(lbData), this)
-    let rangeData = ::events.getPlayersRangeTextData(this.curEvent)
+    let rangeData = events.getPlayersRangeTextData(this.curEvent)
     let missArr = [$"{loc("mainmenu/missions")}{loc("ui/colon")}"]
     foreach (miss, _v in (this.curEvent.mission_decl?.missions_list ?? {}))
       missArr.append("".concat("<color=@activeTextColor>",
         getCombineLocNameMission(get_meta_mission_info_by_name(miss)), "</color>"))
     let descTxtArr = [
-      ::events.getEventActiveTicketText(this.curEvent, "activeTextColor"),
+      events.getEventActiveTicketText(this.curEvent, "activeTextColor"),
       rangeData.isValid ? $"{rangeData.label}<color=@activeTextColor>{rangeData.value}</color>" : "",
-      ::events.getRespawnsText(this.curEvent),
-      ::events.getEventDescriptionText(this.curEvent)
+      events.getRespawnsText(this.curEvent),
+      events.getEventDescriptionText(this.curEvent)
     ].extend(missArr.len() > 1 ? missArr : [])
 
     return {

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -325,8 +324,7 @@ function gatherItemsArray(trophyData, mainLength) {
     local insertIdx = insertRewardIdx + 1 // Interting teaser item next to reward.
     if (insertIdx >= mainLength)
       insertIdx = 0
-    log($"ItemsRoulette: Top reward by key {topRewardKey} not founded." +
-         $"Insert manually into {insertIdx}.")
+    log($"ItemsRoulette: Top reward by key {topRewardKey} not founded. Insert manually into {insertIdx}.")
 
     let slot = resultArray[insertIdx]
     if (slot.len() == 0)
@@ -425,7 +423,7 @@ function createItemsMarkup(completeArray) {
     foreach (slotIdx, item in slot)
       slotRes.insert(0,
         LayersIcon.genDataFromLayer(
-          { x = (offset * slotIdx) + "@itemWidth", w = "1@itemWidth" },
+          { x = $"{offset * slotIdx}@itemWidth", w = "1@itemWidth" },
           item?.reward?.layout ?? item?.layout))
 
     let layerCfg = LayersIcon.findLayerCfg("roulette_slot")
@@ -435,7 +433,7 @@ function createItemsMarkup(completeArray) {
     layerCfg.w <-$"{width}@itemWidth"
     layerCfg.id <-$"roulette_slot_{idx}"
 
-    result += LayersIcon.genDataFromLayer(layerCfg, "".join(slotRes, true))
+    result = "".concat(result, LayersIcon.genDataFromLayer(layerCfg, "".join(slotRes, true)))
   }
 
   return result

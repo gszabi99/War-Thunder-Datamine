@@ -3853,7 +3853,8 @@
               "blk": "gameData/Weapons/containers/fr_auf2_gbu_12_x2.blk",
               "emitter": "pylon_auf2",
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 6,
@@ -5084,6 +5085,234 @@
       -3.7053,
       2.65215,
       -2.58566e-16
+    ]
+  },
+  "AfterBurner0": {
+    "volumetricAfterBurner": {
+      "name": "jet_blue_orange_modern",
+      "maxHeight": 11.0,
+      "minHeight": 6.0,
+      "heightNoiseStrength": 0.0,
+      "heightNoiseSpeed": 20.0,
+      "maxRadius": 0.35,
+      "minRadius": 0.3,
+      "maxBaseRadius": 0.32,
+      "minBaseRadius": 0.32,
+      "relativeCylinderHeightMax": 0.36,
+      "relativeCylinderHeightMin": 0.2,
+      "outerCylinderAbsorptionMax": 0.75,
+      "outerCylinderAbsorptionMin": 0.5,
+      "outerCylinderHeightFadeMax": 7.0,
+      "outerCylinderHeightFadeMin": 5.0,
+      "tailHeightFadeMax": 3.5,
+      "tailHeightFadeMin": 0.5,
+      "outerCylinderHeightFadeNoiseStrength": 2.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.4,
+      "maxOuterCylinderRadius": 0.45,
+      "absorption": 1.0,
+      "colorIntensityMax": 10.0,
+      "colorIntensityMin": 1.0,
+      "colorOverHeightMult": 1.1,
+      "colorOverDepthMult": 2.5,
+      "colorOverRadiusMult": 4.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 38.0,
+      "ringAbsorption": 1.2,
+      "maxRingFrequency": 9.71038,
+      "minRingFrequency": 11.5192,
+      "ringIntensityMin": -0.5,
+      "ringIntensityMax": 2.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 1.0,
+      "ringOffsetNoiseStrength": 1.0,
+      "ringOffsetNoiseSpeed": 20.0,
+      "rampTextureOffset": 0,
+      "radiusNoiseStrength": 0.06,
+      "radiusNoiseSpeed": 20.0,
+      "shakeNoiseStrength": 0.01,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.5,
+      "colorOverHeightNoiseStrength": 0.1,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.1,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.03,
+      "colorOverDepthNoiseSpeed": 10.0,
+      "colorIntensityNoiseStrength": 2.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "ringIntensity": 2.0,
+      "ringFrequency": 11.3097,
+      "preNominalEasingParams": {
+        "animationTime": 2.0,
+        "ascendingSmoothIntensityParams": 0.5
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.5,
+        "ascendingSmoothIntensityParams": 1.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.889273,
+          0.686275
+        ],
+        "angle": 1.0,
+        "brightness": 20.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensity": 1.0,
+        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseSpeed": 16.0
+      }
+    }
+  },
+  "lerxVapors": {
+    "lerxVapor": [
+      {
+        "entryPoint": [
+          3.0,
+          0.1,
+          1.0
+        ],
+        "exitPoint": [
+          -5.0,
+          0.4,
+          1.0
+        ],
+        "entryTangent": [
+          1.0,
+          0.1,
+          1.2
+        ],
+        "exitTangent": [
+          0.5,
+          0.4,
+          1.3
+        ],
+        "exitTangentHeight": [
+          0.5,
+          0.0
+        ],
+        "exitTangentWidth": [
+          -0.5,
+          0.5
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          -1.0,
+          2.0
+        ],
+        "maxRadius": [
+          0.05,
+          0.3
+        ],
+        "minRadius": [
+          0.05,
+          0.18
+        ],
+        "noiseParms": [
+          0.1,
+          0.5
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          0.8,
+          0.2
+        ],
+        "density": 1.0,
+        "intensityMult": 7.0,
+        "criticalAOA": [
+          5.0,
+          20.0,
+          35.0,
+          45.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ]
+      },
+      {
+        "entryPoint": [
+          3.0,
+          0.1,
+          -1.0
+        ],
+        "exitPoint": [
+          -5.0,
+          0.4,
+          -1.0
+        ],
+        "entryTangent": [
+          1.0,
+          0.1,
+          -1.2
+        ],
+        "exitTangent": [
+          0.5,
+          0.4,
+          -1.3
+        ],
+        "exitTangentHeight": [
+          0.5,
+          0.0
+        ],
+        "exitTangentWidth": [
+          0.5,
+          -0.5
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          1.0,
+          -2.0
+        ],
+        "maxRadius": [
+          0.05,
+          0.3
+        ],
+        "minRadius": [
+          0.05,
+          0.18
+        ],
+        "noiseParms": [
+          0.1,
+          0.5
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          0.8,
+          0.2
+        ],
+        "density": 1.0,
+        "intensityMult": 7.0,
+        "criticalAOA": [
+          5.0,
+          20.0,
+          35.0,
+          45.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ]
+      }
     ]
   }
 }

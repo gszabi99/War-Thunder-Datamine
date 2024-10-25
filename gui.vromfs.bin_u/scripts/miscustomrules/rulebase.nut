@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on_respawn_screen, get_user_custom_state, get_local_player_country, get_mission_custom_state
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
 let { g_team } = require("%scripts/teams.nut")
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
@@ -73,11 +74,11 @@ let Base = class {
   /*************************************************************************************************/
 
   function getMaxRespawns() {
-    return ::RESPAWNS_UNLIMITED
+    return RESPAWNS_UNLIMITED
   }
 
   function getLeftRespawns() {
-    local res = ::RESPAWNS_UNLIMITED
+    local res = RESPAWNS_UNLIMITED
     if (!this.isScoreRespawnEnabled && getTblValue("maxRespawns", this.missionParams, 0) > 0)
       res = get_respawns_left() //code return spawn score here when spawn score enabled instead of respawns left
     return res
@@ -112,14 +113,14 @@ let Base = class {
 
   function getRespawnInfoTextForUnit(unit) {
     let unitLeftRespawns = this.getUnitLeftRespawns(unit)
-    if (unitLeftRespawns == ::RESPAWNS_UNLIMITED || this.isUnitAvailableBySpawnScore(unit))
+    if (unitLeftRespawns == RESPAWNS_UNLIMITED || this.isUnitAvailableBySpawnScore(unit))
       return ""
     return loc("respawn/leftTeamUnit", { num = unitLeftRespawns })
   }
 
   function getRespawnInfoTextForUnitInfo(unit) {
     let unitLeftRespawns = this.getUnitLeftRespawns(unit)
-    if (unitLeftRespawns == ::RESPAWNS_UNLIMITED)
+    if (unitLeftRespawns == RESPAWNS_UNLIMITED)
       return ""
     return "".concat(loc("unitInfo/team_left_respawns"), loc("ui/colon"), unitLeftRespawns)
   }
@@ -346,20 +347,20 @@ let Base = class {
 
   //return -1 when unlimited
   function getUnitLeftRespawnsByTeamDataBlk(_unit, _teamDataBlk) {
-    return ::RESPAWNS_UNLIMITED
+    return RESPAWNS_UNLIMITED
   }
 
   function calcFullUnitLimitsData(_isTeamMine = true) {
     return {
-      defaultUnitRespawnsLeft = ::RESPAWNS_UNLIMITED
+      defaultUnitRespawnsLeft = RESPAWNS_UNLIMITED
       unitLimits = [] //unitLimitBaseClass
     }
   }
 
   function minRespawns(respawns1, respawns2) {
-    if (respawns1 == ::RESPAWNS_UNLIMITED)
+    if (respawns1 == RESPAWNS_UNLIMITED)
       return respawns2
-    if (respawns2 == ::RESPAWNS_UNLIMITED)
+    if (respawns2 == RESPAWNS_UNLIMITED)
       return respawns1
     return min(respawns1, respawns2)
   }

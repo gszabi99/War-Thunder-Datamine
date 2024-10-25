@@ -2,6 +2,8 @@ from "%scripts/dagui_natives.nut" import request_leaderboard_blk, get_leaderboar
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -795,19 +797,19 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
   customSelfStats = null
 
   function initScreen() {
-    let eventData = ::events.getEvent(this.eventId)
+    let eventData = events.getEvent(this.eventId)
     if (!eventData)
       return this.goBack()
 
-    let event = ::events.getEvent(this.eventId)
+    let event = events.getEvent(this.eventId)
     if (event?.leaderboardEventTable != null) {
       this.customSelfStats = userstatCustomLeaderboardStats.value?.stats[event.leaderboardEventTable]
       refreshUserstatCustomLeaderboardStats()
     }
 
-    this.request = ::events.getMainLbRequest(eventData)
+    this.request = events.getMainLbRequest(eventData)
     if (!this.lbModel)
-      this.lbModel = ::events
+      this.lbModel = events
 
     this.forClans = this.request?.forClans ?? this.forClans
     if (this.lb_presets == null)
@@ -816,7 +818,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     let sortLeaderboard = eventData?.sort_leaderboard
     this.curLbCategory = (sortLeaderboard != null)
       ? getLbCategoryTypeByField(sortLeaderboard)
-      : ::events.getTableConfigShortRowByEvent(eventData)
+      : events.getTableConfigShortRowByEvent(eventData)
 
     this.updateLeaderboard()
     let nestObj = this.scene.findObject("tabs_list")
@@ -826,7 +828,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     let tabsArr = [
       {
         id = eventData.economicName
-        name = ::events.getEventNameText(eventData)
+        name = events.getEventNameText(eventData)
       },
       {
         id = this.sharedEconomicName
@@ -886,7 +888,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
   }
 
   function onEventUserstatCustomLeaderboardStats(_) {
-    let event = ::events.getEvent(this.eventId)
+    let event = events.getEvent(this.eventId)
     if (event?.leaderboardEventTable == null)
       return
 

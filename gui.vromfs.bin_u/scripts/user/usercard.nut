@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
@@ -526,17 +525,17 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!titlesTotal)
       return
 
-    local markup = ""
+    let markup = []
     let cols = 2
     let rows = ceil(titlesTotal * 1.0 / cols)
     for (local r = 0; r < rows; r++) {
       let rowData = []
       for (local c = 0; c < cols; c++)
         rowData.append(titles?[rows * c + r] ?? {})
-      markup += ::buildTableRow("", rowData)
+      markup.append(::buildTableRow("", rowData))
     }
-
-    this.guiScene.replaceContentFromText(this.scene.findObject("titles_table"), markup, markup.len(), this)
+    let markupTxt = "".join(markup)
+    this.guiScene.replaceContentFromText(this.scene.findObject("titles_table"), markupTxt, markupTxt.len(), this)
   }
 
   function getPlayerStats() {
@@ -798,7 +797,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.initStatsPerPage()
 
-    local data = ""
+    let data = []
     let posWidth = "0.05@scrn_tgt"
     let rcWidth = "0.04@scrn_tgt"
     let nameWidth = "0.2@scrn_tgt"
@@ -816,14 +815,14 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
         headerRow.append({
           id = item.id
-          image = "#ui/gameuiskin#" + (("icon" in item) ? item.icon : "lb_" + item.id) + ".svg"
-          tooltip = ("text" in item) ? $"#{item.text}" : "#multiplayer/" + item.id
+          image = "".concat("#ui/gameuiskin#", item?.icon ?? $"lb_{item.id}", ".svg")
+          tooltip = item?.text ?? $"#multiplayer/{item.id}"
           callback = "onStatsCategory"
           active = this.statsSortBy == item.id
           needText = false
         })
     }
-    data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+    data.append(::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
 
     let tooltips = {}
     let fromIdx = this.curStatsPage * this.statsPerPage
@@ -865,11 +864,12 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           rowData.append(cell)
         }
       }
-      data += ::buildTableRow(rowName, rowData, idx % 2 == 0)
+      data.append(::buildTableRow(rowName, rowData, idx % 2 == 0))
     }
 
+    let dataTxt = "".join(data)
     let tblObj = this.scene.findObject("airs_stats_table")
-    this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(tblObj, dataTxt, dataTxt.len(), this)
     foreach (rowName, row in tooltips) {
       let rowObj = tblObj.findObject(rowName)
       if (rowObj)
@@ -903,7 +903,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let tblObj = this.scene.findObject("profile_leaderboard")
     local rowIdx = 0
-    local data = ""
+    let data = []
     let tooltips = {}
 
     //add header row
@@ -918,7 +918,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           needText = false
         })
 
-    data = ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+    data.append(::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
 
     let rows = [
       {
@@ -973,9 +973,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         }
 
       rowIdx++
-      data += ::buildTableRow(rowName, rowData, rowIdx % 2 == 0, "")
+      data.append(::buildTableRow(rowName, rowData, rowIdx % 2 == 0, ""))
     }
-    this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)
+    let dataTxt = "".join(data)
+    this.guiScene.replaceContentFromText(tblObj, dataTxt, dataTxt.len(), this)
 
     foreach (rowName, row in tooltips)
       foreach (name, value in row)
@@ -998,7 +999,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.lbMode      = ""
     this.lbModesList = []
 
-    local data  = ""
+    let data  = []
 
     foreach (_idx, mode in ::leaderboard_modes) {
       let diffCode = getTblValue("diffCode", mode)
@@ -1009,11 +1010,12 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       this.lbModesList.append(mode.mode)
-      data += format("option {text:t='%s'}", mode.text)
+      data.append(format("option {text:t='%s'}", mode.text))
     }
 
+    let dataTxt = "".join(data)
     let modesObj = showObjById("leaderboard_modes_list", true, this.scene)
-    this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
+    this.guiScene.replaceContentFromText(modesObj, dataTxt, dataTxt.len(), this)
     modesObj.setValue(0)
   }
 

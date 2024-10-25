@@ -16,11 +16,13 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
   return unitTypes.getByName(typeName, caseSensitive).esUnitType
 }
 
-::get_unit_icon_by_unit <- function get_unit_icon_by_unit(unit, iconName) {
+function get_unit_icon_by_unit(unit, iconName) {
   let esUnitType = getEsUnitType(unit)
   let t = unitTypes.getByEsUnitType(esUnitType)
   return $"{t.uiSkin}{iconName}.ddsx"
 }
+
+::get_unit_icon_by_unit <- get_unit_icon_by_unit
 
 ::get_tomoe_unit_icon <- function get_tomoe_unit_icon(iconName, isForGroup = false) {
   return $"!#ui/unitskin#tomoe_{iconName}{isForGroup ? "_group" : ""}.ddsx"
@@ -32,4 +34,8 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 
 ::get_army_id_by_es_unit_type <- function get_army_id_by_es_unit_type(esUnitType) {
   return unitTypes.getByEsUnitType(esUnitType).armyId
+}
+
+return {
+  get_unit_icon_by_unit
 }

@@ -78,10 +78,30 @@ frame {
         text:t="#tankSight/choosePreset"
       }
 
-      ComboBox {
-        id:t= 'select_preset_combobox'
+      tdiv {
         width:t='pw'
-        <<@presetsComboboxMarkup>>
+        flow:t='horizontal'
+
+        ComboBox {
+          id:t='select_preset_combobox'
+          width:t='fw'
+          valign:t='center'
+          <<@presetsComboboxMarkup>>
+        }
+
+        Button_text {
+          id:t='delete_user_preset_btn'
+          display:t='hide'
+          class:t='image'
+          tooltip:t='#tankSight/deletePresetTooltip'
+          on_click:t='onDeleteUserPreset'
+
+          img {
+            background-image:t='#ui/gameuiskin#icon_trash_bin.svg'
+            size:t='1@cIco, 1@cIco'
+            background-svg-size:t='1@cIco, 1@cIco'
+          }
+        }
       }
 
       Button_text {

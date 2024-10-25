@@ -7,7 +7,7 @@ let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
 let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings,
   save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset, switch_tank_sight_settings_mode,
   TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings,
-  reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair
+  reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair, delete_user_tank_sight_preset
 } = require("tankSightSettings")
 let { create_option_combobox } = require("%scripts/options/optionsExt.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
@@ -17,7 +17,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
-const SELECT_PRESET_COMBOBOX_ID = "select_preset_combobox_options"
+const SELECT_PRESET_COMBOBOX_ID = "select_preset_combobox"
 
 let createSelectControl = @(settingId, options, idx = 0)
   create_option_combobox(settingId, options, idx, "onChangeSightOption", false)
@@ -33,13 +33,23 @@ let modeToBgImageModePostfix = {
   [TSM_THERMAL] = "thermal"
 }
 
-let customPresetOption = {value = "", text = "#tankSight/customPreset"}
+let customPresetOption = { value = "", text = "#tankSight/customPreset", isPredefinedPreset = true }
 let getPresetsOptions = @() [customPresetOption]
   .extend(
-    get_tank_sight_presets().map(@(preset) {
-      value = preset
-      text = doesLocTextExist($"tankSight/{preset}") ? loc($"tankSight/{preset}") : preset
-    })
+    get_tank_sight_presets()
+      .reduce(function(presets, isPredefinedPreset, presetName) {
+        let text =  isPredefinedPreset && doesLocTextExist($"tankSight/{presetName}")
+          ? loc($"tankSight/{presetName}")
+          : presetName
+        return presets.append({
+          text
+          isPredefinedPreset
+          value = presetName
+          sortId = text.tolower()
+        })
+      }, [])
+      .sort(@(p1, p2) p1.isPredefinedPreset <=> p2.isPredefinedPreset
+        || p1.sortId <=> p2.sortId)
   )
 
 local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
@@ -99,9 +109,12 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangePreset(obj) {
-    let { value } = this.tankSightPresets[obj.getValue()]
+    let { value, isPredefinedPreset } = this.tankSightPresets[obj.getValue()]
+    this.scene.findObject("delete_user_preset_btn").show(!isPredefinedPreset)
+
     if ( value == "" || this.isSettingsApplying)
       return
+
     apply_tank_sight_preset(value)
     let curSettings = get_tank_sight_settings()
     this.updateTankSightsOptions(curSettings)
@@ -129,8 +142,10 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
   function updatePresetsOptions(presetToSet = customPresetOption.value) {
     this.tankSightPresets = getPresetsOptions()
     let idx = this.tankSightPresets.findindex(@(p) p.value == presetToSet) ?? 0
+    let { isPredefinedPreset } = this.tankSightPresets[idx]
     let markup = this.getPresetsComboboxMarkup(idx)
     this.guiScene.replaceContentFromText(this.scene.findObject(SELECT_PRESET_COMBOBOX_ID), markup, markup.len(), this)
+    this.scene.findObject("delete_user_preset_btn").show(!isPredefinedPreset)
   }
 
   function updateCrosshairOptions() {
@@ -266,6 +281,21 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
       ? TSM_SIMPLE
       : TSM_THERMAL
     this.updateSightMode()
+  }
+
+  function onDeleteUserPreset() {
+    let curPresetIdx = this.scene.findObject(SELECT_PRESET_COMBOBOX_ID).getValue()
+    let curPresetName = this.tankSightPresets[curPresetIdx].value
+    let okCb = Callback(function() {
+      delete_user_tank_sight_preset(curPresetName)
+      this.updatePresetsOptions()
+    }, this)
+    scene_msg_box(
+      "delete_user_sight_preset", null,
+      loc("tankSight/confirmUserPresetDeletion", { name = curPresetName }),
+      [ ["ok", okCb ], ["cancel" @() null] ],
+      "cancel"
+    )
   }
 
   function updateSightMode() {

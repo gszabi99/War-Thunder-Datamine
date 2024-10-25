@@ -3,6 +3,7 @@ from "%sqDagui/daguiNativeApi.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { assertf } = require("dagor.debug")
 let { object_to_json_string, parse_json } = require("json")
+let { dynamic_content } = require("%sqstd/analyzer.nut")
 
 let callbacks = {
   types = []
@@ -39,4 +40,4 @@ callbacks.get <- @(typeId) this?[typeId] ?? EMPTY
 
 ::gcb <- cbTbl
 
-return callbacks
+return dynamic_content(callbacks)

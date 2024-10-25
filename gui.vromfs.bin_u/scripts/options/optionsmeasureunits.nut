@@ -82,7 +82,7 @@ function getMeasureCfg(unitNo) {
   return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
-local function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false, isPresize = true) {
+function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, forceMaxPrecise = false, isPresize = true) {
   let unit = getMeasureCfg(unitNo)
   if (!unit)
     return ""

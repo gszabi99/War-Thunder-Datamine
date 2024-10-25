@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_warbond_balance, get_warbond_curr_stage_name, warbond_get_shop_levels
 from "%scripts/dagui_library.nut" import *
 
@@ -65,7 +64,7 @@ let Warbond = class {
   }
 
   function getFullId() {
-    return this.id + ::g_warbonds.FULL_ID_SEPARATOR + this.listId
+    return "".concat(this.id, ::g_warbonds.FULL_ID_SEPARATOR, this.listId)
   }
 
   function isCurrent() { //warbond than can be received right now
@@ -125,8 +124,9 @@ let Warbond = class {
   }
 
   function getBalanceText() {
-    let limitText = loc("ui/slash") + this.getPriceText(::g_warbonds.getLimit(), true, false)
-    return colorize("activeTextColor", this.getPriceText(this.getBalance(), true, false) + limitText)
+    let limitText = loc("ui/slash").concat(this.getPriceText(this.getBalance(), true, false),
+      this.getPriceText(::g_warbonds.getLimit(), true, false))
+    return colorize("activeTextColor", limitText)
   }
 
   function getExpiredTimeLeft() {

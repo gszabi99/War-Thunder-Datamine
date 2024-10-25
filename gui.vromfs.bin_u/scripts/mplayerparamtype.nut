@@ -26,7 +26,8 @@ let expEventLocIds = {
   [EXP_EVENT_DEATH]              = "expEventScore/death",
   [EXP_EVENT_MISSION_ACTION]     = "expEventScore/missionAction",
   [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies",
-  [EXP_EVENT_SEVERE_DAMAGE]      = "expEventScore/severeDamage"
+  [EXP_EVENT_SEVERE_DAMAGE]      = "expEventScore/severeDamage",
+  [EXP_EVENT_MISSILE_EVADE]      = "expEventScore/missileEvade"
 }
 
 let g_mplayer_param_type = {
@@ -288,6 +289,18 @@ enumsAddTypes(g_mplayer_param_type, {
           res.append("".concat(loc(row.label), loc("ui/colon"), rowVal))
       }
       return "\n".join(res, true)
+    }
+  }
+
+  MISSILE_EVADES = {
+    id = "missileEvade"
+    fontIcon = "#icon/mpstats/missileEvade"
+    tooltip = "multiplayer/missileEvade"
+    getVal = function(player) {
+      return player?["missileEvades"] ?? 0
+    }
+    printFunc = function(_val, player) {
+      return this.getVal(player).tostring()
     }
   }
 

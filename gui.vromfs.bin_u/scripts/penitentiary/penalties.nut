@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_decals_disabled, get_time_till_decals_disabled
 from "%scripts/dagui_library.nut" import *
 
@@ -34,18 +33,18 @@ function getDevoiceMessage(activeColor = "chatActiveInfoColor") {
 
   local txt = ""
   if (st.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
-    txt += loc("charServer/mute/permanent") + "\n"
+    txt = "".concat(txt, loc("charServer/mute/permanent"), "\n")
   }
   else {
     let durationHours = time.secondsToHours(st.duration)
     local timeText = colorize(activeColor, time.hoursToString(durationHours, false))
-    txt += format(loc("charServer/mute/timed"), timeText)
+    txt = "".concat(txt, format(loc("charServer/mute/timed"), timeText))
 
     if (("seconds_left" in st) && st.seconds_left > 0) {
       let leftHours = time.secondsToHours(st.seconds_left)
       timeText = colorize(activeColor, time.hoursToString(leftHours, false, true))
       if (timeText != "") {
-        txt += " " + format(loc("charServer/ban/timeLeft"), timeText)
+        txt = "".concat(txt, " ", format(loc("charServer/ban/timeLeft"), timeText))
       }
     }
     else if (isInMenu()) {
@@ -53,13 +52,13 @@ function getDevoiceMessage(activeColor = "chatActiveInfoColor") {
     }
 
     if (txt != "") {
-      txt += "\n"
+      txt = $"{txt}\n"
     }
   }
 
-  txt += loc("charServer/ban/reason") + loc("ui/colon") + " " +
-    colorize(activeColor, loc($"charServer/ban/reason/{st.category}")) + "\n" +
-    loc("charServer/ban/comment") + "\n" + st.comment
+  txt = "".concat(txt, loc("charServer/ban/reason"), loc("ui/colon"), " ",
+    colorize(activeColor, loc($"charServer/ban/reason/{st.category}")), "\n",
+    loc("charServer/ban/comment"), "\n", st.comment)
   return txt
 }
 

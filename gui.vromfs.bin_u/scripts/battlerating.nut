@@ -12,6 +12,7 @@ let { userName } = require("%scripts/user/profileStates.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let events = getGlobalModule("events")
 let { getCurrentGameMode, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 const MATCHING_REQUEST_LIFETIME = 30000
@@ -114,12 +115,12 @@ function setBattleRating(recentUserData, brData) {
 function getBestCountryData(event) {
   if (!event)
     return null
-  let teams = ::events.getAvailableTeams(event)
-  let membersTeams = ::events.getMembersTeamsData(event, null, teams)
+  let teams = events.getAvailableTeams(event)
+  let membersTeams = events.getMembersTeamsData(event, null, teams)
   if (!membersTeams)
     return null
 
-  return ::events.getMembersInfo(membersTeams.teamsData)
+  return events.getMembersInfo(membersTeams.teamsData)
 }
 
 function getUserData() {
@@ -130,7 +131,7 @@ function getUserData() {
   let players = []
 
   if (g_squad_manager.isSquadLeader()) {
-    let countryData = getBestCountryData(::events.getEvent(recentBrGameModeId.value))
+    let countryData = getBestCountryData(events.getEvent(recentBrGameModeId.value))
     foreach (member in g_squad_manager.getMembers()) {
       if (!member.online || member.country == "")
         continue

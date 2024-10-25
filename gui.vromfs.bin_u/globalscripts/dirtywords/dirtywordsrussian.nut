@@ -3,7 +3,7 @@ from "%globalScripts/logs.nut" import *
 // Dirty Words tables for Russian language.
 //
 
-let REGION_RU = [ "RU", "BY" ]
+let REGIONS_RU = [ "RU", "BY" ]
 
 return {
 
@@ -1208,7 +1208,7 @@ fouldata =
 badphrases =
 [
   @"анепош[е]?л[и]?бы[вт]ы",
-  { value = "бандер", region = REGION_RU },
+  { value = "бандер", regions = REGIONS_RU },
   "еханыйбабай",
   "идинахуй",
   "гитл[е3]р",
@@ -1217,9 +1217,9 @@ badphrases =
   @"тык[ао]зел",
   @"отс[ао]сатьу",
   @"отс[ао]сичлен",
-  { value = "шухевич", region = REGION_RU },
-  { value = "bander", region = REGION_RU },
-  { value = "shuhevich", region = REGION_RU },
+  { value = "шухевич", regions = REGIONS_RU },
+  { value = "bander", regions = REGIONS_RU },
+  { value = "shuhevich", regions = REGIONS_RU },
 ]
 
 badcombination =

@@ -2,6 +2,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
@@ -495,7 +497,7 @@ lbCategoryTypes.__update({
   EVENTS_EACH_PLAYER_SESSION = {
     field = "battles"
     visualKey = "each_player_session"
-    showEventFilterFunc = @(event) !::events.isGameTypeOfEvent(event, "gt_football")
+    showEventFilterFunc = @(event) !events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENTS_AIR_KILLS = {
@@ -521,7 +523,7 @@ lbCategoryTypes.__update({
     visualKey = "air_ground_kills"
     hideInAdditionalTooltipIfZero = true
     additionalTooltipCategoryes = ["EVENTS_AIR_KILLS", "EVENTS_GROUND_KILLS"]
-    showEventFilterFunc = @(event) !::events.isGameTypeOfEvent(event, "gt_football")
+    showEventFilterFunc = @(event) !events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENTS_SUPERIORITY_BATTLES_THRESHOLD = {
@@ -546,7 +548,7 @@ lbCategoryTypes.__update({
     field = "battles"
     visualKey = "matches"
     headerImage = "each_player_session"
-    showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    showEventFilterFunc = @(event) events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENT_FOOTBALL_GOALS = {
@@ -554,7 +556,7 @@ lbCategoryTypes.__update({
     visualKey = "footballGoals"
     headerImage = "football_goals"
     headerTooltip = "football/goals"
-    showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    showEventFilterFunc = @(event) events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENT_FOOTBALL_ASSISTS = {
@@ -562,7 +564,7 @@ lbCategoryTypes.__update({
     visualKey = "footballAssists"
     headerImage = "football_assists"
     headerTooltip = "football/assists"
-    showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    showEventFilterFunc = @(event) events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENT_FOOTBALL_SAVES = {
@@ -570,7 +572,7 @@ lbCategoryTypes.__update({
     visualKey = "footballSaves"
     headerImage = "football_saves"
     headerTooltip = "football/saves"
-    showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    showEventFilterFunc = @(event) events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENT_FOOTBALL_TOTAL_ACTIONS = {
@@ -578,7 +580,7 @@ lbCategoryTypes.__update({
     visualKey = "footballTotalActions"
     headerImage = "total_score"
     headerTooltip = "football/totalActions"
-    showEventFilterFunc = @(event) ::events.isGameTypeOfEvent(event, "gt_football")
+    showEventFilterFunc = @(event) events.isGameTypeOfEvent(event, "gt_football")
   }
 
   EVENT_SCORE = {

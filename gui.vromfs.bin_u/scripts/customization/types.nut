@@ -75,9 +75,9 @@ let decoratorTypes = {
     function getTypeDesc(decorator) {
       local text = loc($"trophy/unlockables_names/{this.resourceType}")
       if (decorator.category != "" && this.categoryPathPrefix != "")
-        text += loc("ui/comma") + loc(this.categoryPathPrefix + decorator.category)
+        text = "".concat(text, loc("ui/comma"), loc(this.categoryPathPrefix + decorator.category))
       if (decorator.group != "" && this.groupPathPrefix != "")
-        text += loc("ui/comma") + loc(this.groupPathPrefix + decorator.group)
+        text = "".concat(text, loc("ui/comma"), loc(this.groupPathPrefix + decorator.group))
       return text
     }
 
@@ -457,8 +457,8 @@ enums.addTypes(decoratorTypes, {
       let unit = getAircraftByName(getPlaneBySkinId(decorator.id))
       if (!unit)
         return loc("trophy/unlockables_names/skin")
-      return loc("reward/skin_for") + " " +
-        getUnitName(unit) + loc("ui/comma") + loc(getUnitCountry(unit))
+      return "".concat(loc("reward/skin_for"), " ",
+        getUnitName(unit), loc("ui/comma"), loc(getUnitCountry(unit)))
     }
 
     getCost = function(decorator) {

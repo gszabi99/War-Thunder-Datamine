@@ -13,6 +13,7 @@ let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerSt
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let events = getGlobalModule("events")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { SERVER_ERROR_ROOM_PASSWORD_MISMATCH, INVALID_ROOM_ID, INVALID_SQUAD_ID
@@ -283,7 +284,7 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
     if (get_game_mode() == GM_DOMINATION) {
       let event = SessionLobby.getRoomEvent()
       if (event)
-        return ::events.getEventNameText(event)
+        return events.getEventNameText(event)
     }
     else {
       let misName = SessionLobby.getMissionNameLoc()
@@ -357,7 +358,7 @@ let joiningGameWaitBox = @() loadHandler(gui_handlers.JoiningGameWaitBox)
 let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
 
 function reconnect(roomId, gameModeName) {
-  let event = ::events.getEvent(gameModeName)
+  let event = events.getEvent(gameModeName)
   if (!showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
     return
 
@@ -417,8 +418,8 @@ SessionLobby = {
       function getLocText(public, locParams) {
         local res = loc("multiplayer/closeByDisbalance", locParams)
         if ("disbalanceType" in public)
-          res += "\n" + loc("multiplayer/reason") + loc("ui/colon")
-            + loc($"roomCloseReason/{public.disbalanceType}")
+          res = "".concat(res, "\n", loc("multiplayer/reason"), loc("ui/colon"),
+            loc($"roomCloseReason/{public.disbalanceType}"))
         return res
       }
     }
@@ -703,8 +704,8 @@ SessionLobby = {
     }
 
     SessionLobbyState.crsSetTeamTo = Team.none
-    foreach (team in ::events.getSidesList()) {
-      let players = this.getSessionInfo()?[::events.getTeamName(team)].players
+    foreach (team in events.getSidesList()) {
+      let players = this.getSessionInfo()?[events.getTeamName(team)].players
       if (!u.isArray(players))
         continue
 
@@ -744,8 +745,8 @@ SessionLobby = {
   }
 
   function addTeamsInfoToSettings(v_settings, teamDataA, teamDataB) {
-    v_settings[::events.getTeamName(Team.A)] <- teamDataA
-    v_settings[::events.getTeamName(Team.B)] <- teamDataB
+    v_settings[events.getTeamName(Team.A)] <- teamDataA
+    v_settings[events.getTeamName(Team.B)] <- teamDataB
   }
 
   function checkDynamicSettings(silent = false, v_settings = null) {
@@ -897,12 +898,12 @@ SessionLobby = {
   }
 
   function getTeamData(teamCode, room = null) {
-    return ::events.getTeamData(this.getPublicData(room), teamCode)
+    return events.getTeamData(this.getPublicData(room), teamCode)
   }
 
   function getRequiredCrafts(teamCode = Team.A, room = null) {
     let teamData = this.getTeamData(teamCode, room)
-    return ::events.getRequiredCrafts(teamData)
+    return events.getRequiredCrafts(teamData)
   }
 
   function getRoomSessionStartTime(room = null) {
@@ -910,11 +911,11 @@ SessionLobby = {
   }
 
   function getUnitTypesMask(room = null) {
-    return ::events.getEventUnitTypesMask(this.getMGameMode(room) || this.getPublicData(room))
+    return events.getEventUnitTypesMask(this.getMGameMode(room) || this.getPublicData(room))
   }
 
   function getRequiredUnitTypesMask(room = null) {
-    return ::events.getEventRequiredUnitTypesMask(this.getMGameMode(room) || this.getPublicData(room))
+    return events.getEventRequiredUnitTypesMask(this.getMGameMode(room) || this.getPublicData(room))
   }
 
   function getNotAvailableUnitByBRText(unit, room = null) {
@@ -930,11 +931,11 @@ SessionLobby = {
       : getCurrentShopDifficulty().diffCode)
     let maxBR = (this.getBattleRatingParamByPlayerInfo(this.getMemberPlayerInfo(userIdInt64.value),
       ES_UNIT_TYPE_SHIP)?.units?[0]?.rating ?? 0) + MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS
-    return (::events.isUnitTypeRequired(mGameMode, ES_UNIT_TYPE_SHIP)
+    return (events.isUnitTypeRequired(mGameMode, ES_UNIT_TYPE_SHIP)
       && unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT
       && ((curBR - maxBR) * 10).tointeger() >= 0)
         ? loc("not_available_aircraft/byBR", {
-            gameModeName = ::events.getEventNameText(mGameMode),
+            gameModeName = events.getEventNameText(mGameMode),
             lockedUnitType = colorize("userlogColoredText",
               loc($"mainmenu/type_{unit.unitType.lowerName}")),
             battleRatingDiff = colorize("userlogColoredText", format("%.1f", MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS)),
@@ -987,7 +988,7 @@ SessionLobby = {
     local hasCountries = false
     foreach (t in [Team.A, Team.B]) {
       let teamData = this.getTeamData(t, room)
-      let countries = ::events.getCountries(teamData)
+      let countries = events.getCountries(teamData)
       res.append(countries)
       hasCountries = hasCountries || countries.len()
     }
@@ -997,7 +998,7 @@ SessionLobby = {
     //!!FIX ME: is we need a code below? But better to do something with it only with a s.zvyagin
     let mGameMode = this.getMGameMode(room)
     if (mGameMode)
-      return ::events.getCountriesByTeams(mGameMode)
+      return events.getCountriesByTeams(mGameMode)
 
     let pData = this.getPublicData(room)
     foreach (idx, name in ["country_allies", "country_axis"])
@@ -1853,7 +1854,7 @@ SessionLobby = {
 
     let event = this.getRoomEvent()
     if (event) {
-      if (::events.isEventVisibleInEventsWindow(event))
+      if (events.isEventVisibleInEventsWindow(event))
         saveLocalByAccount("lastPlayedEvent", {
           eventName = event.name
           economicName = getEventEconomicName(event)
@@ -2349,7 +2350,7 @@ SessionLobby = {
     let event = this.getRoomEvent()
     if (!event)
       return null
-    return ::events.getCountries(::events.getTeamData(event, teamIndex))
+    return events.getCountries(events.getTeamData(event, teamIndex))
   }
 
   function getMyCurUnit() {
@@ -2370,15 +2371,15 @@ SessionLobby = {
    */
   function isUnitAllowed(unit) {
     let roomSpecialRules = this.getRoomSpecialRules()
-    if (roomSpecialRules && !::events.isUnitMatchesRule(unit, roomSpecialRules, true, this.getCurRoomEdiff()))
+    if (roomSpecialRules && !events.isUnitMatchesRule(unit, roomSpecialRules, true, this.getCurRoomEdiff()))
       return false
 
     let teamData = this.getTeamDataToCheckUnits()
-    return !teamData || ::events.isUnitAllowedByTeamData(teamData, unit.name, this.getCurRoomEdiff())
+    return !teamData || events.isUnitAllowedByTeamData(teamData, unit.name, this.getCurRoomEdiff())
   }
 
   function hasUnitRequirements() {
-    return ::events.hasUnitRequirements(this.getTeamDataToCheckUnits())
+    return events.hasUnitRequirements(this.getTeamDataToCheckUnits())
   }
 
   function isUnitRequired(unit) {
@@ -2386,8 +2387,8 @@ SessionLobby = {
     if (!teamData)
       return false
 
-    return ::events.isUnitMatchesRule(unit.name,
-      ::events.getRequiredCrafts(teamData), true, this.getCurRoomEdiff())
+    return events.isUnitMatchesRule(unit.name,
+      events.getRequiredCrafts(teamData), true, this.getCurRoomEdiff())
   }
 
   /**
@@ -2422,7 +2423,7 @@ SessionLobby = {
     let crews = getCrewsListByCountry(countryName)
 
     foreach (team in teamsToCheck) {
-      let teamName = ::events.getTeamName(team)
+      let teamName = events.getTeamName(team)
       let teamData = getTblValue(teamName, this.getSessionInfo(), null)
       if (teamData == null)
         continue
@@ -2431,7 +2432,7 @@ SessionLobby = {
       foreach (crew in crews) {
         let unit = getCrewUnit(crew)
         hasUnitsInSlotbar = hasUnitsInSlotbar || unit != null
-        if (!unit || !::events.isUnitAllowedByTeamData(teamData, unit.name, ediff))
+        if (!unit || !events.isUnitAllowedByTeamData(teamData, unit.name, ediff))
           continue
 
         hasAnyAvailable = true
@@ -2459,7 +2460,7 @@ SessionLobby = {
   function getRandomTeam() {
     let curCountry = SessionLobbyState.countryData ? SessionLobbyState.countryData.country : null
     let teams = []
-    let allTeams = ::events.getSidesList()
+    let allTeams = events.getSidesList()
     foreach (team in allTeams) {
       let checkTeamResult = this.checkUnitsInSlotbar(curCountry, team)
       if (checkTeamResult.isAvailable)
@@ -2487,7 +2488,7 @@ SessionLobby = {
       return room._customGameMode
 
     let mGameMode = getModeById(mGameModeId)
-    if (isCustomGameModeAllowed && room && mGameMode && ::events.isCustomGameMode(mGameMode)) {
+    if (isCustomGameModeAllowed && room && mGameMode && events.isCustomGameMode(mGameMode)) {
       let customGameMode = clone mGameMode
       foreach (team in g_team.getTeams())
         customGameMode[team.name] <- this.getTeamData(team.code, room)
@@ -2499,7 +2500,7 @@ SessionLobby = {
   }
 
   function getRoomEvent(room = null) {
-    return ::events.getEvent(this.getPublicData(room)?.game_mode_name)
+    return events.getEvent(this.getPublicData(room)?.game_mode_name)
   }
 
   function getMaxDisbalance() {

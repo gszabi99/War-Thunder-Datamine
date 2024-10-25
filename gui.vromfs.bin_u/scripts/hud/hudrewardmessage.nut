@@ -231,6 +231,12 @@ enumsAddTypes(g_hud_reward_message, {
     priority = REWARD_PRIORITY.severe
   }
 
+  MISSILE_EVADE = {
+    code = EXP_EVENT_MISSILE_EVADE
+    locId  = "exp_reasons/missile_evade"
+    priority = REWARD_PRIORITY.hit
+  }
+
 })
 
 return {

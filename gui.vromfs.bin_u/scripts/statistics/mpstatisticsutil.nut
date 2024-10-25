@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 
@@ -227,32 +226,32 @@ function createExpSkillBonusIcon(tooltipFunction) {
     hdr.reverse()
   }
 
-  local data = ""
+  let data = []
   for (local i = 0; i < numRows; i++) {
     let isEmpty = i >= numTblRows
-    local trData = format("even:t='%s'; ", (i % 2 == 0) ? "yes" : "no")
-    local trAdd = isEmpty ? "inactive:t='yes'; " : ""
+    let trData = [format("even:t='%s'; ", (i % 2 == 0) ? "yes" : "no")]
+    let trAdd = [isEmpty ? "inactive:t='yes'; " : ""]
     if (!u.isEmpty(trOnHover))
-      trAdd = "".concat(trAdd, $"rowIdx='{i}'; on_hover:t='{trOnHover}'; on_unhover:t='{trOnHover}';")
+      trAdd.append($"rowIdx='{i}'; on_hover:t='{trOnHover}'; on_unhover:t='{trOnHover}';")
 
     for (local j = 0; j < hdr.len(); ++j) {
       local item = ""
       local tdData = ""
       let widthAdd = ((j == 0) || (j == (hdr.len() - 1))) ? "+@tablePad" : ""
-      local textPadding = "style:t='padding:@tablePad,0;'; "
+      let textPadding = "style:t='padding:@tablePad,0;'; "
 
       if (!isEmpty && (hdr[j] in table[i]))
         item = table[i][hdr[j]]
 
       if (hdr[j] == "hasPassword") {
         let icon = item ? "#ui/gameuiskin#password.svg" : ""
-        tdData += "size:t='ph" + widthAdd + " ,ph';"  +
-          ("img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';" +
-          "background-svg-size:t='@tableIcoSize,@tableIcoSize'; background-image:t='" + (isEmpty ? "" : icon) + "'; }")
+        tdData = "".concat("size:t='ph", widthAdd, " ,ph';",
+          "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';",
+          "background-svg-size:t='@tableIcoSize,@tableIcoSize'; background-image:t='", isEmpty ? "" : icon, "'; }")
       }
       else if (hdr[j] == "team") {
         let teamText = "teamImg{ text { halign:t='center'}} "
-        tdData += "size:t='ph" + widthAdd + ",ph'; css-hier-invalidate:t='yes'; team:t=''; " + teamText
+        tdData = "".concat("size:t='ph", widthAdd, ",ph'; css-hier-invalidate:t='yes'; team:t=''; ", teamText)
       }
       else if (hdr[j] == "country" || hdr[j] == "teamCountry") {
         local country = ""
@@ -264,11 +263,10 @@ function createExpSkillBonusIcon(tooltipFunction) {
         local icon = ""
         if (!isEmpty && country != "")
           icon = getCountryIcon(country)
-        tdData += format("size:t='ph%s,ph';"
-          + "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';"
-          +   "background-image:t='%s'; background-svg-size:t='@cIco, @cIco';"
-          + "}",
-          widthAdd, icon)
+        tdData = format("".concat("size:t='ph%s,ph';",
+          "img{ pos:t='(pw-w)/2,(ph-h)/2'; position:t='relative'; size:t='@tableIcoSize,@tableIcoSize';",
+          "background-image:t='%s'; background-svg-size:t='@cIco, @cIco';",
+          "}"), widthAdd, icon)
       }
       else if (hdr[j] == "status") {
         tdData = format("size:t='ph%s,ph'; playerStateIcon { id:t='ready-ico' } ", widthAdd)
@@ -281,18 +279,18 @@ function createExpSkillBonusIcon(tooltipFunction) {
         nameText = stripTags(nameText)
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
         let nameAlign = isRowInvert ? "text-align:t='right' " : ""
-        tdData += format ("width:t='%s'; %s { id:t='name-text'; %s text:t = '%s';" +
+        tdData = format("width:t='%s'; %s { id:t='name-text'; %s text:t = '%s';" +
           "pare-text:t='yes'; width:t='pw'; halign:t='center'; top:t='(ph-h)/2';} %s",
           nameWidth, "textareaNoTab", nameAlign, nameText, textPadding
         )
         if (!isEmpty) {
           //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
           if (table[i]?.isLocal)
-            trAdd += "mainPlayer:t = 'yes';"
+            trAdd.append("mainPlayer:t = 'yes';")
           else if (table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadById(table[i]?.userId.tointeger()))
-            trAdd += "inMySquad:t = 'yes';"
+            trAdd.append("inMySquad:t = 'yes';")
           if (("spectator" in table[i]) && table[i].spectator)
-            trAdd += "spectator:t = 'yes';"
+            trAdd.append("spectator:t = 'yes';")
         }
       }
       else if (hdr[j] == "unitIcon") {
@@ -308,7 +306,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
           images.reverse()
         let cellWidth = markup?[hdr[j]]?.width ?? "@tableIcoSize, @tableIcoSize"
         let divPos = isRowInvert ? "0" : "pw-w"
-        tdData += format("width:t='%s'; tdiv { pos:t='%s, ph/2-h/2'; position:t='absolute'; %s } ", cellWidth, divPos, "".join(images, true))
+        tdData = format("width:t='%s'; tdiv { pos:t='%s, ph/2-h/2'; position:t='absolute'; %s } ", cellWidth, divPos, "".join(images, true))
       }
       else if (hdr[j] == "rank") {
         local prestigeImg = "";
@@ -319,28 +317,28 @@ function createExpSkillBonusIcon(tooltipFunction) {
         }
         let rankItem = format("activeText { id:t='rank-text'; text:t='%s'; margin-right:t='%%s' } ", rankTxt)
         let prestigeItem = format("cardImg { id:t='prestige-ico'; background-image:t='%s'; margin-right:t='%%s' } ", prestigeImg)
-        let cell = isRowInvert ? prestigeItem + rankItem : rankItem + prestigeItem
-        tdData += format("width:t='2.2@rows16height%s'; tdiv { pos:t='%s, 0.5(ph-h)'; position:t='absolute'; " + cell + " } ",
-                    widthAdd, isRowInvert ? "0" : "pw-w-1", "0", "0.003sh")
+        let cell = isRowInvert ? $"{prestigeItem}{rankItem}" : $"{rankItem}{prestigeItem}"
+        tdData = format("".concat("width:t='2.2@rows16height%s'; tdiv { pos:t='%s, 0.5(ph-h)'; position:t='absolute'; ", cell, " } "),
+          widthAdd, isRowInvert ? "0" : "pw-w-1", "0", "0.003sh")
       }
       else if (hdr[j] == "rowNo") {
-        local tdProp = ""
+        let tdProp = []
         if (hdr[j] in markup)
-          tdProp += format("width:t='%s'", getTblValue("width", markup[hdr[j]], ""))
+          tdProp.append(format("width:t='%s'", getTblValue("width", markup[hdr[j]], "")))
 
-        trAdd += "winnerPlace:t='none';"
-        tdData += format("%s activeText { text:t = '%i'; halign:t='center'} ", tdProp, i + 1)
+        trAdd.append("winnerPlace:t='none';")
+        tdData = format("%s activeText { text:t = '%i'; halign:t='center'} ", "".join(tdProp), i + 1)
       }
       else if (hdr[j] == "place") {
-        let width = "width:t='" + getTblValue("width", markup[hdr[j]], "1") + "'; "
-        tdData += format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
+        let width = $"width:t='{markup[hdr[j]]?.width ?? 1}'; "
+        tdData = format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
       else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
         let txt = isEmpty ? "" : g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
-        tdData += format("activeText { text:t='%s' halign:t='center' } ", txt)
+        tdData = format("activeText { text:t='%s' halign:t='center' } ", txt)
         let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
         if (width != "")
-          tdData += format("width:t='%s'; ", width)
+          tdData = "".concat(tdData, format("width:t='%s'; ", width))
       }
       else if (hdr[j] == "numPlayers") {
         let curWidth = ((hdr[j] in markup) && ("width" in markup[hdr[j]])) ? markup[hdr[j]].width : "0.15pw"
@@ -348,11 +346,11 @@ function createExpSkillBonusIcon(tooltipFunction) {
         local txtParams = "pare-text:t='yes'; max-width:t='pw'; halign:t='center';"
         if (!isEmpty && "numPlayersTotal" in table[i]) {
           let maxVal = table[i].numPlayersTotal
-          txt += $"/{maxVal}"
+          txt = $"{txt}/{maxVal}"
           if (item >= maxVal)
-            txtParams += "overlayTextColor:t='warning';"
+            txtParams = $"{txtParams}overlayTextColor:t='warning';"
         }
-        tdData += "width:t='" + curWidth + "'; activeText { text:t = '" + txt + "'; " + txtParams + " } "
+        tdData = "".concat("width:t='", curWidth, "'; activeText { text:t = '", txt, "'; ", txtParams, " } ")
       }
       else {
         local tdProp = textPadding
@@ -364,7 +362,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
 
         if (hdr[j] in markup) {
           if ("width" in markup[hdr[j]])
-            tdProp += "width:t='" + markup[hdr[j]].width + "'; "
+            tdProp = "".concat(tdProp, "width:t='", markup[hdr[j]].width, "'; ")
           if ("textDiv" in markup[hdr[j]])
             textType = markup[hdr[j]].textDiv
           if ("halign" in markup[hdr[j]])
@@ -372,42 +370,35 @@ function createExpSkillBonusIcon(tooltipFunction) {
           if ("pareText" in markup[hdr[j]])
             pareText =  markup[hdr[j]].pareText
           if ("image" in markup[hdr[j]])
-            imageBg = format(" team:t='%s'; " +
-              "teamImg {" +
-              "css-hier-invalidate:t='yes'; " +
-              "id:t='%s';" +
-              "background-image:t='%s';" +
-              "display:t='%s'; ",
-              colorTeam, "icon_" + hdr[j], markup[hdr[j]].image, isEmpty ? "hide" : "show"
+            imageBg = format("".concat(" team:t='%s'; ", "teamImg {", "css-hier-invalidate:t='yes'; ",
+                "id:t='%s';", "background-image:t='%s';", "display:t='%s'; "),
+              colorTeam, $"icon_{hdr[j]}", markup[hdr[j]].image, isEmpty ? "hide" : "show"
             )
         }
         let textParams = format("halign:t='%s'; ", halign)
 
-        tdData += format("%s {" +
-          "id:t='%s';" +
-          "text:t = '%s';" +
-          "max-width:t='pw';" +
-          "pare-text:t='%s'; " +
-          "%s}",
-          tdProp + imageBg + textType, "txt_" + hdr[j], text, (pareText ? "yes" : "no"), textParams + ((imageBg == "") ? "" : "}")
+        tdData = format("".concat("%s {", "id:t='%s';", "text:t = '%s';",
+            "max-width:t='pw';", "pare-text:t='%s'; ", "%s}"),
+          $"{tdProp}{imageBg}{textType}", $"txt_{hdr[j]}", text, pareText ? "yes" : "no",
+          "".concat(textParams, (imageBg == "") ? "" : "}")
         )
       }
 
-      trData += "td { id:t='td_" + hdr[j] + "'; "
+      trData.append("td { id:t='td_", hdr[j], "'; ")
         if (j == 0)
-          trData += "padding-left:t='@tablePad'; "
+          trData.append("padding-left:t='@tablePad'; ")
         if (j > 0)
-          trData += "cellType:t = 'border'; "
+          trData.append("cellType:t = 'border'; ")
         if (j == (hdr.len() - 1))
-          trData += "padding-right:t='@tablePad'; "
-      trData += tdData + " }"
+          trData.append("padding-right:t='@tablePad'; ")
+      trData.append(tdData, " }")
     }
 
-    if (trData.len() > 0)
-      data += "tr {size:t = '" + trSize + "'; " + trAdd + trData + " text-valign:t='center'; css-hier-invalidate:t='all'; }\n"
+    data.append("".concat("tr {size:t = '", trSize, "'; ", "".join(trAdd), "".join(trData),
+      " text-valign:t='center'; css-hier-invalidate:t='all'; }"))
   }
 
-  return data
+  return "\n".join(data)
 }
 
 ::update_team_css_label <- function update_team_css_label(nestObj, customPlayerTeam = null) {
@@ -533,7 +524,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
           objReady["background-image"] = playerState.getIcon(table[i])
           objReady["background-color"] = playerState.getIconColor()
           let desc = playerState.getText(table[i])
-          objReady.tooltip = (desc != "") ? (loc("multiplayer/state") + loc("ui/colon") + desc) : ""
+          objReady.tooltip = (desc != "") ? loc("ui/colon").concat(loc("multiplayer/state"), desc) : ""
         }
       }
       else if (hdr == "name") {
@@ -581,7 +572,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
             let squadInfo = getSquadInfo(data.squad)
             let isInSquad = squadInfo ? !squadInfo.autoSquad : false
             let ratingTotal = calcBattleRatingFromRank(data.rank)
-            tooltip += "\n" + loc("debriefing/battleRating/units") + loc("ui/colon")
+            tooltip = "".concat(tooltip, "\n", loc("debriefing/battleRating/units"), loc("ui/colon"))
             local showLowBRPrompt = false
 
             let unitsForTooltip = []
@@ -595,15 +586,17 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
                 : "\n<color=@disabledTextColor>(<color=@userlogColoredText>%.1f</color>) %s</color>"
               if (rankUnused)
                 showLowBRPrompt = true
-              tooltip += format(formatString, unitsForTooltip[j].rating, unitsForTooltip[j].name)
+              tooltip = "".concat(tooltip, format(formatString, unitsForTooltip[j].rating, unitsForTooltip[j].name))
             }
-            tooltip += "\n" + loc(isInSquad ? "debriefing/battleRating/squad" : "debriefing/battleRating/total") +
-                              loc("ui/colon") + format("%.1f", ratingTotal)
+            tooltip = "".concat(tooltip, "\n",
+              loc(isInSquad ? "debriefing/battleRating/squad" : "debriefing/battleRating/total"),
+              loc("ui/colon"), format("%.1f", ratingTotal))
             if (showLowBRPrompt) {
               let maxBRDifference = 2.0 // Hardcoded till switch to new matching.
               let rankCalcMode = ::SessionLobby.getRankCalcMode()
               if (rankCalcMode)
-                tooltip += "\n" + loc($"multiplayer/lowBattleRatingPrompt/{rankCalcMode}", { maxBRDifference = format("%.1f", maxBRDifference) })
+                tooltip = "".concat(tooltip, "\n",
+                  loc($"multiplayer/lowBattleRatingPrompt/{rankCalcMode}", { maxBRDifference = format("%.1f", maxBRDifference) }))
             }
           }
         }
@@ -698,7 +691,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
       else if (hdr == "numPlayers") {
         local txt = item.tostring()
         if ("numPlayersTotal" in table[i])
-          txt += "/" + table[i].numPlayersTotal
+          txt = "".concat(txt, "/", table[i].numPlayersTotal)
         objTd.getChild(0).setValue(txt)
       }
       else if (hdr == "squad") {
@@ -719,9 +712,9 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
           if (needSquadIcon) {
             cellIcon["iconSquad"] = squadInfo.autoSquad ? "autosquad" : "squad"
             cellIcon["topSquad"] = isTopSquad ? "yes" : "no"
-            cellIcon["tooltip"] = format("%s %s%s", loc("options/chat_messages_squad"), loc("ui/number_sign", "#"), labelSquad)
-              + "\n" + loc("profile/awards") + loc("ui/colon") + squadScore
-              + (isTopSquad ? ("\n" + loc("streaks/squad_best")) : "")
+            cellIcon["tooltip"] = "".concat(format("%s %s%s", loc("options/chat_messages_squad"), loc("ui/number_sign", "#"), labelSquad),
+              "\n", loc("profile/awards"), loc("ui/colon"), squadScore,
+              (isTopSquad ? $"\n{loc("streaks/squad_best")}" : ""))
 
             if (isReplay)
               objTd.team = squadInfo.teamId == get_player_army_for_hud() ? "blue" : "red"
@@ -743,34 +736,32 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
 }
 
 ::getCurMpTitle <- function getCurMpTitle() {
-  local text = ""
+  let text = []
 
   if (getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
-    text = ::g_world_war.getCurMissionWWBattleName()
-    text = (text.len() > 0 ? loc("ui/comma") : "").concat(text, locCurrentMissionName())
+    text.append(::g_world_war.getCurMissionWWBattleName())
   }
   else {
     let gm = get_game_mode()
     if (gm == GM_DOMINATION) {
       let diffCode = get_mission_difficulty_int()
-      text = g_difficulty.getDifficultyByDiffCode(diffCode).getLocName()
+      text.append(g_difficulty.getDifficultyByDiffCode(diffCode).getLocName())
     }
     else if (gm == GM_SKIRMISH)
-      text = loc("multiplayer/skirmishMode")
+      text.append(loc("multiplayer/skirmishMode"))
     else if (gm == GM_CAMPAIGN)
-      text = loc("mainmenu/btnCampaign")
+      text.append(loc("mainmenu/btnCampaign"))
     else if (gm == GM_SINGLE_MISSION)
-      text = loc("mainmenu/btnCoop")
+      text.append(loc("mainmenu/btnCoop"))
     else if (gm == GM_DYNAMIC)
-      text = loc("mainmenu/btnDynamic")
+      text.append(loc("mainmenu/btnDynamic"))
     else if (gm == GM_BUILDER)
-      text = loc("mainmenu/btnBuilder")
+      text.append(loc("mainmenu/btnBuilder"))
     //else if (gm==GM_TOURNAMENT)       text = loc("multiplayer/tournamentMode")
-
-    text += ((text.len()) ? loc("ui/comma") : "") + locCurrentMissionName()
   }
 
-  return text
+  text.append(locCurrentMissionName())
+  return loc("ui/comma").join(text, true)
 }
 
 ::getUnitClassIco <- function getUnitClassIco(unit) {
@@ -791,17 +782,17 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
   if (!unit)
     return ""
 
-  local weaponIconsText = ""
+  let weaponIconsText = []
   foreach (weapon in unit.getWeapons())
     if (weapon.name == weaponName) {
       foreach (paramName in [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET,
         WEAPON_TAG.TORPEDO, WEAPON_TAG.ADD_GUN])
           if (weapon[paramName])
-            weaponIconsText += loc($"weapon/{paramName}Icon")
+            weaponIconsText.append(loc($"weapon/{paramName}Icon"))
       break
     }
 
-  return colorize("weaponPresetColor", weaponIconsText)
+  return colorize("weaponPresetColor", "".join(weaponIconsText))
 }
 
 ::count_width_for_mptable <- function count_width_for_mptable(objTbl, markup) {

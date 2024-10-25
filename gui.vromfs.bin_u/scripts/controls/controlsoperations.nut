@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import AXIS
+
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let Flags = {
@@ -34,10 +36,10 @@ let replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
 
 let swapGamepadSticks = function(ctrlGroup, flags = Flags.NONE) {
   let replacements = {
-    [::AXIS.LEFTSTICK_X] = ::AXIS.RIGHTSTICK_X,
-    [::AXIS.LEFTSTICK_Y] = ::AXIS.RIGHTSTICK_Y,
-    [::AXIS.RIGHTSTICK_X] = ::AXIS.LEFTSTICK_X,
-    [::AXIS.RIGHTSTICK_Y] = ::AXIS.LEFTSTICK_Y,
+    [AXIS.LEFTSTICK_X] = AXIS.RIGHTSTICK_X,
+    [AXIS.LEFTSTICK_Y] = AXIS.RIGHTSTICK_Y,
+    [AXIS.RIGHTSTICK_X] = AXIS.LEFTSTICK_X,
+    [AXIS.RIGHTSTICK_Y] = AXIS.LEFTSTICK_Y,
   }
   return replaceAxes(ctrlGroup, replacements, flags)
 }

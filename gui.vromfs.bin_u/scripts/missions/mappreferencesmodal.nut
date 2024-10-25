@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_online_single_job
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
@@ -145,8 +144,10 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
           { count = this.counters[typeName].maxCounterWithPremium }) }))
         : ""
 
-    return loc("ui/parentheses", { text = this.counters[typeName].curCounter + loc("ui/slash")
-      + this.counters[typeName].maxCounter + maxCountertextWithPremium })
+    return loc("ui/parentheses", {
+      text = "".concat(this.counters[typeName].curCounter, loc("ui/slash"),
+        this.counters[typeName].maxCounte, maxCountertextWithPremium)
+    })
   }
 
   function getCounterTitleText() {
@@ -231,7 +232,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
       else {
         let msg_id = isDislikeBannedMap ? "mapIsBanned"
           : mapPreferencesParams.getPrefTypes()[objType].msg_id
-        addPopup(null, loc(POPUP_PREFIX_LOC_ID + msg_id), null, null, null, msg_id)
+        addPopup(null, loc($"{POPUP_PREFIX_LOC_ID}{msg_id}"), null, null, null, msg_id)
       }
 
       count.curCounter--

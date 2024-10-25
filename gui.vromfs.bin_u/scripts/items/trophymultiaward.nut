@@ -83,7 +83,7 @@ let class TrophyMultiAward {
       local text = loc("multiAward/fromLastBattle")
       if (useBoldAsSmaller)
         text = $"<b>{text}</b>"
-      header += "\n" + text
+      header = "\n".concat(header, text)
     }
 
     let textList = []
@@ -119,7 +119,7 @@ let class TrophyMultiAward {
         return ""
 
       local res = colorize(this.goodsColor, loc("multiAward/type/modification"))
-      res += colorize(this.condColor, " x" + awardBlk.paramCount())
+      res = "".concat(res, colorize(this.condColor, $" x{awardBlk.paramCount()}"))
       return res
     }
 
@@ -144,7 +144,7 @@ let class TrophyMultiAward {
       return skipUnconditional ? "" : res
 
     if (!skipUnconditional)
-      conditions = " (" + conditions + ")"
+      conditions = "".concat(" (", conditions, ")")
 
     if (useBoldAsSmaller)
       conditions = $"<b>{conditions}</b>"
@@ -187,7 +187,7 @@ let class TrophyMultiAward {
     if (!countries.len())
       return
 
-    local text = loc("options/country") + loc("ui/colon")
+    local text = $"{loc("options/country")}{loc("ui/colon")}"
     countries = countries.map(function(val) { return colorize(this.condColor loc(val)) }.bindenv(this))
     text += ", ".join(countries, true)
     condList.append(text)
@@ -198,7 +198,7 @@ let class TrophyMultiAward {
     if (!ranks.len())
       return
 
-    local text = loc("shop/age") + loc("ui/colon")
+    local text = $"{loc("shop/age")}{loc("ui/colon")}"
     ranks = ranks.map(function(val) {
       if (!isIPoint2(val))
         return ""
@@ -220,7 +220,7 @@ let class TrophyMultiAward {
     if (!classes.len())
       return
 
-    local text = loc("unit_type") + loc("ui/colon")
+    local text = $"{loc("unit_type")}{loc("ui/colon")}"
     classes = classes.map(function(val) {
       local role = val.tolower()
       role = cutPrefix(role, "exp_", role)

@@ -1,4 +1,3 @@
-//-file:plus-string
 // warning disable: -file:forbidden-function
 
 from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
@@ -53,8 +52,8 @@ function debug_change_resolution(shouldIncrease = true) {
   let curIdx = list.indexof(curResolution) || 0
   let newIdx = clamp(curIdx + (shouldIncrease ? 1 : -1), 0, list.len() - 1)
   let newResolution = list[newIdx]
-  let done = @() dlog($"Set resolution: {newResolution}" +
-    " (" + screen_width() + "x" + screen_height() + ")")
+  let done = @() dlog($"Set resolution: {newResolution}",
+    "(", screen_width(), "x", screen_height(), ")")
   if (newResolution == curResolution)
     return done()
   setSystemConfigOption("video/resolution", newResolution)
@@ -70,7 +69,7 @@ function debug_multiply_color(colorStr, multiplier) {
 }
 
 function to_pixels_float(value) {
-  return to_pixels("(" + value + ") * 1000000") / 1000000.0
+  return to_pixels($"({value}) * 1000000") / 1000000.0
 }
 
 function debug_check_dirty_words(path = null) {
@@ -87,7 +86,7 @@ function debug_check_dirty_words(path = null) {
     }
   }
   dirtyWordsFilter.setDebugLogFunc(null)
-  dlog("DIRTYWORDS: FINISHED, checked " + blk.paramCount() + ", failed check " + failed)
+  dlog("DIRTYWORDS: FINISHED, checked", blk.paramCount(), ", failed check", failed)
 }
 
 function debug_tips_list() {
@@ -155,7 +154,8 @@ register_command(debug_multiply_color, "debug.multiply_color")
 register_command(@(value) dlog(to_pixels(value)), "debug.to_pixels")
 register_command(@(value) dlog(to_pixels_float(value)), "debug.to_pixels_float")
 register_command(debug_check_dirty_words, "debug.check_dirty_words")
-register_command(@(text) dirtyWordsFilter.debugDirtyWordsFilter(text, console_print), "debug.dirty_words_filter")
+register_command(@(text) dirtyWordsFilter.debugDirtyWordsFilter(text, false, console_print), "debug.dirty_words_filter.phrase")
+register_command(@(text) dirtyWordsFilter.debugDirtyWordsFilter(text, true,  console_print), "debug.dirty_words_filter.name")
 register_command(debug_tips_list, "debug.tips_list")
 register_command(animBg.debugLoad, "debug.load_anim_bg")
 register_command(debug_focus, "debug.focus")

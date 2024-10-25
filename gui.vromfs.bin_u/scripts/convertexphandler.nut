@@ -20,7 +20,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType, canResearchUnit, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, canResearchUnit, canBuyUnit, getUnitReqExp, getUnitExp, isUnitInResearch } = require("%scripts/unit/unitInfo.nut")
 let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
@@ -102,8 +102,8 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.expPerGold = wp_get_exp_convert_exp_for_gold_rate(this.country) || 1
 
     if (this.currentState != windowState.noUnit) {
-      this.unitExpGranted = ::getUnitExp(this.unit)
-      this.unitReqExp = ::getUnitReqExp(this.unit)
+      this.unitExpGranted = getUnitExp(this.unit)
+      this.unitReqExp = getUnitReqExp(this.unit)
     }
     else {
       this.unitExpGranted = 0
@@ -359,7 +359,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let strGrantedExp = Cost().setRp(this.unitExpGranted).tostring()
     let expToBuy = this.getCurExpValue()
     let strWantToBuyExp = format("<color=@activeTextColor> +%s</color>", Cost().setFrp(expToBuy).toStringWithParams({ isFrpAlwaysShown = true }))
-    let strRequiredExp = Cost().setRp(::getUnitReqExp(this.unit)).tostring()
+    let strRequiredExp = Cost().setRp(getUnitReqExp(this.unit)).tostring()
     let sliderText = format("<color=@commonTextColor>%s%s%s%s</color>", strGrantedExp, strWantToBuyExp, loc("ui/slash"), strRequiredExp)
     sliderTextObj.setValue(sliderText)
   }
@@ -470,7 +470,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isInProgressChooseResearch)
       return
     let newUnit = this.unitList[obj.getValue()]
-    let isNewUnitInResearch = ::isUnitInResearch(newUnit)
+    let isNewUnitInResearch = isUnitInResearch(newUnit)
     let isNewUnitResearched = ::isUnitResearched(newUnit)
     let hasChangedUnit = !isEqual(newUnit, this.unit)
     if (!hasChangedUnit && (isNewUnitInResearch || isNewUnitResearched))

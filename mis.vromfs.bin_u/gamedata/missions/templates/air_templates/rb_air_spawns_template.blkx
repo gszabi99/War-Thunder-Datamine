@@ -5003,9 +5003,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t1_airfield_default_name",
             "enemySurrenderOnLanding": true
@@ -5014,9 +5019,26 @@
             "value": true,
             "var": "t1_airfield_exist"
           },
-          "triggerEnable": {
-            "target": "t1_airfields_spawn_default_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t1_airfields_spawn_default_wide_check"
+            },
+            {
+              "target": "t1_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t1_spawn_airfield_name",
+              "input_var": "t1_airfield_default_name"
+            },
+            {
+              "value": "",
+              "var": "t1_spawn_aaa_squad_name",
+              "input_var": "t1_def_aaa_squad_default_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5105,9 +5127,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t2_airfield_default_name",
             "enemySurrenderOnLanding": true
@@ -5116,9 +5143,26 @@
             "value": true,
             "var": "t2_airfield_exist"
           },
-          "triggerEnable": {
-            "target": "t2_airfields_spawn_default_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t2_airfields_spawn_default_wide_check"
+            },
+            {
+              "target": "t2_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t2_spawn_airfield_name",
+              "input_var": "t2_airfield_default_name"
+            },
+            {
+              "value": "",
+              "var": "t2_spawn_aaa_squad_name",
+              "input_var": "t2_def_aaa_squad_default_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5207,9 +5251,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t1_airfield_top_name",
             "enemySurrenderOnLanding": true
@@ -5229,9 +5278,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t1_airfields_spawn_top_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t1_airfields_spawn_top_wide_check"
+            },
+            {
+              "target": "t1_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t1_spawn_airfield_name",
+              "input_var": "t1_airfield_top_name"
+            },
+            {
+              "value": "",
+              "var": "t1_spawn_aaa_squad_name",
+              "input_var": "t1_def_aaa_squad_top_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5320,9 +5386,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t2_airfield_top_name",
             "enemySurrenderOnLanding": true
@@ -5342,9 +5413,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t2_airfields_spawn_top_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t2_airfields_spawn_top_wide_check"
+            },
+            {
+              "target": "t2_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t2_spawn_airfield_name",
+              "input_var": "t2_airfield_top_name"
+            },
+            {
+              "value": "",
+              "var": "t2_spawn_aaa_squad_name",
+              "input_var": "t2_def_aaa_squad_top_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5433,9 +5521,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t1_airfield_high_name",
             "enemySurrenderOnLanding": true
@@ -5455,9 +5548,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t1_airfields_spawn_high_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t1_airfields_spawn_high_wide_check"
+            },
+            {
+              "target": "t1_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t1_spawn_airfield_name",
+              "input_var": "t1_airfield_high_name"
+            },
+            {
+              "value": "",
+              "var": "t1_spawn_aaa_squad_name",
+              "input_var": "t1_def_aaa_squad_high_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5546,9 +5656,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t2_airfield_high_name",
             "enemySurrenderOnLanding": true
@@ -5568,9 +5683,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t2_airfields_spawn_high_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t2_airfields_spawn_high_wide_check"
+            },
+            {
+              "target": "t2_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t2_spawn_airfield_name",
+              "input_var": "t2_airfield_high_name"
+            },
+            {
+              "value": "",
+              "var": "t2_spawn_aaa_squad_name",
+              "input_var": "t2_def_aaa_squad_high_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5659,9 +5791,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t1_airfield_mid_name",
             "enemySurrenderOnLanding": true
@@ -5681,9 +5818,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t1_airfields_spawn_mid_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t1_airfields_spawn_mid_wide_check"
+            },
+            {
+              "target": "t1_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t1_spawn_airfield_name",
+              "input_var": "t1_airfield_mid_name"
+            },
+            {
+              "value": "",
+              "var": "t1_spawn_aaa_squad_name",
+              "input_var": "t1_def_aaa_squad_mid_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5772,9 +5926,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t2_airfield_mid_name",
             "enemySurrenderOnLanding": true
@@ -5794,9 +5953,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t2_airfields_spawn_mid_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t2_airfields_spawn_mid_wide_check"
+            },
+            {
+              "target": "t2_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t2_spawn_airfield_name",
+              "input_var": "t2_airfield_mid_name"
+            },
+            {
+              "value": "",
+              "var": "t2_spawn_aaa_squad_name",
+              "input_var": "t2_def_aaa_squad_mid_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5885,9 +6061,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t1_airfield_low_name",
             "enemySurrenderOnLanding": true
@@ -5907,9 +6088,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t1_airfields_spawn_low_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t1_airfields_spawn_low_wide_check"
+            },
+            {
+              "target": "t1_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t1_spawn_airfield_name",
+              "input_var": "t1_airfield_low_name"
+            },
+            {
+              "value": "",
+              "var": "t1_spawn_aaa_squad_name",
+              "input_var": "t1_def_aaa_squad_low_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -5998,9 +6196,14 @@
           ]
         },
         "actions": {
-          "comment": {
-            "value": "airfields exists"
-          },
+          "comment": [
+            {
+              "value": "airfields exists"
+            },
+            {
+              "value": "fill names to spawn aaa on field"
+            }
+          ],
           "airfieldSetProperties": {
             "object": "@t2_airfield_low_name",
             "enemySurrenderOnLanding": true
@@ -6020,9 +6223,26 @@
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
           },
-          "triggerEnable": {
-            "target": "t2_airfields_spawn_low_wide_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "t2_airfields_spawn_low_wide_check"
+            },
+            {
+              "target": "t2_spawn_aaa_on_airfield"
+            }
+          ],
+          "varSetString": [
+            {
+              "value": "",
+              "var": "t2_spawn_airfield_name",
+              "input_var": "t2_airfield_low_name"
+            },
+            {
+              "value": "",
+              "var": "t2_spawn_aaa_squad_name",
+              "input_var": "t2_def_aaa_squad_low_name"
+            }
+          ]
         },
         "else_actions": {
           "triggerEnable": {
@@ -6406,6 +6626,80 @@
             "target": "t2_airfields_sub_spawn_low"
           }
         }
+      },
+      "t1_spawn_aaa_on_airfield": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_spawn_airfield_name",
+              "type": "objectGroup"
+            },
+            {
+              "target": "@t1_spawn_aaa_squad_name",
+              "type": "squad"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "object group and  aaa exist"
+          },
+          "unitSpawnOnObjectGroup": {
+            "type": "air_def",
+            "object": "@t1_spawn_aaa_squad_name",
+            "target": "@t1_spawn_airfield_name"
+          }
+        },
+        "else_actions": {}
+      },
+      "t2_spawn_aaa_on_airfield": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t2_spawn_airfield_name",
+              "type": "objectGroup"
+            },
+            {
+              "target": "@t2_spawn_aaa_squad_name",
+              "type": "squad"
+            }
+          ]
+        },
+        "actions": {
+          "comment": {
+            "value": "object group and  aaa exist"
+          },
+          "unitSpawnOnObjectGroup": {
+            "type": "air_def",
+            "object": "@t2_spawn_aaa_squad_name",
+            "target": "@t2_spawn_airfield_name"
+          }
+        },
+        "else_actions": {}
       }
     },
     "rearm_areas": {
@@ -8247,7 +8541,11 @@
     "t2_wide_spawn_mid_name": "",
     "t2_wide_spawn_low_name": "",
     "t2_wide_spawn_top_name": "",
-    "assaults_air_spawn": false
+    "assaults_air_spawn": false,
+    "t1_spawn_airfield_name": "",
+    "t1_spawn_aaa_squad_name": "",
+    "t2_spawn_airfield_name": "",
+    "t2_spawn_aaa_squad_name": ""
   },
   "dialogs": {},
   "airfields": {},

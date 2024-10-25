@@ -1,13 +1,13 @@
-from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_send_operation_request, ww_find_army_name_by_coordinates, ww_convert_map_to_world_position
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_send_operation_request
 from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
-let { wwSetCurrActionType, wwGetCurrActionType, wwGetMapCellByCoords,
-  wwArtillerySetAttackRadius, wwArtilleryGetAttackRadius,
+let { wwSetCurrActionType, wwGetCurrActionType, wwArtillerySetAttackRadius, wwArtilleryGetAttackRadius,
   wwGetUnloadArmyFromTransportError, wwGetLoadArmyToTransportError } = require("worldwar")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 
 function setActionMode(modeId = AUT_None) {
   wwSetCurrActionType(modeId)
@@ -19,9 +19,9 @@ function onSuccessAction() {
   setActionMode()
 }
 
-function useTransportAction(clickPos, requestActionCb) {
-  let loadArmyName = ww_find_army_name_by_coordinates(clickPos.x, clickPos.y) ?? ""
-  let cellIdx = wwGetMapCellByCoords(clickPos.x, clickPos.y)
+function useTransportAction(requestActionCb) {
+  let loadArmyName = armyUnderCursor.get() ?? ""
+  let cellIdx = mapCellUnderCursor.get()
   foreach (armyName in ww_get_selected_armies_names())
     if (::g_world_war.getArmyByName(armyName).isTransport())
       requestActionCb(armyName, loadArmyName, cellIdx)
@@ -50,8 +50,8 @@ let actionModesById = {
         addPopup(this.getTitle(), loc("worldwar/artillery/notReadyToFire"),
           null, null, null, "cant_fire")
     }
-    useAction = function useAction(clickPos) {
-      let mapPos = ww_convert_map_to_world_position(clickPos.x, clickPos.y)
+    useAction = function useAction() {
+      let mapPos = mapCoordsUnderCursor.get()
       let selectedArmies = ww_get_selected_armies_names()
       for (local i = 0; i < selectedArmies.len(); i++) {
         let army = ::g_world_war.getArmyByName(selectedArmies[i])
@@ -82,7 +82,7 @@ let actionModesById = {
       addTask(taskId, null, @() onSuccessAction(),
         Callback(@(_errorCode) ::g_world_war.popupCharErrorMsg(this.errorGroupName), this))
     }
-    useAction = @(clickPos) useTransportAction(clickPos, this.requestAction)
+    useAction = @() useTransportAction(this.requestAction)
     setMode = @() setActionMode(AUT_TransportLoad)
     getTitle = @() loc("worldwar/cant_use_transport")
   },
@@ -111,7 +111,7 @@ let actionModesById = {
           this.requestAction(transportName, armiesBlk.getBlock(i).getBlockName(), cellIdx)
       }
     }
-    useAction = @(clickPos) useTransportAction(clickPos, this.requestActionForAllLoadedArmy)
+    useAction = @() useTransportAction(this.requestActionForAllLoadedArmy)
     setMode = @() setActionMode(AUT_TransportUnload)
     getTitle = @() loc("worldwar/cant_use_transport")
   }

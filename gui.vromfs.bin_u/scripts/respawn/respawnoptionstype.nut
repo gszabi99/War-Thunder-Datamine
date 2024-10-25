@@ -5,7 +5,7 @@ from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { bombNbr, hasCountermeasures, getCurrentPreset, hasBombDelayExplosion } = require("%scripts/unit/unitStatus.nut")
+let { getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let { getSkinsOption } = require("%scripts/customization/skins.nut")
 let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR,
@@ -16,7 +16,7 @@ let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_T
   USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM
 } = require("%scripts/options/optionsExtNames.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
-let { get_option } = require("%scripts/options/optionsExt.nut")
+let { get_option, create_option_list } = require("%scripts/options/optionsExt.nut")
 
 let options = {
   types = []
@@ -50,7 +50,7 @@ function _update(p, trigger, isAlreadyFilled) {
       let objOptionValue = obj.getValue()
       if (isNeedUpdateContent) {
         if (this.cType == optionControlType.LIST) {
-          let markup = ::create_option_list(null, opt.items, opt.value, null, false)
+          let markup = create_option_list(null, opt.items, opt.value, null, false)
           p.handler.guiScene.replaceContentFromText(obj, markup, markup.len(), p.handler)
         }
         else if (this.cType == optionControlType.SLIDER) {

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -62,25 +61,25 @@ let ModificationBase = class (BaseItem) {
             res = loc($"modification/{mod}")
           return res
         })
-      textParts.append(loc("multiAward/type/modification") + loc("ui/colon")
-          + colorize("activeTextColor", ", ".join(locMods, true)))
+      textParts.append("".concat(loc("multiAward/type/modification"), loc("ui/colon"),
+          colorize("activeTextColor", ", ".join(locMods, true))))
     }
 
     if (this.countries) {
       let locCountries = this.countries.map(@(country) loc($"unlockTag/{country}"))
-      textParts.append(loc("trophy/unlockables_names/country") + loc("ui/colon")
-          + colorize("activeTextColor", ", ".join(locCountries, true)))
+      textParts.append("".concat(loc("trophy/unlockables_names/country"), loc("ui/colon"),
+          colorize("activeTextColor", ", ".join(locCountries, true))))
     }
     if (this.unitTypes) {
       let processedUnitTypes = processUnitTypeArray(this.unitTypes)
       let locUnitTypes = processedUnitTypes.map(@(unitType) loc($"mainmenu/type_{unitType}"))
-      textParts.append(loc("mainmenu/btnUnits") + loc("ui/colon")
-          + colorize("activeTextColor", ", ".join(locUnitTypes, true)))
+      textParts.append("".concat(loc("mainmenu/btnUnits"), loc("ui/colon"),
+          colorize("activeTextColor", ", ".join(locUnitTypes, true))))
     }
 
     let rankText = this.getRankText()
     if (rankText.len())
-      textParts.append(loc("sm_rank") + loc("ui/colon") + colorize("activeTextColor", rankText))
+      textParts.append("".concat(loc("sm_rank"), loc("ui/colon"), colorize("activeTextColor", rankText)))
 
     let outro = this.getDescriptionOutroArray()
     if (outro)

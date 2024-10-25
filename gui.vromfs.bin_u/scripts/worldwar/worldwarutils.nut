@@ -15,48 +15,47 @@ let { loadLocalByAccount, saveLocalByAccount
 let DataBlock  = require("DataBlock")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
-let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
-let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let wwArmyGroupManager = require("%scripts/worldWar/inOperation/wwArmyGroupManager.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
-let { getNearestMapToBattle, hasAvailableMapToBattle, getOperationById
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
-let { openWwOperationRewardPopup
-} = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
-let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { get_current_mission_desc } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
-let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
+let { addTask } = require("%scripts/tasker.nut")
+let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
+let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetOperationWinner,
   wwGetOperationTimeMillisec, wwGetZoneSideByName, wwGetAirfieldsCount, wwGetSelectedAirfield,
   wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo, wwGetConfigurableValues,
   wwGetReinforcementsInfo, wwGetBattlesInfo, wwGetMapCellByCoords } = require("worldwar")
+
+let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let { addTask } = require("%scripts/tasker.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
-let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
+let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
+let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
+let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let wwArmyGroupManager = require("%scripts/worldWar/inOperation/wwArmyGroupManager.nut")
+let { getNearestMapToBattle, hasAvailableMapToBattle, getOperationById
+} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
+let { openWwOperationRewardPopup } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
+let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -82,14 +81,14 @@ function canPlayWorldwar() {
   return !!unit
 }
 
+let wwstorage = persist("wwstorage", @() {configurableValues = DataBlock(), curOperationCountry = null})
+
 local g_world_war
 g_world_war = {
   armyGroups = []
   isArmyGroupsValid = false
   battles = []
   isBattlesValid = false
-  configurableValues = DataBlock()
-
   isLastFlightWasWwBattle = false
 
   infantryUnits = null
@@ -97,10 +96,9 @@ g_world_war = {
   transportUnits = null
 
   rearZones = null
-  curOperationCountry = null
   lastPlayedOperationId = null
   lastPlayedOperationCountry = null
-
+  getCurOperationCountry = @() wwstorage.curOperationCountry
   isDebugMode = false
 
   myClanParticipateIcon = "#ui/gameuiskin#lb_victories_battles.svg"
@@ -268,7 +266,7 @@ g_world_war = {
 
   function stopWar() {
     this.rearZones = null
-    this.curOperationCountry = null
+    wwstorage.curOperationCountry = null
 
     removeAllGenericTooltip()
     ::g_ww_logs.clear()
@@ -318,7 +316,7 @@ g_world_war = {
     if (!this.checkPlayWorldwarAccess())
       return
 
-    wwGetConfigurableValues(this.configurableValues)
+    wwGetConfigurableValues(wwstorage.configurableValues)
 
     if (!handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler))
       handlersManager.loadHandler(gui_handlers.WwOperationsMapsHandler,
@@ -352,7 +350,7 @@ g_world_war = {
       else
         sideSelectSuccess = ww_select_player_side_for_regular_user(country)
     }
-    this.curOperationCountry = country
+    wwstorage.curOperationCountry = country
 
     if (!sideSelectSuccess) {
       this.openOperationsOrQueues()
@@ -764,27 +762,27 @@ g_world_war = {
     this.clearUnitsLists()
     let blk = DataBlock()
     wwGetConfigurableValues(blk)
-    this.configurableValues = blk
+    wwstorage.configurableValues = blk
     // ----- FIX ME: Weapon masks data should be received from char -----
-    if (!("fighterCountAsAssault" in this.configurableValues)) {
-      this.configurableValues.fighterCountAsAssault = DataBlock()
-      this.configurableValues.fighterCountAsAssault.mgun    = false
-      this.configurableValues.fighterCountAsAssault.cannon  = false
-      this.configurableValues.fighterCountAsAssault.gunner  = false
-      this.configurableValues.fighterCountAsAssault.bomb    = true
-      this.configurableValues.fighterCountAsAssault.torpedo = false
-      this.configurableValues.fighterCountAsAssault.rockets = true
-      this.configurableValues.fighterCountAsAssault.gunpod  = false
+    if (!("fighterCountAsAssault" in wwstorage.configurableValues)) {
+      wwstorage.configurableValues.fighterCountAsAssault = DataBlock()
+      wwstorage.configurableValues.fighterCountAsAssault.mgun    = false
+      wwstorage.configurableValues.fighterCountAsAssault.cannon  = false
+      wwstorage.configurableValues.fighterCountAsAssault.gunner  = false
+      wwstorage.configurableValues.fighterCountAsAssault.bomb    = true
+      wwstorage.configurableValues.fighterCountAsAssault.torpedo = false
+      wwstorage.configurableValues.fighterCountAsAssault.rockets = true
+      wwstorage.configurableValues.fighterCountAsAssault.gunpod  = false
     }
     // ------------------------------------------------------------------
 
     local fighterToAssaultWeaponMask = 0
-    let fighterCountAsAssault = this.configurableValues.fighterCountAsAssault
+    let fighterCountAsAssault = wwstorage.configurableValues.fighterCountAsAssault
     for (local i = 0; i < fighterCountAsAssault.paramCount(); i++)
       if (fighterCountAsAssault.getParamValue(i))
         fighterToAssaultWeaponMask = fighterToAssaultWeaponMask | (1 << i)
 
-    this.configurableValues.fighterToAssaultWeaponMask = fighterToAssaultWeaponMask
+    wwstorage.configurableValues.fighterToAssaultWeaponMask = fighterToAssaultWeaponMask
   }
 
 
@@ -798,7 +796,7 @@ g_world_war = {
   }
 
   function getWWConfigurableValue(paramPath, defaultValue) {
-    return getBlkValueByPath(this.configurableValues, paramPath, defaultValue)
+    return getBlkValueByPath(wwstorage.configurableValues, paramPath, defaultValue)
   }
 
   function getOperationObjectives() {
@@ -918,10 +916,7 @@ g_world_war = {
     this.playArmyActionSound("moveSound", army)
 
     let taskId = ww_send_operation_request("cln_ww_move_army_to", blk)
-    addTask(taskId, null, @() null,
-      function (_errorCode) {
-        this.popupCharErrorMsg("move_army_error")
-      })
+    addTask(taskId, null, @() null, Callback(@() this.popupCharErrorMsg("move_army_error"), this))
   }
 
 
@@ -959,12 +954,12 @@ g_world_war = {
   }
 
 
-  function moveSelectedArmes(toX, toY, target = null, append = false) {
+  function moveSelectedArmes(toX, toY, target = null, append = false, cellIdx = -1) {
     if (!this.haveManagementAccessForSelectedArmies())
       return
 
     if (!this.hasEntrenchedInList(ww_get_selected_armies_names())) {
-      this.requestMoveSelectedArmies(toX, toY, target, append)
+      this.requestMoveSelectedArmies(toX, toY, target, append, cellIdx)
       return
     }
 
@@ -981,7 +976,7 @@ g_world_war = {
         {
           id = "yes",
           text = loc("msgbox/btn_yes"),
-          cb = Callback(@() this.requestMoveSelectedArmies(toX, toY, target, append), this)
+          cb = Callback(@() this.requestMoveSelectedArmies(toX, toY, target, append, cellIdx), this)
           shortcut = "A"
         }
       ]
@@ -989,7 +984,8 @@ g_world_war = {
   }
 
 
-  function requestMoveSelectedArmies(toX, toY, target, append) {
+  function requestMoveSelectedArmies(toX, toY, target, append, cellIdx) {
+    cellIdx = cellIdx != -1 ? cellIdx : wwGetMapCellByCoords(toX, toY)// cut when cutting native
     let groundArmies = []
     let selectedArmies = ww_get_selected_armies_names()
     for (local i = selectedArmies.len() - 1; i >= 0 ; i--) {
@@ -998,7 +994,6 @@ g_world_war = {
         continue
 
       if (g_ww_unit_type.isAir(army.unitType)) {
-        let cellIdx = wwGetMapCellByCoords(toX, toY)
         let targetAirfieldIdx = wwFindAirfieldByCoordinates(toX, toY)
         this.moveSelectedArmyToCell(cellIdx, {
           army = army
@@ -1013,7 +1008,6 @@ g_world_war = {
     }
 
     if (groundArmies.len()) {
-      let cellIdx = wwGetMapCellByCoords(toX, toY)
       this.moveSelectedArmiesToCell(cellIdx, groundArmies, target, append)
     }
   }
@@ -1245,8 +1239,8 @@ g_world_war = {
   }
 
 }
-registerPersistentData("g_world_war", g_world_war, ["configurableValues", "curOperationCountry"])
-
 ::g_world_war <- g_world_war
 
 subscribe_handler(g_world_war, g_listener_priority.DEFAULT_HANDLER)
+
+return g_world_war

@@ -7,6 +7,7 @@ let heliStockCamera = require("planeCockpit/mfdHeliCamera.nut")
 let shkval = require("planeCockpit/mfdShkval.nut")
 let shkvalKa52 = require("planeCockpit/mfdShkvalKa52.nut")
 let tads = require("planeCockpit/mfdTads.nut")
+let platan = require("planeCockpit/mfdPlatan.nut")
 let { IsMfdSightHudVisible, MfdSightPosSize } = require("airState.nut")
 let hudUnitType = require("hudUnitType.nut")
 
@@ -16,6 +17,7 @@ let mfdCameraSetting = Computed(function() {
     isShkvalKa52 = false
     isTads = false
     isTadsApache = false
+    isPlatan = false
     lineWidthScale = 1.0
     fontScale = 1.0
   }
@@ -30,6 +32,7 @@ let mfdCameraSetting = Computed(function() {
     isShkvalKa52 = blk.getBool("mfdCamShkvalKa52", false)
     isTads = blk.getBool("mfdCamTads", false)
     isTadsApache = blk.getBool("mfdCamTadsApache", false)
+    isPlatan = blk.getBool("mfdCamPlatan", false)
 
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
@@ -37,7 +40,7 @@ let mfdCameraSetting = Computed(function() {
 })
 
 let planeMfdCamera = @(width, height) function() {
-  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale} = mfdCameraSetting.value
+  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan} = mfdCameraSetting.value
   return {
     watch = mfdCameraSetting
     children = [
@@ -45,7 +48,8 @@ let planeMfdCamera = @(width, height) function() {
       (isShkvalKa52 ? shkvalKa52(width, height) :
       (isTads ? tads(width, height, false) :
       (isTadsApache ? tads(width, height, true) :
-      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0))))))
+      (isPlatan ? platan(width, height) :
+      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)))))))
     ]
   }
 }

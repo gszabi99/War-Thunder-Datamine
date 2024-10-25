@@ -17,6 +17,8 @@ let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
@@ -82,7 +84,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
       onChangeCb = Callback(this.onOptionChange, this)
     }
     if (this.isAllowCountriesSetsOnly)
-      this._optionsConfig.countriesSetList = ::events.getAllCountriesSets(this.mGameMode)
+      this._optionsConfig.countriesSetList = events.getAllCountriesSets(this.mGameMode)
     else
       foreach (team in g_team.getTeams())
         this._optionsConfig.countries[team.name] <- this.mGameMode?[team.name].countries
@@ -103,12 +105,12 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   function isUnitAllowed(unit) {
-    if (!::events.isUnitAllowedForEvent(this.mGameMode, unit))
+    if (!events.isUnitAllowedForEvent(this.mGameMode, unit))
       return false
 
     let brRange = this.getCurBrRange()
     if (brRange) {
-      let ediff = ::events.getEDiffByEvent(this.mGameMode)
+      let ediff = events.getEDiffByEvent(this.mGameMode)
       let unitMRank = unit.getEconomicRank(ediff)
       if (unitMRank < getTblValue(0, brRange, 0) || getTblValue(1, brRange, MAX_COUNTRY_RANK) < unitMRank)
         return false
@@ -127,13 +129,13 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   function getCurCrewsReadyStatus() {
     local res = 0
     let country = profileCountrySq.value
-    let ediff = ::events.getEDiffByEvent(this.mGameMode)
+    let ediff = events.getEDiffByEvent(this.mGameMode)
     foreach (team in g_team.getTeams()) {
       if (!isInArray(country, this.getCurCountries(team)))
        continue
 
-      let teamData = ::events.getTeamData(this.mGameMode, team.code)
-      let requiredCrafts = ::events.getRequiredCrafts(teamData)
+      let teamData = events.getTeamData(this.mGameMode, team.code)
+      let requiredCrafts = events.getRequiredCrafts(teamData)
       let crews = getCrewsListByCountry(country)
       foreach (crew in crews) {
         if (isCrewLockedByPrevBattle(crew))
@@ -146,7 +148,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
           continue
         res = res | CREWS_READY_STATUS.HAS_ALLOWED
 
-        if (requiredCrafts.len() && !::events.isUnitMatchesRule(unit, requiredCrafts, true, ediff))
+        if (requiredCrafts.len() && !events.isUnitMatchesRule(unit, requiredCrafts, true, ediff))
           continue
         res = res | CREWS_READY_STATUS.HAS_REQUIRED_AND_ALLOWED
 
@@ -156,11 +158,11 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
     return res
   }
 
-  //same format result as ::events.getCantJoinReasonData
+  //same format result as events.getCantJoinReasonData
   function getCantCreateReasonData(params = null) {
     params = params ? clone params : {}
     params.isCreationCheck <- true
-    let res = ::events.getCantJoinReasonData(this.mGameMode, null, params)
+    let res = events.getCantJoinReasonData(this.mGameMode, null, params)
     if (res.reasonText.len())
       return res
 

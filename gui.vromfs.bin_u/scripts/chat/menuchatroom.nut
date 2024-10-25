@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal
 from "%scripts/dagui_library.nut" import *
 
@@ -31,7 +30,7 @@ let systemColor = "@chatInfoColor"
 
 registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
 
-local function localizeSystemMsg(msg) {
+function localizeSystemMsg(msg) {
   local localized = false
   foreach (ending in ["is set READONLY", "is set BANNED"]) {
     if (!endsWith(msg, ending))
@@ -52,33 +51,32 @@ local function localizeSystemMsg(msg) {
   return msg
 }
 
-local function colorMyNameInText(msg) {
+function colorMyNameInText(msg) {
   if (userName.value == "" || msg.len() < userName.value.len())
     return msg
 
-  local counter = 0;
-  msg = $" {msg} "; //add temp spaces before name coloring
+  local counter = 0
+  msg = $" {msg} " //add temp spaces before name coloring
 
   while (counter + userName.value.len() <= msg.len()) {
-    let nameStartPos = msg.indexof(userName.value, counter);
+    let nameStartPos = msg.indexof(userName.value, counter)
     if (nameStartPos == null)
-      break;
+      break
 
-    let nameEndPos = nameStartPos + userName.value.len();
-    counter = nameEndPos;
+    let nameEndPos = nameStartPos + userName.value.len()
+    counter = nameEndPos
 
     if (isInArray(msg.slice(nameStartPos - 1, nameStartPos), ::punctuation_list) &&
         isInArray(msg.slice(nameEndPos, nameEndPos + 1),     ::punctuation_list)) {
-      let msgStart = msg.slice(0, nameStartPos);
-      let msgEnd = msg.slice(nameEndPos);
-      let msgName = msg.slice(nameStartPos, nameEndPos);
-      let msgProcessedPart = msgStart + colorize(::g_chat.color.senderMe[false], msgName)
-      msg = msgProcessedPart + msgEnd;
-      counter = msgProcessedPart.len();
+      let msgStart = msg.slice(0, nameStartPos)
+      let msgEnd = msg.slice(nameEndPos)
+      let msgName = msg.slice(nameStartPos, nameEndPos)
+      let msgProcessedPart = $"{msgStart}{colorize(::g_chat.color.senderMe[false], msgName)}"
+      msg = $"{msgProcessedPart}{msgEnd}"
+      counter = msgProcessedPart.len()
     }
   }
-  msg = msg.slice(1, msg.len() - 1); //remove temp spaces after name coloring
-
+  msg = msg.slice(1, msg.len() - 1) //remove temp spaces after name coloring
   return msg
 }
 
@@ -248,7 +246,7 @@ function newRoom(id, customScene = null, ownerHandler = null) {
             mBlock.fullName)
       }
 
-      mBlock.text += (!this.isCustomScene ? "\n" : "") + mBlock.msgs.top()
+      mBlock.text = "".concat(mBlock.text, !this.isCustomScene ? "\n" : "", mBlock.msgs.top())
       mBlock.messageIndex = persistent.lastCreatedMessageIndex++
 
       if (this.mBlocks.len() > ::g_chat.getMaxRoomMsgAmount())

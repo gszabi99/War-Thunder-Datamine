@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_warbond_curr_stage_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
@@ -199,7 +198,7 @@ seenWarbondsShop.setCompatibilityLoadData(function() {
    for (local i = 0; i < blk.blockCount(); i++) {
      let warbondBlk = blk.getBlock(i)
      for (local j = 0; j < warbondBlk.paramCount(); j++)
-       res[warbondBlk.getBlockName() + "_" + warbondBlk.getParamName(j)] <- warbondBlk.getParamValue(j)
+       res["_".concat(warbondBlk.getBlockName(), warbondBlk.getParamName(j))] <- warbondBlk.getParamValue(j)
    }
    saveLocalByAccount(savePath, null)
    return res

@@ -88,7 +88,7 @@ function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomiza
  * @param {string|null} [skinId] - Skin to apply. Use null for default skin.
  * @param {boolean} [isForApprove] - Enables UI for skin approvement.
  */
-local function showUnitSkin(unitId, skinId = null, isForApprove = false) {
+function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   if (!canStartPreviewScene(true, true))
     return
 

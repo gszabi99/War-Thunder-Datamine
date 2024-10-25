@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -112,7 +112,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
       return this.newClanType.getPrimaryInfoChangeCost()
     if (changedSecondary)
       return this.newClanType.getSecondaryInfoChangeCost()
-    return clone ::zero_money
+    return clone zero_money
   }
 
   function onFieldChange(_obj) {
@@ -140,10 +140,10 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
 
     let cost = this.getCost(changedPrimary, changedSecondary)
 
-    if (cost <= ::zero_money)
+    if (cost <= zero_money)
       this.editClanInfo()
     else if (checkBalanceMsgBox(cost)) {
-      let text = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > ::zero_money
+      let text = changedPrimary && this.newClanType.getPrimaryInfoChangeCost() > zero_money
                    ? "clan/needMoneyQuestion_editClanPrimaryInfo"
                    : "clan/needMoneyQuestion_editClanSecondaryInfo"
       let msgText = warningIfGold(format(loc(text), cost.getTextAccordingToBalance()), cost)

@@ -4,6 +4,7 @@ from "%scripts/events/eventsConsts.nut" import UnitRelevance
 let { EDifficulties } = require("%appGlobals/ranks_common_shared.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -13,8 +14,7 @@ let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
 let DataBlock = require("DataBlock")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isCrossPlayEnabled,
-  needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { isCrossPlayEnabled, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
@@ -99,8 +99,13 @@ let getCurrentGameModeId = @() currentGameModeId
 let getUserGameModeId = @() userGameModeId
 let setUserGameModeId = @(id) userGameModeId = id
 
+/**
+  * Returns game mode data by id.
+  */
+let getGameModeById = @(id) gameModeById?[id]
+
 function setCurrentGameModeId(id, save, isUserSelected = false) {
-  if (!::events.isEventsLoaded())
+  if (!events.isEventsLoaded())
     return
 
   if (isUserSelected)
@@ -123,17 +128,18 @@ function setCurrentGameModeById(id, isUserSelected = false) {
 
 let featuredModes = [
   {
+    /*World War*/
     modeId = "world_war_featured_game_mode"
     text = @() loc("mainmenu/btnWorldwar")
     textDescription = @() ::g_world_war.getPlayedOperationText()
     isWide = @() isMeNewbie() || !is_platform_pc
     image = function() {
-        let operation = ::g_world_war.getLastPlayedOperation()
-        if (operation != null)
-          return $"#ui/images/game_modes_tiles/worldwar_active_{(this.isWide() ? "wide" : "thin")}?P1"
-        else
-          return $"#ui/images/game_modes_tiles/worldwar_live_{(this.isWide() ? "wide" : "thin")}?P1"
-      }
+      let operation = ::g_world_war.getLastPlayedOperation()
+      if (operation != null)
+        return $"#ui/images/game_modes_tiles/worldwar_active_{(this.isWide() ? "wide" : "thin")}?P1"
+      else
+        return $"#ui/images/game_modes_tiles/worldwar_live_{(this.isWide() ? "wide" : "thin")}?P1"
+    }
     videoPreview = null
     isVisible = @() ::is_worldwar_enabled()
     isCrossPlayRequired = needShowCrossPlayInfo
@@ -145,45 +151,29 @@ let featuredModes = [
       if (checkObj(descObj))
         descObj.setValue(::g_world_war.getPlayedOperationText())
     }
-    getTooltipText = @() ::is_worldwar_enabled() ? ::g_world_war.getCantPlayWorldwarReasonText() : ""
   }
   {
-    /*TSS*/
+    /*War Thunder League*/
     modeId = "tss_featured_game_mode"
     text = @() loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
     isWide = false
     image = @() $"#ui/images/game_modes_tiles/tss_{(this.isWide ? "wide" : "thin")}?P1"
     videoPreview = null
-    isVisible = @() !isMeNewbie() && hasFeature("Tournaments") && hasFeature("AllowExternalLink")
+    isVisible = @() hasFeature("Tournaments") && hasFeature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
-    inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
+    inactiveColor = @() isMeNewbie() || (needShowCrossPlayInfo() && !isCrossPlayEnabled())
       || !isMultiplayerPrivilegeAvailable.value || hasMultiplayerRestritionByBalance()
     crossPlayRestricted = @() needShowCrossPlayInfo()
-                           && isMultiplayerPrivilegeAvailable.value
-                           && !isCrossPlayEnabled()
-    crossplayTooltip = function() {
-      if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
-        return null
-
-      if (!isMultiplayerPrivilegeAvailable.value)
-        return loc("xbox/noMultiplayer")
-
-      //Always send to other platform if enabled
-      //Need to notify about it
-      if (isCrossPlayEnabled())
-        return loc("xbox/crossPlayEnabled")
-
-      //Notify that crossplay is strongly required
-      return loc("xbox/crossPlayRequired")
-    }
+      && isMultiplayerPrivilegeAvailable.value
+      && !isCrossPlayEnabled()
   }
   {
-    /*events*/
+    /*Events*/
     modeId = "tournaments_and_event_featured_game_mode"
     text = function () {
-      let activeEventsNum = ::events.getEventsVisibleInEventsWindowCount()
+      let activeEventsNum = events.getEventsVisibleInEventsWindowCount()
       if (activeEventsNum <= 0)
         return loc("mainmenu/events/eventlist_btn_no_active_events")
       else
@@ -196,20 +186,12 @@ let featuredModes = [
       return $"#ui/images/game_modes_tiles/events_{(this.isWide ? "wide" : "thin")}?P1"
     }
     videoPreview = null
-    isVisible = function () {
-      return hasFeature("Events") && ::events.getEventsVisibleInEventsWindowCount() > 0
-    }
+    isVisible = @() hasFeature("Events") && events.getEventsVisibleInEventsWindowCount() > 0
     hasNewIconWidget = false
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
-    crossplayTooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable.value)
-        return loc("xbox/noMultiplayer")
-
-      return null
-    }
   }
   {
-    /*custom battles*/
+    /*Custom Battles*/
     modeId = "custom_battles_featured_game_mode"
     text = function () {
       return loc("mainmenu/btnSkirmish")
@@ -220,17 +202,11 @@ let featuredModes = [
       return $"#ui/images/game_modes_tiles/custom_battles_{(this.isWide ? "wide" : "thin")}?P1"
     }
     videoPreview = null
-    isVisible = @() !isMeNewbie()
+    isVisible = @() true
     hasNewIconWidget = false
     newIconWidgetId = ""
-    inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
+    inactiveColor = @() isMeNewbie() || !isMultiplayerPrivilegeAvailable.value
       || hasMultiplayerRestritionByBalance()
-    crossplayTooltip = function() {
-      if (!isMultiplayerPrivilegeAvailable.value)
-        return loc("xbox/noMultiplayer")
-
-      return null
-    }
   }
   //{
     /*dynamic campaign*/
@@ -242,6 +218,7 @@ let featuredModes = [
 
 let customGameModesBattles = [
   {
+    // "Simulator Battles"
     id = "custom_mode_fullreal"
     difficulty = g_difficulty.SIMULATOR
     image = "#ui/images/game_modes_tiles/mixed_event_02_wide?P1"
@@ -249,16 +226,16 @@ let customGameModesBattles = [
     displayWide = true
     getEventId = function() {
       let curUnit = getCurSlotbarUnit()
-      let chapter = ::events.getChapter("simulation_battles")
+      let chapter = events.getChapter("simulation_battles")
       let chapterEvents = chapter ? chapter.getEvents() : []
 
       local openEventId = null
       if (chapterEvents.len()) {
-        let lastPlayedEventId = ::events.getLastPlayedEvent()?.name
+        let lastPlayedEventId = events.getLastPlayedEvent()?.name
         let lastPlayedEventRelevance = isInArray(lastPlayedEventId, chapterEvents) ?
-          ::events.checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
+          events.checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
         let relevanceList = chapterEvents.map(@(id) { eventId = id,
-          relevance = ::events.checkUnitRelevanceForEvent(id, curUnit) })
+          relevance = events.checkUnitRelevanceForEvent(id, curUnit) })
         relevanceList.sort(@(a, b) b.relevance <=> a.relevance || a.eventId <=> b.eventId)
         openEventId = relevanceList.findvalue(@(item) lastPlayedEventRelevance >= item.relevance)?.eventId
           ?? lastPlayedEventId
@@ -267,18 +244,14 @@ let customGameModesBattles = [
       return openEventId
     }
     inactiveColor = function() {
+      if (isMeNewbie())
+        return true
       if (!isMultiplayerPrivilegeAvailable.value)
         return true
-
-      let chapter = ::events.getChapter("simulation_battles")
+      let chapter = events.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()
     }
-    isVisible = function() {
-      return hasFeature("AllModesInRandomBattles")
-        && g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
-        && !isMeNewbie()
-    }
-    getTooltipText = function() { return loc("simulator_battles/desc") }
+    isVisible = @() hasFeature("AllModesInRandomBattles") && g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
   }
 ]
 
@@ -286,11 +259,6 @@ let customGameModesBattles = [
    * Returns current game mode data.
    */
 let getCurrentGameMode = @() gameModeById?[currentGameModeId]
-
-  /**
-   * Returns game mode data by id.
-   */
-let getGameModeById = @(id) gameModeById?[id]
 
   /**
    * Game modes retrieve method.
@@ -375,7 +343,7 @@ function getGameModesPartitions() {
     // sort game modes by difficulty.
     if (diffCode == -1) {
       partition.gameModes.sort(function (gm1, gm2) {
-        return ::events.diffCodeCompare(gm1.diffCode, gm2.diffCode)
+        return events.diffCodeCompare(gm1.diffCode, gm2.diffCode)
       })
     }
     partitions.append(partition)
@@ -484,7 +452,7 @@ function updateCurrentGameModeId() {
   let curGameModeId = findCurrentGameModeId()
   if (curGameModeId != null) {
     // This activates saving to profile on first update after profile loaded.
-    let save = curGameModeId == null && ::events.isEventsLoaded()
+    let save = curGameModeId == null && events.isEventsLoaded()
     setCurrentGameModeId(curGameModeId, save)
   }
 }
@@ -507,7 +475,7 @@ function getGameModeEvent(gm) {
   if (gm?.getEvent)
     return gm.getEvent()
 
-  return gm?.getEventId ? ::events.getEvent(gm.getEventId()) : null
+  return gm?.getEventId ? events.getEvent(gm.getEventId()) : null
 }
 
 function getUnitTypesByGameMode(gameMode, isOnlyAvailable = true, needReqUnitType = false) {
@@ -520,8 +488,8 @@ function getUnitTypesByGameMode(gameMode, isOnlyAvailable = true, needReqUnitTyp
 
   let event = getGameModeEvent(gameMode)
   return filteredUnitTypes
-    .filter(@(unitType) needReqUnitType ? ::events.isUnitTypeRequired(event, unitType.esUnitType)
-      : ::events.isUnitTypeAvailable(event, unitType.esUnitType))
+    .filter(@(unitType) needReqUnitType ? events.isUnitTypeRequired(event, unitType.esUnitType)
+      : events.isUnitTypeAvailable(event, unitType.esUnitType))
     .map(@(unitType) unitType.esUnitType)
 }
 
@@ -539,22 +507,17 @@ function createEventGameMode(event, isTempGameMode = false) {
     eventForSquad = null
     modeId = event.name
     type = RB_GM_TYPE.EVENT
-    text = ::events.getEventNameText(event)
-    diffCode = ::events.getEventDiffCode(event)
-    ediff = ::events.getEDiffByEvent(event)
-    image = ::events.getEventTileImageName(event, ::events.isEventDisplayWide(event))
-    videoPreview = hasFeature("VideoPreview") ? ::events.getEventPreviewVideoName(event, ::events.isEventDisplayWide(event)) : null
+    text = events.getEventNameText(event)
+    diffCode = events.getEventDiffCode(event)
+    ediff = events.getEDiffByEvent(event)
+    image = events.getEventTileImageName(event, events.isEventDisplayWide(event))
+    videoPreview = hasFeature("VideoPreview") ? events.getEventPreviewVideoName(event, events.isEventDisplayWide(event)) : null
     displayType = getEventDisplayType(event)
     forClan = isForClan
-    countries = ::events.getAvailableCountriesByEvent(event)
-    displayWide = ::events.isEventDisplayWide(event)
-    enableOnDebug = ::events.isEventEnableOnDebug(event)
-
+    countries = events.getAvailableCountriesByEvent(event)
+    displayWide = events.isEventDisplayWide(event)
+    enableOnDebug = events.isEventEnableOnDebug(event)
     getEvent = function() { return (g_squad_manager.isNotAloneOnline() && this.eventForSquad) || event }
-    getTooltipText = function() {
-      let ev = this.getEvent()
-      return ev ? ::events.getEventDescriptionText(ev, null, true) : ""
-    }
     unitTypes = null
     reqUnitTypes = null
     inactiveColor = null
@@ -563,7 +526,7 @@ function createEventGameMode(event, isTempGameMode = false) {
   let reqUnitTypes = getUnitTypesByGameMode(gameMode, false, true)
   gameMode.reqUnitTypes = reqUnitTypes
   gameMode.inactiveColor = function() {
-    local inactiveColor = !::events.checkEventFeature(event, true)
+    local inactiveColor = !events.checkEventFeature(event, true)
 
     if (!inactiveColor)
       foreach (esUnitType in reqUnitTypes) {
@@ -596,8 +559,7 @@ function createCustomGameMode(gm) {
     inactiveColor = gm?.inactiveColor ?? @() false
     unitTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER]
     getEventId = @() gm?.getEventId()
-    getEvent = @() ::events.getEvent(gm?.getEventId())
-    getTooltipText = getTblValue("getTooltipText", gm, function() { return "" })
+    getEvent = @() events.getEvent(gm?.getEventId())
   }
   return appendGameMode(gameMode)
 }
@@ -617,20 +579,28 @@ function updateGameModes() {
       createCustomGameMode(dm)
   }
 
-  foreach (eventId in ::events.getEventsForGcDrawer()) {
-    let event = ::events.getEvent(eventId)
+  foreach (eventId in events.getEventsForGcDrawer()) {
+    let event = events.getEvent(eventId)
     local skip = false
+    local hasNewbieEvent = false
     foreach (unitType, newbieGm in newbieGmByUnitType) {
-      if (::events.isUnitTypeAvailable(event, unitType) && ::events.isUnitTypeRequired(event, unitType, true)) {
-        if (::events.getEventDiffCode(event) == newbieGm.diffCode && isEventForNewbies(event)) {
-          newbieGm.eventForSquad = event
-        }
-        skip = true
+      if (!(events.isUnitTypeAvailable(event, unitType) && events.isUnitTypeRequired(event, unitType, true)))
+        continue
+      hasNewbieEvent = true
+      if (events.getEventDiffCode(event) != newbieGm.diffCode)
         break
-      }
+      if (isEventForNewbies(event))
+        newbieGm.eventForSquad = event
+
+      skip = true
+      break
     }
-    if (!skip)
-      createEventGameMode(event)
+    if (skip)
+      continue
+
+    let gm = createEventGameMode(event)
+    if (hasNewbieEvent)
+      gm.inactiveColor = @() true
   }
 
   broadcastEvent("GameModesUpdated")
@@ -727,7 +697,7 @@ function updateManager() {
 
 function setLeaderGameMode(id) {
   if (!getGameModeById(id))
-    createEventGameMode(::events.getEvent(id), true)
+    createEventGameMode(events.getEvent(id), true)
 
   setCurrentGameModeId(id, false, false)
 }
@@ -744,7 +714,7 @@ function isUnitAllowedForGameMode(unit, gameMode = null) {
   if (!gameMode)
     return false
   return gameMode.type != RB_GM_TYPE.EVENT
-    || ::events.isUnitAllowedForEvent(getGameModeEvent(gameMode), unit)
+    || events.isUnitAllowedForEvent(getGameModeEvent(gameMode), unit)
 }
 
   /**

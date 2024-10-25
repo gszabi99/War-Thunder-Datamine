@@ -85,7 +85,7 @@ let getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup) {
   local res = actionBarInfo.getActionDesc(getActionBarUnitName(), triggerGroup)
   let cooldownTime = actionItem?.cooldownTime
   if (cooldownTime)
-    res += ("\n" + loc("shop/reloadTime") + " " + time.secondsToString(cooldownTime, true, true))
+    res = "".concat(res, "\n", loc("shop/reloadTime"), " ", time.secondsToString(cooldownTime, true, true))
   return res
 }
 
@@ -173,7 +173,7 @@ g_hud_action_bar_type.template <- {
     local res = loc("actionBarItem/" + this.getName(actionItem, actionItem?.killStreakUnitTag))
     res = $"{res}{getCooldownText(actionItem)}"
     if (actionItem?.automatic)
-      res += "\n" + loc("actionBar/action/automatic")
+      res = "\n".concat(res, loc("actionBar/action/automatic"))
     return res
   }
 
@@ -184,14 +184,14 @@ g_hud_action_bar_type.template <- {
       return null
 
     if (hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
-      return "ID_SUBMARINE_ACTION_BAR_ITEM_" + (shortcutIdx + 1)
+      return $"ID_SUBMARINE_ACTION_BAR_ITEM_{shortcutIdx + 1}"
     if (hudUnitType == HUD_UNIT_TYPE.SHIP)
-      return "ID_SHIP_ACTION_BAR_ITEM_" + (shortcutIdx + 1)
+      return $"ID_SHIP_ACTION_BAR_ITEM_{shortcutIdx + 1}"
     //
 
 
 
-    return "ID_ACTION_BAR_ITEM_" + (shortcutIdx + 1)
+    return $"ID_ACTION_BAR_ITEM_{shortcutIdx + 1}"
   }
 
   getVisualShortcut = function(actionItem = null, hudUnitType = null) {
@@ -642,7 +642,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = @(actionItem, _hudUnitType = null)
       "ID_SHIP_DAMAGE_CONTROL_PRESET_" + (actionItem.userHandle >> 3).tostring()
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      return "#ui/gameuiskin#ship_damage_control_" + ((actionItem.userHandle & 7) + 1).tostring() + ""
+      return "".concat("#ui/gameuiskin#ship_damage_control_", (actionItem.userHandle & 7) + 1)
     }
   }
 

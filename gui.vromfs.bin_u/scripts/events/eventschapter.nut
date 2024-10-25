@@ -2,6 +2,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE
 
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 let EventChapter = class {
   name = ""
@@ -36,9 +38,9 @@ let EventChapter = class {
   function updateSortPriority() {
     this.sortPriority = 0
     foreach (eventName in this.getEvents()) {
-      let event = ::events.getEvent(eventName)
+      let event = events.getEvent(eventName)
       if (event)
-        this.sortPriority = max(this.sortPriority, ::events.getEventUiSortPriority(event))
+        this.sortPriority = max(this.sortPriority, events.getEventUiSortPriority(event))
     }
   }
 
@@ -47,23 +49,23 @@ let EventChapter = class {
   }
 
   function update() {
-    this.eventIds = ::events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) { //-ident-hides-ident
-      return ::events.getEventsChapter(event) == name
-             && ::events.isEventVisibleInEventsWindow(event)
+    this.eventIds = events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) { //-ident-hides-ident
+      return events.getEventsChapter(event) == name
+             && events.isEventVisibleInEventsWindow(event)
     })(this.name))
     this.sortValid = false
     this.sortPriority = -1
   }
 
   function sortChapterEvents(eventId1, eventId2) { // warning disable: -return-different-types
-    let event1 = ::events.getEvent(eventId1)
-    let event2 = ::events.getEvent(eventId2)
+    let event1 = events.getEvent(eventId1)
+    let event2 = events.getEvent(eventId2)
     if (event1 == null && event2 == null)
       return 0
     return (!!event1 <=> !!event2)
-        || (::events.getEventUiSortPriority(event2) <=> ::events.getEventUiSortPriority(event1))
-        || (::events.getEventDiffCode(event1) <=> ::events.getEventDiffCode(event2))
-        || (::events.getEventNameText(event1) <=> ::events.getEventNameText(event2))
+        || (events.getEventUiSortPriority(event2) <=> events.getEventUiSortPriority(event1))
+        || (events.getEventDiffCode(event1) <=> events.getEventDiffCode(event2))
+        || (events.getEventNameText(event1) <=> events.getEventNameText(event2))
         || event1.name <=> event2.name
   }
 }
@@ -85,13 +87,13 @@ let EventChapter = class {
   * And when some chapters are empty, removes them
   */
   function updateChapters() {
-    let eventsList = ::events.getEventsList(EVENT_TYPE.ANY, ::events.isEventVisibleInEventsWindow)
+    let eventsList = events.getEventsList(EVENT_TYPE.ANY, events.isEventVisibleInEventsWindow)
 
     foreach (eventName in eventsList) {
-      let event = ::events.getEvent(eventName)
+      let event = events.getEvent(eventName)
       if (event == null)
         continue
-      let chapterId = ::events.getEventsChapter(event)
+      let chapterId = events.getEventsChapter(event)
       if (!this.getChapter(chapterId))
         this.addChapter(chapterId)
     }

@@ -6,6 +6,7 @@ from "mission" import get_game_mode, get_game_type
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInMenu, handlersManager, loadHandler, get_cur_base_gui_handler
@@ -160,7 +161,7 @@ function guiStartMpLobby() {
     backFromLobby = { eventbusName = "guiStartSkirmish" }
   else {
     let lastEvent = ::SessionLobby.getRoomEvent()
-    if (lastEvent && ::events.eventRequiresTicket(lastEvent) && ::events.getEventActiveTicket(lastEvent) == null) {
+    if (lastEvent && events.eventRequiresTicket(lastEvent) && events.getEventActiveTicket(lastEvent) == null) {
       gui_start_mainmenu()
       return
     }

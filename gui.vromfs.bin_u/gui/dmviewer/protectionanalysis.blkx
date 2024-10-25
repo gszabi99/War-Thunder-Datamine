@@ -30,111 +30,148 @@
               "text": "#mainmenu/btnProtectionAnalysis"
             }
           },
-          "EditBox": {
-            "id": "filter_edit_box",
-            "width": "pw",
-            "on_change_value": "applyFilter",
-            "on_cancel_edit": "onFilterCancel",
-            "text": "",
-            "edit-hint": "#contacts/search_placeholder"
-          },
-          "verticalCellsOptions": {
-            "id": "options_container",
-            "width": "pw",
-            "class": "optionsMultiColumn",
-            "fullWidthOptions": "yes",
-            "selfFocusBorder": "yes",
-            "css-hier-invalidate": "yes",
-            "moveY": "linear",
-            "behavior": "PosOptionsNavigator",
-            "navigatorShortcuts": "yes",
-            "on_wrap_left": "onDistanceDec",
-            "on_wrap_right": "onDistanceInc"
-          },
-          "rowSeparator": [
-            {
-              "pos": "0, 1@blockInterval"
-            },
-            {
-              "id": "rowSeparator",
-              "pos": "0, 1@blockInterval"
-            }
-          ],
-          "CheckBox": [
-            {
-              "id": "checkboxSaveChoice",
-              "class": "with_textarea",
-              "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
-              "position": "relative",
-              "on_change_value": "onSave",
-              "btnName": "Y",
-              "ButtonImg": {},
-              "CheckBoxImg": {},
-              "textareaNoTab": {
-                "text": "#mainmenu/btnSaveChoice"
-              }
-            },
-            {
-              "id": "checkboxVerticalAngle",
-              "class": "with_textarea",
-              "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
-              "position": "relative",
-              "width": "pw - 1@framePadding",
-              "on_change_value": "onConsiderVerticalAngle",
-              "btnName": "R3",
-              "display": "hide",
-              "enable": "no",
-              "ButtonImg": {},
-              "CheckBoxImg": {},
-              "textareaNoTab": {
-                "text": "#mainmenu/considerCameraVerticalAngle"
-              }
-            }
-          ],
           "tdiv": {
-            "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
-            "Button_text": [
+            "size": "pw, ph",
+            "flow": "vertical",
+            "overflow-y": "auto",
+            "max-height": "@rh - @gamercardHeight - 250@sf/@pf",
+            "EditBox": {
+              "id": "filter_edit_box",
+              "width": "pw",
+              "on_change_value": "applyFilter",
+              "on_cancel_edit": "onFilterCancel",
+              "text": "",
+              "edit-hint": "#contacts/search_placeholder"
+            },
+            "verticalCellsOptions": {
+              "id": "options_container",
+              "width": "pw",
+              "class": "optionsMultiColumn",
+              "fullWidthOptions": "yes",
+              "selfFocusBorder": "yes",
+              "css-hier-invalidate": "yes",
+              "moveY": "linear",
+              "behavior": "PosOptionsNavigator",
+              "navigatorShortcuts": "yes",
+              "on_wrap_left": "onDistanceDec",
+              "on_wrap_right": "onDistanceInc"
+            },
+            "rowSeparator": [
               {
-                "id": "btnProtectionMap",
-                "position": "relative",
-                "text": "#mainmenu/protectionMap",
-                "on_click": "onProtectionMap",
-                "btnName": "X",
-                "noMargin": "yes",
-                "display": "hide",
-                "enable": "no",
-                "ButtonImg": {}
+                "pos": "0, 1@blockInterval"
               },
               {
-                "id": "btnCrewMap",
-                "position": "relative",
-                "text": "#mainmenu/crewMap",
-                "on_click": "onCrewMap",
-                "btnName": "X",
-                "noMargin": "yes",
-                "display": "hide",
-                "enable": "no",
-                "ButtonImg": {}
+                "id": "rowSeparator",
+                "pos": "0, 1@blockInterval"
               }
             ],
-            "tdiv": {
-              "id": "pa_info_block",
-              "height": "1@buttonHeight",
-              "display": "hide",
-              "text": {
-                "id": "pa_wait_text",
-                "pos": "0, 0.5ph-0.5h",
+            "CheckBox": [
+              {
+                "id": "checkboxSaveChoice",
+                "class": "with_textarea",
+                "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
                 "position": "relative",
-                "padding": "1@blockInterval, 0"
+                "on_change_value": "onSave",
+                "btnName": "Y",
+                "ButtonImg": {},
+                "CheckBoxImg": {},
+                "textareaNoTab": {
+                  "text": "#mainmenu/btnSaveChoice"
+                }
               },
-              "animated_wait_icon": {
-                "id": "pa_wait_icon",
-                "class": "byParent",
-                "pos": "0, 0.5ph-0.5h",
+              {
+                "id": "checkboxVerticalAngle",
+                "class": "with_textarea",
+                "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
                 "position": "relative",
-                "background-rotation": "0"
+                "width": "pw - 1@framePadding",
+                "on_change_value": "onConsiderVerticalAngle",
+                "btnName": "R3",
+                "display": "hide",
+                "enable": "no",
+                "ButtonImg": {},
+                "CheckBoxImg": {},
+                "textareaNoTab": {
+                  "text": "#mainmenu/considerCameraVerticalAngle"
+                }
               }
-            }
+            ],
+            "tdiv": [
+              {
+                "margin": "1@tablePad, 2@blockInterval, 0, 1@blockInterval",
+                "Button_text": [
+                  {
+                    "id": "btnProtectionMap",
+                    "position": "relative",
+                    "text": "#mainmenu/protectionMap",
+                    "on_click": "onProtectionMap",
+                    "btnName": "X",
+                    "noMargin": "yes",
+                    "display": "hide",
+                    "enable": "no",
+                    "ButtonImg": {}
+                  },
+                  {
+                    "id": "btnCrewMap",
+                    "position": "relative",
+                    "text": "#mainmenu/crewMap",
+                    "on_click": "onCrewMap",
+                    "btnName": "X",
+                    "noMargin": "yes",
+                    "display": "hide",
+                    "enable": "no",
+                    "ButtonImg": {}
+                  }
+                ],
+                "tdiv": {
+                  "id": "pa_info_block",
+                  "height": "1@buttonHeight",
+                  "display": "hide",
+                  "text": {
+                    "id": "pa_wait_text",
+                    "pos": "0, 0.5ph-0.5h",
+                    "position": "relative",
+                    "padding": "1@blockInterval, 0"
+                  },
+                  "animated_wait_icon": {
+                    "id": "pa_wait_icon",
+                    "class": "byParent",
+                    "pos": "0, 0.5ph-0.5h",
+                    "position": "relative",
+                    "background-rotation": "0"
+                  }
+                }
+              },
+              {
+                "margin": "1@tablePad, 1@blockInterval, 0, 1@blockInterval",
+                "flow": "vertical",
+                "Button_text": [
+                  {
+                    "id": "btnOpenHitFile",
+                    "position": "relative",
+                    "text": "#hitsAnalisys/openHitFile",
+                    "on_click": "onOpenHitFile",
+                    "btnName": "LB",
+                    "noMargin": "yes",
+                    "display": "hide",
+                    "enable": "no",
+                    "ButtonImg": {}
+                  },
+                  {
+                    "id": "btnSimulateHit",
+                    "position": "relative",
+                    "text": "#hitsAnalisys/replayShot",
+                    "on_click": "onSimulateHit",
+                    "btnName": "RB",
+                    "noMargin": "yes",
+                    "display": "hide",
+                    "enable": "no",
+                    "margin-top": "1@blockInterval",
+                    "ButtonImg": {}
+                  }
+                ]
+              }
+            ]
           }
         },
         "baseToggleButton": {

@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { format } = require("string")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -30,13 +32,13 @@ let class SmallTeamsOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
     this.optionsContainer = container.descr
 
     local smallTeamEvent = getGameModeWithTagContains(SMALL_TEAMS_GAME_MODE_TAG_PREFIX)
-    let usualTeamsCount = $"{::events.getMinTeamSize(this.curEvent)} - {::events.getTeamData(this.curEvent, Team.A).maxTeamSize}"
+    let usualTeamsCount = $"{events.getMinTeamSize(this.curEvent)} - {events.getTeamData(this.curEvent, Team.A).maxTeamSize}"
 
     return {
-      titleText = loc("ui/colon").concat(::events.getEventNameText(this.curEvent), loc("game_mode_settings"))
+      titleText = loc("ui/colon").concat(events.getEventNameText(this.curEvent), loc("game_mode_settings"))
       descText = loc("small_teams/desc", {
         smallTeamsCount = smallTeamEvent != null
-          ? $"{::events.getMinTeamSize(smallTeamEvent)} - {::events.getTeamData(smallTeamEvent, Team.A).maxTeamSize}"
+          ? $"{events.getMinTeamSize(smallTeamEvent)} - {events.getTeamData(smallTeamEvent, Team.A).maxTeamSize}"
           : usualTeamsCount
         usualTeamsCount
         optionName = loc("options/can_queue_to_small_teams")

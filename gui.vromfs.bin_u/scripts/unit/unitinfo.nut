@@ -1,10 +1,12 @@
-from "%scripts/dagui_natives.nut" import is_era_available, shop_unit_research_status, is_default_aircraft
+from "%scripts/dagui_natives.nut" import is_era_available, shop_unit_research_status, is_default_aircraft, shop_get_unit_exp, wp_get_repair_cost, wp_get_cost, wp_get_cost_gold
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
+let { Cost } = require("%scripts/money.nut")
 
 enum bit_unit_status {
   locked      = 1
@@ -81,24 +83,6 @@ function isGroupPart(unit) {
   return unit && unit.group != null
 }
 
-function canResearchUnit(unit) {
-  let isInShop = unit?.isInShop
-  if (isInShop == null) {
-    debugTableData(unit)
-    assert(false, "not existing isInShop param")
-    return false
-  }
-
-  if (!isInShop)
-    return false
-
-  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
-    return false
-
-  let status = shop_unit_research_status(unit.name)
-  return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !::isUnitMaxExp(unit)
-}
-
 function canBuyUnit(unit) {
   if (isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
     return false           // if vehicle could be bought in game, but it became a gift vehicle.
@@ -139,6 +123,74 @@ function getRomanNumeralRankByUnitName (unitName) {
   return unit ? get_roman_numeral(unit.rank) : null
 }
 
+function isUnitBought(unit) {
+  return unit ? unit.isBought() : false
+}
+
+function getUnitReqExp(unit) {
+  if (!("reqExp" in unit))
+    return 0
+  return unit.reqExp
+}
+
+function getUnitExp(unit) {
+  return shop_get_unit_exp(unit.name)
+}
+
+function isUnitMaxExp(unit) { //temporary while not exist correct status between in_research and canBuy
+  return isUnitSpecial(unit) || (getUnitReqExp(unit) <= getUnitExp(unit))
+}
+
+function canResearchUnit(unit) {
+  let isInShop = unit?.isInShop
+  if (isInShop == null) {
+    debugTableData(unit)
+    assert(false, "not existing isInShop param")
+    return false
+  }
+
+  if (!isInShop)
+    return false
+
+  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
+    return false
+
+  let status = shop_unit_research_status(unit.name)
+  return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !isUnitMaxExp(unit)
+}
+
+function isUnitInResearch(unit) {
+  if (!unit)
+    return false
+
+  if (!("name" in unit))
+    return false
+
+  local status = shop_unit_research_status(unit.name)
+  return ((status & ES_ITEM_STATUS_IN_RESEARCH) != 0) && !isUnitMaxExp(unit)
+}
+
+let getUnitRepairCost = @(unit) ("name" in unit) ? wp_get_repair_cost(unit.name) : 0
+
+let isUnitBroken = @(unit) getUnitRepairCost(unit) > 0
+
+function isUnitDescriptionValid(unit) {
+  if (!hasFeature("UnitInfo"))
+    return false
+  if (hasFeature("WikiUnitInfo"))
+    return true // Because there is link to wiki.
+  let desc = unit ? loc($"encyclopedia/{unit.name}/desc", "") : ""
+  return desc != "" && desc != loc("encyclopedia/no_unit_description")
+}
+
+function getUnitRealCost(unit) {
+  return Cost(unit.cost, unit.costGold)
+}
+
+function getUnitCost(unit) {
+  return Cost(wp_get_cost(unit.name), wp_get_cost_gold(unit.name))
+}
+
 return {
   bit_unit_status, canBuyUnit,
   getEsUnitType, getUnitTypeTextByUnit, isUnitsEraUnlocked, getUnitName,//next
@@ -148,4 +200,13 @@ return {
   isUnitWithRadar,
   isUnitWithRwr
   getRomanNumeralRankByUnitName
+  isUnitBought
+  getUnitReqExp
+  getUnitExp
+  isUnitMaxExp
+  isUnitInResearch
+  isUnitBroken
+  isUnitDescriptionValid
+  getUnitRealCost
+  getUnitCost
 }

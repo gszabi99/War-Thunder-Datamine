@@ -1,5 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -24,7 +26,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 }
 
 ::g_qi_view_utils.createViewByCountries <- function createViewByCountries(nestObj, queue, event) {
-  let needRankInfo = ::events.needRankInfoInQueue(event)
+  let needRankInfo = events.needRankInfoInQueue(event)
   let headerColumns = []
   let view = {
     rows = [
@@ -45,13 +47,13 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
   //fillheader
   foreach (_i, countryName in shopCountriesList)
     headerColumns.append({
-      image = getCountryIcon(countryName, false, !::events.isCountryAvailable(event, countryName))
+      image = getCountryIcon(countryName, false, !events.isCountryAvailable(event, countryName))
     })
 
   //fillrank rows
   let myCountry = ::queues.getQueueCountry(queue)
   let myRank = ::queues.getMyRankInQueue(queue)
-  let countriesSets = ::events.getAllCountriesSets(event)
+  let countriesSets = events.getAllCountriesSets(event)
   local canMeetCountries = {}
   foreach (cSet in countriesSets)
     if (myCountry in cSet.allCountries)
@@ -69,7 +71,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
       foreach (_i, country in shopCountriesList)
         row.columns.append({
           id = $"{country}_{rank}"
-          text = ::events.isCountryAvailable(event, country) ? "0" : "-"
+          text = events.isCountryAvailable(event, country) ? "0" : "-"
           overlayTextColor = (country == myCountry && rank == myRank) ? "mainPlayer"
                            : country in canMeetCountries ? null
                            : "minor"
@@ -89,11 +91,11 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
     return
 
   let event = ::queues.getQueueEvent(queue)
-  if (::events.needRankInfoInQueue(event)) {
+  if (events.needRankInfoInQueue(event)) {
     let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
     let countryOption = ::get_option(USEROPT_COUNTRY)
     foreach (countryName in countryOption.values) {
-      if (!::events.isCountryAvailable(event, countryName))
+      if (!events.isCountryAvailable(event, countryName))
         continue
 
       let ranksQueueTable = countriesQueueTable?[countryName]

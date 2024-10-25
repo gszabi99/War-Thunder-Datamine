@@ -75,15 +75,18 @@ function charAddAllItems(count = 1) {
 
 //must to be switched on before we get to debrifing.
 //but after it you can restart derifing with full recalc by usual reload()
+local _stat_get_exp = null
+local _stat_get_exp_cache = null
+
 function switch_on_debug_debriefing_recount() {
-  if ("_stat_get_exp" in getroottable())
+  if (!_stat_get_exp)
     return
 
-  ::_stat_get_exp <- ::stat_get_exp
-  ::_stat_get_exp_cache <- null
+  _stat_get_exp = ::stat_get_exp
+  _stat_get_exp_cache = null
   ::stat_get_exp = function() {
-    ::_stat_get_exp_cache = ::_stat_get_exp() ?? ::_stat_get_exp_cache
-    return ::_stat_get_exp_cache
+    _stat_get_exp_cache = _stat_get_exp() ?? _stat_get_exp_cache
+    return _stat_get_exp_cache
   }
 }
 
@@ -91,7 +94,7 @@ function debug_reload_and_restart_debriefing() {
   let result = getDebriefingResult()
   reload_dagui()
 
-  let canRecount = "_stat_get_exp" in getroottable()
+  let canRecount = _stat_get_exp != null
   if (!canRecount)
     setDebriefingResult(result)
 
@@ -124,7 +127,7 @@ function debug_export_unit_weapons_descriptions() {
       let blk = DataBlock()
       foreach (weapon in unit.getWeapons())
         if (!isWeaponAux(weapon)) {
-          blk[weapon.name + "_short"] <- getWeaponNameText(unit, false, weapon.name, ", ")
+          blk[$"{weapon.name}_short"] <- getWeaponNameText(unit, false, weapon.name, ", ")
           local rowsList = split_by_chars(getWeaponInfoText(unit,
             { isPrimary = false, weaponPreset = weapon.name }), "\n")
           foreach (row in rowsList)
@@ -132,11 +135,11 @@ function debug_export_unit_weapons_descriptions() {
           rowsList = split_by_chars(getWeaponInfoText(unit,
             { isPrimary = false, weaponPreset = weapon.name, detail = INFO_DETAIL.EXTENDED }), "\n")
           foreach (row in rowsList)
-            blk[weapon.name + "_extended"] <- row
+            blk[$"{weapon.name}_extended"] <- row
           rowsList = split_by_chars(getWeaponInfoText(unit,
             { weaponPreset = weapon.name, detail = INFO_DETAIL.FULL }), "\n")
           foreach (row in rowsList)
-            blk[weapon.name + "_full"] <- row
+            blk[$"{weapon.name}_full"] <- row
           blk[$"{weapon.name}_massPerSec"] <- getUnitMassPerSecValue(unit, true, weapon.name)
           blk[$"{weapon.name}_bombsNbr"] <- weapon.bombsNbr
         }
@@ -254,7 +257,8 @@ function debug_show_units_by_loc_name(unitLocName, needIncludeNotInShop = false)
     let rank = get_roman_numeral(unit?.rank ?? -1)
     let prem = (isUnitSpecial(unit) || isUnitGift(unit)) ? loc("shop/premiumVehicle/short") : ""
     let hidden = !unit.isInShop ? loc("controls/NA") : unit.isVisibleInShop() ? "" : loc("worldWar/hided_logs")
-    return unit.name + "; \"" + locName + "\" (" + ", ".join([ army, country, rank, prem, hidden ], true) + ")"
+    return "".concat(unit.name, "; \"", locName, "\" (",
+      ", ".join([ army, country, rank, prem, hidden ], true), ")")
   })
 
   foreach (line in res)
@@ -300,34 +304,6 @@ function debug_get_last_userlogs(num = 1) {
   return res
 }
 
-/*
-function debug_unit_rent(unitId = null, seconds = 60) {
-  if (!("_debug_unit_rent" in getroottable())) {
-    ::_debug_unit_rent <- {}
-    ::_shop_is_unit_rented <- shop_is_unit_rented
-    ::_rented_units_get_last_max_full_rent_time <- rented_units_get_last_max_full_rent_time
-    ::_rented_units_get_expired_time_sec <- rented_units_get_expired_time_sec
-    shop_is_unit_rented = @(id) (::_debug_unit_rent?[id] ? true : ::_shop_is_unit_rented(id))
-    rented_units_get_last_max_full_rent_time = @(id) (::_debug_unit_rent?[id]?.time ??
-      ::_rented_units_get_last_max_full_rent_time(id))
-    rented_units_get_expired_time_sec = function(id) {
-      if (!::_debug_unit_rent?[id])
-        return ::_rented_units_get_expired_time_sec(id)
-      let remain = ::_debug_unit_rent[id].expire - get_charserver_time_sec()
-      if (remain <= 0)
-        ::_debug_unit_rent.$rawdelete(id)
-      return remain
-    }
-  }
-
-  if (unitId) {
-    ::_debug_unit_rent[unitId] <- { time = seconds, expire = get_charserver_time_sec() + seconds }
-    broadcastEvent("UnitRented", { unitName = unitId })
-  }
-  else
-    ::_debug_unit_rent.clear()
-}
-*/
 
 //
 

@@ -23,6 +23,17 @@
     "import_record": {
       "file": "gameData/missions/training/testFlight/tank/testFlight_sound_areas.blk",
       "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -237,11 +248,11 @@
           "object_type": "isActive"
         },
         "unitSetProperties": {
+          "object": "@target_tanks_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "@target_tanks_squad",
           "forceVisibleOnMap": true,
           "attack_type": "dont_aim",
           "speed": 25.0,
@@ -332,6 +343,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "flight_target01"
         },
         "triggerEnable": {
@@ -401,6 +415,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "flight_target02"
         },
         "triggerEnable": {
@@ -509,20 +526,9 @@
           "army": 1,
           "area_name": "rearm_area",
           "enabled": true,
-          "restoreWhenNoAmmoLeft": false,
-          "hideMarkers": true,
           "tags": {
             "tank": true
           }
-        },
-        "missionShowMapIcon": {
-          "show": true,
-          "team": "A",
-          "iconName": "ui/gameuiskin#icon_weapons_in_progress.svg",
-          "areaName": "rearm_area",
-          "colorCode": "Ally",
-          "scale": 0.33,
-          "opacity": 192
         }
       },
       "else_actions": {}
@@ -622,9 +628,9 @@
             0.0,
             0.0
           ],
-          "needStopOnRespawn": true,
           "object": "@target_tank",
-          "target": "@tank_spawn_area"
+          "target": "@tank_spawn_area",
+          "needStopOnRespawn": true
         },
         "triggerEnable": [
           {
@@ -1053,19 +1059,19 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "@atgm_unit",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@atgm_unit",
             "attack_type": "dont_aim"
           },
           {
+            "object": "@atgm_unit",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "@atgm_unit",
             "attack_type": "fire_at_will"
           }
         ],
@@ -1271,20 +1277,20 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "@atgm_unit",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "@atgm_unit",
           "attack_type": "fire_at_will"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "@atgm_unit",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "@atgm_unit"
+          "object_var_value": 0
         },
         "triggerDisable": {
           "target": "atgm_in_area"
@@ -1339,20 +1345,20 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "@atgm_unit",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "@atgm_unit",
           "attack_type": "dont_aim"
         },
         "unitSetIndication": {
+          "set": false,
+          "target": "@atgm_unit",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": false,
-          "target": "@atgm_unit"
+          "object_var_value": 0
         },
         "varSetInt": {
           "value": 0,

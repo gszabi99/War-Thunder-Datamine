@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import send_complaint_by_uid, myself_can_devoice, gchat_raw_command, gchat_escape_target, myself_can_ban, set_char_cb, send_complaint, get_game_mode_name, send_complaint_by_nick, char_ban_user
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -10,7 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode, get_local_mplayer } = require("mission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, create_option_list } = require("%scripts/options/optionsExt.nut")
 let time = require("%scripts/time.nut")
 let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME
 } = require("%scripts/options/optionsExtNames.nut")
@@ -73,12 +72,12 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let nameObj = this.scene.findObject("complain_text")
     if (checkObj(nameObj))
-      nameObj.setValue(loc("clan/nick") + loc("ui/colon"))
+      nameObj.setValue($"{loc("clan/nick")}{loc("ui/colon")}")
 
     let clanTag = getTblValue("clanTag", this.player, "")
     let targetObj = this.scene.findObject("complain_target")
     if (checkObj(targetObj))
-      targetObj.setValue((clanTag.len() > 0 ? ($"{clanTag} ") : "") + getPlayerName(this.playerName))
+      targetObj.setValue("".concat((clanTag.len() > 0 ? ($"{clanTag} ") : ""), getPlayerName(this.playerName)))
 
     let options = [
       USEROPT_COMPLAINT_CATEGORY,
@@ -102,7 +101,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       optRow.findObject("option_name").setValue(loc($"options/{opt.id}"))
       let typeObj = optRow.findObject("option_list")
-      let data = ::create_option_list(opt.id, opt.items, opt.value, null, false)
+      let data = create_option_list(opt.id, opt.items, opt.value, null, false)
       this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
       typeObj.id = opt.id
     }
@@ -172,7 +171,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.showTaskProgressBox(loc("charServer/send"))
       this.afterSlotOp = function() {
           log($"[IRC] sending /reauth {this.playerName}")
-          ::gchat_raw_command("reauth " + gchat_escape_target(this.playerName))
+          ::gchat_raw_command($"reauth {gchat_escape_target(this.playerName)}")
           this.goBack()
         }
     }
@@ -195,11 +194,11 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.scene || !this.pInfo || type(this.pInfo) != "table")
       return this.goBack()
 
-    let gameMode = "GameMode = " + loc(format("multiplayer/%sMode", get_game_mode_name(get_game_mode())))
+    let gameMode = "".concat("GameMode = ", loc(format("multiplayer/%sMode", get_game_mode_name(get_game_mode()))))
     this.location = gameMode
     if (this.chatLog != null) {
       if ("roomId" in this.pInfo && "roomName" in this.pInfo && this.pInfo.roomName != "")
-        this.location = "Main Chat, Channel = " + this.pInfo.roomName + " (" + this.pInfo.roomId + ")"
+        this.location = "".concat("Main Chat, Channel = ", this.pInfo.roomName, " (", this.pInfo.roomId, ")")
       else
         this.location =$"In-game Chat; {gameMode}"
     }
@@ -212,11 +211,11 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let clanData = this.pInfo.clanData
       clanTag = ("tag" in clanData) ? clanData.tag : null
 
-      this.clanInfo = ("id" in clanData ? $"clan id = {clanData.id}" + "\n" : "") +
-                ("tag" in clanData ? $"clan tag = {clanData.tag}" + "\n" : "") +
-                ("name" in clanData ? $"clan name = {clanData.name}" + "\n" : "") +
-                ("slogan" in clanData ? $"clan slogan = {clanData.slogan}" + "\n" : "") +
-                ("desc" in clanData ? $"clan description = {clanData.desc}" : "")
+      this.clanInfo = "".concat(("id" in clanData ? $"clan id = {clanData.id}\n" : ""),
+                ("tag" in clanData ? $"clan tag = {clanData.tag}\n" : ""),
+                ("name" in clanData ? $"clan name = {clanData.name}\n" : ""),
+                ("slogan" in clanData ? $"clan slogan = {clanData.slogan}\n" : ""),
+                ("desc" in clanData ? $"clan description = {clanData.desc}" : ""))
     }
     clanTag = clanTag || (("clanTag" in this.pInfo && this.pInfo.clanTag != "") ? this.pInfo.clanTag : null)
     pName = clanTag ? ($"{clanTag} {pName}") : pName
@@ -227,7 +226,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let nameObj = this.scene.findObject("complain_text")
     if (checkObj(nameObj))
-      nameObj.setValue(loc("clan/nick") + loc("ui/colon"))
+      nameObj.setValue($"{loc("clan/nick")}{loc("ui/colon")}")
     let targetObj = this.scene.findObject("complain_target")
     if (checkObj(targetObj))
       targetObj.setValue(pName)
@@ -237,7 +236,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.optionsList = []
     let option = ::get_option(USEROPT_COMPLAINT_CATEGORY)
     this.optionsList.append(option)
-    let data = ::create_option_list(option.id, option.items, option.value, null, false)
+    let data = create_option_list(option.id, option.items, option.value, null, false)
     this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
     typeObj.id = option.id
 
@@ -318,7 +317,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.chatLog.clanInfo <- this.clanInfo
     let strChatLog = chatLogToString(this.chatLog)
 
-    log($"Send complaint {this.compliantCategory}" + ": \ncomment = " + user_comment + ", \nchatLog = " + strChatLog + ", \ndetails = " + details)
+    log($"Send complaint {this.compliantCategory}: \ncomment = {user_comment}, \nchatLog = {strChatLog}, \ndetails = {details}")
     log("pInfo:")
     debugTableData(this.pInfo)
 

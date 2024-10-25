@@ -3065,7 +3065,29 @@
                   0.0,
                   50.0
                 ]
-              }
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -18.0,
+                    -25.0
+                  ],
+                  "pitch": [
+                    -7.0,
+                    10.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    18.0,
+                    25.0
+                  ],
+                  "pitch": [
+                    -7.0,
+                    10.0
+                  ]
+                }
+              ]
             },
             {
               "trigger": "gunner1",
@@ -3077,21 +3099,69 @@
               "gunnerDm": "gunner2_dm",
               "gunDm": "gun2_dm",
               "partsDP": "gun2_dm",
-              "bullets": 120,
+              "bullets": 250,
               "turret": {
                 "head": "turret2",
                 "gun": "gun2"
               },
               "limits": {
                 "yaw": [
-                  -50.0,
-                  50.0
+                  -92.0,
+                  76.0
                 ],
                 "pitch": [
-                  0.0,
-                  40.0
+                  -11.0,
+                  60.0
                 ]
-              }
+              },
+              "limitsTable": {
+                "lim1": [
+                  -65.0,
+                  -18.0,
+                  -11.0,
+                  60.0
+                ],
+                "lim2": [
+                  -18.0,
+                  0.0,
+                  0.0,
+                  60.0
+                ],
+                "lim3": [
+                  0.0,
+                  18.0,
+                  0.0,
+                  60.0
+                ],
+                "lim4": [
+                  18.0,
+                  65.0,
+                  -11.0,
+                  60.0
+                ]
+              },
+              "limitsDeadzone": [
+                {
+                  "yaw": [
+                    -41.0,
+                    -25.0
+                  ],
+                  "pitch": [
+                    -11.0,
+                    24.0
+                  ]
+                },
+                {
+                  "yaw": [
+                    25.0,
+                    41.0
+                  ],
+                  "pitch": [
+                    -11.0,
+                    24.0
+                  ]
+                }
+              ]
             },
             {
               "trigger": "gunner2",
@@ -3130,7 +3200,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab250_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb250kg_pylon1",
@@ -3150,7 +3220,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "brab250_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb250kg_pylon1",
@@ -3170,7 +3240,7 @@
           {
             "iconType": "bombs_special",
             "name": "fab500_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb500kg_pylon1",
@@ -3190,7 +3260,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "brab500_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb500kg_pylon1",
@@ -3210,7 +3280,7 @@
           {
             "iconType": "bombs_heavy",
             "name": "fab1000_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": "bomb_1000m44_pylon1"
             },
@@ -3227,7 +3297,7 @@
           {
             "iconType": "bombs_heavy_high_drag",
             "name": "brab1000_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb1000kg_pylon1",
@@ -3324,7 +3394,7 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab250_x2",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -3347,7 +3417,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "brab250_x2",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -3370,7 +3440,7 @@
           {
             "iconType": "bombs_large_group_x4",
             "name": "fab250_x4",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -3409,7 +3479,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x4",
             "name": "brab250_x4",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -3448,7 +3518,7 @@
           {
             "iconType": "bombs_special",
             "name": "fab500_internal",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab_500m_44.blk",
@@ -3461,7 +3531,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "brab500_internal",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_brab_500m43_ap.blk",
@@ -3474,7 +3544,7 @@
           {
             "iconType": "bombs_heavy",
             "name": "fab1000_internal",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab_1000m_44.blk",
@@ -3487,7 +3557,7 @@
           {
             "iconType": "bombs_heavy_high_drag",
             "name": "brab1000_internal",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_brab_1000m43_ap.blk",
@@ -3507,7 +3577,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab250_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb250kg_pylon2",
@@ -3527,7 +3597,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "brab250_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb250kg_pylon2",
@@ -3547,7 +3617,7 @@
           {
             "iconType": "bombs_special",
             "name": "fab500_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb500kg_pylon2",
@@ -3567,7 +3637,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "brab500_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb500kg_pylon2",
@@ -3587,7 +3657,7 @@
           {
             "iconType": "bombs_heavy",
             "name": "fab1000_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": "bomb_1000m44_pylon2"
             },
@@ -3604,7 +3674,7 @@
           {
             "iconType": "bombs_heavy_high_drag",
             "name": "brab1000_external",
-            "reqModification": "tu-2_pkd-2",
+            "reqModification": "der_19u",
             "ShowNodes": {
               "node": [
                 "bomb1000kg_pylon2",
@@ -3664,7 +3734,7 @@
       "tier": 4,
       "modClass": "lth"
     },
-    "tu-2_pkd-2": {
+    "der_19u": {
       "modClass": "weapon",
       "tier": 2,
       "reqModLevel": 5.0

@@ -10,7 +10,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { isShipWithoutPurshasedTorpedoes } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost, getUnitNotReadyAmmoList } = require("%scripts/weaponry/ammoInfo.nut")
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
@@ -69,7 +69,7 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
         else
           readyWeaponsFound = true
 
-        if (unitStatus.isShipWithoutPurshasedTorpedoes(air))
+        if (isShipWithoutPurshasedTorpedoes(air))
           res.shipsWithoutPurshasedTorpedoes.append(air)
       }
   }
@@ -102,7 +102,7 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
           else
             readyWeaponsFound = true
 
-          if (unitStatus.isShipWithoutPurshasedTorpedoes(unit))
+          if (isShipWithoutPurshasedTorpedoes(unit))
             res.shipsWithoutPurshasedTorpedoes.append(unit)
         }
         res.canFlyout = res.canFlyout && have_repaired_in_country
@@ -133,7 +133,7 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
   if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !get_gui_option(USEROPT_SKIP_WEAPON_WARNING)) {
     let price = Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
     local msg = loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
-    msg += "\n\n" + format(loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance())
+    msg = "\n\n".concat(msg, format(loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance()))
 
     loadHandler(gui_handlers.WeaponWarningHandler,
       {

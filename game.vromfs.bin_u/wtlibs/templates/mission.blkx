@@ -1,0 +1,244 @@
+{
+  "import": "%wtlibs/templates/essentials.blk",
+  "unit_loader": {
+    "setting__className": "",
+    "setting__playerNo": -1,
+    "setting__unitType": "",
+    "setting__crewSkillK": -1.0,
+    "setting__weapons": "",
+    "setting__skin": "",
+    "setting__canChangeUnit": false,
+    "setting__isPhysPredictionEnabled": false,
+    "setting__loadAnim": false,
+    "setting__unit_class": "",
+    "setting__applyAllMods": false,
+    "setting__closed_waypoints": false,
+    "setting__tm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "setting__isDelayed": false,
+    "setting__isDead": false,
+    "setting__active": true,
+    "setting__ignoreCollisions": false,
+    "setting__shouldDrawSmallIndForMissTarget": true,
+    "setting__uniqueName": "",
+    "setting__count": 1,
+    "setting__attack_type": "",
+    "setting__army": 0,
+    "setting__formation_type": "cols",
+    "setting__formation_div": 1,
+    "setting__formation_step": [
+      1.0,
+      1.0
+    ],
+    "setting__formation_noise": [
+      0.1,
+      0.1
+    ],
+    "setting__stealthRadius": -1.0,
+    "setting__supportUnitType": 0,
+    "setting__targetAir": true,
+    "setting__targetGnd": true,
+    "setting__targetAAA": true,
+    "setting__accuracy": 1.0,
+    "setting__maxDeviationAngle": 0.0,
+    "setting__effShootingRate": 1.0,
+    "setting__lightlyArmored": false,
+    "setting__avoidObstacles": false,
+    "setting__targetableByAi": true,
+    "setting__isImmortal": false,
+    "setting__calmDetection": false,
+    "setting__name": "",
+    "setting__flags": 0,
+    "setting__aiReloadMult": 1.0,
+    "setting__speed": 0.0,
+    "setting__routeName": "",
+    "setting__cannotMove": false,
+    "setting__toGround": false,
+    "setting__loadSound": true,
+    "setting__aiEnabled": true,
+    "setting__canControlInHangar": false,
+    "setting__bullets:list<t>": {},
+    "setting__bulletsCount:list<i>": {},
+    "setting__unit_target_list:list<t>": {}
+  },
+  "spawn_point": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "spawnPointType": "",
+    "missionObject:tag": {}
+  },
+  "route": {
+    "route__routeId": "",
+    "route__isLooped": false,
+    "missionObject:tag": {},
+    "route__wayPointsNames:list<t>": {},
+    "route__wayPoints:list<eid>": {}
+  },
+  "way_point": {
+    "way_point__transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "way_point__name": "",
+    "way_point__moveType": "",
+    "way_point__speed": 30.0,
+    "way_point__radius": 5.0,
+    "missionObject:tag": {}
+  },
+  "disable_move": {
+    "_singleton": true,
+    "missionObject:tag": {},
+    "disable__targets_list:list<t>": {}
+  },
+  "unit_current_route": {
+    "unit_current_route__routeEid:eid": {},
+    "unit_current_route__curWayPoint:eid": {}
+  },
+  "unit_target_list": {
+    "unit_target_list:list<t>": {}
+  },
+  "base_area": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "area_name": ""
+  },
+  "base_restricted_area": {
+    "_use": "base_area",
+    "restricted_area__away_time": 0.0
+  },
+  "box_restricted_area": {
+    "_use": "base_restricted_area",
+    "box_area:tag": {}
+  },
+  "sphere_restricted_area": {
+    "_use": "base_restricted_area",
+    "sphere_area:tag": {}
+  },
+  "destroy_ri_sphere_area": {
+    "_use": "replicating",
+    "_replicate": true,
+    "destroy_ri_area__is_forced": true,
+    "destroy_ri_sphere_area__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "destroy_ri_sphere_area__radius": 0.0
+  },
+  "destroy_ri_box_area": {
+    "_use": "replicating",
+    "_replicate": true,
+    "destroy_ri_area__is_forced": true,
+    "destroy_ri_box_area__bbox__bmin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "destroy_ri_box_area__bbox__bmax": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "destroy_ri_box_area__itm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  }
+}

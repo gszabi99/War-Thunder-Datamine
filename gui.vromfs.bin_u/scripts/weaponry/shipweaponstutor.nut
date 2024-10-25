@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { ANY_CLICK } = require("%scripts/tutorials/tutorialActions.nut")
@@ -15,7 +16,7 @@ let mkWeaponsTutorStep = @(target, text) {
   obj = [target]
   text
   actionType = ANY_CLICK
-  shortcut = ::GAMEPAD_ENTER_SHORTCUT
+  shortcut = GAMEPAD_ENTER_SHORTCUT
   nextActionShortcut = "help/NEXT_ACTION"
 }
 

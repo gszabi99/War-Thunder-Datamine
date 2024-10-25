@@ -268,8 +268,9 @@ def has_any_repairable_breaches(unit : Unit?; v : tuple<
                                   ship_cover_parts__partId : PartIdList
                                   >) : bool
   assume dmData = unit.dmData
+  let allow_dead_covers = get_difficulty_config().shipAllowRepairBreachesInDeadCovers
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if amount_to_repair > 0.0f && !is_cover_part_dead_cover_id(unit, cover_id) <| v
+    if amount_to_repair > 0.0f && (allow_dead_covers || !is_cover_part_dead_cover_id(unit, cover_id) <| v)
       return true
   return false
 
@@ -298,8 +299,9 @@ def calc_time_to_repair_breaches(unit : Unit?; repair_speed_mult : float;
                                    ship_cover_parts__partId : PartIdList
                                    >) : float
   var time = 0.0f
+  let allow_dead_covers = get_difficulty_config().shipAllowRepairBreachesInDeadCovers
   for amount_to_repair, cover_id in v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-    if !is_cover_part_dead_cover_id(unit, cover_id) <| v
+    if allow_dead_covers || !is_cover_part_dead_cover_id(unit, cover_id) <| v
       time = max(time, amount_to_repair / repair_speed_mult)
   return time
 
@@ -394,8 +396,9 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
     let repair_speed_mult = calc_repair_speed_mult(unit) <| v
     v.ship__repairBreachesRemainingTime = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
 
+    let allow_dead_covers = get_difficulty_config().shipAllowRepairBreachesInDeadCovers
     for breach_id, amount_to_repair, cover_id in v.ship_breaches__id, v.ship_breaches__amountToRepair, v.ship_breaches__coverId
-      if is_cover_part_dead_cover_id(unit, cover_id) <| v
+      if !allow_dead_covers && is_cover_part_dead_cover_id(unit, cover_id) <| v
         continue
       if amount_to_repair > 0.0f
         amount_to_repair -= repair_speed_mult * info.dt
@@ -620,7 +623,7 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
     if v.ship__repairBreachesRemainingTime <= 0.0f && v.ship__unwateringRemainingTime <= 0.0f
       let unit = get_unit(uid)
       let ship = unit |> as_ship()
-      if ship != null && !unit.isDelayed && !ship.isVeryFewCrew
+      if ship != null && !unit.isDelayed && !ship.isVeryFewCrew && !ship.isCoverDestroyed
         let repair_speed_mult = calc_repair_speed_mult(unit) <| v
         let time_to_repair = calc_time_to_repair_breaches(unit, repair_speed_mult) <| v
         if time_to_repair > 0.0f

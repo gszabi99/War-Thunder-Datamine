@@ -3,14 +3,14 @@
   "AileronEffectiveSpeed": 380.0,
   "RudderEffectiveSpeed": 380.0,
   "ElevatorsEffectiveSpeed": [
-    380.0,
-    380.0
+    340.0,
+    340.0
   ],
   "AileronPowerLoss": 3.0,
   "RudderPowerLoss": 3.0,
   "ElevatorPowerLoss": [
-    4.0,
-    4.0
+    2.7,
+    2.7
   ],
   "AlphaAileronMin": 0.2,
   "AlphaRudderMin": 0.2,
@@ -90,6 +90,8 @@
   "CriticalSpeed": 50.0,
   "ArcadeHelpersSensitivity": 1.0,
   "AllowModsToChangeLongidutialBalance": true,
+  "ConvertAoa": false,
+  "ConvertAoaAI": false,
   "ArcadeRollCorrectionMultiplier": 1.0,
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 1.0,
@@ -440,7 +442,7 @@
         0.3,
         0.8
       ],
-      "FlowInertia": 0.0599821,
+      "FlowInertia": 0.0599781,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 1.62,
@@ -512,7 +514,7 @@
         0.73,
         0.0
       ],
-      "FlowInertia": 0.0499851,
+      "FlowInertia": 0.0499818,
       "SlipStreamDistance": 8.9,
       "Areas": {
         "Main": 0.62,
@@ -1048,6 +1050,7 @@
       "PowerConstRPMCurvature0": 1.0,
       "Ceiling0": 700.05,
       "PowerAtCeiling0": 1259.99,
+      "AfterburnerPressureBoost0": 1.0,
       "Altitude1": 2700.0,
       "AfterburnerBoostMul1": 1.0,
       "Power1": 1180.0,
@@ -1056,6 +1059,7 @@
       "PowerConstRPMCurvature1": 1.0,
       "Ceiling1": 2700.05,
       "PowerAtCeiling1": 1179.99,
+      "AfterburnerPressureBoost1": 1.0,
       "AfterburnerManifoldPressure": 1.382,
       "SpeedManifoldMultiplier": 0.85,
       "AllowAutoTurboCharger": false,
@@ -1379,7 +1383,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      90.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -1410,6 +1414,8 @@
     "MinimalLoadFactor0": 0.0,
     "FuelAccumulatorFlowRate0": 0.38,
     "FuelEngineFlowRate0": 1000000.0,
+    "hasFuelDumping": false,
+    "fuelDumpingRate": -1.0,
     "MaxNitro": 0.0,
     "OilMass": 35.0,
     "AdvancedMass": true,
@@ -1509,7 +1515,7 @@
   },
   "Gear": {
     "SinkFactor": 1000.0,
-    "SinkRateMult": 1.0304,
+    "SinkRateMult": 1.0371,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
@@ -2215,6 +2221,10 @@
         1.0
       ],
       "ClimbMax": [
+        0.0,
+        0.0
+      ],
+      "SpeedMult": [
         0.0,
         0.0
       ],

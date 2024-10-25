@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { zero_money } = require("%scripts/money.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -107,7 +108,7 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
     if (!this.prepareClanData())
       return
     let createCost = this.newClanType.getCreateCost()
-    if (createCost <= ::zero_money)
+    if (createCost <= zero_money)
       this.createClan(createCost)
     else if (checkBalanceMsgBox(createCost)) {
       let msgText = warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),

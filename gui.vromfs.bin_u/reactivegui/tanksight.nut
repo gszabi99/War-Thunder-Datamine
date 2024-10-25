@@ -1,7 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 let tankSightDas = load_das("%rGui/tankSight.das")
 let {set_tank_sight_setting, TSI_RANGEFINDER_POS, TSI_TURRET_ORI_POS, TSI_GUN_READY_POS, TSO_TURRET,
-  TSO_RANGEFINDER, TSO_GUN_READY, get_tank_sight_elem_pos} = require("tankSightSettings")
+  TSO_RANGEFINDER, TSO_GUN_READY, TSO_VERT_DIST, TSI_VERT_DIST_OFFSET, get_tank_sight_elem_pos,
+  get_tank_sight_elem_size} = require("tankSightSettings")
 let { Point2 } = require("dagor.math")
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 
@@ -17,6 +18,11 @@ let gunReadyState = Watched({
   pos = [0, 0]
 })
 
+let vertDistState = Watched({
+  pos = [0, 0]
+  size = [hdpx(80), hdpx(50)]
+})
+
 function onTankSightReloaded(_) {
   let newTPos = get_tank_sight_elem_pos(TSI_TURRET_ORI_POS)
   turretState.set({pos = [hdpx(newTPos.x), hdpx(newTPos.y)]})
@@ -24,6 +30,9 @@ function onTankSightReloaded(_) {
   rangefinderState.set({pos = [hdpx(newRPos.x), hdpx(newRPos.y)]})
   let newGPos = get_tank_sight_elem_pos(TSI_GUN_READY_POS)
   gunReadyState.set({pos = [hdpx(newGPos.x), hdpx(newGPos.y)]})
+  let newVPos = get_tank_sight_elem_pos(TSI_VERT_DIST_OFFSET)
+  let newVSize = get_tank_sight_elem_size(TSO_VERT_DIST)
+  vertDistState.set({pos = [sw(50) - newVPos.x, sh(50) - newVPos.y], size = [newVSize.x, newVSize.y]})
 }
 eventbus_subscribe("onTankSightReloaded", onTankSightReloaded)
 
@@ -114,6 +123,26 @@ let mkTankSight = @(isPreviewMode = false)
           gunReadyState.set({pos = [hdpx(newPos.x), hdpx(newPos.y)]})
         }
       }
+      isPreviewMode ? @(){
+        watch = vertDistState
+        pos = vertDistState.get().pos
+        size = vertDistState.get().size
+        behavior = Behaviors.MoveResize
+        moveResizeModes = MR_AREA
+        onMoveResizeStarted = @(_x, _y, _bbox) eventbus_send("TankSightObjectClick", TSO_VERT_DIST)
+        onMoveResize = function(dx, _dy, _dw, _dh) {
+          let w = vertDistState.get()
+          w.pos = [max(0, min(w.pos[0]+dx, sw(100) - hdpx(80))), w.pos[1]]
+          set_tank_sight_setting({param = TSI_VERT_DIST_OFFSET, value = w.pos[0] - sw(50)})
+          vertDistState.update(w)
+          return w
+        }
+        onAttach = function() {
+          let newPos = get_tank_sight_elem_pos(TSI_VERT_DIST_OFFSET)
+          let newSize = get_tank_sight_elem_size(TSO_VERT_DIST)
+          vertDistState.set({pos = [sw(50) - newPos.x, sh(50) + hdpx(newPos.y)], size = [newSize.x, newSize.y]})
+        }
+      } : null
     ]
   }
 

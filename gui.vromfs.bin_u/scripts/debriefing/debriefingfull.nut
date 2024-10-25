@@ -207,6 +207,11 @@ debriefingRows = [
   }
   "Landings"
   "Takeoffs"
+  { id = "MissileEvade"
+    showByModes = isGameModeVersus
+    text = "multiplayer/missileEvade"
+    icon = "icon/mpstats/missileEvade"
+  }
   { id = "Sights"
     showByModes = isGameModeVersus
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
@@ -1005,7 +1010,7 @@ function getDebriefingActiveWager() {
     let locParams = {
       wagerRewardText = rewardText
     }
-    data.wagerText += "\n" + loc("item/wager/endedWager/rewardPart", locParams)
+    data.wagerText = "\n".concat(data.wagerText, loc("item/wager/endedWager/rewardPart", locParams))
   }
 
   return data

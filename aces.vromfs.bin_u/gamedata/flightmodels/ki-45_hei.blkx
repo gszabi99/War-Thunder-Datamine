@@ -22,7 +22,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "bayDoorTextureCtrl": true,
-  "fightAiBehaviour": "fighter",
+  "fightAiBehaviour": "assault",
   "ikPilot": {
     "model": "pilot_japan_char",
     "maxHeadHorAngle": 60.0,
@@ -2569,10 +2569,26 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "ki-45_hei_default",
-      "blk": "gameData/FlightModels/weaponPresets/empty.blk"
-    }
+    "preset": [
+      {
+        "name": "ki-45_hei_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      },
+      {
+        "name": "ki-45_jp_type94mod5",
+        "blk": "gameData/FlightModels/weaponPresets/ki-45_jp_type94mod5.blk"
+      },
+      {
+        "name": "ki-45_jp_type94mod10",
+        "blk": "gameData/FlightModels/weaponPresets/ki-45_jp_type94mod10.blk",
+        "reqModification": "ki_10in_mod24"
+      },
+      {
+        "name": "ki-45_mod25mark2",
+        "blk": "gameData/FlightModels/weaponPresets/ki-45_mod25mark2.blk",
+        "reqModification": "ki45_12in_mod30"
+      }
+    ]
   },
   "default_skin_tomoe": {
     "replace_tex": {
@@ -2616,6 +2632,15 @@
     "mg_turret_belt_pack": {},
     "mg15_turret_new_gun": {
       "reqModification": "mg_turret_belt_pack"
+    },
+    "ki_10in_mod24": {
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "ki45_12in_mod30": {
+      "reqModification": "ki_10in_mod24",
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "cutting": {

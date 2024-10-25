@@ -114,3 +114,17 @@ tr[selected=no]:hover > td > tdiv > invisSlider > sliderButton[type=various] > i
 invisSlider:disabled > sliderButton > img {
   background-color:@fadedTextColor;
 }
+
+[optContainer=yes] slider {
+  width:@optContainerControlWidth-32@sf/@pf;
+}
+
+[optContainer=yes] slider[fullWidth=yes] {
+  width:@optContainerControlWidth;
+}
+
+slider:disabled[hitsAnalysis=yes]
+{
+  background-color:@sliderBgColor;
+  foreground-color:@sliderFgColor;
+}

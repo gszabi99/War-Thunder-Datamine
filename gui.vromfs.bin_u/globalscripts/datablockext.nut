@@ -25,7 +25,7 @@ function copyFromDataBlock(fromDataBlock, toDataBlock, isOverride = true) {
   }
 }
 
-local function setBlkValueByPath(blk, path, val) {
+function setBlkValueByPath(blk, path, val) {
   if (!blk || !path)
     return false
 

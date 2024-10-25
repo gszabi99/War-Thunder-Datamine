@@ -3149,17 +3149,46 @@
       {
         "name": "Ju-288C_8x250kg",
         "blk": "gameData/FlightModels/weaponPresets/ju_288c_8x250.blk",
-        "reqModification": "ju_88_SC250"
+        "reqModification": "ju_88_SC250",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_middle"
+          }
+        }
       },
       {
         "name": "Ju-288C_3x500kg",
         "blk": "gameData/FlightModels/weaponPresets/ju_288c_3x500.blk",
-        "reqModification": "ju_88_SC500"
+        "reqModification": "ju_88_SC500",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_large"
+          }
+        }
       },
       {
         "name": "Ju-288C_2x1000kg",
         "blk": "gameData/FlightModels/weaponPresets/ju_288c_2x1000.blk",
-        "reqModification": "ju_88_SC1000"
+        "reqModification": "ju_88_SC1000",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_heavy_middle",
+            "tier": [
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              }
+            ]
+          }
+        }
       },
       {
         "name": "Ju-288C_2x1800kg",
@@ -3168,6 +3197,26 @@
         "weaponConfig": {
           "Weapon": {
             "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
+            "amountPerTier": 1.0,
+            "iconType": "bombs_special",
+            "tier": [
+              {
+                "idx": 5
+              },
+              {
+                "idx": 7
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "ju_288c_2x2500",
+        "blk": "gameData/FlightModels/weaponPresets/ju_288c_2x2500.blk",
+        "reqModification": "etc2500",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/de_sb2500.blk",
             "amountPerTier": 1.0,
             "iconType": "bombs_heavy",
             "tier": [
@@ -3547,6 +3596,11 @@
       "tier": 4,
       "modClass": "weapon",
       "reqModification": "ju_88_SC1000"
+    },
+    "etc2500": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "ju_88_SC1800"
     },
     "flamm_250": {
       "modClass": "weapon",

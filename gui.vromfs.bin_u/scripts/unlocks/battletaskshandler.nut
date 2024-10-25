@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
 from "%scripts/mainConsts.nut" import SEEN
+import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -197,7 +198,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD) {
       let obj = this.scene.findObject("warbond_shop_progress_block")
       let curWb = ::g_warbonds.getCurrentWarbond()
-      ::g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !isHardTaskIncomplete.value)
+      g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !isHardTaskIncomplete.value)
     }
   }
 

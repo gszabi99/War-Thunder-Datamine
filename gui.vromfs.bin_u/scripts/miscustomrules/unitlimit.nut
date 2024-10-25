@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getRoleText, getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
@@ -9,14 +10,14 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let UnitLimitBase = class {
   name = ""
   respawnsLeft = 0
-  distributed = ::RESPAWNS_UNLIMITED
+  distributed = RESPAWNS_UNLIMITED
   presetInfo = null
   nameLocId = null
 
   constructor(v_name, v_respawnsLeft, params = {}) {
     this.name = v_name
     this.respawnsLeft = v_respawnsLeft
-    this.distributed = params?.distributed ?? ::RESPAWNS_UNLIMITED
+    this.distributed = params?.distributed ?? RESPAWNS_UNLIMITED
     this.presetInfo = params?.presetInfo
     this.nameLocId = params?.nameLocId
   }
@@ -26,7 +27,7 @@ let UnitLimitBase = class {
   }
 
   function getRespawnsLeftText() {
-    return this.respawnsLeft == ::RESPAWNS_UNLIMITED ? loc("options/resp_unlimited") : this.respawnsLeft
+    return this.respawnsLeft == RESPAWNS_UNLIMITED ? loc("options/resp_unlimited") : this.respawnsLeft
   }
 
   function getText() {
@@ -47,7 +48,7 @@ let UnitLimitByUnitName = class (UnitLimitBase) {
         text = "".concat(weaponPresetIconsText, getTblValue("teamUnitPresetAmount", this.presetInfo, 0))
       }))
 
-    if (this.distributed != null && this.distributed != ::RESPAWNS_UNLIMITED) {
+    if (this.distributed != null && this.distributed != RESPAWNS_UNLIMITED) {
       local text = this.distributed > 0 ? colorize("userlogColoredText", this.distributed) : this.distributed
       if (!u.isEmpty(weaponPresetIconsText))
         text = "".concat(text, loc("ui/parentheses/space", {
@@ -80,7 +81,7 @@ let ActiveLimitByUnitExpClass = class (UnitLimitBase) {
     let expClassType = getUnitClassTypeByExpClass(this.name)
     let fontIcon = colorize("activeTextColor", expClassType.getFontIcon())
     local amountText = ""
-    if (this.distributed == ::RESPAWNS_UNLIMITED || this.respawnsLeft == ::RESPAWNS_UNLIMITED)
+    if (this.distributed == RESPAWNS_UNLIMITED || this.respawnsLeft == RESPAWNS_UNLIMITED)
       amountText = colorize("activeTextColor", this.getRespawnsLeftText())
     else {
       let color = (this.distributed < this.respawnsLeft) ? "userlogColoredText" : "activeTextColor"

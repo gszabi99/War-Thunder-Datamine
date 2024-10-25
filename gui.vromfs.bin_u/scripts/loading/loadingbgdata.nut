@@ -182,7 +182,7 @@ let isBgUnlockable = @(id) id in bgUnlocks
 let isBgUnlocked = @(id) (id not in bgUnlocks) || isUnlockOpened(bgUnlocks[id])
 let isBgUnlockableByUser = @(id) isBgUnlockable(id) && canDoUnlock(getUnlockById(bgUnlocks[id]))
 
-local function filterLoadingBgData(bgData) {
+function filterLoadingBgData(bgData) {
   bgData = clone bgData
   bgData.list = bgData.list.filter(::g_login.isProfileReceived()
     ? @(_v, id) isBgUnlocked(id)

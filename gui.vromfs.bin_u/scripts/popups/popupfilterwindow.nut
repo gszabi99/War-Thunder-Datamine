@@ -20,6 +20,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   btnPosition          = null
   btnHeight            = null
   visualStyle          = null
+  isOptionsChanged     = false
 
   function getSceneTplView() {
     let maxTextWidths = {}
@@ -33,16 +34,19 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let columns = this.filterTypes.map(function(fType, idx) {
+    let columns = []
+    foreach(idx, fType in this.filterTypes) {
       let { checkbox } = fType
       if (!checkbox.len())
-        return null
+        continue
 
       let isResetShow = checkbox.findindex(@(c) c.value) != null
+      if (isResetShow)
+        this.isOptionsChanged = true
       let typeName = checkbox[checkbox.len() - 1].id.split("_")[0]
       let hasIcon = checkbox[checkbox.len() - 1]?.image != null
       let params = $"pos:t='0, 1@popupFilterRowHeight-h'; type:t='rightSideCb'; typeName:t={typeName}"
-      return fType.__merge({
+      columns.append(fType.__merge({
         typeName
         isResetShow
         typeIdx = idx
@@ -57,10 +61,9 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
             hasMinWidth = true
           })
         })
-      })
-    }).filter(@(inst) inst != null)
+      }))
+    }
     columns[columns.len() - 1].isLast <- true
-
     let stateItems = columns.reduce(@(res, inst) res.extend(inst?.checkbox), [])
 
     this.stateList = {}
@@ -86,6 +89,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updatePopupPosition() {
+    this.guiScene.applyPendingChanges(false)
     let popupObj = this.scene.findObject("filter_popup")
     let popupSize = popupObj.getSize()
     local posX = 0
@@ -93,7 +97,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.popupAlign == "top") {
       posX = 0
-      posY = - popupSize[1] - to_pixels("1@blockInterval")
+      posY = - popupSize[1] - to_pixels("1@blockInterval") - (!this.isOptionsChanged ? to_pixels("1@buttonHeight") + to_pixels("1@blockInterval") : 0)
     }
     else if (this.popupAlign == "top-center") {
       posX = this.btnWidth / 2 - popupSize[0] / 2
@@ -140,6 +144,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
         isResetShow = value || isResetShow
       }
     }
+    this.isOptionsChanged = isResetShow
     showObjById("reset_btn", isResetShow, columnObj)
   }
 

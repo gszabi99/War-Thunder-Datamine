@@ -550,7 +550,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
     v.ammo_stowage__fatalDetonatePortion = ammo_blk |> datablock_getPoint2("detonatePortion", v.ammo_stowage__fatalDetonatePortion)
     v.ammo_stowage__nonFatalDetonatePortion = ammo_blk |> datablock_getPoint2("ammoStowageDetonatePortion",  get_wt_dm_params().ammoStowageDetonatePortion)
     v.ammo_stowage__explosiveProperties |> explosive_props_load(ammo_blk, 1.f)
-    v.ammo_stowage__splashProperties |> splash_props_load(ammo_blk)
+    splash_props_load(v.ammo_stowage__splashProperties, ammo_blk)
 
   if !unit.isHumanPlayer && !unit_change_data_has_any_bullets(unit)
     return

@@ -11,8 +11,8 @@ let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { fillUserNick, getFirstChosenUnitType, unlockCountry, checkUnlockedCountriesByAirs,
-  isFirstChoiceShown } = require("%scripts/firstChoice/firstChoice.nut")
+let { fillUserNick, unlockCountry, checkUnlockedCountriesByAirs,
+  isFirstChoiceShown, getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")

@@ -8,6 +8,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isCountryUnlocked } = require("%scripts/firstChoice/firstChoice.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 /**
  * Action to perform after change country window closes.
@@ -125,7 +127,7 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
     let currentMode = getCurrentGameMode()
     let source = getTblValue("source", currentMode, {})
     foreach (country in shopCountriesList) {
-      if (::events.isCountryAvailable(source, country))
+      if (events.isCountryAvailable(source, country))
         res.append(country)
     }
     return res

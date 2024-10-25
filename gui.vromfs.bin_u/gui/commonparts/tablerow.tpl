@@ -2,6 +2,9 @@ tr {
   id:t='<<row_id>>'
   <<#even>> even:t='yes' <</even>>
   <<@trParams>>
+  <<#hasHeaderLine>>
+    optionHeaderLine{}
+  <</hasHeaderLine>>
 
   <<#cell>>
   td {

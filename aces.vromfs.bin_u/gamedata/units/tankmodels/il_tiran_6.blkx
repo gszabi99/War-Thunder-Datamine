@@ -484,6 +484,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "fire_control_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "power_system_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
@@ -1834,17 +1838,6 @@
           "barrel": "bone_gun_barrel",
           "linkedAnimPart": [
             {
-              "verNode": "bone_mg_twin_02",
-              "verLimits": [
-                -4.0,
-                2.0
-              ],
-              "verOriginLimits": [
-                -4.0,
-                2.0
-              ]
-            },
-            {
               "verNode": "bone_roll_06",
               "verLimits": [
                 6.0,
@@ -1887,12 +1880,12 @@
           ],
           "lim2": [
             -150.0,
-            -40.0,
+            -45.0,
             -6.0,
             16.0
           ],
           "lim3": [
-            -40.0,
+            -45.0,
             -22.0,
             -3.0,
             16.0
@@ -1962,7 +1955,7 @@
         "triggerGroup": "coaxial",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
         "emitter": "bone_mg_twin_02",
-        "flash": "bone_mg_gun_twin",
+        "flash": "emtr_mg_flame_01",
         "useEmitter": true,
         "barrelDP": "gun_barrel_04_dm",
         "defaultYaw": 0.0,
@@ -2821,6 +2814,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2839,6 +2833,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2996,7 +2991,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -3144,6 +3139,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3151,6 +3147,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3158,6 +3155,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3165,6 +3163,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3172,6 +3171,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3179,7 +3179,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -3199,7 +3199,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -3219,7 +3219,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -3233,7 +3233,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -3253,7 +3253,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -3273,7 +3273,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -3351,6 +3351,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false

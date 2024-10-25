@@ -592,6 +592,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "fire_control_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "power_system_dm": {
         "hp": 60.0,
         "armorThrough": 15.0,
@@ -2416,6 +2420,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2434,6 +2439,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2591,7 +2597,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2739,6 +2745,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2746,6 +2753,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2753,6 +2761,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2760,6 +2769,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2767,6 +2777,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2774,7 +2785,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2794,7 +2805,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2814,7 +2825,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2828,7 +2839,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2848,7 +2859,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2868,7 +2879,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -2946,6 +2957,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false
@@ -3327,7 +3339,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3426,7 +3438,7 @@
     }
   },
   "supportPlane": {
-    "supportPlaneClass": "ucav_recon_micro",
+    "supportPlaneClass": "ucav_recon_micro_flir",
     "behTreeName": "recon_micro",
     "planeStartSpeed": 80.0,
     "count": 1
@@ -3453,12 +3465,30 @@
       }
     },
     {
+      "name": "nl_camo_carc_desert",
+      "nameLocId": "skin/nl_camo_carc_desert",
+      "descLocId": "skin/nl_camo_carc_desert/desc",
+      "replace_tex": {
+        "from": "se_camo_green*",
+        "to": "nl_camo_carc_desert*"
+      }
+    },
+    {
       "name": "fr_camo_winter_green_white",
       "nameLocId": "skin/fr_camo_winter_green_white",
       "descLocId": "skin/fr_camo_winter_green_white/desc",
       "replace_tex": {
         "from": "se_camo_green*",
         "to": "fr_camo_winter_green_white*"
+      }
+    },
+    {
+      "name": "nl_camo_carc_winter_stripes",
+      "nameLocId": "skin/nl_camo_carc_winter_stripes",
+      "descLocId": "skin/nl_camo_carc_winter_stripes/desc",
+      "replace_tex": {
+        "from": "se_camo_green*",
+        "to": "nl_camo_carc_winter_stripes*"
       }
     },
     {

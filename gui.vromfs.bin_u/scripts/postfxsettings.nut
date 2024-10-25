@@ -27,7 +27,7 @@ let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFx
       setLenseFlareMode, getLenseFlareMode, getDefaultLenseFlareMode,
       setIsUsingDynamicLut, getIsUsingDynamicLut } = require("postFxSettings")
 
-let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
+let { create_option_switchbox, create_option_list } = require("%scripts/options/optionsExt.nut")
 
 let tonemappingMode_list = freeze(["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"])
 let lenseFlareMode_list = freeze(["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"])
@@ -129,7 +129,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createOneSpinner(name, list, value, cb) {
-    local markup = ::create_option_list($"postfx_settings_{name}", list, value, cb, true)
+    local markup = create_option_list($"postfx_settings_{name}", list, value, cb, true)
     markup = this.createRowMarkup(name, markup)
     let dObj = this.scene.findObject("postfx_table")
     this.guiScene.appendWithBlk(dObj, markup, this)

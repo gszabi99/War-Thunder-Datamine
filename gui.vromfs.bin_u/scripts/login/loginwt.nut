@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import stat_get_value_respawns, ps4_is_ugc_enabled, disable_network, pause_game, run_reactive_gui, epic_is_running, get_player_user_id_str, set_show_attachables, fetch_devices_inited_once, set_host_cb, ps4_is_chat_enabled, get_num_real_devices, fetch_profile_inited_once, get_localization_blk_copy
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
@@ -399,7 +398,7 @@ function needAutoStartBattle() {
       if (is_user_mission(misBlk)) {
         statsd.send_counter("sq.ug.goodum", 1)
         anyUG = true
-        log("statsd_on_login ug.goodum " + (misBlk?.name ?? "null"))
+        log($"statsd_on_login ug.goodum {(misBlk?.name ?? "null")}")
         break
       }
 
@@ -413,7 +412,7 @@ function needAutoStartBattle() {
         if (folder.indexof("template") == null) {
           haveUserSkin = true
           anyUG = true
-          log($"statsd_on_login ug.haveus {folder} for " + air.getBlockName())
+          log($"statsd_on_login ug.haveus {folder} for {air.getBlockName()}")
           break
         }
       }

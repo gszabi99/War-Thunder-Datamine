@@ -73,18 +73,19 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
       local condition = ""
       if (reward.placeMin)
-        condition = loc("multiplayer/place") + loc("ui/colon") + reward.placeMin + loc("ui/mdash") + reward.placeMax
+        condition = "".concat(loc("multiplayer/place"), loc("ui/colon"), reward.placeMin,
+          loc("ui/mdash"), reward.placeMax)
       else if (reward.place)
-        condition = loc("multiplayer/place") + loc("ui/colon") + reward.place
+        condition = "".concat(loc("multiplayer/place"), loc("ui/colon"), reward.place)
       else if (reward.rating)
-        condition = loc("userLog/clanDuelRewardClanRating") + " " + reward.rating
+        condition =  " ".concat(loc("userLog/clanDuelRewardClanRating"), reward.rating)
 
       local gold = ""
       if (reward.gold) {
         let value = reward.goldMin ?
           (Cost(0, reward.goldMin).tostring() + loc("ui/mdash") + Cost(0, reward.goldMax).tostring()) :
           Cost(0, reward.gold).tostring()
-        gold = loc("charServer/chapter/eagles") + loc("ui/colon") + value
+        gold = "".concat(loc("charServer/chapter/eagles"), loc("ui/colon"), value)
       }
 
       let prizesList = {}
@@ -97,7 +98,7 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
         if (prizeType == "clanTag") {
           let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(clan_get_my_clan_tag())
           let tagTxt = u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
-          let tooltipBase = loc("clan/clan_tag_decoration") + loc("ui/colon")
+          let tooltipBase = $"{loc("clan/clan_tag_decoration")}{loc("ui/colon")}"
           let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)
           foreach (decorator in tagDecorators)
             collection.append({

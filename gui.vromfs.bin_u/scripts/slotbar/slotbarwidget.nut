@@ -4,7 +4,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
@@ -816,7 +816,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (cost <= ::zero_money) {
+    if (cost <= zero_money) {
       this.purchaseNewSlot(country)
       return
     }

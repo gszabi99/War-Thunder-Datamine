@@ -1,4 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { isDataBlock, isString, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -50,7 +53,7 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
       true, 0.5, false, { containerCb = "onChangeOptionValue" })
     this.optionsContainer = container.descr
     return {
-      titleText = loc("ui/colon").concat(::events.getEventNameText(this.curEvent), loc("night_battles"))
+      titleText = loc("ui/colon").concat(events.getEventNameText(this.curEvent), loc("night_battles"))
       descText = loc("night_battles/desc", {
         optionName = loc("options/can_queue_to_night_battles")
         minMRankForNightBattles = format("%.1f",

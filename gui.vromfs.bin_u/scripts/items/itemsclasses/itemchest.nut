@@ -1,6 +1,6 @@
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
-from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/items/itemsConsts.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
@@ -24,6 +24,8 @@ let Chest = class (ItemExternal) {
   static hasTopRewardAsFirstItem = false
   static includeInRecentItems = false
   static descReceipesListHeaderPrefix = "chest/requires/"
+
+  canMultipleConsume = false
 
   _isInitialized = false
   generator = null
@@ -96,6 +98,7 @@ let Chest = class (ItemExternal) {
       needRecipeMarkup = recipe.isMultipleItems
     })
   }
+
   function getContent() {
     return this.getGenerator()?.getContent() ?? []
   }
@@ -129,6 +132,23 @@ let Chest = class (ItemExternal) {
       : this._getDescHeader
   }
 
+  function needShowTextChances() {
+    return this.itemDef?.tags?.showChances ?? false
+  }
+
+  function getDropChanceType() {
+    if (!hasFeature("ShowDropChanceInTrophy"))
+      return CHANCE_VIEW_TYPE.NONE
+
+    if (this.needShowTextChances())
+      return CHANCE_VIEW_TYPE.TEXT
+
+    if (this.itemDef?.tags?.showDropChance ?? (this.getCategoryWeight().len() > 0))
+      return CHANCE_VIEW_TYPE.ICON
+
+    return CHANCE_VIEW_TYPE.NONE
+  }
+
   function getContentMarkupForDescription(params) {
     let res = []
     let content = this.getContent()
@@ -137,10 +157,10 @@ let Chest = class (ItemExternal) {
       return res
 
     params.receivedPrizes <- false
-    params.needShowDropChance <- this.needShowDropChance()
+    params.dropChanceType <- this.getDropChanceType()
     let categoryWeightArray = this.getCategoryWeight()
     let categoryByItemsArray = this.getCategoryByItems()
-    if (params.needShowDropChance && categoryWeightArray.len() > 0) {
+    if (categoryWeightArray.len() > 0) {
       params.categoryWeight <- categoryWeightArray
       res.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
     }
@@ -218,12 +238,8 @@ let Chest = class (ItemExternal) {
     openingRewardTitle           = "mainmenu/chestConsumed/title"
   })
 
-  needShowDropChance = @() hasFeature("ShowDropChanceInTrophy")
-    && ((this.itemDef?.tags?.showDropChance ?? false)
-      || this.getCategoryWeight().len() > 0)
-
   function getTableData() {
-    if (!this.needShowDropChance())
+    if (this.getDropChanceType() != CHANCE_VIEW_TYPE.ICON)
       return null
 
     let markup = getPrizeChanceLegendMarkup()
@@ -274,7 +290,7 @@ let Chest = class (ItemExternal) {
   }
 
   function validateCategoryTypeArray(paramsArray) { //To correctly display weights for items that have "_" in their name
-    if (paramsArray.len() <= 2)
+    if (paramsArray.len() < 2)
       return paramsArray
 
     let prizeType = paramsArray[0]
@@ -290,6 +306,25 @@ let Chest = class (ItemExternal) {
     return res
   }
 
+  function parseCategory(category) {
+    let showTextChances = this.needShowTextChances()
+    local paramsArray = category.split("_")
+    paramsArray = this.validateCategoryTypeArray(paramsArray)
+    if (paramsArray.len() < 2 && !showTextChances)
+      return null
+
+    let prizeType = paramsArray[0]
+    let weight = showTextChances ? "none" : paramsArray[1]
+    let rarity = showTextChances ? paramsArray?[1] : paramsArray?[2]
+    let hasRarity = rarity != null
+    return {
+      prizeType,
+      hasRarity,
+      weight = hasRarity ? null : weight,
+      rarity = hasRarity ? [{ rarity = rarity, weight = weight }] : null
+    }
+  }
+
   function getCategoryWeight() {
     if (this.categoryWeight != null)
       return this.categoryWeight
@@ -298,23 +333,16 @@ let Chest = class (ItemExternal) {
     if (this.itemDef?.tags.categoryWeight == null)
       return this.categoryWeight
 
-    foreach (category in (this.itemDef.tags % "categoryWeight")) {
-      local paramsArray = category.split("_")
-      if (paramsArray.len() < 2)
+    let cateoryWeightsArray = this.itemDef.tags % "categoryWeight"
+    foreach (category in cateoryWeightsArray) {
+      let parsedCategory = this.parseCategory(category)
+      if (parsedCategory == null)
         continue
 
-      paramsArray = this.validateCategoryTypeArray(paramsArray)
-      let prizeType = paramsArray[0]
-      let weight = paramsArray[1]
-      let rarity = paramsArray?[2]
-      let hasRarity = rarity != null
+      let {prizeType, weight, rarity, hasRarity} = parsedCategory
       let categoryIdx = this.categoryWeight.findindex(@(c) c.prizeType == prizeType)
       if (categoryIdx == null) {
-        this.categoryWeight.append({
-          prizeType = prizeType
-          rarity = hasRarity ? [{ rarity = rarity, weight = weight }] : null
-          weight = hasRarity ? null : weight
-        })
+        this.categoryWeight.append(parsedCategory)
         continue
       }
 
@@ -323,11 +351,10 @@ let Chest = class (ItemExternal) {
         continue
 
       if (!hasRarity) {
-        categ.__update({ weight = weight })
+        categ.weight = weight
         continue
       }
-
-      categ.__update({ rarity = categ.rarity.append({ rarity = rarity, weight = weight }) })
+      categ.rarity.append({rarity, weight})
     }
     return this.categoryWeight
   }

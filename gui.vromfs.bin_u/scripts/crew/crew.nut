@@ -122,7 +122,7 @@ function getCrewSkillCost(skillItem, value, prevValue = -1) {
 
 function getCrewName(crew) {
   let number =  getTblValue("idInCountry", crew, -1) + 1
-  return loc("options/crewName") + number
+  return $"{loc("options/crewName")}{number}"
 }
 
 function getCrewUnit(crew) {

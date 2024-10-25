@@ -160,6 +160,30 @@
         "turnSpeed": 0.2,
         "node": "bone_roll_driver_r_04",
         "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_05",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_06",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_07",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_08",
+        "absoluteValue": true
       }
     ]
   },
@@ -317,12 +341,6 @@
       "composite_armor_hull_04_dm": {
         "armorThickness": 20.0,
         "hidableInXrayViewer": true
-      },
-      "firewall_armor_01_dm": {
-        "armorThickness": 35.0,
-        "hp": 150.0,
-        "ignoreDeadWithSplash": true,
-        "armorEffectiveThicknessMax": 50.0
       }
     },
     "turret": {
@@ -438,7 +456,7 @@
         "armorThickness": 11.0
       },
       "composite_armor_turret_03_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 12.7,
         "hidableInXrayViewer": true
       }
     },
@@ -715,6 +733,10 @@
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
       },
@@ -1752,16 +1774,6 @@
             "xrayTextThickness": 20.0
           }
         }
-      },
-      {
-        "xrayDmPart": "composite_armor_turret_03_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "composite_armor_turret_03_dm",
-            "xrayTextThickness": 20.0
-          }
-        }
       }
     ],
     "armorArrayTurret": [
@@ -1787,11 +1799,11 @@
         }
       },
       {
-        "xrayDmPart": "firewall_armor_01_dm",
+        "xrayDmPart": "composite_armor_turret_03_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "firewall_armor_01_dm"
+            "dmPart": "composite_armor_turret_03_dm"
           }
         }
       }
@@ -2030,12 +2042,13 @@
         ],
         "linkShellCasingToGun": true,
         "barrelDP": "gun_barrel_01_dm",
+        "breechDP": "cannon_breech_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "parkInDeadzone": false,
         "speedYaw": 90.0,
         "speedPitch": 60.0,
-        "bullets": 2000,
+        "bullets": 750,
         "isBulletBelt": true,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -2448,6 +2461,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2466,6 +2480,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2623,7 +2638,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2771,6 +2786,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2778,6 +2794,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2785,6 +2802,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2792,6 +2810,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2799,6 +2818,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2806,7 +2826,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2826,7 +2846,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2846,7 +2866,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2860,7 +2880,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2880,7 +2900,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2900,7 +2920,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -2978,6 +2998,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false
@@ -3199,12 +3220,13 @@
               ],
               "linkShellCasingToGun": true,
               "barrelDP": "gun_barrel_01_dm",
+              "breechDP": "cannon_breech_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "parkInDeadzone": false,
               "speedYaw": 90.0,
               "speedPitch": 60.0,
-              "bullets": 2000,
+              "bullets": 750,
               "isBulletBelt": true,
               "fireConeAngle": 5.0,
               "ChainfireTime": 0.5,
@@ -3536,6 +3558,15 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "ger_camo_modern_threecolor*"
+      }
+    },
+    {
+      "name": "ger_camo_carc_winter",
+      "nameLocId": "skin/ger_camo_carc_winter",
+      "descLocId": "skin/ger_camo_carc_winter/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "ger_camo_carc_winter*"
       }
     }
   ]

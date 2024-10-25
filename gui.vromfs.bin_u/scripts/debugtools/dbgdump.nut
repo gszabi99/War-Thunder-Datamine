@@ -102,7 +102,7 @@ function getFuncResult(func, a = []) {
   return func.acall([null].extend(a))
 }
 
-local function pathGet(env, path, defVal) {
+function pathGet(env, path, defVal) {
   let keys = split_by_chars(path, ".")
   foreach (key in keys)
     if (key in env)
@@ -112,7 +112,7 @@ local function pathGet(env, path, defVal) {
   return env
 }
 
-local function pathSet(env, path, val) {
+function pathSet(env, path, val) {
   let keys = split_by_chars(path, ".")
   let lastIdx = keys.len() - 1
   foreach (idx, key in keys) {
@@ -122,7 +122,7 @@ local function pathSet(env, path, val) {
   }
 }
 
-local function pathDelete(env, path) {
+function pathDelete(env, path) {
   let keys = split_by_chars(path, ".")
   let lastIdx = keys.len() - 1
   foreach (idx, key in keys) {

@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let u = require("%sqStdLibs/helpers/u.nut")
 let ww_leaderboard = require("ww_leaderboard")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
@@ -71,7 +73,7 @@ function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
     blk.count = 49  // unusual value indicate problem
   }
 
-  let event = ::events.getEvent(requestData.economicName)
+  let event = events.getEvent(requestData.economicName)
   if (requestData.tournament || isRaceEvent(event))
     blk.tournamentMode = requestData.tournament_mode
 
@@ -91,7 +93,7 @@ function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb) {
   blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
   blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
-  let event = ::events.getEvent(requestData.economicName)
+  let event = events.getEvent(requestData.economicName)
   if (requestData.tournament || isRaceEvent(event))
     blk.tournamentMode = requestData.tournament_mode
 

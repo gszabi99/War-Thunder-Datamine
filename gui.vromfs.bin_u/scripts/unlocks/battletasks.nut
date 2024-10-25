@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, get_unlock_type
 from "%scripts/dagui_library.nut" import *
 
@@ -665,10 +664,8 @@ function getUnlocksListView(config) {
 }
 
 function getUnlockConditionBlock(text, config, isUnlocked, isFinal, compareOR, isBitMode) {
-  local unlockDesc = compareOR ? loc("hints/shortcut_separator") + "\n" : ""
-  unlockDesc += text
-  unlockDesc += compareOR ? "" : loc(isFinal ? "ui/dot" : "ui/comma")
-
+  let unlockDesc = compareOR ? "\n".concat(loc("hints/shortcut_separator"), text)
+    : "".concat(text, loc(isFinal ? "ui/dot" : "ui/comma"))
   return {
     tooltipMarkup = getTooltipMarkupByModeType(config)
     overlayTextColor = (isBitMode && isUnlocked) ? "userlog" : "active"
@@ -729,7 +726,7 @@ function getBattleTaskDesc(config = null, paramsCfg = {}) {
   let isPromo = paramsCfg?.isPromo ?? false
 
   if (getShowAllTasks())
-    taskDescription.append("*Debug info: id - " + config.id)
+    taskDescription.append($"*Debug info: id - {config.id}")
 
   if (isPromo) {
     if (getTblValue("locDescId", config, "") != "")
@@ -818,7 +815,7 @@ function setBattleTasksUpdateTimer(task, taskBlockObj, addParams = {}) {
   if (checkObj(holderObj))
     SecondsUpdater(holderObj, function(obj, _params) {
       let timeText = EASY_TASK.getTimeLeftText(genId)
-      obj.setValue(loc("ui/parentheses/space", { text = timeText + loc("icon/timer") }))
+      obj.setValue(loc("ui/parentheses/space", { text = $"{timeText}{loc("icon/timer")}" }))
 
       return timeText == ""
     })
@@ -857,7 +854,7 @@ function getRewardMarkUpConfig(task, config) {
     return rewardMarkUp
 
   let rewardLoc = isBattleTaskDone(task) ? loc("rewardReceived") : loc("reward")
-  rewardMarkUp.rewardText <- rewardLoc + loc("ui/colon") + reward
+  rewardMarkUp.rewardText <-$"{rewardLoc}{loc("ui/colon")}{reward}"
   return rewardMarkUp
 }
 
@@ -972,12 +969,12 @@ function getBattleTaskUpdateDesc(logObj) {
     if (arr.len() == 0)
       continue
 
-    data += data == "" ? "" : "\n"
+    data = $"{data}{data == "" ? "" : "\n"}"
     if (lastUserLogHeader != userlogHeader) {
-      data += loc($"userlog/battletask/type/{userlogHeader}") + loc("ui/colon")
+      data = "".concat(data, loc($"userlog/battletask/type/{userlogHeader}"), loc("ui/colon"))
       lastUserLogHeader = userlogHeader
     }
-    data += "\n".join(arr, true)
+    data = "".concat(data, "\n".join(arr, true))
   }
 
   return data

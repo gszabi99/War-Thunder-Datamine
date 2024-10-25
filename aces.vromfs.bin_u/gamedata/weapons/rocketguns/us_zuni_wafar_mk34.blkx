@@ -1,0 +1,212 @@
+{
+  "rocketGun": true,
+  "preset_cost": 25,
+  "mesh": "us_zuni_wafar_mk32_rocket",
+  "mesh_deployed": "us_zuni_wafar_mk32_rocket_deployed",
+  "helicopterGroup": 2,
+  "shotFreq": 20.0,
+  "sound": "weapon.rocketgun_132",
+  "rocket": {
+    "bulletName": "us_zuni_wafar_mk34",
+    "statType": "hydra",
+    "caliber": 0.130175,
+    "length": 2.811272,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 1.2,
+    "distFromCmToStab": 0.01,
+    "mass": 60.62716,
+    "massEnd": 39.94335,
+    "timeFire": 1.79,
+    "force": 20135.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "maxSpeed": 726.0,
+    "endSpeed": 0.0,
+    "maxDistance": 20000.0,
+    "minDistance": 500.0,
+    "explosiveType": "smoke_composition",
+    "explosiveMass": 0.272,
+    "explodeTreshold": 0.00001,
+    "rendinstDamageRadius": 6.0,
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "dragCx": 0.0084,
+    "effectOffset": [
+      -1.2,
+      0.0,
+      0.0
+    ],
+    "amountPerTier": 4.0,
+    "iconType": "nar_ap_special",
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "he_small_caliber_ground",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "smoke_tank",
+    "slopeEffectPreset": "ap",
+    "modelName": "tank_bullet_he",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "shellAnimation": "video/shells_animations/smoke.ivf",
+    "smokeShell": true,
+    "smokeFx": "smokescreen_big",
+    "smokeExplosionFx": "smoke_shell_explosion",
+    "smokeExplosionFxVolsmoke": "smoke_shell_explosion_old",
+    "smokeShellRad": 16.0,
+    "smokeActivateTime": 5.0,
+    "smokeTime": 45.0,
+    "groundCollisionEffect": "smoke_shell_explosion",
+    "groundFxScale": [
+      1.2,
+      1.4
+    ],
+    "ricochetEffect": "hit_59_80mm_metal_ap",
+    "waterCollisionEffect": "hit_59_80mm_water",
+    "waterFxScale": [
+      0.7,
+      0.8
+    ],
+    "explosionPatchRadius": 1.5,
+    "waterRicochetEffect": "hit_81_105mm_water_ap",
+    "groundRicochetEffect": "hit_81_105mm_dirt_ap",
+    "destructionBreakFx": "smoke_shell_explosion",
+    "destructionFireFx": "fire_thermite",
+    "destructionExplosionFx": "explosion_tank_ammunition_smoke",
+    "fireEffect": "fires_exhaust_jet_early_small",
+    "smokeEffect": "smoke_rocket_tail_light_multiple",
+    "smokeEffect2": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "maxDeltaAngle": 1.3,
+    "advancedSpread": 0.5,
+    "velSpread": 0.0,
+    "thrustDeviation": 0.00001,
+    "splash": {
+      "innerRadius": 3.0,
+      "outerRadius": 5.0,
+      "penetration": 15.0,
+      "damage": 1500.0,
+      "damageType": "napalm"
+    },
+    "fireDamage": {
+      "velocityMult": 3.5,
+      "maxFlightTime": 10.0,
+      "maxFlightDistance": 20.0,
+      "maxRise": 10.0,
+      "lifeTime": 15.0,
+      "penetration": 5.0,
+      "damage": 2.0,
+      "damageType": "napalm",
+      "radius": 5.0,
+      "fxType": "explosion_napalm_wrackages",
+      "burnFxType": "explosion_napalm_firespot",
+      "burnFxSize": 8.0,
+      "scorchMarginSize": 1.0,
+      "scorchStrength": 1.0,
+      "scorchDuration": 10.0,
+      "emitterCount": 3,
+      "emitterDispersion": 0.7
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "collisions": {
+      "steel": {
+        "fx": "smoke_shell_explosion",
+        "ricochetFx": "hit_59_80mm_stone_ap"
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 50.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "DamageEffects": {
+      "part": {
+        "name": "body",
+        "onHit": [
+          {
+            "shellState": "inFlight",
+            "expl": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.05,
+            "fire": 0.45,
+            "break": 0.5,
+            "damage": 3.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "generic",
+            "expl": 0.5,
+            "fire": 0.3,
+            "break": 0.2,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "explosion",
+            "expl": 0.45,
+            "fire": 0.45,
+            "break": 0.1,
+            "damage": 50.0,
+            "fHitCritical": true
+          },
+          {
+            "shellState": "onUnit",
+            "damageType": "cumulative",
+            "expl": 0.4,
+            "fire": 0.4,
+            "break": 0.1,
+            "damage": 100.0,
+            "fHitCritical": true
+          }
+        ],
+        "onKill": [
+          {
+            "shellState": "inFlight",
+            "destruction": 1.0
+          },
+          {
+            "shellState": "onUnit",
+            "expl": 0.05,
+            "fire": 0.05,
+            "break": 0.9,
+            "fHitCritical": true
+          }
+        ]
+      }
+    }
+  }
+}

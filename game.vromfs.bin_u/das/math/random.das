@@ -55,6 +55,13 @@ def shuffle(var list; up_to : int = -1)
     let idx = grnd() % (maxSize - i)
     swap(list[i], list[i + idx])
 
+def shuffle_seeded(var list; var seed : int&; up_to : int = -1)
+  let maxSize = _::length(list)
+  let size = up_to >= 0 ? min(up_to, maxSize) : maxSize
+  for i in range(size)
+    let idx = _rnd_int(seed, 0, maxSize - i - 1)
+    swap(list[i], list[i + idx])
+
 //for the case when the list itself cannot be shuffled
 def get_shuffled_indexes(list; up_to : int = -1)
   var indexes <- [{for idx in iter_range(list); idx}]

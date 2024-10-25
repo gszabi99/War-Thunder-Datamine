@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
@@ -116,7 +115,7 @@ function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem = null)
     if (next.len() == 0)
       idx = -1
     else if (rangeData[next[0]].used)
-      fatal("Cycled requirements in shop!!!  look at " + rangeData[next[0]].name)
+      fatal($"Cycled requirements in shop!!!  look at {rangeData[next[0]].name}")
     else if (next.len() == 1)
         idx = next[0]
     else {
@@ -196,8 +195,8 @@ function getBranchesTbl(rangeData) {
   local test = "GP: branches:"
   foreach(b in branches)
     foreach(idx, item in b)
-      test += ((idx==0)? "\n" : ", ") + item.air.name + " ("+item.air.rank+","+item.childs+")"
-               + (item?.reqAir ? "("+item.reqAir+")":"")
+      test = "".concat(idx==0 ? "\n" : ", ", item.air.name, " (", item.air.rank, ",", item.childs, ")",
+        item?.reqAir ? $"({item.reqAir})" : "")
   log(test)
 */
   return branches
@@ -482,14 +481,15 @@ function generateTreeData(page) {
   foreach(row in page.tree)
     foreach(idx, item in row)
     {
-      testText += ((idx==0)? "\n":"")
+      testText = "".concat(testText, idx==0 ? "\n" : "")
       if (item==null)
-        testText+=" "
+        testText = $"{testText} "
+      else if (type(item)=="integer")
+        testText = $"{testText}."
       else
-      if (type(item)=="integer") testText += "."
-      else testText += "A"
+        testText = $"{testText}A"
     }
-  log(testText + "\n done.")
+  log($"{testText}\n done.")
 */
   //fill Lines and clear table
   fillLinesInPage(page)

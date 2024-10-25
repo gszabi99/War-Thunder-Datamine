@@ -20,6 +20,7 @@ let { markToShowMultiplayerLimitByAasMsg } = require("%scripts/user/antiAddictSy
 let { EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS } = require("chardConst")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let events = getGlobalModule("events")
 let { getRecentSquadMrank } = require("%scripts/battleRating.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
@@ -76,7 +77,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   }
 
   static function getCustomMgm(eventName) {
-    return ::events.getCustomGameMode(::events.getEvent(eventName))
+    return events.getCustomGameMode(events.getEvent(eventName))
   }
 
   static function hasCustomModeByEventName(eventName) {
@@ -150,7 +151,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   getCurRank = @(event) g_squad_manager.isInSquad()
     ? getRecentSquadMrank()
-    : getPlayerCurUnit().getEconomicRank(::events.getEDiffByEvent(event))
+    : getPlayerCurUnit().getEconomicRank(events.getEDiffByEvent(event))
 
   getExcludedGmsTags = @(event) {
     [NIGHT_GAME_MODE_TAG_PREFIX] = hasNightGameModes(event)
@@ -164,7 +165,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function getQueryParams(isForJoining, customMgm = null) {
     let qp = {}
-    let event = ::events.getEvent(this.name)
+    let event = events.getEvent(this.name)
     let eventName = getEventEconomicName(event)
     let excludedTags = this.getExcludedGmsTags(event)
     let gameModesList = (event?.forceBatchRequest ?? false) ? getGameModeIdsByEconomicName(eventName)
@@ -232,11 +233,11 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   }
 
   function getBattleName() {
-    let event = ::events.getEvent(this.name)
+    let event = events.getEvent(this.name)
     if (!event)
       return ""
 
-    return ::events.getEventNameText(event)
+    return events.getEventNameText(event)
   }
 
   function hasCustomMode() {

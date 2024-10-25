@@ -168,7 +168,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isRecrutedCurCrew())
       return
 
-    let row = getCrewButtonRow(obj, this.scene, this.scene)
+    let row = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
     if (this.curPage.items.len() > 0 && (!this.repeatButton || isRepeat)) {
       let item = this.curPage.items[row]
       let value = getCrewSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
@@ -232,7 +232,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     if (this.pageOnInit || !obj || !this.isRecrutedCurCrew())
       return
 
-    let row = getCrewButtonRow(obj, this.scene, this.scene)
+    let row = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
     if (this.curPage.items.len() == 0)
       return
 
@@ -280,7 +280,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     let buttonsArray = [[cancelButtonName, function() {}]]
     local defaultButton = "ok"
     if (spendGold) {
-      text += "\n" + loc("shop/purchaseMoreSkillPoints")
+      text = "\n".concat(text, loc("shop/purchaseMoreSkillPoints"))
       buttonsArray.insert(0, ["yes", (@(crew) function() { createCrewBuyPointsHandler(crew) })(this.crew)]) //-ident-hides-ident
       defaultButton = "yes"
     }
@@ -335,8 +335,8 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
 
       let lvlDiffByGunners = stdMath.round_by_value(bonusLevel - addLevel, 0.01)
       if (lvlDiffByGunners < 0)
-        bonusTooltip += ((bonusTooltip != "") ? "\n" : "") + loc("crew/notEnoughGunners") + loc("ui/colon")
-          + $"<color=@badTextColor>{lvlDiffByGunners}</color>"
+        bonusTooltip = "".concat(bonusTooltip, ((bonusTooltip != "") ? "\n" : ""),
+          loc("crew/notEnoughGunners"), loc("ui/colon"), $"<color=@badTextColor>{lvlDiffByGunners}</color>")
     }
 
     let level = getCrewLevel(this.crew, this.unit, this.unit?.getCrewUnitType?() ?? CUT_INVALID)

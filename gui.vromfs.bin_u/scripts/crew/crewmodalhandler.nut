@@ -1,4 +1,5 @@
 from "%scripts/dagui_natives.nut" import get_cur_warpoints, shop_upgrade_crew
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/dagui_library.nut" import *
 
 let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
@@ -191,7 +192,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let value = getCrewSkillValue(this.crew.id, this.curUnit, page.id, item.name)
         let newValue = item?.newValue ?? value
         if (newValue > value)
-          this.curPoints -= getCrewSkillCost(item, newValue, value)
+          this.curPoints -= getCrewSkillCost(item, newValue, value) // -param-pos
       }
     this.updateSkillsHandlerPoints()
     this.scene.findObject("crew_cur_skills").setValue(stdMath.round_by_value(this.crewCurLevel, 0.01).tostring())
@@ -393,7 +394,8 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let totalPointsToMax = getCrewSkillPointsToMaxAllSkills(this.crew, this.curUnit, this.curCrewUnitType)
     showObjById("btn_buy_all", totalPointsToMax > 0 && this.crew.id != -1, this.scene)
-    let text = loc("mainmenu/btnBuyAll") + loc("ui/parentheses/space", { text = getCrewSpText(totalPointsToMax) })
+    let text = "".concat(loc("mainmenu/btnBuyAll"),
+      loc("ui/parentheses/space", { text = getCrewSpText(totalPointsToMax) }))
     setColoredDoubleTextToButton(this.scene, "btn_buy_all", text)
   }
 
@@ -766,28 +768,28 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = loc("tutorials/upg_crew/total_skill_points")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
       },
       {
         obj = [["crew_pages_list", "driver_available"]]
         text = loc("tutorials/upg_crew/skill_groups")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
       },
       {
         obj = [this.getObj("skill_row0").findObject("incCost"), "skill_row0"]
         text = loc("tutorials/upg_crew/take_skill_points")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
       },
       {
         obj = [this.getObj("skill_row0").findObject("buttonInc"), "skill_row0"]
         text = loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
         cb = Callback(@() this.onButtonInc(this.getObj("skill_row0").findObject("buttonInc")), this)
       },
       {
@@ -795,14 +797,14 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = loc("tutorials/upg_crew/inc_skills")
         actionType = tutorAction.FIRST_OBJ_CLICK
         nextActionShortcut = "help/OBJ_CLICK"
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
         cb = Callback(@() this.onButtonInc(this.getObj("skill_row1").findObject("buttonInc")), this)
       },
       {
         obj = ["btn_apply"]
         text = loc("tutorials/upg_crew/apply_upgr_skills")
         actionType = tutorAction.OBJ_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
         cb = Callback(function() {
           this.afterApplyAction = this.canUpgradeCrewSpec(this.crew) ? this.onUpgrCrewSpec1Tutorial
             : this.onUpgrCrewTutorFinalStep
@@ -855,7 +857,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = loc("tutorials/upg_crew/spec1")
         actionType = tutorAction.ANY_CLICK
         nextActionShortcut = "help/NEXT_ACTION"
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
         cb = Callback(this.onUpgrCrewSpec1ConfirmTutorial, this)
       }
     ]
@@ -887,7 +889,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
       }
     ]
     ::gui_modal_tutor(steps, this)
@@ -900,7 +902,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = loc("tutorials/upg_crew/final_massage")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
       }
     ]
     ::gui_modal_tutor(steps, this)

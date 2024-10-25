@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_player_multipliers, map_to_location
 from "%scripts/dagui_library.nut" import *
 
@@ -141,8 +140,9 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getHeaderDescConfig(mission) {
     let config = {}
-    config.name <- loc((mission.isCampaign ? "campaigns/" : "chapters/") + mission.id)
-    config.maintext <- loc((mission.isCampaign ? "campaigns/" : "chapters/") + mission.id + "/desc", "")
+    let nameLocId = "".concat(mission.isCampaign ? "campaigns/" : "chapters/", mission.id)
+    config.name <- loc(nameLocId)
+    config.maintext <- loc($"{nameLocId}/desc", "")
     if (mission.id in this.chapterImgList)
       config.chapterImg <-$"ui/chapters/{mission.id}"
     return config
@@ -182,7 +182,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         config.date <- loc($"mb/{mission.id}/date")
     else if (this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
       config.date <- loc($"missions/{mission.id}/date")
-      config.objectiveItem <- loc("sm_objective") + loc("ui/colon")
+      config.objectiveItem <- $"{loc("sm_objective")}{loc("ui/colon")}"
       config.objective <- loc($"missions/{mission.id}/objective")
 
       if (checkJoystickThustmasterHotas(false) && this.gm == GM_TRAINING) {
@@ -199,7 +199,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       config.coop <- missionAvailableForCoop ? loc("single_mission/available_for_coop") : ""
     }
     if (this.gm == GM_CAMPAIGN || this.gm == GM_DYNAMIC) {
-      config.objectiveItem <- loc("sm_objective") + loc("ui/colon")
+      config.objectiveItem <- $"{loc("sm_objective")}{loc("ui/colon")}"
       config.objective <- loc($"mb/{mission.id}/objective")
     }
 
@@ -217,9 +217,9 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       if (sm_weather != "")
         sm_weather = getWeatherLocName(sm_weather)
 
-      config.condition += sm_location
-      config.condition += (config.condition != "" ? "; " : "") + sm_time
-      config.condition += (config.condition != "" ? "; " : "") + sm_weather
+      config.condition = "".concat(config.condition, sm_location,
+        config.condition != "" ? "; " : "", sm_time,
+        config.condition != "" ? "; " : "", sm_weather)
 
       if (this.gm == GM_DYNAMIC) {
         config.date <- config.condition
@@ -227,14 +227,14 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
     if (config.condition != "")
-      config.conditionItem <- loc("sm_conditions") + loc("ui/colon")
+      config.conditionItem <- $"{loc("sm_conditions")}{loc("ui/colon")}"
 
     let aircraft = blk.getStr("player_class", "")
     if ((aircraft != "") && !(gt & GT_VERSUS)
         && (this.gm != GM_EVENT) && (this.gm != GM_TOURNAMENT) && (this.gm != GM_DYNAMIC) && (this.gm != GM_BUILDER) && (this.gm != GM_BENCHMARK)) {
-      config.aircraftItem <- loc("options/aircraft") + loc("ui/colon")
-      config.aircraft <- getUnitName(aircraft) + "; " +
-                 getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", ")
+      config.aircraftItem <- $"{loc("options/aircraft")}{loc("ui/colon")}"
+      config.aircraft <- "; ".concat(getUnitName(aircraft),
+        getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", "))
 
       let country = ::getShopCountry(aircraft)
       log($"aircraft = {aircraft} country = {country}")
@@ -244,13 +244,13 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     config.maintext <- loc($"missions/{mission.id}/desc", "")
     if (this.gm == GM_SKIRMISH && config.maintext != "" && !("objective" in config)) {
-      config.objective <- "\n" + config.maintext
+      config.objective <- $"\n{config.maintext}"
       config.maintext = ""
     }
     else if (this.gm == GM_DOMINATION && blk?.timeLimit) {
       let option = ::get_option(USEROPT_TIME_LIMIT)
-      let timeLimitText = option.getTitle() + loc("ui/colon") + option.getValueLocText(blk.timeLimit)
-      config.maintext += (config.maintext.len() ? "\n\n" : "") + timeLimitText
+      let timeLimitText = loc("ui/colon").concat(option.getTitle(), option.getValueLocText(blk.timeLimit))
+      config.maintext = "".concat(config.maintext, config.maintext.len() ? "\n\n" : "", timeLimitText)
     }
 
     if ((blk?["locDescTeamA"].len() ?? 0) > 0)
@@ -258,7 +258,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     else if ((blk?.locDesc.len() ?? 0) > 0)
       config.objective <- getMissionLocName(blk, "locDesc")
     if (blk.getStr("recommendedPlayers", "") != "")
-      config.maintext += format(loc("players_recommended"), blk.getStr("recommendedPlayers", "1-4")) + "\n"
+      config.maintext = "".concat(config.maintext, format(loc("players_recommended"), blk.getStr("recommendedPlayers", "1-4")), "\n")
 
     let rBlk = get_pve_awards_blk()
     if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
@@ -321,19 +321,19 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let reqAir = ("player_class" in mission.blk ? mission.blk.player_class : "")
       if (reqAir != "") {
-        config.aircraftItem <- loc("options/aircraft") + loc("ui/colon")
+        config.aircraftItem <- $"{loc("options/aircraft")}{loc("ui/colon")}"
         config.aircraft <- getUnitName(reqAir)
       }
     }
 
     if ((this.gm == GM_SINGLE_MISSION) && (mission.progress >= 4)) {
-      config.requirementsItem <- loc("unlocks/requirements") + loc("ui/colon")
+      config.requirementsItem <- $"{loc("unlocks/requirements")}{loc("ui/colon")}"
       if ("mustHaveUnit" in this.curMission) {
         let unitNameLoc = colorize("activeTextColor", getUnitName(this.curMission.mustHaveUnit))
         config.requirements <- loc("conditions/char_unit_exist/single", { value = unitNameLoc })
       }
       else {
-        let unlockName = mission.blk.chapter + "/" + mission.blk.name
+        let unlockName = $"{mission.blk.chapter}/{mission.blk.name}"
         config.requirements <- getFullUnlockDescByName(unlockName, 1)
       }
     }

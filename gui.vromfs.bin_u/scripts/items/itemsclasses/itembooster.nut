@@ -227,7 +227,7 @@ let Booster = class (BaseItem) {
   function getBoosterDescriptionForMessageBox(booster) {
     local result = booster.getName()
     if (this.hasTimer())
-      result += " - " + booster.getTimeLeftText()
+      result = " - ".concat(result, booster.getTimeLeftText())
     return result
   }
 
@@ -362,7 +362,7 @@ let Booster = class (BaseItem) {
   }
 
   function _formatEffectText(value, currencyMark) {
-    return colorize("activeTextColor", "+" + value + "%") + currencyMark
+    return $"{colorize("activeTextColor", "+" + value + "%")}{currencyMark}"
   }
 
   function getEffectText(wpRateNum = 0, xpRateNum = 0, colored = true) {
@@ -402,15 +402,15 @@ let Booster = class (BaseItem) {
     if (this.wpRate != 0 || this.xpRate != 0)
       desc += loc(locString, locParams)
     if (this.eventConditions != null)
-      desc += " " + this.getEventConditionsText()
+      desc = " ".concat(desc, this.getEventConditionsText())
 
     desc += "\n"
 
     let expireText = this.getCurExpireTimeText()
     if (expireText != "")
-      desc += "\n" + expireText
+      desc = "\n".concat(desc, expireText)
     if (this.stopConditions != null)
-      desc += "\n" + this.getStopConditions()
+      desc = "\n".concat(desc, this.getStopConditions())
 
     if (this.isActive(true)) {
       let effectTypes = this.getEffectTypes()
@@ -423,7 +423,7 @@ let Booster = class (BaseItem) {
   }
 
   function getName(colored = true) {
-    return base.getName(colored) + " " + this.getEffectDesc()
+    return  " ".concat(base.getName(colored), this.getEffectDesc())
   }
 
   function getShortDescription(colored = true) {
@@ -539,9 +539,9 @@ let Booster = class (BaseItem) {
                        }))
     }
     if (effects.len())
-      res += " (" + ", ".join(effects, true) + ")"
+      res = "".concat(res, " (", ", ".join(effects, true), ")")
     if (this.eventConditions)
-      res += " (" + this.getEventConditionsText() + ")"
+      res = "".concat(res, " (", this.getEventConditionsText(), ")")
     return res
   }
 }
@@ -565,7 +565,7 @@ let FakeBooster = class (Booster) {
   }
 
   function getDescription() {
-    local desc = base.getDescription() + loc("ui/colon") + this.getEffectDesc()
+    local desc = "".concat(base.getDescription(), loc("ui/colon"), this.getEffectDesc())
     if (!this.isInventoryItem)
       return desc
 
@@ -580,7 +580,9 @@ let FakeBooster = class (Booster) {
 
     if (bonusArray.len()) {
       desc += "\n"
-      desc += loc("item/FakeBoosterForNetCafeLevel/squad", { num = g_squad_manager.getSameCyberCafeMembersNum() }) + loc("ui/colon")
+      desc = "".concat(desc,
+        loc("item/FakeBoosterForNetCafeLevel/squad", { num = g_squad_manager.getSameCyberCafeMembersNum() }),
+        loc("ui/colon"))
       desc += ", ".join(bonusArray, true)
     }
 

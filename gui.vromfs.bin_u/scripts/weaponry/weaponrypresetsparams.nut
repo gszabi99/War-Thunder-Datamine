@@ -55,13 +55,17 @@ function getWeaponrySize(massKg) {
   return ""
 }
 
+let checkIsNotWeaponry = @(inst) inst?.trigger == "fuel tanks" || inst?.trigger == "boosters"
+
 function getTypeByPurpose(weaponry) {
   if (u.isEmpty(weaponry))
     return "NONE"
 
   let res = []
   foreach (triggerType in (weaponry?.weaponsByTypes ?? {}))
-    foreach (inst in triggerType)
+    foreach (inst in triggerType) {
+      if (checkIsNotWeaponry(inst))
+        continue
       foreach (w in inst.weaponBlocks) {
         // Lack of bullet types or all types that is not in PURPOSE_TYPE is AIR_TO_GROUND type
         local isFound = false
@@ -81,9 +85,13 @@ function getTypeByPurpose(weaponry) {
         if (!isFound && !isInArray("AIR_TO_GROUND", res))
           res.append("AIR_TO_GROUND")
       }
+    }
 
-  return res.len() == 1 ? res[0] : isInArray("AIR_TO_AIR", res) ?
-    "UNIVERSAL" : isInArray("AIR_TO_SEA", res) ? "AIR_TO_SEA" : "AIR_TO_GROUND"
+  return res.len() == 0 ? "UNIVERSAL"
+    : res.len() == 1 ? res[0]
+    : isInArray("AIR_TO_AIR", res) ? "UNIVERSAL"
+    : isInArray("AIR_TO_SEA", res) ? "AIR_TO_SEA"
+    : "AIR_TO_GROUND"
 }
 
 function getTierIcon(weaponry, itemsNum) {
@@ -122,7 +130,7 @@ function getTierIcon(weaponry, itemsNum) {
   return $"{path}{wStr}_{groupStr}"
 }
 
-local function createTier(weaponry, presetName, unitName, itemsNum = 0) {
+function createTier(weaponry, presetName, unitName, itemsNum = 0) {
   let tierId  = weaponry?.tierId ?? -1
   let tierWeaponry = weaponry.__merge({ itemsNum = itemsNum })
   itemsNum = itemsNum > 0 ? itemsNum : weaponry.num

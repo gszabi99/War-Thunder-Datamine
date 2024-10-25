@@ -2819,6 +2819,10 @@
         "blk": "gameData/FlightModels/weaponPresets/spitfire_f22_3x250lbs.blk"
       },
       {
+        "name": "spitfire_f22_3x250lbs_mc",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_f22_3x250lbs_mc.blk"
+      },
+      {
         "name": "spitfire_f22_1x500lbs",
         "blk": "gameData/FlightModels/weaponPresets/spitfire_f22_1x500lbs.blk"
       },
@@ -2829,6 +2833,10 @@
       {
         "name": "spitfire_f22_3x500lbs",
         "blk": "gameData/FlightModels/weaponPresets/spitfire_f22_3x500lbs.blk"
+      },
+      {
+        "name": "spitfire_f22_3x500lbs_mc",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_f22_3x500lbs_mc.blk"
       }
     ]
   },
@@ -3021,6 +3029,37 @@
               "bullets": 1,
               "external": true
             }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lb_mc",
+            "reqModification": "spitfire_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb_default.blk",
+              "separate": true,
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lb_mc",
+            "reqModification": "spitfire_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -3060,6 +3099,37 @@
               "bullets": 1,
               "external": true
             }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lb_additional_mc",
+            "reqModification": "spitfire_sbc_additional",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+              "separate": true,
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lb_additional_mc",
+            "reqModification": "spitfire_mbc_additional",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true
+            }
           }
         ]
       },
@@ -3094,6 +3164,37 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_500lbs_default.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "250lb_mc",
+            "reqModification": "spitfire_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb_default.blk",
+              "separate": true,
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "500lb_mc",
+            "reqModification": "spitfire_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
               "emitter": "bomb3",
               "bullets": 1,
               "external": true

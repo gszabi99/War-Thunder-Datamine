@@ -28,8 +28,6 @@
  *  handyman.renderCached(template_name, view) use just template file name.
  */
 
-#no-plus-concat
-
 let g_string =  require("%sqstd/string.nut")
 let { loc } = require("dagor.localize")
 local {regexp} = require("string")

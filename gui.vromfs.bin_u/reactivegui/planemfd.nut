@@ -1,9 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { MfdRadarColor, MfdRadarEnabled, radarPosSize } = require("radarState.nut")
-let { IsMfdEnabled, RwrScale, RwrBackHide, MfdRadarWithNavVis, MfdRadarNavPosSize,
-    MfdVdiVisible, MfdVdiPosSize, DigitalDevicesVisible, DigDevicesPosSize, MfdRwrColor } = require("planeState/planeToolsState.nut")
-let {tws, mfdRwrSettings} = require("tws.nut")
+let { IsMfdEnabled, MfdRwrColor, RwrScale, RwrBackHide, MfdRadarWithNavVis, MfdRadarNavPosSize,
+    MfdVdiVisible, MfdVdiPosSize, DigitalDevicesVisible, DigDevicesPosSize } = require("planeState/planeToolsState.nut")
+let { mfdRwrSettings } = require("tws.nut")
+let planeRwr = require("planeRwr.nut")
 let { RwrForMfd, RwrPosSize } = require("airState.nut")
 let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut")
 let mfdVdi = require("planeCockpit/mfdVdi.nut")
@@ -17,7 +18,7 @@ let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value
 let twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSize.value[3]])
 
 let planeMFD = @() {
-  watch = [MfdRadarEnabled, RwrForMfd, RwrScale, MfdRadarWithNavVis, MfdVdiVisible, DigitalDevicesVisible, RwrBackHide]
+  watch = [MfdRadarEnabled, RwrForMfd, MfdRwrColor, RwrScale, MfdRadarWithNavVis, MfdVdiVisible, DigitalDevicesVisible, RwrBackHide]
   size = flex()
   children = [
     (MfdRadarEnabled.value ? radarMfd(radarPosSize, MfdRadarColor) : null),
@@ -27,21 +28,7 @@ let planeMFD = @() {
         size = [RwrPosSize.value[2] / RwrScale.get(), RwrPosSize.value[3] / RwrScale.get()]
         color = mfdRwrSettings.get().backgroundColor
       } : null),
-    (RwrForMfd.value
-      ? tws({
-        colorWatched = MfdRwrColor,
-        posWatched = twsPosComputed,
-        sizeWatched = twsSizeComputed,
-        relativCircleSize = 54,
-        scale = RwrScale.value,
-        needDrawCentralIcon = !RwrBackHide.value,
-        needDrawBackground = !RwrBackHide.value,
-        fontSizeMult = 1.8,
-        needAdditionalLights = false,
-        forMfd = true
-        centralCircleSizeMult = 0.7
-      })
-      : null),
+    (RwrForMfd.value ? planeRwr(twsPosComputed, twsSizeComputed, MfdRwrColor, RwrScale.get(), RwrBackHide.get(), 70, 2.0) : null),
     mfdCamera,
     mfdCustomPages,
     (MfdRadarWithNavVis.value ? mfdRadarWithNav(MfdRadarNavPosSize[2], MfdRadarNavPosSize[3], MfdRadarNavPosSize[0], MfdRadarNavPosSize[1]) : null),

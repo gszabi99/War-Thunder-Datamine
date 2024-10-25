@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_exe_dir, get_save_load_path
 from "%scripts/dagui_library.nut" import *
 
@@ -232,7 +231,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         else if (value == "")
           extType = "#filesystem/file"
         else
-          extType = loc("filesystem/file") + " " + value
+          extType = " ".concat(loc("filesystem/file"), value)
         return {
           text = extType
           tooltip = extType
@@ -351,7 +350,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
       if (is_platform_windows) {
         let disks = { name = "#filesystem/winDiskDrives", childs = [] }
         for (local diskChar = 'C' ; diskChar <= 'Z'; diskChar++) {
-          let path = diskChar.tochar() + ":"
+          let path = $"{diskChar.tochar()}:"
           disks.childs.append({ path = path })
         }
         favorites.append(disks)
@@ -702,10 +701,11 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         let column = columnInfo.column
         foreach (attr in requiredAttributes)
           if (!(attr in column)) {
-            script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format(
-              "ERROR: FileDialog column " +
-              getTblValue("name", column, "[UNDEFINED name]") +
-              $" has not attribute {attr} but it is required!"))
+            script_net_assert_once("ERROR: FileDialog ColumnNoAttr", format("".concat(
+              "ERROR: FileDialog column ",
+              column?.name ?? "[UNDEFINED name]",
+              $" has not attribute {attr} but it is required!"
+            )))
             return false
           }
       }
@@ -854,7 +854,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         else {
           if (!this.isExists(file) && this.extension
             && !endsWith(this.finallySelectedPath,$".{this.extension}"))
-            this.finallySelectedPath +=$".{this.extension}"
+            this.finallySelectedPath = $"{this.finallySelectedPath}.{this.extension}"
           this.executeSelectCallback()
         }
       }

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
@@ -78,13 +77,13 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     let itemId = this.getTrophyIdName(this.getAwardName())
     let item = ::ItemsManager.findItemById(itemId)
     if (item)
-      text += loc("ui/colon") + item.getName(false)
+      text = loc("ui/colon").concat(text, item.getName(false))
 
     let periodAward = this.getPeriodAwardConfig()
     if (periodAward) {
       let period = getTblValue("periodicDays", periodAward)
       if (periodAward)
-        text += " " + loc("keysPlus") + " " + loc("EveryDayLoginAward/periodAward", { period = period })
+        text = " ".concat(text, loc("keysPlus"), loc("EveryDayLoginAward/periodAward", { period = period }))
     }
 
     titleObj.setValue(text)
@@ -196,8 +195,10 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
     local layersData = this.getChestLayersData()
     if (this.isOpened) {
-      layersData += this.useSingleAnimation ? this.getRewardImage() : ""
-      layersData += ::trophyReward.getRestRewardsNumLayer(this.rewardsArray, ::trophyReward.maxRewardsShow)
+      layersData = "".concat(layersData,
+        this.useSingleAnimation ? this.getRewardImage() : "",
+        ::trophyReward.getRestRewardsNumLayer(this.rewardsArray, ::trophyReward.maxRewardsShow)
+      )
     }
 
     this.guiScene.replaceContentFromText(awObj, layersData, layersData.len(), this)
@@ -257,7 +258,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       if (!(i in this.rewardsArray))
         break
 
-      layersData += ::trophyReward.getImageByConfig(this.rewardsArray[i], false)
+      layersData = "".concat(layersData, ::trophyReward.getImageByConfig(this.rewardsArray[i], false))
     }
 
     if (layersData == "")
@@ -455,7 +456,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
     let gotTextObj = this.scene.findObject("got_text")
     if (checkObj(gotTextObj))
-      gotTextObj.setValue(loc("reward") + loc("ui/colon"))
+      gotTextObj.setValue("".concat(loc("reward"), loc("ui/colon")))
 
     let reward = this.unit ? this.getRentUnitText(this.unit) : ::trophyReward.getReward(this.rewardsArray)
     let rewardTextObj = placeObj.findObject("reward_text")

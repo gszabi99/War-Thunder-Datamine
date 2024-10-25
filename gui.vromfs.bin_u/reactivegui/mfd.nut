@@ -1,12 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { IndicatorsVisible, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("airState.nut")
-let { tws } = require("tws.nut")
 let mfdSightHud = require("planeMfdCamera.nut")
 let { MfdRadarColor, radarPosSize } = require("radarState.nut")
 let { radarMfd } = require("%rGui/radar.nut")
 let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
 let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize } = require("planeState/planeToolsState.nut")
+let planeRwr = require("planeRwr.nut")
 let digitalDevices = require("planeCockpit/digitalDevices.nut")
 
 
@@ -17,17 +17,7 @@ let twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSiz
 let mkTws = @() {
   watch = [MlwsLwsForMfd, RwrForMfd]
   children = (!MlwsLwsForMfd.value && !RwrForMfd.value) ? null
-    : tws({
-      colorWatched = MfdRwrColor
-      posWatched = twsPosComputed,
-      sizeWatched = twsSizeComputed,
-      relativCircleSize = 36,
-      needDrawCentralIcon = true,
-      needDrawBackground = true,
-      fontSizeMult = 2.0,
-      needAdditionalLights = false,
-      forMfd = true
-    })
+    : planeRwr(twsPosComputed, twsSizeComputed, MfdRwrColor, 1.0, false, 70.0, 2.0)
 }
 
 let digitalDev = @(){

@@ -8,9 +8,10 @@
     "typeTransport"
   ],
   "paratrooper": "german",
-  "standardExhaustFxType": "jet_exhaust",
-  "afterburnerExhaustFxType": "jet_afterburner_exhaust",
-  "startExhaustFxType": "jet_start_exhaust",
+  "engineFxMap0": 0,
+  "engineFxMap1": 0,
+  "engineFxMap2": 1,
+  "engineFxMap3": 1,
   "disableExhaustFxIfContrailIsActive": true,
   "arcadeHP": 100.0,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -85,14 +86,6 @@
       }
     },
     "c_dural3": {
-      "aileron_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 29.5
-      },
-      "aileron_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 29.5
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 29.5
@@ -115,6 +108,14 @@
       },
       "flap_r_dm": {
         "hp": 29.5
+      },
+      "flaperon_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 14.5
+      },
+      "flaperon_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 14.5
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
@@ -197,54 +198,6 @@
   },
   "DamageEffects": {
     "part": [
-      {
-        "name": "aileron_l_dm",
-        "onHit": [
-          {
-            "damage": 50.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 70.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "aileron_r_dm",
-        "onHit": [
-          {
-            "damage": 50.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 70.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
       {
         "name": "armor1_dm"
       },
@@ -545,6 +498,88 @@
           {
             "cut": 1.0,
             "nothing": 14.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
           },
           {
             "damage": 20.0,
@@ -2078,10 +2113,7 @@
         "WeaponPreset": [
           {
             "iconType": "bombs_middle",
-            "name": "sc250",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
+            "name": "sc250_int",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/de_sc250.blk",
@@ -2094,11 +2126,8 @@
           },
           {
             "iconType": "bombs_large",
-            "name": "sc500",
+            "name": "sc500_int",
             "reqModification": "ju-88_2xSC500",
-            "ShowNodes": {
-              "node": "pylon_bomb2"
-            },
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/de_sc500.blk",
@@ -2196,6 +2225,22 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
+  "engineFx": [
+    {
+      "exhaust": {
+        "standard": "jet_exhaust",
+        "afterburner": "jet_afterburner_exhaust",
+        "start": "jet_start_exhaust"
+      }
+    },
+    {
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "booster_fire"
+      }
+    }
+  ],
   "fireParams": {
     "engineExtinguishFireSpeed": [
       166.0,

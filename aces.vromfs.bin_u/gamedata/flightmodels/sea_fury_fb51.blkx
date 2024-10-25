@@ -2200,12 +2200,20 @@
         "blk": "gameData/FlightModels/weaponPresets/sea_fury_triplex_rockets.blk"
       },
       {
+        "name": "sea_fury_250lbs_mc_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/sea_fury_250lbs_mc_bombs.blk"
+      },
+      {
         "name": "sea_fury_250lbs_bombs",
         "blk": "gameData/FlightModels/weaponPresets/sea_fury_250lbs_bombs.blk"
       },
       {
         "name": "sea_fury_500lbs_bombs",
         "blk": "gameData/FlightModels/weaponPresets/sea_fury_500lbs_bombs.blk"
+      },
+      {
+        "name": "sea_fury_500lbs_mc_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/sea_fury_500lbs_mc_bombs.blk"
       },
       {
         "name": "sea_fury_1000lbs_bombs",
@@ -2437,6 +2445,22 @@
             }
           },
           {
+            "iconType": "bombs_small",
+            "name": "250lb_mc",
+            "reqModification": "halker_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+              "emitter": "bomb1",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "500lb",
             "reqModification": "halker_mbc",
@@ -2448,6 +2472,40 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb1",
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "rp3_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "rp3_x2_slot1"
+              },
+              {
+                "slot": 3,
+                "preset": "rp3_slot3"
+              },
+              {
+                "slot": 3,
+                "preset": "rp3_x2_slot3"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_mc",
+            "reqModification": "halker_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
               "emitter": "bomb1",
               "bullets": 1
             },
@@ -2730,6 +2788,22 @@
             }
           },
           {
+            "iconType": "bombs_small",
+            "name": "250lb_mc",
+            "reqModification": "halker_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs_mc_mk1_mk2_bomb.blk",
+              "emitter": "bomb2",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "500lb",
             "reqModification": "halker_mbc",
@@ -2741,6 +2815,40 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/BombGuns/uk_500lbs.blk",
+              "emitter": "bomb2",
+              "bullets": 1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 6,
+                "preset": "rp3_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "rp3_x2_slot6"
+              },
+              {
+                "slot": 4,
+                "preset": "rp3_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "rp3_x2_slot4"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_mc",
+            "reqModification": "halker_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_mc_mk1_mk4_long_tail_bomb.blk",
               "emitter": "bomb2",
               "bullets": 1
             },

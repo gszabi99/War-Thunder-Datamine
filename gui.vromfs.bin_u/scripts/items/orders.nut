@@ -1,5 +1,5 @@
 //-file:plus-string
-from "%scripts/dagui_natives.nut" import get_objectives_list, set_order_accepted_cb, use_order_request, is_cursor_visible_in_gui
+from "%scripts/dagui_natives.nut" import set_order_accepted_cb, use_order_request, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/items/itemsConsts.nut" import itemType, itemsTab
@@ -20,7 +20,7 @@ let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { get_time_msec } = require("dagor.time")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_mp_tbl_teams } = require("guiMission")
+let { get_mp_tbl_teams, get_objectives_list, OBJECTIVE_TYPE_ORDER } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -148,7 +148,7 @@ let getAutoActivateHint = @() loc("guiHints/order_auto_activate",
   { time = $"{AUTO_ACTIVATE_TIME} {loc("mainmenu/seconds")}" })
 
 // This takes in account fact that item was used during current battle.
-// @see items_classes.Order::getAmount()
+// @see items_classes.Order.getAmount()
 let collectOrdersToActivate = @() ordersToActivate = ::ItemsManager.getInventoryList(
   itemType.ORDER, @(item) item.getAmount() > 0).sort(@(a, b) a.expiredTimeSec <=> b.expiredTimeSec)
 
@@ -667,7 +667,7 @@ function getScoreTableTexts() {
     let playerData = getPlayerDataByScoreData(item)
     return {
       score = orderObject.orderType.formatScore(item.score)
-      player = (getTblValue("playerIndex", item, 0) + 1).tostring() + ". " + ::build_mplayer_name(playerData)
+      player =  ". ".concat((getTblValue("playerIndex", item, 0) + 1), ::build_mplayer_name(playerData))
     }
   })
 }

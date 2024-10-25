@@ -945,13 +945,13 @@
   "Engine0": {
     "Type": 0,
     "Position": [
-      -0.6,
-      0.6,
-      0.8
+      0.3,
+      0.8,
+      0.6
     ],
     "Direction": [
-      0.0,
-      0.0
+      80.0,
+      -5.0
     ],
     "Main": {
       "FuelSystemNum": 0
@@ -960,13 +960,13 @@
   "Engine1": {
     "Type": 0,
     "Position": [
-      -0.6,
-      0.6,
-      -0.8
+      0.3,
+      0.8,
+      -0.6
     ],
     "Direction": [
-      0.0,
-      0.0
+      -80.0,
+      -5.0
     ],
     "Main": {
       "FuelSystemNum": 0
@@ -1447,6 +1447,106 @@
     "FlapsDestructionIndSpeedP4": [
       1.0,
       315.0
+    ],
+    "Part": [
+      {
+        "mass": 1300.0,
+        "center": [
+          -5.0,
+          0.0,
+          0.0
+        ],
+        "inertiaMoment": [
+          1000.0,
+          -21000.0,
+          -21000.0
+        ],
+        "fm": "tail"
+      },
+      {
+        "mass": 60.0,
+        "center": [
+          -5.0,
+          0.0,
+          -1.0
+        ],
+        "inertiaMoment": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fm": "hor_stab_l"
+      },
+      {
+        "mass": 120.0,
+        "center": [
+          -5.0,
+          0.0,
+          -1.0
+        ],
+        "inertiaMoment": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fm": "elevator_l"
+      },
+      {
+        "mass": 120.0,
+        "center": [
+          -5.0,
+          0.0,
+          1.0
+        ],
+        "inertiaMoment": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fm": "hor_stab_r"
+      },
+      {
+        "mass": 120.0,
+        "center": [
+          -5.0,
+          0.0,
+          1.0
+        ],
+        "inertiaMoment": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fm": "elevator_r"
+      },
+      {
+        "mass": 180.0,
+        "center": [
+          -5.0,
+          0.0,
+          0.0
+        ],
+        "inertiaMoment": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fm": "ver_stab"
+      },
+      {
+        "mass": 120.0,
+        "center": [
+          -5.0,
+          0.0,
+          0.0
+        ],
+        "inertiaMoment": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "fm": "rudder"
+      }
     ],
     "Parts": {
       "tank1_capacity": 320.0,

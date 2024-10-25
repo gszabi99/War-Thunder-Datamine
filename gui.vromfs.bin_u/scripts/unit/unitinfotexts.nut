@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
@@ -217,13 +216,13 @@ function getShipMaterialTexts(unitId) {
     let thickness = blk?[$"{part}Thickness"] ?? 0.0
     if (thickness && material) {
       res[$"{part}Label"] <- loc($"info/ship/part/{part}")
-      res[$"{part}Value"] <- loc($"armor_class/{material}/short", loc($"armor_class/{material}")) +
-        loc("ui/comma") + round(thickness) + " " + loc("measureUnits/mm")
+      res[$"{part}Value"] <- "".concat(loc($"armor_class/{material}/short", loc($"armor_class/{material}")),
+        loc("ui/comma"), round(thickness), " ", loc("measureUnits/mm"))
     }
   }
   if (res?.superstructureValue && res?.superstructureValue == res?.hullValue) {
-    res.hullLabel += " " + loc("clan/rankReqInfoCondType_and") + " " +
-      utf8ToLower(res.superstructureLabel)
+    res.hullLabel = " ".concat(res.hullLabel, loc("clan/rankReqInfoCondType_and"),
+      utf8ToLower(res.superstructureLabel))
     res.$rawdelete("superstructureLabel")
     res.$rawdelete("superstructureValue")
   }

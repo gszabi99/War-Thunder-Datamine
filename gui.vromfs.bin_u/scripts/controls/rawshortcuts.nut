@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import ps4_is_circle_selected_as_enter_button
 from "%scripts/dagui_library.nut" import *
 
-::SHORTCUT <- {
+let SHORTCUT = freeze({
   MOUSE_LEFT_BUTTON   = { dev = [STD_MOUSE_DEVICE_ID], btn = [0] }
   MOUSE_RIGHT_BUTTON  = { dev = [STD_MOUSE_DEVICE_ID], btn = [1] }
   MOUSE_MIDDLE_BUTTON = { dev = [STD_MOUSE_DEVICE_ID], btn = [2] }
@@ -78,17 +78,21 @@ from "%scripts/dagui_library.nut" import *
   GAMEPAD_RSTICK_DOWN    = { dev = [JOYSTICK_DEVICE_0_ID], btn = [25], accessKey = "J:R.Thumb.Down" }
   GAMEPAD_LSTICK_PRESS_2 = { dev = [JOYSTICK_DEVICE_0_ID], btn = [26], accessKey = "J:L.Thumb" }
   GAMEPAD_RSTICK_PRESS_2 = { dev = [JOYSTICK_DEVICE_0_ID], btn = [27], accessKey = "J:R.Thumb" }
-}
+})
 
-::AXIS <- {
+let AXIS = freeze({
   LEFTSTICK_X   = 0
   LEFTSTICK_Y   = 1
   RIGHTSTICK_X  = 2
   RIGHTSTICK_Y  = 3
   LTRIGGER      = 4
   RTRIGGER      = 5
-}
+})
 
-::GAMEPAD_ENTER_SHORTCUT <- ps4_is_circle_selected_as_enter_button() ?
-                             ::SHORTCUT.GAMEPAD_B :
-                             ::SHORTCUT.GAMEPAD_A
+let GAMEPAD_ENTER_SHORTCUT = ps4_is_circle_selected_as_enter_button() ? SHORTCUT.GAMEPAD_B : SHORTCUT.GAMEPAD_A
+
+return {
+  SHORTCUT
+  AXIS
+  GAMEPAD_ENTER_SHORTCUT
+}

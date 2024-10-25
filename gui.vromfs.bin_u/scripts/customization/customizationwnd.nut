@@ -33,8 +33,8 @@ let { showResource, canStartPreviewScene,
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
-let { canBuyNotResearched,
-        isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let decorMenuHandler = require("%scripts/customization/decorMenuHandler.nut")
 let { getDecorLockStatusText, getDecorButtonView } = require("%scripts/customization/decorView.nut")
@@ -60,7 +60,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName, isUnitGift, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, isUnitGift, canBuyUnit, isUnitDescriptionValid, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
@@ -243,6 +243,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.updateBanButton(this.initialAppliedSkinId)
+
+    this.guiScene.setCursor("normal", true)
   }
 
   function canRestartSceneNow() {
@@ -307,7 +309,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateTitle() {
-    local title = loc(this.isUnitOwn && !this.previewMode ? "mainmenu/showroom" : "mainmenu/btnPreview") + " " + loc("ui/mdash") + " "
+    local title = "".concat(
+      loc(this.isUnitOwn && !this.previewMode ? "mainmenu/showroom" : "mainmenu/btnPreview"),
+      " ", loc("ui/mdash"), " ")
     if (!this.previewMode || (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)))
       title += getUnitName(this.unit.name)
 
@@ -315,12 +319,13 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let skinId = getSkinId(this.unit.name, this.previewSkinId)
       let skin = getDecorator(skinId, decoratorTypes.SKINS)
       if (skin)
-        title += loc("ui/comma") + loc("options/skin") + " " + colorize(skin.getRarityColor(), skin.getName())
+        title = "".concat(title, loc("ui/comma"), loc("options/skin"), " ",
+          colorize(skin.getRarityColor(), skin.getName()))
     }
     else if (this.previewMode & PREVIEW_MODE.DECORATOR) {
       let typeText = loc($"trophy/unlockables_names/{this.decoratorPreview.decoratorType.resourceType}")
       let nameText = colorize(this.decoratorPreview.getRarityColor(), this.decoratorPreview.getName())
-      title += typeText + " " + nameText
+      title = "".concat(title, typeText, " ", nameText)
     }
 
     this.setSceneTitle(title)
@@ -331,7 +336,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let hasKeyboard = isPlatformPC
 
     //Flip
-    let btn_toggle_mirror_text = loc("decals/flip") + (hasKeyboard ? " (F)" : "")
+    let btn_toggle_mirror_text = "".concat(loc("decals/flip"), (hasKeyboard ? " (F)" : ""))
     bObj = this.scene.findObject("btn_toggle_mirror")
     if (checkObj(bObj))
       bObj.setValue(btn_toggle_mirror_text)
@@ -479,7 +484,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = "".concat(loc("currency/gc/sign"), " ", text)
 
       if (!access.isVisible)
-        text = colorize("comboExpandedLockedTextColor", "(" + loc("worldWar/hided_logs") + ") ") + text
+        text = "".concat(colorize("comboExpandedLockedTextColor",
+          "(" + loc("worldWar/hided_logs") + ") "), text)
 
       let isBanned = isSkinBanned(getSkinId(this.unit.name, this.skinList.values[i]))
       if(isBanned)
@@ -825,7 +831,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local bObj = showObjById("btn_buy", canBuyIngame, this.scene)
     if (canBuyIngame && checkObj(bObj)) {
-      let price = canBuyNotResearchedUnit ? this.unit.getOpenCost() : ::getUnitCost(this.unit)
+      let price = canBuyNotResearchedUnit ? this.unit.getOpenCost() : getUnitCost(this.unit)
       placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnOrder"), price)
 
       showUnitDiscount(bObj.findObject("buy_discount"), this.unit)
@@ -898,8 +904,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           btn_apply = this.currentState & decoratorEditState.EDITING
 
           btn_testflight = !isInEditMode && !this.decorMenu?.isOpened && can_testflight
-          btn_info       = !isInEditMode && !this.decorMenu?.isOpened && ::isUnitDescriptionValid(this.unit) && !this.access_WikiOnline
-          btn_info_online = !isInEditMode && !this.decorMenu?.isOpened && ::isUnitDescriptionValid(this.unit) && this.access_WikiOnline
+          btn_info       = !isInEditMode && !this.decorMenu?.isOpened && isUnitDescriptionValid(this.unit) && !this.access_WikiOnline
+          btn_info_online = !isInEditMode && !this.decorMenu?.isOpened && isUnitDescriptionValid(this.unit) && this.access_WikiOnline
           btn_sec_weapons    = !isInEditMode && !this.decorMenu?.isOpened &&
             needSecondaryWeaponsWnd(this.unit) && isUnitHaveSecondaryWeapons(this.unit)
 
@@ -1020,7 +1026,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     obj = this.scene.findObject("btn_toggle_mirror")
     if (checkObj(obj)) {
       let enabled = get_mirror_current_decal()
-      let icon = "#ui/gameuiskin#btn_flip_decal" + (enabled ? "_active" : "") + ".svg"
+      let icon = "".concat("#ui/gameuiskin#btn_flip_decal", (enabled ? "_active" : ""), ".svg")
       let iconObj = obj.findObject("btn_toggle_mirror_img")
       iconObj["background-image"] = icon
       iconObj.getParent().active = enabled ? "yes" : "no"
@@ -2220,7 +2226,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (hangar_get_loaded_unit_name() == this.previewParams.unitName)
       this.removeAllDecorators(false)
     if (this.previewMode == PREVIEW_MODE.UNIT || this.previewMode == PREVIEW_MODE.SKIN) {
-      let skinBlockName = this.previewParams.unitName + "/" + this.previewParams.skinName
+      let skinBlockName =  "/".concat(this.previewParams.unitName, this.previewParams.skinName)
       previewedLiveSkinIds.append(skinBlockName)
       if (this.initialUserSkinId != "")
         get_user_skins_profile_blk()[this.unit.name] = ""

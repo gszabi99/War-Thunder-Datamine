@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -203,7 +204,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let needAccessKey = (actionType == tutorAction.OBJ_CLICK ||
                            actionType == tutorAction.FIRST_OBJ_CLICK)
-    let shortcut = getTblValue("shortcut", stepData, needAccessKey ? ::GAMEPAD_ENTER_SHORTCUT : null)
+    let shortcut = getTblValue("shortcut", stepData, needAccessKey ? GAMEPAD_ENTER_SHORTCUT : null)
     let blocksList = []
     local objList = stepData?.obj ?? []
     if (!u.isArray(objList))

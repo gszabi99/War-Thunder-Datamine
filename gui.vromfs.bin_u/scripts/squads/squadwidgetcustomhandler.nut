@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
@@ -106,7 +105,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (member.isActualData()) {
       let contact = ::getContact(member.uid)
       local countryIcon = ""
-      if (::checkCountry(member.country, "squad member data ( uid = " + member.uid + ")", true))
+      if (::checkCountry(member.country, $"squad member data ( uid = {member.uid})", true))
         countryIcon = getCountryIcon(member.country)
 
       let status = g_squad_manager.getPlayerStatusInMySquad(member.uid)

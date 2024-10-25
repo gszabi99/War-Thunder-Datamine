@@ -1,5 +1,3 @@
-//-file:plus-string
-
 from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_is_connected, gchat_raw_command, gchat_escape_target, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
@@ -139,7 +137,7 @@ g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link) {
   end += "</Link>".len()
 
   let msg = this.convertLinkToBlockedMsg(link)
-  text = text.slice(0, start) + msg + text.slice(end)
+  text = "".concat(text.slice(0, start), msg, text.slice(end))
   return text
 }
 
@@ -345,10 +343,10 @@ g_chat.createThread <- function createThread(title, categoryName, langTags = nul
     return
 
   if (!langTags)
-    langTags = ::g_chat_thread_tag.LANG.prefix + getCurLangInfo().chatId
-  let categoryTag = ::g_chat_thread_tag.CATEGORY.prefix + categoryName
+    langTags = "".concat(::g_chat_thread_tag.LANG.prefix, getCurLangInfo().chatId)
+  let categoryTag = "".concat(::g_chat_thread_tag.CATEGORY.prefix, categoryName)
   let tagsList = ",".join([langTags, categoryTag], true)
-  gchat_raw_command($"xtjoin {tagsList} :" + this.prepareThreadTitleToSend(title))
+  gchat_raw_command($"xtjoin {tagsList} :{this.prepareThreadTitleToSend(title)}")
   broadcastEvent("ChatThreadCreateRequested")
 }
 
@@ -589,7 +587,7 @@ g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig,
     return res
   }
 
-  ::gchat_chat_message(gchat_escape_target(roomId), this.LOCALIZED_MESSAGE_PREFIX + message)
+  ::gchat_chat_message(gchat_escape_target(roomId), "".concat(this.LOCALIZED_MESSAGE_PREFIX, message))
   return true
 }
 

@@ -1,4 +1,6 @@
 {
+  "hudBlk": "config/hud.blk",
+  "rumbleDir": "config/rumble",
   "version": "",
   "version-specific": "",
   "compatibilityHangarBlk": "config/hangar_airfield.blk",
@@ -94,6 +96,7 @@
       "waterRefractionEnabledFor": 0,
       "contactShadowsQuality": 0,
       "displacementQuality": 0,
+      "heightmapTexSizeScale": 0,
       "foliageReprojection": false,
       "waterQuality": "low",
       "giQuality": "low",
@@ -102,7 +105,16 @@
       "fxTarget": "auto",
       "enableBlastEffect": true,
       "shatterFxQuality": 0,
-      "proximityDamage": true
+      "proximityDamage": true,
+      "bvhMode": "",
+      "enableBVH": false,
+      "RTAOQuality": "",
+      "enableRTSM": "",
+      "RTRQuality": "",
+      "RTRRes": "",
+      "RTRWater": false,
+      "RTRWaterRes": "",
+      "RTRTranslucent": ""
     },
     "sound": {
       "speakerMode": "",
@@ -142,7 +154,10 @@
       "latency": 0,
       "vreye": "left",
       "vrStreamerMode": false,
-      "temporalResolutionScale": 1.0
+      "temporalResolutionScale": 1.0,
+      "antialiasing_mode": "",
+      "antialiasing_upscaling": "",
+      "antialiasing_sharpening": 0
     },
     "texStreaming": {
       "enableStreaming": false,
@@ -183,6 +198,7 @@
     },
     "debug": {
       "screenshotAsJpeg": false,
+      "screenshotHiRes": false,
       "depthScreenshot": false,
       "screenshotsDir": "",
       "512mboughttobeenoughforanybody": false,
@@ -550,16 +566,20 @@
       "forVromfs": "game_pkg_dev"
     },
     "%dasImgui": {
-      "forSource": "../../prog/1stPartyLibs/daScript/modules/dasImgui",
-      "forVromfs": ""
+      "forSource": "../../prog/1stPartyLibs/daScript/modules/dasImgui/daslib",
+      "forVromfs": "daslib"
     },
     "%imgui": {
       "forSource": "../prog/scripts/das/imgui",
       "forVromfs": "das/imgui"
     },
     "%gameBase": {
-      "forSource": "../prog/gameBase/content",
+      "forSource": "../prog/gameBase/gamebase",
       "forVromfs": ""
+    },
+    "%wtlibs": {
+      "forSource": "../prog/wtlibs",
+      "forVromfs": "wtlibs"
     }
   },
   "addonBasePath": {
@@ -1204,10 +1224,53 @@
     }
   },
   "vulkan": {
+    "enableBindless": true,
     "allocators": {
       "freelist": {
         "pageSizeMb": 64,
         "maxElementSizeMb": 8
+      }
+    }
+  },
+  "console_presets": {
+    "ps5_pro": {
+      "performance": {
+        "video": {
+          "antialiasing_mode": "fsr",
+          "antialiasing_upscaling": "balanced"
+        }
+      },
+      "balanced": {
+        "video": {
+          "antialiasing_mode": "fsr",
+          "antialiasing_upscaling": "quality"
+        }
+      },
+      "quality": {
+        "video": {
+          "antialiasing_mode": "taa",
+          "antialiasing_upscaling": "native"
+        }
+      }
+    },
+    "ps5": {
+      "performance": {
+        "video": {
+          "antialiasing_mode": "fsr",
+          "antialiasing_upscaling": "performance"
+        }
+      },
+      "balanced": {
+        "video": {
+          "antialiasing_mode": "fsr",
+          "antialiasing_upscaling": "balanced"
+        }
+      },
+      "quality": {
+        "video": {
+          "antialiasing_mode": "taa",
+          "antialiasing_upscaling": "native"
+        }
       }
     }
   }

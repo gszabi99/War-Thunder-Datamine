@@ -51,6 +51,10 @@ let visibleRewards = [
     locId = "debriefing/Landings"
   }
   {
+    id = "eventMissileEvade"
+    locId = "expEventScore/missileEvade"
+  }
+  {
     id = "eventCaptureZone"
     locId = "expEventScore/captureZone"
   }

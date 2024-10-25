@@ -17,6 +17,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { can_we_text_user, CommunicationState } = require("%scripts/xbox/permissions.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 class Contact {
   name = ""
@@ -114,9 +116,9 @@ class Contact {
     local locParams = {}
     if (this.presence == contactPresence.IN_QUEUE
         || this.presence == contactPresence.IN_GAME) {
-      let event = ::events.getEvent(getTblValue("eventId", this.gameConfig))
+      let event = events.getEvent(getTblValue("eventId", this.gameConfig))
       locParams = {
-        gameMode = event ? ::events.getEventNameText(event) : ""
+        gameMode = event ? events.getEventNameText(event) : ""
         country = loc(getTblValue("country", this.gameConfig, ""))
       }
     }

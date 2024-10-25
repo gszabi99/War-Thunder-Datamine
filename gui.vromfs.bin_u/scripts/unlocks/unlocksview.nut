@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -99,12 +98,11 @@ function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
           continue
 
         let isUnlocked = isBitMode ? is_bit_set(unlockConfig.curVal, i) : isUnlockOpened(unlockId)
-        hiddenContent += "unlockCondition {"
-        hiddenContent += format("textarea {text:t='%s' } \n %s \n", stripTags(names[i]),
-          ("image" in unlockConfig && unlockConfig.image != "" ? "" : "unlockImg{}"))
-        hiddenContent += format("unlocked:t='%s'; ", (isUnlocked ? "yes" : "no"))
-        hiddenContent += getSubunlockTooltipMarkup(unlockConfig, unlockId)
-        hiddenContent += "}"
+        hiddenContent = "".concat(hiddenContent, "unlockCondition {",
+          format("textarea {text:t='%s' } \n %s \n", stripTags(names[i]),
+            ("image" in unlockConfig && unlockConfig.image != "" ? "" : "unlockImg{}")),
+          format("unlocked:t='%s'; ", (isUnlocked ? "yes" : "no")),
+          getSubunlockTooltipMarkup(unlockConfig, unlockId), "}")
       }
     }
 
@@ -154,12 +152,12 @@ function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
         let stage = unlockConfig.stages[i]
         let curValStage = (unlockConfig.curVal > stage.val) ? stage.val : unlockConfig.curVal
         let isUnlockedStage = curValStage >= stage.val
-        textStages += "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
+        textStages = "".concat(textStages, "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
           .subst({
             image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}" : $"#ui/gameuiskin#stage_locked_{i+1}"
             parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
             tooltip = getTooltipType("UNLOCK_SHORT").getMarkup(unlockConfig.id, { stage = i })
-          })
+          }))
       }
 
     unlockObj.getScene().replaceContentFromText(stagesObj, textStages, textStages.len(), context)

@@ -8,6 +8,7 @@ let { Cost } = require("%scripts/money.nut")
 let { getTiersOpenedAndAwarded } = require("chardResearch")
 let { get_ranks_blk } = require("blkGetters")
 let { roundToDigits } = require("%sqstd/math.nut")
+let { dynamic_content } = require("%sqstd/analyzer.nut")
 
 const PROGRESS_ROUND_DIGITS = 3
 const PROGRESS_MIN_VALUE = 0.001
@@ -16,7 +17,7 @@ let isModificationInTree = @(unit, mod) !mod.isHidden
   && !wp_get_modification_cost_gold(unit.name, mod.name)
   && getModificationBulletsGroup(mod.name) == ""
 
-let commonProgressMods = { }
+let commonProgressMods = dynamic_content({ })
 let modsWndWidthRestrictions = { min = 6, max = 8 }
 
 let categoryTooltips = {

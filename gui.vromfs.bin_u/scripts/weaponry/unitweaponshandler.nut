@@ -10,7 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil } = require("math")
 let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible,
   isDefaultTorpedoes } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")

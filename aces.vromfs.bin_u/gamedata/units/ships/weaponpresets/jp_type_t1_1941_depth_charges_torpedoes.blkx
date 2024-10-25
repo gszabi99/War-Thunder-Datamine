@@ -1,4 +1,10 @@
 {
+  "hideNodes": {
+    "node": [
+      "ex_decor_r_07",
+      "ex_decor_l_07"
+    ]
+  },
   "Weapon": [
     {
       "trigger": "gunner2",
@@ -7,6 +13,9 @@
       "blk": "gameData/Weapons/torpedoes/jp_450mm_type44_torpedo.blk",
       "emitter": "bone_torpedo_01",
       "bullets": 1,
+      "launchAnimVar": "anim_launch_torpedo_01",
+      "animLaunchTime": 1.3,
+      "launchTime": 0.16,
       "barrelDP": "tt_01_dm",
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_01_dm",
@@ -17,9 +26,15 @@
         0.0,
         0.0
       ],
-      "startSpeed": 18.0,
+      "startSpeed": 3.5,
+      "startDir": [
+        0.0,
+        -1.0,
+        15.0
+      ],
       "useStartSpeed": true,
       "allowableDelta": 180.0,
+      "hideIfBroken": false,
       "turret": {
         "head": "bone_torpedo_01",
         "gun": "bone_torpedo_01"
@@ -42,6 +57,9 @@
       "blk": "gameData/Weapons/torpedoes/jp_450mm_type44_torpedo.blk",
       "emitter": "bone_torpedo_02",
       "bullets": 1,
+      "launchAnimVar": "anim_launch_torpedo_02",
+      "animLaunchTime": 1.3,
+      "launchTime": 0.16,
       "barrelDP": "tt_02_dm",
       "brokenBarrelAllowShoot": false,
       "ammoDP": "torpedo_02_dm",
@@ -52,9 +70,15 @@
         0.0,
         0.0
       ],
-      "startSpeed": 18.0,
+      "startSpeed": 3.5,
+      "startDir": [
+        0.0,
+        -1.0,
+        -15.0
+      ],
       "useStartSpeed": true,
       "allowableDelta": 180.0,
+      "hideIfBroken": false,
       "turret": {
         "head": "bone_torpedo_02",
         "gun": "bone_torpedo_02"

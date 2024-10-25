@@ -20,13 +20,12 @@ def sound_point_update_client_es(act : UpdateStageInfoAct;
 
 [es(on_appear, tag=gameClient, tag=sound)]
 def sound_point_constant_init(evt : Event;
-                              eid : EntityId;
                               var sound_point__length : float&;
                               sound_point__event_name : string)
   sound_point__length = float(get_length(sound_point__event_name))
-  if (sound_point__length <= 0.f)
+  if (sound_point__event_name != "" && sound_point__length <= 0.f)
     logerr("sound point {sound_point__event_name} has zero length")
-    destroyEntity(eid)
+
 
 [es(tag=gameClient, tag=sound)]
 def sound_point_constant_update_client_es(act : UpdateStageInfoAct;

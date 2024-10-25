@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -63,7 +62,7 @@ let getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(function(
   local nameText = getUnlockNameText(unlockType, unlockId)
   nameText = colorize(typeValid ? "userlogColoredText" : "red", nameText)
   if (unlockType != UNLOCKABLE_SLOT && nameText != "")
-    name += loc("ui/colon") + nameText
+    name = loc("ui/colon").concat(name, nameText)
 
   return {
     title = name
@@ -147,7 +146,7 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
   }
 })
 
-local function getEntitlementView(entitlement, params = {}) {
+function getEntitlementView(entitlement, params = {}) {
   if (type(entitlement) == "string")
     entitlement = getEntitlementConfig(entitlement)
 
@@ -201,7 +200,7 @@ let getUnitLayeredIcon = @(unitArray) (unitArray ?? []).map(function(unitId) {
   return LayersIcon.getIconData($"reward_unit_{unitType}")
 })
 
-local function getEntitlementLayerIcons(entitlement) {
+function getEntitlementLayerIcons(entitlement) {
   if (type(entitlement) == "string")
     entitlement = getEntitlementConfig(entitlement)
 

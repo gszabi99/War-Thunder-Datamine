@@ -82,6 +82,9 @@ function pitch(width, height, generateFunc) {
     flow = FLOW_VERTICAL
     children = children
     behavior = Behaviors.RtPropUpdate
+    transform = { // fixes blinking when switch sight mode
+      rotate = -Roll.value
+    }
     update = @() {
       transform = {
         translate = [0, -height * (90.0 - Tangage.value) * 0.05]
@@ -190,13 +193,15 @@ let maverickAimMark = @() {
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let ccipDistF = Computed(@() BombingMode.get() ? cvt(TimeBeforeBombRelease.get(), 0, 15, -90, 270).tointeger() :
  cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
-let ccipDistM = Computed(@() (DistToTarget.value < 0 || DistToTarget.value >= 10000 ? -1 : DistToTarget.value * metrToMile * 10.0).tointeger())
+let ccipDistM = Computed(@() (DistToTarget.value * metrToMile * 10.0).tointeger())
+let isDistanceValid = Computed(@() BombingMode.get() || (DistToTarget.get() >= 0 && DistToTarget.get() < 10000))
 let gunAimMark = @() {
   watch = [TargetPosValid, CCIPMode, AirCannonMode]
   size = flex()
-  children = TargetPosValid.value && !AirCannonMode.get() ?
+  transform = {} // fixes blinking when switch sight mode
+  children = !TargetPosValid.value || AirCannonMode.get() ? null :
     @() {
-      watch = [IlsColor, ccipDistF]
+      watch = [IlsColor, isDistanceValid]
       size = [pw(8), ph(8)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -209,11 +214,8 @@ let gunAimMark = @() {
         [VECTOR_LINE, 120, 0, 100, 0],
         [VECTOR_LINE, 0, -120, 0, -100],
         [VECTOR_LINE, 0, 120, 0, 100],
-        (DistToTarget.value < 10000 ? [VECTOR_SECTOR, 0, 0, 90, 90, -90, ccipDistF.value] : []),
-        (DistToTarget.value < 10000 ?
-         [VECTOR_LINE, 90 * cos(PI * ccipDistF.value / 180), 90 * sin(PI * ccipDistF.value / 180), 75 * cos(PI * ccipDistF.value / 180), 75 * sin(PI * ccipDistF.value / 180)] : [])
       ]
-      children = [
+      children = !isDistanceValid.get() ? null :[
         @() {
           watch = ccipDistM
           rendObj = ROBJ_TEXT
@@ -222,17 +224,28 @@ let gunAimMark = @() {
           font = Fonts.hud
           fontSize = 30
           hplace = ALIGN_CENTER
-          text = ccipDistM.value < 0 ? "" : string.format("%.1f", ccipDistM.value * 0.1)
+          text = string.format("%.1f", ccipDistM.value * 0.1)
+        },
+        @() {
+          watch = ccipDistF
+          size = flex()
+          rendObj = ROBJ_VECTOR_CANVAS
+          color = IlsColor.value
+          fillColor = Color(0, 0, 0, 0)
+          lineWidth = baseLineWidth * IlsLineScale.value
+          commands = [
+            ([VECTOR_SECTOR, 0, 0, 90, 90, -90, ccipDistF.value]),
+            ([VECTOR_LINE, 90 * cos(PI * ccipDistF.value / 180), 90 * sin(PI * ccipDistF.value / 180), 75 * cos(PI * ccipDistF.value / 180), 75 * sin(PI * ccipDistF.value / 180)])
+          ]
         }
       ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = BombingMode.get() ? [IlsPosSize[2] * 0.5, IlsPosSize[3] * 0.5] : [TargetPos.value[0], TargetPos.value[1]]
-        }
-      }
     }
-  : null
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      translate = BombingMode.get() ? [IlsPosSize[2] * 0.5, IlsPosSize[3] * 0.5] : [TargetPos.value[0], TargetPos.value[1]]
+    }
+  }
 }
 
 let maverickAim = @() {
@@ -266,6 +279,7 @@ function impactLine(_width, height, c_version) {
 function KaiserTvvLinked(width, height) {
   return {
     size = flex()
+    transform = {} // fixes blinking when switch sight mode
     children = [
       @() {
         watch = IlsColor

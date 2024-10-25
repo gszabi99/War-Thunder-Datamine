@@ -18,7 +18,7 @@ let { fabs, floor } = require("math")
 
 let { TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS } = timeBase
 
-local function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = loc) {
+function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam = false, fullUnits = false, i18n = loc) {
   let res = []
   let sign = time >= 0 ? "" : i18n("ui/minus")
   time = fabs(time.tofloat())
@@ -66,7 +66,7 @@ local function hoursToString(time, full = true, useSeconds = false, dontShowZero
 }
 
 
-local function secondsToString(value, useAbbreviations = true, dontShowZeroParam = false, secondsFraction = 0, i18n = loc) {
+function secondsToString(value, useAbbreviations = true, dontShowZeroParam = false, secondsFraction = 0, i18n = loc) {
   value = value != null ? value.tofloat() : 0.0
   let s = (fabs(value) + 0.5).tointeger()
   let res = []

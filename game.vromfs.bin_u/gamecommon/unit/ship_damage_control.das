@@ -112,7 +112,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
     let unit = get_unit(uid)
     let ship = as_ship(unit)
     if (ship != null && !unit.isDelayed && repair_system_remaining_repair_time <= 0.0f &&
-        !ship.isVeryFewCrew && is_repair_needed(unit,
+        !ship.isVeryFewCrew && !ship.isCoverDestroyed && is_repair_needed(unit,
           repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
           repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp, true, true, false))
       sendEvent(eid, [[EventRepairSystemRequestRepair repair=true]])

@@ -403,7 +403,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let unmappedLocalized = unmapped.map(@(v) loc(v))
-    let text = loc("controls/warningUnmapped") + loc("ui/colon") + "\n" + loc("ui/comma").join(unmappedLocalized, true)
+    let text = "".concat(loc("controls/warningUnmapped"), loc("ui/colon"), "\n",
+      loc("ui/comma").join(unmappedLocalized, true))
     warningObj.setValue(text)
     warningObj.show(true)
     warningObj.wink = "yes"

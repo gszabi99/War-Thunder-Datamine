@@ -18,7 +18,9 @@ def load
   //   ok = load_optional_folder("%gameDev/debugger") && ok
 
   ok = load_wt_scripts("%game") && ok
+  ok = load_client("%game/client") && ok
   ok = load_optional_folder("%gameDev/game") && ok
+  ok = load_client("%gameDev/game/client") && ok
   ok = load_route_prober("%danetlibs/route_prober") && ok
   ok = load_assets_import("%danetlibs/assets_import") && ok
 

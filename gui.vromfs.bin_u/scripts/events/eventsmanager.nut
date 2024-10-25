@@ -6,18 +6,19 @@ from "%scripts/events/eventsConsts.nut" import EVENTS_SHORT_LB_VISIBLE_ROWS, Uni
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN
 
+let { getGlobalModule, lateBindGlobalModule } = require("%scripts/global_modules.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format, split_by_chars } = require("string")
-let { addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { add_event_listener, removeEventListenersByEnv, addListenersWithoutEnv, CONFIG_VALIDATION, subscribe_handler, broadcastEvent
+} = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
 let { getBlkValueByPath } = require("%sqstd/datablock.nut")
@@ -25,7 +26,7 @@ let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformPC
+let { isPlatformSony, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
@@ -51,14 +52,15 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getEsUnitType, getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName, canBuyUnit, isUnitBroken } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventForClan,
   getEventDisplayType, setEventDisplayType, eventIdsForMainGameModeList, isEventRandomBattles,
-  isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature
+  isEventWithLobby, getMaxLobbyDisbalance, getEventReqFeature, isEventVisibleByFeature,
+  isEventPlatformOnlyAllowed
 } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
@@ -110,6 +112,70 @@ local events
 let allUnitTypesMask = (ES_UNIT_TYPE_AIRCRAFT | ES_UNIT_TYPE_TANK | ES_UNIT_TYPE_SHIP | ES_UNIT_TYPE_BOAT)
 
 systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_for_event" })
+
+local g_event_ticket_buy_offer
+
+let EventTicketBuyOfferProcess = class {
+  _event = null
+  _tickets = null
+
+  constructor (event) {
+    this._event = event
+    this._tickets = events.getEventTickets(event, true)
+    foreach (ticket in this._tickets)
+      ::g_item_limits.enqueueItem(ticket.id)
+    if (::g_item_limits.requestLimits(true))
+      add_event_listener("ItemLimitsUpdated", this.onEventItemLimitsUpdated, this)
+    else
+      this.handleTickets()
+  }
+
+  function onEventItemLimitsUpdated(_params) {
+    removeEventListenersByEnv("ItemLimitsUpdated", this)
+    this.handleTickets()
+  }
+
+  function handleTickets() {
+    g_event_ticket_buy_offer.currentProcess = null
+
+    // Array of tickets with valid limit data.
+    let availableTickets = []
+    foreach (ticket in this._tickets)
+      if (ticket.getLimitsCheckData().result)
+        availableTickets.append(ticket)
+
+    let activeTicket = events.getEventActiveTicket(this._event)
+    if (availableTickets.len() == 0) {
+      let msgArr = [loc("events/wait_for_sessions_to_finish/main")]
+      if (activeTicket != null) {
+        let tournamentData = activeTicket.getTicketTournamentData(getEventEconomicName(this._event))
+        msgArr.append(loc("events/wait_for_sessions_to_finish/optional", {
+          timeleft = time.secondsToString(tournamentData.timeToWait)
+        }))
+      }
+      scene_msg_box("cant_join", null,  "\n".join(msgArr, true), [["ok"]], "ok")
+    }
+    else {
+      let windowParams = {
+        event = this._event
+        tickets = availableTickets
+        activeTicket = activeTicket
+      }
+      loadHandler(gui_handlers.TicketBuyWindow, windowParams)
+    }
+  }
+}
+
+g_event_ticket_buy_offer = {
+  // Holds process to prevent it
+  // from being garbage collected.
+  currentProcess = null
+
+  function offerTicket(event) {
+    assert(this.currentProcess == null, "Attempt to use multiple event ticket but offer processes.");
+    this.currentProcess = EventTicketBuyOfferProcess(event)
+  }
+}
 
 let _leaderboards = {
   cashLifetime = 60000
@@ -1021,18 +1087,6 @@ let Events = class {
     return g_team.getTeamByCode(teamCode).name
   }
 
-  function isEventXboxOnlyAllowed(event) {
-    return (event?.xboxOnlyAllowed ?? false) && isPlatformXboxOne
-  }
-
-  function isEventPS4OnlyAllowed(event) {
-    return (event?.ps4OnlyAllowed ?? false) && isPlatformSony
-  }
-
-  function isEventPlatformOnlyAllowed(event) {
-    return this.isEventXboxOnlyAllowed(event) || this.isEventPS4OnlyAllowed(event)
-  }
-
   /**
    * Returns name of suitable image for game mode selection menu.
    * Name could be got from events config or generated by difiiculty level and
@@ -1513,7 +1567,7 @@ let Events = class {
         continue
       if (!this.isUnitAllowedForEvent(event, unit))
         continue
-      if (::isUnitBroken(unit))
+      if (isUnitBroken(unit))
         continue
 
       res = max(res, unit.rank)
@@ -2045,7 +2099,7 @@ let Events = class {
     local allowId = "all_units_allowed"
     local allowText = ""
     if (stdMath.number_of_set_bits(allowedUnitTypes) == 1)
-      allowId = "allowed_only/" + ::getUnitTypeText(stdMath.number_of_set_bits(allowedUnitTypes - 1))
+      allowId = "".concat("allowed_only/", ::getUnitTypeText(stdMath.number_of_set_bits(allowedUnitTypes - 1)))
     if (stdMath.number_of_set_bits(allowedUnitTypes) == 2) {
       let masksArray = unitTypes.getArrayBybitMask(allowedUnitTypes)
       if (masksArray && masksArray.len() == 2) {
@@ -2142,7 +2196,7 @@ let Events = class {
       let mranks = rule.mranks
       let minBR = format("%.1f", calcBattleRatingFromRank(mranks?.min ?? 0))
       let maxBR = format("%.1f", calcBattleRatingFromRank(mranks?.max ?? getMaxEconomicRank()))
-      local brText = minBR + ((minBR != maxBR) ? " - " + maxBR : "")
+      local brText = "".concat(minBR, ((minBR != maxBR) ? " - " + maxBR : ""))
       brText = format(loc("events/br"), brText)
       if (ruleString.len())
         ruleString += loc("ui/parentheses/space", { text = brText })
@@ -2168,7 +2222,7 @@ let Events = class {
     let isEqual = minSize == maxSize
     let res = {
       label = isEqual ? loc("events/players_range_single") : loc("events/players_short")
-      value = minSize + (isEqual ? "" : " - " + maxSize)
+      value = "".concat(minSize, (isEqual ? "" : " - " + maxSize))
       isValid = minSize > 0 && maxSize > 0
     }
     return res
@@ -2271,15 +2325,15 @@ let Events = class {
       data.msgboxReasonText = loc("xbox/noMultiplayer")
       data.checkXboxOverlayMessage = true
     }
-    else if (!this.isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled()) {
+    else if (!isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled()) {
       data.reasonText = loc("xbox/crossPlayRequired")
       data.msgboxReasonText = loc("xbox/actionNotAvailableCrossNetworkPlay")
       data.checkXboxOverlayMessage = true
     }
     else if (!this.checkSpecialRequirements(event)) {
       if (isFullText)
-        data.reasonText = loc("events/specialRequirements") + loc("ui/colon") + "\n"
-                        + this.getSpecialRequirementsText(event)
+        data.reasonText = "".concat(loc("events/specialRequirements"), loc("ui/colon"), "\n",
+          this.getSpecialRequirementsText(event))
       else
         data.reasonText = loc("events/no_specialRequirements")
     }
@@ -2292,7 +2346,7 @@ let Events = class {
     else if (!isCreationCheck && this.isEventEnded(event))
       data.reasonText = loc("events/event_disabled")
     else if (!this.checkRequiredUnits(mGameMode, room))
-      data.reasonText = loc("events/no_required_crafts") + loc("ui/dot")
+      data.reasonText = $"{loc("events/no_required_crafts")}{loc("ui/dot")}"
     else if (!this.isEventMultiSlotEnabled(event) && !this.checkCurrentCraft(mGameMode, room))
       data.reasonText = loc("events/selected_craft_is_not_allowed")
     else if (!this.checkClan(event))
@@ -2305,7 +2359,7 @@ let Events = class {
     else if (this.getEventActiveTicket(event) != null && !this.getEventActiveTicket(event).getTicketTournamentData(getEventEconomicName(event)).canJoinTournament) {
       data.reasonText = loc("events/wait_for_sessions_to_finish/main")
       data.actionFunc = function (reasonData) {
-        ::g_event_ticket_buy_offer.offerTicket(reasonData.event)
+        g_event_ticket_buy_offer.offerTicket(reasonData.event)
       }
     }
     else if (g_squad_manager.getOnlineMembersCount() < this.getMinSquadSize(event))
@@ -2331,7 +2385,7 @@ let Events = class {
         otherTeamCount =  teamsCnt[otherTeam]
         reqOtherteamCount = teamsCnt[myTeam] - getMaxLobbyDisbalance(mGameMode) + membersCount
       }
-      let locKey = "multiplayer/enemyTeamTooLowMembers" + (isFullText ? "" : "/short")
+      let locKey = "".concat("multiplayer/enemyTeamTooLowMembers", (isFullText ? "" : "/short"))
       data.reasonText = loc(locKey, locParams)
     }
     else if (!this.haveEventAccessByCost(event)) {
@@ -2466,7 +2520,7 @@ let Events = class {
       return ""
 
     return "\n".join([
-        ticket.getCost() > ::zero_money
+        ticket.getCost() > zero_money
           ? loc("events/ticket_cost", {
             cost = colorize(valueColor, ticket.getCost(true).getTextAccordingToBalance()) })
           : "",
@@ -2480,7 +2534,7 @@ let Events = class {
    */
   function getEventBattleCostText(event, valueColor = "activeTextColor", useShortText = false, colored = true) {
     let cost = this.getEventBattleCost(event)
-    if (cost <= ::zero_money)
+    if (cost <= zero_money)
       return ""
     let shortText = colored
       ? cost.getTextAccordingToBalance()
@@ -2654,7 +2708,7 @@ let Events = class {
   function buildBonusText(value, endingText) {
     if (!value || value <= 0)
       return ""
-    return "+" + value + endingText
+    return "".concat("+", value, endingText)
   }
 
   function getEventDescriptionText(event, mroom = null, hasEventFeatureReasonText = false) {
@@ -2877,4 +2931,4 @@ addListenersWithoutEnv({
   GameLocalizationChanged = @(_) eventNameText.clear()
 }, CONFIG_VALIDATION)
 
-::events <- freeze(events)
+lateBindGlobalModule("events", events)

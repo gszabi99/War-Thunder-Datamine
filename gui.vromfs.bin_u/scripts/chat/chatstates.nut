@@ -29,7 +29,7 @@ function isChatEnabled(needOverlayMessage = false) {
 // Two funcitons below were made to workaround global variables usage check
 // These checks are introduced for good reasons, but this commit is not
 // intended to reduce global variables usage
-local function is_player_in_friends_group(uid, searchByUid, playerNick) {
+function is_player_in_friends_group(uid, searchByUid, playerNick) {
   return ::isPlayerInFriendsGroup(uid, searchByUid, playerNick)
 }
 

@@ -2606,8 +2606,8 @@
         "pylon_aero3b_1",
         "pylon_marta_magic_r",
         "pylon_aero3b_2",
-        "fr_phimat_container",
-        "fr_phimat_container_cap",
+        "phimat_container",
+        "phimat_container_cap",
         "alkan_ll_5020_l",
         "alkan_ll_5020_r"
       ]
@@ -3548,7 +3548,7 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
               "external": true,
-              "separate": false,
+              "separate": true,
               "emitter": "phimat_container",
               "bullets": 216,
               "bulletsCartridge": 1
@@ -3945,5 +3945,86 @@
       0.160974,
       -1.32634e-7
     ]
+  },
+  "AfterBurner0": {
+    "volumetricAfterBurner": {
+      "name": "jet_orange_flat_ww2",
+      "maxHeight": 7.0,
+      "minHeight": 5.0,
+      "heightNoiseStrength": 1.0,
+      "heightNoiseSpeed": 30.0,
+      "maxRadius": 0.16,
+      "minRadius": 0.11,
+      "maxBaseRadius": 0.21,
+      "minBaseRadius": 0.15,
+      "relativeCylinderHeightMax": 0.32,
+      "relativeCylinderHeightMin": 0.3,
+      "outerCylinderAbsorptionMax": 0.9,
+      "outerCylinderAbsorptionMin": 0.5,
+      "outerCylinderHeightFadeMax": 5.5,
+      "outerCylinderHeightFadeMin": 4.0,
+      "tailHeightFadeMax": 2.0,
+      "tailHeightFadeMin": 1.0,
+      "outerCylinderHeightFadeNoiseStrength": 3.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.24,
+      "maxOuterCylinderRadius": 0.27,
+      "absorption": 9.0,
+      "colorIntensityMax": 8.0,
+      "colorIntensityMin": 5.0,
+      "colorOverHeightMult": 4.0,
+      "colorOverDepthMult": 4.0,
+      "colorOverRadiusMult": 1.0,
+      "colorOverRadiusFadeOverHeight": 1.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 0.0,
+      "ringAbsorption": 0.0,
+      "maxRingCount": 0,
+      "minRingCount": 0,
+      "ringIntensityMin": 0.0,
+      "ringIntensityMax": 0.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 0.0,
+      "ringOffsetNoiseStrength": 0.0,
+      "ringOffsetNoiseSpeed": 0.0,
+      "rampTextureOffset": 2,
+      "radiusNoiseStrength": 0.09,
+      "radiusNoiseSpeed": 20.0,
+      "shakeNoiseStrength": 0.04,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.0,
+      "colorOverHeightNoiseStrength": 0.2,
+      "colorOverHeightNoiseSpeed": 40.0,
+      "colorOverRadiusNoiseStrength": 0.1,
+      "colorOverRadiusNoiseSpeed": 40.0,
+      "colorOverDepthNoiseStrength": 0.05,
+      "colorOverDepthNoiseSpeed": 40.0,
+      "colorIntensityNoiseStrength": 3.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "preNominalEasingParams": {
+        "animationTime": 2.5,
+        "ascendingSmoothIntensityParams": 0.8
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.0,
+        "ascendingSmoothIntensityParams": 1.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.339389,
+          0.22549
+        ],
+        "angle": 1.0,
+        "brightness": 17.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensity": 0.1,
+        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionBrightnessNoiseSpeed": 16.0
+      }
+    }
   }
 }

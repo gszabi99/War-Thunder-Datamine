@@ -46,39 +46,14 @@
     0.92
   ],
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
-  "damagePartsToCollisionObjectsMapBlk": [
-    "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-    "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk"
-  ],
-  "damagePartsToFmPartsMapBlk": [
-    "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
-    "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk"
-  ],
-  "damagePartsToHudPartsMapBlk": [
-    "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
-    "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk"
-  ],
-  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": [
-    "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-    "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk"
-  ],
-  "damagePartsToWeaponsMapBlk": [
-    "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
-    "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk"
-  ],
-  "damagePartsToAvionicsPartsMapBlk": [
-    "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
-    "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk"
-  ],
-  "damagePartsToVisualEffectsMapBlk": [
-    "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
-    "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk"
-  ],
-  "damagePartsExcludeFromHoleBlk": [
-    "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-    "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk"
-  ],
+  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "fighter",
@@ -4271,77 +4246,6 @@
   "damagePartsDependencyMap": {
     "dp": [
       {
-        "dm": "tail_dm",
-        "separateDm": true,
-        "dp": [
-          "antenna",
-          "wire_lc",
-          "wire_rc",
-          "wire_c",
-          "aerial_c"
-        ]
-      },
-      {
-        "dm": "spar_l_dm",
-        "dp": [
-          "wire_l",
-          "wire_lc",
-          "wires_l",
-          "wires_lc",
-          "aerial_l"
-        ]
-      },
-      {
-        "dm": "spar1_l_dm",
-        "dp": [
-          "wire_l",
-          "wire_lc",
-          "wires_l",
-          "wires_lc",
-          "aerial_l"
-        ]
-      },
-      {
-        "dm": "spar2_l_dm",
-        "dp": [
-          "wire_l",
-          "wire_lc",
-          "wires_l",
-          "wires_lc",
-          "aerial_l"
-        ]
-      },
-      {
-        "dm": "spar_r_dm",
-        "dp": [
-          "wire_r",
-          "wire_rc",
-          "wires_r",
-          "wires_rc",
-          "aerial_r"
-        ]
-      },
-      {
-        "dm": "spar1_r_dm",
-        "dp": [
-          "wire_r",
-          "wire_rc",
-          "wires_r",
-          "wires_rc",
-          "aerial_r"
-        ]
-      },
-      {
-        "dm": "spar2_r_dm",
-        "dp": [
-          "wire_r",
-          "wire_rc",
-          "wires_r",
-          "wires_rc",
-          "aerial_r"
-        ]
-      },
-      {
         "dm": "wing_r_dm",
         "dp": "elevon1_r_dm"
       },
@@ -4450,5 +4354,87 @@
       0.146819,
       0.0
     ]
+  },
+  "AfterBurner0": {
+    "volumetricAfterBurner": {
+      "name": "jet_blue_orange_modern",
+      "maxHeight": 11.0,
+      "minHeight": 6.0,
+      "heightNoiseStrength": 0.0,
+      "heightNoiseSpeed": 20.0,
+      "maxRadius": 0.35,
+      "minRadius": 0.3,
+      "maxBaseRadius": 0.32,
+      "minBaseRadius": 0.32,
+      "relativeCylinderHeightMax": 0.36,
+      "relativeCylinderHeightMin": 0.2,
+      "outerCylinderAbsorptionMax": 0.75,
+      "outerCylinderAbsorptionMin": 0.5,
+      "outerCylinderHeightFadeMax": 7.0,
+      "outerCylinderHeightFadeMin": 5.0,
+      "tailHeightFadeMax": 3.5,
+      "tailHeightFadeMin": 0.5,
+      "outerCylinderHeightFadeNoiseStrength": 2.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.4,
+      "maxOuterCylinderRadius": 0.45,
+      "absorption": 1.0,
+      "colorIntensityMax": 10.0,
+      "colorIntensityMin": 1.0,
+      "colorOverHeightMult": 1.1,
+      "colorOverDepthMult": 2.5,
+      "colorOverRadiusMult": 4.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 38.0,
+      "ringAbsorption": 1.2,
+      "maxRingFrequency": 9.71038,
+      "minRingFrequency": 11.5192,
+      "ringIntensityMin": -0.5,
+      "ringIntensityMax": 2.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 1.0,
+      "ringOffsetNoiseStrength": 1.0,
+      "ringOffsetNoiseSpeed": 20.0,
+      "rampTextureOffset": 0,
+      "radiusNoiseStrength": 0.06,
+      "radiusNoiseSpeed": 20.0,
+      "shakeNoiseStrength": 0.01,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.5,
+      "colorOverHeightNoiseStrength": 0.1,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.1,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.03,
+      "colorOverDepthNoiseSpeed": 10.0,
+      "colorIntensityNoiseStrength": 2.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "ringIntensity": 2.0,
+      "ringFrequency": 11.3097,
+      "preNominalEasingParams": {
+        "animationTime": 2.0,
+        "ascendingSmoothIntensityParams": 0.5
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.5,
+        "ascendingSmoothIntensityParams": 1.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.889273,
+          0.686275
+        ],
+        "angle": 1.0,
+        "brightness": 20.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensity": 1.0,
+        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseSpeed": 16.0
+      }
+    }
   }
 }

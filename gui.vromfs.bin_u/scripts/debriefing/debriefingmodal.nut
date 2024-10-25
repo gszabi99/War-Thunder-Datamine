@@ -12,6 +12,7 @@ let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { get_pve_trophy_name, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -97,7 +98,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { blendProp } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, isUnitInResearch } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_game_settings_blk
 } = require("blkGetters")
 let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -128,6 +129,7 @@ let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
 let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -466,7 +468,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
               break
             }
           let winner = ((myTeam == Team.A) == this.debriefingResult.isSucceed) ? "A" : "B"
-          resTitle = loc("multiplayer/team_won") + loc("ui/colon") + loc($"multiplayer/team{winner}")
+          resTitle = "".concat(loc("multiplayer/team_won"), loc("ui/colon"),
+            loc($"multiplayer/team{winner}"))
           resTheme = DEBR_THEME.WIN
         }
         else {
@@ -759,7 +762,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         currencies.append(Cost().setRp(premTeaser.exp).tostring())
       if (premTeaser.wp  > 0)
         currencies.append(Cost(premTeaser.wp).tostring())
-      tooltip = loc("debriefing/PremiumNotEarned") + loc("ui/colon") + "\n" + loc("ui/comma").join(currencies, true)
+      tooltip = "".concat(loc("debriefing/PremiumNotEarned"), loc("ui/colon"), "\n",
+        loc("ui/comma").join(currencies, true))
     }
 
     this.totalObj = this.scene.findObject("wnd_total")
@@ -1600,7 +1604,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return false
     foreach (ut in unitTypes.types) {
       let unit = getTblValue("unit", this.getResearchUnitInfo(ut.name))
-      if (unit && !::isUnitInResearch(unit))
+      if (unit && !isUnitInResearch(unit))
         return true
     }
     foreach (unitId, unitData in this.debriefingResult.exp.aircrafts) {
@@ -1754,7 +1758,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
 
     let { tournamentResult = null, eventId = null } = logs[0]
-    if (tournamentResult == null || ::events.getEvent(eventId)?.leaderboardEventTable != null)
+    if (tournamentResult == null || events.getEvent(eventId)?.leaderboardEventTable != null)
       return
 
     let gapSides = this.guiScene.calcString("@tablePad", null)
@@ -1776,7 +1780,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let items = []
     foreach (lbFieldsConfig in eventsTableConfig) {
       if (!(lbFieldsConfig.field in now)
-        || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
+        || !events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
         continue
 
       let isFirstInRow = items.len() % DEBR_LEADERBOARD_LIST_COLUMNS == 0
@@ -2754,6 +2758,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let buttonsList = {
       btn_view_replay = isAnimDone && isReplayReady
       btn_save_replay = isAnimDone && isReplayReady && !is_replay_saved()
+      btn_parse_replay = isAnimDone && isReplayReady && canOpenHitsAnalysisWindow()
       btn_user_options = isAnimDone && (this.curTab == "players_stats") && player && !player.isBot && showConsoleButtons.value
       btn_view_highlights = isAnimDone && is_highlights_inited()
     }
@@ -2814,6 +2819,12 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       this.updateListsButtons()
     }
     guiModalNameAndSaveReplay(this, afterFunc)
+  }
+
+  function onParseReplay(_obj) {
+    if (this.isInProgress || !is_replay_present())
+      return
+    this.guiScene.performDelayed(this, @() openHitsAnalysisWindow())
   }
 
   function onViewHighlights() {

@@ -1186,7 +1186,13 @@
         ]
       },
       "actions": {
-        "unitAttackTarget": [
+        "triggerEnable": {
+          "target": "arcade_aaa_spawn_on_airfield"
+        },
+        "comment": {
+          "value": ""
+        },
+        "__unitAttackTarget": [
           {
             "playerAttracted": false,
             "object": "@t1_airfield_aaa_name",
@@ -1762,6 +1768,55 @@
             "iconName": "ui/gameuiskin#objective_helicopter.svg",
             "areaName": "@t2_helicopter_spawn_icon_02",
             "colorCode": "Team B"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "arcade_aaa_spawn_on_airfield": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@arcade_t1_airfield_name",
+            "type": "objectGroup"
+          },
+          {
+            "target": "@arcade_t2_airfield_name",
+            "type": "objectGroup"
+          },
+          {
+            "target": "@t1_airfield_aaa_name",
+            "type": "squad"
+          },
+          {
+            "target": "@t2_airfield_aaa_name",
+            "type": "squad"
+          }
+        ]
+      },
+      "actions": {
+        "unitSpawnOnObjectGroup": [
+          {
+            "type": "air_def",
+            "object": "@t1_airfield_aaa_name",
+            "target": "@arcade_t1_airfield_name"
+          },
+          {
+            "type": "air_def",
+            "object": "@t2_airfield_aaa_name",
+            "target": "@arcade_t2_airfield_name"
           }
         ]
       },

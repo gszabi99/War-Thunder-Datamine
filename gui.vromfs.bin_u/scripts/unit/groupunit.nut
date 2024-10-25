@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
-local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
+function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
   let params = {
     status = "owned"
     inactive = true

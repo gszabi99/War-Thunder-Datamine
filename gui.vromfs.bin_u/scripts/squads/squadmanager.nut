@@ -31,7 +31,8 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId } = require("worldwar")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { lateBindGlobalModule } = require("%scripts/global_modules.nut")
+let { getGlobalModule, lateBindGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
@@ -327,7 +328,7 @@ g_squad_manager = {
       broadcastEvent(squadEvent.SET_READY)
     }
 
-    let event = ::events.getEvent(g_squad_manager.getLeaderGameModeId())
+    let event = events.getEvent(g_squad_manager.getLeaderGameModeId())
     if (!isLeader && !isSetNoReady) {
       if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
         return
@@ -460,7 +461,7 @@ g_squad_manager = {
 
     squadData.leaderGameModeId = newLeaderGameModeId
     if (g_squad_manager.isSquadMember()) {
-      let event = ::events.getEvent(g_squad_manager.getLeaderGameModeId())
+      let event = events.getEvent(g_squad_manager.getLeaderGameModeId())
       if (g_squad_manager.isMeReady() && (!antiCheat.showMsgboxIfEacInactive(event) ||
                           !showMsgboxIfSoundModsNotAllowed(event)))
         g_squad_manager.setReadyFlag(false)

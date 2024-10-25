@@ -30,7 +30,7 @@ let Squad = class (BaseInvite) {
   roomType = g_chat_room_type.SQUAD
 
   static function getUidByParams(params) {
-    return "SQ_" + getTblValue("squadId", params, "")
+    return $"SQ_{getTblValue("squadId", params, "")}"
   }
 
   function updateCustomParams(params, initial = false) {

@@ -1,64 +1,11 @@
 {
-  "tdiv": {
+  "optionsList": {
+    "id": "sysopts",
     "width": "pw",
-    "padding": "1@blockInterval",
-    "flow": "vertical",
-    "tdiv": [
-      {
-        "id": "sysopt_top",
-        "width": "pw",
-        "optionsList": [
-          {
-            "id": "sysopt_top_left",
-            "class": "optionsTable",
-            "disablePosition": "yes",
-            "width": "33%pw"
-          },
-          {
-            "id": "sysopt_top_middle",
-            "class": "optionsTable",
-            "disablePosition": "yes",
-            "width": "33%pw"
-          },
-          {
-            "id": "sysopt_top_right",
-            "class": "optionsTable",
-            "disablePosition": "yes",
-            "width": "33%pw"
-          }
-        ]
-      },
-      {
-        "width": "pw",
-        "optionsList": [
-          {
-            "id": "sysopt_bottom_left",
-            "class": "optionsTable",
-            "disablePosition": "yes",
-            "width": "50%pw",
-            "behavior": "PosOptionsNavigator",
-            "navigatorShortcuts": "yes"
-          },
-          {
-            "id": "sysopt_bottom_right",
-            "class": "optionsTable",
-            "disablePosition": "yes",
-            "width": "50%pw",
-            "behavior": "PosOptionsNavigator",
-            "navigatorShortcuts": "yes"
-          }
-        ]
-      }
-    ],
-    "HorizontalListBox": {
-      "id": "sysopt_graphicsQuality",
-      "type": "transparent",
-      "pos": "50%pw-50%w, 0",
-      "position": "relative",
-      "margin": "0, 0.015@scrn_tgt",
-      "move-only-hover": "yes",
-      "on_select": "onSystemOptionChanged",
-      "navigatorShortcuts": "yes"
-    }
+    "class": "optionsTable",
+    "baseRow": "yes",
+    "disablePosition": "yes",
+    "behavior": "PosOptionsNavigator",
+    "navigatorShortcuts": "yes"
   }
 }

@@ -1,5 +1,8 @@
 from "%scripts/dagui_natives.nut" import is_country_available
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -129,7 +132,7 @@ function getEventSlotbarHint(event, country) {
   if (!needShowOverrideSlotbar(event))
     return ""
 
-  let overrideSlotbarData = getSlotbarOverrideData(::events.getEventMission(event.name), event)
+  let overrideSlotbarData = getSlotbarOverrideData(events.getEventMission(event.name), event)
   if ((overrideSlotbarData?.len() ?? 0) == 0)
     return ""
 

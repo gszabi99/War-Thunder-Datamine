@@ -15,6 +15,10 @@ struct EventUnitInitModification
   modType : string
   blk : DataBlock? // not null
 
+[cpp_event(unicast)]
+struct EventUnitDelayedStatusChanged
+  isDelayed : bool
+
 [cpp_event(unicast, with_scheme)]
 struct EventUnitRespawn
   atTime : float

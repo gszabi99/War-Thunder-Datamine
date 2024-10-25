@@ -1,6 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { round } = require("math")
 let { format } = require("string")
@@ -83,8 +83,8 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       )
 
-    rowBlock += ::buildTableRowNoPad("row_header", rowHeader, null,
-        "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ")
+    rowBlock = "".concat(rowBlock, ::buildTableRowNoPad("row_header", rowHeader, null,
+        "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; "))
 
     this.guiScene.replaceContentFromText(tableHeaderObj, rowBlock, rowBlock.len(), this)
 
@@ -105,8 +105,8 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
         let hasBoost = boost > 0
         if (hasBoost && exp > 0) {
           let baseExp = entry.data?.expRewardBase ?? round(exp / (1 + boost))
-          expText = colorize("activeTextColor", baseExp.tostring()
-            + colorize("goodTextColor", " + " + (exp - baseExp).tostring()))
+          expText = colorize("activeTextColor", "".concat(baseExp,
+            colorize("goodTextColor", $" + {exp - baseExp}")))
         }
 
         rowParams.append({ text = expText
@@ -115,11 +115,11 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
           tooltip = hasBoost
             ? loc("clan/activity_reward/wasBoost",
               { bonus = colorize("activeTextColor",
-                "+" + measureType.PERCENT_FLOAT.getMeasureUnitsText(boost)) })
+                "".concat("+", measureType.PERCENT_FLOAT.getMeasureUnitsText(boost))) })
             : ""
         })
       }
-      rowBlock += ::buildTableRowNoPad($"row_{rowIdx}", rowParams, null, "")
+      rowBlock = "".concat(rowBlock, ::buildTableRowNoPad($"row_{rowIdx}", rowParams, null, ""))
       rowIdx++
     }
     this.guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)

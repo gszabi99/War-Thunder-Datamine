@@ -114,7 +114,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       if (isInArray(item.id, hideAxisOptionsArray))
         addTrParams = "hiddenTr:t='yes'; inactive:t='yes';"
 
-      let hotkeyData = ::buildHotkeyItem(idx, this.shortcuts, item, axis, idx % 2 == 0, addTrParams)
+      let hotkeyData = ::buildHotkeyItem(idx, this.shortcuts, item, axis, addTrParams)
       data = "".concat(data, hotkeyData.markup)
     }
 

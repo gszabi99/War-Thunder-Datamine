@@ -2,9 +2,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 
 gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -22,17 +23,17 @@ gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     let data = handyman.renderCached("%gui/vehiclesWindow.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
 
-    foreach (team in ::events.getSidesList()) {
-      let teamName = ::events.getTeamName(team)
+    foreach (team in events.getSidesList()) {
+      let teamName = events.getTeamName(team)
       let teamObj = this.scene.findObject(teamName)
       if (!checkObj(teamObj))
         continue
       let teamData = getTblValue(teamName, this.teamDataByTeamName, null)
-      if (!::events.isTeamDataPlayable(teamData))
+      if (!events.isTeamDataPlayable(teamData))
         continue
 
-      let unitTypes = ::events.getUnitTypesByTeamDataAndName(teamData, teamName)
-      ::events.fillAirsList(this, teamObj, teamData, unitTypes, this.roomSpecialRules)
+      let unitTypes = events.getUnitTypesByTeamDataAndName(teamData, teamName)
+      events.fillAirsList(this, teamObj, teamData, unitTypes, this.roomSpecialRules)
     }
   }
 }
@@ -40,7 +41,7 @@ gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 ::update_vehicle_info_button <- function update_vehicle_info_button(scene, room) {
   showObjById("vehicles_info_button_block",
     !isSlotbarOverrided(::SessionLobby.getMissionName(true, room))
-      && !::events.isEventAllUnitAllowed(::SessionLobby.getPublicData(room)),
+      && !events.isEventAllUnitAllowed(::SessionLobby.getPublicData(room)),
     scene
   )
 }

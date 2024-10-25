@@ -185,7 +185,11 @@ weaponry_item[status=locked] > weaponBody > topLine {background-color:@slotLocke
 weaponry_item[status=researchable] > weaponBody > wallpaper > pattern { type:dark_diag_lines; }
 weaponry_item[status=researchable] > weaponBody> wallpaper,
 weaponry_item[status=research] > weaponBody > wallpaper { background-color:@modResearchBgColor; }
-weaponry_item[status=research] > weaponBody > itemWinkBlock{ display:show; transp-time:3000;}
+weaponry_item[status=research] > weaponBody > itemWinkBlock,
+weaponry_item[status=researchFinished] > weaponBody > itemWinkBlock {
+  display:show;
+  transp-time:3000;
+}
 weaponry_item[status=research] > weaponBody > wallpaper > pattern { type:bright_texture; }
 weaponry_item[status=waiting] > weaponBody { background-color:@shopItemWaiting; }
 

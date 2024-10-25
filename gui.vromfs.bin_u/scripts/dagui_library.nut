@@ -41,6 +41,7 @@ let is_platform_pc = ["win32", "win64", "macosx", "linux64"].contains(platformId
 let is_platform_windows = ["win32", "win64"].contains(platformId)
 let is_platform_android = platformId == "android"
 let is_platform_xbox = platformId == "xboxOne" || platformId == "xboxScarlett"
+let is_platform_macosx = platformId == "macosx"
 
 let getAircraftByName = @(name) getAllUnits()?[name]
 
@@ -121,6 +122,7 @@ return log.__merge(nativeApi, sharedEnums, {
   is_platform_windows
   is_platform_android
   is_platform_xbox
+  is_platform_macosx
   isInArray
   getTblValue
   checkObj

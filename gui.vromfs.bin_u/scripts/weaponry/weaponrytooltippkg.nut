@@ -1,8 +1,9 @@
 from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
-let { getPresetRewardMul, getWeaponDamage } = require("%appGlobals/econWeaponUtils.nut")
+from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText
 
+let { getPresetRewardMul, getWeaponDamage } = require("%appGlobals/econWeaponUtils.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -382,7 +383,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   }
 
   if (hasPlayerInfo && statusTbl.unlocked && currentPrice != "") {
-    let amountText = ::getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount)
+    let amountText = getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount)
     if (amountText != "") {
       let color = statusTbl.amount < statusTbl.amountWarningValue ? "badTextColor" : ""
       res.amountText <- colorize(color, $"{loc("options/count")}{loc("ui/colon")}{amountText}")

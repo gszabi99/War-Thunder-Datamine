@@ -752,7 +752,8 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     //Fill current seasons end date
     let objEndsDuel = this.scene.findObject("clan_battle_season_ends")
     if (checkObj(objEndsDuel)) {
-      let endDateText = loc("clan/battle_season/ends") + loc("ui/colon") + " " + ::g_clan_seasons.getSeasonEndDate()
+      let endDateText = "".concat(loc("clan/battle_season/ends"), loc("ui/colon"), " ",
+        ::g_clan_seasons.getSeasonEndDate())
       objEndsDuel.setValue(endDateText)
     }
 
@@ -847,9 +848,9 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       rowData.append({ text = loc($"clan/battle_season/place_{i}"), active = false, tdalign = "right" })
       rowData.append({
         needText = false,
-        rawParam = "text { text-align:t='right'; text:t='" +
-          Cost(0, getTblValue($"place{i}Gold", rewards, 0)).tostring() +
-          "'; size:t='pw,ph'; style:t='re-type:textarea; behaviour:textarea;'; }",
+        rawParam = "".concat("text { text-align:t='right'; text:t='",
+          Cost(0, getTblValue($"place{i}Gold", rewards, 0)).tostring(),
+          "'; size:t='pw,ph'; style:t='re-type:textarea; behaviour:textarea;'; }"),
         active = false
       })
     }

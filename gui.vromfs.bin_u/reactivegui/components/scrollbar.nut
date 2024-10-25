@@ -41,7 +41,7 @@ let styling = {
 
 
 let scrollbar = function(scroll_handler) {
-  return scrollbarBase.scroll(scroll_handler, { styling = styling })
+  return scrollbarBase.scrollbar(scroll_handler, { styling = styling })
 }
 
 

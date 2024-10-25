@@ -1,0 +1,27 @@
+{
+  "msg_sink": {
+    "_use": "replicating",
+    "_singleton": true,
+    "msg_sink": {}
+  },
+  "player": {
+    "player_id": -1,
+    "connId": -1,
+    "syncVromsStep": 0,
+    "syncVromsStartAtTime": 0,
+    "receiveLogerr": false,
+    "_tracked": [
+      "connId",
+      "syncVromsStep"
+    ],
+    "m_player": {}
+  },
+  "server_load_stat": {
+    "_use": "replicating",
+    "_replicated": "server_load_stat__load",
+    "_tracked": "server_load_stat__load",
+    "server_load_stat__frameCnt": 0,
+    "server_load_stat__timer": 1.0,
+    "server_load_stat__load": 0.0
+  }
+}

@@ -1,7 +1,11 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, is_player_unit_alive, get_slot_delay, get_player_unit_name, shop_get_spawn_score, is_era_available, get_num_used_unit_spawns, rented_units_get_last_max_full_rent_time, utf8_strlen, is_respawn_screen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
+from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
+from "%scripts/utils_sa.nut" import colorTextByValues
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format, split_by_chars } = require("string")
 let { round, floor } = require("math")
@@ -17,7 +21,8 @@ let { removeTextareaTags, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getEsUnitType, isUnitsEraUnlocked, isUnitGift, getUnitName, isUnitDefault,
-  isUnitGroup, canResearchUnit, bit_unit_status, canBuyUnit
+  isUnitGroup, canResearchUnit, bit_unit_status, canBuyUnit, isUnitBought, getUnitReqExp,
+  getUnitExp, isUnitInResearch, isUnitBroken
 } = require("%scripts/unit/unitInfo.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
@@ -93,7 +98,7 @@ function getSlotUnitNameText(unit, params) {
   let leftRespawns = missionRules.getUnitLeftRespawns(unit)
   let leftWeaponPresetsText = missionRules.getUnitLeftWeaponShortText(unit)
   let textArray = []
-  if (leftRespawns != ::RESPAWNS_UNLIMITED) {
+  if (leftRespawns != RESPAWNS_UNLIMITED) {
     if (missionRules.isUnitAvailableBySpawnScore(unit))
       textArray.append(loc("icon/star/white"))
     else
@@ -127,7 +132,7 @@ function getUnitSlotPriceText(unit, params) {
       local wpToRespawn = get_unit_wp_to_respawn(unit.name)
       if (wpToRespawn > 0 && crew != null && isCrewAvailableInSession(crew, unit)) {
         wpToRespawn += weaponPrice
-        txtList.append(::colorTextByValues(Cost(wpToRespawn).toStringWithParams({ isWpAlwaysShown = true }),
+        txtList.append(colorTextByValues(Cost(wpToRespawn).toStringWithParams({ isWpAlwaysShown = true }),
           sessionWpBalance, wpToRespawn, true, false))
       }
 
@@ -161,7 +166,7 @@ function getUnitSlotPriceText(unit, params) {
     priceText = overlayPrice >= 0 ? Cost(overlayPrice).getTextAccordingToBalance()
       : getUnitShopPriceText(unit)
 
-    if (priceText == "" && ::isUnitBought(unit) && showAsTrophyContent && !isReceivedPrizes)
+    if (priceText == "" && isUnitBought(unit) && showAsTrophyContent && !isReceivedPrizes)
       priceText = colorize("goodTextColor", loc("mainmenu/itemReceived"))
   }
 
@@ -174,8 +179,8 @@ function getUnitSlotResearchProgressText(unit, priceText = "") {
   if (!canResearchUnit(unit))
     return ""
 
-  let unitExpReq  = ::getUnitReqExp(unit)
-  let unitExpCur  = ::getUnitExp(unit)
+  let unitExpReq  = getUnitReqExp(unit)
+  let unitExpCur  = getUnitExp(unit)
   if (unitExpReq <= 0 || unitExpReq <= unitExpCur)
     return ""
 
@@ -192,15 +197,15 @@ function getUnitSlotResearchProgressText(unit, priceText = "") {
 function getUnitSlotProgressStatus(unit, params) {
   let { flushExp = 0, forceNotInResearch = false } = params
   let isSquadronVehicle   = unit?.isSquadronVehicle?()
-  let unitExpReq          = ::getUnitReqExp(unit)
-  let unitExpGranted      = ::getUnitExp(unit)
+  let unitExpReq          = getUnitReqExp(unit)
+  let unitExpGranted      = getUnitExp(unit)
   let diffSquadronExp     = isSquadronVehicle
      ? min(clan_get_exp(), unitExpReq - unitExpGranted)
      : 0
   let isFull = (flushExp > 0 && flushExp >= unitExpReq)
     || (diffSquadronExp > 0 && diffSquadronExp >= unitExpReq)
 
-  let isVehicleInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
+  let isVehicleInResearch = !forceNotInResearch && isUnitInResearch(unit)
     && (!isSquadronVehicle || ::is_in_clan() || diffSquadronExp > 0)
 
   return isFull ? "researched"
@@ -346,7 +351,7 @@ function getUnitSlotPriceHintText(unit, params) {
   local wpToRespawn = get_unit_wp_to_respawn(unit.name)
   if (wpToRespawn > 0 && crew != null && isCrewAvailableInSession(crew, unit)) {
     wpToRespawn += weaponPrice
-    let wpToRespawnText = ::colorTextByValues(Cost(wpToRespawn).toStringWithParams({ isWpAlwaysShown = true }),
+    let wpToRespawnText = colorTextByValues(Cost(wpToRespawn).toStringWithParams({ isWpAlwaysShown = true }),
       sessionWpBalance, wpToRespawn, true, false)
     return $"{wpToRespawnText}{loc("ui/minus")}{loc("mission_hint/cost_sl")}"
   }
@@ -486,7 +491,7 @@ function buildGroupSlot(id, unit, params) {
   local bitStatus         = 0
 
   foreach (a in unit.airsGroup) {
-    let isInResearch = !forceNotInResearch && ::isUnitInResearch(a)
+    let isInResearch = !forceNotInResearch && isUnitInResearch(a)
     let isUsable = ::isUnitUsable(a)
 
     if (isInResearch || (canResearchUnit(a) && !researchingUnit)) {
@@ -576,8 +581,8 @@ function buildGroupSlot(id, unit, params) {
   local unitExpProgressValue = 0
   if (researchingUnit) {
     showProgress = true
-    let unitExpGranted = ::getUnitExp(researchingUnit)
-    let unitReqExp = ::getUnitReqExp(researchingUnit)
+    let unitExpGranted = getUnitExp(researchingUnit)
+    let unitReqExp = getUnitReqExp(researchingUnit)
     unitExpProgressValue = unitReqExp > 0 ? unitExpGranted.tofloat() / unitReqExp.tofloat() * 1000 : 0
   }
 
@@ -651,23 +656,23 @@ function buildCommonUnitSlot(id, unit, params) {
   local { inactive = false, status = DEFAULT_STATUS, tooltipParams = null } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
 
-  let isOwn               = ::isUnitBought(unit)
+  let isOwn               = isUnitBought(unit)
   let isUsable            = ::isUnitUsable(unit)
   let isMounted           = isUnitInSlotbar(unit)
   let canResearch         = canResearchUnit(unit)
   let special             = isUnitSpecial(unit)
-  let isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
+  let isVehicleInResearch = isUnitInResearch(unit) && !forceNotInResearch
   let isSquadronVehicle   = unit.isSquadronVehicle()
   let isMarketableVehicle = ::canBuyUnitOnMarketplace(unit)
-  let unitReqExp          = ::getUnitReqExp(unit)
-  local unitExpGranted      = ::getUnitExp(unit)
+  let unitReqExp          = getUnitReqExp(unit)
+  local unitExpGranted      = getUnitExp(unit)
   let diffExp = isSquadronVehicle
     ? min(clan_get_exp(), unitReqExp - unitExpGranted)
     : (params?.diffExp ?? 0)
   if (isSquadronVehicle && isVehicleInResearch)
     unitExpGranted += diffExp
 
-  let isBroken            = ::isUnitBroken(unit)
+  let isBroken            = isUnitBroken(unit)
   let unitRarity          = getUnitRarity(unit)
   let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
 
@@ -1044,9 +1049,9 @@ function isUnitEnabledForSlotbar(unit, params) {
 
   if (eventId != null) {
     res = false
-    let event = ::events.getEvent(eventId)
+    let event = events.getEvent(eventId)
     if (event)
-      res = ::events.isUnitAllowedForEventRoom(event, room, unit)
+      res = events.isUnitAllowedForEventRoom(event, room, unit)
   }
   else if (availableUnits != null)
     res = unit.name in availableUnits

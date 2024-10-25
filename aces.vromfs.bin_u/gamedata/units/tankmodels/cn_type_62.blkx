@@ -331,6 +331,10 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "fire_control_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "power_system_dm": {
         "hp": 60.0,
         "armorThrough": 15.0
@@ -1999,6 +2003,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2017,6 +2022,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2174,7 +2180,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2322,6 +2328,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2329,6 +2336,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2336,6 +2344,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2343,6 +2352,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2350,6 +2360,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2357,7 +2368,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2377,7 +2388,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2397,7 +2408,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2411,7 +2422,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2431,7 +2442,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2451,7 +2462,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -2529,6 +2540,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false
@@ -2570,16 +2582,18 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "removeLoadedAmmo": false,
+      "removeLoadedAmmo": true,
       "weaponTrigger": "gunner0",
       "fatalFire": true,
       "fatalExplosion": true,
+      "replenishmentDelay": 4.0,
+      "replenishmentTime": 12.0,
       "shells": {
         "ammo_turret_01_dm": {
-          "count": 5
+          "count": 1
         },
         "ammo_turret_02_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_turret_03_dm": {
           "count": 1
@@ -2587,11 +2601,23 @@
         "ammo_turret_04_dm": {
           "count": 1
         },
+        "ammo_turret_05_dm": {
+          "count": 1
+        },
+        "ammo_turret_06_dm": {
+          "count": 1
+        },
+        "ammo_turret_07_dm": {
+          "count": 1
+        },
+        "ammo_turret_08_dm": {
+          "count": 1
+        },
         "ammo_body_07_dm": {
-          "count": 5
+          "count": 1
         },
         "ammo_body_08_dm": {
-          "count": 2
+          "count": 1
         },
         "ammo_body_09_dm": {
           "count": 1
@@ -2600,22 +2626,109 @@
           "count": 1
         },
         "ammo_body_01_dm": {
-          "count": 5
+          "count": 1
         },
         "ammo_body_02_dm": {
-          "count": 5
+          "count": 1
         },
         "ammo_body_03_dm": {
-          "count": 5
+          "count": 1
         },
         "ammo_body_04_dm": {
-          "count": 5
+          "count": 1
         },
         "ammo_body_05_dm": {
-          "count": 5
+          "count": 1
         },
         "ammo_body_06_dm": {
-          "count": 4
+          "count": 1
+        },
+        "ammo_body_11_dm": {
+          "count": 1
+        },
+        "ammo_body_12_dm": {
+          "count": 1
+        },
+        "ammo_body_13_dm": {
+          "count": 1
+        },
+        "ammo_body_14_dm": {
+          "count": 1
+        },
+        "ammo_body_15_dm": {
+          "count": 1
+        },
+        "ammo_body_16_dm": {
+          "count": 1
+        },
+        "ammo_body_17_dm": {
+          "count": 1
+        },
+        "ammo_body_18_dm": {
+          "count": 1
+        },
+        "ammo_body_19_dm": {
+          "count": 1
+        },
+        "ammo_body_20_dm": {
+          "count": 1
+        },
+        "ammo_body_21_dm": {
+          "count": 1
+        },
+        "ammo_body_22_dm": {
+          "count": 1
+        },
+        "ammo_body_23_dm": {
+          "count": 1
+        },
+        "ammo_body_24_dm": {
+          "count": 1
+        },
+        "ammo_body_25_dm": {
+          "count": 1
+        },
+        "ammo_body_26_dm": {
+          "count": 1
+        },
+        "ammo_body_27_dm": {
+          "count": 1
+        },
+        "ammo_body_28_dm": {
+          "count": 1
+        },
+        "ammo_body_29_dm": {
+          "count": 1
+        },
+        "ammo_body_30_dm": {
+          "count": 1
+        },
+        "ammo_body_31_dm": {
+          "count": 1
+        },
+        "ammo_body_32_dm": {
+          "count": 1
+        },
+        "ammo_body_33_dm": {
+          "count": 1
+        },
+        "ammo_body_34_dm": {
+          "count": 1
+        },
+        "ammo_body_35_dm": {
+          "count": 1
+        },
+        "ammo_body_36_dm": {
+          "count": 1
+        },
+        "ammo_body_37_dm": {
+          "count": 1
+        },
+        "ammo_body_38_dm": {
+          "count": 1
+        },
+        "ammo_body_39_dm": {
+          "count": 1
         }
       }
     }

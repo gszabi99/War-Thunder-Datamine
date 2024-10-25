@@ -4,6 +4,8 @@ from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 let { format } = require("string")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 /**
  * Caches data from leaderboard to provide always
@@ -31,13 +33,13 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
       return callback(this.__cache[eventEconomicName]?[field])
 
     //Try to get from leaderbords
-    let request = ::events.getMainLbRequest(event)
+    let request = events.getMainLbRequest(event)
     request.economicName = eventEconomicName
     if (request.forClans)
       request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
 
     let cache = this.__cache
-    ::events.requestSelfRow(request, function (selfRow) {
+    events.requestSelfRow(request, function (selfRow) {
       if (!selfRow.len())
         return callback(null)
 
@@ -54,7 +56,7 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 
   function onEventEventBattleEnded(params) {
     let eventId = params?.eventId ?? ""
-    let event = ::events.getEvent(eventId) || ::events.getEventByEconomicName(eventId) // if event name difference of its shared economic name
+    let event = events.getEvent(eventId) || events.getEventByEconomicName(eventId) // if event name difference of its shared economic name
     if (event)
       this.fetchRowFromUserlog(event)
   }

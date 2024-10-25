@@ -1,0 +1,173 @@
+{
+  "import": "%wtlibs/templates/essentials.blk",
+  "projectile": {
+    "_use": "ecs_no_debug",
+    "active": false,
+    "proj_trace_handle": -1
+  },
+  "projectile_physics": {
+    "projectile_phys_obj": {}
+  },
+  "bullet": {
+    "_use": "projectile",
+    "bullet_client_lod:u8": {},
+    "bullet_component": {}
+  },
+  "shell_delayed": {
+    "shell_delayed:tag": {
+      "_tags": "net,netClient"
+    }
+  },
+  "arh_shell": {
+    "_use": "replicating",
+    "arh_shell:tag": {}
+  },
+  "shell": {
+    "_use": [
+      "projectile",
+      "replicating"
+    ],
+    "shell_ref": {}
+  },
+  "rocket": {
+    "_use": "shell",
+    "rocket_component": {}
+  },
+  "bomb": {
+    "_use": "shell",
+    "bomb_component": {}
+  },
+  "torpedo": {
+    "_use": "shell",
+    "torpedo_component": {}
+  },
+  "payload": {
+    "_use": "shell",
+    "payload_component": {}
+  },
+  "jettisoned": {
+    "_use": "shell",
+    "jettisoned_component": {}
+  },
+  "smoke": {
+    "_use": "replicating",
+    "smoke__activate_time": 0.0,
+    "smoke__time": 0.0,
+    "smoke__fx_time": 0.0,
+    "smoke__smokeFxName": "",
+    "_group": {
+      "_replicate": true,
+      "smoke__pos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "smoke__radius": 0.0,
+      "smoke__target_signature_type_flags": 0,
+      "smoke__transparent_for_thermal": false,
+      "smoke__fx_id": -1
+    },
+    "smoke__grid_object": {},
+    "smoke__smoke_fx": {
+      "_tags": "render"
+    }
+  },
+  "damage_area": {
+    "_use": [
+      "root",
+      "replicating"
+    ],
+    "damage_area__fallVel": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "damage_area__fallNorm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "damage_area__velocityMult": 0.0,
+    "damage_area__maxRise": 0.0,
+    "damage_area__endTime": 0.0,
+    "damage_area__pos1": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "damage_area__pos2": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "damage_area__vel": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "damage_area__maxFlightTime": 0.0,
+    "damage_area__maxFlightDist": 0.0,
+    "damage_area__radius": 0.0,
+    "damage_area__damage": 0.0,
+    "damage_area__damageTypeId": -1,
+    "damage_area__seed": 0,
+    "damage_area__fxType": "",
+    "damage_area__burnFxType": "",
+    "damage_area__burnFxSize": 0.0,
+    "damage_area__flightTime": 0.0,
+    "damage_area__scorchMarginSize": 0.0,
+    "damage_area__scorchStrength": 0.0,
+    "damage_area__scorchDuration": 0.0,
+    "damage_area__pos2_prev": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "damage_area__emitterCount": 5,
+    "damage_area__emitterDispersion": 0.1,
+    "_group": [
+      {
+        "_track": true,
+        "damage_area__move": true
+      },
+      {
+        "_tags": "server",
+        "damage_area__nextUpdateTime": 0.0,
+        "damage_area__offender": {}
+      },
+      {
+        "_tags": "gameClient",
+        "damage_area__firstTick": true,
+        "damage_area__emitterVel:list<p3>": {},
+        "damage_area__emitterPos:list<p3>": {},
+        "damage_area__emitterPosPrev:list<p3>": {},
+        "damage_area__emitterFxIds:list<i>": {},
+        "damage_area__burnFxIds:list<i>": {},
+        "damage_area__burnFxCounts:list<i>": {}
+      },
+      {
+        "_tags": "gameClient",
+        "damage_area__debugCommonId": 1,
+        "damage_area__debugTraceId": 2,
+        "damage_area__debugEmitterColor": [
+          127,
+          127,
+          255,
+          255
+        ],
+        "damage_area__debugTraceColor": [
+          0,
+          0,
+          255,
+          255
+        ],
+        "damage_area__debugCombustColor": [
+          0,
+          255,
+          255,
+          255
+        ]
+      }
+    ]
+  }
+}

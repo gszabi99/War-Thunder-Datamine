@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
 
 from "%scripts/dagui_library.nut" import *
@@ -138,7 +137,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       spObj.enable((lp.autoSave & AUTO_SAVE_FLG_LOGIN) != 0 )
       local text = loc("mainmenu/savePassword")
       if (!isPlatformShieldTv())
-        text += " " + loc("mainmenu/savePassword/unsecure")
+        text = " ".concat(text, loc("mainmenu/savePassword/unsecure"))
       spObj.findObject("loginbox_autosave_password_text").setValue(text)
     }
 
@@ -302,7 +301,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     if (checkObj(objLangLabel)) {
       local title = loc("profile/language")
       let titleEn = loc("profile/language/en")
-      title += (title == titleEn ? "" : loc("ui/parentheses/space", { text = titleEn })) + ":"
+      title = "".concat(title, title == titleEn ? "" : loc("ui/parentheses/space", { text = titleEn }), ":")
       objLangLabel.setValue(title)
     }
     let objLangIcon = this.scene.findObject("btn_language_icon")

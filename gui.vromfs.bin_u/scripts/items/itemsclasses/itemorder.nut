@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { g_order_award_mode } = require("%scripts/items/orderAwardMode.nut")
 let { orderUseResult } = require("%scripts/items/orderUseResult.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -81,7 +83,7 @@ let Order = class (BaseItem) {
       return null
 
     let currentEvent = ::SessionLobby.getRoomEvent()
-    let diffCode = ::events.getEventDiffCode(currentEvent)
+    let diffCode = events.getEventDiffCode(currentEvent)
     let diff = g_difficulty.getDifficultyByDiffCode(diffCode)
     let checkDifficulty = !isInArray(diff, this.disabledDifficulties)
     if (!this.isActive() && ::g_orders.orderCanBeActivated() && checkDifficulty)

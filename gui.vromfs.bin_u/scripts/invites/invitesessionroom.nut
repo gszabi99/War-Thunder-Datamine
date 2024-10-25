@@ -2,8 +2,8 @@
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled
 from "%scripts/dagui_library.nut" import *
 
-
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
@@ -30,7 +30,7 @@ let SessionRoom = class (BaseInvite) {
   needCheckSystemRestriction = true
 
   static function getUidByParams(params) {
-    return "SR_" + getTblValue("inviterName", params, "") + "/" + getTblValue("roomId", params, "")
+    return "".concat("SR_", getTblValue("inviterName", params, ""), "/", getTblValue("roomId", params, ""))
   }
 
   function updateCustomParams(params, initial = false) {
@@ -89,7 +89,7 @@ let SessionRoom = class (BaseInvite) {
     let params = { player = colorize(activeColor, this.getInviterName()) }
     if (event) {
       modeId = "event"
-      params.eventName <- colorize(activeColor, ::events.getEventNameText(event))
+      params.eventName <- colorize(activeColor, events.getEventNameText(event))
     }
     else
       params.missionName <- room ? colorize(activeColor, ::SessionLobby.getMissionNameLoc(room)) : ""

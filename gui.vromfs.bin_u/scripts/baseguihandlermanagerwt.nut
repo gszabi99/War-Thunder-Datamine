@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, set_allowed_controls_mask, get_dagui_pre_include_css_str, is_steam_big_picture, is_mouse_last_time_used, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
+from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, get_dagui_pre_include_css_str, is_steam_big_picture, is_mouse_last_time_used, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
+let { setAllowedControlsMask } = require("controlsMask")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -357,12 +358,12 @@ handlersManager.__update({
       return
 
     curControlsAllowMask.val = newMask
-    set_allowed_controls_mask(curControlsAllowMask.val)
+    setAllowedControlsMask(curControlsAllowMask.val)
     //dlog(format("GP: controls changed to 0x%X", curControlsAllowMask.val))
   }
 
   function restoreAllowControlMask() {
-    set_allowed_controls_mask(curControlsAllowMask.val)
+    setAllowedControlsMask(curControlsAllowMask.val)
   }
 
   function updateWidgets() {

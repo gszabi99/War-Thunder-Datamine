@@ -48,7 +48,7 @@ function loadBgBlk(name) {
   return res
 }
 
-local function load(blkFilePath = "", obj = null, curBgData = null) {
+function load(blkFilePath = "", obj = null, curBgData = null) {
   if (!obj)
     obj = get_cur_gui_scene()["animated_bg_picture"]
   if (!checkObj(obj))

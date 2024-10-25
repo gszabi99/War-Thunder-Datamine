@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import has_entitlement, get_entitlement_cost_gold
 from "%scripts/dagui_library.nut" import *
 
@@ -131,9 +130,9 @@ function getEntitlementAmount(ent) {
 
 function getEntitlementTimeText(ent) { // -return-different-types
   if ("ttl" in ent)
-    return ent.ttl + loc("measureUnits/days")
+    return "".concat(ent.ttl, loc("measureUnits/days"))
   if ("httl" in ent)
-    return ent.httl + loc("measureUnits/hours")
+    return "".concat(ent.httl, loc("measureUnits/hours"))
   return ""
 }
 
@@ -153,7 +152,7 @@ function getEntitlementName(ent) {
   local name = getEntitlementShortName(ent)
   let timeText = getEntitlementTimeText(ent)
   if (timeText != "")
-    name += $" {timeText}"
+    name = $"{name} {timeText}"
   return name
 }
 

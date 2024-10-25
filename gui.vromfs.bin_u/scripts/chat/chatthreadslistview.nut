@@ -85,11 +85,11 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
     let canRefresh = !isWaiting && ::g_chat_latest_threads.canRefresh()
     btnObj.enable(canRefresh)
 
-    local tooltip = loc("mainmenu/btnRefresh")
     let timeLeft = ::g_chat_latest_threads.getTimeToRefresh()
-    if (timeLeft > 0)
-      tooltip = $"{tooltip} ({time.secondsToString(0.001 * timeLeft, true, true)})"
-    btnObj.tooltip = tooltip
+
+    btnObj.tooltip = timeLeft > 0
+      ? "".concat(loc("mainmenu/btnRefresh"), " (", time.secondsToString(0.001 * timeLeft, true, true), ")")
+      : loc("mainmenu/btnRefresh")
     this.guiScene.updateTooltip(btnObj)
   }
 

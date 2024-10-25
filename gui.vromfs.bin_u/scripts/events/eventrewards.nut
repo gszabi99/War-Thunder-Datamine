@@ -1,16 +1,17 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let DataBlock = require("DataBlock")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
                                  //param name in tournament configs //param name in userlogs configs
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
@@ -52,7 +53,7 @@ function getSequenceWinsText(rewardBlk, progress = null) {
   local res = loc("conditions/sequence_wins", { value = value })
 
   if (progress)
-    res += " (" + progress + "/" + value + ")"
+    res = $"{res} ({progress}/{value})"
   return res
  }
 
@@ -109,13 +110,13 @@ let rewardConditionsList = {
   position = {
     id = "position"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context) {
-      let request = ::events.getMainLbRequest(event)
+      let request = events.getMainLbRequest(event)
       request.economicName = eventEconomicName
       if (request.forClans)
         request.tournament_mode = GAME_EVENT_TYPE.TM_ELO_GROUP_DETAIL
       request.lbField  <- reward_blk.fieldName
       let cb = Callback(callback, context)
-      ::events.requestSelfRow(request, function(self_row) {
+      events.requestSelfRow(request, function(self_row) {
         let progress = self_row?[0].pos
         cb(progress != null ? progress + 1 : null)
       })
@@ -156,7 +157,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
     locId = ""
     getValue = function(blk) {
       let cost = Cost().setFromTbl(blk)
-      return (cost > ::zero_money) ? cost : null
+      return (cost > zero_money) ? cost : null
     }
     getIconStyle = function(value, _blk) {
       let img = (value.gold > 0) ? "#ui/gameuiskin#items_eagles" : "#ui/gameuiskin#items_warpoints"
@@ -190,7 +191,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       return value ? value.trophy.getSmallIconName() : ""
     }
     valueText = function(value) {
-      return $"{value.count}x " + value.trophy.getName()
+      return $"{value.count}x {value.trophy.getName()}"
     }
     getTooltipId = function (value) {
       return value ? getTooltipType("ITEM").getTooltipId(value.trophy.id) : null
@@ -217,7 +218,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
       return value ? value.item.getSmallIconName() : ""
     }
     valueText = function(value) {
-      return $"{value.count}x " + value.item.getName()
+      return $"{value.count}x {value.item.getName()}"
     }
     getTooltipId = function (value) {
       return value ? getTooltipType("ITEM").getTooltipId(value.item.id) : null
@@ -239,7 +240,7 @@ function initConfigs() {
 initConfigs()
 
 function getRewardsBlk(event) {
-  return getBlkValueByPath(get_tournaments_blk(), getEventEconomicName(event) + "/awards")
+  return getBlkValueByPath(get_tournaments_blk(), $"{getEventEconomicName(event)}/awards")
 }
 
 function haveRewards(event) {
@@ -351,7 +352,7 @@ function getTotalRewardDescText(rewardsBlksArray) {
       }
     }
 
-  if (money > ::zero_money)
+  if (money > zero_money)
     text = addToText(text, "", money.tostring(), "activeTextColor")
   return text
 }
@@ -374,17 +375,17 @@ function isRewardReceived(reward_blk, eventEconomicName) {
 
   //field_number rewards does not contain condition name
   if (conditionId != "field_number")
-    ending +=$"{conditionId}_"
+    ending = $"{ending}{conditionId}_"
 
   //every reward has field number
-  ending +=$"{reward_blk.fieldName}_"
+  ending = $"{ending}{reward_blk.fieldName}_"
 
   //handlind rewards with range
   if ("valueMin" in reward_blk)
-    ending +=$"{reward_blk.valueMin}-"
+    ending = $"{ending}{reward_blk.valueMin}-"
 
   //and every raward has value
-  ending += reward_blk.value
+  ending = $"{ending}{reward_blk.value}"
 
   for (local i = 0; i < infoBlk.awards.blockCount(); i++) {
     let blk = infoBlk.awards.getBlock(i)

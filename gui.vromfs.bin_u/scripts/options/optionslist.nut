@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode
+from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode, get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
@@ -9,13 +9,15 @@ let contentPreset = require("%scripts/customization/contentPreset.nut")
 let soundDevice = require("soundDevice")
 let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { onSystemOptionsApply, canUseGraphicsOptions } = require("%scripts/options/systemOptions.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+let { is_xboxone_X } = require("%sqstd/platform.nut")
 //
 
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
+let { get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values } = require("radarOptions")
 let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -26,7 +28,9 @@ let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let getSystemOptions = @() {
   name = "graphicsParameters"
   fillFuncName = "fillSystemOptions"
+  isInfoOnTheRight = true
   onApplyHandler = @() onSystemOptionsApply()
+  getOptionInfoView = @(id) getSystemOptionInfoView(id)
   options = []
 }
 
@@ -47,6 +51,10 @@ function getPrivacyOptionsList() {
   ]
 }
 
+function hasConsolePresets() {
+  return is_xboxone_X || isPlatformXboxScarlett || isPlatformPS5
+}
+
 let otherOptionsList = @() [
   ["options/header/otherOptions"],
   [USEROPT_MENU_SCREEN_SAFE_AREA, "spinner", safeAreaMenu.canChangeValue()],
@@ -57,6 +65,14 @@ let otherOptionsList = @() [
 ]
 
 let getMainOptions = function() {
+
+  let unit = getAircraftByName(get_player_unit_name())
+  let isShipOrBoat = unit?.isShipOrBoat() ?? false
+  let isTank = unit?.isTank() ?? false
+  let isAir = unit?.isAir() ?? false
+  let isHelicopter = unit?.isHelicopter() ?? false
+  let isAllowRadarMode = hasFeature("allowRadarModeOptions") && get_radar_mode_names().len() > 0 && (get_radar_mode_names().len() > 1 || get_radar_scan_pattern_names().len() > 1 || get_radar_range_values().len() > 1)
+
   if (overrideMainOptionsFn != null)
     return overrideMainOptionsFn()
 
@@ -84,6 +100,7 @@ let getMainOptions = function() {
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
       [USEROPT_POSTFX_SETTINGS, "button", !is_compatibility_mode()],
       [USEROPT_HDR_SETTINGS, "button", is_hdr_enabled()],
+      [USEROPT_CONSOLE_GFX_PRESET, "combobox", hasConsolePresets()],
 
       ["options/header/commonBattleParameters"],
       [USEROPT_DAMAGE_INDICATOR_SIZE, "slider"],
@@ -138,6 +155,9 @@ let getMainOptions = function() {
       [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
       [USEROPT_ACTIVATE_BOMBS_AUTO_RELEASE_ON_SPAWN, "spinner"],
       [USEROPT_AUTOMATIC_EMPTY_CONTAINERS_JETTISON, "spinner"],
+      [USEROPT_RADAR_MODE_SELECT, "spinner", isAir && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isAir && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isAir && isAllowRadarMode],
 
       ["options/header/helicopter"],
       [USEROPT_HUE_HELICOPTER_CROSSHAIR, "spinner"],
@@ -155,6 +175,9 @@ let getMainOptions = function() {
       [USEROPT_LWS_IND_H_SCALE, "slider"],
       [USEROPT_LWS_IND_H_TIMEOUT, "slider"],
       [USEROPT_LWS_IND_AZIMUTH_H_TIMEOUT, "slider"],
+      [USEROPT_RADAR_MODE_SELECT, "spinner", isHelicopter && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isHelicopter && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isHelicopter && isAllowRadarMode],
 
       ["options/header/tank"],
       [TANK_SIGHT_SETTINGS, "button", hasFeature("enableCustomTankSights")],
@@ -185,6 +208,9 @@ let getMainOptions = function() {
       [USEROPT_LWS_IND_SCALE, "slider"],
       [USEROPT_LWS_IND_TIMEOUT, "slider"],
       [USEROPT_LWS_AZIMUTH_IND_TIMEOUT, "slider"],
+      [USEROPT_RADAR_MODE_SELECT, "spinner", isTank && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isTank && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isTank && isAllowRadarMode],
 
       ["options/header/ship"],
       [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! isInFlight()],
@@ -202,6 +228,9 @@ let getMainOptions = function() {
       // TODO: separate from tank [USEROPT_TACTICAL_MAP_SIZE, "slider"],
       // TODO: separate from tank [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner"],
       [USEROPT_FOLLOW_BULLET_CAMERA, "spinner", hasFeature("enableFollowBulletCamera")],
+      [USEROPT_RADAR_MODE_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
+      [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
 
       ["options/header/interface"],
       [USEROPT_HUD_SCREEN_SAFE_AREA, "spinner", safeAreaHud.canChangeValue()],
@@ -300,6 +329,7 @@ local overrideSoundOptionsFn = null
 
 let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
   name = "sound"
+  isInfoOnTheRight = true
   options = [
     [USEROPT_SOUND_ENABLE, "switchbox", is_platform_pc],
     [USEROPT_CUSTOM_SOUND_MODS, "switchbox", is_platform_pc && hasCustomSoundMods()],
@@ -331,6 +361,7 @@ let getVoicechatOptions = function() {
   let voiceOptions = {
     name = "voicechat"
     fillFuncName = "fillVoiceChatOptions"
+    isInfoOnTheRight = true
     options = [
       [USEROPT_VOICE_CHAT, "spinner"],
       [USEROPT_VOLUME_VOICE_IN, "slider"],
@@ -350,6 +381,7 @@ let getVoicechatOptions = function() {
 let getInternetRadioOptions = @() {
   name = "internet_radio"
   fillFuncName = "fillInternetRadioOptions"
+  isInfoOnTheRight = true
   options = [
     [USEROPT_INTERNET_RADIO_ACTIVE, "spinner"],
     [USEROPT_INTERNET_RADIO_STATION, "combobox"],

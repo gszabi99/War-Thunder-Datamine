@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -144,12 +143,12 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       this.filteredUnits.append(unit)
     }
 
-    local data = ""
+    let data = []
     foreach (unit in this.filteredUnits)
-      data += format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
-        buildUnitSlot(unit.name, unit, this.getUnitItemParams(unit)))
+      data.append(format("unitItemContainer{id:t='cont_%s' %s}", unit.name,
+        buildUnitSlot(unit.name, unit, this.getUnitItemParams(unit))))
 
-    return data
+    return "".join(data)
   }
 
   function fillUnitsList() {

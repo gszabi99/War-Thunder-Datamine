@@ -19,6 +19,7 @@ let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
 let { fullScreenBlurPanel } = require("%rGui/components/blurPanel.nut")
 let tankSightPreview = require("%rGui/tankSightPreview.nut")
+let wwMap = require("%rGui/wwMap/wwMap.nut")
 
 let widgetsMap = {
   [DargWidgets.HUD] = function() {
@@ -87,7 +88,8 @@ let widgetsMap = {
     ]
   },
 
-  [DargWidgets.TANK_SIGHT_SETTINGS] = @() tankSightPreview
+  [DargWidgets.TANK_SIGHT_SETTINGS] = @() tankSightPreview,
+  [DargWidgets.WORLDWAR_MAP] = wwMap
 }
 
 // A stub to enable hover functionality

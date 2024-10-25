@@ -218,7 +218,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
       let unitTotalGunners = isUnitCompatible ? (unit?.gunnersCount ?? 0) : 0
       let crewExpGunners = getCrewSkillValue(crewId, unit, "gunner", "members")
       let curGunners = min(crewExpGunners, unitTotalGunners)
-      local text = curGunners + loc("ui/slash") + unitTotalGunners
+      local text = "".concat(curGunners, loc("ui/slash"), unitTotalGunners)
       if (isUnitCompatible) {
         let color = crewExpGunners < unitTotalGunners ? "badTextColor" : "goodTextColor"
         text = colorize(color, text)

@@ -1,4 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -31,7 +34,7 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
 
   function updateStats() {
     ::g_qi_view_utils.updateViewByCountries(this.statsObj, this.queue, this.curClusterName)
-    let countrySets = ::events.getAllCountriesSets(this.event)
+    let countrySets = events.getAllCountriesSets(this.event)
     if (!u.isEqual(this.visibleCountrySets, countrySets))
       this.fillCountrySets(countrySets)
     this.updateCustomModeCheckbox()
@@ -106,7 +109,7 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
 
   function createClustersList() {
     let clustersObj = this.scene.findObject("clusters_list")
-    if (::events.isMultiCluster(this.event)) {
+    if (events.isMultiCluster(this.event)) {
       clustersObj.show(false)
       clustersObj.enable(false)
       return

@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hasFakeRecipesInList } = require("%scripts/items/exchangeRecipes.nut")
@@ -103,7 +104,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       obj = this.getUsableRecipeObjs().map(@(r) { obj = r, hasArrow = true })
       text = loc("workshop/tutorial/selectRecipe")
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      shortcut = GAMEPAD_ENTER_SHORTCUT
       cb = @() this.selectRecipe()
     },
     {
@@ -112,7 +113,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         button_name = this.buttonText
       })
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      shortcut = GAMEPAD_ENTER_SHORTCUT
       cb = @() this.onRecipeApply()
     }]
     ::gui_modal_tutor(steps, this, true)
@@ -160,7 +161,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local btnText = loc(this.curRecipe.getActionButtonLocId() ?? this.buttonText)
     if (this.curRecipe.hasCraftTime())
-      btnText += " " + loc("ui/parentheses", { text = this.curRecipe.getCraftTimeText() })
+      btnText = " ".concat(btnText, loc("ui/parentheses", { text = this.curRecipe.getCraftTimeText() }))
     btnObj.setValue(btnText)
 
     if (!this.needMarkRecipes)

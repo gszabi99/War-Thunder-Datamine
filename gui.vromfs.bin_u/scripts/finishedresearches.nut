@@ -12,6 +12,7 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { register_command } = require("console")
+let { isUnitBought } = require("%scripts/unit/unitInfo.nut")
 
 let researched_items_table = persist("researched_items_table", @() [])
 let abandoned_researched_items_for_session = persist("abandoned_researched_items_for_session", @() [])
@@ -204,7 +205,7 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    let isBought = ::isUnitBought(this.unit)
+    let isBought = isUnitBought(this.unit)
     let isUsable = ::isUnitUsable(this.unit)
 
     showObjById("btn_buy", !isBought, this.scene)
@@ -234,4 +235,7 @@ register_command(
     prevUnit = "v_156_b1", country = "country_britain"}),
   "showUnitFinishedResearchWnd")
 
-
+register_command(
+  @() guiStartChooseNextResearch({
+    name = "v_156_b1", prevMod = "new_radiator"}),
+  "showModificationFinishedResearchWnd")

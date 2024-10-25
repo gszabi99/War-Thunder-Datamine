@@ -1,6 +1,7 @@
 //-file:plus-string
 from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
 let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -608,7 +609,7 @@ dmViewer = {
       obj = listObj.getChild(modeId)
       text = loc($"dm_viewer/tutor/{modeName}")
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      shortcut = GAMEPAD_ENTER_SHORTCUT
       cb = @() listObj?.isValid() && listObj.setValue(modeId)
     }]
     ::gui_modal_tutor(steps, handler, true)
@@ -844,7 +845,7 @@ dmViewer = {
     foreach (re in this.prepareNameId)
       nameId = re.pattern.replace(re.replace, nameId)
     if (nameId == "gunner")
-      nameId += "_" + getUnitTypeTextByUnit(this.unit).tolower()
+      nameId = "_".concat(nameId, getUnitTypeTextByUnit(this.unit).tolower())
     return nameId
   }
 
@@ -1042,8 +1043,12 @@ dmViewer = {
   }
 
   function findBlockByNameWithParamValue(blk, blockName, paramName, paramValue) {
-    if (blk.getBlockByName(blockName)?[paramName] == paramValue)
-      return true
+    for (local b = 0; b < blk.blockCount(); b++) {
+      let block = blk.getBlock(b)
+      if (block.getBlockName() == blockName)
+        if (block?[paramName] == paramValue)
+          return true
+    }
     for (local b = 0; b < blk.blockCount(); b++)
       if (this.findBlockByNameWithParamValue(blk.getBlock(b), blockName, paramName, paramValue))
         return true
@@ -1056,7 +1061,7 @@ dmViewer = {
       if (sensorPropsBlk.getBool(format("band%d", band), false))
         bandsIndexes.append(band)
 
-    local bands = indent + loc("radar_freq_band") + loc("ui/colon")
+    local bands = "".concat(indent, loc("radar_freq_band"), loc("ui/colon"))
     if (bandsIndexes.len() > 1) {
       local bandStart = null
       for (local i = 0; i < bandsIndexes.len(); ++i) {
@@ -1067,18 +1072,20 @@ dmViewer = {
           let bandPrev = bandsIndexes[i - 1]
           if (band > bandPrev + 1) {
             if (bandPrev > bandStart)
-              bands = bands + loc(format("radar_freq_band_%d", bandStart)) + "-" + loc(format("radar_freq_band_%d", bandPrev)) + ", "
+              bands = "".concat(bands, loc(format("radar_freq_band_%d", bandStart)), "-",
+                loc(format("radar_freq_band_%d", bandPrev)), ", ")
             else
-              bands = bands + loc(format("radar_freq_band_%d", bandStart)) + ", "
+              bands = "".concat(bands, loc(format("radar_freq_band_%d", bandStart)), ", ")
             bandStart = band
           }
         }
       }
       let bandLast = bandsIndexes[bandsIndexes.len() - 1]
       if (bandLast > bandStart)
-        bands = bands + loc(format("radar_freq_band_%d", bandStart)) + "-" + loc(format("radar_freq_band_%d", bandLast)) + " "
+        bands = "".concat(bands, loc(format("radar_freq_band_%d", bandStart)), "-",
+          loc(format("radar_freq_band_%d", bandLast)), " ")
       else
-        bands = bands + loc(format("radar_freq_band_%d", bandStart)) + " "
+        bands = "".concat(bands, loc(format("radar_freq_band_%d", bandStart)), " ")
     }
     else
       bands = bands + loc(format("radar_freq_band_%d", bandsIndexes[0]))
@@ -1086,46 +1093,6 @@ dmViewer = {
 
     let rangeMax = sensorPropsBlk.getReal("range", 0.0)
     desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
-
-    let detectTracking = sensorPropsBlk.getBool("detectTracking", true)
-    let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
-    local rangeFinder = false
-    foreach (rangeFinderParamName in ["targetRangeFinder", "searchRangeFinder", "trackRangeFinder", "launchRangeFinder"])
-      if (sensorPropsBlk.getBool(rangeFinderParamName, false)) {
-        rangeFinder = true
-        break
-      }
-    let iff = sensorPropsBlk.getBool("friendFoeId", false)
-
-    local launchingThreatTypes = {}
-    let groupsBlk = sensorPropsBlk.getBlockByName("groups")
-    if (!detectLaunch)
-      for (local g = 0; g < (groupsBlk?.blockCount() ?? 0); g++) {
-        let groupBlk = groupsBlk.getBlock(g)
-        let detectGroupLaunching = !detectLaunch && groupBlk.getBool("detectLaunch", false)
-        for (local t = 0; t < groupBlk.paramCount(); ++t)
-          if (groupBlk.getParamName(t) == "type") {
-            let threatType = groupBlk.getParamValue(t)
-            if (detectGroupLaunching)
-              if (!launchingThreatTypes?[threatType])
-                launchingThreatTypes[threatType] <- true
-          }
-      }
-
-    if (sensorPropsBlk.getBool("targetTracking", false))
-      desc.append(indent + loc("rwr_tracked_threats_max") + loc("ui/colon") + format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16)))
-
-    if (detectTracking)
-      desc.append(indent + loc("rwr_tracking_detection"))
-
-    if (detectLaunch || launchingThreatTypes.len() > 3)
-      desc.append(indent + loc("rwr_launch_detection"))
-
-    if (rangeFinder)
-      desc.append(indent + loc("rwr_signal_strength"))
-
-    if (iff)
-      desc.append(indent + loc("rwr_iff"))
 
     local targetsDirectionGroups = {}
     let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")
@@ -1142,6 +1109,69 @@ dmViewer = {
     let targetsPresenceGroupsCount = targetsPresenceGroupsBlk?.blockCount() ?? 0
     if (targetsPresenceGroupsCount > 1)
       desc.append(indent + loc("rwr_present_id_threats_types") + loc("ui/colon") + format("%d", targetsPresenceGroupsCount))
+
+    if (sensorPropsBlk.getBool("targetTracking", false))
+      desc.append(indent + loc("rwr_tracked_threats_max") + loc("ui/colon") + format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16)))
+
+    if (sensorPropsBlk.getBool("detectTracking", true))
+      desc.append(indent + loc("rwr_tracking_detection"))
+
+    let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
+    local launchingThreatTypes = {}
+
+    if (!detectLaunch) {
+      local groupsMap = {}
+      let groupsBlk = sensorPropsBlk.getBlockByName("groups")
+      for (local g = 0; g < (groupsBlk?.blockCount() ?? 0); g++) {
+        let groupBlk = groupsBlk.getBlock(g)
+        groupsMap[groupBlk.getStr("name", "")] <- groupBlk
+      }
+
+      for (local d = 0; d < (targetsDirectionGroupsBlk?.blockCount() ?? 0); d++) {
+        let targetsDirectionGroupBlk = targetsDirectionGroupsBlk.getBlock(d)
+        let targetsDirectionGroupText = targetsDirectionGroupBlk.getStr("text", "")
+        for (local g = 0; g < targetsDirectionGroupBlk.paramCount(); ++g)
+          if (targetsDirectionGroupBlk.getParamName(g) == "group") {
+            let groupName = targetsDirectionGroupBlk.getParamValue(g)
+            if (groupsMap?[groupName]?.getBool("detectLaunch", false) ?? false)
+              if (!launchingThreatTypes?[targetsDirectionGroupText]) {
+                launchingThreatTypes[targetsDirectionGroupText] <- true
+                break
+              }
+          }
+      }
+
+      for (local p = 0; p < (targetsPresenceGroupsBlk?.blockCount() ?? 0); p++) {
+        let targetsPresenceGroupBlk = targetsPresenceGroupsBlk.getBlock(p)
+        let targetsPresenceGroupText = targetsPresenceGroupBlk.getStr("text", "")
+        for (local g = 0; g < targetsPresenceGroupBlk.paramCount(); ++g)
+          if (targetsPresenceGroupBlk.getParamName(g) == "group") {
+            let groupName = targetsPresenceGroupBlk.getParamValue(g)
+            if (groupsMap?[groupName]?.getBool("detectLaunch", false) ?? false)
+              if (!launchingThreatTypes?[targetsPresenceGroupText]) {
+                launchingThreatTypes[targetsPresenceGroupText] <- true
+                break
+              }
+          }
+      }
+    }
+
+    if (detectLaunch)
+      desc.append(indent + loc("rwr_launch_detection"))
+    else if (launchingThreatTypes.len() > 1)
+      desc.append(indent + loc("rwr_launch_detection") + loc("ui/colon") + format("%d", launchingThreatTypes.len()))
+
+    local rangeFinder = false
+    foreach (rangeFinderParamName in ["targetRangeFinder", "searchRangeFinder", "trackRangeFinder", "launchRangeFinder"])
+      if (sensorPropsBlk.getBool(rangeFinderParamName, false)) {
+        rangeFinder = true
+        break
+      }
+    if (rangeFinder)
+      desc.append(indent + loc("rwr_signal_strength"))
+
+    if (sensorPropsBlk.getBool("friendFoeId", false))
+      desc.append(indent + loc("rwr_iff"))
   }
 
   function addRadarDescription(sensorPropsBlk, indent, desc) {
@@ -1240,7 +1270,7 @@ dmViewer = {
       radarType =$"{radarType}tv"
     }
     if (isSearchRadar && isTrackRadar)
-      radarType = "" + radarType
+      radarType = $"{radarType}"
     else if (isSearchRadar)
       radarType = $"search_{radarType}"
     else if (isTrackRadar) {
@@ -1404,7 +1434,7 @@ dmViewer = {
             desc.append(this.getEngineModelName(infoBlk))
 
             let enginePartId = infoBlk?.part_id ?? ("Engine" + partIndex.tostring())
-            let engineTypeId = "EngineType" + (fmBlk?[enginePartId].Type ?? -1).tostring()
+            let engineTypeId = "".concat("EngineType", (fmBlk?[enginePartId].Type ?? -1).tostring())
             local engineBlk = fmBlk?[engineTypeId] ?? fmBlk?[enginePartId]
             if (!engineBlk) { // try to find booster
               local numEngines = 0
@@ -1604,7 +1634,7 @@ dmViewer = {
       if (stowageInfo.firstStageCount) {
         local txt = loc(isShipOrBoat ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage")
         if (this.unit.isTank())
-          txt += loc("ui/comma") + stowageInfo.firstStageCount + " " + loc("measureUnits/pcs")
+          txt = "".concat(txt, loc("ui/comma"), stowageInfo.firstStageCount, " ", loc("measureUnits/pcs"))
         desc.append(txt)
       }
       if (stowageInfo.isAutoLoad)
@@ -1882,7 +1912,7 @@ dmViewer = {
     else if (partId in armorPartsIds) {
       let info = this.getModernArmorParamsByDmPartName(partName)
 
-      let strUnits = nbsp + loc("measureUnits/mm")
+      let strUnits = $"{nbsp}{loc("measureUnits/mm")}"
       let strBullet = loc("ui/bullet")
       let strColon  = loc("ui/colon")
 
@@ -1913,7 +1943,8 @@ dmViewer = {
           if (u.isFloat(layer?.armorThickness) && layer.armorThickness > 0)
             thicknessText = round(layer.armorThickness).tostring()
           else if (u.isPoint2(layer?.armorThickness) && layer.armorThickness.x > 0 && layer.armorThickness.y > 0)
-            thicknessText = round(layer.armorThickness.x).tostring() + loc("ui/mdash") + round(layer.armorThickness.y).tostring()
+            thicknessText = "".concat(round(layer.armorThickness.x), loc("ui/mdash"),
+              round(layer.armorThickness.y))
           if (thicknessText != "")
             thicknessText = loc("ui/parentheses/space", { text = thicknessText + strUnits })
           texts.append(strBullet + this.getPartNameLocText(layer?.armorClass) + thicknessText)

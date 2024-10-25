@@ -244,12 +244,6 @@
       "composite_armor_hull_04_dm": {
         "armorThickness": 20.0,
         "hidableInXrayViewer": true
-      },
-      "firewall_armor_01_dm": {
-        "armorThickness": 35.0,
-        "hp": 150.0,
-        "ignoreDeadWithSplash": true,
-        "armorEffectiveThicknessMax": 50.0
       }
     },
     "turret": {
@@ -601,6 +595,10 @@
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
       },
@@ -1464,34 +1462,6 @@
     }
   },
   "xray_viewer_data": {
-    "armorArrayTurret": [
-      {
-        "xrayDmPart": "firewall_armor_01_dm",
-        "titleLoc": "RHA_tank_modern",
-        "armorArrayText": {
-          "layer": {
-            "dmPart": "firewall_armor_01_dm"
-          }
-        }
-      },
-      {
-        "xrayDmPart": "composite_armor_turret_01_dm",
-        "titleLoc": "spaced_armor",
-        "armorArrayText": {
-          "layer": [
-            {
-              "dmPart": "turret_side_dm"
-            },
-            {
-              "dmPart": "composite_armor_turret_01_dm"
-            },
-            {
-              "dmPart": "turret_05_side_dm"
-            }
-          ]
-        }
-      }
-    ],
     "armorArrayHullTop": [
       {
         "xrayDmPart": "composite_armor_hull_01_dm",
@@ -1550,6 +1520,23 @@
         }
       }
     ],
+    "armorArrayTurret": {
+      "xrayDmPart": "composite_armor_turret_01_dm",
+      "titleLoc": "spaced_armor",
+      "armorArrayText": {
+        "layer": [
+          {
+            "dmPart": "turret_side_dm"
+          },
+          {
+            "dmPart": "composite_armor_turret_01_dm"
+          },
+          {
+            "dmPart": "turret_05_side_dm"
+          }
+        ]
+      }
+    },
     "armorArrayTurretBack": [
       {
         "xrayDmPart": "composite_armor_turret_02_dm",
@@ -1590,8 +1577,7 @@
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
           "layer": {
-            "dmPart": "composite_armor_turret_04_dm",
-            "xrayTextThickness": 12.7
+            "dmPart": "composite_armor_turret_04_dm"
           }
         }
       }
@@ -1796,7 +1782,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/152mm_XM150E5_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/152mm_XM150E6_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shotFreq": 0.1334,
@@ -2322,6 +2308,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2340,6 +2327,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2497,7 +2485,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2645,6 +2633,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2652,6 +2641,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2659,6 +2649,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2666,6 +2657,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2673,6 +2665,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2680,7 +2673,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2700,7 +2693,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2720,7 +2713,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2734,7 +2727,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2754,7 +2747,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2774,7 +2767,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -2852,6 +2845,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false
@@ -2928,7 +2922,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/152mm_XM150E5_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/152mm_XM150E6_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shotFreq": 0.1334,

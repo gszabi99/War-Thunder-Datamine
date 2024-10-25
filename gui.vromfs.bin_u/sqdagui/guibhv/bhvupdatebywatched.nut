@@ -9,7 +9,7 @@ let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")
     updateFunc - method for update object by watched value
 */
 
-local function assertOnce(_uniqId, errorText) {
+local assertOnce = function(_uniqId, errorText) {
   throw(errorText)
 }
 

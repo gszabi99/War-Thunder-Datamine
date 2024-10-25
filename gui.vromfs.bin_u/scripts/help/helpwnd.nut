@@ -347,15 +347,15 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             text;
         }
 
-        scText = loc((isAxis ? "controls/" : "hotkeys/") + name) + loc("ui/colon") + scText
+        scText = "".concat(loc((isAxis ? "controls/" : "hotkeys/") + name), loc("ui/colon"), scText)
 
         foreach (btnName, isMain in btnList)
           if (btnName in tipTexts) {
             tipTexts[btnName].isMain = tipTexts[btnName].isMain || isMain
             if (isMain)
-              tipTexts[btnName].text = scText + "\n" + tipTexts[btnName].text
+              tipTexts[btnName].text =  "\n".concat(scText, tipTexts[btnName].text)
             else
-              tipTexts[btnName].text += "\n" + scText
+              tipTexts[btnName].text = "\n".concat(tipTexts[btnName].text, scText)
           }
           else
             tipTexts[btnName] <- { text = scText, isMain = isMain }
@@ -368,7 +368,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let view = { texts = [] }
     foreach (_idx, textsArr in scTextFull)
       view.texts.append({
-        width = 100.0 / (scTextFull.len() || 1) + "%pw"
+        width = "".concat(100.0 / (scTextFull.len() || 1), "%pw")
         viewclass = "parInvert"
         text = "\n".join(textsArr, true)
       })
@@ -550,7 +550,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         }
         title = title.len() ? title : "---"
         tooltip = tooltip.len() ? tooltip : loc("controls/unmapped")
-        tooltip = loc("controls/help/press") + loc("ui/colon") + "\n" + tooltip
+        tooltip = "".concat(loc("controls/help/press"), loc("ui/colon"), "\n", tooltip)
         tObj.setValue(title)
         tObj.tooltip = tooltip
       }
@@ -574,16 +574,16 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         for (local a = 0; a < actionsX.len(); a++)
           tooltipX += (tooltipX.len() ? "\n" : "") + bullet + loc("controls/" + actionsX[a])
         tooltipX = tooltipX.len() ? tooltipX : loc("controls/unmapped")
-        tooltipX = loc("controls/help/mouse_aim_x") + loc("ui/colon") + "\n" + tooltipX
+        tooltipX = "".concat(loc("controls/help/mouse_aim_x"), loc("ui/colon"), "\n", tooltipX)
 
         local tooltipY = ""
         for (local a = 0; a < actionsY.len(); a++)
           tooltipY += (tooltipY.len() ? "\n" : "") + bullet + loc("controls/" + actionsY[a])
         tooltipY = tooltipY.len() ? tooltipY : loc("controls/unmapped")
-        tooltipY = loc("controls/help/mouse_aim_y") + loc("ui/colon") + "\n" + tooltipY
+        tooltipY = "".concat(loc("controls/help/mouse_aim_y"), loc("ui/colon"), "\n", tooltipY)
 
         let title = $"{titleX} + {titleY}"
-        let tooltip = tooltipX + "\n\n" + tooltipY
+        let tooltip =  "\n\n".concat(tooltipX, tooltipY)
         tObj.setValue(title)
         tObj.tooltip = tooltip
       }
@@ -593,7 +593,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(tObj)) {
       let title = loc(helpMarkup.btnBackLocId)
       tObj.setValue(title)
-      tObj.tooltip = loc("controls/help/press") + loc("ui/colon") + "\n" + title
+      tObj.tooltip = "".concat(loc("controls/help/press"), loc("ui/colon"), "\n", title)
     }
 
     let mouseObj = this.scene.findObject("joy_mouse")
@@ -604,9 +604,9 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let titleX = loc(mouse_aim_x)
       let titleY = loc(mouse_aim_y)
       let title = $"{titleX} + {titleY}"
-      let tooltipX = loc("controls/help/mouse_aim_x") + loc("ui/colon") + "\n" + loc(mouse_aim_x)
-      let tooltipY = loc("controls/help/mouse_aim_y") + loc("ui/colon") + "\n" + loc(mouse_aim_y)
-      let tooltip = tooltipX + "\n\n" + tooltipY
+      let tooltipX = "".concat(loc("controls/help/mouse_aim_x"), loc("ui/colon"), "\n", loc(mouse_aim_x))
+      let tooltipY = "".concat(loc("controls/help/mouse_aim_y"), loc("ui/colon"), "\n", loc(mouse_aim_y))
+      let tooltip =  "\n\n".concat(tooltipX, tooltipY)
       mouseObj.setValue(title)
       mouseObj.tooltip = tooltip
     }

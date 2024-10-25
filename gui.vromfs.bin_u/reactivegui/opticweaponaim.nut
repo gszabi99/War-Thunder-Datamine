@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/logs.nut" import logerr
 
 let { GuidanceLockResult } = require("guidanceConstants")
 
@@ -8,26 +9,30 @@ let { GuidanceLockResult } = require("guidanceConstants")
 //
 // |__   __|
 //
-let cornersLines = @(tSize, colorTracker) function() {
-  let ss = tSize * 3.0
-  let k = 0.28 * ss
-  let o = tSize * 1.5
+let cornersLines = @(width, height, colorTracker) function() {
+  let w = 1.5 * width
+  let h = 1.5 * height
+  let lX = width * 0.84
+  let lY = height * 0.84
+
   return {
     lineWidth = hdpx(LINE_WIDTH * 1.75)
-    size = [1, 1]
+    size = [sw(100), sh(100)]
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = Color(0, 0, 0, 0)
     color = colorTracker
     commands = [
-      [VECTOR_LINE, 0 - o, 0 - o, k - o, 0 - o],
-      [VECTOR_LINE, 0 - o, 0 - o, 0 - o, k - o],
-      [VECTOR_LINE, ss - o, 0 - o, ss - k - o, 0 - o],
-      [VECTOR_LINE, ss - o, 0 - o, ss - o, k - o],
+      [VECTOR_LINE, -w, h, -w + lX, h],   // left bottom
+      [VECTOR_LINE, 0- w, h, -w, h - lY],
 
-      [VECTOR_LINE, 0 - o, ss - o, k - o, ss - o],
-      [VECTOR_LINE, 0 - o, ss - o, 0 - o, ss - k - o],
-      [VECTOR_LINE, ss - o, ss - o, ss - k - o, ss - o],
-      [VECTOR_LINE, ss - o, ss - o, ss - o, ss - k - o],
+      [VECTOR_LINE, w, h, w - lX, h],   // right bottom
+      [VECTOR_LINE, w, h, w, h - lY],
+
+      [VECTOR_LINE, -w, -h, -w + lX, -h],   // left top
+      [VECTOR_LINE, -w, -h, -w, -h + lY],
+
+      [VECTOR_LINE, w, -h, w - lX, -h],   // right top
+      [VECTOR_LINE, w, -h, w, -h + lY],
     ]
   }
 }
@@ -45,20 +50,25 @@ function() {
         watch = TrackerVisible
       }
 
-    let minMarkSize = hdpx(1100);
-    let tSize = TrackerSize.value < minMarkSize ? minMarkSize : TrackerSize.value
+    let minMarkWidth = hdpx(20) / sw(1);
+    local width = TrackerSize.value / sw(1)
+    local height = TrackerSize.value / sh(1)
 
-    let ss = tSize * 0.5
+    if (width < minMarkWidth) {
+      height = minMarkWidth / sh(1) * sw(1)
+      width = minMarkWidth
+    }
+
     let squareMark = [
-      [VECTOR_RECTANGLE, -ss, -ss, 2.0 * ss, 2.0 * ss],
+      [VECTOR_RECTANGLE, -width * 0.5, -height * 0.5, width, height],
     ]
 
     let trackingMark = [
-      [VECTOR_RECTANGLE, -tSize, -tSize, 2.0 * tSize, 2.0 * tSize],
-      [VECTOR_LINE, 0, -0.33 * tSize, 0, -tSize],
-      [VECTOR_LINE, 0, 0.33 * tSize, 0, tSize],
-      [VECTOR_LINE, -0.33 * tSize, 0, -tSize, 0],
-      [VECTOR_LINE, 0.33 * tSize, 0, tSize, 0]
+      [VECTOR_RECTANGLE, -0.5 * width, -0.5 * height, width, height],
+      [VECTOR_LINE, 0, -0.165 * height, 0, -0.5*height],
+      [VECTOR_LINE, 0, 0.165 * height, 0, 0.5*height],
+      [VECTOR_LINE, -0.165 * width, 0, -0.5*width, 0],
+      [VECTOR_LINE, 0.165 * width, 0, 0.5*width, 0]
     ]
 
     let colorTracker = color_watched.value
@@ -73,7 +83,7 @@ function() {
     return {
       halign = ALIGN_LEFT
       valign = ALIGN_TOP
-      size = [1, 1]
+      size = [sw(100), sh(100)]
       pos = [TrackerX.value, TrackerY.value]
 
       watch = [color_watched, alert_color_watched, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible, TrackerSize, TrackerX, TrackerY]
@@ -82,7 +92,7 @@ function() {
       fillColor = Color(0, 0, 0, 0)
       lineWidth = hdpx(LINE_WIDTH * 0.25)
       commands = isTrack ? (trackingMark) : (hasSquare && !isSquareBlink ? squareMark : null)
-      children = (!isTrack && show_tps_sight) ? [cornersLines(tSize, colorTracker)] : null
+      children = (!isTrack && show_tps_sight) ? [cornersLines(width, height, colorTracker)] : null
     }
   }
 

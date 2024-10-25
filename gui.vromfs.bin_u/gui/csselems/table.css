@@ -2,6 +2,11 @@
 @const rowFocusBackgroundColor: #332C2C2C;
 @const rowFocusForegroundColor: #C6AEAEAE;
 
+@const optContainerRightCellWidth:  450@sf/@pf;
+@const optContainerCellEdgePadding: 27@sf/@pf;
+@const optCellSeparatorMargin:      12@sf/@pf;
+@const optContainerControlWidth:    pw-@optContainerCellEdgePadding-@optCellSeparatorMargin ;
+
 optiontext {
   min-width:pw-1*@scrn_tgt/100.0;   text-align:right;
   font:@option_font;
@@ -13,8 +18,12 @@ optionBlockHeader {
   min-width:pw-1*@scrn_tgt/100.0;
   text-align:left;
   font:@mis_chapter_font;
-  color:@chapterUnlockedColor;
-  padding-left:0.08@sf;
+  color:@activeTextColor;
+}
+
+tr[optContainer=yes][headerRow=yes] optionBlockHeader {
+  position:relative;
+  bottom:0;
 }
 
 dropright[tankBullet=yes] optiontext{
@@ -27,6 +36,11 @@ optiontext[textStyle=textarea] {
   behaviour:textArea;
   re-type:textarea;
   height:ph;
+}
+
+tr[optContainer=yes] optiontext[textStyle=textarea] {
+  text-align:left;
+  max-height:@comboOptContainerHeight;
 }
 
 optionheader {
@@ -814,4 +828,79 @@ table.btlReward[minimized=yes] rewardFormula activeText {
 
 table.btlReward[minimized=yes] > tr[headerRow=yes] textareaNoTab {
   max-width:150@sf/@pf;
+}
+
+tr[optContainer=yes] {
+  size:pw, @optConatainerHeight;
+  margin-top:1@blockInterval;
+  behavior:massTransparency;
+  transp-end:170;
+}
+
+tr[optContainer=yes][headerRow=yes],
+tr[optContainer=yes]:hover {
+  transp-end:255;
+}
+
+tr[optContainer=yes]:hover {
+  background-color:@rowHoverBackgroundColor;
+}
+
+tr[optContainer=yes] > optionHeaderLine {
+  position:absolute;
+  top:ph-h;
+  background-color:@separatorBlockColor;
+  size:pw,2@dp;
+}
+
+
+tr[optContainer=yes] > td[cellType=left] {
+  padding-left:@optContainerCellEdgePadding;
+}
+
+tr[optContainer=yes] > td[cellType=left] optiontext {
+  width:pw;
+}
+
+tr[optContainer=yes] > td {
+  height:@optConatainerHeight;
+}
+
+tr[optContainer=yes] > td[cellType=right] {
+  max-width:@optContainerRightCellWidth;
+}
+
+optionsBoxRightScroll[alignMode=left] tr[optContainer=yes] > td[cellType=right] {
+  max-width:fw;
+}
+
+optionsBoxRightScroll[alignMode=left] tr[optContainer=yes] > td[cellType=left] optiontext {
+  text-align:left;
+}
+
+optionsBoxRightScroll[alignMode=center] tr[optContainer=yes] > td[cellType=left] > optiontext {
+  text-align:right;
+}
+
+tr[optContainer=yes][headerRow=yes] {
+  height:@optConatainerHeight;
+  padding-top:0;
+  background-color:@transparent;
+}
+
+tr[optContainer=yes] > td[cellType=right] ,
+tr[optContainer=yes][headerRow=yes] > td {
+  padding-left:0;
+}
+
+tr[optContainer=yes] > td[cellType=left] {
+  padding-right:@optCellSeparatorMargin;
+}
+
+tr[optContainer=yes] > td > cellSeparator  {
+  position:absolute;
+  size:1@dp, 0.75ph;
+  valign:center;
+  background-color:@separatorBlockColor;
+  margin-right:@optCellSeparatorMargin;
 }

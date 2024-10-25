@@ -1,5 +1,6 @@
 from "auth_wt" import getCountryCode
 from "%globalScripts/logs.nut" import *
+from "%sqstd/string.nut" import utf8ToLower
 
 //
 // Dirty Words checker.
@@ -9,6 +10,8 @@ from "%globalScripts/logs.nut" import *
 // Result: "Полный ******, почему-то не работают ******** закрылки!"
 // checkPhrase("Why did you fucking shot me, bastard?")
 // Result: "Why did you ******* shot me, *******?"
+// checkPhrase("我们要他妈敌方队伍")
+// Result: "我们要****敌方队伍"
 // checkPhrase("何かがおかしい慰安婦フラップが壊れています")
 // Result: "何かがおかしい******フラップが壊れています"
 //
@@ -18,7 +21,7 @@ let utf8 = require("utf8")
 
 local debugLogFunc = null
 
-local dict = {
+let dict = {
   excludesdata    = null
   excludescore    = null
   foulcore        = null
@@ -27,34 +30,44 @@ local dict = {
   badcombination  = null
 }
 
-local dictAsian = {
-  badsegments     = null
+let dictAsian = {
+  badsegments           = {}
+  forbiddennamesegments = {}
 }
 
 local pendingDict = null
+local pendingDictAsian = null
 
 let toRegexpFunc = {
   default = @(str) regexp2(str)
   badcombination = @(str) regexp2("".concat("(", "\\s".join(str.split(" ").filter(@(w) w != "")), ")"))
 }
 
+function updateAsianDict(lookupTbl, upd) {
+  foreach (k, v in upd) {
+    if (k not in lookupTbl)
+      lookupTbl[k] <- []
+    lookupTbl[k].extend(v.filter(@(w) !lookupTbl[k].contains(w)))
+  }
+}
+
 // Collect language tables
-local function init(langSources) {
+function init(langSources) {
   let myLocation = getCountryCode()
   let isMyLocationKnown = myLocation != "" // is true only after login
   foreach (varName, _val in dict) {
     dict[varName] = []
     let mkRegexp = toRegexpFunc?[varName] ?? toRegexpFunc.default
     foreach (source in langSources) {
-      foreach (_i, vSrc in (source?[varName] ?? [])) {
+      foreach (vSrc in (source?[varName] ?? [])) {
         local v
-        local hasRegion = false
+        local hasRegions = false
         let tVSrc = type(vSrc)
         if (tVSrc == "string")
           v = mkRegexp(vSrc)
         else if (tVSrc == "table") {
-          hasRegion = "region" in vSrc
-          if (hasRegion && isMyLocationKnown && !vSrc.region.contains(myLocation))
+          hasRegions = "regions" in vSrc
+          if (hasRegions && isMyLocationKnown && !vSrc.regions.contains(myLocation))
             continue
           v = clone vSrc
           if ("value" in v)
@@ -65,7 +78,7 @@ local function init(langSources) {
         else
           assert(false, "Wrong var type in DirtyWordsFilter config")
 
-        let isPending = hasRegion && !isMyLocationKnown
+        let isPending = hasRegions && !isMyLocationKnown
         if (!isPending)
           dict[varName].append(v)
         else {
@@ -78,20 +91,24 @@ local function init(langSources) {
     }
   }
 
-  foreach (varName, _val in dictAsian) {
-    local res = {}
-    local sources = langSources.map(@(v) v?[varName] ?? {}).sort(@(a, b) b.len() <=> a.len())
-    foreach (src in sources) {
-      if (res.len() == 0)
-        res = src
-      else
-        foreach (k, v in src)
-          if (!(k in res))
-            res[k] <- v
-          else
-            res[k].extend(v.filter(@(value) !res[k].contains(value)))
+  foreach (varName, collection in dictAsian) {
+    foreach (source in langSources) {
+      foreach (cfg in (source?[varName] ?? {})) {
+        let { regions = null, list = {} } = cfg
+        local hasRegions = regions != null
+        if (hasRegions && isMyLocationKnown && !regions.contains(myLocation))
+          continue
+        let isPending = hasRegions && !isMyLocationKnown
+        if (!isPending)
+          updateAsianDict(collection, list)
+        else {
+          pendingDictAsian = pendingDictAsian ?? {}
+          if (varName not in pendingDictAsian)
+            pendingDictAsian[varName] <- []
+          pendingDictAsian[varName].append(cfg)
+        }
+      }
     }
-    dictAsian[varName] = res
   }
 
   foreach (source in langSources)
@@ -99,25 +116,26 @@ local function init(langSources) {
 }
 
 function continueInitAfterLogin() {
-  if (pendingDict == null)
-    return
   let myLocation = getCountryCode()
   if (myLocation == "")
     return
-  foreach (varName, val in pendingDict)
-    foreach (v in val)
-      if (v.region.contains(myLocation))
-        dict[varName].append(v)
-  pendingDict = null
+  if (pendingDict != null) {
+    foreach (varName, val in pendingDict)
+      foreach (v in val)
+        if (v.regions.contains(myLocation))
+          dict[varName].append(v)
+    pendingDict = null
+  }
+  if (pendingDictAsian != null) {
+    foreach (varName, val in pendingDictAsian)
+      foreach (v in val)
+        if (v.regions.contains(myLocation))
+          updateAsianDict(dictAsian[varName], v.list)
+    pendingDictAsian = null
+  }
 }
 
-local alphabet = {
-  upper = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ",
-  lower = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyz"
-};
-
-
-local preparereplace = [
+let preparereplace = [
   {
     pattern = regexp2(@"[\'\-\+\;\.\,\*\?\(\)]")
     replace = " "
@@ -129,10 +147,10 @@ local preparereplace = [
 ];
 
 
-local prepareex = regexp2("(а[х]?)|(в)|([вмт]ы)|(д[ао])|(же)|(за)")
+let prepareex = regexp2("(а[х]?)|(в)|([вмт]ы)|(д[ао])|(же)|(за)")
 
 
-local prepareword = [
+let prepareword = [
   {
     pattern = regexp2("ё")
     replace = "е"
@@ -184,45 +202,45 @@ local prepareword = [
 ];
 
 
-local preparewordwhile = {
+let preparewordwhile = {
   pattern = regexp2(@"(.)\\1\\1")
   replace = "\\1\\1"
 }
 
-local function preparePhrase(text) {
+function preparePhrase(text) {
   local phrase = text
-  local buffer = ""
+  let buffer = []
 
   foreach (p in preparereplace)
     phrase = p.pattern.replace(p.replace, phrase)
 
-  local words = phrase.split(" ")
+  let words = phrase.split(" ")
 
-  local out = []
+  let out = []
 
   foreach (w in words) {
     if (w.len() < 3 && ! prepareex.match(w)) {
-      buffer += w
+      buffer.append(w)
     }
     else {
-      if (buffer != "") {
-        out.append(buffer)
-        buffer = ""
+      if (buffer.len()) {
+        out.append("".join(buffer))
+        buffer.clear()
       }
 
       out.append(w)
     }
   }
 
-  if (buffer != "")
-    out.append(buffer)
+  if (buffer.len())
+    out.append("".join(buffer))
 
   return out
 }
 
-local function prepareWord(word) {
+function prepareWord(word) {
   // convert to lower
-  word = (utf8(word).strtr(alphabet.upper, alphabet.lower)).strip()
+  word = utf8ToLower(word.strip())
 
   // replaces
   foreach (p in prepareword)
@@ -238,7 +256,7 @@ local function prepareWord(word) {
   return word
 }
 
-local function checkRegexps(word, regexps, accuse) {
+function checkRegexps(word, regexps, accuse) {
   foreach (reg in regexps)
     if ((reg?.value ?? reg).match(word)) {
       debugLogFunc?($"DirtyWordsFilter: Word \"{word}\" matched pattern \"{(reg?.value ?? reg).pattern()}\"")
@@ -248,11 +266,11 @@ local function checkRegexps(word, regexps, accuse) {
 }
 
 // Checks that one word is correct.
-local function checkWord(word) {
+function checkWord(word) {
   word = prepareWord(word)
 
   local status = true
-  local fl = utf8(word).slice(0, 1)
+  let fl = utf8(word).slice(0, 1)
 
   if (status)
     status = checkRegexps(word, dict.foulcore, true)
@@ -276,61 +294,66 @@ local function checkWord(word) {
   return status
 }
 
-local function getUnicodeCharsArray(str) {
-  local res = []
-  local utfStr = utf8(str)
+function getUnicodeCharsArray(str) {
+  let res = []
+  let utfStr = utf8(str)
   for (local i = 0; i < utfStr.charCount(); i++) {
-    local char = utfStr.slice(i, i + 1)
+    let char = utfStr.slice(i, i + 1)
     res.append(char)
   }
   return res
 }
 
-local function getMaskedWord(w, maskChar = "*") {
+function getMaskedWord(w, maskChar = "*") {
   return "".join(array(utf8(w).charCount(), maskChar))
 }
 
-// Returns corrected version of phrase.
-local function checkPhrase(text) {
+function checkPhraseInternal(text, isName) {
   local phrase = text
 
   // In Asian languages, there is no spaces to separate words.
   local maskChars = null
-  local charsArray = getUnicodeCharsArray(phrase)
+  let charsArray = getUnicodeCharsArray(phrase)
   foreach (char in charsArray) {
-    foreach (segment in (dictAsian.badsegments?[char] ?? [])) {
-      if (!phrase.contains(segment))
-        continue
-      debugLogFunc?($"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
+    let segmentsLists = [
+      dictAsian.badsegments?[char] ?? []
+      isName ? (dictAsian.forbiddennamesegments?[char] ?? []) : []
+    ]
+    foreach (segmentsList in segmentsLists) {
+      foreach (segment in segmentsList) {
+        if (!phrase.contains(segment))
+          continue
+        debugLogFunc?($"DirtyWordsFilter: Phrase contains segment \"{segment}\"")
 
-      local utfPhrase = utf8(phrase)
-      maskChars = maskChars ?? array(utfPhrase.charCount(), false)
-      local length = utf8(segment).charCount()
-      local startIdx = 0
-      while (true) {
-        local idx = utfPhrase.indexof(segment, startIdx)
-        if (idx == null)
-          break
-        for (local i = idx; i < idx + length; i++)
-          maskChars[i] = true
-        startIdx = idx + length
+        let utfPhrase = utf8(phrase)
+        maskChars = maskChars ?? array(utfPhrase.charCount(), false)
+        let length = utf8(segment).charCount()
+        local startIdx = 0
+        while (true) {
+          let idx = utfPhrase.indexof(segment, startIdx)
+          if (idx == null)
+            break
+          for (local i = idx; i < idx + length; i++) // -w200
+            maskChars[i] = true
+          startIdx = idx + length
+        }
       }
     }
   }
   if (maskChars != null)
     phrase = "".join(charsArray.map(@(c, i) maskChars[i] ? "**" : c))
 
-  local lowerPhrase = phrase.tolower()
+  local lowerPhrase = utf8ToLower(phrase)
   //To match a whole combination of words
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
       debugLogFunc?($"DirtyWordsFilter: Phrase matched pattern \"{pattern.pattern()}\"")
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
-      lowerPhrase = phrase.tolower()
+      lowerPhrase = utf8ToLower(phrase)
     }
 
-  local words = preparePhrase(phrase)
+  let words = preparePhrase(phrase)
 
   foreach (w in words)
     if (!checkWord(w))
@@ -339,26 +362,34 @@ local function checkPhrase(text) {
   return phrase
 }
 
+// Returns censored version of phrase.
+let checkPhrase = @(text) checkPhraseInternal(text, false)
+
 // Checks that phrase is correct.
-local function isPhrasePassing(text) {
-  return checkPhrase(text) == text
-}
+let isPhrasePassing = @(text) checkPhrase(text) == text
+
+// Returns censored version of username.
+let checkName = @(name) checkPhraseInternal(name, true)
+
+// Checks that username is correct.
+let isNamePassing = @(name) checkName(name) == name
 
 // Set debug logging func to enable debug mode, or null to disable it.
-local function setDebugLogFunc(funcOrNull) {
+function setDebugLogFunc(funcOrNull) {
   debugLogFunc = funcOrNull
 }
 
 // This func is for binding a text checking console command, like:
-// register_command(@(text) debugDirtyWordsFilter(text, console_print), "debug.dirty_words_filter")
-function debugDirtyWordsFilter(text, temporaryDebugLogFunc) {
-  let isPassing = isPhrasePassing(text)
+// register_command(@(text) debugDirtyWordsFilter(text, false, console_print), "debug.dirty_words_filter.phrase")
+// register_command(@(text) debugDirtyWordsFilter(text, true,  console_print), "debug.dirty_words_filter.name")
+function debugDirtyWordsFilter(text, isName, temporaryDebugLogFunc) {
+  let isPassing = (isName ? isNamePassing : isPhrasePassing)(text)
   local prevLogFunc = null
   if (!isPassing) {
     prevLogFunc = debugLogFunc
     debugLogFunc = temporaryDebugLogFunc
   }
-  let censoredResult = checkPhrase(text)
+  let censoredResult = (isName ? checkName : checkPhrase)(text)
   if (!isPassing)
     debugLogFunc = prevLogFunc
   temporaryDebugLogFunc("".concat(isPassing ? "(CLEAN)" : "(DIRTY)", " \"", censoredResult, "\""))
@@ -369,6 +400,8 @@ return {
   continueInitAfterLogin
   checkPhrase
   isPhrasePassing
+  checkName
+  isNamePassing
   setDebugLogFunc
   debugDirtyWordsFilter
 }

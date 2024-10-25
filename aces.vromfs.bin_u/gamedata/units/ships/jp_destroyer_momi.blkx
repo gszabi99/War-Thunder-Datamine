@@ -27,7 +27,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_med",
-  "xplosionFx": "explosion_ship_small",
+  "explosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
   "shipsDisableDeadCoverParts": true,
   "smokeScreenActivateTime": 5.0,
@@ -44,6 +44,7 @@
   "isStackRearm": true,
   "depthTraceWarningDepth": 5.0,
   "depthTraceCriticalDepth": 2.0,
+  "debrisPreset": "debris_preset_destroyer",
   "haveAnchor": true,
   "anchorPos": [
     40.78,
@@ -1105,6 +1106,30 @@
         "type": "steeringWheel",
         "turnSpeed": 0.2,
         "node": "bone_roll_driver_r_04",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_05",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_06",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_07",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_08",
         "absoluteValue": true
       }
     ]
@@ -2371,6 +2396,7 @@
     }
   },
   "cockpit": {
+    "headPosOnShootingHeightMult": 1.5,
     "headPos": [
       0.0,
       16.0,
@@ -2984,6 +3010,7 @@
     "event": [
       {
         "name": "engine_fire",
+        "lifetime": 120.0,
         "fx": [
           {
             "name": "ship_fire_medium",
@@ -3004,6 +3031,7 @@
       },
       {
         "name": "compartment_fire",
+        "lifetime": 60.0,
         "fx": {
           "name": "ship_fire_small",
           "centerDmgPart": true,
@@ -3012,6 +3040,7 @@
       },
       {
         "name": "superstructure_fire",
+        "lifetime": 60.0,
         "fx": {
           "name": "ship_fire_small",
           "centerDmgPart": true,
@@ -3020,6 +3049,7 @@
       },
       {
         "name": "turret_fire",
+        "lifetime": 60.0,
         "fx": {
           "name": "ship_fire_small",
           "centerDmgPart": true,
@@ -3028,6 +3058,7 @@
       },
       {
         "name": "fuel_tank_fire",
+        "lifetime": 60.0,
         "fx": {
           "name": "ship_fire_small",
           "centerDmgPart": true,
@@ -3036,6 +3067,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
@@ -3077,6 +3109,7 @@
       },
       {
         "name": "light_smoke",
+        "lifetime": 60.0,
         "fx": [
           {
             "name": "ship_smoke_small",
@@ -3098,6 +3131,7 @@
       },
       {
         "name": "total_smoke",
+        "lifetime": 60.0,
         "fx": [
           {
             "name": "ship_smoke_medium",
@@ -3175,6 +3209,7 @@
       },
       {
         "name": "total_fire",
+        "lifetime": 60.0,
         "fx": [
           {
             "name": "ship_fire_medium",
@@ -3492,6 +3527,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small",
@@ -3530,6 +3566,7 @@
       },
       {
         "name": "big_bang",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
@@ -3568,6 +3605,7 @@
       },
       {
         "name": "ammo_fire_1",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo_second",
@@ -3582,6 +3620,7 @@
       },
       {
         "name": "ammo_fire_2",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo_second",
@@ -3596,6 +3635,7 @@
       },
       {
         "name": "ammo_fire_3",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo_second",
@@ -3610,6 +3650,7 @@
       },
       {
         "name": "ammo_fire_4",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo_second",
@@ -3624,6 +3665,7 @@
       },
       {
         "name": "ammo_explosion_1",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
@@ -3638,6 +3680,7 @@
       },
       {
         "name": "ammo_explosion_2",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
@@ -3652,6 +3695,7 @@
       },
       {
         "name": "ammo_explosion_3",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
@@ -3666,6 +3710,7 @@
       },
       {
         "name": "ammo_explosion_4",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo",
@@ -3680,6 +3725,7 @@
       },
       {
         "name": "torpedo_fire",
+        "lifetime": 20.0,
         "fx": {
           "name": "ship_fire_medium",
           "centerDmgPart": true
@@ -3687,6 +3733,7 @@
       },
       {
         "name": "torpedo_explosion",
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "explosion_ship_small_ammo",

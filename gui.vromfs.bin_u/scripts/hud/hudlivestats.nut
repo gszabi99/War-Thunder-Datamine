@@ -225,7 +225,8 @@ let g_hud_live_stats = {
     else if (this.curViewMode == LIVE_STATS_MODE.SPAWN && !this.isMissionLastManStanding) {
       let txtUnitName = getUnitName(getTblValue("aircraftName", state.player, ""))
       let txtLifetime = time.secondsToString(state.lifetime, true)
-      title = loc("multiplayer/lifetime") + loc("ui/parentheses/space", { text = txtUnitName }) + loc("ui/colon") + txtLifetime
+      title = "".concat(loc("multiplayer/lifetime"),
+        loc("ui/parentheses/space", { text = txtUnitName }), loc("ui/colon"), txtLifetime)
     }
     else if (this.curViewMode == LIVE_STATS_MODE.FINAL || this.isMissionLastManStanding) {
       title = this.isMissionTeamplay ? loc("debriefing/placeInMyTeam") :

@@ -28,7 +28,6 @@
     "endSpeed": 900.0,
     "maxDistance": 6200.0,
     "minDistance": 30.0,
-    "autoaimEnabled": false,
     "effectOffset": [
       -1.06,
       0.0,
@@ -55,6 +54,13 @@
     "explosiveMass": 0.9,
     "spawnExplosionFx": false,
     "spawnExplosionWreckage": false,
+    "explodeTreshold": 0.00001,
+    "rendinstDamageRadius": 6.0,
+    "dragCx": 0.00203,
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "amountPerTier": 19.0,
+    "iconType": "nar_ap_large",
     "explosionEffect": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -107,13 +113,6 @@
       200.0,
       1000.0
     ],
-    "explodeTreshold": 0.00001,
-    "rendinstDamageRadius": 6.0,
-    "dragCx": 0.00203,
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "amountPerTier": 19.0,
-    "iconType": "nar_ap_large",
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -221,6 +220,12 @@
     },
     "shatterDamage": {
       "breachConeAngle": 45.0
+    },
+    "cumulativeDamage": {
+      "armorPower": 290.0,
+      "distance": 3.0,
+      "damage": 300.0,
+      "onHitChanceMultFire": 15.0
     },
     "shatterCollisions": {
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
@@ -411,12 +416,6 @@
           }
         ]
       }
-    },
-    "cumulativeDamage": {
-      "armorPower": 290.0,
-      "distance": 3.0,
-      "damage": 300.0,
-      "onHitChanceMultFire": 15.0
     }
   }
 }

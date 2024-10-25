@@ -32,7 +32,7 @@ function debug_show_test_unlocks(chapter = "test", group = null) {
   foreach (_id, unlock in getAllUnlocks())
     if ((!chapter || unlock?.chapter == chapter) && (!group || unlock.group == group))
       awardsList.append(::build_log_unlock_data({ id = unlock.id }))
-  let titleText = "debug_show_test_unlocks (total: " + awardsList.len() + ")"
+  let titleText = "".concat("debug_show_test_unlocks (total: ", awardsList.len(), ")")
   showUnlocksGroupWnd(awardsList, titleText)
 }
 
@@ -63,7 +63,7 @@ function debug_show_all_streaks() {
     }
   }
 
-  let titleText = "debug_show_all_streaks (total: " + total + ")"
+  let titleText = "".concat("debug_show_all_streaks (total: ", total, ")")
   showUnlocksGroupWnd(awardsList, titleText)
 }
 
@@ -75,7 +75,7 @@ function gen_all_unlocks_desc(showCost = false) {
     local desc = getFullUnlockDesc(cfg)
     if (showCost)
       desc = $"{desc}\n{getUnlockCostText(cfg)}"
-    res += "\n" + unlock.id + ":" + (desc != "" ? "\n" : "") + desc
+    res = "".concat(res, "\n", unlock.id, ":", (desc != "" ? "\n" : ""), desc)
   }
   dlog("GP: res:")
   log(res)

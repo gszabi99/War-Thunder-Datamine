@@ -1,10 +1,10 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
 let { g_team } = require("%scripts/teams.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -103,7 +103,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!event)
       return
 
-    if (::events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
+    if (events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return
 
@@ -135,7 +135,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateWindow()
     this.updateClusters()
 
-    this.scene.findObject("wnd_title").setValue(::events.getEventNameText(this.event))
+    this.scene.findObject("wnd_title").setValue(events.getEventNameText(this.event))
     this.scene.findObject("event_update").setUserData(this)
 
     if (this.selectedIdx != -1) {
@@ -289,7 +289,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let isCurItemInFocus = this.selectedIdx >= 0 && (this.isMouseMode || this.hoveredIdx == this.selectedIdx)
     showObjById("btn_select_console", !isCurItemInFocus && this.hoveredIdx >= 0, this.scene)
 
-    let reasonData = ::events.getCantJoinReasonData(this.event, isCurItemInFocus ? this.getCurRoom() : null)
+    let reasonData = events.getCantJoinReasonData(this.event, isCurItemInFocus ? this.getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
       reasonData.reasonText = loc("multiplayer/no_room_selected")
 
@@ -300,25 +300,25 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let joinButtonObj = showObjById("btn_join_event", isCurItemInFocus && hasRoom, this.scene)
     joinButtonObj.inactiveColor = reasonData.activeJoinButton || isSquadMember ? "no" : "yes"
     joinButtonObj.tooltip = isSquadMember ? reasonData.reasonText : ""
-    let availTeams = ::events.getAvailableTeams(roomMGM)
+    let availTeams = events.getAvailableTeams(roomMGM)
     local startText = ""
     if (isSquadMember)
       startText = loc(isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady")
-    else if (roomMGM && !::events.isEventSymmetricTeams(roomMGM) && availTeams.len() == 1)
+    else if (roomMGM && !events.isEventSymmetricTeams(roomMGM) && availTeams.len() == 1)
       startText = loc("events/join_event_by_team",
         { team = g_team.getTeamByCode(availTeams[0]).getShortName() })
     else
       startText = loc("events/join_event")
 
-    let battlePriceText = ::events.getEventBattleCostText(this.event, "activeTextColor", true, true)
+    let battlePriceText = events.getEventBattleCostText(this.event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0 && reasonData.activeJoinButton)
-      startText += format(" (%s)", battlePriceText)
+      startText = "".concat(startText, format(" (%s)", battlePriceText))
 
     setColoredDoubleTextToButton(this.scene, "btn_join_event", startText)
     let reasonTextObj = showObjById("cant_join_reason", reasonData.reasonText.len() > 0, this.scene)
     reasonTextObj.setValue(reasonData.reasonText)
 
-    showObjById("btn_create_room", ::events.canCreateCustomRoom(this.event), this.scene)
+    showObjById("btn_create_room", events.canCreateCustomRoom(this.event), this.scene)
 
     let isHeader = isCurItemInFocus && this.curChapterId != "" && this.curRoomId == ""
     let collapsedButtonObj = showObjById("btn_collapsed_chapter", isHeader, this.scene)
@@ -355,27 +355,27 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getMGameModeFlags(mGameMode, room, isMultiSlot) {
     local res = eRoomFlags.NONE
-    let teams = ::events.getAvailableTeams(mGameMode)
+    let teams = events.getAvailableTeams(mGameMode)
     if (teams.len() == 0)
       return res
     res = res | eRoomFlags.HAS_COUNTRY
 
-    if ((!isMultiSlot && ::events.isCurUnitMatchesRoomRules(this.event, room))
-        || (isMultiSlot && ::events.checkPlayersCraftsRoomRules(this.event, room))) {
+    if ((!isMultiSlot && events.isCurUnitMatchesRoomRules(this.event, room))
+        || (isMultiSlot && events.checkPlayersCraftsRoomRules(this.event, room))) {
       res = res | eRoomFlags.HAS_UNIT_MATCH_RULES
-      if (::events.checkRequiredUnits(mGameMode, room))
+      if (events.checkRequiredUnits(mGameMode, room))
         res = res | eRoomFlags.HAS_REQUIRED_UNIT
     }
 
-    if ((!isMultiSlot && ::events.checkCurrentCraft(mGameMode))
-        || (isMultiSlot && ::events.checkPlayersCrafts(mGameMode)))
+    if ((!isMultiSlot && events.checkCurrentCraft(mGameMode))
+        || (isMultiSlot && events.checkPlayersCrafts(mGameMode)))
       res = res | eRoomFlags.HAS_AVAILABLE_UNITS
 
-    if (::events.isAllowedByRoomBalance(mGameMode, room))
+    if (events.isAllowedByRoomBalance(mGameMode, room))
       res = res | eRoomFlags.IS_ALLOWED_BY_BALANCE
 
     if (g_squad_manager.isInSquad() && g_squad_manager.isSquadLeader()) {
-      let membersTeams = ::events.getMembersTeamsData(this.event, room, teams)
+      let membersTeams = events.getMembersTeamsData(this.event, room, teams)
       if (!(membersTeams?.haveRestrictions ?? false))
         res = res | eRoomFlags.AVAILABLE_FOR_SQUAD
     }
@@ -387,18 +387,18 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateRoomsFlags(roomsList) {
     local hasChanges = false
-    let isMultiSlot = ::events.isEventMultiSlotEnabled(this.event)
-    let needCheckAvailable = ::events.checkPlayersCrafts(this.event)
-    let teamSize = ::events.getMaxTeamSize(this.event)
+    let isMultiSlot = events.isEventMultiSlotEnabled(this.event)
+    let needCheckAvailable = events.checkPlayersCrafts(this.event)
+    let teamSize = events.getMaxTeamSize(this.event)
     foreach (room in roomsList) {
       let wasFlags = getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
-      let mGameMode = ::events.getMGameMode(this.event, room)
+      let mGameMode = events.getMGameMode(this.event, room)
 
       let countTbl = ::SessionLobby.getMembersCountByTeams(room)
       if (countTbl.total < 2 * teamSize) {
         flags = flags | eRoomFlags.HAS_PLACES
-        let availTeams = ::events.getAvailableTeams(mGameMode)
+        let availTeams = events.getAvailableTeams(mGameMode)
         if (availTeams.len() > 1 || (availTeams.len() && countTbl[availTeams[0]] < teamSize))
           flags = flags | eRoomFlags.HAS_PLACES_IN_MY_TEAM
       }
@@ -406,7 +406,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
       if (reqUnits)
         foreach (rule in reqUnits) {
-          let tier = ::events.getTierNumByRule(rule)
+          let tier = events.getTierNumByRule(rule)
           if (tier > 0) {
             flags = flags | (eRoomFlags.ROOM_TIER >> (min(tier, 5) - 1))
             break
@@ -444,13 +444,13 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       local color = ""
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
         color = "@warningTextColor"
-      let rankText = ::events.getBrTextByRules(reqUnits)
+      let rankText = events.getBrTextByRules(reqUnits)
       let ruleTexts = reqUnits.map(this.getRuleText)
       let rulesText = colorize(color, loc("ui/comma").join(ruleTexts, true))
 
-      text = colorize(color, rankText) + " " + text
+      text = " ".concat(colorize(color, rankText), text)
       if (rulesText.len())
-        text += loc("ui/comma") + rulesText
+        text = loc("ui/comma").concat(text, rulesText)
     }
 
     return {
@@ -460,9 +460,9 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getRuleText(rule, needTierRule = false) {
-    if (!needTierRule && ::events.getTierNumByRule(rule) != -1)
+    if (!needTierRule && events.getTierNumByRule(rule) != -1)
       return ""
-    return ::events.generateEventRule(rule, true)
+    return events.generateEventRule(rule, true)
   }
 
   function updateListInfo(visibleRoomsAmount) {
@@ -478,7 +478,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurrentEdiff() {
-    let ediff = ::events.getEDiffByEvent(this.event)
+    let ediff = events.getEDiffByEvent(this.event)
     return ediff != -1 ? ediff : getCurrentGameModeEdiff()
   }
 
@@ -491,7 +491,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.chaptersTree.clear()
     foreach (_idx, room in roomsList) {
       let chapterGameMode = ::SessionLobby.getMGameMode(room, true)
-      let isCustomMode = ::events.isCustomGameMode(chapterGameMode)
+      let isCustomMode = events.isCustomGameMode(chapterGameMode)
       let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
       let itemView = {
         itemText = isSeparateCustomRoomsList
@@ -499,8 +499,8 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           : null
       }
       local name = ""
-      foreach (side in ::events.getSidesList(chapterGameMode)) {
-        let countries = ::events.getCountries(::events.getTeamData(chapterGameMode, side))
+      foreach (side in events.getSidesList(chapterGameMode)) {
+        let countries = events.getCountries(events.getTeamData(chapterGameMode, side))
         name = isSeparateCustomRoomsList ? "customRooms"
           : "|".concat(name, "_".join(countries.map(@(c) cutPrefix(c, "country_", c))))
         if (!isCustomMode || !isSeparateCustomRoomsList)
@@ -566,7 +566,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let nameView = this.getRoomNameView(room)
 
         view.items.append({
-          id = chapter.name + this.ROOM_ID_SPLIT + roomId
+          id = this.ROOM_ID_SPLIT.concat(chapter.name, roomId)
           isBattle = ::SessionLobby.isSessionStartedInRoom(room)
           itemText = nameView.text
           isLocked = nameView.isLocked
@@ -725,7 +725,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventEventsDataUpdated(_p) {
     //is event still exist
-    if (::events.getEventByEconomicName(getEventEconomicName(this.event)))
+    if (events.getEventByEconomicName(getEventEconomicName(this.event)))
       return
 
     this.guiScene.performDelayed(this, function() {
@@ -748,13 +748,13 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         !showMsgboxIfSoundModsNotAllowed(this.event))
       return
 
-    let diffCode = ::events.getEventDiffCode(this.event)
-    let unitTypeMask = ::events.getEventUnitTypesMask(this.event)
+    let diffCode = events.getEventDiffCode(this.event)
+    let unitTypeMask = events.getEventUnitTypesMask(this.event)
     let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask) == 1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return
 
-    checkShowMultiplayerAasWarningMsg(Callback(@() ::events.openCreateRoomWnd(this.event), this))
+    checkShowMultiplayerAasWarningMsg(Callback(@() events.openCreateRoomWnd(this.event), this))
   }
 
   function onItemDblClick() {

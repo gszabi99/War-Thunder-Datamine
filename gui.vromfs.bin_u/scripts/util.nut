@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, is_online_available, update_entitlements, is_tanks_allowed, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, char_send_blk, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
 
@@ -80,17 +79,6 @@ foreach (i, v in ::cssColorsMapDark)
 
 ::locOrStrip <- function locOrStrip(text) {
   return (text.len() && text.slice(0, 1) != "#") ? stripTags(text) : text
-}
-
-::locEnding <- function locEnding(locId, ending, defValue = null) {
-  local res = loc(locId + ending, "")
-  if (res == "" && ending != "")
-    res = loc(locId, defValue)
-  return res
-}
-
-::getCompoundedText <- function getCompoundedText(firstPart, secondPart, color) {
-  return "".concat(firstPart, colorize(color, secondPart))
 }
 
 local current_wait_screen_txt = ""
@@ -228,35 +216,35 @@ let optionsModeByGameMode = {
     local rate = ""
     if (effectType == boosterEffectType.WP) {
       let blk = get_warpoints_blk()
-      rate = "+" + measureType.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
+      rate = "".concat("+", measureType.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0))
       rate = $"{colorize("activeTextColor", rate)}{loc("warpoints/short/colored")}"
     }
     else if (effectType == boosterEffectType.RP) {
       let blk = get_ranks_blk()
-      rate = "+" + measureType.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
+      rate = "".concat("+", measureType.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0))
       rate = $"{colorize("activeTextColor", rate)}{loc("currency/researchPoints/sign/colored")}"
     }
-    tooltipText.append(loc("mainmenu/activePremium") + loc("ui/colon") + rate)
+    tooltipText.append("".concat(loc("mainmenu/activePremium"), loc("ui/colon"), rate))
   }
 
   local value = ::get_cyber_cafe_bonus_by_effect_type(effectType)
   if (value > 0.0) {
     value = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
     value = effectType.getText(colorize("activeTextColor", value), true)
-    tooltipText.append(loc("mainmenu/bonusCyberCafe") + loc("ui/colon") + value)
+    tooltipText.append("".concat(loc("mainmenu/bonusCyberCafe"), loc("ui/colon"), value))
   }
 
   value = ::get_squad_bonus_for_same_cyber_cafe(effectType)
   if (value > 0.0) {
     value = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
     value = effectType.getText(colorize("activeTextColor", value), true)
-    tooltipText.append(loc("item/FakeBoosterForNetCafeLevel/squad", { num = g_squad_manager.getSameCyberCafeMembersNum() }) + loc("ui/colon") + value)
+    tooltipText.append(loc("item/FakeBoosterForNetCafeLevel/squad", { num = loc("ui/colon").concat(g_squad_manager.getSameCyberCafeMembersNum(), value) }))
   }
 
   let boostersArray = getActiveBoostersArray(effectType)
   let boostersDescription = getActiveBoostersDescription(boostersArray, effectType)
   if (boostersDescription != "")
-    tooltipText.append((havePremium.value ? "\n" : "") + boostersDescription)
+    tooltipText.append("".concat((havePremium.value ? "\n" : ""), boostersDescription))
 
   local bonusText = "\n".join(tooltipText, true)
   if (bonusText != "")
@@ -278,13 +266,6 @@ let optionsModeByGameMode = {
   return air?.shopCountry ?? ""
 }
 
-::getAmountAndMaxAmountText <- function getAmountAndMaxAmountText(amount, maxAmount, showMaxAmount = false) {
-  local amountText = ""
-  if (maxAmount > 1 || showMaxAmount)
-    amountText = amount.tostring() + (showMaxAmount && maxAmount > 1 ? "/" + maxAmount : "")
-  return amountText;
-}
-
 ::is_game_mode_with_spendable_weapons <- function is_game_mode_with_spendable_weapons() {
   let mode = get_game_mode()
   return mode == GM_DOMINATION || mode == GM_TOURNAMENT
@@ -303,31 +284,6 @@ local last_update_entitlements_time = get_time_msec()
     return update_entitlements()
   }
   return -1
-}
-
-::get_flush_exp_text <- function get_flush_exp_text(exp_value) {
-  if (exp_value == null || exp_value < 0)
-    return ""
-  let rpPriceText = exp_value.tostring() + loc("currency/researchPoints/sign/colored")
-  let coloredPriceText = ::colorTextByValues(rpPriceText, exp_value, 0)
-  return format(loc("mainmenu/availableFreeExpForNewResearch"), coloredPriceText)
-}
-
-::colorTextByValues <- function colorTextByValues(text, val1, val2, useNeutral = true, useGood = true) {
-  local color = ""
-  if (val1 >= val2) {
-    if (val1 == val2 && useNeutral)
-      color = "activeTextColor"
-    else if (useGood)
-      color = "goodTextColor"
-  }
-  else
-    color = "badTextColor"
-
-  if (color == "")
-    return text
-
-  return format("<color=@%s>%s</color>", color, text)
 }
 
 ::getObjIdByPrefix <- function getObjIdByPrefix(obj, prefix, idProp = "id") {
@@ -416,7 +372,7 @@ local last_update_entitlements_time = get_time_msec()
 
 ::save_to_json <- function save_to_json(obj) {
   assert(isInArray(type(obj), [ "table", "array" ]),
-    "Data type not suitable for save_to_json: " + type(obj))
+    $"Data type not suitable for save_to_json: {type(obj)}")
 
   return object_to_json_string(obj, false)
 }
@@ -447,7 +403,7 @@ local last_update_entitlements_time = get_time_msec()
 
     local maxYear = 0
     foreach (year in years) {
-      let parameter = "year" + year;
+      let parameter = $"year{year}";
       foreach (tag in air.tags)
         if (tag == parameter) {
           result[parameter]++
@@ -496,14 +452,14 @@ local last_update_entitlements_time = get_time_msec()
 
   for (local i = 0; i <= lastShowPage; i++) {
     if (i == cur_page)
-      buttonsMid += format(numPageText, (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : ""))
+      buttonsMid = "".concat(buttonsMid, format(numPageText, (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : "")))
     else if ((cur_page - 1 <= i && i <= cur_page + 1)       //around current page
              || (i == my_page)                              //equal my page
              || (i < 3)                                     //always show first 2 entrys
              || (show_last_page && i == lastShowPage))      //show last entry if show_last_page
-      buttonsMid += format(numButtonText, i.tostring(), (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : ""))
+      buttonsMid = "".concat(buttonsMid, format(numButtonText, i.tostring(), (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : "")))
     else {
-      buttonsMid += format(numPageText, "...", "")
+      buttonsMid = "".concat(buttonsMid, format(numPageText, "...", ""))
       if (my_page != null && i < my_page && (my_page < cur_page || i > cur_page))
         i = my_page - 1
       else if (i < cur_page)
@@ -639,7 +595,7 @@ local last_update_entitlements_time = get_time_msec()
   return true
 }
 
-::find_nearest <- function find_nearest(val, arrayOfVal) {
+function findNearest(val, arrayOfVal) {
   if (arrayOfVal.len() == 0)
     return -1;
 
@@ -655,6 +611,7 @@ local last_update_entitlements_time = get_time_msec()
 
   return bestIdx;
 }
+::find_nearest <- findNearest
 
 local informTexQualityRestrictedDone = false
 ::informTexQualityRestricted <- function informTexQualityRestricted() {
@@ -691,12 +648,12 @@ local informTexQualityRestrictedDone = false
     else
       style = (cur < total - 1) ? "right" : null
     if (style)
-      res += "navImgStyle:t='" + style + "'; "
+      res = $"navImgStyle:t='{style}'; "
   }
   if (cur > 0)
-    res += "navigationImage{ type:t='left' } "
+    res = "".concat(res, "navigationImage{ type:t='left' } ")
   if (cur < total - 1)
-    res += "navigationImage{ type:t='right' } "
+    res = "".concat(res, "navigationImage{ type:t='right' } ")
   return res
 }
 
@@ -747,12 +704,8 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
   local res = ""
   let total = PASSWORD_SYMBOLS.len()
   for (local i = 0; i < charsAmount; i++)
-    res += PASSWORD_SYMBOLS[rnd() % total].tochar()
+    res = "".concat(res, PASSWORD_SYMBOLS[rnd() % total].tochar())
   return res
-}
-
-::inherit_table <- function inherit_table(parent_table, child_table) {
-  return u.extend(u.copy(parent_table), child_table)
 }
 
 ::is_mode_with_teams <- function is_mode_with_teams(gt = null) {
@@ -815,3 +768,5 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 ::show_not_available_msg_box <- function show_not_available_msg_box() {
   showInfoMsgBox(loc("msgbox/notAvailbleYet"), "not_available", true)
 }
+
+return { findNearest }

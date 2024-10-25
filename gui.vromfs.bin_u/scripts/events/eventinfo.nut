@@ -6,6 +6,7 @@ let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
@@ -111,6 +112,12 @@ let getCurGameModeMinMRankForNightBattles = @(event) event?.minMRankForNightBatt
 let hasNightGameModes = @(event) getCurGameModeMinMRankForNightBattles(event) != null
 let hasSmallTeamsGameModes = @(event) event?.minMRankForSmallTeamsBattles != null
 
+let isEventXboxOnlyAllowed =@(event) (event?.xboxOnlyAllowed ?? false) && isPlatformXboxOne
+
+let isEventPS4OnlyAllowed =@(event) (event?.ps4OnlyAllowed ?? false) && isPlatformSony
+
+let isEventPlatformOnlyAllowed =@(event) isEventXboxOnlyAllowed(event) || isEventPS4OnlyAllowed(event)
+
 return {
   eventIdsForMainGameModeList
   getEventEconomicName
@@ -139,4 +146,5 @@ return {
   hasNightGameModes
   getCurGameModeMinMRankForNightBattles
   hasSmallTeamsGameModes
+  isEventPlatformOnlyAllowed
 }

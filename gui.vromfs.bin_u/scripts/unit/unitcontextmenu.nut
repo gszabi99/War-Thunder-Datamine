@@ -22,14 +22,14 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
         needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let {
-  getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit, canBuyUnit
-} = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit, canBuyUnit, getUnitReqExp,
+  getUnitExp, isUnitInResearch, isUnitDescriptionValid, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
@@ -206,7 +206,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       local priceText = ""
 
       if (canBuyIngame) {
-        let price = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
+        let price = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
         priceText = price.getTextAccordingToBalance()
         if (priceText.len())
           priceText = "".concat(loc("ui/colon"), priceText)
@@ -248,10 +248,10 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       if (::isUnitResearched(unit))
         continue
 
-      let isInResearch = ::isUnitInResearch(unit)
+      let isInResearch = isUnitInResearch(unit)
       let isSquadronVehicle = unit.isSquadronVehicle()
       let isInClan = ::is_in_clan()
-      let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
+      let reqExp = getUnitReqExp(unit) - getUnitExp(unit)
       let squadronExp = min(clan_get_exp(), reqExp)
       let canFlushSquadronExp = hasFeature("ClanVehicles") && isSquadronVehicle
         && squadronExp > 0
@@ -313,7 +313,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "info") {
       actionText = loc("mainmenu/btnAircraftInfo")
       icon       = "#ui/gameuiskin#btn_info.svg"
-      showAction = ::isUnitDescriptionValid(unit)
+      showAction = isUnitDescriptionValid(unit)
       isLink     = hasFeature("WikiUnitInfo")
       actionFunc = function () {
         if (hasFeature("WikiUnitInfo"))

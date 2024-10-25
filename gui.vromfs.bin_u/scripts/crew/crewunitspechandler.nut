@@ -69,7 +69,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj) || !obj.isEnabled())
       return
 
-    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene)
+    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit == null)
       return
@@ -89,7 +89,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function increaseSpec(nextSpecType, obj = null) {
-    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene)
+    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit)
       upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)

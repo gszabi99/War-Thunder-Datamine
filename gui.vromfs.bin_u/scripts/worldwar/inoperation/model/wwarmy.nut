@@ -335,12 +335,12 @@ let WwArmyView = class {
         inactive = inactiveUnitsCountText
       })
 
-    return ""
+    return null
   }
 
   function getArmyInfoText() {
     if (!this.hasArtilleryAbility())
-      return ""
+      return null
 
     if (this.formation.isMove())
       return loc("worldwar/artillery/is_move")

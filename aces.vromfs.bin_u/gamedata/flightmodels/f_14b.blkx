@@ -17,12 +17,13 @@
   "haveCCIPForGun": true,
   "haveCCRPForGun": true,
   "haveCCRPForBombs": true,
-  "ilsF14": true,
-  "isBwOpticSight": true,
   "haveOpticTurret": true,
-  "needTpsNightVision": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
+  "ilsF14": true,
+  "rwrIndicator": "AN/ALR-67",
+  "isBwOpticSight": true,
+  "needTpsNightVision": true,
   "type": "typeFighter",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
@@ -1845,22 +1846,6 @@
       }
     ]
   },
-  "volumetricAfterBurner": {
-    "maxHeight": 10.0,
-    "maxRadius": 0.445,
-    "relativeCylinderHeightMax": 0.3,
-    "absorption": 3.0,
-    "colorIntensityMax": 2.5,
-    "colorOverHeightMult": 15.0,
-    "colorOverDepthMult": 5.0,
-    "colorOverRadiusMult": 0.3,
-    "ringOffset": 0.0,
-    "ringAbsorption": 5.0,
-    "ringFrequency": 4.83322,
-    "ringIntensity": 5.0,
-    "ringPower": 1,
-    "rampTextureOffset": 0
-  },
   "ikPilot": {
     "model": "usaf_pilot_1977_1991_char",
     "maxHeadHorAngle": 60.0,
@@ -2012,6 +1997,9 @@
       5.87,
       1.65
     ],
+    "sightInFov": 1.65,
+    "sightOutFov": 5.87,
+    "sightFov": 1.0,
     "headPos": [
       7.15,
       1.27,
@@ -2072,11 +2060,6 @@
       0.0
     ],
     "lightRadius2": 0.35,
-    "zoomOutFov": 24.7,
-    "zoomInFov": 7.7,
-    "sightInFov": 7.37,
-    "sightOutFov": 18.49,
-    "sightFov": 18.49,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2416,7 +2399,7 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.1
+            "scale": 1.0
           }
         },
         {
@@ -2758,7 +2741,6 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": "lau_138_bol_001"
             },
@@ -2771,7 +2753,8 @@
                 "external": true,
                 "separate": true,
                 "mass": 25.0,
-                "bulletsCartridge": 1
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -2779,7 +2762,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
                 "emitter": "aim_9_1",
-                "bullets": 1
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
               }
             ]
           }
@@ -2833,7 +2817,6 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": [
                 "pylon_for_lau7a_1",
@@ -2849,7 +2832,8 @@
                 "external": true,
                 "separate": true,
                 "mass": 25.0,
-                "bulletsCartridge": 1
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -2857,7 +2841,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
                 "emitter": "aim_9_2",
-                "bullets": 1
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
               }
             ]
           },
@@ -4269,7 +4254,6 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": [
                 "pylon_for_lau7a_2",
@@ -4285,7 +4269,8 @@
                 "external": true,
                 "separate": true,
                 "mass": 25.0,
-                "bulletsCartridge": 1
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -4293,7 +4278,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
                 "emitter": "aim_9_3",
-                "bullets": 1
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
               }
             ]
           },
@@ -4439,7 +4425,6 @@
           {
             "iconType": "missile_type_b_air_to_air_ltc_pod",
             "name": "aim9l_bol",
-            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": "lau_138_bol_004"
             },
@@ -4452,7 +4437,8 @@
                 "external": true,
                 "separate": true,
                 "mass": 25.0,
-                "bulletsCartridge": 1
+                "bulletsCartridge": 1,
+                "reqModification": "uk_ltc_bol"
               },
               {
                 "trigger": "aam",
@@ -4460,7 +4446,8 @@
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
                 "emitter": "aim_9_4",
-                "bullets": 1
+                "bullets": 1,
+                "reqModification": "us_aim_9l"
               }
             ]
           }
@@ -5028,5 +5015,90 @@
       0.0
     ],
     "finCut": false
+  },
+  "AfterBurner0": {
+    "volumetricAfterBurner": {
+      "name": "jet_blue_modern_f_14b",
+      "maxHeight": 12.0,
+      "minHeight": 9.0,
+      "heightNoiseStrength": 0.0,
+      "heightNoiseSpeed": 20.0,
+      "maxRadius": 0.45,
+      "minRadius": 0.4,
+      "maxBaseRadius": 0.4,
+      "minBaseRadius": 0.4,
+      "relativeCylinderHeightMax": 0.3,
+      "relativeCylinderHeightMin": 0.3,
+      "outerCylinderAbsorptionMax": 0.5,
+      "outerCylinderAbsorptionMin": 0.7,
+      "outerCylinderHeightFadeMax": 5.5,
+      "outerCylinderHeightFadeMin": 5.0,
+      "tailHeightFadeMax": 2.0,
+      "tailHeightFadeMin": 2.0,
+      "outerCylinderHeightFadeNoiseStrength": 2.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.4,
+      "maxOuterCylinderRadius": 0.5,
+      "absorption": 1.0,
+      "colorIntensityMax": 10.0,
+      "colorIntensityMin": 2.0,
+      "colorOverHeightMult": 1.0,
+      "colorOverDepthMult": 3.5,
+      "colorOverRadiusMult": 6.0,
+      "colorOverRadiusFadeOverHeight": 2.5,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 20.0,
+      "ringAbsorption": 1.2,
+      "maxRingCount": 17,
+      "minRingCount": 14,
+      "ringIntensityMin": 0.0,
+      "ringIntensityMax": 1.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 1.0,
+      "ringOffsetNoiseStrength": 1.0,
+      "ringOffsetNoiseSpeed": 20.0,
+      "rampTextureOffset": 0,
+      "radiusNoiseStrength": 0.06,
+      "radiusNoiseSpeed": 20.0,
+      "shakeNoiseStrength": 0.01,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.7,
+      "colorOverHeightNoiseStrength": 0.1,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.15,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.03,
+      "colorOverDepthNoiseSpeed": 10.0,
+      "colorIntensityNoiseStrength": 2.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "minStartingRingHeight": 2.5,
+      "maxStartingRingHeight": 2.5,
+      "ringIntensity": 2.0,
+      "ringFrequency": 11.3097,
+      "preNominalEasingParams": {
+        "animationTime": 2.5,
+        "ascendingSmoothIntensityParams": 0.4
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.5,
+        "ascendingSmoothIntensityParams": 1.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.889273,
+          0.686275
+        ],
+        "angle": 1.0,
+        "brightness": 20.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensity": 1.0,
+        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseSpeed": 16.0
+      }
+    }
   }
 }

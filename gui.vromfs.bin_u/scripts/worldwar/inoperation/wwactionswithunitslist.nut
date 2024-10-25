@@ -89,7 +89,7 @@ function unitsCount(units = []) {
   return res
 }
 
-local function getUnitsListViewParams(wwUnits, params = {}, needSort = true) {
+function getUnitsListViewParams(wwUnits, params = {}, needSort = true) {
   if (needSort)
     wwUnits.sort(::g_world_war.sortUnitsBySortCodeAndCount)
   wwUnits = wwUnits.map(@(wwUnit) wwUnit.getShortStringView(params))

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
@@ -54,7 +53,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     local timeHeader = loc("chat/threadTime")
     if (this.threadInfo.timeStamp > 0) {
       this.threadTime = this.threadInfo.timeStamp
-      timeHeader += loc("ui/colon") + time.buildDateTimeStr(this.threadInfo.timeStamp)
+      timeHeader = "".concat(timeHeader, loc("ui/colon"), time.buildDateTimeStr(this.threadInfo.timeStamp))
     }
     this.scene.findObject("thread_time_header").setValue(timeHeader)
 
@@ -142,10 +141,10 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSelTimeText(timestamp) {
-    local text = ""
-    if (timestamp >= 0)
-      text = " -> " + time.buildDateTimeStr(timestamp)
-    this.scene.findObject("new_time_text").setValue(text)
+    this.scene.findObject("new_time_text").setValue(timestamp >= 0
+      ? $" -> {time.buildDateTimeStr(timestamp)}"
+      : ""
+    )
   }
 
   function onChangeTimeStamp(obj) {

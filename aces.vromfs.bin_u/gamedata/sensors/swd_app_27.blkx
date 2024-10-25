@@ -71,6 +71,17 @@
   "groups": {
     "group": [
       {
+        "name": "Pulse",
+        "band": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
         "name": "Pulse + CW",
         "search": false,
         "track": false,
@@ -78,18 +89,13 @@
         "type": [
           "AN/APQ-51",
           "AN/APQ-72",
-          "AN/APQ-100",
           "AN/APQ-120",
           "AN/APG-59",
-          "AN/APG-59U",
           "AN/ASG-14",
           "NASARR",
           "US R21G M1",
           "Type 208A",
-          "Sapphire-23d_tp_23",
-          "Sapphire-23ml_tp_23m",
-          "Sapphire-23mla_tp_23m",
-          "Sapphire-23mla-2_tp_23m"
+          "Sapphire-23"
         ]
       },
       {
@@ -100,66 +106,38 @@
         "launch": true,
         "type": [
           "AN/APG-66",
-          "AN/APG-66(V)1",
-          "AN/APG-66(V)3",
-          "AN/APG-66J",
-          "AN/APG-68(V)5",
-          "AN/APG-68(V)7",
-          "AN/APG-68(V)9",
+          "AN/APG-68",
           "AN/APG-63",
-          "AN/APG-63(V)1",
-          "AN/APG-63 PSP",
-          "AN/APG-63 I-BAZ",
-          "AN/APG-65Q",
-          "AN/APG-65GY",
+          "AN/APG-65",
           "AN/APG-67",
           "AN/APG-76 / AN/ASX-1",
           "Thales RDY",
+          "N019",
           "N001",
-          "N001VEP",
-          "N019_S31",
-          "N010 Zhuk",
-          "N010M Zhuk-M",
+          "N010",
           "ELTA EL/M-2001B",
-          "PS-371A",
-          "PS-37A",
-          "PS-46A",
-          "PS-05A",
+          "PS-37",
+          "PS-05",
           "Ferranti Blue Vixen"
         ]
       },
       {
-        "name": "MPRF + CW",
+        "name": "MPRF + CW/HPRF",
         "search": false,
         "track": false,
         "launch": true,
         "type": [
-          "AN/APG-66",
-          "AN/APG-66(V)1",
-          "AN/APG-66(V)3",
-          "AN/APG-66J",
-          "AN/APG-68(V)5",
-          "AN/APG-68(V)7",
-          "AN/APG-68(V)9",
-          "AN/APG-63",
-          "AN/APG-63(V)1",
-          "AN/APG-63 PSP",
-          "AN/APG-63 I-BAZ",
-          "AN/APG-65Q",
-          "AN/APG-65GY",
-          "AN/APG-67",
-          "AN/APG-76 / AN/ASX-1",
-          "Thales RDY",
           "N001",
-          "N001VEP",
-          "N019_S31",
-          "N010 Zhuk",
-          "N010M Zhuk-M",
+          "N019",
+          "N010",
+          "AN/APG-66",
           "ELTA EL/M-2001B",
-          "PS-371A",
-          "PS-37A",
-          "PS-46A",
-          "PS-05A",
+          "PS-37",
+          "AN/APG-68",
+          "AN/APG-63",
+          "AN/APG-65",
+          "AN/APG-67",
+          "PS-05",
           "Ferranti Blue Vixen"
         ]
       },
@@ -167,37 +145,25 @@
         "name": "HPRF",
         "search": true,
         "track": true,
-        "launch": true,
+        "launch": false,
         "type": [
           "AN/APG-59",
-          "AN/APG-59U",
           "AN/AWG-9",
-          "AN/AWG-9 / AN/AXX-1 TCS",
           "Thomson-CSF RDI",
-          "Thomson-CSF RDM-3",
-          "marconi_ai_mk24",
-          "marconi_ai_mk24z",
-          "AI.24 Foxhunter Stage 2G",
-          "AI.24 Foxhunter Stage 3G",
+          "AI.24 Foxhunter",
           "weapon"
         ]
       },
       {
-        "name": "HPRF + CW",
+        "name": "HPRF + CW/HPRF",
         "search": false,
         "track": false,
         "launch": true,
         "type": [
           "AN/APG-59",
-          "AN/APG-59U",
           "AN/AWG-9",
-          "AN/AWG-9 / AN/AXX-1 TCS",
           "Thomson-CSF RDI",
-          "Thomson-CSF RDM-3",
-          "marconi_ai_mk24",
-          "marconi_ai_mk24z",
-          "AI.24 Foxhunter Stage 2G",
-          "AI.24 Foxhunter Stage 3G",
+          "AI.24 Foxhunter",
           "weapon"
         ]
       }
@@ -207,16 +173,18 @@
     "targetsPresenceGroup": [
       {
         "text": "hud/rwr_threat_pulse",
-        "default": true,
-        "group": "Pulse + CW"
+        "group": [
+          "Pulse",
+          "Pulse + CW"
+        ]
       },
       {
         "text": "hud/rwr_threat_cw_pd",
         "group": [
           "Pulse + CW",
-          "MPRF + CW",
+          "MPRF + CW/HPRF",
           "HPRF",
-          "HPRF + CW"
+          "HPRF + CW/HPRF"
         ]
       }
     ]

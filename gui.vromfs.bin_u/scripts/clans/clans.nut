@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, ps4_is_ugc_enabled, clan_request_edit_black_list, clan_get_my_clan_type, sync_handler_simulate_signal, clan_action_blk, clan_get_my_role, set_char_cb, clan_request_log, clan_request_accept_membership_request, clan_request_membership_request, clan_request_change_info_blk, clan_get_my_clan_tag, clan_request_my_info, clan_request_disband, clan_get_my_clan_name, clan_request_reject_membership_request, clan_get_clan_log, clan_request_dismiss_member, clan_get_clan_info, char_send_blk, clan_get_membership_requirements, char_send_clan_oneway_blk, clan_get_exp, clan_request_info, clan_get_role_rights, clan_get_requested_clan_id, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
@@ -459,8 +458,8 @@ registerPersistentData("ClansGlobals", getroottable(),
 
   if (newCandidatesNicknames.len())
     addPopup(null,
-      loc("clan/requestReceived") + loc("ui/colon") + ", ".join(newCandidatesNicknames, true) +
-      $" {extraText}",
+      "".concat(loc("clan/requestReceived"), loc("ui/colon"),
+        ", ".join(newCandidatesNicknames, true), $" {extraText}"),
       function() {
         if (this.getMyClanCandidates().len())
           openClanRequestsWnd(this.getMyClanCandidates(), clan_get_my_clan_id(), null)
@@ -1013,7 +1012,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 function getSeasonName(blk) {
   local name = ""
   if (blk?.type == "worldWar")
-    name = loc("worldwar/season_name/" + (split_by_chars(blk.titles, "@")?[2] ?? ""))
+    name = loc($"worldwar/season_name/{split_by_chars(blk.titles, "@")?[2] ?? ""}")
   else {
     let year = unixtime_to_utc_timetbl(blk?.seasonStartTimestamp ?? 0).year.tostring()
     let num  = get_roman_numeral(to_integer_safe(blk?.numInYear ?? 0)
@@ -1152,13 +1151,13 @@ function getSeasonName(blk) {
     let params = {
       place = placeTitleColored
       top = placeTitleColored
-      squadron = colorize("activeTextColor", this.clanTag + nbsp + this.clanName)
+      squadron = colorize("activeTextColor", nbsp.concat(this.clanTag, this.clanName))
       season = colorize("activeTextColor", this.seasonName)
     }
     let winner = this.isWinner() ? "place" : "top"
     let path = this.seasonType == "worldWar" ? "clan/season_award_ww/desc/" : "clan/season_award/desc/"
 
-    return loc(path + winner, this.seasonType == "worldWar"
+    return loc("".concat(path, winner), this.seasonType == "worldWar"
       ? params
       : params.__merge({ battleType = colorize("activeTextColor", this.getBattleTypeTitle()) }))
   }

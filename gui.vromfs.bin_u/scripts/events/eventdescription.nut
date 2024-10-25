@@ -4,13 +4,12 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, EVENTS_SHORT_LB_VISIBLE_ROWS
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
+let { zero_money } = require("%scripts/money.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -30,6 +29,8 @@ let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { loadCustomCraftTree } = require("%scripts/items/workshop/workshopCraftTreeWnd.nut")
 let { getSetById } = require("%scripts/items/workshop/workshop.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 ::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -90,9 +91,9 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateBottomDesc(roomMGM) {
     // Fill vehicle lists
     local teamObj = null
-    let sides = ::events.getSidesList(roomMGM)
-    foreach (team in ::events.getSidesList()) {
-      let teamName = ::events.getTeamName(team)
+    let sides = events.getSidesList(roomMGM)
+    foreach (team in events.getSidesList()) {
+      let teamName = events.getTeamName(team)
       teamObj = this.getObject(teamName)
       if (teamObj == null)
         continue
@@ -104,21 +105,21 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let titleObj = teamObj.findObject("team_title")
       if (checkObj(titleObj)) {
-        let isEventFreeForAll = ::events.isEventFreeForAll(roomMGM)
-        titleObj.show(! ::events.isEventSymmetricTeams(roomMGM) || isEventFreeForAll)
+        let isEventFreeForAll = events.isEventFreeForAll(roomMGM)
+        titleObj.show(! events.isEventSymmetricTeams(roomMGM) || isEventFreeForAll)
         titleObj.setValue(isEventFreeForAll ? loc("events/ffa")
           : g_team.getTeamByCode(team).getName())
       }
 
-      let teamData = ::events.getTeamDataWithRoom(roomMGM, team, this.room)
+      let teamData = events.getTeamDataWithRoom(roomMGM, team, this.room)
       let playersCountObj = this.getObject("players_count", teamObj)
       if (playersCountObj)
         playersCountObj.setValue(sides.len() > 1 ? this.getTeamPlayersCountText(team, teamData, roomMGM) : "")
 
-      ::fillCountriesList(this.getObject("countries", teamObj), ::events.getCountries(teamData))
-      let unitTypes = ::events.getUnitTypesByTeamDataAndName(teamData, teamName)
+      ::fillCountriesList(this.getObject("countries", teamObj), events.getCountries(teamData))
+      let unitTypes = events.getUnitTypesByTeamDataAndName(teamData, teamName)
       let roomSpecialRules = this.room && ::SessionLobby.getRoomSpecialRules(this.room)
-      ::events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)
+      events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)
     }
 
     // Team separator
@@ -154,22 +155,22 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let eventDescTextObj = this.getObject("event_desc_text")
     if (eventDescTextObj != null)
-      eventDescTextObj.setValue(::events.getEventDescriptionText(this.selectedEvent, this.room))
+      eventDescTextObj.setValue(events.getEventDescriptionText(this.selectedEvent, this.room))
 
     // Event difficulty
     let eventDifficultyObj = this.getObject("event_difficulty")
     if (eventDifficultyObj != null) {
-      let difficultyText = ::events.isDifficultyCustom(this.selectedEvent)
+      let difficultyText = events.isDifficultyCustom(this.selectedEvent)
         ? loc("options/custom")
-        : ::events.getDifficultyText(this.selectedEvent.name)
-      let respawnText = ::events.getRespawnsText(this.selectedEvent)
+        : events.getDifficultyText(this.selectedEvent.name)
+      let respawnText = events.getRespawnsText(this.selectedEvent)
       eventDifficultyObj.text = format(" %s %s", difficultyText, respawnText)
     }
 
     // Event players range
     let eventPlayersRangeObj = this.getObject("event_players_range")
     if (eventPlayersRangeObj != null) {
-      let rangeData = ::events.getPlayersRangeTextData(roomMGM)
+      let rangeData = events.getPlayersRangeTextData(roomMGM)
       eventPlayersRangeObj.show(rangeData.isValid)
       if (rangeData.isValid) {
         let labelObj = this.getObject("event_players_range_label")
@@ -194,7 +195,8 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       let showMessage = (eventType & clanTournamentType) == clanTournamentType
       allowSwitchClanObj.show(showMessage)
       if (showMessage) {
-        let locId = "events/allowSwitchClan/" + ::events.isEventAllowSwitchClan(this.selectedEvent).tostring()
+        let locId = "".concat("events/allowSwitchClan/",
+          events.isEventAllowSwitchClan(this.selectedEvent).tostring())
         allowSwitchClanObj.text = loc(locId)
       }
     }
@@ -215,7 +217,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       local timeText = ""
       if (timeLimit > 0) {
         let option = ::get_option(USEROPT_TIME_LIMIT)
-        timeText = option.getTitle() + loc("ui/colon") + option.getValueLocText(timeLimit)
+        timeText = "".concat(option.getTitle(), loc("ui/colon"), option.getValueLocText(timeLimit))
       }
       timeLimitObj.setValue(timeText)
     }
@@ -233,7 +235,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.selectedEvent == null)
       return
 
-    let roomMGM = ::events.getMGameMode(this.selectedEvent, this.room)
+    let roomMGM = events.getMGameMode(this.selectedEvent, this.room)
     this.updateTopDesc(roomMGM)
 
     let hasCustomDesc = (this.selectedEvent?.craftTree ?? "") != ""
@@ -249,15 +251,15 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getTeamPlayersCountText(team, teamData, roomMGM) {
     if (!this.room) {
-      if (::events.hasTeamSizeHandicap(roomMGM))
-        return colorize("activeTextColor", loc("events/handicap") + ::events.getTeamSize(teamData))
+      if (events.hasTeamSizeHandicap(roomMGM))
+        return colorize("activeTextColor", loc("events/handicap") + events.getTeamSize(teamData))
       return ""
     }
 
     let otherTeam = g_team.getTeamByCode(team).opponentTeamCode
     let countTblReady = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData, true)
     local countText = countTblReady[team]
-    if (countTblReady[team] >= ::events.getTeamSize(teamData)
+    if (countTblReady[team] >= events.getTeamSize(teamData)
         || countTblReady[team] - getMaxLobbyDisbalance(roomMGM) >= countTblReady[otherTeam])
       countText = colorize("warningTextColor", countText)
 
@@ -265,7 +267,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     local locId = "multiplayer/teamPlayers"
     let locParams = {
       players = countText
-      maxPlayers = ::events.getMaxTeamSize(roomMGM)
+      maxPlayers = events.getMaxTeamSize(roomMGM)
       unready = max(0, getTblValue(team, countTbl, 0) - countTblReady[team])
     }
     if (locParams.unready)
@@ -277,8 +279,8 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     // Difficulty image
     let difficultyImgObj = this.getObject("difficulty_img")
     if (difficultyImgObj) {
-      difficultyImgObj["background-image"] = ::events.getDifficultyImg(this.selectedEvent.name)
-      difficultyImgObj["tooltip"] = ::events.getDifficultyTooltip(this.selectedEvent.name)
+      difficultyImgObj["background-image"] = events.getDifficultyImg(this.selectedEvent.name)
+      difficultyImgObj["tooltip"] = events.getDifficultyTooltip(this.selectedEvent.name)
     }
 
     // Event name
@@ -289,11 +291,12 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getHeaderText() {
     if (!this.room)
-      return ::events.getEventNameText(this.selectedEvent) + " " + ::events.getRespawnsText(this.selectedEvent)
+      return  " ".concat(events.getEventNameText(this.selectedEvent),
+        events.getRespawnsText(this.selectedEvent))
 
     local res = ""
     let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, this.room)
-    let tierText = ::events.getBrTextByRules(reqUnits)
+    let tierText = events.getBrTextByRules(reqUnits)
     if (tierText.len())
       res +=$"{tierText} "
 
@@ -301,10 +304,11 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let teamsCnt = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData)
     local teamsCntText = ""
-    if (::events.isEventSymmetricTeams(::events.getMGameMode(this.selectedEvent, this.room)))
-      teamsCntText = loc("events/players_count") + loc("ui/colon") + (teamsCnt[Team.A] + teamsCnt[Team.B])
+    if (events.isEventSymmetricTeams(events.getMGameMode(this.selectedEvent, this.room)))
+      teamsCntText = "".concat(loc("events/players_count"), loc("ui/colon"),
+        (teamsCnt[Team.A] + teamsCnt[Team.B]))
     else
-      teamsCntText = teamsCnt[Team.A] + " " + loc("country/VS") + " " + teamsCnt[Team.B]
+      teamsCntText =  " ".concat(teamsCnt[Team.A], loc("country/VS"), teamsCnt[Team.B])
     res += loc("ui/parentheses/space", { text = teamsCntText })
     return res
   }
@@ -317,18 +321,18 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (costDescObj == null)
       return
 
-    local text = ::events.getEventActiveTicketText(this.selectedEvent, "activeTextColor")
-    text += (text.len() ? "\n" : "") + ::events.getEventBattleCostText(this.selectedEvent, "activeTextColor")
+    local text = events.getEventActiveTicketText(this.selectedEvent, "activeTextColor")
+    text += (text.len() ? "\n" : "") + events.getEventBattleCostText(this.selectedEvent, "activeTextColor")
     costDescObj.setValue(text)
 
     let ticketBoughtImgObj = this.getObject("bought_ticket_img")
     if (ticketBoughtImgObj != null) {
-      let showImg = ::events.hasEventTicket(this.selectedEvent)
-        && ::events.getEventActiveTicket(this.selectedEvent).getCost() > ::zero_money
+      let showImg = events.hasEventTicket(this.selectedEvent)
+        && events.getEventActiveTicket(this.selectedEvent).getCost() > zero_money
       ticketBoughtImgObj.show(showImg)
     }
 
-    let hasAchievementGroup = (::events.getEventAchievementGroup(this.selectedEvent) != "")
+    let hasAchievementGroup = (events.getEventAchievementGroup(this.selectedEvent) != "")
     showObjById("rewards_list_btn",
       haveRewards(this.selectedEvent) || getBaseVictoryReward(this.selectedEvent)
         || hasAchievementGroup, this.scene)
@@ -342,7 +346,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.room)
       misName = ::SessionLobby.getMissionName(true, this.room)
     if (!misName.len())
-      misName = ::events.getEventMission(this.selectedEvent.name)
+      misName = events.getEventMission(this.selectedEvent.name)
 
     local hasMission = misName != ""
     if (hasMission) {
@@ -366,7 +370,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getDescriptionTimeText() {
     if (!this.room)
-      return ::events.getEventTimeText(::events.getMGameMode(this.selectedEvent, this.room))
+      return events.getEventTimeText(events.getMGameMode(this.selectedEvent, this.room))
 
     let startTime = ::SessionLobby.getRoomSessionStartTime(this.room)
     if (startTime <= 0)
@@ -386,12 +390,12 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    this.newSelfRowRequest = ::events.getMainLbRequest(this.selectedEvent)
-    ::events.requestSelfRow(
+    this.newSelfRowRequest = events.getMainLbRequest(this.selectedEvent)
+    events.requestSelfRow(
       this.newSelfRowRequest,
       "mini_lb_self",
       (@(selectedEvent) function (_self_row) { //-ident-hides-ident
-        ::events.requestLeaderboard(::events.getMainLbRequest(selectedEvent),
+        events.requestLeaderboard(events.getMainLbRequest(selectedEvent),
         "mini_lb_self",
         function (lb_data) {
           this.showEventLb(lb_data)
@@ -419,11 +423,11 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(lbTable, "", 0, this)
     lbWaitBox.show(!lb_data && isLbAvailable)
 
-    if (::events.isEventForClanGlobalLb(this.selectedEvent) || this.newSelfRowRequest == null)
+    if (events.isEventForClanGlobalLb(this.selectedEvent) || this.newSelfRowRequest == null)
       return
 
     let field = this.newSelfRowRequest.lbField
-    let lbCategory = ::events.getLbCategoryByField(field)
+    let lbCategory = events.getLbCategoryByField(field)
     let showTable = this.checkLbTableVisible(lbRows, lbCategory)
     let showButton = lbRows.len() > 0 && isLbAvailable
     lbTable.show(showTable)
@@ -456,7 +460,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return ""
 
     let rowName = $"row_{rowIdx}"
-    let forClan = ::events.isClanLbRequest(this.newSelfRowRequest)
+    let forClan = events.isClanLbRequest(this.newSelfRowRequest)
 
     let name = getPlayerName(row?.name ?? "")
     local text = name
@@ -524,7 +528,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRewardsList() {
-    let eventAchievementGroup = ::events.getEventAchievementGroup(this.selectedEvent)
+    let eventAchievementGroup = events.getEventAchievementGroup(this.selectedEvent)
     if (eventAchievementGroup != "") {
       guiStartProfile({
         initialSheet = "UnlockAchievement"

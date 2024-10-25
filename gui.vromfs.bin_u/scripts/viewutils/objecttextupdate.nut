@@ -8,7 +8,7 @@ let { format } = require("string")
 let { get_game_version_str } = require("app")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-local function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
+function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
   if (!checkObj(nestObj) || firstBtnId == "")
     return null
 

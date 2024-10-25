@@ -22,7 +22,7 @@ function openLastTournamentWnd(lastEvent) {
     eSportTournamentModal({ tournament, curTourParams, curEvent = lastEvent })
 }
 
-local function goToBattleAction(lastEvent) {
+function goToBattleAction(lastEvent) {
   if (lastEvent == null) {
     log($"Debriefing: not found event for goToBattleAction")
     return

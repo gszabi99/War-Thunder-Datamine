@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -99,7 +98,7 @@ local WorkshopSet = class {
     this.craftTrees = (blk % "craftTree").map(workshopCraftTree.bindenv(this))
 
     if (this.hasSubsets)
-      this.curSubsetId = loadLocalAccountSettings(CURRENT_SUBSET_SAVE_PATH + this.id, firstSubsetId)
+      this.curSubsetId = loadLocalAccountSettings($"{CURRENT_SUBSET_SAVE_PATH}{this.id}", firstSubsetId)
 
     subscribe_handler(this, g_listener_priority.CONFIG_VALIDATION)
     this.checkForcedDisplayTime(blk?.forcedDisplayWithoutFeature)
@@ -376,7 +375,7 @@ local WorkshopSet = class {
     saveLocalAccountSettings(saveId, knownBlk)
   }
 
-  getPreviewedSaveId   = @() PREVIEWED_SAVE_PATH + this.id
+  getPreviewedSaveId   = @() $"{PREVIEWED_SAVE_PATH}{this.id}"
   needShowPreview      = @() this.hasPreview() && !loadLocalAccountSettings(this.getPreviewedSaveId(), false)
   markPreviewed        = @() saveLocalAccountSettings(this.getPreviewedSaveId(), true)
 
@@ -445,7 +444,7 @@ local WorkshopSet = class {
       return
 
     this.curSubsetId = subsetId
-    saveLocalAccountSettings(CURRENT_SUBSET_SAVE_PATH + this.id, subsetId)
+    saveLocalAccountSettings($"{CURRENT_SUBSET_SAVE_PATH}{this.id}", subsetId)
   }
 
   function getSubsetIdByItemId(itemId) {

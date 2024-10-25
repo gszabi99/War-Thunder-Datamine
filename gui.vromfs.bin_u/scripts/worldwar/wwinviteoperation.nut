@@ -9,6 +9,7 @@ let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass, findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { updateNewInvitesAmount } = require("%scripts/invites/invites.nut")
 
 function removeInvite(operationId) {
   let uid = findInviteClass("Operation")?.getUidByParams({ mail = { operationId = operationId } })
@@ -53,6 +54,7 @@ let Operation = class (BaseInvite) {
     let cb = Callback(function(_) {
         this.updateInviterContact()
         this.setDelayed(false)
+        updateNewInvitesAmount()
       }, this)
 
     requestUsersInfo([this.senderId], cb, cb)

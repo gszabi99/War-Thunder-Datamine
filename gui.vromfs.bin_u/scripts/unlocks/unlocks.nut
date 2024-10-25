@@ -1,11 +1,10 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getRegionalUnlockProgress, isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
 let DataBlock = require("DataBlock")
@@ -303,7 +302,7 @@ let getEmptyConditionsConfig = @() {
 
   if (haveBasicRewards) {
     let reward = getUnlockRewardCost(blk)
-    if (reward > ::zero_money)
+    if (reward > zero_money)
       config.reward <- reward
   }
 
@@ -349,7 +348,7 @@ let getEmptyConditionsConfig = @() {
     let maxStreak = getTblValue("maxStreak", config.similarAwardNamesList, 1)
     local repeatText = loc("streaks/rewarded_count", { count = colorize("activeTextColor", amount) })
     if (!hasSpecialMultiStageLocId(config.id, maxStreak))
-      repeatText = format(loc("streaks/max_streak_amount"), maxStreak.tostring()) + "\n" + repeatText
+      repeatText = "\n".concat(format(loc("streaks/max_streak_amount"), maxStreak.tostring()), repeatText)
     obj.findObject("mult_awards_text").setValue(repeatText)
   }
 
@@ -393,9 +392,8 @@ let getEmptyConditionsConfig = @() {
 
   if (config?.showAsTrophyContent) {
     let isUnlocked = isUnlockOpened(config?.id)
-    local text = loc(isUnlocked ? "mainmenu/itemReceived" : "mainmenu/itemCanBeReceived")
-    if (isUnlocked)
-      text += "\n" + colorize("badTextColor", loc("mainmenu/receiveOnlyOnce"))
+    let text = !isUnlocked ? loc("mainmenu/itemCanBeReceived")
+      : "\n".concat(loc("mainmenu/itemReceived"), colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")))
     obj.findObject("state").show(true)
     obj.findObject("state_text").setValue(text)
     obj.findObject("state_icon")["background-image"] = isUnlocked ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#locked.svg"
@@ -625,7 +623,7 @@ let getEmptyConditionsConfig = @() {
   else if ( uType == UNLOCKABLE_SLOT) {
     let slotNum = getTblValue("slot", config, 0)
     res.name = (slotNum > 0)
-      ? loc("options/crewName") + slotNum.tostring()
+      ? "".concat(loc("options/crewName"), slotNum)
       : loc("options/crew")
     res.desc = loc($"slot/{id}/desc", "")
     res.image = "#ui/gameuiskin#log_crew"
@@ -647,7 +645,7 @@ let getEmptyConditionsConfig = @() {
     if (::checkCountry(country, "userlog EULT_*_CREW"))
       res.image2 = getCountryIcon(country)
 
-    res.desc = crewName + loc("unlocks/skillpoints/desc") + skillPointsStr
+    res.desc = "".concat(crewName, loc("unlocks/skillpoints/desc"), skillPointsStr)
     res.image = "#ui/gameuiskin#log_crew"
   }
 
@@ -734,10 +732,8 @@ let getEmptyConditionsConfig = @() {
   if ("userLogId" in config) {
     let itemId = config.userLogId
     let item = ::ItemsManager.findItemById(itemId)
-    if (item) {
-      res.rewardText += item.getName()
-      res.rewardText += "\n" + item.getNameMarkup()
-    }
+    if (item)
+      res.rewardText = "".concat(res.rewardText, item.getName(), "\n", item.getNameMarkup())
   }
 
   //check rewards and stages
@@ -768,7 +764,7 @@ let getEmptyConditionsConfig = @() {
         else if (curStage > stage) {
           if (stage >= 0) {
             res.unlocked = false
-            res.iconStyle <- "default_locked_stage_" + (stage + 1)
+            res.iconStyle <- $"default_locked_stage_{stage + 1}"
           }
           break
         }
@@ -812,7 +808,7 @@ let getEmptyConditionsConfig = @() {
                         getTblValue("frp", res, 0),
                         getTblValue("rp", res, 0))
 
-    res.rewardText = colorize("activeTextColor", res.rewardText + cost.tostring())
+    res.rewardText = colorize("activeTextColor", $"{res.rewardText}{cost.tostring()}")
     res.showShareBtn <- true
   }
 

@@ -1,9 +1,10 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_user_log_time_sec, get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -70,7 +71,7 @@ function checkPopupUserLog(user_log_blk) {
   return false
 }
 
-local function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = []) {
+function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = []) {
   let body = newUserLog?.body
   if (!body)
     return
@@ -261,7 +262,7 @@ local logNameByType = {
         if ((blk?.body.locName.len() ?? 0) > 0)
           mission = getMissionLocName(blk?.body, "locName")
         else
-          mission = loc("missions/" + (blk?.body.mission ?? ""))
+          mission = loc($"missions/{blk?.body.mission ?? ""}")
         let isMissionExtrLog = isMissionExtrByName(blk?.body.mission ?? "")
         let nameLoc = isMissionExtrLog ? "userLog/session_result_extr"
           : $"userlog/{logTypeName}{(blk?.body.win ? "/win" : "/lose")}"
@@ -281,7 +282,7 @@ local logNameByType = {
           let item = ::ItemsManager.findItemById(itemId)
           if (item != null) {
             msg = isInArray(rewardType, ["WagerStageWin", "WagerStageFail"])
-              ? loc($"userlog/{rewardType}") + loc("ui/colon") + colorize("userlogColoredText", item.getName())
+              ? loc("ui/colon").concat(loc($"userlog/{rewardType}"), colorize("userlogColoredText", item.getName()))
               : loc($"userlog/{rewardType}", { wagerName = colorize("userlogColoredText", item.getName()) })
           }
         }
@@ -382,11 +383,11 @@ local logNameByType = {
       }
 
       if (blk?.type == EULT_RENT_UNIT) {
-        config.desc += "\n"
+        config.desc = $"{config.desc}\n"
 
         let rentTimeHours = time.secondsToHours(getTblValue("rentTimeLeftSec", blk.body, 0))
         let timeText = colorize("userlogColoredText", time.hoursToString(rentTimeHours))
-        config.desc += loc("mainmenu/rent/rentTimeSec", { time = timeText })
+        config.desc = "".concat(config.desc, loc("mainmenu/rent/rentTimeSec", { time = timeText }))
 
         config.desc = colorize("activeTextColor", config.desc)
       }
@@ -403,7 +404,7 @@ local logNameByType = {
     else if (blk?.type == EULT_OPEN_TROPHY
              && !getTblValue("everyDayLoginAward", blk.body, false)) {
       if ("rentedUnit" in blk.body)
-        ignoreRentItems.append(blk.body.rentedUnit + "_" + ::getLogNameByType(EULT_RENT_UNIT))
+        ignoreRentItems.append("_".concat(blk.body.rentedUnit, ::getLogNameByType(EULT_RENT_UNIT)))
 
       if (onStartAwards || !(popupMask & USERLOG_POPUP.OPEN_TROPHY))
         continue
@@ -510,16 +511,18 @@ local logNameByType = {
     }
     else if (blk?.type == EULT_TICKETS_REMINDER) {
       let logTypeName = ::getLogNameByType(blk.type)
-      let name = loc($"userlog/{logTypeName}")
-      let desc = [colorize("userlogColoredText", ::events.getNameByEconomicName(blk?.body.name))]
-      if (getTblValue("battleLimitReminder", blk.body))
-        desc.append(loc("userlog/battleLimitReminder") + loc("ui/colon") + (blk?.body.battleLimitReminder ?? ""))
-      if (getTblValue("defeatCountReminder", blk.body))
-        desc.append(loc("userlog/defeatCountReminder") + loc("ui/colon") + (blk?.body.defeatCountReminder ?? ""))
-      if (getTblValue("sequenceDefeatCountReminder", blk.body))
-        desc.append(loc("userlog/sequenceDefeatCountReminder") + loc("ui/colon") + (blk?.body.sequenceDefeatCountReminder ?? ""))
+      let logName = loc($"userlog/{logTypeName}")
+      let { name = null, battleLimitReminder = null, defeatCountReminder = null, sequenceDefeatCountReminder = null } = blk?.body
+      let desc = [colorize("userlogColoredText", events.getNameByEconomicName(name))]
+      let colonTxt = loc("ui/colon")
+      if (battleLimitReminder)
+        desc.append(colonTxt.concat(loc("userlog/battleLimitReminder"), battleLimitReminder))
+      if (defeatCountReminder)
+        desc.append(colonTxt.concat(loc("userlog/defeatCountReminder"), defeatCountReminder))
+      if (sequenceDefeatCountReminder)
+        desc.append(colonTxt.concat(loc("userlog/sequenceDefeatCountReminder"), sequenceDefeatCountReminder))
 
-      addPopup(name, "\n".join(desc, true), null, null, null, logTypeName)
+      addPopup(logName, "\n".join(desc, true), null, null, null, logTypeName)
       markDisabled = true
     }
     else if (blk?.type == EULT_ACTIVATE_ITEM) {

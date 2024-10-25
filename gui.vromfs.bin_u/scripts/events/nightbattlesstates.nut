@@ -1,5 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { getCurGameModeMinMRankForNightBattles } = require("%scripts/events/eventInfo.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -18,7 +20,7 @@ function canGoToNightBattleOnUnit(unit, modeName = null) {
   if (curEvent == null)
     return false
   let minMRank = getCurGameModeMinMRankForNightBattles(curEvent)
-  if (minMRank == null || (minMRank > unit.getEconomicRank(::events.getEDiffByEvent(curEvent))))
+  if (minMRank == null || (minMRank > unit.getEconomicRank(events.getEDiffByEvent(curEvent))))
     return false
 
   if (modeName != null)

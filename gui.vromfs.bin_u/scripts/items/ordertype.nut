@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { isArray, isTable, isString } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
@@ -57,7 +56,7 @@ let orderTypes = {
         if (paramName == "type" || !checkValueType)
           continue
         if (description.len() > 0)
-          description += "\n"
+          description = $"{description}\n"
 
         local localizeStringValue = true
         local paramValueFormatted
@@ -68,8 +67,8 @@ let orderTypes = {
         else
           paramValueFormatted = paramValue
 
-        description += this.getParameterDescription(paramName,
-          paramValueFormatted, localizeStringValue, colorScheme)
+        description = "".concat(description,
+          this.getParameterDescription(paramName, paramValueFormatted, localizeStringValue, colorScheme))
       }
       return description
     }
@@ -82,7 +81,7 @@ let orderTypes = {
     /** Returns localized text to show as score header in order status. */
     function getScoreHeaderText() {
       let locPrefix = "items/order/scoreTable/scoreHeader/"
-      return loc(locPrefix + this.name, loc($"{locPrefix}default"))
+      return loc($"{locPrefix}{this.name}" , loc($"{locPrefix}default"))
     }
 
     /** Returns localized text to form proper award mode description. */
@@ -97,20 +96,19 @@ let orderTypes = {
       local description = colorize(colorScheme.parameterLabelColor, localizedParamName)
       if (localizeStringValue && isString(paramValue))
         paramValue = loc(format("items/order/type/%s/param/%s/value/%s", this.name, paramName, paramValue))
-      description += colorize(colorScheme.parameterValueColor, paramValue)
+      description = "".concat(description, colorize(colorScheme.parameterValueColor, paramValue))
       return description
     }
 
     function getObjectiveDescriptionByKey(typeParams, colorScheme, statusDescriptionKey, emptyColorScheme) {
       let defaultText = this.getTypeDescription(emptyColorScheme)
       let uncoloredText = loc(format(statusDescriptionKey, this.name), defaultText)
-      local description = colorize(colorScheme.objectiveDescriptionColor, uncoloredText)
+      let description = colorize(colorScheme.objectiveDescriptionColor, uncoloredText)
       let typeParamsDescription = this.getParametersDescription(typeParams, colorScheme)
-      if (description.len() > 0 && typeParamsDescription.len() > 0)
-        description += "\n"
-
-      description += typeParamsDescription
-      return description
+      let separator = description.len() > 0 && typeParamsDescription.len() > 0
+        ? "\n"
+        : ""
+      return separator.concat(description, typeParamsDescription)
     }
 
     function getObjectiveDecriptionRelativeTarget(typeParams, colorScheme, targetPlayer, emptyColorScheme) {

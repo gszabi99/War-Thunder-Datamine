@@ -1,6 +1,7 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { Cost } = require("%scripts/money.nut")
 let { roundToDigits } = require("%sqstd/math.nut")
 let { format } = require("string")
@@ -15,6 +16,7 @@ let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryTyp
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
+let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 
 let tab = "    "
 
@@ -146,8 +148,8 @@ function get_userlog_plain_text(logObj) {
   let isMissionExtrLog = isMissionExtrByName(logObj?.mission ?? "")
 
   let eventId = logObj?.eventId
-  local mission = ::get_mission_name(logObj.mission, logObj)
-  if (eventId != null && !::events.isEventRandomBattlesById(eventId)) {
+  local mission = getMissionName(logObj.mission, logObj)
+  if (eventId != null && !events.isEventRandomBattlesById(eventId)) {
     local locName = ""
 
     if ("eventLocName" in logObj)
@@ -191,24 +193,25 @@ function get_userlog_plain_text(logObj) {
   }
 
   if ("aircrafts" in logObj) {
-    local aText = ""
+    let aText = []
     foreach (air in logObj.aircrafts)
       if (air.value < 1.0)
-        aText += ((aText != "") ? ", " : "") + getClearUnitName(air.name)
-    if (aText != "")
-      desc = "".concat(desc, "\n", loc("userlog/broken_airs"), colon, aText)
+        aText.append(getClearUnitName(air.name))
+    if (aText.len() > 0)
+      desc = "".concat(desc, "\n", loc("userlog/broken_airs"), colon, ", ".join(aText))
   }
 
   if ("spare" in logObj) {
-    local aText = ""
-    foreach (air in logObj.spare)
-      if (air.value > 0) {
-        aText += ((aText != "") ? ", " : "") + getClearUnitName(air.name)
-        if (air.value > 1)
-          aText += format(" (%d)", air.value.tointeger())
-      }
-    if (aText != "")
-      desc = "".concat(desc, "\n", loc("userlog/used_spare"), colon, aText)
+    let aText = []
+    foreach (air in logObj.spare) {
+      if (air.value <= 0)
+        continue
+
+      aText.append("".concat(getClearUnitName(air.name),
+        air.value > 1 ? format(" (%d)", air.value.tointeger()) : ""))
+    }
+    if (aText.len() > 0)
+      desc = "".concat(desc, "\n", loc("userlog/used_spare"), colon, ", ".join(aText))
   }
 
   let containerLog = getTblValue("container", logObj)
@@ -279,9 +282,9 @@ function get_userlog_plain_text(logObj) {
         item = "".concat(item, " + ", loc("userlog/excessExpEarned"), colon,
           Cost().setRp(fromExcessRP).toPlainText())
       if (!modId)
-        descUnits += item
+        descUnits = $"{descUnits}{item}"
       else
-        descMods += item
+        descMods = $"{descMods}{item}"
       idx++
     }
 
@@ -319,14 +322,14 @@ function get_userlog_plain_text(logObj) {
       desc = "".concat(desc, "\n\n", loc("debriefing/used_items"), colon, "\n", "\n".join(usedItems, true))
   }
 
-  if (("tournamentResult" in logObj) && (::events.getEvent(eventId)?.leaderboardEventTable == null)) {
+  if (("tournamentResult" in logObj) && (events.getEvent(eventId)?.leaderboardEventTable == null)) {
     let now = getTblValue("newStat", logObj.tournamentResult)
     let was = getTblValue("oldStat", logObj.tournamentResult)
     let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
     let items = []
     foreach (lbFieldsConfig in eventsTableConfig) {
       if (!(lbFieldsConfig.field in now)
-        || !::events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
+        || !events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
         continue
 
       items.append(::getLeaderboardItemView(lbFieldsConfig,
@@ -336,7 +339,7 @@ function get_userlog_plain_text(logObj) {
     let lbStatsBlk = ::getLeaderboardItemWidgets({ items = items })
     if (!("descriptionBlk" in res))
       res.descriptionBlk <- ""
-    res.descriptionBlk += format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk)
+    res.descriptionBlk = "".concat(res.descriptionBlk, format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk))
   }
 
   let roomId = logObj?.roomId ?? 0

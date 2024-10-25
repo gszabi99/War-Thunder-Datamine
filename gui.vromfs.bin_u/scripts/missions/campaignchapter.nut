@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import add_video_seen, was_video_seen, get_game_mode_name, is_mouse_last_time_used, play_movie
 from "%scripts/dagui_library.nut" import *
 
@@ -131,7 +130,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCollapseListSaveId() {
-    return "mislist_collapsed_chapters/" + get_game_mode_name(this.gm)
+    return $"mislist_collapsed_chapters/{get_game_mode_name(this.gm)}"
   }
 
   function updateWindow() {
@@ -163,7 +162,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       let dynLayouts = getDynamicLayouts()
       for (local i = 0; i < dynLayouts.len(); i++)
         if (dynLayouts[i].mis_file == l_file) {
-          title = loc("dynamic/" + dynLayouts[i].name)
+          title = loc($"dynamic/{dynLayouts[i].name}")
           break
         }
     }
@@ -490,14 +489,14 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       if (showMsgbox) {
         let unitNameLoc = colorize("activeTextColor", getUnitName(this.curMission.mustHaveUnit))
         let requirements = loc("conditions/char_unit_exist/single", { value = unitNameLoc })
-        showInfoMsgBox(loc("charServer/needUnlock") + "\n\n" + requirements)
+        showInfoMsgBox($"{loc("charServer/needUnlock")}\n\n{requirements}")
       }
       return false
     }
     if ((this.gm == GM_SINGLE_MISSION) && (this.curMission.progress >= 4)) {
       if (showMsgbox) {
-        let unlockId = this.curMission.blk.chapter + "/" + this.curMission.blk.name
-        let msg = loc("charServer/needUnlock") + "\n\n" + getFullUnlockDescByName(unlockId, 1)
+        let unlockId = $"{this.curMission.blk.chapter}/{this.curMission.blk.name}"
+        let msg = $"{loc("charServer/needUnlock")}\n\n{getFullUnlockDescByName(unlockId, 1)}"
         showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
       }
       return false

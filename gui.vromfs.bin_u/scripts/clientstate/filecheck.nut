@@ -9,7 +9,7 @@ let removeImgPostfixRegexpList = [
 ]
 let removeImgPrefixRegexp = regexp2("^#")
 
-local function isImagePrefetched(img) {
+function isImagePrefetched(img) {
   if (img == "")
     return true
 

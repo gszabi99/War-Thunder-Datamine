@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
+let { zero_money } = require("%scripts/money.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let { find_in_array, isDataBlock } = require("%sqStdLibs/helpers/u.nut")
@@ -30,10 +31,11 @@ let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
 
 function getMissionLevelPath(unit) {
-  let misBlk = isInFlight()
-    ? get_current_mission_info_cached()
-    : get_meta_mission_info_by_name(unit.testFlight)
-  return misBlk?.level
+  if (isInFlight())
+    return get_current_mission_info_cached()?.level
+  if (unit.testFlight == "")
+    return null
+  return get_meta_mission_info_by_name(unit.testFlight)?.level
 }
 
 function getTechnicsSkins(levelPath) {
@@ -195,7 +197,7 @@ function addSkinItemToOption(option, locName, value, decorator, shouldSetFirst =
     isOwn          = true
     unlockId       = ""
     canBuy         = false
-    price          = ::zero_money
+    price          = zero_money
     isVisible      = true
     isDownloadable = false
     isAutoSkin     = false

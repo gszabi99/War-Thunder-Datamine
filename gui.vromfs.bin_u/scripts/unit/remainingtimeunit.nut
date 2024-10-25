@@ -7,6 +7,7 @@ let { hoursToString } = require("%appGlobals/timeLoc.nut")
 let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
 let { get_charserver_time_sec } = require("chard")
+let { isUnitBought } = require("%scripts/unit/unitInfo.nut")
 
 let promoteUnits = mkWatched(persist, "promoteUnits", {})
 let clearPromUnitListCache = @() promoteUnits({})
@@ -26,7 +27,7 @@ function updatePromoteUnits() {
   foreach (promoteUnit in shopPromoteUnits.value) {
     let { unit, timeStart, timeEnd } = promoteUnit
 
-    if (::isUnitBought(unit) || currentTime > timeEnd)
+    if (isUnitBought(unit) || currentTime > timeEnd)
       continue
 
     let nextTime = timeStart > currentTime

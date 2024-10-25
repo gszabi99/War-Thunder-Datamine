@@ -8,7 +8,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let DataBlock  = require("DataBlock")
 let { parseDiscountDescription, createDiscountDescriptionSortData,
   sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
-let { getUnitName, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, canBuyUnit, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
@@ -27,6 +27,8 @@ let Discount = class (BaseItem) {
   canBuy = false
   allowBigPicture = false
   discountDescriptionDataItems = null
+
+  canMultipleConsume = false
 
   showAmountInsteadPercent = false //work only for units atm.
   isSpecialOffer = false
@@ -130,9 +132,9 @@ let Discount = class (BaseItem) {
         return {
           btnName = purchaseText
         }
-      let priceWithDiscount = ::getUnitCost(unit).getTextAccordingToBalance()
+      let priceWithDiscount = getUnitCost(unit).getTextAccordingToBalance()
       let priceWithDiscountNoTags = removeTextareaTags(priceWithDiscount)
-      let realCost = ::getUnitRealCost(unit).getTextAccordingToBalance()
+      let realCost = getUnitRealCost(unit).getTextAccordingToBalance()
       let realCostNoTags = removeTextareaTags(realCost)
       let realCostNoTagsLength = getStringWidthPx(realCostNoTags, "fontNormal")
       let purchaseLength = getStringWidthPx($"{loc("mainmenu/btnBuy")} ", "fontNormal")
@@ -175,12 +177,12 @@ let Discount = class (BaseItem) {
         purchasesCount = this.purchasesCount
         purchasesMaxCount = this.purchasesMaxCount
       }
-      result += loc("items/discount/purchasesCounter", locParams) + "\n"
+      result = "".concat(result, loc("items/discount/purchasesCounter", locParams), "\n")
     }
 
     let expireText = this.getCurExpireTimeText()
     if (expireText != "")
-      result += expireText + "\n"
+      result = "".concat(result, expireText, "\n")
 
     foreach (item in this.getDiscountDescriptionDataItems()) {
       if (result != "")
@@ -199,7 +201,7 @@ let Discount = class (BaseItem) {
     let maxValue = getTblValue("discountMax", dataItem, 0)
     local res = toTextFunc(minValue)
     if (minValue != maxValue)
-      res += " - " + toTextFunc(maxValue)
+      res = " - ".concat(res, toTextFunc(maxValue))
     return res
   }
 
@@ -234,7 +236,7 @@ let Discount = class (BaseItem) {
         locParams.unit <- unit
         if (this.showAmountInsteadPercent)
           locParams.discount = this._getDataItemDiscountText(dataItem,
-            @(val) ::getUnitRealCost(unit).multiply(0.01 * val).tostring())
+            @(val) getUnitRealCost(unit).multiply(0.01 * val).tostring())
       }
     }
 

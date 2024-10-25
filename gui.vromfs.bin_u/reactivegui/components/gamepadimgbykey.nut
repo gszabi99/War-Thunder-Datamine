@@ -96,7 +96,7 @@ function mkImageComp(text, params = {}) {
 
 let getTexture = @(id) $"{CUR_IMAGES_PRESET}{id}.svg"
 
-local function mkImageCompByDargKey(key, sf = null, params = {}) {
+function mkImageCompByDargKey(key, sf = null, params = {}) {
   if (sf != null && (sf & S_HOVER) != 0)
     key = "J:A"
   let textureId = dargJKeysToImage?[key]

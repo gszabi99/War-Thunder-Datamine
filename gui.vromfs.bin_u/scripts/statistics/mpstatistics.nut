@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -41,7 +40,12 @@ let { openOrdersInventory, updateActiveOrder, orderCanBeActivated,
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
-local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
+function getCompoundedText(firstPart, secondPart, color) {
+  return "".concat(firstPart, colorize(color, secondPart))
+}
+
+
+let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
                          | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
 
@@ -562,7 +566,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       if (!this.needPlayersTbl)
         return
 
-      let scoreFormat = "%s" + loc("multiplayer/score") + loc("ui/colon") + "%d"
+      let scoreFormat = "".concat("%s", loc("multiplayer/score"), loc("ui/colon"), "%d")
       if (tbl.len() > playerTeamIdx) {
         this.setTeamInfoText(teamObj1, format(scoreFormat, teamTxt[0], tbl[playerTeamIdx].score))
         this.setTeamInfoTeam(teamObj1, (playerTeam == friendlyTeam) ? "blue" : "red")
@@ -576,8 +580,8 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
     if (scoreType == GT_MP_TICKETS) {
       if (this.needPlayersTbl) {
-        let scoreformat = "%s" + loc("multiplayer/tickets") + loc("ui/colon") + "%d" + ", " +
-          loc("multiplayer/airfields") + loc("ui/colon") + "%d"
+        let scoreformat = "".concat("%s", loc("multiplayer/tickets"), loc("ui/colon"), "%d", ", ",
+          loc("multiplayer/airfields"), loc("ui/colon"), "%d")
 
         if (tbl.len() > playerTeamIdx) {
           this.setTeamInfoText(teamObj1, format(scoreformat, teamTxt[0], tbl[playerTeamIdx].tickets, tbl[playerTeamIdx].score))
@@ -623,7 +627,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         let totalCheckpointsAmount = get_race_checkpoints_count()
         local text = ""
         if (totalCheckpointsAmount > 0)
-          text = ::getCompoundedText(loc("multiplayer/totalCheckpoints") + loc("ui/colon"), totalCheckpointsAmount, "activeTextColor")
+          text = getCompoundedText("".concat(loc("multiplayer/totalCheckpoints"), loc("ui/colon")), totalCheckpointsAmount, "activeTextColor")
         chObj.setValue(text)
         this.checkRaceDataOnStart = false
       }
@@ -769,7 +773,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         teamTxt = loc("multiplayer/teamB")
       else
         teamTxt = loc("multiplayer/teamRandom")
-      teamObj.setValue(loc("multiplayer/team") + loc("ui/colon") + teamTxt)
+      teamObj.setValue(loc("ui/colon").concat(loc("multiplayer/team"), teamTxt))
     }
 
     ::fill_gamer_card({
@@ -845,7 +849,7 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     if (selectedObj)
       selectedObj.setValue(-1)
 
-    let tblObj = this.scene.findObject("table_kills_team" + (tblIdx + 1))
+    let tblObj = this.scene.findObject($"table_kills_team{(tblIdx + 1)}")
     if (!checkObj(tblObj) || tblObj.childrenCount() <= playerIdx)
       return false
 
@@ -862,20 +866,22 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let blockSample = "textareaNoTab{id:t='%s'; %s overlayTextColor:t='premiumNotEarned'; textShade:t='yes'; text:t='';}"
     let leftBlockObj = this.scene.findObject("mission_texts_block_left")
     if (checkObj(leftBlockObj)) {
-      local data = ""
+      let data = []
       if (fill)
         foreach (id in ["mission_environment", "gc_time_end", "gc_score_limit", "gc_time_to_kick"])
-          data += format(blockSample, id, "")
-      this.guiScene.replaceContentFromText(leftBlockObj, data, data.len(), this)
+          data.append(format(blockSample, id, ""))
+      let dataTxt = "".join(data)
+      this.guiScene.replaceContentFromText(leftBlockObj, dataTxt, dataTxt.len(), this)
     }
 
     let rightBlockObj = this.scene.findObject("mission_texts_block_right")
     if (checkObj(rightBlockObj)) {
-      local data = ""
+      let data = []
       if (fill)
         foreach (id in ["gc_spawn_score", "gc_wp_respawn_balance", "gc_race_checkpoints", "gc_mp_tickets_rounds"])
-          data += format(blockSample, id, "pos:t='pw-w, 0'; position:t='relative';")
-      this.guiScene.replaceContentFromText(rightBlockObj, data, data.len(), this)
+          data.append(format(blockSample, id, "pos:t='pw-w, 0'; position:t='relative';"))
+      let dataTxt = "".join(data)
+      this.guiScene.replaceContentFromText(rightBlockObj, dataTxt, dataTxt.len(), this)
     }
   }
 
@@ -979,13 +985,13 @@ local MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     }
     else {
       if (checkObj(gameEndsObj))
-        gameEndsObj.setValue(::getCompoundedText(loc("multiplayer/timeLeft") + loc("ui/colon"),
+        gameEndsObj.setValue(getCompoundedText("".concat(loc("multiplayer/timeLeft"), loc("ui/colon")),
                                                  time.secondsToString(timeLeft, false),
                                                  "activeTextColor"))
 
       let mp_ffa_score_limit = get_mp_ffa_score_limit()
       if (!this.isTeamplay && mp_ffa_score_limit && checkObj(scoreLimitTextObj))
-        scoreLimitTextObj.setValue(::getCompoundedText(loc("options/scoreLimit") + loc("ui/colon"),
+        scoreLimitTextObj.setValue(getCompoundedText("".concat(loc("options/scoreLimit"), loc("ui/colon")),
                                    mp_ffa_score_limit,
                                    "activeTextColor"))
     }

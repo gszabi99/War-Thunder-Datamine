@@ -2380,6 +2380,17 @@
       "groups": {
         "group": [
           {
+            "name": "Pulse",
+            "band": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          {
             "name": "Pulse + CW",
             "search": false,
             "track": false,
@@ -2387,18 +2398,13 @@
             "type": [
               "AN/APQ-51",
               "AN/APQ-72",
-              "AN/APQ-100",
               "AN/APQ-120",
               "AN/APG-59",
-              "AN/APG-59U",
               "AN/ASG-14",
               "NASARR",
               "US R21G M1",
               "Type 208A",
-              "Sapphire-23d_tp_23",
-              "Sapphire-23ml_tp_23m",
-              "Sapphire-23mla_tp_23m",
-              "Sapphire-23mla-2_tp_23m"
+              "Sapphire-23"
             ]
           },
           {
@@ -2409,66 +2415,38 @@
             "launch": true,
             "type": [
               "AN/APG-66",
-              "AN/APG-66(V)1",
-              "AN/APG-66(V)3",
-              "AN/APG-66J",
-              "AN/APG-68(V)5",
-              "AN/APG-68(V)7",
-              "AN/APG-68(V)9",
+              "AN/APG-68",
               "AN/APG-63",
-              "AN/APG-63(V)1",
-              "AN/APG-63 PSP",
-              "AN/APG-63 I-BAZ",
-              "AN/APG-65Q",
-              "AN/APG-65GY",
+              "AN/APG-65",
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
               "Thales RDY",
+              "N019",
               "N001",
-              "N001VEP",
-              "N019_S31",
-              "N010 Zhuk",
-              "N010M Zhuk-M",
+              "N010",
               "ELTA EL/M-2001B",
-              "PS-371A",
-              "PS-37A",
-              "PS-46A",
-              "PS-05A",
+              "PS-37",
+              "PS-05",
               "Ferranti Blue Vixen"
             ]
           },
           {
-            "name": "MPRF + CW",
+            "name": "MPRF + CW/HPRF",
             "search": false,
             "track": false,
             "launch": true,
             "type": [
-              "AN/APG-66",
-              "AN/APG-66(V)1",
-              "AN/APG-66(V)3",
-              "AN/APG-66J",
-              "AN/APG-68(V)5",
-              "AN/APG-68(V)7",
-              "AN/APG-68(V)9",
-              "AN/APG-63",
-              "AN/APG-63(V)1",
-              "AN/APG-63 PSP",
-              "AN/APG-63 I-BAZ",
-              "AN/APG-65Q",
-              "AN/APG-65GY",
-              "AN/APG-67",
-              "AN/APG-76 / AN/ASX-1",
-              "Thales RDY",
               "N001",
-              "N001VEP",
-              "N019_S31",
-              "N010 Zhuk",
-              "N010M Zhuk-M",
+              "N019",
+              "N010",
+              "AN/APG-66",
               "ELTA EL/M-2001B",
-              "PS-371A",
-              "PS-37A",
-              "PS-46A",
-              "PS-05A",
+              "PS-37",
+              "AN/APG-68",
+              "AN/APG-63",
+              "AN/APG-65",
+              "AN/APG-67",
+              "PS-05",
               "Ferranti Blue Vixen"
             ]
           },
@@ -2476,37 +2454,25 @@
             "name": "HPRF",
             "search": true,
             "track": true,
-            "launch": true,
+            "launch": false,
             "type": [
               "AN/APG-59",
-              "AN/APG-59U",
               "AN/AWG-9",
-              "AN/AWG-9 / AN/AXX-1 TCS",
               "Thomson-CSF RDI",
-              "Thomson-CSF RDM-3",
-              "marconi_ai_mk24",
-              "marconi_ai_mk24z",
-              "AI.24 Foxhunter Stage 2G",
-              "AI.24 Foxhunter Stage 3G",
+              "AI.24 Foxhunter",
               "weapon"
             ]
           },
           {
-            "name": "HPRF + CW",
+            "name": "HPRF + CW/HPRF",
             "search": false,
             "track": false,
             "launch": true,
             "type": [
               "AN/APG-59",
-              "AN/APG-59U",
               "AN/AWG-9",
-              "AN/AWG-9 / AN/AXX-1 TCS",
               "Thomson-CSF RDI",
-              "Thomson-CSF RDM-3",
-              "marconi_ai_mk24",
-              "marconi_ai_mk24z",
-              "AI.24 Foxhunter Stage 2G",
-              "AI.24 Foxhunter Stage 3G",
+              "AI.24 Foxhunter",
               "weapon"
             ]
           }
@@ -2516,16 +2482,18 @@
         "targetsPresenceGroup": [
           {
             "text": "hud/rwr_threat_pulse",
-            "default": true,
-            "group": "Pulse + CW"
+            "group": [
+              "Pulse",
+              "Pulse + CW"
+            ]
           },
           {
             "text": "hud/rwr_threat_cw_pd",
             "group": [
               "Pulse + CW",
-              "MPRF + CW",
+              "MPRF + CW/HPRF",
               "HPRF",
-              "HPRF + CW"
+              "HPRF + CW/HPRF"
             ]
           }
         ]
@@ -2698,6 +2666,10 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_aj37_rockets_rb_75.blk"
       },
       {
+        "name": "saab_aj37_rockets_rb_75t",
+        "blk": "gameData/FlightModels/weaponPresets/saab_aj37_rockets_rb_75t.blk"
+      },
+      {
         "name": "saab_aj37_120kg_m71",
         "blk": "gameData/FlightModels/weaponPresets/saab_aj37_120kg_m71.blk"
       },
@@ -2817,7 +2789,7 @@
               {
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
-                "emitter": "emtr_inversion_r",
+                "emitter": "emtr_flare3",
                 "bullets": 340,
                 "external": true,
                 "separate": false,
@@ -2959,7 +2931,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_uni_large",
+            "iconType": "missile_air_to_uni",
             "name": "rb75",
             "reqModification": "swd_rb75",
             "ShowNodes": {
@@ -2968,6 +2940,23 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/swd_rb75.blk",
+              "emitter": "rb_75_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "rb75t",
+            "reqModification": "swd_rb75t",
+            "ShowNodes": {
+              "node": "lavett_75_001"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb75t.blk",
               "emitter": "rb_75_001",
               "bullets": 1,
               "external": true,
@@ -3089,7 +3078,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_uni_large",
+            "iconType": "missile_air_to_uni",
             "name": "rb75",
             "reqModification": "swd_rb75",
             "ShowNodes": {
@@ -3098,6 +3087,23 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/swd_rb75.blk",
+              "emitter": "rb_75_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_uni_large",
+            "name": "rb75t",
+            "reqModification": "swd_rb75t",
+            "ShowNodes": {
+              "node": "lavett_75_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb75t.blk",
               "emitter": "rb_75_002",
               "bullets": 1,
               "external": true,
@@ -3160,7 +3166,7 @@
               {
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
-                "emitter": "airbrake_r",
+                "emitter": "emtr_flare4",
                 "bullets": 340,
                 "external": true,
                 "separate": false,
@@ -3382,16 +3388,6 @@
       "group": "countermeasures",
       "tier": 1
     },
-    "aden_air_targets": {},
-    "aden_ground_targets": {},
-    "aden_stealth": {},
-    "aden_belt_pack": {
-      "tier": 1
-    },
-    "aden_new_gun": {
-      "reqModification": "aden_belt_pack",
-      "tier": 3
-    },
     "swd_aj37_120kg_m71": {
       "modClass": "weapon",
       "tier": 1
@@ -3408,6 +3404,22 @@
     },
     "swd_rb75": {
       "reqModification": "rb_05a",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "aden_air_targets": {},
+    "aden_ground_targets": {},
+    "aden_stealth": {},
+    "aden_belt_pack": {
+      "tier": 1
+    },
+    "aden_new_gun": {
+      "reqModification": "aden_belt_pack",
+      "tier": 3
+    },
+    "swd_rb75t": {
+      "prevModification": "aden_new_gun",
+      "reqModification": "swd_rb75",
       "modClass": "weapon",
       "tier": 4
     }
@@ -3488,5 +3500,90 @@
       0.343456,
       0.00000127097
     ]
+  },
+  "AfterBurner0": {
+    "volumetricAfterBurner": {
+      "name": "jet_blue_modern_ja_37",
+      "maxHeight": 14.0,
+      "minHeight": 12.0,
+      "heightNoiseStrength": 0.05,
+      "heightNoiseSpeed": 20.0,
+      "maxRadius": 0.5,
+      "minRadius": 0.45,
+      "maxBaseRadius": 0.55,
+      "minBaseRadius": 0.55,
+      "relativeCylinderHeightMax": 0.35,
+      "relativeCylinderHeightMin": 0.35,
+      "outerCylinderAbsorptionMax": 0.5,
+      "outerCylinderAbsorptionMin": 0.7,
+      "outerCylinderHeightFadeMax": 7.0,
+      "outerCylinderHeightFadeMin": 5.0,
+      "tailHeightFadeMax": 2.0,
+      "tailHeightFadeMin": 0.2,
+      "outerCylinderHeightFadeNoiseStrength": 2.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.6,
+      "maxOuterCylinderRadius": 0.6,
+      "absorption": 1.0,
+      "colorIntensityMax": 10.0,
+      "colorIntensityMin": 2.0,
+      "colorOverHeightMult": 0.5,
+      "colorOverDepthMult": 3.0,
+      "colorOverRadiusMult": 6.0,
+      "colorOverRadiusFadeOverHeight": 2.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 6.0,
+      "ringAbsorption": 1.2,
+      "maxRingCount": 15,
+      "minRingCount": 14,
+      "ringIntensityMin": 0.0,
+      "ringIntensityMax": 0.5,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 1.0,
+      "ringOffsetNoiseStrength": 1.0,
+      "ringOffsetNoiseSpeed": 20.0,
+      "rampTextureOffset": 0,
+      "radiusNoiseStrength": 0.06,
+      "radiusNoiseSpeed": 20.0,
+      "shakeNoiseStrength": 0.01,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.7,
+      "colorOverHeightNoiseStrength": 0.1,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.15,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.03,
+      "colorOverDepthNoiseSpeed": 10.0,
+      "colorIntensityNoiseStrength": 2.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "minStartingRingHeight": 3.6,
+      "maxStartingRingHeight": 3.6,
+      "ringIntensity": 2.0,
+      "ringFrequency": 11.3097,
+      "preNominalEasingParams": {
+        "animationTime": 3.0,
+        "ascendingSmoothIntensityParams": 0.7
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.5,
+        "ascendingSmoothIntensityParams": 1.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.889273,
+          0.686275
+        ],
+        "angle": 1.0,
+        "brightness": 20.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensity": 1.0,
+        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseSpeed": 16.0
+      }
+    }
   }
 }

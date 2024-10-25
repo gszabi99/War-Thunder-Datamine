@@ -205,9 +205,9 @@ let setNewInvitesAmount = @(val) invitesAmount.val = val
     this.updateNewInvitesAmount()
 }
 
-::g_invites.updateNewInvitesAmount <- function updateNewInvitesAmount() {
+function updateNewInvitesAmount() {
   local amount = 0
-  foreach (invite in this.list)
+  foreach (invite in invitesList)
     if (invite.isNew() && invite.isVisible())
       amount++
   if (amount == getNewInvitesAmount())
@@ -216,6 +216,8 @@ let setNewInvitesAmount = @(val) invitesAmount.val = val
   setNewInvitesAmount(amount)
   ::do_with_all_gamercards(::update_gc_invites)
 }
+
+::g_invites.updateNewInvitesAmount <- updateNewInvitesAmount
 
 ::g_invites._timedInvitesUpdate <- function _timedInvitesUpdate(_dt = 0) {
   let now = get_charserver_time_sec()
@@ -311,4 +313,5 @@ return {
   INVITE_CHAT_LINK_PREFIX
   addFriendInvite
   openInviteWnd
+  updateNewInvitesAmount
 }

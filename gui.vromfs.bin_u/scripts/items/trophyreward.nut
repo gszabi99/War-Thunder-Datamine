@@ -152,7 +152,7 @@ function rewardsSortComparator(a, b) {
     return image
   }
   else if (rewardType == "unit" || rewardType == "rentedUnit")
-    style += "_" + ::getUnitTypeText(getEsUnitType(getAircraftByName(rewardValue))).tolower()
+    style = "_".concat(style, ::getUnitTypeText(getEsUnitType(getAircraftByName(rewardValue))).tolower())
   else if (rewardType == "resource" || rewardType == "resourceType") {
     if (config.resourceType) {
       let visCfg = this.getDecoratorVisualConfig(config)
@@ -360,7 +360,7 @@ function rewardsSortComparator(a, b) {
     else {
       local text = ::trophyReward.getRewardText(data.config)
       if (data.num > 1)
-        text += loc("ui/colon") + data.num
+        text = "".concat(text, loc("ui/colon"), data.num)
       returnData.append(text)
     }
   }

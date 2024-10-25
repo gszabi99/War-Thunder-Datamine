@@ -6,21 +6,24 @@
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.318,
   "gearSinkRangeC": 0.355,
+  "gyroSight": false,
   "haveCCRPForBombs": true,
   "haveCCIPForBombs": true,
+  "haveCCIPForGun": true,
+  "haveCCIPForRocket": true,
   "havePointOfInterestDesignator": true,
-  "isBwOpticSight": true,
   "ilsAVQ7": true,
-  "gyroSight": false,
+  "rwrIndicator": "AN/APR-25",
+  "isBwOpticSight": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "simplifiedJoyAileronMult": 0.0,
   "simplifiedJoyElevatorMult": 1.0,
-  "standardExhaustFxType": "jet_exhaust",
-  "afterburnerExhaustFxType": "jet_afterburner_exhaust",
-  "startExhaustFxType": "jet_start_exhaust",
+  "engineFxMap0": 0,
+  "engineFxMap1": 1,
+  "engineFxMap2": 1,
   "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -3589,6 +3592,22 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
+  "engineFx": [
+    {
+      "exhaust": {
+        "standard": "jet_exhaust",
+        "afterburner": "jet_afterburner_exhaust",
+        "start": "jet_start_exhaust"
+      }
+    },
+    {
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "booster_fire"
+      }
+    }
+  ],
   "fireParams": {
     "engineExtinguishFireSpeed": [
       299.0,

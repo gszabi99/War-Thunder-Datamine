@@ -3,6 +3,7 @@ from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -473,7 +474,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
               adviseMarketplace ? "items/shop/emptyTab/noItemsAdvice/marketplaceEnabled"
             : adviseShop        ? "items/shop/emptyTab/noItemsAdvice/shopEnabled"
             :                     "items/shop/emptyTab/noItemsAdvice/shopDisabled"
-          caption += " " + loc(noItemsAdviceLocId)
+          caption = " ".concat(caption, loc(noItemsAdviceLocId))
         }
         emptyListTextObj.setValue(caption)
       }
@@ -994,7 +995,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       text = loc("workshop/accentCraftTreeButton", {
         buttonName = loc(curSet.getCraftTree()?.openButtonLocId ?? "")
       })
-      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      shortcut = GAMEPAD_ENTER_SHORTCUT
       actionType = tutorAction.OBJ_CLICK
       cb = @() this.openCraftTree(null, tutorialItem)
     }]

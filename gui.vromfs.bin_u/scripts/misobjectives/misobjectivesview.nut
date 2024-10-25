@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import get_objectives_list
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -7,12 +6,13 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
+let { get_objectives_list, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 
 ::gui_load_mission_objectives <- function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
   return handlersManager.loadHandler(gui_handlers.misObjectivesView,
                                        { scene = nestObj,
                                          sceneBlkName = leftAligned ? "%gui/missions/misObjective.blk" : "%gui/missions/misObjectiveRight.blk"
-                                         objTypeMask = typesMask || gui_handlers.misObjectivesView.typesMask
+                                         objTypeMask = typesMask || gui_handlers.misObjectivesView.objTypeMask
                                        })
 }
 
@@ -20,7 +20,7 @@ gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missions/misObjective.blk"
 
-  objTypeMask = (1 << OBJECTIVE_TYPE_PRIMARY) + (1 << OBJECTIVE_TYPE_SECONDARY)
+  objTypeMask = (1 << OBJECTIVE_TYPE_PRIMARY) | (1 << OBJECTIVE_TYPE_SECONDARY)
 
   curList = null
 

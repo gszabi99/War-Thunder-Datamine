@@ -4,6 +4,11 @@ enum MARK_RECIPE {
   USED
 }
 
+enum CHANCE_VIEW_TYPE {
+  NONE
+  ICON
+  TEXT
+}
 
 enum itemsTab {
   INVENTORY
@@ -58,6 +63,7 @@ enum itemType { //bit values for easy multitype search
 
 return {
   MARK_RECIPE
+  CHANCE_VIEW_TYPE
   itemsTab
   itemType
 }

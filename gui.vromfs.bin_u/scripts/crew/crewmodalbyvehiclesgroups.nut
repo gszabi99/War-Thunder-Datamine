@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let { format } = require("string")
 let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
@@ -99,7 +99,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
       this.openSelectedCrew()
       this.updatePage()
     }, this)
-    if (cost > ::zero_money) {
+    if (cost > zero_money) {
       let msgText = warningIfGold(
         format(loc("shop/needMoneyQuestion_purchaseCrew"),
           cost.getTextAccordingToBalance()),

@@ -92,7 +92,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
       for (local j = 0; j < sides.len(); j++) {
         local value = this.info.getInt(sides[j] + "_" + stats[i], 0)
         if (value > 10000)
-          value = "" + ((value / 1000).tointeger()).tostring() + "K"
+          value = "".concat("", ((value / 1000).tointeger()), "K")
         this.guiScene["info-" + stats[i] + j.tostring()].text = value
       }
     }

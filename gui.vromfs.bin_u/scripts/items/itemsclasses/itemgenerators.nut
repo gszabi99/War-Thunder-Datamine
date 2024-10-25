@@ -24,7 +24,6 @@ let ItemGenerator = class {
   timestamp = ""
   rawCraftTime = 0
   lifetimeModifier = null
-
   isPack = false
   hasHiddenItems = false
   hiddenTopPrizeParams = null
@@ -168,6 +167,7 @@ let ItemGenerator = class {
           let b = DataBlock()
           b.item =  item.id
           b.rank = rank
+          b.bundle = this.isPack ? this.id : null
           b.fromGenId = fromGenId ?? this.id
           if (this.tags?.showFreq)
             b.dropChance = this.tags.showFreq.tointeger() / 100.0

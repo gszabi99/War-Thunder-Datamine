@@ -42,6 +42,9 @@ expandable {
 
   <<#rewards>>
   tdiv {
+    <<#id>>
+      id:t='<<id>>'
+    <</id>>
     behaviour:t='bhvUpdateByWatched'
     value:t='<<hasRewardValue>>'
     padding-left:t='1@blockInterval'
@@ -55,8 +58,14 @@ expandable {
       background-svg-size:t='@cIco, @cIco'
     }
     textareaNoTab {
+      id:t='promo_reward_text'
       text:t='<<rewardText>>'
     }
   }
   <</rewards>>
+  timer {
+    id:t='expired_timer'
+    timer_handler_func:t ='updateExpiredTime'
+    timer_interval_msec:t='1000'
+  }
 }

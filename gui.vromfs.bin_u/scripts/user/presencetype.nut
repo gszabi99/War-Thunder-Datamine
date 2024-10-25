@@ -1,5 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -56,7 +58,7 @@ enums.addTypesByGlobalName("g_presence_type", {
       params.country <- ::queues.getQueueCountry(queue)
     }
     getLocText = @(presenceParams) loc(this.locId, {
-      gameMode = ::events.getNameByEconomicName(presenceParams?.eventName ?? "")
+      gameMode = events.getNameByEconomicName(presenceParams?.eventName ?? "")
       country = loc(presenceParams?.country ?? "")
     })
   }
@@ -77,7 +79,7 @@ enums.addTypesByGlobalName("g_presence_type", {
       let eventName = presenceParams?.eventName ?? ""
       return loc(this.locId,
         { gameMode = eventName == "" ? ::get_game_mode_loc_name(presenceParams?.gameMod)
-          : ::events.getNameByEconomicName(presenceParams?.eventName)
+          : events.getNameByEconomicName(presenceParams?.eventName)
           country = loc(presenceParams?.country ?? "")
         })
     }

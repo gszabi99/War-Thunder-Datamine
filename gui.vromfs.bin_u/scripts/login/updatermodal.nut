@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
@@ -157,34 +156,34 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
     if (this.errorCode < 0)
       this.goBack()
     else {
-      let errorText = loc("updater/error/" + this.errorCode.tostring())
+      let errorText = loc($"updater/error/{this.errorCode}")
       this.msgBox("updater_error", errorText, [["ok", this.goBack ]], "ok")
     }
   }
 
   function updateText() {
     let { stage, dspeed, etaSec } = this //-ident-hides-ident
-    local text = ""
-    local textSub = ""
+    let text = []
+    let textSub = []
     if (stage == UPDATER_DOWNLOADING)
-      text = loc("updater/downloading")
+      text.append(loc("updater/downloading"))
     else
-      text = loc("pl1/check_profile") //because we have all localizations
+      text.append(loc("pl1/check_profile")) //because we have all localizations
 
     if (stage == UPDATER_CHECKING_FAST || stage == UPDATER_CHECKING
       || stage == UPDATER_RESPATCH || stage == UPDATER_DOWNLOADING
       || stage == UPDATER_COPYING) {
-      text += ": ";
-      text += floor(this.percent)
-      text += "%"
+      text.append(": ")
+      text.append(floor(this.percent))
+      text.append("%")
     }
     if (stage == UPDATER_DOWNLOADING) {
       if (dspeed > 0) {
         local meas = 0.0;
-        local desc = loc("updater/dspeed/b");
+        local desc = loc("updater/dspeed/b")
         meas = dspeed / 1073741824.0; //GB
         if (meas > 0.5)
-          desc = loc("updater/dspeed/gb");
+          desc = loc("updater/dspeed/gb")
         else {
           meas = dspeed / 1048576.0; //MB
           if (meas > 0.5)
@@ -194,13 +193,12 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
             desc = meas > 0.5 ? loc("updater/dspeed/kb") : loc("updater/dspeed/b");
           }
         }
-        textSub += time.secondsToString(etaSec);
-        textSub += format(" ( %.1f%s )", meas, desc);
+        textSub.append(time.secondsToString(etaSec), format(" ( %.1f%s )", meas, desc))
       }
     }
 
-    this.scene.findObject("msgText").setValue(text)
-    this.scene.findObject("msgTextSub").setValue(textSub)
+    this.scene.findObject("msgText").setValue("".join(text))
+    this.scene.findObject("msgTextSub").setValue("".join(textSub))
   }
 
   function onCancel() {

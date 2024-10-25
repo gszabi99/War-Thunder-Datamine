@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_exp, shop_repair_all, shop_get_researchable_unit_name, shop_get_aircraft_hp, wp_get_repair_cost, clan_get_researching_unit, is_era_available, set_char_cb, is_mouse_last_time_used
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/dagui_library.nut" import *
@@ -47,7 +46,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
 let {
   getEsUnitType, getUnitCountry, isUnitGift, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart,canResearchUnit, getUnitName
+  isUnitGroup, isGroupPart,canResearchUnit, getUnitName, isUnitBought, isUnitBroken
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
@@ -333,10 +332,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     if (isUnitGroup(item)) {
       foreach (air in item.airsGroup) {
-        let isOwn = ::isUnitBought(air)
+        let isOwn = isUnitBought(air)
         res.own = res.own && isOwn
         res.partOwn = res.partOwn || isOwn
-        res.broken = res.broken || ::isUnitBroken(air)
+        res.broken = res.broken || isUnitBroken(air)
         res.checkAir = res.checkAir || checkAir == air.name
       }
     }
@@ -344,9 +343,9 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       res.own = this.isUnlockedFakeUnit(item)
     }
     else {
-      res.own = ::isUnitBought(item)
+      res.own = isUnitBought(item)
       res.partOwn = res.own
-      res.broken = ::isUnitBroken(item)
+      res.broken = isUnitBroken(item)
     }
     return res
   }
@@ -983,8 +982,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isEraAvailable) {
       let unitsCount = this.boughtVehiclesCount[rank]
       let unitsTotal = this.totalVehiclesCount[rank]
-      tooltipRank = loc("shop/age/tooltip") + loc("ui/colon") + colorize("userlogColoredText", get_roman_numeral(rank))
-        + "\n" + loc("shop/tier/unitsBought") + loc("ui/colon") + colorize("userlogColoredText", format("%d/%d", unitsCount, unitsTotal))
+      tooltipRank = "".concat(loc("shop/age/tooltip"), loc("ui/colon"), colorize("userlogColoredText", get_roman_numeral(rank)),
+        "\n", loc("shop/tier/unitsBought"), loc("ui/colon"), colorize("userlogColoredText", format("%d/%d", unitsCount, unitsTotal)))
     }
     else {
       let unitType = this.getCurPageEsUnitType()
@@ -1004,15 +1003,15 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           let txtRankIsLocked = loc("shop/unlockTier/locked", { rank = txtThisRank })
           let txtNeedUnits = loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = txtPrevRank, amount = txtUnitsLeft })
           let txtRankLockedDesc = loc("shop/unlockTier/desc", { rank = txtThisRank, prevRank = txtPrevRank, amount = txtUnitsNeed })
-          let txtRankProgress = loc("shop/unlockTier/progress", { rank = txtThisRank }) + loc("ui/colon") + txtCounterColored
+          let txtRankProgress = loc("ui/colon").concat(loc("shop/unlockTier/progress", { rank = txtThisRank }), txtCounterColored)
 
           if (prevRank == rank - 1) {
             reqCounter = txtCounter
-            tooltipReqCounter = txtRankProgress + "\n" + txtNeedUnits
+            tooltipReqCounter = "\n".concat(txtRankProgress, txtNeedUnits)
           }
 
-          tooltipRank = txtRankIsLocked + "\n" + txtNeedUnits + "\n" + txtRankLockedDesc
-          tooltipPlate = txtRankProgress + "\n" + txtNeedUnits
+          tooltipRank = "\n".concat(txtRankIsLocked, txtNeedUnits, txtRankLockedDesc)
+          tooltipPlate = "\n".concat(txtRankProgress, txtNeedUnits)
           break
         }
       }
@@ -1149,7 +1148,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (unit in getAllUnits())
       if (unit.shopCountry == this.curCountry && pageUnitsType == getEsUnitType(unit)) {
-        let isOwn = ::isUnitBought(unit)
+        let isOwn = isUnitBought(unit)
         if (isOwn)
           bought[unit.rank]++
         if (isOwn || unit.isVisibleInShop())
@@ -1163,7 +1162,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillAirReq(item, reqUnit = null) {
     local req = true
     if (item?.reqAir)
-      req = ::isUnitBought(getAircraftByName(item.reqAir))
+      req = isUnitBought(getAircraftByName(item.reqAir))
     if (req && reqUnit?.isFakeUnit)
       req = this.isUnlockedFakeUnit(reqUnit)
     if (isUnitGroup(item)) {
@@ -1727,7 +1726,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tdObj = grObj.getParent()
     let tdPos = tdObj.getPosRC()
     let tdSize = tdObj.getSize()
-    let leftPos = (tdPos[0] + tdSize[0] / 2) + " -50%w"
+    let leftPos = $"{tdPos[0] + tdSize[0] / 2} -50%w"
 
     let cellHeight = tdSize[1] || 86 // To avoid division by zero
     let screenHeight = screen_height()
@@ -1789,22 +1788,22 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillGroupObjArrows(group) {
     local unitPosNum = 0
     local prevGroupUnit = null
-    local lines = ""
+    let lines = []
     foreach (unit in group) {
       if (!unit)
         continue
       let reqUnit = ::getPrevUnit(unit)
       if (reqUnit  && prevGroupUnit
           && reqUnit.name == prevGroupUnit.name) {
-        local status = ::isUnitBought(prevGroupUnit) || ::isUnitBought(unit)
+        local status = isUnitBought(prevGroupUnit) || isUnitBought(unit)
                        ? ""
                        : "locked"
-        lines += this.linesGenerator.createLine("", unitPosNum - 1, 0, unitPosNum, 0, status)
+        lines.append(this.linesGenerator.createLine("", unitPosNum - 1, 0, unitPosNum, 0, status))
       }
       prevGroupUnit = unit
       unitPosNum++
     }
-    return lines
+    return "".join(lines)
   }
 
   function fillGroupObj(selectUnitName = "") {
@@ -1830,7 +1829,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.appendWithBlk(this.groupChooseObj.findObject("arrows_nest"), lines, this)
 
     foreach (unit in item.airsGroup)
-      if (::isUnitBroken(unit))
+      if (isUnitBroken(unit))
         u.appendOnce(unit, this.brokenList)
   }
 
@@ -2283,7 +2282,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     local adviceText = loc(isAutoDiff() ? "mainmenu/showModesInfo/advice" : "mainmenu/showModesInfo/warning", { automatic = loc("options/auto") })
     adviceText = colorize(isAutoDiff() ? "goodTextColor" : "warningTextColor", adviceText)
-    obj["tooltip"] = loc("mainmenu/showModesInfo/tooltip") + "\n" + adviceText
+    obj["tooltip"] = "\n".concat(loc("mainmenu/showModesInfo/tooltip"), adviceText)
   }
 
   _isShowModeInChange = false

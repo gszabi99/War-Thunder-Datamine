@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import set_allowed_controls_mask
-
+let { setAllowedControlsMask } = require("controlsMask")
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -192,7 +191,7 @@ let class HudAirWeaponSelector {
        | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
        | CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
 
-    set_allowed_controls_mask(wndControlsAllowMaskWhenActive)
+    setAllowedControlsMask(wndControlsAllowMaskWhenActive)
     broadcastEvent("ChangedShowActionBar")
     this.updatePresetData()
     this.updateCounterMeasures()

@@ -1,8 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
@@ -56,7 +57,7 @@ let setTextToObjByOption = function(objId, optionId, value) {
 
   let option = ::get_option(optionId)
   let displayValue = option.getValueLocText(value)
-  setTextToObj(obj, option.getTitle() + loc("ui/colon"), displayValue)
+  setTextToObj(obj, "".concat(option.getTitle(), loc("ui/colon")), displayValue)
 }
 
 return function(scene, sessionInfo) {
@@ -72,7 +73,7 @@ return function(scene, sessionInfo) {
 
   let nameObj = scene.findObject("session_creator")
   let creatorName = getPlayerName(sessionInfo?.creator ?? "")
-  setTextToObj(nameObj, loc("multiplayer/game_host") + loc("ui/colon"), creatorName)
+  setTextToObj(nameObj, "".concat(loc("multiplayer/game_host"), loc("ui/colon")), creatorName)
 
   let teams = SessionLobby.getTeamsCountries(sessionInfo)
   let isEqual = teams.len() == 1 || u.isEqual(teams[0], teams[1])
@@ -91,12 +92,12 @@ return function(scene, sessionInfo) {
 
   let mapNameObj = scene.findObject("session_mapName")
   if (SessionLobby.isUserMission(sessionInfo))
-    setTextToObj(mapNameObj, loc("options/mp_user_mission") + loc("ui/colon"), getTblValue("userMissionName", sessionInfo))
+    setTextToObj(mapNameObj, "".concat(loc("options/mp_user_mission"), loc("ui/colon")), sessionInfo?.userMissionName)
   else if (SessionLobby.isUrlMission(sessionInfo)) {
     let url = getTblValue("missionURL", sessionInfo, "")
     let urlMission =  g_url_missions.findMissionByUrl(url)
     let missionName = urlMission ? urlMission.name : url
-    setTextToObj(mapNameObj, loc("urlMissions/sessionInfoHeader") + loc("ui/colon"), missionName)
+    setTextToObj(mapNameObj, "".concat(loc("urlMissions/sessionInfoHeader"), loc("ui/colon")), missionName)
   }
   else {
     let missionName = SessionLobby.getMissionNameLoc(sessionInfo)
@@ -104,17 +105,17 @@ return function(scene, sessionInfo) {
   }
 
   let pasObj = scene.findObject("session_hasPassword")
-  setTextToObj(pasObj, loc("options/session_password") + loc("ui/colon"),
-               isEventRoom ? null : getTblValue("hasPassword", sessionInfo, false))
+  setTextToObj(pasObj, "".concat(loc("options/session_password"), loc("ui/colon")),
+    isEventRoom ? null : sessionInfo?.hasPassword ?? false)
 
   let tlObj = scene.findObject("session_teamLimit")
-  let rangeData = ::events.getPlayersRangeTextData(SessionLobby.getMGameMode(sessionInfo))
+  let rangeData = events.getPlayersRangeTextData(SessionLobby.getMGameMode(sessionInfo))
   setTextToObj(tlObj, rangeData.label,
                isEventRoom && rangeData.isValid ? rangeData.value : null)
 
   let craftsObj = scene.findObject("session_battleRating")
   let reqUnits = SessionLobby.getRequiredCrafts(Team.A, sessionInfo)
-  setTextToObj(craftsObj, loc("events/required_crafts"), ::events.getRulesText(reqUnits))
+  setTextToObj(craftsObj, loc("events/required_crafts"), events.getRulesText(reqUnits))
 
   let envObj = scene.findObject("session_environment")
   let envTexts = []
@@ -122,12 +123,12 @@ return function(scene, sessionInfo) {
     envTexts.append(getWeatherLocName(missionInfo.weather))
   if ("environment" in missionInfo)
     envTexts.append(getMissionTimeText(missionInfo.environment))
-  setTextToObj(envObj, loc("sm_conditions") + loc("ui/colon"), ", ".join(envTexts, true))
+  setTextToObj(envObj, "".concat(loc("sm_conditions"), loc("ui/colon")), ", ".join(envTexts, true))
 
   let difObj = scene.findObject("session_difficulty")
   if (checkObj(difObj)) {
     let diff = getTblValue("difficulty", missionInfo)
-    setTextToObj(difObj, loc("multiplayer/difficultyShort") + loc("ui/colon"), loc($"options/{diff}"))
+    setTextToObj(difObj, "".concat(loc("multiplayer/difficultyShort"), loc("ui/colon")), loc($"options/{diff}"))
     local diffTooltip = ""
     if (diff == "custom") {
       let custDiff = getTblValue("custDifficulty", missionInfo, null)
@@ -139,14 +140,14 @@ return function(scene, sessionInfo) {
 
 
   local bObj = scene.findObject("session_laps")
-  setTextToObj(bObj, loc("options/race_laps") + loc("ui/colon"),
-               (gt & GT_RACE) ? getTblValue("raceLaps", missionInfo) : null)
+  setTextToObj(bObj, "".concat(loc("options/race_laps"), loc("ui/colon")),
+    (gt & GT_RACE) ? missionInfo?.raceLaps : null)
   bObj = scene.findObject("session_winners")
-  setTextToObj(bObj, loc("options/race_winners") + loc("ui/colon"),
-               (gt & GT_RACE) ? getTblValue("raceWinners", missionInfo) : null)
+  setTextToObj(bObj, "".concat(loc("options/race_winners"), loc("ui/colon")),
+    (gt & GT_RACE) ? missionInfo?.raceWinners : null)
   bObj = scene.findObject("session_can_shoot")
-  setTextToObj(bObj, loc("options/race_can_shoot") + loc("ui/colon"),
-               (gt & GT_RACE) ? !getTblValue("raceForceCannotShoot", missionInfo, false) : null)
+  setTextToObj(bObj, "".concat(loc("options/race_can_shoot"), loc("ui/colon")),
+    (gt & GT_RACE) ? !(missionInfo?.raceForceCannotShoot ?? false) : null)
 
   setTextToObjByOption("session_timeLimit", USEROPT_TIME_LIMIT, SessionLobby.getTimeLimit(sessionInfo))
 
@@ -156,8 +157,8 @@ return function(scene, sessionInfo) {
   setTextToObjByOption("session_respawn", USEROPT_VERSUS_RESPAWN, getTblValue("maxRespawns", missionInfo, -1))
 
   let tObj = scene.findObject("session_takeoff")
-  setTextToObj(tObj, loc("options/optional_takeoff") + loc("ui/colon"),
-               getTblValue("optionalTakeOff", missionInfo, false))
+  setTextToObj(tObj, "".concat(loc("options/optional_takeoff"), loc("ui/colon")),
+    missionInfo?.optionalTakeOff ?? false)
 
   setTextToObjByOption("session_allowbots", USEROPT_IS_BOTS_ALLOWED,
                (gt & GT_RACE) ? null : getTblValue("isBotsAllowed", missionInfo))
@@ -165,8 +166,8 @@ return function(scene, sessionInfo) {
   setTextToObjByOption("session_allow_empty_teams", USEROPT_ALLOW_EMPTY_TEAMS, missionInfo?.allowEmptyTeams)
 
   bObj = scene.findObject("session_jip")
-  setTextToObj(bObj, loc("options/allow_jip") + loc("ui/colon"),
-               getTblValue("allowJIP", sessionInfo, true))
+  setTextToObj(bObj, "".concat(loc("options/allow_jip"), loc("ui/colon")),
+    sessionInfo?.allowJIP ?? true)
 
   setTextToObjByOption("session_cluster", USEROPT_CLUSTERS, getTblValue("cluster", sessionInfo))
 

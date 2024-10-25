@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
 
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { canResearchUnit, getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let isAllClanUnitsResearched = @() getAllUnits().findvalue(
@@ -23,7 +23,7 @@ function needChooseClanUnitResearch() {
     return false
 
   let curSquadronExp = clan_get_exp()
-  if (curSquadronExp <= 0 || (curSquadronExp < (unit.reqExp - ::getUnitExp(unit))))
+  if (curSquadronExp <= 0 || (curSquadronExp < (unit.reqExp - getUnitExp(unit))))
     return false
 
   return true

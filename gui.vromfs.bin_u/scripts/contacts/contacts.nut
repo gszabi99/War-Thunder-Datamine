@@ -4,6 +4,7 @@ from "%scripts/contacts/contactsConsts.nut" import contactEvent
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -243,7 +244,7 @@ foreach (fn in [
       let memberDataAirs = memberData?.crewAirs[memberData.country] ?? []
       let gameMode = getGameModeById(g_squad_manager.getLeaderGameModeId())
       let event = getGameModeEvent(gameMode)
-      let ediff = ::events.getEDiffByEvent(event)
+      let ediff = events.getEDiffByEvent(event)
       view.unitList <- []
       view.hasUnitList = memberDataAirs.len() != 0
 
@@ -274,7 +275,7 @@ foreach (fn in [
         if (memberDataAirs.len() != 0) {
           let battleType = get_battle_type_by_ediff(ediff)
           let fonticon = getFontIconByBattleType(battleType)
-          let difficulty = ::events.getEventDifficulty(event)
+          let difficulty = events.getEventDifficulty(event)
           let diffName = nbsp.join([ fonticon, difficulty.getLocName() ], true)
           view.hint <- $"{loc("shop/all_info_relevant_to_current_game_mode")}: {diffName}"
         }

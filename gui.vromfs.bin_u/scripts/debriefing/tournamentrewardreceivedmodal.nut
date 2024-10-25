@@ -2,11 +2,12 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
@@ -32,11 +33,11 @@ gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function initScreen() {
-    let event = ::events.getEventByEconomicName(this.eventEconomicName)
+    let event = events.getEventByEconomicName(this.eventEconomicName)
     let nextReward = getNextReward(this.rewardBlk, event)
 
     let rewardDescriptionData = {
-      tournamentName = colorize("userlogColoredText", ::events.getNameByEconomicName(this.eventEconomicName))
+      tournamentName = colorize("userlogColoredText", events.getNameByEconomicName(this.eventEconomicName))
     }
 
     let view = {

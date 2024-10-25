@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -39,8 +38,8 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (id in [ "search_btn_start", "search_btn_close" ]) {
       let obj = this.scene.findObject(id)
       if (checkObj(obj))
-        obj["tooltip"] += colorize("hotkeyColor",
-        loc("ui/parentheses/space", { text = loc(obj?["hotkeyLoc"] ?? "") }))
+        obj["tooltip"] = "".concat(obj["tooltip"], colorize("hotkeyColor",
+        loc("ui/parentheses/space", { text = loc(obj?["hotkeyLoc"] ?? "") })))
     }
 
     this.searchClear()
@@ -75,7 +74,7 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
       : loc("shop/search/local/notFound")
     //With IME window with all variants wil be open automatically
     if (countGlobal > countLocal)
-      hintText += "\n" + loc("shop/search/global/found", { count = countGlobal })
+      hintText = "\n".concat(hintText, loc("shop/search/global/found", { count = countGlobal }))
     let obj = this.scene.findObject("search_hint_text")
     if (checkObj(obj))
       obj.setValue(hintText)

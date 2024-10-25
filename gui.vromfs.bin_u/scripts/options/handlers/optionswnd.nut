@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_option_gamma, is_internet_radio_station_removable, remove_internet_radio_station, get_internet_radio_options, set_option_gamma, gchat_voice_echo_test
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
@@ -78,6 +77,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   filterText = ""
 
+  getOptionInfoViewFn = null
+
   function initScreen() {
     if (!this.optGroups)
       base.goBack()
@@ -139,9 +140,12 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   function fillOptions(group) {
     let config = this.optGroups[group]
 
+    this.getOptionInfoViewFn = config?.getOptionInfoView
+
     if ("fillFuncName" in config) {
       this.curGroup = group
-      this[config.fillFuncName](group);
+      this[config.fillFuncName](group)
+      this.updateOptionsListStyle(group)
       return;
     }
 
@@ -149,6 +153,13 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       this.fillOptionsList(group, "optionslist")
 
     this.updateLinkedOptions()
+  }
+
+  function updateOptionsListStyle(group) {
+    let { isInfoOnTheRight = false } = this.optGroups[group]
+    let optsListObj = this.scene.findObject("optionslist")
+    optsListObj.alignMode = isInfoOnTheRight ? "left" : "center"
+    optsListObj.width = isInfoOnTheRight ? "0.45pw" : "pw"
   }
 
   function fillInternetRadioOptions(group) {
@@ -343,7 +354,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     if (data == "")
       data = "---";
     else
-      data = "<color=@hotkeyColor>" + ::hackTextAssignmentForR2buttonOnPS4(data) + "</color>"
+      data = $"<color=@hotkeyColor>{::hackTextAssignmentForR2buttonOnPS4(data)}</color>"
 
     this.scene.findObject("ptt_shortcut").setValue(data)
     showObjById("ptt_buttons_block", ::get_option(USEROPT_PTT).value, this.scene)
@@ -370,7 +381,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     this.save(false);
 
     local data = ::get_shortcut_text({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false })
-    data = "<color=@hotkeyColor>" + ::hackTextAssignmentForR2buttonOnPS4(data) + "</color>"
+    data = $"<color=@hotkeyColor>{::hackTextAssignmentForR2buttonOnPS4(data)}</color>"
     this.scene.findObject("ptt_shortcut").setValue(data);
   }
 
@@ -429,6 +440,29 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       objParent.setValue(val)
   }
 
+  onOptionContainerUnhover = @() this.scene.findObject("option_info_container").show(false)
+
+  function onOptionContainerHover(obj) {
+    let id = obj.id.split("_tr")[0]
+    let infoContainerObj = this.scene.findObject("option_info_container")
+
+    this.guiScene.performDelayed(this, function() {  // To ensure that showing info block happens after hiding the previous one
+      if (!infoContainerObj?.isValid())
+        return
+
+      let opt = this.get_option_by_id(id)
+      let view = this.getOptionInfoViewFn?(id)
+        ?? {
+              title = opt?.text ?? loc($"options/{id}")
+              description = opt?.hint ?? loc($"guiHints/{id}", "")
+           }
+      let markup = handyman.renderCached("%gui/options/optionInfo.tpl", view)
+
+      this.guiScene.replaceContentFromText(infoContainerObj, markup, markup.len(), this)
+      infoContainerObj.show(true)
+    })
+  }
+
   function fillOptionsList(group, objName) {
     this.curGroup = group
     let config = this.optGroups[group]
@@ -439,6 +473,11 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
         containerCb = "onChangeOptionValue"
       }
 
+    this.optionsConfig.__update({
+      onHoverFnName = config?.isInfoOnTheRight ? "onOptionContainerHover" : null
+      onUnhoverFnName = config?.isInfoOnTheRight ? "onOptionContainerUnhover" : null
+    })
+
     this.currentContainerName =$"options_{config.name}"
     let container = create_options_container(this.currentContainerName, config.options, true, this.columnsRatio,
       true, this.optionsConfig)
@@ -447,6 +486,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     this.guiScene.setUpdatesEnabled(false, false)
     this.optionIdToObjCache.clear()
     this.guiScene.replaceContentFromText(this.scene.findObject(objName), container.tbl, container.tbl.len(), this)
+    this.updateOptionsListStyle(group)
     this.setNavigationItems()
     this.showOptionsSelectedNavigation()
     this.updateNavbar()

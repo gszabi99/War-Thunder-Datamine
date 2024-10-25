@@ -2,6 +2,7 @@ require ecs
 require Mission
 require DagorDataBlock
 require DagorSystem
+require strings
 
 def components_to_blk(var blk : DataBlock; eid : EntityId)
   ecs::query(eid) <| $ [es] (setting__crewSkillK : float;
@@ -108,7 +109,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
         let target = string(setting__unit_target_list[i])
         add(tBlk, "t", target)
 
-[es(on_event=EventLevelLoaded)]
+[es(on_event=EventLevelLoaded, tag=server)]
 def unit_loader_init(evt : Event;
                      eid : EntityId;
                      setting__unitType, setting__className : string;
@@ -138,4 +139,8 @@ def unit_loader_init(evt : Event;
     elif setting__unitType == "human"
       create_human(setting__className, setting__tm, settingsBlk, setting__playerNo, setting__flags)
 
+    let customTemplatePrefix = "template:"
+    if starts_with(setting__unitType, customTemplatePrefix)
+      add(settingsBlk, "ecsTemplateOverride", slice(setting__unitType, length(customTemplatePrefix)))
+      create_tank(setting__className, setting__tm, settingsBlk, setting__playerNo, 0)
   destroyEntity(eid)

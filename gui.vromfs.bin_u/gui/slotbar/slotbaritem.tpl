@@ -20,7 +20,8 @@ massTransp {
 
     slotsScrollDiv {
       height:t='1@slotbarHeight -1@slotbar_top_shade +2@slotbarInvisPad + 1@slotBattleButtonHeight' // @slotbarInvisPad here is to exclude overflow-y:hidden troubles (in respawn)
-      pos:t='0, 1@slotbar_top_shade -1@slotbarInvisPad - 1@slotBattleButtonHeight'; position:t='relative'
+      pos:t='0, 1@slotbar_top_shade -1@slotbarInvisPad - 1@slotBattleButtonHeight';
+      position:t='relative'
       input-transparent:t='yes'
       overflow-x:t='auto'
 

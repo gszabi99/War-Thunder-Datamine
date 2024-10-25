@@ -661,8 +661,15 @@ function getBulletsNamesBySet(set) {
   }
 }
 
+function locEnding(locId, ending, defValue = null) {
+  local res = loc($"{locId}{ending}", "")
+  if (res == "" && ending != "")
+    res = loc(locId, defValue)
+  return res
+}
+
 // Generate text description for air.modifications[modificationNo]
-local function getModificationInfo(air, modifName, isShortDesc = false,
+function getModificationInfo(air, modifName, isShortDesc = false,
   limitedName = false, obj = null, itemDescrRewriteFunc = null) {
   let res = { desc = "", delayed = false }
   if (type(air) == "string")
@@ -719,9 +726,9 @@ local function getModificationInfo(air, modifName, isShortDesc = false,
 
       locId = $"modification/{locId}"
       if (isCaliberCannon(caliber))
-        res.desc = ::locEnding($"{locId}/cannon", ending, "")
+        res.desc = locEnding($"{locId}/cannon", ending, "")
       if (res.desc == "")
-        res.desc = ::locEnding(locId, ending)
+        res.desc = locEnding(locId, ending)
       if (caliber > 0)
         res.desc = format(res.desc, caliber.tostring())
     }
@@ -811,7 +818,7 @@ function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabl
   item.tooltip <- " ".join([ amountText, getModificationInfo(air, modifName).desc ])
 }
 
-local function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
+function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
   params = BULLETS_LIST_PARAMS.__merge(params)
   let descr = {
     values = []

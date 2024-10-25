@@ -3,12 +3,14 @@ from "%rGui/globals/ui_library.nut" import *
 let { shellHitDamageEvents } = require("shipState.nut")
 let { get_game_params_blk } = require("blkGetters")
 let { eventbus_subscribe } = require("eventbus")
+let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let DataBlock = require("DataBlock")
 
 enum iconIds {
   HIT,
   HIT_EFFECTIVE,
-  HIT_INEFFECTIVE
+  HIT_INEFFECTIVE,
+  HIT_PIERCE_THROUGH
 }
 
 // behavior
@@ -33,17 +35,46 @@ function mkAppearAnim(trigger) {
   ]
 }
 
+function mkIconHint(hintText) {
+  return {
+    pos = [0, ph(100)]
+    margin = [0, hdpx(12), 0, 0]
+    padding = [hdpx(5), hdpx(10)]
+    minWidth = hdpx(50)
+    zOrder = Layers.Tooltip
+    fillColor = 0xFF2D343C
+    borderColor = 0xFF3A434E
+    borderWidth = hdpx(1)
+    rendObj = ROBJ_BOX
+    flow = FLOW_HORIZONTAL
+    hplace = ALIGN_RIGHT
+    halign = ALIGN_CENTER
+
+    children = {
+      rendObj = ROBJ_TEXT
+      text = loc(hintText)
+      color = 0xFFC0C0C0
+    }
+  }
+}
+
+
 function mkIcon(baseCfg, iconCfg, watched) {
   let text = Computed(@() $"x{watched.get()}")
   let size = [baseCfg.iconSize, baseCfg.iconSize]
   let animTrigger = {}
+  let stateFlags = Watched(0)
   return {
-    icon = {
+    icon = @() {
+      watch = [cursorVisible, stateFlags]
+      size = size
       rendObj = ROBJ_IMAGE
       valign = ALIGN_CENTER
-      size = size
       image = iconCfg.pic
+      behavior = Behaviors.Button
+      onElemState = @(v) stateFlags(v)
       children = [
+        cursorVisible.get() && (stateFlags.get() & S_HOVER) ? mkIconHint(iconCfg.hintLoc) : null
         {
           rendObj = ROBJ_IMAGE
           halign = ALIGN_CENTER
@@ -77,8 +108,10 @@ function mkIcon(baseCfg, iconCfg, watched) {
 // configuration
 local scriptConfig = null
 
-function readIconConfig(baseCfg, iconBlk, ico, watched) {
+function readIconConfig(baseCfg, iconBlk, ico, watched, params) {
   let config = {
+    id = params.id
+    hintLoc = params.hintLoc
     enabled = iconBlk?.enabled ?? true
     text = {
       enabled = iconBlk?.text.enabled ?? true
@@ -107,7 +140,7 @@ function getConfig() {
   let hudBlk = DataBlock()
   let gameplayBlk = DataBlock()
 
-  hudBlk.tryLoad("wt/config/hud.blk")
+  hudBlk.tryLoad("config/hud.blk")
   let iconsParams = hudBlk?.shipHitNotification
 
   let size = iconsParams?.size ?? DEFAULT_ICON_SIZE
@@ -116,16 +149,21 @@ function getConfig() {
   let hitPic = Picture($"ui/gameuiskin#dm_ship_armor_hit.svg:{res.iconSize}:{res.iconSize}:P")
   let effectiveHitPic = Picture($"ui/gameuiskin#dm_ship_armor_breach.svg:{res.iconSize}:{res.iconSize}:P");
   let ineffectiveHitPic = Picture($"ui/gameuiskin#dm_ship_armor_unbroken.svg:{res.iconSize}:{res.iconSize}:P");
-
+  let pierceThroughHitPic = Picture($"ui/gameuiskin#dm_ship_armor_breach_through.svg:{res.iconSize}:{res.iconSize}:P");
 
   let font = iconsParams?.font ?? DEFAULT_ICON_FONT
   res.iconFont = Fonts[font]
 
   res.alignHitCamera = iconsParams?.alignHitCamera ?? true
   res.iconsConfig = {
-    [iconIds.HIT] = readIconConfig(res, iconsParams?.simpleHit, hitPic, shellHitDamageEvents.hitEventsCount),
-    [iconIds.HIT_EFFECTIVE] = readIconConfig(res, iconsParams?.effectiveHit, effectiveHitPic, shellHitDamageEvents.armorPiercesEventCount),
-    [iconIds.HIT_INEFFECTIVE] = readIconConfig(res, iconsParams?.ineffectiveHit, ineffectiveHitPic, shellHitDamageEvents.armorBlockedEventCount),
+    [iconIds.HIT] = readIconConfig(
+      res, iconsParams?.simpleHit, hitPic, shellHitDamageEvents.hitEventsCount, {id = iconIds.HIT, hintLoc = "shipHitHint/simpleHit"}),
+    [iconIds.HIT_EFFECTIVE] = readIconConfig(
+      res, iconsParams?.effectiveHit, effectiveHitPic, shellHitDamageEvents.critEventCount, {id = iconIds.HIT_EFFECTIVE, hintLoc = "shipHitHint/effectiveHit"}),
+    [iconIds.HIT_INEFFECTIVE] = readIconConfig(
+      res, iconsParams?.ineffectiveHit, ineffectiveHitPic, shellHitDamageEvents.armorBlockedEventCount, {id = iconIds.HIT_INEFFECTIVE, hintLoc = "shipHitHint/ineffectiveHit"}),
+    [iconIds.HIT_PIERCE_THROUGH] = readIconConfig(
+      res, iconsParams?.pierceThroughHit, pierceThroughHitPic, shellHitDamageEvents.pierceThroughCount, {id = iconIds.HIT_PIERCE_THROUGH, hintLoc = "shipHitHint/pierceThroughHit"}),
   }
 
   gameplayBlk.tryLoad("config/gameplay.blk")
@@ -194,8 +232,9 @@ function appendHitIndicator(v, id) {
 }
 
 shellHitDamageEvents.hitEventsCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT))
-shellHitDamageEvents.armorPiercesEventCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT_EFFECTIVE))
+shellHitDamageEvents.critEventCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT_EFFECTIVE))
 shellHitDamageEvents.armorBlockedEventCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT_INEFFECTIVE))
+shellHitDamageEvents.pierceThroughCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT_PIERCE_THROUGH))
 
 eventbus_subscribe("setHudHitCameraState", function(params) {
   hudHitCameraState.set(params ? {

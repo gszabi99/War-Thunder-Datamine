@@ -6,6 +6,7 @@ let dirtyWordsFilter = require($"{path}/dirtyWords.nut")
 dirtyWordsFilter.init([
   require($"{path}/dirtyWordsEnglish.nut"),
   require($"{path}/dirtyWordsRussian.nut"),
+  require($"{path}/dirtyWordsChinese.nut"),
   require($"{path}/dirtyWordsJapanese.nut"),
 ])
 

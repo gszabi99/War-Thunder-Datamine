@@ -1184,10 +1184,9 @@
             "target": "@ft_generate_t1_airfield_name",
             "type": "objectGroup"
           },
-          "objGroupWhenStatus": {
-            "obj_status": "isNotActive",
-            "army": 0,
-            "target": "@ft_generate_t1_airfield_name"
+          "airfieldWhenStatus": {
+            "object_type": "isNotActive",
+            "object": "@ft_generate_t1_airfield_name"
           },
           "varCompareBool": {
             "var_value": "ft_generate_t1_distance_check_fail",
@@ -1422,7 +1421,7 @@
             "var": "ft_generate_t1_aaa_cur_field_idx"
           },
           "triggerEnable": {
-            "target": "ft_generate_t1_aaa_rotator"
+            "target": "ft_generate_t1_aaa_spawn_prepare"
           }
         },
         "else_actions": {
@@ -1482,7 +1481,7 @@
             "var": "ft_generate_t1_aaa_cur_field_idx"
           },
           "triggerEnable": {
-            "target": "ft_generate_t1_aaa_rotator"
+            "target": "ft_generate_t1_aaa_spawn_prepare"
           }
         },
         "else_actions": {
@@ -1542,7 +1541,7 @@
             "var": "ft_generate_t1_aaa_cur_field_idx"
           },
           "triggerEnable": {
-            "target": "ft_generate_t1_aaa_rotator"
+            "target": "ft_generate_t1_aaa_spawn_prepare"
           }
         },
         "else_actions": {
@@ -1551,53 +1550,6 @@
           },
           "triggerDisable": {
             "target": "ft_generate_t1_aaa_check_field_pos_near"
-          }
-        }
-      },
-      "ft_generate_t1_aaa_rotator": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.0
-          }
-        },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "ft_generate_t1_aaa_idx",
-            "value": 10,
-            "comparasion_func": "less"
-          }
-        },
-        "actions": {
-          "comment": [
-            {
-              "value": "indeks v diapazone. uvelichivaem indeks na 1"
-            },
-            {
-              "value": "zapuskaem generaciyu zenitki"
-            }
-          ],
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ft_generate_t1_aaa_idx"
-          },
-          "triggerEnable": {
-            "target": "ft_generate_t1_aaa_spawn_prepare"
-          }
-        },
-        "else_actions": {
-          "comment": {
-            "value": "vyshli za diapazon zapuskaem sleduyushchij aerodrom"
-          },
-          "triggerEnable": {
-            "target": "ft_generate_t1_aaa_rotator_field"
           }
         }
       },
@@ -1624,9 +1576,6 @@
               "value": "poluchaem imya filda"
             },
             {
-              "value": "sozdaem imya spavna dlya zenitki"
-            },
-            {
               "value": "sozdaem imya skvada"
             },
             {
@@ -1637,10 +1586,6 @@
             {
               "value": "ft_t1_airfield_",
               "var": "ft_generate_t1_aaa_field_var_name"
-            },
-            {
-              "value": "",
-              "var": "ft_generate_t1_aaa_name"
             },
             {
               "value": "ft_t1_airfield_",
@@ -1657,21 +1602,6 @@
               "value": "_name",
               "digits": 2,
               "var": "ft_generate_t1_aaa_field_var_name"
-            },
-            {
-              "value": "@ft_generate_t1_aaa_field_name",
-              "digits": 0,
-              "var": "ft_generate_t1_aaa_name"
-            },
-            {
-              "value": "_spawn_",
-              "digits": 2,
-              "var": "ft_generate_t1_aaa_name"
-            },
-            {
-              "value": "@ft_generate_t1_aaa_idx",
-              "digits": 2,
-              "var": "ft_generate_t1_aaa_name"
             },
             {
               "value": "@ft_generate_t1_aaa_cur_field_idx",
@@ -1720,12 +1650,12 @@
         "conditions": {
           "objectExists": [
             {
-              "target": "@ft_generate_t1_aaa_name",
-              "type": "area"
-            },
-            {
               "target": "@ft_generate_t1_aaa_squad_name",
               "type": "squad"
+            },
+            {
+              "target": "@ft_generate_t1_aaa_field_name",
+              "type": "objectGroup"
             }
           ]
         },
@@ -1738,18 +1668,10 @@
               "value": "idem dal'she po rotacii"
             }
           ],
-          "unitRespawn": {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+          "unitSpawnOnObjectGroup": {
+            "type": "air_def",
             "object": "@ft_generate_t1_aaa_squad_name",
-            "object_type": "isInactive",
-            "target": "@ft_generate_t1_aaa_name",
-            "randomObjectsCount": 1,
-            "isStealth": true
+            "target": "@ft_generate_t1_aaa_field_name"
           },
           "unitRespawnAfterTime": {
             "time_to_respawn": 600.0,
@@ -1758,7 +1680,7 @@
             "cycle_respawn": true
           },
           "triggerEnable": {
-            "target": "ft_generate_t1_aaa_rotator"
+            "target": "ft_generate_t1_aaa_rotator_field"
           }
         },
         "else_actions": {
@@ -2591,10 +2513,9 @@
             "target": "@ft_generate_t2_airfield_name",
             "type": "objectGroup"
           },
-          "objGroupWhenStatus": {
-            "obj_status": "isNotActive",
-            "army": 0,
-            "target": "@ft_generate_t2_airfield_name"
+          "airfieldWhenStatus": {
+            "object_type": "isNotActive",
+            "object": "@ft_generate_t2_airfield_name"
           },
           "varCompareBool": {
             "var_value": "ft_generate_t2_distance_check_fail",
@@ -2829,7 +2750,7 @@
             "var": "ft_generate_t2_aaa_cur_field_idx"
           },
           "triggerEnable": {
-            "target": "ft_generate_t2_aaa_rotator"
+            "target": "ft_generate_t2_aaa_spawn_prepare"
           }
         },
         "else_actions": {
@@ -2889,7 +2810,7 @@
             "var": "ft_generate_t2_aaa_cur_field_idx"
           },
           "triggerEnable": {
-            "target": "ft_generate_t2_aaa_rotator"
+            "target": "ft_generate_t2_aaa_spawn_prepare"
           }
         },
         "else_actions": {
@@ -2949,7 +2870,7 @@
             "var": "ft_generate_t2_aaa_cur_field_idx"
           },
           "triggerEnable": {
-            "target": "ft_generate_t2_aaa_rotator"
+            "target": "ft_generate_t2_aaa_spawn_prepare"
           }
         },
         "else_actions": {
@@ -2958,53 +2879,6 @@
           },
           "triggerDisable": {
             "target": "ft_generate_t2_aaa_check_field_pos_near"
-          }
-        }
-      },
-      "ft_generate_t2_aaa_rotator": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.0
-          }
-        },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "ft_generate_t2_aaa_idx",
-            "value": 10,
-            "comparasion_func": "less"
-          }
-        },
-        "actions": {
-          "comment": [
-            {
-              "value": "indeks v diapazone. uvelichivaem indeks na 1"
-            },
-            {
-              "value": "spawning aaa"
-            }
-          ],
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ft_generate_t2_aaa_idx"
-          },
-          "triggerEnable": {
-            "target": "ft_generate_t2_aaa_spawn_prepare"
-          }
-        },
-        "else_actions": {
-          "comment": {
-            "value": "vyshli za diapazon zapuskaem sleduyushchij aerodrom"
-          },
-          "triggerEnable": {
-            "target": "ft_generate_t2_aaa_rotator_field"
           }
         }
       },
@@ -3031,9 +2905,6 @@
               "value": "poluchaem imya filda"
             },
             {
-              "value": "sozdaem imya spavna dlya zenitki"
-            },
-            {
               "value": "sozdaem imya skvada"
             },
             {
@@ -3044,10 +2915,6 @@
             {
               "value": "ft_t2_airfield_",
               "var": "ft_generate_t2_aaa_field_var_name"
-            },
-            {
-              "value": "",
-              "var": "ft_generate_t2_aaa_name"
             },
             {
               "value": "ft_t2_airfield_",
@@ -3064,21 +2931,6 @@
               "value": "_name",
               "digits": 2,
               "var": "ft_generate_t2_aaa_field_var_name"
-            },
-            {
-              "value": "@ft_generate_t2_aaa_field_name",
-              "digits": 0,
-              "var": "ft_generate_t2_aaa_name"
-            },
-            {
-              "value": "_spawn_",
-              "digits": 2,
-              "var": "ft_generate_t2_aaa_name"
-            },
-            {
-              "value": "@ft_generate_t2_aaa_idx",
-              "digits": 2,
-              "var": "ft_generate_t2_aaa_name"
             },
             {
               "value": "@ft_generate_t2_aaa_cur_field_idx",
@@ -3127,12 +2979,12 @@
         "conditions": {
           "objectExists": [
             {
-              "target": "@ft_generate_t2_aaa_name",
-              "type": "area"
-            },
-            {
               "target": "@ft_generate_t2_aaa_squad_name",
               "type": "squad"
+            },
+            {
+              "target": "@ft_generate_t2_aaa_field_name",
+              "type": "objectGroup"
             }
           ]
         },
@@ -3145,18 +2997,10 @@
               "value": "idem dal'she po rotacii"
             }
           ],
-          "unitRespawn": {
-            "delay": 1.0,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+          "unitSpawnOnObjectGroup": {
+            "type": "air_def",
             "object": "@ft_generate_t2_aaa_squad_name",
-            "object_type": "isInactive",
-            "target": "@ft_generate_t2_aaa_name",
-            "randomObjectsCount": 1,
-            "isStealth": true
+            "target": "@ft_generate_t2_aaa_field_name"
           },
           "unitRespawnAfterTime": {
             "time_to_respawn": 600.0,
@@ -3165,7 +3009,7 @@
             "cycle_respawn": true
           },
           "triggerEnable": {
-            "target": "ft_generate_t2_aaa_rotator"
+            "target": "ft_generate_t2_aaa_rotator_field"
           }
         },
         "else_actions": {
@@ -8742,10 +8586,9 @@
             "target": "@st_t1_generate_field_name",
             "type": "objectGroup"
           },
-          "objGroupWhenStatus": {
-            "obj_status": "isActive",
-            "army": 0,
-            "target": "@st_t1_generate_field_name"
+          "airfieldWhenStatus": {
+            "object_type": "isActive",
+            "object": "@st_t1_generate_field_name"
           }
         },
         "actions": {
@@ -9199,10 +9042,9 @@
             "target": "@st_t2_generate_field_name",
             "type": "objectGroup"
           },
-          "objGroupWhenStatus": {
-            "obj_status": "isActive",
-            "army": 0,
-            "target": "@st_t2_generate_field_name"
+          "airfieldWhenStatus": {
+            "object_type": "isActive",
+            "object": "@st_t2_generate_field_name"
           }
         },
         "actions": {

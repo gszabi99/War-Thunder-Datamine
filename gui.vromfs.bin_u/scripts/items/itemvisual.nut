@@ -73,7 +73,7 @@ function fillItemDescUnderTable(item, descObj) {
     obj.setValue(item.getDescriptionUnderTable())
 }
 
-local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, preferMarkup = false, params = null) {
+function fillItemDescr(item, holderObj, handler = null, shopDesc = false, preferMarkup = false, params = null) {
   handler = handler || get_cur_base_gui_handler()
   item = item?.getSubstitutionItem() ?? item
 

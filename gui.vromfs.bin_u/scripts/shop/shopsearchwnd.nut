@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -32,7 +31,7 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let countriesView = this.getCountriesView(unitsData)
 
     return {
-      windowTitle = loc("shop/search/results") + loc("ui/colon") + this.searchString
+      windowTitle = loc("ui/colon").concat(loc("shop/search/results"), this.searchString)
       countriesCount = countriesView.len()
       countriesTotal = shopCountriesList.len()
       countries = countriesView
@@ -107,8 +106,8 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
               ico = ::getUnitClassIco(u)
               type = getUnitRole(u)
               tooltipId = getTooltipType("UNIT").getTooltipId(u.name)
-              text = colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))) +
-                nbsp + getUnitName(u, true)
+              text = nbsp.concat(colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))),
+                getUnitName(u, true))
               isUsable = u.isUsable()
               canBuy   = canBuyUnit(u) || ::canBuyUnitOnline(u)
             })

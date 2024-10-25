@@ -6,6 +6,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 const MULTICLUSTER_NAME = "multi"
 
@@ -63,7 +65,7 @@ class QueueStats {
   constructor(queue) {
     local queueEvent = ::queues.getQueueEvent(queue)
     this.isClanStats = ::queues.isClanQueue(queue)
-    this.isMultiCluster = this.isClanStats || ::events.isMultiCluster(queueEvent)
+    this.isMultiCluster = this.isClanStats || events.isMultiCluster(queueEvent)
     this.isSymmetric = this.isClanStats
     this.myRankInQueue = ::queues.getMyRankInQueue(queue)
 

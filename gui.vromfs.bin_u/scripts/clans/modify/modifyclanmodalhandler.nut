@@ -223,14 +223,14 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       err += loc("clan/error/bad_words_in_clanTag")
 
     if (this.newClanTag.len() <= 0)
-      err += loc("clan/error/empty_tag") + "\n"
+      err = "".concat(err, loc("clan/error/empty_tag"), "\n")
 
     let tagLengthLimit = this.newClanType.getTagLengthLimit()
     if (!edit && tagLengthLimit > 0 && utf8_strlen(this.newClanTag) > tagLengthLimit)
-      err += loc("clan/error/tag_length", { maxLength = tagLengthLimit }) + "\n"
+      err = "".concat(err, loc("clan/error/tag_length", { maxLength = tagLengthLimit }), "\n")
 
     if ((!edit && this.newClanName.len() <= 0) || this.newClanName.len() < 3)
-      err += loc("clan/error/empty_name") + "\n"
+      err = "".concat(err, loc("clan/error/empty_name"), "\n")
 
     if (err.len() > 0) {
       if (!silent)

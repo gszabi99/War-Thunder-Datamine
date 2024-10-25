@@ -1,7 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -14,7 +15,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   function updateStats() {
     local myTeamNum = ::queues.getQueueTeam(this.queue)
     if (myTeamNum == Team.Any) {
-      let teams = ::events.getAvailableTeams(this.event)
+      let teams = events.getAvailableTeams(this.event)
       if (teams.len() == 1)
         myTeamNum = teams[0]
     }
@@ -24,16 +25,16 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   }
 
   function updateQueueStats(clusters, queueStats, myTeamNum) {
-    let teams = ::events.getSidesList(this.event)
-    foreach (team in ::events.getSidesList()) {
+    let teams = events.getSidesList(this.event)
+    foreach (team in events.getSidesList()) {
       let show = isInArray(team, teams)
                    && (!queueStats.isSymmetric || team == Team.A)
       let blockObj = showObjById($"{team}_block", show, this.scene)
       if (!show)
         continue
 
-      let teamName = ::events.getTeamName(team)
-      let teamData = ::events.getTeamData(this.event, team)
+      let teamName = events.getTeamName(team)
+      let teamData = events.getTeamData(this.event, team)
 
       local tableMarkup = ""
       local playersCountText = ""
@@ -44,7 +45,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
         teamColor = "any"
       else {
         teamColor = (myTeamNum == Team.Any || team == myTeamNum) ? "blue" : "red"
-        teamNameLoc = loc("events/team" + (team == Team.A ? "A" : "B"))
+        teamNameLoc = loc($"events/team{team == Team.A ? "A" : "B"}")
       }
 
       if (!queueStats.isClanStats) {
@@ -56,11 +57,11 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
           playersCountText = format("%s (%s)",
             loc("events/max_players_count"), getClusterShortName(clusterName))
 
-        playersCountText += loc("ui/colon") + players
+        playersCountText = loc("ui/colon").concat(playersCountText, players)
         tableMarkup = this.getQueueTableMarkup(queueStats, teamName, clusters)
       }
       else {
-        playersCountText = loc("events/clans_count") + loc("ui/colon") + queueStats.getClansCount()
+        playersCountText = loc("ui/colon").concat(loc("events/clans_count"), queueStats.getClansCount())
         tableMarkup = this.getClanQueueTableMarkup(queueStats)
       }
 
@@ -79,7 +80,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
 
     teamObj.bgTeamColor = teamColor
     teamObj.show(!!(teamData && teamData.len()))
-    ::fillCountriesList(teamObj.findObject("countries"), ::events.getCountries(teamData))
+    ::fillCountriesList(teamObj.findObject("countries"), events.getCountries(teamData))
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 
@@ -97,14 +98,14 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
       let maxCluster = queueStats.getMaxClusterName()
       let teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
       let rowData = this.buildQueueStatsRowData(teamStats)
-      res += ::buildTableRow("", rowData, 0, rowParams, "0")
+      res = "".concat(res, ::buildTableRow("", rowData, 0, rowParams, "0"))
       return res
     }
 
     foreach (clusterName in clusters) {
       let teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
       let rowData = this.buildQueueStatsRowData(teamStats, getClusterShortName(clusterName))
-      res += ::buildTableRow("", rowData, 0, rowParams, "0")
+      res = "".concat(res, ::buildTableRow("", rowData, 0, rowParams, "0"))
     }
     return res
   }
@@ -123,20 +124,20 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
         text = loc("multiplayer/playersInYourClan")
         width = "0.1@sf"
       }]
-      res += ::buildTableRow("", headerData, null, rowParams, "0")
+      res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
 
       let rowData = this.buildQueueStatsRowData(myClanQueueTable)
-      res += ::buildTableRow("", rowData, null, rowParams, "0")
+      res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
     }
 
     let headerData = [{
       text = loc("multiplayer/clansInQueue")
       width = "0.1@sf"
     }]
-    res += ::buildTableRow("", headerData, null, rowParams, "0")
+    res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
 
     let rowData = this.buildQueueStatsRowData(queueStats.getClansQueueTable())
-    res += ::buildTableRow("", rowData, null, rowParams, "0")
+    res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
     return res
   }
 

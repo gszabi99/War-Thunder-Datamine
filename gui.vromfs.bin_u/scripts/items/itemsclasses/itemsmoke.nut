@@ -7,7 +7,7 @@ let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.n
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
-let { getUnlockCost, getUnlockType, isUnlockOpened
+let { getUnlockCost, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
@@ -22,6 +22,7 @@ let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFl
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let DataBlock = require("DataBlock")
+let { getUnlockTypeById } = require("unlocks")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -42,7 +43,7 @@ let Smoke = class (BaseItem) {
     this.id = blk.unlockId
     this.usingStyle = this.getUsingStyle(blk)
     this.canBuy = true
-    this.unlockType = getUnlockType(this.id)
+    this.unlockType = getUnlockTypeById(this.id)
     this.tags = []
     let tagsBlk = blk?.tags
     if (tagsBlk)

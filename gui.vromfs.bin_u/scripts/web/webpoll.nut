@@ -59,7 +59,7 @@ function getVotedPolls() {
   return votedPolls
 }
 
-local function webpollEvent(id, token, voted) {
+function webpollEvent(id, token, voted) {
   id = to_integer_safe(id)
   if (!id || token == null)
     return

@@ -14,11 +14,12 @@
   "gyroSight": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
-  "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "ilsAVQ7": true,
   "ilsHaveAVQ7CCIP": true,
   "ilsHaveAVQ7CCRP": true,
+  "rwrIndicator": "AN/APR-25",
+  "isBwOpticSight": true,
   "type": "typeFighter",
   "advancedInstructor": true,
   "advancedMouseAim": true,
@@ -2218,24 +2219,12 @@
         "blk": "gameData/FlightModels/weaponPresets/kfir_canard_mk82_snakeye.blk"
       },
       {
-        "name": "kfir_canard_mk83",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_canard_mk83.blk"
-      },
-      {
         "name": "kfir_canard_mk83_aim9g",
         "blk": "gameData/FlightModels/weaponPresets/kfir_canard_mk83_aim9g.blk"
       },
       {
-        "name": "kfir_canard_mk117",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_canard_mk117.blk"
-      },
-      {
         "name": "kfir_canard_mk117_aim9g",
         "blk": "gameData/FlightModels/weaponPresets/kfir_canard_mk117_aim9g.blk"
-      },
-      {
-        "name": "kfir_canard_mk84",
-        "blk": "gameData/FlightModels/weaponPresets/kfir_canard_mk84.blk"
       },
       {
         "name": "kfir_canard_mk84_aim9g",
@@ -3379,6 +3368,237 @@
       -4.93668,
       -0.000480384,
       -2.58566e-16
+    ]
+  },
+  "AfterBurner0": {
+    "volumetricAfterBurner": {
+      "name": "jet_blue_modern",
+      "maxHeight": 11.0,
+      "minHeight": 8.0,
+      "heightNoiseStrength": 0.0,
+      "heightNoiseSpeed": 20.0,
+      "maxRadius": 0.32,
+      "minRadius": 0.35,
+      "maxBaseRadius": 0.4,
+      "minBaseRadius": 0.35,
+      "relativeCylinderHeightMax": 0.36,
+      "relativeCylinderHeightMin": 0.36,
+      "outerCylinderAbsorptionMax": 0.5,
+      "outerCylinderAbsorptionMin": 0.7,
+      "outerCylinderHeightFadeMax": 7.5,
+      "outerCylinderHeightFadeMin": 5.0,
+      "tailHeightFadeMax": 2.0,
+      "tailHeightFadeMin": 0.2,
+      "outerCylinderHeightFadeNoiseStrength": 2.0,
+      "outerCylinderHeightFadeNoiseSpeed": 10.0,
+      "minOuterCylinderRadius": 0.4,
+      "maxOuterCylinderRadius": 0.48,
+      "absorption": 1.0,
+      "colorIntensityMax": 10.0,
+      "colorIntensityMin": 2.0,
+      "colorOverHeightMult": 0.5,
+      "colorOverDepthMult": 3.0,
+      "colorOverRadiusMult": 6.0,
+      "colorOverRadiusFadeOverHeight": 2.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 20.0,
+      "ringAbsorption": 1.2,
+      "maxRingCount": 17,
+      "minRingCount": 14,
+      "ringIntensityMin": 0.0,
+      "ringIntensityMax": 1.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 1.0,
+      "ringOffsetNoiseStrength": 1.0,
+      "ringOffsetNoiseSpeed": 20.0,
+      "rampTextureOffset": 0,
+      "radiusNoiseStrength": 0.06,
+      "radiusNoiseSpeed": 20.0,
+      "shakeNoiseStrength": 0.01,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.7,
+      "colorOverHeightNoiseStrength": 0.1,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.15,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.03,
+      "colorOverDepthNoiseSpeed": 10.0,
+      "colorIntensityNoiseStrength": 2.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "minStartingRingHeight": 1.7,
+      "maxStartingRingHeight": 1.7,
+      "ringIntensity": 2.0,
+      "ringFrequency": 11.3097,
+      "preNominalEasingParams": {
+        "animationTime": 2.0,
+        "ascendingSmoothIntensityParams": 0.5
+      },
+      "postNominalEasingParams": {
+        "animationTime": 1.5,
+        "ascendingSmoothIntensityParams": 1.0
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.889273,
+          0.686275
+        ],
+        "angle": 1.0,
+        "brightness": 20.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensity": 1.0,
+        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseSpeed": 16.0
+      }
+    }
+  },
+  "lerxVapors": {
+    "lerxVapor": [
+      {
+        "entryPoint": [
+          3.5,
+          0.1,
+          1.0
+        ],
+        "exitPoint": [
+          -5.0,
+          0.4,
+          1.0
+        ],
+        "entryTangent": [
+          1.5,
+          0.1,
+          1.2
+        ],
+        "exitTangent": [
+          0.5,
+          0.4,
+          1.3
+        ],
+        "exitTangentHeight": [
+          0.5,
+          0.0
+        ],
+        "exitTangentWidth": [
+          -0.5,
+          0.5
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          -1.0,
+          2.0
+        ],
+        "maxRadius": [
+          0.05,
+          0.3
+        ],
+        "minRadius": [
+          0.05,
+          0.18
+        ],
+        "noiseParms": [
+          0.1,
+          0.5
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          0.8,
+          0.2
+        ],
+        "density": 1.0,
+        "intensityMult": 7.0,
+        "criticalAOA": [
+          5.0,
+          20.0,
+          35.0,
+          45.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ]
+      },
+      {
+        "entryPoint": [
+          3.5,
+          0.1,
+          -1.0
+        ],
+        "exitPoint": [
+          -5.0,
+          0.4,
+          -1.0
+        ],
+        "entryTangent": [
+          1.5,
+          0.1,
+          -1.2
+        ],
+        "exitTangent": [
+          0.5,
+          0.4,
+          -1.3
+        ],
+        "exitTangentHeight": [
+          0.5,
+          0.0
+        ],
+        "exitTangentWidth": [
+          0.5,
+          -0.5
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          1.0,
+          -2.0
+        ],
+        "maxRadius": [
+          0.05,
+          0.3
+        ],
+        "minRadius": [
+          0.05,
+          0.18
+        ],
+        "noiseParms": [
+          0.1,
+          0.5
+        ],
+        "smoothIntensityParams": [
+          1.0,
+          0.8,
+          0.2
+        ],
+        "density": 1.0,
+        "intensityMult": 7.0,
+        "criticalAOA": [
+          5.0,
+          20.0,
+          35.0,
+          45.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ]
+      }
     ]
   }
 }

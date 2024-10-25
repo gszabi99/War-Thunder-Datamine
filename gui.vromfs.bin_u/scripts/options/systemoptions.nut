@@ -1,5 +1,5 @@
-//-file:plus-string
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_dlss_quality_available_at_resolution, is_hdr_available, is_perf_metrics_available, is_xess_quality_available_at_resolution, get_available_amd_fsr_modes, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
+//-file:param-pos
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -9,7 +9,7 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
-let { get_available_monitors, get_monitor_info, has_broken_recreate_image } = require("graphicsOptions")
+let { get_available_monitors, get_monitor_info, has_broken_recreate_image, get_antialiasing_options, get_antialiasing_upscaling_options, has_antialiasing_sharpening } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -22,6 +22,8 @@ let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { doesLocTextExist } = require("dagor.localize")
+let { findNearest } = require("%scripts/util.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -55,99 +57,108 @@ let compModeGraphicsOptions = {
     anisotropy        = { compMode = true }
     dirtSubDiv        = { compMode = true }
     tireTracksQuality = { compMode = true }
-    msaa              = { compMode = true, fullMode = false }
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
     compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
-    xess              = { compMode = false }
-    dlss              = { compMode = false }
-    dlssSharpness     = { compMode = false }
   }
 }
+
+let platformDependentOpts = {
+  resolution = true
+  mode = true
+  monitor = true
+  vsync = true
+}
+
 //------------------------------------------------------------------------------
 local mUiStruct = [
   {
-    container = "sysopt_top_left"
-    items = [
-      "resolution"
-    ]
-  }
-  {
-    container = "sysopt_top_middle"
+    title = "options/display"
     items = [
       "mode"
+      "resolution"
+      "vsync"
       "monitor"
+      "backgroundScale"
+      "antialiasingMode"
+      "antialiasingUpscaling"
+      "antialiasingSharpening"
+      "anisotropy"
+      "ssaa"
+      "latency"
     ]
   }
   {
-    container = "sysopt_top_right"
+    title = "options/dlss_quality"
     items = [
-      "vsync"
-      ]
-  }
-  {
-    container = "sysopt_graphicsQuality"
-    id = "graphicsQuality"
-  }
-  {
-    container = "sysopt_bottom_left"
-    items = [
-      "xess"
-      "dlss"
-      "dlssSharpness"
-      "anisotropy"
-      "msaa"
-      "antialiasing"
-      "taau_ratio"
-      "ssaa"
-      "latency"
-      "perfMetrics"
+      "graphicsQuality"
       "texQuality"
       "shadowQuality"
       "compatibilityShadowQuality"
-      "fxResolutionQuality"
-      "backgroundScale"
-      "cloudsQuality"
-      "panoramaResolution"
-      "landquality"
-      "rendinstDistMul"
-      "fxDensityMul"
-      "grassRadiusMul"
-      "ssaoQuality"
-      "contactShadowsQuality"
-      "ssrQuality"
       "waterQuality"
       "waterEffectsQuality"
+      "cloudsQuality"
+      "panoramaResolution"
+      "ssrQuality"
+      "fxResolutionQuality"
+      "landquality"
+      "ssaoQuality"
+      "tireTracksQuality"
+      "mirrorQuality"
       "giQuality"
       "physicsQuality"
       "displacementQuality"
       "dirtSubDiv"
-      "tireTracksQuality"
     ]
   }
   {
-    container = "sysopt_bottom_right"
+    title = "options/renderer"
     items = [
-      "mirrorQuality"
-      "motionBlurStrength"
-      "motionBlurCancelCamera"
-      "rendinstGlobalShadows"
-      "staticShadowsOnEffects"
+      "rendinstDistMul"
+      "fxDensityMul"
+      "grassRadiusMul"
+      "contactShadowsQuality"
       "advancedShore"
       "haze"
       "lastClipSize"
       "lenseFlares"
-      "alpha_to_coverage"
+    ]
+  }
+  {
+    title = "options/rt"
+    items = [
+      "rayTracing"
+      "bvhDistance"
+      "rtao"
+      "rtsm"
+      "rtr"
+      "rtrRes"
+      "rtrWater"
+      "rtrWaterRes"
+      "rtrTranslucent"
+    ]
+  }
+  {
+    title = "options/vr"
+    items = [
+      "enableVr"
+      "vrMirror"
+      "vrStreamerMode"
+    ]
+  }
+  {
+    title = "chapters/other"
+    items = [
+      "perfMetrics"
+      "motionBlurStrength"
+      "motionBlurCancelCamera"
       "jpegShots"
       "hiResShots"
       "compatibilityMode"
       "enableHdr"
-      "enableVr"
-      "vrMirror"
-      "vrStreamerMode"
     ]
   }
 ]
@@ -174,6 +185,46 @@ function getOptionDesc(id) {
     return null
   }
   return mSettings[id]
+}
+
+function tryGetOptionImageSrc(id) {
+  let opt = getOptionDesc(id)
+  let curValue = mCfgCurrent[id]
+  let { infoImgPattern = null, availableInfoImgVals = null } = opt
+
+  if (infoImgPattern == null || curValue == null)
+    return null
+
+  let imgVal = availableInfoImgVals
+    ? availableInfoImgVals[findNearest(curValue, availableInfoImgVals)]
+    : curValue
+
+  return format(infoImgPattern, imgVal.tostring().replace(" ",  ""))
+
+}
+
+function tryUpdateOptionImage(id) {
+  let optInfoImg =   mHandler?.scene.findObject("option_info_image")
+  if (!optInfoImg?.isValid())
+    return
+  optInfoImg["background-image"] = tryGetOptionImageSrc(id)
+}
+
+function getOptionInfoView(id) {
+  let opt = getOptionDesc(id)
+  let title = loc($"options/{id}")
+  let descLocKey = $"guiHints/{id}"
+  let description = doesLocTextExist(descLocKey) ? [loc(descLocKey)] : []
+  if (opt?.restart)
+    description.append(colorize("warningTextColor", loc("guiHints/restart_required")))
+  if (opt?.tooltipExtra)
+    description.append(opt?.tooltipExtra)
+
+  return {
+    title
+    description =  "\n".join(description)
+    imageSrc = tryGetOptionImageSrc(id)
+  }
 }
 
 function configValueToGuiValue(id, value) {
@@ -263,7 +314,7 @@ function enableGuiOption(id, state) {
   let rowObj = checkObj(mContainerObj) ? mContainerObj.findObject($"{id}_tr") : null
   if (checkObj(rowObj))
     rowObj.enable(state)
-}
+  }
 
 function checkChanges(config1, config2) {
   let changes = {
@@ -299,7 +350,9 @@ let isHotReloadPending = @() checkChanges(mCfgApplied, mCfgCurrent).needEngineRe
 let isSavePending = @() checkChanges(mCfgInitial, mCfgCurrent).needSave
 
 let canUseGraphicsOptions = @() is_platform_pc && hasFeature("GraphicsOptions")
-let canShowGpuBenchmark = @() canUseGraphicsOptions() && platformId != "macosx"
+let canShowGpuBenchmark = @() canUseGraphicsOptions()
+
+local aaUseGui = false;
 
 function updateGuiNavbar(show = true) {
   let scene = mHandler?.scene
@@ -359,7 +412,7 @@ function localize(optionId, valueId) {
     else
       return valueId
   }
-  if (optionId == "anisotropy" || optionId == "ssaa" || optionId == "msaa" )
+  if (optionId == "anisotropy" || optionId == "ssaa")
     return loc($"options/{valueId}")
 
   if (optionId == "graphicsQuality" ||
@@ -391,32 +444,26 @@ function parseResolution(resolution) {
   }
 }
 
-function getAvailableXessModes() {
-  let values = ["off"]
-  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
-  if (is_xess_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
-    values.append("performance")
-  if (is_xess_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
-    values.append("balanced")
-  if (is_xess_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
-    values.append("quality")
-  if (is_xess_quality_available_at_resolution(3, selectedResolution.w, selectedResolution.h))
-    values.append("ultra_quality")
-
-  return values;
+function antiAliasingOptions() {
+  let modesString = get_antialiasing_options(getGuiValue("enableVr"))
+  return modesString.split(";")
 }
 
-function getAvailableDlssModes() {
-  let values = ["off"]
-  let selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
-  if (is_dlss_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
-    values.append("quality")
-  if (is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
-    values.append("balanced")
-  if (is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
-    values.append("performance")
+function antiAliasingUpscalingOptions(blk) {
+  let aa = aaUseGui ? getGuiValue("antialiasingMode", "off") : getBlkValueByPath(blk, "video/antialiasing_mode", "off")
+  let modesString = get_antialiasing_upscaling_options(aa)
+  return modesString.split(";")
+}
 
-  return values;
+function hasAntialiasingUpscaling() {
+  let aa = getGuiValue("antialiasingMode", "off")
+  let modesString = get_antialiasing_upscaling_options(aa)
+  return modesString.split(";").len() > 1
+}
+
+function hasAntialiasingSharpening() {
+  let aa = getGuiValue("antialiasingMode", "off")
+  return has_antialiasing_sharpening(aa)
 }
 
 function getAvailableLatencyModes() {
@@ -431,6 +478,11 @@ function getAvailableLatencyModes() {
 
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
+let hasRT = @() hasFeature("optionRT") && !is_platform_macosx
+let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
+let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
+let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
+
 function getListOption(id, desc, cb, needCreateList = true) {
   let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
   let customItems = ("items" in desc) ? desc.items : null
@@ -438,6 +490,21 @@ function getListOption(id, desc, cb, needCreateList = true) {
   foreach (index, valueId in desc.values)
     items.append(customItems ? customItems[index] : localize(id, valueId))
   return ::create_option_combobox(desc.widgetId, items, raw, cb, needCreateList)
+}
+
+function changeOptions(id) {
+  let desc = getOptionDesc(id)
+  if (!desc)
+    return
+
+  desc.init(null, desc)
+  setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
+  let obj = getGuiWidget(id)
+  if (!checkObj(obj))
+    return
+
+  let markup = getListOption(id, desc, "onSystemOptionChanged", false)
+  mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
 }
 
 //------------------------------------------------------------------------------
@@ -534,33 +601,21 @@ mShared = {
   }
 
   resolutionClick = function() {
-    let id = "dlss"
-    let desc = getOptionDesc(id)
-    if (!desc)
-      return
-
-    desc.init(null, desc) //list of dlss values depends only on resolution
-    setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
-    let obj = getGuiWidget(id)
-    if (!checkObj(obj))
-      return
-
-    let markup = getListOption(id, desc, "onSystemOptionChanged", false)
-    mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
+    changeOptions("antialiasingUpscaling")
   }
 
   modeClick = @() enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
 
-  dlssClick = function() {
-    setGuiValue("xess", "off")
-    foreach (id in [ "antialiasing", "xess", "ssaa", "dlssSharpness" ])
-      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
-  }
+  antialiasingModeClick = function() {
+    aaUseGui = true;
 
-  xessClick = function() {
-    setGuiValue("dlss", "off")
-    foreach (id in [ "antialiasing", "dlss", "ssaa", "dlssSharpness" ])
-      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
+    enableGuiOption("antialiasingUpscaling", hasAntialiasingUpscaling())
+    enableGuiOption("antialiasingSharpening", hasAntialiasingSharpening())
+
+    changeOptions("antialiasingUpscaling")
+    setGuiValue("antialiasingSharpening", 0)
+
+    aaUseGui = false;
   }
 
   latencyClick = function() {
@@ -674,6 +729,99 @@ mShared = {
       mShared.setCompatibilityMode()
   }
 
+  rtOptionChanged = function() {
+    setGuiValue("rayTracing", "custom")
+  }
+
+  rtrWaterClick = function() {
+    enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && getGuiValue("rayTracing", "off") != "off")
+    mShared.rtOptionChanged()
+  }
+
+  rtrClick = function() {
+    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && getGuiValue("rayTracing", "off") != "off")
+    mShared.rtOptionChanged()
+  }
+
+  rayTracingClick = function() {
+    let rt = getGuiValue("rayTracing", "off")
+    let rtIsOn = rt != "off"
+    enableGuiOption("bvhDistance", rtIsOn)
+    enableGuiOption("rtr", rtIsOn)
+    enableGuiOption("rtao", rtIsOn)
+    enableGuiOption("rtsm", rtIsOn)
+
+    enableGuiOption("rtrWater", rtIsOn)
+    enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && rtIsOn)
+
+    enableGuiOption("rtrTranslucent", rtIsOn)
+    enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && rtIsOn)
+
+    setBlkValueByPath(mBlk, "graphics/enableBVH", rtIsOn)
+
+    if (!rtIsOn) {
+      setGuiValue("rtao", "off")
+      setGuiValue("rtr", "off")
+      setGuiValue("rtrRes", "half")
+      setGuiValue("rtsm", "off")
+      setGuiValue("rtrWater", false)
+      setGuiValue("rtrWaterRes", "half")
+      setGuiValue("rtrTranslucent", "off")
+    }
+    if (rt == "low") {
+      setGuiValue("bvhDistance", 1000)
+      setGuiValue("rtao", "low")
+      setGuiValue("rtr", "low")
+      setGuiValue("rtrRes", "half")
+      setGuiValue("rtsm", "sun")
+      setGuiValue("rtrWater", false)
+      setGuiValue("rtrWaterRes", "half")
+      setGuiValue("rtrTranslucent", "medium")
+    } else if (rt == "medium") {
+      setGuiValue("bvhDistance", 2000)
+      setGuiValue("rtao", "low")
+      setGuiValue("rtr", "medium")
+      setGuiValue("rtrRes", "half")
+      setGuiValue("rtsm", "sun")
+      setGuiValue("rtrWater", true)
+      setGuiValue("rtrWaterRes", "half")
+      setGuiValue("rtrTranslucent", "medium")
+    } else if (rt == "high") {
+      setGuiValue("bvhDistance", 3000)
+      setGuiValue("rtao", "medium")
+      setGuiValue("rtr", "high")
+      setGuiValue("rtrRes", "half")
+      setGuiValue("rtsm", "sun")
+      setGuiValue("rtrWater", true)
+      setGuiValue("rtrWaterRes", "half")
+      setGuiValue("rtrTranslucent", "high")
+    } else if (rt == "ultra") {
+      setGuiValue("bvhDistance", 4000)
+      setGuiValue("rtao", "high")
+      setGuiValue("rtr", "high")
+      setGuiValue("rtrRes", "full")
+      setGuiValue("rtsm", "sun_and_dynamic")
+      setGuiValue("rtrWater", true)
+      setGuiValue("rtrWaterRes", "full")
+      setGuiValue("rtrTranslucent", "high")
+    }
+  }
+
+  vrModeClick = function() {
+    changeOptions("antialiasingMode")
+    changeOptions("antialiasingUpscaling")
+    setGuiValue("antialiasingMode", "off")
+    setGuiValue("antialiasingUpscaling", "native")
+    if (getGuiValue("enableVr")) {
+      setGuiValue("rayTracing", "off")
+      mShared.rayTracingClick();
+      enableGuiOption("rayTracing", false)
+    } else if (hasRT) {
+      enableGuiOption("rayTracing", true)
+      mShared.rayTracingClick();
+    }
+  }
+
   getVideoModes = function(curResolution = null, isNeedAuto = true) {
     let minW = 1024
     let minH = 720
@@ -769,6 +917,13 @@ mShared = {
   init - function, initializes the variable config section, for example, defines 'def' value and/or 'values' list.
   tooltipExtra - optional, text to be added to option tooltip.
   isVisible - function, for hide options
+  infoImgPattern - pattern for the option image in the format `#ui/path/img_name_%s`, where `%s` will be replaced with the current option value.
+    For correct functionality, images for all possible options listed in the 'values' must be present.
+  availableInfoImgVals - (works with the 'slider' widgetType) allows specifying which values have corresponding images.
+    Sliders may have high granularity, so instead of loading an image for every option,
+    we can load a few images. The image with the closest matching value will be displayed.
+
+
 */
 mSettings = {
   resolution = { widgetType = "list" def = "1024 x 768" blk = "video/resolution" restart = true
@@ -797,7 +952,7 @@ mSettings = {
   monitor = { widgetType = "list" def = "auto" blk = "video/monitor" restart = true
     function init(_blk, desc) {
       let availableMonitors = get_available_monitors()
-      desc.values <- availableMonitors?.list ?? []
+      desc.values <- availableMonitors?.list ?? ["auto"]
       desc.items <- desc.values.map(function(value) {
         if (value == "auto")
           return { text = loc("options/auto") }
@@ -811,7 +966,7 @@ mSettings = {
     enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
     isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
   }
-  vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = true
+  vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = false
     getValueFromConfig = function(blk, _desc) {
       let vsync = getBlkValueByPath(blk, "video/vsync", false)
       let adaptive = is_gpu_nvidia() && getBlkValueByPath(blk, "video/adaptive_vsync", true)
@@ -826,44 +981,43 @@ mSettings = {
     }
     enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
   }
-  graphicsQuality = { widgetType = "tabs" def = "high" blk = "graphicsQuality" restart = false
+  graphicsQuality = { widgetType = "list" def = "high" blk = "graphicsQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
   }
-  xess = { widgetType = "list" def = "off" blk = "video/xessQuality" restart = false
+
+  antialiasingMode = { widgetType = "list" def = "off" blk = "video/antialiasing_mode" restart = false
     init = function(_blk, desc) {
-      desc.values <- getAvailableXessModes()
+      desc.values <- antiAliasingOptions()
     }
-    onChanged = "xessClick"
+    onChanged = "antialiasingModeClick"
+    hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa" }
+    enabled = @() !getGuiValue("compatibilityMode")
+  }
+
+  antialiasingUpscaling = { widgetType = "list" def = "native" blk = "video/antialiasing_upscaling" restart = false
+    init = function(blk, desc) {
+      desc.values <- antiAliasingUpscalingOptions(blk)
+    }
+    enabled = @() hasAntialiasingUpscaling() && !getGuiValue("compatibilityMode")
+  }
+
+  antialiasingSharpening = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/antialiasing_sharpening" restart = false
+    enabled = @() hasAntialiasingSharpening() && !getGuiValue("compatibilityMode")
+  }
+
+  ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
+    values = [ "none", "4X" ]
+    enabled = @() getGuiValue("antialiasingMode", "off") == "off" || getGuiValue("antialiasingMode", "off") == "low_fxaa" || getGuiValue("antialiasingMode", "off") == "high_fxaa"
+    onChanged = "ssaaClick"
     getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, -1)
+      return getBlkValueByPath(blk, desc.blk, 1.0)
     }
     setGuiValueToConfig = function(blk, desc, val) {
-      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : (val == "ultra_quality") ? 3 : -1
-      setBlkValueByPath(blk, desc.blk, quality)
+      let res = (val == "4X") ? 4.0 : 1.0
+      setBlkValueByPath(blk, desc.blk, res)
     }
-    configValueToGuiValue = function(val) {
-      return (val == 0) ? "performance" : (val == 1) ? "balanced" : (val == 2) ? "quality" : (val == 3) ? "ultra_quality" : "off"
-    }
-  }
-  dlss = { widgetType = "list" def = "off" blk = "video/dlssQuality" restart = false
-    init = function(_blk, desc) {
-      desc.values <- getAvailableDlssModes()
-    }
-    onChanged = "dlssClick"
-    getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, -1)
-    }
-    setGuiValueToConfig = function(blk, desc, val) {
-      let quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
-      setBlkValueByPath(blk, desc.blk, quality)
-    }
-    configValueToGuiValue = function(val) {
-      return (val == 0) ? "performance" : (val == 1) ? "balanced" : (val == 2) ? "quality" : "off"
-    }
-  }
-  dlssSharpness = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/dlssSharpness" restart = false
-    enabled = @() getGuiValue("dlss", "off") != "off"
+    configValueToGuiValue = @(val) (val == 4.0) ? "4X" : "none"
   }
   anisotropy = { widgetType = "list" def = "2X" blk = "graphics/anisotropy" restart = false
     values = [ "off", "2X", "4X", "8X", "16X" ]
@@ -880,48 +1034,6 @@ mSettings = {
       let strVal = val.tostring()
       return "".concat(strVal, "X")
     }
-  }
-  msaa = { widgetType = "list" def = "off" blk = "directx/maxaa" restart = true
-    values = [ "off", "on"]
-    configValueToGuiValue = function(val) {
-      return (val > 0)?"on":"off"
-    }
-    getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, 0)
-    }
-    setGuiValueToConfig = function(blk, desc, val) {
-      let msaa = (val == "on") ? 2 : 0
-      setBlkValueByPath(blk, desc.blk, msaa)
-    }
-  }
-  antialiasing = { widgetType = "list" def = "none" blk = "video/postfx_antialiasing" restart = false
-  getValueFromConfig = function(blk, desc) {
-    let antiAliasing = getBlkValueByPath(blk, desc.blk, "none")
-    return (antiAliasing == "high_taa") ? "low_taa" : antiAliasing
-  }
-    onChanged = "antiAliasingClick"
-    values = [ "none", "fxaa", "high_fxaa", "low_taa"]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
-  }
-  taau_ratio = { widgetType = "slider" def = 100 min = 50 max = 100 blk = "video/temporalResolutionScale" restart = false
-    enabled = @() !getGuiValue("compatibilityMode")
-                  && (getGuiValue("antialiasing") == "low_taa")
-    getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
-    setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val.tofloat() / 100.0) }
-    configValueToGuiValue = @(val) (val * 100.0).tointeger()
-  }
-  ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
-    values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && getGuiValue("xess", "off") == "off"
-    onChanged = "ssaaClick"
-    getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, 1.0)
-    }
-    setGuiValueToConfig = function(blk, desc, val) {
-      let res = (val == "4X") ? 4.0 : 1.0
-      setBlkValueByPath(blk, desc.blk, res)
-    }
-    configValueToGuiValue = @(val) (val == 4.0) ? "4X" : "none"
   }
   latency = { widgetType = "list" def = "off" blk = "video/latency" restart = false
     init = function(_blk, desc) {
@@ -963,23 +1075,26 @@ mSettings = {
 
       let restrictedValueName = localize("texQuality", desc.values[sysTexQuality])
       let restrictedValueItem = {
-        text = colorize("badTextColor", restrictedValueName + " **")
+        text = colorize("badTextColor", $"{restrictedValueName} **")
         textStyle = "textStyle:t='textarea';"
       }
       desc.items <- []
       foreach (index, item in desc.values)
         desc.items.append((index <= sysTexQuality) ? localize("texQuality", item) : restrictedValueItem)
-      desc.tooltipExtra <- colorize("badTextColor", "** " + loc("msgbox/graphicsOptionValueReduced/lowVideoMemory",
-        { name = loc("options/texQuality"), value = restrictedValueName }))
+      desc.tooltipExtra <- colorize("badTextColor", "".concat("** ", loc("msgbox/graphicsOptionValueReduced/lowVideoMemory",
+        { name = loc("options/texQuality"), value = restrictedValueName })))
       desc.hidden_values <- {ultralow = "ultralow"}
     }
     values = [ "low", "medium", "high" ]
+    infoImgPattern = "#ui/images/settings/textureQuality/%s"
   }
   shadowQuality = { widgetType = "list" def = "high" blk = "graphics/shadowQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
+    infoImgPattern = "#ui/images/settings/shadowQuality/%s"
   }
   waterEffectsQuality = { widgetType = "list" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
+    infoImgPattern = "#ui/images/settings/waterFxQuality/%s"
   }
   compatibilityShadowQuality = { widgetType = "list" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
     values = [ "low", "medium" ]
@@ -987,6 +1102,7 @@ mSettings = {
   fxResolutionQuality = { widgetType = "list" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"
     values = [ "low", "medium", "high", "ultrahigh" ]
+    infoImgPattern = "#ui/images/settings/fxQuality/%s"
   }
   selfReflection = { widgetType = "checkbox" def = true blk = "render/selfReflection" restart = false
   }
@@ -1010,6 +1126,8 @@ mSettings = {
   }
   landquality = { widgetType = "slider" def = 0 min = 0 max = 4 blk = "graphics/landquality" restart = false
     onChanged = "landqualityClick"
+    infoImgPattern = "#ui/images/settings/terrainQuality/%s"
+    availableInfoImgVals = [0, 1, 2, 3, 4]
   }
   clipmapScale = { widgetType = "slider" def = 100 min = 30 max = 150 blk = "graphics/clipmapScale" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
@@ -1031,11 +1149,15 @@ mSettings = {
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 2 - desc.def) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, 2 - val) }
     configValueToGuiValue = @(val)(2 - val).tointeger()
+    infoImgPattern = "#ui/images/settings/cloudQuality/%s"
+    availableInfoImgVals = [0, 1, 2]
   }
   panoramaResolution = { widgetType = "slider" def = 8 min = 4 max = 16 blk = "graphics/panoramaResolution" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def * 256) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val * 256) }
     configValueToGuiValue = @(val)(val / 256).tointeger()
+    infoImgPattern = "#ui/images/settings/panoramaQuality/%s"
+    availableInfoImgVals = [7, 10, 13, 16]
   }
   fxDensityMul = { widgetType = "slider" def = 100 min = 20 max = 100 blk = "graphics/fxDensityMul" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0)}
@@ -1049,8 +1171,6 @@ mSettings = {
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
   }
-  alpha_to_coverage = { widgetType = "checkbox" def = false blk = "video/alpha_to_coverage" restart = false
-  }
   tireTracksQuality = { widgetType = "list" def = "none" blk = "graphics/tireTracksQuality" restart = false
     values = [ "none", "medium", "high", "ultrahigh" ]
     configValueToGuiValue = @(val) this.values[val]
@@ -1061,9 +1181,11 @@ mSettings = {
       let res = desc.values.indexof(val) ?? 0
       setBlkValueByPath(blk, desc.blk, res)
     }
+    infoImgPattern = "#ui/images/settings/trackMarks/%s"
   }
   waterQuality = { widgetType = "list" def = "high" blk = "graphics/waterQuality" restart = false
     values = [ "low", "medium", "high", "ultrahigh" ]
+    infoImgPattern = "#ui/images/settings/waterQuality/%s"
   }
   giQuality = { widgetType = "list" def = "low" blk = "graphics/giQuality" restart = false
     values = [ "low", "medium", "high" ], isVisible = @() true
@@ -1081,17 +1203,19 @@ mSettings = {
   }
   ssaoQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssaoQuality" restart = false
     onChanged = "ssaoQualityClick"
+    infoImgPattern = "#ui/images/settings/ssao/%s"
+    availableInfoImgVals = [0, 1, 2]
   }
   ssrQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssrQuality" restart = false
     onChanged = "ssrQualityClick"
   }
   shadows = { widgetType = "checkbox" def = true blk = "render/shadows" restart = false
   }
-  rendinstGlobalShadows = { widgetType = "checkbox" def = true blk = "render/rendinstGlobalShadows" restart = false
-  }
   advancedShore = { widgetType = "checkbox" def = false blk = "graphics/advancedShore" restart = false
   }
   mirrorQuality = { widgetType = "slider" def = 5 min = 0 max = 10 blk = "graphics/mirrorQuality" restart = false
+    infoImgPattern = "#ui/images/settings/mirrorQuality/%s"
+    availableInfoImgVals = [0, 1, 3, 5, 8, 10]
   }
   motionBlurStrength = { widgetType = "slider" def = 0 min = 0 max = 10 blk = "graphics/motionBlurStrength" restart = false
     isVisible = @() hasFeature("optionMotionBlur")
@@ -1126,19 +1250,58 @@ mSettings = {
       return setBlkValueByPath(blk, desc.blk, val)
     }
     enabled = @() is_platform_windows && (platformId == "win64" || is_dev_version()) && !getGuiValue("compatibilityMode")
+    onChanged = "vrModeClick"
   }
   vrMirror = { widgetType = "list" def = "left" blk = "video/vreye" restart = false values = [ "left", "right", "both" ]
   }
   vrStreamerMode = { widgetType = "checkbox" def = false blk = "video/vrStreamerMode" restart = false
   }
-  displacementQuality = { widgetType = "slider" def = 2 min = 0 max = 3 blk = "graphics/displacementQuality" restart = false
+  displacementQuality = { widgetType = "slider" def = 2 min = 0 max = 4 blk = "graphics/displacementQuality" restart = false
   }
   contactShadowsQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "graphics/contactShadowsQuality" restart = false
     onChanged = "contactShadowsQualityClick"
   }
-  staticShadowsOnEffects = { widgetType = "checkbox" def = false blk = "render/staticShadowsOnEffects" restart = false
-  }
   riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
+  }
+  rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false enabled = hasRT
+    values = ["off", "low", "medium", "high", "ultra", "custom"]
+    onChanged = "rayTracingClick" isVisible = @() hasFeature("optionBVH")
+  }
+  bvhDistance = { widgetType = "slider" def = 3000 min = 1000 max = 6000 blk = "graphics/bvhRiGenRange" restart = false enabled = hasRTGUI
+    isVisible = @() hasFeature("optionBVH")
+  }
+  rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false
+    values = ["off", "low", "medium", "high"] enabled = hasRTGUI
+    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+  }
+  rtsm = { widgetType = "list" def = "off" blk = "graphics/enableRTSM" restart = false
+    values = [ "off", "sun", "sun_and_dynamic" ]
+    enabled = hasRTGUI
+    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+  }
+  rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false
+    values = ["off", "low", "medium", "high", "ultra"]
+    enabled = hasRTGUI
+    onChanged = "rtrClick" isVisible = @() hasFeature("optionBVH")
+  }
+  rtrRes = { widgetType = "list" def = "half" blk = "graphics/RTRRes" restart = false
+    values = ["half", "full"]
+    enabled = hasRTR
+    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+  }
+  rtrWater = { widgetType = "checkbox" def = false blk = "graphics/RTRWater" restart = false
+    enabled = hasRTGUI
+    onChanged = "rtrWaterClick" isVisible = @() hasFeature("optionBVH")
+  }
+  rtrWaterRes = { widgetType = "list" def = "half" blk = "graphics/RTRWaterRes" restart = false
+    values = ["half", "full"]
+    enabled = hasRTRWater
+    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+  }
+  rtrTranslucent = { widgetType = "list" def = "off" blk = "graphics/RTRTranslucent" restart = false
+    values = ["off", "medium", "high"]
+    enabled = hasRTGUI
+    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
   }
 }
 //------------------------------------------------------------------------------
@@ -1151,7 +1314,7 @@ function validateInternalConfigs() {
         $"Option '{id}' - 'widgetType' invalid or undefined."))
     if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
-        $"Option '{id}" + "' - 'blk' invalid or undefined. It can be undefined only when both getValueFromConfig & setGuiValueToConfig are defined."))
+        $"Option '{id}' - 'blk' invalid or undefined. It can be undefined only when both getValueFromConfig & setGuiValueToConfig are defined."))
     if (("onChanged" in desc) && type(desc.onChanged) != "function")
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'onChanged' function not found in sysopt.shared."))
@@ -1228,13 +1391,8 @@ function validateInternalConfigs() {
     }
   })
 
-  foreach (sectIndex, section in mUiStruct) {
-    let container = getTblValue("container", section)
-    let id = getTblValue("id", section)
-    let items = getTblValue("items", section)
-    if (!container || (!id && !items))
-      errorsList.append(logError("sysopt.validateInternalConfigs()",
-        $"Array uiStruct - Index {sectIndex} contains invalid data."))
+  foreach (section in mUiStruct) {
+    let { id = null, items = null } = section
     let ids = items ? items : id ? [ id ] : []
     foreach (itemId in ids)
       if (!(itemId in mSettings))
@@ -1288,7 +1446,7 @@ function configWrite() {
   foreach (id, _ in mCfgCurrent) {
     let value = getGuiValue(id)
     if (mCfgInitial?[id] != value)
-      log($"[sysopt] {id}: " + (mCfgInitial?[id] ?? "null") + " -> " + value)
+      log($"[sysopt] {id}: {mCfgInitial?[id] ?? "null"} -> {value}")
     let desc = getOptionDesc(id)
     if ("setGuiValueToConfig" in desc)
       desc.setGuiValueToConfig(mBlk, desc, value)
@@ -1314,7 +1472,6 @@ function init() {
   }
 
   validateInternalConfigs()
-  configRead()
 }
 
 function configFree() {
@@ -1407,7 +1564,7 @@ function hotReloadOrRestart() {
     }
 
     if (canRestartClient()) {
-      let message = loc("msgbox/client_restart_required") + "\n" + loc("msgbox/restart_now")
+      let message = "\n".concat(loc("msgbox/client_restart_required"), loc("msgbox/restart_now"))
       scene_msg_box("sysopt_apply", null, message, [
           ["restart", func_restart],
           ["no"],
@@ -1500,6 +1657,8 @@ function onGuiOptionChanged(obj) {
   if (id != "graphicsQuality")
     mShared.presetCheck()
   updateGuiNavbar(true)
+
+  tryUpdateOptionImage(id)
 }
 
 function fillGuiOptions(containerObj, handler) {
@@ -1508,7 +1667,7 @@ function fillGuiOptions(containerObj, handler) {
   let guiScene = containerObj.getScene()
 
   if (!mScriptValid) {
-    let msg = loc("msgbox/internal_error_header") + "\n" + mValidationError
+    let msg = "\n".concat(loc("msgbox/internal_error_header"), mValidationError)
     let data = format("textAreaCentered { text:t='%s' size:t='pw,ph' }", stripTags(msg))
     guiScene.replaceContentFromText(containerObj, data, data.len(), handler)
     return
@@ -1519,23 +1678,25 @@ function fillGuiOptions(containerObj, handler) {
   mContainerObj = containerObj
   mHandler = handler
 
-  if (get_video_modes().len() == 0 && !is_platform_windows) { // Hiding resolution, mode, vsync.
-    let topBlockId = "sysopt_top"
-    if (topBlockId in guiScene) {
-      guiScene.replaceContentFromText(topBlockId, "", 0, handler)
-      guiScene[topBlockId].height = 0
-    }
-  }
 
   configRead()
   let cb = "onSystemOptionChanged"
+  local data = ""
   foreach (section in mUiStruct) {
-    if (! guiScene[section.container])
+    if ( section.title == "options/rt" && !hasFeature("optionBVH") )
       continue
     let isTable = ("items" in section)
     let ids = isTable ? section.items : [ section.id ]
-    local data = ""
+    let sectionHeader = format("optionBlockHeader { text:t='#%s'; }", section.title)
+    let sectionRow = format(
+      "tr { optContainer:t='yes'; headerRow:t='yes'; td { cellType:t='left'; %s } optionHeaderLine{} }",
+      sectionHeader
+    )
+    data = "".concat(data, sectionRow)
     foreach (id in ids) {
+      if (id in platformDependentOpts && get_video_modes().len() == 0 && !is_platform_windows)  // Hiding resolution, mode, vsync.
+        continue
+
       let desc = getOptionDesc(id)
       if (!(desc?.isVisible() ?? true))
         continue
@@ -1563,11 +1724,11 @@ function fillGuiOptions(containerObj, handler) {
         let items = []
         foreach (valueId in desc.values) {
           local warn = loc(format("options/%s_%s/comment", id, valueId), "")
-          warn = warn.len() ? ("\n" + colorize("badTextColor", warn)) : ""
+          warn = warn.len() ? $"\n{colorize("badTextColor", warn)}" : ""
 
           items.append({
             text = localize(id, valueId)
-            tooltip = loc(format("guiHints/%s_%s", id, valueId)) + warn
+            tooltip = "".concat(loc(format("guiHints/%s_%s", id, valueId)), warn)
           })
         }
         option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
@@ -1584,26 +1745,20 @@ function fillGuiOptions(containerObj, handler) {
       if (isTable) {
         let enable = (desc?.enabled() ?? true) ? "yes" : "no"
         let requiresRestart = getTblValue("restart", desc, false)
-        let tooltipExtra = desc?.tooltipExtra ?? ""
         let optionName = loc($"options/{id}")
         let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
-        let tooltip = stripTags("\n".join(
-          [ loc($"guiHints/{id}", optionName),
-            requiresRestart ? colorize("warningTextColor", loc("guiHints/restart_required")) : "",
-            tooltipExtra
-          ], true)
+        option = "".concat("tr { id:t='", id, "_tr'; enable:t='", enable, "' selected:t='no' size:t='pw, ", mRowHeightScale,
+          "@optConatainerHeight' overflow:t='hidden' optContainer:t='yes'  on_hover:t='onOptionContainerHover' on_unhover='onOptionContainerUnhover'",
+          " td { width:t='0.5pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
+          "@optConatainerHeight' optiontext {text:t='", label, "'} }",  " td { width:t='0.5pw'; cellType:t='right';  height:t='",
+          mRowHeightScale, "@optConatainerHeight' padding-left:t='@optPad'; cellSeparator{}", option, " } }"
         )
-        option = "tr { id:t='" + id + "_tr'; enable:t='" + enable + "' selected:t='no' size:t='pw, " + mRowHeightScale + "@baseTrHeight' overflow:t='hidden' tooltip:t=\"" + tooltip + "\";" +
-          " td { width:t='0.5pw'; cellType:t='left'; overflow:t='hidden'; height:t='" + mRowHeightScale + "@baseTrHeight' optiontext {text:t='" + label + "'} }" +
-          " td { width:t='0.5pw'; cellType:t='right';  height:t='" + mRowHeightScale + "@baseTrHeight' padding-left:t='@optPad'; " + option + " } }"
       }
-
-      data += option
+      data = "".concat(data, option)
     }
-
-    guiScene.replaceContentFromText(guiScene[section.container], data, data.len(), handler)
   }
 
+  guiScene.replaceContentFromText(guiScene.sysopts, data, data.len(), handler)
   guiScene.setUpdatesEnabled(true, true)
   onGuiLoaded()
 }
@@ -1643,4 +1798,5 @@ return {
   localizaQualityPreset
   onConfigApplyWithoutUiUpdate
   canShowGpuBenchmark
+  getSystemOptionInfoView = getOptionInfoView
 }

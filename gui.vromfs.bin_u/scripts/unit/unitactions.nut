@@ -6,9 +6,7 @@ let { Cost } = require("%scripts/money.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let {
-  getEsUnitType, getUnitName, getUnitCountry, canResearchUnit
-} = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName, getUnitCountry, canResearchUnit, getUnitExp, isUnitInResearch } = require("%scripts/unit/unitInfo.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
@@ -65,7 +63,7 @@ function showFlushSquadronExpMsgBox(unit, onDoneCb, onCancelCb) {
   scene_msg_box("ask_flush_squadron_exp",
     null,
     loc("squadronExp/invest/needMoneyQuestion",
-      { exp = Cost().setSap(min(clan_get_exp(), unit.reqExp - ::getUnitExp(unit))).tostring() }),
+      { exp = Cost().setSap(min(clan_get_exp(), unit.reqExp - getUnitExp(unit))).tostring() }),
     [
       ["yes", onDoneCb],
       ["no", onCancelCb]
@@ -100,7 +98,7 @@ function buy(unit, metric) {
 function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
   let unitName = unit.name
   sendBqEvent("CLIENT_GAMEPLAY_1", "choosed_new_research_unit", { unitName = unitName })
-  if (!canResearchUnit(unit) || (checkCurrentUnit && ::isUnitInResearch(unit)))
+  if (!canResearchUnit(unit) || (checkCurrentUnit && isUnitInResearch(unit)))
     return
 
   local prevUnitName = shop_get_researchable_unit_name(getUnitCountry(unit), getEsUnitType(unit))
@@ -139,7 +137,7 @@ function setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc = @() null)
 }
 
 function setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc = @() null) {
-  if (!canResearchUnit(unit) || ::isUnitInResearch(unit))
+  if (!canResearchUnit(unit) || isUnitInResearch(unit))
     return
 
   showFlushSquadronExpMsgBox(unit, @() setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc), afterDoneFunc)

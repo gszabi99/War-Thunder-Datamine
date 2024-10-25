@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, shop_get_premium_account_ent_name, set_char_cb, yuplay2_get_payment_methods, yuplay2_buy_entitlement, has_entitlement, is_app_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -156,7 +155,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
               id = curChapter
               itemText = $"#charServer/chapter/{curChapter}"
             }
-            data += handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
+            data = "".concat(data, handyman.renderCached("%gui/missions/missionBoxItem.tpl", view))
           }
           if (this.goods[name]?.chapterImage)
             this.chImages[this.goods[name].chapter] <- this.goods[name].chapterImage
@@ -169,7 +168,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           isSelected = first
           discountText = discount > 0 ? ($"-{discount}%") : null
         }
-        data += handyman.renderCached("%gui/missions/missionBoxItem.tpl", view)
+        data = "".concat(data, handyman.renderCached("%gui/missions/missionBoxItem.tpl", view))
       }
       first = false
       idx++
@@ -264,7 +263,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.priceText = this.getItemPriceText(productId)
     showObjById("btn_buy_online", product != null && !isBoughtEntitlement(product), this.scene)
-    this.scene.findObject("btn_buy_online").setValue(loc("mainmenu/btnBuy") + ((this.priceText == "") ? "" : format(" (%s)", this.priceText)))
+    this.scene.findObject("btn_buy_online").setValue("".concat(loc("mainmenu/btnBuy"), (this.priceText == "") ? "" : format(" (%s)", this.priceText)))
 
     local discountText = ""
     let discount = ::g_discount.getEntitlementDiscount(product.name)
@@ -502,10 +501,10 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       local addString = ""
       if (additionalAmount > 0) {
         let addAmount = isGold ? Cost(0, additionalAmount) : Cost(additionalAmount, 0)
-        addString = loc("ui/parentheses/space", { text = "+" + addAmount.tostring() })
+        addString = loc("ui/parentheses/space", { text = $"+{addAmount}" })
       }
 
-      amountText = originAmount.tostring() + addString
+      amountText = $"{originAmount}{addString}"
     }
 
     return {

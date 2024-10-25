@@ -1,9 +1,9 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_short_token
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -38,12 +38,12 @@ let memberStatusLocId = {
 
 let locTags = { [MEMBER_STATUS_LOC_TAG_PREFIX] = "unknown" }
 foreach (status, locId in memberStatusLocId)
-  locTags[MEMBER_STATUS_LOC_TAG_PREFIX + status] <- locId
+  locTags[$"{MEMBER_STATUS_LOC_TAG_PREFIX}{status}"] <- locId
 systemMsg.registerLocTags(locTags)
 
 ::g_squad_utils <- {
   getMemberStatusLocId = @(status) memberStatusLocId?[status] ?? "unknown"
-  getMemberStatusLocTag = @(status) MEMBER_STATUS_LOC_TAG_PREFIX + (status in memberStatusLocId ? status : "")
+  getMemberStatusLocTag = @(status) $"{MEMBER_STATUS_LOC_TAG_PREFIX}{status in memberStatusLocId ? status : ""}"
 
   canSquad = @() getXboxChatEnableStatus() == CommunicationState.Allowed
 
@@ -135,7 +135,7 @@ systemMsg.registerLocTags(locTags)
   if (!members.len())
     return true
 
-  let locId = "squad/sameCrossPlayConditionAsLeader/" + (members[0].crossplay ? "disabled" : "enabled")
+  let locId = $"squad/sameCrossPlayConditionAsLeader/{members[0].crossplay ? "disabled" : "enabled"}"
   let membersNamesArray = members.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
   showInfoMsgBox(
     loc(locId,
@@ -231,8 +231,8 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   if (!g_squad_manager.isInSquad() || !teamData)
     return res
 
-  let ediff = ::events.getEDiffByEvent(event)
-  let respawn = ::events.isEventMultiSlotEnabled(event)
+  let ediff = events.getEDiffByEvent(event)
+  let respawn = events.isEventMultiSlotEnabled(event)
   let shouldUseEac = antiCheat.shouldUseEac(event)
   let squadMembers = g_squad_manager.getMembers()
   foreach (uid, memberData in squadMembers) {
@@ -270,7 +270,7 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
 
     let brokenUnits = []
     local haveNotBroken = false
-    let needCheckRequired = ::events.getRequiredCrafts(teamData).len() > 0
+    let needCheckRequired = events.getRequiredCrafts(teamData).len() > 0
     foreach (country in teamData.countries) {
       if (checkOnlyMemberCountry && country != memberData.country)
         continue
@@ -283,24 +283,24 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
         if (unitName == "")
           continue
 
-        haveAvailable = ::events.isUnitAllowedByTeamData(teamData, unitName, ediff)
+        haveAvailable = events.isUnitAllowedByTeamData(teamData, unitName, ediff)
         let isBroken = isInArray(unitName, memberData.brokenAirs)
         if (isBroken)
           brokenUnits.append(unitName)
         haveNotBroken = haveAvailable && !isBroken
-        haveRequired  = haveRequired || ::events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
+        haveRequired  = haveRequired || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
       }
       else {
         if ((memberData.crewAirs?[country] ?? []).len() == 0)
           continue
 
         foreach (unitName in memberData.crewAirs[country]) {
-          haveAvailable = haveAvailable || ::events.isUnitAllowedByTeamData(teamData, unitName, ediff)
+          haveAvailable = haveAvailable || events.isUnitAllowedByTeamData(teamData, unitName, ediff)
           let isBroken = isInArray(unitName, memberData.brokenAirs)
           if (isBroken)
             brokenUnits.append(unitName)
           haveNotBroken = haveNotBroken || (haveAvailable && !isBroken)
-          haveRequired  = haveRequired  || ::events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
+          haveRequired  = haveRequired  || events.isAirRequiredAndAllowedByTeamData(teamData, unitName, ediff)
         }
       }
 
@@ -377,11 +377,10 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   if (offlineMembers.len() == 0)
     return
 
-  local text = loc("squad/has_offline_members") + loc("ui/colon")
-  text += loc("ui/comma").join(
-                            offlineMembers.map(@(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
-                            true
-                          )
+  let text = loc("ui/colon").concat(loc("squad/has_offline_members"),
+    loc("ui/comma").join(offlineMembers
+      .map(@(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
+    true))
 
   addPopup("", text)
 }

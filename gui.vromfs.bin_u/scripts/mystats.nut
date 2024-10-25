@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import stat_get_value_time_played, get_player_public_stats, req_player_public_statinfo
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -26,6 +27,8 @@ let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 /*
   getStats() - Returns stats or null if stats have not been received yet. Requests stats update when needed.
@@ -51,6 +54,7 @@ let newPlayersBattles = {}
 let newbieByUnitType = {}
 let newbieNextEvent = {}
 let unitTypeByNewbieEventId = {}
+let killsOnUnitTypes = {}
 local needRecountNewbie = true
 local myStats = null
 local lastUpdate = -10000000
@@ -310,6 +314,10 @@ function checkRecountNewbie() {
       kills += getKillsOnUnitType(::getUnitTypeByText(addEsUnitType))
 
     newbieByUnitType[unitType.esUnitType] <- (kills < killsReq)
+    killsOnUnitTypes[unitType.esUnitType] <- {
+      killsReq = killsReq
+      kills = kills
+    }
 
     if (newbieEndByArmyId)
       newbieEndByArmyId[unitType.armyId] <- !newbieByUnitType[unitType.esUnitType]
@@ -337,7 +345,7 @@ function checkRecountNewbie() {
         continue
       if (evData.unitRank && checkUnitInSlot(evData.unitRank, unitType))
         continue
-      event = ::events.getEvent(evData.event)
+      event = events.getEvent(evData.event)
       if (event)
         break
     }
@@ -545,5 +553,6 @@ return {
   getStats
   clearStats
   getTotalTimePlayedSec
-
+  killsOnUnitTypes
+  newbieNextEvent
 }

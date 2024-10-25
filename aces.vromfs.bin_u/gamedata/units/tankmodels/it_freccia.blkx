@@ -161,6 +161,30 @@
         "turnSpeed": 0.2,
         "node": "bone_roll_driver_r_04",
         "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_05",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_06",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_07",
+        "absoluteValue": true
+      },
+      {
+        "type": "steeringWheel",
+        "turnSpeed": 0.2,
+        "node": "bone_roll_driver_l_08",
+        "absoluteValue": true
       }
     ]
   },
@@ -678,6 +702,10 @@
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
       },
@@ -2080,7 +2108,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_600_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame_02",
         "defaultYaw": 0.0,
@@ -2195,7 +2223,7 @@
         "speedYaw": 25.0,
         "speedPitch": 25.0,
         "fireConeAngle": 1.0,
-        "bullets": 8,
+        "bullets": 10,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 5.0,
@@ -2329,13 +2357,15 @@
       "horsePowers": 550.0,
       "maxRPM": 2300.0,
       "minRPM": 900.0,
-      "rpmTau": 1.9
+      "rpmTau": 1.9,
+      "manufacturer": "iveco",
+      "model": "iveco_8262_6v"
     },
     "mechanics": {
       "maxBrakeForce": 108000.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 6.76,
-      "sideGearRatio": 1.0,
+      "sideGearRatio": 0.98,
       "tracked": false,
       "gearRatios": {
         "ratio": [
@@ -2505,6 +2535,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2523,6 +2554,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2680,7 +2712,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2828,6 +2860,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2835,6 +2868,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2842,6 +2876,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2849,6 +2884,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2856,6 +2892,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2863,7 +2900,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2883,7 +2920,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2903,7 +2940,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2917,7 +2954,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2937,7 +2974,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2957,7 +2994,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -3035,6 +3072,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false
@@ -3136,6 +3174,12 @@
             "count": 1
           },
           "ammo_turret_11_dm": {
+            "count": 1
+          },
+          "ammo_turret_13_dm": {
+            "count": 1
+          },
+          "ammo_turret_14_dm": {
             "count": 1
           }
         }
@@ -3372,7 +3416,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Beretta_MG42_59_600_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame_02",
               "defaultYaw": 0.0,
@@ -3487,7 +3531,7 @@
               "speedYaw": 25.0,
               "speedPitch": 25.0,
               "fireConeAngle": 1.0,
-              "bullets": 8,
+              "bullets": 10,
               "salvoAmount": 100.0,
               "ChainfireTime": 0.0,
               "DelayAfterShoot": 5.0,
@@ -3579,7 +3623,7 @@
             {
               "trigger": "gunner5",
               "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/80mm_galix_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_01",
@@ -3642,8 +3686,8 @@
           "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
-              800,
-              600
+              1200,
+              800
             ],
             "noiseFactor": 0.04
           },

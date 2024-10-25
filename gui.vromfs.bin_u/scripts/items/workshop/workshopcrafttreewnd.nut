@@ -1,5 +1,6 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
@@ -529,7 +530,7 @@ function getHeaderView (headerItems, localItemsList, baseEff) {
     items = items
     totalEfficiency = colorize(totalEff == 100
       ? "activeTextColor" : totalEff < 100
-      ? "badTextColor" : "goodTextColor",  totalEff + loc("measureUnits/percent"))
+      ? "badTextColor" : "goodTextColor", $"{totalEff}{loc("measureUnits/percent")}")
     itemsEfficiency = loc("ui/parentheses/space", { text = "+".join(itemsEff, true) })
   }
 }
@@ -1040,7 +1041,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
         button_name = item.getAssembleText()
       })
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      shortcut = GAMEPAD_ENTER_SHORTCUT
       cb = @() this.doMainAction(item, childObj, true)
     }]
     ::gui_modal_tutor(steps, this, true)
@@ -1058,7 +1059,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       obj = [timeObj]
       text = loc("workshop/tutorial/wait")
       actionType = tutorAction.ANY_CLICK
-      shortcut = ::GAMEPAD_ENTER_SHORTCUT
+      shortcut = GAMEPAD_ENTER_SHORTCUT
       waitTime = item.getCraftTimeLeft()
     }]
     ::gui_modal_tutor(steps, this, true)

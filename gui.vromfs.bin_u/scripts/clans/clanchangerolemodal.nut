@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_name, sync_handler_simulate_signal, clan_get_my_role, clan_get_role_rights, clan_get_admin_editor_mode, clan_request_change_member_role
 from "%scripts/dagui_library.nut" import *
 
@@ -78,11 +77,11 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local curIdx = 0
     foreach (idx, role in this.roles) {
-      roleOptions += format("shopFilter { id:t='role_%d'; shopFilterText { id:t='text'; width:t='pw'; %s } %s } \n",
+      roleOptions = "".concat(roleOptions, format("shopFilter { id:t='role_%d'; shopFilterText { id:t='text'; width:t='pw'; %s } %s } \n",
         idx,
         role.current ? "style:t='color:@mainPlayerColor'; " : "",
         role.enabled ? "" : "enable:t='no'; "
-      )
+      ))
       if (role.current)
         curIdx = idx
     }
@@ -91,7 +90,8 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, role in this.roles) {
       let option = this.scene.findObject($"role_{idx}")
       option.findObject("text").setValue(loc($"clan/{role.name}"))
-      option.tooltip = (role.current ? (loc("clan/currentRole") + "\n\n") : "") + lbDataType.ROLE.getPrimaryTooltipText(role.id)
+      option.tooltip = "".concat((role.current ? ("".concat(loc("clan/currentRole"), "\n\n")) : ""),
+                 lbDataType.ROLE.getPrimaryTooltipText(role.id))
     }
     roleListObj.setValue(curIdx)
     move_mouse_on_child(roleListObj, curIdx)
@@ -117,7 +117,7 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return;
     }
 
-    let msg = loc("clan/roleChanged") + " " + loc("clan/" + this.roles[newRoleIdx].name)
+    let msg = "".concat(loc("clan/roleChanged"), " ", loc("".concat("clan/", this.roles[newRoleIdx].name)))
     let taskId = clan_request_change_member_role(this.changeRolePlayer.uid, this.roles[newRoleIdx].name)
 
     if (taskId >= 0 && !this.adminMode)

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -21,7 +22,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName,
-  isEventWithLobby, getEventReqPack, checkEventFeaturePacks
+  isEventWithLobby, getEventReqPack, checkEventFeaturePacks, isEventPlatformOnlyAllowed
 } = require("%scripts/events/eventInfo.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
@@ -73,7 +74,7 @@ function guiStartModalEvents(options = {}) {
   local chapterId = getTblValue ("chapter", options, null)
 
   if (chapterId) {
-    let chapter = ::events.getChapter(chapterId)
+    let chapter = events.getChapter(chapterId)
     if (chapter && !chapter.isEmpty()) {
       let chapterEvents = chapter.getEvents()
       eventId = chapterEvents[0]
@@ -83,9 +84,9 @@ function guiStartModalEvents(options = {}) {
   eventId = eventId || getTblValue("event", options, null)
 
   if (eventId == null) {
-    local lastPlayedEvent = ::events.getLastPlayedEvent()
-    eventId = getTblValue("name", lastPlayedEvent, ::events.getFeaturedEvent())
-    chapterId = ::events.getEventsChapter(::events.getEvent(eventId))
+    local lastPlayedEvent = events.getLastPlayedEvent()
+    eventId = getTblValue("name", lastPlayedEvent, events.getFeaturedEvent())
+    chapterId = events.getEventsChapter(events.getEvent(eventId))
   }
 
   loadHandler(gui_handlers.EventsHandler, {
@@ -154,9 +155,9 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let rowId = this.listMap?[curEventIdx]
     if (rowId == null)
       return
-    let newEvent = ::events.getEvent(rowId)
+    let newEvent = events.getEvent(rowId)
     let newEventId = newEvent?.name ?? ""
-    let newChapterId = newEvent != null ? ::events.getEventsChapter(newEvent) : rowId
+    let newChapterId = newEvent != null ? events.getEventsChapter(newEvent) : rowId
 
     if (onlyChanged && newChapterId == this.curChapterId && this.curEventId == newEventId)
       return
@@ -174,10 +175,10 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateWindow() {
-    let event = ::events.getEvent(this.curEventId)
+    let event = events.getEvent(this.curEventId)
     let showOverrideSlotbar = needShowOverrideSlotbar(event)
     if (showOverrideSlotbar)
-      updateOverrideSlotbar(::events.getEventMission(this.curEventId))
+      updateOverrideSlotbar(events.getEventMission(this.curEventId))
     else
       resetSlotbarOverrided()
     this.createSlotbar({
@@ -214,7 +215,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function joinEvent(isFromDebriefing = false) {
-    let event = ::events.getEvent(this.curEventId)
+    let event = events.getEvent(this.curEventId)
     if (!event)
       return
 
@@ -267,7 +268,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let economicName = getEventEconomicName(::events.getEvent(this.curEventId))
+    let economicName = getEventEconomicName(events.getEvent(this.curEventId))
     let roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = economicName })
     if (!roomsListData.getList().len())
       return
@@ -424,7 +425,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
-    seenEvents.markSeen(::events.getEventsForEventsWindow())
+    seenEvents.markSeen(events.getEventsForEventsWindow())
     resetSlotbarOverrided()
   }
 
@@ -435,14 +436,14 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRoomsList() {
-    gui_handlers.EventRoomsHandler.open(::events.getEvent(this.curEventId), true)
+    gui_handlers.EventRoomsHandler.open(events.getEvent(this.curEventId), true)
     this.canAskAboutRoomsList = false
     saveLocalAccountSettings(ROOMS_LIST_OPEN_COUNT_SAVE_ID,
       loadLocalAccountSettings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0) + 1)
   }
 
   function onDownloadPack() {
-    checkEventFeaturePacks(::events.getEvent(this.curEventId))
+    checkEventFeaturePacks(events.getEvent(this.curEventId))
   }
 
   function onQueueOptions(obj) {
@@ -469,7 +470,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   //----VIEW----//
   function showEventDescription(eventId) {
-    let event = ::events.getEvent(eventId)
+    let event = events.getEvent(eventId)
     this.eventDescription.selectEvent(event)
     if (event != null)
       seenEvents.markSeen(event.name)
@@ -510,9 +511,9 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function scheduleUpdateButtonsIfNeeded(event) {
     clearTimer(this.updateButtonsTimer)
 
-    local time = ::events.getEventStartTime(event)
+    local time = events.getEventStartTime(event)
     if (time <= 0)
-      time = ::events.getEventEndTime(event)
+      time = events.getEventEndTime(event)
     if (time <= 0)
       return
 
@@ -521,14 +522,14 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    let event = ::events.getEvent(this.curEventId)
+    let event = events.getEvent(this.curEventId)
     let isEvent = event != null
     let isHeader = this.curChapterId != "" && this.curEventId == ""
     let isInQueue = this.isInEventQueue()
 
     let isCurItemInFocus = (isEvent || isHeader) && (this.isMouseMode || this.hoveredIdx == this.selectedIdx || isInQueue)
 
-    let reasonData = ::events.getCantJoinReasonData(isCurItemInFocus ? event : null)
+    let reasonData = events.getCantJoinReasonData(isCurItemInFocus ? event : null)
     let isReady = g_squad_manager.isMeReady()
     let isSquadMember = g_squad_manager.isSquadMember()
 
@@ -551,12 +552,12 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     // Used for proper button width calculation.
     local uncoloredStartText = startText
 
-    let battlePriceText = ::events.getEventBattleCostText(event, "activeTextColor", true, true)
+    let battlePriceText = events.getEventBattleCostText(event, "activeTextColor", true, true)
     if (battlePriceText.len() > 0) {
       startText = "".concat(startText, format(" (%s)", battlePriceText))
       uncoloredStartText = "".concat(
         uncoloredStartText,
-        format(" (%s)", ::events.getEventBattleCostText(event, "activeTextColor", true, false))
+        format(" (%s)", events.getEventBattleCostText(event, "activeTextColor", true, false))
       )
     }
 
@@ -592,19 +593,19 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillEventsList() {
-    let chapters = ::events.getChapters()
+    let chapters = events.getChapters()
     let needSkipCrossplayEvent = isPlatformSony && !isCrossPlayEnabled()
 
     let view = { items = [] }
     foreach (chapter in chapters) {
       let eventItems = []
       foreach (eventName in chapter.getEvents()) {
-        let event = ::events.getEvent(eventName)
-        if (needSkipCrossplayEvent && !::events.isEventPlatformOnlyAllowed(event))
+        let event = events.getEvent(eventName)
+        if (needSkipCrossplayEvent && !isEventPlatformOnlyAllowed(event))
           continue
 
         eventItems.append({
-          itemIcon = ::events.getDifficultyImg(eventName)
+          itemIcon = events.getDifficultyImg(eventName)
           id = eventName
           itemText = this.getEventNameForListBox(event)
           unseenIcon = bhvUnseen.makeConfigStr(SEEN.EVENTS, eventName)
@@ -648,23 +649,23 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getEventNameForListBox(event) {
-    local text = ::events.getEventNameText(event)
+    local text = events.getEventNameText(event)
     if (needShowCrossPlayInfo()) {
-      let isPlatformOnlyAllowed = ::events.isEventPlatformOnlyAllowed(event)
+      let isPlatformOnlyAllowed = isEventPlatformOnlyAllowed(event)
       text = getTextWithCrossplayIcon(!isPlatformOnlyAllowed, text)
       if (!isPlatformOnlyAllowed && !isCrossPlayEnabled())
         text = colorize("warningTextColor", text)
     }
 
-    if (::events.isEventEnded(event))
+    if (events.isEventEnded(event))
       text = colorize("oldTextColor", text)
 
     return text
   }
 
   function getCurrentEdiff() {
-    let event = ::events.getEvent(this.curEventId)
-    let ediff = event ? ::events.getEDiffByEvent(event) : -1
+    let event = events.getEvent(this.curEventId)
+    let ediff = event ? events.getEDiffByEvent(event) : -1
     return ediff != -1 ? ediff : getCurrentGameModeEdiff()
   }
 
@@ -675,7 +676,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onCollapse(obj) {
     if (!obj?.id)
       return
-    this.collapseChapter(cutPrefix(obj.id, "btn_", obj.id))
+    this.collapseChapter(cutPrefix(obj.id, "btn_", obj.id)) // -param-pos
     this.updateButtons()
   }
 
@@ -689,7 +690,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (! chapterObj)
       return
     let collapsed = chapterObj.collapsed == "yes" ? true : false
-    let curChapter = ::events.getChapter(chapterId)
+    let curChapter = events.getChapter(chapterId)
     if (! curChapter)
       return
     foreach (eventName in curChapter.getEvents()) {
@@ -701,7 +702,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (chapterId == this.curChapterId) {
-      let chapters = ::events.getChapters()
+      let chapters = events.getChapters()
       local totalRows = -1
       foreach (chapter in chapters)
         if (chapter.getEvents().len() > 0) {
@@ -734,7 +735,7 @@ function openEventsWndFromPromo(owner, params = []) {
     @() guiStartModalEvents({ event = eventId }), false, true))
 }
 
-let getEventsPromoText = @() ::events.getEventsVisibleInEventsWindowCount() == 0
+let getEventsPromoText = @() events.getEventsVisibleInEventsWindowCount() == 0
   ? loc("mainmenu/events/eventlist_btn_no_active_events")
   : loc("mainmenu/btnTournamentsAndEvents")
 
@@ -755,7 +756,7 @@ addPromoButtonConfig({
       buttonObj = showObjById(id, show, this.scene)
     else {
       show = hasFeature("Events")
-        && ::events.getEventsVisibleInEventsWindowCount()
+        && events.getEventsVisibleInEventsWindowCount()
         && isMultiplayerPrivilegeAvailable.value
         && getPromoVisibilityById(id)
       buttonObj = showObjById(id, show, this.scene)

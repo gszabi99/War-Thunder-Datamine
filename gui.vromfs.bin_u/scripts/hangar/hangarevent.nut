@@ -1,4 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -18,7 +21,7 @@ function startGameMode(params) {
   if(gameModeName == null)
     return
 
-  let event = ::events.getEvent(gameModeName)
+  let event = events.getEvent(gameModeName)
   if(event == null)
     return
 

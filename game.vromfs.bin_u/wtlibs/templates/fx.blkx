@@ -1,0 +1,446 @@
+{
+  "import": "%wtlibs/templates/essentials.blk",
+  "ecs_fx": {
+    "_use": "replicating",
+    "_replicate": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "ecs_fx__res": "",
+    "ecs_fx__velocity": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "ecs_fx__spawn_rate": 1.0,
+    "ecs_fx__color_mult": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "ecs_fx__light_radius_mult": 1.0,
+    "ecs_fx__with_sound": true,
+    "ecs_fx__effect_ref": {
+      "_tags": "render"
+    }
+  },
+  "camera_fx": {
+    "_use": "replicating",
+    "_replicate": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "camera_fx__radius": 10.0,
+    "camera_fx__is_cylindrical": false,
+    "camera_fx__height": 0.0,
+    "camera_fx__res": "misc_placeholder_cmps_fx",
+    "camera_fx__moveByWind": false,
+    "camera_fx": {
+      "_tags": "render"
+    }
+  },
+  "area_fx": {
+    "_use": "replicating",
+    "_replicate": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "area_fx__radius": 20.0,
+    "area_fx__height": 5.0,
+    "area_fx__active_limit": 10,
+    "area_fx__spawn_timer_min": 1.0,
+    "area_fx__spawn_timer_max": 1.0,
+    "area_fx__res": "misc_placeholder_cmps_fx",
+    "area_fx__moveByWind": false,
+    "area_fx": {
+      "_tags": "render"
+    }
+  },
+  "dafx_rain": {
+    "_singleton": true,
+    "_group": {
+      "_track": true,
+      "far_rain__density": 10.0,
+      "far_rain__speed": 1.0,
+      "far_rain__width": 1.0,
+      "far_rain__length": 1.0,
+      "far_rain__alpha": 1.0,
+      "far_rain__maxDensity": 10.0,
+      "far_rain__cloudFade": 1.0,
+      "far_rain__isSnow": false,
+      "far_rain__effectTemplates:array": {
+        "template": [
+          "camera_rain_light_effect",
+          "camera_rain_drop_splashes_effect"
+        ]
+      }
+    },
+    "rain_tag:tag": {}
+  },
+  "camera_bound_rain_effect_template": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        20.0,
+        0.0
+      ]
+    ],
+    "_group": {
+      "_tags": "render",
+      "camera_effect__offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "camera_effect__distance": 0.0,
+      "effect__name": "",
+      "is_ground_effect": false
+    },
+    "effect": {
+      "_tags": "render"
+    },
+    "rain_effect_tag:tag": {}
+  },
+  "envi_emitter_base": {
+    "_use": "replicating",
+    "_group": [
+      {
+        "_replicate": true,
+        "_track": true,
+        "transform": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      {
+        "_tags": "render",
+        "_track": true,
+        "emitter__intensity": 0.0,
+        "emitter__material": "dust",
+        "emitter__id:EnviEmitterId": {}
+      }
+    ],
+    "destroyable_with_rendinst:tag": {}
+  },
+  "envi_emitter_uniform": {
+    "_use": "envi_emitter_base",
+    "emitter_uniform:tag": {}
+  },
+  "envi_emitter_point": {
+    "_use": "envi_emitter_base",
+    "emitter_point:tag": {}
+  },
+  "envi_emitter_sphere": {
+    "_use": "envi_emitter_base",
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "emitter__radius": 1.0
+    },
+    "emitter_sphere:tag": {}
+  },
+  "envi_emitter_plane": {
+    "_use": "envi_emitter_base",
+    "_group": {
+      "_tags": "render",
+      "_track": true
+    },
+    "emitter_plane:tag": {}
+  },
+  "envi_emitter_cylinder": {
+    "_use": "envi_emitter_base",
+    "_group": {
+      "_tags": "render",
+      "_track": true,
+      "emitter__radius": 1.0
+    },
+    "emitter_cylinder:tag": {}
+  },
+  "light": {
+    "_use": "replicating",
+    "light__max_radius": 0.0,
+    "light__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "light__color": [
+      200,
+      250,
+      255,
+      255
+    ],
+    "light__brightness": 1.0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_track": true,
+    "_replicate": true
+  },
+  "omni_light": {
+    "_use": "light",
+    "light__nightly": true,
+    "_group": {
+      "_track": true,
+      "_replicate": true,
+      "light__contact_shadows": true,
+      "light__use_box": true,
+      "light__automatic_box": false,
+      "light__box": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "light__direction": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "light__texture_name": ""
+    },
+    "omni_light": {
+      "_tags": "render"
+    },
+    "destroyable_with_rendinst:tag": {}
+  },
+  "spot_light": {
+    "_use": [
+      "light",
+      "replicating"
+    ],
+    "light__nightly": true,
+    "_group": [
+      {
+        "_track": true,
+        "_replicate": true,
+        "light__texture_name": "",
+        "light__max_radius": 45.0,
+        "light__brightness": 100.0
+      },
+      {
+        "_tags": "render",
+        "_replicate": true,
+        "_track": true,
+        "spot_light__inner_attenuation": 0.9,
+        "spot_light__dynamic_light": false,
+        "spot_light__shadows": true,
+        "spot_light__dynamic_obj_shadows": false,
+        "spot_light__shadow_shrink": 0
+      }
+    ],
+    "spot_light": {
+      "_tags": "render"
+    },
+    "destroyable_with_rendinst:tag": {}
+  },
+  "music": {
+    "_singleton": true,
+    "_tags": "sound",
+    "music__forced": false,
+    "music__forcedEvtName": "",
+    "music__curBattleState": -1,
+    "music__battleRadiusAirSq": 2500.0,
+    "music__battleRadiusGroundSq": 2500.0,
+    "music__battleEnemiesThreshold": 3,
+    "music__timerBattle": 0.0,
+    "music__cooldownBattle": 5.0,
+    "music__cooldownCalm": 5.0,
+    "music__curUnitRank": 0,
+    "music__curUnitType": -1,
+    "music__curHangarCountry_id": -1,
+    "music__curForcedEvtName": "",
+    "music__lockedHangar": false,
+    "music__useHangarMusicForUnitType": false,
+    "music__operatorCountryId": -1
+  },
+  "sound_point": {
+    "_use": "replicating",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "sound_point__event_name": "",
+    "sound_point__near_dist": 50.0,
+    "sound_point__vol": 1.0,
+    "sound_point__event:SoundEvent": {
+      "_tags": "sound"
+    },
+    "destroyable_with_rendinst:tag": {}
+  },
+  "sound_point_constant": {
+    "_use": "sound_point",
+    "sound_point__timeline_pos": 0.0,
+    "sound_point__length": 0.0
+  },
+  "sound_point_one_shot": {
+    "_use": "sound_point",
+    "sound_point_one_shot_played": false
+  },
+  "sound_area": {
+    "_use": "replicating",
+    "sound_area__grid_step": 15.0,
+    "sound_area__grid_stride": 0,
+    "sound_area__use_height": false,
+    "sound_area__bounds_y": [
+      0.0,
+      0.0
+    ],
+    "sound_area__bounds": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sound_area__event_name": "",
+    "sound_area__area_names:list<t>": {},
+    "sound_area__bgrid:list<b>": {},
+    "sound_area__event:SoundEvent": {
+      "_tags": "sound"
+    }
+  }
+}

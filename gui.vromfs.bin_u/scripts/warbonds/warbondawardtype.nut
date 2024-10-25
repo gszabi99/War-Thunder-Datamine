@@ -10,7 +10,7 @@ let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getFullUnlockDescByName, getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName, isUnitBought } = require("%scripts/unit/unitInfo.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
@@ -153,7 +153,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 
       let blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
       return format(blockFormat, buildUnitSlot(unit.name, unit, {
-        status = ::isUnitBought(unit) ? "owned" : "canBuy",
+        status = isUnitBought(unit) ? "owned" : "canBuy",
         showAsTrophyContent = true
         isLocalState = false
         tooltipParams = { showLocalState = false }
@@ -166,7 +166,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getMaxBoughtCount = @(_warbond, _blk) 1
     getBoughtCount = function(_warbond, blk) {
       let unit = getAircraftByName(blk.name)
-      return (unit && ::isUnitBought(unit)) ? 1 : 0
+      return (unit && isUnitBought(unit)) ? 1 : 0
     }
     showAvailableAmount = false
 

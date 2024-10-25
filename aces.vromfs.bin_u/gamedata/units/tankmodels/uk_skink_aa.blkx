@@ -177,10 +177,10 @@
         "armorThickness": 50.8
       },
       "gun_mask_03_dm": {
-        "armorThickness": 50.8
+        "armorThickness": 12.7
       },
       "gun_mask_04_dm": {
-        "armorThickness": 50.8
+        "armorThickness": 12.7
       }
     },
     "optics": {
@@ -380,6 +380,10 @@
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
       },
@@ -1708,8 +1712,8 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_01_dm",
         "breechDP": "cannon_breech_01_dm",
-        "speedYaw": 63.0,
-        "speedPitch": 20.0,
+        "speedYaw": 60.0,
+        "speedPitch": 45.0,
         "bullets": 480,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -1781,8 +1785,8 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_02_dm",
         "breechDP": "cannon_breech_02_dm",
-        "speedYaw": 63.0,
-        "speedPitch": 20.0,
+        "speedYaw": 60.0,
+        "speedPitch": 45.0,
         "bullets": 480,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -1832,8 +1836,8 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_03_dm",
         "breechDP": "cannon_breech_03_dm",
-        "speedYaw": 63.0,
-        "speedPitch": 20.0,
+        "speedYaw": 60.0,
+        "speedPitch": 45.0,
         "bullets": 480,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -1883,8 +1887,8 @@
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_04_dm",
         "breechDP": "cannon_breech_04_dm",
-        "speedYaw": 63.0,
-        "speedPitch": 20.0,
+        "speedYaw": 60.0,
+        "speedPitch": 45.0,
         "bullets": 480,
         "fireConeAngle": 5.0,
         "ChainfireTime": 0.5,
@@ -2302,6 +2306,7 @@
   "unitFx": {
     "event": [
       {
+        "lifetime": 120.0,
         "name": "engine_fire",
         "fx": [
           {
@@ -2320,6 +2325,7 @@
       },
       {
         "name": "ammo_fire",
+        "lifetime": 9.0,
         "fx": [
           {
             "name": "tank_ammo_fire",
@@ -2477,7 +2483,7 @@
       },
       {
         "name": "total_fire",
-        "lifetime": 60.0,
+        "lifetime": 40.0,
         "fx": [
           {
             "name": "tank_fire_big",
@@ -2625,6 +2631,7 @@
       },
       {
         "name": "fuel_exterior",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2632,6 +2639,7 @@
       },
       {
         "name": "fuel_internal",
+        "lifetime": 15.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2639,6 +2647,7 @@
       },
       {
         "name": "hydraulic_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2646,6 +2655,7 @@
       },
       {
         "name": "powersystem_internal",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2653,6 +2663,7 @@
       },
       {
         "name": "powersystem_exterior",
+        "lifetime": 10.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2660,7 +2671,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2680,7 +2691,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion",
@@ -2700,7 +2711,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
@@ -2714,7 +2725,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo",
@@ -2734,7 +2745,7 @@
       },
       {
         "name": "big_bang",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": [
           {
             "name": "tank_explosion_ammo_small",
@@ -2754,7 +2765,7 @@
       },
       {
         "name": "full_expl",
-        "lifetime": 10.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_big",
           "emitter": "emtr_explosion_center"
@@ -2832,6 +2843,7 @@
       },
       {
         "name": "engine_overheat",
+        "lifetime": 5.0,
         "fx": {
           "name": "tank_radiator_steam",
           "centerDmgPart": false

@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
@@ -290,7 +291,7 @@ let Cost = class (Money) {
   }
 }
 
-::zero_money <- Money(money_type.none)
+let zero_money = Money(money_type.none)
 
 u.registerClass("Money", Money, @(m1, m2) m1 <= m2 && m1 >= m2, @(m) m.isZero())
 
@@ -299,4 +300,5 @@ return {
   Money
   Balance
   Cost
+  zero_money
 }

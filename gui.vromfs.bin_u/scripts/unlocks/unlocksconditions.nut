@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 
@@ -444,7 +443,7 @@ function getRangeString(val1, val2, formatStr = "%s") {
   val2 = val2.tostring()
   return (val1 == val2)
     ? format(formatStr, val1)
-    : format(formatStr, val1) + loc("ui/mdash") + format(formatStr, val2)
+    : loc("ui/mdash").concat(format(formatStr, val1), format(formatStr, val2))
 }
 
 function getDiffValueText(value, formatStr = "%s", lessIsBetter = false) {
@@ -465,9 +464,9 @@ function getDiffTextArrayByPoint3(val, formatStr = "%s", lessIsBetter = false) {
     foreach (idx, key in [ "x", "y", "z" ]) {
       let value = val[key]
       let valueStr = getDiffValueText(value, formatStr, lessIsBetter)
-      res.append(valueStr + loc("ui/parentheses/space", {
+      res.append("".concat(valueStr, loc("ui/parentheses/space", {
         text = loc(getTblValue("abbreviation", g_difficulty.getDifficultyByDiffCode(idx), ""))
-      }))
+      })))
     }
 
   return res
@@ -644,7 +643,7 @@ function loadCondition(blk, unlockBlk) {
       res.values = null
   }
   else if (t == "targetDistance") {
-    res.values = getDiffTextArrayByPoint3(blk?.distance ?? -1, "%s" + loc("measureUnits/meters_alt"))
+    res.values = getDiffTextArrayByPoint3(blk?.distance ?? -1, $"%s{loc("measureUnits/meters_alt")}")
     res.gt <- blk?.gt ?? true
   }
   else if (isInArray(t, additionalTypes)) {
@@ -728,9 +727,9 @@ function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
 
 // generates conditions texts, adds colorized "<text>: <valueText>" to text
 function addToText(text, name, valueText = "", color = "unlockActiveColor", separator = "\n") {
-  text += (text.len() ? separator : "") + name
+  text = (text.len() ? separator : "").concat(text, name)
   if (valueText != "")
-    text += (name.len() ? loc("ui/colon") : "") + "<color=@" + color + ">" + valueText + "</color>"
+    text = "".concat(text, (name.len() ? loc("ui/colon") : ""), $"<color=@{color}>{valueText}</color>")
   return text
 }
 

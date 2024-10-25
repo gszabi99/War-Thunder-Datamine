@@ -22,7 +22,7 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "600kph",
   "bayDoorTextureCtrl": true,
-  "fightAiBehaviour": "fighter",
+  "fightAiBehaviour": "assault",
   "ikPilot": {
     "model": "pilot_japan_char",
     "maxHeadHorAngle": 60.0,
@@ -2489,7 +2489,7 @@
       },
       {
         "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType94.blk",
+        "blk": "gameData/Weapons/cannonType98.blk",
         "emitter": "flare3",
         "flash": "flare3",
         "shell": "emtr_shellrejection3",
@@ -2570,10 +2570,17 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "ki-45_otsu_default",
-      "blk": "gameData/FlightModels/weaponPresets/empty.blk"
-    }
+    "preset": [
+      {
+        "name": "ki-45_otsu_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      },
+      {
+        "name": "ki-45_mod25mark2",
+        "blk": "gameData/FlightModels/weaponPresets/ki-45_mod25mark2.blk",
+        "reqModification": "ki45_12in_mod30"
+      }
+    ]
   },
   "default_skin_tomoe": {
     "replace_tex": {
@@ -2615,7 +2622,6 @@
       "reqModification": "safat12_belt_pack",
       "tier": 4
     },
-    "type94_antitank": {},
     "mg_turret_ap": {},
     "mg_turret_api_apt": {},
     "mg_turret_belt_pack": {
@@ -2625,11 +2631,16 @@
       "reqModification": "mg_turret_belt_pack",
       "tier": 2
     },
-    "type94_belt_pack": {
+    "type98_belt_pack": {
       "tier": 2
     },
-    "type94_new_gun": {
-      "reqModification": "type94_belt_pack",
+    "type98_antitank": {},
+    "type98_new_gun": {
+      "reqModification": "type98_belt_pack",
+      "tier": 3
+    },
+    "ki45_12in_mod30": {
+      "modClass": "weapon",
       "tier": 3
     }
   },

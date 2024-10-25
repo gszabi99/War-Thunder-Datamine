@@ -359,7 +359,7 @@ local class WeaponsPurchaseProcess {
   }
 }
 
-local function weaponsPurchase(unit, additionalParams = {}) {
+function weaponsPurchase(unit, additionalParams = {}) {
   if (u.isString(unit))
     unit = getAircraftByName(unit)
 

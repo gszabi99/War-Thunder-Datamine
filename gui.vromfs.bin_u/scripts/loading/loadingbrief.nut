@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
@@ -95,7 +94,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         country = ::getCountryByAircraftName(::get_test_flight_unit_info()?.unit.name)
       else
         country = ::getCountryByAircraftName(missionBlk.getStr("player_class", ""))
-      log("0 player_class = " + missionBlk.getStr("player_class", "") + "; country = " + country)
+      log($"0 player_class = {missionBlk.getStr("player_class", "")}; country = {country}")
       if (country != "" && !(get_game_type() & GT_VERSUS) && this.gm != GM_TRAINING)
         this.guiScene["briefing-flag"]["background-image"] = getCountryFlagImg($"bgflag_{country}")
 
@@ -111,9 +110,8 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       local sceneInfo = ""
       let currentCampaignMission = getCurrentCampaignMission()
       if (currentCampaignMission) {
-        sceneInfo += loc($"mb/{currentCampaignMission}/date", "")
-        sceneInfo += (sceneInfo == "") ? "" : "\n"
-        sceneInfo += loc($"mb/{currentCampaignMission}/place", "")
+        sceneInfo = loc($"mb/{currentCampaignMission}/date", "")
+        sceneInfo = "".concat(sceneInfo, sceneInfo == "" ? "" : "\n", loc($"mb/{currentCampaignMission}/place", ""))
       }
       if (sceneInfo == "")
         sceneInfo = loc(this.briefing.getStr("place_loc", ""))
@@ -136,11 +134,11 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
           part.event <- partBlock.getStr("event", "")
           for (local idx = part.event.indexof("/"); idx;)
             if (idx != null) {
-              part.event = part.event.slice(0, idx) + "_" + part.event.slice(idx + 1)
+              part.event = $"{part.event.slice(0, idx)}_{part.event.slice(idx + 1)}"
               idx = part.event.indexof("/")
             }
           part.voiceLen <- loading_get_voice_len(part.event) //-1 if there's no sound
-          log($"voice {part.event} len " + part.voiceLen.tostring())
+          log($"voice {part.event} len {part.voiceLen}")
 
           local totalSlidesTime = 0.0
           let freeTimeSlides = []
@@ -210,7 +208,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let helpBtnObj = showObjById("btn_help", haveHelp, this.scene)
       if (helpBtnObj && !showConsoleButtons.value)
-        helpBtnObj.setValue(loc("flightmenu/btnControlsHelp") + loc("ui/parentheses/space", { text = "F1" }))
+        helpBtnObj.setValue("".concat(loc("flightmenu/btnControlsHelp"), loc("ui/parentheses/space", { text = "F1" })))
 
       if (haveHelp) {
         let parts = missionHelpPath != null
@@ -240,9 +238,8 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       m_weapon = get_gui_option(USEROPT_WEAPONS)
     }
     if ((m_aircraft != "") && !(this.gt & GT_VERSUS))
-      res.append(loc("options/aircraft") + loc("ui/colon") +
-                    " " + getUnitName(m_aircraft) + "; " +
-                    getWeaponNameText(m_aircraft, null, m_weapon, ", "))
+      res.append("".concat(loc("options/aircraft"), loc("ui/colon"), " ",
+        getUnitName(m_aircraft), "; ", getWeaponNameText(m_aircraft, null, m_weapon, ", ")))
 
     local m_condition = ""
     let currentCampaignMission = getCurrentCampaignMission()
@@ -253,17 +250,17 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!(this.gt & GT_VERSUS)) {
         let m_location = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
         if (m_location != "")
-          m_condition += loc($"location/{m_location}")
+          m_condition = loc($"location/{m_location}")
         let m_time = blk.getStr("time", blk.getStr("environment", ""))
         if (m_time != "")
-          m_condition += (m_condition != "" ? "; " : "") + getMissionTimeText(m_time)
+          m_condition = "".concat(m_condition, m_condition != "" ? "; " : "", getMissionTimeText(m_time))
         let m_weather = blk.getStr("weather", "")
         if (m_weather != "")
-          m_condition += (m_condition != "" ? "; " : "") + getWeatherLocName(m_weather)
+          m_condition = "".concat(m_condition, m_condition != "" ? "; " : "", getWeatherLocName(m_weather))
       }
     }
     if (m_condition != "")
-      res.append(loc("sm_conditions") + loc("ui/colon") + " " + m_condition)
+      res.append("".concat(loc("sm_conditions"), loc("ui/colon"), " ", m_condition))
     return "\n".join(res, true)
   }
 
@@ -441,10 +438,10 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         if (misObj == "")
           misObj = loc(this.briefing.getStr("objective_loc", ""))
         if (this.misObj_add != "")
-          misObj += (misObj.len() ? "\n\n" : "") + this.misObj_add
+          misObj = "".concat(misObj, misObj.len() ? "\n\n" : "", this.misObj_add)
 
-        misObj = colorize("userlogColoredText", locCurrentMissionName(false)) +
-          "\n\n" + clearBorderSymbolsMultiline(misObj)
+        misObj = "".concat(colorize("userlogColoredText", locCurrentMissionName(false)),
+          "\n\n", clearBorderSymbolsMultiline(misObj))
         this.setMissionObjective(misObj)
       }
 

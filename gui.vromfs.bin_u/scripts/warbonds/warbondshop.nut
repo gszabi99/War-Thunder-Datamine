@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
 from "%scripts/mainConsts.nut" import SEEN
+import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
 
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -71,7 +72,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (i, wb in this.wbList)
       view.tabs.append({
         id = this.getTabId(i)
-        object = wb.haveAnyOrdinaryRequirements() ? ::g_warbonds_view.getCurrentLevelItemMarkUp(wb) : null
+        object = wb.haveAnyOrdinaryRequirements() ? g_warbonds_view.getCurrentLevelItemMarkUp(wb) : null
         navImagesText = ::get_navigation_images_text(i, this.wbList.len())
         unseenIcon = bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, wb.getSeenId())
       })
@@ -327,7 +328,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initItemsProgress() {
-    let showAnyShopProgress = ::g_warbonds_view.showOrdinaryProgress(this.curWb)
+    let showAnyShopProgress = g_warbonds_view.showOrdinaryProgress(this.curWb)
     let progressPlaceObj = this.scene.findObject("shop_level_progress_place")
     progressPlaceObj.show(showAnyShopProgress)
 
@@ -336,18 +337,18 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
       let oldShopObj = progressPlaceObj.findObject("old_shop_progress_place")
       oldShopObj.show(isShopInactive)
 
-      ::g_warbonds_view.createProgressBox(this.curWb, progressPlaceObj, this, isShopInactive)
+      g_warbonds_view.createProgressBox(this.curWb, progressPlaceObj, this, isShopInactive)
       if (isShopInactive) {
-        let data = ::g_warbonds_view.getCurrentLevelItemMarkUp(this.curWb)
+        let data = g_warbonds_view.getCurrentLevelItemMarkUp(this.curWb)
         this.guiScene.replaceContentFromText(oldShopObj.findObject("level_icon"), data, data.len(), this)
       }
     }
 
-    let showAnyMedalProgress = ::g_warbonds_view.showSpecialProgress(this.curWb)
+    let showAnyMedalProgress = g_warbonds_view.showSpecialProgress(this.curWb)
     let medalsPlaceObj = this.scene.findObject("special_tasks_progress_block")
     medalsPlaceObj.show(showAnyMedalProgress)
     if (showAnyMedalProgress)
-      ::g_warbonds_view.createSpecialMedalsProgress(this.curWb, medalsPlaceObj, this)
+      g_warbonds_view.createSpecialMedalsProgress(this.curWb, medalsPlaceObj, this)
   }
 
   function onItemAction(buttonObj) {

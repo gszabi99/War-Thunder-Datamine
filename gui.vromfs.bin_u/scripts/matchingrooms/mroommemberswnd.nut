@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
@@ -33,9 +35,9 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let mgm = SessionLobby.getMGameMode(this.room)
     if (mgm)
       view.headerData <- {
-        difficultyImage = ::events.getDifficultyImg(mgm.name)
-        difficultyTooltip = ::events.getDifficultyTooltip(mgm.name)
-        headerText = "".concat(::events.getEventNameText(mgm), " ", ::events.getRespawnsText(mgm))
+        difficultyImage = events.getDifficultyImg(mgm.name)
+        difficultyTooltip = events.getDifficultyTooltip(mgm.name)
+        headerText = "".concat(events.getEventNameText(mgm), " ", events.getRespawnsText(mgm))
       }
 
     if (showConsoleButtons.value)
@@ -100,7 +102,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getMaxTeamSize() {
     let mgm = SessionLobby.getMGameMode(this.room)
-    return mgm ? ::events.getMaxTeamSize(mgm) : SessionLobby.getMaxMembersCount(this.room) / 2
+    return mgm ? events.getMaxTeamSize(mgm) : SessionLobby.getMaxMembersCount(this.room) / 2
   }
 
   function initRoomTimer() {

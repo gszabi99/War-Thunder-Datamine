@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_thermovision_index, set_thermovision_index
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
@@ -20,9 +19,11 @@ let checkArgument = function(id, arg, varType) {
   if (type(arg) == varType)
     return true
 
-  local msg = $"[ERROR] Wrong argument type supplied for option item '{id}" + ".\n"
-  msg += "Value = " + toString(arg) + ".\n"
-  msg += "Expected '" + varType + "' found '" + type(arg) + "'."
+  let msg = "\n".concat(
+    $"[ERROR] Wrong argument type supplied for option item '{id}'.",
+    $"Value = {toString(arg)}.",
+    $"Expected '{varType}' found '{type(arg)}'."
+  )
 
   script_net_assert_once(id, msg)
   return false
@@ -233,11 +234,10 @@ let fillDynMapOption = function(descr) {
   }
 
   if (descr.items.len() == 0 && dynLayouts.len() > 0) {
-    log("[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '" +
-      dynLayouts[0].name + "' to avoid empty list.")
+    log($"[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '{dynLayouts[0].name}' to avoid empty list.")
 
     // must be at least one dynamic layout in USEROPT_DYN_MAP
-    descr.items.append("#dynamic/" + dynLayouts[0].name)
+    descr.items.append($"#dynamic/{dynLayouts[0].name}")
     descr.values.append(dynLayouts[0].mis_file)
   }
 }

@@ -39,6 +39,12 @@ enums.addTypes(g_hud_hint_types, {
     isReplaceableByPriority = true
   }
 
+  WARNING_HINTS = {
+    nestId = "warning_hints"
+    hintStyle = "warningHints"
+    isReplaceableByPriority = true
+  }
+
   MISSION_TUTORIAL = { //lower than standard hint, so can override with other mp hints.
     nestId = "tutorial_hints"
     hintStyle = "hudHintCommon"

@@ -548,6 +548,7 @@ function getMaxEconomicRank() {
 let calcBattleRatingFromRank = @(economicRank) round_by_value(economicRank / 3.0 + 1, 0.1)
 
 return {
+  get_unit_blk_battle_rating_by_mode = @(unitBlk, ediff) calcBattleRatingFromRank(get_unit_blk_economic_rank_by_mode(unitBlk, ediff))
   getMaxEconomicRank
   get_spawn_score_tbl = @() spawn_score_tbl
   EDifficulties

@@ -1,0 +1,554 @@
+{
+  "import": "%wtlibs/templates/essentials.blk",
+  "unit_repair": {
+    "repair_system_remaining_repair_time": -1.0,
+    "repair_system_delay_time_to_repair": -1.0,
+    "repair_system_auto_check_delay": 0.0,
+    "repair_system_speed_multiplier_base": 1.0,
+    "repair_system_speed_multiplier": 1.0,
+    "repair_system_toolkit_count": 0,
+    "repair_system_toolkit_count_max": -1,
+    "repair_system_scheduled_bot_repair_time": -1.0,
+    "repair_system_repair_hp_multiplier": 1.0,
+    "repair_system_trailer_repair_progress": -1.0,
+    "repair_system_trailer_repair_time": 20.0,
+    "repair_system_state:u32": {},
+    "repair_system_parts_state:list<u32>": {},
+    "repair_system_parts_id": {},
+    "repair_system_parts_speed_mult:list<r>": {},
+    "repair_system_parts_hp:list<p4>": {}
+  },
+  "unit_fire_and_extinguish": {
+    "extinguish_system_next_extinguisher_time": -1.0,
+    "extinguish_system_last_extinguish_time": -1.0,
+    "extinguish_system_extinguish_time_start": -1.0,
+    "extinguish_system_extinguish_time_end": -1.0,
+    "extinguish_system_crew_busy_time": -1.0,
+    "extinguish_system_crew_busy_time_end": -1.0,
+    "extinguish_system_extinguisher_time_min": 0.0,
+    "extinguish_system_extinguisher_time_max": 0.0,
+    "extinguish_system_cooldown": 0.0,
+    "extinguish_system_extinguisher_count": 0,
+    "extinguish_system_extinguisher_count_max": 0,
+    "extinguish_system_penalty_without_mod": false,
+    "extinguish_system_auto_extinguisher": false,
+    "extinguish_system_is_assisting": false,
+    "extinguish_system_require_net_sync": false
+  },
+  "unit_fire_damage": {
+    "fire_system_require_net_sync": false,
+    "fire_damage__isBurn": false,
+    "fire_damage__updateBurnInterval": 1.0,
+    "fire_damage__nextUpdateTime": 0.0,
+    "fire_damage__offender:eid": {},
+    "fire_data__packedPartId:list<u32>": {},
+    "fire_data__nodeId:list<i>": {},
+    "fire_data__fireParamsId:list<i>": {},
+    "fire_data__offset:list<p3>": {},
+    "fire_data__radius:list<p2>": {},
+    "fire_data__initiatorId:list<u32>": {},
+    "fire_data__startTime:list<r>": {},
+    "fire_data__extinguishProgress:list<r>": {},
+    "fire_data__underwaterTimer:list<r>": {}
+  },
+  "unit_fire_fx": {
+    "fire_fx__id:list<i>": {},
+    "fire_fx__fxId:list<i>": {},
+    "fire_fx__paramsId:list<i>": {}
+  },
+  "unit_ammo_stowage": {
+    "_hide": true,
+    "ammo_stowage__dpAmmo": [
+      -1,
+      -1,
+      -1
+    ],
+    "ammo_stowage__dpTorpedo": [
+      -1,
+      -1,
+      -1
+    ],
+    "ammo_stowage__dpDepthCharge": [
+      -1,
+      -1,
+      -1
+    ],
+    "ammo_stowage__timeAmmoFire": -1.0,
+    "ammo_stowage__numAmmoFsForHud": 0,
+    "ammo_stowage__ammoLost": 0,
+    "ammo_stowage__combustionTime": 10.0,
+    "ammo_stowage__detonateProb": 0.1,
+    "ammo_stowage__fatalDetonatePortion": [
+      0.3,
+      0.6
+    ],
+    "ammo_stowage__nonFatalDetonatePortion": [
+      1.0,
+      1.0
+    ],
+    "ammo_stowage__fxEvAmmoFireId": -1,
+    "ammo_stowage__ammoState:u32": {},
+    "ammo_stowage__explosiveProperties": {},
+    "ammo_stowage__splashProperties": {},
+    "ammo_stowage__delayedOffender": {},
+    "ammo_stowage__ammoTypeRemap:list<ip4>": {},
+    "ammo_stowage__weaponsIds:list<i>": {},
+    "ammo_stowage__ammoTypeToMask:list<u32>": {},
+    "ammo_stowage__partIdRemap:list<ip4>": {},
+    "ammo_stowage__weaponsRemap:list<i16>": {},
+    "ammo_per_type_data__state:list<u32>": {},
+    "ammo_per_type_data__numAmmoFs:list<i>": {},
+    "ammo_per_type_data__numAmmoFsSync:list<i>": {},
+    "ammo_stowages__state:list<u32>": {},
+    "ammo_stowages__bulletsCartridge:list<i>": {},
+    "ammo_stowages__replenishmentStartEnd:list<p2>": {},
+    "ammo_stowages__replenishmentTime:list<p2>": {},
+    "ammo_stowages__powderMassToSplash": {},
+    "ammo_stowages__floodedAmmoReloadMult:list<r>": {},
+    "ammo_stowages__clustersRange:list<ip2>": {},
+    "ammo_stowages__weaponTriggersRange:list<ip2>": {},
+    "ammo_stowages__cachedAmmoHash:list<u32>": {},
+    "ammo_stowage__weaponTriggers:list<i>": {},
+    "ammo_clusters__typeAndStage:list<u16>": {},
+    "ammo_clusters__state:list<u32>": {},
+    "ammo_clusters__fireEvtId:list<i>": {},
+    "ammo_clusters__fireParamsId:list<i>": {},
+    "ammo_clusters__explosionEvtId:list<i>": {},
+    "ammo_clusters__damageEffectPresetId:list<i>": {},
+    "ammo_clusters__reloadTimeMult:list<r>": {},
+    "ammo_clusters__ammoClassConstraints:list<u32>": {},
+    "ammo_clusters__splashConstraints:list<p3>": {},
+    "ammo_clusters__shatterConstraints:list<p3>": {},
+    "ammo_clusters__entityMunition:list<t>": {},
+    "ammo_clusters__slotsRange:list<ip2>": {},
+    "ammo_clusters__wreckageRange:list<ip2>": {},
+    "ammo_clusters__relatedPartsRange:list<ip2>": {},
+    "ammo_stowage__wreckageIds:list<i>": {},
+    "ammo_stowage__relatedPartsIds": {},
+    "ammo_slots__state:list<u32>": {},
+    "ammo_slots__ammoMaskAndType:list<u32>": {},
+    "ammo_slots__partId": {},
+    "ammo_slots__numAmmo:list<ip2>": {},
+    "ammo_slots__node": {}
+  },
+  "tank_engine": {
+    "_use": "replicating",
+    "_group": [
+      {
+        "_replicate": true,
+        "tank_engine__overheat": false
+      },
+      {
+        "_tags": "server",
+        "tank_engine__overheatDelay": 0.0,
+        "tank_engine__overheatDamage": 0.0,
+        "tank_engine__overheatDamageType": -1,
+        "tank_engine__overheatDamageCooldown": 0.0,
+        "tank_engine__overheatDamageTime": -1.0,
+        "tank_engine__brokenRadiatorFxEventId": -1,
+        "tank_engine__engine_parts": {},
+        "tank_engine__radiator_parts": {},
+        "tank_engine__overheatOffender": {}
+      }
+    ]
+  },
+  "tank_phys_tracks": {
+    "physical_tracks_enabled": true,
+    "physical_tracks__meshName": "",
+    "physical_tracks__nonSymmetric": false,
+    "physical_tracks__trackCount": 0,
+    "physical_tracks": {
+      "_tags": "render"
+    },
+    "physical_tracks__isLeft:list<b>": {
+      "_tags": "render"
+    },
+    "physical_tracks_force_update:b": {
+      "_tags": "render",
+      "value": true
+    }
+  },
+  "ship_cover_parts": {
+    "ship_cover_parts__disableDeadParts": true,
+    "ship_cover_parts__partId": {},
+    "ship_cover_parts__compartmentId:list<i>": {},
+    "ship_cover_parts__water:list<p4>": {},
+    "ship_cover_parts__weight:list<r>": {},
+    "ship_cover_parts__pos:list<p3>": {},
+    "ship_cover_parts__innerPartsRange:list<ip2>": {},
+    "ship_cover_parts__innerPartsId": {},
+    "ship_cover_parts__innerPartsCriticalWater:list<r>": {},
+    "ship_compartments__coverPartsRange:list<ip2>": {}
+  },
+  "ship_breaches": {
+    "ship_breaches__nextId": 0,
+    "ship_flooding__waterLeftSide": 0.0,
+    "ship_flooding__waterRightSide": 0.0,
+    "ship_flooding__floodStep": 1,
+    "ship_breaches__fatalPartId": {},
+    "ship_breaches__id:list<i>": {},
+    "ship_breaches__pos:list<p3>": {},
+    "ship_breaches__normal:list<p3>": {},
+    "ship_breaches__size:list<r>": {},
+    "ship_breaches__amountToRepair:list<r>": {},
+    "ship_breaches__depthScale:list<r>": {},
+    "ship_breaches__nextCheck:list<r>": {},
+    "ship_breaches__partId": {},
+    "ship_breaches__coverId:list<i>": {},
+    "ship_breaches__leakedAmount:list<r>": {},
+    "ship_breaches__offender": {}
+  },
+  "ship_phys_proxy": {
+    "ship_phys_proxy__velocitySq": 0.0,
+    "ship_phys_proxy__groundCollision": false,
+    "ship_phys_proxy__additionalWater": 0.0,
+    "ship_phys_proxy__waterLeaking": false,
+    "ship_phys_proxy__avgBreachPos": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "ship_repair": {
+    "ship_repair__partIdx": -1,
+    "ship_repair__partRemainingTime": -1.0,
+    "_group": {
+      "_replicate": true,
+      "ship__repairBreachesRemainingTime": 1.0
+    },
+    "ship_repair__partsPartId:list<i>": {},
+    "ship_repair__partsTime:list<r>": {},
+    "ship_repair__partsHp:list<r>": {}
+  },
+  "ship_unwatering": {
+    "ship__waterMassVelMult": 1.0,
+    "_group": {
+      "_replicate": true,
+      "ship__unwateringRemainingTime": -1.0
+    },
+    "ship__pumpsPartId:list<i>": {}
+  },
+  "ship_damage_control": {
+    "_use": [
+      "ship_cover_parts",
+      "ship_breaches",
+      "ship_phys_proxy",
+      "ship_repair",
+      "ship_unwatering"
+    ],
+    "ship__modernDamageControl": false,
+    "ship_damage_control__cooldownTime": 0.0,
+    "ship_damage_control__cooldownEndTime": 0.0,
+    "ship_damage_control__timePenalty": [
+      1.0,
+      1.2,
+      1.4
+    ],
+    "ship_damage_control__repairSpeedMult": 1.0,
+    "ship_damage_control__extinguishSpeedMult": 1.0,
+    "ship_damage_control__unwateringSpeedMult": 1.0,
+    "ship_damage_control__priorities:u32": {},
+    "ship_damage_control__presets:u32": {}
+  },
+  "gm_engine_sound": {
+    "_tags": "sound",
+    "gm_engine_sound__event_name": "",
+    "gm_engine_sound__event_inside_name": "",
+    "gm_engine_sound__start_event_name": "",
+    "gm_engine_sound__stop_event_name": "",
+    "gm_engine_sound__start_inside_name": "",
+    "gm_engine_sound__stop_inside_name": "",
+    "gm_engine_sound__load_smooth": 0.0,
+    "gm_engine_sound__update_interval": 0.0,
+    "gm_engine_sound__is_inside": false,
+    "gm_engine_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_engine_sound__pos_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_engine_sound__is_playing": false,
+    "gm_engine_sound__should_play": true,
+    "gm_engine_sound__load": 0.0,
+    "gm_engine_sound__loadswitch": false,
+    "gm_engine_sound__event:SoundEvent": {},
+    "gm_engine_sound__event_inside:SoundEvent": {},
+    "gm_engine_sound__start_event:SoundEvent": {},
+    "gm_engine_sound__stop_event:SoundEvent": {},
+    "gm_engine_sound__start_inside_event:SoundEvent": {},
+    "gm_engine_sound__stop_inside_event:SoundEvent": {}
+  },
+  "gm_additional_engine_sound": {
+    "_tags": "sound",
+    "gm_additional_engine_sound__event_name": "",
+    "gm_additional_engine_sound__pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__pos_offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gm_additional_engine_sound__event:SoundEvent": {}
+  },
+  "controlled_hero": {
+    "controlledHero:tag": {}
+  },
+  "watched_hero": {
+    "watchedHero:tag": {}
+  },
+  "player_unit": {
+    "playerUnit:tag": {}
+  },
+  "dead_unit": {
+    "_use": "replicating",
+    "unit_tag__dead:tag": {},
+    "_group": {
+      "dead_unit__player_id": -1,
+      "_replicate": true
+    }
+  },
+  "base_unit": {
+    "_use": [
+      "root",
+      "replicating",
+      "base_unit_ext"
+    ],
+    "uid": -1,
+    "className": "",
+    "playerNo": -1,
+    "is_local": false,
+    "unitVersion": 0,
+    "unitType": -1,
+    "canChangeUnit": false,
+    "missionUnitName": "",
+    "_replicated": "uid",
+    "_tracked": "playerNo",
+    "unit__ref": {},
+    "killerEid:eid": {}
+  },
+  "shell_start_fx": {
+    "shell_start_fx__timeFx": 0.0,
+    "shell_start_fx__offset": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "shell_start_fx__fx:EffectRef": {}
+  },
+  "aircraft": {
+    "_use": [
+      "base_unit",
+      "aircraft_ext"
+    ],
+    "unit_storage__aircraft": {},
+    "unit_tag__aircraft:tag": {},
+    "shell_start_fx_eids:list<eid>": {
+      "_tags": "render"
+    }
+  },
+  "barrage_ballon": {
+    "_use": [
+      "base_unit",
+      "barrage_ballon_ext"
+    ],
+    "unit_storage__barrage_balloon": {},
+    "unit_tag__barrage_balloon:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "ground_unit": {
+    "_use": [
+      "base_unit",
+      "ground_unit_ext",
+      "unit_repair",
+      "unit_fire_and_extinguish",
+      "unit_fire_damage",
+      "unit_fire_fx",
+      "tank_engine",
+      "unit_ammo_stowage"
+    ],
+    "move_sys__maxDecel": 0.0,
+    "aim_component": {},
+    "unit_crew": {},
+    "unit_fx": {},
+    "fuel_tanks": {},
+    "modEids:list<eid>": {
+      "_replicate": true
+    },
+    "shell_start_fx_eids:list<eid>": {
+      "_tags": "render"
+    }
+  },
+  "tank": {
+    "_use": [
+      "ground_unit",
+      "tank_ext",
+      "gm_engine_sound",
+      "tank_phys_tracks"
+    ],
+    "unit_storage__tank": {},
+    "unit_tag__tank:tag": {},
+    "unit_tag__gm:tag": {},
+    "mods:list<t>": {
+      "mod": [
+        "toolkit_ecs",
+        "extinguisher_ecs",
+        "medicalkit_ecs",
+        "tank_smokescreen_ecs"
+      ]
+    },
+    "track_sound": {
+      "_tags": "sound"
+    },
+    "reloadedFromAmmoBoxCount:list<i>": {
+      "primary": 0,
+      "secondary": 0,
+      "special": 0
+    }
+  },
+  "ship": {
+    "_use": [
+      "ground_unit",
+      "ship_ext",
+      "ship_damage_control",
+      "gm_engine_sound"
+    ],
+    "unit_storage__ship": {},
+    "unit_tag__ship:tag": {},
+    "unit_tag__gm:tag": {},
+    "mods:list<t>": {
+      "mod": [
+        "ship_toolkit_ecs",
+        "ship_extinguisher_ecs",
+        "medicalkit_ecs",
+        "ship_smokescreen_ecs"
+      ]
+    },
+    "track_sound": {
+      "_tags": "sound"
+    }
+  },
+  "walker": {
+    "_use": [
+      "ground_unit",
+      "walker_ext"
+    ],
+    "unit_storage__walker": {},
+    "unit_tag__walker:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "simple_ground_unit": {
+    "_use": [
+      "base_unit",
+      "simple_ground_unit_ext"
+    ],
+    "aim_component": {}
+  },
+  "simple_tank": {
+    "_use": [
+      "simple_ground_unit",
+      "simple_tank_ext"
+    ],
+    "unit_storage__tank": {},
+    "unit_tag__tank:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "simple_ship": {
+    "_use": [
+      "simple_ground_unit",
+      "simple_ship_ext"
+    ],
+    "unit_storage__ship": {},
+    "unit_tag__ship:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "trailer": {
+    "_use": [
+      "simple_ground_unit",
+      "trailer_ext"
+    ],
+    "track_sound": {
+      "_tags": "sound"
+    },
+    "unit_storage__tank": {},
+    "unit_tag__tank:tag": {},
+    "unit_tag__tank_trailer:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "simple_trailer": {
+    "_use": "trailer"
+  },
+  "human": {
+    "_use": [
+      "simple_ground_unit",
+      "human_ext"
+    ],
+    "restricted_area_timer": -1.0,
+    "unit_storage__human": {},
+    "unit_tag__human:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "light_vehicle": {
+    "_use": [
+      "simple_ground_unit",
+      "light_vehicle_ext"
+    ],
+    "unit_storage__light_vehicle": {},
+    "unit_tag__light_vehicle:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "fortification": {
+    "_use": [
+      "simple_ground_unit",
+      "fortification_ext"
+    ],
+    "unit_storage__fortification": {},
+    "unit_tag__fortification:tag": {},
+    "unit_tag__gm:tag": {}
+  },
+  "infantry_troop": {
+    "_use": [
+      "simple_ground_unit",
+      "infantry_troop_ext"
+    ],
+    "unit_storage__infantry_troop": {},
+    "unit_tag__infantry_troop:tag": {}
+  },
+  "expendable_mod": {
+    "_use": "replicating",
+    "mod__enabled_without_mod": false,
+    "mod__count_effects_mod": false,
+    "mod__send_economic_spend": true,
+    "mod__name": "",
+    "mod__type_name": "",
+    "mod__ownerEid:eid": {},
+    "_group": {
+      "_replicate": true,
+      "mod__total_count": 0,
+      "mod__count": 0
+    }
+  }
+}

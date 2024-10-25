@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import set_presence_to_player, get_option_autosave_replays, is_mouse_last_time_used, rename_file
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -24,8 +23,11 @@ let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
-let { move_mouse_on_child_by_value, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { move_mouse_on_child_by_value, select_editbox, loadHandler,
+  handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -78,9 +80,9 @@ function guiModalRenameReplay(base_name, base_path, func_owner, after_rename_fun
 }
 
 function guiModalNameAndSaveReplay(func_owner, after_func) {
-  let baseName = get_new_replay_filename();
-  let basePath = get_replays_dir() + "\\" + baseName;
-  guiModalRenameReplay(baseName, basePath, func_owner, null, after_func);
+  let baseName = get_new_replay_filename()
+  let basePath = "\\".concat(get_replays_dir(), baseName)
+  guiModalRenameReplay(baseName, basePath, func_owner, null, after_func)
 }
 
 function autosaveReplay() {
@@ -238,7 +240,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         let startTime = this.replays[i]?.startTime ?? -1
         if (startTime >= 0) {
           let date = time.buildDateTimeStr(startTime)
-          name += colorize("fadedTextColor", loc("ui/parentheses/space", { text = date }))
+          name = "".concat(name, colorize("fadedTextColor", loc("ui/parentheses/space", { text = date })))
         }
       }
       obj.setValue(name);
@@ -269,6 +271,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         btn_view_replay   = isCurItemInFocus && canPlayReplay(curReplay)
         btn_rename_replay = isCurItemInFocus
         btn_del_replay    = isCurItemInFocus
+        btn_parse_replay  = isCurItemInFocus && canOpenHitsAnalysisWindow() && !isCorruptedReplay(curReplay)
     })
   }
 
@@ -302,7 +305,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       if (corrupted) {
         text = loc(isVersionMismatch ? "replays/versionMismatch" : "replays/corrupted")
         if (is_dev_version() && ("error" in this.replays[index]))
-          text += colorize("warningTextColor", "\nDEBUG: " + this.replays[index].error) + "\n\n"
+          text = "".concat(text, colorize("warningTextColor", $"\nDEBUG: {this.replays[index].error}"), "\n\n")
 
         if (!is_dev_version() || isHeaderUnreadable) {
           objDesc.findObject("item_name").setValue(this.replays[index].name)
@@ -316,18 +319,18 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let startTime = replayInfo?.startTime ?? -1
       if (startTime >= 0)
-        text += loc("options/mission_start_time") + loc("ui/colon") + time.buildDateTimeStr(startTime) + "\n"
+        text = "".concat(text, loc("options/mission_start_time"), loc("ui/colon"), time.buildDateTimeStr(startTime), "\n")
 
       if (replayInfo.multiplayerGame)
-        headerText += loc("mainmenu/btnMultiplayer")
+        headerText = "".concat(headerText, loc("mainmenu/btnMultiplayer"))
       if (replayInfo.missionName.len() > 0) {
         if (replayInfo.multiplayerGame)
-          headerText += loc("ui/colon");
-        headerText += ::get_mission_name(replayInfo.missionName, replayInfo)
+          headerText = "".concat(headerText, loc("ui/colon"))
+        headerText = "".concat(headerText, getMissionName(replayInfo.missionName, replayInfo))
       }
-      text += loc("options/time") + loc("ui/colon") + getMissionTimeText(replayInfo.environment) + "\n"
-      text += loc("options/weather") + loc("ui/colon") + getWeatherLocName(replayInfo.weather) + "\n"
-      text += loc("options/difficulty") + loc("ui/colon") + loc($"difficulty{replayInfo.difficulty}") + "\n"
+      text = "".concat(text, loc("options/time"), loc("ui/colon"), getMissionTimeText(replayInfo.environment), "\n",
+        loc("options/weather"), loc("ui/colon"), getWeatherLocName(replayInfo.weather), "\n",
+        loc("options/difficulty"), loc("ui/colon"), loc($"difficulty{replayInfo.difficulty}"), "\n")
 
 /*      local limits = ""
       if (replayInfo.isLimitedFuel && replayInfo.isLimitedAmmo)
@@ -339,17 +342,17 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       else
         limits = loc("options/unlimited")
 
-      text += loc("options/fuel_and_ammo") + loc("ui/colon") + limits + "\n" */
+      text = "".concat(text, loc("options/fuel_and_ammo"), loc("ui/colon"), limits, "\n") */
       let autosave = startsWith(this.replays[index].name, autosaveReplayPrefix) //not replayInfo
       if (autosave)
-        text += loc("msg/autosaveReplayDescription") + "\n"
-      text += this.createSessionResultsTable(replayInfo)
+        text = "".concat(text, loc("msg/autosaveReplayDescription"), "\n")
+      text = "".concat(text, this.createSessionResultsTable(replayInfo))
       if ("sessionId" in replayInfo)
-        text += loc("options/session") + loc("ui/colon") + replayInfo.sessionId + "\n"
+        text = "".concat(text, loc("options/session"), loc("ui/colon"), replayInfo.sessionId, "\n")
 
       let fps = this.replays[index].text
       if (fps.len())
-        text += fps + (endsWith(fps, "\n") ? "" : "\n")
+        text = "".concat(text, fps, endsWith(fps, "\n") ? "" : "\n")
 
       objDesc.findObject("item_name").setValue(headerText)
       objDesc.findObject("item_desc_text").setValue(text)
@@ -365,8 +368,8 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
 
       foreach (name in replayResultsTable.tablesArray) {
         let rows = replayResultsTable.playersRows[name]
-        tables += format("table{id:t='%s_table'; width:t='pw'; baseRow:t='yes' %s}",
-          name, rows + getTblValue(name, replayResultsTable.addTableParams, ""))
+        tables = "".concat(tables, format("table{id:t='%s_table'; width:t='pw'; baseRow:t='yes' %s}",
+          name, "".concat(rows, replayResultsTable.addTableParams?[name] ?? "")))
       }
     }
     let tablesObj = this.scene.findObject("session_results")
@@ -409,7 +412,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (name == "timePlayed")
         value = time.secondsToString(value)
-      data.addDescr += (loc($"options/{name}") + loc("ui/colon") + value + "\n")
+      data.addDescr = "".concat(data.addDescr, loc($"options/{name}"), loc("ui/colon"), value, "\n")
     }
 
     let mplayersList = replayMetadata.buildReplayMpTable(this.replays?[this.getCurrentReplayIndex()]?.path ?? "")
@@ -440,7 +443,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       foreach (team, paramsTable in addTableParams) {
         local params = ""
         foreach (name, value in paramsTable)
-          params += format("%s:t='%s'", name, value)
+          params = "".concat(params, format("%s:t='%s'", name, value))
         data.addTableParams[team] <- params
       }
     }
@@ -487,8 +490,8 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       if (data.markups[name].invert)
         data.rowHeader[name].reverse()
 
-      data.playersRows[name] <- ::buildTableRowNoPad("row_header", data.rowHeader[name], null, "class:t='smallIconsStyle'")
-      data.playersRows[name] += ::build_mp_table(playersTables[name], data.markups[name], data.headerArray[name], playersTables[name].len())
+      data.playersRows[name] <- "".concat(::buildTableRowNoPad("row_header", data.rowHeader[name], null, "class:t='smallIconsStyle'"),
+        ::build_mp_table(playersTables[name], data.markups[name], data.headerArray[name], playersTables[name].len()))
     }
 
     return data
@@ -593,6 +596,15 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     ], "no")
   }
 
+  function onParseReplay() {
+    let index = this.getCurrentReplayIndex()
+    if (index < 0 || index >= this.replays.len())
+      return
+
+    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    this.guiScene.performDelayed(this, @() openHitsAnalysisWindow(this.replays[index].path))
+  }
+
   function onOpenFolder() {
     on_open_replays_folder()
   }
@@ -604,6 +616,21 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.applyPendingChanges(false)
     let replaysListObj = this.scene.findObject("items_list")
     this.replaysPerPage = countSizeInItems(replaysListObj, 1, "1@baseTrHeight", 0, 0).itemsCountY
+  }
+
+  function getHandlerRestoreData() {
+    return {
+      openData = {
+      }
+      stateData = {
+        index = this.getCurrentReplayIndex()
+      }
+    }
+  }
+
+  function restoreHandler(stateData) {
+    let { index } = stateData
+    this.refreshList(index)
   }
 }
 
@@ -617,7 +644,7 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.baseName = this.baseName || ""
     this.baseName = startsWith(this.baseName, autosaveReplayPrefix) ?
       this.baseName.slice(autosaveReplayPrefix.len()) : this.baseName
-    this.scene.findObject("edit_box_window_header").setValue(loc("mainmenu/replayName"));
+    this.scene.findObject("edit_box_window_header").setValue(loc(this.title));
 
     let editBoxObj = this.scene.findObject("edit_box_window_text")
     editBoxObj.show(true)
@@ -676,6 +703,7 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/editBoxWindow.blk"
+  title = "mainmenu/replayName"
 }
 
 return {

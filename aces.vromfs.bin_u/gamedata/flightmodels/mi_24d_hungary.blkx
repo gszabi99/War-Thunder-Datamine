@@ -1846,9 +1846,100 @@
             ]
           },
           {
+            "name": "gun_yak_b_exhaust_common",
+            "ShowNodes": {
+              "node": [
+                "fuse2",
+                "fuse4"
+              ]
+            },
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
+                },
+                "limits": {
+                  "yaw": [
+                    -50.0,
+                    50.0
+                  ],
+                  "pitch": [
+                    -40.0,
+                    20.0
+                  ]
+                }
+              },
+              {
+                "trigger": "gunner0",
+                "blk": "gameData/Weapons/gunYaK_B.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "shell": "emtr_shellrejection1",
+                "dm": "gunner1_dm",
+                "gunnerDm": "gunner1_dm",
+                "gunDm": "gun1_dm",
+                "partsDP": "gun1_dm",
+                "bullets": 1470,
+                "recoilOffset": 0.0,
+                "rotationAnimScale": "gun_rotate_01:CRS",
+                "parkInDeadzone": false,
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "barrel": "gun_barrel1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
+                },
+                "limits": {
+                  "yaw": [
+                    -60.0,
+                    60.0
+                  ],
+                  "pitch": [
+                    -60.0,
+                    20.0
+                  ]
+                }
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 64,
+                "external": true,
+                "separate": false,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 64,
+                "external": true,
+                "separate": false,
+                "bulletsCartridge": 1
+              }
+            ]
+          },
+          {
             "name": "gun_yak_ltc_full_common",
             "ShowNodes": {
               "node": [
+                "fuse2",
                 "fuse4",
                 "lipa"
               ]
@@ -3026,19 +3117,44 @@
       "reqModification": "mi_24_fab_250",
       "tier": 2
     },
+    "heli_screen_exhaust_device": {
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "countermeasures",
+      "tier": 1,
+      "effects": {
+        "enginesInfraRedBrightnessMult": 0.7,
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "gun_yak_b_exhaust_common"
+          }
+        }
+      }
+    },
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,
+      "reqModification": "heli_screen_exhaust_device",
       "invertEnableLogic": false,
       "group": "countermeasures",
-      "tier": 1
+      "tier": 2,
+      "effects": {
+        "enginesInfraRedBrightnessMult": 0.7,
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "gun_yak_b_exhaust_common"
+          }
+        }
+      }
     },
     "heli_counterMeasures": {
       "turn_it_off": false,
       "invertEnableLogic": false,
       "reqModification": "countermeasures_belt_pack",
-      "tier": 2,
+      "tier": 3,
       "group": "countermeasures",
       "effects": {
         "counterMeasures": {
@@ -3056,7 +3172,7 @@
     },
     "heli_night_vision_system": {
       "prevModification": "countermeasures_belt_pack",
-      "tier": 3,
+      "tier": 4,
       "modClass": "weapon",
       "effects": {
         "nightVision": {

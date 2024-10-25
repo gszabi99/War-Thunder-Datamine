@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_mission_progress
 from "%scripts/dagui_library.nut" import *
 
@@ -72,7 +71,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
     for (local j = 0; j < mission_array.len(); j++) {
       let misDescr = {}
       misDescr.map <- mission_array[j].mis_file
-      misDescr.locName <- "dynamic/" + mission_array[j].name
+      misDescr.locName <- $"dynamic/{mission_array[j].name}"
 
       let misBlk = DataBlock()
       misBlk.load(misDescr.map)
@@ -100,7 +99,8 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
         let countryId = $"{misDescr.id}_{country}"
         local isCountryUnlocked = isUnlockOpened(countryId, UNLOCKABLE_DYNCAMPAIGN)
         if (!isCountryUnlocked)
-          lockReason += (lockReason.len() ? "\n" : "") + getFullUnlockDescByName(countryId) + "\n"
+          lockReason = "".concat(lockReason, (lockReason.len() ? "\n" : ""),
+            getFullUnlockDescByName(countryId), "\n")
         else {
           foreach (year in this.yearsArray) {
             local is_unlocked = false
@@ -113,7 +113,8 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
           }
 
           if (!isAnyYearUnlocked)
-            lockReason += getFullUnlockDescByName($"country_{country}_{this.yearsArray[0]}")
+            lockReason = "".concat(lockReason,
+              getFullUnlockDescByName($"country_{country}_{this.yearsArray[0]}"))
 
           isAnyCountryUnlocked = isAnyYearUnlocked
           isCountryUnlocked = isAnyYearUnlocked
@@ -186,8 +187,8 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
       local reqText = missionBlock.unlockText
       foreach (_idx, country in missionBlock.countries) {
         let countryUnlocked = this.checkCountry(country) && missionBlock.unlocks.country[$"{missionBlock.id}_{country}"]
-        config.countries += format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
-          getCountryIcon($"country_{country}", true), countryUnlocked ? "yes" : "no")
+        config.countries = "".concat(config.countries, format("optionImg{ background-image:t='%s'; enable:t='%s' } ",
+          getCountryIcon($"country_{country}", true), countryUnlocked ? "yes" : "no"))
 
         isAnyCountryUnlocked = isAnyCountryUnlocked || countryUnlocked
       }
@@ -195,7 +196,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
       let reqTitle = isAnyCountryUnlocked ? loc("dynamic/requireForUnlockCountry") : loc("dynamic/requireForUnlock")
       if (reqText != "")
         reqText = "".concat("<color=@badTextColor>", reqTitle, loc("ui/colon"), "\n", reqText, "</color>\n")
-      config.maintext <- reqText + loc("dynamic/" + missionBlock.id + "/desc", "")
+      config.maintext <- "".concat(reqText, loc($"dynamic/{missionBlock.id}/desc", ""))
       config.canStart <- isAnyCountryUnlocked
     }
     return config

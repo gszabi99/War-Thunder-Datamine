@@ -113,7 +113,7 @@ function sendReceiveRewardRequest(params) {
   }, receiveRewardsCallback, taskOptions)
 }
 
-local function receiveRewards(unlockName, params = {}) {
+function receiveRewards(unlockName, params = {}) {
   if (!unlockName || unlockName in rewardsInProgress.value)
     return
   let { needShowRewardWnd = true, rewardTitleLocId = "rewardReceived" } = params

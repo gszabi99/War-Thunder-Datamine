@@ -1,7 +1,8 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -43,7 +44,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("queue_players_total").show(!isMeNewbie())
 
     this.scene.findObject("queue_table_timer").setUserData(this)
-    this.scene.findObject("countries_header").setValue(loc("available_countries") + ":")
+    this.scene.findObject("countries_header").setValue($"{loc("available_countries")}:")
     this.updateTip()
   }
 
@@ -107,7 +108,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
       let playersOfMyRank = queueStats?.isClanStats
         ? queueStats.getClansCount()
         : queueStats.getPlayersCountOfMyRank()
-      txtPlayersWaiting = loc("multiplayer/playersInQueue") + loc("ui/colon") + playersOfMyRank
+      txtPlayersWaiting = loc("ui/colon").concat(loc("multiplayer/playersInQueue"), playersOfMyRank)
     }
     this.scene.findObject("queue_players_total").setValue(txtPlayersWaiting)
 
@@ -149,8 +150,8 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let event = ::events.getEvent(queue.name)
-    let countriesList = ::events.getAvailableCountriesByEvent(event)
+    let event = events.getEvent(queue.name)
+    let countriesList = events.getAvailableCountriesByEvent(event)
 
     if (countriesList.len() == 0)
       availCountriesObj.show(false)
@@ -242,7 +243,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(nestObj))
       return
 
-    let genCode = $"{event.name}_" + ::queues.getQueueCountry(queue) + "_" + ::queues.getMyRankInQueue(queue)
+    let genCode = $"{event.name}_{::queues.getQueueCountry(queue)}_{::queues.getMyRankInQueue(queue)}"
     if (nestObj?._queueTableGenCode == genCode) {
       this.updateTabContent()
       return
@@ -266,7 +267,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let queueBoxObj = nestObj.findObject("queue_box_container")
     this.guiScene.replaceContent(queueBoxObj, "%gui/events/eventQueue.blk", this)
 
-    foreach (team in ::events.getSidesList())
+    foreach (team in events.getSidesList())
       queueBoxObj.findObject($"{team}_block").show(team == Team.A) //clan queue always symmetric
   }
 
@@ -324,8 +325,8 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let statsObj = tblObj.findObject($"{Team.A}_block")
-    let teamData = ::events.getTeamData(::queues.getQueueEvent(queue), Team.A)
-    let playersCountText = loc("events/clans_count") + loc("ui/colon") + queueStats.getClansCount()
+    let teamData = events.getTeamData(::queues.getQueueEvent(queue), Team.A)
+    let playersCountText = loc("ui/colon").concat(loc("events/clans_count"), queueStats.getClansCount())
     let tableMarkup = this.getClanQueueTableMarkup(queueStats)
 
     this.fillQueueTeam(statsObj, teamData, tableMarkup, playersCountText)
@@ -338,7 +339,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
 
     teamObj.bgTeamColor = teamColor
     teamObj.show(teamData && teamData.len())
-    ::fillCountriesList(teamObj.findObject("countries"), ::events.getCountries(teamData))
+    ::fillCountriesList(teamObj.findObject("countries"), events.getCountries(teamData))
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 
@@ -364,10 +365,10 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
         width = "0.1@sf"
         textRawParam = "pare-text:t='no'"
       }]
-      res += ::buildTableRow("", headerData, null, rowParams, "0")
+      res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
 
       let rowData = this.buildQueueStatsRowData(myClanQueueTable)
-      res += ::buildTableRow("", rowData, null, rowParams, "0")
+      res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
     }
 
     let headerData = [{
@@ -375,10 +376,10 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
       width = "0.1@sf"
       textRawParam = "pare-text:t='no'"
     }]
-    res += ::buildTableRow("", headerData, null, rowParams, "0")
+    res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
 
     let rowData = this.buildQueueStatsRowData(queueStats.getClansQueueTable())
-    res += ::buildTableRow("", rowData, null, rowParams, "0")
+    res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
     return res
   }
 

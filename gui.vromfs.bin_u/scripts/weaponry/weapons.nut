@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
 from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+from "%scripts/utils_sa.nut" import get_flush_exp_text
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
@@ -22,7 +24,7 @@ let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurc
 let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
   getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
-let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitStatus.nut")
+let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl,
   isCanBeDisabled, isModInResearch, getBundleCurItem, canResearchItem
 } = require("%scripts/weaponry/itemInfo.nut")
@@ -426,7 +428,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = loc("help/newModification", { modName = newModName })
         nextActionShortcut = "help/OBJ_CLICK"
         actionType = tutorAction.OBJ_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
         cb = @() this.setModificatonOnResearch(this.items[newIdx], @() this.updateAllItems())
       },
       {
@@ -434,7 +436,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = loc("help/FreeExp")
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
       }
     ]
 
@@ -449,7 +451,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           text = loc("help/finishedModification", { modName = finModName })
           nextActionShortcut = "help/OBJ_CLICK"
           actionType = tutorAction.OBJ_CLICK
-          shortcut = ::GAMEPAD_ENTER_SHORTCUT
+          shortcut = GAMEPAD_ENTER_SHORTCUT
           cb = @() this.checkAndBuyWeaponry(finItem)
         })
     }
@@ -476,7 +478,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.availableFlushExp = shop_get_unit_excess_exp(this.airName)
     let freeRPObj = this.scene.findObject("available_free_exp_text")
     if (checkObj(freeRPObj))
-      freeRPObj.setValue(::get_flush_exp_text(this.availableFlushExp))
+      freeRPObj.setValue(get_flush_exp_text(this.availableFlushExp))
   }
 
   function automaticallySpendAllExcessiveExp() { //!!!TEMP function, true func must be from code
@@ -606,6 +608,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       posX, posY
       curEdiff = currentEdiff
       tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff })
+      researchFinished = this?.researchBlock.prevMod == item.name
     })
   }
 
@@ -684,6 +687,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       tooltipId = getCustomTooltipId(this.air.name, item, {
         curEdiff = currentEdiff
       })
+      researchFinished = this?.researchBlock.prevMod == item.name
     })
   }
 
@@ -1480,14 +1484,14 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onGoToModTutorial(obj) {
     let idx = this.getItemIdxByObj(obj)
     let item = this.items[idx]
-    let { tutorialMission, tutorialMissionWeapon = null } = item
+    let { tutorialMission, name, tutorialMissionWeapon = null } = item
     let misInfo = get_meta_mission_info_by_name(tutorialMission)
     let unit = this.air
 
     this.markSeenModTutorialIfNeeded(item)
 
     let params = {
-      modalHeader = loc("mod/start_test_modal_title", { modName = getModificationName(this.air, item.name) })
+      modalHeader = loc("mod/start_test_modal_title", { modName = getModificationName(this.air, name) })
       modalWidth = "900@sf/@pf"
       modalHeight = "300@sf/@pf"
       columnsRatio = 0.35
@@ -1503,7 +1507,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (!::g_squad_utils.canJoinFlightMsgBox())
           return
         this.shouldBeRestoredOnMainMenu = true
-        startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon)
+        startModTutorialMission(unit, name, tutorialMission, tutorialMissionWeapon)
       }.bindenv(this)
     }
 

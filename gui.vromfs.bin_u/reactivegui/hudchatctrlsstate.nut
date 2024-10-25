@@ -1,6 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-
-let { set_allowed_controls_mask } = require("%rGui/globals/system.nut")
+let { setAllowedControlsMask } = require("controlsMask")
 let { isInFlight } = require("globalState.nut")
 let { canWriteToChat, inputChatVisible } = require("hudChatState.nut")
 let { isChatPlaceVisible } = require("hud/hudPartVisibleState.nut")
@@ -15,6 +14,4 @@ let ctrlsState = keepref(Computed(function() {
     return CtrlsInGui.CTRL_ALLOW_FULL
 }))
 
-ctrlsState.subscribe(function (new_val) {
-  set_allowed_controls_mask(new_val)
-})
+ctrlsState.subscribe(setAllowedControlsMask)

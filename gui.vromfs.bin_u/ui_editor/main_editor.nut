@@ -11,9 +11,9 @@ if (require_optional("daEditorEmbedded") != null) {
   editorIsActive = require_optional("%daeditor/state.nut").editorIsActive
 }
 
-local editor = editorIsActive != null ? require_optional("%daeditor/editor.nut") : null
+let editor = editorIsActive != null ? require_optional("%daeditor/editor.nut") : null
 
-local function root() {
+function root() {
   return editorIsActive != null ? {
     watch = editorIsActive
     size = flex()

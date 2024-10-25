@@ -1,12 +1,12 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import shop_get_country_excess_exp, shop_get_researchable_unit_name, is_era_available, shop_reset_researchable_unit, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "%scripts/airInfo.nut" import CheckFeatureLockAction
+from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+from "%scripts/utils_sa.nut" import get_flush_exp_text
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { fatal } = require("dagor.debug")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -17,9 +17,9 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let {
-  getEsUnitType, getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart, canResearchUnit, canBuyUnit
+let { getEsUnitType, getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
+  isUnitGroup, isGroupPart, canResearchUnit, canBuyUnit, getUnitReqExp,
+  getUnitExp, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
 let { get_ranks_blk, get_discounts_blk, get_shop_blk } = require("blkGetters")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
@@ -117,8 +117,8 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     let unitsNeed = getUnitsNeedBuyToOpenNextInEra(this.unitCountry, this.unitType, rank, ranksBlk)
     let reqUnits = max(0, unitsNeed - unitsCount)
     if (reqUnits > 0) {
-      let text = loc("shop/unlockTier/locked", { rank = get_roman_numeral(nextRank) }) + "\n"
-                    + loc("shop/unlockTier/reqBoughtUnitsPrevRank", { amount = reqUnits, prevRank = get_roman_numeral(rank) })
+      let text = "\n".concat(loc("shop/unlockTier/locked", { rank = get_roman_numeral(nextRank) }),
+        loc("shop/unlockTier/reqBoughtUnitsPrevRank", { amount = reqUnits, prevRank = get_roman_numeral(rank) }))
       this.msgBox("locked_rank", text, [["ok", function() {}]], "ok", { cancel_fn = function() {} })
     }
   }
@@ -128,10 +128,10 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     if (!checkObj(headerObj))
       return
 
-    let expText = ::get_flush_exp_text(this.availableFlushExp)
+    let expText = get_flush_exp_text(this.availableFlushExp)
     local headerText = loc("mainmenu/nextResearch/title")
     if (expText != "")
-      headerText += loc("ui/parentheses/space", { text = expText })
+      headerText = "".concat(headerText, loc("ui/parentheses/space", { text = expText }))
     headerObj.setValue(headerText)
   }
 
@@ -259,7 +259,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
         nextActionShortcut = "help/NEXT_ACTION"
         actionType = tutorAction.ANY_CLICK
         haveArrow = false
-        shortcut = ::GAMEPAD_ENTER_SHORTCUT
+        shortcut = GAMEPAD_ENTER_SHORTCUT
       }]
     ::gui_modal_tutor(steps, this)
   }
@@ -303,7 +303,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     this.showNavButton("btn_buy_unit", showBuyUnit)
     if (showBuyUnit) {
       let locText = loc("shop/btnOrderUnit", { unit = getUnitName(unit.name) })
-      let unitCost = (canBuyIngame && !canBuyOnline) ? ::getUnitCost(unit) : Cost()
+      let unitCost = (canBuyIngame && !canBuyOnline) ? getUnitCost(unit) : Cost()
       placePriceTextToButton(this.navBarObj,      "btn_buy_unit", locText, unitCost)
       placePriceTextToButton(this.navBarGroupObj, "btn_buy_unit", locText, unitCost)
     }
@@ -316,12 +316,12 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     let showSpendBtn = this.canSpendExp(unit)
     local coloredText = ""
     if (showSpendBtn) {
-      let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
+      let reqExp = getUnitReqExp(unit) - getUnitExp(unit)
       let flushExp = reqExp < this.availableFlushExp ? reqExp : this.availableFlushExp
-      let textSample = loc("shop/researchUnit", { unit = getUnitName(unit.name) }) + "%s"
+      let textSample = loc("shop/researchUnit", { unit = getUnitName(unit.name) })
       let textValue = flushExp ? loc("ui/parentheses/space",
         { text = Cost().setRp(flushExp).tostring() }) : ""
-      coloredText = format(textSample, textValue)
+      coloredText = "".concat(textSample, textValue)
     }
 
     foreach (navBar in [this.navBarObj, this.navBarGroupObj]) {
@@ -440,7 +440,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       return
     }
     let unitName = getUnitName(unit.name)
-    let reqExp = ::getUnitReqExp(unit) - ::getUnitExp(unit)
+    let reqExp = getUnitReqExp(unit) - getUnitExp(unit)
     let flushExp = reqExp < this.availableFlushExp ? reqExp : this.availableFlushExp
     let expText = Cost().setRp(flushExp).tostring()
 
@@ -496,7 +496,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 }
 
 ::checkShopBlk <- function checkShopBlk() {
-  local resText = ""
+  let resArray = []
   let shopBlk = get_shop_blk()
   for (local tree = 0; tree < shopBlk.blockCount(); tree++) {
     let tblk = shopBlk.getBlock(tree)
@@ -514,7 +514,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
           if (!air) {
             let groupTotal = airBlk.blockCount()
             if (groupTotal == 0) {
-              resText += ((resText != "") ? "\n" : "") + "Not found aircraft " + airName + " in " + country
+              resArray.append($"Not found aircraft {airName} in {country}")
               continue
             }
             groups.append(airName)
@@ -522,20 +522,21 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
               let gAirBlk = airBlk.getBlock(ga)
               air = getAircraftByName(gAirBlk.getBlockName())
               if (!air)
-                resText += ((resText != "") ? "\n" : "") + "Not found aircraft " + gAirBlk.getBlockName() + " in " + country
+                resArray.append($"Not found aircraft {gAirBlk.getBlockName()} in {country}")
             }
           }
           else if ((airBlk?.reqAir ?? "") != "") {
               let reqAir = getAircraftByName(airBlk.reqAir)
               if (!reqAir && !isInArray(airBlk.reqAir, groups))
-                resText += ((resText != "") ? "\n" : "") + "Not found reqAir " + airBlk.reqAir + " for " + airName + " in " + country
+                resArray.append($"Not found reqAir {airBlk.reqAir} for {airName} in {country}")
           }
         }
       }
     }
   }
+  let resText = "\n".join(resArray, true)
   if (resText == "")
     log("Shop.blk checked.")
   else
-    fatal("Incorrect shop.blk!\n" + resText)
+    fatal($"Incorrect shop.blk!\n{resText}")
 }

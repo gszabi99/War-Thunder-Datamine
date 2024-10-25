@@ -58,11 +58,11 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
+          "object": "target_ships_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ships_squad",
           "isImmortal": true,
           "attack_type": "dont_aim"
         },
@@ -121,7 +121,8 @@
               "ID_CONTROL_CAMERA_SHIFT",
               "AXIS_TURRET_X",
               "AXIS_TURRET_Y",
-              "ID_SHOW_MOUSE_CURSOR"
+              "ID_SHOW_MOUSE_CURSOR",
+              "ID_LOCK_TARGET"
             ]
           }
         ],
@@ -209,11 +210,11 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
+          "object": "target_ships_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ships_squad",
           "isImmortal": true,
           "attack_type": "dont_aim"
         },
@@ -556,12 +557,12 @@
           "show": true,
           "attach": true,
           "scale": 1.0,
-          "doNuclearExplosion": false,
           "target": "waypoint01",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "missionMarkAsWaypoint": {
           "visible": true,
@@ -683,12 +684,12 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint01",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           },
           {
             "effect_type": "specify",
@@ -706,12 +707,12 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint02",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           }
         ],
         "missionMarkAsWaypoint": [
@@ -800,12 +801,12 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint02",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           },
           {
             "effect_type": "specify",
@@ -823,12 +824,12 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint03",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           }
         ],
         "hudElementShow": {
@@ -898,12 +899,12 @@
           "show": false,
           "attach": false,
           "scale": 1.0,
-          "doNuclearExplosion": false,
           "target": "waypoint03",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "wait": {
           "time": 0.5
@@ -1066,12 +1067,12 @@
           "target": "target_ship01"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship01",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship01"
+          "object_var_value": 0
         },
         "playerControls": {
           "setStatus": "disable",
@@ -1090,11 +1091,11 @@
           }
         ],
         "unitSetProperties": {
+          "object": "target_ship01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship01",
           "isImmortal": false
         },
         "__playerEmulateShortcut": {
@@ -1541,35 +1542,19 @@
         }
       },
       "actions": {
-        "playHint": [
-          {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_shoot_at_first_target",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_WEAPON_ALL"
-          }
-        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
         "hudElementSelectionShade": {
           "element": ""
         },
@@ -1596,12 +1581,97 @@
             1.0,
             1.0
           ],
-          "doNuclearExplosion": false,
           "target": "target_ship01",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
+        },
+        "triggerEnable": {
+          "target": "closeCombat_check_target"
+        }
+      },
+      "else_actions": {}
+    },
+    "closeCombat_check_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "closeCombat_shoot_at_first_msg",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/aircraft_modifications/activation_lock",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_LOCK_TARGET"
+        },
+        "triggerEnable": {
+          "target": "closeCombat_shoot_at_first_msg"
+        }
+      }
+    },
+    "closeCombat_shoot_at_first_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_LOCK_TARGET"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialBoat_shoot_at_first_target",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SHIP_WEAPON_ALL"
         },
         "playerControls": {
           "setStatus": "enable",
@@ -2228,12 +2298,12 @@
             1.0,
             1.0
           ],
-          "doNuclearExplosion": false,
           "target": "target_ship01",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "triggerEnable": {
           "target": "torpedoing_player_positioning"
@@ -2390,12 +2460,12 @@
           "target": "target_ship03"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship03",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship03"
+          "object_var_value": 0
         },
         "__playerEmulateShortcut": {
           "control": "ID_LOCK_TARGET"
@@ -2473,11 +2543,11 @@
           }
         ],
         "__unitSetProperties": {
+          "object": "target_ship02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship02",
           "isImmortal": false
         },
         "wait": [
@@ -2636,48 +2706,29 @@
         }
       },
       "actions": {
-        "playHint": [
-          {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_torpedoing_hint02+use_torpedo",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
         "wait": {
           "time": 0.5
         },
         "unitSetProperties": {
+          "object": "target_ship03",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship03",
           "isImmortal": false
-        },
-        "playerControls": {
-          "setStatus": "enable",
-          "control": "ID_SHIP_WEAPON_TORPEDOES"
         },
         "unitPlayEffect": {
           "effect_type": "specify",
@@ -2695,12 +2746,100 @@
             1.0,
             1.0
           ],
-          "doNuclearExplosion": false,
           "target": "target_ship03",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
+        },
+        "triggerEnable": {
+          "target": "torpedoingt_check_target"
+        }
+      },
+      "else_actions": {}
+    },
+    "torpedoingt_check_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "torpedoing_use_torpedo_msg",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/aircraft_modifications/activation_lock",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_LOCK_TARGET"
+        },
+        "triggerEnable": {
+          "target": "torpedoing_use_torpedo_msg"
+        }
+      }
+    },
+    "torpedoing_use_torpedo_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_LOCK_TARGET"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SHIP_WEAPON_TORPEDOES"
+        },
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialBoat_torpedoing_hint02+use_torpedo",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "torpedoing_torpedo_used+markers_hint"
@@ -2886,12 +3025,12 @@
               1.0,
               1.0
             ],
-            "doNuclearExplosion": false,
             "target": "target_ship03",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           },
           {
             "effect_type": "specify",
@@ -2909,12 +3048,12 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint04",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           }
         ],
         "wait": [
@@ -2981,12 +3120,12 @@
           "target": "waypoint_underground04"
         },
         "unitSetIndication": {
+          "set": false,
+          "target": "target_ship03",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": false,
-          "target": "target_ship03"
+          "object_var_value": 0
         },
         "unitSetStealth": {
           "set": true,
@@ -3357,12 +3496,12 @@
           "target": "target_ship03"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship03",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship03"
+          "object_var_value": 0
         },
         "wait": {
           "time": 0.5
@@ -3724,12 +3863,12 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint04",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           },
           {
             "effect_type": "specify",
@@ -3747,12 +3886,12 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint05",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           }
         ],
         "triggerEnable": {
@@ -3841,12 +3980,12 @@
           "show": false,
           "attach": false,
           "scale": 1.0,
-          "doNuclearExplosion": false,
           "target": "waypoint05",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "wait": {
           "time": 0.5
@@ -4115,12 +4254,12 @@
           "target": "target_ship04"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship04",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship04"
+          "object_var_value": 0
         },
         "playerEmulateShortcut": {
           "control": "ID_LOCK_TARGET"
@@ -4212,41 +4351,25 @@
         }
       },
       "actions": {
-        "playHint": [
-          {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_switch_gunners_mode",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_TOGGLE_GUNNERS"
-          }
-        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
         "unitSetProperties": {
+          "object": "target_ship04",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship04",
           "isImmortal": false
         },
         "wait": {
@@ -4260,16 +4383,99 @@
         "hudElementSelectionShade": {
           "element": ""
         },
-        "playerControls": [
-          {
-            "setStatus": "enable",
-            "control": "ID_SHIP_TOGGLE_GUNNERS"
-          },
-          {
-            "setStatus": "disable",
-            "control": "ID_SHIP_WEAPON_ALL"
-          }
-        ],
+        "playerControls": {
+          "setStatus": "disable",
+          "control": "ID_SHIP_WEAPON_ALL"
+        },
+        "triggerEnable": {
+          "target": "artModes_check_target"
+        }
+      },
+      "else_actions": {}
+    },
+    "artModes_check_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "artModes_target_spotted+shoot_msg",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/aircraft_modifications/activation_lock",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_LOCK_TARGET"
+        },
+        "triggerEnable": {
+          "target": "artModes_target_spotted+shoot_msg"
+        }
+      }
+    },
+    "artModes_target_spotted+shoot_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_LOCK_TARGET"
+        }
+      },
+      "actions": {
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ID_SHIP_TOGGLE_GUNNERS"
+        },
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialBoat_switch_gunners_mode",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SHIP_TOGGLE_GUNNERS"
+        },
         "triggerEnable": {
           "target": "artModes_gunners_mode_switched"
         }
@@ -4562,12 +4768,12 @@
           "target": "target_ship05"
         },
         "unitSetIndication": {
+          "set": true,
+          "target": "target_ship05",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "set": true,
-          "target": "target_ship05"
+          "object_var_value": 0
         },
         "missionMarkAsCaptureZone": [
           {
@@ -4991,35 +5197,19 @@
       },
       "conditions": {},
       "actions": {
-        "playHint": [
-          {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_ranged_combat_hint05",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_WEAPON_ALL"
-          }
-        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "",
+          "action": "hideCur",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
         "hudElementSelectionShade": {
           "element": ""
         },
@@ -5032,16 +5222,101 @@
           "time": -1
         },
         "unitSetProperties": {
+          "object": "target_ship05",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_ship05",
           "isImmortal": false
         },
+        "triggerEnable": {
+          "target": "rangedCombat_check_target"
+        }
+      },
+      "else_actions": {}
+    },
+    "rangedCombat_check_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
+        }
+      },
+      "actions": {
+        "triggerActivate": {
+          "target": "rangedCombat_ranged_hint05+start_shooting_msg",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/aircraft_modifications/activation_lock",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_LOCK_TARGET"
+        },
+        "triggerEnable": {
+          "target": "rangedCombat_ranged_hint05+start_shooting_msg"
+        }
+      }
+    },
+    "rangedCombat_ranged_hint05+start_shooting_msg": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_LOCK_TARGET"
+        }
+      },
+      "actions": {
         "playerControls": {
           "setStatus": "enable",
           "control": "ID_SHIP_WEAPON_ALL"
+        },
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorialBoat_ranged_combat_hint05",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SHIP_WEAPON_ALL"
         },
         "triggerEnable": {
           "target": "rangedCombat_target_destroyed+go_to_capture"
@@ -5220,12 +5495,12 @@
           "show": true,
           "attach": true,
           "scale": 1.0,
-          "doNuclearExplosion": false,
           "target": "waypoint06",
           "radiusOffset": [
             0.0,
             0.0
-          ]
+          ],
+          "doNuclearExplosion": false
         },
         "triggerEnable": {
           "target": [
@@ -5298,12 +5573,12 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint06",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           },
           {
             "effect_type": "specify",
@@ -5321,12 +5596,12 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint07",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           }
         ],
         "triggerEnable": {
@@ -5397,12 +5672,12 @@
             "show": false,
             "attach": false,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint07",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           },
           {
             "effect_type": "specify",
@@ -5420,12 +5695,12 @@
             "show": true,
             "attach": true,
             "scale": 1.0,
-            "doNuclearExplosion": false,
             "target": "waypoint08",
             "radiusOffset": [
               0.0,
               0.0
-            ]
+            ],
+            "doNuclearExplosion": false
           }
         ],
         "triggerEnable": {
@@ -5500,7 +5775,6 @@
           "show": false,
           "attach": false,
           "scale": 1.0,
-          "doNuclearExplosion": false,
           "target": [
             "waypoint07",
             "waypoint08",
@@ -5510,6 +5784,7 @@
             0.0,
             0.0
           ],
+          "doNuclearExplosion": false,
           "mustExist": false
         },
         "missionMarkAsWaypoint": {
@@ -5605,12 +5880,12 @@
           "show": false,
           "attach": false,
           "scale": 1.0,
-          "doNuclearExplosion": false,
           "target": "waypoint08",
           "radiusOffset": [
             0.0,
             0.0
           ],
+          "doNuclearExplosion": false,
           "mustExist": false
         },
         "wait": [
@@ -8499,14 +8774,14 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "target_ship01_squad",
             "target_ship02_squad",
             "target_ship03_squad",
             "target_ship04_squad",
             "target_ship05_squad"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -8534,8 +8809,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship01"
+          "squad_members": "target_ship01",
+          "object_marking": 0
         }
       },
       {
@@ -8563,8 +8838,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship02"
+          "squad_members": "target_ship02",
+          "object_marking": 0
         }
       },
       {
@@ -8592,8 +8867,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship03"
+          "squad_members": "target_ship03",
+          "object_marking": 0
         }
       },
       {
@@ -8621,8 +8896,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship04"
+          "squad_members": "target_ship04",
+          "object_marking": 0
         }
       },
       {
@@ -8650,8 +8925,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship05"
+          "squad_members": "target_ship05",
+          "object_marking": 0
         }
       },
       {
@@ -8679,7 +8954,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "buoy1101",
             "buoy1102",
@@ -8697,7 +8971,8 @@
             "buoy1124",
             "buoy1125",
             "buoy1122"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ]

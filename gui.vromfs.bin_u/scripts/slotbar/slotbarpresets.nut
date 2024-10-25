@@ -21,7 +21,7 @@ let { isEqual } = u
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
 let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitCountry, isUnitBought } = require("%scripts/unit/unitInfo.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
   getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode
@@ -255,7 +255,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       if (! (unit.unitType in this.activeTypeBonusByCountry[countryName]))
         this.activeTypeBonusByCountry[countryName][unit.unitType] <- false
 
-      if (::isUnitBought(unit))
+      if (isUnitBought(unit))
         this.activeTypeBonusByCountry[countryName][unit.unitType] = true
     }
   }

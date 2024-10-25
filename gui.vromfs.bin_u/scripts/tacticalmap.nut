@@ -9,7 +9,8 @@ let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerIniti
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { get_game_type, get_cur_game_mode_name } = require("mission")
 let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active,
-  is_aircraft_player, set_tactical_screen_player, get_player_group } = require("guiMission")
+  is_aircraft_player, set_tactical_screen_player, get_player_group,
+  OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")

@@ -218,9 +218,6 @@
         "triggerEnable": {
           "target": "if_player_ussr"
         },
-        "triggerDisable": {
-          "target": "if_player_us"
-        },
         "unitSetProperties": {
           "object_marking": 0,
           "object_var_name": "",
@@ -240,6 +237,9 @@
           "object": "ussr_tank_05",
           "target": "spawn_shtora_tank",
           "randomObjectsCount": 1
+        },
+        "triggerDisable": {
+          "target": "if_player_us"
         }
       },
       "else_actions": {}
@@ -292,9 +292,6 @@
         "triggerEnable": {
           "target": "if_player_us"
         },
-        "triggerDisable": {
-          "target": "if_player_ussr"
-        },
         "unitSetProperties": {
           "object_marking": 0,
           "object_var_name": "",
@@ -303,6 +300,9 @@
           "object": "us_tank_04",
           "attack_type": "hold_fire",
           "useSearchRadar": true
+        },
+        "triggerDisable": {
+          "target": "if_player_ussr"
         }
       },
       "else_actions": {}

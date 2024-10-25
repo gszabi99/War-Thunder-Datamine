@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { seasonLevel, todayLoginExp, hasBattlePassReward,
-  loginStreak, tomorowLoginExp, levelExp
+  loginStreak, tomorowLoginExp, levelExp, seasonEndsTime
 } = require("%scripts/battlePass/seasonState.nut")
 let { mainChallengeOfSeason, hasChallengesReward } = require("%scripts/battlePass/challenges.nut")
 let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
@@ -142,6 +142,17 @@ let hasChallengesRewardWatchObj = {
   updateFunc = @(obj, value) obj.show(value)
 }
 
+let seasonEndsTimeWatchObj = {
+  watch = seasonEndsTime
+  updateFunc = function(obj, _value) {
+    let parent = obj.getParent()
+    let timer = parent.findObject("expired_timer")
+    let data = timer?.getUserData()
+    if (data)
+      data[timer.timer_handler_func](timer, 0)
+  }
+}
+
 return {
   seasonLvlWatchObj
   levelExpWatchObj
@@ -154,4 +165,5 @@ return {
   leftSpecialTasksBoughtCountWatchObj
   hasBattlePassRewardWatchObj
   hasChallengesRewardWatchObj
+  seasonEndsTimeWatchObj
 }

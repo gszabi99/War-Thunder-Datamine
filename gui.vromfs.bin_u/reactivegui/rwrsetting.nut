@@ -1,8 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
+let { Point2 } = require("dagor.math")
 let DataBlock = require("DataBlock")
 
 let { RwrBlkName, BlkFileName } = require("planeState/planeToolsState.nut")
+
+let rangeDefault = Point2(5000, 50000)
 
 let rwrSetting = Computed(function() {
   local res = {
@@ -11,7 +14,8 @@ let rwrSetting = Computed(function() {
     presence = [],
     presenceMap = [],
     presenceDefault = [],
-    targetTracking = false
+    targetTracking = false,
+    range = rangeDefault
   }
 
   local rwrBlkName = null
@@ -57,6 +61,8 @@ let rwrSetting = Computed(function() {
   }
 
   res.targetTracking = rwrBlk.getBool("targetTracking", false)
+
+  res.range = rwrBlk.getPoint2("targetRange", rangeDefault)
 
   let groupsBlk = rwrBlk.getBlockByName("groups")
   if (groupsBlk == null)

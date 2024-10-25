@@ -7,6 +7,8 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete",
       "helicopterRotorGroundDustFx": "rotor_ground_dust",
       "sparksGroundFrictionFx": "sparks_ground_friction_sand"
     },
@@ -37,6 +39,8 @@
       "resistanceK": 0.000025,
       "explMat": "default",
       "iak": 0.5,
+      "trackEffectsPreset": "dirt",
+      "trackDirtSpawnRateMult": 1.0,
       "shakePeriod": [
         0.35,
         0.7
@@ -59,6 +63,9 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "enviCoverAccumulationFactors": {
+        "dust": 0.003
+      },
       "shakeProps": {
         "period": [
           0.35,
@@ -216,20 +223,68 @@
       ],
       "explosionWreckage": "wall_expl",
       "damage_k": 0.3,
-      "trackDirtSpawnRateMult": 0.0,
       "tankTracksTexId": -1,
       "explMat": "rockCrater",
       "iak": 1.0,
+      "trackEffectsPreset": "ground",
+      "trackDirtSpawnRateMult": 1.0,
       "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete",
       "sparksGroundFrictionFx": "sparks_ground_friction_concrete",
       "dustTargetLevel": 0.1,
       "mudTargetLevel": 0.0,
       "dustFactor": 0.4,
       "mudFactor": 0.2,
       "trackDustFactor": 4.0,
-      "trackMudFactor": 2.0
+      "trackMudFactor": 2.0,
+      "enviCoverAccumulationFactors": {
+        "dust": 0.004
+      }
+    },
+    "concrete_snow": {
+      "bf_class": "concrete",
+      "color": [
+        0,
+        255,
+        255,
+        200
+      ],
+      "isWater": false,
+      "shakeMultiplier": 3.0,
+      "frictionMultiplier": 1.0,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "explosionWreckage": "wall_expl",
+      "damage_k": 0.3,
+      "tankTracksTexId": -1,
+      "explMat": "rockCrater",
+      "iak": 1.0,
+      "trackEffectsPreset": "ground",
+      "trackDirtSpawnRateMult": 1.0,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete_snow",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete_snow",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete",
+      "sparksGroundFrictionFx": "sparks_ground_friction_concrete",
+      "dustTargetLevel": 0.1,
+      "mudTargetLevel": 0.0,
+      "dustFactor": 0.4,
+      "mudFactor": 0.2,
+      "trackDustFactor": 4.0,
+      "trackMudFactor": 2.0,
+      "enviCoverAccumulationFactors": {
+        "snow": 0.004
+      }
     },
     "bricks_red": {
       "bf_class": "bricks_red",
@@ -493,7 +548,6 @@
       "frictionMultiplier": 1.0,
       "resistanceK": 0.00035,
       "fk": 0.65,
-      "trackDirtSpawnRateMult": 0.0,
       "tankTracksTexId": 3,
       "dustTargetLevel": 0.5,
       "mudTargetLevel": 0.3,
@@ -505,6 +559,13 @@
       "damage_k": 0.3,
       "explMat": "stone",
       "explosionWreckage": "rocks_expl",
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete_snow",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete_snow",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete",
+      "trackEffectsPreset": "ground",
+      "trackDirtSpawnRateMult": 1.0,
       "breachMat": "stone",
       "shakeProps": {
         "period": [
@@ -522,6 +583,9 @@
       },
       "arcadeProps": {
         "boost": 1.0
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.002
       }
     },
     "ships": {
@@ -577,6 +641,8 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete",
       "helicopterRotorGroundDustFx": "rotor_ground_dust",
       "sparksGroundFrictionFx": "sparks_ground_friction_sand"
     },
@@ -857,11 +923,11 @@
     "soil": {
       "bf_class": "soil",
       "deformable_width": 0.2,
-      "trackEffectsPreset": "soil",
-      "trackDirtSpawnRateMult": 1.0,
       "resistanceK": 0.000025,
       "explMat": "soil",
       "iak": 0.5,
+      "trackEffectsPreset": "soil",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -886,6 +952,8 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_dirt",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_dirt",
       "tankTracksTexId": 0,
       "dustTargetLevel": 0.7,
       "mudTargetLevel": 0.4,
@@ -909,6 +977,9 @@
       },
       "arcadeProps": {
         "boost": 0.95
+      },
+      "enviCoverAccumulationFactors": {
+        "mud": 0.002
       }
     },
     "tankTrack": {
@@ -919,9 +990,10 @@
     },
     "road": {
       "bf_class": "road",
-      "trackDirtSpawnRateMult": 0.0,
       "explMat": "default",
       "iak": 0.5,
+      "trackEffectsPreset": "ground",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -934,6 +1006,8 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_sand",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_sand",
       "dustTargetLevel": 0.4,
       "mudTargetLevel": 0.0,
       "dustFactor": 0.4,
@@ -944,11 +1018,11 @@
     "steppe": {
       "bf_class": "steppe",
       "deformable_width": 0.1,
-      "trackEffectsPreset": "sand",
-      "trackDirtSpawnRateMult": 1.0,
       "resistanceK": 0.000025,
       "explMat": "sandCrater",
       "iak": 0.5,
+      "trackEffectsPreset": "dirt",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -977,6 +1051,11 @@
       "mudFactor": 0.01,
       "trackDustFactor": 15.0,
       "trackMudFactor": 0.1,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_dirt",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_dirt",
       "shakeProps": {
         "period": [
           0.8,
@@ -993,15 +1072,19 @@
       },
       "arcadeProps": {
         "boost": 0.95
+      },
+      "enviCoverAccumulationFactors": {
+        "dust": 0.002
       }
     },
     "dirt": {
       "bf_class": "dirt",
       "deformable_width": 0.3,
-      "trackDirtSpawnRateMult": 1.0,
       "resistanceK": 0.001,
       "explMat": "default",
       "iak": 0.5,
+      "trackEffectsPreset": "default",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1023,6 +1106,11 @@
         1.2,
         0.6
       ],
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete_snow",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete_snow",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_dirt",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_dirt",
       "tankTracksTexId": 0,
       "dustTargetLevel": 0.0,
       "mudTargetLevel": 1.0,
@@ -1047,6 +1135,9 @@
       },
       "arcadeProps": {
         "boost": 0.0
+      },
+      "enviCoverAccumulationFactors": {
+        "mud": 0.002
       }
     },
     "visibilityRay": {
@@ -1057,6 +1148,8 @@
       "deformable_width": 0.05,
       "explMat": "default",
       "iak": 0.5,
+      "trackEffectsPreset": "soil",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1073,8 +1166,16 @@
       "mudFactor": 0.25,
       "trackDustFactor": 7.0,
       "trackMudFactor": 2.5,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_dirt",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_dirt",
       "arcadeProps": {
         "boost": 0.8
+      },
+      "enviCoverAccumulationFactors": {
+        "mud": 0.002
       }
     },
     "sand": {
@@ -1086,9 +1187,10 @@
         0
       ],
       "deformable_width": 0.2,
-      "trackEffectsPreset": "sand",
       "explMat": "sandCrater",
       "iak": 0.5,
+      "trackEffectsPreset": "sand",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1122,6 +1224,8 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_sand",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_sand",
       "helicopterRotorGroundDustFx": "rotor_sand_dust",
       "sparksGroundFrictionFx": "sparks_ground_friction_sand",
       "shakeProps": {
@@ -1140,14 +1244,18 @@
       },
       "arcadeProps": {
         "boost": 0.8
+      },
+      "enviCoverAccumulationFactors": {
+        "dust": 0.002
       }
     },
     "duneSand": {
       "bf_class": "duneSand",
       "deformable_width": 0.2,
-      "trackEffectsPreset": "sand",
       "explMat": "sandCrater",
       "iak": 0.5,
+      "trackEffectsPreset": "sand",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1178,6 +1286,11 @@
       "trackDustFactor": 15.0,
       "trackMudFactor": 0.1,
       "apexGroundCollisionFx": "px_ground_sand_fx",
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_sand",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_sand",
       "helicopterRotorGroundDustFx": "rotor_sand_dust",
       "shakeProps": {
         "period": [
@@ -1195,14 +1308,18 @@
       },
       "arcadeProps": {
         "boost": 0.8
+      },
+      "enviCoverAccumulationFactors": {
+        "dust": 0.002
       }
     },
     "roadSand": {
       "bf_class": "roadSand",
       "deformable_width": 0.1,
-      "trackEffectsPreset": "sand",
       "explMat": "sandCrater",
       "iak": 0.5,
+      "trackEffectsPreset": "sand",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1233,6 +1350,11 @@
       "trackMudFactor": 0.1,
       "apexGroundCollisionFx": "px_ground_sand_fx",
       "helicopterRotorGroundDustFx": "rotor_sand_dust",
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_ground",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_ground",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_ground",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_sand",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_sand",
       "shakeProps": {
         "period": [
           0.3,
@@ -1249,6 +1371,9 @@
       },
       "arcadeProps": {
         "boost": 0.8
+      },
+      "enviCoverAccumulationFactors": {
+        "dust": 0.002
       }
     },
     "quickSand": {
@@ -1276,6 +1401,8 @@
       "trackMudFactor": 1.0,
       "apexGroundCollisionFx": "px_ground_sand_fx",
       "helicopterRotorGroundDustFx": "rotor_sand_dust",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_sand",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_sand",
       "shakeProps": {
         "period": [
           0.1,
@@ -1292,15 +1419,19 @@
       },
       "arcadeProps": {
         "boost": 0.2
+      },
+      "enviCoverAccumulationFactors": {
+        "dust": 0.002
       }
     },
     "snow": {
       "bf_class": "snow",
       "deformable_width": 0.3,
-      "trackEffectsPreset": "snow",
       "explMat": "snowCrater",
       "iak": 0.5,
       "resistanceK": 0.000025,
+      "trackEffectsPreset": "snow",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1326,6 +1457,8 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_snow",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_snow",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_snow",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_snow",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_snow",
       "apexGroundCollisionFx": "px_ground_snow_fx",
       "helicopterRotorGroundDustFx": "rotor_snow_dust",
       "sparksGroundFrictionFx": "sparks_ground_friction_snow",
@@ -1345,14 +1478,17 @@
       },
       "arcadeProps": {
         "boost": 0.8
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.002
       }
     },
     "ice": {
       "bf_class": "ice",
-      "trackEffectsPreset": "snow",
-      "trackDirtSpawnRateMult": 0.0,
       "explMat": "default",
       "iak": 0.5,
+      "trackEffectsPreset": "snow",
+      "trackDirtSpawnRateMult": 0.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1369,7 +1505,15 @@
       "dustFactor": 0.1,
       "mudFactor": 0.1,
       "trackDustFactor": 1.0,
-      "trackMudFactor": 1.0
+      "trackMudFactor": 1.0,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete",
+      "enviCoverAccumulationFactors": {
+        "snow": 0.0025
+      }
     },
     "football_ramp": {
       "bf_class": "football_ramp",
@@ -1438,14 +1582,18 @@
       },
       "arcadeProps": {
         "boost": 0.8
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.002
       }
     },
     "roadSnow": {
       "bf_class": "roadSnow",
       "deformable_width": 0.05,
-      "trackEffectsPreset": "snow",
       "explMat": "default",
       "iak": 0.5,
+      "trackEffectsPreset": "snow",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1470,6 +1618,11 @@
       "tankTracksTexId": 2,
       "apexGroundCollisionFx": "px_ground_snow_fx",
       "helicopterRotorGroundDustFx": "rotor_snow_dust",
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete_snow",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete_snow",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_snow",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_snow",
       "shakeProps": {
         "period": [
           0.5,
@@ -1486,12 +1639,16 @@
       },
       "arcadeProps": {
         "boost": 0.8
+      },
+      "enviCoverAccumulationFactors": {
+        "snow": 0.002
       }
     },
     "rocks": {
       "bf_class": "rocks",
-      "trackDirtSpawnRateMult": 0.0,
       "explMat": "default",
+      "trackEffectsPreset": "ground",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1509,13 +1666,15 @@
       "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
       "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
       "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete",
       "tankTracksTexId": 3
     },
     "rocksSlippery": {
       "bf_class": "rocksSlippery",
-      "trackEffectsPreset": "rocks",
-      "trackDirtSpawnRateMult": 0.0,
       "explMat": "default",
+      "trackEffectsPreset": "ground",
+      "trackDirtSpawnRateMult": 1.0,
       "explosionPatchShader": "explosion_patch",
       "explosionPatchTexture": "explosion_patch_rocks_n",
       "explosionPatchTexcoord": [
@@ -1530,7 +1689,12 @@
       "mudFactor": 0.1,
       "trackDustFactor": 0.5,
       "trackMudFactor": 1.0,
-      "tankTracksTexId": 3
+      "tankTracksTexId": 3,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete"
     },
     "transparentBeton": {
       "bf_class": "transparentBeton",

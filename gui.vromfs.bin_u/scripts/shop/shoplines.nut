@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { stripTags } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -195,79 +194,78 @@ let ShopLines = class {
       posX = $"{(c0 + 0.5 + offset)}@shop_width - 0.5@modArrowWidth"
       height = $"{pad1} + {pad2} + {(r1 - r0 - 1)}@shop_height"
       posY = $"{(r0 + 1)}@shop_height - {pad1}"
-      lines += format(arrowFormat, idString, "vertical", "1@modArrowWidth", height,
-        posX, posY, "0")
+      lines = "".concat(lines, format(arrowFormat, idString, "vertical", "1@modArrowWidth", height,
+        posX, posY, "0"))
 
     }
     else if (lineType == "horizontal") {
       posX = $"{(c0 + 1)}@shop_width - {interval1}"
       width = $"{(c1 - c0 - 1)}@shop_width + {interval1} + {interval2}"
       posY = $"{(r0 + 0.5 + offset)}@shop_height - 0.5@modArrowWidth"
-      lines += format(arrowFormat, idString, "horizontal", width, "1@modArrowWidth",
-        posX, posY, "0")
+      lines = "".concat(lines, format(arrowFormat, idString, "horizontal", width, "1@modArrowWidth",
+        posX, posY, "0"))
 
     }
     else if (lineType == "fakeUnitReq") { //special line for fake unit. Line is go to unit plate on side
-      lines += "tdiv { " + idString
-      lines += format(lineFormat,
-                       $"{pad1} + " + (r1 - r0 - 0.5) + "@shop_height", //height
-                       "1@modLineWidth", //width
-                       (c0 + 0.5) + "@shop_width" + ((c0 > c1) ? "- 0.5@modLineWidth" : "+ 0.5@modLineWidth"), //posX
-                       (r0 + 1) + "@shop_height - " + pad1 + ((c0 > c1) ? "+w" : ""), // posY
-                       (c0 > c1) ? "-90" : "90")
-      lines += format(arrowFormat, "",
-                       "horizontal",  //type
-                       (abs(c1 - c0) - 0.5) + "@shop_width + " + interval1, //width
-                       "1@modArrowWidth", //height
-                       (c1 > c0 ? (c0 + 0.5) : c0) + "@shop_width" + (c1 > c0 ? "" : ($" - {interval1}")), //posX
-                       (r1 + 0.5) + "@shop_height - 0.5@modArrowWidth", // posY
-                       (c0 > c1) ? "180" : "0")
-      lines += format(angleFormat,
-                       "1@modAngleWidth", //width
-                       "1@modAngleWidth", //height
-                       (c0 + 0.5) + "@shop_width - 0.5@modAngleWidth", //posX
-                       (r1 + 0.5) + "@shop_height - 0.5@modAngleWidth", // posY
-                       (c0 > c1 ? "-90" : "0"))
-      lines += "}"
+      lines = "".concat(lines, "tdiv { ", idString,
+        format(lineFormat,
+          $"{pad1} + {(r1 - r0 - 0.5)}@shop_height", //height
+          "1@modLineWidth", //width
+          "".concat(c0 + 0.5, "@shop_width", c0 > c1 ? "- 0.5@modLineWidth" : "+ 0.5@modLineWidth"), //posX
+          "".concat(r0 + 1, "@shop_height - ", pad1, c0 > c1 ? "+w" : ""), // posY
+          (c0 > c1) ? "-90" : "90"),
+        format(arrowFormat, "",
+          "horizontal",  //type
+          "".concat(abs(c1 - c0) - 0.5, "@shop_width + ", interval1), //width
+          "1@modArrowWidth", //height
+          "".concat(c1 > c0 ? c0 + 0.5 : c0, "@shop_width", c1 > c0 ? "" : $" - {interval1}"), //posX
+          $"{r1 + 0.5}@shop_height - 0.5@modArrowWidth", // posY
+          (c0 > c1) ? "180" : "0"),
+        format(angleFormat,
+          "1@modAngleWidth", //width
+          "1@modAngleWidth", //height
+          $"{c0 + 0.5}@shop_width - 0.5@modAngleWidth", //posX
+          $"{r1 + 0.5}@shop_height - 0.5@modAngleWidth", // posY
+          c0 > c1 ? "-90" : "0"),
+        "}")
     }
     else {
       let lh = 0
       offset = isMultipleArrow ? 0.1 : 0
       let arrowOffset = c0 > c1 ? -offset : offset
-      lines += "tdiv { " + idString
-      lines += format(lineFormat,
-                       $"{pad1} + {lh}@shop_height", //height
-                       "1@modLineWidth", //width
-                       (c0 + 0.5 + arrowOffset) + "@shop_width" + ((c0 > c1) ? "-" : "+") + " 0.5@modLineWidth", //posX
-                       (r0 + 1) + "@shop_height - " + pad1 + ((c0 > c1) ? "+ w " : ""), // posY
-                       (c0 > c1) ? "-90" : "90")
-
-      lines += format(lineFormat,
-                      (abs(c1 - c0) - offset) + "@shop_width",
-                      "1@modLineWidth", //height
-                      (min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset)) + "@shop_width",
-                      (lh + r0 + 1) + "@shop_height - 0.75@modLineWidth",
-                      "0")
-      lines += format(angleFormat,
-                       "1@modAngleWidth", //width
-                       "1@modAngleWidth", //height
-                       (c0 + 0.5 + arrowOffset) + "@shop_width - 0.5@modAngleWidth", //posX
-                       (lh + r0 + 1) + "@shop_height - 0.75@modLineWidth", // posY
-                       (c0 > c1 ? "-90" : "0"))
-      lines += format(arrowFormat, "",
-                      "vertical",
-                      "1@modArrowWidth",
-                      $"{pad2} + " + (r1 - r0 - 1 - lh) + "@shop_height + 0.25@modArrowWidth",
-                      (c1 + 0.5) + "@shop_width - 0.5@modArrowWidth",
-                      (lh + r0 + 1) + "@shop_height - 0.25@modLineWidth",
-                      "0")
-      lines += format(angleFormat,
-                       "1@modAngleWidth", //width
-                       "1@modAngleWidth", //height
-                       (c1 + 0.5) + "@shop_width - 0.5@modAngleWidth",
-                       (lh + r0 + 1) + "@shop_height - 0.75@modLineWidth",
-                       (c0 > c1 ? "90" : "180"))
-      lines += "}"
+      lines = "".concat(lines, "tdiv { ", idString,
+        format(lineFormat,
+          $"{pad1} + {lh}@shop_height", //height
+          "1@modLineWidth", //width
+          "".concat(c0 + 0.5 + arrowOffset, "@shop_width", c0 > c1 ? "-" : "+", " 0.5@modLineWidth"), //posX
+          "".concat(r0 + 1, "@shop_height - ", pad1, c0 > c1 ? "+ w " : ""), // posY
+          (c0 > c1) ? "-90" : "90"),
+        format(lineFormat,
+          "".concat(abs(c1 - c0) - offset, "@shop_width"),
+          "1@modLineWidth", //height
+          "".concat(min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset), "@shop_width"),
+          $"{lh + r0 + 1}@shop_height - 0.75@modLineWidth",
+          "0"),
+        format(angleFormat,
+          "1@modAngleWidth", //width
+          "1@modAngleWidth", //height
+          $"{c0 + 0.5 + arrowOffset}@shop_width - 0.5@modAngleWidth", //posX
+          $"{lh + r0 + 1}@shop_height - 0.75@modLineWidth", // posY
+          (c0 > c1 ? "-90" : "0")),
+        format(arrowFormat, "",
+          "vertical",
+          "1@modArrowWidth",
+          $"{pad2} + {r1 - r0 - 1 - lh}@shop_height + 0.25@modArrowWidth",
+          $"{c1 + 0.5}@shop_width - 0.5@modArrowWidth",
+          $"{lh + r0 + 1}@shop_height - 0.25@modLineWidth",
+          "0"),
+        format(angleFormat,
+          "1@modAngleWidth", //width
+          "1@modAngleWidth", //height
+          $"{c1 + 0.5}@shop_width - 0.5@modAngleWidth",
+          $"{lh + r0 + 1}@shop_height - 0.75@modLineWidth",
+          (c0 > c1 ? "90" : "180"))
+        "}")
     }
 
     return lines

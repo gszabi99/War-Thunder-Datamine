@@ -260,7 +260,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
           return res
         })
         if (unitsTexts.len())
-          text = loc("flightmenu/haveAvailableCrews") + "\n" + ", ".join(unitsTexts, true) + "\n\n"
+          text = "".concat(loc("flightmenu/haveAvailableCrews"), "\n", ", ".join(unitsTexts, true), "\n\n")
 
         text = "".concat(text, (misBlk?.gt_use_wp && misBlk?.gt_use_xp)
           ? loc("flightmenu/questionQuitMissionInProgress")

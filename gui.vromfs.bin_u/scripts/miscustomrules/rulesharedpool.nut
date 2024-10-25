@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
@@ -14,13 +15,13 @@ let { UnitLimitByUnitName, UnitLimitByUnitRole, UnitLimitByUnitExpClass,
 
 let SharedPool = class (RuleBase) {
   function getMaxRespawns() {
-    return getTblValue("playerMaxSpawns", this.getMyTeamDataBlk(), ::RESPAWNS_UNLIMITED)
+    return getTblValue("playerMaxSpawns", this.getMyTeamDataBlk(), RESPAWNS_UNLIMITED)
   }
 
   function getLeftRespawns() {
     let maxRespawns = this.getMaxRespawns()
-    if (maxRespawns == ::RESPAWNS_UNLIMITED)
-      return ::RESPAWNS_UNLIMITED
+    if (maxRespawns == RESPAWNS_UNLIMITED)
+      return RESPAWNS_UNLIMITED
 
     let spawnsBlk = getTblValue("spawns", this.getMisStateBlk())
     let usedSpawns = getTblValue(userIdStr.value, spawnsBlk, 0)
@@ -39,7 +40,7 @@ let SharedPool = class (RuleBase) {
   function getSpecialCantRespawnMessage(unit) {
     let expClassName = unit.expClass.getExpClass()
     let activeAtOnce = this.getActiveAtOnceExpClass(expClassName)
-    if (activeAtOnce != ::RESPAWNS_UNLIMITED
+    if (activeAtOnce != RESPAWNS_UNLIMITED
         && activeAtOnce <= this.getCurActiveExpClassAmount(expClassName))
       return loc("multiplayer/cant_spawn/all_active_at_once",
                    {
@@ -57,7 +58,7 @@ let SharedPool = class (RuleBase) {
   function getExpClassLimitTextByUnit(unit) {
     let expClassName = unit.expClass.getExpClass()
     let activeAtOnce = this.getActiveAtOnceExpClass(expClassName)
-    if (activeAtOnce == ::RESPAWNS_UNLIMITED)
+    if (activeAtOnce == RESPAWNS_UNLIMITED)
       return ""
 
     let limit = ActiveLimitByUnitExpClass(
@@ -79,7 +80,7 @@ let SharedPool = class (RuleBase) {
     if (!unit)
       return 0
 
-    local res = ::RESPAWNS_UNLIMITED
+    local res = RESPAWNS_UNLIMITED
     let limitedClasses = getTblValue("limitedClasses", teamDataBlk)
     if (u.isDataBlock(limitedClasses)) {
       let total = limitedClasses.paramCount()
@@ -103,9 +104,9 @@ let SharedPool = class (RuleBase) {
     }
 
     let limitedUnits = getTblValue("limitedUnits", teamDataBlk)
-    res = this.minRespawns(res, getTblValue(unit.name, limitedUnits, ::RESPAWNS_UNLIMITED))
+    res = this.minRespawns(res, getTblValue(unit.name, limitedUnits, RESPAWNS_UNLIMITED))
 
-    if (res != ::RESPAWNS_UNLIMITED)
+    if (res != RESPAWNS_UNLIMITED)
       return res
 
     let unlimitedUnits = getTblValue("unlimitedUnits", teamDataBlk)
@@ -118,7 +119,7 @@ let SharedPool = class (RuleBase) {
     let res = base.calcFullUnitLimitsData()
 
     let myTeamDataBlk = this.getMyTeamDataBlk()
-    res.defaultUnitRespawnsLeft = "unlimitedUnits" in myTeamDataBlk ? 0 : ::RESPAWNS_UNLIMITED
+    res.defaultUnitRespawnsLeft = "unlimitedUnits" in myTeamDataBlk ? 0 : RESPAWNS_UNLIMITED
 
     let limitedClasses = getTblValue("limitedClasses", myTeamDataBlk)
     if (u.isDataBlock(limitedClasses)) {
@@ -159,7 +160,7 @@ let SharedPool = class (RuleBase) {
     blk = getTblValue("unlimitedUnits", myTeamDataBlk)
     if (u.isDataBlock(blk))
       for (local i = 0; i < blk.paramCount(); i++)
-        res.unitLimits.append(UnitLimitByUnitName(blk.getParamName(i), ::RESPAWNS_UNLIMITED,
+        res.unitLimits.append(UnitLimitByUnitName(blk.getParamName(i), RESPAWNS_UNLIMITED,
           { nameLocId = unitsGroups?[blk.getParamName(i)] }))
 
     let activeLimitsBlk = getTblValue("limitedActiveClasses", myTeamDataBlk)
@@ -198,12 +199,12 @@ let SharedPool = class (RuleBase) {
   }
 
   function getActiveAtOnceExpClass(expClassName) {
-    local res = ::RESPAWNS_UNLIMITED
+    local res = RESPAWNS_UNLIMITED
     let activeLimitsBlk = getTblValue("limitedActiveClasses", this.getMyTeamDataBlk())
     if (!activeLimitsBlk)
       return res
 
-    res = this.minRespawns(res, getTblValue(expClassName, activeLimitsBlk, ::RESPAWNS_UNLIMITED))
+    res = this.minRespawns(res, getTblValue(expClassName, activeLimitsBlk, RESPAWNS_UNLIMITED))
     let percent = getTblValue($"{expClassName}_perc", activeLimitsBlk, -1)
     if (percent >= 0)
       res = this.minRespawns(res, this.getAmountByTeamPercent(percent))

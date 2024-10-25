@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
@@ -57,7 +56,7 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, preset in this.presets) {
       local title = preset.title
       if (idx == this.activePreset)
-        title += nbsp + loc("shop/current")
+        title = $"{title}{nbsp}{loc("shop/current")}"
 
       view.items.append({
         itemTag = preset.enabled ? "mission_item_unlocked" : "mission_item_locked"
@@ -102,12 +101,13 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
         let battleRatingRange = isPresetHasUnits
           ? format("%.1f %s %.1f", battleRatingMin, loc("ui/mdash"), battleRatingMax)
           : "—"
-        presetBattleRatingText = loc("shop/battle_rating") + loc("ui/colon") + battleRatingRange + "\n"
+        presetBattleRatingText = "".concat(loc("shop/battle_rating"), loc("ui/colon"), battleRatingRange, "\n")
       }
 
       let gameMode = getGameModeById(preset.gameModeId) ?? getCurrentGameMode()
-      let presetGameMode = gameMode != null ? loc("options/mp_mode") +
-                                                loc("ui/colon") + gameMode.text + "\n" : ""
+      let presetGameMode = gameMode != null
+        ? "".concat(loc("options/mp_mode"), loc("ui/colon"), gameMode.text, "\n")
+        : ""
       let presetContents = "".concat(loc("shop/slotbarPresets/contents"), loc("ui/colon"), isPresetHasUnits ? "" : "—")
 
       let header = "".concat(stripTags(presetBattleRatingText),

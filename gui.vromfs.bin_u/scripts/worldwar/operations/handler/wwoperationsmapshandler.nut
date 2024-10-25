@@ -749,7 +749,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
   function onClusterApply(values) {
-    this.clustersList = values ? ",".join(values) : null
+    this.clustersList = values.len() > 0 ? ",".join(values) : null
     saveLocalAccountSettings(MY_CLUSRTERS, this.clustersList)
     this.updateButtons()
     this.updateClustersTxt()

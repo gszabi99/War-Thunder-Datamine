@@ -13,7 +13,9 @@ let consoleRevision = get_console_model_revision(consoleModel)
 
 let is_pc = oneOf("win32", "win64", "macosx", "linux64")
 let is_sony = oneOf("ps4", "ps5")
+let isPlatformSony = @(pl) ["ps4", "ps5"].contains(pl)
 let is_xbox = oneOf("xboxOne", "xboxScarlett")
+let isPlatformXbox = @(pl) ["xboxOne", "xboxScarlett"].contains(pl)
 let is_nswitch = oneOf("nswitch")
 let is_mobile = oneOf("iOS", "android")
 let is_android = platformId == "android"
@@ -78,6 +80,7 @@ return {
   is_xbox_anaconda = isModel(platform.XBOX_ANACONDA)
   is_ps4_simple = oneOf("ps4") && isModel(platform.PS4)
   is_ps4_pro = oneOf("ps4") && isModel(platform.PS4_PRO)
+  is_ps5_pro = oneOf("ps5") && isModel(platform.PS5_PRO)
   is_console
   aliases
   SCE_REGION
@@ -89,4 +92,7 @@ return {
   isPS5
   isSony
   isPC
+
+  isPlatformXbox
+  isPlatformSony
 }

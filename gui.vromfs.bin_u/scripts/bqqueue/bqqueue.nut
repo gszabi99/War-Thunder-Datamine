@@ -76,8 +76,6 @@ function sendAll() {
     action = "cln_bq_put_batch_json"
     appid  = APP_ID
     token  = getPlayerTokenGlobal()
-    withAppid = true
-    withCircuit = true
   }
 
   let remainingCount = remainingMsg.len()

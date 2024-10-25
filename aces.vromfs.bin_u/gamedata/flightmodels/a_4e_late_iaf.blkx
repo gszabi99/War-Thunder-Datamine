@@ -8,17 +8,18 @@
   "gearSinkRangeC": 0.355,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
-  "isBwOpticSight": true,
   "gyroSight": false,
+  "rwrIndicator": "AN/APR-25",
+  "isBwOpticSight": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "simplifiedJoyAileronMult": 0.0,
   "simplifiedJoyElevatorMult": 1.0,
-  "standardExhaustFxType": "jet_exhaust",
-  "afterburnerExhaustFxType": "jet_afterburner_exhaust",
-  "startExhaustFxType": "jet_start_exhaust",
+  "engineFxMap0": 0,
+  "engineFxMap1": 1,
+  "engineFxMap2": 1,
   "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -2230,8 +2231,16 @@
         "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_agm_62.blk"
       },
       {
+        "name": "a_4e_late_iaf_agm_62_aim9b",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_agm_62_aim9b.blk"
+      },
+      {
         "name": "a_4e_late_iaf_bomb_guided_gbu8",
         "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_bomb_guided_gbu8.blk"
+      },
+      {
+        "name": "a_4e_late_iaf_bomb_guided_gbu8_aim9b",
+        "blk": "gameData/FlightModels/weaponPresets/a_4e_late_iaf_bomb_guided_gbu8_aim9b.blk"
       },
       {
         "name": "a_4e_late_iaf_mk4_mod0",
@@ -3371,6 +3380,22 @@
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
   },
+  "engineFx": [
+    {
+      "exhaust": {
+        "standard": "jet_exhaust",
+        "afterburner": "jet_afterburner_exhaust",
+        "start": "jet_start_exhaust"
+      }
+    },
+    {
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "booster_fire"
+      }
+    }
+  ],
   "fireParams": {
     "engineExtinguishFireSpeed": [
       272.0,

@@ -1,10 +1,10 @@
+// warning disable: -file:forbidden-function
 from "%scripts/dagui_natives.nut" import shop_get_units_list_with_autoset_modules, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, copy_to_clipboard, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
+
 let { eventbus_send } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-// warning disable: -file:forbidden-function
-
 let { clearCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -176,7 +176,7 @@ function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
   //::SessionLobby.settings = get_fake_sessionlobby_settings()
   //::SessionLobby.setPlayersInfo = getroottable()?._fake_playersInfo ?? {}
   //::SessionLobby.getUnitTypesMask = @(_room = null) getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
-  //::SessionLobby.getRoomEvent = @(_room = null) ::events.getEvent(getroottable()?._fake_sessionlobby_last_event_name ?? "")
+  //::SessionLobby.getRoomEvent = @(_room = null) events.getEvent(getroottable()?._fake_sessionlobby_last_event_name ?? "")
   //HudBattleLog.battleLog = get_fake_battlelog()
   initListLabelsSquad()
 
@@ -293,7 +293,6 @@ function debug_dump_respawn_save(filename) {
     "get_option_depthcharge_activation_time"
     "get_option_mine_depth"
     "get_option_rocket_fuse_dist"
-    "get_objectives_list"
     "is_in_flight"
     "get_player_army_for_hud"
     "get_mp_tbl_teams"

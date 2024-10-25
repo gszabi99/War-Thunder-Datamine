@@ -1,9 +1,10 @@
 from "%scripts/dagui_natives.nut" import wp_get_cost2, wp_get_cost_gold2, wp_get_modification_cost, wp_get_weapon_max_count, shop_is_weapon_purchased, shop_get_weapon_baseval, wp_get_modification_max_count, shop_get_modification_baseval, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING
+from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let { get_game_params } = require("gameparams")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
@@ -54,7 +55,7 @@ function getAmmoMaxAmountInSession(unit, ammoName, ammoType) {
 }
 
 function isAmmoFree(unit, ammoName, ammoType) {
-  return getAmmoCost(unit, ammoName, ammoType) <= ::zero_money
+  return getAmmoCost(unit, ammoName, ammoType) <= zero_money
 }
 
 function getAmmoWarningMinimum(ammoType, unit, maxAmount) {
@@ -74,7 +75,7 @@ function getAmmoAmountData(unit, ammoName, ammoType) {
 
   res.amount = getAmmoAmount(unit, ammoName, ammoType)
   let maxAmount = getAmmoMaxAmount(unit, ammoName, ammoType)
-  let text = ::getAmountAndMaxAmountText(res.amount, maxAmount)
+  let text = getAmountAndMaxAmountText(res.amount, maxAmount)
   if (text == "")
     return res
 

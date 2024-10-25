@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import fill_joysticks_desc, set_current_controls
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -35,8 +36,8 @@ function getLoadedPresetBlk() {
       source = "ID_FLIGHTMENU"
       target = "ID_FLIGHTMENU_SETUP"
       value = [{
-        deviceId = ::SHORTCUT.GAMEPAD_START.dev[0]
-        buttonId = ::SHORTCUT.GAMEPAD_START.btn[0]
+        deviceId = SHORTCUT.GAMEPAD_START.dev[0]
+        buttonId = SHORTCUT.GAMEPAD_START.btn[0]
       }]
       shouldAppendIfEmptyOnXInput = true
     }
@@ -45,28 +46,28 @@ function getLoadedPresetBlk() {
       source = "ID_CONTINUE",
       target = "ID_CONTINUE_SETUP"
       value = [{
-        deviceId = ::GAMEPAD_ENTER_SHORTCUT.dev[0]
-        buttonId = ::GAMEPAD_ENTER_SHORTCUT.btn[0]
+        deviceId = GAMEPAD_ENTER_SHORTCUT.dev[0]
+        buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0]
       }]
       shouldAppendIfEmptyOnXInput = true
     }
     {
       target = "ID_FLIGHTMENU"
       value = [[{
-        deviceId = ::SHORTCUT.KEY_ESC.dev[0]
-        buttonId = ::SHORTCUT.KEY_ESC.btn[0]
+        deviceId = SHORTCUT.KEY_ESC.dev[0]
+        buttonId = SHORTCUT.KEY_ESC.btn[0]
       }]]
     }
     {
       target = "ID_CONTINUE"
       valueFunction = function() {
         return [[isXInputDevice() ? {
-          deviceId = ::GAMEPAD_ENTER_SHORTCUT.dev[0]
-          buttonId = ::GAMEPAD_ENTER_SHORTCUT.btn[0] // used in mission hints
+          deviceId = GAMEPAD_ENTER_SHORTCUT.dev[0]
+          buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0] // used in mission hints
         } :
         {
-          deviceId = ::SHORTCUT.KEY_SPACE.dev[0]
-          buttonId = ::SHORTCUT.KEY_SPACE.btn[0]
+          deviceId = SHORTCUT.KEY_SPACE.dev[0]
+          buttonId = SHORTCUT.KEY_SPACE.btn[0]
         }]]
       }
     }
@@ -79,8 +80,8 @@ function getLoadedPresetBlk() {
         {
           name = "ID_SCREENSHOT",
           combo = [{
-            deviceId = ::SHORTCUT.KEY_PRNT_SCRN.dev[0]
-            buttonId = ::SHORTCUT.KEY_PRNT_SCRN.btn[0]
+            deviceId = SHORTCUT.KEY_PRNT_SCRN.dev[0]
+            buttonId = SHORTCUT.KEY_PRNT_SCRN.btn[0]
           }]
         }
       ]

@@ -39,3 +39,12 @@ shortcutCell keyboardButtonText {
 shortcutCell combination > textareaNoTab {
   font:@fontMedium;
 }
+
+[optContainer=yes] shortcutCell {
+  max-width:@optContainerControlWidth;
+  margin-left:1@comboOptionPadding;
+}
+
+[optContainer=yes] shortcutCell tdiv, [optContainer=yes] shortcutCell textarea {
+  valign:center;
+}

@@ -1,4 +1,13 @@
-from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug, make_all_observables_immutable
+from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug,
+  make_all_observables_immutable, recalc_all_computed_values, gather_graph_stats, update_deferred, set_default_deferred
+
+// set_default_deferred(false)
+
+function ComputedImmediate(...) {
+  let c = Computed.acall([this].extend(vargv))
+  c.setDeferred(false)
+  return c
+}
 
 let isObservable = @(v) type(v)=="instance" && v instanceof Watched
 let isComputed = @(v) type(v)=="instance" && v instanceof Computed
@@ -184,11 +193,16 @@ return {
   watchedTable2TableOfWatched
   MK_COMBINED_STATE
   Computed
+  ComputedImmediate
   Watched
   FRP_INITIAL
   FRP_DONT_CHECK_NESTED
   set_nested_observable_debug
   make_all_observables_immutable
+  recalc_all_computed_values
+  gather_graph_stats
+  update_deferred
+  set_default_deferred
   WatchedRo
   isObservable
   isComputed

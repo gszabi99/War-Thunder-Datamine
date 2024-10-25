@@ -20,7 +20,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
   USEROPT_LIMITED_AMMO, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_DYN_ALLIES,
   USEROPT_DYN_ENEMIES
 } = require("%scripts/options/optionsExtNames.nut")
-let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { create_options_container, create_option_list } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
@@ -210,7 +210,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function update_dynamic_map() {
     let descr = ::get_option(USEROPT_DYN_MAP)
-    let txt = ::create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
+    let txt = create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
     let dObj = this.scene.findObject(descr.id)
     this.guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
 
@@ -224,7 +224,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     this.init_builder_map()
 
     let descrWeap = ::get_option(USEROPT_DYN_ZONE)
-    let txt = ::create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, "onSectorChange", false)
+    let txt = create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, "onSectorChange", false)
     let dObj = this.scene.findObject(descrWeap.id)
     guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
     return descrWeap
@@ -233,7 +233,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   function update_dynamic_sector(guiScene, _obj, _descr) {
     this.generate_builder_list(true)
     let descrWeap = ::get_option(USEROPT_DMP_MAP)
-    let txt = ::create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, null, false)
+    let txt = create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, null, false)
     let dObj = this.scene.findObject(descrWeap.id)
     guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
 

@@ -18,6 +18,7 @@ function registerScriptProfiler(prefix, logRes = log.console_print, filePath = n
   let isProfileOn = hardPersistWatched($"{prefix}isProfileOn", false)
   let isSpikesProfileOn = hardPersistWatched($"{prefix}isSpikesProfileOn", false)
   let spikesThresholdMs = hardPersistWatched($"{prefix}spikesThresholdMs", 10)
+  let frp = require_optional("frp")
 
   local st = 0
   function toggleProfiler(newVal = null, fileName = null) {
@@ -81,6 +82,23 @@ function registerScriptProfiler(prefix, logRes = log.console_print, filePath = n
   console.register_command(toggleSpikesProfiler, $"{prefix}.profiler.spikes")
   console.register_command(setSpikesThreshold, $"{prefix}.profiler.spikesMsValue")
   console.register_command(@(threshold) profiler.detect_slow_calls(threshold), $"{prefix}.profiler.detect_slow_calls")
+
+  if (frp != null) {
+    function frpStats() {
+      let stats = frp.gather_graph_stats()
+      let names = stats.keys()
+      names.sort()
+      foreach (n in names) logRes($"{n} = {stats[n]}")
+    }
+
+    function recalcAll() {
+      frp.recalc_all_computed_values()
+      frpStats()
+    }
+
+    console.register_command(recalcAll, $"{prefix}.profiler.recalc_all_computed")
+    console.register_command(frpStats, $"{prefix}.profiler.gather_frp_stats")
+  }
 }
 
 return registerScriptProfiler

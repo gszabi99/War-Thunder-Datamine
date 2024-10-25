@@ -11,7 +11,6 @@ let { initBulletIcons } = require("%scripts/weaponry/bulletsVisual.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { initWeaponParams } = require("%scripts/weaponry/weaponsParams.nut")
-let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
@@ -135,7 +134,7 @@ local usageAmountCounted = false
 
   function() {
     let blk = DataBlock()
-    blk.load($"{controlsPresetConfigPath.value}config/hud.blk")
+    blk.load("config/hud.blk")
     if (blk?.crosshair) {
       let crosshairs = blk.crosshair % "pictureTpsView"
       foreach (crosshair in crosshairs)

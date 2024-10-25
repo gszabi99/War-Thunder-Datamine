@@ -1,6 +1,8 @@
 from "%scripts/dagui_library.nut" import *
+
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let events = getGlobalModule("events")
 let { get_time_msec } = require("dagor.time")
 let stdMath = require("%sqstd/math.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -23,10 +25,10 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
 
 function setSquadReadyFlag(event) {
   //Don't allow to change ready status, leader don't know about members balance
-  if (!::events.haveEventAccessByCost(event))
+  if (!events.haveEventAccessByCost(event))
     showInfoMsgBox(loc("events/notEnoughMoney"))
-  else if (::events.eventRequiresTicket(event) && ::events.getEventActiveTicket(event) == null)
-    ::events.checkAndBuyTicket(event)
+  else if (events.eventRequiresTicket(event) && events.getEventActiveTicket(event) == null)
+    events.checkAndBuyTicket(event)
   else
     g_squad_manager.setReadyFlag()
 }
@@ -130,14 +132,14 @@ function canJoinEventForNewbies(event) {
 
   function joinStep3_external() {
     this.processStepName = "joinStep3_external"
-    if (::events.getEventDiffCode(this.event) == DIFFICULTY_HARDCORE &&
+    if (events.getEventDiffCode(this.event) == DIFFICULTY_HARDCORE &&
         !::check_package_and_ask_download("pkg_main"))
       return this.remove()
 
-    if (!::events.checkEventFeature(this.event))
+    if (!events.checkEventFeature(this.event))
       return this.remove()
 
-    if (!::events.isEventAllowedByComaptibilityMode(this.event)) {
+    if (!events.isEventAllowedByComaptibilityMode(this.event)) {
       showInfoMsgBox(loc("events/noCompatibilityMode/msg"))
       this.remove()
       return
@@ -159,20 +161,20 @@ function canJoinEventForNewbies(event) {
 
   function joinStep4_internal() {
     this.processStepName = "joinStep4_internal"
-    let mGameMode = ::events.getMGameMode(this.event, this.room)
-    if (::events.isEventTanksCompatible(this.event.name) && !::check_tanks_available())
+    let mGameMode = events.getMGameMode(this.event, this.room)
+    if (events.isEventTanksCompatible(this.event.name) && !::check_tanks_available())
       return this.remove()
     if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
         !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, showOfflineSquadMembersPopup = true }))
       return this.remove()
-    if (::events.checkEventDisableSquads(this, this.event.name))
+    if (events.checkEventDisableSquads(this, this.event.name))
       return this.remove()
     if (!this.checkEventTeamSize(mGameMode))
       return this.remove()
     if (!canJoinEventForNewbies(this.event))
       return this.remove()
-    let diffCode = ::events.getEventDiffCode(this.event)
-    let unitTypeMask = ::events.getEventUnitTypesMask(this.event)
+    let diffCode = events.getEventDiffCode(this.event)
+    let unitTypeMask = events.getEventUnitTypesMask(this.event)
     let checkTutorUnitType = (stdMath.number_of_set_bits(unitTypeMask) == 1) ? stdMath.number_of_set_bits(unitTypeMask - 1) : null
     if (checkDiffTutorial(diffCode, checkTutorUnitType))
       return this.remove()
@@ -182,7 +184,7 @@ function canJoinEventForNewbies(event) {
 
   function joinStep5_cantJoinReason() {
     this.processStepName = "joinStep5_cantJoinReason"
-    let reasonData = ::events.getCantJoinReasonData(this.event, this.room, { isFullText = true })
+    let reasonData = events.getCantJoinReasonData(this.event, this.room, { isFullText = true })
     if (reasonData.checkStatus)
       return this.joinStep6_repairInfo()
 
@@ -192,13 +194,13 @@ function canJoinEventForNewbies(event) {
 
   function joinStep6_repairInfo() {
     this.processStepName = "joinStep6_repairInfo"
-    let repairInfo = ::events.getCountryRepairInfo(this.event, this.room, profileCountrySq.value)
+    let repairInfo = events.getCountryRepairInfo(this.event, this.room, profileCountrySq.value)
     ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep7_membersForQueue, false, this.remove)
   }
 
   function joinStep7_membersForQueue() {
     this.processStepName = "joinStep7_membersForQueue"
-    ::events.checkMembersForQueue(this.event, this.room,
+    events.checkMembersForQueue(this.event, this.room,
       Callback(@(membersData) this.joinStep8_joinQueue(membersData), this),
       Callback(this.remove, this)
     )
@@ -229,7 +231,7 @@ function canJoinEventForNewbies(event) {
 
   function checkEventTeamSize(ev) {
     let squadSize = g_squad_manager.getSquadSize()
-    let maxTeamSize = ::events.getMaxTeamSize(ev)
+    let maxTeamSize = events.getMaxTeamSize(ev)
     if (squadSize > maxTeamSize) {
       let locParams = {
         squadSize = squadSize.tostring()

@@ -3,7 +3,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let u = require("%sqStdLibs/helpers/u.nut")
-
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { buildTimeStr,  buildDateStrShort, isInTimerangeByUtcStrings,
   getTimestampFromStringUtc } = require("%scripts/time.nut")
@@ -62,7 +63,7 @@ let getSharedTourNameByEvent = @(economicName) economicName.split("_day")[0]
 
 function getEventByDay(tourId, dayNum, isTraining = false) {
  let matchingEventId = getMatchingEventId(tourId, dayNum, isTraining)
- return ::events.getEvent(matchingEventId)
+ return events.getEvent(matchingEventId)
 }
 
 function getTourParams(tour) {
@@ -170,7 +171,7 @@ function getBattlesNum(event) {
   if (!event)
     return null
 
-  let ticket = ::events.getEventActiveTicket(event)
+  let ticket = events.getEventActiveTicket(event)
   if (!ticket)
     return null
 
@@ -182,12 +183,12 @@ function getBattlesNum(event) {
 }
 
 function fetchLbData(event, cb, context) {
-  let newSelfRowRequest = ::events.getMainLbRequest(event)
-  ::events.requestSelfRow(
+  let newSelfRowRequest = events.getMainLbRequest(event)
+  events.requestSelfRow(
     newSelfRowRequest,
     "mini_lb_self",
     function (_self_row) {
-      ::events.requestLeaderboard(::events.getMainLbRequest(event),
+      events.requestLeaderboard(events.getMainLbRequest(event),
       "mini_lb_self", cb, context)
     }, this)
 }

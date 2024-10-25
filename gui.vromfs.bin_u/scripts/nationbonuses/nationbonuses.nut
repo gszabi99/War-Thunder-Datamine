@@ -8,6 +8,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
+let { isUnitInResearch } = require("%scripts/unit/unitInfo.nut")
 
 local unitsWithBonusData = null
 local nationBonusMarkState = null
@@ -37,7 +38,7 @@ function getUnitsWithNationBonuses() {
     let currentMaxRank = maxRanks[shopCountry]?[unitType.armyId] ?? 0
     maxRanks[shopCountry][unitType.armyId] <- max(currentMaxRank, rank)
 
-    if(!::isUnitInResearch(unit) || unit.isRecentlyReleased())
+    if(!isUnitInResearch(unit) || unit.isRecentlyReleased())
       continue
 
     let countryBonusesData = getBonusesCountryData(shopCountry)

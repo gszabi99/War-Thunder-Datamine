@@ -385,9 +385,6 @@ function getPlayerStatsFromBlk(blk) {
 
     icon = avatars.getIconById(blk?.icon)
 
-    aircrafts = []
-    crews = []
-
     //stats & leaderboards
     summary = isDataBlock(blk?.summary) ? convertBlk(blk.summary) : {}
     userstat = blk?.userstat ? getAirsStatsFromBlk(blk.userstat) : {}
@@ -428,16 +425,6 @@ function getPlayerStatsFromBlk(blk) {
     }
     player.countryStats[country] <- cData
   }
-
-  //aircrafts list
-  eachBlock(blk?.aircrafts, @(_, airName) player.aircrafts.append(airName))
-
-  //same with getCrewsList()
-  eachBlock(blk?.slots, function(crewBlk, country) {
-    let countryData = { country, crews = [] }
-    eachParam(crewBlk, @(_, aircraft) countryData.crews.append({ aircraft }))
-    player.crews.append(countryData)
-  })
 
   return player
 }

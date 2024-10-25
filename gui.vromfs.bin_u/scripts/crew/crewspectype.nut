@@ -139,8 +139,7 @@ crewSpecTypes = {
         foreach (item in page.items)
           if (item.isVisible(crewUnitType) && item.useSpecializations) {
             let skillCrewLevel = getSkillCrewLevel(item, specMul * getCrewMaxSkillValue(item))
-            let skillText = loc($"crew/{item.name}") + " "
-              + colorize("goodTextColor",$"+{skillCrewLevel}")
+            let skillText =  " ".concat(loc($"crew/{item.name}"), colorize("goodTextColor",$"+{skillCrewLevel}"))
             textsArray.append(skillText.replace(" ", nbsp))
           }
 
@@ -219,7 +218,7 @@ crewSpecTypes = {
 
         let reqLevelText = nextType.getReqLevelText(crew, unit)
         if (reqLevelText.len())
-          tooltipText += "\n" + reqLevelText
+          tooltipText = "\n".concat(tooltipText, reqLevelText)
         else {
           let specDescriptionPart = isShowExpUpgrade
             ? loc("crew/qualification/specDescriptionPart", {
@@ -232,7 +231,7 @@ crewSpecTypes = {
               trainCost = this.getUpgradeCostByCrewAndByUnit(crew, unit).tostring()
               descPart = specDescriptionPart
             })
-          tooltipText += "\n" + specDescription
+          tooltipText = "\n".concat(tooltipText, specDescription)
         }
       }
       if (isShowExpUpgrade) {
@@ -309,8 +308,8 @@ crewSpecTypes = {
       }
 
       if (this.isCrewTrained(crew, unit) || !this.hasPrevType()) {
-        view.tooltipText = loc("crew/trained") + loc("ui/colon")
-          + colorize("activeTextColor", this.getName())
+        view.tooltipText = "".concat(loc("crew/trained"), loc("ui/colon"),
+          colorize("activeTextColor", this.getName()))
       }
       else {
         let curSpecType = getSpecTypeByCrewAndUnit(crew, unit)
@@ -329,7 +328,7 @@ crewSpecTypes = {
             curSpecType.code == -1 ? 0 : curSpecType.code) //show bonuses relatively basic spec for not trained unit
         })
       }
-      view.tooltipText += "\n\n" + loc("crew/qualification/tooltip")
+      view.tooltipText = "\n\n".concat(view.tooltipText, loc("crew/qualification/tooltip"))
 
       return handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
     }

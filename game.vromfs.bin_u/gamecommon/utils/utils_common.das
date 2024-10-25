@@ -95,6 +95,18 @@ def foreach_weapon(weapon_triggers : auto implicit ==const; groups; blk : block<
         invoke(blk, w)
 
 [generic]
+def foreach_weapon_by_trigger_group(var weapon_triggers : auto implicit ==const; group; blk : block<(var weapon : Weapon?#) : void>)
+  get_weapons_by_trigger_group_for_edit(weapon_triggers, group) <| $(var weapons : array<Weapon?>#)
+    for w in weapons
+      invoke(blk, w)
+
+[generic]
+def foreach_weapon_by_trigger_group(weapon_triggers : auto implicit ==const; group; blk : block<(weapon : Weapon const? const#) : void>)
+  get_weapons_by_trigger_group(weapon_triggers, group) <| $(weapons : array<Weapon const? const> const#)
+    for w in weapons
+      invoke(blk, w)
+
+[generic]
 def foreach_torpedo_gun(var weapon_triggers : auto implicit ==const; blk : block<(var weapon : Weapon?#) : void>)
   get_weapons_by_trigger_group_for_edit(weapon_triggers, WeaponTriggerGroups TRIGGER_GROUP_TORPEDOES) <| $(var weapons : array<Weapon?>#)
     for w in weapons

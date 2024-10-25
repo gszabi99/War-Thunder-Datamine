@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
@@ -10,7 +12,7 @@ let UnitsDeck = class (RuleBase) {
   needLeftRespawnOnSlots = true
 
   function getLeftRespawns() {
-    return ::RESPAWNS_UNLIMITED
+    return RESPAWNS_UNLIMITED
   }
 
   function getRespawnInfoTextForUnitInfo(unit) {
@@ -30,7 +32,7 @@ let UnitsDeck = class (RuleBase) {
     if (!unit)
       return 0
 
-    return teamDataBlk?.limitedUnits?[unit.name] ?? ::RESPAWNS_UNLIMITED
+    return teamDataBlk?.limitedUnits?[unit.name] ?? RESPAWNS_UNLIMITED
   }
 
   function getSpecialCantRespawnMessage(unit) {

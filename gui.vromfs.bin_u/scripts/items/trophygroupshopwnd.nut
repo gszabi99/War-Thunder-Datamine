@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_trophy_info
 from "%scripts/dagui_library.nut" import *
 
@@ -69,8 +68,8 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(headerObj))
       return
 
-    let restText = getTblValue("openCount", this.trophyInfo, 0) + loc("ui/slash") + this.trophy.numTotal
-    headerObj.setValue(loc("mainmenu/itemReceived") + loc("ui/parentheses/space", { text = restText }))
+    let restText = "".concat(getTblValue("openCount", this.trophyInfo, 0), loc("ui/slash"), this.trophy.numTotal)
+    headerObj.setValue("".concat(loc("mainmenu/itemReceived"), loc("ui/parentheses/space", { text = restText })))
   }
 
   function getMaxSizeInItems(reduceSize = false) {
@@ -127,7 +126,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     for (local i = 0; i < this.trophy.numTotal; i++) {
       let isOpened = this.isTrophyPurchased(i)
-      view.trophyItems += handyman.renderCached(("%gui/items/item.tpl"), {
+      view.trophyItems = "".concat(view.trophyItems, handyman.renderCached(("%gui/items/item.tpl"), {
         items = this.trophy.getViewData({
           showPrice = false,
           contentIcon = false,
@@ -137,7 +136,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
           itemHighlight = !isOpened,
           isItemLocked = isOpened,
           itemIndex = i.tostring()
-        }) })
+        }) }))
     }
 
     let data = handyman.renderCached(this.sceneTplName, view)

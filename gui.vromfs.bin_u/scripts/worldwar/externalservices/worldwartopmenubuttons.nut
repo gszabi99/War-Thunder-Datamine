@@ -10,12 +10,13 @@ let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut"
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
 let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 
 let template = {
   category = -1
-  value = @() ::g_world_war_render.isCategoryEnabled(this.category)
-  onChangeValueFunc = @(value) ::g_world_war_render.setCategory(this.category, value)
-  isHidden = @(...) !::g_world_war_render.isCategoryVisible(this.category)
+  value = @() g_world_war_render.isCategoryEnabled(this.category)
+  onChangeValueFunc = @(value) g_world_war_render.setCategory(this.category, value)
+  isHidden = @(...) !g_world_war_render.isCategoryVisible(this.category)
   elementType = TOP_MENU_ELEMENT_TYPE.CHECKBOX
 }
 

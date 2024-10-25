@@ -154,7 +154,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (fieldId, func in armyView.getRedrawArmyStatusData()) {
       let redrawFieldObj = this.scene.findObject(fieldId)
       if (checkObj(redrawFieldObj))
-        redrawFieldObj.setValue(func.call(armyView))
+        redrawFieldObj.setValue(func.call(armyView) ?? "")
     }
   }
 

@@ -1,0 +1,246 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "bdt_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/air_afghan.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": true
+    },
+    "spectator_points": {}
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/enduring_confrontation/bdt_bases_destroy_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_aaa_bases/bdt_t1_ussr_rank_03.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/units_sets/land_sets_aaa_bases/bdt_t2_usa_rank_03.blk",
+        "rankRange": [
+          9,
+          13
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "bdt_part_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "set max bases amount +1"
+          },
+          {
+            "value": "enable self restarting for template"
+          },
+          {
+            "value": "increase one-moment bases amount"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetInt": [
+          {
+            "value": 0,
+            "var": "bdt_t1_total_bases_max_count",
+            "input_var": "base_total"
+          },
+          {
+            "value": 0,
+            "var": "bdt_t2_total_bases_max_count",
+            "input_var": "base_total"
+          },
+          {
+            "value": 0,
+            "var": [
+              "bdt_t1_active_bases_max_count",
+              "bdt_t2_active_bases_max_count"
+            ],
+            "input_var": "base_total"
+          },
+          {
+            "value": 1,
+            "var": "bdt_delay_timer"
+          },
+          {
+            "value": 0,
+            "var": "bdt_respawn_time",
+            "input_var": "target_respawn_time"
+          }
+        ],
+        "varSetBool": [
+          {
+            "value": true,
+            "var": "bdt_self_restart"
+          },
+          {
+            "value": true,
+            "var": "bMirrorSpawn"
+          }
+        ],
+        "varSetString": {
+          "value": "aconq",
+          "var": "bdt_game_mode"
+        }
+      },
+      "else_actions": {}
+    },
+    "bomb_areas_mid_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetReal": {
+          "value": 500.0,
+          "var": [
+            "bdt_t1_min_zone_distance",
+            "bdt_t2_min_zone_distance"
+          ]
+        },
+        "varSetString": {
+          "value": "mid_",
+          "var": "bdt_base_name_suffix"
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "mid_bases_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          22497.7,
+          0.0,
+          0.000457716
+        ],
+        [
+          0.0,
+          12000.0,
+          0.0
+        ],
+        [
+          -0.000244141,
+          0.0,
+          12000.0
+        ],
+        [
+          -3963.9,
+          648.184,
+          -15194.7
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

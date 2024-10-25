@@ -2,14 +2,13 @@ from "%scripts/dagui_library.nut" import *
 
 let { regexp } = require("string")
 let DataBlock  = require("DataBlock")
-let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 /**
  * Functions to work with controls presets
  */
 
-let stdPresetPathPrefix = $"{controlsPresetConfigPath.value}config/hotkeys/hotkey."
+let stdPresetPathPrefix = "config/hotkeys/hotkey."
 let presetFileNameExtention = ".blk"
 let versionRegExp = regexp(@"_ver(\d+)$")
 let versionDigits = regexp(@"\d+$")
@@ -125,7 +124,7 @@ function _handleVersion(preset) {
   function getControlsPresetsList() {
     if (this.presetsListCached == null) {
       let blk = DataBlock()
-      blk.load($"{controlsPresetConfigPath.value}config/hotkeys/list.blk")
+      blk.load("config/hotkeys/list.blk")
       local platform = isPlatformSteamDeck ? "steamdeck" : platformId
       this.presetsListCached = (blk?[platform] != null)
         ? blk[platform] % "preset"

@@ -11,7 +11,7 @@ let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, isUnitBroken } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -85,7 +85,7 @@ let CrewTakeUnitProcess = class {
 
       //we cant make slotbar invalid by add crew to new hired crew
       let isInvalidCrewsAllowed = this.crew == null || ::SessionLobby.isInvalidCrewsAllowed()
-      let isCurUnitAllowed = this.unit && ::SessionLobby.isUnitAllowed(this.unit) && !::isUnitBroken(this.unit)
+      let isCurUnitAllowed = this.unit && ::SessionLobby.isUnitAllowed(this.unit) && !isUnitBroken(this.unit)
       let needCheckAllowed = !isInvalidCrewsAllowed  && (!this.unit || !isCurUnitAllowed)
       let needCheckRequired = !isInvalidCrewsAllowed && ::SessionLobby.hasUnitRequirements()
         && (!isCurUnitAllowed || !::SessionLobby.isUnitRequired(this.unit))
@@ -103,7 +103,7 @@ let CrewTakeUnitProcess = class {
             if (!cUnit)
               continue
             hasUnit = true
-            let isAllowed = ::SessionLobby.isUnitAllowed(cUnit) && !::isUnitBroken(cUnit)
+            let isAllowed = ::SessionLobby.isUnitAllowed(cUnit) && !isUnitBroken(cUnit)
             hasAllowedUnit = hasAllowedUnit || isAllowed
             hasRequiredUnit = hasRequiredUnit || (isAllowed && ::SessionLobby.isUnitRequired(cUnit))
             if (hasRequiredUnit && hasAllowedUnit)

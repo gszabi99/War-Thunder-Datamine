@@ -2,13 +2,13 @@ from "%scripts/dagui_library.nut" import *
 
 let { round } = require("math")
 
-local function isTripleHead(sw = null, sh = null) {
+function isTripleHead(sw = null, sh = null) {
   sw = sw ?? screen_width()
   sh = sh ?? screen_height()
   return sw >= sh * 3 * 5 / 4
 }
 
-local function isUltraWide(sw = null, sh = null) {
+function isUltraWide(sw = null, sh = null) {
   sw = sw ?? screen_width()
   sh = sh ?? screen_height()
   let ratio = 1.0 * sw / sh
@@ -27,13 +27,13 @@ function getMenuWidthLimit() {
   return isTripleHead() ? (1.0 / 3) : 1.0
 }
 
-local function getFinalSafearea(safearea, widthLimit) {
+function getFinalSafearea(safearea, widthLimit) {
   if (widthLimit < 1.0 && safearea < 1.0 && isTripleHead())
     widthLimit = widthLimit * safearea
   return [ min(safearea, widthLimit), safearea ]
 }
 
-local function getMainScreenSizePx(sw = null, sh = null) {
+function getMainScreenSizePx(sw = null, sh = null) {
   sw = sw ?? screen_width()
   sh = sh ?? screen_height()
   if (isTripleHead(sw, sh))

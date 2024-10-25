@@ -159,7 +159,7 @@ let Wager = class (BaseItem) {
         text += ", "
       let rewardDataType = this.getRewardDataTypeByName(rewardDataTypeName)
       let rewardValue = this.getRewardValueByNumWins(rewardParams, rewData.winCount, stakeValue)
-      text += decimalFormat(rewardValue) + loc(rewardDataType.icon)
+      text = "".concat(text, decimalFormat(rewardValue), loc(rewardDataType.icon))
     }
     return text
   }
@@ -279,7 +279,7 @@ let Wager = class (BaseItem) {
     let layers = []
 
     if (this.reqWinsNum && this.reqWinsNum > 1) {
-      let textLayerId = this.getBasePartOfLayerId(small) + "_" + this.defaultTextType
+      let textLayerId =  "_".concat(this.getBasePartOfLayerId(small), this.defaultTextType)
       let textLayerCfg = LayersIcon.findLayerCfg(textLayerId)
       if (textLayerCfg) {
         textLayerCfg.id <- textLayerId
@@ -309,7 +309,7 @@ let Wager = class (BaseItem) {
 
   function getAvailableStakeText() {
     if (this.curWager >= 0)
-      return loc("items/wager/name") + loc("ui/colon") + Cost(this.curWager).getTextAccordingToBalance()
+      return "".concat(loc("items/wager/name"), loc("ui/colon"), Cost(this.curWager).getTextAccordingToBalance())
     return loc("items/wager/notAvailable")
   }
 
@@ -355,11 +355,11 @@ let Wager = class (BaseItem) {
         Cost(this.minWager).toStringWithParams(costParam),
         Cost(this.maxWager).toStringWithParams(costParam))
     if (stakeText != "")
-      desc += loc("items/wager/stake", { stakeText = stakeText }) + "\n"
+      desc = "".concat(desc, loc("items/wager/stake", { stakeText = stakeText }), "\n")
 
     let expireText = this.getCurExpireTimeText()
     if (expireText != "")
-      desc += "\n" + expireText
+      desc = "\n".concat(desc, expireText)
 
     if (this.winConditions != null && this.winConditions.len() > 0
         && getTblValue("showLongMarkupPart", customParams, true)) {
@@ -440,7 +440,7 @@ let Wager = class (BaseItem) {
   function getDescriptionAboveTable() {
     local desc = ""
     if (this.winParamsData != null && this.winParamsData.len() > 0)
-      desc += colorize("grayOptionColor", loc("items/wager/winParams")) + "\n"
+      desc = "".concat(desc, colorize("grayOptionColor", loc("items/wager/winParams")), "\n")
 
     return desc
   }
@@ -448,8 +448,8 @@ let Wager = class (BaseItem) {
   function getDescriptionUnderTable() {
     if (this.conditions == null || this.conditions.len() == 0)
       return ""
-    return colorize("grayOptionColor", loc("items/wager/conditions")) +
-      "\n" + getFullUnlockCondsDesc(this.conditions)
+    return "\n".concat(colorize("grayOptionColor",
+      loc("items/wager/conditions")), getFullUnlockCondsDesc(this.conditions))
   }
 
   function getMainActionData(isShort = false, params = {}) {
@@ -512,7 +512,7 @@ let Wager = class (BaseItem) {
     }
 
     local bodyText = format(loc("msgbox/conflictingWager"), this.getWagerDescriptionForMessageBox(this.uids[0]))
-    bodyText += "\n" + this.getWagerDescriptionForMessageBox(get_current_wager_uid())
+    bodyText = "\n".concat(bodyText, this.getWagerDescriptionForMessageBox(get_current_wager_uid()))
     let item = this
     scene_msg_box("conflicting_wager_message_box", null, bodyText,
       [

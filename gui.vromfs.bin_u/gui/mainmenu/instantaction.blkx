@@ -31,51 +31,32 @@
         "pos": "0.5sw-0.5w, 2@topBarHeight + 0.018@sf - @bh",
         "position": "absolute",
         "flow": "vertical",
-        "Button_text": [
-          {
-            "id": "game_modes_not_loaded_suppot_link",
-            "position": "relative",
-            "pos": "0.5pw-0.5w, 0",
-            "visualStyle": [
-              "noBgr",
-              "noFrame"
-            ],
-            "isTextArea": "yes",
-            "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
-            "text": "#mainmenu/gamemodesNotLoaded/support_message",
-            "display": "hide",
-            "isLink": "yes",
-            "on_click": "onMsgLink",
-            "behaviour": "bhvUpdateByWatched",
-            "focus_border": {},
-            "underline": {}
-          },
-          {
-            "id": "btn_main_menu_showRequests",
-            "position": "relative",
-            "pos": "0.5pw-0.5w, 0",
-            "visualStyle": "noBgr",
-            "isTextArea": "yes",
-            "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
-            "display": "hide",
-            "on_click": "on_show_clan_requests",
-            "focus_border": {}
-          },
-          {
-            "id": "game_mode_notice",
-            "position": "relative",
-            "pos": "0.5pw-0.5w, 0",
-            "visualStyle": "noBgr",
-            "isTextArea": "yes",
-            "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
-            "display": "hide",
-            "btnName": "R3",
-            "on_click": "onGMNoticeClick",
-            "focus_border": {},
-            "ButtonImg": {}
-          }
-        ],
         "advertDiv": [
+          {
+            "id": "game_modes_not_loaded_suppot",
+            "position": "relative",
+            "pos": "50%pw-50%w, 50%ph-50%h",
+            "width": "0.55sw",
+            "padding": "10@sf/@pf, 5@sf/@pf, 10@sf/@pf, 10@sf/@pf",
+            "display": "hide",
+            "css-hier-invalidate": "yes",
+            "behaviour": "bhvUpdateByWatched",
+            "Button_text": {
+              "id": "game_modes_not_loaded_suppot_link",
+              "position": "relative",
+              "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+              "visualStyle": "noFrame",
+              "externalLink": "yes",
+              "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
+              "isLink": "yes",
+              "on_click": "onMsgLink",
+              "focus_border": {},
+              "btnText": {
+                "text": "#mainmenu/gamemodesNotLoaded/support_message",
+                "underline": {}
+              }
+            }
+          },
           {
             "id": "topmenu_advert",
             "pos": "50%pw-50%w, 0",
@@ -124,7 +105,33 @@
           "tooltip": "#mainmenu/update_avail_popup_text",
           "input-transparent": "yes",
           "display": "hide"
-        }
+        },
+        "Button_text": [
+          {
+            "id": "btn_main_menu_showRequests",
+            "position": "relative",
+            "pos": "0.5pw-0.5w, 0",
+            "visualStyle": "noBgr",
+            "isTextArea": "yes",
+            "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
+            "display": "hide",
+            "on_click": "on_show_clan_requests",
+            "focus_border": {}
+          },
+          {
+            "id": "game_mode_notice",
+            "position": "relative",
+            "pos": "0.5pw-0.5w, 0",
+            "visualStyle": "noBgr",
+            "isTextArea": "yes",
+            "max-width": "0.5sw+0.5@slotbarWidthFull-0.01@sf",
+            "display": "hide",
+            "btnName": "R3",
+            "on_click": "onGMNoticeClick",
+            "focus_border": {},
+            "ButtonImg": {}
+          }
+        ]
       },
       {
         "pos": "50%pw-50%w, @battleBtnBottomOffset-1.5@battleButtonHeight-h",

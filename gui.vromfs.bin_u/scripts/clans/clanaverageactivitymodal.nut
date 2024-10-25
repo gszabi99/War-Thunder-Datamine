@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_exp_boost
 from "%scripts/dagui_library.nut" import *
 
@@ -64,29 +63,26 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
         if (hasBoost)
           descrArray.append(loc("clan/activity_reward/nowBoost",
             { bonus = colorize("goodTextColor",
-              "+" + measureType.PERCENT_FLOAT.getMeasureUnitsText(expBoost)) }))
+              $"+{measureType.PERCENT_FLOAT.getMeasureUnitsText(expBoost)}") }))
         descrArray.append(isAllVehiclesResearched
           ? loc("clan/activity/progress/desc_all_researched")
           : loc("clan/activity/progress/desc"))
 
         let markerPosMyExp = min(100 * myExp / limitClanActivity, 100)
 
-        let pxCountToEdgeWnd = to_pixels((1 - markerPosMyExp / 100.0)
-          + "*0.4@scrn_tgt + 1@tablePad + 5@blockInterval")
-        let myExpTextSize = daguiFonts.getStringWidthPx(shortTextFromNum(roundMyExp)
-            + (hasBoost ? (" + " + shortTextFromNum((roundMyExp * expBoost).tointeger())) : ""),
-          "fontNormal", this.guiScene)
+        let pxCountToEdgeWnd = to_pixels($"{1 - markerPosMyExp / 100.0}*0.4@scrn_tgt + 1@tablePad + 5@blockInterval")
+        let expBoostedShortText = shortTextFromNum((roundMyExp * expBoost).tointeger())
+        let myExpText = $"{shortTextFromNum(roundMyExp)}{hasBoost ? $" + {expBoostedShortText}" : ""}"
+        let myExpTextSize = daguiFonts.getStringWidthPx(myExpText, "fontNormal", this.guiScene)
         let offsetMyExpText = min(pxCountToEdgeWnd - myExpTextSize / 2, 0)
         let myExpShortText = colorize("activeTextColor",
-          shortTextFromNum(roundMyExp) + (hasBoost ? (" + " + colorize("goodTextColor",
-          shortTextFromNum((roundMyExp * expBoost).tointeger()))) : ""))
-        let myExpFullText = colorize("activeTextColor",
-          roundMyExp + (hasBoost ? (" + " + colorize("goodTextColor",
-            round((roundMyExp * expBoost).tointeger()))) : ""))
+          $"{shortTextFromNum(roundMyExp)}{hasBoost ? $" + {colorize("goodTextColor", expBoostedShortText)}" : ""}")
+        let expBoostStr = hasBoost ? $" + {colorize("goodTextColor", round((roundMyExp * expBoost).tointeger()))}" : ""
+        let myExpFullText = colorize("activeTextColor", $"{roundMyExp}{expBoostStr}")
 
         view = {
           clan_activity_header_text = loc("clan/my_activity_in_period",
-            { activity = myActivity.tostring() + loc("ui/slash") + maxMemberActivity.tostring() })
+            { activity = "".concat(myActivity.tostring(), loc("ui/slash"), maxMemberActivity.tostring()) })
           clan_activity_description = "\n".join(descrArray, true)
           rows = [
             {
@@ -101,7 +97,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
                 PROGRESS_PARAMS.__merge({
                   value = min(limit, percentClanActivity) * 10
                   markerPos = min(limit, percentClanActivity)
-                  text = round(min(limit, percentClanActivity)) + "%"
+                  text = $"{round(min(limit, percentClanActivity))}%"
                 })
               ]
             }
@@ -115,7 +111,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
                   text = shortTextFromNum(limitClanActivity)
                   rotation = 180
                   tooltip = shortTextFromNum(limitClanActivity) != limitClanActivity.tostring()
-                    ? loc("leaderboards/exactValue") + loc("ui/colon") + limitClanActivity
+                    ? "".concat(loc("leaderboards/exactValue"), loc("ui/colon"), limitClanActivity)
                     : ""
                 })
                 PROGRESS_PARAMS.__merge({
@@ -125,7 +121,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
                   textPos = $"0.5pw - 0.5w + {offsetMyExpText}"
                   text = myExpShortText
                   tooltip = myExpFullText != myExpShortText
-                    ? loc("leaderboards/exactValue") + loc("ui/colon") + myExpFullText
+                    ? "".concat(loc("leaderboards/exactValue"), loc("ui/colon"), myExpFullText)
                     : ""
                 })
               ]
@@ -142,7 +138,7 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
                 PROGRESS_PARAMS.__merge({
                   value = min(limit, percentMemberActivity) * 10
                   markerPos = min(limit, percentMemberActivity)
-                  text = round(min(limit, percentMemberActivity)) + "%"
+                  text = $"{round(min(limit, percentMemberActivity))}%"
                 })
               ]
             }

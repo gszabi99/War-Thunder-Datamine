@@ -8,6 +8,8 @@
  */
 
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_charserver_time_sec } = require("chard")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -86,18 +88,18 @@ function tryControlsOverride() {
   ]
 
   let tryBtnIdOrder = [
-    ::SHORTCUT.GAMEPAD_L2 // LT
-    ::SHORTCUT.GAMEPAD_L1 // LB // This one will be chosen for our uncustomized presets.
-    ::SHORTCUT.GAMEPAD_R1 // RB
-    ::SHORTCUT.GAMEPAD_R2 // RT
-    ::SHORTCUT.GAMEPAD_LSTICK_PRESS
-    ::SHORTCUT.GAMEPAD_RSTICK_PRESS
-    ::SHORTCUT.GAMEPAD_Y
-    ::SHORTCUT.GAMEPAD_X
-    ::SHORTCUT.GAMEPAD_UP
-    ::SHORTCUT.GAMEPAD_DOWN
-    ::SHORTCUT.GAMEPAD_LEFT
-    ::SHORTCUT.GAMEPAD_RIGHT
+    SHORTCUT.GAMEPAD_L2 // LT
+    SHORTCUT.GAMEPAD_L1 // LB // This one will be chosen for our uncustomized presets.
+    SHORTCUT.GAMEPAD_R1 // RB
+    SHORTCUT.GAMEPAD_R2 // RT
+    SHORTCUT.GAMEPAD_LSTICK_PRESS
+    SHORTCUT.GAMEPAD_RSTICK_PRESS
+    SHORTCUT.GAMEPAD_Y
+    SHORTCUT.GAMEPAD_X
+    SHORTCUT.GAMEPAD_UP
+    SHORTCUT.GAMEPAD_DOWN
+    SHORTCUT.GAMEPAD_LEFT
+    SHORTCUT.GAMEPAD_RIGHT
   ].map(@(b) b.btn[0]) // Mapped to integer buttonIds
 
   foreach (hotkeyId in preserveHotkeys) {

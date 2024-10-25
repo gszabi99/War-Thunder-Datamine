@@ -7,6 +7,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let { wwUpdateHoverArmyName } = require("worldwar")
+let { hoverArmyByName } = require("%scripts/worldWar/wwMapDataBridge.nut")
 
 gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -194,11 +195,13 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onHoverArmyItem(obj) {
     wwUpdateHoverArmyName(obj.armyName)
+    hoverArmyByName(obj.armyName)
     wwEvent("HoverArmyItem", { armyName = obj.armyName })
   }
 
   function onHoverLostArmyItem(_obj) {
     wwUpdateHoverArmyName("")
+    hoverArmyByName("")
     wwEvent("HoverLostArmyItem", { armyName = null })
   }
 

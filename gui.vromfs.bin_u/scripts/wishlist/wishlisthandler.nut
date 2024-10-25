@@ -14,7 +14,7 @@ let { getWishList, getMaxWishListSize } = require("chard")
 let { requestRemoveFromWishlist } = require("%scripts/wishlist/wishlistManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry, getEsUnitType, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, getEsUnitType, canBuyUnit, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { getUnitTooltipImage, getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
@@ -97,7 +97,7 @@ function getUnitButtonType(unit, friendUid) {
   }
 
   let canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
-  let unitPrice = canBuyNotResearchedUnit ? unit.getOpenCost() : ::getUnitCost(unit)
+  let unitPrice = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
 
   let hasUseCouponButton = unit.name in unitCoupons
   let hasMarketPlaceButton = !hasUseCouponButton && buyTypes.contains("marketPlace")

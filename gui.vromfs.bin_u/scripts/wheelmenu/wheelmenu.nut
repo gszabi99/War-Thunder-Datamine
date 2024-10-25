@@ -22,16 +22,15 @@ let { getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo,
 const ITEMS_PER_PAGE = 8
 
 function guiStartWheelmenu(params, isUpdate = false) {
-  let defaultParams = {
+  params = {
     menu = []
     callbackFunc = null
     owner = null
     mouseEnabled    = false
     axisEnabled     = true
     contentTemplate = null
-  }
+  }.__update(params)
 
-  ::inherit_table(params, defaultParams)
   local handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
   if (handler && isUpdate)
     handler.updateContent(params)

@@ -1,7 +1,9 @@
 from "%scripts/dagui_natives.nut" import get_level_texture, map_to_location
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let u = require("%sqStdLibs/helpers/u.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 let { debug_dump_stack } = require("dagor.debug")
 let { split_by_chars, format } = require("string")
 let regexp2 = require("regexp2")
@@ -145,7 +147,7 @@ function getMapsListImpl(curEvent) {
   let dislikeList = banData.disliked
   let likeList = banData.liked
   local list = []
-  let hasTankOrShip =  (::events.getEventUnitTypesMask(curEvent)
+  let hasTankOrShip =  (events.getEventUnitTypesMask(curEvent)
     & (unitTypes.TANK.bit | unitTypes.SHIP.bit)) != 0
   let missionToLevelTable = {}
   if (isLevelBanMode)

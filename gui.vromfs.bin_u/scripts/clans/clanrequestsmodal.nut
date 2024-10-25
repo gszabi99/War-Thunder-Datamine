@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -62,7 +61,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let headerRow = [];
     foreach (item in ::clan_candidate_list) {
-      let name = "#clan/" + (item.id == "date" ? "requestDate" : item.id);
+      let name = $"#clan/{item.id == "date" ? "requestDate" : item.id}"
       headerRow.append({
         id = item.id,
         text = name,
@@ -75,7 +74,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let startIdx = this.curPage * this.rowsPerPage
     let lastIdx = min((this.curPage + 1) * this.rowsPerPage, this.rowTexts.len())
     for (local i = startIdx; i < lastIdx; i++) {
-      let rowName = "row_" + i;
+      let rowName = $"row_{i}";
       let rowData = [];
 
       foreach (item in ::clan_candidate_list) {
@@ -84,7 +83,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
           text = "",
         });
       }
-      data += ::buildTableRow(rowName, rowData, (i - startIdx) % 2 == 0, "");
+      data = "".concat(data, ::buildTableRow(rowName, rowData, (i - startIdx) % 2 == 0, ""))
     }
 
     this.guiScene.setUpdatesEnabled(false, false);

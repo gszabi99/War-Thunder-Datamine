@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { Cost } = require("%scripts/money.nut")
+let { zero_money, Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let inventory = require("inventory")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -297,8 +297,8 @@ let class InventoryClient {
     if (!url)
       return null
 
-    return $"auto_login auto_local sso_service=any {url}" + "?a=" + APP_ID +
-      (steam_is_running() ? $"&app_id={steam_get_app_id()}&steam_id={steam_get_my_id()}" : "")
+    return "".concat($"auto_login auto_local sso_service=any {url}", "?a=", APP_ID,
+      (steam_is_running() ? $"&app_id={steam_get_app_id()}&steam_id={steam_get_my_id()}" : ""))
   }
 
   function getMarketplaceItemUrl(itemdefid, _itemid = null) {
@@ -504,7 +504,7 @@ let class InventoryClient {
 
   getItems             = @() this.items
   getItemdefs          = @() this.itemdefs
-  getItemCost          = @(itemdefid) prices.value?[itemdefid] ?? ::zero_money
+  getItemCost          = @(itemdefid) prices.value?[itemdefid] ?? zero_money
 
   function addItemDefIdToRequest(itemdefid) {
     if (itemdefid == null || itemdefid in this.itemdefs || itemdefid in this.itemsForRequest)

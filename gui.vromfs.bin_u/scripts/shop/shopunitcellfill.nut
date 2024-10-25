@@ -19,7 +19,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGroup, canResearchUnit,
-  bit_unit_status, canBuyUnit
+  bit_unit_status, canBuyUnit, getUnitReqExp, getUnitExp, isUnitInResearch, isUnitBroken
 } = require("%scripts/unit/unitInfo.nut")
 let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
@@ -396,7 +396,7 @@ let getUnitStatusTbl = function(unit, params) {
     unitRankText        = getUnitRankText(unit, showBR, getEdiffFunc())
     isInactive          = (bit_unit_status.disabled & bitStatus) != 0
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
-    isBroken            = ::isUnitBroken(unit)
+    isBroken            = isUnitBroken(unit)
     isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
       && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo
     needInService       = isUsable
@@ -416,7 +416,7 @@ let getUnitStatusTbl = function(unit, params) {
   if (canBuyNotResearched(unit)) {
     if(!::is_in_clan()) {
       res.priceText = unit.getOpenCost().getTextAccordingToBalance()
-      params.hideProgress <- ::getUnitExp(unit) > 0
+      params.hideProgress <- getUnitExp(unit) > 0
     }
     else if(::is_in_clan() && (bitStatus & bit_unit_status.inResearch) == 0 ) {
       res.priceText = unit.getOpenCost().getTextAccordingToBalance()
@@ -424,7 +424,7 @@ let getUnitStatusTbl = function(unit, params) {
     }
   }
 
-  if (forceNotInResearch || !::isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
+  if (forceNotInResearch || !isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
     if (showConsoleButtons.value)
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
     else
@@ -437,16 +437,16 @@ function getUnitResearchStatusTbl(unit, params) {
     return {}
   if (unit.isBought() || !canResearchUnit(unit))
     return {}
-  let unitReqExp = ::getUnitReqExp(unit)
+  let unitReqExp = getUnitReqExp(unit)
   if (unitReqExp <= 0)
     return {}
 
   let { forceNotInResearch = false, flushExp = 0, unitTypeName,
     nationBonusBattlesRemain, maxRank, hasNationBonus} = params
 
-  let isVehicleInResearch = ::isUnitInResearch(unit) && !forceNotInResearch
+  let isVehicleInResearch = isUnitInResearch(unit) && !forceNotInResearch
   let isSquadronVehicle = unit.isSquadronVehicle()
-  let unitCurExp = ::getUnitExp(unit)
+  let unitCurExp = getUnitExp(unit)
   let diffExp = isSquadronVehicle ? min(clan_get_exp(), unitReqExp - unitCurExp) : 0
   let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
   if (isLockedSquadronVehicle && unitCurExp <= 0)
@@ -532,7 +532,7 @@ function getGroupStatusTbl(group, params) {
   local markerHolderId     = ""
 
   foreach (unit in unitsList) {
-    let isInResearch = !forceNotInResearch && ::isUnitInResearch(unit)
+    let isInResearch = !forceNotInResearch && isUnitInResearch(unit)
     let isUsable = ::isUnitUsable(unit)
 
     if (isInResearch || (canResearchUnit(unit) && !researchingUnit)) {

@@ -15,7 +15,6 @@ let globalEnv = require("globalEnv")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let controlsPresetConfigPath = require("%scripts/controls/controlsPresetConfigPath.nut")
 let { getHelpPreviewHandler } = require("%scripts/help/helpPreview.nut")
 let { recomendedControlPresets, getControlsPresetBySelectedType
 } = require("%scripts/controls/controlsUtils.nut")
@@ -465,7 +464,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (item.type == CONTROL_TYPE.AXIS)
       return $"controls/{item.id}"
     else if ("optionType" in item)
-      return "options/" + ::get_option(item.optionType).id
+      return $"options/{::get_option(item.optionType).id}"
 
     return $"hotkeys/{item.id}"
   }
@@ -708,7 +707,9 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
         cantBeEmpty = false
       })
 
-    local assignText = axisAssignText + ((buttonAssignText == "" || axisAssignText == "") ? "" : loc("ui/semicolon")) + buttonAssignText
+    local assignText = "".concat(axisAssignText,
+      (buttonAssignText == "" || axisAssignText == "") ? "" : loc("ui/semicolon"),
+      buttonAssignText)
     if (assignText == "")
       assignText = "---"
 
@@ -1115,7 +1116,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
     local actionText = ""
     foreach (binding in curBinding)
-      actionText += ((actionText == "") ? "" : ", ") + loc(this.getItemName(binding))
+      actionText = "".concat(actionText, actionText == "" ? "" : ", ", loc(this.getItemName(binding)))
     let msg = loc("hotkeys/msg/unbind_axis_question", {
       button = this.curBtnText, action = actionText
     })
@@ -1294,9 +1295,9 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       value = -value
 
     if (this.isAxisVertical)
-      obj.pos = "0.5pw-0.5w, " + format("%.3f(ph - h)", ((32000 - value).tofloat() / 64000))
+      obj.pos = "".concat("0.5pw-0.5w, ", format("%.3f(ph - h)", ((32000 - value).tofloat() / 64000)))
     else
-      obj.pos = format("%.3f(pw - w)", ((value + 32000).tofloat() / 64000)) + ", 0.5ph- 0.5h"
+      obj.pos = "".concat(format("%.3f(pw - w)", ((value + 32000).tofloat() / 64000)), ", 0.5ph- 0.5h")
   }
 
   function initAxisPresetup(fullInit = true) {
@@ -1478,7 +1479,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
         return
       }
 
-      let presetPath = ($"{controlsPresetConfigPath.value}config/hotkeys/hotkey.{this.presetSelected}.blk")
+      let presetPath = ($"config/hotkeys/hotkey.{this.presetSelected}.blk")
       let previewPreset = ::ControlsPreset(presetPath)
       let currentPreset = ::g_controls_manager.getCurPreset()
 

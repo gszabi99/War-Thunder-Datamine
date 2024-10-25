@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
+
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -81,7 +83,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
         obj = [presetObj]
         text = this.createMessageWhithUnitType()
         actionType = tutorAction.OBJ_CLICK
-        shortcut = ::SHORTCUT.GAMEPAD_X
+        shortcut = SHORTCUT.GAMEPAD_X
         cb = Callback(this.onSlotbarPresetSelect, this)
         keepEnv = true
       }]
@@ -95,7 +97,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
         obj = [presetsButtonObj]
         text = loc("slotbarPresetsTutorial/openWindow")
         actionType = tutorAction.OBJ_CLICK
-        shortcut = ::SHORTCUT.GAMEPAD_X
+        shortcut = SHORTCUT.GAMEPAD_X
         cb = Callback(this.onChooseSlotbarPresetWnd_Open, this)
         keepEnv = true
       }]
@@ -135,14 +137,14 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       obj = [presetObj]
       text = this.createMessageWhithUnitType()
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::SHORTCUT.GAMEPAD_X
+      shortcut = SHORTCUT.GAMEPAD_X
       cb = Callback(this.onChooseSlotbarPresetWnd_Select, this)
       keepEnv = true
     } {
       obj = [applyButtonObj]
       text = loc("slotbarPresetsTutorial/pressApplyButton")
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::SHORTCUT.GAMEPAD_X
+      shortcut = SHORTCUT.GAMEPAD_X
       cb = Callback(this.onChooseSlotbarPresetWnd_Apply, this)
       keepEnv = true
     }]
@@ -238,7 +240,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       obj = getSlotObj(slotbarHandler.scene, crew.idCountry, crew.idInCountry)
       text = loc("slotbarPresetsTutorial/selectUnit")
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::SHORTCUT.GAMEPAD_X
+      shortcut = SHORTCUT.GAMEPAD_X
       cb = Callback(this.onUnitSelect, this)
       keepEnv = true
     }]
@@ -282,7 +284,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       obj = [objs]
       text = this.createMessage_pressToBattleButton()
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::SHORTCUT.GAMEPAD_X
+      shortcut = SHORTCUT.GAMEPAD_X
       cb = Callback(this.onStartPress, this)
     }]
     this.currentStepsName = "pressToBattleButton"
@@ -302,7 +304,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       obj = [gameModeChangeButtonObj]
       text = loc("slotbarPresetsTutorial/openGameModeSelect")
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::SHORTCUT.GAMEPAD_X
+      shortcut = SHORTCUT.GAMEPAD_X
       cb = Callback(this.onOpenGameModeSelect, this)
       keepEnv = true
     }]
@@ -344,7 +346,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       obj = [gameModeObj]
       text = this.createMessageWhithUnitType("selectGameMode")
       actionType = tutorAction.OBJ_CLICK
-      shortcut = ::SHORTCUT.GAMEPAD_X
+      shortcut = SHORTCUT.GAMEPAD_X
       cb = Callback(this.onSelectGameMode, this)
       keepEnv = true
     }]

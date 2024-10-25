@@ -1,11 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getChestChancesData, fillChestChances } = require("%scripts/items/prizeChance.nut")
 
 local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -13,6 +13,7 @@ local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
 
   currentItemId = null
   currentCategoryId = null
+  currentGeneratorId = -1
 
   function updateHandlerData(item, shopDesc = false, preferMarkup = false, params = null) {
     this.scene.scrollToView(true)
@@ -24,12 +25,31 @@ local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
+    this.currentGeneratorId = item?.generator.id ?? -1
+    if (this.currentGeneratorId > -1 && item?.needShowTextChances()) {
+      let chancesData = getChestChancesData(this.currentGeneratorId,
+        Callback(this.fillChestChances, this))
+      if (chancesData != null)
+        this.fillChestChances(chancesData, this.currentGeneratorId)
+    }
+
     if (item.id == this.currentItemId && this.currentCategoryId != null) {
       this.openCategory(this.currentCategoryId)
       return
     }
     this.currentItemId = item.id
     this.currentCategoryId = null
+  }
+
+  function fillChestChances(chancesData, generatorId) {
+    if (this.currentGeneratorId != generatorId)
+      return
+
+    let itemsNest = this.scene.findObject("item_info_collapsable_prizes")
+      ?? this.scene.findObject("item_desc_div")
+    if (!itemsNest?.isValid())
+      return
+    fillChestChances(itemsNest, chancesData)
   }
 
   function setHandlerVisible(value) {

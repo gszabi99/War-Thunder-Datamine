@@ -9,10 +9,13 @@ let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesMan
 let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { wwGetZoneName, wwGetZoneIdx, wwGetSelectedAirfield, wwSelectAirfield,
   wwFindAirfieldByCoordinates, wwClearOutlinedZones, wwGetBattlesNames,
-  wwUpdateHoverArmyName, wwGetMapCellByCoords, wwFindLastFlewOutArmyNameByAirfield,
+  wwUpdateHoverArmyName, wwFindLastFlewOutArmyNameByAirfield,
   wwIsCellGenerallyPassable, wwCanAppendPathPointForSelectedArmies } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
+let { selectArmyByName, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
+let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 
 function ww_is_append_path_mode_active() {
   if (!::g_world_war.haveManagementAccessForSelectedArmies())
@@ -36,13 +39,15 @@ let worldWarMapControls = class {
   }
 
   function selectInteractiveElements(obj, mx, my) {
+    if(dargMapVisible.get() == true)
+      return
     wwEvent("ClearSelectFromLogArmy")
     wwClearOutlinedZones()
     let mapPos = Point2(mx, my)
 
     let curActionMode = actionModesManager.getCurActionMode()
     if (curActionMode != null) {
-      curActionMode.useAction(mapPos)
+      curActionMode.useAction()
       return
     }
 
@@ -66,6 +71,8 @@ let worldWarMapControls = class {
   }
 
   function onLMouse(obj, mx, my, is_up, _bits) {
+    if(dargMapVisible.get() == true)
+      return RETCODE_NOTHING
     if (is_up)
       return RETCODE_NOTHING
 
@@ -74,6 +81,8 @@ let worldWarMapControls = class {
   }
 
   function onMouseMove(obj, _mx, _my, _bits) {
+    if(dargMapVisible.get() == true)
+      return RETCODE_NOTHING
     this.enableObjectsHover(obj, true)
 
     return RETCODE_PROCESSED
@@ -132,10 +141,10 @@ let worldWarMapControls = class {
           }
         }
 
-      let mapCell = wwGetMapCellByCoords(clickPos.x, clickPos.y)
+      let mapCell = mapCellUnderCursor.get()
       if (wwIsCellGenerallyPassable(mapCell))
         gui_handlers.WwAirfieldFlyOut.open(
-          airfieldIdx, clickPos, armyTargetName, Callback(checkFlewOutArmy, this))
+          airfieldIdx, clickPos, armyTargetName, mapCell, Callback(checkFlewOutArmy, this))
       else
         addPopup("", loc("worldwar/charError/MOVE_REJECTED"),
           null, null, null, "send_air_army_error")
@@ -145,6 +154,8 @@ let worldWarMapControls = class {
   }
 
   function onExtMouse(obj, mx, my, btn_id, is_up, _bits) {
+    if(dargMapVisible.get() == true)
+      return RETCODE_NOTHING
     if (is_up)
       return RETCODE_NOTHING
 
@@ -164,7 +175,7 @@ let worldWarMapControls = class {
     wwClearOutlinedZones()
     let mapPos = Point2(mx, my)
 
-    this.sendMapEvent("RequestReinforcement", { cellIdx = wwGetMapCellByCoords(mapPos.x, mapPos.y) })
+    this.sendMapEvent("RequestReinforcement", { cellIdx = mapCellUnderCursor.get() })
 
     let currentSelectedObject = this.getSelectedObject(obj)
     if (currentSelectedObject != mapObjectSelect.NONE)
@@ -174,6 +185,9 @@ let worldWarMapControls = class {
   }
 
   function onTimer(obj, _dt) {
+    if(dargMapVisible.get() == true)
+      return
+
     let params = obj.getUserData() || {}
     let isMapObjHovered = obj.isHovered()
     if (!("isMapHovered" in params))
@@ -257,7 +271,7 @@ let worldWarMapControls = class {
   }
 
   function onMapHover(_obj) {
-    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
+    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
   }
 
   function onMapUnhover(obj) {
@@ -265,7 +279,7 @@ let worldWarMapControls = class {
     this.updateHoveredObjects(params)
     this.sendMapEvent("UpdateCursorByTimer", params)
     obj.setUserData(params)
-    ::g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
+    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
   }
 
   function onMouseWheel(_obj, _mx, _my, is_up, _buttons) {
@@ -292,7 +306,6 @@ let worldWarMapControls = class {
     let armyIdx  = armyList.findindex(@(name) name == lastClickedArmyName) ?? -1
     let nextArmyIdx = armyIdx + 1
     let nextArmyName = nextArmyIdx in armyList ? armyList[nextArmyIdx] : armyList[0]
-
     return nextArmyName ? this.selectArmy(obj, nextArmyName) : false
   }
 
@@ -343,6 +356,8 @@ let worldWarMapControls = class {
       }
     }
     ww_update_selected_armies_name(selectedArmiesInfo)
+    if(selectedArmiesInfo.len() > 0)
+      selectArmyByName(selectedArmiesInfo[0].name)
   }
 
   function clearSelectedArmies(obj) {
@@ -406,12 +421,16 @@ let worldWarMapControls = class {
   }
 
   function clearAllHover() {
+    if(dargMapVisible.get() == true)
+      return
     wwUpdateHoverArmyName("")
     ww_update_hover_battle_id("")
     ww_update_hover_airfield_id(-1)
   }
 
   function updateHoveredObjects(params) {
+    if(dargMapVisible.get() == true)
+      return
     local hoveredArmyName = ""
     local hoveredBattleName = ""
     local hoveredAirfieldId = -1
@@ -491,6 +510,4 @@ let worldWarMapControls = class {
 
 return {
   worldWarMapControls
-//  ww_is_add_selected_army_mode_active
-//  ww_is_append_path_mode_active
 }

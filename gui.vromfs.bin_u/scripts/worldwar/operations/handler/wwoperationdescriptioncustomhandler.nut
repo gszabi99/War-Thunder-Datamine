@@ -1,10 +1,12 @@
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_preview_operation_from_file
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { countSizeInItems, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
+let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 
 gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDescription) {
   sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght.tpl"
@@ -65,7 +67,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
       return
     }
 
-    ::g_world_war_render.setPreviewCategories()
+    g_world_war_render.setPreviewCategories()
 
     let mapNestObj = this.scene.findObject("map_nest_obj")
     if (!checkObj(mapNestObj))

@@ -27,11 +27,11 @@ function fadeColor(color, transparency) {
   return Color((color & redHex) >> 16, (color & greenHex) >> 8, color & blueHex, transparency)
 }
 
-local function mixColor(colorA, colorB, value) {
+function mixColor(colorA, colorB, mixValue) {
   return Color(
-    ((colorA & redHex) >> 16) * (1.0 - value) + ((colorB & redHex) >> 16) * value,
-    ((colorA & greenHex) >> 8) * (1.0 - value) + ((colorB & greenHex) >> 8) * value,
-    (colorA & blueHex) * (1.0 - value) + (colorB & blueHex) * value,
+    ((colorA & redHex) >> 16) * (1.0 - mixValue) + ((colorB & redHex) >> 16) * mixValue,
+    ((colorA & greenHex) >> 8) * (1.0 - mixValue) + ((colorB & greenHex) >> 8) * mixValue,
+    (colorA & blueHex) * (1.0 - mixValue) + (colorB & blueHex) * mixValue,
     (colorA & alphaHex) >> 24)
 }
 

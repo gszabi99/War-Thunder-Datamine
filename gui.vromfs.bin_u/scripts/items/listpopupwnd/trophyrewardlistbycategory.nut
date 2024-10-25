@@ -4,6 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getChestChancesData, fillChestChances } = require("%scripts/items/prizeChance.nut")
 
 local class TrophyRewardListByCategory (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -11,6 +12,24 @@ local class TrophyRewardListByCategory (gui_handlers.BaseGuiHandlerWT) {
 
   chestItem = null
   currentCategoryId = null
+
+  function initScreen() {
+    base.initScreen()
+    let generatorId = this?.chestItem.generator.id ?? -1
+    if (generatorId >= 0 && this?.chestItem.needShowTextChances()) {
+      let chancesData = getChestChancesData(generatorId,
+        Callback(this.fillChestChances, this))
+      if (chancesData != null)
+        this.fillChestChances(chancesData)
+    }
+  }
+
+  function fillChestChances(chancesData, _generatorId = -1) {
+    let itemsNest = this.scene.findObject("item_info_collapsable_prizes")
+    if (!itemsNest?.isValid())
+      return
+    fillChestChances(itemsNest, chancesData)
+  }
 
   getSceneTplView = @() {
     contentData = "".join(this.chestItem.getContentMarkupForDescription({}))

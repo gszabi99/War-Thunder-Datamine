@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import update_volume_for_music, set_option_gamma
+from "%scripts/dagui_natives.nut" import update_volume_for_music, set_option_gamma, set_option_console_preset
 from "%scripts/dagui_library.nut" import *
 from "soundOptions" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
@@ -20,6 +20,7 @@ let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { set_gui_option } = require("guiOptions")
+let { set_option_radar_name, set_option_radar_scan_pattern_name } = require("radarOptions")
 let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -28,7 +29,7 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A,
   USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
-  USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT
+  USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT, USEROPT_RADAR_SCAN_RANGE_SELECT
 } = require("%scripts/options/optionsExtNames.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
@@ -339,6 +340,19 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     broadcastEvent("ChangedPartHudVisible")
   }
 
+  function onChangeRadarMode(obj) {
+    set_option_radar_name(obj.getValue())
+
+    this.updateOption(USEROPT_RADAR_SCAN_PATTERN_SELECT)
+    this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECT)
+  }
+
+  function onChangeRadarScanRange(obj) {
+    set_option_radar_scan_pattern_name(obj.getValue())
+
+    this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECT)
+  }
+
   function onChangedShowActionBar(obj) {
     set_gui_option(USEROPT_SHOW_ACTION_BAR, obj.getValue())
     broadcastEvent("ChangedShowActionBar")
@@ -478,6 +492,10 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   function onGammaChange(obj) {
     let gamma = obj.getValue() / 100.0
     set_option_gamma(gamma, false)
+  }
+
+  function onConsolePresetChange(obj) {
+    set_option_console_preset(obj.getValue())
   }
 
   function onControls(_obj) {

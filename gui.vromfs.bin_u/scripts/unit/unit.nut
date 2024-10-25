@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, clan_get_unit_open_cost_gold, wp_get_repair_cost, shop_is_aircraft_purchased, remove_calculate_modification_effect_jobs, shop_is_unit_rented, shop_get_spawn_score, shop_is_player_has_unit
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
@@ -34,7 +33,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
   get_modifications_blk, get_ranks_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { getUnitCountry, isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { getUnitCountry, isUnitGift, getUnitExp, isUnitInResearch, isUnitBroken } = require("%scripts/unit/unitInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isUnitSpecial, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
@@ -211,7 +210,7 @@ local Unit = class {
     if (uWpCost?.weapons != null) {
       if (this.hasWeaponSlots)
         initUnitWeaponsContainers(this.weaponsContainers, uWpCost.weapons)
-      initUnitWeapons(this, this.weapons, uWpCost.weapons)
+      initUnitWeapons(this, this.weapons, uWpCost.weapons) // -param-pos
       initWeaponryUpgrades(this, uWpCost)
     }
 
@@ -299,14 +298,14 @@ local Unit = class {
   isBought              = @() shop_is_aircraft_purchased(this.name)
   isUsable              = @() shop_is_player_has_unit(this.name)
   isRented              = @() shop_is_unit_rented(this.name)
-  isBroken              = @() ::isUnitBroken(this)
+  isBroken              = @() isUnitBroken(this)
   isResearched          = @() ::isUnitResearched(this)
-  isInResearch          = @() ::isUnitInResearch(this)
+  isInResearch          = @() isUnitInResearch(this)
   getRentTimeleft       = @() rented_units_get_expired_time_sec(this.name)
   getRepairCost         = @() Cost(wp_get_repair_cost(this.name))
   getCrewTotalCount     = @() this.getUnitWpCostBlk()?.crewTotalCount || 1
   getCrewUnitType       = @() this.unitType.crewUnitType
-  getExp                = @() ::getUnitExp(this)
+  getExp                = @() getUnitExp(this)
 
   _endRecentlyReleasedTime = null
   function getEndRecentlyReleasedTime() {
@@ -378,7 +377,7 @@ local Unit = class {
   }
 
   function _tostring() {
-    return "Unit( " + this.name + " )"
+    return $"Unit( {this.name} )"
   }
 
   function canAssignToCrew(country) {

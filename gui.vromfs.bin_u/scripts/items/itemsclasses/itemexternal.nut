@@ -37,6 +37,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 
 let emptyBlk = DataBlock()
 
@@ -107,7 +108,7 @@ let ItemExternal = class (BaseItem) {
 
   isAllowWideSize = true
 
-  canMultipleConsume = false
+  canMultipleConsume = true
 
   constructor(itemDefDesc, itemDesc = null, _slotData = null) {
     base.constructor(emptyBlk)
@@ -381,8 +382,8 @@ let ItemExternal = class (BaseItem) {
           time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true).replace(" ", nbsp))
           : ""
       })
-    return loc("currency/gc/sign/colored", "") + " " +
-      colorize(canSell ? "userlogColoredText" : "badTextColor", text)
+    return  " ".concat(loc("currency/gc/sign/colored", ""),
+      colorize(canSell ? "userlogColoredText" : "badTextColor", text))
   }
 
   function getResourceDesc() {
@@ -740,7 +741,8 @@ let ItemExternal = class (BaseItem) {
     let msg = loc("items/exchangeMessage", {
       amount = convertAmount
       item = this.getName()
-      currency = convertAmount * warbondItem.getWarbondsAmount() + loc(warbondItem.getWarbond()?.fontIcon)
+      currency = "".concat(convertAmount * warbondItem.getWarbondsAmount(),
+        loc(warbondItem.getWarbond()?.fontIcon))
     })
     scene_msg_box("warbond_exchange", null, msg, [
       [ "yes", @() recipe.doExchange(warbondItem, convertAmount) ],
@@ -1077,7 +1079,7 @@ let ItemExternal = class (BaseItem) {
 
   hasCustomMission = @() this.getCustomMissionBlk() != null
   canRunCustomMission = @() this.amount > 0 && this.hasCustomMission()
-  getCustomMissionButtonText = @() ::get_mission_name(this.itemDef.tags.canRunCustomMission, this.getCustomMissionBlk())
+  getCustomMissionButtonText = @() getMissionName(this.itemDef.tags.canRunCustomMission, this.getCustomMissionBlk())
 
   function runCustomMission() {
     if (!this.canRunCustomMission())

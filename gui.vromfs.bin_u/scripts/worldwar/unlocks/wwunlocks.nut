@@ -11,7 +11,7 @@ const CHAPTER_NAME = "worldwar"
 local cacheArray = {}
 local isCacheValid = false
 
-local function invalidateUnlocksCache() {
+function invalidateUnlocksCache() {
   isCacheValid = false
   wwEvent("UnlocksCacheInvalidate")
 }
@@ -20,7 +20,7 @@ subscriptions.addListenersWithoutEnv({
   UnlocksCacheInvalidate = @(_p) invalidateUnlocksCache()
 })
 
-local function getWwUnlocksForCash() {
+function getWwUnlocksForCash() {
   local chapter = ""
   local res = []
   foreach (unlock in getAllUnlocksWithBlkOrder()) {
@@ -43,7 +43,7 @@ local function getWwUnlocksForCash() {
   return res
 }
 
-local function validateCache() {
+function validateCache() {
   if (isCacheValid)
     return
 
@@ -51,7 +51,7 @@ local function validateCache() {
   cacheArray = getWwUnlocksForCash()
 }
 
-local function getAllUnlocks() {
+function getAllUnlocks() {
   validateCache()
   return cacheArray
 }

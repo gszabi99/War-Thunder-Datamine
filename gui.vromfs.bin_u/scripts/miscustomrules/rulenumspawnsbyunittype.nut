@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
@@ -120,7 +119,7 @@ let NumSpawnsByUnitType = class (RuleBase) {
           continue
 
         let resp = this.getUnitTypeLeftRespawns(unitType.esUnitType, stateData)
-        res.append(unitType.fontIcon + resp)
+        res.append($"{unitType.fontIcon}{resp}")
       }
       return colorize("@activeTextColor", loc("ui/comma").join(res, true))
     }
@@ -131,7 +130,7 @@ let NumSpawnsByUnitType = class (RuleBase) {
           continue
 
         let resp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
-        res.append(classType.getFontIcon() + resp)
+        res.append($"{classType.getFontIcon()}{resp}")
       }
       return colorize("@activeTextColor", loc("ui/comma").join(res, true))
     }
@@ -152,16 +151,16 @@ let NumSpawnsByUnitType = class (RuleBase) {
             continue
 
           let classResp = this.getUnitClassLeftRespawns(classType.getExpClass(), stateData)
-          classesText.append(classType.getFontIcon() + classResp)
+          classesText.append($"{classType.getFontIcon()}{classResp}")
         }
         classesText = loc("ui/comma").join(classesText, true)
 
-        local typeText = unitType.fontIcon + typeResp
+        local typeText = $"{unitType.fontIcon}{typeResp}"
         if (classesText != "") {
           if (unit)
             typeText = loc("ui/comma").join([ typeText, classesText ], true)
           else
-            typeText += loc("ui/parentheses/space", { text = classesText })
+            typeText = "".concat(typeText, loc("ui/parentheses/space", { text = classesText }))
         }
         res.append(typeText)
       }
@@ -171,7 +170,7 @@ let NumSpawnsByUnitType = class (RuleBase) {
   }
 
   function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) { //stateData is a table or blk
-    let respawns = stateData?[(isDsUnitType ? esUnitType : get_ds_ut_name_unit_type(esUnitType)) + "_numSpawn"] ?? 0
+    let respawns = stateData?[$"{isDsUnitType ? esUnitType : get_ds_ut_name_unit_type(esUnitType)}_numSpawn"] ?? 0
     return max(0, respawns) //dont have unlimited respawns
   }
 
@@ -188,7 +187,7 @@ let NumSpawnsByUnitType = class (RuleBase) {
     let baseRules = rulesTbl?.ruleSet ?? {}
     this.getRestrictionRule(baseRules)
     this.collectAllowedTypeAndClasses(baseRules)
-    return loc("multiplayer/flyouts") + loc("ui/colon") + this.getRespawnInfoText(null, baseRules)
+    return loc("ui/colon").concat(loc("multiplayer/flyouts"), this.getRespawnInfoText(null, baseRules))
   }
 
   function calcFullUnitLimitsData(_isTeamMine = true) {

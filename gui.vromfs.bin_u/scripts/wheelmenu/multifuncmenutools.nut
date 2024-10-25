@@ -126,7 +126,7 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
 }
 
 
-local function openMfm(cfg, curSectionId = null, isForward = true) {
+function openMfm(cfg, curSectionId = null, isForward = true) {
   let hudUnitType = getHudUnitType()
   curSectionId = curSectionId ?? $"root_{hudUnitType}"
   if (cfg?[curSectionId] == null)

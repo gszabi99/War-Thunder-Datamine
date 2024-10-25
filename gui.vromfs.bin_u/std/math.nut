@@ -46,10 +46,10 @@ function change_bit_mask(bitMask, bitMaskToSet, value) {
 * f(valueMin) = resMin
 * f(valueMax) = resMax
 */
-function lerp(valueMin, valueMax, resMin, resMax, value) {
+function lerp(valueMin, valueMax, resMin, resMax, curValue) {
   if (valueMin == valueMax)
     return 0.5 * (resMin + resMax)
-  return resMin + (resMax - resMin) * (value - valueMin) / (valueMax - valueMin)
+  return resMin + (resMax - resMin) * (curValue - valueMin) / (valueMax - valueMin)
 }
 
 /**

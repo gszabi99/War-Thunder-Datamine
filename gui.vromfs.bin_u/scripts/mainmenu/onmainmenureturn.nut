@@ -60,7 +60,7 @@ function popGblkErrorPopups() {
 
 
 //called after all first mainmenu actions
-local function onMainMenuReturn(handler, isAfterLogin) {
+function onMainMenuReturn(handler, isAfterLogin) {
   if (!handler)
     return
   local isAllowPopups = ::g_login.isProfileReceived() && !getFromSettingsBlk("debug/skipPopups")

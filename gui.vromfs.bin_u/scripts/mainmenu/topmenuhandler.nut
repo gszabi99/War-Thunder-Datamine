@@ -614,15 +614,16 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initModesNotLoadedBtn() {
-    let buttonObj = this.scene.findObject("game_modes_not_loaded_suppot_link")
-    if (!buttonObj?.isValid())
+    let buttonContainerObj = this.scene.findObject("game_modes_not_loaded_suppot")
+    if (!buttonContainerObj?.isValid())
       return
+    let buttonObj = buttonContainerObj.findObject("game_modes_not_loaded_suppot_link")
 
     let lang = getCurLangShortName() == "ru" ? "ru" : "en-us"
     let link = getCurCircuitOverride("knowledgebaseModesNotLoaded", $"auto_login https://support.gaijin.net/hc/{lang}/articles/201705251")
     buttonObj.link = link
 
-    buttonObj.setValue(stashBhvValueConfig([{
+    buttonContainerObj.setValue(stashBhvValueConfig([{
       watch = needShowGameModesNotLoadedMsg
       updateFunc = @(obj, value) obj.show(value)
     }]))

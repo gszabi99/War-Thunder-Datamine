@@ -1,5 +1,3 @@
-#no-plus-concat
-
 let { regexp, format, startswith, endswith, strip }=require("string")
 let math=require("math")
 let regexp2 = require_optional("regexp2")
@@ -322,7 +320,17 @@ function tostring_r(inp, params=defTostringParams) {
       arrInd=indent
     local out = []
     local li = 0
-    local maxind = (type(input?.len) == "function" ? input.len() : 0) - 1
+    local maxind = -1
+    try {
+      if (input?.len && type(input?.len)=="function") {
+        let info = input.len.getfuncinfos()
+        if (!info.native && info.parameters.len()==1)
+          maxind = input.len()-1
+        else if (info.native && info.typecheck.len()==1 && info.typecheck[0]==32) //this is instance
+          maxind = input.len()-1
+      }
+    }
+    catch(e){}
     foreach (key, value in input) {
       local typ = type(value)
       local isArray = typ=="array"

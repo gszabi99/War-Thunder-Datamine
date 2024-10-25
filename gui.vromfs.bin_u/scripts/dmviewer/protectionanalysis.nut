@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar
+from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar, get_save_load_path
 from "%scripts/dagui_library.nut" import *
 
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -19,6 +19,10 @@ let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_replay_hits_dir, repeat_shot_from_file } = require("replays")
+let DataBlock = require("DataBlock")
+let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 local switch_damage = false
 local allow_cutting = false
@@ -46,23 +50,12 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   hintHandler = null
   unit = null
   applyFilterTimer = null
+  hitFilePath = null
+  hitData = null
+  isAllowResetHitAnalysis = false
 
   getSceneTplContainerObj = @() this.scene.findObject("options_container")
-  function getSceneTplView() {
-    protectionAnalysisOptions.setParams(this.unit)
-
-    let view = { rows = [] }
-    foreach (o in protectionAnalysisOptions.types)
-      if (o.isVisible())
-        view.rows.append({
-          id = o.id
-          name = o.getLabel()
-          option = o.getControlMarkup()
-          infoRows = o.getInfoRows()
-          valueWidth = o.valueWidth
-        })
-    return view
-  }
+  getSceneTplView = @() this.getOptionsView(this.unit)
 
   function initScreen() {
     ::dmViewer.init(this)
@@ -115,6 +108,9 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
     allowCuttingInHangar(false)
     this.resetFilter()
+
+    showObjById("btnOpenHitFile", hasFeature("HitsAnalysis") && is_platform_windows)
+    showObjById("btnSimulateHit", false)
   }
 
   onSave = @(obj) protectionAnalysisOptions.isSaved = obj?.getValue()
@@ -128,6 +124,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeOption(obj) {
+    this.resetRepeatHit()
     if (!checkObj(obj))
       return
     protectionAnalysisOptions.get(obj.id).onChange(this, this.scene, obj)
@@ -139,6 +136,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   onDistanceDec = @(_obj) this.onButtonDec(this.scene.findObject("buttonDec"))
 
   function onProgressButton(obj, isIncrement) {
+    this.resetRepeatHit()
     if (!checkObj(obj))
       return
     let optionId = cutPrefix(obj.getParent().id, "container_", "")
@@ -168,6 +166,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       explosionTest = !explosionTest
       set_explosion_test(explosionTest)
     }
+    this.resetRepeatHit()
   }
 
   function onTestProjectileProps(sObj) {
@@ -176,6 +175,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       set_test_projectile_props(value)
       saveLocalAccountSettings(CB_TEST_PROJECTILE, value)
     }
+    this.resetRepeatHit()
   }
 
   function onAllowSimulation(sObj) {
@@ -246,6 +246,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     let value = obj.getValue()
     saveLocalAccountSettings(CB_VERTICAL_ANGLE, value)
     set_protection_map_y_nulling(!value)
+    this.resetRepeatHit()
   }
 
   function applyFilter(obj) {
@@ -271,6 +272,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function applyFilterImpl(filterText) {
     this.showTypes(false)
     protectionAnalysisOptions.get("UNIT").filterByName(this, this.scene, filterText)
+    this.resetRepeatHit()
   }
 
   function onFilterCancel(filterObj) {
@@ -337,8 +339,86 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventBeforeOpenWeaponryPresetsWnd(_) {
     handlersManager.requestHandlerRestore(this, this.getclass())
   }
-}
 
+  function onOpenHitFile(_) {
+    handlersManager.loadHandler(gui_handlers.FileDialog, {
+      isSaveFile = false
+      dirPath = get_replay_hits_dir()
+      pathTag = "replay_hits"
+      onSelectCallback = Callback(this.onSelectCallback, this)
+      extension = "blk"
+      currentFilter = "blk"
+    })
+  }
+
+  function onSelectCallback(path) {
+    this.hitFilePath = path
+    this.hitData = DataBlock()
+    let res = this.hitData.tryLoad(this.hitFilePath)
+    if (!res)
+      return false
+
+    this.isAllowResetHitAnalysis = false
+    this.scene.findObject("filter_edit_box").setValue("")
+    this.updateOptions(this.hitData)
+    if (getShowedUnit()?.name == this.hitData.object) {
+      showObjById("btnSimulateHit", true)
+      return true
+    }
+    setShowUnit(getAircraftByName(this.hitData.object))
+    return true
+  }
+
+  function onSimulateHit(_) {
+    if (this.hitFilePath == null)
+      return
+    repeat_shot_from_file(this.hitFilePath)
+  }
+
+  function onEventHangarModelLoaded(_) {
+    if (this.hitData == null)
+      return
+    showObjById("btnSimulateHit", true)
+  }
+
+  function resetRepeatHit() {
+    if (!this.isAllowResetHitAnalysis || this.hitData == null)
+      return
+
+    protectionAnalysisOptions.setParams(getAircraftByName(this.hitData.offenderObject), null, null)
+    protectionAnalysisOptions.get("DISTANCE").update(this, this.scene)
+
+    this.hitFilePath = null
+    this.hitData = null
+    showObjById("btnSimulateHit", false)
+  }
+
+  function getOptionsView(unit, ammo = null, distance = null) {
+    protectionAnalysisOptions.setParams(unit, ammo, distance)
+
+    let view = { rows = [] }
+    foreach (o in protectionAnalysisOptions.types)
+      if (o.isVisible())
+        view.rows.append({
+          id = o.id
+          name = o.getLabel()
+          option = o.getControlMarkup()
+          infoRows = o.getInfoRows()
+          valueWidth = o.valueWidth
+        })
+    return view
+  }
+
+  function updateOptions(hitData) {
+    let unit = getAircraftByName(hitData.offenderObject)
+    let view = this.getOptionsView(unit, hitData.ammo, hitData.distance)
+    let data = handyman.renderCached(this.sceneTplName, view)
+    this.guiScene.replaceContentFromText(this.getSceneTplContainerObj(), data, data.len(), this)
+    protectionAnalysisOptions.init(this, this.scene)
+    this.isAllowResetHitAnalysis = true
+    return true
+  }
+}
 
 return {
   canOpen = function(unit) {

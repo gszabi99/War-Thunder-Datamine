@@ -11,10 +11,11 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
-  "mfdCamTads": true,
-  "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "ilsMarconiAvionics": true,
+  "mfdCamTads": true,
+  "rwrIndicator": "AN/ALR-56",
+  "isBwOpticSight": true,
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
@@ -2307,6 +2308,404 @@
         0.0
       ]
     },
+    "rwr": {
+      "type": "rwr",
+      "name": "AN/ALR-56M",
+      "power": 250.0,
+      "txAngle": [
+        5.0,
+        15.0
+      ],
+      "txSidelobes": -30.0,
+      "rxAngle": [
+        180.0,
+        90.0
+      ],
+      "range": 70000.0,
+      "signalSfxName": "alarm_radar",
+      "band4": true,
+      "band5": true,
+      "band6": true,
+      "band7": true,
+      "band8": true,
+      "band9": true,
+      "detectTracking": true,
+      "detectLaunch": false,
+      "targetTracking": true,
+      "matchSector": 15.0,
+      "targetSuperResolution": false,
+      "trackedTargetsMax": 12,
+      "targetRangeFinder": true,
+      "targetRange": [
+        5000.0,
+        50000.0
+      ],
+      "friendFoeId": true,
+      "signalHoldTime": 5.0,
+      "targetHoldTime": 5.0,
+      "newTargetHoldTime": 5.0,
+      "mandatoryRecognition": false,
+      "receivers": {
+        "receiver": [
+          {
+            "azimuth": 0.0,
+            "elevation": 0.0,
+            "azimuthWidth": 180.0,
+            "elevationWidth": 90.0,
+            "angleFinder": true
+          },
+          {
+            "azimuth": -180.0,
+            "elevation": 0.0,
+            "azimuthWidth": 180.0,
+            "elevationWidth": 90.0,
+            "angleFinder": true
+          }
+        ]
+      },
+      "groups": {
+        "group": [
+          {
+            "name": "S-125",
+            "detectLaunch": true,
+            "type": "4R-90-Yatagan"
+          },
+          {
+            "name": "9K330",
+            "detectLaunch": true,
+            "type": [
+              "9K330 TA",
+              "9K330 TT"
+            ]
+          },
+          {
+            "name": "Roland",
+            "detectLaunch": true,
+            "type": "Roland TT"
+          },
+          {
+            "name": "Crotal",
+            "detectLaunch": true,
+            "type": [
+              "Crotale TA",
+              "Crotale TT"
+            ]
+          },
+          {
+            "name": "AAA",
+            "type": [
+              "1RL114 TA",
+              "Gepard TA",
+              "EDR 110",
+              "DR-VC-1A",
+              "PGZ-09 TA",
+              "1RL34",
+              "AN/VPS-2",
+              "M-247 TA",
+              "ESD RA-20 S",
+              "1RL33",
+              "1RL114 TT",
+              "Marconi S-400",
+              "Gepard TT",
+              "Antelope",
+              "PGZ-09 TT",
+              "Type-87 TT"
+            ]
+          },
+          {
+            "name": "Naval",
+            "type": [
+              "Foot-N",
+              "Type 992Q",
+              "Type-275",
+              "MR-103-Bars",
+              "MR-123-176",
+              "MR-102-Baklan",
+              "MR-104-Rys",
+              "MR-105",
+              "Yakor-M",
+              "Type-275",
+              "Type 903",
+              "AN-SPG-48",
+              "MK25-radar",
+              "WM-27",
+              "SGR-108"
+            ]
+          },
+          {
+            "name": "Fighter",
+            "type": [
+              "AN/APG-30",
+              "AN/ASG-14",
+              "AN/ASG-19",
+              "SRD-1",
+              "SRD-5",
+              "AIDA 2",
+              "ARI.5820",
+              "ARI.5857",
+              "Marconi Type 226",
+              "ELTA EL/M-2001B",
+              "AN/APS-6",
+              "AN/APS-19",
+              "AN/APS-21",
+              "AN/APS-67",
+              "NASARR",
+              "US R21G M1",
+              "AN/APQ-72",
+              "AN/APQ-104",
+              "AN/APQ-120",
+              "AN/APQ-126",
+              "AN/APQ-159",
+              "AN/APQ-113",
+              "AN/APQ-50",
+              "AN/APQ-51",
+              "AN/APQ-94",
+              "AN/APG-26",
+              "AN/APG-33",
+              "Thorium",
+              "RP-1 TA",
+              "RP-1 TT",
+              "RP-5 TA",
+              "RP-5 TT",
+              "CD-30",
+              "Cyrano Ibis",
+              "Cyrano-IV",
+              "DRAC-25A",
+              "DRAC-32A",
+              "DRAA 3D AIDA",
+              "AI Mk.23",
+              "AI Mk.18",
+              "PS-03",
+              "PS-011A 71H IR",
+              "PS-42 TA",
+              "PS-42 TT",
+              "Type 1492",
+              "Type 208A",
+              "Sapphire-21",
+              "Sapphire-23",
+              "AN/APG-66",
+              "AN/APG-68",
+              "AN/APG-63",
+              "AN/APG-65",
+              "AN/APG-67",
+              "AN/APG-76 / AN/ASX-1",
+              "Thales RDY",
+              "N019",
+              "N001",
+              "N010",
+              "ELTA EL/M-2001B",
+              "PS-37",
+              "PS-05",
+              "Ferranti Blue Vixen",
+              "AN/APG-59",
+              "AN/AWG-9",
+              "Thomson-CSF RDI",
+              "AI.24 Foxhunter",
+              "weapon"
+            ]
+          },
+          {
+            "name": "Attacker",
+            "type": [
+              "Orion",
+              "AN/APQ-113",
+              "ARI 23274"
+            ]
+          },
+          {
+            "name": "MiG-21",
+            "type": [
+              "CD-30",
+              "Sapphire-21",
+              "JL-7A",
+              "Type 208A"
+            ]
+          },
+          {
+            "name": "MiG-23",
+            "detectLaunch": true,
+            "type": "Sapphire-23"
+          },
+          {
+            "name": "MiG-29",
+            "detectLaunch": true,
+            "type": [
+              "N019",
+              "N001",
+              "N010"
+            ]
+          },
+          {
+            "name": "F-4",
+            "detectLaunch": true,
+            "type": [
+              "AN/APQ-72",
+              "AN/APQ-120",
+              "AN/APG-59"
+            ]
+          },
+          {
+            "name": "F-5",
+            "type": "AN/APQ-159"
+          },
+          {
+            "name": "F-14",
+            "detectLaunch": true,
+            "type": "AN/AWG-9"
+          },
+          {
+            "name": "F-16",
+            "detectLaunch": true,
+            "type": [
+              "AN/APG-66",
+              "AN/APG-68",
+              "PS-37",
+              "Type 1492"
+            ]
+          },
+          {
+            "name": "F-15",
+            "detectLaunch": true,
+            "type": "AN/APG-63"
+          },
+          {
+            "name": "F-18",
+            "detectLaunch": true,
+            "type": [
+              "AN/APG-65",
+              "AN/APG-67"
+            ]
+          },
+          {
+            "name": "Tornado F",
+            "detectLaunch": true,
+            "type": "AI.24 Foxhunter"
+          },
+          {
+            "name": "Harrier",
+            "type": "Ferranti Blue Fox"
+          },
+          {
+            "name": "Mirage 2000",
+            "detectLaunch": true,
+            "type": [
+              "Thomson-CSF RDI",
+              "Thales RDY"
+            ]
+          },
+          {
+            "name": "J-39",
+            "detectLaunch": true,
+            "type": [
+              "PS-05",
+              "Ferranti Blue Vixen"
+            ]
+          },
+          {
+            "name": "ARH",
+            "detectTracking": true,
+            "detectLaunch": true,
+            "type": "weapon"
+          }
+        ]
+      },
+      "targetsDirectionGroups": {
+        "targetsDirectionGroup": [
+          {
+            "text": "S125",
+            "group": "S-125"
+          },
+          {
+            "text": "9K3",
+            "group": "9K330"
+          },
+          {
+            "text": "RLD",
+            "group": "Roland"
+          },
+          {
+            "text": "CRT",
+            "group": "Crotal"
+          },
+          {
+            "text": "hud/rwr_threat_aaa",
+            "group": "AAA"
+          },
+          {
+            "text": "hud/rwr_threat_naval",
+            "group": "Naval"
+          },
+          {
+            "text": "F",
+            "group": "Fighter"
+          },
+          {
+            "text": "A",
+            "group": "Attacker"
+          },
+          {
+            "text": "M21",
+            "group": "MiG-21"
+          },
+          {
+            "text": "M23",
+            "group": "MiG-23"
+          },
+          {
+            "text": "M29",
+            "group": "MiG-29"
+          },
+          {
+            "text": "F4",
+            "group": "F-4"
+          },
+          {
+            "text": "F5",
+            "group": "F-5"
+          },
+          {
+            "text": "F14",
+            "group": "F-14"
+          },
+          {
+            "text": "F15",
+            "group": "F-15"
+          },
+          {
+            "text": "F16",
+            "group": "F-16"
+          },
+          {
+            "text": "F18",
+            "group": "F-18"
+          },
+          {
+            "text": "TRF",
+            "group": "Tornado F"
+          },
+          {
+            "text": "HRR",
+            "group": "Harrier"
+          },
+          {
+            "text": "M2K",
+            "group": "Mirage 2000"
+          },
+          {
+            "text": "J39",
+            "group": "J-39"
+          },
+          {
+            "text": "MSL",
+            "group": "ARH"
+          }
+        ]
+      },
+      "modeLamps": {
+        "trackLamp": 0,
+        "launchLamp": 0
+      }
+    },
     "multifunctionDisplays": {
       "display": [
         {
@@ -3869,106 +4268,373 @@
     "lerxVapor": [
       {
         "entryPoint": [
-          5.372,
-          0.165,
-          0.58
+          3.928,
+          0.05,
+          0.786
         ],
         "exitPoint": [
-          -3.708,
-          0.124,
-          2.069
+          -9.0,
+          0.594,
+          2.0
         ],
         "entryTangent": [
-          1.11,
-          0.544,
-          0.672
+          1.316,
+          0.23,
+          1.1
         ],
         "exitTangent": [
-          -2.212,
-          1.274,
-          1.916
+          -3.0,
+          0.4,
+          2.0
         ],
         "exitTangentHeight": [
-          -0.761,
-          0.572
+          1.0,
+          0.0
         ],
         "exitTangentWidth": [
-          -0.855,
-          0.781
+          -0.5,
+          0.52
         ],
         "exitPointHeight": [
-          -1.057,
-          1.578
+          0.0,
+          2.0
         ],
         "exitPointWidth": [
-          -0.478,
-          0.78
-        ],
-        "radius": [
-          0.15,
-          0.5
-        ],
-        "noiseParms": [
-          -0.25,
+          -2.0,
           3.0
         ],
+        "maxRadius": [
+          0.05,
+          0.7
+        ],
+        "minRadius": [
+          0.05,
+          0.3
+        ],
+        "noiseParms": [
+          0.1,
+          0.8
+        ],
         "smoothIntensityParams": [
-          1.0,
-          2.2,
-          0.703
+          2.0,
+          3.0,
+          0.219
+        ],
+        "density": 1.0,
+        "intensityMult": 10.0,
+        "criticalAOA": [
+          5.0,
+          25.0,
+          35.0,
+          50.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
         ]
       },
       {
         "entryPoint": [
-          5.372,
-          0.165,
-          -0.58
+          3.928,
+          0.05,
+          -0.786
         ],
         "exitPoint": [
-          -3.708,
-          0.124,
-          -2.069
+          -9.0,
+          0.594,
+          -2.0
         ],
         "entryTangent": [
-          1.11,
-          0.544,
-          -0.672
+          1.316,
+          0.23,
+          -1.1
         ],
         "exitTangent": [
-          -2.212,
-          1.274,
-          -1.916
+          -3.0,
+          0.4,
+          -2.0
         ],
         "exitTangentHeight": [
-          -0.761,
-          0.572
+          1.0,
+          0.0
         ],
         "exitTangentWidth": [
-          0.855,
-          -0.781
+          0.5,
+          -0.52
         ],
         "exitPointHeight": [
-          -1.057,
-          1.578
+          0.0,
+          2.0
         ],
         "exitPointWidth": [
-          0.478,
-          -0.78
+          2.0,
+          -3.0
         ],
-        "radius": [
-          0.15,
-          0.5
+        "maxRadius": [
+          0.05,
+          0.7
+        ],
+        "minRadius": [
+          0.05,
+          0.3
         ],
         "noiseParms": [
-          -0.25,
-          3.0
+          0.1,
+          0.8
         ],
         "smoothIntensityParams": [
-          1.0,
-          2.2,
-          0.703
+          2.0,
+          3.0,
+          0.219
+        ],
+        "density": 1.0,
+        "intensityMult": 10.0,
+        "criticalAOA": [
+          5.0,
+          25.0,
+          35.0,
+          50.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ]
+      },
+      {
+        "entryPoint": [
+          3.907,
+          -0.1,
+          0.794
+        ],
+        "exitPoint": [
+          -1.649,
+          -0.5,
+          1.8
+        ],
+        "entryTangent": [
+          1.237,
+          -0.2,
+          1.5
+        ],
+        "exitTangent": [
+          -0.205,
+          -0.4,
+          1.6
+        ],
+        "exitTangentHeight": [
+          0.0,
+          0.0
+        ],
+        "exitTangentWidth": [
+          -0.3,
+          0.3
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.0
+        ],
+        "exitPointWidth": [
+          -0.6,
+          0.6
+        ],
+        "maxRadius": [
+          0.05,
+          0.4
+        ],
+        "minRadius": [
+          0.05,
+          0.2
+        ],
+        "noiseParms": [
+          0.2,
+          0.7
+        ],
+        "smoothIntensityParams": [
+          0.46,
+          1.248,
+          0.275
+        ],
+        "density": 1.0,
+        "intensityMult": 3.0,
+        "criticalAOA": [
+          -4.0,
+          -15.0,
+          -25.0,
+          -35.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          25.0
+        ],
+        "absoluteCriticalAOA": [
+          -4.0,
+          -35.0
+        ]
+      },
+      {
+        "entryPoint": [
+          3.907,
+          -0.1,
+          -0.794
+        ],
+        "exitPoint": [
+          -1.649,
+          -0.5,
+          -1.8
+        ],
+        "entryTangent": [
+          1.237,
+          -0.2,
+          -1.5
+        ],
+        "exitTangent": [
+          -0.205,
+          -0.4,
+          -1.6
+        ],
+        "exitTangentHeight": [
+          0.0,
+          0.0
+        ],
+        "exitTangentWidth": [
+          0.3,
+          -0.3
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.0
+        ],
+        "exitPointWidth": [
+          0.6,
+          -0.6
+        ],
+        "maxRadius": [
+          0.05,
+          0.4
+        ],
+        "minRadius": [
+          0.05,
+          0.2
+        ],
+        "noiseParms": [
+          0.2,
+          0.7
+        ],
+        "smoothIntensityParams": [
+          0.46,
+          1.248,
+          0.275
+        ],
+        "density": 1.0,
+        "intensityMult": 3.0,
+        "criticalAOA": [
+          -4.0,
+          -15.0,
+          -25.0,
+          -35.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          25.0
+        ],
+        "absoluteCriticalAOA": [
+          -4.0,
+          -35.0
         ]
       }
     ]
+  },
+  "AfterBurner0": {
+    "volumetricAfterBurner": {
+      "name": "jet_orange_modern",
+      "maxHeight": 11.0,
+      "minHeight": 8.0,
+      "heightNoiseStrength": 0.0,
+      "heightNoiseSpeed": 20.0,
+      "maxRadius": 0.35,
+      "minRadius": 0.3,
+      "maxBaseRadius": 0.34,
+      "minBaseRadius": 0.3,
+      "relativeCylinderHeightMax": 0.2,
+      "relativeCylinderHeightMin": 0.2,
+      "outerCylinderAbsorptionMax": 0.6,
+      "outerCylinderAbsorptionMin": 0.7,
+      "outerCylinderHeightFadeMax": 6.0,
+      "outerCylinderHeightFadeMin": 5.0,
+      "tailHeightFadeMax": 4.0,
+      "tailHeightFadeMin": 1.0,
+      "outerCylinderHeightFadeNoiseStrength": 1.0,
+      "outerCylinderHeightFadeNoiseSpeed": 20.0,
+      "minOuterCylinderRadius": 0.36,
+      "maxOuterCylinderRadius": 0.38,
+      "absorption": 1.0,
+      "colorIntensityMax": 8.0,
+      "colorIntensityMin": 1.0,
+      "colorOverHeightMult": 1.2,
+      "colorOverDepthMult": 4.0,
+      "colorOverRadiusMult": 3.5,
+      "colorOverRadiusFadeOverHeight": 2.0,
+      "maxRingOffset": 0.0,
+      "minRingOffset": 14.0,
+      "ringAbsorption": 1.2,
+      "maxRingCount": 17,
+      "minRingCount": 15,
+      "ringIntensityMin": 0.0,
+      "ringIntensityMax": 1.0,
+      "ringIntensityNoiseStrength": 0.0,
+      "ringIntensityNoiseSpeed": 1.0,
+      "ringOffsetNoiseStrength": 1.0,
+      "ringOffsetNoiseSpeed": 20.0,
+      "rampTextureOffset": 2,
+      "radiusNoiseStrength": 0.08,
+      "radiusNoiseSpeed": 20.0,
+      "shakeNoiseStrength": 0.04,
+      "shakeNoiseSpeed": 30.0,
+      "ringAngleFadeMult": 0.75,
+      "colorOverHeightNoiseStrength": 0.1,
+      "colorOverHeightNoiseSpeed": 10.0,
+      "colorOverRadiusNoiseStrength": 0.05,
+      "colorOverRadiusNoiseSpeed": 10.0,
+      "colorOverDepthNoiseStrength": 0.03,
+      "colorOverDepthNoiseSpeed": 10.0,
+      "colorIntensityNoiseStrength": 2.0,
+      "colorIntensityNoiseSpeed": 30.0,
+      "minStartingRingHeight": 1.1,
+      "maxStartingRingHeight": 1.1,
+      "ringIntensity": 2.0,
+      "ringFrequency": 11.3097,
+      "preNominalEasingParams": {
+        "animationTime": 2.5,
+        "ascendingSmoothIntensityParams": 0.5
+      },
+      "postNominalEasingParams": {
+        "animationTime": 2.0,
+        "ascendingSmoothIntensityParams": 1.5
+      },
+      "lightProperties": {
+        "color": [
+          1.0,
+          0.339389,
+          0.22549
+        ],
+        "angle": 1.0,
+        "brightness": 20.0,
+        "radius": 20.0,
+        "attenuation": 0.8,
+        "brightnessNoiseStrength": 3.0,
+        "brightnessNoiseSpeed": 6.0,
+        "ignitionTextureIntensity": 0.8,
+        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseSpeed": 16.0
+      }
+    }
   }
 }

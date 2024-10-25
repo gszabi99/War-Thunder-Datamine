@@ -52,7 +52,7 @@ g_url_missions.fixUrlMissionNames <- function fixUrlMissionNames() {
         let unlimitCharCount = newNameLen - MAX_URL_MISSION_NAME_LENGTH
         if (unlimitCharCount > 0)
           newName = utf8(newName).slice(0, MAX_URL_MISSION_NAME_LENGTH - unlimitCharCount)
-        newName += namePostFix  //-plus-string
+        newName = $"{newName}{namePostFix}"
         if (!this.hasMissionWithSameName(mission, newName)) {
           mission.name = newName
           hasFixedMissionNames = true

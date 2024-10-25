@@ -77,7 +77,7 @@ local EpicShopPurchasableItem = class {
   }
 
   update = function(blk) {
-    this.isBought = this.isMultiConsumable ? false : ((blk?.PurchasedCount ?? 0) > 0)
+    this.isBought = this.isMultiConsumable ? false : ((blk?.PurchasedCount ?? 0) > 0) // PurchasedCount - depricated in EOS starts 1.15.2
   }
 
   getPriceText = function() {

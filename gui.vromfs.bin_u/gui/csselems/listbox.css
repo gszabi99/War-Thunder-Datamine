@@ -692,3 +692,16 @@ additionalUnit[isLocked = yes] {
 additionalUnit[isLocked = yes] img {
   background-color: @shopItemLocked;
 }
+
+hitItem:hover {
+  background-color: @listboxHoverOptionColor;
+}
+
+hitItem[selected=yes] {
+  background-color: @listboxSelOptionColor;
+  color: @white;
+}
+
+hitItem[selected=yes] > textarea {
+  color: @white;
+}

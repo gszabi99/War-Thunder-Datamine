@@ -68,6 +68,7 @@ enum DargWidgets {
   , HUD_TOUCH
   , RESPAWN
   , TANK_SIGHT_SETTINGS
+  , WORLDWAR_MAP
 };
 
 enum AirParamsMain {

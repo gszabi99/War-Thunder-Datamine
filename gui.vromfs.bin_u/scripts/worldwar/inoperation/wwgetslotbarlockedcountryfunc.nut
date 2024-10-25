@@ -16,7 +16,7 @@ function getLockedCountryDataBySquad() {
 }
 
 function getLockedCountryData() {
-  let curOperationCountry = ::g_world_war.curOperationCountry
+  let curOperationCountry = ::g_world_war.getCurOperationCountry()
   if (curOperationCountry == null)
     return getLockedCountryDataBySquad()
 

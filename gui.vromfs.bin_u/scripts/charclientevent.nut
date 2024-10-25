@@ -47,7 +47,7 @@ function charClientEvent(name, client) {
   let executors = {} //external callback
   let doRequest = @(params, context) client.requestEventBus(params, event, context)
 
-  local function request(handler, params, context, isExternal) {
+  function request(handler, params, context, isExternal) {
     params = clone params
     let func = $"{name}.{handler} request"
     if (!isExternal)
@@ -85,7 +85,7 @@ function charClientEvent(name, client) {
       debug($"{label} {msg}: {shortKeyValue(output)}")
   }
 
-  local function process(r) {
+  function process(r) {
     local result = clone r
     if ("$action" not in result) {
       assert(false, @()$"{name} process: No '$action' in result")

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -39,7 +38,7 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let misList = getTblValue("missionsList", config)
     if (!u.isArray(misList) || !misList.len()) {
       script_net_assert_once(" bad_missions_list",
-        "Bad missions list to choose: " + toString(misList))
+        $"Bad missions list to choose: {toString(misList)}")
       return
     }
     handlersManager.loadHandler(gui_handlers.ChooseMissionsListWnd, config)

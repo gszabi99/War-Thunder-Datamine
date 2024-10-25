@@ -1855,7 +1855,7 @@ let openProfileSheetParamsFromPromo = {
   UnlockDecal = @(p1, _p2, ...) { filterGroupName = p1 }
 }
 
-local function openProfileFromPromo(params, sheet = null) {
+function openProfileFromPromo(params, sheet = null) {
   sheet = sheet ?? params?[0]
   let launchParams = openProfileSheetParamsFromPromo?[sheet](
     params?[1], params?[2] ?? "", params?[3] ?? "") ?? {}

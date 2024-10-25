@@ -231,7 +231,7 @@ function genCombatPatrolMission(_isFreeFlight) {
     }
     else if ( k == 2 ) {
       point = $"battle_point_wp0{j}"
-      lookAt = "waypoint0" + (j + 1)
+      lookAt = $"waypoint0{j + 1}"
       squad = $"#enemy_move_wp0{j}"
     }
     else if ( k == 3 ) {

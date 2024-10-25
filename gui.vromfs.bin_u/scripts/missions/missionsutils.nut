@@ -196,14 +196,6 @@ function cacheCampaignNames() {
   return campaignNames.filter(@(name) !has_entitlement(name) && !hasFeature(name))
 }
 
-::get_mission_name <- function get_mission_name(missionId, config, locNameKey = "locName") {
-  let locNameValue = getTblValue(locNameKey, config, null)
-  if (locNameValue && locNameValue.len())
-    return getMissionLocName(config, locNameKey)
-
-  return loc($"missions/{missionId}")
-}
-
 function locCurrentMissionName(needComment = true) {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)

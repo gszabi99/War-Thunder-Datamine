@@ -57,7 +57,7 @@ function needShowUnseenModTutorialForUnitMod(unit, mod) {
   return hasAvailableModTutorial(unit, mod) && !isSeenTutorial(mod?.tutorialMission)
 }
 
-function startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon = null) {
+function startModTutorialMission(unit, modName, tutorialMission, tutorialMissionWeapon = null) {
   let misInfo = get_meta_mission_info_by_gm_and_name(GM_TRAINING, tutorialMission)
 
   ::cur_aircraft_name = unit.name
@@ -74,6 +74,7 @@ function startModTutorialMission(unit, tutorialMission, tutorialMissionWeapon = 
   missInfoOvr.setFrom(misInfo)
   missInfoOvr.difficulty = get_gui_option(USEROPT_DIFFICULTY)
   missInfoOvr.modTutorial = true
+  missInfoOvr.modification = modName
 
   select_training_mission(missInfoOvr)
 }

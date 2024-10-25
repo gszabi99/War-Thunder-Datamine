@@ -2,8 +2,9 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getGlobalModule } = require("%scripts/global_modules.nut")
+let events = getGlobalModule("events")
 
 gui_handlers.EventDescriptionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -19,9 +20,9 @@ gui_handlers.EventDescriptionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let view = {
       eventHeader = {
-        difficultyImage = ::events.getDifficultyImg(this.event.name)
-        difficultyTooltip = ::events.getDifficultyTooltip(this.event.name)
-        eventName = " ".concat(::events.getEventNameText(this.event), ::events.getRespawnsText(this.event))
+        difficultyImage = events.getDifficultyImg(this.event.name)
+        difficultyTooltip = events.getDifficultyTooltip(this.event.name)
+        eventName = " ".concat(events.getEventNameText(this.event), events.getRespawnsText(this.event))
       }
       showOkButton = false
     }

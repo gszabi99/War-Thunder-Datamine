@@ -9,6 +9,7 @@ let dagorMath = require("dagor.math")
 let underscore = require("%sqstd/underscore.nut")
 let functools = require("%sqstd/functools.nut")
 let {isTable, isArray, isDataBlock } = underscore
+let { dynamic_content } = require("%sqstd/analyzer.nut")
 
 let rnd = require_optional("dagor.random")?.rnd
   ?? require("math")?.rand
@@ -438,4 +439,4 @@ foreach (className, config in dagorClasses)
   if (type(config?.classRef) == "class")
     export.registerClass(className, config.classRef, config?.isEqual, config?.isEmpty)
 
-return export
+return dynamic_content(export)

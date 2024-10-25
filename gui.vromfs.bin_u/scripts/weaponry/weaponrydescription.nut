@@ -34,7 +34,7 @@ let getTextNoWeapons = @(unit, isPrimary) isPrimary ? loc("weapon/noPrimaryWeapo
   : (unit.isAir() || unit.isHelicopter()) ? loc("weapon/noSecondaryWeapon")
   : loc("weapon/noAdditionalWeapon")
 
-local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
+function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS) {
   local text = ""
   unit = type(unit) == "string" ? getAircraftByName(unit) : unit
   if (!unit)
@@ -239,7 +239,7 @@ function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
 }
 
 // return short desc of unit.weapons[weaponPresetNo], like M\C\B\T
-local function getWeaponShortType(_unit, weapon) {
+function getWeaponShortType(_unit, weapon) {
   let textArr = []
   if (weapon.frontGun)
     textArr.append(loc("weapons_types/short/guns"))
@@ -255,7 +255,7 @@ local function getWeaponShortType(_unit, weapon) {
   return loc("weapons_types/short/separator").join(textArr)
 }
 
-local function getWeaponShortTypeFromWpName(wpName, unit = null) {
+function getWeaponShortTypeFromWpName(wpName, unit = null) {
   if (!wpName || type(wpName) != "string")
     return ""
 

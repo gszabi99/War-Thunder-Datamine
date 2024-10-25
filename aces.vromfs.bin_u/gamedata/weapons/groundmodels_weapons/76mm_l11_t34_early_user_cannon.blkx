@@ -68,6 +68,10 @@
     ],
     "fuseDelayDist": 1.2,
     "explodeTreshold": 14.0,
+    "timeFuseDistanceError": 3.0,
+    "timeFuseDistanceOffset": -7.5,
+    "explosionInAir": true,
+    "canChangeFuseMode": true,
     "relativeVelArmorShift": [
       200.0,
       1000.0
@@ -113,6 +117,12 @@
     "pressureDamage": {
       "damageType": "pressure"
     },
+    "shatterDamage": {
+      "radius": 30.0,
+      "count": 100,
+      "penetration": 8.0,
+      "damage": 10.0
+    },
     "damage": {
       "kinetic": {
         "damageType": "generic",
@@ -123,89 +133,17 @@
       },
       "shatter": {
         "useRealShatters": true,
-        "countPortion": 0.25,
-        "segment": [
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              0.0,
-              10.0
-            ],
-            "countPortion": 0.09
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              11.0,
-              39.0
-            ],
-            "countPortion": 0.1
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.5,
-            "angles": [
-              40.0,
-              70.0
-            ],
-            "countPortion": 0.11
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              71.0,
-              180.0
-            ],
-            "countPortion": 0.2
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              181.0,
-              289.0
-            ],
-            "countPortion": 0.2
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.5,
-            "angles": [
-              290.0,
-              320.0
-            ],
-            "countPortion": 0.11
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              321.0,
-              349.0
-            ],
-            "countPortion": 0.1
-          },
-          {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [
-              350.0,
-              359.0
-            ],
-            "countPortion": 0.09
-          }
-        ]
+        "countPortion": 1.0,
+        "segment": {
+          "radiusScale": 1.0,
+          "penetrationScale": 1.0,
+          "damageScale": 1.0,
+          "angles": [
+            0.0,
+            15.0
+          ],
+          "countPortion": 1.0
+        }
       }
     },
     "visual": {

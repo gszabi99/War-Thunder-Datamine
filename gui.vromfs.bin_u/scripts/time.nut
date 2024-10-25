@@ -208,7 +208,7 @@ function calculateCorrectTimePeriodYears(startTime, endTime) {
   return { startTime, endTime }
 }
 
-local function processTimeStamps(text) {
+function processTimeStamps(text) {
   foreach (_idx, time in ["{time=", "{time_countdown="]) {
     local startPos = 0
     let startTime = time
@@ -245,7 +245,7 @@ local function processTimeStamps(text) {
 }
 
 
-local function preciseSecondsToString(value, canShowZeroMinutes = true) {
+function preciseSecondsToString(value, canShowZeroMinutes = true) {
   value = value != null ? value.tofloat() : 0.0
   let sign = value >= 0 ? "" : loc("ui/minus")
   local ms = (math.fabs(value) * 1000.0 + 0.5).tointeger()

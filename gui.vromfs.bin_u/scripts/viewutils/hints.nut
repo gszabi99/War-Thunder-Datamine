@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { split_by_chars } = require("string")
@@ -139,7 +140,7 @@ enumsAddTypes(g_hint_tag, {
 
     getViewSlices = function(tagName, params) { //tagName == shortcutId
       let paramsList = split_by_chars(tagName, this.delimiter)
-      let shortcut = ::SHORTCUT?[paramsList?[1]]
+      let shortcut = SHORTCUT?[paramsList?[1]]
       if (!u.isTable(shortcut))
         return []
 

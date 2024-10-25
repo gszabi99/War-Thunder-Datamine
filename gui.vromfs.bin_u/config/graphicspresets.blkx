@@ -45,15 +45,6 @@
     "max": 16,
     "movie": 16
   },
-  "rendinstGlobalShadows": {
-    "block": "render",
-    "ultralow": true,
-    "low": true,
-    "medium": true,
-    "high": true,
-    "max": true,
-    "movie": true
-  },
   "ssaoQuality": {
     "block": "render",
     "ultralow": 0,
@@ -152,44 +143,6 @@
     "high": 2,
     "max": 2,
     "movie": 3
-  },
-  "alpha_to_coverage": {
-    "block": "video",
-    "ultralow": false,
-    "low": false,
-    "medium": false,
-    "high": false,
-    "max": true,
-    "movie": true
-  },
-  "msaa": {
-    "block": "directx",
-    "name": "maxaa",
-    "ultralow": 0,
-    "low": 0,
-    "medium": 0,
-    "high": 0,
-    "max": 0,
-    "movie": 0
-  },
-  "antialiasing": {
-    "block": "video",
-    "name": "postfx_antialiasing",
-    "ultralow": "none",
-    "low": "none",
-    "medium": "fxaa",
-    "high": "high_fxaa",
-    "max": "low_taa",
-    "movie": "low_taa"
-  },
-  "ssaa": {
-    "block": "graphics",
-    "ultralow": 1.0,
-    "low": 1.0,
-    "medium": 1.0,
-    "high": 1.0,
-    "max": 1.0,
-    "movie": 1.0
   },
   "haze": {
     "block": "render",
@@ -327,15 +280,6 @@
     "max": 1,
     "movie": 1
   },
-  "staticShadowsOnEffects": {
-    "block": "render",
-    "ultralow": false,
-    "low": false,
-    "medium": false,
-    "high": false,
-    "max": true,
-    "movie": true
-  },
   "compatibilityMode": {
     "block": "video",
     "ultralow": true,
@@ -353,5 +297,25 @@
     "high": true,
     "max": true,
     "movie": true
+  },
+  "antialiasingMode": {
+    "block": "video",
+    "name": "antialiasing_mode",
+    "ultralow": "off",
+    "low": "off",
+    "medium": "low_fxaa",
+    "high": "high_fxaa",
+    "max": "taa",
+    "movie": "taa"
+  },
+  "antialiasingUpscaling": {
+    "block": "video",
+    "name": "antialiasing_upscaling",
+    "ultralow": "native",
+    "low": "native",
+    "medium": "native",
+    "high": "native",
+    "max": "native",
+    "movie": "native"
   }
 }
