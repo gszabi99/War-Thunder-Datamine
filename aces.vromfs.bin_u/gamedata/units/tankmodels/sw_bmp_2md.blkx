@@ -157,6 +157,16 @@
       },
       "ex_armor_03_dm": {
         "armorThickness": 7.0
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true,
+        "armorClass": "aluminium"
+      },
+      "composite_armor_hull_03_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true,
+        "armorClass": "aluminium"
       }
     },
     "turret": {
@@ -732,6 +742,40 @@
       "machine_gunner_03_dm": {},
       "machine_gunner_04_dm": {}
     }
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "aluminium",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm",
+            "xrayTextThickness": 2.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "aluminium",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm",
+            "xrayTextThickness": 2.0
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "aluminium",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm",
+            "xrayTextThickness": 2.0
+          }
+        }
+      }
+    ]
   },
   "sound": {
     "EngineName": "engine_bmp",
@@ -1987,9 +2031,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 13700.0,
+      "Empty": 14000.0,
       "Fuel": 300.0,
-      "TakeOff": 14000.0,
+      "TakeOff": 14300.0,
       "momentOfInertia": [
         2.0,
         2.0,

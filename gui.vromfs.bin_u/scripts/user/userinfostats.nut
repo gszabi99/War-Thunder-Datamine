@@ -19,6 +19,7 @@ let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut"
 let { userName } = require("%scripts/user/profileStates.nut")
 let { ranksPersist, expPerRank, getRankByExp, getPrestigeByRank
 } = require("%scripts/ranks.nut")
+let { isUnitEliteByStatus } = require("%scripts/unit/unitStatus.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -419,7 +420,7 @@ function getPlayerStatsFromBlk(blk) {
     if (blk?.aircrafts?[country]) {
       cData.unitsCount = blk.aircrafts[country].paramCount()
       eachParam(blk.aircrafts[country], function(unitEliteStatus) {
-        if (::isUnitEliteByStatus(unitEliteStatus))
+        if (isUnitEliteByStatus(unitEliteStatus))
           cData.eliteUnitsCount++
       })
     }

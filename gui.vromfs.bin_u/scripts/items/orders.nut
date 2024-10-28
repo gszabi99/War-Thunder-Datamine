@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import set_order_accepted_cb, use_order_request, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -158,7 +157,7 @@ function getActivateButtonLabel() {
   local label = loc("flightmenu/btnActivateOrder")
   if (cooldownTimeleft.value > 0) {
     let timeText = time.secondsToString(cooldownTimeleft.value)
-    label += format(" (%s)", timeText)
+    label = "".concat(label, format(" (%s)", timeText))
   }
   return label
 }
@@ -302,15 +301,15 @@ function updateStatusTextView(orderObject, fullUpdate) {
     view.orderTimeleftLabel <- loc("icon/timer")
 
     // Order starter
-    view.orderStarterLabel <- loc("items/order/status/starter") + loc("ui/colon")
+    view.orderStarterLabel <- "".concat(loc("items/order/status/starter"), loc("ui/colon"))
     view.orderStarter <- ::build_mplayer_name(orderObject.starterPlayer)
 
     // Order target
-    view.orderTargetLabel <- loc("items/order/status/target") + loc("ui/colon")
+    view.orderTargetLabel <- "".concat(loc("items/order/status/target"), loc("ui/colon"))
 
-    view.cooldownTimeleftLabel <- loc("items/order/status/cooldown") + loc("ui/colon")
-    view.orderFinishedLabel <- loc("items/order/status/finished") + loc("ui/colon")
-    view.timeToSwitchTargetLabel <- loc("items/order/status/timeToSwitchTarget") + loc("ui/colon")
+    view.cooldownTimeleftLabel <- "".concat(loc("items/order/status/cooldown"), loc("ui/colon"))
+    view.orderFinishedLabel <- "".concat(loc("items/order/status/finished"), loc("ui/colon"))
+    view.timeToSwitchTargetLabel <- "".concat(loc("items/order/status/timeToSwitchTarget"), loc("ui/colon"))
   }
 
   // Order description
@@ -336,29 +335,27 @@ function getStatusText() {
 
   updateStatusTextView(orderObject, false)
   let view = orderObject.statusTextView
-  local result = ""
   if (!hasActiveOrder.value) {
-    result += colorize(statusColorScheme.parameterLabelColor, view.orderFinishedLabel)
-    result += colorize(statusColorScheme.parameterValueColor, view.orderName)
-    return result
+    return "".concat(colorize(statusColorScheme.parameterLabelColor, view.orderFinishedLabel),
+      colorize(statusColorScheme.parameterValueColor, view.orderName))
   }
-  result += colorize(statusColorScheme.parameterLabelColor, view.orderActiveLabel) + " "
-  result += colorize(statusColorScheme.parameterValueColor, view.orderName) + "\n"
-  result += view.orderDescription + "\n"
+  local result = "".concat(colorize(statusColorScheme.parameterLabelColor, view.orderActiveLabel), " ",
+    colorize(statusColorScheme.parameterValueColor, view.orderName), "\n",
+    view.orderDescription, "\n")
   if (orderObject.starterPlayer != null && checkOrderActivationTime(5)) {
-    result += colorize(statusColorScheme.parameterLabelColor, view.orderStarterLabel)
-    result += colorize(statusColorScheme.parameterValueColor, view.orderStarter) + "\n"
+    result = "".concat(result, colorize(statusColorScheme.parameterLabelColor, view.orderStarterLabel),
+      colorize(statusColorScheme.parameterValueColor, view.orderStarter), "\n")
   }
   if (orderObject.targetPlayer != emptyPlayerData) {
-    result += colorize(statusColorScheme.parameterLabelColor, view.orderTargetLabel)
-    result += colorize(statusColorScheme.parameterValueColor, view.orderTarget) + "\n"
+    result = "".concat(result, colorize(statusColorScheme.parameterLabelColor, view.orderTargetLabel),
+      colorize(statusColorScheme.parameterValueColor, view.orderTarget), "\n")
     if (orderObject.timeToSwitchTarget != -1) {
-      result += colorize(statusColorScheme.parameterLabelColor, view.timeToSwitchTargetLabel)
-      result += colorize(statusColorScheme.parameterValueColor, view.timeToSwitchTarget) + "\n"
+      result = "".concat(result, colorize(statusColorScheme.parameterLabelColor, view.timeToSwitchTargetLabel),
+        colorize(statusColorScheme.parameterValueColor, view.timeToSwitchTarget), "\n")
     }
   }
-  result += colorize(statusColorScheme.parameterLabelColor, view.orderTimeleftLabel) + " "
-  result += colorize(statusColorScheme.parameterValueColor, view.orderTimeleft)
+  result = "".concat(result, colorize(statusColorScheme.parameterLabelColor, view.orderTimeleftLabel), " ",
+    colorize(statusColorScheme.parameterValueColor, view.orderTimeleft))
   return result
 }
 
@@ -379,10 +376,8 @@ function getStatusTextBottom() {
   if (hasActiveOrder.value || prevActiveOrder.value == null)
     return ""
   let view = prevActiveOrder.value.statusTextView
-  local result = ""
-  result += colorize(statusColorScheme.parameterLabelColor, view.cooldownTimeleftLabel)
-  result += colorize(statusColorScheme.parameterValueColor, view.cooldownTimeleft)
-  return result
+  return "".concat(colorize(statusColorScheme.parameterLabelColor, view.cooldownTimeleftLabel),
+    colorize(statusColorScheme.parameterValueColor, view.cooldownTimeleft))
 }
 
 function getStatusContent(orderObject, isHalignRight = false) {
@@ -483,14 +478,14 @@ function activateOrder(orderItem, onComplete = null, isSilent = false) {
         orderId = orderItem.id
       })
     }
-    debugPrint("orders: activateOrder: Activation didn't start. "
-      + "Already activating order with ID: " + activatingLocalOrderId)
+    debugPrint("".concat("orders: activateOrder: Activation didn't start. ",
+      "Already activating order with ID: ", activatingLocalOrderId))
     return
   }
   activatingLocalOrderId = orderItem.id
   activatingLocalOrderCallback = onComplete
-  debugPrint("orders: activateOrder: Activation started. "
-    + "Order ID: " + activatingLocalOrderId + " Order UID: " + orderItem.uids[0])
+  debugPrint("".concat("orders: activateOrder: Activation started. ",
+    "Order ID: ", activatingLocalOrderId, " Order UID: ", orderItem.uids[0]))
   if (checkCurrentMission(orderItem)) {
     set_order_accepted_cb(null, @(res) onOrderAccepted(res, isSilent))
     use_order_request(orderItem.uids[0])

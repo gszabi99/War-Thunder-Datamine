@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, get_trophy_info, wp_get_trophy_cost, wp_get_trophy_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
@@ -210,7 +209,7 @@ let Trophy = class (BaseItem) {
       log($"id = {this.id}")
       debugTableData(recursionUsedIds)
       script_net_assert_once("trophy recursion",
-                               $"Infinite recursion detected in trophy: {this.id}. Array " + toString(recursionUsedIds))
+        $"Infinite recursion detected in trophy: {this.id}. Array {toString(recursionUsedIds)}")
       return null
     }
 
@@ -249,7 +248,7 @@ let Trophy = class (BaseItem) {
       log($"id = {this.id}")
       debugTableData(recursionUsedIds)
       script_net_assert_once("trophy recursion",
-                               $"Infinite recursion detected in trophy: {this.id}. Array " + toString(recursionUsedIds))
+        $"Infinite recursion detected in trophy: {this.id}. Array {toString(recursionUsedIds)}")
       return null
     }
 
@@ -329,7 +328,7 @@ let Trophy = class (BaseItem) {
       log($"id = {this.id}")
       debugTableData(recursionUsedIds)
       script_net_assert_once("trophy recursion",
-                               $"Infinite recursion detected in trophy: {this.id}. Array " + toString(recursionUsedIds))
+        $"Infinite recursion detected in trophy: {this.id}. Array {toString(recursionUsedIds)}")
       return
     }
 
@@ -388,15 +387,15 @@ let Trophy = class (BaseItem) {
   }
 
   function getBigIcon() {
-    return this.getTrophyImage(this.getUsingStyle() + "_big")
+    return this.getTrophyImage($"{this.getUsingStyle()}_big")
   }
 
   function getOpenedIcon() {
-    return this.getTrophyImage(this.getUsingStyle() + "_opened")
+    return this.getTrophyImage($"{this.getUsingStyle()}_opened")
   }
 
   function getOpenedBigIcon() {
-    return this.getTrophyImage(this.getUsingStyle() + "_opened_big")
+    return this.getTrophyImage($"{this.getUsingStyle()}_opened_big")
   }
 
   function getName(colored = true) {
@@ -424,7 +423,7 @@ let Trophy = class (BaseItem) {
 
       local comment = prizeTypeName.len() ? loc("ui/parentheses/space", { text = prizeTypeName }) : ""
       comment = colored ? colorize("commonTextColor", comment) : comment
-      name += comment
+      name = $"{name}{comment}"
     }
     return name
   }

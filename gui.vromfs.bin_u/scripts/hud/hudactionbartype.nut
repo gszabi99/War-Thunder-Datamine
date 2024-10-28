@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -170,7 +169,7 @@ g_hud_action_bar_type.template <- {
   getIcon        = @(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) this._icon
   getTitle       = @(_actionItem, _killStreakTag = null) this._title
   getTooltipText = function(actionItem = null) {
-    local res = loc("actionBarItem/" + this.getName(actionItem, actionItem?.killStreakUnitTag))
+    local res = loc($"actionBarItem/{this.getName(actionItem, actionItem?.killStreakUnitTag)}")
     res = $"{res}{getCooldownText(actionItem)}"
     if (actionItem?.automatic)
       res = "\n".concat(res, loc("actionBar/action/automatic"))
@@ -636,11 +635,10 @@ enumsAddTypes(g_hud_action_bar_type, {
     isForWheelMenu = @() true
     canSwitchAutomaticMode = @() false
     getTitle = @(actionItem, _killStreakTag = null)
-      loc("hotkeys/ID_SHIP_DAMAGE_CONTROL_PRESET_" + (actionItem.userHandle >> 3).tostring())
-    getName = @(actionItem, _killStreakTag = null)
-      "ship_damage_control" + (actionItem.userHandle >> 3).tostring()
+      loc($"hotkeys/ID_SHIP_DAMAGE_CONTROL_PRESET_{actionItem.userHandle >> 3}")
+    getName = @(actionItem, _killStreakTag = null) $"ship_damage_control{actionItem.userHandle >> 3}"
     getShortcut = @(actionItem, _hudUnitType = null)
-      "ID_SHIP_DAMAGE_CONTROL_PRESET_" + (actionItem.userHandle >> 3).tostring()
+      $"ID_SHIP_DAMAGE_CONTROL_PRESET_{actionItem.userHandle >> 3}"
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       return "".concat("#ui/gameuiskin#ship_damage_control_", (actionItem.userHandle & 7) + 1)
     }

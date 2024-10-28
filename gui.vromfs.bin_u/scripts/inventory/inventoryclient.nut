@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, char_send_custom_action
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
@@ -203,9 +202,9 @@ function _validate(data, name) {
         if (checks & validationCheckBitMask.INVALIDATE)
           foreach (key, _val in keys)
             if (key in item)
-              itemDebug.append($"{key}=" + item[key])
+              itemDebug.append($"{key}={item[key]}")
       itemDebug.append(isItemValid ? ($"err={itemErrors}") : "INVALID")
-      itemDebug.append(u.isTable(item) ? ("len=" + item.len()) : ("var=" + type(item)))
+      itemDebug.append(u.isTable(item) ? $"len={item.len()}" : $"var={type(item)}")
 
       itemsBroken.append(",".join(itemDebug, true))
     }
@@ -217,7 +216,7 @@ function _validate(data, name) {
   if (itemsBroken.len() || keysMissing.len() || keysWrongType.len()) {
     itemsBroken = ";".join(itemsBroken, true) // warning disable: -assigned-never-used
     keysMissing = ";".join(keysMissing.keys(), true) // warning disable: -assigned-never-used
-    keysWrongType = ";".join(keysWrongType.topairs().map(@(i) i[0] + "=" + i[1])) // warning disable: -assigned-never-used
+    keysWrongType = ";".join(keysWrongType.topairs().map(@(i) $"{i[0]}={i[1]}")) // warning disable: -assigned-never-used
     script_net_assert_once("inventory client bad response", $"InventoryClient: Response has errors: {name}")
   }
 

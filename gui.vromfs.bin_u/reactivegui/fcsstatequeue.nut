@@ -5,7 +5,7 @@ let { ShotState, ShotDiscrepancy, ShotDirection } = require("%rGui/fcsState.nut"
 
 let fcsShotState = Watched({shotState = FCSShotState.SHOT_NONE shotDiscrepancy = 0 shotDirection = 0})
 
-let statesQueue = Watched([])
+let statesQueue = []
 let maxStatesQueueLength = 5
 let maxShownDiscrepancyValue = 1000
 let maxShownDiscrepancy = 2000
@@ -14,17 +14,15 @@ let function addToQueue(shotState, shotDiscrepancy, shotDirection) {
   let discrepancy = round_by_value(shotDiscrepancy, 10)
   let direction = shotDirection
   let state = {shotState shotDiscrepancy = discrepancy shotDirection = direction}
-  let queue = clone statesQueue.value
 
-  if(queue.len() == 0 && fcsShotState.value.shotState == FCSShotState.SHOT_NONE) {
+  if(statesQueue.len() == 0 && fcsShotState.value.shotState == FCSShotState.SHOT_NONE) {
     fcsShotState(state)
     return
   }
 
-  if(queue.len() == maxStatesQueueLength)
-    queue.pop()
-  queue.append(state)
-  statesQueue(queue)
+  if(statesQueue.len() == maxStatesQueueLength)
+    statesQueue.pop()
+  statesQueue.append(state)
 }
 
 function collectShotStates() {
@@ -40,13 +38,11 @@ function collectShotStates() {
 }
 
 function showNewStateFromQueue() {
-  if(statesQueue.value.len() == 0)
+  if (statesQueue.len() == 0)
     return
-  if(fcsShotState.value.shotState != FCSShotState.SHOT_NONE)
+  if (fcsShotState.value.shotState != FCSShotState.SHOT_NONE)
     return
-  let queue = clone statesQueue.value
-  let state = queue.pop()
-  statesQueue(queue)
+  let state = statesQueue.pop()
   fcsShotState(state)
 }
 
@@ -55,11 +51,11 @@ ShotDiscrepancy.subscribe(@(_v) deferOnce(collectShotStates))
 ShotDirection.subscribe(@(_v) deferOnce(collectShotStates))
 
 fcsShotState.subscribe(function(v) {
-  if(v.shotState == FCSShotState.SHOT_NONE)
+  if (v.shotState == FCSShotState.SHOT_NONE && statesQueue.len() != 0)
     deferOnce(showNewStateFromQueue)
 })
 
-let clearCurrentShotState = @() fcsShotState({shotState = FCSShotState.SHOT_NONE shotDiscrepancy = 0 ShotDirection = 0})
+let clearCurrentShotState = @() fcsShotState({shotState = FCSShotState.SHOT_NONE, shotDiscrepancy = 0, shotDirection = 0})
 
 return {
   fcsShotState

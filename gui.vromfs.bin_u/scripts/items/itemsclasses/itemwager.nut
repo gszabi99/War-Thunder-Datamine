@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, get_cur_rank_info, get_current_wager_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -153,15 +152,13 @@ let Wager = class (BaseItem) {
   }
 
   function getRewardText(rewData, stakeValue) {
-    local text = ""
+    let text = []
     foreach (rewardDataTypeName, rewardParams in rewData.rewardParamsTable) {
-      if (text != "")
-        text += ", "
       let rewardDataType = this.getRewardDataTypeByName(rewardDataTypeName)
       let rewardValue = this.getRewardValueByNumWins(rewardParams, rewData.winCount, stakeValue)
-      text = "".concat(text, decimalFormat(rewardValue), loc(rewardDataType.icon))
+      text.append("".concat(decimalFormat(rewardValue), loc(rewardDataType.icon)))
     }
-    return text
+    return ", ".join(text)
   }
 
   /** Creates array with reward data objects sorted by param value. */
@@ -217,7 +214,6 @@ let Wager = class (BaseItem) {
         a = p3.x
         b = p3.y
         c = p3.z
-        //iconName = LayersIcon.findLayerCfg(getBasePartOfLayerId(/*small*/true) + "_" + rewardDataTypeName)
       }
       res.isEmpty = false
     }
@@ -238,7 +234,7 @@ let Wager = class (BaseItem) {
       if (paramName != "unlock")
         continue
       let paramValue = winBlk.getParamValue(i)
-      if (!LayersIcon.findLayerCfg(this.getBasePartOfLayerId(false) + "_" + paramValue))
+      if (!LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(false)}_{paramValue}"))
         continue
 
       iconName = paramValue
@@ -257,15 +253,15 @@ let Wager = class (BaseItem) {
   }
 
   function getLayersData(small = true) {
-    local layersData = LayersIcon.genDataFromLayer(this._getBestRewardImage(small))
-    layersData += this._getWinIconData(small)
+    let layersData = "".concat(LayersIcon.genDataFromLayer(this._getBestRewardImage(small)),
+      this._getWinIconData(small))
 
     let mainLayerCfg = this._getBackground(small)
     return LayersIcon.genDataFromLayer(mainLayerCfg, layersData)
   }
 
   function getBasePartOfLayerId(_small) {
-    return this.iconStyle // + (small? "_shop" : "")
+    return this.iconStyle
   }
 
   function _getBackground(small) {
@@ -288,11 +284,11 @@ let Wager = class (BaseItem) {
       }
     }
 
-    local imageLayerCfg = LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.winIcon)
+    local imageLayerCfg = LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(small)}_{this.winIcon}")
     if (imageLayerCfg)
       layers.append(imageLayerCfg)
     else {
-      imageLayerCfg = LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.defaultWinIcon)
+      imageLayerCfg = LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(small)}_{this.defaultWinIcon}")
       if (imageLayerCfg)
         layers.append(imageLayerCfg)
     }
@@ -304,7 +300,7 @@ let Wager = class (BaseItem) {
     if (!this.rewardType)
       return
 
-    return LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_" + this.rewardType)
+    return LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(small)}_{this.rewardType}")
   }
 
   function getAvailableStakeText() {
@@ -320,26 +316,24 @@ let Wager = class (BaseItem) {
   }
 
   function getDescription(customParams = {}) {
-    local desc = ""
+    let desc = []
     let customNumWins = getTblValue("numWins", customParams, this.numWins)
 
     if (this.isActive())
-      desc += loc("items/wager/numWins", { numWins = customNumWins, maxWins = this.maxWins })
+      desc.append(loc("items/wager/numWins", { numWins = customNumWins, maxWins = this.maxWins }))
     else
-      desc += loc("items/wager/maxWins", { maxWins = this.maxWins })
-    desc += "\n"
+      desc.append(loc("items/wager/maxWins", { maxWins = this.maxWins }))
 
     if (this.maxFails > 0) {
       if (this.numBattles == null)
-        desc += loc("items/wager/maxFails", { maxFails = this.maxFails })
+        desc.append(loc("items/wager/maxFails", { maxFails = this.maxFails }))
       else {
         let customNumFails = getTblValue("numFails", customParams, this.numBattles - customNumWins)
-        desc += loc("items/wager/numFails", {
+        desc.append(loc("items/wager/numFails", {
           numFails = customNumFails
           maxFails = this.maxFails
-        })
+        }))
       }
-      desc += "\n"
     }
 
     local stakeText
@@ -355,22 +349,20 @@ let Wager = class (BaseItem) {
         Cost(this.minWager).toStringWithParams(costParam),
         Cost(this.maxWager).toStringWithParams(costParam))
     if (stakeText != "")
-      desc = "".concat(desc, loc("items/wager/stake", { stakeText = stakeText }), "\n")
+      desc.append(loc("items/wager/stake", { stakeText = stakeText }))
 
     let expireText = this.getCurExpireTimeText()
     if (expireText != "")
-      desc = "\n".concat(desc, expireText)
+      desc.append(expireText)
 
     if (this.winConditions != null && this.winConditions.len() > 0
         && getTblValue("showLongMarkupPart", customParams, true)) {
-      if (desc != "")
-        desc += "\n"
-      desc += colorize("grayOptionColor", loc("items/wager/winConditions"))
-      desc += "\n" + getFullUnlockCondsDesc(this.winConditions, null, null, this.winCondParams)
-      desc += "\n" + colorize("grayOptionColor", loc("items/wager/winConditions/caption"))
+      desc.append(colorize("grayOptionColor", loc("items/wager/winConditions")),
+        getFullUnlockCondsDesc(this.winConditions, null, null, this.winCondParams),
+        colorize("grayOptionColor", loc("items/wager/winConditions/caption")))
     }
 
-    return desc
+    return "\n".join(desc)
   }
 
   _needLongMarkup = null
@@ -407,12 +399,12 @@ let Wager = class (BaseItem) {
       }
 
     let res = { subTexts = [] }
-    res.subTexts.append({ text = getUnlockMainCondDesc(mainCond, "", null, this.winCondParams) + loc("ui/colon") })
+    res.subTexts.append({ text = "".concat(getUnlockMainCondDesc(mainCond, "", null, this.winCondParams), loc("ui/colon")) })
 
     let locValues = getLocForBitValues(modeType, values)
     foreach (idx, value in locValues)
       res.subTexts.append({
-        text = colorize("unlockActiveColor", value) + ((idx < values.len() - 1) ? loc("ui/comma") : "")
+        text = "".concat(colorize("unlockActiveColor", value), (idx < values.len() - 1) ? loc("ui/comma") : "")
         tooltipId = getTooltipType("UNLOCK").getTooltipId(values[idx])
       })
 
@@ -562,8 +554,7 @@ let Wager = class (BaseItem) {
   }
 
   function showNotEnoughMoneyMsgBox(cb) {
-    local bodyTextLocString = "msgbox/notEnoughMoneyWager/"
-    bodyTextLocString += this.isGoldWager ? "gold" : "wp"
+    let bodyTextLocString = $"msgbox/notEnoughMoneyWager/{this.isGoldWager ? "gold" : "wp"}"
     let bodyText = loc(bodyTextLocString)
     scene_msg_box("not_enough_money_message_box", null, bodyText,
       [["ok", @() cb({ success = false }) ]],
@@ -577,10 +568,10 @@ let Wager = class (BaseItem) {
       descVars.append($"{this.numWins}/{this.maxWins}")
 
     if (this.numBattles != null)
-      descVars.append(colorize("badTextColor", (this.numBattles - this.numWins) + "/" + this.maxFails))
+      descVars.append(colorize("badTextColor", $"{this.numBattles - this.numWins}/{this.maxFails}"))
 
     if (descVars.len() > 0)
-      desc += loc("ui/parentheses/space", { text = ", ".join(descVars, true) })
+      desc = "".concat(desc, loc("ui/parentheses/space", { text = ", ".join(descVars) }))
 
     return desc
   }

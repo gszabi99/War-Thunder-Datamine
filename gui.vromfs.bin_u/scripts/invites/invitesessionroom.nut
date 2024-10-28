@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled
 from "%scripts/dagui_library.nut" import *
 

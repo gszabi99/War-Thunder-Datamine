@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
 
@@ -230,8 +229,8 @@ let g_hud_live_stats = {
     }
     else if (this.curViewMode == LIVE_STATS_MODE.FINAL || this.isMissionLastManStanding) {
       title = this.isMissionTeamplay ? loc("debriefing/placeInMyTeam") :
-        (loc("mainmenu/btnMyPlace") + loc("ui/colon"))
-      title += colorize("userlogColoredText", getTblValue("rowNo", state.player, this.getPlayerPlaceInTeam(state.player)))
+       "".concat(loc("mainmenu/btnMyPlace"), loc("ui/colon"))
+      title = "".concat(title, colorize("userlogColoredText", getTblValue("rowNo", state.player, this.getPlayerPlaceInTeam(state.player))))
     }
 
     let isHeader = this.curViewMode == LIVE_STATS_MODE.FINAL
@@ -259,7 +258,7 @@ let g_hud_live_stats = {
       let unitNames = []
       foreach (unitId in this.hero.units)
         unitNames.append(getUnitName(unitId))
-      view["units"] <- loc("mainmenu/btnUnits") + loc("ui/colon") + loc("ui/comma").join(unitNames, true)
+      view["units"] <- "".concat(loc("mainmenu/btnUnits"), loc("ui/colon"), loc("ui/comma").join(unitNames, true))
     }
 
     let template = this.isSelfTogglable ? "%gui/hud/hudLiveStats.tpl" : "%gui/hud/hudLiveStatsSpectator.tpl"

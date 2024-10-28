@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -56,9 +55,9 @@ let Ticket = class (BaseItem) {
       log("Item Ticket: empty tournamentTicketParams",$"Items: missing any tournamentName in ticket tournamentTicketParams, {this.id}")
     else {
       let tournamentBlk = get_tournaments_blk()
-      this.clanTournament = this.clanTournament || getBlkValueByPath(tournamentBlk, this.eventEconomicNamesArray[0] + "/clanTournament", false)
+      this.clanTournament = this.clanTournament || getBlkValueByPath(tournamentBlk, $"{this.eventEconomicNamesArray[0]}/clanTournament", false)
       //handling closed sales
-      this.canBuy = this.canBuy && !getBlkValueByPath(tournamentBlk, this.eventEconomicNamesArray[0] + "/saleClosed", false)
+      this.canBuy = this.canBuy && !getBlkValueByPath(tournamentBlk, $"{this.eventEconomicNamesArray[0]}/saleClosed", false)
 
       if (this.isInventoryItem && !this.isActiveTicket) {
         let tBlk = DataBlock()
@@ -112,7 +111,7 @@ let Ticket = class (BaseItem) {
     if (!iconTable)
       iconTable = this.getIconTableForEvent(null)
 
-    let unitTypeLayer = getTblValue("unitType", this.customLayers) ? "_" + this.customLayers.unitType : iconTable.unitType
+    let unitTypeLayer = getTblValue("unitType", this.customLayers) ? $"_{this.customLayers.unitType}" : iconTable.unitType
     let insertLayersArrayCfg = []
     insertLayersArrayCfg.append(this._getUnitTypeLayer(unitTypeLayer, small))
     insertLayersArrayCfg.append(this._getDifficultyLayer(getTblValue("diffCode", this.customLayers) || iconTable.diffCode, small))
@@ -124,7 +123,7 @@ let Ticket = class (BaseItem) {
   }
 
   function getBasePartOfLayerId(small) {
-    return this.iconStyle + (small ? "_shop" : "")
+    return $"{this.iconStyle}{small ? "_shop" : ""}"
   }
 
   function _getBackground(small) {
@@ -140,13 +139,13 @@ let Ticket = class (BaseItem) {
     local unitsString = ""
     foreach (unitType in unitTypes.types)
       if (unitType.bit & unitTypeMask)
-        unitsString +=$"_{unitType.name}"
+        unitsString = $"{unitsString}_{unitType.name}"
 
     return unitsString
   }
 
   function _getUnitTypeLayer(unitsString, small) {
-    return LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + unitsString)
+    return LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(small)}{unitsString}")
   }
 
   function _getDiffCode(event) {
@@ -156,7 +155,7 @@ let Ticket = class (BaseItem) {
   function _getDifficultyLayer(diffCode, small) {
     if (diffCode == null)
       return null
-    return LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_diff" + diffCode)
+    return LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(small)}_diff{diffCode}")
   }
 
   function _getTournamentMode(event) {
@@ -174,7 +173,7 @@ let Ticket = class (BaseItem) {
   }
 
   function _getTournamentModeLayer(mode, small) {
-    return LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_gm_" + mode)
+    return LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(small)}_gm_{mode}")
   }
 
   function _getTournamentType(event) {
@@ -188,7 +187,7 @@ let Ticket = class (BaseItem) {
   }
 
   function _getTournamentTypeLayer(lType, small) {
-    return LayersIcon.findLayerCfg(this.getBasePartOfLayerId(small) + "_gt_" + lType)
+    return LayersIcon.findLayerCfg($"{this.getBasePartOfLayerId(small)}_gt_{lType}")
   }
 
   function _getNameForLayer(_event, eventEconomicName = "") {
@@ -328,7 +327,7 @@ let Ticket = class (BaseItem) {
     if (event) {
       let baseReward = getBaseVictoryReward(event)
       if (baseReward)
-        text += (text.len() ? "\n" : "") + loc("tournaments/reward/everyVictory",  { reward = baseReward })
+        text = "".concat(text, text.len() ? "\n" : "", loc("tournaments/reward/everyVictory",  { reward = baseReward }))
 
       if (haveRewards(event)) {
         text = "".concat(text, (text.len() ? "\n\n" : ""), loc("tournaments/specialRewards"), loc("ui/colon"))

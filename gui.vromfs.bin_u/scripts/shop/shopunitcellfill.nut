@@ -7,7 +7,7 @@ let { Cost } = require("%scripts/money.nut")
 let { format, split_by_chars } = require("string")
 let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getBitStatus, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, canBuyNotResearched, isUnitElite } = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
 let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -402,7 +402,7 @@ let getUnitStatusTbl = function(unit, params) {
     needInService       = isUsable
     isMounted           = isUsable && isUnitInSlotbar(unit)
     weaponsStatus       = getWeaponsStatusName(isUsable ? checkUnitWeapons(unit) : UNIT_WEAPONS_READY)
-    isElite             = isOwn ? ::isUnitElite(unit) : isSpecial
+    isElite             = isOwn ? isUnitElite(unit) : isSpecial
     hasTalismanIcon     = isSpecial || shopIsModificationEnabled(unit.name, "premExpMul")
     priceText           = getUnitShopPriceText(unit)
 
@@ -557,7 +557,7 @@ function getGroupStatusTbl(group, params) {
     bitStatus = bitStatus | curBitStatus
     isPkgDev = isPkgDev || unit.isPkgDev
     isRecentlyReleased = isRecentlyReleased || unit.isRecentlyReleased()
-    isElite = isElite && ::isUnitElite(unit)
+    isElite = isElite && isUnitElite(unit)
     let hasTalisman = isUnitSpecial(unit) || shopIsModificationEnabled(unit.name, "premExpMul")
     hasTalismanIcon = hasTalismanIcon || hasTalisman
     isTalismanComplete = isTalismanComplete && hasTalisman

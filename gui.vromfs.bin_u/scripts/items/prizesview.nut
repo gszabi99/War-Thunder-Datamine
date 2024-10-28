@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_unlock_type, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
@@ -750,7 +749,7 @@ function getViewDataUnit(unitName, params = null, rentTimeHours = 0, numSpares =
   else if (rentTimeHours == 0 && numSpares > 0)
     infoText = getUnitSparesComment(unit, numSpares)
   if (!receivedPrizes && isBought)
-    infoText += (infoText.len() ? "\n" : "") + colorize("badTextColor", loc(receiveOnce))
+    infoText = "".concat(infoText, infoText.len() ? "\n" : "", colorize("badTextColor", loc(receiveOnce)))
 
   let unitPlate = buildUnitSlot(unitName, unit, {
     status = (!receivedPrizes && isBought) ? "locked" : "canBuy",
@@ -794,7 +793,7 @@ function getViewDataSpare(unitName, count, params) {
   local title = "".concat(colorize("activeTextColor", getUnitName(unitName, true)),
     loc("ui/colon"), colorize("userlogColoredText", loc("spare/spare")))
   if (count && count > 1)
-    title += colorize("activeTextColor",$" x{count}")
+    title = "".concat(title, colorize("activeTextColor",$" x{count}"))
   return {
     icon = "#ui/gameuiskin#item_type_spare.svg"
     icon2 = getUnitCountryIcon(unit)
@@ -1122,7 +1121,7 @@ addTooltipTypes({
 
         let kinds = detailed ? "" : colorize("fadedTextColor", loc("ui/parentheses/space", { text = loc("trophy/item_type_different_kinds") }))
         data = {
-          title = name + countText + kinds
+          title = $"{name}{countText}{kinds}"
           icon = this.getPrizeTypeIcon(st.prize)
         }
       }
@@ -1316,7 +1315,7 @@ addTooltipTypes({
   let headerSeparator = "".concat(loc("ui/colon"), (isDetailed ? "\n" : ""))
   let unitsSeparator  = isDetailed ? "\n" : loc("ui/comma")
 
-  return header + headerSeparator + unitsSeparator.join(units, true)
+  return "".concat(header, headerSeparator, unitsSeparator.join(units, true))
 }
 
 ::PrizesView.getPrizesListText <- function getPrizesListText(content, fixedAmountHeaderFunc = null, hasHeaderWithoutContent = true) {
@@ -1334,7 +1333,7 @@ addTooltipTypes({
   let listMarker = "".concat(nbsp, colorize("grayOptionColor", loc("ui/mdash")), nbsp)
   foreach (st in stacksList) {
     if (st.level == prizesStack.NOT_STACKED)
-      list.append(listMarker + getPrizeText(st.prize, true, false, showCount))
+      list.append("".concat(listMarker, getPrizeText(st.prize, true, false, showCount)))
     else if (st.stackType == STACK_TYPE.ITEM) { //onl stack by items atm, so this only to do last check.
       let detailed = st.level == prizesStack.DETAILED
 
@@ -1349,13 +1348,13 @@ addTooltipTypes({
         countText = (st.countMin < st.countMax) ? ($" x{st.countMin}-x{st.countMax}") : ($" x{st.countMax}")
 
       let kinds = detailed ? "" : colorize("fadedTextColor", loc("ui/parentheses/space", { text = loc("trophy/item_type_different_kinds") }))
-      list.append(listMarker + name + countText + kinds)
+      list.append("".concat(listMarker, name, countText, kinds))
     }
     else if (st.stackType == STACK_TYPE.VEHICLE) {
-      list.append(listMarker + this._getStackUnitsText(st))
+      list.append("".concat(listMarker, this._getStackUnitsText(st)))
     }
     else if (st.stackType == STACK_TYPE.CURRENCY) {
-      list.append(listMarker + getStackCurrencyText(st))
+      list.append("".concat(listMarker, getStackCurrencyText(st)))
     }
   }
 

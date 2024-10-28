@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
@@ -237,12 +236,13 @@ function showConfirmExchangeMsg(recipe, componentItem, params, quantity = 1, rec
     })
   if (recipe.isDisassemble && params?.bundleContent) {
     msgboxParams.__update({
-      data_below_text = (msgboxParams?.data_below_text ?? "")
-        + ::PrizesView.getPrizesListView(params.bundleContent,
-            { header = loc("mainmenu/you_will_receive")
-              headerParams = recipeComponentHeaderParams
-              widthByParentParent = true
-            }, false)
+      data_below_text = "".concat(msgboxParams?.data_below_text ?? "",
+        ::PrizesView.getPrizesListView(params.bundleContent,
+          { header = loc("mainmenu/you_will_receive")
+            headerParams = recipeComponentHeaderParams
+            widthByParentParent = true
+          }, false)
+      )
       baseHandler = get_cur_base_gui_handler()
     })
   }
@@ -506,7 +506,7 @@ local ExchangeRecipes = class {
 
   function getCraftTimeText() {
     return loc(this.getLocIdsList().craftTime,
-      { time = loc("icon/hourglass") + " " + time.secondsToString(this.craftTime, true, true) })
+      { time = "".concat(loc("icon/hourglass"), " ", time.secondsToString(this.craftTime, true, true)) })
   }
 
   getItemMarkupParams = @() {
@@ -564,7 +564,7 @@ local ExchangeRecipes = class {
       return ""
 
     if (curMark == MARK_RECIPE.USED)
-      return loc(path + (this.isFake ? "fake" : "true"))
+      return loc($"{path}{this.isFake ? "fake" : "true"}")
 
     if (curMark == MARK_RECIPE.BY_USER)
       return loc($"{path}fakeByUser")
@@ -622,7 +622,7 @@ local ExchangeRecipes = class {
   function getComponentQuantityText(component, params = null) {
     if (!(params?.showCurQuantities ?? true))
       return component.reqQuantity > 1 ?
-        (nbsp + format(loc("weapons/counter/right/short"), component.reqQuantity)) : ""
+        ("".concat(nbsp, format(loc("weapons/counter/right/short"), component.reqQuantity))) : ""
 
     let { needShowItemName = true, quantity = 1, needColoredText = true } = params
     let locId = needShowItemName ? "ui/parentheses/space" : "ui/parentheses"
@@ -767,7 +767,7 @@ local ExchangeRecipes = class {
     autoConsumeItems()
   }
 
-  getSaveId = @() markRecipeSaveId + this.uid
+  getSaveId = @() $"{markRecipeSaveId}{this.uid}"
 
   function markRecipe(isUserMark = false, needSave = true) {
     let curMark = this.getMark()
@@ -806,8 +806,8 @@ local ExchangeRecipes = class {
     : this.getLocIdsList().rewardTitle
 
   getRecipeStr = @() ",".join(
-    this.initedComponents.map(@(component) component.itemdefid.tostring()
-      + (component.quantity > 1 ? ($"x{component.quantity}") : "")),
+    this.initedComponents.map(@(component) "".concat(component.itemdefid,
+      component.quantity > 1 ? ($"x{component.quantity}") : "")),
     true)
 
   getLocIdsList = function() {

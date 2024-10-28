@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
@@ -41,7 +40,7 @@ let Squad = class (BaseInvite) {
 
     if (this.inviterName.len() != 0) {
       //Don't show invites from xbox players, as notification comes from system overlay
-      log("InviteSquad: invitername != 0 " + platformModule.isPlayerFromXboxOne(this.inviterName))
+      log($"InviteSquad: invitername != 0 {platformModule.isPlayerFromXboxOne(this.inviterName)}")
       if (platformModule.isPlayerFromXboxOne(this.inviterName))
         this.setDelayed(true)
     }
@@ -49,7 +48,7 @@ let Squad = class (BaseInvite) {
       this.setDelayed(true)
       let cb = Callback(function(_r) {
                               this.updateInviterContact()
-                              log("InviteSquad: Callback: invitername == 0 " + platformModule.isPlayerFromXboxOne(this.inviterName))
+                              log($"InviteSquad: Callback: invitername == 0 {platformModule.isPlayerFromXboxOne(this.inviterName)}")
                               if (platformModule.isPlayerFromXboxOne(this.inviterName)) {
                                 this.setDelayed(true)
                                 this.checkAutoAcceptXboxInvite()

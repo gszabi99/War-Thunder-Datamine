@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
@@ -97,7 +96,7 @@ let class TrophyMultiAward {
     if (!textList.len())
       return header
 
-    textList.insert(0, header + loc("ui/colon"))
+    textList.insert(0, $"{header}{loc("ui/colon")}")
     return ((skipUnconditional && count == 1) ? "\n" : this.listDiv).join(textList, true)
   }
 
@@ -189,7 +188,7 @@ let class TrophyMultiAward {
 
     local text = $"{loc("options/country")}{loc("ui/colon")}"
     countries = countries.map(function(val) { return colorize(this.condColor loc(val)) }.bindenv(this))
-    text += ", ".join(countries, true)
+    text = "".concat(text, ", ".join(countries, true))
     condList.append(text)
   }
 
@@ -211,7 +210,7 @@ let class TrophyMultiAward {
       return div.concat(res, colorize(this.condColor, get_roman_numeral(val.y)))
     }.bindenv(this))
 
-    text += ", ".join(ranks, true)
+    text = "".concat(text, ", ".join(ranks, true))
     condList.append(text)
   }
 
@@ -229,7 +228,7 @@ let class TrophyMultiAward {
       return colorize(this.condColor, getRoleText(role))
     }.bindenv(this))
 
-    text += ", ".join(classes, true)
+    text = "".concat(text, ", ".join(classes, true))
     condList.append(text)
   }
 
@@ -539,9 +538,7 @@ let class TrophyMultiAward {
   }
 
   function getRewardImage() {
-    local res = this._getIconsLayer()
-    res += this._getTextLayer()
-    return res
+    return "".concat(this._getIconsLayer(), this._getTextLayer())
   }
 
   function getOnlyRewardImage() {
@@ -570,12 +567,12 @@ let class TrophyMultiAward {
     let layerName = singleType ? "item_multiaward_single" : "item_multiaward"
     let chosen = this._chooseIconsForLayer(iconsList, singleType ? this.maxRouletteIconsSingleType : this.maxRouletteIcons)
     for (local idx = chosen.len() - 1; idx >= 0; idx--) {
-      let layerCfg = LayersIcon.findLayerCfg(layerName + idx)
+      let layerCfg = LayersIcon.findLayerCfg($"{layerName}{idx}")
       if (!layerCfg)
         continue
 
       layerCfg.img = chosen[idx]
-      res += LayersIcon.genDataFromLayer(layerCfg)
+      res = "".concat(res, LayersIcon.genDataFromLayer(layerCfg))
     }
     return res
   }
@@ -585,7 +582,7 @@ let class TrophyMultiAward {
     if (!layerCfg)
       return ""
 
-    layerCfg.text <- this.haveCount() ? "x" + this.getCount() : this.getCost().tostring()
+    layerCfg.text <- this.haveCount() ? $"x{this.getCount()}" : this.getCost().tostring()
     return LayersIcon.getTextDataFromLayer(layerCfg)
   }
 }

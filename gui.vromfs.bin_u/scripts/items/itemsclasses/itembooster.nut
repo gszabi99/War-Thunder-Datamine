@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import set_char_cb, get_current_booster_count, char_send_blk, get_current_booster_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -295,9 +294,9 @@ let Booster = class (BaseItem) {
   }
 
   function getIcon(_addItemName = true) {
-    local res = LayersIcon.genDataFromLayer(this._getBaseIconCfg())
-    res += LayersIcon.genInsertedDataFromLayer({ w = "0", h = "0" }, this._getMulIconCfg())
-    res += LayersIcon.genDataFromLayer(this._getModifiersIconCfgs())
+    let res = "".concat(LayersIcon.genDataFromLayer(this._getBaseIconCfg()),
+      LayersIcon.genInsertedDataFromLayer({ w = "0", h = "0" }, this._getMulIconCfg()),
+      LayersIcon.genDataFromLayer(this._getModifiersIconCfgs()))
 
     return res
   }
@@ -357,12 +356,12 @@ let Booster = class (BaseItem) {
       : this.getEffectText(this.wpRate, this.xpRate, colored)
 
     if (!this.personal)
-      desc += format(" (%s)", loc("boostEffect/group"))
+      desc = "".concat(desc, format(" (%s)", loc("boostEffect/group")))
     return desc
   }
 
   function _formatEffectText(value, currencyMark) {
-    return $"{colorize("activeTextColor", "+" + value + "%")}{currencyMark}"
+    return "".concat(colorize("activeTextColor", $"+{value}%"), currencyMark)
   }
 
   function getEffectText(wpRateNum = 0, xpRateNum = 0, colored = true) {
@@ -400,11 +399,11 @@ let Booster = class (BaseItem) {
       effectDesc = this.getEffectDesc()
     }
     if (this.wpRate != 0 || this.xpRate != 0)
-      desc += loc(locString, locParams)
+      desc = "".concat(desc, loc(locString, locParams))
     if (this.eventConditions != null)
       desc = " ".concat(desc, this.getEventConditionsText())
 
-    desc += "\n"
+    desc = "".concat(desc, "\n")
 
     let expireText = this.getCurExpireTimeText()
     if (expireText != "")
@@ -429,7 +428,7 @@ let Booster = class (BaseItem) {
   function getShortDescription(colored = true) {
     local desc = this.getName(colored)
     if (this.eventConditions)
-      desc += loc("ui/parentheses/space", { text = this.getEventConditionsText() })
+      desc = "".concat(desc, loc("ui/parentheses/space", { text = this.getEventConditionsText() }))
     return desc
   }
 
@@ -579,11 +578,9 @@ let FakeBooster = class (Booster) {
     }
 
     if (bonusArray.len()) {
-      desc += "\n"
-      desc = "".concat(desc,
+      desc = "".concat(desc, "\n",
         loc("item/FakeBoosterForNetCafeLevel/squad", { num = g_squad_manager.getSameCyberCafeMembersNum() }),
-        loc("ui/colon"))
-      desc += ", ".join(bonusArray, true)
+        loc("ui/colon"), ", ".join(bonusArray, true))
     }
 
     return desc
@@ -602,7 +599,7 @@ let FakeBooster = class (Booster) {
         : this.getEffectText(this.wpRate, this.xpRate, colored)
 
     if (!this.personal)
-      desc += format(" (%s)", loc("boostEffect/group"))
+      desc = "".concat(desc, format(" (%s)", loc("boostEffect/group")))
     return desc
   }
 

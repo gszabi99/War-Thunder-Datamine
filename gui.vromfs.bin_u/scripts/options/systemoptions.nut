@@ -1,5 +1,5 @@
 //-file:param-pos
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes, disable_network
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -67,6 +67,7 @@ let compModeGraphicsOptions = {
 }
 
 let platformDependentOpts = {
+  gfx_api = true
   resolution = true
   mode = true
   monitor = true
@@ -82,6 +83,7 @@ local mUiStruct = [
       "resolution"
       "vsync"
       "monitor"
+      "gfx_api"
       "backgroundScale"
       "antialiasingMode"
       "antialiasingUpscaling"
@@ -482,7 +484,7 @@ let hasRT = @() hasFeature("optionRT") && !is_platform_macosx
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
-
+let isRTVisible = @() hasFeature("optionBVH") || disable_network()
 function getListOption(id, desc, cb, needCreateList = true) {
   let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
   let customItems = ("items" in desc) ? desc.items : null
@@ -816,7 +818,7 @@ mShared = {
       setGuiValue("rayTracing", "off")
       mShared.rayTracingClick();
       enableGuiOption("rayTracing", false)
-    } else if (hasRT) {
+    } else if (hasRT()) {
       enableGuiOption("rayTracing", true)
       mShared.rayTracingClick();
     }
@@ -926,6 +928,16 @@ mShared = {
 
 */
 mSettings = {
+  gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
+    init = function(_blk, desc) {
+      desc.values <- is_platform_windows
+        ? [ "auto", "dx11", "dx12", "vulkan" ]
+        : is_platform_macosx ? [ "metal" ] : [ "vulkan" ]
+      let otherPlatform = is_platform_macosx ? "metal" : "vulkan"
+      desc.def <- is_platform_windows ? "auto" : otherPlatform
+    }
+    isVisible = @() hasFeature("optionGFXAPI") || disable_network()
+  }
   resolution = { widgetType = "list" def = "1024 x 768" blk = "video/resolution" restart = true
     init = function(blk, desc) {
       let curResolution = mShared.getCurResolution(blk, desc)
@@ -1218,11 +1230,9 @@ mSettings = {
     availableInfoImgVals = [0, 1, 3, 5, 8, 10]
   }
   motionBlurStrength = { widgetType = "slider" def = 0 min = 0 max = 10 blk = "graphics/motionBlurStrength" restart = false
-    isVisible = @() hasFeature("optionMotionBlur")
     enabled = @() !getGuiValue("compatibilityMode")
   }
   motionBlurCancelCamera = { widgetType = "checkbox" def = false blk = "graphics/motionBlurCancelCamera" restart = false
-    isVisible = @() hasFeature("optionMotionBlur")
     enabled = @() !getGuiValue("compatibilityMode")
   }
   haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
@@ -1265,43 +1275,43 @@ mSettings = {
   }
   rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false enabled = hasRT
     values = ["off", "low", "medium", "high", "ultra", "custom"]
-    onChanged = "rayTracingClick" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rayTracingClick" isVisible = @() isRTVisible()
   }
   bvhDistance = { widgetType = "slider" def = 3000 min = 1000 max = 6000 blk = "graphics/bvhRiGenRange" restart = false enabled = hasRTGUI
-    isVisible = @() hasFeature("optionBVH")
+  isVisible = @() isRTVisible()
   }
   rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false
     values = ["off", "low", "medium", "high"] enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
   }
   rtsm = { widgetType = "list" def = "off" blk = "graphics/enableRTSM" restart = false
     values = [ "off", "sun", "sun_and_dynamic" ]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
   }
   rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false
-    values = ["off", "low", "medium", "high", "ultra"]
+    values = ["off", "low", "medium", "high"]
     enabled = hasRTGUI
-    onChanged = "rtrClick" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rtrClick" isVisible = @() isRTVisible()
   }
   rtrRes = { widgetType = "list" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
     enabled = hasRTR
-    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
   }
   rtrWater = { widgetType = "checkbox" def = false blk = "graphics/RTRWater" restart = false
     enabled = hasRTGUI
-    onChanged = "rtrWaterClick" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rtrWaterClick" isVisible = @() isRTVisible()
   }
   rtrWaterRes = { widgetType = "list" def = "half" blk = "graphics/RTRWaterRes" restart = false
     values = ["half", "full"]
     enabled = hasRTRWater
-    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
   }
   rtrTranslucent = { widgetType = "list" def = "off" blk = "graphics/RTRTranslucent" restart = false
     values = ["off", "medium", "high"]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() hasFeature("optionBVH")
+    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
   }
 }
 //------------------------------------------------------------------------------
@@ -1683,7 +1693,7 @@ function fillGuiOptions(containerObj, handler) {
   let cb = "onSystemOptionChanged"
   local data = ""
   foreach (section in mUiStruct) {
-    if ( section.title == "options/rt" && !hasFeature("optionBVH") )
+    if ( section.title == "options/rt" && !hasFeature("optionBVH") && !disable_network())
       continue
     let isTable = ("items" in section)
     let ids = isTable ? section.items : [ section.id ]

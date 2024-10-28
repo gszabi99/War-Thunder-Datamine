@@ -35,14 +35,7 @@ let deathEasing = function(x) {
 
 let isShotResultVisible = Computed(@() fcsShotState.value.shotState != FCSShotState.SHOT_NONE && (IsTargetDataAvailable.value || IsTargetDead.value))
 
-function requestNewShotResult() {
-  fcsShotState({shotState = FCSShotState.SHOT_NONE shotDiscrepancy = 0 shotDirection = 0})
-}
-
-IsTargetDataAvailable.subscribe(function(_){
-  clearCurrentShotState()
-  requestNewShotResult()
-})
+IsTargetDataAvailable.subscribe(@(_) clearCurrentShotState())
 
 function mkTargetShipComponent(size) {
   let compSize = [0.486 * size[0], 0.486 * size[1]]
@@ -199,13 +192,12 @@ function mkShotResultComponent(size) {
   let center = [0.5 * size[0], 0.286 * size[1]]
   let pos = [center[0] - compSize[0] / 2, center[1] - compSize[1] / 2]
   return function(){
-    if(!isShotResultVisible.value)
-      return {
-        watch = fcsShotState
-      }
+    if (!isShotResultVisible.get())
+      return { watch = [isShotResultVisible, fcsShotState] }
+
     let imageSuff = fcsShotState.value.shotState != FCSShotState.SHOT_HIT ? FCSShotState.SHOT_OVER : FCSShotState.SHOT_HIT
     return {
-      watch = fcsShotState
+      watch = [isShotResultVisible, fcsShotState]
       size = compSize
       pos
       children = {
@@ -302,7 +294,7 @@ function mkShotResultBack(fillColor) {
       },
       {
         prop = AnimProp.opacity, from = 1, to = 0, play = true, delay = 2.5,
-        duration = 0.5, onFinish = @() requestNewShotResult()
+        duration = 0.5, onFinish = clearCurrentShotState
       }
     ]
   }
@@ -528,8 +520,8 @@ function mkFCSComponent(posWatched, size) {
       mkShotResultBulletsComponent(size)
       mkShotResultTextComponent(size)
     ]
-    onAttach = @() showNewStateFromQueue()
-    onDetach = @() clearCurrentShotState()
+    onAttach = showNewStateFromQueue
+    onDetach = clearCurrentShotState
   }
 }
 

@@ -45,7 +45,7 @@ function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       fontSize = fontSizeMult * styleText.fontSize * newTargetFontSizeMultRwr.get()
-      text = directionGroup != null ? directionGroup.text : "U"
+      text = directionGroup != null ? directionGroup.text : settings.unknownText
     })
 
   local icon = null
@@ -339,7 +339,7 @@ let settings = Computed(function() {
       }
     }
   }
-  return { directionGroups = directionGroupOut }
+  return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
 
@@ -361,6 +361,7 @@ let rwrPriorityTargetComponent = function(iconSizeMult) {
 
 return {
   color
+  settings
   rwrTargetsComponent
   rwrPriorityTargetComponent
 }

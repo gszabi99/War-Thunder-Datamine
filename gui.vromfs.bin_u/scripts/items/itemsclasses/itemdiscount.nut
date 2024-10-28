@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, get_current_personal_discount_count, get_current_personal_discount_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -186,8 +185,8 @@ let Discount = class (BaseItem) {
 
     foreach (item in this.getDiscountDescriptionDataItems()) {
       if (result != "")
-        result += "\n"
-      result += this.getDataItemDescription(item)
+        result = "".concat(result, "\n")
+      result = "".concat(result, this.getDataItemDescription(item))
     }
     return result
   }
@@ -209,7 +208,7 @@ let Discount = class (BaseItem) {
     let nameId = this.isSpecialOffer ? "specialOffer" : "discount"
     local locId = $"item/{nameId}/description/{dataItem.category}"
     if ("type" in dataItem)
-      locId +=$"/{dataItem.type}"
+      locId =$"{locId}/{dataItem.type}"
     let locParams = this.getLocParamsDescription(dataItem)
     return loc(locId, locParams)
   }
@@ -330,7 +329,7 @@ let Discount = class (BaseItem) {
   function getIcon(addItemName = true) {
     local layers = base.getIcon()
     if (addItemName && !this.needHideTextOnIcon)
-      layers += this._getTextLayer()
+      layers = $"{layers}{this._getTextLayer()}"
     return layers
   }
 

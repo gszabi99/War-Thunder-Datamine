@@ -4,6 +4,8 @@ let rwrSetting = require("%rGui/rwrSetting.nut")
 
 let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nut")
 
+let { color, outerCircle,  middleCircle, innerCircle } = require("rwrAnAlr67Parameters.nut")
+
 let ThreatType = {
   AI = 0,
   AAA = 1,
@@ -11,8 +13,6 @@ let ThreatType = {
   SHIP = 3,
   WEAPON = 4
 }
-
-let color = Color(10, 202, 10, 250)
 
 let styleText = {
   color = color
@@ -22,10 +22,6 @@ let styleText = {
   fontFx = FFT_GLOW
   fontSize = getFontDefHt("hud") * 1.5
 }
-
-let outerCircle = 0.8
-let middleCircle = 0.65
-let innerCircle = 0.2
 
 let nonLethalThreatsRadius = (1.0 + outerCircle) * 0.5
 let lethalThreatsRadius = (outerCircle + middleCircle) * 0.5
@@ -72,7 +68,7 @@ function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       fontSize = fontSizeMult * styleText.fontSize
-      text = directionGroup != null ? directionGroup.text : "U"
+      text = directionGroup != null ? directionGroup.text : settings.unknownText
     })
 
   let attackOpacityRwr = Computed(@() (target.launch && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
@@ -435,7 +431,7 @@ let settings = Computed(function() {
       }
     }
   }
-  return { directionGroups = directionGroupOut }
+  return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
 let rwrTargetsComponent = function(iconSizeMult, fontSizeMult) {

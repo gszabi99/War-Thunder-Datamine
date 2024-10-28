@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, inventory_generate_key
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -246,7 +245,7 @@ let ItemExternal = class (BaseItem) {
     local tags = this.getTagsLoc()
     if (tags.len()) {
       tags = tags.map(@(txt) colorize("activeTextColor", txt))
-      desc.append(loc("ugm/tags") + loc("ui/colon") + loc("ui/comma").join(tags, true))
+      desc.append("".concat(loc("ugm/tags"), loc("ui/colon"), loc("ui/comma").join(tags, true)))
     }
 
     if (! this.itemDef?.tags?.hideDesc)
@@ -356,12 +355,13 @@ let ItemExternal = class (BaseItem) {
       headers.append({ header = loc(this.getLocIdsList().reachedMaxAmount) })
     else
       recipes = this.getMyRecipes()
-    return ::PrizesView.getPrizesListView(content, params)
-      + getRequirementsMarkup(recipes, this, params)
-      + ::PrizesView.getPrizesListView(resultContent,
+    return "".concat(::PrizesView.getPrizesListView(content, params),
+      getRequirementsMarkup(recipes, this, params),
+      ::PrizesView.getPrizesListView(resultContent,
           { widthByParentParent = true,
             header = colorize("grayOptionColor", loc("mainmenu/you_will_receive")) },
           false)
+    )
   }
 
   getTypeNameForMarketableDesc = @() utf8ToLower(this.getTypeName())
@@ -407,7 +407,7 @@ let ItemExternal = class (BaseItem) {
           count = totalAmount
           countColored = colorize("activeTextColor", totalAmount)
           exampleCount = showAmount
-          createTime = timeText.len() ? "\n" + timeText + "\n" : ""
+          createTime = timeText.len() ? $"\n{timeText}\n" : ""
         })
 
     let isMultipleRecipes = showAmount > 1
@@ -416,8 +416,8 @@ let ItemExternal = class (BaseItem) {
       : isMultipleRecipes && !isMultipleExtraItems ? "any_of_items"
       : "item"
 
-    return (timeText.len() ? timeText + "\n" : "") +
-      loc(this.getLocIdsList().descReceipesListHeaderPrefix + headerSuffix)
+    return "".concat(timeText.len() ? $"{timeText}\n" : "",
+      loc($"{this.getLocIdsList().descReceipesListHeaderPrefix}{headerSuffix}"))
   }
 
   isRare              = @() this.isDisguised ? base.isRare() : this.rarity.isRare
@@ -520,8 +520,8 @@ let ItemExternal = class (BaseItem) {
       return true
     }
 
-    let text = loc("recentItems/useItem", { itemName = colorize("activeTextColor", this.getName()) })
-      + "\n" + loc("msgBox/coupon_exchange")
+    let text = "\n".concat(loc("recentItems/useItem", { itemName = colorize("activeTextColor", this.getName()) }),
+      loc("msgBox/coupon_exchange"))
     let msgboxParams = {
       cancel_fn = @() null
       baseHandler = get_cur_base_gui_handler() //FIX ME: handler used only for prizes tooltips
@@ -610,9 +610,9 @@ let ItemExternal = class (BaseItem) {
   getAssembleButtonText   = @() this.getVisibleRecipes().len() > 1 ? loc(this.getLocIdsList().recipes) : this.getAssembleText()
   getCantUseLocId         = @() this.getLocIdsList().msgBoxCantUse
   getConfirmMessageData   = @(recipe, quantity) this.getEmptyConfirmMessageData().__update({
-    text = loc(recipe.getConfirmMessageLocId(this.getLocIdsList()),
-        { itemName = colorize("activeTextColor", quantity == 1 ? this.getName() : $"{this.getName()} {loc("ui/multiply")}{quantity})") })
-      + (recipe.hasCraftTime() ? "\n" + recipe.getCraftTimeText() : "")
+    text = "".concat(loc(recipe.getConfirmMessageLocId(this.getLocIdsList()),
+        { itemName = colorize("activeTextColor", quantity == 1 ? this.getName() : $"{this.getName()} {loc("ui/multiply")}{quantity})") }),
+      recipe.hasCraftTime() ? $"\n{recipe.getCraftTimeText()}" : "")
     headerRecipeMarkup = recipe.getHeaderRecipeMarkupText()
     needRecipeMarkup = true
   })
@@ -728,8 +728,8 @@ let ItemExternal = class (BaseItem) {
 
       headerText = loc("items/exchangeTo", { currency = icon })
       buttonText = loc("items/btnExchange")
-      getValueText = @(value) $"{value} x " + warbondItem.getWarbondsAmount() + icon
-        + " = " + value * warbondItem.getWarbondsAmount() + icon
+      getValueText = @(value) "".concat(value, " x ", warbondItem.getWarbondsAmount(), icon,
+        " = ", value * warbondItem.getWarbondsAmount(), icon)
 
       onAcceptCb = @(value) item.convertToWarbondsImpl(recipe, warbondItem, value)
       onCancelCb = null
@@ -969,8 +969,8 @@ let ItemExternal = class (BaseItem) {
         this.onItemCraft()
       return colorize(this.craftColor, loc(this.craftFinishedLocId))
     }
-    return colorize(this.craftColor, loc("icon/hourglass") + nbsp +
-      time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true).replace(" ", nbsp))
+    return colorize(this.craftColor, "".concat(loc("icon/hourglass"), nbsp,
+      time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true).replace(" ", nbsp)))
   }
 
   function getCraftTimeText() {
@@ -1044,8 +1044,8 @@ let ItemExternal = class (BaseItem) {
 
     // prevent infinite recursion on incorrectly configured delayedexchange
     if (craftingItem == this) {
-      logerr($"Inventory: delayedexchange {this.id} instance has type " +
-        getEnumValName("itemType", itemType, this.iType) + " which does not implement cancelCrafting()")
+      logerr("".concat($"Inventory: delayedexchange {this.id} instance has type ",
+        getEnumValName("itemType", itemType, this.iType), " which does not implement cancelCrafting()"))
       return false
     }
 
@@ -1179,13 +1179,13 @@ let ItemExternal = class (BaseItem) {
   }
 
   getLocIdsListImpl = @() defaultLocIdsList.__merge({
-    descReceipesListHeaderPrefix = this.descReceipesListHeaderPrefix
-      + (this.needShowAsDisassemble() ? "disassemble/" : "")
+    descReceipesListHeaderPrefix = "".concat(this.descReceipesListHeaderPrefix,
+      this.needShowAsDisassemble() ? "disassemble/" : "")
     msgBoxCantUse                = this.needShowAsDisassemble()
       ? "msgBox/disassembleItem/cant"
       : "msgBox/assembleItem/cant"
-    craftCountdown               = "items/craft_process/countdown"
-      + (this.needShowAsDisassemble() ? "/disassemble" : "")
+    craftCountdown               = "".concat("items/craft_process/countdown",
+      this.needShowAsDisassemble() ? "/disassemble" : "")
     headerRecipesList            = hasFakeRecipesInList(this.getVisibleRecipes())
       ? "item/create_header/findTrue"
       : "item/create_header"

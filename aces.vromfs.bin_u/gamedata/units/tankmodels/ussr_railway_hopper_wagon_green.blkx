@@ -56,6 +56,16 @@
       "hp": 100.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
+      "ex_armor_02_dm": {
+        "armorClass": "wood",
+        "collisionDamageMult": 0.01,
+        "hp": 100.0
+      },
+      "ex_armor_03_dm": {
+        "armorClass": "wood",
+        "collisionDamageMult": 0.01,
+        "hp": 100.0
+      },
       "ex_armor_l_01_dm": {
         "armorClass": "wood",
         "collisionDamageMult": 0.01,
@@ -920,23 +930,7 @@
   "MetaParts": {
     "body": {
       "hp": 100000.0,
-      "part": "body_dm",
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "expl": 1.0,
-          "conditionDamage": 250.0,
-          "kill": true,
-          "killEffect": "fire"
-        },
-        {
-          "conditionDamageType": "cumulative",
-          "expl": 1.0,
-          "conditionDamage": 100.0,
-          "kill": true,
-          "killEffect": "fire"
-        }
-      ]
+      "part": "body_dm"
     }
   },
   "sound": {

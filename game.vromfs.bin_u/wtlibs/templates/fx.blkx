@@ -176,41 +176,37 @@
   },
   "envi_emitter_base": {
     "_use": "replicating",
-    "_group": [
-      {
-        "_replicate": true,
-        "_track": true,
-        "transform": [
-          [
-            1.0,
-            0.0,
-            0.0
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            1.0
-          ],
-          [
-            0.0,
-            0.0,
-            0.0
-          ]
+    "_group": {
+      "_replicate": true,
+      "_track": true,
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0
         ]
-      },
-      {
-        "_tags": "render",
-        "_track": true,
-        "emitter__intensity": 0.0,
-        "emitter__material": "dust",
-        "emitter__id:EnviEmitterId": {}
-      }
-    ],
+      ],
+      "emitter__intensity": 0.0,
+      "emitter__material": "dust"
+    },
+    "emitter__id:EnviEmitterId": {
+      "_tags": "render"
+    },
     "destroyable_with_rendinst:tag": {}
   },
   "envi_emitter_uniform": {
@@ -224,7 +220,7 @@
   "envi_emitter_sphere": {
     "_use": "envi_emitter_base",
     "_group": {
-      "_tags": "render",
+      "_replicate": true,
       "_track": true,
       "emitter__radius": 1.0
     },
@@ -232,16 +228,12 @@
   },
   "envi_emitter_plane": {
     "_use": "envi_emitter_base",
-    "_group": {
-      "_tags": "render",
-      "_track": true
-    },
     "emitter_plane:tag": {}
   },
   "envi_emitter_cylinder": {
     "_use": "envi_emitter_base",
     "_group": {
-      "_tags": "render",
+      "_replicate": true,
       "_track": true,
       "emitter__radius": 1.0
     },
@@ -420,6 +412,10 @@
   "sound_point_one_shot": {
     "_use": "sound_point",
     "sound_point_one_shot_played": false
+  },
+  "sound_radio_localized": {
+    "_use": "sound_point_constant",
+    "sound_radio_localized__lang": 0
   },
   "sound_area": {
     "_use": "replicating",

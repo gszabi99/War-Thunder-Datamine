@@ -660,3 +660,25 @@ def repair_system_net_sync_handle_es(evt : EventRepairSystemNetSync;
 def repair_system_trailer_dead_handle_es(evt : EventOnTrailerDead;
                                          var repair_system_trailer_repair_progress : float&)
   repair_system_trailer_repair_progress = 0.0
+
+
+[es(tag=server)]
+def repair_system_on_damage_es(evt : EventUnitDamage;
+                               uid : int;
+                               repair_system_state : uint&;
+                               var repair_system_parts_hp : Point4List&;
+                               repair_system_parts_state : UInt32List&;
+                               repair_system_parts_id : PartIdList&)
+  if !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
+    return
+
+  var unit = get_unit(uid)
+  if unit == null || unit.isDelayed
+    return
+
+  let mult = get_game_params().minDamageFractionToResetRepair
+  for part_id, part_state, part_hp in repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp
+    if part_id.id == evt.partId.id && get_flag(part_state, DmPartRepairState IN_PROGRESS)
+      if part_hp.y * mult < evt.damage
+        part_hp.x = get_part_hp(unit.dmData, part_id)
+      break

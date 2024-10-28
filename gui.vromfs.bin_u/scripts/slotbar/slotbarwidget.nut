@@ -15,7 +15,7 @@ let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getNearestSelectableChildIndex } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, isUnitElite } = require("%scripts/unit/unitStatus.nut")
 let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockShortText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
@@ -1449,7 +1449,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   onEventAllModificationsPurchased = @(params) this.getSlotsData(params.unit.name)
     .map(@(slot) slot.obj)
-    .filter(@(obj) obj?.isValid() && ::isUnitElite(params.unit))
+    .filter(@(obj) obj?.isValid() && isUnitElite(params.unit))
     .each(@(obj) obj.isElite = "yes")
 
   function onOpenCrewWindow(obj) {

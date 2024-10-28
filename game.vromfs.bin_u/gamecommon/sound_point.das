@@ -3,6 +3,8 @@ require Unit
 require soundEvent
 require soundSystem
 require DagorSystem
+require app
+require DagorConsole
 
 [es(tag=gameClient, tag=sound)]
 def sound_point_update_client_es(act : UpdateStageInfoAct;
@@ -25,6 +27,25 @@ def sound_point_constant_init(evt : Event;
   sound_point__length = float(get_length(sound_point__event_name))
   if (sound_point__event_name != "" && sound_point__length <= 0.f)
     logerr("sound point {sound_point__event_name} has zero length")
+
+
+[es(on_appear, tag=gameClient, tag=sound)]
+def sound_radio_localized(evt : Event;
+                          var sound_radio_localized__lang : int&)
+  let gameLang = string(get_game_language())
+  if gameLang == "Russian"
+    sound_radio_localized__lang = 1
+  elif gameLang == "Chilese"
+    sound_radio_localized__lang = 2
+  else
+    sound_radio_localized__lang = 0
+
+[es(tag=gameClient, tag=sound)]
+def sound_radio_localized_update_client_es(act : UpdateStageInfoAct;
+                                           sound_point__event : SoundEvent;
+                                           sound_radio_localized__lang : int)
+  if is_playing(sound_point__event)
+    sound_point__event |> set_var_optional("lang", float(sound_radio_localized__lang))
 
 
 [es(tag=gameClient, tag=sound)]
@@ -63,3 +84,4 @@ def sound_point_one_shot_update_client_es(act : UpdateStageInfoAct;
   if sound_point_one_shot_played && !is_playing(sound_point__event)
     abandon(sound_point__event)
     destroyEntity(eid)
+

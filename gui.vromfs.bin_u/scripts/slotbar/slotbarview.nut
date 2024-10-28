@@ -27,7 +27,7 @@ let { getEsUnitType, isUnitsEraUnlocked, isUnitGift, getUnitName, isUnitDefault,
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
-let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, isUnitElite } = require("%scripts/unit/unitStatus.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -515,7 +515,7 @@ function buildGroupSlot(id, unit, params) {
     if (unitRole == null || isInResearch)
       unitRole = getUnitRole(nextAir)
     special = isUnitSpecial(a)
-    isElite = isElite && ::isUnitElite(a)
+    isElite = isElite && isUnitElite(a)
     isPkgDev = isPkgDev || a.isPkgDev
     isRecentlyReleased = isRecentlyReleased || a.isRecentlyReleased()
 
@@ -523,7 +523,7 @@ function buildGroupSlot(id, unit, params) {
     hasTalismanIcon = hasTalismanIcon || hasTalisman
     talismanIncomplete = talismanIncomplete || !hasTalisman
 
-    bitStatus = bitStatus | unitStatus.getBitStatus(a)
+    bitStatus = bitStatus | getBitStatus(a)
   }
 
   if ((shopResearchMode && !(bitStatus &
@@ -677,7 +677,7 @@ function buildCommonUnitSlot(id, unit, params) {
   let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
 
   if (status == DEFAULT_STATUS) {
-    let bitStatus = unitStatus.getBitStatus(unit, params)
+    let bitStatus = getBitStatus(unit, params)
     if (bit_unit_status.locked & bitStatus)
       inactive = shopResearchMode
     else if (bit_unit_status.disabled & bitStatus)
@@ -933,7 +933,7 @@ function buildCommonUnitSlot(id, unit, params) {
     isMounted           = isMounted
     priceText           = showAdditionExtraInfo ? "" : priceText
     isLongPriceText     = isUnitPriceTextLong(priceText)
-    isElite             = (isLocalState && isOwn && ::isUnitElite(unit)) || (!isOwn && special)
+    isElite             = (isLocalState && isOwn && isUnitElite(unit)) || (!isOwn && special)
     unitRankText        = getUnitSlotRankText(unit, crew, showBR, curEdiff)
     bottomLineText
     isItemLocked        = isLocalState && !isUsable && !special && !isSquadronVehicle && !isMarketableVehicle && !isUnitsEraUnlocked(unit)

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_user_logs_count, get_current_personal_discount_count, get_user_log_blk_body, item_get_type_id_by_type_name, get_item_data_by_uid, periodic_task_register_ex, get_current_personal_discount_uid, get_items_blk, get_items_cache, get_cyber_cafe_level, periodic_task_unregister
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
@@ -147,7 +146,7 @@ function fillFakeItemsList() {
         wpRate = floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(boosterEffectType.WP, level) + 0.5)
       }
     }
-    fakeItemsList["FakeBoosterForNetCafeLevel" + (i || "")] <- ::build_blk_from_container(table)
+    fakeItemsList[$"FakeBoosterForNetCafeLevel{i || ""}"] <- ::build_blk_from_container(table)
   }
 
   for (local i = 2; i <= g_squad_manager.getMaxSquadSize(); ++i) {

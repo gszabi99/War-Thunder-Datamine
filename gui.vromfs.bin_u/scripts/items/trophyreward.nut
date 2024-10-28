@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -188,7 +187,7 @@ function rewardsSortComparator(a, b) {
     image = LayersIcon.getIconData(style)
 
   if (!this.isRewardMultiAward(config) && !onlyImage)
-    image += this.getMoneyLayer(config)
+    image = "".concat(image, this.getMoneyLayer(config))
 
   let resultImage = LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg(layerCfgName), image)
   if (!imageAsItem)
@@ -355,7 +354,7 @@ function rewardsSortComparator(a, b) {
     if (data.type == "item") {
       let item = getTblValue("item", data)
       if (item)
-        returnData.append(item.getTypeName() + loc("ui/colon") + data.num)
+        returnData.append(loc("ui/colon").concat(item.getTypeName(), data.num))
     }
     else {
       local text = ::trophyReward.getRewardText(data.config)

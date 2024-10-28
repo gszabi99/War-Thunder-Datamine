@@ -5,7 +5,7 @@ let { mpsToKnots, metrToFeet, metrToNavMile, mpsToKmh } = require("%rGui/planeIl
 let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
 let string = require("string")
 let { IsTwsActivated, rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
-let rwrSetting = require("%rGui/rwrSetting.nut")
+let { settings } = require("%rGui/planeRwrs/rwrAnAlr56Components.nut")
 let { HmdYaw, RadarTargetPosValid, RadarTargetDistRate } = require("%rGui/planeState/planeToolsState.nut")
 let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
@@ -148,7 +148,8 @@ let rwr = @() {
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           fontSize = hudFontHgt * 1.2
-          text = rwrTargets[0].groupId >= 0 && rwrTargets[0].groupId < rwrSetting.value.direction.len() ? rwrSetting.value.direction[rwrTargets[0].groupId].text : "?"
+          text = rwrTargets[0].groupId >= 0 && rwrTargets[0].groupId < settings.value.directionGroups.len() ?
+            settings.value.directionGroups[rwrTargets[0].groupId].text : settings.value.unknownText
         }
         {
           size = flex()

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import char_send_blk, wp_get_item_cost_gold, wp_get_item_cost
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
@@ -281,9 +280,9 @@ let BaseItem = class {
   function getNameWithCount(colored = true, count = 0) {
     local counttext = ""
     if (count > 1)
-      counttext = colorize("activeTextColor", " x") + colorize("userlogColoredText", count)
+      counttext = "".concat(colorize("activeTextColor", " x"), colorize("userlogColoredText", count))
 
-    return this.getName(colored) + counttext
+    return "".concat(this.getName(colored), counttext)
   }
 
   function getTypeName() {
@@ -295,7 +294,7 @@ let BaseItem = class {
       title = showTitle ? colorize("activeTextColor", this.getName()) : null
       icon = this.getSmallIconName()
       tooltipId = getTooltipType("ITEM").getTooltipId(this.id, tooltipParams.__merge({isDisguised = this.isDisguised}))
-      count = count > 1 ? (colorize("activeTextColor", " x") + colorize("userlogColoredText", count)) : null
+      count = count > 1 ? "".concat(colorize("activeTextColor", " x"), colorize("userlogColoredText", count)) : null
       hasPadding = hasPadding
     })
   }
@@ -430,15 +429,15 @@ let BaseItem = class {
         && (!u.isInteger(amountVal) || this.shouldShowAmount(amountVal))) {
       res.amount <- isSelfAmount && this.hasReachedMaxAmount()
         ? colorize("goodTextColor",
-          loc("ui/parentheses/space", { text = amountVal + loc("ui/slash") + this.maxAmount }))
-        : amountVal.tostring() + additionalTextInAmmount
+          loc("ui/parentheses/space", { text = loc("ui/slash").concat(amountVal, this.maxAmount) }))
+        : $"{amountVal}{additionalTextInAmmount}"
       if (isSelfAmount && this.transferAmount > 0)
         res.isInTransfer <- true
     }
     if (getTblValue("showSellAmount", params, false)) {
       let sellAmount = this.getSellAmount()
       if (sellAmount > 1)
-        res.amount <- sellAmount + additionalTextInAmmount
+        res.amount <- $"{sellAmount}{additionalTextInAmmount}"
     }
 
     if (!res?.isItemLocked)
@@ -446,9 +445,8 @@ let BaseItem = class {
 
     let boostEfficiency = this.getBoostEfficiency()
     if (params?.hasBoostEfficiency && boostEfficiency)
-      res.boostEfficiency <- colorize(this.getAmount() > 0
-        ? "activeTextColor"
-        : "commonTextColor", loc("keysPlus") + boostEfficiency + loc("measureUnits/percent"))
+      res.boostEfficiency <- colorize(this.getAmount() > 0 ? "activeTextColor" : "commonTextColor",
+        "".concat(loc("keysPlus"), boostEfficiency, loc("measureUnits/percent")))
 
     return res
   }
@@ -550,7 +548,7 @@ let BaseItem = class {
 
     cost = cost ?? this.getCost()
     let costText = colored ? cost.getTextAccordingToBalance() : cost.getUncoloredText()
-    return "".concat(res, ((costText == "") ? "" : " (" + costText + ")"))
+    return "".concat(res, (costText == "") ? "" : $" ({costText})")
   }
 
   function getMainActionData(isShort = false, _params = {}) {
@@ -631,7 +629,7 @@ let BaseItem = class {
     local res = ""
     let active = this.isActive()
     if (!active)
-      res += this.getExpireAfterActivationText()
+      res = $"{res}{this.getExpireAfterActivationText()}"
 
     let timeText = this.getExpireTimeTextShort()
     if (timeText != "") {

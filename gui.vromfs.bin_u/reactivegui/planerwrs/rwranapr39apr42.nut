@@ -49,7 +49,8 @@ function createOwnShip() {
 }
 
 let ThreatType = {
-  AD = 0
+  AI = 0,
+  AD = 1
 }
 
 function calcRwrTargetRadius(target) {
@@ -76,7 +77,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = fontSizeMult * styleText.fontSize
-        text = directionGroup != null ? directionGroup.text : "U"
+        text = directionGroup != null ? directionGroup.text : settings.unknownText
       })
 
   let targetAttackIconSizeRel = targetIconSizeRel * 2.0
@@ -111,7 +112,17 @@ function createRwrTarget(index, settings, fontSizeMult) {
   local icon = null
   if (directionGroup != null && directionGroup?.type != null) {
     local commands = null
-    if (directionGroup.type == ThreatType.AD)
+    if (directionGroup.type == ThreatType.AI)
+      commands = [
+        [ VECTOR_LINE,
+          (target.x * targetRadiusRel - targetIconSizeRel) * 100.0,
+          (target.y * targetRadiusRel + 0.5 * targetIconSizeRel) * 100.0,
+          target.x * targetRadiusRel * 100.0,
+          (target.y * targetRadiusRel - targetIconSizeRel) * 100.0,
+          (target.x * targetRadiusRel + targetIconSizeRel) * 100.0,
+          (target.y * targetRadiusRel + 0.5 * targetIconSizeRel) * 100.0 ]
+      ]
+    else if (directionGroup.type == ThreatType.AD)
       commands = [
         [ VECTOR_POLY,
            target.x * targetRadiusRel * 100.0,
@@ -156,6 +167,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
 let directionGroups = [
   {
     originalName = "hud/rwr_threat_ai"
+    type = ThreatType.AI
   },
   //
 
@@ -233,7 +245,7 @@ let settings = Computed(function() {
       }
     }
   }
-  return { directionGroups = directionGroupOut }
+  return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
 let rwrTargetsComponent = function(fontSizeMult) {

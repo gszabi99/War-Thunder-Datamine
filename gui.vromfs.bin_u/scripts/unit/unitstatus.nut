@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp
+from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status
 from "%scripts/dagui_library.nut" import *
 let { canResearchUnit, bit_unit_status, canBuyUnit, getUnitReqExp } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -68,7 +68,18 @@ function getBitStatus(unit, params = {}) {
   return bitStatus
 }
 
+function isUnitEliteByStatus(status) {
+  return status > ES_UNIT_ELITE_STAGE1
+}
+
+function isUnitElite(unit) {
+  let unitName = unit?.name
+  return unitName ? isUnitEliteByStatus(get_unit_elite_status(unitName)) : false
+}
+
 return {
   canBuyNotResearched
   getBitStatus
+  isUnitEliteByStatus
+  isUnitElite
 }

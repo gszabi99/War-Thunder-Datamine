@@ -1,5 +1,5 @@
 {
-  "model": "icv_prototype",
+  "model": "icv_ifv_prototype",
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
@@ -1744,37 +1744,19 @@
     "gunner": {
       "dmPart": "gunner_dm",
       "role": "tank_gunner",
-      "substitute": [
-        "machine_gunner",
-        "commander",
-        "loader"
-      ]
+      "substitute": "commander"
     },
     "driver": {
       "dmPart": "driver_dm",
       "role": "driver",
-      "substitute": [
-        "machine_gunner",
-        "commander",
-        "loader"
-      ]
-    },
-    "loader": {
-      "dmPart": "loader_dm",
-      "role": "loader",
-      "substitute": [
-        "machine_gunner",
-        "commander"
-      ]
+      "substitute": "commander"
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander",
-      "substitute": "machine_gunner"
-    },
-    "machine_gunner": {
-      "dmPart": "machine_gunner_dm",
-      "role": "radio_gunner"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ]
     }
   },
   "MetaParts": {
