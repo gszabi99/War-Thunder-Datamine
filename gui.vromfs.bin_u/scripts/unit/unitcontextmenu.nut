@@ -22,7 +22,7 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
         needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
@@ -35,7 +35,6 @@ let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattle
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
@@ -48,6 +47,7 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,

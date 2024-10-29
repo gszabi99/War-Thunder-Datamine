@@ -8,16 +8,16 @@ let { isInFlight } = require("gameplayBinding")
 let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
-let { isCrewLockedByPrevBattle, getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
+let { isCrewLockedByPrevBattle, getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-
 let selectedCrews = persist("selectedCrews", @() [])
 
 function getCrewsListByCountry(country) {
@@ -76,17 +76,6 @@ function getCrewById(id) {
          return crew
   return null
 }
-
-function getCrewByAir(air) {
-  foreach (country in ::g_crews_list.getCrewsList())
-    if (country.country == air.shopCountry)
-      foreach (crew in country.crews)
-        if (("aircraft" in crew) && crew.aircraft == air.name)
-          return crew
-  return null
-}
-
-let isUnitInSlotbar = @(unit) getCrewByAir(unit) != null
 
 function checkReserveUnit(unit, paramsTable) {
   let country = getTblValue("country", paramsTable, "")
@@ -295,8 +284,6 @@ return {
   getCrewsListByCountry
   isCountryAllCrewsUnlockedInHangar
   getCrewById
-  getCrewByAir
-  isUnitInSlotbar
   getSlotbarUnitTypes
   selectCrew
   getCrewUnlockTimeByUnit

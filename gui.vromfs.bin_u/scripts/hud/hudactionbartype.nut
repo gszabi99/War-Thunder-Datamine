@@ -1213,15 +1213,15 @@ enumsAddTypes(g_hud_action_bar_type, {
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_ACTION_BAR_ITEM_9"
   }
-  //
 
-
-
-
-
-
-
-
+  BUILDING = {
+    code = EII_BUILDING
+    _name = "building"
+    _title = loc("hotkeys/ID_TOGGLE_CONSTRUCTION_MODE")
+    _icon = "#ui/gameuiskin#tank_ammo"
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_CONSTRUCTION_MODE"
+  }
 
 })
 

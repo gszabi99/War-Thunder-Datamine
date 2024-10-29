@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
@@ -38,7 +37,7 @@ let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
 let { get_game_params_blk, get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
 let { round_by_value } = require("%sqstd/math.nut")
-let { getCrewByAir } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isStatsLoaded, isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -857,7 +856,7 @@ dmViewer = {
     if (idxSeparator)
       nameVariations.append(nameId.slice(0, idxSeparator))
     if (this.unit != null)
-      nameVariations.append(::getUnitTypeText(this.unit.esUnitType).tolower() + "_" + nameId)
+      nameVariations.append("_".concat(::getUnitTypeText(this.unit.esUnitType).tolower(), nameId))
     if (this.unit?.esUnitType == ES_UNIT_TYPE_BOAT)
       nameVariations.append($"ship_{nameId}")
 
@@ -968,24 +967,24 @@ dmViewer = {
     }
     else if (thickness) {
       let thicknessStr = thickness.tostring()
-      desc.append(loc("armor_class/thickness") + nbsp +
-        colorize("activeTextColor", thicknessStr) + nbsp + loc("measureUnits/mm"))
+      desc.append("".concat(loc("armor_class/thickness"), nbsp,
+        colorize("activeTextColor", thicknessStr), nbsp, loc("measureUnits/mm")))
     }
 
     let normalAngleValue = getTblValue("normal_angle", params, null)
     if (normalAngleValue != null)
-      desc.append(loc("armor_class/normal_angle") + nbsp +
-        (normalAngleValue + 0.5).tointeger() + nbsp + loc("measureUnits/deg"))
+      desc.append("".concat(loc("armor_class/normal_angle"), nbsp,
+        (normalAngleValue + 0.5).tointeger(), nbsp, loc("measureUnits/deg")))
 
     let angleValue = getTblValue("angle", params, null)
     if (angleValue != null)
-      desc.append(loc("armor_class/impact_angle") + nbsp + round(angleValue) + nbsp + loc("measureUnits/deg"))
+      desc.append("".concat(loc("armor_class/impact_angle"), nbsp, round(angleValue), nbsp, loc("measureUnits/deg")))
 
     if (effectiveThickness) {
       if (solid) {
-        desc.append(loc("armor_class/armor_dimensions_at_point") + nbsp +
-          colorize("activeTextColor", round(effectiveThickness)) +
-          nbsp + loc("measureUnits/mm"))
+        desc.append("".concat(loc("armor_class/armor_dimensions_at_point"), nbsp,
+          colorize("activeTextColor", round(effectiveThickness)),
+          nbsp, loc("measureUnits/mm")))
 
         if ((this.armorClassToSteel?[params.name] ?? 0) != 0) {
           let equivSteelMm = round(effectiveThickness * this.armorClassToSteel[params.name])
@@ -997,14 +996,14 @@ dmViewer = {
         let effectiveThicknessClamped = min(effectiveThickness,
           min((this.relativeArmorThreshold * thickness).tointeger(), this.absoluteArmorThreshold))
 
-        desc.append(loc("armor_class/effective_thickness") + nbsp +
-          (effectiveThicknessClamped < effectiveThickness ? ">" : "") +
-          round(effectiveThicknessClamped) + nbsp + loc("measureUnits/mm"))
+        desc.append("".concat(loc("armor_class/effective_thickness"), nbsp,
+          (effectiveThicknessClamped < effectiveThickness ? ">" : ""),
+          round(effectiveThicknessClamped), nbsp, loc("measureUnits/mm")))
       }
     }
 
     if (this.isDebugMode)
-      desc.append("\n" + colorize("badTextColor", params.nameId))
+      desc.append("".concat("\n", colorize("badTextColor", params.nameId)))
 
     let rawPartName = getTblValue("raw_name", params)
     if (rawPartName)
@@ -1088,11 +1087,11 @@ dmViewer = {
         bands = "".concat(bands, loc(format("radar_freq_band_%d", bandStart)), " ")
     }
     else
-      bands = bands + loc(format("radar_freq_band_%d", bandsIndexes[0]))
+      bands = "".concat(bands, loc(format("radar_freq_band_%d", bandsIndexes[0])))
     desc.append(bands)
 
     let rangeMax = sensorPropsBlk.getReal("range", 0.0)
-    desc.append(indent + loc("radar_range_max") + loc("ui/colon") + distanceToStr(rangeMax))
+    desc.append("".concat(indent, loc("radar_range_max"), loc("ui/colon"), distanceToStr(rangeMax)))
 
     local targetsDirectionGroups = {}
     let targetsDirectionGroupsBlk = sensorPropsBlk.getBlockByName("targetsDirectionGroups")
@@ -1103,18 +1102,18 @@ dmViewer = {
         targetsDirectionGroups[targetsDirectionGroupText] <- true
     }
     if (targetsDirectionGroups.len() > 1)
-      desc.append(indent + loc("rwr_scope_id_threats_types") + loc("ui/colon") + format("%d", targetsDirectionGroups.len()))
+      desc.append("".concat(indent, loc("rwr_scope_id_threats_types"), loc("ui/colon"), format("%d", targetsDirectionGroups.len())))
 
     let targetsPresenceGroupsBlk = sensorPropsBlk.getBlockByName("targetsPresenceGroups")
     let targetsPresenceGroupsCount = targetsPresenceGroupsBlk?.blockCount() ?? 0
     if (targetsPresenceGroupsCount > 1)
-      desc.append(indent + loc("rwr_present_id_threats_types") + loc("ui/colon") + format("%d", targetsPresenceGroupsCount))
+      desc.append("".concat(indent, loc("rwr_present_id_threats_types"), loc("ui/colon"), format("%d", targetsPresenceGroupsCount)))
 
     if (sensorPropsBlk.getBool("targetTracking", false))
-      desc.append(indent + loc("rwr_tracked_threats_max") + loc("ui/colon") + format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16)))
+      desc.append("".concat(indent, loc("rwr_tracked_threats_max"), loc("ui/colon"), format("%d", sensorPropsBlk.getInt("trackedTargetsMax", 16))))
 
     if (sensorPropsBlk.getBool("detectTracking", true))
-      desc.append(indent + loc("rwr_tracking_detection"))
+      desc.append("".concat(indent, loc("rwr_tracking_detection")))
 
     let detectLaunch = sensorPropsBlk.getBool("detectLaunch", false)
     local launchingThreatTypes = {}
@@ -1157,9 +1156,9 @@ dmViewer = {
     }
 
     if (detectLaunch)
-      desc.append(indent + loc("rwr_launch_detection"))
+      desc.append("".concat(indent, loc("rwr_launch_detection")))
     else if (launchingThreatTypes.len() > 1)
-      desc.append(indent + loc("rwr_launch_detection") + loc("ui/colon") + format("%d", launchingThreatTypes.len()))
+      desc.append("".concat(indent, loc("rwr_launch_detection"), loc("ui/colon"), format("%d", launchingThreatTypes.len())))
 
     local rangeFinder = false
     foreach (rangeFinderParamName in ["targetRangeFinder", "searchRangeFinder", "trackRangeFinder", "launchRangeFinder"])
@@ -1168,10 +1167,10 @@ dmViewer = {
         break
       }
     if (rangeFinder)
-      desc.append(indent + loc("rwr_signal_strength"))
+      desc.append("".concat(indent, loc("rwr_signal_strength")))
 
     if (sensorPropsBlk.getBool("friendFoeId", false))
-      desc.append(indent + loc("rwr_iff"))
+      desc.append("".concat(indent, loc("rwr_iff")))
   }
 
   function addRadarDescription(sensorPropsBlk, indent, desc) {
@@ -1407,8 +1406,8 @@ dmViewer = {
             desc.append("".concat(loc("plane_engine_type"), loc("ui/colon"), typeText))
 
           if (infoBlk?.displacement)
-            desc.append(loc("engine_displacement") + loc("ui/colon")
-              + loc("measureUnits/displacement", { num = infoBlk.displacement.tointeger() }))
+            desc.append("".concat(loc("engine_displacement"), loc("ui/colon"),
+              loc("measureUnits/displacement", { num = infoBlk.displacement.tointeger() })))
         }
 
         if (! this.isSecondaryModsValid)
@@ -1416,7 +1415,7 @@ dmViewer = {
 
         let currentParams = this.unit?.modificators[this.difficulty.crewSkillName]
         if (this.isSecondaryModsValid && currentParams && currentParams.horsePowers && currentParams.maxHorsePowersRPM) {
-          desc.append(format("%s %s (%s %d %s)", loc("engine_power") + loc("ui/colon"),
+          desc.append(format("%s %s (%s %d %s)", "".concat(loc("engine_power"), loc("ui/colon")),
             measureType.HORSEPOWERS.getMeasureUnitsText(currentParams.horsePowers),
             loc("shop/unitValidCondition"), currentParams.maxHorsePowersRPM.tointeger(), loc("measureUnits/rpm")))
         }
@@ -1433,7 +1432,7 @@ dmViewer = {
             let infoBlk = this.getInfoBlk(partName)
             desc.append(this.getEngineModelName(infoBlk))
 
-            let enginePartId = infoBlk?.part_id ?? ("Engine" + partIndex.tostring())
+            let enginePartId = infoBlk?.part_id ?? ($"Engine{partIndex}")
             let engineTypeId = "".concat("EngineType", (fmBlk?[enginePartId].Type ?? -1).tostring())
             local engineBlk = fmBlk?[engineTypeId] ?? fmBlk?[enginePartId]
             if (!engineBlk) { // try to find booster
@@ -1455,7 +1454,7 @@ dmViewer = {
               if (engineType == "inline" || engineType == "radial") {
                 let cylinders = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.Cylinders ?? b?.cylinders, 0)
                 if (cylinders > 0)
-                  engineInfo.append(cylinders + loc("engine_cylinders_postfix"))
+                  engineInfo.append("".concat(cylinders, loc("engine_cylinders_postfix")))
               }
               let typeText = loc("ui/comma").join(engineInfo, true)
               if (typeText != "")
@@ -1465,8 +1464,8 @@ dmViewer = {
               if ((engineType == "inline" || engineType == "radial")
                   && "IsWaterCooled" in engineMainBlk) {           // Plane : Engine : Cooling
                 let coolingKey = engineMainBlk?.IsWaterCooled ? "water" : "air"
-                desc.append(loc("plane_engine_cooling_type") + loc("ui/colon")
-                + loc($"plane_engine_cooling_type_{coolingKey}"))
+                desc.append("".concat(loc("plane_engine_cooling_type"), loc("ui/colon"),
+                  loc($"plane_engine_cooling_type_{coolingKey}")))
               }
 
               if (!this.isSecondaryModsValid) {
@@ -1545,19 +1544,19 @@ dmViewer = {
                 // display power values
                 if (powerMax > 0) {
                   powerMax += horsepowerModDelta
-                  desc.append(loc("engine_power_max") + loc("ui/colon")
-                    + measureType.HORSEPOWERS.getMeasureUnitsText(powerMax))
+                  desc.append("".concat(loc("engine_power_max"), loc("ui/colon"),
+                    measureType.HORSEPOWERS.getMeasureUnitsText(powerMax)))
                 }
                 if (powerTakeoff > 0) {
                   powerTakeoff += horsepowerModDelta
-                  desc.append(loc("engine_power_takeoff") + loc("ui/colon")
-                    + measureType.HORSEPOWERS.getMeasureUnitsText(powerTakeoff))
+                  desc.append("".concat(loc("engine_power_takeoff"), loc("ui/colon"),
+                    measureType.HORSEPOWERS.getMeasureUnitsText(powerTakeoff)))
                 }
                 if (thrustMax > 0) {
                       thrustMax += thrustModDelta
                   thrustMax *= thrustMaxCoef
-                  desc.append(loc("engine_thrust_max") + loc("ui/colon")
-                    + measureType.THRUST_KGF.getMeasureUnitsText(thrustMax))
+                  desc.append("".concat(loc("engine_thrust_max"), loc("ui/colon"),
+                    measureType.THRUST_KGF.getMeasureUnitsText(thrustMax)))
                 }
                 if (thrustTakeoff > 0) {
                   let afterburnerBlk = engineBlk?.Afterburner
@@ -1568,8 +1567,8 @@ dmViewer = {
 
                   thrustTakeoff += thrustModDelta
                   thrustTakeoff *= thrustMaxCoef * afterburneThrustMaxCoef
-                  desc.append(loc(thrustTakeoffLocId) + loc("ui/colon")
-                    + measureType.THRUST_KGF.getMeasureUnitsText(thrustTakeoff))
+                  desc.append("".concat(loc(thrustTakeoffLocId), loc("ui/colon"),
+                    measureType.THRUST_KGF.getMeasureUnitsText(thrustTakeoff)))
                 }
 
                 // mass
@@ -1589,8 +1588,8 @@ dmViewer = {
           : ""
         let model = info?.model ? loc($"transmission_model/{info.model}", "") : ""
         let props = info?.type ? utf8ToLower(loc($"transmission_type/{info.type}", "")) : ""
-        desc.append(" ".join([ manufacturer, model ], true) +
-          (props == "" ? "" : loc("ui/parentheses/space", { text = props })))
+        desc.append("".concat(" ".join([ manufacturer, model ], true),
+          props == "" ? "" : loc("ui/parentheses/space", { text = props })))
 
         let maxSpeed = this.unit?.modificators?[this.difficulty.crewSkillName]?.maxSpeed ?? 0
         if (maxSpeed && info?.gearRatios) {
@@ -1611,13 +1610,13 @@ dmViewer = {
           let maxSpeedF = maxSpeed
           let maxSpeedB = ratioB ? (maxSpeed * ratioF / ratioB) : 0
           if (maxSpeedF && gearsF)
-            desc.append(loc("xray/transmission/maxSpeed/forward") + loc("ui/colon") +
-              countMeasure(0, maxSpeedF) + loc("ui/comma") +
-                loc("xray/transmission/gears") + loc("ui/colon") + gearsF)
+            desc.append("".concat(loc("xray/transmission/maxSpeed/forward"), loc("ui/colon"),
+              countMeasure(0, maxSpeedF), loc("ui/comma"), loc("xray/transmission/gears")
+              loc("ui/colon"), gearsF))
           if (maxSpeedB && gearsB)
-            desc.append(loc("xray/transmission/maxSpeed/backward") + loc("ui/colon") +
-              countMeasure(0, maxSpeedB) + loc("ui/comma") +
-                loc("xray/transmission/gears") + loc("ui/colon") + gearsB)
+            desc.append("".concat(loc("xray/transmission/maxSpeed/backward"), loc("ui/colon"),
+              countMeasure(0, maxSpeedB), loc("ui/comma"), loc("xray/transmission/gears"),
+              loc("ui/colon"), gearsB))
         }
       }
     }
@@ -1626,7 +1625,7 @@ dmViewer = {
       let ammoSlotInfo = this.getAmmoStowageSlotInfo(partName)
       if (isShipOrBoat) {
         if (ammoSlotInfo.count > 1)
-          desc.append(loc("shop/ammo") + loc("ui/colon") + ammoSlotInfo.count)
+          desc.append("".concat(loc("shop/ammo"), loc("ui/colon"), ammoSlotInfo.count))
       }
       let stowageInfo = this.getAmmoStowageInfo(null, partName, isShipOrBoat)
       if (stowageInfo.isCharges)
@@ -1867,7 +1866,7 @@ dmViewer = {
         if (weaponName != "")
           desc.append("".concat(loc($"weapons/{weaponName}"), ammoTxt))
         if (weaponInfoBlk && ammo > 1 && !shouldShowAmmoInTitle)
-          desc.append(loc("shop/ammo") + loc("ui/colon") + ammo)
+          desc.append("".concat(loc("shop/ammo"), loc("ui/colon"), ammo))
 
         if (isSpecialBullet || isSpecialBulletEmitter)
           desc[desc.len() - 1] += getWeaponXrayDescText(weaponInfoBlk, this.unit, getCurrentGameModeEdiff())
@@ -1927,11 +1926,11 @@ dmViewer = {
           desc.append(loc("shop/armorThicknessEquivalent"))
 
         if (data.kineticProtectionEquivalent)
-          desc.append(strBullet + loc("shop/armorThicknessEquivalent/kinetic") + strColon +
-            round(data.kineticProtectionEquivalent) + strUnits)
+          desc.append("".concat(strBullet, loc("shop/armorThicknessEquivalent/kinetic"), strColon,
+            round(data.kineticProtectionEquivalent), strUnits))
         if (data.cumulativeProtectionEquivalent)
-          desc.append(strBullet + loc("shop/armorThicknessEquivalent/cumulative") + strColon +
-            round(data.cumulativeProtectionEquivalent) + strUnits)
+          desc.append("".concat(strBullet, loc("shop/armorThicknessEquivalent/cumulative"), strColon,
+            round(data.cumulativeProtectionEquivalent), strUnits))
       }
 
       let blockSep = desc.len() ? "\n" : ""
@@ -1946,13 +1945,13 @@ dmViewer = {
             thicknessText = "".concat(round(layer.armorThickness.x), loc("ui/mdash"),
               round(layer.armorThickness.y))
           if (thicknessText != "")
-            thicknessText = loc("ui/parentheses/space", { text = thicknessText + strUnits })
-          texts.append(strBullet + this.getPartNameLocText(layer?.armorClass) + thicknessText)
+            thicknessText = loc("ui/parentheses/space", { text = $"{thicknessText}{strUnits}" })
+          texts.append("".concat(strBullet, this.getPartNameLocText(layer?.armorClass), thicknessText))
         }
-        desc.append(blockSep + loc("xray/armor_composition") + loc("ui/colon") + "\n" + "\n".join(texts, true))
+        desc.append("".concat(blockSep, loc("xray/armor_composition"), loc("ui/colon"), "\n", "\n".join(texts, true)))
       }
       else if (!info.isComposite && !u.isEmpty(info.armorClass)) // reactive armor
-        desc.append(blockSep + loc("plane_engine_type") + loc("ui/colon") + this.getPartNameLocText(info.armorClass))
+        desc.append("".concat(blockSep, loc("plane_engine_type"), loc("ui/colon"), this.getPartNameLocText(info.armorClass)))
     }
     else if (partId == "coal_bunker") {
       let coalToSteelMul = this.armorClassToSteel?["ships_coal_bunker"] ?? 0
@@ -2081,7 +2080,7 @@ dmViewer = {
     }
 
     if (this.isDebugMode)
-      desc.append("\n" + colorize("badTextColor", partName))
+      desc.append("".concat("\n", colorize("badTextColor", partName)))
 
     let rawPartName = getTblValue("raw_name", params)
     if (rawPartName)
@@ -2316,8 +2315,7 @@ dmViewer = {
         foreach (linkKeyFmt in partLinkSourcesGenFmt)
           if (weapon?[linkKeyFmt]) {
             if (weapon[linkKeyFmt].indexof("%02d") == null) {
-              assert(false, $"Bad weapon param {linkKeyFmt}='" + weapon[linkKeyFmt] +
-                "' on " + this.unit.name)
+              assert(false, $"Bad weapon param {linkKeyFmt}='{weapon[linkKeyFmt]}' on {this.unit.name}")
               continue
             }
             for (local i = rangeMin; i <= rangeMax; i++)
@@ -2458,7 +2456,7 @@ dmViewer = {
       if (isStabilizerX || isStabilizerY) {
         let valueLoc = needSingleAxis ? "options/yes"
           : (isStabilizerX ? "shop/gunStabilizer/twoPlane" : "shop/gunStabilizer/vertical")
-        desc.append(loc("shop/gunStabilizer") + " " + loc(valueLoc))
+        desc.append(" ".concat(loc("shop/gunStabilizer"), loc(valueLoc)))
       }
     }
 
@@ -2804,7 +2802,7 @@ dmViewer = {
     foreach (pattern in massPatterns)
       foreach (nameVariant in pattern.variants)
         if (nameVariant in data)
-          return format(loc("shop/tank_mass") + " " + loc(pattern.langKey), data[nameVariant])
+          return format(" ".concat(loc("shop/tank_mass"), loc(pattern.langKey)), data[nameVariant])
     return "";
   }
 

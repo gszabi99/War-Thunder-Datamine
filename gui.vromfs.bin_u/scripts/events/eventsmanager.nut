@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import have_you_valid_tournament_ticket, clan_get_my_clan_id, get_tournament_battle_cost, has_entitlement, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -348,14 +347,13 @@ let _leaderboards = {
    * Function generates hash string from leaderboard request data
    */
   function hashLbRequest(request_data) {
-    local res = ""
-    res += request_data.lbField
-    res += getTblValue("rowsInPage", request_data, "")
-    res += getTblValue("inverse", request_data, false)
-    res += getTblValue("rowsInPage", request_data, "")
-    res += getTblValue("pos", request_data, "")
-    res += getTblValue("tournament_mode", request_data, "")
-    return res
+    return "".concat(
+      request_data.lbField,
+      request_data?.rowsInPage ?? "",
+      request_data?.inverse ?? false,
+      request_data?.rowsInPage ?? "",
+      request_data?.pos ?? "",
+      request_data?.tournament_mode ?? "")
   }
 
   function handleLbRequest(requestData, id, requestResult) {
@@ -892,8 +890,8 @@ let Events = class {
       eventData.specialRequirements <- [eventData.specialRequirements]
 
     if (("loc_name" in eventData) && !u.isString(eventData.loc_name)) {
-      assert(false, $"Bad event loc_name. eventName = {eventData.name}, " +
-                             "economicName = " + getEventEconomicName(eventData) + ", loc_name = " + toString(eventData.loc_name))
+      assert(false, "".concat($"Bad event loc_name. eventName = {eventData.name}, ",
+        "economicName = ", getEventEconomicName(eventData), ", loc_name = ", toString(eventData.loc_name)))
       eventData.$rawdelete("loc_name")
     }
 
@@ -1100,18 +1098,18 @@ let Events = class {
 
     local res = ""
     if (this.isUnitTypeAvailable(event, ES_UNIT_TYPE_TANK) && this.isUnitTypeAvailable(event, ES_UNIT_TYPE_AIRCRAFT))
-      res += "mixed"
+      res = "mixed"
     else if (this.isUnitTypeAvailable(event, ES_UNIT_TYPE_SHIP))
-      res += "ship"
+      res = "ship"
     else if (!this.isUnitTypeAvailable(event, ES_UNIT_TYPE_TANK))
-      res += "air"
+      res = "air"
     else if (!this.isUnitTypeAvailable(event, ES_UNIT_TYPE_AIRCRAFT))
-      res += "tank"
-    return this.wrapImageName(this.getEventDiffName(event.name, true) + "_" + res, isWide)
+      res = "tank"
+    return this.wrapImageName($"{this.getEventDiffName(event.name, true)}_{res}", isWide)
   }
 
   function wrapImageName(imageName, isWide) {
-    return format("#ui/images/game_modes_tiles/%s?P1", imageName + (isWide ? "_wide" : "_thin"))
+    return format("#ui/images/game_modes_tiles/%s?P1", $"{imageName}{isWide ? "_wide" : "_thin"}")
   }
 
   function getEventPreviewVideoName(event, isWide) {
@@ -1130,13 +1128,10 @@ let Events = class {
     if (customVideoPreviewName)
       return customVideoPreviewName == "" ? null : customVideoPreviewName
 
-    local unitTypeName = ""
-    if (this.isUnitTypeAvailable(event, ES_UNIT_TYPE_SHIP))
-      unitTypeName += "ship"
-    else if (this.isUnitTypeAvailable(event, ES_UNIT_TYPE_TANK))
-      unitTypeName += "tank"
-    else if (this.isUnitTypeAvailable(event, ES_UNIT_TYPE_AIRCRAFT))
-      unitTypeName += "air"
+    let unitTypeName = this.isUnitTypeAvailable(event, ES_UNIT_TYPE_SHIP) ? "ship"
+      : this.isUnitTypeAvailable(event, ES_UNIT_TYPE_TANK) ? "tank"
+      : this.isUnitTypeAvailable(event, ES_UNIT_TYPE_AIRCRAFT) ? "air"
+      : ""
 
     return $"video/gameModes/{unitTypeName}_{this.getEventDiffName(event.name, true)}.ivf"
   }
@@ -1635,7 +1630,7 @@ let Events = class {
       langConfig.extend(singleLangConfig)
     else
       foreach (teamCode, teamLangConfig in langConfigByTeam) {
-        langConfig.append({ [systemMsg.LOC_ID] = "events/" + g_team.getTeamByCode(teamCode).name })
+        langConfig.append({ [systemMsg.LOC_ID] = $"events/{g_team.getTeamByCode(teamCode).name}" })
         langConfig.extend(teamLangConfig)
       }
 
@@ -1859,16 +1854,14 @@ let Events = class {
   }
 
   function getCustomDifficultyChanges(eventId) {
-    local diffChanges = ""
+    let diffChanges = []
     if (!this.checkEventId(eventId) || !this.isDifficultyCustom(__game_events[eventId]))
       return ""
 
-    foreach (name, flag in __game_events[eventId].mission_decl.customDifficulty) {
-      diffChanges += diffChanges.len() ? "\n" : ""
-      diffChanges += format("%s - %s", loc($"options/{name}"), loc("options/" + (flag ? "enabled" : "disabled")))
-    }
+    foreach (name, flag in __game_events[eventId].mission_decl.customDifficulty)
+      diffChanges.append(format("%s - %s", loc($"options/{name}"), loc($"options/{flag ? "enabled" : "disabled"}")))
 
-    return diffChanges
+    return "\n".join(diffChanges)
   }
 
   function getTeamSize(teamData) {
@@ -2105,8 +2098,9 @@ let Events = class {
       if (masksArray && masksArray.len() == 2) {
         let allowUnitId = "events/allowed_units"
         allowText = loc(allowUnitId, {
-          unitType = loc($"{allowUnitId}/" + masksArray[0].name),
-          unitType2 = loc($"{allowUnitId}/" + masksArray[1].name) })
+          unitType = loc($"{allowUnitId}/{masksArray[0].name}"),
+          unitType2 = loc($"{allowUnitId}/{masksArray[1].name}")
+        })
         allowText = toUpper(allowText, 1)
       }
     }
@@ -2173,21 +2167,21 @@ let Events = class {
       }
     }
     else if ("type" in rule)
-      ruleString += loc($"mainmenu/type_{rule.type}")
+      ruleString = "".concat(ruleString, loc($"mainmenu/type_{rule.type}"))
     else if ("class" in rule) {
       local ruleClass = rule["class"]
       if (ruleClass == "ship")
         ruleClass = "ship_and_boat"
-      ruleString += loc($"mainmenu/type_{ruleClass}")
+      ruleString = "".concat(ruleString, loc($"mainmenu/type_{ruleClass}"))
     }
     if ("ranks" in rule) {
       let minRank = max(1, rule.ranks?.min ?? 1)
       let maxRank = rule.ranks?.max ?? MAX_COUNTRY_RANK
-      local rankText = get_roman_numeral(minRank)
-                     + ((minRank != maxRank) ? " - " + get_roman_numeral(maxRank) : "")
+      local rankText = "".concat(get_roman_numeral(minRank),
+        minRank != maxRank ? $" - {get_roman_numeral(maxRank)}" : "")
       rankText = format(loc("events/rank"), rankText)
       if (ruleString.len())
-        ruleString += loc("ui/parentheses/space", { text = rankText })
+        ruleString = "".concat(ruleString, loc("ui/parentheses/space", { text = rankText }))
       else
         ruleString = rankText
     }
@@ -2196,10 +2190,10 @@ let Events = class {
       let mranks = rule.mranks
       let minBR = format("%.1f", calcBattleRatingFromRank(mranks?.min ?? 0))
       let maxBR = format("%.1f", calcBattleRatingFromRank(mranks?.max ?? getMaxEconomicRank()))
-      local brText = "".concat(minBR, ((minBR != maxBR) ? " - " + maxBR : ""))
+      local brText = "".concat(minBR, minBR != maxBR ? $" - {maxBR}" : "")
       brText = format(loc("events/br"), brText)
       if (ruleString.len())
-        ruleString += loc("ui/parentheses/space", { text = brText })
+        ruleString = "".concat(ruleString, loc("ui/parentheses/space", { text = brText }))
       else
         ruleString = brText
     }
@@ -2222,7 +2216,7 @@ let Events = class {
     let isEqual = minSize == maxSize
     let res = {
       label = isEqual ? loc("events/players_range_single") : loc("events/players_short")
-      value = "".concat(minSize, (isEqual ? "" : " - " + maxSize))
+      value = "".concat(minSize, isEqual ? "" : $" - {maxSize}")
       isValid = minSize > 0 && maxSize > 0
     }
     return res
@@ -2314,8 +2308,8 @@ let Events = class {
         local messageText = reasonData.reasonText
         startTime = events.getEventStartTime(reasonData.event)
         if (startTime > 0)
-          messageText +=  "\n" + format(loc("events/event_starts_in"), colorize("activeTextColor",
-            time.hoursToString(time.secondsToHours(startTime))))
+          messageText = "\n".concat(messageText, format(loc("events/event_starts_in"), colorize("activeTextColor",
+            time.hoursToString(time.secondsToHours(startTime)))))
         scene_msg_box("cant_join", null, messageText,
             [["ok", function() {}]], "ok")
       }
@@ -2636,7 +2630,7 @@ let Events = class {
       return "test_events"
     local chapterName = event?.chapter ?? "basic_events"
     if (events.isEventEnded(event) && isInArray(chapterName, standardChapterNames))
-      chapterName += "/ended"
+      chapterName = $"{chapterName}/ended"
     return chapterName
   }
 
@@ -2700,9 +2694,9 @@ let Events = class {
 
   function getEventRewardText(event) {
     let muls = events.getEventRewardMuls(event.name)
-    let wpText = this.buildBonusText((100.0 * (muls.wp  - 1.0) + 0.5).tointeger(), "% " + loc("warpoints/short/colored"))
-    let expText = this.buildBonusText((100.0 * (muls.exp - 1.0) + 0.5).tointeger(), "% " + loc("currency/researchPoints/sign/colored"))
-    return wpText + ((wpText.len() && expText.len()) ? ", " : "") + expText
+    let wpText = this.buildBonusText((100.0 * (muls.wp  - 1.0) + 0.5).tointeger(), $"% {loc("warpoints/short/colored")}")
+    let expText = this.buildBonusText((100.0 * (muls.exp - 1.0) + 0.5).tointeger(), $"% {loc("currency/researchPoints/sign/colored")}")
+    return "".concat(wpText, (wpText.len() && expText.len()) ? ", " : "", expText)
   }
 
   function buildBonusText(value, endingText) {
@@ -2757,8 +2751,8 @@ let Events = class {
 
   function getDifficultyTooltip(eventId) {
     local custChanges = this.getCustomDifficultyChanges(eventId)
-    custChanges = (custChanges.len() ? "\n" : "") + custChanges
-    return events.descFormat(loc("multiplayer/difficulty"), this.getDifficultyText(eventId)) + custChanges
+    custChanges = "".concat(custChanges.len() ? "\n" : "", custChanges)
+    return "".concat(events.descFormat(loc("multiplayer/difficulty"), this.getDifficultyText(eventId)), custChanges)
   }
 
   function getDifficultyText(eventId) {

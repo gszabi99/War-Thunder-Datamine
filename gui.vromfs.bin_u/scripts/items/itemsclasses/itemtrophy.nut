@@ -269,7 +269,7 @@ let Trophy = class (BaseItem) {
     let contentWithChances = []
     foreach (i in contentRawWithPrize) {
       let percentStr = $"{roundToDigits((i?.percent ?? 0) / oneHundredPercentFloat, 3)}%"
-      if (i?.percent)
+      if (i?.percent != null && i.percent >= 0)
         i.percentStr = percentStr
       if (!i?.trophy || i?.showAsPack) {
         contentWithChances.append(i)
@@ -291,7 +291,7 @@ let Trophy = class (BaseItem) {
             if (countMul != 1)
               si.count = (si?.count ?? 1) * countMul
 
-            if (si?.percent) {
+            if (si?.percent != null && si.percent >= 0) {
               let siPercent = si.percent / oneHundredPercentFloat
               let siPercentStr = roundToDigits(trophyPercent * siPercent / oneHundredPercentFloat , 3)
               si.percentStr = $"{siPercentStr}%"

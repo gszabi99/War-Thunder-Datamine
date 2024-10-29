@@ -30,7 +30,17 @@ function getCrewUnlockTime(crew) {
 
 let isCrewLockedByPrevBattle = @(crew) isInMenu() && ((crew?.lockedTillSec ?? 0) > 0)
 
+function getCrewByAir(air) {
+  foreach (country in ::g_crews_list.getCrewsList())
+    if (country.country == air.shopCountry)
+      foreach (crew in country.crews)
+        if (("aircraft" in crew) && crew.aircraft == air.name)
+          return crew
+  return null
+}
+
 return {
   getCrewUnlockTime
   isCrewLockedByPrevBattle
+  getCrewByAir
 }

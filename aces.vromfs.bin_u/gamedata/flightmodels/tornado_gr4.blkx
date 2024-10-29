@@ -2729,7 +2729,7 @@
         23.0
       ],
       "aoa_indexer1": [
-        15.0,
+        14.0,
         90.0
       ],
       "compass": [
@@ -2874,9 +2874,19 @@
             0.5,
             0.5
           ],
-          "page": {
-            "type": "map"
-          }
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "map"
+            }
+          ]
         },
         {
           "textureArea": [
@@ -4642,6 +4652,18 @@
               {
                 "slot": 6,
                 "preset": "fr_mk13_fuse_centr"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_500_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "pgm_2000_fuse2"
+              },
+              {
+                "slot": 8,
+                "preset": "us_2000lb_gbu_24_fuse4"
               }
             ]
           }

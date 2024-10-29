@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -71,7 +70,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
     {
      year = this.info.getInt("dataYYYY", 0),
      day = this.info.getInt("dataDD", 0),
-     month = loc("sm_month_" + this.info.getInt("dataMM", 0).tostring())
+     month = loc($"sm_month_{this.info.getInt("dataMM", 0)}")
     })
 
     let playerSide = this.info.getInt("playerSide", 1)
@@ -90,10 +89,10 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
     let sides = ["ally", "enemy"]
     for (local i = 0; i < stats.len(); i++) {
       for (local j = 0; j < sides.len(); j++) {
-        local value = this.info.getInt(sides[j] + "_" + stats[i], 0)
+        local value = this.info.getInt($"{sides[j]}_{stats[i]}", 0)
         if (value > 10000)
           value = "".concat("", ((value / 1000).tointeger()), "K")
-        this.guiScene["info-" + stats[i] + j.tostring()].text = value
+        this.guiScene[$"info-{stats[i]}{j}"].text = value
       }
     }
 
@@ -122,14 +121,14 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
     let ret = {}
 
     if (blk.getStr("sectorName", "").len() > 0) {
-      ret.main <- format("<Color=@blogDateColor>%02d.%02d.%d</Color> <Color=@blogHeaderColor>%s</Color>\n"
-                    + "<Color=@blogCommonColor>%s</Color>\n",
+      ret.main <- format(
+        "<Color=@blogDateColor>%02d.%02d.%d</Color> <Color=@blogHeaderColor>%s</Color>\n<Color=@blogCommonColor>%s</Color>\n",
         blk.getInt("dataDD", 1),
         blk.getInt("dataMM", 1),
         blk.getInt("dataYYYY", 1941),
-        loc($"dynamic/{this.layout}/" + blk.getStr("sectorName", "")),
+        loc($"dynamic/{this.layout}/{blk.getStr("sectorName", "")}"),
         loc(blk.getStr("description", ""))
-        )
+      )
     }
     else if (blk.getStr("winsCountTextId", "").len() > 0) {
       ret.main <- format("<Color=@blogHeaderColor>%s %d</Color>\n",
@@ -138,14 +137,14 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
         );
     }
     else if (blk.getStr("reason", "").len() > 0) {
-      ret.main <- format("<Color=@blogDateColor>%02d.%02d.%d</Color> <Color=@blogHeaderColor>%s</Color>\n"
-                    + "<Color=@blogCommonColor>%s</Color>\n",
+      ret.main <- format(
+        "<Color=@blogDateColor>%02d.%02d.%d</Color> <Color=@blogHeaderColor>%s</Color>\n<Color=@blogCommonColor>%s</Color>\n",
         blk.getInt("dataDD", 1),
         blk.getInt("dataMM", 1),
         blk.getInt("dataYYYY", 1941),
         loc(blk.getStr("description", "")),
         loc(blk.getStr("reason", ""))
-        )
+      )
     }
     else if (blk.getInt("enemyStartCount", -1) >= 0) {
       ret.main <- format("<Color=@blogDateColor>%02d.%02d.%d</Color> <Color=@blogHeaderColor>%s %s</Color>\n",
@@ -153,8 +152,8 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
         blk.getInt("dataMM", 1),
         blk.getInt("dataYYYY", 1941),
         loc(blk.getStr("description", "")),
-        loc("dynamic/" + blk.getStr("level", "") + "_dynamic")
-        )
+        loc($"dynamic/{blk.getStr("level", "")}_dynamic")
+      )
     }
     else {
       ret.main <- format("<Color=@blogDateColor>%02d.%02d.%d</Color> <Color=@blogHeaderColor>%s</Color>\n",
@@ -162,17 +161,19 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
         blk.getInt("dataMM", 1),
         blk.getInt("dataYYYY", 1941),
         loc(blk.getStr("description", ""))
-        )
+      )
     }
 
     ret.ally_loses <- "";
     ret.enemy_loses <- "";
     if (blk.getBool("showLoss", false)) {
       for (local i = 0; i < this.loses.len(); i++)
-        ret.ally_loses += this.getLosesBlk(this.loses[i], blk.getInt("ally_destroyed_" + this.loses[i], 0), i < (this.loses.len() - 1))
+        ret.ally_loses = "".concat(ret.ally_loses,
+          this.getLosesBlk(this.loses[i], blk.getInt($"ally_destroyed_{this.loses[i]}", 0), i < (this.loses.len() - 1)))
 
       for (local i = 0; i < this.loses.len(); i++)
-        ret.enemy_loses += this.getLosesBlk(this.loses[i], blk.getInt("enemy_destroyed_" + this.loses[i], 0), i < (this.loses.len() - 1))
+        ret.enemy_loses = "".concat(ret.enemy_loses,
+          this.getLosesBlk(this.loses[i], blk.getInt($"enemy_destroyed_{this.loses[i]}", 0), i < (this.loses.len() - 1)))
     }
 
     let misNum = blk.getInt("missionsPlayed", 0)
@@ -193,9 +194,8 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   function getLosesBlk(name, count, comma = false) {
     local data = ""
     if (name in this.loseImages)
-      data += format("logIcon{ background-image:t='%s'} ", this.loseImages[name])
-    data += format("text{ text:t='%s'; text-align:t='left'} ",
-              count.tostring() + (comma ? "," : ""))
+      data = "".concat(data, "logIcon{ background-image:t='", this.loseImages[name], "'} ")
+    data = "".concat(data, "text{ text:t='", count, comma ? "," : "", "'; text-align:t='left'} ")
     return data
   }
 
@@ -311,23 +311,23 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
     let logTextsToSet = {}
 
     for (local i = (this.logObj.len() - 1); i >= 0; i--) {
-      data += format("textareaNoTab { id:t='%s'; width:t='pw'; sideLogIcon { background-image:t='%s'} } \n",
-                $"logtext_{i}", this.logObj[i].sideIcon)
+      data = "".concat(data, "textareaNoTab { id:t='", $"logtext_{i}",
+        "'; width:t='pw'; sideLogIcon { background-image:t='", this.logObj[i].sideIcon, "'} } \n")
       logTextsToSet[$"logtext_{i}"] <- this.logObj[i].main
 
       if (this.logObj[i].ally_loses.len() > 0) {
-        data += format("tdiv { text{ id:t='%s'; text-align:t='left'} %s } \n",
-                  $"ally_loses_{i}", this.logObj[i].ally_loses);
-        logTextsToSet[$"ally_loses_{i}"] <- loc("log/losses_ally") + ": "
+        data = "".concat(data, "tdiv { text{ id:t='", $"ally_loses_{i}",
+          "'; text-align:t='left'} ", this.logObj[i].ally_loses, " } \n")
+        logTextsToSet[$"ally_loses_{i}"] <- $"{loc("log/losses_ally")}: "
       }
 
       if (this.logObj[i].enemy_loses.len() > 0) {
-        data += format("tdiv { margin-bottom:t='0.03sh'; text{ id:t='%s'; text-align:t='left'} %s } \n",
-                  $"enemy_loses_{i}", this.logObj[i].enemy_loses);
-        logTextsToSet[$"enemy_loses_{i}"] <- loc("log/losses_enemy") + ": "
+        data = "".concat(data, "tdiv { margin-bottom:t='0.03sh'; text{ id:t='",
+          $"enemy_loses_{i}", "'; text-align:t='left'} ", this.logObj[i].enemy_loses, " } \n")
+        logTextsToSet[$"enemy_loses_{i}"] <- $"{loc("log/losses_enemy")}: "
       }
       else
-        data += "tdiv { margin-bottom:t='0.03sh';} \n";
+        data = "".concat(data, "tdiv { margin-bottom:t='0.03sh';} \n")
     }
 
     let title = loc("mainmenu/btnBattlelog")

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -39,7 +38,7 @@ function debug_check_unlocalized_resources() {
   foreach (unit in getAllUnits())
     if (unit.isInShop)
       foreach (suffix in ["_shop", "_0", "_1", "_2"]) {
-        local localeId = unit.name + suffix
+        local localeId = $"{unit.name}{suffix}"
         if (loc(localeId, "") == "") {
           log($"    {localeId}")
           count++
@@ -130,7 +129,7 @@ function debug_check_unit_naming() {
   foreach (c, unitIds in ids)
     foreach (unitId in unitIds)
       foreach (suffix in suffixes) {
-        local locId = unitId + suffix
+        local locId = $"{unitId}{suffix}"
         local locName = loc(locId)
         if (locName == locId) {
           locName = ""

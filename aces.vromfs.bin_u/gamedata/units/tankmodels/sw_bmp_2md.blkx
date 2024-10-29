@@ -19,7 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "rearmTimeOnField": 70.0,
   "canReloadNonGuns": [
     true,
     true
@@ -423,7 +422,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -1545,6 +1545,60 @@
             }
           }
         ]
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": "fire_control_system_dm"
+          }
+        }
       }
     ]
   },
@@ -1723,12 +1777,27 @@
         "blk": "gameData/Weapons/groundModels_weapons/30mm_2a42_md_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "shellCasingEmitter": "emtr_shell",
+        "shellCasingMesh": "auto_cannon_cartridge_case",
+        "openHatchTime": 0.0,
+        "shellCasingLifeTime": 5.0,
+        "shellCasingImpulse": [
+          6.0,
+          0.0,
+          0.5
+        ],
+        "shellCasingImpulseOffset": 0.04,
+        "linkShellCasingToGun": true,
         "recoilOffset": 0.045,
         "jammedReloadTime": 15.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "speedYaw": 30.0,
         "speedPitch": 35.0,
         "fireConeAngle": 1.0,
@@ -2957,12 +3026,27 @@
               "blk": "gameData/Weapons/groundModels_weapons/30mm_2a42_md_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
+              "shellCasingEmitter": "emtr_shell",
+              "shellCasingMesh": "auto_cannon_cartridge_case",
+              "openHatchTime": 0.0,
+              "shellCasingLifeTime": 5.0,
+              "shellCasingImpulse": [
+                6.0,
+                0.0,
+                0.5
+              ],
+              "shellCasingImpulseOffset": 0.04,
+              "linkShellCasingToGun": true,
               "recoilOffset": 0.045,
               "jammedReloadTime": 15.0,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_dm",
               "breechDP": "cannon_breech_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "speedYaw": 30.0,
               "speedPitch": 35.0,
               "fireConeAngle": 1.0,

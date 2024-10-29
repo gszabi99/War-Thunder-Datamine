@@ -1,4 +1,3 @@
-//-file:plus-string
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath

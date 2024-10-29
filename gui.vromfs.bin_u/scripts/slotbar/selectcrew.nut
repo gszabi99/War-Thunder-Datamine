@@ -18,12 +18,14 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewsListByCountry, isUnitInSlotbar, getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot, getCrewByAir
+let { getCrewsListByCountry, getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot
 } = require("%scripts/slotbar/slotbarState.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let fillSlotbarLegend = require("%scripts/slotbar/fillSlotbarLegend.nut")
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
+let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 
 function getObjPosInSafeArea(obj) {
   let pos = obj.getPosRC()

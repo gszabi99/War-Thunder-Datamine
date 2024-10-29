@@ -8,6 +8,7 @@ require %game.unit.ammo_stowage_events
 require %game.unit.repair_system_events
 require %game.unit.extinguish_system_events
 require %game.unit.ship_events
+require Weapon
 
 
 [cpp_event(broadcast)]
@@ -234,3 +235,24 @@ struct EventRendInstDestroyed
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct CmdActionInRespawn {}
+
+[cpp_event(unicast, with_scheme)]
+struct EventTryBuildObject {}
+
+[cpp_event(unicast, with_scheme)]
+struct EventToggleBuildingPreview
+  enable : bool
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdBuildObject
+  tm : float3x4
+  objectTemplate : string
+  triggerGroup : WeaponTriggerGroups
+
+[cpp_event(unicast, with_scheme)]
+struct EventRearmFromAmmoBox
+  count : int
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventCantReloadingFromBox
+{}

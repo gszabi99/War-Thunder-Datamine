@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, pause_game, is_game_paused, in_flight_menu, set_context_to_player
 from "app" import is_offline_version
 from "%scripts/dagui_library.nut" import *
@@ -256,7 +255,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
         let unitsTexts = unitsData.map(function(ud) {
           local res = colorize("userlogColoredText", getUnitName(ud.unit))
           if (ud.comment.len())
-            res += loc("ui/parentheses/space", { text = ud.comment })
+            res = "".concat(res, loc("ui/parentheses/space", { text = ud.comment }))
           return res
         })
         if (unitsTexts.len())

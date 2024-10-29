@@ -354,7 +354,7 @@ let Chest = class (ItemExternal) {
         categ.weight = weight
         continue
       }
-      categ.rarity.append({rarity, weight})
+      categ.rarity.append(rarity[0])
     }
     return this.categoryWeight
   }

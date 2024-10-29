@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, get_race_winners_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
@@ -371,10 +370,10 @@ debriefingRows = [
     tooltipComment = function() {
       let firstWinMulRp = (debriefingResult?.xpFirstWinInDayMul ?? 1.0).tointeger()
       let firstWinMulWp = (debriefingResult?.wpFirstWinInDayMul ?? 1.0).tointeger()
-      return loc("reward") + loc("ui/colon") + loc("ui/comma").join([
+      return "".concat(loc("reward"), loc("ui/colon"), loc("ui/comma").join([
         firstWinMulRp > 1 ? $"x{Cost().setRp(firstWinMulRp).tostring()}" : "",
         firstWinMulWp > 1 ? $"x{Cost(firstWinMulWp).tostring()}" : "",
-      ], true)
+      ], true))
     }
     canShowRewardAsValue = true
     isCountedInUnits = false
@@ -401,13 +400,13 @@ debriefingRows = [
       let tournamentGold = getTblValue("goldTournamentBaseReward", debriefingResult.exp, 0)
       let goldTotal = getTblValue("goldTotal",   debriefingResult.exp, 0)
       if (tournamentWp || tournamentGold)
-        texts.append(loc("debriefing/tournamentBaseReward") + loc("ui/colon") + Cost(tournamentWp, tournamentGold))
+        texts.append("".concat(loc("debriefing/tournamentBaseReward"), loc("ui/colon"), Cost(tournamentWp, tournamentGold)))
       else if (goldTotal)
-        texts.append(loc("chapters/training") + loc("ui/colon") + Cost(0, goldTotal))
+        texts.append("".concat(loc("chapters/training"), loc("ui/colon"), Cost(0, goldTotal)))
       let raceWp = getTblValue("wpRace",  debriefingResult.exp, 0)
       let raceRp = getTblValue("expRace", debriefingResult.exp, 0)
       if (raceWp || raceRp)
-        texts.append(loc("events/chapter/race") + loc("ui/colon") + Cost(raceWp, 0, 0, raceRp))
+        texts.append("".concat(loc("events/chapter/race"), loc("ui/colon"), Cost(raceWp, 0, 0, raceRp)))
       return texts.len() ? colorize("commonTextColor", "\n".join(texts, true)) : null
     }
   }
@@ -787,7 +786,7 @@ function updateDebriefingExpInvestmentData() {
 
 function getStatReward(row, currency, keysArray = []) {
   if (!keysArray.len()) { // empty means pre-calculated final value
-    let finalId = currency + row.getRewardId()
+    let finalId = "".concat(currency, row.getRewardId())
     return getTblValue(finalId, debriefingResult.exp, 0)
   }
 
@@ -795,7 +794,7 @@ function getStatReward(row, currency, keysArray = []) {
   let tableId = getTableNameById(row)
   let currencyName = toUpper(currency, 1)
   foreach (key in keysArray)
-    result += debriefingResult.exp?[tableId][key + currencyName] ?? 0
+    result += debriefingResult.exp?[tableId][$"{key}{currencyName}"] ?? 0
   return result
 }
 
@@ -844,7 +843,7 @@ function recountDebriefingResult() {
 
     local isRowEmpty = true
     foreach (currency in ["wp", "exp", "gold"]) {
-      let id = currency + row.getRewardId()
+      let id = $"{currency}{row.getRewardId()}"
       let result = getTblValue(id, debriefingResult.exp, 0)
       row[currency] <- result
       isRowEmpty = isRowEmpty && !result
@@ -855,7 +854,7 @@ function recountDebriefingResult() {
     else if (row.customValueName)
       row.value = getTblValue(row.customValueName, debriefingResult.exp, 0)
     else
-      row.value = getTblValue(row.rowType + row.getRewardId(), debriefingResult.exp, 0)
+      row.value = getTblValue($"{row.rowType}{row.getRewardId()}", debriefingResult.exp, 0)
     isRowEmpty = isRowEmpty && !row.value
 
     let isHide = (row.showByValue && !row.showByValue(row.value))
@@ -1036,11 +1035,11 @@ function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
 
   foreach (tbl in tables)
     foreach (prefix in [ "tbl", "wp", "exp", "num" ]) {
-      let keyTo = prefix + destRowId
+      let keyTo = $"{prefix}{destRowId}"
       if (keyTo in tbl)
         continue
       foreach (srcRowId in srcRowIdsArray) {
-        let keyFrom = prefix + srcRowId
+        let keyFrom = $"{prefix}{srcRowId}"
         if (!(keyFrom in tbl))
           continue
         let val = tbl[keyFrom]
@@ -1400,7 +1399,7 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
         continue
       rowTbl[$"premAcc{suffix}"] <- virtPremAcc
 
-      let precalcResultId = suffix.tolower() + row.getRewardId()
+      let precalcResultId = $"{suffix.tolower()}{row.getRewardId()}"
       let origFinal = getTblValue(precalcResultId, data, 0)
       if (origFinal >= 0) {
         data[$"noPremAcc{suffix}"] <- origFinal

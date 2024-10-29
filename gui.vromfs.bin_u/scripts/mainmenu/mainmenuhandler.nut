@@ -13,7 +13,7 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
-let { getCrewUnlockTime } = require("%scripts/crew/crewInfo.nut")
+let { getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
 let { startFleetTrainingMission, canStartFleetTrainingMission
@@ -22,7 +22,7 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
-let { getCrewByAir, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {

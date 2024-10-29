@@ -70,11 +70,12 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial,
   startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewByAir, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
+let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16

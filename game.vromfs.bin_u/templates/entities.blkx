@@ -1666,5 +1666,117 @@
     "unit_fx": {},
     "constantlyWinchable:tag": {},
     "dynamicObstacle:tag": {}
+  },
+  "builder_preview": {
+    "preview_render__enabled": false,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "buildingTime": 10.0,
+    "buildingTimer": -1.0,
+    "buildingRadius": 10.0,
+    "debuffUpdateTimer": 1.0,
+    "avaliableAngles": [
+      -30.0,
+      30.0
+    ],
+    "checkGridObjectsTimeInterval": 0.3,
+    "nextCheckGridObjectsTime": 0.0,
+    "builder_preview__collObjOffset": 0.5,
+    "simpleObject__transparentColor": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "collres__res": "ammunition_box_construction_120x55x30_dynamic_collision",
+    "builder_preview__physBlk": "gameData/units/structures/ammo_box_phys.blk",
+    "builder_preview__soundName": "ground/effects/construction_set",
+    "simpleObject__model_res_list": {},
+    "simpleObject__resNameList:list<t>": {
+      "primary": "ammunition_box_construction_120x55x30_dynamic",
+      "secondary": "ammunition_box_construction_99x50x27_dynamic",
+      "special": "ammunition_box_construction_99x50x27_dynamic"
+    },
+    "simpleObject__offsets:list<p3>": {
+      "primary": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "secondary": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "special": [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
+    "simpleObject__visibleList:list<b>": {
+      "primary": false,
+      "secondary": false,
+      "special": false
+    },
+    "buildingTemplates:list<t>": {
+      "primary": "ammo_box_primary",
+      "secondary": "ammo_box_secondary",
+      "special": "ammo_box_special"
+    },
+    "builder_preview__collObj:CollisionObject": {},
+    "builder_preview__collRes:CollisionResource": {},
+    "builder_preview__soundEvent:SoundEvent": {
+      "_tags": "sound"
+    },
+    "builder_preview__triggerGrMask:u8": {
+      "value": 0
+    }
+  },
+  "ammo_box": {
+    "_use": [
+      "replicating",
+      "rendinst_owned"
+    ],
+    "ammo_box__triggerGroupNo": 0,
+    "ammo_box__bulletCount": 0,
+    "ammo_box__rearmRadius": 10.0,
+    "ri_extra__destructable": true,
+    "ri_extra__allyDontDamage": true,
+    "ammo_box__owner:eid": {}
+  },
+  "ammo_box_primary": {
+    "_use": "ammo_box",
+    "ri_extra__name": "ammunition_box_construction_120x55x30_static",
+    "ammo_box__triggerGroupNo": 0
+  },
+  "ammo_box_secondary": {
+    "_use": "ammo_box",
+    "ri_extra__name": "ammunition_box_construction_99x50x27_static",
+    "ammo_box__triggerGroupNo": 1
+  },
+  "ammo_box_special": {
+    "_use": "ammo_box",
+    "ri_extra__name": "ammunition_box_construction_99x50x27_static",
+    "ammo_box__triggerGroupNo": 4
   }
 }

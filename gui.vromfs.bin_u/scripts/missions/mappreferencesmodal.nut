@@ -146,7 +146,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     return loc("ui/parentheses", {
       text = "".concat(this.counters[typeName].curCounter, loc("ui/slash"),
-        this.counters[typeName].maxCounte, maxCountertextWithPremium)
+        this.counters[typeName].maxCounter, maxCountertextWithPremium)
     })
   }
 

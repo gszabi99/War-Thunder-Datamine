@@ -16,7 +16,7 @@
     1.0
   ],
   "canReloadNonGuns": true,
-  "useSimpleDeathConditionsAndEffects": true,
+  "useSimpleDeathConditionsAndEffects": false,
   "subclass": "heavyVehicle",
   "moveType": "vehicle",
   "maxFwdSpeed": 60.0,
@@ -30,7 +30,7 @@
   "groundNormSmoothViscosity": 0.1,
   "minDistBetween": 10.0,
   "expClass": "exp_zero",
-  "mass": 45000.0,
+  "mass": 60000.0,
   "bulletHitFx": "ground_model_hit",
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
@@ -464,57 +464,63 @@
   "class_tags": {},
   "VehiclePhys": {
     "Mass": {
-      "Empty": 45000.0,
-      "Fuel": 190.0,
-      "TakeOff": 30000.0,
+      "Empty": 60000.0,
+      "Fuel": 0.0,
+      "TakeOff": 60000.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        5.0
+        10.0,
+        15.0,
+        50.0
       ],
       "CenterOfGravity": [
-        -0.1,
-        1.0,
+        0.0,
+        0.2,
         0.0
       ],
       "CenterOfGravityClampY": [
         0.0,
         1.0
       ],
-      "AdvancedMass": true,
-      "trackMass": 40.0,
+      "AdvancedMass": false,
+      "trackMass": 1000.0,
       "engineInertialMass": 400.0
     },
     "tracks": {
       "animationMultiplier": 0.5,
       "height": 0.0,
       "width": 0.05,
-      "trackPhysMat": "wheel"
+      "trackPhysMat": "wheel",
+      "fricFrontal": [
+        1.0,
+        0.9
+      ],
+      "fricSideRot": [
+        10.0,
+        0.0,
+        10.0,
+        0.05
+      ]
     },
     "collisionProps": {
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 12000.0,
+      "horsePowers": 100.0,
       "maxRPM": 2500.0,
       "minRPM": 900.0,
       "rpmTau": 1.9
     },
     "mechanics": {
-      "maxBrakeForce": 31000.0,
+      "maxBrakeForce": 10000.0,
       "driveGearRadius": 0.4,
       "mainGearRatio": 6.6,
       "sideGearRatio": 0.99,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -6.0,
+          -1.0,
           0.0,
-          6.06,
-          3.5,
-          1.8,
-          1.0,
-          0.799
+          1.0
         ]
       }
     },
@@ -537,8 +543,6 @@
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
       "steeringDeflection": {
-        "wheel_l_01": 35.0,
-        "wheel_r_01": 35.0,
         "steeringTau": 1.0
       },
       "wheelsDamageWeight": {
@@ -554,24 +558,10 @@
         "wheel_l_drive": 0.25
       },
       "driven": {
-        "wheel_l_drive": true,
-        "wheel_r_drive": true,
         "wheel_l_01": true,
         "wheel_r_01": true,
         "wheel_l_02": true,
         "wheel_r_02": true
-      }
-    },
-    "movableSuspension": {
-      "speed": 0.05,
-      "maxSpeedForMove": 0.1,
-      "vehicleSpeedLimitWhenMovedMult": 0.0,
-      "restStateEps": 0.001,
-      "pitch": {
-        "wheel_l_01": {},
-        "wheel_r_01": {},
-        "wheel_l_02": {},
-        "wheel_r_02": {}
       }
     }
   },

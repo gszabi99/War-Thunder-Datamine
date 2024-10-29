@@ -1,5 +1,5 @@
 {
-  "model": "av_8a",
+  "model": "av_8s",
   "fmFile": "fm/av_8s.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
@@ -2200,10 +2200,6 @@
         "blk": "gameData/FlightModels/weaponPresets/av_8s_thailand_default.blk"
       },
       {
-        "name": "av_8s_thailand_aim9",
-        "blk": "gameData/FlightModels/weaponPresets/av_8s_thailand_aim9.blk"
-      },
-      {
         "name": "av_8s_thailand_rocket_aero_6a",
         "blk": "gameData/FlightModels/weaponPresets/av_8s_thailand_rocket_aero_6a.blk"
       },
@@ -2332,7 +2328,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "aim9l",
+            "name": "aim9g",
             "ShowNodes": {
               "node": [
                 "pylon_e_l",
@@ -2344,7 +2340,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
               "emitter": "aim_9_001",
               "bullets": 1
             }
@@ -2978,7 +2974,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "aim9l",
+            "name": "aim9g",
             "ShowNodes": {
               "node": [
                 "pylon_e_r",
@@ -2990,7 +2986,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9g_sidewinder.blk",
               "emitter": "aim_9_002",
               "bullets": 1
             }
@@ -3366,23 +3362,21 @@
       "tier": 1
     }
   },
-  "default_skin": {
-    "name": "default",
+  "user_skin": {
+    "name": "av_8s",
     "replace_tex": [
       {
-        "from": "av_8a_c*",
-        "to": "av_8s_thai_grey_c*"
+        "from": "av_8s_c*"
       },
       {
-        "from": "av_8a_n*",
-        "to": "av_8s_thai_grey_n*"
+        "from": "av_8s_n*"
       }
     ]
   },
   "default_skin_tomoe": {
     "replace_tex": {
-      "from": "av_8a_c*",
-      "to": "av_8s_thai_grey*"
+      "from": "av_8s_c*",
+      "to": "av_8s_c*"
     }
   },
   "bailout": {

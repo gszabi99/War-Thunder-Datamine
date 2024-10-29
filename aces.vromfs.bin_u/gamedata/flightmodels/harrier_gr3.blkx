@@ -2148,8 +2148,12 @@
       "band8": true,
       "band9": true,
       "detectTracking": true,
+      "targetTracking": true,
+      "trackedTargetsMax": 1,
       "targetHoldTime": 1.0,
       "mandatoryRecognition": true,
+      "priorityTargetSelection": true,
+      "lampsTimeOut": 1.0,
       "receivers": {
         "receiver": [
           {
@@ -2191,11 +2195,13 @@
               5,
               6,
               7
-            ]
+            ],
+            "priority": 6
           },
           {
             "name": "I",
-            "band": 8
+            "band": 8,
+            "priority": 4
           },
           {
             "name": "I+CW",
@@ -2203,6 +2209,7 @@
             "track": false,
             "launch": true,
             "detectLaunch": true,
+            "priority": 0,
             "type": [
               "AN/APQ-51",
               "AN/APQ-72",
@@ -2216,7 +2223,6 @@
           },
           {
             "name": "I+HPRF",
-            "detectLaunch": true,
             "type": [
               "AN/APG-59",
               "AN/AWG-9",
@@ -2228,7 +2234,6 @@
           {
             "name": "I+MPRF",
             "block": true,
-            "detectLaunch": true,
             "type": [
               "AN/APG-66",
               "AN/APG-68",
@@ -2267,6 +2272,7 @@
             "track": false,
             "launch": true,
             "detectLaunch": true,
+            "priority": 0,
             "type": [
               "N001",
               "N019",
@@ -2278,8 +2284,8 @@
           },
           {
             "name": "J",
-            "detectLaunch": true,
-            "band": 9
+            "band": 9,
+            "priority": 3
           },
           {
             "name": "J+CW",
@@ -2287,11 +2293,13 @@
             "search": false,
             "track": false,
             "launch": true,
+            "priority": 2,
             "type": "Sapphire-23"
           },
           {
             "name": "E-H+TWS",
-            "detectLaunch": true
+            "detectLaunch": true,
+            "priority": 7
           },
           {
             "name": "I+TWS",
@@ -2299,6 +2307,7 @@
             "search": false,
             "track": true,
             "launch": true,
+            "priority": 5,
             "type": [
               "4R-90-Yatagan",
               "1RL34"
@@ -2306,9 +2315,11 @@
           },
           {
             "name": "J+TWS",
+            "detectLaunch": true,
             "search": false,
             "track": true,
             "launch": true,
+            "priority": 8,
             "type": "1RL33"
           }
         ]
@@ -2372,7 +2383,7 @@
               "I",
               "J"
             ],
-            "lamp": 4
+            "priorityLamp": 4
           },
           {
             "group": [
@@ -2380,7 +2391,7 @@
               "I+TWS",
               "J+TWS"
             ],
-            "lamp": 5
+            "priorityLamp": 5
           },
           {
             "group": [
@@ -2389,14 +2400,14 @@
               "I+CW",
               "J+CW"
             ],
-            "lamp": 6
+            "priorityLamp": 6
           },
           {
             "group": [
               "E-H",
               "E-H+TWS"
             ],
-            "lamp": 7
+            "priorityLamp": 7
           },
           {
             "group": [
@@ -2407,7 +2418,7 @@
               "I+MPRF+HPRF",
               "I+CW"
             ],
-            "lamp": 8
+            "priorityLamp": 8
           },
           {
             "group": [
@@ -2415,7 +2426,7 @@
               "J+TWS",
               "J+CW"
             ],
-            "lamp": 9
+            "priorityLamp": 9
           }
         ]
       },
@@ -2423,19 +2434,19 @@
         "directionLamp": [
           {
             "receiver": 0,
-            "lamp": 0
+            "priorityLamp": 0
           },
           {
             "receiver": 1,
-            "lamp": 1
+            "priorityLamp": 1
           },
           {
             "receiver": 2,
-            "lamp": 2
+            "priorityLamp": 2
           },
           {
             "receiver": 3,
-            "lamp": 3
+            "priorityLamp": 3
           }
         ]
       }

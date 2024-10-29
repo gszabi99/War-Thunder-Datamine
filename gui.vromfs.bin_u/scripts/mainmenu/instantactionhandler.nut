@@ -32,8 +32,9 @@ let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomizati
 let { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
 let { isCountrySlotbarHasUnits, getSelAircraftByCountry, getCurSlotbarUnit,
-  isCountryAllCrewsUnlockedInHangar, getCrewByAir
+  isCountryAllCrewsUnlockedInHangar
 } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { initBackgroundModelHint, placeBackgroundModelHint
 } = require("%scripts/hangar/backgroundModelHint.nut")

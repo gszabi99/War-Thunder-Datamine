@@ -1,4 +1,3 @@
-//-file:plus-string
 from "app" import is_dev_version
 from "%scripts/dagui_natives.nut" import stop_gui_sound, show_highlights, save_profile, get_premium_reward_wp, is_online_available, entitlement_expires_in, start_gui_sound, set_presence_to_player, disable_network, get_session_warpoints, shop_get_premium_account_ent_name, set_char_cb, is_highlights_inited, get_premium_reward_xp, purchase_entitlement_and_get_award
 from "%scripts/dagui_library.nut" import *
@@ -742,9 +741,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.totalTarValues = {}
 
     foreach (currency in [ "exp", "wp" ]) {
-      foreach (suffix in [ "", "Teaser" ])
-        if (!(currency + suffix in this.totalCurValues))
-          this.totalCurValues[currency + suffix] <- 0
+      foreach (suffix in [ "", "Teaser" ]) {
+        let finalName = $"{currency}{suffix}"
+        if (!(finalName in this.totalCurValues))
+          this.totalCurValues[finalName] <- 0
+      }
 
       let totalKey = getCountedResultId(this.totalRow, this.state, currency)
       this.totalCurValues[currency] <- getTblValue(currency, this.totalCurValues, 0)
@@ -817,16 +818,18 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!isWagerHasResult)
       containerObj.tooltip = loc("debriefing/wager_result_will_be_later")
     else if (isWagerEnded) {
-      local endedWagerText = activeWagerData.wagerText
-      endedWagerText += "\n" + loc("items/wager/numWins", {
-        numWins = activeWagerData.wagerNumWins,
-        maxWins = wager.maxWins
-      })
-      endedWagerText += "\n" + loc("items/wager/numFails", {
-        numFails = activeWagerData.wagerNumFails,
-        maxFails = wager.maxFails
-      })
-      containerObj.tooltip = endedWagerText
+      let endedWagerText = [
+        activeWagerData.wagerText,
+        loc("items/wager/numWins", {
+          numWins = activeWagerData.wagerNumWins,
+          maxWins = wager.maxWins
+        }),
+        loc("items/wager/numFails", {
+          numFails = activeWagerData.wagerNumFails,
+          maxFails = wager.maxFails
+        })
+      ]
+      containerObj.tooltip = "\n".join(endedWagerText)
     }
 
     this.handleActiveWagerText(activeWagerData)
@@ -937,7 +940,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     for (local i = 0; i < showLen; i++) {
       let markup = ::trophyReward.getImageByConfig(this.giftItems[i], false)
       this.isAllGiftItemsKnown = this.isAllGiftItemsKnown && markup != ""
-      giftsMarkup += markup
+      giftsMarkup = $"{giftsMarkup}{markup}"
     }
     this.guiScene.replaceContentFromText(obj, giftsMarkup, giftsMarkup.len(), this)
   }
@@ -1066,7 +1069,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     foreach (logObj in filteredLogs) {
       let layer = ::trophyReward.getImageByConfig(logObj, false)
       if (layer != "") {
-        layersData += layer
+        layersData = $"{layersData}{layer}"
         break
       }
     }
@@ -1274,8 +1277,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         let bonusWp  = getTblValue($"{bonusType}Wp",  tblTotal, 0)
         if (!bonusExp && !bonusWp)
           continue
-        bonusesTotal.append(loc(getTblValue(bonusType, bonusNames, "")) + loc("ui/colon") +
-          Cost(bonusWp, 0, bonusExp).tostring())
+        bonusesTotal.append("".concat(loc(getTblValue(bonusType, bonusNames, "")), loc("ui/colon"),
+          Cost(bonusWp, 0, bonusExp).tostring()))
       }
       if (!u.isEmpty(bonusesTotal))
         textArray.append("\n".join(bonusesTotal, true))
@@ -1358,8 +1361,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       config.subType = ps4_activity_feed.MISSION_SUCCESS_AFTER_UPDATE
       customConfig.blkParamName = "MAJOR_UPDATE"
       let ver = split_by_chars(get_game_version_str(), ".")
-      customConfig.version <- ver[0] + "." + ver[1]
-      customConfig.imgSuffix <- "_" + ver[0] + "_" + ver[1]
+      customConfig.version <- $"{ver[0]}.{ver[1]}"
+      customConfig.imgSuffix <- $"_{ver[0]}_{ver[1]}"
       customConfig.shouldForceLogo <- true
     }
 
@@ -1563,7 +1566,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     foreach (ut in unitTypes.types) {
       let unitItem = this.getResearchUnitMarkupData(ut.name)
       if (unitItem) {
-        data += buildUnitSlot(unitItem.id, unitItem.unit, unitItem.params)
+        data = "".concat(data, buildUnitSlot(unitItem.id, unitItem.unit, unitItem.params))
         unitItems.append(unitItem)
       }
     }
@@ -1905,9 +1908,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
             continue
           local extra = ""
           if (source == "booster") {
-            let effect = getTblValue((currency == "exp" ? "xp" : currency) + "Rate", boosterEffects, 0)
+            let effect = boosterEffects?[$"{currency == "exp" ? "xp" : currency}Rate"] ?? 0
             if (effect)
-              extra = colorize("fadedTextColor", loc("ui/parentheses", { text = effect.tointeger().tostring() + "%" }))
+              extra = colorize("fadedTextColor", loc("ui/parentheses", { text = $"{effect.tointeger()}%" }))
           }
           let { text, image } = getViewByType(val, currency)
           currencySourcesView.append((sourcesConfig?[source] ?? {}).__merge({
@@ -2011,7 +2014,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let btnObj = obj.findObject("btn_buy_premium_award")
     if (checkObj(btnObj))
-      btnObj.findObject("label").setValue(loc("mainmenu/earn") + "\n" + curAwardText)
+      btnObj.findObject("label").setValue($"{loc("mainmenu/earn")}\n{curAwardText}")
 
     this.updateMyStatsTopBarArrangement()
   }
@@ -2330,7 +2333,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let hasPlace = place != 0
 
     let label = hasPlace && this.isTeamplay ? loc("debriefing/placeInMyTeam")
-      : hasPlace && !this.isTeamplay ? (loc("mainmenu/btnMyPlace") + loc("ui/colon"))
+      : hasPlace && !this.isTeamplay ? "".concat(loc("mainmenu/btnMyPlace"), loc("ui/colon"))
       : !isDebriefingResultFull() ? loc("debriefing/preliminaryResults")
       : loc(this.debriefingResult.isSucceed ? "debriefing/victory" : "debriefing/defeat")
 
@@ -2407,7 +2410,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       if (checkObj(obj)) {
         local data = ""
         foreach (f in filters)
-          data += format("RadioButton { text:t='#%s'; style:t='color:@white'; RadioButtonImg{} }\n", f.title)
+          data = "".concat(data, "RadioButton { text:t='#", f.title, "'; style:t='color:@white'; RadioButtonImg{} }\n")
         this.guiScene.replaceContentFromText(obj, data, data.len(), this)
         obj.setValue(filterIdx)
       }
@@ -3206,7 +3209,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       local hasAnyReward = false
       foreach (source in [ "Total", "Mission" ])
         foreach (currency in [ "exp", "wp", "gold" ])
-          if (getTblValue(currency + source, this.debriefingResult.exp, 0) > 0)
+          if ((this.debriefingResult.exp?[$"{currency}{source}"] ?? 0) > 0)
             hasAnyReward = true
 
       if (!hasAnyReward) {

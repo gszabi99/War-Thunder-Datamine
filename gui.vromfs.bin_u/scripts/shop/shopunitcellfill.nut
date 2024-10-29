@@ -7,7 +7,7 @@ let { Cost } = require("%scripts/money.nut")
 let { format, split_by_chars } = require("string")
 let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getBitStatus, canBuyNotResearched, isUnitElite } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, canBuyNotResearched, isUnitElite, isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
 let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -22,7 +22,6 @@ let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGroup, canResearchUn
   bit_unit_status, canBuyUnit, getUnitReqExp, getUnitExp, isUnitInResearch, isUnitBroken
 } = require("%scripts/unit/unitInfo.nut")
 let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
-let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 let { getBonusImage } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")

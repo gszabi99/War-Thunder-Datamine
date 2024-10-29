@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import is_flight_menu_disabled, get_is_in_flight_menu, pause_game, close_ingame_gui, is_game_paused
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
@@ -290,7 +289,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = shortcutsAxisListModule[id]
     {
       if ("symbol" in item)
-        this.modifierSymbols[id] <- colorize("axisSymbolColor", loc(item.symbol) + loc("ui/colon"))
+        this.modifierSymbols[id] <- colorize("axisSymbolColor", $"{loc(item.symbol)}{loc("ui/colon")}")
       return this.modifierSymbols[id]
     }
 
@@ -342,12 +341,11 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         for (local sc = 0; sc < shortcuts.len(); sc++) {
           let text = this.getShortcutText(shortcuts[sc], btnList, true)
           if (text != "" && (!isAxis || axisModifyerButtons[sc] != "")) //do not show axis text (axis buttons only)
-            scText += ((scText != "") ? ";  " : "") +
-            (isAxis ? this.getModifierSymbol(axisModifyerButtons[sc]) : "") +
-            text;
+            scText = "".concat(scText, scText != "" ? ";  " : "",
+              isAxis ? this.getModifierSymbol(axisModifyerButtons[sc]) : "", text)
         }
 
-        scText = "".concat(loc((isAxis ? "controls/" : "hotkeys/") + name), loc("ui/colon"), scText)
+        scText = "".concat(loc($"{isAxis ? "controls/" : "hotkeys/"}{name}"), loc("ui/colon"), scText)
 
         foreach (btnName, isMain in btnList)
           if (btnName in tipTexts) {
@@ -417,15 +415,15 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getShortcutText(shortcut, btnList, color = true) {
-    local scText = ""
+    let scText = []
     for (local i = 0; i < shortcut.len(); i++) {
       let sc = shortcut[i]
       if (!sc)
         continue
 
-      local text = ""
+      let textArr = []
       for (local k = 0; k < sc.dev.len(); k++) {
-        text += ((k != 0) ? " + " : "") + getLocalizedControlName(this.preset, sc.dev[k], sc.btn[k])
+        textArr.append(getLocalizedControlName(this.preset, sc.dev[k], sc.btn[k]))
         local btnName = this.preset.getButtonName(sc.dev[k], sc.btn[k])
         if (btnName == "MWUp" || btnName == "MWDown")
           btnName = "MMB"
@@ -434,10 +432,12 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         else
           btnList[btnName] <- (i == 0)
       }
-      if (text != "")
-        scText += ((scText != "") ? ", " : "") + (color ? ($"<color=@hotkeyColor>{text}</color>") : text)
+      if (textArr.len() > 0) {
+        let text = " + ".join(textArr)
+        scText.append(color ? $"<color=@hotkeyColor>{text}</color>" : text)
+      }
     }
-    return scText
+    return ", ".join(scText)
   }
 
   function initGamepadPage() {
@@ -541,11 +541,11 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
               shText = loc(customLocalization[actionId])
 
             if (titlesCount < maxActionsInTitle) {
-              title += (title.len() ? (loc("ui/semicolon") + "\n") : "") + shText
+              title = "".concat(title, title.len() ? $"{loc("ui/semicolon")}\n" : "", shText)
               titlesCount++
             }
 
-            tooltip += (tooltip.len() ? "\n" : "") + bullet + shText
+            tooltip = "".concat(tooltip, tooltip.len() ? "\n" : "", bullet, shText)
           }
         }
         title = title.len() ? title : "---"
@@ -572,13 +572,13 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         local tooltipX = ""
         for (local a = 0; a < actionsX.len(); a++)
-          tooltipX += (tooltipX.len() ? "\n" : "") + bullet + loc("controls/" + actionsX[a])
+          tooltipX = "".concat(tooltipX, tooltipX.len() ? "\n" : "", bullet, loc($"controls/{actionsX[a]}"))
         tooltipX = tooltipX.len() ? tooltipX : loc("controls/unmapped")
         tooltipX = "".concat(loc("controls/help/mouse_aim_x"), loc("ui/colon"), "\n", tooltipX)
 
         local tooltipY = ""
         for (local a = 0; a < actionsY.len(); a++)
-          tooltipY += (tooltipY.len() ? "\n" : "") + bullet + loc("controls/" + actionsY[a])
+          tooltipY = "".concat(tooltipY, tooltipY.len() ? "\n" : "", bullet, loc($"controls/{actionsY[a]}"))
         tooltipY = tooltipY.len() ? tooltipY : loc("controls/unmapped")
         tooltipY = "".concat(loc("controls/help/mouse_aim_y"), loc("ui/colon"), "\n", tooltipY)
 
@@ -691,11 +691,13 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
 
       if (altitudeBottom && altitudeTop) {
-        airCaptureZoneDescTextObj.setValue(loc("hints/tutorial_newbie/air_domination/air_capture_zone") + " " +
+        airCaptureZoneDescTextObj.setValue(" ".concat(
+          loc("hints/tutorial_newbie/air_domination/air_capture_zone"),
           loc("hints/tutorial_newbie/air_domination/air_capture_zone/altitudes", {
-          altitudeBottom = colorize("userlogColoredText", altitudeBottom),
-          altitudeTop = colorize("userlogColoredText", altitudeTop)
-          }))
+            altitudeBottom = colorize("userlogColoredText", altitudeBottom),
+            altitudeTop = colorize("userlogColoredText", altitudeTop)
+          })
+        ))
       }
     }
   }

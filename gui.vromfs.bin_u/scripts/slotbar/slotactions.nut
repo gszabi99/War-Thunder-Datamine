@@ -1,14 +1,13 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 
-let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let { isUnitGift, isUnitGroup, canResearchUnit, canBuyUnit, getUnitExp, isUnitMaxExp, isUnitInResearch, isUnitBroken
 } = require("%scripts/unit/unitInfo.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 
 let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0
@@ -55,7 +54,7 @@ function getSlotActionFunctionName(unit, params) {
 
   if (canFlushSquadronExp && (isInResearch || params.isSquadronResearchMode))
     return "mainmenu/btnInvestSquadronExp"
-  if (isInResearch && unitStatus.canBuyNotResearched(unit))
+  if (isInResearch && canBuyNotResearched(unit))
     return "mainmenu/btnOrder"
   if (!::isUnitUsable(unit) && !isUnitGift(unit) && (!isSquadronVehicle || !isInResearch))
     return (::isUnitResearched(unit) || isUnitMaxExp(unit)) ? "mainmenu/btnOrder" : "mainmenu/btnResearch"
@@ -94,7 +93,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
 
   if (canFlushSquadronExp && isInResearch)
     return unitActions.flushSquadronExp(unit)
-  if (isInResearch && unitStatus.canBuyNotResearched(unit)
+  if (isInResearch && canBuyNotResearched(unit)
     && isSquadronVehicle && ::is_in_clan())
     return unitActions.buy(unit, "slot_action_squad")
   if (unit.isCrossPromo)

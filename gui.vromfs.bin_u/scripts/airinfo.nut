@@ -22,7 +22,7 @@ let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText, getUnitClassCol
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { canBuyNotResearched, getBitStatus } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, getBitStatus, isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -63,7 +63,8 @@ let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewById, getCrewByAir, isUnitInSlotbar, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { hideBonus } = require("%scripts/bonusModule.nut")

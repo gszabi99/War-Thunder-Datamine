@@ -18,15 +18,15 @@
   "band8": true,
   "detectTracking": true,
   "targetTracking": false,
-  "searchRangeFinder": false,
-  "trackRangeFinder": true,
-  "launchRangeFinder": true,
+  "targetRangeFinder": true,
   "targetRange": [
     5000.0,
     50000.0
   ],
   "friendFoeId": true,
+  "targetHoldTime": 1.0,
   "mandatoryRecognition": true,
+  "priorityTargetSelection": true,
   "receivers": {
     "receiver": [
       {
@@ -163,6 +163,7 @@
     "group": [
       {
         "name": "AI pulse",
+        "priority": 3,
         "type": [
           "AN/APS-6",
           "AN/APS-19",
@@ -231,6 +232,7 @@
         "track": true,
         "launch": false,
         "detectLaunch": true,
+        "priority": 3,
         "type": [
           "AN/APQ-51",
           "AN/APQ-72",
@@ -245,6 +247,7 @@
       {
         "name": "AI PD",
         "detectLaunch": true,
+        "priority": 2,
         "type": [
           "AN/APG-66",
           "AN/APG-68",
@@ -269,6 +272,7 @@
       },
       {
         "name": "A/D",
+        "priority": 1,
         "type": [
           "1RL34",
           "AN/VPS-2",
@@ -285,6 +289,7 @@
         "track": false,
         "launch": true,
         "detectLaunch": true,
+        "priority": 0,
         "type": [
           "AN/APQ-51",
           "AN/APQ-72",

@@ -485,6 +485,8 @@ let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
 let isRTVisible = @() hasFeature("optionBVH") || disable_network()
+let isRTAOVisible = @() (hasFeature("optionBVH") && hasFeature("optionBVH_AO")) || disable_network()
+let isRTSMVisible = @() (hasFeature("optionBVH") && hasFeature("optionBVH_SM")) || disable_network()
 function getListOption(id, desc, cb, needCreateList = true) {
   let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
   let customItems = ("items" in desc) ? desc.items : null
@@ -1171,10 +1173,12 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/panoramaQuality/%s"
     availableInfoImgVals = [7, 10, 13, 16]
   }
-  fxDensityMul = { widgetType = "slider" def = 100 min = 20 max = 100 blk = "graphics/fxDensityMul" restart = false
+  fxDensityMul = { widgetType = "slider" def = 100 min = 20 max = 100 blk = "graphics/fxDensityMul" restart = true
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0)}
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
+    infoImgPattern = "#ui/images/settings/fxDensity/%s"
+    availableInfoImgVals = [20, 40, 60, 80, 100]
   }
   physicsQuality = { widgetType = "slider" def = 3 min = 0 max = 5 blk = "graphics/physicsQuality" restart = false
   }
@@ -1220,10 +1224,13 @@ mSettings = {
   }
   ssrQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssrQuality" restart = false
     onChanged = "ssrQualityClick"
+    infoImgPattern = "#ui/images/settings/ssr/%s"
+    availableInfoImgVals = [0, 1, 2]
   }
   shadows = { widgetType = "checkbox" def = true blk = "render/shadows" restart = false
   }
   advancedShore = { widgetType = "checkbox" def = false blk = "graphics/advancedShore" restart = false
+    infoImgPattern = "#ui/images/settings/advancedShores/%s"
   }
   mirrorQuality = { widgetType = "slider" def = 5 min = 0 max = 10 blk = "graphics/mirrorQuality" restart = false
     infoImgPattern = "#ui/images/settings/mirrorQuality/%s"
@@ -1236,13 +1243,16 @@ mSettings = {
     enabled = @() !getGuiValue("compatibilityMode")
   }
   haze = { widgetType = "checkbox" def = false blk = "render/haze" restart = false
+    infoImgPattern = "#ui/images/settings/haze/%s"
   }
   lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 4096) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, (val ? 8192 : 4096)) }
     configValueToGuiValue = @(val) val == 8192 ? true : false
+    infoImgPattern = "#ui/images/settings/farTerrain/%s"
   }
   lenseFlares = { widgetType = "checkbox" def = false blk = "graphics/lenseFlares" restart = false
+    infoImgPattern = "#ui/images/settings/lensFlare/%s"
   }
   jpegShots = { widgetType = "checkbox" def = true blk = "debug/screenshotAsJpeg" restart = false }
   hiResShots = { widgetType = "checkbox" def = false blk = "debug/screenshotHiRes" restart = false enabled = @() getGuiValue("ssaa") == "4X" }
@@ -1270,6 +1280,8 @@ mSettings = {
   }
   contactShadowsQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "graphics/contactShadowsQuality" restart = false
     onChanged = "contactShadowsQualityClick"
+    infoImgPattern = "#ui/images/settings/contactShadows/%s"
+    availableInfoImgVals = [0, 1, 2]
   }
   riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
   }
@@ -1282,12 +1294,12 @@ mSettings = {
   }
   rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false
     values = ["off", "low", "medium", "high"] enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    onChanged = "rtOptionChanged" isVisible = @() isRTAOVisible()
   }
   rtsm = { widgetType = "list" def = "off" blk = "graphics/enableRTSM" restart = false
     values = [ "off", "sun", "sun_and_dynamic" ]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    onChanged = "rtOptionChanged" isVisible = @() isRTSMVisible()
   }
   rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false
     values = ["off", "low", "medium", "high"]

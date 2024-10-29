@@ -2,7 +2,9 @@ from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status
 from "%scripts/dagui_library.nut" import *
 let { canResearchUnit, bit_unit_status, canBuyUnit, getUnitReqExp } = require("%scripts/unit/unitInfo.nut")
 let { isInFlight } = require("gameplayBinding")
-let { isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
+
+let isUnitInSlotbar = @(unit) getCrewByAir(unit) != null
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && canResearchUnit(unit)
@@ -82,4 +84,5 @@ return {
   getBitStatus
   isUnitEliteByStatus
   isUnitElite
+  isUnitInSlotbar
 }

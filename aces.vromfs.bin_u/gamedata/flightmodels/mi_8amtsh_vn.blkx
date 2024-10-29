@@ -1700,7 +1700,7 @@
         "node": "optic2_gun"
       },
       {
-        "blk": "gameData/sensors/su_spo-150.blk"
+        "blk": "gameData/sensors/su_spo_150_28m.blk"
       },
       {
         "blk": "gameData/sensors/su_l-140.blk"
@@ -1757,16 +1757,12 @@
         "blk": "gameData/flightModels/weaponPresets/mi_8amtsh_vn_upk_23_250.blk"
       },
       {
-        "name": "mi_8amtsh_vn_guv_8700",
-        "blk": "gameData/flightModels/weaponPresets/mi_8amtsh_vn_guv_8700.blk"
+        "name": "mi_8amtsh_vn_9m336",
+        "blk": "gameData/flightModels/weaponPresets/mi_8amtsh_vn_9m336.blk"
       },
       {
-        "name": "mi_8amtsh_vn_9m39",
-        "blk": "gameData/flightModels/weaponPresets/mi_8amtsh_vn_9m39.blk"
-      },
-      {
-        "name": "mi_8amtsh_vn_9m39_x2",
-        "blk": "gameData/flightModels/weaponPresets/mi_8amtsh_vn_9m39_x2.blk"
+        "name": "mi_8amtsh_vn_9m336_x2",
+        "blk": "gameData/flightModels/weaponPresets/mi_8amtsh_vn_9m336_x2.blk"
       }
     ]
   },
@@ -1952,7 +1948,7 @@
           {
             "iconType": "atgm_type2_x2_late",
             "name": "9m120_x2",
-            "remotelyGuidedWeaponsMax": 1,
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/mi_8_9m120m_ataka_x2.blk",
@@ -1965,7 +1961,7 @@
             "iconType": "atgm_type1_x4_late",
             "name": "9m120_x4",
             "reqModification": "mi_35_9M120_4",
-            "remotelyGuidedWeaponsMax": 1,
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/mi_8_9m120m_ataka_x4.blk",
@@ -2023,109 +2019,28 @@
             }
           },
           {
-            "iconType": "doublebarreled_box",
-            "name": "upk250",
-            "reqModification": "il_28sh_upk23_gunpod",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_l_upor",
-                "upk_23_250_b001"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover3_dm",
-                "cannon1_dm"
-              ]
-            },
+            "iconType": "missile_air_to_air_group",
+            "name": "9m336",
+            "reqModification": "mi_8_9M336",
             "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "bullets": 250,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/amtsh_9m336_2x_verba.blk",
+              "emitter": "9m39_tpk_001",
               "external": true,
-              "dm": "cannon1_dm"
+              "separate": true
             }
           },
           {
-            "iconType": "multibarrel_guv_gun",
-            "name": "guv_8700_slot1",
-            "reqModification": "su_guv_8700",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_l_upor",
-                "guv_8700_gunpod_001",
-                "guv_8700_gunpod_001_mgun1",
-                "guv_8700_gunpod_001_mgun2",
-                "guv_8700_gunpod_001_mgun3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover9_dm",
-                "mgun1_dm",
-                "mgun2_dm",
-                "mgun3_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare15",
-                "flash": "flare15",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun1_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection1"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunYaK_B_guv.blk",
-                "emitter": "flare14",
-                "flash": "flare14",
-                "bullets": 750,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 2,
-                "external": true,
-                "dm": "mgun2_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection1"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare16",
-                "flash": "flare16",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun3_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection1"
-              }
-            ],
-            "BannedWeaponPreset": [
-              {
-                "slot": 2,
-                "preset": "guv_8700_slot2"
-              },
-              {
-                "slot": 3,
-                "preset": "guv_8700_slot3"
-              }
-            ]
+            "iconType": "missile_air_to_air_group_x4",
+            "name": "9m336_x2",
+            "reqModification": "mi_8_9M336",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/amtsh_9m336_4x_verba.blk",
+              "emitter": "9m39_tpk_001",
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2245,30 +2160,6 @@
             }
           },
           {
-            "iconType": "missile_air_to_air_group",
-            "name": "9m39_x2",
-            "reqModification": "mi_35_9M39",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/amtsh_9m39_2x_igla.blk",
-              "emitter": "9m39_tpk_002",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_group_x4",
-            "name": "9m39",
-            "reqModification": "mi_35_9M39",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/amtsh_9m39_4x_igla.blk",
-              "emitter": "9m39_tpk_002",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "doublebarreled_box",
             "name": "upk250",
             "reqModification": "il_28sh_upk23_gunpod",
@@ -2296,82 +2187,6 @@
               "external": true,
               "dm": "cannon2_dm"
             }
-          },
-          {
-            "iconType": "multibarrel_guv_gun",
-            "name": "guv_8700_slot2",
-            "reqModification": "su_guv_8700",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_l1_upor",
-                "guv_8700_gunpod_002",
-                "guv_8700_gunpod_002_mgun1",
-                "guv_8700_gunpod_002_mgun2",
-                "guv_8700_gunpod_002_mgun3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover10_dm",
-                "mgun4_dm",
-                "mgun5_dm",
-                "mgun6_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare18",
-                "flash": "flare18",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun4_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection2"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunYaK_B_guv.blk",
-                "emitter": "flare17",
-                "flash": "flare17",
-                "bullets": 750,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 2,
-                "external": true,
-                "dm": "mgun5_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection2"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare19",
-                "flash": "flare19",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun6_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection2"
-              }
-            ],
-            "BannedWeaponPreset": [
-              {
-                "slot": 1,
-                "preset": "guv_8700_slot1"
-              },
-              {
-                "slot": 3,
-                "preset": "guv_8700_slot3"
-              }
-            ]
           }
         ]
       },
@@ -2380,20 +2195,6 @@
         "tier": 7,
         "order": 5,
         "WeaponPreset": [
-          {
-            "iconType": "nar_ap_large",
-            "name": "b8m1",
-            "ShowNodes": {
-              "node": "su_bd3_57krv_l2_upor"
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/b8m_20.blk",
-              "emitter": "b8_v20_003",
-              "external": true,
-              "machLimit": 1.01
-            }
-          },
           {
             "iconType": "bombs_small",
             "name": "fab100",
@@ -2441,111 +2242,6 @@
               "external": true,
               "separate": true
             }
-          },
-          {
-            "iconType": "doublebarreled_box",
-            "name": "upk250",
-            "reqModification": "il_28sh_upk23_gunpod",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_l2_upor",
-                "upk_23_250_b003"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover5_dm",
-                "cannon3_dm"
-              ]
-            },
-            "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
-              "emitter": "flare6",
-              "flash": "flare6",
-              "bullets": 250,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
-              "external": true,
-              "dm": "cannon3_dm"
-            }
-          },
-          {
-            "iconType": "multibarrel_guv_gun",
-            "name": "guv_8700_slot3",
-            "reqModification": "su_guv_8700",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_l2_upor",
-                "guv_8700_gunpod_003",
-                "guv_8700_gunpod_003_mgun1",
-                "guv_8700_gunpod_003_mgun2",
-                "guv_8700_gunpod_003_mgun3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover11_dm",
-                "mgun7_dm",
-                "mgun8_dm",
-                "mgun9_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare21",
-                "flash": "flare21",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun7_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection3"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunYaK_B_guv.blk",
-                "emitter": "flare20",
-                "flash": "flare20",
-                "bullets": 750,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 2,
-                "external": true,
-                "dm": "mgun8_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection3"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare22",
-                "flash": "flare22",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun9_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection3"
-              }
-            ],
-            "BannedWeaponPreset": [
-              {
-                "slot": 1,
-                "preset": "guv_8700_slot1"
-              },
-              {
-                "slot": 2,
-                "preset": "guv_8700_slot2"
-              }
-            ]
           }
         ]
       },
@@ -2554,20 +2250,6 @@
         "tier": 5,
         "order": 6,
         "WeaponPreset": [
-          {
-            "iconType": "nar_ap_large",
-            "name": "b8m1",
-            "ShowNodes": {
-              "node": "su_bd3_57krv_r2_upor"
-            },
-            "Weapon": {
-              "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/b8m_20.blk",
-              "emitter": "b8_v20_004",
-              "external": true,
-              "machLimit": 1.01
-            }
-          },
           {
             "iconType": "bombs_small",
             "name": "fab100",
@@ -2615,111 +2297,6 @@
               "external": true,
               "separate": true
             }
-          },
-          {
-            "iconType": "doublebarreled_box",
-            "name": "upk250",
-            "reqModification": "il_28sh_upk23_gunpod",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_r2_upor",
-                "upk_23_250_b004"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover6_dm",
-                "cannon4_dm"
-              ]
-            },
-            "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
-              "emitter": "flare8",
-              "flash": "flare8",
-              "bullets": 250,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
-              "external": true,
-              "dm": "cannon4_dm"
-            }
-          },
-          {
-            "iconType": "multibarrel_guv_gun",
-            "name": "guv_8700_slot4",
-            "reqModification": "su_guv_8700",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_r2_upor",
-                "guv_8700_gunpod_004",
-                "guv_8700_gunpod_004_mgun1",
-                "guv_8700_gunpod_004_mgun2",
-                "guv_8700_gunpod_004_mgun3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover12_dm",
-                "mgun10_dm",
-                "mgun11_dm",
-                "mgun12_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare24",
-                "flash": "flare24",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun10_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection4"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunYaK_B_guv.blk",
-                "emitter": "flare23",
-                "flash": "flare23",
-                "bullets": 750,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 2,
-                "external": true,
-                "dm": "mgun11_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection4"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare25",
-                "flash": "flare25",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun12_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection4"
-              }
-            ],
-            "BannedWeaponPreset": [
-              {
-                "slot": 5,
-                "preset": "guv_8700_slot5"
-              },
-              {
-                "slot": 6,
-                "preset": "guv_8700_slot6"
-              }
-            ]
           }
         ]
       },
@@ -2839,30 +2416,6 @@
             }
           },
           {
-            "iconType": "missile_air_to_air_group",
-            "name": "9m39_x2",
-            "reqModification": "mi_35_9M39",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/amtsh_9m39_2x_igla.blk",
-              "emitter": "9m39_tpk_005",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_group_x4",
-            "name": "9m39",
-            "reqModification": "mi_35_9M39",
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/amtsh_9m39_4x_igla.blk",
-              "emitter": "9m39_tpk_005",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "doublebarreled_box",
             "name": "upk250",
             "reqModification": "il_28sh_upk23_gunpod",
@@ -2890,82 +2443,6 @@
               "external": true,
               "dm": "cannon5_dm"
             }
-          },
-          {
-            "iconType": "multibarrel_guv_gun",
-            "name": "guv_8700_slot5",
-            "reqModification": "su_guv_8700",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_r1_upor",
-                "guv_8700_gunpod_005",
-                "guv_8700_gunpod_005_mgun1",
-                "guv_8700_gunpod_005_mgun2",
-                "guv_8700_gunpod_005_mgun3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover13_dm",
-                "mgun13_dm",
-                "mgun14_dm",
-                "mgun15_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare27",
-                "flash": "flare27",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun13_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection5"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunYaK_B_guv.blk",
-                "emitter": "flare26",
-                "flash": "flare26",
-                "bullets": 750,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 2,
-                "external": true,
-                "dm": "mgun14_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection5"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare28",
-                "flash": "flare28",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun15_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection5"
-              }
-            ],
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "guv_8700_slot4"
-              },
-              {
-                "slot": 6,
-                "preset": "guv_8700_slot6"
-              }
-            ]
           }
         ]
       },
@@ -2991,7 +2468,7 @@
           {
             "iconType": "atgm_type2_x2_late",
             "name": "9m120_x2",
-            "remotelyGuidedWeaponsMax": 1,
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/mi_8_9m120m_ataka_x2.blk",
@@ -3004,7 +2481,7 @@
             "iconType": "atgm_type1_x4_late",
             "name": "9m120_x4",
             "reqModification": "mi_35_9M120_4",
-            "remotelyGuidedWeaponsMax": 1,
+            "maxMissileSalvoTimeInterval": 3.0,
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/mi_8_9m120m_ataka_x4.blk",
@@ -3060,111 +2537,6 @@
               "external": true,
               "separate": true
             }
-          },
-          {
-            "iconType": "doublebarreled_box",
-            "name": "upk250",
-            "reqModification": "il_28sh_upk23_gunpod",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_r_upor",
-                "upk_23_250_b006"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover8_dm",
-                "cannon6_dm"
-              ]
-            },
-            "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/cannonGSh_23L.blk",
-              "emitter": "flare29",
-              "flash": "flare29",
-              "bullets": 250,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
-              "external": true,
-              "dm": "cannon6_dm"
-            }
-          },
-          {
-            "iconType": "multibarrel_guv_gun",
-            "name": "guv_8700_slot6",
-            "reqModification": "su_guv_8700",
-            "ShowNodes": {
-              "node": [
-                "su_bd3_57krv_r_upor",
-                "guv_8700_gunpod_006",
-                "guv_8700_gunpod_006_mgun1",
-                "guv_8700_gunpod_006_mgun2",
-                "guv_8700_gunpod_006_mgun3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": [
-                "cover14_dm",
-                "mgun16_dm",
-                "mgun17_dm",
-                "mgun18_dm"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare30",
-                "flash": "flare30",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun16_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection6"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunYaK_B_guv.blk",
-                "emitter": "flare29",
-                "flash": "flare29",
-                "bullets": 750,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 2,
-                "external": true,
-                "dm": "mgun17_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection6"
-              },
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunGShG_guv.blk",
-                "emitter": "flare31",
-                "flash": "flare31",
-                "bullets": 1800,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 3,
-                "external": true,
-                "dm": "mgun18_dm",
-                "rotationAnimScale": "gun_rotate_01:CRS",
-                "shell": "emtr_shellrejection6"
-              }
-            ],
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "guv_8700_slot4"
-              },
-              {
-                "slot": 5,
-                "preset": "guv_8700_slot5"
-              }
-            ]
           }
         ]
       }
@@ -3841,7 +3213,7 @@
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/su_spo-150.blk"
+              "blk": "gameData/sensors/su_spo_150_28m.blk"
             },
             {
               "blk": "gameData/sensors/su_l_370_2.blk"
@@ -3919,18 +3291,6 @@
       "reqModification": "il_28sh_upk23_gunpod",
       "tier": 4
     },
-    "su_guv_8700": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
-    "gunGShG_new_gun": {
-      "reqModification": "su_guv_8700",
-      "tier": 2
-    },
-    "YaK-B_new_gun": {
-      "reqModification": "gunGShG_new_gun",
-      "tier": 3
-    },
     "zb_500": {
       "modClass": "weapon",
       "tier": 1
@@ -3955,7 +3315,7 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "mi_35_9M39": {
+    "mi_8_9M336": {
       "prevModification": "mi_35_9M120_4",
       "deactivationIsAllowed": false,
       "modClass": "weapon",

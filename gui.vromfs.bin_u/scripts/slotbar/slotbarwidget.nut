@@ -22,7 +22,7 @@ let { startLogout } = require("%scripts/login/logout.nut")
 let { isCountrySlotbarHasUnits, isUnitUnlockedInSlotbar, initSelectedCrews,
   selectCrew, getSelectedCrews, getCrewById
 } = require("%scripts/slotbar/slotbarState.nut")
-let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { setShowUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getAvailableRespawnBases } = require("guiRespawn")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
@@ -416,7 +416,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function calcSelectedCrewData(crewsConfig) {
     let forcedCountry = this.getForcedCountry()
     local unitShopCountry = forcedCountry || profileCountrySq.value
-    local curUnit = getShowedUnit()
+    local curUnit = getPlayerCurUnit()
     local curCrewId = this.crewId
 
     if (!forcedCountry && !curCrewId) {
@@ -1164,7 +1164,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         || this.curSlotIdInCountry != getSelectedCrews(this.curSlotCountryId)
         || (this.getCurSlotUnit() == null && isCountrySlotbarHasUnits(curCountry)))
       this.updateSlotbarImpl()
-    else if (this.selectedCrewData && this.selectedCrewData?.unit != getShowedUnit())
+    else if (this.selectedCrewData && this.selectedCrewData?.unit != getPlayerCurUnit())
       this.refreshAll()
   }
 

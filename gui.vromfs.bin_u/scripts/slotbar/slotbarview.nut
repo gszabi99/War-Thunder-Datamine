@@ -27,7 +27,7 @@ let { getEsUnitType, isUnitsEraUnlocked, isUnitGift, getUnitName, isUnitDefault,
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
-let { getBitStatus, isUnitElite } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, isUnitElite, isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -36,7 +36,7 @@ let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpa
 } = require("%scripts/respawn/respawnState.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCrewById, isUnitInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff, isUnitAllowedForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")

@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, EVENTS_SHORT_LB_VISIBLE_ROWS
@@ -252,7 +251,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function getTeamPlayersCountText(team, teamData, roomMGM) {
     if (!this.room) {
       if (events.hasTeamSizeHandicap(roomMGM))
-        return colorize("activeTextColor", loc("events/handicap") + events.getTeamSize(teamData))
+        return colorize("activeTextColor", "".concat(loc("events/handicap"), events.getTeamSize(teamData)))
       return ""
     }
 
@@ -298,9 +297,9 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, this.room)
     let tierText = events.getBrTextByRules(reqUnits)
     if (tierText.len())
-      res +=$"{tierText} "
+      res =$"res{tierText} "
 
-    res += ::SessionLobby.getMissionNameLoc(this.room)
+    res = "".concat(res, ::SessionLobby.getMissionNameLoc(this.room))
 
     let teamsCnt = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData)
     local teamsCntText = ""
@@ -309,7 +308,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         (teamsCnt[Team.A] + teamsCnt[Team.B]))
     else
       teamsCntText =  " ".concat(teamsCnt[Team.A], loc("country/VS"), teamsCnt[Team.B])
-    res += loc("ui/parentheses/space", { text = teamsCntText })
+    res = "".concat(res, loc("ui/parentheses/space", { text = teamsCntText }))
     return res
   }
 
@@ -322,7 +321,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local text = events.getEventActiveTicketText(this.selectedEvent, "activeTextColor")
-    text += (text.len() ? "\n" : "") + events.getEventBattleCostText(this.selectedEvent, "activeTextColor")
+    text = "".concat(text, text.len() ? "\n" : "", events.getEventBattleCostText(this.selectedEvent, "activeTextColor"))
     costDescObj.setValue(text)
 
     let ticketBoughtImgObj = this.getObject("bought_ticket_img")
@@ -357,7 +356,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         setMapPreview(this.scene.findObject("tactical-map"), m)
       }
       else {
-        log("Error: Event " + this.selectedEvent.name + ": not found mission info for mission " + misName)
+        log($"Error: Event {this.selectedEvent.name}: not found mission info for mission {misName}")
         hasMission = false
       }
     }
@@ -440,7 +439,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (row in lbRows) {
       if ((row?[lbCategory.field] ?? -1) <= 0)
         continue
-      data += this.generateRowTableData(row, rowIdx++, lbCategory)
+      data = "".concat(data, this.generateRowTableData(row, rowIdx++, lbCategory))
       this.playersInTable.append("nick" in row ? row.nick : -1)
       if (rowIdx >= EVENTS_SHORT_LB_VISIBLE_ROWS)
         break

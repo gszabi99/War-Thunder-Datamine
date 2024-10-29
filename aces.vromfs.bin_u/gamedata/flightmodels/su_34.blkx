@@ -2047,7 +2047,7 @@
   },
   "ikPilot": [
     {
-      "model": "su_pilot_late_char",
+      "model": "su_pilot_late_zsh_7ap_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -2124,7 +2124,7 @@
       ]
     },
     {
-      "model": "su_pilot_late_char",
+      "model": "su_pilot_late_zsh_7ap_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -2910,6 +2910,10 @@
         "blk": "gameData/FlightModels/weaponPresets/su_34_default.blk"
       },
       {
+        "name": "su_34_r73_r77_default",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_r73_r77_default.blk"
+      },
+      {
         "name": "su_34_r73",
         "blk": "gameData/FlightModels/weaponPresets/su_34_r73.blk"
       },
@@ -2960,10 +2964,6 @@
       {
         "name": "su_34_rocket_kh29l",
         "blk": "gameData/FlightModels/weaponPresets/su_34_rocket_kh29l.blk"
-      },
-      {
-        "name": "su_34_rocket_grom_1",
-        "blk": "gameData/FlightModels/weaponPresets/su_34_rocket_grom_1.blk"
       },
       {
         "name": "su_34_rocket_grom_2",
@@ -3090,6 +3090,7 @@
         "pylon_2_aku_170_launcher_gear_10",
         "pylon_2_aku_170_launcher_gear_11",
         "pylon_2_aku_170_launcher_gear_12",
+        "pylon_5_aku_170_launcher",
         "pylon_2_aku_470",
         "pylon_2_aku_470_fin1",
         "pylon_2_aku_470_fin2",
@@ -3183,6 +3184,35 @@
         "pylon_5_apu_73",
         "pylon_6_apu_27",
         "pylon_6_apu_73",
+        "pylon_6_aku_170_launcher",
+        "pylon_5_aku_170_launcher_connector",
+        "pylon_5_aku_170_launcher_gear_7",
+        "pylon_5_aku_170_launcher_gear_9",
+        "pylon_5_aku_170_launcher_gear_11",
+        "pylon_5_aku_170_launcher_gear_12",
+        "pylon_5_aku_170_launcher_spring_2",
+        "pylon_5_aku_170_launcher_gear_8",
+        "pylon_5_aku_170_launcher_gear_10",
+        "pylon_5_aku_170_launcher_gear_2",
+        "pylon_5_aku_170_launcher_gear_3",
+        "pylon_5_aku_170_launcher_gear_4",
+        "pylon_5_aku_170_launcher_spring_1",
+        "pylon_5_aku_170_launcher_gear_6",
+        "pylon_5_aku_170_launcher_gear_1",
+        "pylon_6_aku_170_launcher_connector",
+        "pylon_6_aku_170_launcher_gear_7",
+        "pylon_6_aku_170_launcher_gear_9",
+        "pylon_6_aku_170_launcher_gear_11",
+        "pylon_6_aku_170_launcher_gear_12",
+        "pylon_6_aku_170_launcher_spring_2",
+        "pylon_6_aku_170_launcher_gear_8",
+        "pylon_6_aku_170_launcher_gear_10",
+        "pylon_6_aku_170_launcher_gear_2",
+        "pylon_6_aku_170_launcher_gear_3",
+        "pylon_6_aku_170_launcher_gear_4",
+        "pylon_6_aku_170_launcher_spring_1",
+        "pylon_6_aku_170_launcher_gear_6",
+        "pylon_6_aku_170_launcher_gear_1",
         "pylon_9_aku_170_launcher",
         "pylon_9_aku_170_launcher_connector",
         "pylon_9_aku_170_launcher_spring_1",
@@ -4036,31 +4066,6 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/su_kh_29td.blk",
-              "emitter": "pylon_3_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "order": 7
-            }
-          },
-          {
-            "iconType": "glide_rockets_middle",
-            "name": "grom1_slot3",
-            "reqModification": "su_grom",
-            "ShowNodes": {
-              "node": [
-                "pylon_3",
-                "pylon_3_aku_58",
-                "pylon_3_aku_58_fin1",
-                "pylon_3_aku_58_fin2",
-                "pylon_3_aku_58_fin3",
-                "pylon_3_aku_58_fin4",
-                "pylon_3_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_grom_1.blk",
               "emitter": "pylon_3_aku_58_kh_29",
               "bullets": 1,
               "external": true,
@@ -5167,30 +5172,6 @@
             }
           },
           {
-            "iconType": "glide_rockets_middle",
-            "name": "grom1_slot4",
-            "reqModification": "su_grom",
-            "ShowNodes": {
-              "node": [
-                "pylon_11",
-                "pylon_11_aku_58",
-                "pylon_11_aku_58_fin1",
-                "pylon_11_aku_58_fin2",
-                "pylon_11_aku_58_fin3",
-                "pylon_11_aku_58_fin4",
-                "pylon_11_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_grom_1.blk",
-              "emitter": "pylon_11_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "glide_bombs_middle",
             "name": "grom2_slot4",
             "reqModification": "su_grom",
@@ -5722,30 +5703,6 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/su_kh_29td.blk",
-              "emitter": "pylon_9_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "glide_rockets_middle",
-            "name": "grom1_slot5",
-            "reqModification": "su_grom",
-            "ShowNodes": {
-              "node": [
-                "pylon_9",
-                "pylon_9_aku_58",
-                "pylon_9_aku_58_fin1",
-                "pylon_9_aku_58_fin2",
-                "pylon_9_aku_58_fin3",
-                "pylon_9_aku_58_fin4",
-                "pylon_9_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_grom_1.blk",
               "emitter": "pylon_9_aku_58_kh_29",
               "bullets": 1,
               "external": true,
@@ -6926,30 +6883,6 @@
             }
           },
           {
-            "iconType": "glide_rockets_middle",
-            "name": "grom1_slot8",
-            "reqModification": "su_grom",
-            "ShowNodes": {
-              "node": [
-                "pylon_10",
-                "pylon_10_aku_58",
-                "pylon_10_aku_58_fin1",
-                "pylon_10_aku_58_fin2",
-                "pylon_10_aku_58_fin3",
-                "pylon_10_aku_58_fin4",
-                "pylon_10_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_grom_1.blk",
-              "emitter": "pylon_10_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "glide_bombs_middle",
             "name": "grom2_slot8",
             "reqModification": "su_grom",
@@ -7565,30 +7498,6 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/su_kh_29td.blk",
-              "emitter": "pylon_12_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "glide_rockets_middle",
-            "name": "grom1_slot9",
-            "reqModification": "su_grom",
-            "ShowNodes": {
-              "node": [
-                "pylon_12",
-                "pylon_12_aku_58",
-                "pylon_12_aku_58_fin1",
-                "pylon_12_aku_58_fin2",
-                "pylon_12_aku_58_fin3",
-                "pylon_12_aku_58_fin4",
-                "pylon_12_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_grom_1.blk",
               "emitter": "pylon_12_aku_58_kh_29",
               "bullets": 1,
               "external": true,
@@ -8352,31 +8261,6 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/su_kh_29td.blk",
-              "emitter": "pylon_4_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "order": 8
-            }
-          },
-          {
-            "iconType": "glide_rockets_middle",
-            "name": "grom1_slot10",
-            "reqModification": "su_grom",
-            "ShowNodes": {
-              "node": [
-                "pylon_4",
-                "pylon_4_aku_58",
-                "pylon_4_aku_58_fin1",
-                "pylon_4_aku_58_fin2",
-                "pylon_4_aku_58_fin3",
-                "pylon_4_aku_58_fin4",
-                "pylon_4_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_grom_1.blk",
               "emitter": "pylon_4_aku_58_kh_29",
               "bullets": 1,
               "external": true,

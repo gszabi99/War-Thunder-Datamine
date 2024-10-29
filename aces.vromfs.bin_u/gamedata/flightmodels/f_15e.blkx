@@ -17,6 +17,8 @@
   "ilsF15a": true,
   "hmdF16c": true,
   "rwrIndicator": "TEWS",
+  "mfdCamTads": true,
+  "needTpsNightVision": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -2601,24 +2603,73 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.1,
-            0.25,
-            0.1
-          ],
           "cameraFromShell": true,
           "page": [
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
             {
               "type": "target_tracking",
               "turretIdx": 0
             },
             {
-              "type": "radar",
-              "scale": 0.9,
-              "hideRadarBackground": true
+              "type": "ils_duplicate"
             },
             {
-              "type": "ils_duplicate"
+              "type": "rwr",
+              "scale": 1.0,
+              "centralMark": "cross"
             }
           ]
         },
@@ -2629,10 +2680,162 @@
             1.0,
             1.0
           ],
-          "page": {
-            "type": "rwr",
-            "scale": 1.15
-          }
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "custom",
+              "pageName": "f15cWpn"
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0,
+              "centralMark": "cross"
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
+            },
+            {
+              "type": "ils_duplicate"
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "rwr",
+              "scale": 1.0,
+              "centralMark": "cross"
+            },
+            {
+              "type": "map"
+            },
+            {
+              "type": "custom",
+              "pageName": "f15cWpn"
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
+            },
+            {
+              "type": "ils_duplicate"
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2644,8 +2847,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.22,
-              0.22
+              0.34,
+              0.34
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -2780,6 +2983,10 @@
       {
         "name": "f_15e_aim_120",
         "blk": "gameData/FlightModels/weaponPresets/f_15e_aim_120.blk"
+      },
+      {
+        "name": "f_15e_aim_120_ltc",
+        "blk": "gameData/FlightModels/weaponPresets/f_15e_aim_120_ltc.blk"
       },
       {
         "name": "f_15e_mk82",
@@ -2970,7 +3177,7 @@
               "flash": "flare1",
               "dm": "cannon1_dm",
               "rotationAnimScale": "gun_rotate_01:CRS",
-              "bullets": 940,
+              "bullets": 512,
               "spread": 1.0,
               "counterIndex": [
                 1,
@@ -3024,8 +3231,8 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a_slot1",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120b_slot1",
+            "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -3034,7 +3241,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
               "emitter": "aim_9_001",
               "bullets": 1,
               "external": true,
@@ -3113,7 +3320,7 @@
               },
               {
                 "slot": 1,
-                "preset": "aim_120a_slot1"
+                "preset": "aim_120b_slot1"
               },
               {
                 "slot": 3,
@@ -3125,7 +3332,7 @@
               },
               {
                 "slot": 3,
-                "preset": "aim_120a_slot3_default"
+                "preset": "aim_120b_slot3_default"
               }
             ]
           },
@@ -3160,7 +3367,7 @@
               },
               {
                 "slot": 1,
-                "preset": "aim_120a_slot1"
+                "preset": "aim_120b_slot1"
               },
               {
                 "slot": 3,
@@ -3172,7 +3379,7 @@
               },
               {
                 "slot": 3,
-                "preset": "aim_120a_slot3_default"
+                "preset": "aim_120b_slot3_default"
               }
             ]
           },
@@ -3207,7 +3414,7 @@
               },
               {
                 "slot": 1,
-                "preset": "aim_120a_slot1"
+                "preset": "aim_120b_slot1"
               },
               {
                 "slot": 3,
@@ -3219,7 +3426,7 @@
               },
               {
                 "slot": 3,
-                "preset": "aim_120a_slot3_default"
+                "preset": "aim_120b_slot3_default"
               }
             ]
           },
@@ -3254,7 +3461,7 @@
               },
               {
                 "slot": 1,
-                "preset": "aim_120a_slot1"
+                "preset": "aim_120b_slot1"
               },
               {
                 "slot": 3,
@@ -3266,7 +3473,7 @@
               },
               {
                 "slot": 3,
-                "preset": "aim_120a_slot3_default"
+                "preset": "aim_120b_slot3_default"
               }
             ]
           },
@@ -3430,7 +3637,7 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a_slot3_default",
+            "name": "aim_120b_slot3_default",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -3519,12 +3726,12 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange_group",
-            "name": "aim_120a_slot4",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120b_slot4",
+            "reqModification": "us_aim_120b",
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_003",
                 "bullets": 1,
                 "external": true,
@@ -3532,7 +3739,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_001",
                 "bullets": 1,
                 "external": true,
@@ -3542,8 +3749,8 @@
           },
           {
             "iconType": "ptb_fuse_missile_type_f_air_to_air_midrange_group_x2",
-            "name": "aim_120a_tank_slot4",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120b_tank_slot4",
+            "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": [
                 "fuel_tank1",
@@ -3554,7 +3761,7 @@
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_007",
                 "bullets": 1,
                 "external": true,
@@ -3562,7 +3769,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_005",
                 "bullets": 1,
                 "external": true,
@@ -3621,11 +3828,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -3633,7 +3840,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -3641,7 +3848,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -3742,11 +3949,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -3754,7 +3961,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -3762,7 +3969,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -3862,11 +4069,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -3874,7 +4081,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -3882,7 +4089,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -3971,11 +4178,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -3983,7 +4190,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -3991,7 +4198,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4080,11 +4287,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4092,7 +4299,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4100,7 +4307,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4164,11 +4371,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4176,7 +4383,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4184,7 +4391,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4237,11 +4444,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4249,7 +4456,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4257,7 +4464,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4321,11 +4528,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4333,7 +4540,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4341,7 +4548,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4394,11 +4601,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4406,7 +4613,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4414,7 +4621,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4500,11 +4707,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4512,7 +4719,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4520,7 +4727,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4579,11 +4786,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4591,7 +4798,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4599,7 +4806,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4667,11 +4874,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4679,7 +4886,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4687,12 +4894,12 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
           {
-            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "iconType": "bombs_ptb_fuse_guided_bomb_middle_jdam_group_x6",
             "name": "us_gbu_38_slot5_fuel_tank",
             "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
@@ -4787,11 +4994,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4799,7 +5006,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4807,7 +5014,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4871,11 +5078,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4883,7 +5090,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4891,7 +5098,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -4953,11 +5160,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4965,7 +5172,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -4973,7 +5180,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5048,11 +5255,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5060,7 +5267,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5068,7 +5275,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5114,11 +5321,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5126,7 +5333,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5134,7 +5341,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5191,11 +5398,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5203,7 +5410,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5211,12 +5418,12 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
           {
-            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "iconType": "guided_bomb_middle_jdam_group_x6",
             "name": "us_gbu_38_slot5",
             "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
@@ -5300,11 +5507,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5312,7 +5519,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5320,7 +5527,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5373,11 +5580,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5385,7 +5592,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5393,7 +5600,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5444,11 +5651,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5456,7 +5663,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5464,7 +5671,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           }
@@ -5764,11 +5971,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5776,7 +5983,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5784,7 +5991,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5884,11 +6091,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -5896,7 +6103,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -5904,7 +6111,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6004,11 +6211,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6016,7 +6223,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6024,7 +6231,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6113,11 +6320,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6125,7 +6332,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6133,7 +6340,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6222,11 +6429,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6234,7 +6441,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6242,7 +6449,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6306,11 +6513,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6318,7 +6525,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6326,7 +6533,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6379,11 +6586,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6391,7 +6598,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6399,7 +6606,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6463,11 +6670,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6475,7 +6682,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6483,7 +6690,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6536,11 +6743,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6548,7 +6755,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6556,7 +6763,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6642,11 +6849,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6654,7 +6861,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6662,7 +6869,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6721,11 +6928,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6733,7 +6940,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6741,7 +6948,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6809,11 +7016,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6821,7 +7028,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6829,12 +7036,12 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
           {
-            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "iconType": "bombs_ptb_fuse_guided_bomb_middle_jdam_group_x6",
             "name": "us_gbu_38_slot9_fuel_tank",
             "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
@@ -6929,11 +7136,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6941,7 +7148,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -6949,7 +7156,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -7013,11 +7220,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7025,7 +7232,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7033,7 +7240,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -7095,11 +7302,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7107,7 +7314,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7115,7 +7322,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -7190,11 +7397,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7202,7 +7409,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7210,7 +7417,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -7256,11 +7463,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7268,7 +7475,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7276,7 +7483,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -7333,11 +7540,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7345,7 +7552,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7353,12 +7560,12 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
           {
-            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "iconType": "guided_bomb_middle_jdam_group_x6",
             "name": "us_gbu_38_slot9",
             "reqModification": "us_500lb_mk82_gbu38_jdam",
             "ShowNodes": {
@@ -7442,11 +7649,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7454,7 +7661,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7462,7 +7669,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -7515,11 +7722,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7527,7 +7734,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7535,7 +7742,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -7586,11 +7793,11 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_slot4"
+                "preset": "aim_120b_slot4"
               },
               {
                 "slot": 4,
-                "preset": "aim_120a_tank_slot4"
+                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7598,7 +7805,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_slot10"
+                "preset": "aim_120b_slot10"
               },
               {
                 "slot": 10,
@@ -7606,7 +7813,7 @@
               },
               {
                 "slot": 10,
-                "preset": "aim_120a_tank_slot10"
+                "preset": "aim_120b_tank_slot10"
               }
             ]
           }
@@ -7673,12 +7880,12 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange_group",
-            "name": "aim_120a_slot10",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120b_slot10",
+            "reqModification": "us_aim_120b",
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_004",
                 "bullets": 1,
                 "external": true,
@@ -7686,7 +7893,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_002",
                 "bullets": 1,
                 "external": true,
@@ -7696,8 +7903,8 @@
           },
           {
             "iconType": "ptb_fuse_missile_type_f_air_to_air_midrange_group_x2",
-            "name": "aim_120a_tank_slot10",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120b_tank_slot10",
+            "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": [
                 "fuel_tank2",
@@ -7708,7 +7915,7 @@
             "Weapon": [
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_008",
                 "bullets": 1,
                 "external": true,
@@ -7716,7 +7923,7 @@
               },
               {
                 "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+                "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
                 "emitter": "aim_7e_006",
                 "bullets": 1,
                 "external": true,
@@ -7771,7 +7978,7 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a_slot11_default",
+            "name": "aim_120b_slot11_default",
             "ShowNodes": {
               "node": [
                 "pylon_2",
@@ -7859,7 +8066,7 @@
               },
               {
                 "slot": 11,
-                "preset": "aim_120a_slot11_default"
+                "preset": "aim_120b_slot11_default"
               },
               {
                 "slot": 13,
@@ -7871,7 +8078,7 @@
               },
               {
                 "slot": 13,
-                "preset": "aim_120a_slot13"
+                "preset": "aim_120b_slot13"
               }
             ]
           },
@@ -7906,7 +8113,7 @@
               },
               {
                 "slot": 11,
-                "preset": "aim_120a_slot11_default"
+                "preset": "aim_120b_slot11_default"
               },
               {
                 "slot": 13,
@@ -7918,7 +8125,7 @@
               },
               {
                 "slot": 13,
-                "preset": "aim_120a_slot13"
+                "preset": "aim_120b_slot13"
               }
             ]
           },
@@ -7953,7 +8160,7 @@
               },
               {
                 "slot": 11,
-                "preset": "aim_120a_slot11_default"
+                "preset": "aim_120b_slot11_default"
               },
               {
                 "slot": 13,
@@ -7965,7 +8172,7 @@
               },
               {
                 "slot": 13,
-                "preset": "aim_120a_slot13"
+                "preset": "aim_120b_slot13"
               }
             ]
           },
@@ -8000,7 +8207,7 @@
               },
               {
                 "slot": 11,
-                "preset": "aim_120a_slot11_default"
+                "preset": "aim_120b_slot11_default"
               },
               {
                 "slot": 13,
@@ -8012,7 +8219,7 @@
               },
               {
                 "slot": 13,
-                "preset": "aim_120a_slot13"
+                "preset": "aim_120b_slot13"
               }
             ]
           },
@@ -8174,8 +8381,8 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120a_slot13",
-            "reqModification": "us_aim_120a",
+            "name": "aim_120b_slot13",
+            "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": [
                 "pylon_2",
@@ -8184,7 +8391,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120a.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
               "emitter": "aim_9_004",
               "bullets": 1,
               "external": true,
@@ -8540,7 +8747,7 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_aim_120a": {
+    "us_aim_120b": {
       "reqModification": "us_aim_9m",
       "tier": 4,
       "modClass": "weapon"

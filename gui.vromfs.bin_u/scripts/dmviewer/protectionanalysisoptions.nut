@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import set_protection_checker_params
 from "%scripts/dagui_library.nut" import *
 
@@ -605,7 +604,7 @@ options.addTypes({
 
     afterChangeFunc = function(obj) {
       let parentObj = obj.getParent().getParent()
-      parentObj.findObject($"value_{this.id}").setValue(this.value + loc("measureUnits/meters_alt"))
+      parentObj.findObject($"value_{this.id}").setValue($"{this.value}{loc("measureUnits/meters_alt")}")
       enableObjsByTable(parentObj, {
         buttonInc = this.value < this.maxValue
         buttonDec = this.value > this.minValue

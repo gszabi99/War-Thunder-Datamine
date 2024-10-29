@@ -443,6 +443,8 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
   let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)) *
     (target.launch && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) *
     (target.show ? 1.0 : 0.2))
+  let priorityTargetWidth = target.priority ? 2 : 1
+  let priorityTargetOpacity = priorityTargetWidth
 
   local targetComponent = null
   local targetType = null
@@ -464,7 +466,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
       watch = [colorWatched]
       color = isColorOrWhite(colorWatched.value)
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(1)
+      lineWidth = hdpx(1 * priorityTargetWidth)
       fillColor = Color(0, 0, 0, 0)
       size = [pw(50), ph(50)]
       pos = [pw(85 * targetRange), ph(85 * targetRange)]
@@ -474,7 +476,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
         : {
             color = isColorOrWhite(colorWatched.value)
             rendObj = ROBJ_VECTOR_CANVAS
-            lineWidth = hdpx(1)
+            lineWidth = hdpx(1 * priorityTargetWidth)
             size = flex()
             commands = [[VECTOR_LINE, -20, -40, -20, 40]]
           }
@@ -490,7 +492,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
       rendObj = ROBJ_VECTOR_CANVAS
       size = [pw(50), ph(50)]
       pos = [pw(100), ph(100)]
-      lineWidth = hdpx(1)
+      lineWidth = hdpx(1 * priorityTargetWidth)
       commands = [
         [VECTOR_LINE_DASHED, nearRadius, nearRadius, farRadius, farRadius, hdpx(5), hdpx(3)]
       ]
@@ -507,7 +509,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
       pos = [pw(0), ph(0)]
       lineWidth = hdpx(35)
       fillColor = Color(0, 0, 0, 0)
-      opacity = targetOpacityRwr.value * sectorOpacityMult
+      opacity = targetOpacityRwr.value * priorityTargetOpacity
       commands = [
         [VECTOR_SECTOR, 0, 0, 100 * targetRange, 100 * targetRange, -target.sector, target.sector]
       ]
@@ -524,7 +526,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
       watch = [colorWatched]
       color = isColorOrWhite(colorWatched.value)
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(1)
+      lineWidth = hdpx(1 * priorityTargetWidth)
       fillColor = Color(0, 0, 0, 0)
       size = [pw(100 * targetRange), ph(100 * targetRange)]
       pos = [pw(0), ph(0)]
@@ -539,7 +541,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
       watch = [colorWatched]
       color = isColorOrWhite(colorWatched.value)
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(1)
+      lineWidth = hdpx(1 * priorityTargetWidth)
       fillColor = Color(0, 0, 0, 0)
       size = flex()
       pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
@@ -576,6 +578,7 @@ function createRwrTargetPresence(index, colorWatched) {
   let targetPresence = rwrTargetsPresence[index]
 
   let targetOpacityRwr = Computed(@() max(0.0, targetPresence.presents ? 1.0 - min(targetPresence.age * RwrSignalHoldTimeInv.value, 0.9) : 0.1))
+  let prioritySizeMult = targetPresence.priority ? 2 : 1
 
   local targetPresenceType = @()
     styleText.__merge({
@@ -591,7 +594,7 @@ function createRwrTargetPresence(index, colorWatched) {
     watch = [colorWatched]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
-    lineWidth = hdpx(2)
+    lineWidth = hdpx(2 * prioritySizeMult)
     color = isColorOrWhite(colorWatched.value)
     fillColor = Color(0, 0, 0, 0)
     commands = [

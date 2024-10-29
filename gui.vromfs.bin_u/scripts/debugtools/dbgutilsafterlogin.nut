@@ -1,5 +1,4 @@
 // warning disable: -file:forbidden-function
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_user_logs_count, get_user_log_blk_body, shop_is_unit_rented, rented_units_get_last_max_full_rent_time, char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
@@ -184,7 +183,7 @@ function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
         let params = { name = partName }
         let info = ::dmViewer.getPartTooltipInfo(::dmViewer.getPartNameId(params), params)
         if (info.desc != "")
-          blk[partName] <- stripTags(info.title + "\n" + info.desc)
+          blk[partName] <- stripTags($"{info.title}\n{info.desc}")
       }
       return blk.paramCount() != 0 ? { key = unit.name, value = blk } : null
     }
@@ -198,7 +197,7 @@ function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
 function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china_s01", slidesAmount = 0) {
   let missionBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
   if (!u.isDataBlock(missionBlk))
-    return dlog("Not found mission " + missionName) //warning disable: -dlog-warn
+    return dlog($"Not found mission {missionName}") //warning disable: -dlog-warn
 
   let filePath = missionBlk?.mis_file
   if (filePath == null)
@@ -297,7 +296,7 @@ function debug_get_last_userlogs(num = 1) {
   for (local i = total - 1; i > (total - num - 1); i--) {
     local blk = DataBlock()
     get_user_log_blk_body(i, blk)
-    dlog("print userlog " + ::getLogNameByType(blk.type) + " " + blk.id)
+    dlog($"print userlog {::getLogNameByType(blk.type)} {blk.id}")
     debugTableData(blk)
     res.append(blk)
   }

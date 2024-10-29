@@ -25517,7 +25517,7 @@
       -0.82
     ],
     "dawn": [
-      0.01,
+      0.0,
       0.01
     ],
     "morning": [
@@ -25538,7 +25538,7 @@
     ],
     "dusk": [
       0.99,
-      0.99
+      1.0
     ]
   },
   "replay": {
@@ -27118,6 +27118,29 @@
     "impulseEmitterLifetime": 0.5,
     "impulseEmitterCaliberMult": 30.0,
     "impulseEmitterMinCaliber": 0.08
+  },
+  "BuildObjectsParams": {
+    "AmmoBox": {
+      "cooldownTime": 60.0,
+      "builderTemplate": "builder_preview",
+      "UnitExpClassRestriction": {
+        "exp_SPAA": {
+          "primary": true,
+          "secondary": true,
+          "special": true
+        },
+        "exp_tank_destroyer": {
+          "primary": true,
+          "secondary": true,
+          "special": true
+        }
+      },
+      "UnitTagRestriction": {
+        "canBuildAmmoBoxForSpecial": {
+          "special": true
+        }
+      }
+    }
   },
   "vapor": {
     "scrollingSpeed": 9.0,
