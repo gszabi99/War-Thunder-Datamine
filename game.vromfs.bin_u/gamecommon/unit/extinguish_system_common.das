@@ -6,11 +6,11 @@ require WTDamageModel
 require IGroundModel
 
 
-def has_extinguisher_mod(gm : IGroundModel?; count : int; count_max : int)
+def has_extinguisher_mod(gm : IGroundModel const?; count : int; count_max : int)
   return (gm != null && gm.extinguisher.isAvailable && count > 0) || count_max < 0
 
 
-def is_extinguisher_available(gm : IGroundModel?; count : int; count_max : int; penalty_without_mod : bool)
+def is_extinguisher_available(gm : IGroundModel const?; count : int; count_max : int; penalty_without_mod : bool)
   return penalty_without_mod || has_extinguisher_mod(gm, count, count_max)
 
 

@@ -598,10 +598,13 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
       } })
 
       let rowParams = ["optContainer:t='yes'"]
-      if (context?.onHoverFnName)
-        rowParams.append($"on_hover:t='{context.onHoverFnName}'")
-      if (context?.onUnhoverFnName)
-        rowParams.append($"on_unhover:t='{context.onUnhoverFnName}'")
+
+      if (!isHeader) {
+        if (context?.onHoverFnName)
+          rowParams.append($"on_hover:t='{context.onHoverFnName}'")
+        if (context?.onUnhoverFnName)
+          rowParams.append($"on_unhover:t='{context.onUnhoverFnName}'")
+      }
       if (isHeader)
         rowParams.append("inactive:t='yes'; headerRow:t='yes'")
       if ("enabled" in optionData)

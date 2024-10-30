@@ -42,6 +42,26 @@
       },
       "conditions": {},
       "actions": {
+        "varSetString": [
+          {
+            "value": "",
+            "var": "aircraft_ship_name",
+            "fromDescriptor": "aircraft_ship_name"
+          },
+          {
+            "value": "armada_01",
+            "var": "player"
+          }
+        ],
+        "missionSetFade": {
+          "mode": "fadeOut",
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time": 0.0
+        },
         "unitPutToSleep": {
           "target": [
             "target_tanks_low_squad",
@@ -57,17 +77,6 @@
           "var": "air_spawn_point",
           "fromDescriptor": "air_spawn_point"
         },
-        "varSetString": [
-          {
-            "value": "",
-            "var": "aircraft_ship_name",
-            "fromDescriptor": "aircraft_ship_name"
-          },
-          {
-            "value": "armada_01",
-            "var": "player"
-          }
-        ],
         "varSetBool": [
           {
             "value": true,
@@ -82,7 +91,10 @@
         ],
         "triggerEnable": [
           {
-            "target": "check_high"
+            "target": [
+              "check_high",
+              "ship_spawn"
+            ]
           },
           {
             "target": [
@@ -101,6 +113,73 @@
         }
       },
       "else_actions": {}
+    },
+    "ship_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "aircraft_ship_name",
+          "value": "",
+          "comparasion_func": "notEqual"
+        },
+        "objectExists": {
+          "target": "airfield01ship",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "airfield_ship_unit"
+        },
+        "changeUnit": {
+          "unit_class": "@aircraft_ship_name",
+          "weaponPreset": "",
+          "isIndividual": true,
+          "hangarMission": false,
+          "object": "airfield_ship_unit",
+          "type": "ship"
+        },
+        "wait": [
+          {
+            "time": 0.1
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "airfield_ship_unit",
+          "target": "airfield01ship",
+          "resetFormation": false
+        },
+        "unitSetRoute": {
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "route": "ship_airfield",
+          "teleportToStart": false,
+          "object": "airfield_ship_unit"
+        }
+      },
+      "else_actions": {
+        "unitPutToSleep": {
+          "target": "airfield_ship_unit"
+        }
+      }
     },
     "check_high": {
       "is_enabled": false,
@@ -176,7 +255,7 @@
             "target": "unit_mode_idle"
           },
           {
-            "target": "check_helicopter"
+            "target": "make_aircraft_ship"
           }
         ],
         "varAddString": {
@@ -192,7 +271,7 @@
             "target": "unit_mode_idle"
           },
           {
-            "target": "check_helicopter"
+            "target": "make_aircraft_ship"
           }
         ],
         "varSetString": [
@@ -233,6 +312,51 @@
         }
       }
     },
+    "make_aircraft_ship": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "aircraft_ship_name",
+          "value": "",
+          "comparasion_func": "notEqual"
+        },
+        "objectExists": {
+          "target": "airfield01ship",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 0.5
+        },
+        "varSetString": {
+          "value": "airfield_ship_unit",
+          "var": "airfield_spawn"
+        },
+        "triggerEnable": {
+          "target": "init_carrier"
+        }
+      },
+      "else_actions": {
+        "unitWakeUp": {
+          "target": "@airfield_unit_name"
+        },
+        "triggerEnable": {
+          "target": "check_helicopter"
+        }
+      }
+    },
     "check_helicopter": {
       "is_enabled": false,
       "comments": "",
@@ -269,89 +393,6 @@
           "value": "airfield00",
           "var": "airfield_spawn"
         },
-        "triggerEnable": {
-          "target": "make_aircraft_ship"
-        }
-      },
-      "else_actions": {
-        "triggerEnable": {
-          "target": "make_aircraft_ship"
-        }
-      }
-    },
-    "make_aircraft_ship": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "varCompareString": {
-          "var_value": "aircraft_ship_name",
-          "value": "",
-          "comparasion_func": "notEqual"
-        },
-        "objectExists": {
-          "target": "airfield01ship",
-          "type": "area"
-        }
-      },
-      "actions": {
-        "changeUnit": {
-          "unit_class": "@aircraft_ship_name",
-          "weaponPreset": "",
-          "isIndividual": true,
-          "hangarMission": false,
-          "object": "airfield_ship_unit",
-          "type": "ship"
-        },
-        "wait": {
-          "time": 0.5
-        },
-        "unitRespawn": {
-          "delay": 1.0,
-          "offset": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "object": "airfield_ship_unit",
-          "target": "airfield01ship",
-          "lookAtTargetUponRespawn": "ships_04_wp_01"
-        },
-        "unitSetRoute": {
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "route": "ship_airfield",
-          "teleportToStart": true,
-          "object": "airfield_ship_unit"
-        },
-        "unitSetProperties": {
-          "object": "airfield_ship_unit",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "isImmortal": true,
-          "speed": 50.0,
-          "lockSpeed": true
-        },
-        "varSetString": {
-          "value": "airfield_ship_unit",
-          "var": "airfield_spawn"
-        },
-        "triggerEnable": {
-          "target": "init_carrier"
-        }
-      },
-      "else_actions": {
         "addAirfield": {
           "runwayStart": "airfield00",
           "runwayEnd": "airfield01high",
@@ -359,8 +400,17 @@
           "army": 1,
           "spawnPoint": "heli_spawn_area"
         },
-        "unitWakeUp": {
-          "target": "@airfield_unit_name"
+        "triggerEnable": {
+          "target": "init_carrier"
+        }
+      },
+      "else_actions": {
+        "__addAirfield": {
+          "runwayStart": "airfield00",
+          "runwayEnd": "airfield01high",
+          "runwayWidth": 100.0,
+          "army": 1,
+          "spawnPoint": "airfield_spawnpoint"
         },
         "triggerEnable": {
           "target": "init_carrier"
@@ -392,6 +442,15 @@
         "wait": {
           "time": 0.1
         },
+        "missionSetFade": {
+          "mode": "fadeIn",
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time": 0.1
+        },
         "spawnOnAirfield": {
           "runwayName": "@airfield_spawn",
           "objects": "@player"
@@ -410,6 +469,15 @@
           ],
           "object": "@player",
           "target": "@air_spawn"
+        },
+        "missionSetFade": {
+          "mode": "fadeIn",
+          "color": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "time": 0.1
         }
       }
     },
@@ -1701,6 +1769,66 @@
         }
       },
       "else_actions": {}
+    },
+    "check_attack_area": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "@player",
+          "target": "attack_area"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "In attack area",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target": "@target_tanks_squad"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
+      }
     }
   },
   "mission_objectives": {
@@ -1734,7 +1862,8 @@
     "airfield_unit_name": "",
     "air_spawn_point": 1,
     "is_high": true,
-    "is_airfield_spawn": false
+    "is_airfield_spawn": false,
+    "airfield_spawn_area": ""
   },
   "dialogs": {},
   "airfields": {},

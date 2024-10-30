@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile, get_time_till_decals_disabled, is_decals_disabled, hangar_get_attachable_tm, set_option_delayed_download_content, hangar_prem_vehicle_view_close, reload_user_skins
 from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
@@ -313,7 +312,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       loc(this.isUnitOwn && !this.previewMode ? "mainmenu/showroom" : "mainmenu/btnPreview"),
       " ", loc("ui/mdash"), " ")
     if (!this.previewMode || (this.previewMode & (PREVIEW_MODE.UNIT | PREVIEW_MODE.SKIN)))
-      title += getUnitName(this.unit.name)
+      title = "".concat(title, getUnitName(this.unit.name))
 
     if (this.previewMode & PREVIEW_MODE.SKIN) {
       let skinId = getSkinId(this.unit.name, this.previewSkinId)
@@ -484,8 +483,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         text = "".concat(loc("currency/gc/sign"), " ", text)
 
       if (!access.isVisible)
-        text = "".concat(colorize("comboExpandedLockedTextColor",
-          "(" + loc("worldWar/hided_logs") + ") "), text)
+        text = "".concat(
+          colorize("comboExpandedLockedTextColor", $"({loc("worldWar/hided_logs")}) "),
+          text
+        )
 
       let isBanned = isSkinBanned(getSkinId(this.unit.name, this.skinList.values[i]))
       if(isBanned)
@@ -665,11 +666,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSkinConditionValue(value, obj) {
-    let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
+    let textObj = this.scene.findObject($"value_{obj?.id ?? ""}")
     if (!checkObj(textObj))
       return
 
-    textObj.setValue(((value + 100) / 2).tostring() + "%")
+    textObj.setValue($"{(value + 100) / 2}%")
     set_tank_skin_condition(value)
   }
 
@@ -677,11 +678,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
+    let textObj = this.scene.findObject($"value_{obj?.id ?? ""}")
     if (checkObj(textObj)) {
       let value = obj.getValue()
       set_tank_camo_scale(value / TANK_CAMO_SCALE_SLIDER_FACTOR)
-      textObj.setValue((get_tank_camo_scale_result_value() * 100 + 0.5).tointeger().tostring() + "%")
+      textObj.setValue($"{(get_tank_camo_scale_result_value() * 100 + 0.5).tointeger()}%")
     }
   }
 
@@ -689,11 +690,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let textObj = this.scene.findObject("value_" + (obj?.id ?? ""))
+    let textObj = this.scene.findObject($"value_{obj?.id ?? ""}")
     if (checkObj(textObj)) {
       let value = obj.getValue()
       let visualValue = (value * 180 / 100) / TANK_CAMO_ROTATION_SLIDER_FACTOR
-      textObj.setValue((visualValue > 0 ? "+" : "") + visualValue.tostring())
+      textObj.setValue($"{visualValue > 0 ? "+" : ""}{visualValue}")
       set_tank_camo_rotation(value / TANK_CAMO_ROTATION_SLIDER_FACTOR)
     }
   }
@@ -1072,19 +1073,22 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let isUnitAutoselected = this.initialUnitId && this.initialUnitId != this.unit?.name
     local obj = showObjById("previewed_decorator_unit", isUnitAutoselected, this.scene)
     if (obj && isUnitAutoselected)
-      obj.findObject("label").setValue(loc("decoratorPreview/autoselectedUnit", {
+      obj.findObject("label").setValue(" ".concat(
+        loc("decoratorPreview/autoselectedUnit", {
           previewUnit = colorize("activeTextColor", getUnitName(this.unit))
           hangarUnit  = colorize("activeTextColor", getUnitName(this.initialUnitId))
-        }) + " " + loc("decoratorPreview/autoselectedUnit/desc", {
+        }),
+        loc("decoratorPreview/autoselectedUnit/desc", {
           preview       = loc("mainmenu/btnPreview")
           customization = loc("mainmenu/btnShowroom")
-        }))
+        })
+      ))
 
     obj = showObjById("previewed_decorator", true, this.scene)
     if (obj) {
       let txtApplyDecorator = loc($"decoratorPreview/applyManually/{this.currentType.resourceType}")
       let labelObj = obj.findObject("label")
-      labelObj.setValue(txtApplyDecorator + loc("ui/colon"))
+      labelObj.setValue($"{txtApplyDecorator}{loc("ui/colon")}")
 
       let params = {
         onClick = "onDecoratorItemClick"
@@ -2062,7 +2066,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (hasFeature("WikiUnitInfo"))
       openUrl(format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), this.unit.name), false, false, "customization_wnd")
     else
-      showInfoMsgBox(colorize("activeTextColor", getUnitName(this.unit, false)) + "\n" + loc("profile/wiki_link"))
+      showInfoMsgBox("\n".concat(colorize("activeTextColor", getUnitName(this.unit, false)), loc("profile/wiki_link")))
   }
 
   function onAddToWishlist() {

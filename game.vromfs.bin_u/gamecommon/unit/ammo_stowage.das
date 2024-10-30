@@ -275,9 +275,8 @@ def find_next_slots_to_replenish(stowage_id : int; amount : int;
 
 [es, with_bundle(v)]
 def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDelayed;
-                                                   active : bool;
                                                    eid : EntityId;
-                                                   uid : int;
+                                                   var unit__ref : UnitRef;
                                                    v : tuple<
                                                      ammo_stowage__ammoState : uint;
                                                      ammo_stowage__weaponTriggers : IntList;
@@ -306,8 +305,8 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
                                                      ammo_per_type_data__state : UInt32List -const;
                                                      ammo_per_type_data__numAmmoFs : IntList -const
                                                      >)
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed || !active
+  var unit = unit__ref.unit
+  if unit.isDelayed
     return
   let allow_replenishment = !is_in_hangar()
 
@@ -428,15 +427,14 @@ def ammo_stowage_sync_num_ammo_fs_es(act : UpdateStageInfoAct;
 
 [es(on_event=EventOnStopBurn)]
 def ammo_stowage_on_stop_burn_es(evt : Event;
-                                 uid : int; active : bool;
+                                 var unit__ref : UnitRef;
                                  var unit_fx : UnitFx;
                                  var ammo_clusters__state : UInt32List&;
                                  ammo_clusters__fireEvtId : IntList)
 
-  let unit = get_unit(uid)
-  if !active || unit == null || unit.isDelayed || !unit.isAuthority
+  let unit = unit__ref.unit
+  if unit.isDelayed || !unit.isAuthority
     return
-
   for state, fire_event_id in ammo_clusters__state, ammo_clusters__fireEvtId
     if !get_flag(state, AmmoClusterState FIRE_FATAL)
       unit_fx |> stopFxEvent(fire_event_id)

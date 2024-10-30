@@ -284,12 +284,14 @@ unlockImg[background-image] {
 bigMedalPlace {
   height:1@profileMedalSize;
   width:h;
-  pos:50%pw-50%w, @bigMedalPlaceYpos;
   position:relative;
 }
+bigMedalPlace[midSize=yes] {
+  height:256@sf/@pf;
+}
+
 bigMedalPlace[double=yes] {
   height:1@profileMedalSizeBig;
-  pos:50%pw-50%w, 0.5@bigMedalPlaceYpos;
 }
 
 bigMedalImg {

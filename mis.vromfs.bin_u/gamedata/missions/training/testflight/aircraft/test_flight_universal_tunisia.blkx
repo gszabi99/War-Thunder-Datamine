@@ -54,7 +54,12 @@
             {
               "icontype": "airfield",
               "side": "player",
-              "target": "center"
+              "target": "airfield00"
+            },
+            {
+              "icontype": "ship",
+              "side": "enemy",
+              "target": "tank_spawn_ship_area01_01"
             },
             {
               "icontype": "fighter",
@@ -445,30 +450,57 @@
       ],
       "props": {}
     },
-    "spawnpoint": {
+    "airfield_spawnpoint": {
       "type": "Sphere",
       "tm": [
         [
-          0.00000644738,
+          -0.00000363809,
           0.0,
-          76.5
+          230.299
         ],
         [
           0.0,
-          76.5,
+          230.3,
           0.0
         ],
         [
-          -76.5,
+          -230.299,
           0.0,
-          0.00000644738
+          -0.00000363809
         ],
         [
-          1382.8,
-          75.6034,
-          6748.2
+          1386.45,
+          48.9126,
+          7989.4
         ]
       ],
+      "props": {}
+    },
+    "attack_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          21142.4,
+          0.0,
+          11357.7
+        ],
+        [
+          0.0,
+          24000.0,
+          0.0
+        ],
+        [
+          -11357.7,
+          0.0,
+          21142.4
+        ],
+        [
+          25721.4,
+          61.85,
+          -25896.2
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     },
     "flight_point01": {
@@ -1683,9 +1715,9 @@
       "type": "Sphere",
       "tm": [
         [
-          0.880934,
+          -0.0565996,
           0.0,
-          0.473237
+          0.998396
         ],
         [
           0.0,
@@ -1693,14 +1725,14 @@
           0.0
         ],
         [
-          -0.473237,
+          -0.998396,
           0.0,
-          0.880934
+          -0.0565996
         ],
         [
-          7435.95,
-          32.6035,
-          4833.2
+          8704.1,
+          32.6023,
+          1359.3
         ]
       ],
       "objLayer": 0,
@@ -2836,7 +2868,7 @@
     },
     "ship_airfield": {
       "closed_waypoints": true,
-      "isShipSpline": false,
+      "isShipSpline": true,
       "shipTurnRadius": 100.0,
       "way": {
         "ships_04_wp_01": {
@@ -2858,13 +2890,13 @@
               1.0
             ],
             [
-              7565.6,
-              153.6,
-              4971.75
+              8388.95,
+              153.599,
+              4175.15
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
             "canUsePathFinder": false
@@ -2889,16 +2921,15 @@
               1.0
             ],
             [
-              7785.61,
-              153.592,
-              7593.04
+              8371.76,
+              153.591,
+              6742.25
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -2921,16 +2952,15 @@
               1.0
             ],
             [
-              8444.03,
-              153.592,
-              8449.19
+              8798.94,
+              153.591,
+              7448.89
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -2953,16 +2983,15 @@
               1.0
             ],
             [
-              9198.71,
-              153.592,
-              9044.14
+              9417.3,
+              153.591,
+              8006.63
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -2985,16 +3014,15 @@
               1.0
             ],
             [
-              9976.29,
-              153.592,
-              9264.74
+              10235.0,
+              153.591,
+              8258.93
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3017,16 +3045,15 @@
               1.0
             ],
             [
-              10861.8,
-              153.592,
-              8904.55
+              11135.7,
+              153.591,
+              8124.75
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3049,16 +3076,15 @@
               1.0
             ],
             [
-              11599.1,
-              153.592,
-              8060.15
+              11804.8,
+              153.591,
+              7836.58
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3081,13 +3107,13 @@
               1.0
             ],
             [
-              12084.0,
-              153.6,
-              5740.77
+              12327.1,
+              153.591,
+              7283.74
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
             "canUsePathFinder": false
@@ -3112,13 +3138,13 @@
               1.0
             ],
             [
-              12833.7,
-              153.6,
-              -4302.59
+              12882.0,
+              153.599,
+              5048.03
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
             "canUsePathFinder": false
@@ -3143,16 +3169,15 @@
               1.0
             ],
             [
-              12738.9,
-              153.592,
-              -6868.0
+              14056.6,
+              153.599,
+              -4860.57
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3175,16 +3200,15 @@
               1.0
             ],
             [
-              12281.3,
-              153.592,
-              -7555.33
+              13951.1,
+              153.591,
+              -7488.96
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3207,16 +3231,15 @@
               1.0
             ],
             [
-              11639.2,
-              153.592,
-              -8085.57
+              13330.7,
+              153.591,
+              -8373.02
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3239,16 +3262,15 @@
               1.0
             ],
             [
-              10811.3,
-              153.592,
-              -8301.96
+              12602.7,
+              153.591,
+              -9000.32
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3271,16 +3293,15 @@
               1.0
             ],
             [
-              9917.31,
-              153.592,
-              -8128.63
+              11835.4,
+              153.591,
+              -9254.64
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3303,16 +3324,15 @@
               1.0
             ],
             [
-              9261.36,
-              153.592,
-              -7811.54
+              10935.1,
+              153.591,
+              -8933.41
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3335,16 +3355,15 @@
               1.0
             ],
             [
-              8763.72,
-              153.592,
-              -7236.44
+              10161.6,
+              153.591,
+              -8121.98
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
-            "shouldKeepFormation": false,
             "canUsePathFinder": false
           }
         },
@@ -3367,13 +3386,13 @@
               1.0
             ],
             [
-              8306.8,
-              153.6,
-              -4978.65
+              9576.02,
+              153.599,
+              -5825.95
             ]
           ],
           "props": {
-            "speed": 30.0,
+            "speed": 50.0,
             "moveType": "MOVETO_STRAIGHT",
             "tas": false,
             "canUsePathFinder": false

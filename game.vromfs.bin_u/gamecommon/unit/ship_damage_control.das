@@ -87,7 +87,7 @@ def ship_damage_control_init_es(evt : CmdInitComponent;
 [es(no_order)]
 def ship_update_damage_control_es(act : UpdateStageInfoAct;
                                   eid : EntityId;
-                                  uid : int;
+                                  unit__ref : UnitRef;
                                   ship__modernDamageControl : bool;
                                   var repair_system_auto_check_delay : float&;
                                   repair_system_remaining_repair_time : float;
@@ -109,7 +109,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
 
   repair_system_auto_check_delay -= act.dt
   if repair_system_auto_check_delay < 0.0f
-    let unit = get_unit(uid)
+    let unit = unit__ref.unit
     let ship = as_ship(unit)
     if (ship != null && !unit.isDelayed && repair_system_remaining_repair_time <= 0.0f &&
         !ship.isVeryFewCrew && !ship.isCoverDestroyed && is_repair_needed(unit,
@@ -125,7 +125,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
 
 [es(no_order)]
 def ship_update_time_penalty_es(info : UpdateStageInfoAct;
-                                uid : int;
+                                unit__ref : UnitRef;
                                 ship__modernDamageControl : bool;
                                 ship_damage_control__priorities : uint;
                                 ship_damage_control__timePenalty : float3;
@@ -139,8 +139,8 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
                                 extinguish_system_extinguish_time_end : float;
                                 ship__repairBreachesRemainingTime : float;
                                 ship__unwateringRemainingTime : float)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
 
   // in old system we count repair breaches as unwatering process, in new system - as repair process

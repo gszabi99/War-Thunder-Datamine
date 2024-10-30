@@ -790,6 +790,8 @@ gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
       return
 
     let option = this.getSelectedOption()
+    if (!option)
+      return
     if (option.controlType == optionControlType.EDITBOX)
       select_editbox(this.getObj(option.id))
   }

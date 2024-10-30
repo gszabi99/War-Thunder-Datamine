@@ -253,7 +253,7 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
 
 
 [es, with_bundle(v)]
-def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; active : bool; eid : EntityId; uid : int;
+def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; eid : EntityId; var unit__ref : UnitRef;
                                   v : tuple<
                                     ammo_stowage__ammoState : uint;
                                     ammo_stowage__ammoLost : int -const;
@@ -271,19 +271,16 @@ def ammo_stowage_setup_stowage_es(evt : EventAmmoStowageSetup; active : bool; ei
                                     ammo_slots__numAmmo : IPoint2List -const;
                                     ammo_slots__ammoMaskAndType : UInt32List -const
                                     >)
-  if !active
-    return
-  var unit = get_unit(uid)
-  if unit != null && !unit.isDelayed
-    let sync_required = setup_ammo_stowage(unit,
-      evt.initNum,
-      evt.isRefill) <| v
-    if evt.netSyncIfRequired && sync_required
-      ammo_stowage_send_net_sync(eid) <| v
+  var unit = unit__ref.unit
+  let sync_required = setup_ammo_stowage(unit,
+    evt.initNum,
+    evt.isRefill) <| v
+  if evt.netSyncIfRequired && sync_required
+    ammo_stowage_send_net_sync(eid) <| v
 
 
 [es, with_bundle(v)]
-def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; active : bool; eid : EntityId; uid : int;
+def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; eid : EntityId; var unit__ref : UnitRef;
                                            v : tuple<
                                              ammo_stowage__ammoState : uint;
                                              ammo_stowage__ammoLost : int -const;
@@ -301,23 +298,21 @@ def ammo_stowage_bullets_amount_changed_es(evt : EventBulletsAmountChanged; acti
                                              ammo_slots__numAmmo : IPoint2List -const;
                                              ammo_slots__ammoMaskAndType : UInt32List -const
                                              >)
-  if !active
-    return
-  var unit = get_unit(uid)
-  if unit != null && !unit.isDelayed
+  var unit = unit__ref.unit
+  if !unit.isDelayed
     let sync_required = setup_ammo_stowage(unit, false, evt.isRefill) <| v
     if sync_required
       ammo_stowage_send_net_sync(eid) <| v
 
 
 [es, with_bundle(v)]
-def ammo_stowage_force_reload_gun_es(evt : EventAmmoStowageForceReloadGun; uid : int;
+def ammo_stowage_force_reload_gun_es(evt : EventAmmoStowageForceReloadGun; var unit__ref : UnitRef;
                                      v : tuple<
                                        ammo_stowages__weaponTriggersRange : IPoint2List;
                                        ammo_stowage__weaponTriggers : IntList
                                        >)
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  var unit = unit__ref.unit
+  if unit.isDelayed
     return
   if evt.stowageId < 0 || evt.stowageId >= length(v.ammo_stowages__weaponTriggersRange)
     return
@@ -397,7 +392,7 @@ def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
 
 [es]
 def ammo_stowage_gun_net_sync_es(act : UpdateStageInfoAct;
-                                 uid : int;
+                                 var unit__ref : UnitRef;
                                  var ammo_stowages__state : UInt32List&;
                                  ammo_stowages__weaponTriggersRange : IPoint2List;
                                  ammo_stowage__weaponTriggers : IntList)
@@ -405,10 +400,9 @@ def ammo_stowage_gun_net_sync_es(act : UpdateStageInfoAct;
     if get_flag(state, AmmoStowageState NEED_SYNC_BULLET_COUNT)
       set_flag(state, AmmoStowageState NEED_SYNC_BULLET_COUNT, false)
 
-      let unit = get_unit(uid)
-      if unit == null || unit.isDelayed
+      let unit = unit__ref.unit
+      if unit.isDelayed
         return
-
       let triggers_range = ammo_stowages__weaponTriggersRange[stowage_id]
       for trigger_id_idx in triggers_range.x..triggers_range.y
         let trigger_id = ammo_stowage__weaponTriggers[trigger_id_idx]

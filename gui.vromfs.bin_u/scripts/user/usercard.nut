@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
+from "%scripts/dagui_natives.nut" import get_unlock_type, get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
+from "%scripts/mainConsts.nut" import SEEN
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -12,7 +13,7 @@ let { loadLocalByAccount, saveLocalByAccount
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXboxOne,
   isPlayerFromPS4
 } = require("%scripts/clientState/platform.nut")
@@ -23,16 +24,16 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let psnSocial = require("sony.social")
 let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getMedalRibbonImg, hasMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
-let { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk,
+let { getMedalRibbonImg } = require("%scripts/unlocks/unlockInfo.nut")
+let { fillProfileSummary, getPlayerStatsFromBlk,
   airStatsListConfig } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { APP_ID } = require("app")
-let { getUnlockNameText, getUnlockableMedalImage
+let { getUnlockNameText, getUnlockableMedalImage, buildUnlockDesc, getUnlockMainCondDescByCfg,
+      getUnlockMultDescByCfg, getUnlockCondsDescByCfg
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { ceil, floor } = require("math")
-let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
+let { floor } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { encode_uri_component } = require("url")
@@ -42,26 +43,48 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { isUnlockVisible, getUnlockRewardText, canClaimUnlockRewardForUnit } = require("%scripts/unlocks/unlocksModule.nut")
+let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
+let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
+let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
+let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
+let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
     return
+  let guiScene = get_gui_scene()
+  if (guiScene?.isInAct()) {
+    defer(@() loadHandler(gui_handlers.UserCardHandler, { info = playerInfo }))
+    return
+  }
   loadHandler(gui_handlers.UserCardHandler, { info = playerInfo })
 }
 
+
+function getUnlockFiltersList(uType, getCategoryFunc) {
+  let categories = []
+  let unlocks = getUnlocksByTypeInBlkOrder(uType)
+  foreach (unlock in unlocks)
+    if (isUnlockVisible(unlock))
+      u.appendOnce(getCategoryFunc(unlock), categories, true)
+
+  return categories
+}
+
 gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
-  wndType = handlerType.MODAL
+  wndType = handlerType.BASE
   sceneBlkName = "%gui/profile/userCard.blk"
 
   isOwnStats = false
 
   info = null
-  sheetsList = ["Profile", "Statistics"]
+  sheetsList = ["Profile", "Records", "Statistics", "Medal"]
 
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
   tabLocalePrefix = "#mainmenu/btn"
@@ -85,7 +108,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   statsSortBy = ""
   statsSortReverse = false
   curStatsPage = 0
-
+  filterCountryName = null
   player = null
   searchPlayerByNick = false
   infoReady = false
@@ -101,13 +124,24 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   filterTypes = {}
   applyFilterTimer = null
+  medalsByCountry = null
+  isProfileInited = false
 
   nameStats = ""
   isMyPage = false
+  isPageFilling = false
+  medalsFilters = []
+  curFilter = null
+  selMedalIdx = null
 
   function initScreen() {
+    this.selMedalIdx = {}
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
       return this.goBack()
+
+    let needShortSeparators = to_pixels("sw") > to_pixels("1@maxProfileFrameWidth + 2@framePadding")
+    let frame = this.scene.findObject("wnd_frame")
+    frame.needShortSeparators = needShortSeparators ? "yes" : "no"
 
     this.player = {}
     foreach (pName in ["name", "uid", "id"])
@@ -157,8 +191,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.afterSlotOpError = function(_result) { /* notFoundPlayerMsg() */ this.goBack() }
 
     this.fillGamercard()
-    this.initLeaderboardModes()
     this.updateButtons()
+
+    let medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
+    this.medalsFilters = shopCountriesList.filter(@(c) medalCountries.contains(c))
   }
 
   function initTabs() {
@@ -166,7 +202,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, sheet in this.sheetsList) {
       view.tabs.append({
         id = sheet
-        tabImage = format(this.tabImageNameTemplate, sheet.tolower())
         tabName = this.tabLocalePrefix + sheet
         navImagesText = ::get_navigation_images_text(idx, this.sheetsList.len())
       })
@@ -238,11 +273,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("profile-container").show(true)
     this.scene.findObject("profile_sheet_list").show(true)
     this.onSheetChange(null)
-    this.fillLeaderboard()
   }
 
   function showSheetDiv(name) {
-    foreach (div in ["profile", "stats"]) {
+    foreach (div in ["profile", "records", "stats", "medals"]) {
       let show = div == name
       let divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
@@ -253,18 +287,35 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
+  function isPageHasProfileHandler(sheet) {
+    return (sheet == "Profile") || (sheet == "Records")
+  }
+
   function onSheetChange(_obj) {
     if (!this.infoReady)
       return
 
-    if (this.getCurSheet() == "Statistics") {
-      this.showSheetDiv("stats")
-      this.fillStatistics()
-    }
-    else {
-      this.showSheetDiv("profile")
+    let curSheet = this.getCurSheet()
+    let pageHasProfileHeader = this.isPageHasProfileHandler(curSheet)
+    showObjById("profile_header", pageHasProfileHeader, this.scene)
+
+    let accountImage = this.scene.findObject("profile_header_picture")
+    accountImage.height = pageHasProfileHeader ? "@maxAccountHeaderHeight" : "@minAccountHeaderHeight"
+
+    if (pageHasProfileHeader && !this.isProfileInited)
       this.fillProfile()
-    }
+
+    if (curSheet == "Profile")
+      this.showSheetDiv("profile")
+    else if (curSheet == "Records") {
+      this.showSheetDiv("stats")
+      this.fillModeListBox(this.scene.findObject("stats-container"), this.curMode)
+    } else if (curSheet == "Statistics") {
+      this.showSheetDiv("records")
+      this.fillStatistics()
+    } else if (curSheet == "Medal")
+      this.showMedalsSheet()
+
     this.updateButtons()
   }
 
@@ -273,13 +324,11 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.fillTitleName(this.player.title, false)
-
     this.fillClanInfo(this.player)
     this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)
     ::fill_gamer_card(this.player, "profile-", this.scene)
-    this.fillAwardsBlock(this.player)
-    this.fillShortCountryStats(this.player)
     this.scene.findObject("profile_loading").show(false)
+    this.isProfileInited = true
   }
 
   function onEventContactsUpdated(_p) {
@@ -358,23 +407,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function fillShortCountryStats(profile) {
-    let countryStatsNest = this.scene.findObject("country_stats_nest")
-    if (!checkObj(countryStatsNest))
-      return
-
-    let columns = shopCountriesList.map(@(c) {
-      icon            = getCountryIcon(c)
-      unitsCount      = profile.countryStats[c].unitsCount
-      eliteUnitsCount = profile.countryStats[c].eliteUnitsCount
-    })
-
-    let blk = handyman.renderCached(("%gui/profile/country_stats_table.tpl"), {
-      columns = columns,
-      tableName = loc("lobby/vehicles")
-    })
-    this.guiScene.replaceContentFromText(countryStatsNest, blk, blk.len(), this)
-  }
 
   function updateCurrentStatsMode(value) {
     this.statsMode = g_difficulty.getDifficultyByDiffCode(value).egdLowercaseName
@@ -409,70 +441,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillAirStats()
   }
 
-  function fillAwardsBlock(pl) {
-    if (hasFeature("ProfileMedals"))
-      this.fillMedalsBlock(pl)
-    else
-      this.fillTitlesBlock(pl)
-  }
-
-  function fillMedalsBlock(pl) {
-    local curCountryId = profileCountrySq.value
-    local maxMedals = 0
-    if (!this.isOwnStats) {
-      maxMedals = pl.countryStats[curCountryId].medalsCount
-      foreach (_idx, countryId in shopCountriesList) {
-        let medalsCount = pl.countryStats[countryId].medalsCount
-        if (maxMedals < medalsCount) {
-          curCountryId = countryId
-          maxMedals = medalsCount
-        }
-      }
-    }
-
-    // Filling country tabs
-    local curValue = 0
-    let view = { items = [] }
-    let countFmt = "text { pos:t='pw/2-w/2, ph+@blockInterval'; position:t='absolute'; text:t='%d' }"
-    foreach (idx, countryId in shopCountriesList) {
-      view.items.append({
-        id = countryId
-        image = getCountryIcon(countryId)
-        tooltip = $"#{countryId}"
-        objects = format(countFmt, pl.countryStats[countryId].medalsCount)
-      })
-
-      if (countryId == curCountryId)
-        curValue = idx
-    }
-
-    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
-    let countriesObj = this.scene.findObject("medals_country_tabs")
-    this.guiScene.replaceContentFromText(countriesObj, data, data.len(), this)
-    countriesObj.setValue(curValue)
-  }
-
-  function onMedalsCountrySelect(obj) {
-    let nestObj = this.scene.findObject("medals_nest")
-    if (!checkObj(obj) || !checkObj(nestObj))
-      return
-
-    let countryId = shopCountriesList?[obj.getValue()]
-    if (!countryId)
-      return
-
-    let medalsList = getCountryMedals(countryId, this.player)
-    showObjById("medals_empty", !medalsList.len(), this.scene)
-
-    let view = {
-      ribbons = this.getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
-      medals = this.getMedalsView(medalsList.filter(@(id) !hasMedalRibbonImg(id)))
-    }
-
-    let markup = handyman.renderCached("%gui/profile/profileRibbons.tpl", view)
-    this.guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
-  }
-
   function getRibbonsView(medalsList) {
     return medalsList.len() > 0 ? {
       flowAlign = medalsList.len() > this.ribbonsRowLength ? "center" : "left"
@@ -500,43 +468,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function fillTitlesBlock(pl) {
-    showObjById("medals_block", false, this.scene)
-    showObjById("titles_block", true, this.scene)
-
-    let titles = []
-    foreach (id in pl.titles) {
-      let titleUnlock = getUnlockById(id)
-      if (!titleUnlock || titleUnlock?.hidden)
-        continue
-
-      let locText = loc($"title/{id}")
-      titles.append({
-        name = id
-        text = locText
-        lowerText = utf8ToLower(locText)
-        tooltipId = getTooltipType("UNLOCK").getTooltipId(id, { showLocalState = this.isOwnStats, needTitle = false })
-      })
-    }
-    titles.sort(@(a, b) a.lowerText <=> b.lowerText)
-
-    let titlesTotal = titles.len()
-    showObjById("titles_empty", !titlesTotal, this.scene)
-    if (!titlesTotal)
-      return
-
-    let markup = []
-    let cols = 2
-    let rows = ceil(titlesTotal * 1.0 / cols)
-    for (local r = 0; r < rows; r++) {
-      let rowData = []
-      for (local c = 0; c < cols; c++)
-        rowData.append(titles?[rows * c + r] ?? {})
-      markup.append(::buildTableRow("", rowData))
-    }
-    let markupTxt = "".join(markup)
-    this.guiScene.replaceContentFromText(this.scene.findObject("titles_table"), markupTxt, markupTxt.len(), this)
-  }
 
   function getPlayerStats() {
     return this.player
@@ -547,29 +478,12 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.statsType = obj.getValue() ? ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL
     saveLocalByAccount("leaderboards_type", this.statsType)
-    this.fillLeaderboard()
   }
 
-  function onLbModeSelect(obj) {
-    if (!checkObj(obj) || this.lbModesList == null)
-      return
-
-    let newLbMode = this.lbModesList?[obj.getValue()]
-    if (newLbMode == null || this.lbMode == newLbMode)
-      return
-
-    this.lbMode = newLbMode
-    this.guiScene.performDelayed(this, function() {
-      if (this.isValid())
-        this.fillLeaderboard()
-    })
-  }
 
   function fillStatistics() {
     if (!checkObj(this.scene))
       return
-
-    this.showSheetDiv("stats")
     this.fillAirStats()
   }
 
@@ -587,12 +501,11 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.countryStats = []
     foreach (country in shopCountriesList)
       this.countryStats.append(country)
-    this.initAirStatsScene(this.player.userstat)
+    this.initAirStatsPage()
   }
 
-  function initAirStatsScene(_airStats) {
-    let sObj = this.scene.findObject("stats-container")
-
+  function initAirStatsPage() {
+    let sObj = this.scene.findObject("records-container")
     sObj.findObject("stats_loading").show(false)
 
     let modesObj = sObj.findObject("modes_list")
@@ -725,7 +638,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillAirStatsScene(airStats) {
-
     if (!checkObj(this.scene))
       return
 
@@ -801,22 +713,24 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let posWidth = "0.05@scrn_tgt"
     let rcWidth = "0.04@scrn_tgt"
     let nameWidth = "0.2@scrn_tgt"
+    let countryWidth = "0.08@scrn_tgt"
+    let rankWidth = "70@sf/@pf"
     let headerRow = [
-      { width = posWidth }
-      { id = "rank", width = rcWidth, text = "#sm_rank", tdalign = "split", cellType = "splitRight", callback = "onStatsCategory", active = this.statsSortBy == "rank" }
-      { id = "rank", width = rcWidth, cellType = "splitLeft", callback = "onStatsCategory" }
-      { id = "locName", width = rcWidth, cellType = "splitRight", callback = "onStatsCategory" }
-      { id = "locName", width = nameWidth, text = "#options/unit", tdalign = "left", cellType = "splitLeft", callback = "onStatsCategory", active = this.statsSortBy == "locName" }
+      { width = posWidth, text = "#", tdalign = "center"}
+      { id = "country", width = countryWidth, text="#options/country", cellType = "splitLeft",
+        tdalign = "center", callback = "onStatsCategory", active = this.statsSortBy == "country" }
+      { id = "rank", width = rankWidth, text = "#sm_rank", tdalign = "center", callback = "onStatsCategory", active = this.statsSortBy == "rank" }
+      { id = "locName", width = "0.05@scrn_tgt", cellType = "splitRight", callback = "onStatsCategory" }
+      { id = "locName", width = nameWidth, text = "#options/unit", tdalign = "center", cellType = "splitLeft", callback = "onStatsCategory", active = this.statsSortBy == "locName" }
     ]
     foreach (item in airStatsListConfig) {
       if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))
         continue
-
       if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
         headerRow.append({
           id = item.id
           image = "".concat("#ui/gameuiskin#", item?.icon ?? $"lb_{item.id}", ".svg")
-          tooltip = item?.text ?? $"#multiplayer/{item.id}"
+          tooltip = loc(item?.text ?? $"multiplayer/{item.id}")
           callback = "onStatsCategory"
           active = this.statsSortBy == item.id
           needText = false
@@ -826,26 +740,28 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let tooltips = {}
     let fromIdx = this.curStatsPage * this.statsPerPage
-    local toIdx = (this.curStatsPage + 1) * this.statsPerPage - 1
-    if (toIdx >= this.airStatsList.len())
-      toIdx = this.airStatsList.len() - 1
+    local toIdx = min(this.airStatsList.len(), (this.curStatsPage + 1) * this.statsPerPage)
 
-    for (local idx = fromIdx; idx <= toIdx; idx++) {
+    for (local idx = fromIdx; idx < toIdx; idx++) {
+      let rowName = $"row_{idx}"
+      local rowData = null
       let airData = this.airStatsList[idx]
       let unitTooltipId = getTooltipType("UNIT").getTooltipId(airData.name)
 
-      let rowName = $"row_{idx}"
-      let rowData = [
-        { text = (idx + 1).tostring(), width = posWidth }
-        { id = "rank", width = rcWidth, text = airData.rank.tostring(), tdalign = "right", cellType = "splitRight", active = this.statsSortBy == "rank" }
-        { id = "country", width = rcWidth, image = getCountryIcon(airData.country), cellType = "splitLeft", needText = false }
+      rowData = [
+        { text = (idx + 1).tostring(), width = posWidth, tdalign = "center"}
+        { id = "country", width = countryWidth, image = getCountryIcon(airData.country), imageRawParams = "left:t='0.5*(pw-w)'",
+          tdalign = "center", cellType = "splitLeft", needText = false }
+        { id = "rank", width = rankWidth, text = airData.rank.tostring(), tdalign = "center", cellType = "splitRight", active = this.statsSortBy == "rank" }
         {
           id = "unit",
           width = rcWidth,
           image = ::getUnitClassIco(airData.name),
           tooltipId = unitTooltipId,
           cellType = "splitRight",
-          needText = false
+          imageRawParams = "left:t='pw-w-2@sf/@pf';",
+          needText = false,
+          tdalign = "right"
         }
         { id = "name", text = getUnitName(airData.name, true), tdalign = "left", active = this.statsSortBy == "name", cellType = "splitLeft", tooltipId = unitTooltipId }
       ]
@@ -856,6 +772,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly) {
           let cell = ::getLbItemCell(item.id, airData[item.id], item.type)
           cell.active <- this.statsSortBy == item.id
+          cell.tdalign <- "center"
           if ("tooltip" in cell) {
             if (!(rowName in tooltips))
               tooltips[rowName] <- {}
@@ -864,7 +781,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           rowData.append(cell)
         }
       }
-      data.append(::buildTableRow(rowName, rowData, idx % 2 == 0))
+      data.append(::buildTableRow(rowName, rowData ?? [], idx % 2 == 0))
     }
 
     let dataTxt = "".join(data)
@@ -890,98 +807,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return ::leaderboardModel.checkLbRowVisibility(row, this)
   }
 
-  function fillLeaderboard() {
-    let stats = this.getPlayerStats()
-    if (!stats || !("leaderboard" in stats) || !stats.leaderboard.len())
-      return
-
-    let typeProfileObj = this.scene.findObject("stats_type_profile")
-    if (checkObj(typeProfileObj)) {
-      typeProfileObj.show(true)
-      typeProfileObj.setValue(this.statsType == ETTI_VALUE_INHISORY)
-    }
-
-    let tblObj = this.scene.findObject("profile_leaderboard")
-    local rowIdx = 0
-    let data = []
-    let tooltips = {}
-
-    //add header row
-    let headerRow = [""]
-    foreach (lbCategory in ::leaderboards_list)
-      if (this.checkLbRowVisibility(lbCategory))
-        headerRow.append({
-          id = lbCategory.id
-          image = lbCategory.headerImage
-          tooltip = lbCategory.headerTooltip
-          active = true
-          needText = false
-        })
-
-    data.append(::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
-
-    let rows = [
-      {
-        text = "#mainmenu/btnLeaderboards"
-        showLbPlaces = false
-      }
-      {
-        text = "#multiplayer/place"
-        showLbPlaces = true
-      }
-    ]
-
-    let valueFieldName = (this.statsType == ETTI_VALUE_TOTAL)
-                           ? LEADERBOARD_VALUE_TOTAL
-                           : LEADERBOARD_VALUE_INHISTORY
-    let lb = getTblValue(valueFieldName, getTblValue(this.lbMode, stats.leaderboard), {})
-    let standartRow = {}
-
-    foreach (idx, fieldTbl in lb) {
-      standartRow[idx] <- getTblValue(valueFieldName, fieldTbl, -1)
-    }
-
-    foreach (row in rows) {
-      let rowName = $"row_{rowIdx}"
-      let rowData = [{ text = row.text, tdalign = "left" }]
-      local res = {}
-
-      foreach (lbCategory in ::leaderboards_list)
-        if (this.checkLbRowVisibility(lbCategory)) {
-          if (lbCategory.field in lb) {
-            if (!row.showLbPlaces)
-              res = lbCategory.getItemCell(standartRow[lbCategory.field], standartRow)
-            else {
-              let value = (lb[lbCategory.field].idx < 0) ? -1 : lb[lbCategory.field].idx + 1
-              res = lbCategory.getItemCell(value, null, false, lbDataType.PLACE)
-            }
-          }
-          else {
-            if (!row.showLbPlaces)
-              res = lbCategory.getItemCell(lbCategory.lbDataType == lbDataType.PERCENT ? -1 : 0)
-            else
-              res = lbCategory.getItemCell(-1, null, false, lbDataType.PLACE)
-          }
-
-          if ("tooltip" in res) {
-            if (!(rowName in tooltips))
-              tooltips[rowName] <- {}
-            tooltips[rowName][lbCategory.id] <- res.$rawdelete("tooltip")
-          }
-
-          rowData.append(res)
-        }
-
-      rowIdx++
-      data.append(::buildTableRow(rowName, rowData, rowIdx % 2 == 0, ""))
-    }
-    let dataTxt = "".join(data)
-    this.guiScene.replaceContentFromText(tblObj, dataTxt, dataTxt.len(), this)
-
-    foreach (rowName, row in tooltips)
-      foreach (name, value in row)
-        tblObj.findObject(rowName).findObject(name).tooltip = value
-  }
 
   function onChangePilotIcon(_obj) {}
   function openChooseTitleWnd() {}
@@ -995,29 +820,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return obj.getChild(sheetIdx).id
   }
 
-  function initLeaderboardModes() {
-    this.lbMode      = ""
-    this.lbModesList = []
-
-    let data  = []
-
-    foreach (_idx, mode in ::leaderboard_modes) {
-      let diffCode = getTblValue("diffCode", mode)
-      if (!g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
-        continue
-      let reqFeature = getTblValue("reqFeature", mode)
-      if (!hasAllFeatures(reqFeature))
-        continue
-
-      this.lbModesList.append(mode.mode)
-      data.append(format("option {text:t='%s'}", mode.text))
-    }
-
-    let dataTxt = "".join(data)
-    let modesObj = showObjById("leaderboard_modes_list", true, this.scene)
-    this.guiScene.replaceContentFromText(modesObj, dataTxt, dataTxt.len(), this)
-    modesObj.setValue(0)
-  }
 
   function updateButtons() {
     if (!checkObj(this.scene))
@@ -1153,4 +955,193 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let applyCallback = Callback(@() this.fillAirStats(), this)
     this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
   }
+
+  function showMedalsSheet() {
+    this.showSheetDiv("medals")
+    if (this.medalsByCountry == null)
+      this.fillMedalsByCountry()
+
+    let selCategory = this.filterCountryName ?? profileCountrySq.value
+    local selIdx = 0
+    let view = { items = [] }
+
+    foreach (idx, filter in this.medalsFilters) {
+      if (filter == selCategory)
+        selIdx = idx
+      let medalsData = this.medalsByCountry?[filter]
+      view.items.append({
+        text = $"#{filter}",
+        objects = format("text {text:t='%s'}", $"{medalsData?.unlocked ?? 0}/{medalsData?.total ?? 1}")
+      })
+    }
+
+    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
+    let pageList = this.scene.findObject("medals_list")
+    this.guiScene.replaceContentFromText(pageList, data, data.len(), this)
+
+    let isEqualIdx = selIdx == pageList.getValue()
+    pageList.setValue(selIdx)
+    if (isEqualIdx) // func on_select don't call if same value is se already
+      this.onMedalsCountrySelect(pageList)
+  }
+
+
+  function onMedalsCountrySelect(_obj) {
+    this.fillMedalsZone()
+  }
+
+  function updateUnlockFav(_name, containerObj) {
+    showObjById("checkbox_favorites", false, containerObj)
+  }
+
+  function unlockToFavorites(_obj = null) {}
+
+  function onMedalSelect(obj) {
+    if (!checkObj(obj))
+      return
+
+    let idx = obj.getValue()
+    let itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
+    let name = checkObj(itemObj) && itemObj?.id
+    let unlock = name && getUnlockById(name)
+    if (!unlock)
+      return
+
+    let containerObj = this.scene.findObject("medals_info")
+    let descObj = checkObj(containerObj) && containerObj.findObject("medals_desc")
+    if (!checkObj(descObj))
+      return
+
+    if (!this.isPageFilling)
+      this.selMedalIdx[this.curFilter] <- idx
+
+    let config = buildUnlockDesc(::build_conditions_config(unlock))
+    let rewardText = getUnlockRewardText(name)
+    let progressData = this.isOwnStats ? config.getProgressBarData() : null
+
+    let view = {
+      title = loc($"{name}/name")
+      image = getUnlockableMedalImage(name, true)
+      unlockProgress = progressData?.value ?? 0
+      hasProgress = progressData?.show ?? false
+      mainCond = getUnlockMainCondDescByCfg(config, { showSingleStreakCondText = true })
+      multDesc = getUnlockMultDescByCfg(config)
+      conds = getUnlockCondsDescByCfg(config)
+      rewardText = rewardText != "" ? rewardText : null
+    }
+
+    let markup = handyman.renderCached("%gui/profile/profileMedal.tpl", view)
+    this.guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.replaceContentFromText(descObj, markup, markup.len(), this)
+    this.updateUnlockFav(name, containerObj)
+    this.guiScene.setUpdatesEnabled(true, true)
+  }
+
+  function fillMedalsZone() {
+    let pageIdx = this.scene.findObject("medals_list").getValue()
+    if (pageIdx < 0 || pageIdx >= this.medalsFilters.len())
+      return
+
+    this.isPageFilling = true
+    this.guiScene.setUpdatesEnabled(false, false)
+
+    local view = { items = [] }
+    let country = this.medalsFilters[pageIdx]
+    this.curFilter = country
+    view.items = this.medalsByCountry?[country].items ?? []
+    local data = handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
+
+    let ediff = getShopDiffCode()
+    let medalsObj = this.scene.findObject("medals_zone")
+    if (this.isOwnStats) {
+      let markerUnlockIds = getUnlockIds(ediff)
+      let manualUnlockIds = getManualUnlocks().map(@(unlock) unlock.id)
+      view = { items = [] }
+      foreach (chapterName, chapterItem in this.unlocksTree) {
+        local markerSeenIds = markerUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
+          || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
+        local manualSeenIds = manualUnlockIds.filter(@(id) (chapterItem.rootItems.contains(id)
+          || chapterItem.groups.findindex(@(g) g.contains(id)) != null) && canClaimUnlockRewardForUnit(id))
+
+        view.items.append({
+          itemTag = "campaign_item"
+          id = chapterName
+          itemText = $"#unlocks/chapter/{chapterName}"
+          isCollapsable = chapterItem.groups.len() > 0
+          unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
+            makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
+            makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
+          ])
+        })
+
+        if (chapterItem.groups.len() > 0)
+          foreach (groupName, groupItem in chapterItem.groups) {
+            let id = $"{chapterName}/{groupName}"
+
+            markerSeenIds = markerSeenIds.filter(@(unlockId) groupItem.contains(unlockId))
+            manualSeenIds = manualUnlockIds.filter(@(unlockId) groupItem.contains(unlockId)
+              && canClaimUnlockRewardForUnit(unlockId))
+
+            view.items.append({
+              id = id
+              itemText = chapterItem.rootItems.indexof(groupName) != null ? $"#{groupName}/name" : $"#unlocks/group/{groupName}"
+              unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
+                makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
+                makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
+              ])
+            })
+          }
+      }
+      data = "".concat(data, handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view))
+    }
+    this.guiScene.replaceContentFromText(medalsObj, data, data.len(), this)
+    this.guiScene.setUpdatesEnabled(true, true)
+
+    local curIndex = this.selMedalIdx?[country] ?? 0
+    let total = medalsObj.childrenCount()
+    curIndex = total ? clamp(curIndex, 0, total - 1) : -1
+    medalsObj.setValue(curIndex)
+
+    this.onMedalSelect(medalsObj)
+    this.isPageFilling = false
+  }
+
+
+  function fillMedalsByCountry() {
+    this.medalsByCountry = {}
+    let unlocks = getAllUnlocksWithBlkOrder()
+    foreach (cb in unlocks) {
+      let name = cb.getStr("id", "")
+      let unlockType = cb?.type ?? ""
+      let unlockTypeId = get_unlock_type(unlockType)
+      if (unlockTypeId != UNLOCKABLE_MEDAL || !isUnlockVisible(cb) || isBattleTask(cb))
+        continue
+
+      let medalCountry = cb.getStr("country", "")
+      if (medalCountry == "")
+        return
+
+      if (this.medalsByCountry?[medalCountry] == null)
+        this.medalsByCountry[medalCountry] <- {unlocked = 0, total = 0, items = [] }
+
+      let item = {
+        id = name
+        tag = "imgSelectable"
+        unlocked = this.isMedalUnlocked(name)
+        image = getUnlockableMedalImage(name)
+        imgClass = "profileMedals"
+        focusBorder = true
+      }
+      this.medalsByCountry[medalCountry].total += 1
+      if (item.unlocked)
+        this.medalsByCountry[medalCountry].unlocked += 1
+
+      this.medalsByCountry[medalCountry].items.append(item)
+    }
+  }
+
+  function isMedalUnlocked(name) {
+    return this.player?.unlocks.medal[name] != null
+  }
+
 }

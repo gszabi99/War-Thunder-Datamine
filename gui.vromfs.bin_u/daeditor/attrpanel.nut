@@ -1285,9 +1285,9 @@ function compPanel() {
 
           children = [
             {
-              size = [flex(), flex()] // free some space for combo
-              rendObj = ROBJ_WORLD_BLUR
-              color = Color(220,220,220,205)
+              size = flex() // free some space for combo
+              rendObj = ROBJ_WORLD_BLUR_PANEL
+              fillColor = Color(20,20,20,235)
               clipChildren = true
 
               flow = FLOW_VERTICAL

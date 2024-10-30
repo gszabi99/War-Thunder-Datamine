@@ -79,8 +79,9 @@ cardImg[type=veryTiny] {
   background-svg-size:0.6@sIco, 0.6@sIco;
 }
 
-.lbTable td:hover cardImg {
-  background-color:@imageHoverColor;
+cardImg[type=profile] {
+  size:1.1@dIco, 1.1@dIco;
+  background-svg-size:1.1@dIco, 1.1@dIco;
 }
 
 .lbTable td[no-hover = yes] cardImg {
@@ -189,7 +190,15 @@ imgSelectable.mediumSize > img {
 }
 imgSelectable.smallMedals {
   size:1.5@profileMedalSizeList, 1.5@profileMedalSizeList;
+  re-type:9rect;
+  foreground-image:#ui/gameuiskin#item_selection;
+  foreground-position:8;
+  foreground-repeat:expand;
+  foreground-color:#55555555;
+  margin-right:19@sf/@pf;
+  margin-bottom:20@sf/@pf;
 }
+
 imgSelectable.smallMedals > img {
   size:@profileMedalSizeList, @profileMedalSizeList;
   background-svg-size:@profileMedalSizeList, @profileMedalSizeList;
@@ -246,13 +255,11 @@ banImg {
 avatarImg {
   input-transparent:yes;
   reduceMinimalWidth:yes;
+  width:1@avatarButtonSize;
   height:1@avatarButtonSize;
-  width:h;
   background-image:#ui/gameuiskin#header_button_;
   border:no;
   margin:0;
-  padding:1@blockInterval;
-  padding-left:1@blockInterval;
   css-hier-invalidate:yes;
 }
 

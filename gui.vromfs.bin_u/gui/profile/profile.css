@@ -1,0 +1,331 @@
+@const medalItemMargin:21@sf/@pf;
+@const unlockListRightMargin:13@sf/@pf;
+@const maxAccountHeaderHeight:348@sf/@pf + 1@bh;
+@const minAccountHeaderHeight:126@sf/@pf + 1@bh;
+@const accountHeaderWidth:720@sf/@pf;
+
+@const profileFrameWidth: 1.0 *(1@rw-2@framePadding);
+@const maxProfileContentWidth: 1.0 * (2080@sf/@pf - 2@framePadding);
+
+@const profilePageLeftPartWidth: (0.17 * @profileFrameWidth) $min 373@sf/@pf;
+@const profilePageRightPartWidth: (0.7938 * @profileFrameWidth) $min 1642@sf/@pf;
+@const profilePagePartsMargin: (0.013 * @profileFrameWidth) $min 26@sf/@pf;
+
+@const profileUnockIconWidth: 160@sf/@pf;
+@const profileUnockIconPadding: 26@sf/@pf;
+@const profilePageTextColor: #FFc0c0c0;
+@const profileSeparatorExtraWidth: 128@sf/@pf;
+@const maxProfileFrameWidth: 2560@sf/@pf - 2@framePadding;
+
+
+profileContent {
+  position:relative;
+  size:@profileFrameWidth $min 1@maxProfileContentWidth, fh;
+  left:(pw-w)/2;
+}
+
+profileContentLeft {
+  position:relative;
+  size:0.18*pw, ph;
+}
+
+profileContentLeft[page=skins] {
+  size:0.30*pw, ph;
+}
+
+profileContentSeparator {
+  position:relative;
+  size:2@sf/@pf, ph - 3@blockInterval;
+  margin:0.013*pw, 0;
+  background-color:#4B4F53;
+}
+
+profileContentRight {
+  position:relative;
+  size:fw, ph;
+}
+
+profileContentBigIcon {
+  size:344@sf/@pf, 344@sf/@pf;
+  padding:10@sf/@pf, 20@sf/@pf, 30@sf/@pf, 20@sf/@pf;
+}
+
+profileContentLeft > listbox {
+  padding:0, 10@sf/@pf, 3@sf/@pf, 0;
+}
+
+bigMedalPlace[parentSize=yes] {
+  size:pw, ph;
+}
+
+imgSelectable.profileMedals {
+  size:186@sf/@pf, 186@sf/@pf;
+  re-type:9rect;
+  foreground-image:#ui/gameuiskin#item_selection;
+  foreground-position:8;
+  foreground-repeat:expand;
+  foreground-color:#22222222;
+  margin-left:@medalItemMargin;
+  margin-right:0;
+  margin-bottom:10@sf/@pf;
+}
+
+imgSelectable.profileMedals > img {
+  size:160@sf/@pf, 160@sf/@pf;
+  background-svg-size:160@sf/@pf, 160@sf/@pf;
+}
+
+medalsList {
+  position:relative;
+  overflow-y:auto;
+  width:pw + 15@sf/@pf;
+  css-hier-invalidate:yes;
+}
+
+medalsListContent {
+  position:relative;
+  behaviour:posNavigator;
+  flow:h-flow;
+  flow-align:left;
+  width:1@medalItemMargin + p.p.w + 3@sf/@pf;
+  left:-1@medalItemMargin;
+  navigatorShortcuts:yes;
+  canSelectNone:yes;
+}
+
+medalsList ScrollBar {
+  position:absolute;
+  background-color:#FF5555;
+}
+
+HorizontalListBox[class=countries_small] > shopFilter,
+HorizontalListBox[class=countries_small] {
+  height:50@sf/@pf;
+  background-color:@transparent;
+}
+
+HorizontalListBox[class=countries_small] > shopFilter[selected=yes] {
+  background-color:#77777777;
+}
+
+HorizontalListBox[class=countries_small] > shopFilter > shopFilterImg {
+  height:1.33@cIco;
+  background-svg-size:1.33@cIco, 1.33@cIco;
+}
+
+table[isProfileStatsTable=yes] {
+  padding:27@sf/@pf;
+  css-hier-invalidate:yes;
+}
+
+[isProfileStatsTable=yes] tr {
+  height:32@sf/@pf;
+}
+
+[isProfileStatsTable=yes] tr[headerRow=first]:hover,
+[isProfileStatsTable=yes] tr[headerRow=first],
+[isProfileStatsTable=yes] tr[headerRow=yes] {
+  height:67@sf/@pf;
+  bgcolor:@transparent;
+}
+
+td[isTableStatsName=yes] > text {
+  text-align:left;
+  font:@fontNormal;
+  top:ph-h;
+  padding-left:3@sf/@pf;
+}
+
+td[isTableStatsVal=yes] > text {
+  text-align:right;
+  font:@fontNormal;
+  color:#FFFFFF;
+  top:ph-h;
+}
+
+td[isTableStatsName=yes],
+td[isTableStatsVal=yes] {
+  min-width:0;
+  width:fw;
+  padding:5@sf/@pf, 0;
+}
+
+table[isProfileStatsTable=yes] > tr[headerRow=yes] > td,
+table[isProfileStatsTable=yes] > tr[headerRow=first] > td {
+  foreground-color:@headerOptionSelectedColor;
+  foreground-position:0, h-40@listboxItemsInterval, 0, 0;
+}
+
+table[isProfileStatsTable=yes] > tr[headerRow=yes] > td > text,
+table[isProfileStatsTable=yes] > tr[headerRow=first] > td > text {
+  re-type:fgPict;
+  position:absolute;
+  width:p.p.w;
+  text-align:center;
+  font:@fontNormalBold;
+  pos:50%p.p.w-50%w, ph-1.1h;
+  color:#FFFFFF;
+  foreground-color:#4B4F53;
+  padding-bottom:13@sf/@pf;
+  foreground-position:0, h-2@listboxItemsInterval, 0, 0;
+}
+
+profilePage .lbTable td:hover cardImg {
+  background-color:#FFFFFF;
+}
+
+[isBigSizeList=yes] > shopFilter {
+  size:pw, 40@sf/@pf;
+  foreground-color:#00000000;
+  margin:0, 0, 0, 8@sf/@pf;
+}
+
+[isBigSizeList=yes] > shopFilter > shopFilterText {
+  font:@fontNormal;
+  color:#908f8f;
+}
+
+[isBigSizeList=yes] > shopFilter > text {
+  position:absolute;
+  pos:pw-w-19@sf/@pf, (ph-h)/2;
+  font:@fontNormal;
+  color:#908f8f;
+}
+
+[isBigSizeList=yes] > shopFilter:hover > shopFilterText,
+[isBigSizeList=yes] > shopFilter[selected=yes] > shopFilterText,
+[isBigSizeList=yes] > shopFilter[selected=yes] > text,
+[isBigSizeList=yes] > shopFilter:hover > text {
+  color:#FFFFFF;
+}
+
+[isBigSizeList=yes] mission_item_text {
+  font:@fontNormal;
+  color:#908f8f;
+}
+
+[isBigSizeList=yes] mission_item_unlocked,
+[isBigSizeList=yes] campaign_item {
+  height:40@sf/@pf;
+  margin-top:0;
+  margin-right:0;
+  margin-left:0;
+  margin-bottom:8@sf/@pf;
+}
+
+[isBigSizeList=yes] mission_item_unlocked:hover  > missionDiv > mission_item_text,
+[isBigSizeList=yes] campaign_item:hover  > missionDiv > mission_item_text,
+[isBigSizeList=yes] mission_item_unlocked[selected=yes] > missionDiv > mission_item_text,
+[isBigSizeList=yes] campaign_item[selected=yes] > missionDiv > mission_item_text {
+  color:#FFFFFF;
+}
+
+listbox[isProfileUnlocksList=yes] {
+  size:pw + 1@unlockListRightMargin, fh;
+}
+
+listbox[isProfileUnlocksList=yes] > expandable {
+  pos:0, 0;
+  width:p.p.w;
+  margin-top:0;
+  margin-bottom:@blockInterval;
+  re-type:9rect;
+  foreground-image:#ui/gameuiskin#item_selection;
+  foreground-position:8;
+  foreground-repeat:expand;
+  foreground-color:#22222222;
+}
+
+listbox[isProfileUnlocksList=yes] > expandable > selImg {
+  padding:0, 0;
+}
+
+listbox[isProfileUnlocksList=yes] achievementTitle {
+  margin-left:27@sf/@pf;
+}
+
+listbox[isProfileUnlocksList=yes] achievementTitle activeText {
+  font:@fontNormal;
+}
+
+listbox[isProfileUnlocksList=yes] iconLayer {
+  min-height:ph;
+}
+
+hiddenDiv[isProfilePageUnlock=yes] {
+  padding-top:0;
+}
+hiddenDiv[isProfilePageUnlock=yes] layeredIconContainer {
+  margin-bottom:0;
+}
+
+hiddenDiv[isProfilePageUnlock=yes] unlockCondition {
+  padding-left:0;
+  font:@fontNormal;
+  width:pw/4;
+  margin-right:70@sf/@pf;
+  margin-top:6@sf/@pf;
+  margin-bottom:6@sf/@pf;
+}
+
+hiddenDiv[isProfilePageUnlock=yes] unlockCondition > textarea {
+  font:@fontNormal;
+}
+
+hiddenDiv[isProfilePageUnlock=yes] Button_text {
+  margin-bottom:0;
+}
+
+challengeDescriptionProgress[isProfileDecalsProgress=yes] {
+  margin-top:22@sf/@pf;
+  margin-bottom:15@sf/@pf;
+  height:5@sf/@pf;
+  width:536@sf/@pf;
+}
+
+challengeDescriptionProgress[isProfileUnlockProgress=yes] {
+  width:500@sf/@pf;
+  height:5@sf/@pf;
+}
+
+profilePageText {
+  behavior:textarea;
+  re-type:textarea;
+  font:@fontSmall;
+}
+
+profilePageTitle {
+  behavior:textarea;
+  re-type:textarea;
+  font:@fontNormal;
+  color:#FFFFFF;
+}
+
+frameSeparator {
+  background-color:#4B4F53;
+  size:pw, 3@sf/@pf;
+}
+
+frame[needShortSeparators=yes] frameSeparator {
+  re-type:9rect;
+  size:pw + 1@profileSeparatorExtraWidth, 3@sf/@pf;
+  background-image:!ui/images/profile/separator_gradient.svg;
+  background-repeat:expand-svg;
+  background-color:#FFFFFF;
+  background-position:64px, 0;
+  background-svg-size:256, 2;
+}
+
+frameSeparator[position=root] {
+  size:sw, 3@sf/@pf;
+}
+
+frame[needShortSeparators=yes] frameSeparator[position=root] {
+  size:sw + 1@profileSeparatorExtraWidth, 3@sf/@pf;
+  max-width:1@maxProfileFrameWidth + 1@profileSeparatorExtraWidth;
+  left:(sw-w)/2;
+}
+
+frame[profilePage=yes] navBar{
+  background-color:@transparent;
+}

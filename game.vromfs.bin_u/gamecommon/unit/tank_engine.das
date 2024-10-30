@@ -13,7 +13,7 @@ require %game.dm.dm_events
 [es(tag=server)]
 def tank_engine_updater_es(act : UpdateStageInfoAct;
                            eid : EntityId;
-                           uid : int;
+                           unit__ref : UnitRef;
                            var unit_fx : UnitFx;
                            tank_engine__overheatDelay : float;
                            tank_engine__overheatDamageCooldown : float&;
@@ -25,10 +25,9 @@ def tank_engine_updater_es(act : UpdateStageInfoAct;
                            repair_system_remaining_repair_time : float;
                            var tank_engine__overheat : bool&;
                            var tank_engine__overheatDamageTime : float&)
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
-
   let gm = unit |> as_gm()
   if gm == null || !gm.isEngineWorking
     tank_engine__overheatDamageTime = -1.f
@@ -53,7 +52,7 @@ def tank_engine_updater_es(act : UpdateStageInfoAct;
 
 [es(tag=server)]
 def tank_engine_init_es(evt : CmdInitComponent;
-                        uid : int;
+                        var unit__ref : UnitRef;
                         var unit_fx : UnitFx;
                         var tank_engine__overheatDelay : float&;
                         var tank_engine__overheatDamage : float&;
@@ -62,7 +61,7 @@ def tank_engine_init_es(evt : CmdInitComponent;
                         var tank_engine__radiator_parts : PartIdList&;
                         var tank_engine__engine_parts : PartIdList&;
                         var tank_engine__brokenRadiatorFxEventId : int&)
-  var unit = get_unit(uid)
+  var unit = unit__ref.unit
   assert(unit != null)
   if unit == null || !unit.isGroundModel
     return
@@ -101,17 +100,16 @@ def tank_engine_init_es(evt : CmdInitComponent;
 [es(tag=server)]
 def tank_engine_on_damage_es(evt : EventUnitDamage;
                              eid : EntityId;
-                             uid : int;
+                             var unit__ref : UnitRef;
                              var unit_fx : UnitFx;
                              tank_engine__radiator_parts : PartIdList;
                              tank_engine__overheatDamageTime : float;
                              tank_engine__brokenRadiatorFxEventId : int;
                              var tank_engine__overheatOffender : OffenderData&;
                              var tank_engine__overheat : bool&)
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  var unit = unit__ref.unit
+  if unit.isDelayed
     return
-
   if int(evt.hpFixed) == 0 && tank_engine__overheatDamageTime < 0.0
     var containPart = false
     for partId in tank_engine__radiator_parts

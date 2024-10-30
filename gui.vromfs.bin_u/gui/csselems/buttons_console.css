@@ -211,6 +211,12 @@ Button_text[type=wwArmyFlyOut]
   mouse-pointer-centering:10, 50;
 }
 
+tr[hotkeyOpt=yes] > td > Button_text {
+  max-width:0.5*(1@optContainerControlWidth-1@blockInterval);
+  margin-right:1@blockInterval;
+  mouse-pointer-centering:20, 50;
+}
+
 top_right_holder > Button_text {
   showConsoleImage:no;
 }
@@ -2027,13 +2033,12 @@ expandable:hover Button_text[enableOn=hoverOrSelect] {
 
 Button_text.profileImg {
   reduceMinimalWidth:yes;
-  height:1@avatarButtonSize;
-  width:h;
+  width:1@avatarButtonSize;
+  height:w;
   background-image:#ui/gameuiskin#header_button_;
   border:no;
   margin:0;
-  padding:1@blockInterval;
-  padding-left:1@blockInterval;
+  padding:0;
   css-hier-invalidate:yes;
 }
 
@@ -2540,6 +2545,11 @@ Button_text[visualStyle=noBgr] {
   background-color: @transparent;
   border-color:@transparent;
   reduceMinimalWidth:yes;
+}
+
+Button_text[visualStyle=noBgr][isProfileTitleBtn = yes] {
+  padding:0;
+  min-height:0;
 }
 
 Button_text[visualStyle=noBgr][isTextArea=yes] {

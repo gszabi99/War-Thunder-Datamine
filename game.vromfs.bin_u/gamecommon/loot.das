@@ -14,6 +14,7 @@ require app
 require Mission
 require MPlayer
 require Economic
+require %game.unit.unit_events
 
 let lootType = [[string[4] "scrap_metal_loot"; "vehicle_parts_loot"; "armor_loot"; "electronics_loot"]]
 
@@ -29,18 +30,14 @@ def loot_init(evt : Event;
 
 [es(tag=server)]
 def loot_carrier_update_es(act : UpdateStageInfoAct;
-                           active : bool;
-                           uid : int;
+                           unit__ref : UnitRef;
                            eid aka unit_eid : EntityId;
                            loot_carrier__capacity : int;
                            var loot_carrier__loot_count : IntList&;
                            var loot_carrier__loot_type : IntList&;
                            var loot_carrier__loot_itemId : IntList&)
-
-  if (!active)
-    return
-  let unit = get_unit(uid)
-  if (unit == null || unit.isDelayed || !unit.isAlive || !unit.isTank)
+  let unit = unit__ref.unit
+  if unit.isDelayed || !unit.isAlive || !unit.isTank
     return
 
   let bbox = unit.unitTm * unit.boundingBox
@@ -76,20 +73,21 @@ def loot_carrier_update_es(act : UpdateStageInfoAct;
 [es(tag=server)]
 def loot_carrier_rage_update_es(act : UpdateStageInfoAct;
                                 uid aka hero_uid : int;
+                                unit__ref aka hero_unit__ref : UnitRef;
                                 var loot_carrier__rage aka hero_loot_carrier__rage : int&)
   if hero_loot_carrier__rage >= 5
     return
-  let hero = get_unit(hero_uid)
-  if hero == null || hero.isDelayed || !hero.isAlive || hero.myPlayer == null
+  let hero = hero_unit__ref.unit
+  if hero.isDelayed || !hero.isAlive || hero.myPlayer == null
     return
   let playerIdx = int(hero.myPlayer.id)
   var heroBbox = hero.boundingBox
   bbox3_inflate(heroBbox, 2.)
   heroBbox = hero.unitTm * heroBbox
-  find_query() <| $ [es] (uid aka victim_uid : int; var loot_carrier__rage aka victim_loot_carrier__rage : int&; dead_unit__player_id : int)
+  find_query() <| $ [es] (uid aka victim_uid : int; var unit__ref aka victim_unit__ref : UnitRef; var loot_carrier__rage aka victim_loot_carrier__rage : int&; dead_unit__player_id : int)
     if victim_loot_carrier__rage >= 0 && victim_uid != hero_uid
-      let unit = get_unit(victim_uid)
-      if unit != null && !unit.isDelayed && !unit.isAlive && !is_allies(unit.army, hero.army) && !unit.bailoutAtExitZone && (dead_unit__player_id < 0 || dead_unit__player_id != playerIdx)
+      let unit = victim_unit__ref.unit
+      if !unit.isDelayed && !unit.isAlive && !is_allies(unit.army, hero.army) && !unit.bailoutAtExitZone && (dead_unit__player_id < 0 || dead_unit__player_id != playerIdx)
         let bbox = unit.unitTm * unit.boundingBox
         if heroBbox & bbox
           if victim_loot_carrier__rage > hero_loot_carrier__rage
@@ -102,24 +100,22 @@ def loot_carrier_rage_update_es(act : UpdateStageInfoAct;
 
 [es(tag=server, track=loot_carrier__rage)]
 def loot_carrier_rage_track(evt : Event;
-                            uid : int;
+                            var unit__ref : UnitRef;
                             loot_carrier__rage : int)
-  get_unit_for_edit(uid) <| $(var unit)
-    if unit != null
-      let flag = uint(LowRateUnitFlag LRUF_FORCE_VISIBLE_ON_MAP)
-      if loot_carrier__rage >= 5
-        *unit |> setLowRateUnitFlags(flag)
-      else
-        *unit |> clrLowRateUnitFlags(flag)
+  let flag = uint(LowRateUnitFlag LRUF_FORCE_VISIBLE_ON_MAP)
+  if loot_carrier__rage >= 5
+    *unit__ref.unit |> setLowRateUnitFlags(flag)
+  else
+    *unit__ref.unit |> clrLowRateUnitFlags(flag)
 
-[es(tag=render, track=loot_carrier__rage, on_appear)]
+[es(tag=render, track=loot_carrier__rage, on_event=CmdInitComponent)]
 def loot_carrier_rage_render_track(evt : Event;
-                                   uid : int;
+                                   var unit__ref : UnitRef;
                                    loot_carrier__rage : int)
-  get_unit_for_edit(uid) <| $(var unit)
-    if unit != null && !unit.isDelayed
-      let name = loot_carrier__rage >= 0 ? "rage_0{loot_carrier__rage}" : "rage_00"
-      *unit |> changeFlagTex(name)
+  var unit = unit__ref.unit
+  if !unit.isDelayed
+    let name = loot_carrier__rage >= 0 ? "rage_0{loot_carrier__rage}" : "rage_00"
+    *unit |> changeFlagTex(name)
 
 [es(tag=sound, track=loot_carrier__rage, REQUIRE=controlledHero)]
 def loot_carrier_rage_sound_track(evt : Event;
@@ -145,12 +141,12 @@ def on_loot_carrier_death_es(evt : EventOnUnitDead)
 
 [es(tag=server)]
 def on_unit_death_es(evt : EventOnUnitDead;
-                     uid : int;
+                     var unit__ref : UnitRef;
                      loot_carrier__rage : int;
                      var killerEid : EntityId&)
   killerEid = evt.killer_eid
-  let unit = get_unit(uid)
-  if (unit == null || unit.myPlayer == null)
+  var unit = unit__ref.unit
+  if unit.myPlayer == null
     return
   let addCnt = unit.bailoutAtExitZone ? 1 : 0
   if loot_carrier__rage + addCnt > 0
@@ -158,13 +154,11 @@ def on_unit_death_es(evt : EventOnUnitDead;
 
 [es(tag=server)]
 def lost_loot_after_death_es(evt : EventOnUnitDead;
-                             uid : int;
+                             unit__ref : UnitRef;
                              var loot_carrier__loot_count : IntList&;
                              var loot_carrier__loot_type : IntList&;
                              var loot_carrier__loot_itemId : IntList&)
-  let unit = get_unit(uid)
-  if unit == null
-    return
+  let unit = unit__ref.unit
   let player = unit.myPlayer
   for lType, cnt, itemId in loot_carrier__loot_type, loot_carrier__loot_count, loot_carrier__loot_itemId
     if lType < 0 || lType >= length(lootType) || cnt <= 0
@@ -268,13 +262,13 @@ def set_rage_item_award(evt : EventOnSessionEnd;
 
 [es(tag=server)]
 def set_rage_item_from_alive_unit_award(evt : EventOnSessionEnd;
-                                        uid : int;
+                                        unit__ref : UnitRef;
                                         loot_carrier__rage : int;
                                         var loot_carrier__loot_count : IntList&;
                                         var loot_carrier__loot_type : IntList&;
                                         var loot_carrier__loot_itemId : IntList&)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed || !unit.isAlive || unit.myPlayer == null
+  let unit = unit__ref.unit
+  if unit.isDelayed || !unit.isAlive || unit.myPlayer == null
     return
   let player = unit.myPlayer
   if loot_carrier__rage > 0

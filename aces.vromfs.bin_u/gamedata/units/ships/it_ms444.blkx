@@ -1940,7 +1940,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
@@ -1949,7 +1949,6 @@
         "breechDP": "auxiliary_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "isBulletBelt": true,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -2041,7 +2040,7 @@
       },
       {
         "trigger": "gunner2",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
@@ -2050,7 +2049,6 @@
         "breechDP": "auxiliary_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "isBulletBelt": true,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -2142,7 +2140,7 @@
       },
       {
         "trigger": "gunner3",
-        "triggerGroup": "machinegun",
+        "triggerGroup": "secondary",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
@@ -2151,7 +2149,6 @@
         "breechDP": "auxiliary_caliber_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "isBulletBelt": true,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -3147,22 +3144,6 @@
     "ammo1": {
       "weaponTrigger": [
         "gunner0",
-        "gunner1"
-      ],
-      "shells": {
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "damageEffect": "ammunition_storage_fixed",
-        "fireEvent": "ammo_fire_1",
-        "explosionEvent": "ammo_explosion_1",
-        "ammunition_storage_01_dm": {
-          "count": 3600
-        }
-      }
-    },
-    "ammo2": {
-      "weaponTrigger": [
-        "gunner2",
         "gunner3"
       ],
       "shells": {
@@ -3173,6 +3154,22 @@
         "explosionEvent": "ammo_explosion_2",
         "ammunition_storage_02_dm": {
           "count": 3800
+        }
+      }
+    },
+    "ammo2": {
+      "weaponTrigger": [
+        "gunner1",
+        "gunner2"
+      ],
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "damageEffect": "ammunition_storage_fixed",
+        "fireEvent": "ammo_fire_2",
+        "explosionEvent": "ammo_explosion_2",
+        "ammunition_storage_01_dm": {
+          "count": 3600
         }
       }
     }

@@ -121,7 +121,15 @@ function toggleUnlockFav(unlockId) {
 
 function fillUnlockFavCheckbox(obj) {
   let isUnlockInFavorites = isUnlockFav(obj.unlockId)
-  obj.setValue(isUnlockInFavorites)
+  if (obj?.isChecked != null) {
+    obj.setValue(isUnlockInFavorites
+      ? loc("preloaderSettings/untrackProgress")
+      : loc("preloaderSettings/trackProgress")
+    )
+    obj.isChecked = isUnlockInFavorites ? "yes" : "no"
+  } else
+    obj.setValue(isUnlockInFavorites)
+
   obj.tooltip = isUnlockInFavorites
     ? loc("mainmenu/UnlockAchievementsRemoveFromFavorite/hint")
     : loc("mainmenu/UnlockAchievementsToFavorite/hint")
@@ -141,17 +149,24 @@ function unlockToFavorites(obj, updateCb = null) {
   if (u.isEmpty(unlockId))
     return
 
+  let isButton = obj?.isChecked != null
+  let isChecked = isButton ? obj?.isChecked == "yes" : obj.getValue()
+
   if (!canAddFavorite()
-      && obj.getValue() // Don't notify if value set to false
+      && isChecked // Don't notify if value set to false
       && !(unlockId in getFavoriteUnlocks())) { // Don't notify if unlock wasn't in list already
     let num = FAVORITE_UNLOCKS_LIMIT
     let msg = loc("mainmenu/unlockAchievements/limitReached", { num })
     addPopup("", colorize("warningTextColor", msg))
-    obj.setValue(false)
+    if (isButton) {
+      obj.isChecked = "no"
+      obj.setValue(loc("preloaderSettings/trackProgress"))
+    } else
+      obj.setValue(false)
     return
   }
 
-  obj.tooltip = obj.getValue()
+  obj.tooltip = isChecked
     ? addUnlockToFavorites(unlockId)
     : removeUnlockFromFavorites(unlockId)
 

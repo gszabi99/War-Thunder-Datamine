@@ -998,6 +998,7 @@ mSettings = {
   graphicsQuality = { widgetType = "list" def = "high" blk = "graphicsQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
+    infoImgPattern = "#ui/images/settings/graphicsQuality/%s"
   }
 
   antialiasingMode = { widgetType = "list" def = "off" blk = "video/antialiasing_mode" restart = false
@@ -1007,6 +1008,7 @@ mSettings = {
     onChanged = "antialiasingModeClick"
     hidden_values = { low_fxaa = "low_fxaa", high_fxaa = "high_fxaa", taa = "taa" }
     enabled = @() !getGuiValue("compatibilityMode")
+    infoImgPattern = "#ui/images/settings/antiAliasing/%s"
   }
 
   antialiasingUpscaling = { widgetType = "list" def = "native" blk = "video/antialiasing_upscaling" restart = false
@@ -1014,10 +1016,13 @@ mSettings = {
       desc.values <- antiAliasingUpscalingOptions(blk)
     }
     enabled = @() hasAntialiasingUpscaling() && !getGuiValue("compatibilityMode")
+    infoImgPattern = "#ui/images/settings/upscaling/%s"
   }
 
   antialiasingSharpening = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/antialiasing_sharpening" restart = false
     enabled = @() hasAntialiasingSharpening() && !getGuiValue("compatibilityMode")
+    infoImgPattern = "#ui/images/settings/sharpening/%s"
+    availableInfoImgVals = [0, 33, 66, 100]
   }
 
   ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
@@ -1027,6 +1032,7 @@ mSettings = {
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 1.0)
     }
+    infoImgPattern = "#ui/images/settings/ssaa/%s"
     setGuiValueToConfig = function(blk, desc, val) {
       let res = (val == "4X") ? 4.0 : 1.0
       setBlkValueByPath(blk, desc.blk, res)
@@ -1038,6 +1044,7 @@ mSettings = {
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 2)
     }
+    infoImgPattern = "#ui/images/settings/anisotropy/%s"
     setGuiValueToConfig = function(blk, desc, val) {
       let anis = (val == "16X") ? 16 : (val == "8X") ? 8 : (val == "4X") ? 4 : (val == "2X") ? 2 : 1
       setBlkValueByPath(blk, desc.blk, anis)
@@ -1048,6 +1055,7 @@ mSettings = {
       let strVal = val.tostring()
       return "".concat(strVal, "X")
     }
+
   }
   latency = { widgetType = "list" def = "off" blk = "video/latency" restart = false
     init = function(_blk, desc) {
@@ -1112,6 +1120,7 @@ mSettings = {
   }
   compatibilityShadowQuality = { widgetType = "list" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
     values = [ "low", "medium" ]
+    infoImgPattern = "#ui/images/settings/compShadowQuality/%s"
   }
   fxResolutionQuality = { widgetType = "list" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"
@@ -1132,6 +1141,7 @@ mSettings = {
         res = 2.0
       setBlkValueByPath(blk, desc.blk, res)
     }
+    infoImgPattern = "#ui/images/settings/resolution/%s"
     configValueToGuiValue = function(val) {
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
         val = 2.0
@@ -1152,6 +1162,8 @@ mSettings = {
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
+    infoImgPattern = "#ui/images/settings/rendinstRange/%s"
+    availableInfoImgVals = [50, 100, 150, 200, 250, 300, 350]
   }
   skyQuality = { widgetType = "slider" def = 1 min = 0 max = 2 blk = "graphics/skyQuality" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 2 - desc.def) }
@@ -1173,7 +1185,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/panoramaQuality/%s"
     availableInfoImgVals = [7, 10, 13, 16]
   }
-  fxDensityMul = { widgetType = "slider" def = 100 min = 20 max = 100 blk = "graphics/fxDensityMul" restart = true
+  fxDensityMul = { widgetType = "slider" def = 100 min = 20 max = 100 blk = "graphics/fxDensityMul" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0)}
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
@@ -1186,6 +1198,8 @@ mSettings = {
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, desc.def / 100.0) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, val / 100.0) }
     configValueToGuiValue = @(val)(val * 100).tointeger()
+    infoImgPattern = "#ui/images/settings/grassRange/%s"
+    availableInfoImgVals = [10, 55, 100, 145, 180]
   }
   tireTracksQuality = { widgetType = "list" def = "none" blk = "graphics/tireTracksQuality" restart = false
     values = [ "none", "medium", "high", "ultrahigh" ]
@@ -1205,6 +1219,7 @@ mSettings = {
   }
   giQuality = { widgetType = "list" def = "low" blk = "graphics/giQuality" restart = false
     values = [ "low", "medium", "high" ], isVisible = @() true
+    infoImgPattern = "#ui/images/settings/GI/%s"
   }
   dirtSubDiv = { widgetType = "list" def = "high" blk = "graphics/dirtSubDiv" restart = false
     values = [ "high", "ultrahigh" ]
@@ -1216,6 +1231,7 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, res)
     }
     configValueToGuiValue = @(val)(val == 2) ? "ultrahigh" : "high"
+    infoImgPattern = "#ui/images/settings/terrainDeformation/%s"
   }
   ssaoQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssaoQuality" restart = false
     onChanged = "ssaoQualityClick"
@@ -1277,6 +1293,8 @@ mSettings = {
   vrStreamerMode = { widgetType = "checkbox" def = false blk = "video/vrStreamerMode" restart = false
   }
   displacementQuality = { widgetType = "slider" def = 2 min = 0 max = 4 blk = "graphics/displacementQuality" restart = false
+    infoImgPattern = "#ui/images/settings/terrainDisplacement/%s"
+    availableInfoImgVals = [0, 1, 2, 3, 4]
   }
   contactShadowsQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "graphics/contactShadowsQuality" restart = false
     onChanged = "contactShadowsQualityClick"
@@ -1288,42 +1306,52 @@ mSettings = {
   rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false enabled = hasRT
     values = ["off", "low", "medium", "high", "ultra", "custom"]
     onChanged = "rayTracingClick" isVisible = @() isRTVisible()
+    infoImgPattern = "#ui/images/settings/rtQuality/%s"
   }
   bvhDistance = { widgetType = "slider" def = 3000 min = 1000 max = 6000 blk = "graphics/bvhRiGenRange" restart = false enabled = hasRTGUI
   isVisible = @() isRTVisible()
+    infoImgPattern = "#ui/images/settings/bvhDistance/%s"
+    availableInfoImgVals = [1000, 2650, 4300, 6000]
   }
   rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false
     values = ["off", "low", "medium", "high"] enabled = hasRTGUI
     onChanged = "rtOptionChanged" isVisible = @() isRTAOVisible()
+    infoImgPattern = "#ui/images/settings/rtAOQuality/%s"
   }
   rtsm = { widgetType = "list" def = "off" blk = "graphics/enableRTSM" restart = false
     values = [ "off", "sun", "sun_and_dynamic" ]
     enabled = hasRTGUI
     onChanged = "rtOptionChanged" isVisible = @() isRTSMVisible()
+    infoImgPattern = "#ui/images/settings/rtShadows/%s"
   }
   rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false
     values = ["off", "low", "medium", "high"]
     enabled = hasRTGUI
     onChanged = "rtrClick" isVisible = @() isRTVisible()
+    infoImgPattern = "#ui/images/settings/rtReflections/%s"
   }
   rtrRes = { widgetType = "list" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
     enabled = hasRTR
     onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    infoImgPattern = "#ui/images/settings/rtResolution/%s"
   }
   rtrWater = { widgetType = "checkbox" def = false blk = "graphics/RTRWater" restart = false
     enabled = hasRTGUI
     onChanged = "rtrWaterClick" isVisible = @() isRTVisible()
+    infoImgPattern = "#ui/images/settings/rtWater/%s"
   }
   rtrWaterRes = { widgetType = "list" def = "half" blk = "graphics/RTRWaterRes" restart = false
     values = ["half", "full"]
     enabled = hasRTRWater
     onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    infoImgPattern = "#ui/images/settings/rtWaterResolution/%s"
   }
   rtrTranslucent = { widgetType = "list" def = "off" blk = "graphics/RTRTranslucent" restart = false
     values = ["off", "medium", "high"]
     enabled = hasRTGUI
     onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    infoImgPattern = "#ui/images/settings/rtTransQuality/%s"
   }
 }
 //------------------------------------------------------------------------------
@@ -1771,8 +1799,8 @@ function fillGuiOptions(containerObj, handler) {
         let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
         option = "".concat("tr { id:t='", id, "_tr'; enable:t='", enable, "' selected:t='no' size:t='pw, ", mRowHeightScale,
           "@optConatainerHeight' overflow:t='hidden' optContainer:t='yes'  on_hover:t='onOptionContainerHover' on_unhover='onOptionContainerUnhover'",
-          " td { width:t='0.5pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
-          "@optConatainerHeight' optiontext {text:t='", label, "'} }",  " td { width:t='0.5pw'; cellType:t='right';  height:t='",
+          " td { width:t='0.55pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
+          "@optConatainerHeight' optiontext {text:t='", label, "'} }",  " td { width:t='0.45pw'; cellType:t='right';  height:t='",
           mRowHeightScale, "@optConatainerHeight' padding-left:t='@optPad'; cellSeparator{}", option, " } }"
         )
       }

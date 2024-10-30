@@ -1,7 +1,5 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
-let { format } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 
@@ -149,7 +147,7 @@ let mouseAxesImages = {
 
 let curPreset = isPlatformSony ? ICO_PRESET_PS4 : ICO_PRESET_DEFAULT
 
-let getTexture = @(id, preset = curPreset) (id in controlsList) ? preset + id + SVG_EXT : ""
+let getTexture = @(id, preset = curPreset) (id in controlsList) ? "".concat(preset, id, SVG_EXT) : ""
 let getTextureByButtonIdx = @(idx) getTexture(btnNameByIndex?[idx])
 
 local cssString = null
@@ -159,7 +157,7 @@ let getCssString = function() {
 
   cssString = ""
   foreach (name, _value in controlsList)
-    cssString += format("@const control_%s:%s;", name, getTexture(name))
+    cssString = "".concat(cssString, "@const control_", name, ":", getTexture(name), ";")
   return cssString
 }
 
@@ -167,7 +165,7 @@ let getGamepadAxisTexture = @(axisVal, _preset = curPreset) getTexture(gamepadAx
 
 let getMouseTexture = function(idx, preset = curPreset) {
   if (preset == ICO_PRESET_PS4 && idx in ps4TouchpadImagesByMouseIdx)
-    return preset + ps4TouchpadImagesByMouseIdx[idx] + SVG_EXT
+    return "".concat(preset, ps4TouchpadImagesByMouseIdx[idx], SVG_EXT)
 
   if (idx in mouseButtonTextures)
     return $"#ui/gameuiskin#{mouseButtonTextures[idx]}"

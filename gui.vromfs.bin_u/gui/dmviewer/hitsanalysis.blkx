@@ -189,11 +189,19 @@
               "padding": "1@comboOptionPadding, 1@dp",
               "size": "pw, @baseTrHeight - 4@dp",
               "background-color": "@black",
+              "tooltip": "$tooltipObj",
               "textareaNoTab": {
                 "id": "bulletName",
                 "text": "",
                 "valign": "center",
                 "input-transparent": "yes"
+              },
+              "tooltipObj": {
+                "id": "bulletTooltip",
+                "display": "hide",
+                "tooltipId": "",
+                "on_tooltip_open": "onGenericTooltipOpen",
+                "on_tooltip_close": "onTooltipObjClose"
               }
             },
             {

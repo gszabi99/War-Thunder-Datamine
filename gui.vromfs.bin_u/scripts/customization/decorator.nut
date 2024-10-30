@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -179,14 +178,14 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 
     if (!u.isEmpty(this.units)) {
       let visUnits = this.units.filter(@(unit) getAircraftByName(unit)?.isInShop)
-      important.append(loc("options/unit") + loc("ui/colon") +
-        loc("ui/comma").join(visUnits.map(@(unit) getUnitName(unit)), true))
+      important.append("".concat(loc("options/unit"), loc("ui/colon"),
+        loc("ui/comma").join(visUnits.map(@(unit) getUnitName(unit)), true)))
     }
 
     if (this.countries) {
       let visCountries = this.countries.filter(@(c) isInArray(c, shopCountriesList))
-      important.append(loc("events/countres") + " " +
-        loc("ui/comma").join(visCountries.map(@(c) loc(c)), true))
+      important.append(" ".concat(loc("events/countres"),
+        loc("ui/comma").join(visCountries.map(@(c) loc(c)), true)))
     }
 
     if (this.limit != -1)
@@ -229,11 +228,8 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
     if (this.cost.isZero())
       return ""
 
-    return loc("ugm/price")
-           + loc("ui/colon")
-           + this.cost.getTextAccordingToBalance()
-           + "\n"
-           + loc("shop/object/can_be_purchased")
+    return "".concat(loc("ugm/price"), loc("ui/colon"), this.cost.getTextAccordingToBalance(),
+      "\n", loc("shop/object/can_be_purchased"))
   }
 
   function getSmallIcon() {

@@ -2280,12 +2280,12 @@
     ],
     "headPos": [
       5.945,
-      1.615,
+      1.595,
       0.0
     ],
     "headPosOnShooting": [
       6.045,
-      1.615,
+      1.595,
       0.0
     ],
     "hasAirCannonIlsMode": true,
@@ -2396,6 +2396,10 @@
         -1.0,
         1.0
       ],
+      "trimmer_indicator": [
+        -1.0,
+        1.0
+      ],
       "weapon2": [
         0.0,
         1.0
@@ -2413,7 +2417,7 @@
         0.0,
         1.0
       ],
-      "flaps_fixed": false,
+      "flaps_fixed": true,
       "speed": [
         0.0,
         514.444
@@ -2458,26 +2462,6 @@
         0.0,
         100000.0
       ],
-      "altitude1_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude2_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude2_hour": [
-        0.0,
-        10000.0
-      ],
-      "altitude2_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude3_min": [
-        0.0,
-        1000.0
-      ],
       "radio_altitude": [
         0.0,
         1000.0
@@ -2496,14 +2480,6 @@
         80.0
       ],
       "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "aviahorizon_pitch1": [
-        -80.0,
-        80.0
-      ],
-      "aviahorizon_roll1": [
         -180.0,
         180.0
       ],
@@ -2839,6 +2815,17 @@
         },
         {
           "textureArea": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": {
+            "type": "digital_devices"
+          }
+        },
+        {
+          "textureArea": [
             0.0,
             0.0,
             1.0,
@@ -2863,6 +2850,186 @@
           }
         }
       ]
+    },
+    "digitalDevices": {
+      "REL_RPM_L": {
+        "pos": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "relative_rpm",
+        "format": "%.1f",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "REL_RPM_R": {
+        "pos": [
+          0.5,
+          0.0
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "relative_rpm1",
+        "format": "%.1f",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "EGT_L": [
+        {
+          "pos": [
+            0.0,
+            0.25
+          ],
+          "size": [
+            0.5,
+            0.25
+          ],
+          "color": [
+            0,
+            255,
+            0
+          ],
+          "fontSize": 100,
+          "value": "water_temperature",
+          "format": "%d",
+          "padding": [
+            20.0,
+            0.0
+          ]
+        },
+        {
+          "pos": [
+            0.5,
+            0.25
+          ],
+          "size": [
+            0.5,
+            0.25
+          ],
+          "color": [
+            0,
+            255,
+            0
+          ],
+          "fontSize": 100,
+          "value": "water_temperature1",
+          "format": "%d",
+          "padding": [
+            20.0,
+            0.0
+          ]
+        }
+      ],
+      "RPM_L": {
+        "pos": [
+          0.0,
+          0.5
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "rpm",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "RPM_R": {
+        "pos": [
+          0.5,
+          0.5
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "rpm1",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "OIL_PRESS_L": {
+        "pos": [
+          0.0,
+          0.75
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "oil_pressure",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "OIL_PRESS_R": {
+        "pos": [
+          0.5,
+          0.75
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "oil_pressure1",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      }
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -3646,7 +3813,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120a_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
               "emitter": "aim_9_002",
               "bullets": 1,
               "external": true,
@@ -7987,7 +8154,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120a_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
               "emitter": "aim_9_003",
               "bullets": 1,
               "external": true,

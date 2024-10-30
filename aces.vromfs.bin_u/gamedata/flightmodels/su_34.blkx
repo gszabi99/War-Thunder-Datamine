@@ -2910,10 +2910,6 @@
         "blk": "gameData/FlightModels/weaponPresets/su_34_default.blk"
       },
       {
-        "name": "su_34_r73_r77_default",
-        "blk": "gameData/FlightModels/weaponPresets/su_34_r73_r77_default.blk"
-      },
-      {
         "name": "su_34_r73",
         "blk": "gameData/FlightModels/weaponPresets/su_34_r73.blk"
       },
@@ -3014,12 +3010,12 @@
         "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_kab_500kr.blk"
       },
       {
-        "name": "su_34_bomb_kab_500l",
-        "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_kab_500l.blk"
+        "name": "su_34_bomb_kab_500lg",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_kab_500lg.blk"
       },
       {
-        "name": "su_34_bomb_kab_500s",
-        "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_kab_500s.blk"
+        "name": "su_34_bomb_upab_500b",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_upab_500b.blk"
       },
       {
         "name": "su_34_bomb_kab_1500kr",
@@ -4049,31 +4045,6 @@
             }
           },
           {
-            "iconType": "guided_bomb_red",
-            "name": "kh_29te_slot3",
-            "reqModification": "su_27sm_x29td",
-            "ShowNodes": {
-              "node": [
-                "pylon_3",
-                "pylon_3_aku_58",
-                "pylon_3_aku_58_fin1",
-                "pylon_3_aku_58_fin2",
-                "pylon_3_aku_58_fin3",
-                "pylon_3_aku_58_fin4",
-                "pylon_3_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_kh_29td.blk",
-              "emitter": "pylon_3_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "order": 7
-            }
-          },
-          {
             "iconType": "glide_bombs_middle",
             "name": "grom2_slot3",
             "reqModification": "su_grom",
@@ -4151,7 +4122,7 @@
           {
             "iconType": "bombs_small",
             "name": "fab_100_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4173,7 +4144,7 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4195,7 +4166,7 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4217,7 +4188,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4239,7 +4210,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4261,7 +4232,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4283,7 +4254,7 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4326,8 +4297,8 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "kab_500l_slot3",
-            "reqModification": "mig_27_kab_500l",
+            "name": "kab_500lg_slot3",
+            "reqModification": "su_kab_500lg",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4337,7 +4308,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500l.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500lg.blk",
               "emitter": "pylon_3_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -4348,8 +4319,8 @@
           },
           {
             "iconType": "guided_bomb_large_jdam",
-            "name": "kab_500s_slot3",
-            "reqModification": "su_fab_500_kab_500s",
+            "name": "upab_500b_slot3",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4359,7 +4330,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "blk": "gameData/Weapons/bombguns/su_upab_500b.blk",
               "emitter": "pylon_3_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -4371,7 +4342,7 @@
           {
             "iconType": "bombs_small_group_x2",
             "name": "fab_100_slot3_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4405,7 +4376,7 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot3_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4439,7 +4410,7 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot3_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4473,7 +4444,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot3_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4507,7 +4478,7 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot3_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4541,7 +4512,7 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot3_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4575,7 +4546,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "zb_500_slot3_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -5247,7 +5218,7 @@
           {
             "iconType": "bombs_small_group_x6",
             "name": "ofab_100_x6_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5265,7 +5236,7 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5286,7 +5257,7 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5304,7 +5275,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5322,7 +5293,7 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5343,7 +5314,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5364,7 +5335,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5385,7 +5356,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5427,7 +5398,7 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5468,8 +5439,8 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "kab_500l_slot4",
-            "reqModification": "mig_27_kab_500l",
+            "name": "kab_500lg_slot4",
+            "reqModification": "su_kab_500lg",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5479,7 +5450,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500l.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500lg.blk",
               "emitter": "pylon_11_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -5489,8 +5460,8 @@
           },
           {
             "iconType": "guided_bomb_large_jdam",
-            "name": "kab_500s_slot4",
-            "reqModification": "su_fab_500_kab_500s",
+            "name": "upab_500b_slot4",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_11",
@@ -5500,7 +5471,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "blk": "gameData/Weapons/bombguns/su_upab_500b.blk",
               "emitter": "pylon_11_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -5785,7 +5756,7 @@
           {
             "iconType": "bombs_small_group_x6",
             "name": "ofab_100_x6_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5803,7 +5774,7 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5824,7 +5795,7 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5842,7 +5813,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5860,7 +5831,7 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5881,7 +5852,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5902,7 +5873,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5923,7 +5894,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5944,7 +5915,7 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5985,8 +5956,8 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "kab_500l_slot5",
-            "reqModification": "mig_27_kab_500l",
+            "name": "kab_500lg_slot5",
+            "reqModification": "su_kab_500lg",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -5996,7 +5967,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500l.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500lg.blk",
               "emitter": "pylon_9_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -6006,8 +5977,8 @@
           },
           {
             "iconType": "guided_bomb_large_jdam",
-            "name": "kab_500s_slot5",
-            "reqModification": "su_fab_500_kab_500s",
+            "name": "upab_500b_slot5",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_9",
@@ -6017,7 +5988,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "blk": "gameData/Weapons/bombguns/su_upab_500b.blk",
               "emitter": "pylon_9_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -6034,7 +6005,7 @@
           {
             "iconType": "bombs_small_group",
             "name": "ofab_100_x3_slot6",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6054,7 +6025,7 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot6",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6074,7 +6045,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot6",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6094,7 +6065,7 @@
           {
             "iconType": "bombs_small_group_x2",
             "name": "fab_100_slot6_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6134,7 +6105,7 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot6_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6174,7 +6145,7 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot6_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6214,7 +6185,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot6_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6254,7 +6225,7 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot6_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6294,7 +6265,7 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot6_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6408,7 +6379,7 @@
           {
             "iconType": "bombs_small_group",
             "name": "ofab_100_x3_slot7",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6424,7 +6395,7 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot7",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6440,7 +6411,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot7",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -6478,7 +6449,7 @@
           {
             "iconType": "bombs_small_group_x2",
             "name": "fab_100_slot7_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6514,7 +6485,7 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot7_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6550,7 +6521,7 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot7_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6586,7 +6557,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot7_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6622,7 +6593,7 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot7_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6658,7 +6629,7 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot7_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6694,7 +6665,7 @@
           {
             "iconType": "bombs_large_group_x4",
             "name": "fab_500m_62_slot7_x4",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_1",
@@ -6958,7 +6929,7 @@
           {
             "iconType": "bombs_small_group_x6",
             "name": "ofab_100_x6_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -6976,7 +6947,7 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -6997,7 +6968,7 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7015,7 +6986,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7033,7 +7004,7 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7054,7 +7025,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7075,7 +7046,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7096,7 +7067,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7117,7 +7088,7 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7158,8 +7129,8 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "kab_500l_slot8",
-            "reqModification": "mig_27_kab_500l",
+            "name": "kab_500lg_slot8",
+            "reqModification": "su_kab_500lg",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7169,7 +7140,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500l.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500lg.blk",
               "emitter": "pylon_10_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -7179,8 +7150,8 @@
           },
           {
             "iconType": "guided_bomb_large_jdam",
-            "name": "kab_500s_slot8",
-            "reqModification": "su_fab_500_kab_500s",
+            "name": "upab_500b_slot8",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_10",
@@ -7190,7 +7161,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "blk": "gameData/Weapons/bombguns/su_upab_500b.blk",
               "emitter": "pylon_10_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -7580,7 +7551,7 @@
           {
             "iconType": "bombs_small_group_x6",
             "name": "ofab_100_x6_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7598,7 +7569,7 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7619,7 +7590,7 @@
           {
             "iconType": "bombs_middle_group_m54",
             "name": "fab_250_270_x3_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7637,7 +7608,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ofab_250sh_x3_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7655,7 +7626,7 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7676,7 +7647,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7697,7 +7668,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7718,7 +7689,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7760,7 +7731,7 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7801,8 +7772,8 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "kab_500l_slot9",
-            "reqModification": "mig_27_kab_500l",
+            "name": "kab_500lg_slot9",
+            "reqModification": "su_kab_500lg",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7812,7 +7783,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500l.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500lg.blk",
               "emitter": "pylon_12_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -7822,8 +7793,8 @@
           },
           {
             "iconType": "guided_bomb_large_jdam",
-            "name": "kab_500s_slot9",
-            "reqModification": "su_fab_500_kab_500s",
+            "name": "upab_500b_slot9",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_12",
@@ -7833,7 +7804,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "blk": "gameData/Weapons/bombguns/su_upab_500b.blk",
               "emitter": "pylon_12_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -8244,31 +8215,6 @@
             }
           },
           {
-            "iconType": "guided_bomb_red",
-            "name": "kh_29te_slot10",
-            "reqModification": "su_27sm_x29td",
-            "ShowNodes": {
-              "node": [
-                "pylon_4",
-                "pylon_4_aku_58",
-                "pylon_4_aku_58_fin1",
-                "pylon_4_aku_58_fin2",
-                "pylon_4_aku_58_fin3",
-                "pylon_4_aku_58_fin4",
-                "pylon_4_aku_58_fin5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/rocketGuns/su_kh_29td.blk",
-              "emitter": "pylon_4_aku_58_kh_29",
-              "bullets": 1,
-              "external": true,
-              "separate": true,
-              "order": 8
-            }
-          },
-          {
             "iconType": "glide_bombs_middle",
             "name": "grom2_slot10",
             "reqModification": "su_grom",
@@ -8346,7 +8292,7 @@
           {
             "iconType": "bombs_small",
             "name": "fab_100_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8368,7 +8314,7 @@
           {
             "iconType": "bombs_middle_m54",
             "name": "fab_250_270_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8390,7 +8336,7 @@
           {
             "iconType": "bombs_middle",
             "name": "fab_250m_62_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8412,7 +8358,7 @@
           {
             "iconType": "bombs_middle_high_drag",
             "name": "ofab_250sh_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8434,7 +8380,7 @@
           {
             "iconType": "bombs_large",
             "name": "fab_500m_62_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8456,7 +8402,7 @@
           {
             "iconType": "bombs_large_high_drag",
             "name": "fab_500sh_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8478,7 +8424,7 @@
           {
             "iconType": "napalm_large",
             "name": "zb_500_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8521,8 +8467,8 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "kab_500l_slot10",
-            "reqModification": "mig_27_kab_500l",
+            "name": "kab_500lg_slot10",
+            "reqModification": "su_kab_500lg",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8532,7 +8478,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500l.blk",
+              "blk": "gameData/Weapons/bombguns/su_kab_500lg.blk",
               "emitter": "pylon_4_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -8543,8 +8489,8 @@
           },
           {
             "iconType": "guided_bomb_large_jdam",
-            "name": "kab_500s_slot10",
-            "reqModification": "su_fab_500_kab_500s",
+            "name": "upab_500b_slot10",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -8554,7 +8500,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "blk": "gameData/Weapons/bombguns/su_upab_500b.blk",
               "emitter": "pylon_4_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -8566,7 +8512,7 @@
           {
             "iconType": "bombs_small_group_x2",
             "name": "fab_100_slot10_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8600,7 +8546,7 @@
           {
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot10_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8634,7 +8580,7 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot10_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8668,7 +8614,7 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot10_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8702,7 +8648,7 @@
           {
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot10_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8736,7 +8682,7 @@
           {
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot10_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8770,7 +8716,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "zb_500_slot10_x2",
-            "reqModification": "su_fab_500_kab_500s",
+            "reqModification": "su_fab_500_upab_500b",
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9570,18 +9516,18 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "su_fab_500_kab_500s": {
+    "su_fab_500_upab_500b": {
       "modClass": "weapon",
       "tier": 1
     },
-    "mig_27_kab_500l": {
+    "su_kab_500lg": {
       "modClass": "weapon",
-      "reqModification": "su_fab_500_kab_500s",
+      "reqModification": "su_fab_500_upab_500b",
       "tier": 2
     },
     "mig_27_kab_500": {
       "modClass": "weapon",
-      "reqModification": "mig_27_kab_500l",
+      "reqModification": "su_kab_500lg",
       "tier": 3
     },
     "yak_141_r_77": {
@@ -9592,19 +9538,19 @@
     },
     "su_fab_1500_upab_1500": {
       "modClass": "weapon",
-      "reqModification": "su_fab_500_kab_500s",
+      "reqModification": "su_fab_500_upab_500b",
       "tier": 1
     },
     "su_kab_1500l": {
       "modClass": "weapon",
       "prevModification": "su_fab_1500_upab_1500",
-      "reqModification": "mig_27_kab_500l",
+      "reqModification": "su_kab_500lg",
       "tier": 2
     },
     "su_27_kab_1500": {
       "modClass": "weapon",
       "prevModification": "su_kab_1500l",
-      "reqModification": "mig_27_kab_500l",
+      "reqModification": "su_kab_500lg",
       "tier": 3
     },
     "su_x25l_29l": {

@@ -37,7 +37,7 @@ function mkAppearAnim(trigger) {
 
 function mkIconHint(hintText) {
   return {
-    pos = [0, ph(100)]
+    pos = [0, ph(150)]
     margin = [0, hdpx(12), 0, 0]
     padding = [hdpx(5), hdpx(10)]
     minWidth = hdpx(50)
@@ -67,12 +67,13 @@ function mkIcon(baseCfg, iconCfg, watched) {
   return {
     icon = @() {
       watch = [cursorVisible, stateFlags]
-      size = size
       rendObj = ROBJ_IMAGE
+      size = size
       valign = ALIGN_CENTER
-      image = iconCfg.pic
       behavior = Behaviors.Button
       onElemState = @(v) stateFlags(v)
+      image = iconCfg.pic
+
       children = [
         cursorVisible.get() && (stateFlags.get() & S_HOVER) ? mkIconHint(iconCfg.hintLoc) : null
         {
@@ -90,6 +91,7 @@ function mkIcon(baseCfg, iconCfg, watched) {
         }
         iconCfg.text.enabled ? @() {
           rendObj = ROBJ_TEXT
+          pos = [0, ph(30)]
           watch = text
           text = text.get()
           size = flex()
@@ -97,6 +99,11 @@ function mkIcon(baseCfg, iconCfg, watched) {
           color = iconCfg.text.color
           halign = ALIGN_RIGHT
           valign = ALIGN_BOTTOM
+          fontFx = FFT_SHADOW
+          fontFxColor = 0xFF000000
+          fontFxFactor = 100
+          fontFxOffsX = hdpx(1)
+          fontFxOffsY = hdpx(1)
         } : null
       ]
     }
@@ -110,7 +117,6 @@ local scriptConfig = null
 
 function readIconConfig(baseCfg, iconBlk, ico, watched, params) {
   let config = {
-    id = params.id
     hintLoc = params.hintLoc
     enabled = iconBlk?.enabled ?? true
     text = {
@@ -159,11 +165,11 @@ function getConfig() {
     [iconIds.HIT] = readIconConfig(
       res, iconsParams?.simpleHit, hitPic, shellHitDamageEvents.hitEventsCount, {id = iconIds.HIT, hintLoc = "shipHitHint/simpleHit"}),
     [iconIds.HIT_EFFECTIVE] = readIconConfig(
-      res, iconsParams?.effectiveHit, effectiveHitPic, shellHitDamageEvents.critEventCount, {id = iconIds.HIT_EFFECTIVE, hintLoc = "shipHitHint/effectiveHit"}),
+      res, iconsParams?.effectiveHit, effectiveHitPic, shellHitDamageEvents.critEventCount, {hintLoc = "shipHitHint/effectiveHit"}),
     [iconIds.HIT_INEFFECTIVE] = readIconConfig(
-      res, iconsParams?.ineffectiveHit, ineffectiveHitPic, shellHitDamageEvents.armorBlockedEventCount, {id = iconIds.HIT_INEFFECTIVE, hintLoc = "shipHitHint/ineffectiveHit"}),
+      res, iconsParams?.ineffectiveHit, ineffectiveHitPic, shellHitDamageEvents.armorBlockedEventCount, {hintLoc = "shipHitHint/ineffectiveHit"}),
     [iconIds.HIT_PIERCE_THROUGH] = readIconConfig(
-      res, iconsParams?.pierceThroughHit, pierceThroughHitPic, shellHitDamageEvents.pierceThroughCount, {id = iconIds.HIT_PIERCE_THROUGH, hintLoc = "shipHitHint/pierceThroughHit"}),
+      res, iconsParams?.pierceThroughHit, pierceThroughHitPic, shellHitDamageEvents.pierceThroughCount, {hintLoc = "shipHitHint/pierceThroughHit"}),
   }
 
   gameplayBlk.tryLoad("config/gameplay.blk")
@@ -255,7 +261,7 @@ let hitNotifications = function() {
   let { resetDuration, alignHitCamera } = getConfig()
   let res = {
     watch = [hitNotificationVisible, hits, hitboxX, hitboxY, isHitcamSet]
-    gap = hdpx(5)
+    gap = hdpx(7)
     opacity = 0
     pos = [hitboxX.get(), hitboxY.get()]
     flow = FLOW_HORIZONTAL
@@ -283,10 +289,11 @@ let hitNotifications = function() {
     // centered in case if hit cam is not available
   if (!alignHitCamera || !isHitcamSet.get()) {
     return res.__merge({
-      valign = ALIGN_CENTER
       hplace = ALIGN_CENTER
       size = [SIZE_TO_CONTENT, flex()]
-      pos = [0, hdpx(-140)]
+      pos = isHitcamSet.get()
+        ? [0, hudHitCameraState.get().pos[1] + hudHitCameraState.get().size[1]/2]
+        : [0, hdpx(-140)]
     })
   }
 

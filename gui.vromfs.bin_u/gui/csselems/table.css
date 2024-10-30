@@ -263,8 +263,12 @@ verticalCellsOptions[baseRow=yes] > tr {
 .lbTable tr[headerRow=first] {
   height:1.3@leaderboardTrHeight;
 }
-tr[isLeaderBoardHeader=yes] {
+tr[isShortLeaderBoardHeader=yes] {
   background-color: @separatorBlockColor;
+  commonTextColor: yes;
+  bigIcons: yes;
+}
+tr[isLeaderBoardHeader=yes] {
   commonTextColor: yes;
   bigIcons: yes;
 }
@@ -903,4 +907,8 @@ tr[optContainer=yes] > td > cellSeparator  {
   valign:center;
   background-color:@separatorBlockColor;
   margin-right:@optCellSeparatorMargin;
+}
+
+tr[hotkeyOpt=yes] {
+  interactive:no;
 }

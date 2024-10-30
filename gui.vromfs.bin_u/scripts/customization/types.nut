@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import player_have_attachable, get_decal_cost_wp, get_skin_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_skin_cost_gold, get_attachable_cost_gold, save_attachables, get_max_num_attachables_slots, is_decal_allowed, has_entitlement, get_decal_cost_gold, get_attachable_cost_wp
 from "%scripts/dagui_library.nut" import *
 
@@ -75,9 +74,9 @@ let decoratorTypes = {
     function getTypeDesc(decorator) {
       local text = loc($"trophy/unlockables_names/{this.resourceType}")
       if (decorator.category != "" && this.categoryPathPrefix != "")
-        text = "".concat(text, loc("ui/comma"), loc(this.categoryPathPrefix + decorator.category))
+        text = "".concat(text, loc("ui/comma"), loc($"{this.categoryPathPrefix}{decorator.category}"))
       if (decorator.group != "" && this.groupPathPrefix != "")
-        text = "".concat(text, loc("ui/comma"), loc(this.groupPathPrefix + decorator.group))
+        text = "".concat(text, loc("ui/comma"), loc($"{this.groupPathPrefix}{decorator.group}"))
       return text
     }
 
@@ -229,7 +228,7 @@ enums.addTypes(decoratorTypes, {
 
     getImage = function(decorator) {
       return decorator
-        ? ($"@!{decorator.tex}" + "*")
+        ? ($"@!{decorator.tex}*")
         : ""
     }
 
@@ -428,7 +427,7 @@ enums.addTypes(decoratorTypes, {
       }
 
       if (addUnitName && !u.isEmpty(unitName))
-        name += loc("ui/parentheses/space", { text = getUnitName(unit) })
+        name = "".concat(name, loc("ui/parentheses/space", { text = getUnitName(unit) }))
 
       return name
     }

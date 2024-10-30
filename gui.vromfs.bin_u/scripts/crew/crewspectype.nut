@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import expert_to_ace_get_unit_exp, wp_get_specialization_cost_gold, wp_get_specialization_cost
 from "%scripts/dagui_library.nut" import *
 
@@ -211,11 +210,8 @@ crewSpecTypes = {
       if (this.hasNextType()) {
         let nextType = this.getNextType()
         let nextSpecName = nextType.getName()
-        tooltipText += format(
-          "\n\n%s: %s",
-          loc("crew/qualification/nextSpec"),
-          colorize("activeTextColor", nextSpecName))
-
+        tooltipText = "".concat(tooltipText, "\n\n",
+          loc("crew/qualification/nextSpec"), ": ", colorize("activeTextColor", nextSpecName))
         let reqLevelText = nextType.getReqLevelText(crew, unit)
         if (reqLevelText.len())
           tooltipText = "\n".concat(tooltipText, reqLevelText)
@@ -234,13 +230,12 @@ crewSpecTypes = {
           tooltipText = "\n".concat(tooltipText, specDescription)
         }
       }
-      if (isShowExpUpgrade) {
-        tooltipText += format(
-          "\n%s: %s / %s",
-          loc("crew/qualification/expUpgradeLabel"),
+      if (isShowExpUpgrade)
+        tooltipText = "".concat(tooltipText, "\n",
+          loc("crew/qualification/expUpgradeLabel"), ": ",
           Cost().setRp(this.getExpLeftByCrewAndUnit(crew, unit)).toStringWithParams({ isRpAlwaysShown = true }),
-          Cost().setRp(this.getTotalExpByUnit(unit)).tostring())
-      }
+          " / ", Cost().setRp(this.getTotalExpByUnit(unit)).tostring())
+
       return tooltipText
     }
 
@@ -255,7 +250,7 @@ crewSpecTypes = {
       }
 
       // Discount markers.
-      local expUpgradeText = ""
+      let expUpgradeText = []
       let totalExp = this.getTotalExpByUnit(unit)
       foreach (i, dataItem in this.getExpUpgradeDiscountData()) {
         let romanNumeral = get_roman_numeral(i + 1)
@@ -265,8 +260,6 @@ crewSpecTypes = {
         }
         view.markers.append(markerView)
 
-        if (expUpgradeText.len() > 0)
-          expUpgradeText += "\n"
         let expAmount = (dataItem.percent * totalExp / 100).tointeger()
         let trainCost = this.getUpgradeCostByUnitAndExp(unit, expAmount)
         let locParams = {
@@ -274,7 +267,7 @@ crewSpecTypes = {
           trainCost = trainCost.tostring()
           expAmount = Cost().setRp(expAmount).toStringWithParams({ isRpAlwaysShown = true })
         }
-        expUpgradeText += loc("crew/qualification/expUpgradeMarkerCaption", locParams)
+        expUpgradeText.append(loc("crew/qualification/expUpgradeMarkerCaption", locParams))
       }
 
       // Marker at 100% progress.
@@ -283,16 +276,14 @@ crewSpecTypes = {
         markerRatio = 1
         markerText = romanNumeral
       })
-      if (expUpgradeText.len() > 0)
-        expUpgradeText += "\n"
       let locParams = {
         romanNumeral = romanNumeral
         specName = colorize("activeTextColor", this.getNextType().getName())
         expAmount = Cost().setRp(this.getTotalExpByUnit(unit)).toStringWithParams({ isRpAlwaysShown = true })
       }
-      expUpgradeText += loc("crew/qualification/expUpgradeFullUpgrade", locParams)
+      expUpgradeText.append(loc("crew/qualification/expUpgradeFullUpgrade", locParams))
 
-      view.expUpgradeText <- expUpgradeText
+      view.expUpgradeText <- "\n".join(expUpgradeText)
 
       return handyman.renderCached("%gui/crew/crewUnitSpecUpgradeTooltip.tpl", view)
     }

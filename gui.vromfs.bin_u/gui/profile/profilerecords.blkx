@@ -1,0 +1,52 @@
+{
+  "tdiv": {
+    "id": "filters_div",
+    "flow": "horizontal",
+    "width": "pw",
+    "position": "relative",
+    "padding-right": "450@sf/@pf",
+    "bgcolor": "#11080808",
+    "margin-bottom": "1@blockInterval",
+    "HorizontalListBox": {
+      "id": "modes_list",
+      "fullTransparent": "yes",
+      "bottomSelectLine": "yes",
+      "navigatorShortcuts": "yes",
+      "move-only-hover": "yes",
+      "on_select": "onStatsModeChange"
+    },
+    "tdiv": {
+      "width": "450@sf/@pf",
+      "left": "pw-w",
+      "position": "absolute",
+      "flow": "horizontal",
+      "EditBox": {
+        "id": "filter_edit_box",
+        "width": "fw",
+        "on_change_value": "applyFilter",
+        "on_cancel_edit": "onFilterCancel",
+        "text": "",
+        "edit-hint": "#contacts/search_placeholder"
+      },
+      "popupFilter": {
+        "margin-left": "1@blockInterval"
+      }
+    }
+  },
+  "table": {
+    "id": "airs_stats_table",
+    "width": "pw",
+    "height": "fh",
+    "pos": "0.5pw-0.5w, 0",
+    "position": "relative",
+    "class": "lbTable",
+    "higlightRowOnHover": "yes",
+    "text-valign": "center"
+  },
+  "animated_wait_icon": {
+    "id": "stats_loading",
+    "pos": "50%pw-50%w, 50%ph-50%h",
+    "position": "absolute",
+    "background-rotation": "0"
+  }
+}

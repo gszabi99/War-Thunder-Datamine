@@ -5,202 +5,246 @@
     "id": "unlock_block",
     "width": "pw",
     "mainDescWrap": {
-      "padding": "1.5*@sf/100.0",
       "width": "pw",
-      "layeredIconContainer": {
-        "id": "achivment_ico",
-        "size": "@profileUnlockIconSize, @profileUnlockIconSize",
+      "padding": "@profileUnockIconPadding",
+      "flow": "vertical",
+      "tdiv": {
         "position": "relative",
-        "pos": "0, ph/2 - h/2"
-      },
-      "achievementTitle": {
-        "margin-left": "0.015@sf",
-        "min-height": "@profileUnlockIconSize",
-        "width": "fw",
-        "flow": "vertical",
-        "activeText": {
-          "id": "achivment_title",
-          "text": "",
-          "max-width": "pw",
-          "pare-text": "yes",
-          "overlayTextColor": "unlockHeader"
+        "width": "pw",
+        "layeredIconContainer": {
+          "id": "achivment_ico",
+          "size": "@profileUnockIconWidth, @profileUnockIconWidth",
+          "position": "relative"
         },
-        "textareaNoTab": [
-          {
-            "id": "description",
-            "width": "pw",
-            "overflow": "hidden",
-            "smallFont": "yes",
-            "text": ""
-          },
-          {
-            "id": "main_cond",
-            "width": "pw",
-            "overflow": "hidden",
-            "smallFont": "yes",
-            "text": "",
-            "margin-top": "1@blockInterval"
-          },
-          {
-            "id": "mult_desc",
-            "width": "pw",
-            "overflow": "hidden",
-            "smallFont": "yes",
-            "text": ""
-          },
-          {
-            "id": "conditions",
-            "width": "pw",
-            "overflow": "hidden",
-            "smallFont": "yes",
-            "text": "",
-            "margin-top": "1@blockInterval"
-          },
-          {
-            "id": "reward",
-            "text": "",
-            "smallFont": "yes",
-            "margin-top": "0.005@sf",
-            "title": "$tooltipObj",
-            "max-width": "pw",
-            "pare-text": "yes",
-            "tooltipObj": {
-              "id": "tooltip",
-              "reward": "",
-              "smallFont": "yes",
-              "on_tooltip_open": "onGenericTooltipOpen",
-              "on_tooltip_close": "onTooltipObjClose",
-              "display": "hide"
+        "achievementTitle": {
+          "margin-left": "0.015@sf",
+          "min-height": "160@sf/@pf",
+          "width": "fw",
+          "flow": "vertical",
+          "tdiv": [
+            {
+              "position": "relative",
+              "flow": "horizontal",
+              "tdiv": {
+                "id": "lock_icon",
+                "pos": "0, (ph-h)/2",
+                "position": "relative",
+                "display": "hide",
+                "size": "1.33@cIco, ph",
+                "img": {
+                  "pos": "0, (ph-h)/2",
+                  "position": "absolute",
+                  "background-image": "#ui/gameuiskin#locked.svg",
+                  "size": "pw, pw",
+                  "background-svg-size": "pw, pw",
+                  "background-color": "@white"
+                }
+              },
+              "activeText": {
+                "id": "achivment_title",
+                "position": "relative",
+                "top": "(ph-h)/2",
+                "text": "",
+                "font": "@fontSmall",
+                "max-width": "pw",
+                "pare-text": "yes",
+                "overlayTextColor": "unlockHeader"
+              }
+            },
+            {
+              "position": "relative",
+              "padding-bottom": "3@sf/@pf",
+              "challengeDescriptionProgress": {
+                "id": "progress_bar",
+                "value": "",
+                "display": "hide",
+                "isProfileUnlockProgress": "yes",
+                "tdiv": {
+                  "id": "progress_markers_nest",
+                  "size": "pw, ph+4@blockInterval",
+                  "pos": "0, -4@blockInterval",
+                  "position": "relative",
+                  "display": "hide"
+                }
+              }
             }
-          }
-        ],
-        "challengeDescriptionProgress": {
-          "id": "progress_bar",
-          "value": "",
-          "display": "hide",
-          "tdiv": {
-            "id": "progress_markers_nest",
-            "size": "pw, ph+4@blockInterval",
-            "pos": "0, -4@blockInterval",
-            "position": "relative",
-            "display": "hide"
+          ],
+          "profilePageText": [
+            {
+              "id": "description",
+              "width": "pw",
+              "overflow": "hidden",
+              "margin-top": "17@sf/@pf",
+              "text": "",
+              "color": "@profilePageTextColor"
+            },
+            {
+              "id": "main_cond",
+              "width": "pw",
+              "overflow": "hidden",
+              "text": "",
+              "margin-top": "1@blockInterval",
+              "color": "@profilePageTextColor"
+            },
+            {
+              "id": "mult_desc",
+              "width": "pw",
+              "overflow": "hidden",
+              "text": "",
+              "color": "@profilePageTextColor"
+            },
+            {
+              "id": "conditions",
+              "width": "pw",
+              "overflow": "hidden",
+              "text": "",
+              "color": "@profilePageTextColor"
+            },
+            {
+              "id": "reward",
+              "text": "",
+              "margin-top": "0.005@sf",
+              "title": "$tooltipObj",
+              "max-width": "pw",
+              "pare-text": "yes",
+              "color": "@profilePageTextColor",
+              "tooltipObj": {
+                "id": "tooltip",
+                "reward": "",
+                "smallFont": "yes",
+                "on_tooltip_open": "onGenericTooltipOpen",
+                "on_tooltip_close": "onTooltipObjClose",
+                "display": "hide"
+              }
+            }
+          ],
+          "hiddenDiv": {
+            "width": "pw",
+            "flow": "vertical",
+            "isProfilePageUnlock": "yes",
+            "tdiv": [
+              {
+                "id": "hidden_block",
+                "position": "relative",
+                "width": "pw",
+                "flow": "h-flow"
+              },
+              {
+                "width": "pw",
+                "left": "-6@sf/@pf",
+                "position": "relative",
+                "Button_text": [
+                  {
+                    "id": "purchase_button",
+                    "hideText": "yes",
+                    "visualStyle": "purchase",
+                    "enableOn": "hoverOrSelect",
+                    "on_click": "onBuyUnlock",
+                    "tooltip": "#mainmenu/btnBuyInstantly/tooltip",
+                    "unlockId": "",
+                    "btnName": "Y",
+                    "buttonWink": {},
+                    "ButtonImg": {
+                      "showOnSelect": "yes"
+                    },
+                    "textarea": {
+                      "id": "purchase_button_text",
+                      "class": "buttonText"
+                    }
+                  },
+                  {
+                    "id": "manual_open_button",
+                    "visualStyle": "purchase",
+                    "enableOn": "hoverOrSelect",
+                    "on_click": "onManualOpenUnlock",
+                    "unlockId": "",
+                    "btnName": "Y",
+                    "text": "#items/getRewardShort",
+                    "buttonWink": {},
+                    "ButtonImg": {
+                      "showOnSelect": "yes"
+                    }
+                  },
+                  {
+                    "id": "show_prizes_btn",
+                    "trophyId": "",
+                    "text": "#profile/awards",
+                    "margin-top": "1@blockInterval",
+                    "margin-bottom": "1@blockInterval",
+                    "btnName": "L3",
+                    "enableOn": "hoverOrSelect",
+                    "display": "hide",
+                    "on_click": "showUnlockPrizes",
+                    "visualStyle": "secondary",
+                    "buttonWink": {},
+                    "ButtonImg": {
+                      "showOnSelect": "yes"
+                    }
+                  },
+                  {
+                    "id": "preview_prize_btn",
+                    "unlockId": "",
+                    "text": "#mainmenu/btnPreview",
+                    "margin-top": "1@blockInterval",
+                    "margin-bottom": "1@blockInterval",
+                    "btnName": "L3",
+                    "enableOn": "hoverOrSelect",
+                    "display": "hide",
+                    "on_click": "onPrizePreview",
+                    "visualStyle": "secondary",
+                    "class": "image",
+                    "buttonWink": {},
+                    "img": {
+                      "background-image": "#ui/gameuiskin#btn_preview.svg"
+                    },
+                    "ButtonImg": {
+                      "showOnSelect": "yes"
+                    }
+                  },
+                  {
+                    "id": "show_units_btn",
+                    "unlockId": "",
+                    "text": "#mainmenu/showVehicles",
+                    "margin-top": "1@blockInterval",
+                    "margin-bottom": "1@blockInterval",
+                    "btnName": "X",
+                    "enableOn": "hoverOrSelect",
+                    "display": "hide",
+                    "on_click": "showUnlockUnits",
+                    "visualStyle": "secondary",
+                    "buttonWink": {},
+                    "ButtonImg": {
+                      "showOnSelect": "yes"
+                    }
+                  },
+                  {
+                    "id": "checkbox_favorites",
+                    "position": "relative",
+                    "margin-top": "1@blockInterval",
+                    "margin-bottom": "1@blockInterval",
+                    "text": "#mainmenu/UnlockAchievementsToFavorite",
+                    "tooltip": "",
+                    "on_click": "unlockToFavorites",
+                    "unlockId": "",
+                    "visualStyle": "secondary",
+                    "btnName": "Y",
+                    "isChecked": "no",
+                    "ButtonImg": {},
+                    "buttonWink": {}
+                  }
+                ]
+              }
+            ]
           }
         },
-        "tdiv": {
-          "width": "pw",
-          "left": "-1@blockInterval",
+        "unlockStages": {
+          "id": "stages",
+          "margin-left": "0.05@sf",
+          "pos": "0, 50%ph-50%h",
           "position": "relative",
-          "Button_text": [
-            {
-              "id": "purchase_button",
-              "hideText": "yes",
-              "visualStyle": "purchase",
-              "enableOn": "hoverOrSelect",
-              "on_click": "onBuyUnlock",
-              "tooltip": "#mainmenu/btnBuyInstantly/tooltip",
-              "unlockId": "",
-              "btnName": "Y",
-              "buttonWink": {},
-              "ButtonImg": {
-                "showOnSelect": "yes"
-              },
-              "textarea": {
-                "id": "purchase_button_text",
-                "class": "buttonText"
-              }
-            },
-            {
-              "id": "manual_open_button",
-              "visualStyle": "purchase",
-              "enableOn": "hoverOrSelect",
-              "on_click": "onManualOpenUnlock",
-              "unlockId": "",
-              "btnName": "Y",
-              "text": "#items/getRewardShort",
-              "buttonWink": {},
-              "ButtonImg": {
-                "showOnSelect": "yes"
-              }
-            },
-            {
-              "id": "show_prizes_btn",
-              "trophyId": "",
-              "text": "#profile/awards",
-              "margin-top": "1@blockInterval",
-              "margin-bottom": "1@blockInterval",
-              "btnName": "L3",
-              "enableOn": "hoverOrSelect",
-              "display": "hide",
-              "on_click": "showUnlockPrizes",
-              "visualStyle": "secondary",
-              "buttonWink": {},
-              "ButtonImg": {
-                "showOnSelect": "yes"
-              }
-            },
-            {
-              "id": "preview_prize_btn",
-              "unlockId": "",
-              "text": "#mainmenu/btnPreview",
-              "margin-top": "1@blockInterval",
-              "margin-bottom": "1@blockInterval",
-              "btnName": "L3",
-              "enableOn": "hoverOrSelect",
-              "display": "hide",
-              "on_click": "onPrizePreview",
-              "visualStyle": "secondary",
-              "class": "image",
-              "buttonWink": {},
-              "img": {
-                "background-image": "#ui/gameuiskin#btn_preview.svg"
-              },
-              "ButtonImg": {
-                "showOnSelect": "yes"
-              }
-            },
-            {
-              "id": "show_units_btn",
-              "unlockId": "",
-              "text": "#mainmenu/showVehicles",
-              "margin-top": "1@blockInterval",
-              "margin-bottom": "1@blockInterval",
-              "btnName": "X",
-              "enableOn": "hoverOrSelect",
-              "display": "hide",
-              "on_click": "showUnlockUnits",
-              "visualStyle": "secondary",
-              "buttonWink": {},
-              "ButtonImg": {
-                "showOnSelect": "yes"
-              }
-            }
-          ]
-        }
-      },
-      "unlockStages": {
-        "id": "stages",
-        "margin-left": "0.05@sf",
-        "pos": "0, 50%ph-50%h",
-        "position": "relative",
-        "flow": "horizontal",
-        "behavior": "PosNavigator",
-        "navigatorShortcuts": "noSelect"
-      },
-      "CheckBox": {
-        "id": "checkbox_favorites",
-        "pos": "pw-w-@blockInterval, @blockInterval",
-        "position": "absolute",
-        "text": "#mainmenu/UnlockAchievementsToFavorite",
-        "smallFont": "yes",
-        "btnName": "",
-        "tooltip": "",
-        "skip-navigation": "yes",
-        "on_change_value": "unlockToFavorites",
-        "unlockId": "",
-        "CheckBoxImg": {},
-        "ButtonImg": {
-          "showOnSelect": "hover",
-          "btnName": "A"
+          "flow": "horizontal",
+          "behavior": "PosNavigator",
+          "navigatorShortcuts": "noSelect"
         }
       }
     },
@@ -214,12 +258,6 @@
       "background-color": "@premiumColor",
       "display": "hide"
     },
-    "hiddenDiv": {
-      "id": "hidden_block",
-      "width": "pw",
-      "padding": "8*@scrn_tgt/100.0, 0, 1*@scrn_tgt/100.0, 0",
-      "flow": "h-flow"
-    },
     "tdiv": {
       "pos": "10@sf/@pf, 10@sf/@pf",
       "position": "absolute",
@@ -227,16 +265,6 @@
       "unseenIcon": {
         "id": "unseen_icon",
         "noMargin": "yes"
-      },
-      "img": {
-        "id": "lock_icon",
-        "display": "hide",
-        "pos": "0, 50%(ph-h)",
-        "position": "relative",
-        "background-image": "#ui/gameuiskin#locked.svg",
-        "size": "@cIco,@cIco",
-        "background-svg-size": "@cIco,@cIco",
-        "background-color": "@white"
       }
     }
   }

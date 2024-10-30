@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -73,7 +72,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
           text = "",
          })
       }
-      data += ::buildTableRow(rowName, rowData, (i - this.curPage * this.rowsPerPage) % 2 == 0, "")
+      data = "".concat(data, ::buildTableRow(rowName, rowData, (i - this.curPage * this.rowsPerPage) % 2 == 0, ""))
     }
     this.guiScene.setUpdatesEnabled(false, false)
     this.guiScene.replaceContentFromText(tblObj, data, data.len(), this)

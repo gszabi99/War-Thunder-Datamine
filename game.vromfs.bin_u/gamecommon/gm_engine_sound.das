@@ -18,7 +18,7 @@ require Sound
 [es(tag=sound)]
 def gm_engine_sound_init_es(evt : CmdInitComponent;
                             eid : EntityId;
-                            uid : int;
+                            var unit__ref : UnitRef;
                             playerNo : int;
                             className : string;
                             unitType : int;
@@ -30,10 +30,8 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                             var gm_engine_sound__stop_event_name : das_string&;
                             var gm_engine_sound__start_inside_name : das_string&;
                             var gm_engine_sound__stop_inside_name : das_string&)
-  let unit = get_unit(uid)
-  if unit == null
-    addSubTemplate(eid, "disabled_update")
-    return
+  let unit = unit__ref.unit
+  assert(unit != null)
 
   let gm = unit |> as_gm()
   if gm == null
@@ -168,7 +166,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
 
 [es(tag=sound, REQUIRE = controlledHero, REQUIRE_NOT = disabled)]
 def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
-                                     uid : int;
+                                     unit__ref : UnitRef;
                                      gm_engine_sound__should_play : bool;
                                      gm_engine_sound__event_inside_name : das_string;
                                      var gm_engine_sound__loadswitch : bool&;
@@ -177,8 +175,8 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
                                      var gm_engine_sound__start_inside_event : SoundEvent&;
                                      var gm_engine_sound__stop_inside_event : SoundEvent&;
                                      var gm_engine_sound__event_inside : SoundEvent&)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
 
   if gm_engine_sound__is_inside != unit.isCameraInCockpit
@@ -201,7 +199,7 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
 
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
 def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
-                              uid : int;
+                              unit__ref : UnitRef;
                               var gm_engine_sound__is_playing : bool&;
                               var gm_engine_sound__loadswitch : bool&;
                               gm_engine_sound__load_smooth : float;
@@ -214,11 +212,9 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                               gm_engine_sound__pos_offset : float3;
                               gm_engine_sound__is_inside : bool;
                               var gm_engine_sound__pos : float3&)
-  let unit = get_unit(uid)
-  if unit == null
-    return
+  let unit = unit__ref.unit
   let gm = unit |> as_gm()
-  if gm == null
+  if gm == null || unit.isDelayed
     return
 
   gm_engine_sound__update_interval += act.dt
@@ -391,13 +387,13 @@ def gm_additional__on_steal_es(evt : CmdEngineStealSound;
 
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
 def gm_additional_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
-                                         uid : int;
+                                         unit__ref : UnitRef;
                                          gm_engine_sound__load : float;
                                          var gm_additional_engine_sound__pos : float3&;
                                          gm_additional_engine_sound__pos_offset : float3;
                                          gm_additional_engine_sound__event : SoundEvent)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   let gm = unit |> as_gm()
   if gm == null

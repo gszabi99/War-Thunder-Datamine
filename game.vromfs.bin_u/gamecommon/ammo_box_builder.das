@@ -91,10 +91,10 @@ def build_ability_update_transform_es(info : UpdateStageInfoAct;
 [es(tag=server)]
 def build_object_es(evt : CmdBuildObject;
                     eid aka unit_eid : EntityId;
-                    uid : int;
+                    var unit__ref : UnitRef;
                     reloadedFromAmmoBoxCount : IntList)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  var unit = unit__ref.unit
+  if unit.isDelayed
     return
   var count = 0
   foreach_weapon_by_trigger_group(unit.weap.Weapons, evt.triggerGroup) <| $(var weapon)

@@ -49,9 +49,6 @@
   "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
-      "cannon1_dm": {
-        "hp": 15.0
-      },
       "cannon2_dm": {
         "hp": 15.0
       }
@@ -444,9 +441,6 @@
       },
       {
         "name": "airbrake_r_dm"
-      },
-      {
-        "name": "cannon1_dm"
       },
       {
         "name": "cannon2_dm"
@@ -3186,7 +3180,7 @@
               "blk": "gameData/Weapons/cannon_mauser_bk_27.blk",
               "emitter": "flare1",
               "flash": "flare1",
-              "dm": "cannon1_dm",
+              "dm": "cannon2_dm",
               "bullets": 180,
               "spread": 1.1,
               "traceOffset": 1,
@@ -3920,6 +3914,27 @@
               "separate": true,
               "emitter": "bomb5_ld",
               "bullets": 1,
+              "order": 9
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "litening"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "fr_mk13_fuse5",
+            "reqModification": "uk_mk_13_18",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_mk13.blk",
+              "emitter": "bomb5_ld",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
               "order": 9
             },
             "DependentWeaponPreset": {

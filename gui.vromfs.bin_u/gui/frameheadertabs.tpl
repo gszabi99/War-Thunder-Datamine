@@ -32,6 +32,13 @@ shopFilter {
   }
   <</tabImage>>
 
+  <<@object>>
+
+  shopFilterText {
+    <<#id>>id:t='<<id>>_text'<</id>>
+    text:t='<<tabName>>'
+  }
+
   <<#unseenIcon>>
   unseenIcon {
     valign:t='center'
@@ -39,13 +46,6 @@ shopFilter {
     unseenText {}
   }
   <</unseenIcon>>
-
-  <<@object>>
-
-  shopFilterText {
-    <<#id>>id:t='<<id>>_text'<</id>>
-    text:t='<<tabName>>'
-  }
 
   <<#seenIconCfg>>
   infoMarker {

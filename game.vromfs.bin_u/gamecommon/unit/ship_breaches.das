@@ -134,7 +134,7 @@ def ship_repair_handler_es(evt : Event;
 
 [es, with_bundle(v)]
 def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
-                                    uid : int;
+                                    var unit__ref : UnitRef;
                                     var v : tuple<
                                       ship_cover_parts__disableDeadParts : bool;
                                       ship_cover_parts__partId : PartIdList;
@@ -147,7 +147,7 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
                                       ship_cover_parts__innerPartsId : PartIdList;
                                       ship_cover_parts__innerPartsCriticalWater : FloatList
                                       >) : void
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   assert(unit != null)
   if unit == null
     return
@@ -193,9 +193,9 @@ def ship_request_net_sync_on_load_es(evt : CmdInitComponent; eid : EntityId)
 
 [es]
 def ship_init_mod_handle_es(evt : CmdInitComponent;
-                            uid : int;
+                            var unit__ref : UnitRef;
                             var ship__waterMassVelMult : float&)
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   assert(unit != null)
   if unit != null && unit.modBlk != null
     let defaultVal = unit.isHumanPlayer ? 1.0f : 0.0f
@@ -210,11 +210,11 @@ def ship_init_damage_parts_handle_es(evt : EventShipInitDamageParts;
 
 [es]
 def ship_init_repair_parts_info_handle_es(evt : CmdInitComponent;
-                                          uid : int;
+                                          var unit__ref : UnitRef;
                                           var ship_repair__partsPartId : IntList&;
                                           var ship_repair__partsTime : FloatList&;
                                           var ship_repair__partsHp : FloatList&)
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   assert(unit != null)
   if unit == null
     return
@@ -251,17 +251,17 @@ def ship_copy_from_handle_es(evt : EventShipCopyFrom;
 
 
 [with_bundle(v)]
-def is_cover_part_dead_cover_id(unit : Unit?; cover_id : int; v : tuple<ship_cover_parts__disableDeadParts : bool; ship_cover_parts__partId : PartIdList>) : bool
+def is_cover_part_dead_cover_id(unit : Unit const?; cover_id : int; v : tuple<ship_cover_parts__disableDeadParts : bool; ship_cover_parts__partId : PartIdList>) : bool
   return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, v.ship_cover_parts__partId[cover_id])
 
 
 [with_bundle(v)]
-def is_cover_part_dead_part_id(unit : Unit?; part_id : PartId; v : tuple<ship_cover_parts__disableDeadParts : bool>) : bool
+def is_cover_part_dead_part_id(unit : Unit const?; part_id : PartId; v : tuple<ship_cover_parts__disableDeadParts : bool>) : bool
   return v.ship_cover_parts__disableDeadParts && is_part_dead(unit.dmData, part_id)
 
 
 [with_bundle(v)]
-def has_any_repairable_breaches(unit : Unit?; v : tuple<
+def has_any_repairable_breaches(unit : Unit const?; v : tuple<
                                   ship_cover_parts__disableDeadParts : bool;
                                   ship_breaches__amountToRepair : FloatList;
                                   ship_breaches__coverId : IntList;
@@ -276,7 +276,7 @@ def has_any_repairable_breaches(unit : Unit?; v : tuple<
 
 
 [with_bundle(v)]
-def calc_repair_speed_mult(unit : Unit?; v : tuple<
+def calc_repair_speed_mult(unit : Unit const?; v : tuple<
                              ship__modernDamageControl : bool;
                              ship_damage_control__repairSpeedMult : float;
                              ship_damage_control__unwateringSpeedMult : float
@@ -291,7 +291,7 @@ def calc_repair_speed_mult(unit : Unit?; v : tuple<
 
 
 [with_bundle(v)]
-def calc_time_to_repair_breaches(unit : Unit?; repair_speed_mult : float;
+def calc_time_to_repair_breaches(unit : Unit const?; repair_speed_mult : float;
                                  v : tuple<
                                    ship_cover_parts__disableDeadParts : bool;
                                    ship_breaches__amountToRepair : FloatList;
@@ -307,7 +307,7 @@ def calc_time_to_repair_breaches(unit : Unit?; repair_speed_mult : float;
 
 
 [with_bundle(v)]
-def calc_pump_mass_vel(unit : Unit?;
+def calc_pump_mass_vel(unit : Unit const?;
                        v : tuple<
                          ship__pumpsPartId : IntList;
                          ship_cover_parts__water : Point4List;
@@ -342,7 +342,7 @@ def calc_pump_mass_vel(unit : Unit?;
 
 
 [with_bundle(v)]
-def calc_time_to_unwater(unit : Unit?;
+def calc_time_to_unwater(unit : Unit const?;
                          v : tuple<
                            ship_cover_parts__disableDeadParts : bool;
                            ship__pumpsPartId : IntList;
@@ -369,7 +369,7 @@ def calc_time_to_unwater(unit : Unit?;
 [es(no_order), with_bundle(v)]
 def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                    eid : EntityId;
-                                   uid : int;
+                                   unit__ref : UnitRef;
                                    v : tuple<
                                      ship__modernDamageControl : bool;
                                      ship_cover_parts__disableDeadParts : bool;
@@ -386,7 +386,7 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
                                      ship__waterMassVelMult : float;
                                      ship__unwateringRemainingTime : float -const
                                      >) : void
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   let ship = unit |> as_ship()
   if ship == null || unit.isDelayed
     return
@@ -461,7 +461,7 @@ def soa_safe_emplace(var arr; idx; item)
 [es]
 def add_breach_handle_es(evt : EventShipAddBreach;
                          eid : EntityId;
-                         uid : int;
+                         unit__ref : UnitRef;
                          ship__modernDamageControl : bool;
                          ship_cover_parts__partId : PartIdList;
                          var ship_breaches__id : IntList&;
@@ -479,11 +479,9 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   if evt.id < 0
     return
 
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
-    return
+  let unit = unit__ref.unit
   let ship = as_ship(unit)
-  if ship == null
+  if ship == null || unit.isDelayed
     return
 
   var cover_id = -1
@@ -544,7 +542,7 @@ def add_breach_handle_es(evt : EventShipAddBreach;
 [es]
 def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
                                eid : EntityId;
-                               uid : int;
+                               unit__ref : UnitRef;
                                var ship_breaches__nextId : int&;
                                var ship_breaches__fatalPartId : PartId&;
                                ship_cover_parts__partId : PartIdList;
@@ -552,7 +550,7 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
   if ship_breaches__fatalPartId.valid
     return
 
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   let ship = unit |> as_ship()
   if ship == null || unit.isDelayed
     return
@@ -577,7 +575,7 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
 [es(after=ship_repair_breaches_update_es), with_bundle(v)]
 def ship_unwatering_update_es(info : UpdateStageInfoAct;
                               eid : EntityId;
-                              uid : int;
+                              unit__ref : UnitRef;
                               v : tuple<
                                 ship_cover_parts__disableDeadParts : bool;
                                 ship_breaches__amountToRepair : FloatList;
@@ -590,8 +588,8 @@ def ship_unwatering_update_es(info : UpdateStageInfoAct;
                                 ship__unwateringRemainingTime : float -const
                                 >)
   if v.ship__unwateringRemainingTime > 0.0f
-    let unit = get_unit(uid)
-    if unit == null || unit.isDelayed
+    let unit = unit__ref.unit
+    if unit.isDelayed
       return
     // update unwatering time, if has no breaches
     if !has_any_repairable_breaches(unit, v)
@@ -604,7 +602,7 @@ def ship_unwatering_update_es(info : UpdateStageInfoAct;
 [es, with_bundle(v)]
 def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
                                            eid : EntityId;
-                                           uid : int;
+                                           unit__ref : UnitRef;
                                            v : tuple<
                                              ship_cover_parts__disableDeadParts : bool;
                                              ship__modernDamageControl : bool;
@@ -621,7 +619,7 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
                                              >)
   if evt.repair
     if v.ship__repairBreachesRemainingTime <= 0.0f && v.ship__unwateringRemainingTime <= 0.0f
-      let unit = get_unit(uid)
+      let unit = unit__ref.unit
       let ship = unit |> as_ship()
       if ship != null && !unit.isDelayed && !ship.isVeryFewCrew && !ship.isCoverDestroyed
         let repair_speed_mult = calc_repair_speed_mult(unit) <| v
@@ -641,14 +639,14 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
 
 [es(no_order)]
 def ship_repair_parts_update_es(info : UpdateStageInfoAct;
-                                uid : int;
+                                var unit__ref : UnitRef;
                                 var ship_repair__partIdx : int&;
                                 var ship_repair__partRemainingTime : float&;
                                 ship_repair__partsPartId : IntList;
                                 ship_repair__partsTime : FloatList;
                                 ship_repair__partsHp : FloatList)
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  var unit = unit__ref.unit
+  if unit.isDelayed
     return
   assume unit_dm = *unit.visual
 
@@ -671,7 +669,7 @@ def ship_repair_parts_update_es(info : UpdateStageInfoAct;
 [es(after=ship_repair_parts_update_es)]
 def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
                                       eid : EntityId;
-                                      uid : int;
+                                      var unit__ref : UnitRef;
                                       ship_phys_proxy__velocitySq : float;
                                       ship_phys_proxy__groundCollision : bool;
                                       ship_breaches__fatalPartId : PartId;
@@ -690,7 +688,7 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
                                       ship_cover_parts__innerPartsId : PartIdList;
                                       ship_cover_parts__innerPartsCriticalWater : FloatList;
                                       ship_compartments__coverPartsRange : IPoint2List)
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   let ship = unit |> as_ship()
   if ship == null || unit.isDelayed
     return
@@ -753,7 +751,7 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
 [es(after=ship_breaches_add_water_update_es), with_bundle(v)]
 def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
                                        eid : EntityId;
-                                       uid : int;
+                                       unit__ref : UnitRef;
                                        v : tuple<
                                          ship_cover_parts__disableDeadParts : bool;
                                          ship_phys_proxy__additionalWater : float -const;
@@ -774,11 +772,9 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
                                          ship_flooding__waterRightSide : float -const
                                          >)
   // we will not pump water if the process was stopped
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
-    return
+  let unit = unit__ref.unit
   let ship = as_ship(unit)
-  if ship == null
+  if ship == null || unit.isDelayed
     return
 
   var additional_water = 0.0f
@@ -846,12 +842,7 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
 
 
 def send_water_net_sync_event(eid : EntityId;
-                              uid : int;
                               ship_cover_parts__water : Point4List)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
-    return
-
   using() <| $(var cover_parts_water : FloatList)
     let partsCount = length(ship_cover_parts__water)
     cover_parts_water |> resize(partsCount * 2)
@@ -859,7 +850,7 @@ def send_water_net_sync_event(eid : EntityId;
       cover_parts_water[i] = ship_cover_parts__water[i].x
       cover_parts_water[partsCount + i] = ship_cover_parts__water[i].y
     send_net_event(eid, [[EventShipWaterNetSync
-      unitVersion=unit.authorityUnitVersion,
+      unitVersion=uint8(0),
       coverPartsWaterAndBalance = ecs_addr(cover_parts_water)
     ]])
 
@@ -867,17 +858,14 @@ def send_water_net_sync_event(eid : EntityId;
 [es(tag=netClient)]
 def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
                                   eid : EntityId;
-                                  uid : int;
+                                  unit__ref : UnitRef;
                                   var ship_cover_parts__water : Point4List&)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed || unit.authorityUnitVersion != evt.unitVersion
-    return
-
+  let unit = unit__ref.unit
   assume cover_parts_water = *evt.coverPartsWaterAndBalance
   let partsCount = length(ship_cover_parts__water)
   let receivedPartsCount = length(cover_parts_water) / 2
   if receivedPartsCount != partsCount
-    logerr("EventShipWaterNetSync: invalid cover parts count received from server for {unit.props.fileName} uid:{uid} eid:{eid}, while versions match {evt.unitVersion}, part count: {partsCount}/{receivedPartsCount}")
+    logerr("EventShipWaterNetSync: invalid cover parts count received from server for {unit.props.fileName} eid:{eid}, while versions match {evt.unitVersion}, part count: {partsCount}/{receivedPartsCount}")
     return
 
   for i in 0..partsCount
@@ -886,7 +874,6 @@ def ship_handle_water_net_sync_es(evt : EventShipWaterNetSync;
 
 
 def send_breaches_net_sync_event(eid : EntityId;
-                                 uid : int;
                                  ship_breaches__id : IntList;
                                  ship_breaches__pos : Point3List;
                                  ship_breaches__size : FloatList;
@@ -895,10 +882,6 @@ def send_breaches_net_sync_event(eid : EntityId;
                                  ship_breaches__partId : PartIdList;
                                  ship_breaches__coverId : IntList;
                                  ship_breaches__leakedAmount : FloatList)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
-    return
-
   let len = ship_breaches__id |> length()
   using() <| $(var breaches_ids : IntList)
     using() <| $(var breaches_pos_and_size : Point4List)
@@ -916,7 +899,7 @@ def send_breaches_net_sync_event(eid : EntityId;
           let pos = ship_breaches__pos[i]
           breaches_pos_and_size |> push(float4(pos.x, pos.y, pos.z, ship_breaches__size[i]))
         send_net_event(eid, [[EventShipBreachesNetSync
-          unitVersion = unit.authorityUnitVersion,
+          unitVersion = uint8(0),
           breachesIds = ecs_addr(breaches_ids),
           breachesPosAndSize = ecs_addr(breaches_pos_and_size),
           breachesRepairProgress = ecs_addr(breaches_repair_progress)
@@ -925,7 +908,6 @@ def send_breaches_net_sync_event(eid : EntityId;
 
 [es(tag=netClient)]
 def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
-                                     uid : int;
                                      ship_cover_parts__partId : PartIdList;
                                      var ship_breaches__id : IntList&;
                                      var ship_breaches__pos : Point3List&;
@@ -938,10 +920,6 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
                                      var ship_breaches__coverId : IntList&;
                                      var ship_breaches__leakedAmount : FloatList&;
                                      var ship_breaches__offender : BreachOffenderDataList&)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed || unit.authorityUnitVersion != evt.unitVersion
-    return
-
   let len = *evt.breachesPosAndSize |> length()
   ship_breaches__id |> resize(len)
   ship_breaches__pos |> resize(len)
@@ -980,16 +958,14 @@ def ship_handle_net_sync_request_es(evt : EventShipRequestNetSync; eid : EntityI
 
 [es(tag=server)]
 def ship_send_water_net_sync_es(evt : EventShipSyncWater;
-                                uid : int;
                                 eid : EntityId;
                                 ship_cover_parts__water : Point4List)
-  send_water_net_sync_event(eid, uid, ship_cover_parts__water)
+  send_water_net_sync_event(eid, ship_cover_parts__water)
 
 
 [es(tag=server)]
 def ship_send_breaches_net_sync_es(evt : EventShipSyncBreaches;
                                    eid : EntityId;
-                                   uid : int;
                                    ship_breaches__id : IntList;
                                    ship_breaches__pos : Point3List;
                                    ship_breaches__size : FloatList;
@@ -998,7 +974,7 @@ def ship_send_breaches_net_sync_es(evt : EventShipSyncBreaches;
                                    ship_breaches__partId : PartIdList;
                                    ship_breaches__coverId : IntList;
                                    ship_breaches__leakedAmount : FloatList)
-  send_breaches_net_sync_event(eid, uid,
+  send_breaches_net_sync_event(eid,
     ship_breaches__id,
     ship_breaches__pos,
     ship_breaches__size,

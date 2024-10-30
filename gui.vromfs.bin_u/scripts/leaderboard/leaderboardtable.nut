@@ -75,7 +75,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
         }
         headerRow.append(block)
       }
-      data += ::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'")
+      data += ::buildTableRow("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'")
     }
 
     this.isLastPage = false

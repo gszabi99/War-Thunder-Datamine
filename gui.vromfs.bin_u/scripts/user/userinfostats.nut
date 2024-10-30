@@ -310,8 +310,9 @@ function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
     : value.tostring()
 
   let row = [
-    { id = textId, text = $"#{config.name}", tdalign = "left" },
-    { text = s, tooltip = diff.getLocName() }
+    { id = textId, text = $"#{config.name}", tdalign = "left",
+      rawParam = "isTableStatsName:t='yes'", textType = "text" },
+    { text = s, textType = "text", rawParam = "isTableStatsVal:t='yes'" }
   ]
 
   return ::buildTableRowNoPad("", row)
@@ -329,7 +330,7 @@ function fillProfileSummary(sObj, summary, diff) {
       continue
 
     if (item.header)
-      data += ::buildTableRowNoPad("", [$"#{item.name}"], null,
+      data += ::buildTableRowNoPad("", [{ text = $"#{item.name}", textType = "text"}], null,
                   format("headerRow:t='%s'; ", idx ? "yes" : "first"))
     else if (item.separateRowsByFm)
       for (local i = 0; i < statsFm.len(); i++) {

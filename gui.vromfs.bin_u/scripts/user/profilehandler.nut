@@ -12,7 +12,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { deferOnce } = require("dagor.workcycle")
+let { deferOnce, defer } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, isInMenu, handlersManager, loadHandler, is_in_loading_screen
@@ -54,11 +54,11 @@ let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnlockMainCondDescByCfg,
   getLocForBitValues, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus,
   fillUnlockImage, fillUnlockProgressBar, fillUnlockDescription, doPreviewUnlockPrize, fillReward,
-  fillUnlockTitle, fillUnlockPurchaseButton,getUnlockableMedalImage
+  fillUnlockTitle, fillUnlockPurchaseButton
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isUnlockVisible, getUnlockCost, getUnlockRewardText, canDoUnlock,
+let { isUnlockVisible, getUnlockCost, canDoUnlock,
   canOpenUnlockManually, isUnlockOpened, findUnusableUnitForManualUnlock, canClaimUnlockRewardForUnit
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
@@ -89,6 +89,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
+let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -107,7 +108,6 @@ let profileSelectedFiltersCache = {
   country = []
 }
 
-let selMedalIdx = {}
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
@@ -127,21 +127,24 @@ function getUnlockFiltersList(uType, getCategoryFunc) {
 }
 
 function guiStartProfile(params = {}) {
+  let guiScene = get_gui_scene()
+  if (guiScene?.isInAct()) {
+    defer(@() loadHandler(gui_handlers.Profile, params))
+    return
+  }
   loadHandler(gui_handlers.Profile, params)
 }
 
 gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
-  wndType = handlerType.MODAL
+  wndType = handlerType.BASE
   sceneBlkName = "%gui/profile/profile.blk"
   initialSheet = ""
 
   curDifficulty = "any"
   curPlayerMode = 0
-  curFilter = ""
   curSubFilter = -1
   curFilterType = ""
   airStatsInited = false
-  profileInited = false
 
   airStatsList = null
   statsType = ETTI_VALUE_INHISORY
@@ -153,7 +156,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   pending_logout = false
 
-  presetSheetList = ["Profile", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal"]
+  presetSheetList = ["Profile", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal"]
 
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
   tabLocalePrefix = "#mainmenu/btn"
@@ -163,8 +166,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   customMenuTabs = null
 
   curPage = ""
-  isPageFilling = false
-
   unlockTypesToShow = [
     UNLOCKABLE_ACHIEVEMENT,
     UNLOCKABLE_CHALLENGE,
@@ -187,14 +188,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   curAchievementGroupName = ""
   initialUnlockId = ""
   previewUnlockId = ""
-  filterCountryName = null
   filterUnitTag = ""
   initSkinId = ""
   initDecalId = ""
   filterGroupName = null
 
   unlockFilters = {
-    Medal = []
     UnlockAchievement = null
     UnlockChallenge = null
     UnlockSkin = []
@@ -206,6 +205,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function initScreen() {
+    this.selMedalIdx = {}
+    setBreadcrumbGoBackParams(this)
     if (!this.scene)
       return this.goBack()
 
@@ -216,6 +217,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.isOwnStats = true
     this.scene.findObject("profile_update").setUserData(this)
 
+    let needShortSeparators = to_pixels("sw") > to_pixels("1@maxProfileFrameWidth + 2@framePadding")
+    let frame = this.scene.findObject("wnd_frame")
+    frame.needShortSeparators = needShortSeparators ? "yes" : "no"
+
     //prepare options
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
@@ -223,20 +228,14 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.unlocksTree = {}
 
     //fill skins filters
-    if ("UnlockSkin" in this.unlockFilters) {
-      let skinCountries = getUnlockFiltersList("skin", function(unlock) {
-        let country = getSkinCountry(unlock.getStr("id", ""))
-        return (country != "") ? country : null
-      })
+    let skinCountries = getUnlockFiltersList("skin", function(unlock) {
+      let country = getSkinCountry(unlock.getStr("id", ""))
+      return (country != "") ? country : null
+    })
+    this.unlockFilters.UnlockSkin = shopCountriesList.filter(@(c) isInArray(c, skinCountries))
 
-      this.unlockFilters.UnlockSkin = shopCountriesList.filter(@(c) isInArray(c, skinCountries))
-    }
-
-    //fill medal filters
-    if ("Medal" in this.unlockFilters) {
-      let medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
-      this.unlockFilters.Medal = shopCountriesList.filter(@(c) isInArray(c, medalCountries))
-    }
+    let medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
+    this.medalsFilters = shopCountriesList.filter(@(c) isInArray(c, medalCountries))
 
     this.initStatsParams()
     this.initSheetsList()
@@ -246,7 +245,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (checkObj(bntGetLinkObj))
       bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
 
-    this.initLeaderboardModes()
     this.initShortcuts()
   }
 
@@ -281,7 +279,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         continue
 
       this.sheetsList.append(lowerCaseTab)
-      this.unlockFilters[lowerCaseTab]  <- null
+      this.unlockFilters[lowerCaseTab] <- null
 
       let defaultImage = format(this.tabImageNameTemplate, this.defaultTabImageName)
 
@@ -314,22 +312,16 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function initTabs() {
     let view = { tabs = [] }
     local curSheetIdx = 0
-    local tabImage = null
     local tabText = null
 
     foreach (idx, sheet in this.sheetsList) {
-      if (sheet in this.customMenuTabs) {
-        tabImage = this.customMenuTabs[sheet].image
+      if (sheet in this.customMenuTabs)
         tabText = this.customMenuTabs[sheet].title
-      }
-      else {
-        tabImage = format(this.tabImageNameTemplate, sheet.tolower())
+      else
         tabText = this.tabLocalePrefix + sheet
-      }
 
       view.tabs.append({
         id = sheet
-        tabImage = tabImage
         tabName = tabText
         unseenIcon = sheet == "UnlockAchievement"
           ? makeConfigStrByList([seenUnlockMarkers.id, seenManualUnlocks.id])
@@ -342,6 +334,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         curSheetIdx = idx
     }
 
+    view.hasBottomLine <- true
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     let sheetsListObj = this.scene.findObject("profile_sheet_list")
     this.guiScene.replaceContentFromText(sheetsListObj, data, data.len(), this)
@@ -493,85 +486,41 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     foreach (btn in ["btn_top_place", "btn_pagePrev", "btn_pageNext", "checkbox_only_for_bought"])
       showObjById(btn, false, this.scene)
 
+    let pageHasProfileHeader = this.isPageHasProfileHandler(sheet)
+    showObjById("profile_header", pageHasProfileHeader, this.scene)
+
+    let accountImage = this.scene.findObject("profile_header_picture")
+    accountImage.height = pageHasProfileHeader ? "1@maxAccountHeaderHeight" : "1@minAccountHeaderHeight"
+
+    if (pageHasProfileHeader && !this.isProfileInited)
+      this.updateStats()
+
     if (sheet == "Profile") {
       this.showSheetDiv("profile")
-      if (!this.profileInited) {
-        this.updateStats()
-        this.profileInited = true
-      }
     }
     else if (sheet == "Statistics") {
-      this.showSheetDiv("stats")
+      this.showSheetDiv("records")
       this.fillAirStats()
     }
+    else if (sheet == "Records") {
+      this.showSheetDiv("stats")
+      this.fillModeListBox(this.scene.findObject("stats-container"), this.curMode)
+    }
     else if (sheet == "UnlockDecal") {
-      this.showSheetDiv("decals", true)
-
-      let decorCache = getCachedDataByType(decoratorTypes.DECALS)
-      let view = { items = [] }
-      foreach (categoryId in decorCache.categories) {
-        let groups = decorCache.catToGroupNames[categoryId]
-        let hasGroups = groups.len() > 1 || groups[0] != "other"
-        view.items.append({
-          id = categoryId
-          itemTag = "campaign_item"
-          itemText = $"#decals/category/{categoryId}"
-          isCollapsable = hasGroups
-        })
-
-        if (hasGroups)  {
-          view.items.extend(groups.map(@(groupId) {
-            id = $"{categoryId}/{groupId}"
-            itemText = $"#decals/group/{groupId}"
-          }))
-        }
-      }
-
-      let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
-      let categoriesListObj = this.scene.findObject("decals_group_list")
-      this.guiScene.replaceContentFromText(categoriesListObj, data, data.len(), this)
-
-      let selCategory = this.filterGroupName ?? loadLocalByAccount("wnd/decalsCategory", "")
-      if (this.isDecalGroup(selCategory))
-        this.openDecalCategory(categoriesListObj, selCategory.split("/")[0])
-
-      let selIdx = view.items.findindex(@(c) c.id == selCategory) ?? 0
-      categoriesListObj.setValue(selIdx)
-
-      this.guiScene.applyPendingChanges(false)
-      categoriesListObj.getChild(selIdx).scrollToView()
+      this.showDecalsSheet()
     }
     else if (sheet == "Medal") {
-      this.showSheetDiv("medals", true)
-
-      let selCategory = this.filterCountryName ?? profileCountrySq.value
-
-      local selIdx = 0
-      let view = { items = [] }
-      foreach (idx, filter in this.unlockFilters[sheet]) {
-        if (filter == selCategory)
-          selIdx = idx
-        view.items.append({ text = $"#{filter}" })
-      }
-
-      let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
-      let pageList = this.scene.findObject("medals_list")
-      this.guiScene.replaceContentFromText(pageList, data, data.len(), this)
-
-      let isEqualIdx = selIdx == pageList.getValue()
-      pageList.setValue(selIdx)
-      if (isEqualIdx) // func on_select don't call if same value is se already
-        this.onPageChange(pageList)
+      this.showMedalsSheet()
     }
     else if (sheet in this.unlockFilters) {
-      if ((!this.unlockFilters[sheet]) || (this.unlockFilters[sheet].len() < 1)) {
+      if (!this.unlockFilters[sheet] || (this.unlockFilters[sheet].len() < 1)) {
         //challange and achievents
         this.showSheetDiv("unlocks")
         this.curPage = this.getPageIdByName(sheet)
         this.fillUnlocksList()
       }
       else {
-        this.showSheetDiv("unlocks", true, true)
+        this.showSheetDiv("skins", true, true)
         let pageList = this.scene.findObject("pages_list")
         let curCountry = this.filterCountryName || profileCountrySq.value
         local selIdx = 0
@@ -608,7 +557,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function showSheetDiv(name, pages = false, subPages = false) {
-    foreach (div in ["profile", "unlocks", "stats", "medals", "decals"]) {
+    foreach (div in ["profile", "records", "unlocks", "skins", "stats", "medals", "decals"]) {
       let show = div == name
       let divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
@@ -641,6 +590,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let categoryObj = listObj.getChild(idx)
     let isCollapsable = categoryObj?.collapse_header == "yes"
     let decalsListObj = this.scene.findObject("decals_zone")
+    showObjById("decals_separator", !isCollapsable, this.scene)
     if (isCollapsable) {
       this.guiScene.replaceContentFromText(decalsListObj, "", 0, null)
       this.onDecalSelect()
@@ -659,6 +609,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     }
 
     decalsListObj.setValue(0)
+    this.onDecalSelect()
   }
 
   isDecalGroup = @(categoryId) categoryId.indexof("/") != null
@@ -757,7 +708,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return null
 
     let idx = listObj.getValue()
-    if (idx == -1)
+    if (idx == -1 || idx >= listObj.childrenCount())
       return null
 
     let decalId = listObj.getChild(idx).id
@@ -770,26 +721,19 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!(sheet in this.unlockFilters) || !this.unlockFilters[sheet])
       return
 
-    if (sheet == "Medal")
-      pageIdx = this.scene.findObject("medals_list").getValue()
-    else
-      pageIdx = this.scene.findObject("pages_list").getValue()
-
+    pageIdx = this.scene.findObject("pages_list").getValue()
     if (pageIdx < 0 || pageIdx >= this.unlockFilters[sheet].len())
       return
 
     let filter = this.unlockFilters[sheet][pageIdx]
     this.curPage = ("page" in filter) ? filter.page : this.getPageIdByName(sheet)
 
-    this.curFilterType = getTblValue(sheet, this.filterTable, "")
-
+    this.curFilterType = this.filterTable?[sheet] ?? ""
     if (this.curFilterType != "")
       this.curFilter = filter
 
     if (this.getCurSheet() == "UnlockSkin")
       this.refreshUnitTypeControl()
-    else
-      this.fillUnlocksList()
   }
 
   function onSubPageChange(_obj = null) {
@@ -923,8 +867,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     local curIndex = 0
     let lowerCurPage = this.curPage.tolower()
     let pageTypeId = get_unlock_type(lowerCurPage)
-    let itemSelectFunc = pageTypeId == UNLOCKABLE_MEDAL ? this.onMedalSelect : null
-    let containerObjId = pageTypeId == UNLOCKABLE_MEDAL ? "medals_zone" : "unlocks_group_list"
+    if (pageTypeId == UNLOCKABLE_MEDAL)
+      return
+
+    let itemSelectFunc = null
+    let containerObjId = pageTypeId == UNLOCKABLE_SKIN ? "skins_group_list" : "unlocks_group_list"
     this.unlocksTree = {}
 
     if (pageTypeId == UNLOCKABLE_SKIN) {
@@ -992,12 +939,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           })
         }
     }
-    data += handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    data = "".concat(data, handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view))
     this.guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
     this.guiScene.setUpdatesEnabled(true, true)
 
     if (pageTypeId == UNLOCKABLE_MEDAL)
-      curIndex = selMedalIdx?[this.curFilter] ?? 0
+      curIndex = this.selMedalIdx?[this.curFilter] ?? 0
 
     this.collapse(this.curAchievementGroupName != "" ? this.curAchievementGroupName : null)
 
@@ -1098,16 +1045,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           this.unlocksTree[chapter].groups[group].append(name)
         continue
       }
-
-      if (pageTypeId == UNLOCKABLE_MEDAL)
-        items.append({
-          id = name
-          tag = "imgSelectable"
-          unlocked = isUnlockOpened(name, unlockTypeId)
-          image = getUnlockableMedalImage(name)
-          imgClass = "smallMedals"
-          focusBorder = true
-        })
     }
     return items;
   }
@@ -1138,6 +1075,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         image = decorator.decoratorType.getImage(decorator)
         imgRatio = decorator.decoratorType.getRatio(decorator)
         statusLock = decorator.isUnlocked() ? null : "achievement"
+        imgClass = "profileMedals"
       })
     }
     return handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
@@ -1260,6 +1198,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       })
   }
 
+  function updateUnlockFav(name, objDesc) {
+    fillUnlockFav(name, objDesc)
+  }
+
   function fillSkinDescr(name) {
     let unitName = getPlaneBySkinId(name)
     let unitNameLoc = (unitName != "") ? getUnitName(unitName) : ""
@@ -1290,18 +1232,20 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     this.guiScene.setUpdatesEnabled(false, false)
     let markUpData = handyman.renderCached("%gui/profile/profileSkins.tpl", skinView)
-    let objDesc = showObjById("item_desc", true, this.scene)
+    let objDesc = showObjById("skin_desc", true, this.scene)
     this.guiScene.replaceContentFromText(objDesc, markUpData, markUpData.len(), this)
 
     if (canAddFav)
       fillUnlockFav(name, objDesc)
 
-    showObjById("unlocks_list", false, this.scene)
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
-  unlockToFavorites = @(obj) unlockToFavorites(obj,
-    Callback(this.updateFavoritesCheckboxesInList, this))
+  function unlockToFavorites(obj) {
+    if (obj?.isChecked != null)
+      obj.isChecked = obj.isChecked == "yes" ? "no" : "yes"
+    unlockToFavorites(obj, Callback(this.updateFavoritesCheckboxesInList, this))
+  }
 
   function updateFavoritesCheckboxesInList() {
     if (this.isPageFilling)
@@ -1329,7 +1273,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!checkObj(checkBoxObj))
       return
 
-    checkBoxObj.setValue(!checkBoxObj.getValue())
+    checkBoxObj.setValue(!checkBoxObj.getValue() ? "yes" : "no")
   }
 
   function onManualOpenUnlock(obj) {
@@ -1464,50 +1408,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       .filter(@(unlock) unlocksList.contains(unlock)))
   }
 
+
   function getUnlockBlockId(unlockId) {
     return $"{unlockId}_block"
   }
 
-  function onMedalSelect(obj) {
-    if (!checkObj(obj))
-      return
-
-    let idx = obj.getValue()
-    let itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
-    let name = checkObj(itemObj) && itemObj?.id
-    let unlock = name && getUnlockById(name)
-    if (!unlock)
-      return
-
-    let containerObj = this.scene.findObject("medals_info")
-    let descObj = checkObj(containerObj) && containerObj.findObject("medals_desc")
-    if (!checkObj(descObj))
-      return
-
-    if (!this.isPageFilling)
-      selMedalIdx[this.curFilter] <- idx
-
-    let config = buildUnlockDesc(::build_conditions_config(unlock))
-    let rewardText = getUnlockRewardText(name)
-    let progressData = config.getProgressBarData()
-
-    let view = {
-      title = loc($"{name}/name")
-      image = getUnlockableMedalImage(name, true)
-      unlockProgress = progressData.value
-      hasProgress = progressData.show
-      mainCond = getUnlockMainCondDescByCfg(config, { showSingleStreakCondText = true })
-      multDesc = getUnlockMultDescByCfg(config)
-      conds = getUnlockCondsDescByCfg(config)
-      rewardText = rewardText != "" ? rewardText : null
-    }
-
-    let markup = handyman.renderCached("%gui/profile/profileMedal.tpl", view)
-    this.guiScene.setUpdatesEnabled(false, false)
-    this.guiScene.replaceContentFromText(descObj, markup, markup.len(), this)
-    fillUnlockFav(name, containerObj)
-    this.guiScene.setUpdatesEnabled(true, true)
-  }
 
   function onUnlockSelect(obj) {
     if (obj?.isValid())
@@ -1515,12 +1420,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onUnlockGroupSelect(_obj) {
-    let list = this.scene.findObject("unlocks_group_list")
+    let isSkinPage = this.curPage.tolower() == "skin"
+    let list = this.scene.findObject(isSkinPage ? "skins_group_list" : "unlocks_group_list")
     let index = list.getValue()
     local unlocksList = []
     if ((index >= 0) && (index < list.childrenCount())) {
       let curObj = list.getChild(index)
-      if (this.curPage.tolower() == "skin")
+      if (isSkinPage)
         this.fillSkinDescr(curObj.id)
       else {
         let id = curObj.id
@@ -1536,7 +1442,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
               break
             }
         this.printUnlocksList(unlocksList)
-        if (this.curPage == "Achievement") {
+        if (!isSkinPage) {
           this.curAchievementGroupName = id
           if (isGroup && id != this.uncollapsedChapterName)
             this.onGroupCollapse(list)
@@ -1546,7 +1452,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onSkinPreview(_obj) {
-    let list = this.scene.findObject("unlocks_group_list")
+    let list = this.scene.findObject("skins_group_list")
     let index = list.getValue()
     if ((index < 0) || (index >= list.childrenCount()))
       return
@@ -1623,7 +1529,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let myStats = getStats()
     if (!myStats || !checkObj(this.scene))
       return
-
+    this.isProfileInited = true
     this.fillProfileStats(myStats)
   }
 
@@ -1642,15 +1548,50 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     }
   }
 
+  function showDecalsSheet() {
+    this.showSheetDiv("decals", true)
+
+    let decorCache = getCachedDataByType(decoratorTypes.DECALS)
+    let view = { items = [] }
+    foreach (categoryId in decorCache.categories) {
+      let groups = decorCache.catToGroupNames[categoryId]
+      let hasGroups = groups.len() > 1 || groups[0] != "other"
+      view.items.append({
+        id = categoryId
+        itemTag = "campaign_item"
+        itemText = $"#decals/category/{categoryId}"
+        isCollapsable = hasGroups
+      })
+
+      if (hasGroups)  {
+        view.items.extend(groups.map(@(groupId) {
+          id = $"{categoryId}/{groupId}"
+          itemText = $"#decals/group/{groupId}"
+        }))
+      }
+    }
+
+    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
+    let categoriesListObj = this.scene.findObject("decals_group_list")
+    this.guiScene.replaceContentFromText(categoriesListObj, data, data.len(), this)
+
+    let selCategory = this.filterGroupName ?? loadLocalByAccount("wnd/decalsCategory", "")
+    if (this.isDecalGroup(selCategory))
+      this.openDecalCategory(categoriesListObj, selCategory.split("/")[0])
+
+    let selIdx = view.items.findindex(@(c) c.id == selCategory) ?? 0
+    categoriesListObj.setValue(selIdx)
+
+    this.guiScene.applyPendingChanges(false)
+    categoriesListObj.getChild(selIdx).scrollToView()
+  }
+
   function fillProfileStats(stats) {
     this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
     if ("uid" in stats && stats.uid != userIdStr.value)
       externalIDsService.reqPlayerExternalIDsByUserId(stats.uid)
     this.fillClanInfo(getProfileInfo())
-    this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)
     ::fill_gamer_card(getProfileInfo(), "profile-", this.scene)
-    this.fillAwardsBlock(stats)
-    this.fillShortCountryStats(stats)
     this.scene.findObject("profile_loading").show(false)
   }
 
@@ -1666,7 +1607,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     ::set_current_wnd_difficulty(this.curMode)
     this.updateCurrentStatsMode(this.curMode)
     fillProfileSummary(this.scene.findObject("stats_table"), myStats.summary, this.curMode)
-    this.fillLeaderboard()
   }
 
   function onUpdate(_obj, _dt) {
@@ -1738,11 +1678,19 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     broadcastEvent(profileEvent.AVATAR_CHANGED)
   }
 
+  function onEventProfileUpdated(_params) {
+    ::fill_gamer_card(getProfileInfo(), "profile-", this.scene)
+  }
+
   function onEventMyStatsUpdated(_params) {
-    if (this.getCurSheet() == "Statistics")
+    let sheet = this.getCurSheet()
+    if (sheet == "Statistics")
       this.fillAirStats()
-    if (this.getCurSheet() == "Profile")
+
+    if (this.isPageHasProfileHandler(sheet))
       this.updateStats()
+    else
+      this.isProfileInited = false
   }
 
   function onEventClanInfoUpdate(_params) {
@@ -1754,7 +1702,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!myStats || !checkObj(this.scene))
       return
 
-    this.initAirStatsScene(myStats.userstat)
+    this.initAirStatsPage()
   }
 
   function fillAirStats() {
@@ -1838,6 +1786,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     openUrl(getCurCircuitOverride("achievementsURL", loc("url/achievements")).subst(
         { appId = APP_ID, name = getProfileInfo().name }),
       false, false, "profile_page")
+  }
+
+  function isMedalUnlocked(name) {
+    return isUnlockOpened(name, UNLOCKABLE_MEDAL)
   }
 }
 

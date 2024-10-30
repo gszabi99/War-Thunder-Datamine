@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import get_axis_name, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -330,8 +329,8 @@ function isSameMapping(lhs, rhs) {
 
     // Check preset load recursion
     if (presetChain.indexof(presetPath) != null) {
-      assert(false, "Controls preset require itself. " +
-        "Preset chain: " + toString(presetChain) + " > " + presetPath)
+      assert(false, "".concat("Controls preset require itself. ",
+        "Preset chain: ", toString(presetChain), " > ", presetPath))
       return
     }
 
@@ -381,7 +380,7 @@ function isSameMapping(lhs, rhs) {
 
     this.loadBasePresetsFromBlk(controlsBlk, version, presetChain)
 
-    log("ControlsPreset: LoadControls v" + version.tostring())
+    log($"ControlsPreset: LoadControls v{version}")
 
     this.loadHotkeysFromBlk    (controlsBlk, version)
     this.loadAxesFromBlk       (controlsBlk, version)
@@ -421,12 +420,12 @@ function isSameMapping(lhs, rhs) {
 
 
   function debugPresetStats() {
-    log("ControlsPreset: Stats:"
-      + " hotkeys=" + this.hotkeys.len()
-      + " axes=" + this.axes.len()
-      + " params=" + this.params.len()
-      + " joyticks=" + this.deviceMapping.len()
-    )
+    log("".concat("ControlsPreset: Stats:",
+      " hotkeys=", this.hotkeys.len(),
+      " axes=", this.axes.len(),
+      " params=", this.params.len(),
+      " joyticks=", this.deviceMapping.len()
+    ))
   }
 
 
@@ -545,7 +544,7 @@ function isSameMapping(lhs, rhs) {
 
     if (presetChain.len() == 1) {
       this.basePresetPaths["default"] <- presetChain[0]
-      log("ControlsPreset: InitialPreset = " + presetChain[0])
+      log($"ControlsPreset: InitialPreset = {presetChain[0]}")
     }
   }
 
@@ -826,9 +825,7 @@ function isSameMapping(lhs, rhs) {
         connected = true
 
       if (name == null || !connected)
-        name = ("C" + (idx + 1).tostring() + ":" +
-          buttonLocalized + (buttonId - joy.buttonsOffset + 1).tostring())
-
+        name = $"C{idx + 1}:{buttonLocalized}{buttonId - joy.buttonsOffset + 1}"
       break
     }
 
@@ -857,8 +854,7 @@ function isSameMapping(lhs, rhs) {
         connected = true
 
       if (name == null || !connected)
-        name = ("C" + (idx + 1).tostring() + ":" + joy.name + ":" +
-          axisLocalized + (axisId - joy.axesOffset + 1).tostring())
+        name = $"C{idx + 1}:{joy.name}:{axisLocalized}{axisId - joy.axesOffset + 1}"
 
       break
     }

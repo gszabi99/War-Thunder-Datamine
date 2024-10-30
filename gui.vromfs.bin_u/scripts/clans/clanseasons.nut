@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import clan_get_current_season_info
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE, CLAN_SEASON_NUM_IN_YEAR_SHIFT
@@ -104,7 +103,7 @@ let { get_clan_rewards_blk } = require("blkGetters")
       else {
         local place = currentPlace
         for (; place < min(maxPlaceForBlock, till); ++place) {
-          let gold = getTblValue("place" + (place + 1) + "Gold", rewardsData, 0)
+          let gold = rewardsData?[$"place{place + 1}Gold"] ?? 0
           let regalia = this.getRagalia(rewardsData, place + 1)
           let hasAnyRewards = gold > 0 || this.getRegaliaPrizes(regalia).len() > 0
           if (hasAnyRewards)

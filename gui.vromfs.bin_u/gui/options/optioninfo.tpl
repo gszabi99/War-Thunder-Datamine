@@ -1,20 +1,30 @@
-activeText {
+tdiv {
   width:t='pw'
-  text:t='<<title>>'
-}
+  flow:t='vertical'
+  padding-left:t='10@sf/@pf'
+  padding-top:t='14@sf/@pf'
 
-<<#imageSrc>>
+  activeText {
+    width:t='pw'
+    mediumFont:t='yes'
+    text:t='<<title>>'
+  }
+
+  <<#imageSrc>>
   img {
     id:t='option_info_image'
-    width:t='1000@sf/@pf'
-    height:t='750@sf/@pf'
+    width:t='pw'
+    height:t='0.552pw' // 0.552 is the info-images ratio
+    margin-top:t='2@blockInterval'
+    margin-bottom:t='4@blockInterval'
     background-image:t='<<imageSrc>>'
     background-repeat:t='aspect-ratio'
   }
-<</imageSrc>>
+  <</imageSrc>>
 
-textareaNoTab {
-  width:t='pw'
-  margin-top:t='3@blockInterval'
-  text:t='<<description>>'
+  textareaNoTab {
+    width:t='pw'
+    margin-top:t='3@blockInterval'
+    text:t='<<description>>'
+  }
 }

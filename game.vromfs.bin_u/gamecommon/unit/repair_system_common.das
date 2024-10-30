@@ -25,7 +25,7 @@ def can_repair_part(dmData : DamageModelData; part_id : PartId; part_state : uin
   )
 
 
-def is_repair_needed(unit : Unit?; repair_state : uint; speed_multiplier : float; repair_system_repair_hp_multiplier : float;
+def is_repair_needed(unit : Unit const?; repair_state : uint; speed_multiplier : float; repair_system_repair_hp_multiplier : float;
                      parts_id : PartIdList; parts_state : UInt32List; parts_hp : Point4List;
                      with_mods : bool; without_mods : bool; with_help : bool) : bool
   if unit.isGroundModel && speed_multiplier > 0.0f
@@ -48,7 +48,7 @@ def is_repair_needed(unit : Unit?; repair_state : uint; speed_multiplier : float
   return false
 
 
-def can_start_repair(unit : Unit?; repair_state : uint; speed_multiplier : float; repair_system_repair_hp_multiplier : float;
+def can_start_repair(unit : Unit const?; repair_state : uint; speed_multiplier : float; repair_system_repair_hp_multiplier : float;
                      parts_id : PartIdList; parts_state : UInt32List; parts_hp : Point4List;
                      remaining_repair_time : float; delay_time_to_repair : float; repair_by_ally : bool) : bool
   return (
@@ -86,7 +86,7 @@ def get_part_current_hp(dmData : DamageModelData; part_id : PartId; part_state :
   return part_hp.x
 
 
-def calc_time_to_repair(unit : Unit?; speed_multiplier : float; repair_system_repair_hp_multiplier : float;
+def calc_time_to_repair(unit : Unit const?; speed_multiplier : float; repair_system_repair_hp_multiplier : float;
                         repair_system_parts_id : PartIdList; repair_system_parts_state : UInt32List;
                         var repair_system_parts_hp : Point4List&; repair_system_parts_speed_mult : FloatList;
                         repair_with_mods_available : bool; repair_trailer_time : float; repair_trailer_progress : float)

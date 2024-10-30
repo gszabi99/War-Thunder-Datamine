@@ -1,0 +1,665 @@
+{
+  "type": "radar",
+  "name": "VN001",
+  "transivers": {
+    "GTM": {
+      "sideLobesAttenuation": -20.0,
+      "power": 100.0,
+      "band": 8,
+      "rcs": 40.0,
+      "range": 15000.0,
+      "rangeMax": 20000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 0.5,
+          "sideLobesSensitivity": -50.0
+        },
+        "elevation": {
+          "angleHalfSens": 3.9,
+          "sideLobesSensitivity": -50.0
+        }
+      }
+    },
+    "MTI": {
+      "sideLobesAttenuation": -20.0,
+      "power": 200.0,
+      "band": 8,
+      "rcs": 40.0,
+      "range": 15000.0,
+      "rangeMax": 20000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "timeGainControl": true,
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 0.5,
+          "sideLobesSensitivity": -50.0
+        },
+        "elevation": {
+          "angleHalfSens": 3.9,
+          "sideLobesSensitivity": -50.0
+        }
+      }
+    },
+    "mprf": {
+      "sideLobesAttenuation": -20.0,
+      "power": 200.0,
+      "band": 8,
+      "rcs": 3.0,
+      "range": 15000.0,
+      "rangeMax": 20000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "angleHalfSens": 3.9,
+        "sideLobesSensitivity": -32.0
+      }
+    },
+    "hprf": {
+      "sideLobesAttenuation": -20.0,
+      "power": 200.0,
+      "band": 8,
+      "rcs": 3.0,
+      "range": 20000.0,
+      "rangeMax": 25000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "angleHalfSens": 3.9,
+        "sideLobesSensitivity": -32.0
+      }
+    }
+  },
+  "scanPatterns": {
+    "searchWideATM": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        30.0
+      ],
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "period": 3.0,
+      "width": 60.0,
+      "barHeight": 3.5,
+      "barsCount": 5
+    },
+    "searchNarrowATM": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        30.0
+      ],
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "period": 1.5,
+      "width": 30.0,
+      "barHeight": 3.5,
+      "barsCount": 5
+    },
+    "searchWideGTM": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        30.0
+      ],
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "period": 2.0,
+      "width": 60.0,
+      "barHeight": 5.0,
+      "barsCount": 3
+    },
+    "searchNarrowGTM": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -30.0,
+        30.0
+      ],
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
+      "rowMajor": true,
+      "preciseMinor": true,
+      "period": 1.0,
+      "width": 30.0,
+      "barHeight": 5.0,
+      "barsCount": 3
+    }
+  },
+  "signals": {
+    "GTM": {
+      "groundClutter": false,
+      "groundMultipath": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 20000.0,
+        "width": 15.0
+      }
+    },
+    "MTI": {
+      "groundClutter": false,
+      "groundMultipath": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "mainBeamNotchWidth": 2.5,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 20000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -1000.0,
+        "maxValue": 1000.0,
+        "signalWidthMin": 2.5,
+        "width": 2.5
+      }
+    },
+    "mprfSearch": {
+      "groundClutter": false,
+      "groundMultipath": false,
+      "aircraftAsTarget": true,
+      "groundVehiclesAsTarget": false,
+      "friendFoeId": false,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "mainBeamNotchWidth": 10.0,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 25000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -900.0,
+        "maxValue": 900.0,
+        "signalWidthMin": 2.5,
+        "width": 10.0
+      }
+    },
+    "hprfSearch": {
+      "groundClutter": false,
+      "groundMultipath": false,
+      "aircraftAsTarget": true,
+      "groundVehiclesAsTarget": false,
+      "friendFoeId": false,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 2000.0,
+        "maxValue": 30000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 25.0,
+        "maxValue": 1200.0,
+        "signalWidthMin": 5.0,
+        "width": 150.0
+      }
+    }
+  },
+  "scanPatternSets": {
+    "GTM": {
+      "scanPattern1": "searchWideGTM",
+      "scanPattern2": "searchNarrowGTM"
+    },
+    "ATM": {
+      "scanPattern1": "searchWideATM",
+      "scanPattern2": "searchNarrowATM"
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range1": 12500.0,
+      "range2": 25000.0,
+      "range3": 3000.0,
+      "range4": 6000.0
+    }
+  },
+  "fsms": {
+    "main": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "constant",
+              "value": -7.8
+            }
+          ],
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTM"
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -60.0,
+              60.0
+            ],
+            "azimuthRelWidthMin": 0.02,
+            "elevationRange": [
+              -30.0,
+              30.0
+            ],
+            "distanceRange": [
+              500.0,
+              20000.0
+            ]
+          },
+          "setFsmActive": {
+            "fsm": "mode",
+            "active": true
+          }
+        },
+        "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
+          },
+          "setEnabled": {
+            "value": false
+          },
+          "setFsmActive": {
+            "fsm": "mode",
+            "active": false
+          }
+        },
+        "resetStandbyMode": {},
+        "setSearchMode": {
+          "setEnabled": {
+            "value": true
+          },
+          "setFsmActive": [
+            {
+              "fsm": "search",
+              "active": true
+            },
+            {
+              "fsm": "mode",
+              "active": true
+            }
+          ],
+          "setCueEnabled": {
+            "value": true,
+            "updateActiveTargetUnderCue": true
+          }
+        },
+        "resetSearchMode": {
+          "clearTargets": {},
+          "setFsmActive": {
+            "fsm": "search",
+            "active": false
+          },
+          "setCueEnabled": {
+            "value": false
+          }
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "standby",
+          "actions": {
+            "init": {},
+            "setStandbyMode": {}
+          }
+        },
+        "switchOn": {
+          "stateFrom": "standby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "search",
+          "actions": {
+            "setSearchMode": {}
+          }
+        },
+        "switchOff": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "resetSearchMode": {},
+            "setStandbyMode": {}
+          }
+        },
+        "switchScanPattern": {
+          "stateFrom": [
+            "standby",
+            "search"
+          ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {}
+          }
+        },
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": {}
+          }
+        }
+      }
+    },
+    "search": {
+      "stateInit": "search",
+      "transitions": {
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": {},
+            "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ],
+            "setCenterElevation": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "detectTarget": {}
+          }
+        },
+        "addTarget": {
+          "event": "targetDetected",
+          "actions": {
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {},
+            "setCueDopplerSpeed": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
+          }
+        },
+        "designateTarget": {
+          "command": "selectTarget",
+          "actions": {
+            "designateActiveDetectedTarget": [
+              {
+                "type": 0,
+                "sensorIndex": 1
+              },
+              {
+                "type": 0,
+                "self": true,
+                "sensorIndex": 0
+              }
+            ]
+          }
+        }
+      }
+    },
+    "mode": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "setGTMMode": {
+          "setModeName": {
+            "name": "ground_search"
+          },
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTM"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "GTM"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": -7.8
+          },
+          "clearTargets": {}
+        },
+        "setHPRFMode": {
+          "setModeName": {
+            "name": "PD HDN VS standby"
+          },
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "ATM"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "clearTargets": {}
+        },
+        "setMPRFMode": {
+          "setModeName": {
+            "name": "PD VS standby"
+          },
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "ATM"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "clearTargets": {}
+        },
+        "setMTIMode": {
+          "setModeName": {
+            "name": "GTM standby"
+          },
+          "setTransiver": {
+            "transiver": "MTI"
+          },
+          "setSignal": {
+            "signal": "MTI"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "GTM"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": -7.8
+          },
+          "clearTargets": {}
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "fsmActivate",
+          "stateTo": "mti",
+          "actions": {
+            "setGTMMode": {}
+          }
+        },
+        "showGTM": {
+          "stateFrom": "gtm",
+          "event": "fsmActivate",
+          "stateTo": "gtm",
+          "actions": {
+            "setGTMMode": {}
+          }
+        },
+        "showHPRF": {
+          "stateFrom": "hprf",
+          "event": "fsmActivate",
+          "stateTo": "hprf",
+          "actions": {
+            "setHPRFMode": {}
+          }
+        },
+        "showMPRF": {
+          "stateFrom": "mprf",
+          "event": "fsmActivate",
+          "stateTo": "mprf",
+          "actions": {
+            "setMPRFMode": {}
+          }
+        },
+        "showMTI": {
+          "stateFrom": "mti",
+          "event": "fsmActivate",
+          "stateTo": "mti",
+          "actions": {
+            "setMTIMode": {}
+          }
+        },
+        "switchToHPRF": {
+          "stateFrom": "mti",
+          "command": "modeSwitch",
+          "stateTo": "hprf",
+          "actions": {
+            "setHPRFMode": {}
+          }
+        },
+        "switchToMPRF": {
+          "stateFrom": "hprf",
+          "command": "modeSwitch",
+          "stateTo": "mprf",
+          "actions": {
+            "setMPRFMode": {}
+          }
+        },
+        "switchToGTM": {
+          "stateFrom": "mprf",
+          "command": "modeSwitch",
+          "stateTo": "gtm",
+          "actions": {
+            "setGTMMode": {}
+          }
+        },
+        "switchToMTI": {
+          "stateFrom": "gtm",
+          "command": "modeSwitch",
+          "stateTo": "mti",
+          "actions": {
+            "setMTIMode": {}
+          }
+        }
+      }
+    }
+  }
+}

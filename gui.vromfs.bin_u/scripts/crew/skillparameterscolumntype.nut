@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
@@ -51,7 +50,7 @@ enum skillColumnOrder {
 }
 
 ::g_skill_parameters_column_type._getHeaderImageLegendText <- function _getHeaderImageLegendText() {
-  return loc("crewSkillParameter/legend/" + this.id.tolower())
+  return loc($"crewSkillParameter/legend/{this.id.tolower()}")
 }
 
 ::g_skill_parameters_column_type._createValueItem <- function _createValueItem(
@@ -59,10 +58,10 @@ enum skillColumnOrder {
   local itemText = this.getDiffText(prevValue, curValue, sign, measureType, this.textColor)
   let selectedDiffText = this.getDiffText(prevSelectedValue - prevValue,
     curSelectedValue - curValue, sign, measureType, "userlogColoredText", true)
-  itemText += selectedDiffText
+  itemText = "".concat(itemText, selectedDiffText)
 
   if (this.addMeasureUnits)
-    itemText += format(" %s", colorize(this.textColor, measureType.getMeasureUnitsName()))
+    itemText = "".concat(itemText, format(" %s", colorize(this.textColor, measureType.getMeasureUnitsName())))
   let valueItem = {
     itemText = itemText
   }
@@ -84,7 +83,7 @@ enum skillColumnOrder {
   else if (this.addSignChar || isAdditionalText)
     diffSignChar = "+"
 
-  diffText = diffSignChar + diffText
+  diffText = $"{diffSignChar}{diffText}"
   if (diffAbsValue > 0)
     diffText = colorize(colorName, diffText)
   return diffText
@@ -207,7 +206,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     getHeaderText = function () {
       let unitName = getUnitName(getCachedCrewUnit())
       let pad = "    "
-      return pad + loc("crew/forUnit", { unitName = unitName }) + pad
+      return "".concat(pad, loc("crew/forUnit", { unitName = unitName }), pad)
     }
 
     createValueItem = function (_prevValue, _curValue, _prevSelectedValue, _curSelectedValue, _measureType, _sign) {

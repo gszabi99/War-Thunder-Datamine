@@ -721,7 +721,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       this.playerByRow.append(member.nick)
     }
 
-    markup.insert(0, ::buildTableRowNoPad("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
+    markup.insert(0, ::buildTableRowNoPad("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'"))
     markup = "".join(markup)
 
     this.guiScene.setUpdatesEnabled(false, false)

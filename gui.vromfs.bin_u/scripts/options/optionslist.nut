@@ -24,6 +24,7 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
 let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
+let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -65,7 +66,6 @@ let otherOptionsList = @() [
 ]
 
 let getMainOptions = function() {
-
   let unit = getAircraftByName(get_player_unit_name())
   let isShipOrBoat = unit?.isShipOrBoat() ?? false
   let isTank = unit?.isTank() ?? false
@@ -83,6 +83,7 @@ let getMainOptions = function() {
   return {
     name = isInFlight() ? "main" : "mainParameters"
     isSearchAvaliable = true
+    showNav = true
     options = [
       ["options/mainParameters"],
       [USEROPT_LANGUAGE, "spinner", ! isInFlight() && canSwitchGameLocalization()],
@@ -285,12 +286,6 @@ let getMainOptions = function() {
       [USEROPT_CHAT_FILTER, "spinner"],
       [USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, "spinner"],
 
-      //TODO fillVoiceChatOptions
-      //[USEROPT_VOICE_CHAT, "spinner"],
-      //[USEROPT_VOLUME_VOICE_IN, "slider"],
-      //[USEROPT_VOLUME_VOICE_OUT, "slider"],
-      //[USEROPT_PTT, "spinner"],
-
       ["options/header/gamepad"],
       [USEROPT_ENABLE_CONSOLE_MODE, "spinner", !::get_is_console_mode_force_enabled()],
       [USEROPT_GAMEPAD_CURSOR_CONTROLLER, "spinner", ::g_gamepad_cursor_controls.canChangeValue()],
@@ -327,55 +322,47 @@ let getMainOptions = function() {
 
 local overrideSoundOptionsFn = null
 
-let getSoundOptions = @() overrideSoundOptionsFn?() ?? {
-  name = "sound"
-  isInfoOnTheRight = true
-  options = [
-    [USEROPT_SOUND_ENABLE, "switchbox", is_platform_pc],
-    [USEROPT_CUSTOM_SOUND_MODS, "switchbox", is_platform_pc && hasCustomSoundMods()],
-    [USEROPT_SOUND_DEVICE_OUT, "combobox", is_platform_pc && soundDevice.get_out_devices().len() > 0],
-    [USEROPT_SOUND_SPEAKERS_MODE, "combobox", is_platform_pc],
-    [USEROPT_VOICE_MESSAGE_VOICE, "spinner"],
-    [USEROPT_SPEECH_TYPE, "spinner", ! isInFlight()],
-    [USEROPT_VOLUME_MASTER, "slider"],
-    [USEROPT_VOLUME_MUSIC, "slider"],
-    [USEROPT_VOLUME_MENU_MUSIC, "slider"],
-    [USEROPT_VOLUME_SFX, "slider"],
-    [USEROPT_VOLUME_ENGINE, "slider"],
-    [USEROPT_VOLUME_MY_ENGINE, "slider"],
-    [USEROPT_VOLUME_GUNS, "slider"],
-    [USEROPT_VOLUME_RADIO, "slider"],
-    [USEROPT_VOLUME_DIALOGS, "slider"],
-    [USEROPT_VOLUME_VWS, "slider"],
-    [USEROPT_VOLUME_RWR, "slider"],
-    [USEROPT_VOLUME_TINNITUS, "slider"],
-    [USEROPT_HANGAR_SOUND, "spinner"],
-    [USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", is_platform_pc],
-    [USEROPT_ENABLE_SOUND_SPEED, "spinner", (! isInFlight()) || (get_mission_difficulty_int() != DIFFICULTY_HARDCORE) ],
-    [USEROPT_VWS_ONLY_IN_COCKPIT, "button"],
-    [USEROPT_SOUND_RESET_VOLUMES, "button"]
-  ]
-}
-
-let getVoicechatOptions = function() {
-  let voiceOptions = {
-    name = "voicechat"
-    fillFuncName = "fillVoiceChatOptions"
+function getSoundOptions() {
+  let needShowVoiceOptions = chatStatesCanUseVoice() && (isCrossNetworkChatEnabled() || isPlatformXboxOne)
+  return overrideSoundOptionsFn?() ?? {
+    name = "sound"
+    fillFuncName = "fillSoundOptions"
     isInfoOnTheRight = true
     options = [
-      [USEROPT_VOICE_CHAT, "spinner"],
-      [USEROPT_VOLUME_VOICE_IN, "slider"],
-      [USEROPT_VOLUME_VOICE_OUT, "slider"],
-      [USEROPT_PTT, "spinner"]
+      ["options/sound"],
+      [USEROPT_SOUND_ENABLE, "switchbox", is_platform_pc],
+      [USEROPT_CUSTOM_SOUND_MODS, "switchbox", is_platform_pc && hasCustomSoundMods()],
+      [USEROPT_SOUND_DEVICE_OUT, "combobox", is_platform_pc && soundDevice.get_out_devices().len() > 0],
+      [USEROPT_SOUND_SPEAKERS_MODE, "combobox", is_platform_pc],
+      [USEROPT_VOICE_MESSAGE_VOICE, "spinner"],
+      [USEROPT_SPEECH_TYPE, "spinner", ! isInFlight()],
+      ["options/volume_master"],
+      [USEROPT_VOLUME_MASTER, "slider"],
+      [USEROPT_VOLUME_MUSIC, "slider"],
+      [USEROPT_VOLUME_MENU_MUSIC, "slider"],
+      [USEROPT_VOLUME_SFX, "slider"],
+      [USEROPT_VOLUME_ENGINE, "slider"],
+      [USEROPT_VOLUME_MY_ENGINE, "slider"],
+      [USEROPT_VOLUME_GUNS, "slider"],
+      [USEROPT_VOLUME_RADIO, "slider"],
+      [USEROPT_VOLUME_DIALOGS, "slider"],
+      [USEROPT_VOLUME_VWS, "slider"],
+      [USEROPT_VOLUME_RWR, "slider"],
+      [USEROPT_VOLUME_TINNITUS, "slider"],
+      [USEROPT_HANGAR_SOUND, "spinner"],
+      [USEROPT_PLAY_INACTIVE_WINDOW_SOUND, "spinner", is_platform_pc],
+      [USEROPT_ENABLE_SOUND_SPEED, "spinner", (!isInFlight()) || (get_mission_difficulty_int() != DIFFICULTY_HARDCORE) ],
+      [USEROPT_VWS_ONLY_IN_COCKPIT, "button"],
+      [USEROPT_SOUND_RESET_VOLUMES, "button"],
+      ["options/voicechat"],
+      [USEROPT_VOICE_CHAT, "spinner", needShowVoiceOptions],
+      [USEROPT_VOICE_DEVICE_IN, "combobox", needShowVoiceOptions
+        && !isPlatformSony && soundDevice.get_record_devices().len() > 0],
+      [USEROPT_VOLUME_VOICE_IN, "slider", needShowVoiceOptions],
+      [USEROPT_VOLUME_VOICE_OUT, "slider", needShowVoiceOptions],
+      [USEROPT_PTT, "spinner", needShowVoiceOptions],
     ]
   }
-
-  if (!isPlatformSony) {
-    if (soundDevice.get_record_devices().len() > 0)
-      voiceOptions.options.insert(1, [USEROPT_VOICE_DEVICE_IN, "combobox"])
-  }
-
-  return voiceOptions
 }
 
 let getInternetRadioOptions = @() {
@@ -383,6 +370,7 @@ let getInternetRadioOptions = @() {
   fillFuncName = "fillInternetRadioOptions"
   isInfoOnTheRight = true
   options = [
+    ["options/internet_radio"],
     [USEROPT_INTERNET_RADIO_ACTIVE, "spinner"],
     [USEROPT_INTERNET_RADIO_STATION, "combobox"],
   ]
@@ -395,9 +383,6 @@ let getOptionsList = function() {
     options.append(getSystemOptions())
 
   options.append(getSoundOptions())
-
-  if (chatStatesCanUseVoice())
-    options.append(getVoicechatOptions())
 
   if (hasFeature("Radio"))
     options.append(getInternetRadioOptions())

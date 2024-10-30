@@ -1315,6 +1315,89 @@
       }
     },
     {
+      "id": "2024_birthday_bonus_hidden",
+      "type": "award",
+      "hidden": true
+    },
+    {
+      "id": "2024_birthday_bonus_5win",
+      "locDescId": "2024_birthday_bonus/desc",
+      "userLogId": "2024_birthday_bonus_trophy",
+      "hideUntilPrevUnlocked": "2024_birthday_bonus_hidden",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_birthday_bonus",
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 50
+          },
+          {
+            "type": "unlocked",
+            "unlock": "2024_birthday_bonus_hidden"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_birthday_bonus_10win",
+      "locDescId": "2024_birthday_bonus/desc",
+      "userLogId": "2024_birthday_bonus_trophy",
+      "hideUntilPrevUnlocked": "2024_birthday_bonus_hidden",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_birthday_bonus",
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 50
+          },
+          {
+            "type": "unlocked",
+            "unlock": "2024_birthday_bonus_hidden"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2024_birthday_bonus_15win",
+      "locDescId": "2024_birthday_bonus/desc",
+      "userLogId": "2024_birthday_bonus_trophy",
+      "hideUntilPrevUnlocked": "2024_birthday_bonus_hidden",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_birthday_bonus",
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 15,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 50
+          },
+          {
+            "type": "unlocked",
+            "unlock": "2024_birthday_bonus_hidden"
+          }
+        ]
+      }
+    },
+    {
       "id": "empty_alco_anclock",
       "type": "award",
       "isMultiUnlock": true,
@@ -3950,6 +4033,7 @@
       "group": "trafalgar_day",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,

@@ -11,22 +11,20 @@ require %game.unit_events
 
 [es]
 def unit_fx_updater_es(info : UpdateStageInfoAct;
-                       uid : int;
+                       var unit__ref : UnitRef;
                        active : bool;
                        var unit_fx : UnitFx)
   if active
-    get_unit_for_edit(uid) <| $(var unit)
-      unit_fx |> update(*unit, info.dt)
+    unit_fx |> update(*unit__ref.unit, info.dt)
 
 
 [es(on_event=CmdUpdateRelativeUnitHealth)]
 def unit_fx_update_rel_health_es(evt : Event;
-                                 uid : int;
+                                 var unit__ref : UnitRef;
                                  active : bool;
                                  var unit_fx : UnitFx)
   if active
-    get_unit_for_edit(uid) <| $(var unit)
-      unit_fx |> updateRelativeHealth(*unit)
+    unit_fx |> updateRelativeHealth(*unit__ref.unit)
 
 
 [es]
@@ -39,11 +37,9 @@ def unit_fx_stop_all_es(evt : CmdUnitFxStopAll;
 
 [es]
 def unit_fx_hide_es(evt : CmdUnitFxHide;
-                    uid : int;
                     active : bool;
                     var unit_fx : UnitFx)
-  let unit = get_unit(uid)
-  if active && unit != null && !unit.isDelayed
+  if active
     unit_fx |> hide(evt.hide)
 
 
@@ -54,16 +50,14 @@ def unit_fx_became_delayed_es(evt : EventUnitDelayedStatusChanged;
     unit_fx |> stopAll(true)
 
 
-[es(REQUIRE = fire_damage__isBurn)]
+[es(REQUIRE = fire_damage__isBurn, tag=server)]
 def unit_fx_event_on_start_burn_es(evt : EventOnStartSingleBurn;
                                    active : bool;
-                                   uid : int;
                                    var unit_fx : UnitFx;
                                    var fire_fx__id : ecs::IntList;
                                    var fire_fx__fxId : ecs::IntList;
                                    var fire_fx__paramsId : ecs::IntList)
-  let unit = get_unit(uid)
-  if !active || unit == null || unit.isDelayed || !unit.isAuthority
+  if !active
     return
 
   let fireParams = get_fire_params(evt.fireParamsId);
@@ -91,15 +85,12 @@ def unit_fx_event_on_start_burn_es(evt : EventOnStartSingleBurn;
 [es(REQUIRE = fire_damage__isBurn)]
 def unit_fx_stop_single_burn_es(evt : EventOnStopSingleBurn;
                                 active : bool;
-                                uid : int;
                                 var unit_fx : UnitFx;
                                 var fire_fx__id : ecs::IntList;
                                 var fire_fx__fxId : ecs::IntList;
                                 var fire_fx__paramsId : ecs::IntList)
-  let unit = get_unit(uid)
-  if !active || unit == null || unit.isDelayed
+  if !active
     return
-
   var i = length(fire_fx__paramsId)
   while --i >= 0
     if fire_fx__id[i] == evt.fireId
@@ -112,15 +103,12 @@ def unit_fx_stop_single_burn_es(evt : EventOnStopSingleBurn;
 [es(REQUIRE = fire_damage__isBurn, on_event=EventOnStopBurn)]
 def unit_fx_stop_burn_es(evt : Event;
                          active : bool;
-                         uid : int;
                          var unit_fx : UnitFx;
                          var fire_fx__id : ecs::IntList;
                          var fire_fx__fxId : ecs::IntList;
                          var fire_fx__paramsId : ecs::IntList)
-  let unit = get_unit(uid)
-  if !active || unit == null || unit.isDelayed
+  if !active
     return
-
   for fxId in fire_fx__fxId
     unit_fx |> stopFxEventByIndex(fxId, false);
   fire_fx__id |> clear()

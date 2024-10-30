@@ -447,7 +447,7 @@ struct LegacyLoadParams
 
 [es, with_bundle(v)]
 def ammo_stowage_load_es(evt : CmdInitComponent;
-                         uid : int;
+                         var unit__ref : UnitRef;
                          var v : tuple<
                            ammo_stowage__ammoState : uint;
                            ammo_stowage__dpAmmo : int3;
@@ -528,7 +528,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
   v.ammo_slots__numAmmo |> clear()
   v.ammo_slots__node |> clear()
 
-  var unit = get_unit(uid)
+  var unit = unit__ref.unit
   assert(unit != null)
   if !unit.isGroundModel
     return
@@ -792,7 +792,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
 [es(after=ammo_stowage_load_es), with_bundle(v)]
 def ammo_stowage_init_es(evt : CmdInitComponent;
                          eid : EntityId;
-                         uid : int;
+                         var unit__ref : UnitRef;
                          v : tuple<
                            ammo_stowage__ammoState : uint;
                            ammo_stowage__ammoTypeToMask : UInt32List -const;
@@ -812,7 +812,7 @@ def ammo_stowage_init_es(evt : CmdInitComponent;
                            ammo_per_type_data__numAmmoFs : IntList -const;
                            ammo_per_type_data__numAmmoFsSync : IntList -const
                            >)
-  var unit = get_unit(uid)
+  var unit = unit__ref.unit
   assert(unit != null)
   if v.ammo_stowages__clustersRange |> length() == 0
     return

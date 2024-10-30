@@ -116,7 +116,7 @@ def load_toolkit_mod_blk(blk : DataBlock&;
 
 [es]
 def repair_system_init_handle_es(evt : CmdInitComponent;
-                                 uid : int;
+                                 var unit__ref : UnitRef;
                                  var repair_system_state : uint&;
                                  var repair_system_toolkit_count : int&;
                                  var repair_system_toolkit_count_max : int&;
@@ -126,7 +126,7 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
                                  var repair_system_parts_state : UInt32List&;
                                  var repair_system_parts_hp : Point4List&;
                                  var repair_system_parts_speed_mult : FloatList&)
-  var unit = get_unit(uid);
+  var unit = unit__ref.unit;
   var gm = unit |> as_gm();
   assert(unit != null)
   if unit == null
@@ -191,7 +191,7 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
 
 [es]
 def repair_system_init_mod_handle_es(evt : EventUnitInitModification;
-                                     uid : int;
+                                     var unit__ref : UnitRef;
                                      var repair_system_state : uint&;
                                      var repair_system_toolkit_count : int&;
                                      var repair_system_toolkit_count_max : int&;
@@ -199,15 +199,9 @@ def repair_system_init_mod_handle_es(evt : EventUnitInitModification;
                                      var repair_system_repair_hp_multiplier : float&)
   if evt.modType != "toolkit"
     return
-
-  var unit = get_unit(uid)
-  assert(unit != null)
-  if unit == null
-    return
-
   // load toolkit mod blk
   load_toolkit_mod_blk(*evt.blk,
-    unit,
+    unit__ref.unit,
     repair_system_state,
     repair_system_toolkit_count,
     repair_system_toolkit_count_max,
@@ -219,9 +213,8 @@ def repair_system_init_mod_handle_es(evt : EventUnitInitModification;
 
 [es(no_order)]
 def repair_system_update_es(act : UpdateStageInfoAct;
-                            active : bool;
                             eid : EntityId;
-                            uid : int;
+                            var unit__ref : UnitRef;
                             var repair_system_state : uint&;
                             var repair_system_remaining_repair_time : float&;
                             var repair_system_delay_time_to_repair : float&;
@@ -238,10 +231,8 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                             repair_system_parts_speed_mult : FloatList;
                             var repair_system_parts_hp : Point4List&;        // x - hp, y - ph needed, z - repairHpVal, w - hpForRepair
                             var repair_system_parts_state : UInt32List&)
-  if !active
-    return
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  var unit = unit__ref.unit
+  if unit.isDelayed
     return
   let gm = unit |> as_gm()
 
@@ -266,7 +257,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
     return
 
   // if not suitable for repair - return
-  if !active || !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
+  if !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
     return
 
   // update repair speed multiplier
@@ -472,13 +463,13 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 [es]
 def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;
                                         eid : EntityId;
-                                        uid : int;
+                                        unit__ref : UnitRef;
                                         repair_system_state : uint;
                                         var repair_system_parts_state : UInt32List&;
                                         repair_system_parts_id : PartIdList&;
                                         var repair_system_parts_hp : Point4List&)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   assume dmData = unit.dmData
 
@@ -493,13 +484,13 @@ def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;
 
 [es]
 def repair_system_spend_toolkit_handle_es(evt : EventRepairSystemSpendToolkit;
-                                          uid : int;
+                                          unit__ref : UnitRef;
                                           var repair_system_toolkit_count : int&)
   if repair_system_toolkit_count > 0
     repair_system_toolkit_count--
 
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   let gm = unit |> as_gm()
   if gm != null
@@ -509,16 +500,14 @@ def repair_system_spend_toolkit_handle_es(evt : EventRepairSystemSpendToolkit;
 [es(on_event=EventUnitRespawn, on_event=EventUnitRepair)]
 def repair_system_handle_restore_es(evt : Event;
                                     eid : EntityId;
-                                    uid : int;
+                                    unit__ref : UnitRef;
                                     var repair_system_remaining_repair_time : float&;
                                     var repair_system_delay_time_to_repair : float&;
                                     var repair_system_scheduled_bot_repair_time : float&;
                                     var repair_system_toolkit_count : int&;
                                     repair_system_toolkit_count_max : int;
                                     var repair_system_parts_state : UInt32List&)
-  let unit = get_unit(uid)
-  if unit == null
-    return
+  let unit = unit__ref.unit
   let gm = unit |> as_gm()
 
   var toolkit_count = 0
@@ -564,7 +553,7 @@ def repair_system_repair_request_handle_es(evt : EventRepairSystemRequestRepair;
 
 [es]
 def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingRepair;
-                                          uid : int;
+                                          unit__ref : UnitRef;
                                           eid : EntityId;
                                           var repair_system_state : uint&;
                                           repair_system_remaining_repair_time : float;
@@ -576,8 +565,8 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
                                           repair_system_parts_id : PartIdList;
                                           repair_system_parts_state : UInt32List;
                                           repair_system_parts_hp : Point4List)
-  let unit = get_unit(uid);
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   if (!unit.isShip && unit.isBurn) || (repair_system_toolkit_count_max >= 0 && !get_flag(repair_system_state, RepairState REPAIR_AVAILABLE) && !get_flag(repair_system_state, RepairState NEED_REPAIR_HELP))
     return
@@ -664,16 +653,15 @@ def repair_system_trailer_dead_handle_es(evt : EventOnTrailerDead;
 
 [es(tag=server)]
 def repair_system_on_damage_es(evt : EventUnitDamage;
-                               uid : int;
+                               var unit__ref : UnitRef;
                                repair_system_state : uint&;
                                var repair_system_parts_hp : Point4List&;
                                repair_system_parts_state : UInt32List&;
                                repair_system_parts_id : PartIdList&)
   if !get_flag(repair_system_state, RepairState SUITABLE_FOR_REPAIR)
     return
-
-  var unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  var unit = unit__ref.unit
+  if unit.isDelayed
     return
 
   let mult = get_game_params().minDamageFractionToResetRepair

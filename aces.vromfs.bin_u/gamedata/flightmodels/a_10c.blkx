@@ -3358,6 +3358,10 @@
       {
         "name": "a_10c_jdam_31",
         "blk": "gameData/FlightModels/weaponPresets/a_10c_jdam_31.blk"
+      },
+      {
+        "name": "a_10c_gbu_39",
+        "blk": "gameData/FlightModels/weaponPresets/a_10c_gbu_39.blk"
       }
     ]
   },
@@ -4533,6 +4537,22 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot4",
+            "reqModification": "us_gbu39",
+            "ShowNodes": {
+              "node": "bomb_pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_4",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -4680,6 +4700,22 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "bomb_5",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot5",
+            "reqModification": "us_gbu39",
+            "ShowNodes": {
+              "node": "bomb_pylon5"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_5",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -4882,6 +4918,22 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "bomb_6",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot7",
+            "reqModification": "us_gbu39",
+            "ShowNodes": {
+              "node": "bomb_pylon7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_6",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -5226,6 +5278,22 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "bomb_7",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot8",
+            "reqModification": "us_gbu39",
+            "ShowNodes": {
+              "node": "bomb_pylon8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_7",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -6248,6 +6316,11 @@
     },
     "us_2000lb_mk84_gbu31_jdam": {
       "reqModification": "us_500lb_mk82_gbu38_jdam",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "us_gbu39": {
+      "reqModification": "us_2000lb_mk84_gbu31_jdam",
       "modClass": "weapon",
       "tier": 4
     }

@@ -217,7 +217,7 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
 
 [es, with_bundle(v)]
 def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
-                                      uid : int;
+                                      var unit__ref : UnitRef;
                                       v : tuple<
                                         ammo_stowage__ammoState : uint;
                                         ammo_stowage__partIdRemap : IPoint4List;
@@ -233,8 +233,8 @@ def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
                                         ammo_slots__partId : PartIdList;
                                         ammo_slots__ammoMaskAndType : UInt32List
                                         >)
-  var unit = get_unit(uid)
-  if unit != null && !unit.isDelayed
+  var unit = unit__ref.unit
+  if !unit.isDelayed
     let remap = get_remap(v.ammo_stowage__partIdRemap, evt.partId)
     if remap.partId.valid
       apply_ammo_slot_effect(unit, remap.stowageId, remap.clusterId, remap.slotId, evt.effect) <| v
@@ -502,7 +502,7 @@ def ammo_stowage_disable_affected_slots(var unit : Unit?; stowage_id : int; clus
 
 [es, with_bundle(v)]
 def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
-                                    uid : int;
+                                    var unit__ref : UnitRef;
                                     eid : EntityId;
                                     v : tuple<
                                       ammo_stowage__ammoState : uint -const;
@@ -536,8 +536,8 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
     set_flag(v.ammo_stowage__ammoState, AmmoState ON_FIRE, false)
     set_flag(v.ammo_stowage__ammoState, AmmoState ON_EXPLODE, false)
 
-    var unit = get_unit(uid)
-    if unit == null || unit.isDelayed
+    var unit = unit__ref.unit
+    if unit.isDelayed
       return
 
     for stowage_id, clusters_range in iter_range(v.ammo_stowages__clustersRange), v.ammo_stowages__clustersRange
@@ -555,8 +555,8 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
     v.ammo_stowage__delayedOffender |> clear_offender_data()
 
   if v.ammo_stowage__timeAmmoFire > 0.0f
-    var unit = get_unit(uid)
-    if unit != null && !unit.isAlive && !unit.isDelayed
+    let unit = unit__ref.unit
+    if !unit.isAlive && !unit.isDelayed
       v.ammo_stowage__timeAmmoFire -= evt.dt
       if v.ammo_stowage__timeAmmoFire > 0.0f
         let ammo_left = safediv(v.ammo_stowage__timeAmmoFire, v.ammo_stowage__combustionTime)
@@ -571,8 +571,8 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
   // - if unit is alive, these flags prevent doing fatal fire/explosion several times in one tick
   // - if unit is dead, these flags will persist and prevent any new fires/explosions from happening after fatal one
   if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION)
-    var unit = get_unit(uid)
-    if unit != null && unit.isAlive && !unit.isDelayed
+    var unit = unit__ref.unit
+    if unit.isAlive && !unit.isDelayed
       set_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE, false)
       set_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION, false)
 
@@ -748,7 +748,7 @@ def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; o
 
 [es, with_bundle(v)]
 def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
-                                        eid : EntityId; uid : int; active : bool;
+                                        eid : EntityId; var unit__ref : UnitRef;
                                         v : tuple<
                                           ammo_stowage__ammoState : uint -const;
                                           ammo_stowage__ammoTypeRemap : IPoint4List;
@@ -766,8 +766,8 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
                                           ammo_slots__numAmmo : IPoint2List;
                                           ammo_stowage__splashProperties : SplashProps -const
                                           >)
-  var unit = get_unit(uid)
-  if !active || unit == null || unit.isDelayed || !unit.isAlive || unit.visual == null
+  var unit = unit__ref.unit
+  if unit.isDelayed || !unit.isAlive || unit.visual == null
     return
 
   let partId = evt.partId
@@ -796,7 +796,7 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
 
 [es, with_bundle(v)]
 def ammo_stowage_on_damage_es(evt : EventUnitDamage;
-                              eid : EntityId; uid : int; active : bool;
+                              eid : EntityId; var unit__ref : UnitRef;
                               v : tuple<
                                 ammo_stowage__ammoTypeRemap : IPoint4List;
                                 ammo_stowage__weaponsIds : IntList;
@@ -814,8 +814,8 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
                                 ammo_slots__numAmmo : IPoint2List;
                                 ammo_stowage__splashProperties : SplashProps -const
                                 >)
-  let unit = get_unit(uid)
-  if !active || unit == null || unit.isDelayed || !unit.isAlive || (unit.isTank && !is_equal_float(unit.dmgScaleFromBot, 1.))
+  var unit = unit__ref.unit
+  if unit.isDelayed || !unit.isAlive || (unit.isTank && !is_equal_float(unit.dmgScaleFromBot, 1.))
     return
 
   let remap = get_remap(v.ammo_stowage__partIdRemap, evt.partId)

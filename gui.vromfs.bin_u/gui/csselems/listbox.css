@@ -257,6 +257,75 @@ HorizontalListBox[type=transparent] {
   foreground-position:0, h-2@listboxItemsInterval, 0, 0;
 }
 
+HorizontalListBox[bottomSelectLine=yes] > shopFilter:hover {
+  background-position:0, 0, 0, 1@sf/@pf;
+  foreground-position:0, h - 3@sf/@pf, 0, 0;
+}
+
+HorizontalListBox[bottomSelectLine=yes] > shopFilter[selected=yes] {
+  background-position:0, 0, 0, 1@sf/@pf;
+  foreground-position:0, h - 3@sf/@pf, 0, 0;
+}
+
+HorizontalListBox[buttonsHasPadding=yes] {
+  padding: 13@sf/@pf, 0;
+}
+
+HorizontalListBox[buttonsHasPadding=yes] > shopFilter {
+  margin:12@sf/@pf, 0;
+}
+
+HorizontalListBox[normalFont=yes] > shopFilter > shopFilterText {
+  font:@fontNormal;
+}
+
+HorizontalListBox[autoSize=yes] > shopFilter  {
+  width:fw;
+  height:ph;
+  re-type:fgPict;
+}
+
+HorizontalListBox[autoSize=yes] > shopFilter > shopFilterText {
+  pos:(pw-w)/2, (ph-h)/2;
+}
+
+HorizontalListBox[transparentButtons=yes] {
+  background-color:@transparent;
+}
+
+HorizontalListBox[transparentButtons=yes] > shopFilter {
+  background-color:#00000000;
+}
+
+HorizontalListBox[transparentButtons=yes] > shopFilter > shopFilterText {
+  color:#908f8f;
+}
+
+HorizontalListBox[transparentButtons=yes] > shopFilter[selected=yes] > shopFilterText {
+  color:#FFFFFF;
+}
+
+HorizontalListBox[transparentButtons=yes] > shopFilter:hover > shopFilterText {
+  color:#e0e0e0;
+}
+
+HorizontalListBox[transparentButtons=yes] > shopFilter:hover {
+  foreground-color:#996a2211;
+}
+
+HorizontalListBox[transparentButtons=yes] > shopFilter[selected=yes] {
+  foreground-color:@headerOptionSelectedColor;
+}
+
+HorizontalListBox[transparentButtons=yes] > shopFilter[selected=yes]:hover {
+  foreground-color:#ffb2391d;
+}
+
+HorizontalListBox[fullTransparent=yes] {
+  transparentButtons:yes;
+  background-color:#00000000;
+}
+
 .choice3 > shopFilter {
   width:30*@scrn_tgt/100.0;
   flow:vertical;
@@ -326,6 +395,9 @@ HorizontalListBox[type=transparent] {
 }
 .tabs[smallFont=yes] > shopFilter[canClose=yes] {
   padding:@scrn_tgt/100.0, 2*@sf/@pf_outdated+0.5*@scrn_tgt/100.0, 3*@scrn_tgt/100.0, 0.5*@scrn_tgt/100.0;
+}
+HorizontalListBox[profilePage=yes] > shopFilter {
+  padding:@scrn_tgt/100.0, 2*@sf/@pf_outdated+0.5*@scrn_tgt/100.0, @scrn_tgt/100.0, 0;
 }
 
 .countries > shopFilter > textAreaCentered {
@@ -587,7 +659,6 @@ HorizontalListBox[withImages=yes] > shopFilter > shopFilterImg {
 VerticalListBox.options > shopFilter {
   width:pw;
 }
-
 
 CountriesCrews {
   size: pw, 1@slotbarHeight;

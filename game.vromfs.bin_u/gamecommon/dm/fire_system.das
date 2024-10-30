@@ -154,7 +154,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
 [es, with_bundle(v)]
 def fire_damage_start_burn_with_offender(evt : EventFireSystemStartBurnWithOffender;
                                          eid : EntityId;
-                                         uid : int;
+                                         var unit__ref : UnitRef;
                                          var v : tuple<
                                            fire_data__packedPartId : UInt32List;
                                            fire_data__nodeId : IntList;
@@ -173,8 +173,8 @@ def fire_damage_start_burn_with_offender(evt : EventFireSystemStartBurnWithOffen
                                            >)
   if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
     return
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   if !fire_system_can_part_burn(evt.partId, v)
     return
@@ -186,7 +186,7 @@ def fire_damage_start_burn_with_offender(evt : EventFireSystemStartBurnWithOffen
 [es(tag=server), with_bundle(v)]
 def fire_damage_start_burn_with_offender_in_pos(evt : EventFireSystemStartBurnWithOffenderInPos;
                                                 eid : EntityId;
-                                                uid : int;
+                                                var unit__ref : UnitRef;
                                                 var v : tuple<
                                                   fire_data__packedPartId : UInt32List;
                                                   fire_data__nodeId : IntList;
@@ -205,8 +205,8 @@ def fire_damage_start_burn_with_offender_in_pos(evt : EventFireSystemStartBurnWi
                                                   >)
   if !extinguish_system_can_reignite(v.extinguish_system_last_extinguish_time)
     return
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   if !fire_system_can_part_burn(evt.partId, v)
     return

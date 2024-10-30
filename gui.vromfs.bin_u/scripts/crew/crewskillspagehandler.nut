@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -330,8 +329,8 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
         curValue += stdMath.round_by_value(bonusLevel, 0.01)
 
       if (bonusData.add > 0)
-        bonusTooltip = loc("crew/qualifyBonus") + loc("ui/colon")
-                  + colorize("goodTextColor", "+" + stdMath.round_by_value(addLevel, 0.01))
+        bonusTooltip = "".concat(loc("crew/qualifyBonus"), loc("ui/colon"),
+          colorize("goodTextColor", $"+{stdMath.round_by_value(addLevel, 0.01)}"))
 
       let lvlDiffByGunners = stdMath.round_by_value(bonusLevel - addLevel, 0.01)
       if (lvlDiffByGunners < 0)

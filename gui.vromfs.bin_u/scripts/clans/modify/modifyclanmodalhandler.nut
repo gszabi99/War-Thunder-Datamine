@@ -1,4 +1,3 @@
-//-file:plus-string
 from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
@@ -168,7 +167,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!tag.len())
       tag = "   "
     foreach (idx, decorItem in decorators)
-      decorObj.getChild(idx).setValue(decorItem.start + tag + decorItem.end)
+      decorObj.getChild(idx).setValue("".concat(decorItem.start, tag, decorItem.end))
     decorObj.setValue(decorObj.getValue())
     this.onFieldChange(obj)
   }
@@ -220,7 +219,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.newClanAnnouncement  = this.newClanAnnouncement.len() > 0 ? clearBorderSymbols(this.newClanAnnouncement, [" "]) : ""
 
     if (!::checkClanTagForDirtyWords(this.newClanTag, false))
-      err += loc("clan/error/bad_words_in_clanTag")
+      err = "".concat(err, loc("clan/error/bad_words_in_clanTag"))
 
     if (this.newClanTag.len() <= 0)
       err = "".concat(err, loc("clan/error/empty_tag"), "\n")
@@ -240,7 +239,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let tagDecorations = this.getDecoratorsList()
     if (tagDecorations.len() >= this.newClanTagDecoration + 1 && this.newClanTag.len() > 0)
-      this.newClanTag = tagDecorations[this.newClanTagDecoration].start + this.newClanTag + tagDecorations[this.newClanTagDecoration].end
+      this.newClanTag = "".concat(tagDecorations[this.newClanTagDecoration].start, this.newClanTag, tagDecorations[this.newClanTagDecoration].end)
     return true
   }
 

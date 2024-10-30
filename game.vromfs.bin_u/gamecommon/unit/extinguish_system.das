@@ -25,7 +25,7 @@ require %game.events
 [es(no_order)]
 def extinguish_system_update_es(act : UpdateStageInfoAct;
                                 eid : EntityId;
-                                uid : int;
+                                var unit__ref : UnitRef;
                                 extinguish_system_penalty_without_mod : bool;
                                 fire_damage__isBurn : bool;
                                 extinguish_system_is_assisting : bool;
@@ -37,8 +37,8 @@ def extinguish_system_update_es(act : UpdateStageInfoAct;
                                 var extinguish_system_crew_busy_time_end : float&;
                                 var extinguish_system_next_extinguisher_time : float&;
                                 var extinguish_system_require_net_sync : bool&)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed || !unit.isAuthority
+  let unit = unit__ref.unit
+  if unit.isDelayed || !unit.isAuthority
     return
 
   let gm = unit |> as_gm()
@@ -99,6 +99,7 @@ def extinguish_system_update_es(act : UpdateStageInfoAct;
 
 
 // ---------------------------- extinguish init & reset --------------------------------
+
 
 def load_extinguisher_mod_blk(blk : DataBlock&;
                               var unit : Unit?;
@@ -165,7 +166,7 @@ def load_extinguisher_mod_blk(blk : DataBlock&;
 
 [es]
 def extinguish_system_init_handle_es(evt : CmdInitComponent;
-                                     uid : int;
+                                     var unit__ref : UnitRef;
                                      var extinguish_system_penalty_without_mod : bool&;
                                      var extinguish_system_auto_extinguisher : bool&;
                                      var extinguish_system_extinguisher_count : int&;
@@ -174,7 +175,7 @@ def extinguish_system_init_handle_es(evt : CmdInitComponent;
                                      var extinguish_system_crew_busy_time : float&;
                                      var extinguish_system_extinguisher_time_min : float&;
                                      var extinguish_system_extinguisher_time_max : float&)
-  var unit = get_unit(uid)
+  var unit = unit__ref.unit
   var gm = unit |> as_gm()
   assert(unit != null)
   if unit == null
@@ -209,9 +210,9 @@ def extinguish_system_init_handle_es(evt : CmdInitComponent;
           extinguish_system_penalty_without_mod)
 
 
-[es]
+[es(REQUIRE=unit_tag__gm)]
 def extinguish_system_init_mod_handle_es(evt : EventUnitInitModification;
-                                         uid : int;
+                                         var unit__ref : UnitRef;
                                          extinguish_system_penalty_without_mod : bool;
                                          var extinguish_system_auto_extinguisher : bool&;
                                          var extinguish_system_extinguisher_count : int&;
@@ -223,14 +224,13 @@ def extinguish_system_init_mod_handle_es(evt : EventUnitInitModification;
   if evt.modType != "extinguisher"
     return
 
-  var unit = get_unit(uid)
-  var gm = unit |> as_gm()
-  assert(unit != null)
-  if unit == null
+  var unit = unit__ref.unit
+  var gm = as_gm(unit)
+  assert(gm != null)
+  if gm == null
     return
 
   extinguish_system_extinguisher_count_max = gm != null && gm.extinguisher.isAvailable ? (unit.isShip ? -1 : 0) : 0
-
   load_extinguisher_mod_blk(*evt.blk,
     unit,
     extinguish_system_auto_extinguisher,
@@ -262,7 +262,7 @@ def extinguish_system_repair_handle_es(evt : EventUnitRepair;
 [es]
 def extinguish_system_respawn_handle_es(evt : EventUnitRespawn;
                                         eid : EntityId;
-                                        uid : int;
+                                        var unit__ref : UnitRef;
                                         var extinguish_system_extinguisher_count : int&;
                                         extinguish_system_extinguisher_count_max : int;
                                         var extinguish_system_extinguish_time_start : float&;
@@ -272,7 +272,7 @@ def extinguish_system_respawn_handle_es(evt : EventUnitRespawn;
                                         var extinguish_system_is_assisting : bool&;
                                         var extinguish_system_require_net_sync : bool&)
 
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   let gm = unit |> as_gm()
   var extinguisher_count = -1
   if gm != null && !unit.isDelayed
@@ -298,17 +298,14 @@ def extinguish_system_respawn_handle_es(evt : EventUnitRespawn;
 [es]
 def extinguish_system_activate_handle_es(evt : EventExtinguishSystemSetActive;
                                          eid : EntityId;
-                                         uid : int;
+                                         unit__ref : UnitRef;
                                          fire_damage__isBurn : bool;
                                          var extinguish_system_extinguish_time_start : float&;
                                          var extinguish_system_extinguish_time_end : float&;
                                          var extinguish_system_crew_busy_time_end : float&;
                                          var extinguish_system_is_assisting : bool&;
                                          var extinguish_system_require_net_sync : bool&)
-  let unit = get_unit(uid)
-  if unit == null
-    return
-
+  let unit = unit__ref.unit
   let ship = unit |> as_ship()
   if ship == null || !ship.isVeryFewCrew
     if evt.active
@@ -337,7 +334,7 @@ def can_unit_be_extinguished_with_extinguisher(eid : EntityId)
 [es]
 def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSystemActivateExtinguisher;
                                                       eid : EntityId;
-                                                      uid : int;
+                                                      unit__ref : UnitRef;
                                                       var extinguish_system_is_assisting : bool&;
                                                       extinguish_system_penalty_without_mod : bool;
                                                       extinguish_system_extinguisher_count : int;
@@ -356,8 +353,8 @@ def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSyste
   if (is_burning && is_assisting) || (!is_burning && !is_assisting)
     return
 
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   let gm = unit |> as_gm()
 
@@ -457,11 +454,11 @@ def extinguish_system_stop_burn_with_extinguisher_handle_es(evt : EventExtinguis
 
 [es(tag=server)]
 def extinguish_system_spend_extinguisher_es(evt : EventExtinguishSystemSpendExtinguisher;
-                                            uid : int;
+                                            unit__ref : UnitRef;
                                             var extinguish_system_extinguisher_count : int&;
                                             extinguish_system_extinguisher_count_max : int;
                                             var extinguish_system_require_net_sync : bool&)
-  let unit = get_unit(uid)
+  let unit = unit__ref.unit
   if extinguish_system_extinguisher_count_max > 0 && !unit.isDelayed && unit.isAuthority
     if extinguish_system_extinguisher_count > 0
       --extinguish_system_extinguisher_count
@@ -474,7 +471,7 @@ def extinguish_system_spend_extinguisher_es(evt : EventExtinguishSystemSpendExti
 [es(tag=server), with_bundle(v)]
 def extinguish_system_extinguish_by_ally_handle_es(evt : EventExtinguishSystemExtinguishByAlly;
                                                    eid : EntityId;
-                                                   uid : int;
+                                                   unit__ref : UnitRef;
                                                    fire_damage__isBurn : bool;
                                                    extinguish_system_is_assisting : bool;
                                                    extinguish_system_penalty_without_mod : bool;
@@ -489,8 +486,8 @@ def extinguish_system_extinguish_by_ally_handle_es(evt : EventExtinguishSystemEx
                                                      fire_data__fireParamsId : IntList;
                                                      fire_data__startTime : FloatList
                                                      >)
-  let unit = get_unit(uid)
-  if unit == null || unit.isDelayed
+  let unit = unit__ref.unit
+  if unit.isDelayed
     return
   let gm = unit |> as_gm()
   let is_burning = fire_damage__isBurn

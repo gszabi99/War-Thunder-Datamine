@@ -11,6 +11,7 @@
       "depth_charge_40",
       "depth_charge_41",
       "depth_charge_42",
+      "ammunition_storage_02",
       "holder_01",
       "holder_02"
     ]
@@ -126,7 +127,7 @@
       "weaponType": "bombs",
       "blk": "gameData/weapons/bombguns/bomb_uk_hedgehog.blk",
       "emitter": "bone_bomb_01",
-      "bullets": 24,
+      "bullets": 144,
       "external": true,
       "dropSpeed": 55.0,
       "useEmitter": true,
@@ -138,15 +139,17 @@
       "ammoDpGenFmt": "depth_charge_%02d_dm",
       "barrelDP": "depth_charge_mount_02_dm",
       "brokenBarrelAllowShoot": false,
+      "speedYaw": 5.0,
       "allowableDelta": 15.0,
       "turret": {
-        "head": "body",
-        "gun": "depth_charge_mount_01"
+        "head": "depth_charge_mount_01",
+        "gun": "depth_charge_mount_01",
+        "gunnerDm": "depth_charge_mount_01"
       },
       "limits": {
         "yaw": [
-          -0.0,
-          0.0
+          -120.0,
+          120.0
         ],
         "pitch": [
           -0.0,
