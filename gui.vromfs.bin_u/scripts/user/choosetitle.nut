@@ -25,12 +25,13 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   curTitle = ""
   ownTitles = null
   titlesList = null
+  onCompleteFunc = null
 
-  static function open() {
+  static function open(params) {
     if (!isInMenu() || !getStats())
       return
 
-    handlersManager.loadHandler(gui_handlers.ChooseTitle)
+    handlersManager.loadHandler(gui_handlers.ChooseTitle, params)
   }
 
   function getSceneTplView() {
@@ -38,7 +39,8 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
     this.titlesList = getAllUnlocksWithBlkOrder()
       .filter(@(u) u?.type == "title" && isUnlockVisible(u))
       .map(@(u) u.id)
-    this.curTitle = getStats().title
+    if (this.curTitle == "")
+      this.curTitle = getStats().title
 
     let hasUnseen = seenTitles.getNewCount() > 0
     local titlesData = this.titlesList.map(function(name) {
@@ -163,6 +165,12 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   function setTitleAndGoBack(titleName) {
     if (!titleName || titleName == this.curTitle)
       return this.goBack()
+
+    if (this.onCompleteFunc) {
+      this.onCompleteFunc(titleName)
+      this.goBack()
+      return
+    }
 
     addTask(
       select_current_title(titleName),

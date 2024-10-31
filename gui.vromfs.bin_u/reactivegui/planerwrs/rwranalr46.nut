@@ -17,16 +17,16 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, hdpx(90))
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud") * 1.5
+  fontSize = getFontDefHt("hud") * 3.0
 }
 
 function calcRwrTargetRadius(target) {
   return 0.2 + target.rangeRel * 0.8
 }
 
-let iconRadiusRel = 0.2
+let iconRadiusBaseRel = 0.15
 
-function createRwrTarget(index, settings, fontSizeMult) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
@@ -34,6 +34,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
 
   let directionGroup = target.groupId >= 0 && target.groupId < settings.directionGroups.len() ? settings.directionGroups[target.groupId] : null
   let targetRadiusRel = calcRwrTargetRadius(target)
+  let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
 
   local targetType = null
   if (directionGroup == null || directionGroup?.text != null)
@@ -44,7 +45,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = fontSizeMult * styleText.fontSize
+        fontSize = objectStyle.fontScale * styleText.fontSize
         text = directionGroup != null ? directionGroup.text : settings.unknownText
       })
 
@@ -83,7 +84,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       icon = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(4)
+        lineWidth = hdpx(4 * objectStyle.lineWidthScale)
         fillColor = 0
         size = flex()
         commands = commands
@@ -98,7 +99,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       color = color
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4)
+      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
       fillColor = 0
       size = flex()
       commands = [
@@ -166,7 +167,7 @@ function targetPriorityGreater(left, right, settings) {
     return targetRangeSmaller(left, right, settings)
 }
 
-function createRwrPriorityTarget(settings) {
+function createRwrPriorityTarget(settings, objectStyle) {
   local priorityTarget = null
   for (local i = 0; i < rwrTargets.len(); ++i) {
     let target = rwrTargets[i]
@@ -179,11 +180,12 @@ function createRwrPriorityTarget(settings) {
     return @() { }
 
   let priorityTargetRadiusRel = calcRwrTargetRadius(priorityTarget)
+  let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
 
   local priority = @() {
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4)
+    lineWidth = hdpx(4 * objectStyle.lineWidthScale)
     fillColor = 0
     size = flex()
     pos = [pw(0), ph(0)]
@@ -277,42 +279,42 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
-function rwrTargetsComponent(fontSizeMult) {
+function rwrTargetsComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-function rwrPriorityTargetComponent() {
+function rwrPriorityTargetComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = createRwrPriorityTarget(settings.get())
+    children = createRwrPriorityTarget(settings.get(), objectStyle)
   }
 }
 
-function scope(scale, fontSizeMult) {
+function scope(scale, style) {
   return {
     size = [pw(scale), ph(scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
-      rwrTargetsComponent(fontSizeMult),
-      rwrPriorityTargetComponent()
+      rwrTargetsComponent(style.object),
+      rwrPriorityTargetComponent(style.object)
     ]
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, fontSizeMult) {
+let function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()
     pos = posWatched.get()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(scale, fontSizeMult)
+    children = scope(scale, style)
   }
 }
 

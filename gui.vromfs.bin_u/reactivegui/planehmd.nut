@@ -15,6 +15,7 @@ let hmdAH64 = require("planeHmds/hmdAh64.nut")
 let hmdJas39 = require("planeHmds/hmdJas39.nut")
 let hmdA10c = require("planeHmds/hmdA10c.nut")
 let hmdTopOwl = require("planeHmds/hmdTopOwl.nut")
+let hmdTornado = require("planeHmds/hmdTornado.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
 
@@ -27,7 +28,8 @@ let hmdSetting = Computed(function() {
     isJas39 = false,
     isMetric = false,
     isA10c = false,
-    isTopOwl = false
+    isTopOwl = false,
+    isTornado = false
   }
   if (BlkFileName.value == "")
     return res
@@ -43,13 +45,14 @@ let hmdSetting = Computed(function() {
     isMetric = blk.getBool("isMetricHmd", false),
     isJas39 = blk.getBool("hmdJas39", false),
     isA10c = blk.getBool("hmdA10c", false),
-    isTopOwl = blk.getBool("hmdTopOwl", false)
+    isTopOwl = blk.getBool("hmdTopOwl", false),
+    isTornado = blk.getBool("hmdTornado", false)
   }
 })
 
 let isVisible = Computed(@() (HmdVisibleAAM.value || HmdSensorVisible.value || HmdVisible.value) && !HmdBlockIls.value)
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isVtas, isF16c, isAh64, isMetric, isJas39, isA10c, isTopOwl } = hmdSetting.value
+  let { isShelZoom, isVtas, isF16c, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado } = hmdSetting.value
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.value ? [
@@ -59,7 +62,8 @@ let planeHmd = @(width, height) function() {
       (isAh64 ? hmdAH64(width, height) : null),
       (isJas39 ? hmdJas39(width, height, isMetric) : null),
       (isA10c ? hmdA10c(width, height) : null),
-      (isTopOwl ? hmdTopOwl(width, height) : null)
+      (isTopOwl ? hmdTopOwl(width, height) : null),
+      (isTornado ? hmdTornado(width, height) : null)
     ] : null
   }
 }

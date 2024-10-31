@@ -2648,7 +2648,6 @@ enums.addTypes(g_hud_hints, {
       "warn:gun_breech_malfunction",
       "warn:gun_barrel_malfunction",
       "warn:rocket_launcher_malfunction",
-      "warn:crit_cockpit_door",
       "warn:too_heavy_for_vtol",
       "warn:laser_warning",
       "warn:owned_unit_dead",

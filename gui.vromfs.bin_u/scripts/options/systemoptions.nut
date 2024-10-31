@@ -1,5 +1,5 @@
 //-file:param-pos
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes, disable_network
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -18,7 +18,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let { applyRestartClient, canRestartClient
 } = require("%scripts/utils/restartClient.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
+let { create_option_switchbox, create_option_slider } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -194,7 +194,7 @@ function tryGetOptionImageSrc(id) {
   let curValue = mCfgCurrent[id]
   let { infoImgPattern = null, availableInfoImgVals = null } = opt
 
-  if (infoImgPattern == null || curValue == null)
+  if (infoImgPattern == null || curValue == null || curValue == "custom")
     return null
 
   let imgVal = availableInfoImgVals
@@ -255,7 +255,7 @@ function validateGuiValue(id, value) {
       return (value < desc.min) ? desc.min : desc.max
     }
   }
-  else if ( widgetType == "list" || widgetType == "tabs") {
+  else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "value_slider") {
     if (desc.values.indexof(value) == null && (value not in desc?.hidden_values)) {
       logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is not in the allowed values list.")
       return desc.def
@@ -293,7 +293,7 @@ function setGuiValue(id, value, skipUI = false) {
     if ( widgetType == "checkbox"  || "slider" == widgetType) {
       raw = value
     }
-    else if ( widgetType == "list" || widgetType == "tabs") {
+    else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "value_slider") {
       raw = desc.values.indexof(value) ?? -1
     }
     else if ( widgetType == "editbox" ) {
@@ -484,9 +484,9 @@ let hasRT = @() hasFeature("optionRT") && !is_platform_macosx
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
-let isRTVisible = @() hasFeature("optionBVH") || disable_network()
-let isRTAOVisible = @() (hasFeature("optionBVH") && hasFeature("optionBVH_AO")) || disable_network()
-let isRTSMVisible = @() (hasFeature("optionBVH") && hasFeature("optionBVH_SM")) || disable_network()
+let isRTVisible = @() hasFeature("optionBVH")
+let isRTAOVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_AO")
+let isRTSMVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_SM")
 function getListOption(id, desc, cb, needCreateList = true) {
   let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
   let customItems = ("items" in desc) ? desc.items : null
@@ -906,7 +906,7 @@ mShared = {
 }
 //------------------------------------------------------------------------------
 /*
-  widgetType - type of the widget in UI ("list", "slider", "checkbox", "editbox", "tabs").
+  widgetType - type of the widget in UI ("list", "slider", "value_slider", "checkbox", "editbox", "tabs").
   def - default value in UI (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
   blk - path to variable in config.blk file structure (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
   restart - client restart is required to apply an option (e.g. no support in Renderer::onSettingsChanged() function).
@@ -921,9 +921,9 @@ mShared = {
   init - function, initializes the variable config section, for example, defines 'def' value and/or 'values' list.
   tooltipExtra - optional, text to be added to option tooltip.
   isVisible - function, for hide options
-  infoImgPattern - pattern for the option image in the format `#ui/path/img_name_%s`, where `%s` will be replaced with the current option value.
+  infoImgPattern - optional, pattern for the option image in the format `#ui/path/img_name_%s`, where `%s` will be replaced with the current option value.
     For correct functionality, images for all possible options listed in the 'values' must be present.
-  availableInfoImgVals - (works with the 'slider' widgetType) allows specifying which values have corresponding images.
+  availableInfoImgVals - optional, (works with the 'slider' and 'value_slider' widgetType) allows specifying which values have corresponding images.
     Sliders may have high granularity, so instead of loading an image for every option,
     we can load a few images. The image with the closest matching value will be displayed.
 
@@ -933,12 +933,15 @@ mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     init = function(_blk, desc) {
       desc.values <- is_platform_windows
-        ? [ "auto", "dx11", "dx12", "vulkan" ]
+        ? [ "auto", "dx11", "dx12" ]
         : is_platform_macosx ? [ "metal" ] : [ "vulkan" ]
-      let otherPlatform = is_platform_macosx ? "metal" : "vulkan"
-      desc.def <- is_platform_windows ? "auto" : otherPlatform
+
+      if (is_platform_windows && hasFeature("optionGFXAPIVulkan"))
+        desc.values.append("vulkan")
+
+      desc.def <- desc.values[0]
     }
-    isVisible = @() hasFeature("optionGFXAPI") || disable_network()
+    isVisible = @() is_platform_windows && hasFeature("optionGFXAPI")
   }
   resolution = { widgetType = "list" def = "1024 x 768" blk = "video/resolution" restart = true
     init = function(blk, desc) {
@@ -1087,7 +1090,7 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
   }
-  texQuality = { widgetType = "list" def = "high" blk = "graphics/texquality" restart = has_broken_recreate_image()
+  texQuality = { widgetType = "value_slider" def = "high" blk = "graphics/texquality" restart = has_broken_recreate_image()
     init = function(_blk, desc) {
       let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
       let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
@@ -1110,19 +1113,19 @@ mSettings = {
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/textureQuality/%s"
   }
-  shadowQuality = { widgetType = "list" def = "high" blk = "graphics/shadowQuality" restart = false
+  shadowQuality = { widgetType = "value_slider" def = "high" blk = "graphics/shadowQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
     infoImgPattern = "#ui/images/settings/shadowQuality/%s"
   }
-  waterEffectsQuality = { widgetType = "list" def = "high" blk = "graphics/waterEffectsQuality" restart = false
+  waterEffectsQuality = { widgetType = "value_slider" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/waterFxQuality/%s"
   }
-  compatibilityShadowQuality = { widgetType = "list" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
+  compatibilityShadowQuality = { widgetType = "value_slider" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
     values = [ "low", "medium" ]
     infoImgPattern = "#ui/images/settings/compShadowQuality/%s"
   }
-  fxResolutionQuality = { widgetType = "list" def = "high" blk = "graphics/fxTarget" restart = false
+  fxResolutionQuality = { widgetType = "value_slider" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"
     values = [ "low", "medium", "high", "ultrahigh" ]
     infoImgPattern = "#ui/images/settings/fxQuality/%s"
@@ -1201,7 +1204,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/grassRange/%s"
     availableInfoImgVals = [10, 55, 100, 145, 180]
   }
-  tireTracksQuality = { widgetType = "list" def = "none" blk = "graphics/tireTracksQuality" restart = false
+  tireTracksQuality = { widgetType = "value_slider" def = "none" blk = "graphics/tireTracksQuality" restart = false
     values = [ "none", "medium", "high", "ultrahigh" ]
     configValueToGuiValue = @(val) this.values[val]
     getValueFromConfig = function(blk, desc) {
@@ -1213,11 +1216,11 @@ mSettings = {
     }
     infoImgPattern = "#ui/images/settings/trackMarks/%s"
   }
-  waterQuality = { widgetType = "list" def = "high" blk = "graphics/waterQuality" restart = false
+  waterQuality = { widgetType = "value_slider" def = "high" blk = "graphics/waterQuality" restart = false
     values = [ "low", "medium", "high", "ultrahigh" ]
     infoImgPattern = "#ui/images/settings/waterQuality/%s"
   }
-  giQuality = { widgetType = "list" def = "low" blk = "graphics/giQuality" restart = false
+  giQuality = { widgetType = "value_slider" def = "low" blk = "graphics/giQuality" restart = false
     values = [ "low", "medium", "high" ], isVisible = @() true
     infoImgPattern = "#ui/images/settings/GI/%s"
   }
@@ -1305,52 +1308,52 @@ mSettings = {
   }
   rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false enabled = hasRT
     values = ["off", "low", "medium", "high", "ultra", "custom"]
-    onChanged = "rayTracingClick" isVisible = @() isRTVisible()
+    onChanged = "rayTracingClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtQuality/%s"
   }
   bvhDistance = { widgetType = "slider" def = 3000 min = 1000 max = 6000 blk = "graphics/bvhRiGenRange" restart = false enabled = hasRTGUI
-  isVisible = @() isRTVisible()
+  isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/bvhDistance/%s"
     availableInfoImgVals = [1000, 2650, 4300, 6000]
   }
-  rtao = { widgetType = "list" def = "off" blk = "graphics/RTAOQuality" restart = false
+  rtao = { widgetType = "value_slider" def = "off" blk = "graphics/RTAOQuality" restart = false
     values = ["off", "low", "medium", "high"] enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() isRTAOVisible()
+    onChanged = "rtOptionChanged" isVisible = isRTAOVisible
     infoImgPattern = "#ui/images/settings/rtAOQuality/%s"
   }
-  rtsm = { widgetType = "list" def = "off" blk = "graphics/enableRTSM" restart = false
+  rtsm = { widgetType = "value_slider" def = "off" blk = "graphics/enableRTSM" restart = false
     values = [ "off", "sun", "sun_and_dynamic" ]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() isRTSMVisible()
+    onChanged = "rtOptionChanged" isVisible = isRTSMVisible
     infoImgPattern = "#ui/images/settings/rtShadows/%s"
   }
-  rtr = { widgetType = "list" def = "off" blk = "graphics/RTRQuality" restart = false
+  rtr = { widgetType = "value_slider" def = "off" blk = "graphics/RTRQuality" restart = false
     values = ["off", "low", "medium", "high"]
     enabled = hasRTGUI
-    onChanged = "rtrClick" isVisible = @() isRTVisible()
+    onChanged = "rtrClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtReflections/%s"
   }
   rtrRes = { widgetType = "list" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
     enabled = hasRTR
-    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    onChanged = "rtOptionChanged" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtResolution/%s"
   }
   rtrWater = { widgetType = "checkbox" def = false blk = "graphics/RTRWater" restart = false
     enabled = hasRTGUI
-    onChanged = "rtrWaterClick" isVisible = @() isRTVisible()
+    onChanged = "rtrWaterClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtWater/%s"
   }
   rtrWaterRes = { widgetType = "list" def = "half" blk = "graphics/RTRWaterRes" restart = false
     values = ["half", "full"]
     enabled = hasRTRWater
-    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    onChanged = "rtOptionChanged" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtWaterResolution/%s"
   }
-  rtrTranslucent = { widgetType = "list" def = "off" blk = "graphics/RTRTranslucent" restart = false
+  rtrTranslucent = { widgetType = "value_slider" def = "off" blk = "graphics/RTRTranslucent" restart = false
     values = ["off", "medium", "high"]
     enabled = hasRTGUI
-    onChanged = "rtOptionChanged" isVisible = @() isRTVisible()
+    onChanged = "rtOptionChanged" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtTransQuality/%s"
   }
 }
@@ -1359,7 +1362,7 @@ function validateInternalConfigs() {
   let errorsList = []
   foreach (id, desc in mSettings) {
     let widgetType = getTblValue("widgetType", desc)
-    if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "tabs"]))
+    if (!isInArray(widgetType, ["list", "slider", "value_slider", "checkbox", "editbox", "tabs"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'widgetType' invalid or undefined."))
     if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
@@ -1392,6 +1395,11 @@ function validateInternalConfigs() {
           || vMin > vMax || vMin > safeDef || safeDef > vMax)
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'min'/'def'/'max' conflict."))
+    }
+    else if ( widgetType == "value_slider") {
+      if (!desc?.values.len())
+        errorsList.append(logError("sysopt.validateInternalConfigs()",
+          $"Option '{id}' - 'values' is empty or undefined."))
     }
     else if ( widgetType == "list" || widgetType ==  "tabs") {
       if (def != null && uiType != "string")
@@ -1680,7 +1688,7 @@ function onGuiOptionChanged(obj) {
   else if ( widgetType == "slider" ) {
     value = raw.tointeger()
   }
-  else if ( widgetType == "list" || widgetType == "tabs") {
+  else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "value_slider") {
     value = desc.values[raw]
   }
   else if ( widgetType == "editbox") {
@@ -1733,7 +1741,7 @@ function fillGuiOptions(containerObj, handler) {
   let cb = "onSystemOptionChanged"
   local data = ""
   foreach (section in mUiStruct) {
-    if ( section.title == "options/rt" && !hasFeature("optionBVH") && !disable_network())
+    if (section.title == "options/rt" && !hasFeature("optionBVH"))
       continue
     let isTable = ("items" in section)
     let ids = isTable ? section.items : [ section.id ]
@@ -1764,7 +1772,13 @@ function fillGuiOptions(containerObj, handler) {
       }
       else if ( widgetType == "slider" ) {
         desc.step <- desc?.step ?? max(1, round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
-        option = ::create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
+        option = create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
+      }
+      else if ( widgetType == "value_slider" ) {
+        desc.step <- 1
+        desc.max <- desc.values.len() - 1
+        let val = desc.values.findindex(@(v) v == mCfgCurrent[id])
+        option = create_option_slider(desc.widgetId, val, cb, true, "slider", desc)
       }
       else if ( widgetType == "list" ) {
         option = getListOption(id, desc, cb)

@@ -48,12 +48,9 @@ let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNickna
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
-let { isUnlockVisible, getUnlockRewardText, canClaimUnlockRewardForUnit } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockVisible, getUnlockRewardText } = require("%scripts/unlocks/unlocksModule.nut")
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
-let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
-let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
-let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
+let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -135,6 +132,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   selMedalIdx = null
 
   function initScreen() {
+    setBreadcrumbGoBackParams(this)
     this.selMedalIdx = {}
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
       return this.goBack()
@@ -151,10 +149,13 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.player.name <- ""
 
     let customNick = getCustomNick(this.player)
-    this.scene.findObject("profile-name").setValue(customNick == null
+    let profileName = customNick == null
       ? this.player.name
-      : $"{this.player.name}{loc("ui/parentheses/space", { text = customNick })}")
+      : $"{this.player.name}{loc("ui/parentheses/space", { text = customNick })}"
+    this.scene.findObject("profile-name").setValue(profileName)
     this.scene.findObject("profile-container").show(false)
+    let breadCrumbTitle = this.scene.findObject("breadcrumb_title")
+    breadCrumbTitle.setValue(" ".concat(loc("mainmenu/btnProfile"), profileName))
 
     this.initStatsParams()
     this.initTabs()
@@ -840,7 +841,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let sheet = this.getCurSheet()
     let showStatBar = this.infoReady && sheet == "Statistics"
-    let showProfBar = this.infoReady && !showStatBar
+    let showProfBar = this.infoReady && sheet == "Profile"
     let isVisibleAchievementsUrlBtn = showProfBar && hasFeature("AchievementsUrl") && hasFeature("AllowExternalLink")
 
     showObjectsByTable(this.scene, {
@@ -1051,49 +1052,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     view.items = this.medalsByCountry?[country].items ?? []
     local data = handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
 
-    let ediff = getShopDiffCode()
     let medalsObj = this.scene.findObject("medals_zone")
-    if (this.isOwnStats) {
-      let markerUnlockIds = getUnlockIds(ediff)
-      let manualUnlockIds = getManualUnlocks().map(@(unlock) unlock.id)
-      view = { items = [] }
-      foreach (chapterName, chapterItem in this.unlocksTree) {
-        local markerSeenIds = markerUnlockIds.filter(@(id) chapterItem.rootItems.contains(id)
-          || chapterItem.groups.findindex(@(g) g.contains(id)) != null)
-        local manualSeenIds = manualUnlockIds.filter(@(id) (chapterItem.rootItems.contains(id)
-          || chapterItem.groups.findindex(@(g) g.contains(id)) != null) && canClaimUnlockRewardForUnit(id))
-
-        view.items.append({
-          itemTag = "campaign_item"
-          id = chapterName
-          itemText = $"#unlocks/chapter/{chapterName}"
-          isCollapsable = chapterItem.groups.len() > 0
-          unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
-            makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
-            makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
-          ])
-        })
-
-        if (chapterItem.groups.len() > 0)
-          foreach (groupName, groupItem in chapterItem.groups) {
-            let id = $"{chapterName}/{groupName}"
-
-            markerSeenIds = markerSeenIds.filter(@(unlockId) groupItem.contains(unlockId))
-            manualSeenIds = manualUnlockIds.filter(@(unlockId) groupItem.contains(unlockId)
-              && canClaimUnlockRewardForUnit(unlockId))
-
-            view.items.append({
-              id = id
-              itemText = chapterItem.rootItems.indexof(groupName) != null ? $"#{groupName}/name" : $"#unlocks/group/{groupName}"
-              unseenIcon = (markerSeenIds.len() == 0 && manualSeenIds.len() == 0) ? null : makeConfigStrByList([
-                makeConfig(SEEN.UNLOCK_MARKERS, markerSeenIds),
-                makeConfig(SEEN.MANUAL_UNLOCKS, manualSeenIds)
-              ])
-            })
-          }
-      }
-      data = "".concat(data, handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view))
-    }
     this.guiScene.replaceContentFromText(medalsObj, data, data.len(), this)
     this.guiScene.setUpdatesEnabled(true, true)
 

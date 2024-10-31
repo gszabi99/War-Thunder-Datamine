@@ -137,20 +137,25 @@ def on_ammo_box_destroy(evt : Event;
                         ammo_box__bulletCount : int)
   if ammo_box__bulletCount > 0
     return
-  query(ammo_box__owner) <| $ [es] (reloadedFromAmmoBoxCount : IntList)
+  query(ammo_box__owner) <| $ [es] (reloadedFromAmmoBoxCount : IntList; canReloadFromBox : BoolList)
     let hero = get_unit_by_eid(ammo_box__owner)
     if hero == null || hero.isDelayed
       return
     var count = 0
-    for i in range(0, 2)
+    for i in range(0, 3)
       let triggerGroup = i == 2 ? WeaponTriggerGroups TRIGGER_GROUP_SPECIAL_GUN : (i == 1 ? WeaponTriggerGroups TRIGGER_GROUP_SECONDARY : WeaponTriggerGroups TRIGGER_GROUP_PRIMARY)
+      if !canReloadFromBox[i]
+        continue
       foreach_weapon_by_trigger_group(hero.weap.Weapons, triggerGroup) <| $(var weapon)
         let gun = weapon |> as_gun()
+        let baseGun = weapon |> as_base_gun()
         if gun != null
           let gun_props = gun.properties
           for j in range(0, length(gun_props.bulletSets))
             assume bullet_set = gun_props.bulletSets[j]
             count += max(0, bullet_set.initialBulletsCount)
+        elif baseGun != null
+          count += max(0, weapon.prop.bullets)
       count -= reloadedFromAmmoBoxCount[i]
       if count > 0
         break

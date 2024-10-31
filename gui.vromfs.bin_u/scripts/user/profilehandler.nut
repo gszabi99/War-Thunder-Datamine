@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, is_app_active
+from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, is_app_active, select_current_title
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
@@ -83,13 +83,14 @@ let { userIdStr, havePlayerTag, isGuestLogin } = require("%scripts/user/profileS
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
-let { getStats } = require("%scripts/myStats.nut")
+let { getStats, clearStats } = require("%scripts/myStats.nut")
 let { findItemById, canGetDecoratorFromTrophy } = require("%scripts/items/itemsManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
+let { addTask } = require("%scripts/tasker.nut")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -153,7 +154,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   statsSortBy = ""
   statsSortReverse = false
   curStatsPage = 0
-
   pending_logout = false
 
   presetSheetList = ["Profile", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal"]
@@ -182,7 +182,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     UNLOCKABLE_MEDAL
   ]
 
-  unlocksTree = {}
+  unlocksTree = null
   skinsCache = null
   uncollapsedChapterName = null
   curAchievementGroupName = ""
@@ -192,6 +192,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   initSkinId = ""
   initDecalId = ""
   filterGroupName = null
+  isEditModeEnabled = false
+  editModeTempData = null
 
   unlockFilters = {
     UnlockAchievement = null
@@ -205,6 +207,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function initScreen() {
+    this.editModeTempData = {}
     this.selMedalIdx = {}
     setBreadcrumbGoBackParams(this)
     if (!this.scene)
@@ -409,12 +412,15 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let isProfileOpened = sheet == "Profile"
     let needHideChangeAccountBtn = steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
-      btn_changeAccount = isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn
-      btn_changeName = isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player()
-      btn_getLink = !is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value
+      btn_changeAccount = isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn && !this.isEditModeEnabled
+      btn_changeName = isInMenu() && isProfileOpened && !isMeXBOXPlayer() && !isMePS4Player() && !this.isEditModeEnabled
+      btn_editPage = isInMenu() && isProfileOpened && !this.isEditModeEnabled
+      btn_cancelEditPage = isInMenu() && isProfileOpened && this.isEditModeEnabled
+      btn_applyEditPage = isInMenu() && isProfileOpened && this.isEditModeEnabled
+      btn_getLink = !is_in_loading_screen() && isProfileOpened && hasFeature("Invites") && !isGuestLogin.value && !this.isEditModeEnabled
       btn_codeApp = isPlatformPC && hasFeature("AllowExternalLink") &&
-        !havePlayerTag("gjpass") && isInMenu() && isProfileOpened
-      btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration())
+        !havePlayerTag("gjpass") && isInMenu() && isProfileOpened && !this.isEditModeEnabled
+      btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration()) && !this.isEditModeEnabled
       paginator_place = (sheet == "Statistics") && this.airStatsList && (this.airStatsList.len() > this.statsPerPage)
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
@@ -437,6 +443,97 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           name = getCurCircuitOverride("operatorName", "Gaijin.Net") }))
 
     this.updateDecalButtons(this.getCurDecal())
+    this.updateEditProfileButtons()
+  }
+
+  function updateEditProfileButtons() {
+    this.scene.isEditModeEnabled = this.isEditModeEnabled ? "yes" : "no"
+  }
+
+  function onProfileEditBtn() {
+    this.setEditMode(!this.isEditModeEnabled)
+  }
+
+  function onProfileTitleSelect(titleName, handler) {
+    handler.editModeTempData.title <- titleName
+    handler.fillTitleName(titleName, false)
+  }
+
+  function onProfileEditCancelBtn() {
+    this.setEditMode(!this.isEditModeEnabled)
+
+    if (this.editModeTempData?.title)
+      this.fillTitleName(this.player.title, false)
+    if (this.editModeTempData?.icon)
+      this.fillProfileIcon(getProfileInfo().icon)
+  }
+
+  function onProfileEditApplyBtn() {
+    this.setEditMode(!this.isEditModeEnabled)
+    let newIcon = this.editModeTempData?.icon
+    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value) {
+      set_option(USEROPT_PILOT, newIcon)
+      save_profile(false)
+      broadcastEvent(profileEvent.AVATAR_CHANGED)
+    }
+    if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
+      addTask(select_current_title(this.editModeTempData.title),
+        {},
+        function() {
+          clearStats()
+          getStats()
+        }
+      )
+  }
+
+  function setEditMode(val) {
+    this.isEditModeEnabled = val
+    this.updateButtons()
+    if (val)
+      this.editModeTempData = {}
+  }
+
+  function onIconChoosen(option) {
+    let value = ::get_option(USEROPT_PILOT).value
+    if (value == option.idx)
+      return
+
+    this.editModeTempData.icon <- option.idx
+    this.fillProfileIcon(option.idx)
+  }
+
+  function fillProfileIcon(iconIdx) {
+    if (!checkObj(this.scene))
+      return
+    let obj = this.scene.findObject("profile-icon")
+    if (obj)
+      obj.setValue(iconIdx)
+  }
+
+  function hasEditProfileChanges() {
+    if (!this.isEditModeEnabled)
+      return false
+    let newIcon = this.editModeTempData?.icon
+    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value)
+      return true
+
+    if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
+      return true
+    return false
+  }
+
+  function askAboutSaveProfile(cb) {
+    this.msgBox("safe_unfinished", loc("hotkeys/msg/wizardSaveUnfinished"),
+    [
+      ["ok", function() {
+        this.onProfileEditApplyBtn()
+        cb()
+      }],
+      ["cancel", function() {
+        this.onProfileEditCancelBtn()
+        cb()
+      }]
+    ], "cancel")
   }
 
   function onMarketplaceFindCoupon() {
@@ -482,6 +579,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onSheetChange(_obj) {
     let sheet = this.getCurSheet()
+    if (this.hasEditProfileChanges()) {
+      this.askAboutSaveProfile(@() this.onSheetChange(null))
+      return
+    }
+    if (this.isEditModeEnabled)
+      this.setEditMode(false)
+
     this.curFilterType = ""
     foreach (btn in ["btn_top_place", "btn_pagePrev", "btn_pageNext", "checkbox_only_for_bought"])
       showObjById(btn, false, this.scene)
@@ -863,31 +967,22 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.isPageFilling = true
 
     this.guiScene.setUpdatesEnabled(false, false)
-    local data = ""
-    local curIndex = 0
     let lowerCurPage = this.curPage.tolower()
     let pageTypeId = get_unlock_type(lowerCurPage)
     if (pageTypeId == UNLOCKABLE_MEDAL)
       return
 
-    let itemSelectFunc = null
-    let containerObjId = pageTypeId == UNLOCKABLE_SKIN ? "skins_group_list" : "unlocks_group_list"
-    this.unlocksTree = {}
-
+    local data = ""
+    local curIndex = 0
     if (pageTypeId == UNLOCKABLE_SKIN) {
       let itemsView = this.getSkinsView()
       data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", { items = itemsView })
       let skinId = this.initSkinId
       curIndex = itemsView.findindex(@(p) p.id == skinId) ?? 0
     }
-    else {
-      let view = { items = [] }
-      view.items = this.generateItems(pageTypeId)
-      data = handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
-    }
 
+    let containerObjId = pageTypeId == UNLOCKABLE_SKIN ? "skins_group_list" : "unlocks_group_list"
     let unlocksObj = this.scene.findObject(containerObjId)
-
     let isAchievementPage = pageTypeId == UNLOCKABLE_ACHIEVEMENT
     if (isAchievementPage && this.curAchievementGroupName == "")
       this.curAchievementGroupName = this.initialUnlockId == ""
@@ -895,10 +990,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         : this.findGroupName((@(g) g.contains(this.initialUnlockId)).bindenv(this))
 
     let ediff = getShopDiffCode()
-
     let markerUnlockIds = getUnlockIds(ediff)
     let manualUnlockIds = getManualUnlocks().map(@(unlock) unlock.id)
     let view = { items = [] }
+    this.updateUnlocksTree(pageTypeId)
+
     foreach (chapterName, chapterItem in this.unlocksTree) {
       if (isAchievementPage && chapterName == this.curAchievementGroupName)
         curIndex = view.items.len()
@@ -942,18 +1038,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     data = "".concat(data, handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view))
     this.guiScene.replaceContentFromText(unlocksObj, data, data.len(), this)
     this.guiScene.setUpdatesEnabled(true, true)
-
-    if (pageTypeId == UNLOCKABLE_MEDAL)
-      curIndex = this.selMedalIdx?[this.curFilter] ?? 0
-
     this.collapse(this.curAchievementGroupName != "" ? this.curAchievementGroupName : null)
 
     let total = unlocksObj.childrenCount()
     curIndex = total ? clamp(curIndex, 0, total - 1) : -1
     unlocksObj.setValue(curIndex)
-
-    itemSelectFunc?(unlocksObj)
-
     this.isPageFilling = false
     this.updateFavoritesCheckboxesInList()
   }
@@ -985,8 +1074,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     return ""
   }
 
-  function generateItems(pageTypeId) {
-    let items = []
+  function updateUnlocksTree(pageTypeId) {
+    this.unlocksTree = {}
     let lowerCurPage = this.curPage.tolower()
     let isCustomMenuTab = lowerCurPage in this.customMenuTabs
     let isUnlockTree = isCustomMenuTab || pageTypeId == -1 || pageTypeId == UNLOCKABLE_ACHIEVEMENT
@@ -1046,7 +1135,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         continue
       }
     }
-    return items;
   }
 
   function getSkinsUnitType(skinName) {
@@ -1534,7 +1622,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function openChooseTitleWnd(_obj) {
-    gui_handlers.ChooseTitle.open()
+    let cachedHandler = this
+    let curTitle = this.editModeTempData?.title ?? ""
+    gui_handlers.ChooseTitle.open({
+      onCompleteFunc = @(titleName) cachedHandler.onProfileTitleSelect(titleName, cachedHandler)
+      curTitle
+    })
   }
 
   function openProfileTab(tab, selectedBlock) {
@@ -1660,24 +1753,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     showViralAcquisitionWnd()
   }
 
-  function onIconChoosen(option) {
-    let value = ::get_option(USEROPT_PILOT).value
-    if (value == option.idx)
-      return
-
-    set_option(USEROPT_PILOT, option.idx)
-    save_profile(false)
-
-    if (!checkObj(this.scene))
-      return
-
-    let obj = this.scene.findObject("profile-icon")
-    if (obj)
-      obj.setValue(getProfileInfo().icon)
-
-    broadcastEvent(profileEvent.AVATAR_CHANGED)
-  }
-
   function onEventProfileUpdated(_params) {
     ::fill_gamer_card(getProfileInfo(), "profile-", this.scene)
   }
@@ -1790,6 +1865,17 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function isMedalUnlocked(name) {
     return isUnlockOpened(name, UNLOCKABLE_MEDAL)
+  }
+
+  function goBack() {
+    if (this.hasEditProfileChanges()) {
+      this.askAboutSaveProfile(@() this.goBack())
+      return
+    }
+    if (this.isEditModeEnabled)
+      this.setEditMode(false)
+
+    base.goBack()
   }
 }
 

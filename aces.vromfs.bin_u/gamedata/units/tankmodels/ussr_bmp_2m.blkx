@@ -19,10 +19,8 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
+  "canReloadNonGuns": true,
+  "rearmSmokeTimeOnField": 60.0,
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -52,7 +50,6 @@
   "waterBreakerToggleTime": 4.0,
   "radarCanLockTargetFromTPV": false,
   "type": "typeLightTank",
-  "rearmSmokeTimeOnField": 60.0,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -1455,6 +1452,15 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
           "rotatedTurret": "bone_turret",
           "linkedAnimPart": [
             {
@@ -1580,7 +1586,16 @@
           "head": "bone_mg_gun_twin_01",
           "gun": "bone_mg_gun_twin_01",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1638,7 +1653,8 @@
           "gun": "bone_gun_02",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "rotatedTurret": "bone_turret"
+          "rotatedTurret": "bone_turret",
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1684,6 +1700,7 @@
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "shootingDmPart": "fire_control_system_dm",
           "rotatedTurret": "bone_turret"
         },
         "limits": {
@@ -3415,6 +3432,15 @@
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm",
                 "rotatedTurret": "bone_turret",
                 "linkedAnimPart": [
                   {
@@ -3540,7 +3566,16 @@
                 "head": "bone_mg_gun_twin_01",
                 "gun": "bone_mg_gun_twin_01",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3598,7 +3633,8 @@
                 "gun": "bone_gun_02",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "rotatedTurret": "bone_turret"
+                "rotatedTurret": "bone_turret",
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3644,6 +3680,7 @@
                 "gun": "bone_gun_01",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
+                "shootingDmPart": "fire_control_system_dm",
                 "rotatedTurret": "bone_turret"
               },
               "limits": {

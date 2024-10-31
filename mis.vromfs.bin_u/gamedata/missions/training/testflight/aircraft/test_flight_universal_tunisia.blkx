@@ -21,7 +21,7 @@
       ],
       "air_spawn_point": 1,
       "is_high": true,
-      "is_airfield_spawn": false,
+      "is_airfield_spawn": true,
       "aircraft_ship_name": "",
       "locName": "location/avg_tunisia_desert",
       "restoreType": "manual",
@@ -49,12 +49,12 @@
             {
               "icontype": "fighter",
               "side": "player",
-              "target": "airfield00"
+              "target": "airfield00plane"
             },
             {
               "icontype": "airfield",
               "side": "player",
-              "target": "airfield00"
+              "target": "airfield00plane"
             },
             {
               "icontype": "ship",
@@ -264,7 +264,7 @@
             6343.77
           ]
         ],
-        "unit_class": "dynaf_universal_pg_1line_3000_universal",
+        "unit_class": "dynaf_pg_1line_3000_universal",
         "objLayer": 2,
         "props": {
           "army": 1,
@@ -398,7 +398,7 @@
     ]
   },
   "areas": {
-    "airfield00": {
+    "airfield00heli": {
       "type": "Sphere",
       "tm": [
         [
@@ -418,6 +418,32 @@
         ],
         [
           1386.45,
+          48.9126,
+          7989.4
+        ]
+      ],
+      "props": {}
+    },
+    "airfield00plane": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000363809,
+          0.0,
+          230.299
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -230.299,
+          0.0,
+          -0.00000363809
+        ],
+        [
+          1605.0,
           48.9126,
           7989.4
         ]
@@ -469,9 +495,9 @@
           -0.00000363809
         ],
         [
-          1386.45,
+          1598.85,
           48.9126,
-          7989.4
+          7864.1
         ]
       ],
       "props": {}
@@ -848,7 +874,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "airfield01high": {
+    "airfield01heli_high": {
       "type": "Sphere",
       "tm": [
         [
@@ -868,6 +894,32 @@
         ],
         [
           1491.33,
+          58.8577,
+          5180.95
+        ]
+      ],
+      "props": {}
+    },
+    "airfield01plane_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.1937,
+          0.0,
+          -229.798
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          229.798,
+          0.0,
+          -15.1937
+        ],
+        [
+          1640.65,
           58.8577,
           5180.95
         ]
@@ -1487,9 +1539,9 @@
           -0.417238
         ],
         [
-          1399.9,
-          32.6026,
-          6720.57
+          1407.5,
+          32.6025,
+          6714.85
         ]
       ],
       "objLayer": 0,

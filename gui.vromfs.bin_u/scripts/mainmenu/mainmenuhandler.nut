@@ -90,8 +90,10 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
     let isReqButtonDisplay = haveRights && ::g_clans.getMyClanCandidates().len() > 0
     let obj = showObjById("btn_main_menu_showRequests", isReqButtonDisplay, this.scene)
     if (checkObj(obj) && isReqButtonDisplay)
-      obj.setValue(loc("clan/btnShowRequests") + loc("ui/parentheses/space",
-        { text = ::g_clans.getMyClanCandidates().len() }))
+      obj.setValue("".concat(
+        loc("clan/btnShowRequests"),
+        loc("ui/parentheses/space",
+          { text = ::g_clans.getMyClanCandidates().len() })))
   }
 
   function onExit() {

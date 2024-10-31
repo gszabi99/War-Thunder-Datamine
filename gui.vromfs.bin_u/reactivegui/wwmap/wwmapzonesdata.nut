@@ -64,6 +64,8 @@ function processCoords(coords) {
 }
 
 function parseZones(zonesBlk) {
+  cachedZones.clear()
+  zonesForSearch.clear()
   let cnt = zonesBlk.blockCount()
   local firstLetterOfName = "A"
   for (local i = 0; i < cnt; i++) {

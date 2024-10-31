@@ -2391,6 +2391,14 @@
             ]
           },
           {
+            "name": "9K33",
+            "detectLaunch": true,
+            "type": [
+              "9K33 TA",
+              "9K33 TT"
+            ]
+          },
+          {
             "name": "Roland",
             "detectLaunch": true,
             "type": "Roland TT"
@@ -3091,6 +3099,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_gbu_31.blk"
       },
       {
+        "name": "f_16c_block_50_gbu_39",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_gbu_39.blk"
+      },
+      {
         "name": "f_16c_block_50_blu_1",
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_50_blu_1.blk"
       }
@@ -3656,9 +3668,28 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot3",
+            "reqModification": "us_blu27_gbu39",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_2000lb_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot3",
-            "reqModification": "us_blu27_b",
+            "reqModification": "us_blu27_gbu39",
             "ShowNodes": {
               "node": [
                 "pylon2",
@@ -3812,7 +3843,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot4",
-            "reqModification": "us_blu27_b",
+            "reqModification": "us_blu27_gbu39",
             "ShowNodes": {
               "node": [
                 "pylon4",
@@ -4050,7 +4081,7 @@
           {
             "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot6",
-            "reqModification": "us_blu27_b",
+            "reqModification": "us_blu27_gbu39",
             "ShowNodes": {
               "node": [
                 "pylon5",
@@ -4413,9 +4444,28 @@
             }
           },
           {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot8",
+            "reqModification": "us_blu27_gbu39",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_2000lb_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "napalm_large_group_x2",
             "name": "blu_27_slot7",
-            "reqModification": "us_blu27_b",
+            "reqModification": "us_blu27_gbu39",
             "ShowNodes": {
               "node": [
                 "pylon6",
@@ -4758,14 +4808,14 @@
       "modClass": "weapon",
       "reqModification": "us_2_75_in_ffar_lau_3a"
     },
-    "us_blu27_b": {
+    "us_blu27_gbu39": {
       "modClass": "weapon",
       "tier": 1
     },
     "us_500lb_mk82_gbu38_jdam": {
       "modClass": "weapon",
       "tier": 2,
-      "prevModification": "us_blu27_b"
+      "prevModification": "us_blu27_gbu39"
     },
     "us_2000lb_mk84_gbu31_jdam": {
       "modClass": "weapon",

@@ -451,10 +451,10 @@ let HudBattleLog = {
       if (w.len() >= 3 && this.rePatternNumeric.match(w.slice(0, 3))) {
         let color = getTblValue(w.slice(0, 3).tointeger(), this.escapeCodeToCssColor)
         let value = w.slice(3)
-        ret += color ? colorize(color, value) : value
+        ret = "".concat(ret, color ? colorize(color, value) : value)
       }
       else
-        ret += w
+        ret = "".concat(ret, w)
     }
     return ret
   }

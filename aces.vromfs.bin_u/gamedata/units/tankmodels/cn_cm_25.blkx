@@ -20,6 +20,7 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
+  "canReloadNonGuns": true,
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -50,7 +51,6 @@
   "drowningCheckHeightMultiplier": 0.7,
   "waterBreakerAnimVar": "cm_25_break_water_action",
   "rearmSmokeTimeOnField": 60.0,
-  "canReloadNonGuns": true,
   "ikGunner": [
     {
       "model": "chinese_gunner_char",
@@ -2132,6 +2132,66 @@
     ],
     "detectionHeight": 2.0
   },
+  "nightVision": [
+    {
+      "gunnerIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 8.0,
+        "ghosting": 0.75,
+        "noiseFactor": 0.2
+      },
+      "commanderViewIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 8.0,
+        "ghosting": 0.75,
+        "noiseFactor": 0.2
+      },
+      "driverIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 5.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.2
+      }
+    },
+    {
+      "gunnerIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 8.0,
+        "ghosting": 0.75,
+        "noiseFactor": 0.2
+      },
+      "commanderViewIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 8.0,
+        "ghosting": 0.75,
+        "noiseFactor": 0.2
+      },
+      "driverIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 5.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.2
+      }
+    }
+  ],
   "user_skin": {
     "name": "m113a1_tow",
     "replace_tex": {
@@ -3059,39 +3119,6 @@
     },
     "tank_medical_kit_expendable": {
       "image": "#ui/gameuiskin#tank_reinforcement_cn"
-    },
-    "night_vision_system": {
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.2
-          }
-        }
-      }
     },
     "tank_smoke_screen_system_mod": {
       "tier": 4,

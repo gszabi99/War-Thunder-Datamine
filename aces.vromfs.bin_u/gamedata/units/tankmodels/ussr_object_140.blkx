@@ -55,9 +55,6 @@
   "smokeScreenDmPart": "engine_dm",
   "smokeScreenFxType": "tank_smokescreen",
   "smokeScreenFx": "smokescreen_no_therm_small",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -70,7 +67,8 @@
         "armorThickness": 100.0
       },
       "superstructure_side_dm": {
-        "armorThickness": 80.0
+        "armorThickness": 80.0,
+        "variableThickness": true
       },
       "superstructure_back_dm": {
         "armorThickness": 45.0
@@ -176,7 +174,8 @@
         "armorThickness": 66.0
       },
       "turret_front_dm": {
-        "armorThickness": 200.0
+        "armorThickness": 200.0,
+        "variableThickness": true
       },
       "turret_02_front_dm": {
         "armorThickness": 130.0
@@ -2908,39 +2907,35 @@
     "100mm_ussr_APCBC": {},
     "100mm_ussr_HEAT": {},
     "100mm_ussr_HE": {},
-    "tank_rangefinder": {},
-    "night_vision_system": {
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.2
-          }
-        }
-      }
+    "tank_rangefinder": {}
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "commanderViewIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "driverIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 5.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.2
     }
   },
   "ammoStowages": {

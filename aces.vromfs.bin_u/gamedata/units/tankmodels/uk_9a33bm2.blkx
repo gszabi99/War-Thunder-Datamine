@@ -49,18 +49,6 @@
   "drowningCheckHeightMultiplier": 0.7,
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": [
-    "!#ui/gameuiskin#image_in_progress_ico.svg",
-    "!#ui/gameuiskin#image_in_progress_ico.svg"
-  ],
-  "customImage": [
-    "!#ui/unitskin#image_in_progress",
-    "!#ui/unitskin#image_in_progress"
-  ],
-  "customTooltipImage": [
-    "ui/aircrafts/image_in_progress",
-    "ui/aircrafts/image_in_progress"
-  ],
   "ikGunner": [
     {
       "model": "ussr_gunner_6b48_char",
@@ -538,33 +526,14 @@
       "turret_side_dm": {},
       "turret_back_dm": {},
       "turret_top_dm": {},
-      "turret_01_back_dm": {},
-      "turret_03_back_dm": {},
       "turret_04_back_dm": {
         "armorThickness": 5.0
       },
-      "turret_01_front_dm": {},
-      "turret_01_top_dm": {},
       "turret_front_dm": {},
-      "turret_02_front_dm": {},
-      "turret_03_front_dm": {
-        "armorThickness": 60.0,
-        "armorClass": "glass60"
-      },
-      "turret_01_side_dm": {},
       "turret_04_side_dm": {},
-      "turret_03_side_dm": {
-        "armorThickness": 60.0,
-        "armorClass": "glass60"
-      },
-      "turret_01_bottom_dm": {},
-      "turret_02_bottom_dm": {},
-      "turret_03_bottom_dm": {},
       "turret_04_bottom_dm": {
         "armorThickness": 5.0
       },
-      "turret_02_top_dm": {},
-      "turret_03_top_dm": {},
       "turret_05_side_dm": {},
       "superstructure_front_dm": {},
       "superstructure_side_dm": {},
@@ -581,7 +550,52 @@
         "armorThickness": 10.0
       },
       "turret_05_top_dm": {},
-      "turret_05_bottom_dm": {}
+      "turret_05_bottom_dm": {},
+      "turret_01_back_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_01_front_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_01_side_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_01_top_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_02_back_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_02_bottom_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_02_front_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_02_side_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_02_top_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_03_back_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_03_bottom_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_03_front_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 555.0
+      },
+      "turret_03_top_dm": {
+        "armorThickness": 555.0
+      }
     },
     "sensor": {
       "armorClass": "tank_structural_steel",
@@ -622,11 +636,9 @@
       "armorThickness": 4.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
-      "turret_02_side_dm": {},
       "ex_armor_l_01_dm": {},
       "ex_armor_r_01_dm": {},
-      "ex_decor_01_dm": {},
-      "turret_02_back_dm": {}
+      "ex_decor_01_dm": {}
     },
     "chassis": {
       "armorClass": "car_wheels",
@@ -2079,70 +2091,70 @@
     "floats": {
       "volume": [
         [
-          3.4,
-          1.15,
-          1.5,
-          0.85
+          3.8,
+          1.45,
+          1.25,
+          1.02
         ],
         [
-          3.4,
-          1.15,
-          -1.5,
-          0.85
-        ],
-        [
-          1.3,
-          1.15,
-          1.0,
-          0.75
+          3.8,
+          1.45,
+          -1.25,
+          1.02
         ],
         [
           1.3,
-          1.15,
+          1.45,
+          1.0,
+          0.9
+        ],
+        [
+          1.3,
+          1.45,
           -1.0,
-          0.75
+          0.9
         ],
         [
           0.0,
-          1.15,
+          1.45,
           1.0,
-          0.7
+          0.84
         ],
         [
           0.0,
-          1.15,
+          1.45,
           -1.0,
-          0.7
+          0.84
         ],
         [
           -1.3,
-          1.15,
+          1.45,
           1.0,
-          0.77
+          0.924
         ],
         [
           -1.3,
-          1.15,
+          1.45,
           -1.0,
-          0.77
+          0.924
         ],
         [
           -2.5,
-          1.15,
+          1.45,
           0.0,
-          0.83
+          0.996
         ],
         [
           -4.0,
-          1.15,
-          1.5,
-          0.83
+          1.45,
+          1.25,
+          0.975
         ],
         [
           -4.0,
-          1.15,
-          -1.5,
-          0.83
+          1.45,
+          -1.25,
+          0.975
         ]
       ],
       "waterJet": [
@@ -2150,21 +2162,21 @@
           "exhaustNode": "emtr_waterjet_l",
           "intake": [
             -1.25,
-            0.4,
+            1.2,
             0.85
           ],
-          "thrust": 30000.0,
-          "reverseMult": 0.2
+          "thrust": 15000.0,
+          "reverseMult": 0.3
         },
         {
           "exhaustNode": "emtr_waterjet_r",
           "intake": [
             -1.25,
-            0.4,
+            1.2,
             -0.85
           ],
-          "thrust": 30000.0,
-          "reverseMult": 0.2
+          "thrust": 15000.0,
+          "reverseMult": 0.3
         }
       ]
     }
@@ -3282,10 +3294,10 @@
       0.0
     ],
     "detectionHeight": 4.374,
-    "zoomOutFov": 12.3,
-    "zoomInFov": 12.2,
-    "sightFov": 5.9,
-    "sightName": "periscope_m411"
+    "zoomOutFov": 7.52153,
+    "zoomInFov": 2.25268,
+    "sightFov": 3.3429,
+    "sightName": "_ussr_9sh38_2"
   },
   "optics": {
     "driverReticule": "car_driver_optics"
@@ -3335,7 +3347,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/de_roland_sr.blk",
+        "blk": "gameData/sensors/su_9k_33m3_search.blk",
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
@@ -3349,7 +3361,7 @@
         ]
       },
       {
-        "blk": "gameData/sensors/de_roland_fr.blk",
+        "blk": "gameData/sensors/su_9k_33m3_track.blk",
         "turretIndex": 0,
         "radarParkingAzimuth": 0.0,
         "radarParkingPitch": 0.0,
@@ -3372,8 +3384,8 @@
         "emitter": "bone_gun_01",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 80.0,
-        "speedPitch": 80.0,
+        "speedYaw": 22.5,
+        "speedPitch": 40.0,
         "bullets": 1,
         "turret": {
           "head": "bone_turret",
@@ -3395,8 +3407,8 @@
             180.0
           ],
           "pitch": [
-            -6.0,
-            84.0
+            -12.0,
+            78.0
           ]
         },
         "gunStabilizer": {
@@ -3455,8 +3467,8 @@
         "barrelDP": "gun_barrel_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "allowableDelta": 60.0,
-        "speedYaw": 50.0,
+        "allowableDelta": 90.0,
+        "speedYaw": 22.5,
         "speedPitch": 0.0,
         "bullets": 6,
         "salvoAmount": 100.0,
@@ -3512,5 +3524,43 @@
       "from": "ussr_camo_green*",
       "to": "in_camo_summer_four_color*"
     }
-  }
+  },
+  "skin": [
+    {
+      "name": "us_camo_modern_green",
+      "nameLocId": "skin/us_camo_modern_green",
+      "descLocId": "skin/us_camo_modern_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "us_camo_modern_green*"
+      }
+    },
+    {
+      "name": "uk_camo_earth_yellow",
+      "nameLocId": "skin/uk_camo_earth_yellow",
+      "descLocId": "skin/uk_camo_earth_yellow/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "uk_camo_earth_yellow*"
+      }
+    },
+    {
+      "name": "in_camo_forest_four_color",
+      "nameLocId": "skin/in_camo_forest_four_color",
+      "descLocId": "skin/in_camo_forest_four_color/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "in_camo_forest_four_color*"
+      }
+    },
+    {
+      "name": "fr_camo_winter_green_white",
+      "nameLocId": "skin/fr_camo_winter_green_white",
+      "descLocId": "skin/fr_camo_winter_green_white/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "fr_camo_winter_green_white*"
+      }
+    }
+  ]
 }

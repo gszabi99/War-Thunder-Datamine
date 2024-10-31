@@ -125,11 +125,12 @@
       "trigger": "gunner7",
       "triggerGroup": "mortar",
       "weaponType": "bombs",
-      "blk": "gameData/weapons/bombguns/bomb_uk_hedgehog.blk",
+      "blk": "gameData/weapons/bombguns/bomb_uk_mk15_hedgehog.blk",
       "emitter": "bone_bomb_01",
       "bullets": 144,
       "external": true,
       "dropSpeed": 55.0,
+      "skipAxisEmitterCheck": true,
       "useEmitter": true,
       "emitterGenRange": [
         1,
@@ -137,14 +138,15 @@
       ],
       "emitterGenFmt": "bone_bomb_%02d",
       "ammoDpGenFmt": "depth_charge_%02d_dm",
-      "barrelDP": "depth_charge_mount_02_dm",
       "brokenBarrelAllowShoot": false,
+      "barrelDP": "auxiliary_caliber_gun_05_dm",
+      "breechDP": "auxiliary_caliber_turret_03_dm",
       "speedYaw": 5.0,
       "allowableDelta": 15.0,
       "turret": {
-        "head": "depth_charge_mount_01",
-        "gun": "depth_charge_mount_01",
-        "gunnerDm": "depth_charge_mount_01"
+        "head": "auxiliary_caliber_turret_03",
+        "gun": "auxiliary_caliber_gun_05",
+        "gunnerDm": "auxiliary_caliber_turret_03_dm"
       },
       "limits": {
         "yaw": [

@@ -19,10 +19,6 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -51,7 +47,6 @@
   "waterBreakerToggleTime": 4.0,
   "type": "typeLightTank",
   "cruiseVelocity": 3.0,
-  "rearmSmokeTimeOnField": 60.0,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -2885,39 +2880,35 @@
     "manual_extinguisher": {},
     "tank_tool_kit": {},
     "airstrike": {},
-    "improved_optics": {},
-    "night_vision_system": {
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.2
-          }
-        }
-      }
+    "improved_optics": {}
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "commanderViewIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "driverIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 5.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.2
     }
   },
   "ammoStowages": {

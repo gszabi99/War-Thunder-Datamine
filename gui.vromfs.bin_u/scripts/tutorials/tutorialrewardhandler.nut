@@ -64,7 +64,8 @@ local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let descObj = this.scene.findObject("award_desc")
     descObj["text-align"] = "center"
 
-    let msgText = colorize("activeTextColor", loc("MISSION_SUCCESS") + "\n" + loc($"missions/{this.misName}", ""))
+    let msgText = colorize("activeTextColor",
+      "\n".concat(loc("MISSION_SUCCESS"), loc($"missions/{this.misName}", "")))
     descObj.setValue(msgText)
 
     if (this.rewardMarkup != "") {

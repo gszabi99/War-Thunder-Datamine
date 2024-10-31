@@ -113,8 +113,10 @@ function update_font_heights(font) {
   }
 
   //text visible in options
-  getOptionText = @() loc("fontSize/" + this.id.tolower())
-    + loc("ui/parentheses/space", { text = "{0}%".subst(round(100 * this.sizeMultiplier).tointeger()) })
+  getOptionText = @() "".concat(
+    loc($"fontSize/{this.id.tolower()}"),
+    loc("ui/parentheses/space", { text = "{0}%".subst(round(100 * this.sizeMultiplier).tointeger()) }))
+
   getFontExample = @() "small_text; font-pixht: {0}".subst(round(getFontInitialHt("small_text") * this.sizeMultiplier).tointeger())
 }
 

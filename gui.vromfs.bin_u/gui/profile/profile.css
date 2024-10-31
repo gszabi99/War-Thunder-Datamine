@@ -329,3 +329,23 @@ frame[needShortSeparators=yes] frameSeparator[position=root] {
 frame[profilePage=yes] navBar{
   background-color:@transparent;
 }
+
+profileEditBtn {
+  behavior:button;
+  behavior:accesskey;
+  position:absolute;
+  size: 24@sf/@pf, 24@sf/@pf;
+  background-image:"!#ui/images/profile/ic_change.svg";
+  background-color:#FFFFFF;
+  display:hide;
+  interactive:yes;
+}
+
+profileEditBtn[type=big] {
+  size: 32@sf/@pf, 32@sf/@pf;
+  background-svg-size: 32@sf/@pf, 32@sf/@pf;
+}
+
+[isEditModeEnabled=yes] profileEditBtn{
+  display:show;
+}

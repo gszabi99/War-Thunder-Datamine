@@ -20,7 +20,7 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, hdpx(90))
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud") * 1.5
+  fontSize = getFontDefHt("hud") * 2.5
 }
 
 let nonLethalThreatsRadius = (1.0 + outerCircle) * 0.5
@@ -49,9 +49,9 @@ function calcRwrTargetRadius(target, directionGroup) {
     return nonLethalThreatsRadius
 }
 
-let iconRadiusRel = 0.2
+let iconRadiusBaseRel = 0.2
 
-function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
@@ -67,9 +67,11 @@ function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
       size = flex()
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      fontSize = fontSizeMult * styleText.fontSize
+      fontSize = objectStyle.fontScale * styleText.fontSize
       text = directionGroup != null ? directionGroup.text : settings.unknownText
     })
+
+  let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
 
   let attackOpacityRwr = Computed(@() (target.launch && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
   local attack = null
@@ -79,15 +81,15 @@ function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
       color = color
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4)
+      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
       fillColor = 0
       size = flex()
       commands = [
         [ VECTOR_SECTOR,
           target.x * targetRadiusRel * 100.0,
           target.y * targetRadiusRel * 100.0,
-          0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          0.50 * iconSizeMult * iconRadiusRel * 100.0,
+          0.50 * iconRadiusRel * 100.0,
+          0.50 * iconRadiusRel * 100.0,
           0, 180]
        ]
     }
@@ -99,74 +101,74 @@ function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
     if (directionGroup.type == ThreatType.AI)
       commands = [
         [ VECTOR_LINE,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
           target.x * targetRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0 ]
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0 ]
       ]
     else if (directionGroup.type == ThreatType.AAA)
       commands = [
         [ VECTOR_LINE,
-          target.x * targetRadiusRel * 100.0 - 0.60 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.40 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.60 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.40 * iconSizeMult * iconRadiusRel * 100.0 ],
+          target.x * targetRadiusRel * 100.0 - 0.60 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.40 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.60 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.40 * iconRadiusRel * 100.0 ],
         [ VECTOR_LINE,
-          target.x * targetRadiusRel * 100.0 - 0.10 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.10 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
           target.x * targetRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 1.00 * iconSizeMult * iconRadiusRel * 100.0 ],
+          target.y * targetRadiusRel * 100.0 - 1.00 * iconRadiusRel * 100.0 ],
         [ VECTOR_LINE,
           target.x * targetRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.10 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 1.00 * iconSizeMult * iconRadiusRel * 100.0 ]
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.10 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 1.00 * iconRadiusRel * 100.0 ]
       ]
     else if (directionGroup.type == ThreatType.SAM)
       commands = [
         [ VECTOR_LINE,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.25 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.25 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
           target.x * targetRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.25 * iconSizeMult * iconRadiusRel * 100.0 ]
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.25 * iconRadiusRel * 100.0 ]
       ]
     else if (directionGroup.type == ThreatType.SHIP)
       commands = [
         [ VECTOR_LINE,
-          target.x * targetRadiusRel * 100.0 - 0.60 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.40 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.60 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 + 0.40 * iconSizeMult * iconRadiusRel * 100.0 ]
+          target.x * targetRadiusRel * 100.0 - 0.60 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.40 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.60 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 + 0.40 * iconRadiusRel * 100.0 ]
       ]
     if (commands != null)
       icon = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(4)
+        lineWidth = hdpx(4 * objectStyle.lineWidthScale)
         fillColor = 0
         size = flex()
         commands = commands
@@ -232,7 +234,7 @@ function targetPriorityGreater(left, right, settings) {
     return targetRangeSmaller(left, right, settings)
 }
 
-function createRwrPriorityTarget(settings, iconSizeMult) {
+function createRwrPriorityTarget(settings, objectStyle) {
   local priorityTarget = null
   for (local i = 0; i < rwrTargets.len(); ++i) {
     let target = rwrTargets[i]
@@ -246,24 +248,25 @@ function createRwrPriorityTarget(settings, iconSizeMult) {
 
   let priorityDirectionGroup = priorityTarget.groupId >= 0 && priorityTarget.groupId < settings.directionGroups.len() ? settings.directionGroups[priorityTarget.groupId] : null
   let priorityTargetRadiusRel = calcRwrTargetRadius(priorityTarget, priorityDirectionGroup)
+  let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
 
   local priority = @() {
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4)
+    lineWidth = hdpx(4 * objectStyle.lineWidthScale)
     fillColor = 0
     size = flex()
     pos = [pw(0), ph(0)]
     commands = [
       [ VECTOR_POLY,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0 - iconSizeMult * iconRadiusRel * 100.0,
+        priorityTarget.x * priorityTargetRadiusRel * 100.0 - iconRadiusRel * 100.0,
         priorityTarget.y * priorityTargetRadiusRel * 100.0,
         priorityTarget.x * priorityTargetRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0 - iconSizeMult * iconRadiusRel * 100.0,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0 + iconSizeMult * iconRadiusRel * 100.0,
+        priorityTarget.y * priorityTargetRadiusRel * 100.0 - iconRadiusRel * 100.0,
+        priorityTarget.x * priorityTargetRadiusRel * 100.0 + iconRadiusRel * 100.0,
         priorityTarget.y * priorityTargetRadiusRel * 100.0,
         priorityTarget.x * priorityTargetRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0 + iconSizeMult * iconRadiusRel * 100.0 ]
+        priorityTarget.y * priorityTargetRadiusRel * 100.0 + iconRadiusRel * 100.0 ]
     ]
   }
 
@@ -434,19 +437,19 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
-let rwrTargetsComponent = function(iconSizeMult, fontSizeMult) {
+let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), iconSizeMult, fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-let rwrPriorityTargetComponent = function(iconSizeMult) {
+let rwrPriorityTargetComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = createRwrPriorityTarget(settings.get(), iconSizeMult)
+    children = createRwrPriorityTarget(settings.get(), objectStyle)
   }
 }
 

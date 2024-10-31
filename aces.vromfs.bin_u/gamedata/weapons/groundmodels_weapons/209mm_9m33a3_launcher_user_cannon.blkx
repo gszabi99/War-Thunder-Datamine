@@ -15,7 +15,7 @@
   "attackMaxDist": 10300.0,
   "maxDeltaAngle": 0.06,
   "maxDeltaAngleVertical": 0.08,
-  "shotFreq": 1.0,
+  "shotFreq": 0.25,
   "traceFreq": 4,
   "reloadTime": 15.0,
   "bEnablePause": false,
@@ -41,6 +41,8 @@
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
   "mesh": "9a33m_rocket",
+  "animChar": "9a33m_rocket_char",
+  "reloadAnimParam": "rocket_hide",
   "bullet": {
     "mass": 126.3,
     "normalizationPreset": "heat",
@@ -150,7 +152,7 @@
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
       "effectOffset": [
-        -1.35,
+        -1.65,
         0.0,
         0.0
       ],
@@ -162,7 +164,7 @@
       "fuseDelayDist": 1.0,
       "explodeTreshold": 0.1,
       "price": 3000.0,
-      "mesh": "roland_rocket_deployed",
+      "mesh": "9a33m_rocket_deployed",
       "hasTracerTrail": true,
       "tracerTrailEmitter": [
         0.05,
@@ -849,7 +851,7 @@
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
         "effectOffset": [
-          -1.35,
+          -1.65,
           0.0,
           0.0
         ],
@@ -861,7 +863,7 @@
         "fuseDelayDist": 1.0,
         "explodeTreshold": 0.1,
         "price": 3000.0,
-        "mesh": "roland_rocket_deployed",
+        "mesh": "9a33m_rocket_deployed",
         "hasTracerTrail": true,
         "tracerTrailEmitter": [
           0.05,

@@ -292,7 +292,7 @@ let hitNotifications = function() {
       hplace = ALIGN_CENTER
       size = [SIZE_TO_CONTENT, flex()]
       pos = isHitcamSet.get()
-        ? [0, hudHitCameraState.get().pos[1] + hudHitCameraState.get().size[1]/2]
+        ? [0, hudHitCameraState.get().pos[1] + hudHitCameraState.get().size[1]/1.15]
         : [0, hdpx(-140)]
     })
   }

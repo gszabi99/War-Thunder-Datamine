@@ -2283,12 +2283,12 @@
     ],
     "headPos": [
       5.945,
-      1.615,
+      1.595,
       0.0
     ],
     "headPosOnShooting": [
       6.045,
-      1.615,
+      1.595,
       0.0
     ],
     "hasAirCannonIlsMode": true,
@@ -2399,6 +2399,10 @@
         -1.0,
         1.0
       ],
+      "trimmer_indicator": [
+        -1.0,
+        1.0
+      ],
       "weapon2": [
         0.0,
         1.0
@@ -2416,7 +2420,7 @@
         0.0,
         1.0
       ],
-      "flaps_fixed": false,
+      "flaps_fixed": true,
       "speed": [
         0.0,
         514.444
@@ -2461,26 +2465,6 @@
         0.0,
         100000.0
       ],
-      "altitude1_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude2_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude2_hour": [
-        0.0,
-        10000.0
-      ],
-      "altitude2_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude3_min": [
-        0.0,
-        1000.0
-      ],
       "radio_altitude": [
         0.0,
         1000.0
@@ -2499,14 +2483,6 @@
         80.0
       ],
       "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "aviahorizon_pitch1": [
-        -80.0,
-        80.0
-      ],
-      "aviahorizon_roll1": [
         -180.0,
         180.0
       ],
@@ -2842,6 +2818,17 @@
         },
         {
           "textureArea": [
+            0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": {
+            "type": "digital_devices"
+          }
+        },
+        {
+          "textureArea": [
             0.0,
             0.0,
             1.0,
@@ -2866,6 +2853,186 @@
           }
         }
       ]
+    },
+    "digitalDevices": {
+      "REL_RPM_L": {
+        "pos": [
+          0.0,
+          0.0
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "relative_rpm",
+        "format": "%.1f",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "REL_RPM_R": {
+        "pos": [
+          0.5,
+          0.0
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "relative_rpm1",
+        "format": "%.1f",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "EGT_L": [
+        {
+          "pos": [
+            0.0,
+            0.25
+          ],
+          "size": [
+            0.5,
+            0.25
+          ],
+          "color": [
+            0,
+            255,
+            0
+          ],
+          "fontSize": 100,
+          "value": "water_temperature",
+          "format": "%d",
+          "padding": [
+            20.0,
+            0.0
+          ]
+        },
+        {
+          "pos": [
+            0.5,
+            0.25
+          ],
+          "size": [
+            0.5,
+            0.25
+          ],
+          "color": [
+            0,
+            255,
+            0
+          ],
+          "fontSize": 100,
+          "value": "water_temperature1",
+          "format": "%d",
+          "padding": [
+            20.0,
+            0.0
+          ]
+        }
+      ],
+      "RPM_L": {
+        "pos": [
+          0.0,
+          0.5
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "rpm",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "RPM_R": {
+        "pos": [
+          0.5,
+          0.5
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "rpm1",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "OIL_PRESS_L": {
+        "pos": [
+          0.0,
+          0.75
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "oil_pressure",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      },
+      "OIL_PRESS_R": {
+        "pos": [
+          0.5,
+          0.75
+        ],
+        "size": [
+          0.5,
+          0.25
+        ],
+        "color": [
+          0,
+          255,
+          0
+        ],
+        "fontSize": 100,
+        "value": "oil_pressure1",
+        "format": "%d",
+        "padding": [
+          20.0,
+          0.0
+        ]
+      }
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -3106,7 +3273,11 @@
         "optic2_turret",
         "optic2_gun",
         "chaff_cap_l",
-        "chaff_cap_r"
+        "chaff_cap_r",
+        "pylon_1_aim_9_l",
+        "pylon_1_aim_9_r",
+        "pylon_2_aim_9_l",
+        "pylon_2_aim_9_r"
       ]
     },
     "HideDmParts": {
@@ -3156,7 +3327,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonM61A1.blk",
+              "blk": "gameData/Weapons/cannonM61A1_pgu_28_f15.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -3201,7 +3372,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_001"
+                "lau_7_001",
+                "pylon_1_aim_9_l"
               ]
             },
             "Weapon": {
@@ -3219,7 +3391,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_001"
+                "lau_7_001",
+                "pylon_1_aim_9_l"
               ]
             },
             "Weapon": {
@@ -3238,13 +3411,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_001"
+                "lau_7_001",
+                "pylon_1_aim_9_l"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
-              "emitter": "aim_9_001",
+              "emitter": "aim_120a_001",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3550,7 +3724,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_002"
+                "lau_7_002",
+                "pylon_1_aim_9_r"
               ]
             },
             "Weapon": {
@@ -3569,7 +3744,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_002"
+                "lau_7_002",
+                "pylon_1_aim_9_r"
               ]
             },
             "Weapon": {
@@ -3587,13 +3763,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_002"
+                "lau_7_002",
+                "pylon_1_aim_9_r"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
-              "emitter": "aim_9_002",
+              "emitter": "aim_120a_002",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -7891,7 +8068,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_003"
+                "lau_7_003",
+                "pylon_2_aim_9_l"
               ]
             },
             "Weapon": {
@@ -7910,7 +8088,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_003"
+                "lau_7_003",
+                "pylon_2_aim_9_l"
               ]
             },
             "Weapon": {
@@ -7928,13 +8107,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_003"
+                "lau_7_003",
+                "pylon_2_aim_9_l"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
-              "emitter": "aim_9_003",
+              "emitter": "aim_120a_003",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -8239,7 +8419,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_004"
+                "lau_7_004",
+                "pylon_2_aim_9_r"
               ]
             },
             "Weapon": {
@@ -8257,7 +8438,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_004"
+                "lau_7_004",
+                "pylon_2_aim_9_r"
               ]
             },
             "Weapon": {
@@ -8276,13 +8458,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_004"
+                "lau_7_004",
+                "pylon_2_aim_9_r"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
-              "emitter": "aim_9_004",
+              "emitter": "aim_120a_004",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -8645,6 +8828,12 @@
       }
     ]
   },
+  "default_skin": {
+    "replace_tex": {
+      "from": "us_610gal_drop_tank_dark_c*",
+      "to": "us_610gal_drop_tank_iaf_c*"
+    }
+  },
   "parachutes": {
     "emitterRange": [
       1,
@@ -8828,7 +9017,7 @@
           0.175
         ],
         "density": 1.0,
-        "intensityMult": 2.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
           5.0,
           20.0,
@@ -8899,7 +9088,7 @@
           0.175
         ],
         "density": 1.0,
-        "intensityMult": 2.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
           5.0,
           20.0,
@@ -8932,9 +9121,9 @@
           1.7
         ],
         "exitTangent": [
-          2.062,
+          2.891,
           1.2,
-          0.207
+          0.2
         ],
         "exitTangentHeight": [
           0.0,
@@ -8969,12 +9158,12 @@
           1.408,
           0.219
         ],
-        "density": 2.0,
-        "intensityMult": 7.0,
+        "density": 1.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [
@@ -9003,9 +9192,9 @@
           -1.7
         ],
         "exitTangent": [
-          2.062,
+          2.891,
           1.2,
-          -0.207
+          -0.2
         ],
         "exitTangentHeight": [
           0.0,
@@ -9040,12 +9229,12 @@
           1.408,
           0.219
         ],
-        "density": 2.0,
-        "intensityMult": 7.0,
+        "density": 1.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [
@@ -9059,24 +9248,24 @@
       },
       {
         "entryPoint": [
-          2.258,
+          2.4,
           1.2,
-          1.031
+          0.9
         ],
         "exitPoint": [
-          -3.0,
+          -1.756,
           1.5,
-          1.824
+          0.618
         ],
         "entryTangent": [
-          1.237,
+          0.615,
           1.2,
           0.588
         ],
         "exitTangent": [
           -0.618,
           1.4,
-          0.587
+          1.823
         ],
         "exitTangentHeight": [
           0.5,
@@ -9114,9 +9303,9 @@
         "density": 1.0,
         "intensityMult": 3.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [
@@ -9130,24 +9319,24 @@
       },
       {
         "entryPoint": [
-          2.258,
+          2.4,
           1.2,
-          -1.031
+          -0.9
         ],
         "exitPoint": [
-          -3.0,
+          -1.756,
           1.5,
-          -1.824
+          -0.618
         ],
         "entryTangent": [
-          1.237,
+          0.615,
           1.2,
           -0.588
         ],
         "exitTangent": [
           -0.618,
           1.4,
-          -0.587
+          -1.823
         ],
         "exitTangentHeight": [
           0.5,
@@ -9185,9 +9374,9 @@
         "density": 1.0,
         "intensityMult": 3.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [

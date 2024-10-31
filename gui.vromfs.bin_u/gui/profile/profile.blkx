@@ -1,6 +1,9 @@
 {
+  "isEditModeEnabled": "no",
+  "css-hier-invalidate": "yes",
   "root": {
     "bgrStyle": "fullScreenWnd",
+    "css-hier-invalidate": "yes",
     "blur_foreground": {
       "filledDark": "yes"
     },
@@ -181,10 +184,11 @@
               "size": "pw, ph",
               "pos": "50%pw-50%w, 0",
               "position": "relative",
+              "css-hier-invalidate": "yes",
               "Button_text": {
                 "id": "btn_profile_icon",
-                "_on_click": "onChangePilotIcon",
                 "class": "profileImg",
+                "css-hier-invalidate": "yes",
                 "div": {
                   "id": "profile-icon",
                   "size": "pw,ph",
@@ -192,7 +196,13 @@
                   "isFull": "yes",
                   "border": "yes",
                   "border-color": "#FFFFFF",
-                  "border-radius": "2@sf/@pf"
+                  "border-radius": "2@sf/@pf",
+                  "css-hier-invalidate": "yes",
+                  "profileEditBtn": {
+                    "type": "big",
+                    "pos": "pw - w - 5@sf/@pf, ph - h - 5@sf/@pf",
+                    "_on_click": "onChangePilotIcon"
+                  }
                 },
                 "ButtonImg": {},
                 "unseenIcon": {
@@ -206,61 +216,60 @@
                 "position": "relative",
                 "height": "1@avatarButtonSize",
                 "left": "23@sf/@pf",
+                "css-hier-invalidate": "yes",
                 "tdiv": [
                   {
                     "width": "pw",
                     "position": "absolute",
                     "flow": "vertical",
                     "overflow": "hidden",
-                    "tdiv": {
-                      "auto-scroll": "slow",
-                      "tdiv": [
-                        {
-                          "re-type": "textarea",
-                          "behaviour": "textArea",
-                          "id": "profile-clanTagss",
-                          "max-width": "pw",
-                          "font": "@fontBigBold",
-                          "tooltip": "",
-                          "padding-right": "1@blockInterval",
-                          "hideEmptyText": "yes",
-                          "text": "",
-                          "color": "#787a7d"
-                        },
-                        {
-                          "position": "relative",
-                          "re-type": "textarea",
-                          "behaviour": "textArea",
-                          "id": "profile-name",
-                          "talign": "left",
-                          "font": "@fontBigBold",
-                          "style": "color:@mainPlayerColor"
-                        }
-                      ]
-                    },
-                    "Button_text": {
-                      "id": "profile_currentUser_btn_title",
-                      "visualStyle": "noBgr",
-                      "on_click": "openChooseTitleWnd",
-                      "width": "pw",
-                      "top": "4@sf/@pf",
-                      "hideEmptyText": "yes",
-                      "isProfileTitleBtn": "yes",
-                      "css-hier-invalidate": "yes",
-                      "textareaNoTab": {
-                        "id": "profile-currentUser-title",
-                        "pos": "0, 0.5ph-0.5h",
-                        "position": "relative",
-                        "unseenIcon": {
-                          "id": "unseen_titles",
-                          "pos": "pw + 1@blockInterval, 50%ph-50%h",
-                          "position": "absolute",
-                          "unseenText": {}
-                        }
+                    "css-hier-invalidate": "yes",
+                    "tdiv": [
+                      {
+                        "auto-scroll": "slow",
+                        "tdiv": [
+                          {
+                            "re-type": "textarea",
+                            "behaviour": "textArea",
+                            "id": "profile-clanTagss",
+                            "max-width": "pw",
+                            "font": "@fontBigBold",
+                            "tooltip": "",
+                            "padding-right": "1@blockInterval",
+                            "hideEmptyText": "yes",
+                            "text": "",
+                            "color": "#787a7d"
+                          },
+                          {
+                            "position": "relative",
+                            "re-type": "textarea",
+                            "behaviour": "textArea",
+                            "id": "profile-name",
+                            "talign": "left",
+                            "font": "@fontBigBold",
+                            "style": "color:@mainPlayerColor"
+                          }
+                        ]
                       },
-                      "focus_border": {},
-                      "ButtonImg": {}
-                    },
+                      {
+                        "position": "relative",
+                        "css-hier-invalidate": "yes",
+                        "textareaNoTab": {
+                          "id": "profile-currentUser-title",
+                          "position": "relative",
+                          "unseenIcon": {
+                            "id": "unseen_titles",
+                            "pos": "pw + 1@blockInterval, 50%ph-50%h",
+                            "position": "absolute",
+                            "unseenText": {}
+                          }
+                        },
+                        "profileEditBtn": {
+                          "pos": "pw,(ph - h)/2",
+                          "_on_click": "openChooseTitleWnd"
+                        }
+                      }
+                    ],
                     "textareaNoTab": [
                       {
                         "id": "profile-currentUser-psnName",
@@ -941,17 +950,38 @@
         "navRight": {
           "Button_text": [
             {
-              "id": "btn_changeAccount",
-              "text": "#mainmenu/btnChangePlayer",
-              "btnName": "LB",
-              "on_click": "onChangeAccount",
-              "ButtonImg": {}
-            },
-            {
               "id": "btn_changeName",
               "text": "#mainmenu/btnChangeName",
               "btnName": "RB",
               "on_click": "onChangeName",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_editPage",
+              "text": "#msgbox/btn_edit",
+              "btnName": "X",
+              "on_click": "onProfileEditBtn",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_applyEditPage",
+              "text": "#msgbox/btn_apply",
+              "btnName": "RB",
+              "on_click": "onProfileEditApplyBtn",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_cancelEditPage",
+              "text": "#msgbox/btn_cancel",
+              "btnName": "LB",
+              "on_click": "onProfileEditCancelBtn",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_changeAccount",
+              "text": "#mainmenu/btnChangePlayer",
+              "btnName": "LB",
+              "on_click": "onChangeAccount",
               "ButtonImg": {}
             },
             {

@@ -17,16 +17,16 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, hdpx(90))
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud") * 1.5
+  fontSize = getFontDefHt("hud") * 2.5
 }
 
 function calcRwrTargetRadius(target) {
   return 0.2 + target.rangeRel * 0.8
 }
 
-let iconRadiusRel = 0.2
+let iconRadiusBaseRel = 0.2
 
-function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
@@ -44,26 +44,28 @@ function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
       size = flex()
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      fontSize = fontSizeMult * styleText.fontSize * newTargetFontSizeMultRwr.get()
+      fontSize = styleText.fontSize * objectStyle.fontScale * newTargetFontSizeMultRwr.get()
       text = directionGroup != null ? directionGroup.text : settings.unknownText
     })
+
+  let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
 
   local icon = null
   if (directionGroup != null && directionGroup?.type == ThreatType.AI) {
     icon = @() {
       color = color
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4)
+      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
       fillColor = 0
       size = flex()
       commands = [
         [ VECTOR_LINE,
-          target.x * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
           target.x * targetRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.75 * iconSizeMult * iconRadiusRel * 100.0,
-          target.x * targetRadiusRel * 100.0 + 0.50 * iconSizeMult * iconRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0 - 0.50 * iconSizeMult * iconRadiusRel * 100.0 ]
+          target.y * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
+          target.x * targetRadiusRel * 100.0 + 0.50 * iconRadiusRel * 100.0,
+          target.y * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0 ]
       ]
     }
   }
@@ -76,15 +78,15 @@ function createRwrTarget(index, settings, iconSizeMult, fontSizeMult) {
       color = color
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4)
+      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
       fillColor = 0
       size = flex()
       commands = [
         [ VECTOR_ELLIPSE,
           target.x * targetRadiusRel * 100.0,
           target.y * targetRadiusRel * 100.0,
-          iconSizeMult * iconRadiusRel * 100.0,
-          iconSizeMult * iconRadiusRel * 100.0]
+          iconRadiusRel * 100.0,
+          iconRadiusRel * 100.0]
        ]
     }
   }
@@ -148,7 +150,7 @@ function targetPriorityGreater(left, right, settings) {
     return targetRangeSmaller(left, right, settings)
 }
 
-function createRwrPriorityTarget(settings, iconSizeMult) {
+function createRwrPriorityTarget(settings, objectStyle) {
   local priorityTarget = null
   for (local i = 0; i < rwrTargets.len(); ++i) {
     let target = rwrTargets[i]
@@ -162,23 +164,24 @@ function createRwrPriorityTarget(settings, iconSizeMult) {
 
   let priorityTargetRadiusRel = calcRwrTargetRadius(priorityTarget)
 
+  let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
   local priority = @() {
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4)
+    lineWidth = hdpx(4 * objectStyle.lineWidthScale)
     fillColor = 0
     size = flex()
     pos = [pw(0), ph(0)]
     commands = [
       [ VECTOR_POLY,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0 - iconSizeMult * iconRadiusRel * 100.0,
+        priorityTarget.x * priorityTargetRadiusRel * 100.0 - iconRadiusRel * 100.0,
         priorityTarget.y * priorityTargetRadiusRel * 100.0,
         priorityTarget.x * priorityTargetRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0 - iconSizeMult * iconRadiusRel * 100.0,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0 + iconSizeMult * iconRadiusRel * 100.0,
+        priorityTarget.y * priorityTargetRadiusRel * 100.0 - iconRadiusRel * 100.0,
+        priorityTarget.x * priorityTargetRadiusRel * 100.0 + iconRadiusRel * 100.0,
         priorityTarget.y * priorityTargetRadiusRel * 100.0,
         priorityTarget.x * priorityTargetRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0 + iconSizeMult * iconRadiusRel * 100.0 ]
+        priorityTarget.y * priorityTargetRadiusRel * 100.0 + iconRadiusRel * 100.0 ]
     ]
   }
 
@@ -343,19 +346,19 @@ let settings = Computed(function() {
 })
 
 
-let rwrTargetsComponent = function(iconSizeMult, fontSizeMult) {
+let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), iconSizeMult, fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-let rwrPriorityTargetComponent = function(iconSizeMult) {
+let rwrPriorityTargetComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = createRwrPriorityTarget(settings.get(), iconSizeMult)
+    children = createRwrPriorityTarget(settings.get(), objectStyle)
   }
 }
 

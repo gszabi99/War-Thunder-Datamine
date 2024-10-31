@@ -42,6 +42,7 @@ let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlin
 let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdOptions, setIsRemoteMission,
   getCurrentCampaignId, setCurrentCampaignId, setCurrentCampaignMission, getCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
+let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -93,6 +94,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   filterText = ""
 
   needCheckDiffAfterOptions = false
+  applyFilterTimer = null
 
   function initScreen() {
     this.showWaitAnimation(true)
@@ -905,7 +907,20 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   onFilterEditBoxActivate = @() null
 
-  function onFilterEditBoxChangeValue() {
+  function onFilterEditBoxChangeValue(_) {
+    clearTimer(this.applyFilterTimer)
+    let filterEditBox = this.scene.findObject("filter_edit_box")
+    let filterText = utf8ToLower(filterEditBox.getValue())
+    if(filterText == "") {
+      this.applyFilterImpl()
+      return
+    }
+
+    let applyCallback = Callback(@() this.applyFilterImpl(), this)
+    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
+  }
+
+  function applyFilterImpl() {
     this.applyMissionFilter()
     this.updateCollapsedItems()
     this.updateButtons()

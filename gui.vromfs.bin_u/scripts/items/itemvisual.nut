@@ -213,10 +213,9 @@ function getActiveBoostersDescription(boostersArray, effectType, selectedItem = 
         : loc("mainmenu/boosterType/common")
 
       local subHeader = "".concat("* ", loc($"mainmenu/booster/{arrayName}"))
-      if (isBothBoosterTypesAvailable) {
-        subHeader += loc("ui/colon")
-        subHeader += getColoredNumByType(boostNum)
-      }
+      if (isBothBoosterTypesAvailable)
+        subHeader = loc("ui/colon").concat(subHeader, getColoredNumByType(boostNum))
+
 
       detailedArray.append(subHeader)
 

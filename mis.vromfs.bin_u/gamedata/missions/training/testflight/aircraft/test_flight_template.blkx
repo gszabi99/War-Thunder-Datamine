@@ -53,6 +53,21 @@
             "var": "player"
           }
         ],
+        "triggerEnable": [
+          {
+            "target": "ship_spawn"
+          },
+          {
+            "target": "check_high"
+          },
+          {
+            "target": [
+              "spawn_plane",
+              "spawn_plane2",
+              "spawn_plane3"
+            ]
+          }
+        ],
         "missionSetFade": {
           "mode": "fadeOut",
           "color": [
@@ -87,21 +102,6 @@
             "value": true,
             "var": "is_airfield_spawn",
             "fromDescriptor": "is_airfield_spawn"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": [
-              "check_high",
-              "ship_spawn"
-            ]
-          },
-          {
-            "target": [
-              "spawn_plane",
-              "spawn_plane2",
-              "spawn_plane3"
-            ]
           }
         ],
         "wait": {
@@ -140,22 +140,6 @@
         "unitPutToSleep": {
           "target": "airfield_ship_unit"
         },
-        "changeUnit": {
-          "unit_class": "@aircraft_ship_name",
-          "weaponPreset": "",
-          "isIndividual": true,
-          "hangarMission": false,
-          "object": "airfield_ship_unit",
-          "type": "ship"
-        },
-        "wait": [
-          {
-            "time": 0.1
-          },
-          {
-            "time": 1.0
-          }
-        ],
         "unitRespawn": {
           "delay": 1.0,
           "offset": [
@@ -166,6 +150,30 @@
           "object": "airfield_ship_unit",
           "target": "airfield01ship",
           "resetFormation": false
+        },
+        "wait": [
+          {
+            "time": 0.1
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "changeUnit": {
+          "unit_class": "@aircraft_ship_name",
+          "weaponPreset": "",
+          "isIndividual": true,
+          "hangarMission": false,
+          "object": "airfield_ship_unit",
+          "type": "ship"
+        },
+        "unitSetProperties": {
+          "object": "airfield_ship_unit",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "isImmortal": true
         },
         "unitSetRoute": {
           "object_var_name": "",
@@ -234,7 +242,7 @@
             "var": "target_tanks_squad_total"
           },
           {
-            "value": "airfield01high",
+            "value": "airfield01plane_high",
             "var": "airfield_end"
           },
           {
@@ -300,7 +308,7 @@
             "var": "airfield_spawn"
           },
           {
-            "value": "airfield01high",
+            "value": "airfield01plane_high",
             "var": "airfield_end"
           }
         ],
@@ -338,14 +346,17 @@
       },
       "actions": {
         "wait": {
-          "time": 0.5
+          "time": 1.0
         },
-        "varSetString": {
+        "__varSetString": {
           "value": "airfield_ship_unit",
           "var": "airfield_spawn"
         },
+        "unitWakeUp": {
+          "target": "@airfield_unit_name"
+        },
         "triggerEnable": {
-          "target": "init_carrier"
+          "target": "check_helicopter"
         }
       },
       "else_actions": {
@@ -390,27 +401,33 @@
       },
       "actions": {
         "varSetString": {
-          "value": "airfield00",
+          "value": "airfield00heli",
           "var": "airfield_spawn"
         },
         "addAirfield": {
-          "runwayStart": "airfield00",
-          "runwayEnd": "airfield01high",
+          "runwayStart": "airfield00heli",
+          "runwayEnd": "airfield01heli_high",
           "runwayWidth": 100.0,
           "army": 1,
-          "spawnPoint": "heli_spawn_area"
+          "spawnPoint": "heli_spawn_area",
+          "visibleOnHud": false
         },
         "triggerEnable": {
           "target": "init_carrier"
         }
       },
       "else_actions": {
-        "__addAirfield": {
-          "runwayStart": "airfield00",
-          "runwayEnd": "airfield01high",
+        "varSetString": {
+          "value": "airfield00plane",
+          "var": "airfield_spawn"
+        },
+        "addAirfield": {
+          "runwayStart": "airfield00plane",
+          "runwayEnd": "airfield01plane_high",
           "runwayWidth": 100.0,
           "army": 1,
-          "spawnPoint": "airfield_spawnpoint"
+          "spawnPoint": "airfield_spawnpoint",
+          "visibleOnHud": false
         },
         "triggerEnable": {
           "target": "init_carrier"

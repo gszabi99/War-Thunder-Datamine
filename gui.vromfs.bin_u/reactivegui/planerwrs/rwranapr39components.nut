@@ -12,7 +12,7 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, hdpx(90))
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud") * 1.5
+  fontSize = getFontDefHt("hud") * 2.5
 }
 
 let ThreatType = {
@@ -26,7 +26,7 @@ function calcRwrTargetRadius(target) {
   return 0.2 + 0.8 * target.rangeRel
 }
 
-function createRwrTarget(index, settings, fontSizeMult) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
@@ -44,11 +44,11 @@ function createRwrTarget(index, settings, fontSizeMult) {
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = fontSizeMult * styleText.fontSize
+        fontSize = objectStyle.fontScale * styleText.fontSize
         text = directionGroup != null ? directionGroup.text : settings.unknownText
       })
 
-  let targetIconSizeRel = 0.07
+  let targetIconSizeRel = 0.07 * objectStyle.scale
   let targetAttackIconSizeRel = targetIconSizeRel * 1.3
   let attackOpacityRwr = Computed(@() (target.launch && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
   local attack = null
@@ -58,7 +58,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       color = color
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(2)
+      lineWidth = hdpx(2 * objectStyle.lineWidthScale)
       fillColor = 0
       size = [pw(100), ph(100)]
       commands = [
@@ -141,7 +141,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       icon = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(2)
+        lineWidth = hdpx(2 * objectStyle.lineWidthScale)
         fillColor = 0
         size = [pw(100), ph(100)]
         commands = commands
@@ -217,11 +217,11 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
-let rwrTargetsComponent = function(fontSizeMult) {
+let rwrTargetsComponent = function(style) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), style))
   }
 }
 

@@ -3289,7 +3289,11 @@
         "optic2_turret",
         "optic2_gun",
         "chaff_cap_l",
-        "chaff_cap_r"
+        "chaff_cap_r",
+        "pylon_1_aim_9_l",
+        "pylon_1_aim_9_r",
+        "pylon_2_aim_9_l",
+        "pylon_2_aim_9_r"
       ]
     },
     "HideDmParts": {
@@ -3339,7 +3343,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonM61A1.blk",
+              "blk": "gameData/Weapons/cannonM61A1_pgu_28_f15.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -3366,7 +3370,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_001"
+                "lau_7_001",
+                "pylon_1_aim_9_l"
               ]
             },
             "Weapon": {
@@ -3384,7 +3389,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_001"
+                "lau_7_001",
+                "pylon_1_aim_9_l"
               ]
             },
             "Weapon": {
@@ -3403,13 +3409,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_001"
+                "lau_7_001",
+                "pylon_1_aim_9_l"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
-              "emitter": "aim_9_001",
+              "emitter": "aim_120a_001",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3699,7 +3706,25 @@
             "DependentWeaponPreset": {
               "slot": 12,
               "preset": "ptb_right"
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni",
@@ -3771,7 +3796,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_002"
+                "lau_7_002",
+                "pylon_1_aim_9_r"
               ]
             },
             "Weapon": {
@@ -3790,7 +3816,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_002"
+                "lau_7_002",
+                "pylon_1_aim_9_r"
               ]
             },
             "Weapon": {
@@ -3808,13 +3835,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_1",
-                "lau_7_002"
+                "lau_7_002",
+                "pylon_1_aim_9_r"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
-              "emitter": "aim_9_002",
+              "emitter": "aim_120a_002",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -6057,7 +6085,25 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              }
+            ]
           },
           {
             "iconType": "glide_guided_bomb_small_jdam_group_x4",
@@ -8112,7 +8158,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_003"
+                "lau_7_003",
+                "pylon_2_aim_9_l"
               ]
             },
             "Weapon": {
@@ -8131,7 +8178,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_003"
+                "lau_7_003",
+                "pylon_2_aim_9_l"
               ]
             },
             "Weapon": {
@@ -8149,13 +8197,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_003"
+                "lau_7_003",
+                "pylon_2_aim_9_l"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
-              "emitter": "aim_9_003",
+              "emitter": "aim_120a_003",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -8445,7 +8494,25 @@
             "DependentWeaponPreset": {
               "slot": 2,
               "preset": "ptb_left"
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              }
+            ]
           },
           {
             "iconType": "missile_air_to_uni",
@@ -8516,7 +8583,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_004"
+                "lau_7_004",
+                "pylon_2_aim_9_r"
               ]
             },
             "Weapon": {
@@ -8534,7 +8602,8 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_004"
+                "lau_7_004",
+                "pylon_2_aim_9_r"
               ]
             },
             "Weapon": {
@@ -8553,13 +8622,14 @@
             "ShowNodes": {
               "node": [
                 "pylon_2",
-                "lau_7_004"
+                "lau_7_004",
+                "pylon_2_aim_9_r"
               ]
             },
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
-              "emitter": "aim_9_004",
+              "emitter": "aim_120a_004",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -9182,7 +9252,7 @@
           0.175
         ],
         "density": 1.0,
-        "intensityMult": 2.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
           5.0,
           20.0,
@@ -9253,7 +9323,7 @@
           0.175
         ],
         "density": 1.0,
-        "intensityMult": 2.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
           5.0,
           20.0,
@@ -9286,9 +9356,9 @@
           1.7
         ],
         "exitTangent": [
-          2.062,
+          2.891,
           1.2,
-          0.207
+          0.2
         ],
         "exitTangentHeight": [
           0.0,
@@ -9323,12 +9393,12 @@
           1.408,
           0.219
         ],
-        "density": 2.0,
-        "intensityMult": 7.0,
+        "density": 1.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [
@@ -9357,9 +9427,9 @@
           -1.7
         ],
         "exitTangent": [
-          2.062,
+          2.891,
           1.2,
-          -0.207
+          -0.2
         ],
         "exitTangentHeight": [
           0.0,
@@ -9394,12 +9464,12 @@
           1.408,
           0.219
         ],
-        "density": 2.0,
-        "intensityMult": 7.0,
+        "density": 1.0,
+        "intensityMult": 4.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [
@@ -9413,24 +9483,24 @@
       },
       {
         "entryPoint": [
-          2.258,
+          2.4,
           1.2,
-          1.031
+          0.9
         ],
         "exitPoint": [
-          -3.0,
+          -1.756,
           1.5,
-          1.824
+          0.618
         ],
         "entryTangent": [
-          1.237,
+          0.615,
           1.2,
           0.588
         ],
         "exitTangent": [
           -0.618,
           1.4,
-          0.587
+          1.823
         ],
         "exitTangentHeight": [
           0.5,
@@ -9468,9 +9538,9 @@
         "density": 1.0,
         "intensityMult": 3.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [
@@ -9484,24 +9554,24 @@
       },
       {
         "entryPoint": [
-          2.258,
+          2.4,
           1.2,
-          -1.031
+          -0.9
         ],
         "exitPoint": [
-          -3.0,
+          -1.756,
           1.5,
-          -1.824
+          -0.618
         ],
         "entryTangent": [
-          1.237,
+          0.615,
           1.2,
           -0.588
         ],
         "exitTangent": [
           -0.618,
           1.4,
-          -0.587
+          -1.823
         ],
         "exitTangentHeight": [
           0.5,
@@ -9539,9 +9609,9 @@
         "density": 1.0,
         "intensityMult": 3.0,
         "criticalAOA": [
-          5.0,
-          15.0,
+          7.0,
           25.0,
+          29.0,
           35.0
         ],
         "absoluteCriticalAOS": [

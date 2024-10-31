@@ -4952,7 +4952,10 @@
   "sensors": {
     "fireDirecting": [
       {
-        "dmPartMain": "fire_control_room_01_dm",
+        "dmPartMain": [
+          "fire_control_room_01_dm",
+          "fire_control_room_02_dm"
+        ],
         "dmPart": "fire_director_01_dm",
         "measureAccuracy": 1.0,
         "targetLockTime": 15.0,
@@ -4966,26 +4969,16 @@
         }
       },
       {
-        "dmPartMain": "bridge_dm",
-        "dmPart": "rangefinder_05_dm",
-        "measureAccuracy": 0.85,
-        "targetLockTime": 20.0,
-        "calcTime": 12.0,
-        "rotationSpeed": 20.0,
-        "shipIndicationOn": true,
-        "triggerGroupUse": {
-          "primary": true,
-          "secondary": true,
-          "machinegun": false
-        }
-      },
-      {
-        "dmPartMain": "bridge_dm",
+        "dmPartMain": [
+          "fire_control_room_01_dm",
+          "fire_control_room_02_dm"
+        ],
         "dmPart": [
           "rangefinder_01_dm",
           "rangefinder_02_dm",
           "rangefinder_03_dm",
-          "rangefinder_04_dm"
+          "rangefinder_04_dm",
+          "rangefinder_05_dm"
         ],
         "measureAccuracy": 0.85,
         "targetLockTime": 20.0,
@@ -6254,7 +6247,7 @@
         }
       },
       {
-        "trigger": "gunner10",
+        "trigger": "gunner9",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/102mm_35_sav_mod_1915_aa_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_14",

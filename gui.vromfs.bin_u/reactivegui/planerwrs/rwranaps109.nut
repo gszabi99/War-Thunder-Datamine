@@ -16,7 +16,7 @@ function calcRwrTargetRadius(target) {
 
 let color = Color(10, 202, 10, 250)
 
-function createRwrTarget(index, settings) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
@@ -38,7 +38,7 @@ function createRwrTarget(index, settings) {
       azimuth = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(20)
+        lineWidth = hdpx(20 * objectStyle.lineWidthScale)
         fillColor = 0
         size = flex()
         commands = commands
@@ -87,33 +87,33 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut }
 })
 
-let rwrTargetsComponent = function() {
+let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get()))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-function scope(scale) {
+function scope(scale, style) {
   return {
     size = [pw(scale * 0.85), ph(scale * 0.85)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
-      rwrTargetsComponent()
+      rwrTargetsComponent(style.object)
     ]
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, _fontSizeMult) {
+let function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()
     pos = posWatched.get()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(scale)
+    children = scope(scale, style)
   }
 }
 

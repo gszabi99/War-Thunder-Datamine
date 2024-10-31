@@ -320,8 +320,10 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
       let unitsLeft = max(0, unitsNeed - unitsCount)
 
       if (unitsLeft > 0) {
-        return loc("shop/unlockTier/locked", { rank = get_roman_numeral(rank) })
-          + "\n" + loc("shop/unlockTier/reqBoughtUnitsPrevRank", { prevRank = get_roman_numeral(prevRank), amount = unitsLeft })
+        return  "\n".concat(
+          loc("shop/unlockTier/locked", { rank = get_roman_numeral(rank) }),
+          loc("shop/unlockTier/reqBoughtUnitsPrevRank",
+            { prevRank = get_roman_numeral(prevRank), amount = unitsLeft }))
       }
     }
     return loc("shop/unlockTier/locked", { rank = get_roman_numeral(rank) })
@@ -884,12 +886,12 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
           isSquadronVehicle ? Cost().setSap(expTotal).tostring() : Cost().setRp(expTotal).tostring())
         expText = colorize(isResearching ? "cardProgressTextColor" : "commonTextColor", expText)
         if (isResearching && expInvest > 0)
-          expText += colorize(isSquadronVehicle
+          expText = "".concat(expText, colorize(isSquadronVehicle
             ? "cardProgressChangeSquadronColor"
             : "cardProgressTextBonusColor", loc("ui/parentheses/space",
             { text = "".concat("+ ", (isSquadronVehicle
               ? Cost().setSap(expInvest).tostring()
-              : Cost().setRp(expInvest).tostring())) }))
+              : Cost().setRp(expInvest).tostring())) })))
         labelObj.setValue(expText)
       }
     }

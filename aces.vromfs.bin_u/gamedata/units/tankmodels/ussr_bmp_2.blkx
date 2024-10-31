@@ -19,10 +19,8 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
+  "canReloadNonGuns": true,
+  "rearmSmokeTimeOnField": 60.0,
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -51,7 +49,6 @@
   "waterBreakerToggleTime": 4.0,
   "type": "typeLightTank",
   "cruiseVelocity": 3.0,
-  "rearmSmokeTimeOnField": 60.0,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -2001,6 +1998,15 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": [
             {
               "verNode": "bone_gun_roller_02",
@@ -2114,7 +2120,16 @@
           "head": "bone_mg_gun_twin_01",
           "gun": "bone_mg_gun_twin_01",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -2169,7 +2184,8 @@
           "head": "bone_turret_02",
           "gun": "bone_gun_02",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -3345,41 +3361,6 @@
     "tank_medical_kit_expendable": {
       "image": "#ui/gameuiskin#tank_reinforcement_ussr"
     },
-    "night_vision_system": {
-      "tier": 2,
-      "modClass": "protection",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
       "tier": 4,
@@ -3439,6 +3420,15 @@
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm",
                 "linkedAnimPart": [
                   {
                     "verNode": "bone_gun_roller_02",
@@ -3552,7 +3542,16 @@
                 "head": "bone_mg_gun_twin_01",
                 "gun": "bone_mg_gun_twin_01",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3607,7 +3606,8 @@
                 "head": "bone_turret_02",
                 "gun": "bone_gun_02",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3817,6 +3817,35 @@
       "disableModEffects": {
         "allowSupportPlane": false
       }
+    }
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "commanderViewIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "driverIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 5.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.2
     }
   },
   "supportPlane": {

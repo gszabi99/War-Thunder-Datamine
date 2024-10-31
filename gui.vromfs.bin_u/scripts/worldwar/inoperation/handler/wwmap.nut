@@ -313,7 +313,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local markUp = ""
     foreach (buttonView in ::g_ww_map_controls_buttons.types)
-      markUp += handyman.renderCached("%gui/commonParts/button.tpl", buttonView)
+      markUp = "".concat(markUp, handyman.renderCached("%gui/commonParts/button.tpl", buttonView))
 
     this.guiScene.replaceContentFromText(obj, markUp, markUp.len(), this)
   }
@@ -1179,7 +1179,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local text = loc("mainmenu/log/short")
     if (params.amount > 0)
-      text += loc("ui/parentheses/space", { text = params.amount })
+      text = "".concat(text, loc("ui/parentheses/space", { text = params.amount }))
     tabObj.setValue(text)
   }
 

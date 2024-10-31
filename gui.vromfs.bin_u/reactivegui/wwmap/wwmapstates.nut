@@ -6,7 +6,10 @@ let { updateBattlesStates } = require("%rGui/wwMap/wwBattlesStates.nut")
 let { updateArmiesState } = require("%rGui/wwMap/wwArmyStates.nut")
 let { updateArtilleryStrikeStates, updateArtilleryAction } = require("%rGui/wwMap/wwArtilleryStrikeStates.nut")
 let { updateTransportAction } = require("%rGui/wwMap/wwTransportUtils.nut")
+let { updateAirfieldsStates } = require("%rGui/wwMap/wwAirfieldsStates.nut")
+let { updateOperationState } = require("%rGui/wwMap/wwOperationStates.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
+
 //watches
 let zonesSides = Watched([])
 let zonesConnectedToRear = Watched([])
@@ -52,6 +55,8 @@ function updateWatches() {
   updateArtilleryStrikeStates()
   updateArtilleryAction()
   updateTransportAction()
+  updateAirfieldsStates()
+  updateOperationState()
 }
 
 return {

@@ -36,13 +36,13 @@ function makePolarGridCommands() {
 
 let polarGridCommands = makePolarGridCommands()
 
-function createPolarGrid() {
+function createPolarGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = flex()
+    size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(2)
+    lineWidth = hdpx(2 * gridStyle.lineWidthScale)
     fillColor = 0
     commands = polarGridCommands
   }
@@ -52,12 +52,12 @@ let tabularGridCommands = [
   [VECTOR_RECTANGLE, -50.0, -80.0, 50.0, 80.0]
 ]
 
-function createTabularGrid() {
+function createTabularGrid(gridStyle) {
   return {
-    size = flex()
+    size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(2)
+    lineWidth = hdpx(2 * gridStyle.lineWidthScale)
     fillColor = 0
     commands = tabularGridCommands
   }
@@ -89,7 +89,7 @@ function calcRwrTargetRadius(target) {
   return 0.2 + target.rangeRel * 0.8
 }
 
-function createRwrTarget(index, settings, fontSizeMult) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
@@ -104,7 +104,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       size = flex()
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      fontSize = fontSizeMult * styleText.fontSize * 0.75
+      fontSize = objectStyle.fontScale * styleText.fontSize
       text = directionGroup != null ? directionGroup.text : settings.unknownText
     })
 
@@ -115,7 +115,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
     color = color
     opacity = attackOpacityRwr.get()
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(5)
+    lineWidth = hdpx(5 * objectStyle.lineWidthScale)
     fillColor = 0
     size = flex()
     commands = [
@@ -138,7 +138,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
   }
 }
 
-function createTargetsList(settings, fontSizeMult) {
+function createTargetsList(settings, objectStyle) {
   let targetsText = makeTargetsText(settings)
   return targetsText.len() > 0 ? @()
     styleText.__merge({
@@ -148,7 +148,7 @@ function createTargetsList(settings, fontSizeMult) {
       size = flex()
       halign = ALIGN_CENTER
       valign = ALIGN_TOP
-      fontSize = fontSizeMult * styleText.fontSize
+      fontSize = objectStyle.fontScale * styleText.fontSize * 2.0
       text = targetsText
     }) : @() {}
 }
@@ -402,23 +402,23 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut, unknownText = "?" }
 })
 
-function rwrTargetsListComponent(fontSizeMult) {
+function rwrTargetsListComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = createTargetsList(settings.get(), fontSizeMult)
+    children = createTargetsList(settings.get(), objectStyle)
   }
 }
 
-function rwrTargetsComponent(fontSizeMult) {
+function rwrTargetsComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-function scope(scale, fontSizeMult) {
+function scope(scale, style) {
   return {
     size = [pw(scale), ph(scale)]
     vplace = ALIGN_CENTER
@@ -428,30 +428,30 @@ function scope(scale, fontSizeMult) {
         pos = [pw(140), ph(130)]
         size = [pw(100), ph(180)]
         children = [
-          createTabularGrid(),
-          rwrTargetsListComponent(fontSizeMult)
+          createTabularGrid(style.grid),
+          rwrTargetsListComponent(style.object)
         ]
       }
       {
         pos = [pw(-30), ph(20)]
         size = [pw(70), ph(70)]
         children = [
-          createPolarGrid(),
-          rwrTargetsComponent(fontSizeMult)
+          createPolarGrid(style.grid),
+          rwrTargetsComponent(style.object)
         ]
       }
     ]
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, fontSizeMult) {
+let function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()
     pos = posWatched.get()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(scale, fontSizeMult)
+    children = scope(scale, style)
   }
 }
 

@@ -45,14 +45,8 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeLightTank",
-  "rearmSmokeTimeOnField": [
-    60.0,
-    60.0
-  ],
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
+  "rearmSmokeTimeOnField": 60.0,
+  "canReloadNonGuns": true,
   "controlDevices": {
     "device": [
       {
@@ -3346,41 +3340,6 @@
     },
     "airstrike": {},
     "improved_optics": {},
-    "night_vision_system": {
-      "tier": 2,
-      "modClass": "firepower",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
     "30mm_2a72_BTR_HE": {
       "maxToRespawn": 1
     },
@@ -3624,6 +3583,35 @@
           ]
         }
       }
+    }
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "commanderViewIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "driverIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 5.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.2
     }
   },
   "ammo": {

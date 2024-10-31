@@ -38,7 +38,7 @@ let function mkArmyPaths(armyWatch, areaBounds) {
 
     let arrowColor = getMapColor(isPlayerSide(armySide) ? "alliesArmyColorArrow" : "enemiesArmyColorArrow")
     let endArrowColor = getMapColor(isPlayerSide(armySide) ? "alliesArrowLastCircleColor" : "enemiesArrowLastCircleColor")
-    let radius = even(armyData.specs.battleStartRadiusN * mapZoom.get() + hdpx(1))
+    let radius = even(armyData.specs.battleStartRadiusN * mapZoom.get() + hdpx(2))
 
     let nextPathIdx = armyData.pathTracker.nextPathIdx
     let points = (armyData.pathTracker.path.points % "item").slice(nextPathIdx)
@@ -46,6 +46,8 @@ let function mkArmyPaths(armyWatch, areaBounds) {
 
     let firstPoint = convertToRelativeMapCoords(armyData.pathTracker.pos)
     let lastPoint = {}
+
+    let commands = [[VECTOR_LINE_INDENT_PX, hdpx(5), 0]]
     let command = points.reduce(function(res, p) {
       let nextPoint = convertToRelativeMapCoords(p.pos)
       res.append(100 * nextPoint.x, 100 * nextPoint.y)
@@ -53,9 +55,8 @@ let function mkArmyPaths(armyWatch, areaBounds) {
       lastPoint.__update(nextPoint)
       return res
     }, [VECTOR_LINE, 100 * firstPoint.x, 100 * firstPoint.y])
-
     let arrowSize = 25
-
+    commands.append(command)
     if(preLastPoint.len() == 0)
       preLastPoint.__update(firstPoint)
 
@@ -65,14 +66,14 @@ let function mkArmyPaths(armyWatch, areaBounds) {
       color = arrowColor
       size = [areaWidth, areaHeight]
       lineWidth = 2 * radius
-      commands = [command]
+      commands = commands
       children = {
         rendObj = ROBJ_BOX
         borderColor = arrowColor
         pos = [areaWidth * lastPoint.x - radius, areaHeight * lastPoint.y - radius]
         size = [2 * radius, 2 * radius]
         fillColor = endArrowColor
-        borderWidth = hdpx(1)
+        borderWidth = hdpx(2)
         borderRadius = radius
         transform = {
           rotate = calcAngleBetweenVectors(lastPoint, preLastPoint).deg
@@ -111,7 +112,7 @@ let mkArmyEntrenchIcon = @(armyData, areaBounds, mpZoom) function() {
     rendObj = ROBJ_IMAGE
     pos
     size = [entrenchIconSize, entrenchIconSize]
-    keepAspect = true
+    subPixel = true
     image = Picture($"{iconName}:{entrenchIconSize}:{entrenchIconSize}")
     color = entrenchIconColors.spriteColor
     animations = [{ prop = AnimProp.color, from = entrenchIconColors.blinkColor, to = entrenchIconColors.spriteColor,
@@ -149,7 +150,7 @@ let mkArmyIcon = @(armyData) function() {
     color = Color(0, 0, 0)
     children = isShow && groupIdxs.contains(armyData.owner.armyGroupIdx)
       ? {
-          padding = [hdpx(1), 0, 0, hdpx(1)]
+          padding = [hdpx(2), 0, 0, hdpx(2)]
           vplace = ALIGN_CENTER
           hplace = ALIGN_CENTER
           rendObj = ROBJ_TEXT
@@ -173,8 +174,8 @@ function mkArmyBack(armyData, areaBounds) {
     let armyPos = convertToRelativeMapCoords(armyData.pathTracker.pos)
     let armySide = zoneSideType[armyData.owner.side]
     let { areaWidth, areaHeight } = areaBounds
-    let borderWidth = hdpx(1)
-    let armyBorderSize = even(armyData.specs.battleStartRadiusN * mapZoom.get() + borderWidth) * 2
+    let borderWidth = hdpx(2)
+    let armyBorderSize = even(armyData.specs.battleStartRadiusN * mapZoom.get() + borderWidth) * 2 - borderWidth / 2
     let armyBorderPos = [areaWidth * armyPos.x - armyBorderSize / 2, areaHeight * armyPos.y - armyBorderSize / 2]
     local borderColor = getMapColor("armyOutlineColor")
 
@@ -223,7 +224,7 @@ function mkArmyBack(armyData, areaBounds) {
           pos = [armyBorderSize / 2, armyBorderSize / 2]
           size = [arrowSize, arrowSize]
           fillColor
-          lineWidth = hdpx(1)
+          lineWidth = hdpx(2)
           commands
         })
       }
@@ -261,7 +262,7 @@ let mkArtilleryFire = @(armyData, areaBounds, armyStrike) function() {
 
   let fireIconSize = armySize
   let { areaWidth, areaHeight } = areaBounds
-  let armyIconPos = [areaWidth * armyPos.x + armySize / 2 , areaHeight * armyPos.y - armySize]
+  let armyIconPos = [areaWidth * armyPos.x + armySize / 2 - hdpx(5) , areaHeight * armyPos.y - armySize - hdpx(1)]
 
   return {
     watch = [armyStrike, mapZoom]
@@ -269,7 +270,7 @@ let mkArtilleryFire = @(armyData, areaBounds, armyStrike) function() {
     keepAspect = true
     pos = armyIconPos
     size = [fireIconSize, fireIconSize]
-    image = Picture(getSettings("artilleryStrike").fireTexture)
+    image = Picture($"{getSettings("artilleryStrike").fireTexture}:{fireIconSize}:{fireIconSize}")
     color = Color(255, 0, 0, 192)
   }
 }

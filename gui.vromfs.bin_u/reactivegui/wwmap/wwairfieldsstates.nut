@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { wwGetAirfieldsCount, wwGetAirfieldInfo, wwClearOutlinedZones,
-  wwSelectAirfield } = require("worldwar")
+  wwSelectAirfield, wwGetSelectedAirfield } = require("worldwar")
 
 let { getZoneByPoint } = require("%rGui/wwMap/wwMapZonesData.nut")
 let { getSettings } = require("%rGui/wwMap/wwSettings.nut")
@@ -54,6 +54,14 @@ function updateSelectedAirfield(airfieldData) {
   sendToDagui("ww.selectAirfield", params)
 }
 
+function updateAirfieldsStates() {
+  let index = wwGetSelectedAirfield()
+  if (index == -1 || airfieldsInfo.get().len() - 1 < index || selectedAirfield.get()?["airfieldIdx"] == index)
+    return
+
+  selectedAirfield.set(airfieldsInfo.get()[index])
+}
+
 let updateHoveredAirfield = @(airfieldData) hoveredAirfield.set(airfieldData)
 
 return {
@@ -64,4 +72,5 @@ return {
   hoveredAirfield
   updateSelectedAirfield
   selectedAirfield
+  updateAirfieldsStates
 }

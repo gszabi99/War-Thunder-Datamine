@@ -95,7 +95,8 @@ let WwBattleResultsView = class {
   function getArmyStateText(wwArmy, armyState) {
     local res = loc(getTblValue(armyState, this.armyStateTexts, ""))
     if (armyState == "EASAB_DEAD" && wwArmy.deathReason != "")
-      res += loc("ui/parentheses/space", { text = loc($"worldwar/log/army_died_{wwArmy.deathReason}") })
+      res = "".concat(res,
+        loc("ui/parentheses/space", { text = loc($"worldwar/log/army_died_{wwArmy.deathReason}") }))
     return res
   }
 

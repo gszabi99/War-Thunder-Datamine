@@ -20,13 +20,13 @@ function makeGridCommands() {
 
 let gridCommands = makeGridCommands()
 
-function createGrid() {
+function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = flex()
+    size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4)
+    lineWidth = hdpx(4 * gridStyle.lineWidthScale)
     fillColor = 0
     commands = gridCommands
   }

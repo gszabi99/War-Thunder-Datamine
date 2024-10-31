@@ -14,18 +14,18 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, hdpx(90))
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud") * 0.5
+  fontSize = getFontDefHt("hud") * 1.0
 }
 
 let gridCommands = [ [VECTOR_ELLIPSE, 0, 0, 100.0, 100.0] ]
 
-function createGrid() {
+function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
     size = flex()
     color = gridColor
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(3)
+    lineWidth = hdpx(3 * gridStyle.lineWidthScale)
     fillColor = 0
     commands = gridCommands
   }
@@ -36,13 +36,13 @@ let ownShipCommands = [
   [VECTOR_ELLIPSE, 0, 0, 5.0, 5.0]
 ]
 
-function createOwnShip() {
+function createOwnShip(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
     size = flex()
     color = ownShipColor
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(2)
+    lineWidth = hdpx(2 * gridStyle.lineWidthScale)
     fillColor = 0
     commands = ownShipCommands
   }
@@ -57,7 +57,7 @@ function calcRwrTargetRadius(target) {
   return 0.2 + 0.8 * target.rangeRel
 }
 
-function createRwrTarget(index, settings, fontSizeMult) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
@@ -66,7 +66,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
   let directionGroup = target.groupId >= 0 && target.groupId < settings.directionGroups.len() ? settings.directionGroups[target.groupId] : null
   let targetRadiusRel = calcRwrTargetRadius(target)
 
-  let targetIconSizeRel = 0.04
+  let targetIconSizeRel = 0.04 * objectStyle.scale
   local targetType = null
   if (directionGroup == null || directionGroup?.text != null)
     targetType = @()
@@ -76,7 +76,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
-        fontSize = fontSizeMult * styleText.fontSize
+        fontSize = objectStyle.fontScale * styleText.fontSize
         text = directionGroup != null ? directionGroup.text : settings.unknownText
       })
 
@@ -89,7 +89,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       color = targetColor
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(3)
+      lineWidth = hdpx(objectStyle.lineWidthScale)
       fillColor = 0
       size = flex()
       commands = [
@@ -140,7 +140,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
         color = targetColor
         opacity = ageOpacity.get()
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(3) * newTargetLineWidthMult.get()
+        lineWidth = hdpx(objectStyle.lineWidthScale) * newTargetLineWidthMult.get()
         fillColor = 0
         size = flex()
         commands = commands
@@ -248,35 +248,35 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
-let rwrTargetsComponent = function(fontSizeMult) {
+let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-function scope(scale, fontSizeMult) {
+function scope(scale, style) {
   return {
     size = [pw(scale), ph(scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
-      createGrid(),
-      createOwnShip(),
-      rwrTargetsComponent(fontSizeMult)
+      createGrid(style.grid),
+      createOwnShip(style.grid),
+      rwrTargetsComponent(style.object)
     ]
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, fontSizeMult) {
+let function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.value
     pos = posWatched.value
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(scale, fontSizeMult)
+    children = scope(scale, style)
   }
 }
 

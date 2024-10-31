@@ -422,7 +422,7 @@ function create_option_vlistbox(id, items, value, cb, isFull) {
   return data
 }
 
-::create_option_slider <- function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
+function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
   if (!checkArgument(id, value, "integer"))
     return ""
 
@@ -440,6 +440,8 @@ function create_option_vlistbox(id, items, value, cb, isFull) {
 
   return data
 }
+
+::create_option_slider <- create_option_slider
 
 let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   {
@@ -539,7 +541,7 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
     }
 
     else if ( controlName == "slider")
-      elemTxt = ::create_option_slider(optionData.id, optionData.value, optionData.cb, true, "slider", optionData)
+      elemTxt = create_option_slider(optionData.id, optionData.value, optionData.cb, true, "slider", optionData)
 
     else if ( controlName == "vlist") {
       elemTxt = create_option_vlistbox(optionData.id, optionData.items, optionData.value, optionData.cb, true)
@@ -5353,4 +5355,5 @@ return {
   crosshair_colors
   image_for_air
   create_option_list
+  create_option_slider
 }

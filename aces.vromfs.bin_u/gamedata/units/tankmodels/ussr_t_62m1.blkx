@@ -21,10 +21,8 @@
   "dustFx": "",
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
-  "canReloadNonGuns": [
-    true,
-    true
-  ],
+  "canReloadNonGuns": true,
+  "rearmSmokeTimeOnField": 60.0,
   "useSimpleDeathConditionsAndEffects": false,
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
@@ -49,7 +47,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "rearmSmokeTimeOnField": 60.0,
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 7.0,
   "smokeScreenRad": 12.0,
@@ -3501,41 +3498,6 @@
         }
       }
     },
-    "night_vision_system": {
-      "tier": 3,
-      "modClass": "protection",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "commanderViewIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
     "modern_tank_laser_rangefinder": {
       "tier": 2,
       "effects": {
@@ -3602,6 +3564,35 @@
     "115mm_ussr_3BM_21_APDS_FS_ammo_pack": {},
     "115mm_APDS_FS_ammo_pack": {
       "tier": 4
+    }
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "commanderViewIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "driverIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 5.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.2
     }
   },
   "user_skin": {

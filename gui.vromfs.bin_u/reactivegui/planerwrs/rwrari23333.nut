@@ -15,21 +15,21 @@ let styleText = {
   fontFxColor = Color(0, 0, 0, 255)
   fontFxFactor = max(70, hdpx(90))
   fontFx = FFT_GLOW
-  fontSize = getFontDefHt("hud")
+  fontSize = getFontDefHt("hud") * 1.8
 }
 
 let outerCircle = 0.5
 let middleCircle = 0.3
 let innerCircle = 0.1
 
-function createRwrMark(fontSizeMult) {
+function createRwrMark(gridStyle) {
   return styleText.__merge({
     rendObj = ROBJ_TEXT
     pos = [pw(85), ph(-90)]
     size = flex()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    fontSize = fontSizeMult * styleText.fontSize
+    fontSize = gridStyle.fontScale * styleText.fontSize
     text = "RWR"
   })
 }
@@ -49,13 +49,13 @@ function makeGridCommands() {
 
 let gridCommands = makeGridCommands()
 
-function createGrid() {
+function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = flex()
+    size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4)
+    lineWidth = hdpx(4 * gridStyle.lineWidthScale)
     fillColor = 0
     commands = gridCommands
   }
@@ -84,13 +84,13 @@ function calcRwrTargetRadius(target, directionGroup) {
     return nonLethalThreatsRadius
 }
 
-let iconSizeMult = 0.1
-
-function createRwrTarget(index, settings, fontSizeMult) {
+function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
   if (!target.valid || target.groupId == null)
     return @() { }
+
+  let iconSizeMult = 0.1 * objectStyle.scale
 
   let directionGroup = target.groupId >= 0 && target.groupId < settings.directionGroups.len() ? settings.directionGroups[target.groupId] : null
   let targetRadiusRel = calcRwrTargetRadius(target, directionGroup)
@@ -101,7 +101,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       size = flex()
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      fontSize = fontSizeMult * styleText.fontSize
+      fontSize = objectStyle.fontScale * styleText.fontSize
       text = directionGroup != null ? directionGroup.text : settings.unknownText
     })
 
@@ -110,7 +110,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
     track = @() {
       color = color
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4)
+      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
       fillColor = 0
       size = flex()
       commands = [
@@ -143,7 +143,7 @@ function createRwrTarget(index, settings, fontSizeMult) {
       color = color
       opacity = launchOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4)
+      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
       fillColor = 0
       size = flex()
       commands = [
@@ -251,40 +251,40 @@ let settings = Computed(function() {
   return { directionGroups = directionGroupOut, unknownText = "U" }
 })
 
-function rwrTargetsComponent(fontSizeMult) {
+function rwrTargetsComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
     size = flex()
-    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), fontSizeMult))
+    children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-function scope(scale, fontSizeMult) {
+function scope(scale, style) {
   return {
     size = [pw(scale), ph(scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
-      createRwrMark(fontSizeMult),
+      createRwrMark(style.grid),
       {
         size = [pw(85), ph(85)]
         children = [
-          createGrid(),
-          rwrTargetsComponent(fontSizeMult)
+          createGrid(style.grid),
+          rwrTargetsComponent(style.object)
         ]
       }
     ]
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, fontSizeMult) {
+let function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()
     pos = posWatched.get()
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(scale, fontSizeMult)
+    children = scope(scale, style)
   }
 }
 
