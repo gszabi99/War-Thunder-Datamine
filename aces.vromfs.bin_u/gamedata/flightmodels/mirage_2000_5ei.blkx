@@ -2295,9 +2295,16 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 0.6,
-            "circleCnt": 1,
-            "centralMark": "cross"
+            "grid": {
+              "scale": 1.3,
+              "lineWidthScale": 0.8,
+              "fontScale": 0.8
+            },
+            "object": {
+              "scale": 0.8,
+              "lineWidthScale": 0.4,
+              "fontScale": 0.4
+            }
           }
         },
         {
@@ -2380,9 +2387,16 @@
             },
             {
               "type": "rwr",
-              "scale": 0.6,
-              "circleCnt": 1,
-              "centralMark": "cross"
+              "grid": {
+                "scale": 1.3,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.8
+              },
+              "object": {
+                "scale": 0.8,
+                "lineWidthScale": 0.4,
+                "fontScale": 0.4
+              }
             }
           ]
         },
@@ -2705,6 +2719,15 @@
       ],
       "opticType": "tv",
       "turretNo": 1
+    }
+  },
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04
     }
   },
   "sensors": {
@@ -3344,15 +3367,6 @@
     "maxSpeedMultiplier": 1.01,
     "wepOverspeed": 1.05
   },
-  "nightVision": {
-    "sightTPodThermal": {
-      "resolution": [
-        800,
-        600
-      ],
-      "noiseFactor": 0.05
-    }
-  },
   "wiki": {
     "general": {
       "length": 11.58,
@@ -3537,7 +3551,7 @@
               1200,
               800
             ],
-            "noiseFactor": 0.05,
+            "noiseFactor": 0.04,
             "index": 2
           }
         }
@@ -3816,7 +3830,7 @@
         ],
         "maxRadius": [
           0.05,
-          0.3
+          0.2
         ],
         "minRadius": [
           0.05,
@@ -3834,8 +3848,8 @@
         "density": 1.0,
         "intensityMult": 7.0,
         "criticalAOA": [
-          5.0,
-          20.0,
+          9.0,
+          25.0,
           35.0,
           45.0
         ],
@@ -3846,7 +3860,9 @@
         "absoluteCriticalAOA": [
           5.0,
           40.0
-        ]
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
       },
       {
         "entryPoint": [
@@ -3887,7 +3903,7 @@
         ],
         "maxRadius": [
           0.05,
-          0.3
+          0.2
         ],
         "minRadius": [
           0.05,
@@ -3905,8 +3921,8 @@
         "density": 1.0,
         "intensityMult": 7.0,
         "criticalAOA": [
-          5.0,
-          20.0,
+          9.0,
+          25.0,
           35.0,
           45.0
         ],
@@ -3917,7 +3933,155 @@
         "absoluteCriticalAOA": [
           5.0,
           40.0
-        ]
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
+      },
+      {
+        "entryPoint": [
+          2.0,
+          -0.3,
+          1.2
+        ],
+        "exitPoint": [
+          -1.5,
+          0.0,
+          2.0
+        ],
+        "entryTangent": [
+          1.0,
+          -0.1,
+          1.6
+        ],
+        "exitTangent": [
+          -0.2,
+          -0.1,
+          1.8
+        ],
+        "exitTangentHeight": [
+          0.0,
+          0.0
+        ],
+        "exitTangentWidth": [
+          0.0,
+          0.0
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          -0.5,
+          0.5
+        ],
+        "maxRadius": [
+          0.1,
+          0.4
+        ],
+        "minRadius": [
+          0.1,
+          0.15
+        ],
+        "noiseParms": [
+          0.1,
+          0.8
+        ],
+        "smoothIntensityParams": [
+          0.748,
+          1.194,
+          0.295
+        ],
+        "density": 1.0,
+        "intensityMult": 2.0,
+        "criticalAOA": [
+          5.0,
+          25.0,
+          35.0,
+          40.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
+      },
+      {
+        "entryPoint": [
+          2.0,
+          -0.3,
+          -1.2
+        ],
+        "exitPoint": [
+          -1.5,
+          0.0,
+          -2.0
+        ],
+        "entryTangent": [
+          1.0,
+          -0.1,
+          -1.6
+        ],
+        "exitTangent": [
+          -0.2,
+          -0.1,
+          -1.8
+        ],
+        "exitTangentHeight": [
+          0.0,
+          0.0
+        ],
+        "exitTangentWidth": [
+          -0.0,
+          -0.0
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          0.5,
+          -0.5
+        ],
+        "maxRadius": [
+          0.1,
+          0.4
+        ],
+        "minRadius": [
+          0.1,
+          0.15
+        ],
+        "noiseParms": [
+          0.1,
+          0.8
+        ],
+        "smoothIntensityParams": [
+          0.748,
+          1.194,
+          0.295
+        ],
+        "density": 1.0,
+        "intensityMult": 2.0,
+        "criticalAOA": [
+          5.0,
+          25.0,
+          35.0,
+          40.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
       }
     ]
   }

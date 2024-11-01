@@ -9,13 +9,13 @@ let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scrip
 let { get_gui_option } = require("guiOptions")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { DeviceType, register_for_devices_change } = require("%xboxLib/impl/input.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM } = require("%scripts/options/optionsExtNames.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { is_xbox } = require("%sqstd/platform.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -181,21 +181,24 @@ eventbus_subscribe("controls.joystickConnected", @(_) onJoystickConnected())
 
 local xboxInputDevicesData = persist("xboxInputDevicesData", @() { gamepads = 0, keyboards = 0, user_notified = false })
 
-register_for_devices_change(function(device_type, count) {
-  if (device_type == DeviceType.Gamepad)
-    xboxInputDevicesData.gamepads = count
-  if (device_type == DeviceType.Keyboard)
-    xboxInputDevicesData.keyboards = count
+if (is_xbox) {
+  let { DeviceType, register_for_devices_change } = require("%xboxLib/impl/input.nut")
+  register_for_devices_change(function(device_type, count) {
+    if (device_type == DeviceType.Gamepad)
+      xboxInputDevicesData.gamepads = count
+    if (device_type == DeviceType.Keyboard)
+      xboxInputDevicesData.keyboards = count
 
-  let shouldNotify = xboxInputDevicesData.gamepads == 0 && xboxInputDevicesData.keyboards == 0
-  if (shouldNotify && !xboxInputDevicesData.user_notified) {
-    xboxInputDevicesData.user_notified = true
-    add_msg_box("no_input_devices", loc("pl1/lostController"),
-      [
-        ["ok", @() xboxInputDevicesData.user_notified = false]
-      ], "ok")
-  }
-})
+    let shouldNotify = xboxInputDevicesData.gamepads == 0 && xboxInputDevicesData.keyboards == 0
+    if (shouldNotify && !xboxInputDevicesData.user_notified) {
+      xboxInputDevicesData.user_notified = true
+      add_msg_box("no_input_devices", loc("pl1/lostController"),
+        [
+          ["ok", @() xboxInputDevicesData.user_notified = false]
+        ], "ok")
+    }
+  })
+}
 
 updateExtWatched({ haveXinputDevice = hasXInputDevice() })
 

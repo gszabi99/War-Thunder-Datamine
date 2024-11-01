@@ -115,10 +115,10 @@ def get_battle_state(radius_air_sq : float;
   let heroPos = hero.pos
 
   var numEnemies = 0
-  ecs::query() <| $ [es] (uid : int;
+  ecs::query() <| $ [es] (unit__ref : UnitRef;
                           unitType : int)
-    let unit = get_unit(uid)
-    if (unit != null && unit.army != hero.army && !unit.isDelayed)
+    let unit = unit__ref.unit
+    if unit.army != hero.army && !unit.isDelayed
       let unitPos = unit.pos
       let radiusSq = (unitType == int(UnitType UT_Airplane)) ? radius_air_sq : radius_ground_sq
       if (length_sq(unitPos - heroPos) < radiusSq)
@@ -296,10 +296,10 @@ def music_es(info : ParallelUpdateFrameDelayed;
     var heroRank = -1
     var heroUnitType = -1
     var heroExist = false
-    ecs::query() <| $ [es(REQUIRE=controlledHero)] (uid : int; unitType : int; loot_carrier__capacity : int const?)
+    ecs::query() <| $ [es(REQUIRE=controlledHero)] (var unit__ref : UnitRef; unitType : int; loot_carrier__capacity : int const?)
       heroUnitType = unitType
-      let hero = get_unit(uid)
-      if hero != null && !hero.isDelayed && hero.props != null && !hero.isSupportPlane
+      var hero = unit__ref.unit
+      if !hero.isDelayed && hero.props != null && !hero.isSupportPlane
         heroExist = true
         heroRank = hero.props.unitRank
         let app = get_app()

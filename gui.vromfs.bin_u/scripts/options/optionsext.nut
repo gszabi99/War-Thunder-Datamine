@@ -215,6 +215,8 @@ setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 ::crosshair_icons <- []
 ::thermovision_colors <- []
 
+let getUnitNameForWeapons = @() ::aircraft_for_weapons
+
 let clanRequirementsRankDescId = {
   [USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK] = "rankReqAircraft",
   [USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK] = "rankReqTank",
@@ -736,7 +738,7 @@ function useropt_takeoff_mode(optionId, descr, _context) {
 }
 
 function useropt_bullets0(optionId, descr, _context) {
-  let aircraft = ::aircraft_for_weapons
+  let aircraft = getUnitNameForWeapons()
   let groupIndex = optionId - USEROPT_BULLETS0
   descr.id = $"bullets{groupIndex}"
   descr.items = []
@@ -755,7 +757,7 @@ function useropt_bullets0(optionId, descr, _context) {
     descr.optionCb = "onMyWeaponOptionUpdate"
   }
   else {
-    debugTableData(::aircraft_for_weapons)
+    debugTableData(aircraft)
     debug_dump_stack()
     logerr($"Options: USEROPT_BULLET{groupIndex}: get: Wrong 'aircraft_for_weapons' type")
   }
@@ -4367,11 +4369,16 @@ let optionsMap = {
   },
   [USEROPT_AIR_SPAWN_POINT] = function(optionId, descr, _context) {
     descr.id = "air_spawn_point"
-    descr.values = [0, 1, 2, 3, 4, 5]
-    descr.value = get_gui_option(optionId)
+    let unit = getAircraftByName(getUnitNameForWeapons())
+    descr.values = unit?.isHelicopter() ? [0, 1, 2, 6] : [0, 1, 2, 3, 4, 5, 6]
     let measure = loc("measureUnits/km_dist")
-    descr.items = [loc("multiplayer/airfieldName"), $"1 {measure}", $"2 {measure}", $"3 {measure}",
-      $"5 {measure}", $"7 {measure}"]
+    descr.items = unit?.isHelicopter()
+      ? [loc("multiplayer/airfieldName"), $"1 {measure}", $"2 {measure}", loc("options/air_spawn_point/sam")]
+      : [loc("multiplayer/airfieldName"), $"1 {measure}", $"2 {measure}", $"3 {measure}",
+          $"5 {measure}", $"7 {measure}", loc("options/air_spawn_point/sam")]
+
+    let lastValue = get_gui_option(optionId)
+    descr.value = descr.values.findvalue(@(v) v == lastValue) ?? 0
   },
   [USEROPT_TARGET_RANK] = function(optionId, descr, _context) {
     descr.id = "target_rank"

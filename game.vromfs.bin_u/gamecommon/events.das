@@ -117,7 +117,7 @@ struct EventGunShot
 
 [cpp_event(unicast)]
 struct CmdDisableMove
-  uid : int
+  eid : EntityId
   name : string
 
 [cpp_event(broadcast, with_scheme)]
@@ -166,12 +166,12 @@ struct EventOnTrailerDead
 
 [cpp_event(broadcast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct EventTryControlBurav
-  uid : int
+  eid : EntityId
   target : float2
 
 [cpp_event(unicast, with_scheme)]
 struct EventKilledByBurav
-  killerUid : int
+  killerEid : EntityId
 
 [cpp_event(unicast)]
 struct CmdSetOperatorCountry
@@ -243,7 +243,7 @@ struct EventTryBuildObject {}
 struct EventToggleBuildingPreview
   enable : bool
 
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+[event(unicast, routing=ROUTING_CLIENT_TO_SERVER)]
 struct CmdBuildObject
   tm : float3x4
   objectTemplate : string

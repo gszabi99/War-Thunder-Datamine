@@ -40,7 +40,7 @@ def burav_update_es(act : UpdateStageInfoAct;
                     var burav__target : float2&;
                     burav__attackRadius : float;
                     var burav__curArmy : int&;
-                    burav__controllerUid : int;
+                    burav__controllerEid : EntityId;
                     burav__respawnTimeout : float2;
                     burav__excludeAreasId : IntList&)
   burav__needSync = false
@@ -68,10 +68,9 @@ def burav_update_es(act : UpdateStageInfoAct;
       burav__position += burav__velocity * act.dt * dir
       burav__needSync = true
     var victimEid = INVALID_ENTITY_ID
-    var victinUid = -1
-    query() <| $ [es] (uid : int; eid : EntityId)
-      let unit = get_unit(uid)
-      if unit != null && unit.army != burav__curArmy && !unit.isFlightModelWrap && unit.isAlive
+    query() <| $ [es] (unit__ref : UnitRef; eid : EntityId)
+      let unit = unit__ref.unit
+      if unit.army != burav__curArmy && !unit.isFlightModelWrap && unit.isAlive
         let unitPos3 = unit.pos
         let unitPos = unitPos3.xz
         if length_sq(unitPos - burav__position) <= burav__attackRadius * burav__attackRadius
@@ -81,16 +80,15 @@ def burav_update_es(act : UpdateStageInfoAct;
             if inSafe
               break
           if !inSafe
-            victinUid = uid
             victimEid = eid
-    if victinUid != -1
+    if victimEid != INVALID_ENTITY_ID
       burav__delayed = true
       burav__delayTimer = rnd_float(burav__respawnTimeout.x, burav__respawnTimeout.y)
       sendEvent(victimEid, [[EventAmmoStowageSendExplosionFatal ammoLeft = 1.0, fullExpl = true]])
-      sendEvent(victimEid, [[EventKilledByBurav killerUid = burav__controllerUid]])
+      sendEvent(victimEid, [[EventKilledByBurav killerEid = burav__controllerEid]])
       burav__target = float2(0., 0.)
-      query() <| $ [es] (var sand_worm__victimUid : int&; var sand_worm__delayedTimer : float&; sand_worm__delayedTime : float)
-        sand_worm__victimUid = victinUid
+      query() <| $ [es] (var sand_worm__victimEid : EntityId&; var sand_worm__delayedTimer : float&; sand_worm__delayedTime : float)
+        sand_worm__victimEid = victimEid
         sand_worm__delayedTimer = sand_worm__delayedTime
 
 
@@ -109,20 +107,21 @@ def burav_client_update_es(act : UpdateStageInfoAct;
                            burav__position : float2;
                            burav__delayed : bool;
                            burav__controlRadius : float)
-  var nearestUnit = -1
+  var nearestUnit = INVALID_ENTITY_ID
   var nearestDistSq = -1.0
-  query() <| $ [es(REQUIRE=can_control_burav)] (uid : int)
-    get_unit_for_edit(uid) <| $(var unit)
-      if !unit.isDelayed && unit.isAlive
-        let unitPos3 = unit.pos
-        let unitPos = unitPos3.xz
-        let distSq = length_sq(unitPos - burav__position)
-        if (nearestDistSq < 0.0 || distSq < nearestDistSq) && distSq <= burav__controlRadius * burav__controlRadius
-          nearestDistSq = distSq
-          nearestUnit = uid
-        *unit |> setCanControlBurav(false)
-  if nearestUnit >= 0 && !burav__delayed
-    get_unit_for_edit(nearestUnit) <| $(var unit)
+  query() <| $ [es(REQUIRE=can_control_burav)] (var unit__ref : UnitRef; eid : EntityId)
+    var unit = unit__ref.unit;
+    if !unit.isDelayed && unit.isAlive
+      let unitPos3 = unit.pos
+      let unitPos = unitPos3.xz
+      let distSq = length_sq(unitPos - burav__position)
+      if (nearestDistSq < 0.0 || distSq < nearestDistSq) && distSq <= burav__controlRadius * burav__controlRadius
+        nearestDistSq = distSq
+        nearestUnit = eid
+      *unit |> setCanControlBurav(false)
+  if nearestUnit != INVALID_ENTITY_ID && !burav__delayed
+    var unit = get_unit_by_eid(nearestUnit)
+    if unit != null
       *unit |> setCanControlBurav(true)
 
 [es(tag=gameClient)]
@@ -152,30 +151,30 @@ def burav_control_command_es(evt : EventTryControlBurav;
                              burav__controlRadius : float;
                              burav__position : float2;
                              var burav__target : float2&;
-                             var burav__controllerUid : int&;
+                             var burav__controllerEid : EntityId&;
                              var burav__curArmy : int&)
-  if evt.uid < 0 || length_sq(evt.target) == 0. || burav__delayed
+  if evt.eid == INVALID_ENTITY_ID || length_sq(evt.target) == 0. || burav__delayed
     return
   if (!das_is_in_battle_area(evt.target, true))
     return
-  let controlSender = get_unit(evt.uid)
+  let controlSender = get_unit_by_eid(evt.eid)
   if controlSender != null
     if length_sq(evt.target - burav__position) <= burav__controlRadius * burav__controlRadius
-      var nearestUnitId = -1
+      var nearestUnitEid = INVALID_ENTITY_ID
       var nearestDistSq = -1.0
-      query() <| $ [es(REQUIRE=can_control_burav)] (uid : int)
-        let unit = get_unit(uid)
+      query() <| $ [es(REQUIRE=can_control_burav)] (eid : EntityId; unit__ref : UnitRef)
+        let unit = unit__ref.unit
         if !unit.isDelayed && unit.isAlive
           let unitPos3 = unit.pos
           let unitPos = unitPos3.xz
           let distSq = length_sq(unitPos - burav__position)
           if (nearestDistSq < 0.0 || distSq < nearestDistSq) && distSq <= burav__controlRadius * burav__controlRadius
             nearestDistSq = distSq
-            nearestUnitId = uid
-      if nearestUnitId == evt.uid
+            nearestUnitEid = eid
+      if nearestUnitEid == evt.eid
         burav__target = evt.target
         burav__curArmy = controlSender.army
-        burav__controllerUid = nearestUnitId
+        burav__controllerEid = nearestUnitEid
 
 
 

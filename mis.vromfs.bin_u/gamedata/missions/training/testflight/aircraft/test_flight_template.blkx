@@ -107,7 +107,7 @@
         "wait": {
           "time": 0.1
         },
-        "unitSetIndication": {
+        "__unitSetIndication": {
           "set": true,
           "target": "@target_tanks_squad"
         }
@@ -907,7 +907,7 @@
         ],
         "varSetString": [
           {
-            "value": "target_tanks_ship_attack_squad",
+            "value": "target_tanks_attack_low_squad",
             "var": "target_tanks_squad"
           },
           {
@@ -1043,7 +1043,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "forceVisibleOnMap": true,
-          "attack_type": "dont_aim",
           "speed": 25.0,
           "lockSpeed": true
         },
@@ -1274,6 +1273,15 @@
         }
       },
       "else_actions": {
+        "unitSetProperties": {
+          "object": "@target_tanks_squad",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "forceVisibleOnMap": true,
+          "attack_type": "dont_aim"
+        },
         "triggerEnable": {
           "target": "name_assemble"
         }
@@ -1592,40 +1600,6 @@
         }
       }
     },
-    "set_route": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "varCompareString": {
-          "var_value": "target_tank",
-          "value": "target_tank06",
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "wait": {
-          "time": 0.1
-        },
-        "unitSetRoute": {
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "route": "way_target_tank05",
-          "teleportToStart": true,
-          "object": "@target_tank"
-        }
-      },
-      "else_actions": {}
-    },
     "respawn_plane": {
       "is_enabled": false,
       "comments": "",
@@ -1788,7 +1762,7 @@
       "else_actions": {}
     },
     "check_attack_area": {
-      "is_enabled": false,
+      "is_enabled": true,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1815,7 +1789,7 @@
       "actions": {
         "playHint": {
           "hintType": "standard",
-          "name": "In attack area",
+          "name": "hints/test_flight/attack_area",
           "action": "show",
           "shouldFadeOut": false,
           "isOverFade": false,

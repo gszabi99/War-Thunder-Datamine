@@ -27,10 +27,10 @@ def delayed_action_create_es(evt : Event;
 def delayed_unit_shot_action_es(evt : Event;
                                 delayed_unit_shot__unitName : string;
                                 delayed_unit_shot__triggerGroup : int)
-  find_query() <| $ [es] (missionUnitName : string; uid : int)
+  find_query() <| $ [es] (missionUnitName : string; var unit__ref : UnitRef)
     let found = missionUnitName == delayed_unit_shot__unitName
     if (found)
-      unit_single_shot(uid, delayed_unit_shot__triggerGroup)
+      unit_single_shot(unit__ref.unit, delayed_unit_shot__triggerGroup)
     return found
 
 [es(no_order)]
@@ -38,7 +38,7 @@ def disable_move_es(evt : CmdDisableMove;
                     disable__targets_list : StringList)
   for target_name in disable__targets_list
     if target_name == evt.name
-      var gm = get_unit(evt.uid) |> as_gm()
+      var gm = get_unit_by_eid(evt.eid) |> as_gm()
       if gm != null && gm.moveSys != null
         gm.moveSys.inactive = true
 

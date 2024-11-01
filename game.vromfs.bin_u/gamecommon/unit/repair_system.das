@@ -405,8 +405,8 @@ def repair_system_update_es(act : UpdateStageInfoAct;
           if repair_system_trailer_repair_progress >= 0.0
             repair_system_trailer_repair_progress += repair_system_speed_multiplier / get_difficulty_config().tankRepairSpeedK * act.dt / repair_system_trailer_repair_time
             if repair_system_trailer_repair_progress >= 1.0
-              let uidTr = unit.getTrailerId
-              get_unit_for_edit(uidTr) <| $(var trailer)
+              var trailer = get_unit_by_eid(unit.trailerEid)
+              if trailer != null
                 *trailer |> sendRepair()
               repair_system_trailer_repair_progress = -1.0
               any_parts_repairing = true

@@ -42,7 +42,7 @@ def is_repair_needed(unit : Unit const?; repair_state : uint; speed_multiplier :
           if repair_with_mods_available
             return true
     if with_mods && repair_with_mods_available
-      var trailer = get_unit(unit.getTrailerId);
+      var trailer = get_unit_by_eid(unit.trailerEid);
       if trailer != null && !trailer.isAlive
         return true
   return false
@@ -102,7 +102,7 @@ def calc_time_to_repair(unit : Unit const?; speed_multiplier : float; repair_sys
         total_serial_time_to_repair += time
       else
         total_normal_time_to_repair = max(total_normal_time_to_repair, time);
-  var trailer = get_unit(unit.getTrailerId);
+  var trailer = get_unit_by_eid(unit.trailerEid);
   if trailer != null && !trailer.isAlive
     total_normal_time_to_repair = max(total_normal_time_to_repair, (1.0 - repair_trailer_progress) * repair_trailer_time * get_difficulty_config().tankRepairSpeedK / speed_multiplier)
   return max(total_normal_time_to_repair, total_serial_time_to_repair);

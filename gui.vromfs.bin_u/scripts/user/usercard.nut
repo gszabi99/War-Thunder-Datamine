@@ -842,7 +842,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let sheet = this.getCurSheet()
     let showStatBar = this.infoReady && sheet == "Statistics"
     let showProfBar = this.infoReady && sheet == "Profile"
-    let isVisibleAchievementsUrlBtn = showProfBar && hasFeature("AchievementsUrl") && hasFeature("AllowExternalLink")
+    let isVisibleAchievementsUrlBtn = !isMe && showProfBar && hasFeature("AchievementsUrl") && hasFeature("AllowExternalLink")
 
     showObjectsByTable(this.scene, {
       paginator_place = showStatBar && (this.airStatsList != null) && (this.airStatsList.len() > this.statsPerPage)

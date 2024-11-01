@@ -24,12 +24,18 @@ let FuelConsume = Watched(0.0)
 let FuelInternal = Watched(0)
 let FuelTotal = Watched(0)
 let RpmRel = Watched(0)
+let RpmRel1 = Watched(0)
+let Rpm = Watched(0)
+let Rpm1 = Watched(0)
 let WaterTemp = Watched(0)
+let WaterTemp1 = Watched(0)
 let HorAccelX = Watched(0.0)
 let HorAccelY = Watched(0.0)
 let Nozzle0 = Watched(0)
 let OilTemp0 = Watched(0)
 let TurnRate = Watched(0.0)
+let OilPress0 = Watched(0)
+let OilPress1 = Watched(0)
 
 let planeState = {
   Speed,
@@ -53,13 +59,19 @@ let planeState = {
   FuelInternal,
   FuelTotal,
   RpmRel,
+  RpmRel1,
+  Rpm,
+  Rpm1,
   WaterTemp,
+  WaterTemp1,
   Bank,
   HorAccelX,
   HorAccelY,
   Nozzle0,
   OilTemp0,
-  TurnRate
+  TurnRate,
+  OilPress0,
+  OilPress1
 }
 
 interopGen({

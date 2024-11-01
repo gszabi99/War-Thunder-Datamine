@@ -15,41 +15,162 @@
     0.0,
     1.0
   ],
-  "exhaustFx": "ship_exhaust_blur",
-  "dustFx": "",
   "canReloadNonGuns": true,
   "useSimpleDeathConditionsAndEffects": false,
-  "subclass": "heavyVehicle",
+  "subclass": [
+    "heavyVehicle",
+    "heavyVehicle"
+  ],
+  "moveType": [
+    "vehicle",
+    "vehicle"
+  ],
+  "maxFwdSpeed": [
+    60.0,
+    60.0
+  ],
+  "maxRevSpeed": [
+    10.0,
+    10.0
+  ],
+  "maxAngSpeed": [
+    30.0,
+    30.0
+  ],
+  "maxAccel": [
+    4.0,
+    4.0
+  ],
+  "maxDecel": [
+    8.0,
+    8.0
+  ],
+  "maxAngAccel0": [
+    20.0,
+    20.0
+  ],
+  "maxAngAccelV": [
+    0.0,
+    0.0
+  ],
+  "maxAngAccel": [
+    40.0,
+    40.0
+  ],
+  "groundNormSmoothViscosity": [
+    0.1,
+    0.1
+  ],
+  "minDistBetween": [
+    10.0,
+    10.0
+  ],
+  "expClass": [
+    "exp_zero",
+    "exp_zero"
+  ],
+  "mass": [
+    60000.0,
+    300000.0
+  ],
+  "bulletHitFx": [
+    "ground_model_hit",
+    "ground_model_hit"
+  ],
+  "partDamageFx": [
+    "part_damage",
+    "part_damage"
+  ],
+  "explosionFx": [
+    "tank_explosion",
+    "tank_explosion"
+  ],
+  "fireFx": [
+    "ground_model_fire",
+    "ground_model_fire"
+  ],
+  "destroysRendInstances": [
+    false,
+    true
+  ],
+  "destroysTrees": [
+    false,
+    true
+  ],
+  "type": [
+    "typeLightTank",
+    "typeLightTank"
+  ],
   "onRadarAs": "tracked",
-  "moveType": "vehicle",
-  "maxFwdSpeed": 60.0,
-  "maxRevSpeed": 10.0,
-  "maxAngSpeed": 30.0,
-  "maxAccel": 4.0,
-  "maxDecel": 8.0,
-  "maxAngAccel0": 20.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 40.0,
-  "groundNormSmoothViscosity": 0.1,
-  "minDistBetween": 10.0,
-  "expClass": "exp_zero",
-  "mass": 300000.0,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "tank_explosion",
-  "fireFx": "ground_model_fire",
-  "destroysRendInstances": false,
-  "destroysTrees": false,
   "isDynamicObstacle": true,
   "isConstantlyWinchable": true,
-  "type": "typeLightTank",
   "DamageParts": {
     "formatVersion": 2,
-    "armorThickness": 10.0,
-    "armorClass": "RHA_tank",
-    "hp": 1000.0,
+    "armorClass": "steel",
+    "hp": 10000.0,
     "hull": {
-      "ex_armor_01_dm": {}
+      "ex_armor_01_dm": {
+        "genericDamageMult": 0.01,
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 0.01,
+        "collisionDamageMult": 0.01
+      },
+      "wheel_support_dm": {}
+    },
+    "body_shields": {
+      "armorClass": "wood",
+      "armorThickness": 10.0,
+      "hp": 100.0,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "ex_armor_02_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_03_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_l_01_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_l_02_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_l_03_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_l_04_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_l_05_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_r_01_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_r_02_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_r_03_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_r_04_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      },
+      "ex_armor_r_05_dm": {
+        "explosionDamageMult": 10.0,
+        "cumulativeDamageMult": 10.0
+      }
     },
     "chassis": {
       "hp": 250.0,
@@ -62,38 +183,12 @@
       "wheel_l_03_dm": {},
       "wheel_r_03_dm": {},
       "wheel_l_04_dm": {},
-      "wheel_r_04_dm": {},
-      "wheel_l_05_dm": {},
-      "wheel_r_05_dm": {},
-      "wheel_l_06_dm": {},
-      "wheel_r_06_dm": {}
-    },
-    "crew": {
-      "armorClass": "steel_tankman",
-      "hp": 40.0,
-      "genericDamageMult": 3.0,
-      "pressureDamageMult": 1.0,
-      "napalmDamageMult": 0.0,
-      "ignoreSolidDimension": true,
-      "driver_dm": {},
-      "loader_dm": {},
-      "loader_01_dm": {},
-      "loader_02_dm": {},
-      "loader_03_dm": {},
-      "gunner_dm": {},
-      "gunner_01_dm": {},
-      "gunner_02_dm": {},
-      "gunner_03_dm": {},
-      "commander_dm": {},
-      "machine_gunner_dm": {},
-      "machine_gunner_01_dm": {},
-      "machine_gunner_02_dm": {},
-      "machine_gunner_03_dm": {},
-      "machine_gunner_04_dm": {}
+      "wheel_r_04_dm": {}
     },
     "equipment_body_turret": {
       "armorClass": "tank_structural_steel",
-      "hp": 150.0,
+      "hp": 250.0,
+      "armorThickness": 2.0,
       "armorThrough": 15.0,
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
@@ -162,17 +257,25 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "radio_station_01_dm": {
-        "hp": 50.0,
+      "electronic_equipment_dm": {
+        "hp": 60.0,
         "armorThrough": 3.0
       },
-      "electronic_equipment_dm": {
-        "hp": 50.0,
+      "electronic_equipment_01_dm": {
+        "hp": 60.0,
         "armorThrough": 3.0
       },
       "fire_control_system_dm": {
-        "hp": 50.0,
+        "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "fire_control_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
+      "power_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -182,43 +285,37 @@
       "fireProtectionHp": 5.0,
       "hidableInViewer": false,
       "cannon_breech_dm": {
-        "restrainDamage": 0.5,
-        "armorThrough": 150.0
+        "restrainDamage": 0.5
       },
       "cannon_breech_01_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_02_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_03_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_04_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "cannon_breech_05_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 10.0
       },
       "autoloader_dm": {
-        "armorThickness": 5.0,
-        "armorThrough": 5.0
+        "armorThickness": 2.0,
+        "armorThrough": 1.0,
+        "ignoreSolidDimension": true
       }
     },
     "power_block": {
       "armorClass": "armor_tank_engine",
       "hp": 100.0,
-      "armorThickness": 50.0,
+      "armorThickness": 150.0,
       "fireProtectionHp": 5.0,
       "restrainDamage": 0.5,
       "engine_dm": {},
-      "transmission_dm": {},
-      "power_system_dm": {}
+      "transmission_dm": {}
     },
     "ammo": {
       "armorClass": "tank_structural_steel",
@@ -396,10 +493,6 @@
       "ammo_body_l_18_dm": {},
       "ammo_body_l_19_dm": {},
       "ammo_body_l_20_dm": {},
-      "ammo_body_l_21_dm": {},
-      "ammo_body_l_22_dm": {},
-      "ammo_body_l_23_dm": {},
-      "ammo_body_l_24_dm": {},
       "ammo_body_r_01_dm": {},
       "ammo_body_r_02_dm": {},
       "ammo_body_r_03_dm": {},
@@ -419,21 +512,17 @@
       "ammo_body_r_17_dm": {},
       "ammo_body_r_18_dm": {},
       "ammo_body_r_19_dm": {},
-      "ammo_body_r_20_dm": {},
-      "ammo_body_r_21_dm": {},
-      "ammo_body_r_22_dm": {},
-      "ammo_body_r_23_dm": {},
-      "ammo_body_r_24_dm": {}
+      "ammo_body_r_20_dm": {}
     },
     "fuel_tanks": {
       "armorClass": "tank_structural_steel",
-      "hp": 250.0,
+      "hp": 400.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "createSecondaryShatters": false,
-      "fireParamsPreset": "fuel_internal",
       "stopChanceOnDeadPart": 0.0,
+      "fireParamsPreset": "fuel_internal",
       "fuel_tank_dm": {},
       "fuel_tank_01_dm": {},
       "fuel_tank_02_dm": {},
@@ -455,16 +544,21 @@
       "armorClass": "tank_structural_steel",
       "hp": 250.0,
       "armorThickness": 2.0,
-      "armorThrough": 10.0,
-      "fireProtectionHp": 10.0,
+      "armorThrough": 12.0,
+      "fireProtectionHp": 15.0,
       "createSecondaryShatters": false,
       "fireParamsPreset": "fuel_exterior",
+      "stopChanceOnDeadPart": 0.0,
       "fuel_tank_exterior_r_01_dm": {},
       "fuel_tank_exterior_r_02_dm": {},
       "fuel_tank_exterior_r_03_dm": {},
+      "fuel_tank_exterior_r_04_dm": {},
+      "fuel_tank_exterior_r_05_dm": {},
       "fuel_tank_exterior_l_01_dm": {},
       "fuel_tank_exterior_l_02_dm": {},
       "fuel_tank_exterior_l_03_dm": {},
+      "fuel_tank_exterior_l_04_dm": {},
+      "fuel_tank_exterior_l_05_dm": {},
       "fuel_tank_exterior_01_dm": {},
       "fuel_tank_exterior_02_dm": {},
       "fuel_tank_exterior_03_dm": {}
@@ -474,7 +568,7 @@
         "armorClass": "optics_tank",
         "armorThrough": 20.0,
         "armorThickness": 10.0,
-        "hp": 100.0
+        "hp": 20.0
       }
     }
   },
@@ -888,211 +982,16 @@
       }
     ]
   },
-  "tank_crew": {
-    "changeTimeMult": 1.0,
-    "driver": {
-      "dmPart": "driver_dm",
-      "role": "driver"
-    }
-  },
   "MetaParts": {
-    "inner": {
-      "hp": 20000.0,
-      "part": "engine_dm",
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "expl": 1.0,
-          "conditionDamage": 250.0,
-          "kill": true,
-          "killEffect": "fire"
-        },
-        {
-          "conditionDamageType": "cumulative",
-          "expl": 1.0,
-          "conditionDamage": 100.0,
-          "kill": true,
-          "killEffect": "fire"
-        }
-      ]
-    },
     "body": {
-      "hp": 10000.0,
-      "part": "ex_armor_01_dm",
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "expl": 1.0,
-          "conditionDamage": 250.0,
-          "kill": true,
-          "killEffect": "fire"
-        },
-        {
-          "conditionDamageType": "cumulative",
-          "expl": 1.0,
-          "conditionDamage": 100.0,
-          "kill": true,
-          "killEffect": "fire"
-        }
-      ]
-    },
-    "suspension": {
-      "hp": 7000.0,
-      "part": [
-        "wheel_r_01_dm",
-        "wheel_l_01_dm",
-        "wheel_l_02_dm",
-        "wheel_r_02_dm",
-        "wheel_l_03_dm",
-        "wheel_r_03_dm",
-        "wheel_l_04_dm",
-        "wheel_r_04_dm",
-        "wheel_l_05_dm",
-        "wheel_r_05_dm",
-        "wheel_l_06_dm",
-        "wheel_r_06_dm"
-      ],
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "expl": 1.0,
-          "conditionDamage": 250.0,
-          "kill": true,
-          "killEffect": "fire"
-        },
-        {
-          "conditionDamageType": "cumulative",
-          "expl": 1.0,
-          "conditionDamage": 100.0,
-          "kill": true,
-          "killEffect": "fire"
-        }
-      ]
+      "hp": 100000.0,
+      "part": "body_dm"
     }
   },
-  "sound": {
-    "EngineName": "engine_locomotive_ai",
-    "TrackSoundPath": "tanks/engines_tanks",
-    "TrackSoundPathStudio": "ground/engines",
-    "TrackSoundName": "track_ai_train_wheels",
-    "TrackSoundNameCockpit": "track_ai_train_wheels",
-    "EngineNameAi": "engine_locomotive_ai",
-    "TrackSoundNameAi": "track_ai_train_wheels"
-  },
-  "class_tags": {},
-  "VehiclePhys": {
-    "Mass": {
-      "Empty": 300000.0,
-      "Fuel": 190.0,
-      "TakeOff": 300000.0,
-      "momentOfInertia": [
-        2.0,
-        2.0,
-        5.0
-      ],
-      "CenterOfGravity": [
-        -0.1,
-        0.4,
-        0.0
-      ],
-      "CenterOfGravityClampY": [
-        0.0,
-        0.7
-      ],
-      "AdvancedMass": true,
-      "trackMass": 40.0,
-      "engineInertialMass": 400.0
-    },
-    "tracks": {
-      "animationMultiplier": 0.5,
-      "height": 0.0,
-      "width": 0.05,
-      "trackPhysMat": "wheel"
-    },
-    "collisionProps": {
-      "cls_body": "convex_hull"
-    },
-    "engine": {
-      "horsePowers": 12000.0,
-      "maxRPM": 2500.0,
-      "minRPM": 900.0,
-      "rpmTau": 1.9
-    },
-    "mechanics": {
-      "maxBrakeForce": 31000.0,
-      "driveGearRadius": 0.4,
-      "mainGearRatio": 6.6,
-      "sideGearRatio": 0.99,
-      "tracked": false,
-      "gearRatios": {
-        "ratio": [
-          -6.0,
-          0.0,
-          6.06,
-          3.5,
-          1.8,
-          1.0,
-          0.799
-        ]
-      }
-    },
-    "suspension": {
-      "maxDisplacementOffsets": [
-        -0.02,
-        0.02
-      ],
-      "suspensionOffsets": [
-        -0.1,
-        -0.1,
-        0.1
-      ],
-      "defaultGearRadius": 0.55,
-      "defaultDampeningForce": [
-        1700000.0,
-        1700000.0
-      ],
-      "hasSuspensionOnDriveGear": true,
-      "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15,
-      "steeringDeflection": {
-        "wheel_l_01": 10.0,
-        "wheel_r_01": 10.0,
-        "steeringTau": 1.0
-      },
-      "wheelsDamageWeight": {
-        "wheel_l_01": 0.05,
-        "wheel_r_01": 0.05,
-        "wheel_l_02": 0.05,
-        "wheel_r_02": 0.05,
-        "wheel_l_03": 0.05,
-        "wheel_r_03": 0.05,
-        "wheel_l_04": 0.05,
-        "wheel_r_04": 0.05,
-        "wheel_r_drive": 0.25,
-        "wheel_l_drive": 0.25
-      },
-      "driven": {
-        "wheel_l_drive": true,
-        "wheel_r_drive": true,
-        "wheel_l_01": true,
-        "wheel_r_01": true,
-        "wheel_l_02": true,
-        "wheel_r_02": true
-      }
-    },
-    "movableSuspension": {
-      "speed": 0.05,
-      "maxSpeedForMove": 0.1,
-      "vehicleSpeedLimitWhenMovedMult": 0.0,
-      "restStateEps": 0.001,
-      "pitch": {
-        "wheel_l_01": {},
-        "wheel_r_01": {},
-        "wheel_l_02": {},
-        "wheel_r_02": {}
-      }
-    }
-  },
+  "class_tags": [
+    {},
+    {}
+  ],
   "unitFx": {
     "event": [
       {
@@ -1663,9 +1562,6 @@
     "zoomInFov": 20.0,
     "detectionHeight": 2.2
   },
-  "optics": {
-    "driverReticule": "car_driver_optics"
-  },
   "user_skin": {
     "name": "default",
     "replace_tex": {
@@ -1673,6 +1569,87 @@
     }
   },
   "default_skin": {
-    "name": "default"
+    "name": "default",
+    "replace_tex": {
+      "from": "us_camo_olive*"
+    }
+  },
+  "sound": {
+    "EngineName": "engine_locomotive_ai",
+    "TrackSoundPath": "tanks/engines_tanks",
+    "TrackSoundPathStudio": "ground/engines",
+    "TrackSoundName": "track_ai_train_wheels",
+    "TrackSoundNameCockpit": "track_ai_train_wheels",
+    "EngineNameAi": "engine_locomotive_ai",
+    "TrackSoundNameAi": "track_ai_train_wheels"
+  },
+  "VehiclePhys": {
+    "Mass": {
+      "Empty": 300000.0,
+      "Fuel": 190.0,
+      "TakeOff": 300000.0,
+      "momentOfInertia": [
+        2.0,
+        2.0,
+        5.0
+      ],
+      "CenterOfGravity": [
+        -0.1,
+        0.4,
+        0.0
+      ],
+      "CenterOfGravityClampY": [
+        0.0,
+        0.7
+      ],
+      "AdvancedMass": true,
+      "trackMass": 40.0,
+      "engineInertialMass": 400.0
+    },
+    "tracks": {
+      "animationMultiplier": 0.5,
+      "height": 0.0,
+      "width": 0.05,
+      "trackPhysMat": "wheel"
+    },
+    "collisionProps": {
+      "cls_body": "convex_hull"
+    },
+    "engine": {
+      "horsePowers": 12000.0,
+      "maxRPM": 2500.0,
+      "minRPM": 900.0,
+      "rpmTau": 1.9
+    },
+    "mechanics": {
+      "maxBrakeForce": 31000.0,
+      "driveGearRadius": 0.4,
+      "mainGearRatio": 6.6,
+      "sideGearRatio": 0.99,
+      "tracked": false,
+      "gearRatios": {
+        "ratio": [
+          -6.0,
+          0.0,
+          6.06,
+          3.5,
+          1.8,
+          1.0,
+          0.799
+        ]
+      }
+    },
+    "movableSuspension": {
+      "speed": 0.05,
+      "maxSpeedForMove": 0.1,
+      "vehicleSpeedLimitWhenMovedMult": 0.0,
+      "restStateEps": 0.001,
+      "pitch": {
+        "wheel_l_01": {},
+        "wheel_r_01": {},
+        "wheel_l_02": {},
+        "wheel_r_02": {}
+      }
+    }
   }
 }

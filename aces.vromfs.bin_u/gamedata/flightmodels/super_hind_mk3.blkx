@@ -2409,15 +2409,6 @@
     ],
     "crosshairPreset": "test_crosshair"
   },
-  "nightVision": {
-    "sightThermal": {
-      "resolution": [
-        500,
-        300
-      ],
-      "noiseFactor": 0.05
-    }
-  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -3928,8 +3919,9 @@
       }
     },
     "heli_night_vision_system": {
-      "prevModification": "heli_counterMeasures",
+      "image": "#ui/gameuiskin#thermal_sight",
       "tier": 4,
+      "prevModification": "heli_counterMeasures",
       "modClass": "weapon",
       "effects": {
         "nightVision": {
@@ -3953,10 +3945,10 @@
           },
           "sightThermal": {
             "resolution": [
-              500,
-              300
+              800,
+              600
             ],
-            "noiseFactor": 0.05
+            "noiseFactor": 0.04
           }
         }
       }

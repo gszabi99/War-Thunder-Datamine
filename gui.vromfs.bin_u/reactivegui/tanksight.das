@@ -354,3 +354,72 @@ def draw_inner_fov(var ctx : GuiContext&; pos : float2; size : float2; data : Ca
     ctx |> set_color(highlightColor)
     ctx |> render_frame(newPos.x - ctx |> hdpx(20.), newPos.y - ctx |> hdpx(15.),
       newPos.x + newSize.x + ctx |> hdpx(20.), newPos.y + newSize.y + ctx |> hdpx(15.), ctx |> hdpx(data.lineWidth))
+
+[export]
+def draw_bullet_type_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
+  if !is_custom_tank_sight_enabled()
+    return
+  let settings = get_tank_sight_settings()
+  if settings == null || !settings.bulletTypeVisible
+    return
+  if !data.isPreviewMode
+    let hero = get_controlled_hero()
+    if hero == null || hero.isDelayed
+      return
+    let app = get_app()
+    if app == null || app.flightControlMode == null
+      return
+    let camera = app.flightControlMode.cameraControl.cur
+    if camera == null || camera.camtype != FlightCameraType FLIGHT_CAMERA_TYPE_TURRET_VIRTUAL_FPS
+      return
+    let isNightVision = hero.curNightVisionRenderMode == 1
+    let isThermal = hero.curNightVisionRenderMode == 2
+    draw_bullet_type(ctx, rdata.pos, rdata.size, data, hero, isNightVision, isThermal)
+  else
+    let isNightVision = settings != null && settings.currentMode == TankSettingMode TSM_NIGHT_VISION
+    let isThermal = settings != null && settings.currentMode == TankSettingMode TSM_THERMAL
+    draw_bullet_type(ctx, rdata.pos, rdata.size, data, null, isNightVision, isThermal)
+
+def draw_bullet_type(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; unit : Unit?; is_night_vision : bool;
+                     is_thermal : bool)
+  let settings = get_tank_sight_settings()
+  var name = settings.bulletTypeIsShortName ? loc("tankSight/bulletName") : loc("tankSight/bulletType")
+  if !data.isPreviewMode
+    if unit == null || unit.weap == null
+      return
+    let weapon = unit.curWeapon
+    if weapon == null
+      return
+    let gun = as_gun(weapon)
+    if gun != null
+      name = settings.bulletTypeIsShortName ? loc(gun.currentBulletSet.bullet[0].getName) : loc("{gun.currentBulletSet.bullet[0].getType}/name/short")
+    else
+      return
+
+  let backColor = (is_thermal ? settings.bulletTypeThBackColor :
+   (is_night_vision ? settings.bulletTypeNvBackColor :
+   (get_crosshair_light_on() ? settings.bulletTypeLightBackColor : settings.bulletTypeBackColor)))
+  if Color4(backColor).a > 0.
+    ctx |> reset_textures()
+    ctx |> set_color(backColor)
+    let tc = float2(0., 0.)
+    ctx |> render_rect(pos.x, pos.y, pos.x + size.x, pos.y + size.y, tc, tc, tc)
+
+  var fctx : StdGuiFontContext
+  let fontId = settings.bulletTypeFontId != -1 ? settings.bulletTypeFontId : get_font_id("hud")
+  get_font_context(fctx, fontId, 0, 0, settings.bulletTypeTextSize)
+
+  ctx |> set_font(fontId, 0, 0)
+  ctx |> set_font_ht(settings.bulletTypeTextSize)
+  let color = (is_thermal ? settings.bulletTypeThTextColor :
+   (is_night_vision ? settings.bulletTypeNvTextColor :
+   (get_crosshair_light_on() ? settings.bulletTypeLightTextColor : settings.bulletTypeTextColor)))
+  ctx |> set_color(color)
+  let strBox = get_str_bbox(name, name |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x * 0.5 - strBox.width.x * 0.5, pos.y + (size.y + strBox.width.y) * 0.5)
+  ctx |> draw_str_scaled(1.0, name, name |> length())
+
+  if data.isPreviewMode && settings.highlightedObject == TankSettingObj TSO_BULLET_TYPE
+    ctx |> set_color(highlightColor)
+    ctx |> render_frame(pos.x - ctx |> hdpx(5.), pos.y - ctx |> hdpx(5.),
+     pos.x + size.x + ctx |> hdpx(5.), pos.y + size.y + ctx |> hdpx(5.), ctx |> hdpx(data.lineWidth))

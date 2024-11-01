@@ -249,6 +249,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
 
     this.initShortcuts()
+    this.updateStats()
   }
 
   function initSheetsList() {
@@ -972,6 +973,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (pageTypeId == UNLOCKABLE_MEDAL)
       return
 
+    this.updateUnlocksTree(pageTypeId)
     local data = ""
     local curIndex = 0
     if (pageTypeId == UNLOCKABLE_SKIN) {
@@ -993,7 +995,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let markerUnlockIds = getUnlockIds(ediff)
     let manualUnlockIds = getManualUnlocks().map(@(unlock) unlock.id)
     let view = { items = [] }
-    this.updateUnlocksTree(pageTypeId)
 
     foreach (chapterName, chapterItem in this.unlocksTree) {
       if (isAchievementPage && chapterName == this.curAchievementGroupName)
@@ -1431,7 +1432,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return
 
     broadcastEvent("ShowUnitInShop", { unitName })
-    this.goBack()
+    let handler = this
+    defer(@() handler.goBack())
   }
 
   function fillUnlockInfo(unlockBlk, unlockObj) {
@@ -1817,10 +1819,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onGroupCancel(_obj) {
-    if (showConsoleButtons.value && this.getCurSheet() == "UnlockSkin")
+    if (showConsoleButtons.value && this.getCurSheet() == "UnlockSkin") {
       move_mouse_on_child_by_value(this.scene.findObject("pages_list"))
-    else
-      this.goBack()
+      return
+    }
+    let handler = this
+    defer(@() handler.goBack())
   }
 
   function onBindEmail() {
@@ -1868,6 +1872,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function goBack() {
+    if (!this.scene.isValid())
+      return
+
     if (this.hasEditProfileChanges()) {
       this.askAboutSaveProfile(@() this.goBack())
       return

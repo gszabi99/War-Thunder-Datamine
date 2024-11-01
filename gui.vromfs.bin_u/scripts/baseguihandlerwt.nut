@@ -36,6 +36,7 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { steamContactsGroup } = require("%scripts/contacts/contactsManager.nut")
+let { defer } = require("dagor.workcycle")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -354,6 +355,11 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
       initialSheet = "UnlockAchievement"
       initialUnlockId = getManualUnlocks()[0].id
     } : {}
+
+    if (this.guiScene?.isInAct()) {
+      defer(@() loadHandler(gui_handlers.Profile, params))
+      return
+    }
     loadHandler(gui_handlers.Profile, params)
   }
 

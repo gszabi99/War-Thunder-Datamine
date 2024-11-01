@@ -91,6 +91,9 @@
       },
       "cannon2_dm": {
         "hp": 15.0
+      },
+      "cannon3_dm": {
+        "hp": 15.0
       }
     },
     "armor_jet_engine": {
@@ -175,6 +178,9 @@
       },
       "cover1_dm": {
         "hp": 19.5
+      },
+      "cover2_dm": {
+        "hp": 21.4
       }
     },
     "dural40": {
@@ -274,13 +280,11 @@
       }
     },
     "steel_tank_s": {
+      "tank10_dm": {
+        "hp": 80.5
+      },
       "tank9_dm": {
         "hp": 80.5
-      }
-    },
-    "wood": {
-      "tank10_dm": {
-        "hp": 92.2
       }
     }
   },
@@ -308,7 +312,13 @@
         "name": "cannon2_dm"
       },
       {
+        "name": "cannon3_dm"
+      },
+      {
         "name": "cover1_dm"
+      },
+      {
+        "name": "cover2_dm"
       },
       {
         "name": "elevon1_l_dm",
@@ -901,7 +911,46 @@
         "name": "tailcontrol_dm"
       },
       {
-        "name": "tank10_dm"
+        "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.3,
+            "leak": 0.8
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 25.0,
+            "leak": 35.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
       },
       {
         "name": "tank1_dm",
@@ -2394,7 +2443,8 @@
         "blk": "gameData/sensors/fr_serval_rwr.blk"
       },
       {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic1_gun"
       }
     ]
   },
@@ -2441,7 +2491,7 @@
         800,
         600
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.04
     }
   },
   "commonWeapons": {
@@ -2566,8 +2616,9 @@
     "HideDmParts": {
       "node": [
         "armor1_dm",
+        "cannon1_dm",
+        "cannon2_dm",
         "cannon3_dm",
-        "cannon4_dm",
         "cover2_dm",
         "tank10_dm"
       ]
@@ -4522,7 +4573,7 @@
               1200,
               800
             ],
-            "noiseFactor": 0.05,
+            "noiseFactor": 0.04,
             "index": 2
           }
         }
@@ -4848,7 +4899,7 @@
         ],
         "maxRadius": [
           0.05,
-          0.3
+          0.2
         ],
         "minRadius": [
           0.05,
@@ -4866,8 +4917,8 @@
         "density": 1.0,
         "intensityMult": 7.0,
         "criticalAOA": [
-          5.0,
-          20.0,
+          9.0,
+          25.0,
           35.0,
           45.0
         ],
@@ -4878,7 +4929,9 @@
         "absoluteCriticalAOA": [
           5.0,
           40.0
-        ]
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
       },
       {
         "entryPoint": [
@@ -4919,7 +4972,7 @@
         ],
         "maxRadius": [
           0.05,
-          0.3
+          0.2
         ],
         "minRadius": [
           0.05,
@@ -4937,8 +4990,8 @@
         "density": 1.0,
         "intensityMult": 7.0,
         "criticalAOA": [
-          5.0,
-          20.0,
+          9.0,
+          25.0,
           35.0,
           45.0
         ],
@@ -4949,7 +5002,155 @@
         "absoluteCriticalAOA": [
           5.0,
           40.0
-        ]
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
+      },
+      {
+        "entryPoint": [
+          2.0,
+          -0.3,
+          1.2
+        ],
+        "exitPoint": [
+          -1.5,
+          0.0,
+          2.0
+        ],
+        "entryTangent": [
+          1.0,
+          -0.1,
+          1.6
+        ],
+        "exitTangent": [
+          -0.2,
+          -0.1,
+          1.8
+        ],
+        "exitTangentHeight": [
+          0.0,
+          0.0
+        ],
+        "exitTangentWidth": [
+          0.0,
+          0.0
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          -0.5,
+          0.5
+        ],
+        "maxRadius": [
+          0.1,
+          0.4
+        ],
+        "minRadius": [
+          0.1,
+          0.15
+        ],
+        "noiseParms": [
+          0.1,
+          0.8
+        ],
+        "smoothIntensityParams": [
+          0.748,
+          1.194,
+          0.295
+        ],
+        "density": 1.0,
+        "intensityMult": 2.0,
+        "criticalAOA": [
+          5.0,
+          25.0,
+          35.0,
+          40.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
+      },
+      {
+        "entryPoint": [
+          2.0,
+          -0.3,
+          -1.2
+        ],
+        "exitPoint": [
+          -1.5,
+          0.0,
+          -2.0
+        ],
+        "entryTangent": [
+          1.0,
+          -0.1,
+          -1.6
+        ],
+        "exitTangent": [
+          -0.2,
+          -0.1,
+          -1.8
+        ],
+        "exitTangentHeight": [
+          0.0,
+          0.0
+        ],
+        "exitTangentWidth": [
+          -0.0,
+          -0.0
+        ],
+        "exitPointHeight": [
+          0.0,
+          0.5
+        ],
+        "exitPointWidth": [
+          0.5,
+          -0.5
+        ],
+        "maxRadius": [
+          0.1,
+          0.4
+        ],
+        "minRadius": [
+          0.1,
+          0.15
+        ],
+        "noiseParms": [
+          0.1,
+          0.8
+        ],
+        "smoothIntensityParams": [
+          0.748,
+          1.194,
+          0.295
+        ],
+        "density": 1.0,
+        "intensityMult": 2.0,
+        "criticalAOA": [
+          5.0,
+          25.0,
+          35.0,
+          40.0
+        ],
+        "absoluteCriticalAOS": [
+          2.0,
+          30.0
+        ],
+        "absoluteCriticalAOA": [
+          5.0,
+          40.0
+        ],
+        "endPositionNoiseStrength": 0.0,
+        "endPositionNoiseSpeed": 1.0
       }
     ]
   }

@@ -5,7 +5,7 @@ let { round_by_value, round } = require("%sqstd/math.nut")
 let { Point2, IPoint3 } = require("dagor.math")
 let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, Altitude, CompassValue, Mach, FuelConsume, FuelInternal, FuelTotal,
-  RpmRel, WaterTemp, Nozzle0, OilTemp0 } = require("%rGui/planeState/planeFlyState.nut")
+  RpmRel, RpmRel1, WaterTemp, WaterTemp1, Nozzle0, OilTemp0, Rpm, Rpm1, OilPress0, OilPress1 } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { mpsToKnots, metrToFeet } = require("%rGui/planeIlses/ilsConstants.nut")
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
@@ -34,10 +34,16 @@ let valueTable = {
   ["fuel"] = FuelInternal,
   ["total_fuel"] = FuelTotal,
   ["relative_rpm"] = RpmRel,
+  ["relative_rpm1"] = RpmRel1,
+  ["rpm"] = Rpm,
+  ["rpm1"] = Rpm1,
   ["water_temperature"] = WaterTemp,
+  ["water_temperature1"] = WaterTemp1,
   ["nozzle"] = Nozzle0,
   ["oil"] = OilTemp0,
-  ["clock"] = Watched(0)
+  ["clock"] = Watched(0),
+  ["oil_pressure"] = OilPress0,
+  ["oil_pressure1"] = OilPress1,
 }
 
 let updateFuncs = {

@@ -7,7 +7,11 @@ let { TSI_RANGE_TEXT_COLOR, TSI_RANGE_BACK_COLOR, TSI_RANGE_NV_TEXT_COLOR, TSI_R
   TSI_GUN_READY_TEXT_SIZE, TSI_GUN_READY_COLOR, TSI_GUN_READY_LIGHT_COLOR, TSI_GUN_READY_NV_COLOR, TSO_RANGEFINDER,
   TSO_TURRET, TSO_FOV, TSO_GUN_READY, TSI_RANGE_TH_TEXT_COLOR, TSI_RANGE_TH_BACK_COLOR, TSI_TURRET_TH_COLOR,
   TSI_FOV_THERMAL_COLOR, TSI_GUN_READY_TH_COLOR, TSI_CROSSHAIR, TSO_CROSSHAIR, TSI_RANGEFINDER_VISIBLE, TSI_RANGEFINDER_FONT,
-  TSI_CROSSHAIR_COLOR, TSI_CROSSHAIR_L_COLOR, TSI_CROSSHAIR_NV_COLOR, TSI_CROSSHAIR_TH_COLOR, TSI_GUN_READY_FONT
+  TSI_CROSSHAIR_COLOR, TSI_CROSSHAIR_L_COLOR, TSI_CROSSHAIR_NV_COLOR, TSI_CROSSHAIR_TH_COLOR, TSI_GUN_READY_FONT,
+  TSI_BULLET_TYPE_VISIBLE, TSI_BULLET_TYPE_SHORT, TSI_BULLET_TYPE_TEXT_COLOR, TSI_BULLET_TYPE_BACK_COLOR,
+  TSI_BULLET_TYPE_NV_TEXT_COLOR, TSI_BULLET_TYPE_NV_BACK_COLOR, TSI_BULLET_TYPE_LTEXT_COLOR, TSI_BULLET_TYPE_LBACK_COLOR,
+  TSI_BULLET_TYPE_TH_TEXT_COLOR, TSI_BULLET_TYPE_TH_BACK_COLOR, TSI_BULLET_TYPE_TEXT_SIZE, TSI_BULLET_TYPE_FONT,
+  TSO_BULLET_TYPE
 } = require("tankSightSettings")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let { isEqual } = require("%globalScripts/isEqual.nut")
@@ -50,11 +54,24 @@ let tankSightOptionsSections = [
       TSI_GUN_READY_NV_COLOR, TSI_GUN_READY_TH_COLOR
     ]
   }
+  {
+    id = TSO_BULLET_TYPE
+    title = "#tankSight/bulletTypeElem"
+    options = [
+      TSI_BULLET_TYPE_VISIBLE, TSI_BULLET_TYPE_SHORT, TSI_BULLET_TYPE_TEXT_COLOR, TSI_BULLET_TYPE_BACK_COLOR,
+      TSI_BULLET_TYPE_NV_TEXT_COLOR, TSI_BULLET_TYPE_NV_BACK_COLOR, TSI_BULLET_TYPE_LTEXT_COLOR, TSI_BULLET_TYPE_LBACK_COLOR,
+      TSI_BULLET_TYPE_TH_TEXT_COLOR, TSI_BULLET_TYPE_TH_BACK_COLOR, TSI_BULLET_TYPE_TEXT_SIZE, TSI_BULLET_TYPE_FONT
+    ]
+  }
 ]
 
 let visibilityOpts = [
   {value = true, text = "#controls/on"}
   {value = false, text = "#controls/off"}
+]
+let shortNameOpts = [
+  {value = true, text = loc("tankSight/bulletName")}
+  {value = false, text = loc("tankSight/bulletType")}
 ]
 let textSizeOpts = [
   {value = 20, text = "#options/small_text"}
@@ -62,6 +79,16 @@ let textSizeOpts = [
   {value = 40, text = "#options/large_text"}
 ]
 let mkFontOpts = @() ["digital", "hud", "tiny_text_hud", "ils31", "ussr_ils", "usa_ils", "mirage_ils", "ah64", "f14_ils"]
+  .map(function(fontType) {
+    let fontTypeLoc = doesLocTextExist($"tankSight/fontType/{fontType}")
+      ? loc($"tankSight/fontType/{fontType}")
+      : fontType
+    return {
+      value = fontType
+      text = loc("tankSight/fontType" , { fontType = fontTypeLoc })
+    }
+  })
+let mkTextFontOpts = @() ["hud", "tiny_text_hud"]
   .map(function(fontType) {
     let fontTypeLoc = doesLocTextExist($"tankSight/fontType/{fontType}")
       ? loc($"tankSight/fontType/{fontType}")
@@ -89,9 +116,12 @@ function getCrosshairOpts() {
 }
 
 let getVisibilityOpts = @(idx = 0) { idx, options = visibilityOpts }
+let getShortNameOpts = @(idx = 0) { idx, options = shortNameOpts }
 let getTextSizeOpts = @(idx = 0) { idx, options = textSizeOpts }
 let getFontOpts = @(idx = 0)
   { idx, options = mkFontOpts(), handleUnknownValue = @(_val) { newIdx = 0 } }
+let getTextFontOpts = @(idx = 0)
+  { idx, options = mkTextFontOpts(), handleUnknownValue = @(_val) { newIdx = 0 } }
 
 let transparentColorOption = {
   hueColor = "00000000"
@@ -145,7 +175,7 @@ function mkTankSightOptionsMap(params) {
     [TSI_TURRET_VISIBLE]        = getVisibilityOpts(1),
     [TSI_TURRET_COLOR]          = getColorOpts(params.colorOpts, "#tankSight/color"),
     [TSI_TURRET_LIGHT_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
-    [TSI_TURRET_NV_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
+    [TSI_TURRET_NV_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/nightVisionColodraw_bullet_typeTSIr"),
     [TSI_TURRET_TH_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/thermalColor"),
 
     [TSI_FOV_VISIBLE]           = getVisibilityOpts(1),
@@ -160,7 +190,20 @@ function mkTankSightOptionsMap(params) {
     [TSI_GUN_READY_COLOR]       = getColorOpts(params.colorOpts, "#tankSight/color"),
     [TSI_GUN_READY_LIGHT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
     [TSI_GUN_READY_NV_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
-    [TSI_GUN_READY_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/thermalColor")
+    [TSI_GUN_READY_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/thermalColor"),
+
+    [TSI_BULLET_TYPE_VISIBLE]   = getVisibilityOpts(1),
+    [TSI_BULLET_TYPE_SHORT]     = getShortNameOpts(1),
+    [TSI_BULLET_TYPE_TEXT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/color"),
+    [TSI_BULLET_TYPE_BACK_COLOR] = getColorOpts(bgColorOpts, "#tankSight/bgColor"),
+    [TSI_BULLET_TYPE_LTEXT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/backlightTextColor"),
+    [TSI_BULLET_TYPE_LBACK_COLOR] = getColorOpts(bgColorOpts, "#tankSight/backlightBgColor"),
+    [TSI_BULLET_TYPE_NV_TEXT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/nightVisionTextColor"),
+    [TSI_BULLET_TYPE_NV_BACK_COLOR] = getColorOpts(bgColorOpts, "#tankSight/nightVisionBgColor"),
+    [TSI_BULLET_TYPE_TH_TEXT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/thermalTextColor"),
+    [TSI_BULLET_TYPE_TH_BACK_COLOR] = getColorOpts(bgColorOpts, "#tankSight/thermalBgColor"),
+    [TSI_BULLET_TYPE_TEXT_SIZE] = getTextSizeOpts(1),
+    [TSI_BULLET_TYPE_FONT]      = getTextFontOpts()
   }
 }
 

@@ -30,43 +30,13 @@ def read_flag(blk : DataBlock&; var state : uint&; flag; key : string; default_v
 def read_flag(blk : DataBlock&; var state : uint&; flag; key : string)
   read_flag(blk, state, flag, key, get_flag(state, flag))
 
-
-[generic]
-def get_unit(uid; blk : block<(unit : Unit?) : void>)
-  let unit = get_unit(uid)
-  if unit != null && !unit.isDelayed
-    blk |> invoke(unit)
-
-[generic]
-def get_unit_with_target(uid; blk : block<(unit, target : Unit?) : void>)
-  get_unit(uid) <| $(unit)
-    let target = get_selectedTarget(unit)
-    if target != null && target.isAlive && unit.weap != null
-      blk |> invoke(unit, target)
-
-[generic]
-def get_unit_for_edit(uid; blk : block<(var unit : Unit?) : void>)
-  var unit = get_unit(uid)
-  if unit != null && !unit.isDelayed
-    blk |> invoke(unit)
-
-[generic]
-def get_unit_for_edit_with_target(uid; blk : block<(var unit : Unit?; target : Unit?) : void>)
-  get_unit_for_edit(uid) <| $(var unit)
-    let target = get_selectedTarget(unit)
-    if target != null && target.isAlive && unit.weap != null
-      blk |> invoke(unit, target)
-
-[generic]
-def get_unit_target(uid; blk : block<(target : Unit const?) : void>)
-  var target : Unit const?
-  get_unit(uid) <| $(unit) { target = get_selectedTarget(unit); }
-
-  if target == null
-    target = get_flight_control_mode()?.target
-
-  if target != null
-    blk |> invoke(target)
+def get_unit_target(unit : Unit?) : Unit?
+  if unit == null
+    return null
+  var target = get_selectedTarget(unit)
+  if target != null && target.isAlive && unit.weap != null
+    return target
+  return null
 
 [generic]
 def foreach_weapon(var weapon_triggers : auto implicit ==const; blk : block<(var weapon : Weapon?#) : void>)

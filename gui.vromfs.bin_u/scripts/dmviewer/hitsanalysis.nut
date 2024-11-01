@@ -177,6 +177,11 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
+    if (bulletsSet == null) {
+      this.scene.findObject("bulletTooltip")["tooltipId"] = ""
+      return
+    }
+
     let bSet = bulletsSet.__merge({
       bullets = [bulletName]
       bulletAnimations = [bulletSet.shellAnimation]

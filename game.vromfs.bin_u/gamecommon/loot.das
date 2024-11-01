@@ -72,7 +72,6 @@ def loot_carrier_update_es(act : UpdateStageInfoAct;
 
 [es(tag=server)]
 def loot_carrier_rage_update_es(act : UpdateStageInfoAct;
-                                uid aka hero_uid : int;
                                 unit__ref aka hero_unit__ref : UnitRef;
                                 var loot_carrier__rage aka hero_loot_carrier__rage : int&)
   if hero_loot_carrier__rage >= 5
@@ -84,9 +83,9 @@ def loot_carrier_rage_update_es(act : UpdateStageInfoAct;
   var heroBbox = hero.boundingBox
   bbox3_inflate(heroBbox, 2.)
   heroBbox = hero.unitTm * heroBbox
-  find_query() <| $ [es] (uid aka victim_uid : int; var unit__ref aka victim_unit__ref : UnitRef; var loot_carrier__rage aka victim_loot_carrier__rage : int&; dead_unit__player_id : int)
-    if victim_loot_carrier__rage >= 0 && victim_uid != hero_uid
-      let unit = victim_unit__ref.unit
+  find_query() <| $ [es] (var unit__ref aka victim_unit__ref : UnitRef; var loot_carrier__rage aka victim_loot_carrier__rage : int&; dead_unit__player_id : int)
+    let unit = victim_unit__ref.unit
+    if victim_loot_carrier__rage >= 0 && hero.eid != unit.eid
       if !unit.isDelayed && !unit.isAlive && !is_allies(unit.army, hero.army) && !unit.bailoutAtExitZone && (dead_unit__player_id < 0 || dead_unit__player_id != playerIdx)
         let bbox = unit.unitTm * unit.boundingBox
         if heroBbox & bbox

@@ -1787,6 +1787,8 @@
       "transitions": {
         "scan": {
           "event": "update",
+          "stateFrom": "search",
+          "stateTo": "track",
           "actions": {
             "scan": {},
             "extrapolateTargetsOfInterest": {},
@@ -1888,6 +1890,21 @@
               "type": 0,
               "sensorIndex": 1
             }
+          }
+        },
+        "scanTrack": {
+          "stateFrom": "track",
+          "event": "update",
+          "stateTo": "search",
+          "actions": {
+            "scan": {
+              "periodMult": 0.01
+            },
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 4.0
+            },
+            "setCueToActiveTargetOfInterest": {}
           }
         }
       }

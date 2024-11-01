@@ -24,6 +24,7 @@ let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/s
 let { eventbus_subscribe } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
 let { findNearest } = require("%scripts/util.nut")
+let { is_win64, is_win32 } = require("%sqstd/platform.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -619,6 +620,13 @@ mShared = {
     changeOptions("antialiasingUpscaling")
     setGuiValue("antialiasingSharpening", 0)
 
+    let mode = getGuiValue("antialiasingMode", "off")
+    let enableSSAA = mode == "off" || mode == "low_fxaa" || mode == "high_fxaa"
+    if (!enableSSAA && getGuiValue("ssaa") == "4X") {
+      setGuiValue("ssaa", "none")
+      setGuiValue("backgroundScale", 1.0)
+    }
+
     aaUseGui = false;
   }
 
@@ -650,18 +658,6 @@ mShared = {
   contactShadowsQualityClick = function() {
     if (getGuiValue("contactShadowsQuality") > 0 && getGuiValue("ssaoQuality") == 0)
       setGuiValue("ssaoQuality", 1)
-  }
-
-  antiAliasingClick = function() {
-    if (getGuiValue("antialiasing") == "low_taa") {
-      setGuiValue("backgroundScale", 1.0)
-      enableGuiOption("backgroundScale", false)
-      enableGuiOption("taau_ratio", true)
-    }
-    else {
-      enableGuiOption("backgroundScale", true)
-      enableGuiOption("taau_ratio", false)
-    }
   }
 
   ssaaClick = function() {
@@ -932,16 +928,17 @@ mShared = {
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     init = function(_blk, desc) {
-      desc.values <- is_platform_windows
-        ? [ "auto", "dx11", "dx12" ]
-        : is_platform_macosx ? [ "metal" ] : [ "vulkan" ]
+      desc.values <- is_win64 ? [ "auto", "dx11", "dx12" ]
+        : is_win32 ? [ "dx11" ]
+        : is_platform_macosx ? [ "metal" ]
+        : [ "vulkan" ]
 
-      if (is_platform_windows && hasFeature("optionGFXAPIVulkan"))
+      if (is_win64 && hasFeature("optionGFXAPIVulkan"))
         desc.values.append("vulkan")
 
       desc.def <- desc.values[0]
     }
-    isVisible = @() is_platform_windows && hasFeature("optionGFXAPI")
+    isVisible = @() is_win64 && hasFeature("optionGFXAPI")
   }
   resolution = { widgetType = "list" def = "1024 x 768" blk = "video/resolution" restart = true
     init = function(blk, desc) {

@@ -9,18 +9,18 @@
   "tags": {},
   "bomb": {
     "bulletName": "su_kab_500k08b",
-    "mass": 560.0,
-    "caliber": 0.4,
-    "length": 3.05,
-    "distFromCmToStab": 0.55,
+    "mass": 505.0,
+    "caliber": 0.355,
+    "length": 2.84,
+    "distFromCmToStab": 0.4,
     "dragCx": 0.0257,
-    "CxK": 1.575,
+    "CxK": 1.325,
     "WdK": [
       2.5,
       2.5,
       2.5
     ],
-    "wingAreaMult": 1.6,
+    "wingAreaMult": 1.75,
     "finsAoaHor": 0.3,
     "finsAoaVer": 0.3,
     "normalizationPreset": "heat",
@@ -40,10 +40,10 @@
     ],
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "explosiveType": "tgaf_5",
-    "explosiveMass": 195.0,
+    "explosiveType": "tgaf_5m",
+    "explosiveMass": 185.0,
     "guidanceType": "sns",
-    "timeLife": 40.0,
+    "timeLife": 200.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -128,38 +128,46 @@
       "constantDesignationSourceTypeMask": 1,
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 4.0,
-        "loftTargetElevation": -12.0,
-        "loftAngleToAccelMult": 0.5,
-        "loftTargetOmegaMax": 0.45,
+        "loftElevation": -0.25,
+        "loftTargetElevation": -60.0,
+        "loftAngleToAccelMult": 0.75,
+        "loftTargetOmegaMax": 1.15,
         "timeToGain0": [
-          1.5,
+          1.0,
           0.0
         ],
         "timeToGain1": [
-          1.51,
-          1.0
+          1.5,
+          3.0
         ],
         "timeToGain2": [
-          40.0,
-          1.0
+          10.0,
+          3.0
         ],
         "timeToGain3": [
-          40.1,
+          12.5,
+          1.0
+        ],
+        "timeToGain4": [
+          200.0,
+          1.0
+        ],
+        "timeToGain5": [
+          200.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.0211,
-        "accelControlIntg": 0.1495,
+        "reqAccelMax": 5.0,
+        "accelControlProp": 0.0491,
+        "accelControlIntg": 0.1055,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0007
+        "accelControlDiff": 0.0004
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18,
+      "finsAoaHor": 0.35,
+      "finsAoaVer": 0.35,
       "timeFire": 0.0
     },
     "collisions": {

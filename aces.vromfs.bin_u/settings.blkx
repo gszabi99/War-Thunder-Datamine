@@ -9,6 +9,8 @@
   "dasMain": "%appGame/main.das",
   "game_das_script_init": "%appGame/wt_init.das",
   "game_das_loading_threads": 1,
+  "localizationVrom": "lang.vromfs.bin",
+  "localizationRegionalVrom": "regional.vromfs.bin",
   "__allowedConfigOverrides": {
     "graphicsQuality": "",
     "renderer": "",
@@ -586,6 +588,7 @@
     "addon": [
       {
         "vrom": "aces.vromfs.bin",
+        "tag": "configs",
         "src": [
           "../develop/gameBase",
           "../develop/gameBase/pkg_dev",
@@ -595,13 +598,17 @@
         ]
       },
       {
-        "vrom": "char.vromfs.bin"
+        "vrom": "char.vromfs.bin",
+        "notImportantForSession": true
       },
       {
-        "vrom": "mis.vromfs.bin"
+        "vrom": "mis.vromfs.bin",
+        "tag": "missions",
+        "notImportantForSession": true
       },
       {
-        "vrom": "game.vromfs.bin"
+        "vrom": "game.vromfs.bin",
+        "tag": "game-scripts"
       },
       {
         "vrom": "regional.vromfs.bin",
@@ -632,6 +639,7 @@
       },
       {
         "vrom": "gui.vromfs.bin",
+        "tag": "gui-scripts",
         "vromIgnoreForServer": true
       },
       {

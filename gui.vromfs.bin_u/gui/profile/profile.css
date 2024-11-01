@@ -16,6 +16,7 @@
 @const profilePageTextColor: #FFc0c0c0;
 @const profileSeparatorExtraWidth: 128@sf/@pf;
 @const maxProfileFrameWidth: 2560@sf/@pf - 2@framePadding;
+@const beyondScrollbarSize: 10@sf/@pf;
 
 
 profileContent {
@@ -218,6 +219,18 @@ profilePage .lbTable td:hover cardImg {
 [isBigSizeList=yes] mission_item_unlocked[selected=yes] > missionDiv > mission_item_text,
 [isBigSizeList=yes] campaign_item[selected=yes] > missionDiv > mission_item_text {
   color:#FFFFFF;
+}
+
+listbox[beyondScrollbar=yes] {
+  size:pw + @beyondScrollbarSize, ph;
+  width:pw + @beyondScrollbarSize;
+}
+
+listbox[beyondScrollbar=yes] > shopFilter,
+listbox[beyondScrollbar=yes] > campaign_item,
+listbox[beyondScrollbar=yes] > mission_item_unlocked {
+  size:p.p.w, 40@sf/@pf;
+  width:p.p.w;
 }
 
 listbox[isProfileUnlocksList=yes] {

@@ -981,7 +981,7 @@ function getBulletSetNameByBulletName(unit, bulletName) {
       let bulletSet = getBulletsSetData(unit, value)
       if (bulletSet?.bulletNames.contains(bulletName))
         return value
-      if (bulletSet?.bullets.contains(bulletName))
+      if (bulletSet?.bullets.findindex(@(b) b.split("@")[0] == bulletName) != null)
         return value
     }
   }
