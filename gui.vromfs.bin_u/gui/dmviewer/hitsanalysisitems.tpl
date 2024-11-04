@@ -1,5 +1,6 @@
 <<#items>>
 hitItem {
+  idx:t=<<idx>>
   flow:t='horizontal'
   width:t='pw'
   css-hier-invalidate:t='yes'

@@ -4,8 +4,10 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
-let { getEsUnitType, isUnitDefault, isUnitGift, bit_unit_status } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
+let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
+let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 
 let basicUnitRoles = {
   [ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],

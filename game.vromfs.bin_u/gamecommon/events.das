@@ -243,7 +243,7 @@ struct EventTryBuildObject {}
 struct EventToggleBuildingPreview
   enable : bool
 
-[event(unicast, routing=ROUTING_CLIENT_TO_SERVER)]
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct CmdBuildObject
   tm : float3x4
   objectTemplate : string

@@ -2,9 +2,10 @@
 from "%scripts/dagui_library.nut" import *
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let unitStatus = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
-let { canBuyUnit, isUnitGift, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
@@ -38,7 +39,7 @@ function isFullyIncluded(refArr, testArr) {
 }
 
 function balanceEnough(unit) {
-  let canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
+  let canBuyNotResearchedUnit = canBuyNotResearched(unit)
   let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
   let { wp, gold } = get_balance()
 
@@ -65,7 +66,7 @@ function getUnitAvailabilityForBuyType(unit, isFriendWishList = false) {
     return res.append("available")
 
   let { isGoldEnough } = balanceEnough(unit)
-  let canBuyNotResearchedUnit = unitStatus.canBuyNotResearched(unit)
+  let canBuyNotResearchedUnit = canBuyNotResearched(unit)
 
   if(isResearchableVehicle && (canBuyNotResearchedUnit || canBuyUnit(unit)))
     return res.append("available")

@@ -22,7 +22,9 @@ let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText, getUnitClassCol
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { canBuyNotResearched, getBitStatus, isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, getBitStatus, isUnitInSlotbar, isUnitDefault, canResearchUnit,
+  isUnitInResearch
+} = require("%scripts/unit/unitStatus.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -51,10 +53,11 @@ let { shopIsModificationEnabled } = require("chardResearch")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
 let {
   getEsUnitType, isUnitsEraUnlocked, getUnitName, getUnitCountry,
-  isUnitDefault, isUnitGift, getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, canResearchUnit, isRequireUnlockForUnit, canBuyUnit, isUnitBought,
-  getUnitExp, isUnitInResearch, getUnitRealCost, getUnitCost
+  getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
+  isUnitGroup, isRequireUnlockForUnit,
+  getUnitExp, getUnitRealCost, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
@@ -563,11 +566,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 
 ::getPrevUnit <- function getPrevUnit(unit) {
   return "reqAir" in unit ? getAircraftByName(unit.reqAir) : null
-}
-
-::isUnitLocked <- function isUnitLocked(unit) {
-  let status = shop_unit_research_status(unit.name)
-  return 0 != (status & ES_ITEM_STATUS_LOCKED)
 }
 
 ::isUnitResearched <- function isUnitResearched(unit) {

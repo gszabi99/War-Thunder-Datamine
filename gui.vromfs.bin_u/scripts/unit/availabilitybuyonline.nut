@@ -4,7 +4,7 @@ let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
-let { isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 let isEventUnit = @(unit) unit.event != null

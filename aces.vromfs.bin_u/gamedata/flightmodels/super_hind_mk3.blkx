@@ -2426,6 +2426,10 @@
         "blk": "gameData/flightModels/weaponPresets/super_hind_mk3_s_24.blk"
       },
       {
+        "name": "super_hind_mk3_zt_35_default",
+        "blk": "gameData/flightModels/weaponPresets/super_hind_mk3_zt_35_default.blk"
+      },
+      {
         "name": "super_hind_mk3_zt_35",
         "blk": "gameData/flightModels/weaponPresets/super_hind_mk3_zt_35.blk"
       },
@@ -2797,19 +2801,33 @@
         "index": 1,
         "tier": 9,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "atgm_type1_x4",
-          "name": "zt_35_ingwe",
-          "reqModification": "sa_zt_35_ingwe",
-          "remotelyGuidedWeaponsMax": 1,
-          "Weapon": {
-            "trigger": "atgm",
-            "blk": "gameData/Weapons/containers/zt_35_ingwe_x2_helicopter.blk",
-            "emitter": "ingwe_launcher_001",
-            "external": true,
-            "separate": true
+        "WeaponPreset": [
+          {
+            "iconType": "atgm_type2_x2",
+            "name": "zt_35_ingwe_default",
+            "remotelyGuidedWeaponsMax": 1,
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/zt_35_ingwe_x2_helicopter.blk",
+              "emitter": "ingwe_launcher_001",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "atgm_type1_x4",
+            "name": "zt_35_ingwe",
+            "reqModification": "sa_zt_35_ingwe",
+            "remotelyGuidedWeaponsMax": 1,
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/zt_35_ingwe_x4_helicopter.blk",
+              "emitter": "ingwe_launcher_001",
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
@@ -2863,7 +2881,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_m54",
+            "iconType": "bombs_middle",
             "name": "mk82",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2872,7 +2890,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "emitter": "su_ofab250_1",
+              "emitter": "b8_v20_1",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2932,7 +2950,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_m54",
+            "iconType": "bombs_middle",
             "name": "mk82",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -2941,7 +2959,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "emitter": "su_ofab250_2",
+              "emitter": "b8_v20_2",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3033,7 +3051,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_m54",
+            "iconType": "bombs_middle",
             "name": "mk82",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -3042,7 +3060,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "emitter": "su_ofab250_3",
+              "emitter": "b8_v20_3",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3134,7 +3152,7 @@
             }
           },
           {
-            "iconType": "bombs_middle_m54",
+            "iconType": "bombs_middle",
             "name": "mk82",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
@@ -3143,7 +3161,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-              "emitter": "su_ofab250_4",
+              "emitter": "b8_v20_4",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3155,19 +3173,33 @@
         "index": 6,
         "tier": 3,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "atgm_type1_x4",
-          "name": "zt_35_ingwe",
-          "reqModification": "sa_zt_35_ingwe",
-          "remotelyGuidedWeaponsMax": 1,
-          "Weapon": {
-            "trigger": "atgm",
-            "blk": "gameData/Weapons/containers/zt_35_ingwe_x2_helicopter.blk",
-            "emitter": "ingwe_launcher_002",
-            "external": true,
-            "separate": true
+        "WeaponPreset": [
+          {
+            "iconType": "atgm_type2_x2",
+            "name": "zt_35_ingwe_default",
+            "remotelyGuidedWeaponsMax": 1,
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/zt_35_ingwe_x2_helicopter.blk",
+              "emitter": "ingwe_launcher_002",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "atgm_type1_x4",
+            "name": "zt_35_ingwe",
+            "reqModification": "sa_zt_35_ingwe",
+            "remotelyGuidedWeaponsMax": 1,
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/zt_35_ingwe_x4_helicopter.blk",
+              "emitter": "ingwe_launcher_002",
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       }
     ]
   },

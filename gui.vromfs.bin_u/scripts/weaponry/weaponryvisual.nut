@@ -299,7 +299,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     }
   }
   local optStatus = "locked"
-  if (params?.researchFinished)
+  if (params?.researchFinished && !(statusTbl.amount || statusTbl.unlocked))
     optStatus = "researchFinished"
   else if (params?.visualDisabled ?? false)
     optStatus = "disabled"

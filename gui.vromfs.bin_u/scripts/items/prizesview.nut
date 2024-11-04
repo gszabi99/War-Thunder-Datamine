@@ -25,7 +25,8 @@ let { getUnlockType, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
-let { getUnitName, getUnitCountryIcon, isUnitBought } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
+let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
@@ -250,7 +251,7 @@ function getStackTypeBasedOnPercentChance(prize) {
 }
 
 function getStackType(prize) {
-  if (prize?.percent)
+  if (prize?.percent != null && prize.percent >= 0)
     return getStackTypeBasedOnPercentChance(prize)
 
   let prizeType = getPrizeType(prize)
@@ -609,7 +610,11 @@ function findAndStackPrizeChance(prize, stackList, stackLevel, shopDesc) {
 
   let prizeType = getPrizeType(prize)
 
-  local stack = findOneStack(stackList, prizeType, @(stack) stack?.prize.weight == prize?.weight)
+  local stack = null
+  if (prize?.percent != null && prize.percent == 0)
+    stack = findOneStack(stackList, prizeType, @(stk) stk?.prize.percent == 0)
+  if (prize?.percent != null && prize.percent > 0)
+    stack = findOneStack(stackList, prizeType, @(stk) stk?.prize.percent != null && stk.prize.percent > 0 && stk?.prize.weight == prize?.weight)
 
   if (stack) {
     stack.params.prizes.append(prize)
@@ -626,7 +631,7 @@ function findAndStackPrizeChance(prize, stackList, stackLevel, shopDesc) {
   return true
 }
 
-function stackContent(content, stackLevel = prizesStack.BY_TYPE, shopDesc = false) {
+function stackContent(content, stackLevel = prizesStack.BY_TYPE, shopDesc = false, needShowChance = false) {
   let res = []
   foreach (prize in content) {
     let stackType = getStackType(prize)
@@ -642,6 +647,19 @@ function stackContent(content, stackLevel = prizesStack.BY_TYPE, shopDesc = fals
 
     res.append(createStack(prize))
   }
+
+  if (!needShowChance)
+    return res
+
+  local isNotStacked = true
+  foreach (st in res) {
+    if (st?.level != null && st.level != 0) {
+      isNotStacked = false
+      break
+    }
+  }
+  if (!isNotStacked)
+    return res.sort(@(a ,b) b.prize.percent <=> a.prize.percent)
   return res
 }
 
@@ -1097,7 +1115,7 @@ addTooltipTypes({
       needShowDropChance = false, stacksList = null, needShowChance = false
       isFirstHighlightedLine = false } = params
 
-    stacksList = stacksList ?? stackContent(content, stackLevel, shopDesc)
+    stacksList = stacksList ?? stackContent(content, stackLevel, shopDesc, needShowChance)
     let showCount = fixedAmount == 1
 
     local maxButtonsCount = 0
@@ -1149,8 +1167,14 @@ addTooltipTypes({
           if (trophyChanceStr) {
             if (st.size == 1)
               data.trophyChance <- trophyChanceStr
-            if (st.size > 1 && data?.title)
-              data.title = "\n".concat(data.title, loc("trophy/chest_contents/drop_chances/multiple", {amount = st.size, percentStr = trophyChanceStr}))
+            if (data?.title) {
+              if (st.size > 1)
+                data.title = "\n".concat(data.title, loc("trophy/chest_contents/drop_chances/multiple", {amount = st.size, percentStr = trophyChanceStr}))
+              if (st.prize.percent == 0)
+                data.title = "\n".concat(data.title, colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")))
+              if (stacksList.len() > 1)
+                data.listOfTrophies <- true
+            }
           }
         }
         maxButtonsCount = max(data?.buttonsCount ?? 0, maxButtonsCount)
@@ -1304,8 +1328,7 @@ addTooltipTypes({
   let units = []
   foreach (p in stack.params.prizes) {
     let unitId = isRent ? p.rentedUnit : p.unit
-    let color = getUnitClassColor(unitId)
-    local name = colorize(color, getUnitName(unitId))
+    local name = colorize("currencyGCColor", getUnitName(unitId))
     if (isRent)
       name = "".concat(name, getUnitRentComment(getAircraftByName(unitId), p.timeHours, p.numSpares, true))
     units.append(name)

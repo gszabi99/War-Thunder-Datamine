@@ -1221,7 +1221,7 @@ mSettings = {
     values = [ "low", "medium", "high" ], isVisible = @() true
     infoImgPattern = "#ui/images/settings/GI/%s"
   }
-  dirtSubDiv = { widgetType = "list" def = "high" blk = "graphics/dirtSubDiv" restart = false
+  dirtSubDiv = { widgetType = "value_slider" def = "high" blk = "graphics/dirtSubDiv" restart = false
     values = [ "high", "ultrahigh" ]
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 1)
@@ -1330,7 +1330,7 @@ mSettings = {
     onChanged = "rtrClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtReflections/%s"
   }
-  rtrRes = { widgetType = "list" def = "half" blk = "graphics/RTRRes" restart = false
+  rtrRes = { widgetType = "value_slider" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
     enabled = hasRTR
     onChanged = "rtOptionChanged" isVisible = isRTVisible
@@ -1341,7 +1341,7 @@ mSettings = {
     onChanged = "rtrWaterClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtWater/%s"
   }
-  rtrWaterRes = { widgetType = "list" def = "half" blk = "graphics/RTRWaterRes" restart = false
+  rtrWaterRes = { widgetType = "value_slider" def = "half" blk = "graphics/RTRWaterRes" restart = false
     values = ["half", "full"]
     enabled = hasRTRWater
     onChanged = "rtOptionChanged" isVisible = isRTVisible

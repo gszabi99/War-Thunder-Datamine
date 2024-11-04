@@ -163,7 +163,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
         action = this.onDeleteFromBlacklist
       }
       {
-        text = loc("mainmenu/btnUserCard")
+        text = loc("mainmenu/btnProfile")
         action = @() ::gui_modal_userCard({ uid = this.curCandidate.uid })
       }
     ]

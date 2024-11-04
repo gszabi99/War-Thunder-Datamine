@@ -837,12 +837,16 @@ table.btlReward[minimized=yes] > tr[headerRow=yes] textareaNoTab {
 tr[optContainer=yes] {
   size:pw, @optConatainerHeight;
   margin-top:1@blockInterval;
-  behavior:massTransparency;
+}
+
+tr[optContainer=yes] > td[cellType="right"] > * {
+  behavior:basicTransparency;
+  transp-base:170;
   transp-end:170;
 }
 
-tr[optContainer=yes][headerRow=yes],
-tr[optContainer=yes]:hover {
+tr[optContainer=yes]:hover > td[cellType="right"] > * {
+  transp-base:255;
   transp-end:255;
 }
 

@@ -178,7 +178,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       }
     }
     {
-      text = loc("mainmenu/btnUserCard")
+      text = loc("mainmenu/btnProfile")
       show = hasFeature("UserCards") && getPlayerCardInfoTable(uid, name).len() > 0
       action = @() ::gui_modal_userCard(getPlayerCardInfoTable(uid, name))
     }

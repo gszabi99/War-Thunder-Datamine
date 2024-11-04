@@ -2113,7 +2113,8 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
@@ -2493,8 +2494,8 @@
     "zoomOutFov": 12.3,
     "zoomInFov": 12.3,
     "sightSize": [
-      0.146,
-      0.103
+      0.23,
+      0.16
     ]
   },
   "unitFx": {
@@ -2825,7 +2826,7 @@
       },
       {
         "name": "fuel_exterior",
-        "lifetime": 15.0,
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2833,7 +2834,7 @@
       },
       {
         "name": "fuel_internal",
-        "lifetime": 15.0,
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2841,7 +2842,7 @@
       },
       {
         "name": "hydraulic_internal",
-        "lifetime": 10.0,
+        "lifetime": 30.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2849,7 +2850,7 @@
       },
       {
         "name": "powersystem_internal",
-        "lifetime": 10.0,
+        "lifetime": 30.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -2857,7 +2858,7 @@
       },
       {
         "name": "powersystem_exterior",
-        "lifetime": 10.0,
+        "lifetime": 30.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3149,7 +3150,8 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "rotatedTurret": "bone_turret"
               },
               "limits": {
                 "yaw": [

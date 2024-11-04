@@ -5,7 +5,8 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
-let { isUnitDefault, isUnitGift } = require("%scripts/unit/unitInfo.nut")
+let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
+let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 
 let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
 local countDefaultUnitsByCountry = null

@@ -204,6 +204,11 @@ let directionGroups = [
     lethalRangeMax = 16000.0
   },
   {
+    text = "8",
+    originalName = "93",
+    lethalRangeMax = 12000.0
+  },
+  {
     text = "15",
     originalName = "9K3",
     lethalRangeMax = 12000.0

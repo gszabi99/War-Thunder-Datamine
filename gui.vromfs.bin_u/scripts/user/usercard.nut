@@ -51,6 +51,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { isUnlockVisible, getUnlockRewardText } = require("%scripts/unlocks/unlocksModule.nut")
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -81,7 +82,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   isOwnStats = false
 
   info = null
-  sheetsList = ["Profile", "Records", "Statistics", "Medal"]
+  sheetsList = ["UserCard", "Records", "Statistics", "Medal"]
 
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
   tabLocalePrefix = "#mainmenu/btn"
@@ -132,7 +133,11 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   selMedalIdx = null
 
   function initScreen() {
-    setBreadcrumbGoBackParams(this)
+    if (isInBattleState.get())
+      this.scene.findObject("back_scene_name").setValue(loc("mainmenu/btnBack"))
+    else
+      setBreadcrumbGoBackParams(this)
+
     this.selMedalIdx = {}
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
       return this.goBack()
@@ -153,12 +158,13 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       ? this.player.name
       : $"{this.player.name}{loc("ui/parentheses/space", { text = customNick })}"
     this.scene.findObject("profile-name").setValue(profileName)
-    this.scene.findObject("profile-container").show(false)
+    this.scene.findObject("usercard-container").show(false)
     let breadCrumbTitle = this.scene.findObject("breadcrumb_title")
     breadCrumbTitle.setValue(" ".concat(loc("mainmenu/btnProfile"), profileName))
 
-    this.initStatsParams()
+    this.scene.findObject("profile_header").show(false)
     this.initTabs()
+    this.initStatsParams()
 
     this.taskId = -1
     if ("uid" in this.player) {
@@ -271,13 +277,14 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
 
     this.infoReady = true
-    this.scene.findObject("profile-container").show(true)
+    this.scene.findObject("usercard-container").show(true)
     this.scene.findObject("profile_sheet_list").show(true)
+    this.scene.findObject("profile_header").show(true)
     this.onSheetChange(null)
   }
 
   function showSheetDiv(name) {
-    foreach (div in ["profile", "records", "stats", "medals"]) {
+    foreach (div in ["usercard", "records", "stats", "medals"]) {
       let show = div == name
       let divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
@@ -289,7 +296,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isPageHasProfileHandler(sheet) {
-    return (sheet == "Profile") || (sheet == "Records")
+    return (sheet == "UserCard") || (sheet == "Records")
   }
 
   function onSheetChange(_obj) {
@@ -306,8 +313,8 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (pageHasProfileHeader && !this.isProfileInited)
       this.fillProfile()
 
-    if (curSheet == "Profile")
-      this.showSheetDiv("profile")
+    if (curSheet == "UserCard")
+      this.showSheetDiv("usercard")
     else if (curSheet == "Records") {
       this.showSheetDiv("stats")
       this.fillModeListBox(this.scene.findObject("stats-container"), this.curMode)
@@ -841,7 +848,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let sheet = this.getCurSheet()
     let showStatBar = this.infoReady && sheet == "Statistics"
-    let showProfBar = this.infoReady && sheet == "Profile"
+    let showProfBar = this.infoReady && sheet == "UserCard"
     let isVisibleAchievementsUrlBtn = !isMe && showProfBar && hasFeature("AchievementsUrl") && hasFeature("AllowExternalLink")
 
     showObjectsByTable(this.scene, {

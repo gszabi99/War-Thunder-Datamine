@@ -231,10 +231,14 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
   // if we are initing stowage, limit ammo in slots with initially loaded ammo count
   if init_num
     for cluster_id, slots_range in iter_range(v.ammo_clusters__slotsRange), v.ammo_clusters__slotsRange
+      set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState EXCLUDED, false)
       if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage LOADED_IN_GUN)
         continue
+      var total_cluster_ammo = int2(0)
       for slot_id in slots_range.x..slots_range.y
         v.ammo_slots__numAmmo[slot_id].y = v.ammo_slots__numAmmo[slot_id].x
+        total_cluster_ammo += v.ammo_slots__numAmmo[slot_id]
+      set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState EXCLUDED, total_cluster_ammo.y == 0)
 
   // update dm parts
   let enable_all_parts = is_in_hangar()

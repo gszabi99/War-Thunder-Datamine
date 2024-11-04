@@ -104,7 +104,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillShotsList() {
     let diff = this.ediff
     let hitsData = this.currentHitsData
-      .map(function(h) {
+      .map(function(h, idx) {
         let time = secondsToTimeSimpleString(h.time)
         let unit = getAircraftByName(h.object)
         let br = unit?.getBattleRating(diff) ?? 0
@@ -114,10 +114,10 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
           time
           unitAndWeapon
           hasBulletDesc = bulletDesc != ""
+          idx
         }
       })
       .filter(@(h) h.hasBulletDesc)
-
     let listObj = this.scene.findObject("shots_list")
     let data = handyman.renderCached("%gui/dmViewer/hitsAnalysisItems.tpl", { items = hitsData })
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
@@ -131,9 +131,10 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemSelect(obj) {
-    this.selectedHit = this.currentHitsData[obj.getValue()]
+    let item = obj.getChild(obj.getValue())
+    let idx = to_integer_safe(item["idx"])
+    this.selectedHit = this.currentHitsData[idx]
     let unit = getAircraftByName(this.selectedHit.offenderObject)
-
     let unitType = $"{unit.unitType.fontIcon} {unit.unitType.getArmyLocName()}"
     let unitCountryFlag = getUnitCountryIcon(unit, true)
     let unitCountry = loc(getUnitCountry(unit))

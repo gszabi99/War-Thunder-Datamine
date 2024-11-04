@@ -1,10 +1,35 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status
+from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status, is_default_aircraft, shop_unit_research_status
 from "%scripts/dagui_library.nut" import *
-let { canResearchUnit, bit_unit_status, canBuyUnit, getUnitReqExp } = require("%scripts/unit/unitInfo.nut")
+let { bit_unit_status, getUnitReqExp, getUnitExp } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 let isUnitInSlotbar = @(unit) getCrewByAir(unit) != null
+
+function isUnitMaxExp(unit) { //temporary while not exist correct status between in_research and canBuy
+  return isUnitSpecial(unit) || (getUnitReqExp(unit) <= getUnitExp(unit))
+}
+
+function canResearchUnit(unit) {
+  let isInShop = unit?.isInShop
+  if (isInShop == null) {
+    debugTableData(unit)
+    assert(false, "not existing isInShop param")
+    return false
+  }
+
+  if (!isInShop)
+    return false
+
+  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
+    return false
+
+  let status = shop_unit_research_status(unit.name)
+  return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !isUnitMaxExp(unit)
+}
 
 let canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && canResearchUnit(unit)
@@ -79,10 +104,37 @@ function isUnitElite(unit) {
   return unitName ? isUnitEliteByStatus(get_unit_elite_status(unitName)) : false
 }
 
+function isUnitDefault(unit) {
+  if (!("name" in unit))
+    return false
+  return is_default_aircraft(unit.name)
+}
+
+function isUnitLocked(unit) {
+  let status = shop_unit_research_status(unit.name)
+  return 0 != (status & ES_ITEM_STATUS_LOCKED)
+}
+
+function isUnitInResearch(unit) {
+  if (!unit)
+    return false
+
+  if (!("name" in unit))
+    return false
+
+  local status = shop_unit_research_status(unit.name)
+  return ((status & ES_ITEM_STATUS_IN_RESEARCH) != 0) && !isUnitMaxExp(unit)
+}
+
 return {
   canBuyNotResearched
   getBitStatus
   isUnitEliteByStatus
   isUnitElite
   isUnitInSlotbar
+  isUnitDefault
+  isUnitLocked
+  isUnitMaxExp
+  canResearchUnit
+  isUnitInResearch
 }

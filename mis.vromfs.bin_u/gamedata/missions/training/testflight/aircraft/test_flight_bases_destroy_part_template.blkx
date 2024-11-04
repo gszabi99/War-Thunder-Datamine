@@ -35,7 +35,9 @@
         "showMissionObjectives": true,
         "showWayPoints": true,
         "showDialogs": true,
-        "excludes": {}
+        "excludes": {
+          "exclude": "bdt_init"
+        }
       },
       {
         "file": "gameData/missions/templates/units_sets/land_sets_aaa_bases/bdt_t1_ussr_rank_03.blk",
@@ -55,10 +57,6 @@
       },
       {
         "file": "gameData/missions/templates/units_sets/land_sets_aaa_bases/bdt_t2_usa_rank_03.blk",
-        "rankRange": [
-          9,
-          13
-        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -79,7 +77,7 @@
     "isCategory": true,
     "is_enabled": true,
     "bdt_part_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -91,29 +89,67 @@
       },
       "conditions": {},
       "actions": {
-        "comment": [
+        "triggerEnable": [
           {
-            "value": "set max bases amount +1"
+            "target": [
+              "bomb_areas_0_3_check",
+              "bomb_areas_4_7_check",
+              "bomb_areas_8_11_check",
+              "bomb_areas_12_16_check",
+              "bomb_areas_17_20_check",
+              "bomb_areas_21_50_check"
+            ]
           },
           {
-            "value": "enable self restarting for template"
-          },
-          {
-            "value": "increase one-moment bases amount"
-          },
-          {
-            "value": ""
-          },
-          {
-            "value": ""
-          },
-          {
-            "value": ""
-          },
-          {
-            "value": ""
+            "target": [
+              "bdt_start",
+              "bomb_areas_mid_init"
+            ]
           }
         ],
+        "unitSetProperties": [
+          {
+            "object": [
+              "bdt_t1_targets_squad",
+              "bdt_t2_targets_squad"
+            ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "targetableByAi": false,
+            "isImmortal": true,
+            "stealthRadius": 0.0
+          },
+          {
+            "object": [
+              "bdt_t1_aaa_squad",
+              "bdt_t2_aaa_squad"
+            ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
+            "maxDeviationAngle": 15.0,
+            "checkVisibilityTarget": true,
+            "visibilityTreeTransparencyThreshold": 0.1,
+            "effShootingRate": 0.1,
+            "airEffShootingRate": 0.1,
+            "fireRandom": true,
+            "targetChangeInterval": 5.0,
+            "targetChangeProb": 0.25,
+            "ChainfireTime": 1.0,
+            "DelayAfterShoot": 2.0
+          }
+        ],
+        "unitPutToSleep": {
+          "target": [
+            "bdt_t1_targets_squad",
+            "bdt_t2_targets_squad"
+          ]
+        },
         "varSetInt": [
           {
             "value": 0,
@@ -161,7 +197,7 @@
       "else_actions": {}
     },
     "bomb_areas_mid_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",

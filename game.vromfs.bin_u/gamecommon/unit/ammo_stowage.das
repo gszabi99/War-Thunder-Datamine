@@ -95,6 +95,8 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
     let cluster_state = v.ammo_clusters__state[cluster_id]
     let cluster_stage = get_ammo_cluster_stage(cluster_id, v)
     let parts_range = v.ammo_clusters__relatedPartsRange[cluster_id]
+    if get_flag(cluster_state, AmmoClusterState EXCLUDED)
+      continue
     stage_present[cluster_stage] = true
 
     stowage_has_autoloader_parts = get_flag(cluster_state, AmmoClusterState HAS_AUTOLOADER_PARTS) || stowage_has_autoloader_parts

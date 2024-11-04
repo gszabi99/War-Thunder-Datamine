@@ -26,7 +26,8 @@ let { isPromoLinkVisible, getPromoLinkBtnText, launchPromoAction,
   gatherPromoActionsParamsData
 } = require("%scripts/promo/promo.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getUnitName, canBuyUnit, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")

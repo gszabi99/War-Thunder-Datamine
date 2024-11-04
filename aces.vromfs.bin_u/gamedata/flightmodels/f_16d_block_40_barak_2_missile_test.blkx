@@ -2476,7 +2476,7 @@
       "friendFoeId": true,
       "signalHoldTime": 5.0,
       "targetHoldTime": 5.0,
-      "newTargetHoldTime": 5.0,
+      "newTargetHoldTime": 3.0,
       "mandatoryRecognition": false,
       "receivers": {
         "receiver": [
@@ -2540,6 +2540,7 @@
               "EDR 110",
               "DR-VC-1A",
               "PGZ-09 TA",
+              "1RS1",
               "1RL34",
               "AN/VPS-2",
               "M-247 TA",
@@ -2574,7 +2575,7 @@
             ]
           },
           {
-            "name": "Fighter",
+            "name": "AI",
             "type": [
               "AN/APG-30",
               "AN/ASG-14",
@@ -2761,6 +2762,10 @@
             "group": "9K330"
           },
           {
+            "text": "93",
+            "group": "9K33"
+          },
+          {
             "text": "RLD",
             "group": "Roland"
           },
@@ -2777,11 +2782,11 @@
             "group": "Naval"
           },
           {
-            "text": "F",
-            "group": "Fighter"
+            "text": "hud/rwr_threat_ai",
+            "group": "AI"
           },
           {
-            "text": "A",
+            "text": "hud/rwr_threat_attacker",
             "group": "Attacker"
           },
           {
@@ -3298,14 +3303,14 @@
         }
       }
     },
-    "us_500lb_mk82": {
+    "us_mk82_gbu39": {
       "modClass": "weapon",
       "tier": 1
     },
     "us_750lb_m117a1": {
       "modClass": "weapon",
       "tier": 2,
-      "reqModification": "us_500lb_mk82"
+      "reqModification": "us_mk82_gbu39"
     },
     "us_1000lb_mk83": {
       "modClass": "weapon",

@@ -22,14 +22,16 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
         needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched, isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, isUnitInSlotbar, canResearchUnit, isUnitInResearch
+} = require("%scripts/unit/unitStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { getEsUnitType, getUnitName, getUnitCountry, isUnitGift, canResearchUnit, canBuyUnit, getUnitReqExp,
-  getUnitExp, isUnitInResearch, isUnitDescriptionValid, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName, getUnitCountry, getUnitReqExp,
+  getUnitExp, isUnitDescriptionValid, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")

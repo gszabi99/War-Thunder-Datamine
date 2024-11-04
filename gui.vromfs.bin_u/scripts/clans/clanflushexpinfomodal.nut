@@ -6,7 +6,8 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { format } = require("string")
-let { getUnitName, canResearchUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"

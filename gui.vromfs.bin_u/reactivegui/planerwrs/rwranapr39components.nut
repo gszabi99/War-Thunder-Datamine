@@ -184,6 +184,10 @@ let directionGroups = [
     originalName = "S125"
   },
   {
+    text = "8",
+    originalName = "93"
+  },
+  {
     text = "15",
     originalName = "9K3"
   },

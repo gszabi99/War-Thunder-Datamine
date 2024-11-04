@@ -12,6 +12,7 @@
   "mfdCamTads": true,
   "laserDesignator": true,
   "havePointOfInterestDesignator": true,
+  "haveOpticTurret": true,
   "radarCrossSectionAspectMultFront": 0.0028301887,
   "radarCrossSectionAspectMultSide": 0.0005,
   "radarCrossSectionAspectMultRear": 0.5,
@@ -2088,29 +2089,32 @@
     }
   },
   "gunnerOpticFps": {
-    "pos": [
-      2.6,
-      -0.2,
-      0.0
-    ],
-    "head": "optic1_turret",
-    "crosshairPreset": "test_crosshair",
-    "angularLimits": [
-      -35.0,
-      35.0,
-      -154.0,
-      34.0
-    ],
-    "opticType": ""
+    "Target": {
+      "pos": [
+        2.6,
+        -0.2,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -35.0,
+        35.0,
+        -154.0,
+        34.0
+      ],
+      "opticType": "targeting"
+    }
   },
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "blk": "gameData/sensors/ir_tracker.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic1_gun"
       }
     ]
   },

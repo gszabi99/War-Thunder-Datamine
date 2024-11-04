@@ -42,17 +42,19 @@ cell {
     <</isCheckbox>>
     <<#isSlider>>
     tdiv {
-      size:t='0.55pw, ph'
+      size:t='pw, ph'
+      flow='vertical'
+      textareaNoTab {
+        id:t='value_<<id>>'
+        position:t='relative'
+        pos:t='1@comboOptionPadding,-2@sf/@pf'
+      }
       slider {
         id:t='<<id>>'
-        top:t="50%ph-50%h"
+        pos:t='0,-6@sf/@pf'
         clicks-by-points:t='no'
         on_change_value:t='<<cb>>'
         focus_border{}
-      }
-      optionValueText {
-        id:t='value_<<id>>'
-        top:t="50%ph-50%h"
       }
     }
     <</isSlider>>

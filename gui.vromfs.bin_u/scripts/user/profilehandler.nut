@@ -156,7 +156,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   curStatsPage = 0
   pending_logout = false
 
-  presetSheetList = ["Profile", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal"]
+  presetSheetList = ["UserCard", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal"]
 
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
   tabLocalePrefix = "#mainmenu/btn"
@@ -410,7 +410,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function updateButtons() {
     let sheet = this.getCurSheet()
-    let isProfileOpened = sheet == "Profile"
+    let isProfileOpened = sheet == "UserCard"
     let needHideChangeAccountBtn = steam_is_running() && loadLocalAccountSettings("disabledReloginSteamAccount", false)
     let buttonsList = {
       btn_changeAccount = isInMenu() && isProfileOpened && !isPlatformSony && !needHideChangeAccountBtn && !this.isEditModeEnabled
@@ -456,35 +456,48 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onProfileTitleSelect(titleName, handler) {
-    handler.editModeTempData.title <- titleName
     handler.fillTitleName(titleName, false)
+    if (handler.isEditModeEnabled)
+      handler.editModeTempData.title <- titleName
+    else
+      handler.saveProfileTitle(titleName)
   }
 
   function onProfileEditCancelBtn() {
     this.setEditMode(!this.isEditModeEnabled)
 
-    if (this.editModeTempData?.title)
-      this.fillTitleName(this.player.title, false)
+    if (this.editModeTempData?.title) {
+      let stats = getStats()
+      this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles", false)
+    }
     if (this.editModeTempData?.icon)
       this.fillProfileIcon(getProfileInfo().icon)
+  }
+
+  function saveProfileIcon(newIcon) {
+    set_option(USEROPT_PILOT, newIcon)
+    save_profile(false)
+    broadcastEvent(profileEvent.AVATAR_CHANGED)
+  }
+
+  function saveProfileTitle(title) {
+    addTask(select_current_title(title),
+      {},
+      function() {
+        clearStats()
+        getStats()
+      }
+    )
   }
 
   function onProfileEditApplyBtn() {
     this.setEditMode(!this.isEditModeEnabled)
     let newIcon = this.editModeTempData?.icon
-    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value) {
-      set_option(USEROPT_PILOT, newIcon)
-      save_profile(false)
-      broadcastEvent(profileEvent.AVATAR_CHANGED)
-    }
+    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value)
+      this.saveProfileIcon(newIcon)
+
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
-      addTask(select_current_title(this.editModeTempData.title),
-        {},
-        function() {
-          clearStats()
-          getStats()
-        }
-      )
+      this.saveProfileTitle(this.editModeTempData.title)
   }
 
   function setEditMode(val) {
@@ -499,8 +512,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (value == option.idx)
       return
 
-    this.editModeTempData.icon <- option.idx
     this.fillProfileIcon(option.idx)
+    if (this.isEditModeEnabled)
+      this.editModeTempData.icon <- option.idx
+    else
+      this.saveProfileIcon(option.idx)
   }
 
   function fillProfileIcon(iconIdx) {
@@ -600,8 +616,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (pageHasProfileHeader && !this.isProfileInited)
       this.updateStats()
 
-    if (sheet == "Profile") {
-      this.showSheetDiv("profile")
+    if (sheet == "UserCard") {
+      this.showSheetDiv("usercard")
     }
     else if (sheet == "Statistics") {
       this.showSheetDiv("records")
@@ -662,7 +678,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function showSheetDiv(name, pages = false, subPages = false) {
-    foreach (div in ["profile", "records", "unlocks", "skins", "stats", "medals", "decals"]) {
+    foreach (div in ["usercard", "records", "unlocks", "skins", "stats", "medals", "decals"]) {
       let show = div == name
       let divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {

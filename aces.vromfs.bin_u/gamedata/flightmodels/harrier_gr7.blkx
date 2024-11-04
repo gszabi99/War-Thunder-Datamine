@@ -2238,6 +2238,317 @@
         1000.0
       ]
     },
+    "rwr": {
+      "type": "rwr",
+      "name": "ARI 23333",
+      "power": 250.0,
+      "txAngle": [
+        5.0,
+        15.0
+      ],
+      "txSidelobes": -30.0,
+      "rxAngle": [
+        180.0,
+        90.0
+      ],
+      "range": 70000.0,
+      "signalSfxName": "alarm_radar",
+      "band4": true,
+      "band5": true,
+      "band6": true,
+      "band7": true,
+      "band8": true,
+      "band9": true,
+      "detectTracking": true,
+      "detectLaunch": false,
+      "targetTracking": true,
+      "matchSector": 10.0,
+      "targetSuperResolution": false,
+      "trackedTargetsMax": 15,
+      "targetRangeFinder": true,
+      "targetRange": [
+        5000.0,
+        50000.0
+      ],
+      "signalHoldTime": 5.0,
+      "targetHoldTime": 5.0,
+      "newTargetHoldTime": 2.0,
+      "mandatoryRecognition": false,
+      "friendFoeId": true,
+      "receivers": {
+        "receiver": [
+          {
+            "azimuth": 0.0,
+            "elevation": 0.0,
+            "azimuthWidth": 180.0,
+            "elevationWidth": 90.0,
+            "angleFinder": true
+          },
+          {
+            "azimuth": -180.0,
+            "elevation": 0.0,
+            "azimuthWidth": 180.0,
+            "elevationWidth": 90.0,
+            "angleFinder": true
+          }
+        ]
+      },
+      "groups": {
+        "group": [
+          {
+            "name": "AI",
+            "detectLaunch": true,
+            "type": [
+              "AN/APG-30",
+              "AN/ASG-14",
+              "AN/ASG-19",
+              "SRD-1",
+              "SRD-5",
+              "AIDA 2",
+              "ARI.5820",
+              "ARI.5857",
+              "Marconi Type 226",
+              "ELTA EL/M-2001B",
+              "AN/APS-6",
+              "AN/APS-19",
+              "AN/APS-21",
+              "AN/APS-67",
+              "NASARR",
+              "US R21G M1",
+              "AN/APQ-72",
+              "AN/APQ-104",
+              "AN/APQ-120",
+              "AN/APQ-126",
+              "AN/APQ-159",
+              "AN/APQ-113",
+              "AN/APQ-50",
+              "AN/APQ-51",
+              "AN/APQ-94",
+              "AN/APG-26",
+              "AN/APG-33",
+              "Thorium",
+              "RP-1 TA",
+              "RP-1 TT",
+              "RP-5 TA",
+              "RP-5 TT",
+              "CD-30",
+              "Cyrano Ibis",
+              "Cyrano-IV",
+              "DRAC-25A",
+              "DRAC-32A",
+              "DRAA 3D AIDA",
+              "AI Mk.23",
+              "AI Mk.18",
+              "PS-03",
+              "PS-011A 71H IR",
+              "PS-42 TA",
+              "PS-42 TT",
+              "Type 1492",
+              "Type 208A",
+              "Sapphire-21",
+              "Sapphire-23"
+            ]
+          },
+          {
+            "name": "AI PD",
+            "detectLaunch": true,
+            "type": [
+              "AN/APG-66",
+              "AN/APG-68",
+              "AN/APG-63",
+              "AN/APG-65",
+              "AN/APG-67",
+              "AN/APG-76 / AN/ASX-1",
+              "Thales RDY",
+              "N019",
+              "N001",
+              "N010",
+              "ELTA EL/M-2001B",
+              "PS-37",
+              "PS-05",
+              "Ferranti Blue Vixen",
+              "AN/APG-59",
+              "AN/AWG-9",
+              "Thomson-CSF RDI",
+              "AI.24 Foxhunter",
+              "weapon"
+            ]
+          },
+          {
+            "name": "AAA",
+            "type": [
+              "1RL114 TA",
+              "Gepard TA",
+              "EDR 110",
+              "DR-VC-1A",
+              "PGZ-09 TA",
+              "1RS1",
+              "1RL34",
+              "AN/VPS-2",
+              "M-247 TA",
+              "ESD RA-20 S",
+              "1RL33",
+              "1RL114 TT",
+              "Marconi S-400",
+              "Gepard TT",
+              "Antelope",
+              "PGZ-09 TT",
+              "Type-87 TT"
+            ]
+          },
+          {
+            "name": "ZSU-23-4",
+            "type": "1RL33"
+          },
+          {
+            "name": "S-125",
+            "detectLaunch": true,
+            "type": "4R-90-Yatagan"
+          },
+          {
+            "name": "9K330",
+            "detectLaunch": true,
+            "type": [
+              "9K330 TA",
+              "9K330 TT"
+            ]
+          },
+          {
+            "name": "9K33",
+            "detectLaunch": true,
+            "type": [
+              "9K33 TA",
+              "9K33 TT"
+            ]
+          },
+          {
+            "name": "2S6",
+            "detectLaunch": true,
+            "type": [
+              "1RL114 TA",
+              "1RL114 TT",
+              "PGZ-09 TA",
+              "PGZ-09 TT"
+            ]
+          },
+          {
+            "name": "SAM",
+            "detectLaunch": true,
+            "type": [
+              "Roland TT",
+              "Crotale TA",
+              "Crotale TT"
+            ]
+          },
+          {
+            "name": "ARH",
+            "detectTracking": true,
+            "detectLaunch": true,
+            "type": "weapon"
+          }
+        ]
+      },
+      "targetsDirectionGroups": {
+        "targetsDirectionGroup": [
+          {
+            "text": "hud/rwr_threat_ai",
+            "group": "AI"
+          },
+          {
+            "text": "hud/rwr_threat_pd",
+            "group": [
+              "AI PD",
+              "ARH"
+            ]
+          },
+          {
+            "text": "hud/rwr_threat_aaa",
+            "group": "AAA"
+          },
+          {
+            "text": "Z23",
+            "group": "ZSU-23-4"
+          },
+          {
+            "text": "S125",
+            "group": "S-125"
+          },
+          {
+            "text": "9K3",
+            "group": "9K330"
+          },
+          {
+            "text": "2S6",
+            "group": "2S6"
+          },
+          {
+            "text": "hud/rwr_threat_sam",
+            "group": "SAM"
+          }
+        ]
+      },
+      "targetsPresenceGroups": {
+        "targetsPresenceGroup": [
+          {
+            "text": "hud/rwr_threat_ai_track",
+            "search": false,
+            "track": true,
+            "launch": true,
+            "group": [
+              "AI",
+              "AI PD",
+              "ARH"
+            ]
+          },
+          {
+            "text": "hud/rwr_threat_aaa_track",
+            "search": false,
+            "track": true,
+            "group": "AAA"
+          },
+          {
+            "text": "hud/rwr_threat_sam_launch",
+            "search": false,
+            "track": false,
+            "launch": true,
+            "group": [
+              "S-125",
+              "9K330",
+              "2S6",
+              "SAM"
+            ]
+          }
+        ]
+      },
+      "typeLamps": {
+        "typeLamp": [
+          {
+            "group": [
+              "S-125",
+              "9K330",
+              "9K33",
+              "2S6",
+              "SAM"
+            ],
+            "trackLamp": 0,
+            "launchLamp": 0
+          },
+          {
+            "group": [
+              "AI",
+              "AI PD",
+              "ARH"
+            ],
+            "trackLamp": 1,
+            "launchLamp": 1
+          },
+          {
+            "group": "AAA",
+            "trackLamp": 2
+          }
+        ]
+      }
+    },
     "multifunctionDisplays": {
       "display": [
         {

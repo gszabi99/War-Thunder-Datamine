@@ -2666,7 +2666,7 @@
     },
     "rwr": {
       "type": "rwr",
-      "name": "AN/ALR-56M",
+      "name": "AN/ALR-69",
       "power": 250.0,
       "txAngle": [
         5.0,
@@ -2679,16 +2679,25 @@
       ],
       "range": 70000.0,
       "signalSfxName": "alarm_radar",
-      "band4": true,
-      "band5": true,
-      "band6": true,
+      "band4": [
+        true,
+        true
+      ],
+      "band5": [
+        true,
+        true
+      ],
+      "band6": [
+        true,
+        true
+      ],
       "band7": true,
       "band8": true,
       "band9": true,
       "detectTracking": true,
       "detectLaunch": false,
       "targetTracking": true,
-      "matchSector": 15.0,
+      "matchSector": 10.0,
       "targetSuperResolution": false,
       "trackedTargetsMax": 12,
       "targetRangeFinder": true,
@@ -2699,8 +2708,11 @@
       "friendFoeId": true,
       "signalHoldTime": 5.0,
       "targetHoldTime": 5.0,
-      "newTargetHoldTime": 5.0,
+      "newTargetHoldTime": 3.0,
       "mandatoryRecognition": false,
+      "band2": true,
+      "band3": true,
+      "override:targetSuperResolution": true,
       "receivers": {
         "receiver": [
           {
@@ -2763,6 +2775,7 @@
               "EDR 110",
               "DR-VC-1A",
               "PGZ-09 TA",
+              "1RS1",
               "1RL34",
               "AN/VPS-2",
               "M-247 TA",
@@ -2797,7 +2810,7 @@
             ]
           },
           {
-            "name": "Fighter",
+            "name": "AI",
             "type": [
               "AN/APG-30",
               "AN/ASG-14",
@@ -2887,12 +2900,38 @@
           },
           {
             "name": "MiG-23",
+            "search": true,
+            "track": true,
+            "launch": false,
             "detectLaunch": true,
             "type": "Sapphire-23"
           },
           {
-            "name": "MiG-29",
+            "name": "MiG-23 LAUNCH",
             "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "Sapphire-23"
+          },
+          {
+            "name": "MiG-29",
+            "search": true,
+            "track": true,
+            "launch": false,
+            "detectLaunch": true,
+            "type": [
+              "N019",
+              "N001",
+              "N010"
+            ]
+          },
+          {
+            "name": "MiG-29 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": [
               "N019",
               "N001",
@@ -2902,6 +2941,21 @@
           {
             "name": "F-4",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": [
+              "AN/APQ-72",
+              "AN/APQ-120",
+              "AN/APG-59"
+            ]
+          },
+          {
+            "name": "F-4 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": [
               "AN/APQ-72",
               "AN/APQ-120",
@@ -2915,11 +2969,38 @@
           {
             "name": "F-14",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": "AN/AWG-9"
+          },
+          {
+            "name": "F-14 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": "AN/AWG-9"
           },
           {
             "name": "F-16",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": [
+              "AN/APG-66",
+              "AN/APG-68",
+              "PS-37",
+              "Type 1492"
+            ]
+          },
+          {
+            "name": "F-16 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": [
               "AN/APG-66",
               "AN/APG-68",
@@ -2930,11 +3011,36 @@
           {
             "name": "F-15",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": "AN/APG-63"
+          },
+          {
+            "name": "F-15 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": "AN/APG-63"
           },
           {
             "name": "F-18",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": [
+              "AN/APG-65",
+              "AN/APG-67"
+            ]
+          },
+          {
+            "name": "F-18 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": [
               "AN/APG-65",
               "AN/APG-67"
@@ -2943,6 +3049,17 @@
           {
             "name": "Tornado F",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": "AI.24 Foxhunter"
+          },
+          {
+            "name": "Tornado F LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": "AI.24 Foxhunter"
           },
           {
@@ -2952,6 +3069,20 @@
           {
             "name": "Mirage 2000",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": [
+              "Thomson-CSF RDI",
+              "Thales RDY"
+            ]
+          },
+          {
+            "name": "Mirage 2000 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
             "type": [
               "Thomson-CSF RDI",
               "Thales RDY"
@@ -2960,10 +3091,58 @@
           {
             "name": "J-39",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
             "type": [
               "PS-05",
               "Ferranti Blue Vixen"
             ]
+          },
+          {
+            "name": "J-39 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": [
+              "PS-05",
+              "Ferranti Blue Vixen"
+            ]
+          },
+          {
+            "name": "JF-17",
+            "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": "KLJ-7"
+          },
+          {
+            "name": "JF-17 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "KLJ-7"
+          },
+          {
+            "name": "Roland",
+            "detectLaunch": true,
+            "type": "Roland TA"
+          },
+          {
+            "name": "SAM",
+            "detectLaunch": true,
+            "type": [
+              "ADATS TA",
+              "ASRAD TA",
+              "TriAD TA"
+            ]
+          },
+          {
+            "name": "Naval",
+            "type": "AN-SPG-51"
           },
           {
             "name": "ARH",
@@ -2984,6 +3163,10 @@
             "group": "9K330"
           },
           {
+            "text": "93",
+            "group": "9K33"
+          },
+          {
             "text": "RLD",
             "group": "Roland"
           },
@@ -3000,11 +3183,11 @@
             "group": "Naval"
           },
           {
-            "text": "F",
-            "group": "Fighter"
+            "text": "hud/rwr_threat_ai",
+            "group": "AI"
           },
           {
-            "text": "A",
+            "text": "hud/rwr_threat_attacker",
             "group": "Attacker"
           },
           {
@@ -3013,15 +3196,24 @@
           },
           {
             "text": "M23",
-            "group": "MiG-23"
+            "group": [
+              "MiG-23",
+              "MiG-23 LAUNCH"
+            ]
           },
           {
             "text": "M29",
-            "group": "MiG-29"
+            "group": [
+              "MiG-29",
+              "MiG-29 LAUNCH"
+            ]
           },
           {
             "text": "F4",
-            "group": "F-4"
+            "group": [
+              "F-4",
+              "F-4 LAUNCH"
+            ]
           },
           {
             "text": "F5",
@@ -3029,23 +3221,38 @@
           },
           {
             "text": "F14",
-            "group": "F-14"
+            "group": [
+              "F-14",
+              "F-14 LAUNCH"
+            ]
           },
           {
             "text": "F15",
-            "group": "F-15"
+            "group": [
+              "F-15",
+              "F-15 LAUNCH"
+            ]
           },
           {
             "text": "F16",
-            "group": "F-16"
+            "group": [
+              "F-16",
+              "F-16 LAUNCH"
+            ]
           },
           {
             "text": "F18",
-            "group": "F-18"
+            "group": [
+              "F-18",
+              "F-18 LAUNCH"
+            ]
           },
           {
             "text": "TRF",
-            "group": "Tornado F"
+            "group": [
+              "Tornado F",
+              "Tornado F LAUNCH"
+            ]
           },
           {
             "text": "HRR",
@@ -3053,11 +3260,28 @@
           },
           {
             "text": "M2K",
-            "group": "Mirage 2000"
+            "group": [
+              "Mirage 2000",
+              "Mirage 2000 LAUNCH"
+            ]
           },
           {
             "text": "J39",
-            "group": "J-39"
+            "group": [
+              "J-39",
+              "J-39 LAUNCH"
+            ]
+          },
+          {
+            "text": "J17",
+            "group": [
+              "JF-17",
+              "JF-17 LAUNCH"
+            ]
+          },
+          {
+            "text": "SAM",
+            "group": "SAM"
           },
           {
             "text": "MSL",
@@ -3066,8 +3290,7 @@
         ]
       },
       "modeLamps": {
-        "trackLamp": 0,
-        "launchLamp": 0
+        "launchLamp": 2
       }
     },
     "multifunctionDisplays": {
@@ -3125,8 +3348,17 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.0,
-            "hideBackground": true
+            "hideBackground": true,
+            "grid": {
+              "scale": 1.1,
+              "lineWidthScale": 0.8,
+              "fontScale": 0.8
+            },
+            "object": {
+              "scale": 1.2,
+              "lineWidthScale": 0.8,
+              "fontScale": 0.6
+            }
           }
         },
         {

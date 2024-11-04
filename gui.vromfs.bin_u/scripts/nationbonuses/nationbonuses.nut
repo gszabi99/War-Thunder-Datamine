@@ -8,7 +8,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isUnitInResearch } = require("%scripts/unit/unitInfo.nut")
+let { isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
 
 local unitsWithBonusData = null
 local nationBonusMarkState = null

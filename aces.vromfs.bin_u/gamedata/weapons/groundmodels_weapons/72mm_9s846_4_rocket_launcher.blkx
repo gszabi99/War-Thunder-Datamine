@@ -168,7 +168,6 @@
       "hitPowerMult": 400.0,
       "fuseDelayDist": 1.0,
       "explodeTreshold": 0.1,
-      "hasProximityFuse": true,
       "rendinstDamageRadius": 9.0,
       "price": 3000.0,
       "amountPerTier": 2.0,
@@ -200,29 +199,29 @@
           "prolongationTimeMax": 3.0
         },
         "guidanceAutopilot": {
-          "timeOut": 0.7,
+          "timeOut": 0.6,
           "propNavMult": 4.0,
           "reqAccelMax": 10.2,
           "baseIndSpeed": 1800.0,
-          "accelControlProp": 0.0026,
-          "accelControlIntg": 0.1646,
+          "accelControlProp": 0.0051,
+          "accelControlIntg": 0.0716,
           "accelControlIntgLim": 1.0,
-          "accelControlDiff": 0.0012
+          "accelControlDiff": 0.0005
         },
         "orientationAutopilot": {
           "timeOut": 0.0,
-          "controlTime": 0.7,
+          "controlTime": 0.6,
           "elevationToHeadingMult": [
             10.0,
             10.0,
             1.0,
             1.0
           ],
-          "angleToAngularRate": 9.5,
-          "accelControlProp": 0.08,
+          "angleToAngularRate": 8.5,
+          "accelControlProp": 0.076,
           "accelControlIntg": 0.0,
           "accelControlIntgLim": 0.0,
-          "accelControlDiff": 0.00026,
+          "accelControlDiff": 0.00018,
           "elevationAdd": 5.0
         }
       },
@@ -551,14 +550,6 @@
         "wood": {
           "fx": "explosion_midair_tiny"
         }
-      },
-      "proximityFuse": {
-        "timeOut": 0.5,
-        "radius": 0.5,
-        "detectAirUnits": true,
-        "detectGroundUnits": false,
-        "detectGround": false,
-        "detectShells": false
       },
       "armorpower": {
         "ArmorPower0m": [

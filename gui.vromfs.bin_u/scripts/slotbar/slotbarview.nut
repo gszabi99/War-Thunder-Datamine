@@ -20,14 +20,17 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { removeTextareaTags, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getEsUnitType, isUnitsEraUnlocked, isUnitGift, getUnitName, isUnitDefault,
-  isUnitGroup, canResearchUnit, bit_unit_status, canBuyUnit, isUnitBought, getUnitReqExp,
-  getUnitExp, isUnitInResearch, isUnitBroken
+let { getEsUnitType, isUnitsEraUnlocked, getUnitName,
+  isUnitGroup, bit_unit_status, getUnitReqExp,
+  getUnitExp, isUnitBroken
 } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
-let { getBitStatus, isUnitElite, isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, isUnitElite, isUnitInSlotbar, isUnitDefault, canResearchUnit,
+  isUnitInResearch
+} = require("%scripts/unit/unitStatus.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")

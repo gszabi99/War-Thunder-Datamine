@@ -141,7 +141,7 @@ function aamMark(pos, i) {
     children = [
       @(){
         watch = SelectedWeapSlot
-        size = SIZE_TO_CONTENT
+        size = [baseFontSize * (SelectedWeapSlot.get() == WeaponSlots.get()[i] ? 2 : 2.4), baseFontSize]
         rendObj = ROBJ_TEXT
         color = SelectedWeapSlot.get() == WeaponSlots.get()[i] ? Color(0, 255, 0, 255) : baseColor
         font = Fonts.hud

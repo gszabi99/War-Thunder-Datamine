@@ -7,7 +7,7 @@
     "Button_text": {
       "id": "btn_profile_icon",
       "class": "profileImg",
-      "css-hier-invalidate": "yes",
+      "_on_click": "onChangePilotIcon",
       "div": {
         "id": "profile-icon",
         "size": "pw,ph",
@@ -19,7 +19,7 @@
         "css-hier-invalidate": "yes",
         "profileEditBtn": {
           "type": "big",
-          "pos": "pw - w - 5@sf/@pf, ph - h - 5@sf/@pf",
+          "pos": "pw - w - 5@sf/@pf, 5@sf/@pf",
           "_on_click": "onChangePilotIcon"
         }
       },
@@ -57,7 +57,7 @@
                   "padding-right": "1@blockInterval",
                   "hideEmptyText": "yes",
                   "text": "",
-                  "color": "#787a7d"
+                  "color": "@mainPlayerColor"
                 },
                 {
                   "position": "relative",
@@ -73,15 +73,30 @@
             {
               "position": "relative",
               "css-hier-invalidate": "yes",
-              "textareaNoTab": {
-                "id": "profile-currentUser-title",
+              "Button_text": {
+                "id": "profile_currentUser_btn_title",
                 "position": "relative",
-                "unseenIcon": {
-                  "id": "unseen_titles",
-                  "pos": "pw + 1@blockInterval, 50%ph-50%h",
-                  "position": "absolute",
-                  "unseenText": {}
-                }
+                "left": "-1@buttonTextPadding",
+                "top": "4@sf/@pf",
+                "hideEmptyText": "yes",
+                "isProfileTitleBtn": "yes",
+                "css-hier-invalidate": "yes",
+                "noMargin": "yes",
+                "visualStyle": "noBgr",
+                "on_click": "openChooseTitleWnd",
+                "textareaNoTab": {
+                  "id": "profile-currentUser-title",
+                  "pos": "0, 0.5ph-0.5h",
+                  "position": "relative",
+                  "unseenIcon": {
+                    "id": "unseen_titles",
+                    "pos": "pw + 1@blockInterval, 50%ph-50%h",
+                    "position": "absolute",
+                    "unseenText": {}
+                  }
+                },
+                "focus_border": {},
+                "ButtonImg": {}
               },
               "profileEditBtn": {
                 "pos": "pw,(ph - h)/2",

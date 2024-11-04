@@ -158,13 +158,13 @@ let directionGroups = [
     text = "A"
     desc = "A"
 
-    originalName = "F"
+    originalName = "hud/rwr_threat_ai"
   },
   {
     text = "A"
     desc = "A"
 
-    originalName = "A"
+    originalName = "hud/rwr_threat_attacker"
   },
   {
     text = "Y"
@@ -347,6 +347,12 @@ let directionGroups = [
     desc = "SA-3"
 
     originalName = "S125"
+  },
+  {
+    text = "8"
+    desc = "SA-8"
+
+    originalName = "93"
   },
   {
     text = "15"

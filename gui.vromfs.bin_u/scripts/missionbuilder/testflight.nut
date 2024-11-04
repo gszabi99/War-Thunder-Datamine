@@ -391,7 +391,8 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       }, misBlk)
 
     if (isUniversalTestFlight) {
-      let airSpawnValue = get_gui_option(USEROPT_AIR_SPAWN_POINT)
+      let airSpawnOpt = get_option(USEROPT_AIR_SPAWN_POINT)
+      let airSpawnValue = airSpawnOpt.values[airSpawnOpt.value]
       misBlk.is_airfield_spawn = airSpawnValue == 0
       if (airSpawnValue != 0)
         misBlk.air_spawn_point = airSpawnValue

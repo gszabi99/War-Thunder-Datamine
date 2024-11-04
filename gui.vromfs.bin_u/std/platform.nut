@@ -1,6 +1,6 @@
 let {dgs_get_settings, DBGLEVEL, get_arg_value_by_name} = require("dagor.system")
 let platform = require("platform")
-let {get_platform_string_id, get_console_model, get_console_model_revision} = platform
+let {get_platform_string_id, get_console_model, get_console_model_revision, is_gdk_used} = platform
 let { is_running_on_steam_deck = @() false } = require_optional("steam")
 
 let systemPlatformId = get_platform_string_id()
@@ -15,6 +15,7 @@ let is_pc = oneOf("win32", "win64", "macosx", "linux64")
 let is_sony = oneOf("ps4", "ps5")
 let isPlatformSony = @(pl) ["ps4", "ps5"].contains(pl)
 let is_xbox = oneOf("xboxOne", "xboxScarlett")
+let is_gdk = is_gdk_used()
 let isPlatformXbox = @(pl) ["xboxOne", "xboxScarlett"].contains(pl)
 let is_nswitch = oneOf("nswitch")
 let is_mobile = oneOf("iOS", "android")
@@ -59,6 +60,7 @@ return {
   consoleRevision
   platformAlias
   is_pc
+  is_gdk
   is_steam_deck
   is_windows = oneOf("win32", "win64")
   is_win32 = oneOf("win32")

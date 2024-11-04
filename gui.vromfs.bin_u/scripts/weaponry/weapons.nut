@@ -688,7 +688,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       tooltipId = getCustomTooltipId(this.air.name, item, {
         curEdiff = currentEdiff
       })
-      researchFinished = this?.researchBlock.prevMod == item.name
+      researchFinished = this?.researchBlock.prevMod == item.name && this.lastResearchMod == null
     })
   }
 

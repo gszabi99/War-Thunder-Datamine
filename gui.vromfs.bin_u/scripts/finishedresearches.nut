@@ -12,7 +12,7 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { register_command } = require("console")
-let { isUnitBought } = require("%scripts/unit/unitInfo.nut")
+let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 
 let researched_items_table = persist("researched_items_table", @() [])
 let abandoned_researched_items_for_session = persist("abandoned_researched_items_for_session", @() [])

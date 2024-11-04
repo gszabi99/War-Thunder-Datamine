@@ -25319,8 +25319,8 @@
   },
   "treeDestractible": {
     "heightThreshold": 3.0,
-    "radiusThreshold": 0.5,
-    "impulseThresholdMult": 1.0,
+    "radiusThreshold": 0.1,
+    "impulseThresholdMult": 1000.0,
     "canopyRestitution": 0.5,
     "canopyStiffnessMult": 1.0,
     "canopyAngularLimit": 0.3,
@@ -25358,17 +25358,18 @@
     },
     "branchDestr": {
       "enable": true,
-      "impulseMul": 1.5,
-      "impulseMaxLength": 1.0,
-      "branchSizeMax": 4.0,
-      "rotateSpeedMulX": 0.25,
-      "rotateSpeedMulY": 2.5,
-      "rotateSpeedMulZ": 0.25,
+      "multiplyMode": false,
+      "impulseMul": 1.0,
+      "impulseMaxLength": 2.0,
+      "branchSizeMax": 6.0,
+      "rotateSpeedMulX": 1.33,
+      "rotateSpeedMulY": 1.33,
+      "rotateSpeedMulZ": 1.33,
       "rotateAngleSpread": 1.5,
       "branchSizeSlowDown": 0.3,
       "fallingSpeedMul": 0.25,
       "fallingSpeedRnd": 0.15,
-      "horizontalSpeedMul": 1.0
+      "horizontalSpeedMul": 1.33
     }
   },
   "ground_decals_detail": {

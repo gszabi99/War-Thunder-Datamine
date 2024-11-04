@@ -203,13 +203,13 @@ let directionGroups = [
   {
     text = "F",
     type = ThreatType.AI,
-    originalName = "F",
+    originalName = "hud/rwr_threat_ai",
     lethalRangeMax = 5000.0
   },
   {
     text = "A",
     type = ThreatType.AI,
-    originalName = "A",
+    originalName = "hud/rwr_threat_attacker",
     lethalRangeMax = 8000.0
   },
   {
@@ -295,6 +295,11 @@ let directionGroups = [
     text = "3",
     originalName = "S125",
     lethalRangeMax = 16000.0
+  },
+  {
+    text = "8",
+    originalName = "93",
+    lethalRangeMax = 12000.0
   },
   {
     text = "15",

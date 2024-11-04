@@ -12,37 +12,37 @@
     "bulletName": "su_9M336",
     "statType": "hydra",
     "caliber": 0.0722,
-    "length": 1.68,
+    "length": 1.635,
     "WdK": [
       0.1,
       0.1,
       0.1
     ],
-    "CxK": 1.75,
+    "CxK": 1.65,
     "wingAreaMult": 1.05,
-    "finsAoaHor": 0.0465,
-    "finsAoaVer": 0.0465,
-    "finsLatAccel": 14.16,
+    "finsAoaHor": 0.0555,
+    "finsAoaVer": 0.0555,
+    "finsLatAccel": 18.0,
     "distFromCmToStab": 0.0175,
-    "mass": 10.6,
-    "massEnd": 7.69,
-    "massEnd1": 5.59,
+    "mass": 11.7,
+    "massEnd": 8.8,
+    "massEnd1": 6.6,
     "timeFire": 1.9,
     "timeFire1": 6.6,
-    "force": 2975.0,
-    "force1": 705.0,
+    "force": 3130.0,
+    "force1": 735.0,
     "fireDelay": 0.4,
-    "timeLife": 14.0,
+    "timeLife": 13.0,
     "orientationTorque": 500.0,
     "useStartSpeed": true,
     "startSpeed": 30.0,
     "machMax": 1.7,
-    "maxSpeed": 570.0,
+    "maxSpeed": 600.0,
     "endSpeed": 1000.0,
     "maxDistance": 8000.0,
     "minDistance": 30.0,
-    "rangeMax": 5200.0,
-    "loadFactorMax": 10.2,
+    "rangeMax": 6000.0,
+    "loadFactorMax": 12.0,
     "visRotationFreqX": 20.0,
     "guidanceType": "ir",
     "guidanceSfx": "alarm_con_scan",
@@ -60,8 +60,8 @@
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
-    "explosiveType": "okfol_20",
-    "explosiveMass": 0.4,
+    "explosiveType": "ocfol",
+    "explosiveMass": 0.57,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.018,
     "spawnExplosionFx": false,
@@ -84,11 +84,11 @@
     "hitPowerMult": 400.0,
     "fuseDelayDist": 1.0,
     "explodeTreshold": 0.1,
-    "hasProximityFuse": true,
     "rendinstDamageRadius": 9.0,
     "price": 3000.0,
     "amountPerTier": 2.0,
     "iconType": "missile_air_to_air_group",
+    "hasProximityFuse": true,
     "guidance": {
       "warmUpTime": 2.0,
       "workTime": 60.0,
@@ -97,7 +97,7 @@
       "breakLockMaxTime": 5.0,
       "irSeeker": {
         "rangeBand0": 11000.0,
-        "rangeBand1": 6000.0,
+        "rangeBand1": 6500.0,
         "rangeBand2": 11000.0,
         "rangeBand3": 0.0,
         "rangeBand6": 1000.0,
@@ -108,39 +108,39 @@
           0.0,
           -5.0
         ],
-        "gateWidth": 1.0,
+        "gateWidth": 0.5,
         "bandMaskToReject": 4,
         "minAngleToSun": 5.0,
-        "lockAngleMax": 38.0,
-        "angleMax": 38.0,
+        "lockAngleMax": 40.0,
+        "angleMax": 40.0,
         "rateMax": 12.0,
         "prolongationTimeMax": 3.0
       },
       "guidanceAutopilot": {
-        "timeOut": 0.7,
+        "timeOut": 0.6,
         "propNavMult": 4.0,
-        "reqAccelMax": 10.2,
+        "reqAccelMax": 12.0,
         "baseIndSpeed": 1800.0,
-        "accelControlProp": 0.0026,
-        "accelControlIntg": 0.1646,
+        "accelControlProp": 0.0056,
+        "accelControlIntg": 0.0626,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0012
+        "accelControlDiff": 0.0004
       },
       "orientationAutopilot": {
         "timeOut": 0.0,
-        "controlTime": 0.7,
-        "elevationAdd": 1.5,
+        "controlTime": 0.6,
+        "elevationAdd": 2.5,
         "elevationToHeadingMult": [
           10.0,
           10.0,
           1.0,
           1.0
         ],
-        "angleToAngularRate": 9.5,
-        "accelControlProp": 0.08,
+        "angleToAngularRate": 8.5,
+        "accelControlProp": 0.079,
         "accelControlIntg": 0.0,
         "accelControlIntgLim": 0.0,
-        "accelControlDiff": 0.00026
+        "accelControlDiff": 0.00017
       }
     },
     "stabilityRicochetModifier": {
@@ -469,14 +469,6 @@
         "fx": "explosion_midair_tiny"
       }
     },
-    "proximityFuse": {
-      "timeOut": 0.5,
-      "radius": 0.5,
-      "detectAirUnits": true,
-      "detectGroundUnits": false,
-      "detectGround": false,
-      "detectShells": false
-    },
     "armorpower": {
       "ArmorPower0m": [
         28.0,
@@ -504,6 +496,13 @@
         400.0,
         10000.0
       ]
+    },
+    "proximityFuse": {
+      "timeOut": 1.25,
+      "radius": 1.2,
+      "detectAirUnits": true,
+      "detectGroundUnits": false,
+      "detectGround": false
     }
   }
 }

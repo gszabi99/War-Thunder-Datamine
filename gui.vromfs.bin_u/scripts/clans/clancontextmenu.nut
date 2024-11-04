@@ -69,7 +69,7 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
         }
       }
       {
-        text = loc("mainmenu/btnUserCard")
+        text = loc("mainmenu/btnProfile")
         action = @() ::gui_modal_userCard({ uid = playerUid })
       }
       {

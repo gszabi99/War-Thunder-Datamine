@@ -114,6 +114,40 @@
       },
       "else_actions": {}
     },
+    "change_attack_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "air_spawn",
+          "value": "spawn_area06",
+          "comparasion_func": "equal"
+        },
+        "varCompareBool": {
+          "var_value": "is_high",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "varAddString": {
+          "value": "_high",
+          "digits": 0,
+          "var": "air_spawn"
+        }
+      },
+      "else_actions": {}
+    },
     "ship_spawn": {
       "is_enabled": false,
       "comments": "",
@@ -234,6 +268,10 @@
             "var": "airfield_unit_name"
           },
           {
+            "value": "attack_area_high",
+            "var": "attack_area"
+          },
+          {
             "value": "airfield_high",
             "var": "airfield_spawn"
           },
@@ -263,7 +301,13 @@
             "target": "unit_mode_idle"
           },
           {
-            "target": "make_aircraft_ship"
+            "target": [
+              "make_aircraft_ship",
+              "change_attack_spawn"
+            ]
+          },
+          {
+            "target": "bdt_part_init"
           }
         ],
         "varAddString": {
@@ -271,18 +315,18 @@
           "digits": 0,
           "var": "air_spawn",
           "input_var": "air_spawn_point"
+        },
+        "varSetInt": {
+          "value": 50,
+          "var": "bdt_balance_level"
         }
       },
       "else_actions": {
-        "triggerEnable": [
-          {
-            "target": "unit_mode_idle"
-          },
-          {
-            "target": "make_aircraft_ship"
-          }
-        ],
         "varSetString": [
+          {
+            "value": "attack_area_low",
+            "var": "attack_area"
+          },
           {
             "value": "airfield_high",
             "var": "airfield_unit_name"
@@ -312,11 +356,26 @@
             "var": "airfield_end"
           }
         ],
+        "triggerEnable": [
+          {
+            "target": "unit_mode_idle"
+          },
+          {
+            "target": "make_aircraft_ship"
+          },
+          {
+            "target": "bdt_part_init"
+          }
+        ],
         "varAddString": {
           "value": "",
           "digits": 0,
           "var": "air_spawn",
           "input_var": "air_spawn_point"
+        },
+        "varSetInt": {
+          "value": 1,
+          "var": "bdt_balance_level"
         }
       }
     },
@@ -1783,7 +1842,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "@player",
-          "target": "attack_area"
+          "target": "@attack_area"
         }
       },
       "actions": {
@@ -1854,7 +1913,8 @@
     "air_spawn_point": 1,
     "is_high": true,
     "is_airfield_spawn": false,
-    "airfield_spawn_area": ""
+    "airfield_spawn_area": "",
+    "attack_area": ""
   },
   "dialogs": {},
   "airfields": {},

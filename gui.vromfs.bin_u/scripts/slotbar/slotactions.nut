@@ -1,11 +1,14 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 
-let { isUnitInSlotbar, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar, canBuyNotResearched, isUnitMaxExp, canResearchUnit,
+  isUnitInResearch
+} = require("%scripts/unit/unitStatus.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { isUnitGift, isUnitGroup, canResearchUnit, canBuyUnit, getUnitExp, isUnitMaxExp, isUnitInResearch, isUnitBroken
+let { isUnitGroup, getUnitExp, isUnitBroken
 } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 

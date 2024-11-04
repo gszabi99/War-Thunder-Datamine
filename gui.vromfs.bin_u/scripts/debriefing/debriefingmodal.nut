@@ -97,7 +97,8 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { blendProp } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
-let { getUnitName, isUnitInResearch } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_game_settings_blk
 } = require("blkGetters")
 let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")

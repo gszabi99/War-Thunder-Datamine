@@ -515,6 +515,7 @@
     "formatVersion": 2,
     "armorClass": "tank_structural_steel",
     "hp": 10000.0,
+    "hidableInViewer": false,
     "hull": {
       "armorThickness": 4.0,
       "turret_02_top_dm": {},
@@ -529,9 +530,13 @@
       "turret_02_side_dm": {},
       "turret_01_bottom_dm": {},
       "turret_02_front_dm": {},
-      "ex_armor_body_02_dm": {},
+      "ex_armor_body_02_dm": {
+        "hidableInViewer": true
+      },
       "ex_armor_body_06_dm": {},
-      "body_shield_dm": {},
+      "body_shield_dm": {
+        "hidableInViewer": true
+      },
       "ex_armor_body_01_dm": {},
       "turret_front_dm": {},
       "turret_03_top_dm": {},
@@ -3004,7 +3009,7 @@
       },
       {
         "name": "fuel_exterior",
-        "lifetime": 15.0,
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3012,7 +3017,7 @@
       },
       {
         "name": "fuel_internal",
-        "lifetime": 15.0,
+        "lifetime": 50.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3020,7 +3025,7 @@
       },
       {
         "name": "hydraulic_internal",
-        "lifetime": 10.0,
+        "lifetime": 30.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3028,7 +3033,7 @@
       },
       {
         "name": "powersystem_internal",
-        "lifetime": 10.0,
+        "lifetime": 30.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
@@ -3036,7 +3041,7 @@
       },
       {
         "name": "powersystem_exterior",
-        "lifetime": 10.0,
+        "lifetime": 30.0,
         "fx": {
           "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true

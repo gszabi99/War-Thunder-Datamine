@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { isUnitGift, canBuyUnit } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let getUnitShopPriceText = @(unit)

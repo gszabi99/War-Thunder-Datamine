@@ -8,8 +8,10 @@ let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnitName, canResearchUnit, canBuyUnit, getUnitReqExp, getUnitExp, isUnitInResearch, getUnitCost
+let { getUnitName, getUnitReqExp, getUnitExp, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
+let { canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
 
 local handlerClass = class (vehiclesModal.handlerClass) {
   canQuitByGoBack       = false

@@ -39,6 +39,10 @@ function getLogForBanhammer() {
   return chatLogFormatForBanhammer.__merge({ chatLog = logObj })
 }
 
+function removeForbiddenCharacters(msg) {
+  return msg.replace("\\n", " ")
+}
+
 function clearMpChatLog() {
   onChatClear()
   broadcastEvent("MpChatLogUpdated")
@@ -81,7 +85,8 @@ function onIncomingMessage(sender, msg, _enemy, mode, automatic) {
   checkChatEnableWithPlayer(sender, function(canChat) {
     if (!canChat)
       return
-    onIncomingMessageImpl(sender, msg, mode, automatic)
+
+    onIncomingMessageImpl(sender, removeForbiddenCharacters(msg), mode, automatic)
   })
 }
 

@@ -7,7 +7,7 @@ let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isUnitDefault } = require("%scripts/unit/unitInfo.nut")
+let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
 let { isInFlight } = require("gameplayBinding")
 
 local isFallbackUnitInHangar = null

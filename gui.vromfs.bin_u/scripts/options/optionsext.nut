@@ -28,7 +28,6 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_unit_option, set_unit_option, set_gui_option, get_gui_option,
   setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption, getCdBaseDifficulty
 } = require("guiOptions")
-let { abs } = require("math")
 let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let time = require("%scripts/time.nut")
@@ -431,7 +430,7 @@ function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
   let minVal = params?.min ?? 0
   let maxVal = params?.max ?? 100
   let step = params?.step ?? 5
-  let clickByPoints = abs(maxVal - minVal) == 1 ? "yes" : "no"
+  let clickByPoints = params?.clickByPoints ? "yes" : "no"
   local data = "".concat(
     $"id:t = '{id}'; min:t='{minVal}'; max:t='{maxVal}'; step:t = '{step}'; value:t = '{value}'; ",
     $"clicks-by-points:t='{clickByPoints}'; fullWidth:t={!params?.needShowValueText  ? "yes" : "no"};",
@@ -4370,15 +4369,13 @@ let optionsMap = {
   [USEROPT_AIR_SPAWN_POINT] = function(optionId, descr, _context) {
     descr.id = "air_spawn_point"
     let unit = getAircraftByName(getUnitNameForWeapons())
-    descr.values = unit?.isHelicopter() ? [0, 1, 2, 6] : [0, 1, 2, 3, 4, 5, 6]
+    descr.values = unit?.isHelicopter() ? [0, 6, 1, 2] : [0, 6, 1, 2, 3, 4, 5]
     let measure = loc("measureUnits/km_dist")
     descr.items = unit?.isHelicopter()
-      ? [loc("multiplayer/airfieldName"), $"1 {measure}", $"2 {measure}", loc("options/air_spawn_point/sam")]
-      : [loc("multiplayer/airfieldName"), $"1 {measure}", $"2 {measure}", $"3 {measure}",
-          $"5 {measure}", $"7 {measure}", loc("options/air_spawn_point/sam")]
-
-    let lastValue = get_gui_option(optionId)
-    descr.value = descr.values.findvalue(@(v) v == lastValue) ?? 0
+      ? [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"), $"1 {measure}", $"2 {measure}"]
+      : [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"), $"1 {measure}", $"2 {measure}",
+          $"3 {measure}", $"5 {measure}", $"7 {measure}"]
+    descr.value = get_gui_option(optionId)
   },
   [USEROPT_TARGET_RANK] = function(optionId, descr, _context) {
     descr.id = "target_rank"

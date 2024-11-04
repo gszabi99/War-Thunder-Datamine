@@ -148,8 +148,7 @@ let rwr = @() {
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           fontSize = hudFontHgt * 1.2
-          text = rwrTargets[0].groupId >= 0 && rwrTargets[0].groupId < settings.value.directionGroups.len() ?
-            settings.value.directionGroups[rwrTargets[0].groupId].text : settings.value.unknownText
+          text = settings.get().directionGroups?[rwrTargets[0].groupId].text ?? settings.get().unknownText
         }
         {
           size = flex()

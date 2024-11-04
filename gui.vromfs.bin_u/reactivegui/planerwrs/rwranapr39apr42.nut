@@ -182,6 +182,11 @@ let directionGroups = [
     type = ThreatType.AD
   },
   {
+    text = "  8",
+    originalName = "93",
+    type = ThreatType.AD
+  },
+  {
     text = "1 5",
     originalName = "9K3",
     type = ThreatType.AD

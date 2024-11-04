@@ -163,6 +163,7 @@ tdiv {
       interactive:t='yes'
       font-bold:t='@fontSmall'
       text:t='<<title>>'
+      <<#listOfTrophies>>margin-bottom:t='1@blockInterval'<</listOfTrophies>>
     }
     <</title>>
 

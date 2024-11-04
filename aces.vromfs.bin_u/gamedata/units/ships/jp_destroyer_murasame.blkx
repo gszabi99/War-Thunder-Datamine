@@ -3207,12 +3207,12 @@
       {
         "name": "bomb_mortars",
         "blk": "gameData/units/ships/weaponPresets/jp_destroyer_murasame_bomb_mortar.blk",
-        "reqModification": "ship_torpedoes"
+        "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "torpedoes_bomb_mortar",
         "blk": "gameData/units/ships/weaponPresets/jp_destroyer_murasame_torpedoes_bomb_mortar.blk",
-        "reqModification": "ship_torpedoes"
+        "reqModification": "ship_bomb_mortar"
       },
       {
         "name": "jp_destroyer_murasame_default",
@@ -4662,21 +4662,35 @@
           ]
         }
       },
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_01_dm": {
-          "count": 300
+      "shells": [
+        {
+          "entityMunition": "first_stage",
+          "firstStage": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "fireEvent": "ready_use_ammo_fire",
+          "explosionEvent": "ready_use_ammo_explosion",
+          "damageEffect": "ammunition_first_stage",
+          "ammo_turret_01_dm": {
+            "count": 30
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_01_dm": {
+            "count": 300
+          }
         }
-      },
+      ],
       "charges": {
         "entityMunition": "charges",
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_01_dm": {
-          "count": 300
+          "count": 330
         }
       }
     },
@@ -4767,21 +4781,35 @@
           ]
         }
       },
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_02_dm": {
-          "count": 300
+      "shells": [
+        {
+          "entityMunition": "first_stage",
+          "firstStage": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "fireEvent": "ready_use_ammo_fire",
+          "explosionEvent": "ready_use_ammo_explosion",
+          "damageEffect": "ammunition_first_stage",
+          "ammo_turret_02_dm": {
+            "count": 30
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_02_dm": {
+            "count": 300
+          }
         }
-      },
+      ],
       "charges": {
         "entityMunition": "charges",
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_02_dm": {
-          "count": 300
+          "count": 330
         }
       }
     },
@@ -4872,22 +4900,36 @@
           ]
         }
       },
-      "shells": {
-        "entityMunition": "shells",
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_03_dm": {
-          "count": 300
+      "shells": [
+        {
+          "entityMunition": "first_stage",
+          "firstStage": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "fireEvent": "ready_use_ammo_fire",
+          "explosionEvent": "ready_use_ammo_explosion",
+          "damageEffect": "ammunition_first_stage",
+          "ammo_turret_03_dm": {
+            "count": 30
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_03_dm": {
+            "count": 300
+          }
         }
-      },
+      ],
       "charges": {
         "entityMunition": "charges",
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "explosionEvent": "ammo_explosion_2",
         "ammunition_storage_charges_03_dm": {
-          "count": 300
+          "count": 330
         }
       }
     },
@@ -4959,7 +5001,7 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_01_dm": {
-          "count": 1500
+          "count": 3000
         }
       }
     },
@@ -5031,7 +5073,7 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_02_dm": {
-          "count": 1500
+          "count": 3000
         }
       }
     },
@@ -5217,6 +5259,7 @@
           }
         },
         {
+          "isStock": true,
           "damageEffect": "ammunition_depth_charges",
           "ammunition_storage_01_dm": {
             "count": 120
@@ -5245,18 +5288,21 @@
           }
         },
         {
+          "isStock": true,
           "damageEffect": "ammunition_depth_charges",
           "depth_charge_27_dm": {
             "count": 1
           }
         },
         {
+          "isStock": true,
           "damageEffect": "ammunition_depth_charges",
           "depth_charge_28_dm": {
             "count": 1
           }
         },
         {
+          "isStock": true,
           "damageEffect": "ammunition_depth_charges",
           "depth_charge_29_dm": {
             "count": 1
@@ -5285,18 +5331,21 @@
           }
         },
         {
+          "isStock": true,
           "damageEffect": "ammunition_depth_charges",
           "depth_charge_32_dm": {
             "count": 1
           }
         },
         {
+          "isStock": true,
           "damageEffect": "ammunition_depth_charges",
           "depth_charge_31_dm": {
             "count": 1
           }
         },
         {
+          "isStock": true,
           "damageEffect": "ammunition_depth_charges",
           "depth_charge_30_dm": {
             "count": 1

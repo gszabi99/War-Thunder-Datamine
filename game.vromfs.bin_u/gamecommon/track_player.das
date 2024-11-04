@@ -11,7 +11,7 @@ def track_players_es(evt : Event; eid : EntityId; playerNo : int)
   elif playerNo < 0 && has(eid, "playerUnit")
     removeSubTemplate(eid, "player_unit")
 
-[es(tag=server, on_event=CmdInitComponent, REQUIRE=playerUnit)]
+[es(tag=server, on_appear, after=unit_init_completed_es, REQUIRE=playerUnit)]
 def unit_set_controlled_by_es(evt : Event;
                               unit__ref : UnitRef;
                               playerNo : int;
@@ -23,7 +23,7 @@ def unit_set_controlled_by_es(evt : Event;
       return true
     return false
 
-[es(tag=netClient, on_event=CmdInitComponent, REQUIRE=playerUnit)]
+[es(tag=netClient, on_appear, after=unit_init_completed_es, on_event=CmdInitComponent, REQUIRE=playerUnit)]
 def unit_set_controlled_by_on_client_es(evt : Event;
                                         unit__ref : UnitRef;
                                         var replication : NetObject)

@@ -121,3 +121,16 @@ SwitchBox[btnName] > ButtonImg
   top:50%ph-50%h;
   position:'absolute';
 }
+
+tr[optContainer=yes] > td[cellType="right"] > SwitchBox SwitchSlider,
+tr[optContainer=yes] > td[cellType="right"] > SwitchBox SwitchSliderBg {
+  behavior:basicTransparency;
+  transp-base:170;
+  transp-end:170;
+}
+
+tr[optContainer=yes]:hover > td[cellType="right"] > SwitchBox SwitchSlider,
+tr[optContainer=yes]:hover > td[cellType="right"] > SwitchBox SwitchSliderBg {
+  transp-base:255;
+  transp-end:255;
+}

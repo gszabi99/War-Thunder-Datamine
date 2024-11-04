@@ -1,11 +1,10 @@
-from "%scripts/dagui_natives.nut" import is_era_available, shop_unit_research_status, is_default_aircraft, shop_get_unit_exp, wp_get_repair_cost, wp_get_cost, wp_get_cost_gold
+from "%scripts/dagui_natives.nut" import is_era_available, shop_get_unit_exp, wp_get_repair_cost, wp_get_cost, wp_get_cost_gold
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
 
 enum bit_unit_status {
@@ -46,16 +45,6 @@ function getUnitName(unit, shopName = true) {
   return shopName ? localized.replace(" ", nbsp) : localized
 }
 
-function isUnitDefault(unit) {
-  if (!("name" in unit))
-    return false
-  return is_default_aircraft(unit.name)
-}
-
-function isUnitGift(unit) {
-  return unit.gift != null
-}
-
 function getUnitCountryIcon(unit, needOperatorCountry = false) {
   return getCountryIcon(needOperatorCountry ? unit.getOperatorCountry() : unit.shopCountry)
 }
@@ -83,17 +72,6 @@ function isGroupPart(unit) {
   return unit && unit.group != null
 }
 
-function canBuyUnit(unit) {
-  if (isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
-    return false           // if vehicle could be bought in game, but it became a gift vehicle.
-
-  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
-    return false
-
-  let status = shop_unit_research_status(unit.name)
-  return (0 != (status & ES_ITEM_STATUS_CAN_BUY)) && unit.isVisibleInShop()
-}
-
 let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
 
 let unitSensorsCache = {}
@@ -115,16 +93,14 @@ function isUnitWithSensorType(unit, sensorType) {
     }
   return unitSensorsCache[unitName]?[sensorType] ?? false
 }
+
 let isUnitWithRadar = @(unit) isUnitWithSensorType(unit, "radar")
+
 let isUnitWithRwr = @(unit) isUnitWithSensorType(unit, "rwr")
 
 function getRomanNumeralRankByUnitName (unitName) {
   let unit = unitName ? ::findUnitNoCase(unitName) : null
   return unit ? get_roman_numeral(unit.rank) : null
-}
-
-function isUnitBought(unit) {
-  return unit ? unit.isBought() : false
 }
 
 function getUnitReqExp(unit) {
@@ -135,39 +111,6 @@ function getUnitReqExp(unit) {
 
 function getUnitExp(unit) {
   return shop_get_unit_exp(unit.name)
-}
-
-function isUnitMaxExp(unit) { //temporary while not exist correct status between in_research and canBuy
-  return isUnitSpecial(unit) || (getUnitReqExp(unit) <= getUnitExp(unit))
-}
-
-function canResearchUnit(unit) {
-  let isInShop = unit?.isInShop
-  if (isInShop == null) {
-    debugTableData(unit)
-    assert(false, "not existing isInShop param")
-    return false
-  }
-
-  if (!isInShop)
-    return false
-
-  if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
-    return false
-
-  let status = shop_unit_research_status(unit.name)
-  return (0 != (status & (ES_ITEM_STATUS_IN_RESEARCH | ES_ITEM_STATUS_CAN_RESEARCH))) && !isUnitMaxExp(unit)
-}
-
-function isUnitInResearch(unit) {
-  if (!unit)
-    return false
-
-  if (!("name" in unit))
-    return false
-
-  local status = shop_unit_research_status(unit.name)
-  return ((status & ES_ITEM_STATUS_IN_RESEARCH) != 0) && !isUnitMaxExp(unit)
 }
 
 let getUnitRepairCost = @(unit) ("name" in unit) ? wp_get_repair_cost(unit.name) : 0
@@ -192,19 +135,16 @@ function getUnitCost(unit) {
 }
 
 return {
-  bit_unit_status, canBuyUnit,
+  bit_unit_status,
   getEsUnitType, getUnitTypeTextByUnit, isUnitsEraUnlocked, getUnitName,//next
-  getUnitCountry, isUnitDefault, isUnitGift, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart, canResearchUnit,
+  getUnitCountry, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
+  isUnitGroup, isGroupPart,
   isRequireUnlockForUnit,
   isUnitWithRadar,
   isUnitWithRwr
   getRomanNumeralRankByUnitName
-  isUnitBought
   getUnitReqExp
   getUnitExp
-  isUnitMaxExp
-  isUnitInResearch
   isUnitBroken
   isUnitDescriptionValid
   getUnitRealCost

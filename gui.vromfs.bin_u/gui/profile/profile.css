@@ -285,6 +285,10 @@ hiddenDiv[isProfilePageUnlock=yes] unlockCondition > textarea {
   font:@fontNormal;
 }
 
+hiddenDiv[isProfilePageUnlock=yes] unlockCondition > unlockImg {
+  display:hide;
+}
+
 hiddenDiv[isProfilePageUnlock=yes] Button_text {
   margin-bottom:0;
 }
@@ -359,6 +363,10 @@ profileEditBtn[type=big] {
   background-svg-size: 32@sf/@pf, 32@sf/@pf;
 }
 
-[isEditModeEnabled=yes] profileEditBtn{
+[isEditModeEnabled=yes] profileEditBtn {
   display:show;
+}
+
+[show_console_buttons=yes] Button_text[isProfileTitleBtn=yes] {
+  left:0;
 }

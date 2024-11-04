@@ -287,15 +287,15 @@ function createRwrPriorityTarget(settings, objectStyle) {
 let directionGroups = [
   {
     text = "F",
-    originalName = "F",
+    originalName = "hud/rwr_threat_ai",
     type = ThreatType.AI,
     lethalRangeMax = 5000.0
   },
   {
     text = "A",
-    originalName = "A",
+    originalName = "hud/rwr_threat_attacker",
     type = ThreatType.AI,
-    lethalRangeMax = 8000.0
+    lethalRangeMax = 5000.0
   },
   {
     text = "21",
@@ -382,6 +382,12 @@ let directionGroups = [
     originalName = "S125",
     type = ThreatType.SAM,
     lethalRangeMax = 16000.0
+  },
+  {
+    text = "8",
+    originalName = "93",
+    type = ThreatType.SAM,
+    lethalRangeMax = 12000.0
   },
   {
     text = "15",

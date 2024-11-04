@@ -7,7 +7,8 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let DataBlock  = require("DataBlock")
 let { parseDiscountDescription, createDiscountDescriptionSortData,
   sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
-let { getUnitName, canBuyUnit, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
