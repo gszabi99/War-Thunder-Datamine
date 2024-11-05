@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
+from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_army_for_hud, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left, get_mp_kick_countdown
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
@@ -106,7 +106,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let timeToKickObj = this.getTimeToKickObj()
     if (!checkObj(timeToKickObj))
       return
-    let timeToKickValue = ::get_mp_kick_countdown()
+    let timeToKickValue = get_mp_kick_countdown()
     // Already in battle or it's too early to show the message.
     if (timeToKickValue <= 0 || get_time_to_kick_show_timer() < timeToKickValue)
       timeToKickObj.setValue("")
@@ -123,7 +123,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let timeToKickAlertObj = this.scene.findObject("time_to_kick_alert_text")
     if (!checkObj(timeToKickAlertObj))
       return
-    let timeToKickValue = ::get_mp_kick_countdown()
+    let timeToKickValue = get_mp_kick_countdown()
     if (timeToKickValue <= 0 || get_time_to_kick_show_alert() < timeToKickValue || this.isSpectate)
       timeToKickAlertObj.show(false)
     else {

@@ -30,6 +30,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -922,7 +923,7 @@ function isUnitHaveAnyWeaponsTags(unit, tags, checkPurchase = true) {
 function checkUnitSecondaryWeapons(unit) {
   foreach (weapon in getSecondaryWeaponsList(unit))
     if (isWeaponEnabled(unit, weapon) ||
-      (::isUnitUsable(unit) && isWeaponUnlocked(unit, weapon))) {
+      (isUnitUsable(unit) && isWeaponUnlocked(unit, weapon))) {
       let res = checkAmmoAmount(unit, weapon.name, AMMO.WEAPON)
       if (res != UNIT_WEAPONS_READY)
         return res

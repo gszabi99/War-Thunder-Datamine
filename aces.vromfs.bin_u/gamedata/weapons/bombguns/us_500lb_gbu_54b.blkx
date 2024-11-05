@@ -8,8 +8,7 @@
   "mesh": "us_500_lb_gbu38_usaf",
   "tags": {},
   "bomb": {
-    "bulletName": "us_500lb_gbu38_usaf",
-    "mass": 253.1,
+    "bulletName": "us_500lb_gbu_54b",
     "mass_lbs": 500.0,
     "caliber": 0.273,
     "length": 2.377948,
@@ -43,8 +42,8 @@
     "explodeOnRendinst": true,
     "explosiveType": "comp_h6",
     "explosiveMass": 87.1,
-    "guidanceType": "sns",
-    "timeLife": 150.0,
+    "guidanceType": "laser",
+    "timeLife": 200.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -102,6 +101,11 @@
     "rendinstDamageRadius": 29.0,
     "sound": "weapon.bomb_std",
     "iconType": "guided_bomb_middle_jdam",
+    "isHasLaserChannel": true,
+    "opticSightFov": [
+      5.0,
+      5.0
+    ],
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -120,13 +124,15 @@
       "damageType": "pressure"
     },
     "guidance": {
-      "angleMax": 180.0,
       "permanentlyActivated": true,
-      "warmUpTime": 1.0,
-      "acquisitionTime": 0.1,
-      "workTime": 3600.0,
-      "designationSourceTypeMask": 1,
-      "constantDesignationSourceTypeMask": 1,
+      "inertialNavigation": true,
+      "lockOnAfterLaunch": true,
+      "inertialNavigationDriftSpeed": 0.0,
+      "launchAngleMax": [
+        180.0,
+        90.0
+      ],
+      "breakLockMaxTime": 5.0,
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": 5.0,
@@ -142,11 +148,11 @@
           1.0
         ],
         "timeToGain2": [
-          150.0,
+          200.0,
           1.0
         ],
         "timeToGain3": [
-          150.1,
+          200.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
@@ -156,6 +162,18 @@
         "accelControlIntg": 0.192499,
         "accelControlIntgLim": 1.0,
         "accelControlDiff": 0.0004
+      },
+      "laserSeeker": {
+        "range": 4876.8,
+        "rangeMax": 4876.8,
+        "fov": 32.0,
+        "lockAngleMax": 0.0,
+        "angleMax": 0.0,
+        "rateMax": 10000.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 9,
+        "filterAlpha": 0.85,
+        "filterBetta": 0.2
       }
     },
     "arcadeProp": {

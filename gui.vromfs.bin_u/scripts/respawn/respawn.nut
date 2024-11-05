@@ -93,6 +93,7 @@ let { createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitU
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput
 } = require("%scripts/chat/mpChat.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 
@@ -884,7 +885,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if (this.slotbarInited)
       this.prevUnitAutoChangeTimeMsec = -1
-    ::cur_aircraft_name = unit.name
 
     this.slotbarInited = true
     this.onAircraftUpdate()
@@ -1021,7 +1021,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!air)
       return
 
-    ::aircraft_for_weapons = air.name
+    unitNameForWeapons.set(air.name)
 
     let option = respawnOptions.get(obj?.id)
     if (option.userOption != -1) {
@@ -1068,9 +1068,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let unit = this.getCurSlotUnit()
     local isUnitChanged = false
     if (unit) {
-      isUnitChanged = ::aircraft_for_weapons != unit.name
-      ::cur_aircraft_name = unit.name //used in some options
-      ::aircraft_for_weapons = unit.name
+      isUnitChanged = unitNameForWeapons.get() != unit.name
+      unitNameForWeapons.set(unit.name)
       showedUnit(unit)
 
       if (isUnitChanged || this.isFirstUnitOptionsInSession)

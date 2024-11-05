@@ -272,6 +272,7 @@
   "leaveKillerSearchDistanceMax": 3000.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
   "enableAircraftSevereDamage": true,
+  "enableMissileEvasion": true,
   "showDamageReport": false,
   "damageReportTimeOut": 1.0,
   "showFireDamageReport": true,
@@ -443,7 +444,7 @@
   "traceRendInstSecondLayerMinHeight": 0.5,
   "shipFireControlIndicationOn": true,
   "rocketSightWaterConeEnabled": false,
-  "volumetricAfterBurnerDistanceOcclusion": 500.0,
+  "volumetricAfterBurnerDistanceOcclusion": 1000.0,
   "deadTankDecalLengthMult": 1.4,
   "deadTankDecalWidthMult": 1.7,
   "tracers": {
@@ -22537,6 +22538,30 @@
         {
           "name": "wheel_l_04_",
           "modelNames": "icv_ifv_prototype"
+        },
+        {
+          "name": "wheel_r_01_",
+          "modelNames": "9a33bm3"
+        },
+        {
+          "name": "wheel_l_01_",
+          "modelNames": "9a33bm3"
+        },
+        {
+          "name": "wheel_r_02_",
+          "modelNames": "9a33bm3"
+        },
+        {
+          "name": "wheel_l_02_",
+          "modelNames": "9a33bm3"
+        },
+        {
+          "name": "wheel_r_03_",
+          "modelNames": "9a33bm3"
+        },
+        {
+          "name": "wheel_l_03_",
+          "modelNames": "9a33bm3"
         }
       ]
     },
@@ -27222,13 +27247,13 @@
     "maxLerxVaporCritAOA": 15.0,
     "lerxVaporCritAOS": 5.0,
     "maxLerxVaporCritAOS": 15.0,
-    "halfIntensityAltitude": 5000.0,
-    "zeroIntensityAltitude": 8000.0,
+    "halfIntensityAltitude": 6000.0,
+    "zeroIntensityAltitude": 11000.0,
     "lerxVaporTimeAccumulation": 0.0,
-    "minSpeedForLerxVapor": 51.0,
-    "intensityRampupEndSpeed": 77.16,
+    "minSpeedForLerxVapor": 90.0,
+    "intensityRampupEndSpeed": 128.0,
     "intensityRampDownStartSpeed": 272.222,
-    "maxSpeedForLerxVapor": 325.0
+    "maxSpeedForLerxVapor": 330.0
   },
   "dx12": {
     "asyncPresent": false

@@ -829,4 +829,5 @@ return freeze({
   get_cur_gui_scene = r["get_cur_gui_scene"]
 
   has_ray_query = r["has_ray_query"]
+  get_mp_kick_countdown = r["get_mp_kick_countdown"]
 })

@@ -32,7 +32,7 @@ let { showResource, canStartPreviewScene,
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
-let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, isUnitDescriptionValid } = require("%scripts/unit/unitStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let decorMenuHandler = require("%scripts/customization/decorMenuHandler.nut")
@@ -59,7 +59,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName, isUnitDescriptionValid, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
@@ -80,6 +80,7 @@ let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -200,7 +201,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.unit = showedUnit.value
     if (!this.unit)
       return this.goBack()
-    ::cur_aircraft_name = this.unit.name
+    unitNameForWeapons.set(this.unit.name)
 
     this.access_WikiOnline = hasFeature("WikiUnitInfo")
     this.access_UserSkins = isPlatformPC && hasFeature("UserSkins")
@@ -406,7 +407,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       script_net_assert_once("not found loaded model unit", "customization: not found unit after model loaded")
       return this.goBack()
     }
-    ::cur_aircraft_name = this.unit.name
+    unitNameForWeapons.set(this.unit.name)
     this.initMainParams()
   }
 
@@ -1916,7 +1917,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         return setShowUnit(unit)
 
       if (unit.name != newUnitName) {
-        ::cur_aircraft_name = newUnitName
+        unitNameForWeapons.set(newUnitName)
         owner.unit = getAircraftByName(newUnitName)
         owner.previewSkinId = null
         if (owner && ("initMainParams" in owner) && owner.initMainParams)

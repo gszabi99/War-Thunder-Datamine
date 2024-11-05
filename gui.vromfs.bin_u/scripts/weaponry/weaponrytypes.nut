@@ -12,6 +12,7 @@ let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 
 ::g_weaponry_types <- {
   types = []
@@ -78,7 +79,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     }
     getAmount = function(unit, item) { return shop_is_weapon_purchased(unit.name, item.name) }
     getMaxAmount = function(unit, item) { return wp_get_weapon_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
+    canBuy = function(unit, item) { return isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
 
     getScoreCostText = function(unit, item) {
       let fullCost = shop_get_spawn_score(unit.name, item.name, [])
@@ -103,7 +104,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getCost = ::g_weaponry_types._getCost
     getAmount = ::g_weaponry_types._getAmount
     getMaxAmount = function(unit, item) { return wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
 //********************* MODIFICATION *******************************************
@@ -119,7 +120,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
       ? 1
       : ::g_weaponry_types._getAmount(unit, item)
     getMaxAmount = function(unit, item) { return wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
 
     getScoreCostText = function(unit, item) {
       let fullCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), [ item.name ])
@@ -145,7 +146,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getCost = ::g_weaponry_types._getCost
     getAmount = ::g_weaponry_types._getAmount
     getMaxAmount = function(unit, item) { return wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
 //********************** SPARE *************************************************
@@ -158,7 +159,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     ) }
     getAmount = function(unit, ...) { return get_spare_aircrafts_count(unit.name) }
     getMaxAmount = function(...) { return MAX_SPARE_AMOUNT }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
+    canBuy = function(unit, item) { return isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
   }
 
 //=============================== PSEUDO TYPES =================================
@@ -170,7 +171,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     getCost = ::g_weaponry_types._getCost
     getAmount = function(unit, item) { return u.isEmpty(item.name) ? 1 : shopIsModificationPurchased(unit.name, item.name) }
     getMaxAmount = function(unit, item) { return wp_get_modification_max_count(unit.name, item.name) }
-    canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
+    canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
 //****************** BUNDLE ****************************************************

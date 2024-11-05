@@ -15,9 +15,9 @@
     "length": 1.93,
     "CxK": 2.0,
     "wingAreaMult": 1.1,
-    "finsAoaHor": 0.1,
-    "finsAoaVer": 0.1,
-    "distFromCmToStab": 0.05,
+    "finsAoaHor": 0.125,
+    "finsAoaVer": 0.125,
+    "distFromCmToStab": 0.033,
     "mass": 33.5,
     "massEnd": 27.93,
     "massEnd1": 23.68,
@@ -109,64 +109,45 @@
       "launchSector": 9.0,
       "controlConeFov": 25.0,
       "range": [
-        1500.0,
+        400.0,
         6000.0
       ],
       "timeTableCorrection": [
-        0.598,
-        0.722
+        0.567,
+        0.647
       ],
       "breakLockMaxTime": 5.0,
       "lineOfSightAutopilot": {
-        "timeToGain0": [
-          0.0,
-          0.0
-        ],
-        "timeToGain1": [
-          0.28,
-          0.0
-        ],
-        "timeToGain2": [
-          0.29,
-          0.1
-        ],
-        "timeToGain3": [
-          1.7,
-          0.3
-        ],
-        "timeToGain4": [
-          3.0,
-          1.0
-        ],
-        "crossDistToReqCrossVelMult": 5.5,
-        "reqCrossVelRationMax": 0.6,
-        "velDiffToReqAccelMult": 9.0,
+        "timeOut": 0.15,
+        "crossDistToReqCrossVelMult": 1.45,
+        "reqCrossVelRationMax": 0.75,
+        "velDiffToReqAccelMult": 11.0,
         "accelControl": {
           "velFrameReference": true,
           "baseIndSpeed": 1800.0,
-          "reqAccelMax": 10.0,
-          "accelControlProp": 0.038,
+          "reqAccelMax": 15.0,
+          "accelControlProp": 0.0566,
           "accelControlIntg": 0.0,
-          "accelControlDiff": 0.0009,
+          "accelControlDiff": 0.0013,
           "accelControlIntgLim": 0.0
         }
       },
       "table0": {
-        "altitude": 100.0,
+        "altitude": 10.0,
         "fighterMach": [
-          0.05,
-          0.2
+          0.15,
+          0.45
         ],
         "targetMach": [
-          0.05,
-          0.05
+          0.15,
+          0.15
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          403.867,
-          397.918,
-          392.021,
-          391.983
+          100.0,
+          100.0,
+          100.0,
+          100.0
         ],
         "rangeMax": [
           6000.0,
@@ -175,56 +156,18 @@
           6000.0
         ],
         "rangeMaxAltDiff": [
-          50.0,
+          0.0,
           0.0
         ],
         "timeMax": [
-          19.8882,
-          19.0205,
-          18.6078,
-          17.85
+          19.6706,
+          17.2376,
+          17.2376,
+          15.2646
         ],
         "timeMaxAltDiff": [
-          50.0,
-          -0.000389099
-        ]
-      },
-      "table1": {
-        "altitude": 2000.0,
-        "fighterMach": [
-          0.05,
-          0.2
-        ],
-        "targetMach": [
-          0.05,
-          0.05
-        ],
-        "targetMach2Mult": -1.0,
-        "rangeMin": [
-          421.316,
-          415.394,
-          409.515,
-          406.44
-        ],
-        "rangeMax": [
-          6000.0,
-          6000.0,
-          6000.0,
-          6000.0
-        ],
-        "rangeMaxAltDiff": [
-          1000.0,
+          0.0,
           0.0
-        ],
-        "timeMax": [
-          17.2248,
-          16.4664,
-          16.0997,
-          15.4128
-        ],
-        "timeMaxAltDiff": [
-          1000.0,
-          -0.323
         ]
       }
     },

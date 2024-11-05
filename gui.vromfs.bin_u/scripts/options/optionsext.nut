@@ -142,6 +142,7 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { has_console_120_hz } = require("graphicsOptions")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 function mkUseroptHardWatched(id, defValue = null) {
   let opt = hardPersistWatched(id, defValue)
@@ -207,14 +208,10 @@ const BOMB_ACT_ASSAULT = 1
 
 setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
-::aircraft_for_weapons <- null
-::cur_aircraft_name <- null
 ::bullets_locId_by_caliber <- []
 ::modifications_locId_by_caliber <- []
 ::crosshair_icons <- []
 ::thermovision_colors <- []
-
-let getUnitNameForWeapons = @() ::aircraft_for_weapons
 
 let clanRequirementsRankDescId = {
   [USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK] = "rankReqAircraft",
@@ -600,8 +597,10 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
         rawParam =  !hasTitle ? elemTxt : $"{cellSeparator} {elemTxt}"
       } })
 
-      let rowParams = ["optContainer:t='yes'"]
+      let rowParams = []
 
+      if (!optionData?.skipOptContainerStyles)
+        rowParams.append("optContainer:t='yes'")
       if (!isHeader) {
         if (context?.onHoverFnName)
           rowParams.append($"on_hover:t='{context.onHoverFnName}'")
@@ -737,7 +736,7 @@ function useropt_takeoff_mode(optionId, descr, _context) {
 }
 
 function useropt_bullets0(optionId, descr, _context) {
-  let aircraft = getUnitNameForWeapons()
+  let aircraft = unitNameForWeapons.get()
   let groupIndex = optionId - USEROPT_BULLETS0
   descr.id = $"bullets{groupIndex}"
   descr.items = []
@@ -758,7 +757,7 @@ function useropt_bullets0(optionId, descr, _context) {
   else {
     debugTableData(aircraft)
     debug_dump_stack()
-    logerr($"Options: USEROPT_BULLET{groupIndex}: get: Wrong 'aircraft_for_weapons' type")
+    logerr($"Options: USEROPT_BULLET{groupIndex}: get: Wrong 'unitNameForWeapons' type")
   }
 }
 
@@ -794,6 +793,7 @@ function useropt_bit_countries_team_a(optionId, descr, context) {
   descr.values = []
   descr.trParams <- "iconType:t='listbox_country';"
   descr.listClass <- "countries"
+  descr.skipOptContainerStyles <- true
 
   local allowedMask = (1 << shopCountriesList.len()) - 1
   if (getTblValue("isEventRoom", context, false)) {
@@ -874,6 +874,7 @@ function useropt_mp_team_country_rand(optionId, descr, _context) {
     descr.trParams <- "iconType:t='country';"
     descr.trListParams <- "iconType:t='listbox_country';"
     descr.listClass <- "countries"
+    descr.skipOptContainerStyles <- true
     local selValue = -1
     for (local i = 0; i < descr.values.len(); i++) {
       let c = getTblValue(descr.values[i] - 1, countries, "country_0")
@@ -1227,7 +1228,7 @@ let optionsMap = {
     descr.id = "bomb_series"
     descr.values = [0]
     descr.items = [ { text = "#options/disabled" } ]
-    let unit = getAircraftByName(::aircraft_for_weapons)
+    let unit = getAircraftByName(unitNameForWeapons.get())
     let bombSeries = [0, 4, 6, 12, 24, 48]
     let nbrBomb = unit != null ? bombNbr(unit) : bombSeries.top()
     for (local i = 1; i < bombSeries.len(); ++i) {
@@ -1317,8 +1318,9 @@ let optionsMap = {
     descr.id = "rocket_fuse_dist"
     descr.items = ["#options/rocketFuseImpact", "200", "300", "400", "500", "600", "700", "800", "900", "1000"]
     descr.values = [0, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-    if (::aircraft_for_weapons)
-      descr.value = u.find_in_array(descr.values, get_unit_option(::aircraft_for_weapons, USEROPT_ROCKET_FUSE_DIST), null)
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName != "")
+      descr.value = u.find_in_array(descr.values, get_unit_option(unitName, USEROPT_ROCKET_FUSE_DIST), null)
     if (!is_numeric(descr.value))
       descr.value = u.find_in_array(descr.values, get_option_rocket_fuse_dist(), null)
     descr.defaultValue = 0
@@ -1332,8 +1334,9 @@ let optionsMap = {
       descr.items.append(val.tostring())
       descr.values.append(val)
     }
-    if (::aircraft_for_weapons)
-      descr.value = u.find_in_array(descr.values, get_unit_option(::aircraft_for_weapons, USEROPT_TORPEDO_DIVE_DEPTH), null)
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName != "")
+      descr.value = u.find_in_array(descr.values, get_unit_option(unitName, USEROPT_TORPEDO_DIVE_DEPTH), null)
     if (!is_numeric(descr.value))
       descr.value = u.find_in_array(descr.values, get_option_torpedo_dive_depth(), null)
     descr.defaultValue = 0
@@ -2714,7 +2717,7 @@ let optionsMap = {
   [USEROPT_BULLETS4] = useropt_bullets0,
   [USEROPT_BULLETS5] = useropt_bullets0,
   [USEROPT_MODIFICATIONS] = function(_optionId, descr, _context) {
-    let unit = getAircraftByName(::aircraft_for_weapons)
+    let unit = getAircraftByName(unitNameForWeapons.get())
     let showFullList = unit?.isBought() || !isUnitSpecial(unit)
     descr.id = "enable_modifications"
     descr.items = showFullList
@@ -2730,8 +2733,9 @@ let optionsMap = {
   [USEROPT_SKIN] = function(_optionId, descr, _context) {
     descr.id = "skin"
     descr.trParams <- "optionWidthInc:t='double';"
-    if (type(::aircraft_for_weapons) == "string") {
-      let skins = getSkinsOption(::aircraft_for_weapons)
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName != "") {
+      let skins = getSkinsOption(unitName)
       descr.items = skins.items
       descr.values = skins.values
       descr.value = skins.value
@@ -2751,12 +2755,13 @@ let optionsMap = {
     descr.values = [""]
     descr.defaultValue = ""
 
-    assert(::cur_aircraft_name != null, "ERROR: variable cur_aircraft_name is null")
+    let unitName = unitNameForWeapons.get()
+    assert(unitName != null, "ERROR: variable unitNameForWeapons is null")
 
-    if (is_platform_pc && hasFeature("UserSkins") && ::cur_aircraft_name) {
+    if (is_platform_pc && hasFeature("UserSkins") && unitName) {
       let skinsBlock = getCurUnitUserSkins()
       let cdb = get_user_skins_profile_blk()
-      let setValue = cdb?[::cur_aircraft_name]
+      let setValue = cdb?[unitName]
 
       if (skinsBlock) {
         for (local i = 0; i < skinsBlock.blockCount(); i++) {
@@ -2775,7 +2780,7 @@ let optionsMap = {
       if (descr.value == null) {
         descr.value = 0
         if (setValue)
-          cdb[::cur_aircraft_name] = descr.defaultValue
+          cdb[unitName] = descr.defaultValue
       }
     }
   },
@@ -3303,13 +3308,14 @@ let optionsMap = {
     descr.defaultValue = -1
     descr.optionCb = "onLoadFuelChange"
 
-    let { maxFuel, fuelConsumptionPerHour } = getFuelParams(::cur_aircraft_name)
+    let unitName = unitNameForWeapons.get()
+    let { maxFuel, fuelConsumptionPerHour } = getFuelParams(unitName)
     local minutes = [0, 20.0, 30.0, 45.0, 60.0, 1000000.0]
     local isFuelFixed = false
-    if (::cur_aircraft_name) {
-      descr.prevValue = get_unit_option(::cur_aircraft_name, USEROPT_LOAD_FUEL_AMOUNT)
+    if (unitName) {
+      descr.prevValue = get_unit_option(unitName, USEROPT_LOAD_FUEL_AMOUNT)
       if (fuelConsumptionPerHour > 0 && isInFlight()) {
-        let fixedPercent = getCurMissionRules().getUnitFuelPercent(::cur_aircraft_name)
+        let fixedPercent = getCurMissionRules().getUnitFuelPercent(unitName)
         if (fixedPercent > 0) {
           isFuelFixed = true
           minutes = [fixedPercent * maxFuel / time.minutesToSeconds(fuelConsumptionPerHour)]
@@ -3371,7 +3377,7 @@ let optionsMap = {
     }
 
     descr.items.append(loc("options/customizable_quantity"))
-    let custom_amount = get_unit_option(::aircraft_for_weapons, USEROPT_FUEL_AMOUNT_CUSTOM)
+    let custom_amount = get_unit_option(unitName, USEROPT_FUEL_AMOUNT_CUSTOM)
     descr.values.append(custom_amount ?? (minFuelPercent * 1000000).tointeger())
     descr.value = descr.values.findindex(@(v) v == descr.prevValue) ?? descr.value
   },
@@ -3383,8 +3389,9 @@ let optionsMap = {
     descr.step <- 1 * 10000
     descr.defValue <- 50 * 10000
     descr.optionCb = "onLoadFuelCustomChange"
-    descr.value = get_unit_option(::aircraft_for_weapons, USEROPT_FUEL_AMOUNT_CUSTOM)
-    let { maxFuel, fuelConsumptionPerHour } = getFuelParams(::cur_aircraft_name)
+    let unitName = unitNameForWeapons.get()
+    descr.value = get_unit_option(unitName, USEROPT_FUEL_AMOUNT_CUSTOM)
+    let { maxFuel, fuelConsumptionPerHour } = getFuelParams(unitName)
 
     descr.getValueLocText = function(val) {
       let timeInHours = fuelConsumptionPerHour > 0.0 ? maxFuel * (val / 1000000.0) / fuelConsumptionPerHour : 0.0
@@ -3452,6 +3459,7 @@ let optionsMap = {
     descr.trParams <- "iconType:t='country';"
     descr.trListParams <- "iconType:t='listbox_country';"
     descr.listClass <- "countries"
+    descr.skipOptContainerStyles <- true
 
     let start = 0 //skip country_0
     let isDominationMode = getGuiOptionsMode() == OPTIONS_MODE_MP_DOMINATION
@@ -4368,7 +4376,7 @@ let optionsMap = {
   },
   [USEROPT_AIR_SPAWN_POINT] = function(optionId, descr, _context) {
     descr.id = "air_spawn_point"
-    let unit = getAircraftByName(getUnitNameForWeapons())
+    let unit = getAircraftByName(unitNameForWeapons.get())
     descr.values = unit?.isHelicopter() ? [0, 6, 1, 2] : [0, 6, 1, 2, 3, 4, 5]
     let measure = loc("measureUnits/km_dist")
     descr.items = unit?.isHelicopter()
@@ -4590,13 +4598,14 @@ function set_useropt_mp_team_country_rand(value, descr, _optionId) {
 
 function set_useropt_bullets0(value, _descr, optionId) {
   set_gui_option(optionId, value)
-  let air = getAircraftByName(::aircraft_for_weapons)
+  let unitName = unitNameForWeapons.get()
+  let air = getAircraftByName(unitName)
   if (air)
     setUnitLastBullets(air, optionId - USEROPT_BULLETS0, value)
   else {
     let groupIndex = optionId - USEROPT_BULLETS0
-    logerr($"Options: USEROPT_BULLET{groupIndex}: set: Wrong 'aircraft_for_weapons' type")
-    debugTableData(::aircraft_for_weapons)
+    logerr($"Options: USEROPT_BULLET{groupIndex}: set: Wrong 'unitNameForWeapons' type")
+    debugTableData(unitName)
   }
 }
 
@@ -4651,13 +4660,15 @@ let optionsSetMap = {
   [USEROPT_BOMB_SERIES] = @(value, descr, _optionId) set_option_bombs_series(descr.values[value]),
   [USEROPT_LOAD_FUEL_AMOUNT] = function(value, descr, optionId) {
     set_gui_option(optionId, descr.values[value])
-    if (::aircraft_for_weapons)
-      set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName != "")
+      set_unit_option(unitName, optionId, descr.values[value])
   },
   [USEROPT_FUEL_AMOUNT_CUSTOM] = function(value, _descr, optionId) {
     set_gui_option(optionId, value)
-    if (::aircraft_for_weapons)
-      set_unit_option(::aircraft_for_weapons, optionId, value)
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName != "")
+      set_unit_option(unitName, optionId, value)
   },
   [USEROPT_DEPTHCHARGE_ACTIVATION_TIME] = @(value, descr, _optionId) set_option_depthcharge_activation_time(descr.values[value]),
   [USEROPT_COUNTERMEASURES_PERIODS] = @(value, descr, _optionId) set_option_countermeasures_periods(descr.values[value]),
@@ -4666,13 +4677,15 @@ let optionsSetMap = {
   [USEROPT_USE_PERFECT_RANGEFINDER] = @(value, _descr, _optionId) set_option_use_perfect_rangefinder(value ? 1 : 0),
   [USEROPT_ROCKET_FUSE_DIST] = function(value, descr, optionId) {
     set_option_rocket_fuse_dist(descr.values[value])
-    if (::aircraft_for_weapons)
-      set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName != "")
+      set_unit_option(unitName, optionId, descr.values[value])
   },
   [USEROPT_TORPEDO_DIVE_DEPTH] = function(value, descr, optionId) {
     set_option_torpedo_dive_depth(descr.values[value])
-    if (::aircraft_for_weapons)
-      set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName != "")
+      set_unit_option(unitName, optionId, descr.values[value])
   },
   [USEROPT_AEROBATICS_SMOKE_TYPE] = @(value, descr, _optionId) set_option_aerobatics_smoke_type(descr.values[value]),
   [USEROPT_AEROBATICS_SMOKE_LEFT_COLOR] = set_useropt_aerobatics_smoke_left_color,
@@ -4866,11 +4879,11 @@ let optionsSetMap = {
   [USEROPT_SAVE_ZOOM_CAMERA] = @(value, _descr, _optionId) set_option_save_zoom_camera(value),
   [USEROPT_SKIN] = function(value, descr, optionId) {
     if (type(descr.values) == "array") {
-      let air = ::aircraft_for_weapons
+      let unitName = unitNameForWeapons.get()
       if (value >= 0 && value < descr.values.len()) {
         let isAutoSkin = descr.access[value].isAutoSkin
         set_gui_option(optionId, descr.values[value] ?? "")
-        setLastSkin(air, isAutoSkin ? null : descr.values[value])
+        setLastSkin(unitName, isAutoSkin ? null : descr.values[value])
       }
       else
         print($"[ERROR] value '{value}' is out of range")
@@ -4880,14 +4893,15 @@ let optionsSetMap = {
   },
   [USEROPT_USER_SKIN] = function(value, descr, _optionId) {
     let cdb = get_user_skins_profile_blk()
-    if (::cur_aircraft_name) {
-      if (cdb?[::cur_aircraft_name] != getTblValue(value, descr.values, "")) {
-        cdb[::cur_aircraft_name] = getTblValue(value, descr.values, "")
+    let unitName = unitNameForWeapons.get()
+    if (unitName) {
+      if (cdb?[unitName] != (descr.values?[value] ?? "")) {
+        cdb[unitName] = descr.values?[value] ?? ""
         saveProfile()
       }
     }
     else {
-      log("[ERROR] ::cur_aircraft_name is null")
+      log("[ERROR] unitNameForWeapons is null")
       debug_dump_stack()
     }
   },

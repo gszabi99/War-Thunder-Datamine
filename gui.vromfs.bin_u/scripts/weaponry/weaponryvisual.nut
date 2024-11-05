@@ -25,6 +25,7 @@ let { needShowUnseenModTutorialForUnitMod, hasAvailableModTutorial } = require("
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -193,7 +194,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     canShowGoToModTutorialBtn = ""
     hasUnseenTutorial         = false
   }
-  let isOwn = ::isUnitUsable(unit)
+  let isOwn = isUnitUsable(unit)
   local visualItem = item
   res.isBundle = item.type == weaponsItem.bundle
   if (res.isBundle) {

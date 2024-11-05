@@ -26,6 +26,7 @@ let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let { USEROPT_USER_SKIN } = require("%scripts/options/optionsExtNames.nut")
 let { TANK_CAMO_ROTATION_SLIDER_FACTOR } = require("%scripts/customization/customizationConsts.nut")
 let { floor, round, abs } = require("%sqstd/math.nut")
+let { unitNameForWeapons  } = require("%scripts/weaponry/unitForWeapons.nut")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -290,7 +291,7 @@ function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, showD
   return descr
 }
 
-let getCurUnitUserSkins = @() get_user_skins_blk()?[::cur_aircraft_name]
+let getCurUnitUserSkins = @() get_user_skins_blk()?[unitNameForWeapons.get()]
 
 function getCurUserSkin() {
   let userSkins = getCurUnitUserSkins()

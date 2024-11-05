@@ -21,8 +21,9 @@ let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
-        needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched, isUnitInSlotbar, canResearchUnit, isUnitInResearch
+  needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let { canBuyNotResearched, isUnitInSlotbar, canResearchUnit, isUnitInResearch,
+  isUnitDescriptionValid, isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -30,7 +31,7 @@ let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/u
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let { getEsUnitType, getUnitName, getUnitCountry, getUnitReqExp,
-  getUnitExp, isUnitDescriptionValid, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+  getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
@@ -201,7 +202,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       let isGift   = isUnitGift(unit)
       local canBuyOnline = ::canBuyUnitOnline(unit)
       let canBuyNotResearchedUnit = canBuyNotResearched(unit)
-      let canBuyAfterPrevUnit = !::isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
+      let canBuyAfterPrevUnit = !isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
         && (isSpecial || ::isUnitResearched(unit))
       let canBuyIngame = !canBuyOnline && (canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
       local forceShowBuyButton = false

@@ -18,11 +18,10 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getEsUnitType, getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart, getUnitReqExp,
-  getUnitExp, getUnitCost
+  getUnitReqExp, getUnitExp, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
+let { canResearchUnit, isUnitGroup, isGroupPart } = require("%scripts/unit/unitStatus.nut")
 let { get_ranks_blk, get_discounts_blk, get_shop_blk } = require("blkGetters")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 

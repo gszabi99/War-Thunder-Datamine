@@ -23,6 +23,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let DataBlock = require("DataBlock")
 let { getUnlockTypeById } = require("unlocks")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -125,8 +126,7 @@ let Smoke = class (BaseItem) {
     let curItem = this
     set_last_called_gui_testflight({ eventbusName = "gui_start_itemsShop",
       params = { curTab = -1, itemId = curItem.id } })
-    ::update_test_flight_unit_info({unit})
-    ::cur_aircraft_name = unit.name
+    unitNameForWeapons.set(unit.name)
     let defaultValues = {
       [USEROPT_WEAPONS] = "",
       [USEROPT_AIRCRAFT] = unit.name,

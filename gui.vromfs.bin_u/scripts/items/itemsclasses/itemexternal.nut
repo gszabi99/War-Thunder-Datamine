@@ -214,7 +214,7 @@ let ItemExternal = class (BaseItem) {
     return (tShop != -1 && (tInv == -1 || tShop < tInv)) ? tShop : tInv
   }
 
-  updateNameLoc = @(locName) !this.shouldAutoConsume && this.combinedNameLocId
+  updateNameLoc = @(locName) !this.shouldAutoConsume && this.combinedNameLocId && !u.isEmpty(this.itemDef?.meta)
     ? loc(this.combinedNameLocId, { name = locName })
     : locName
 

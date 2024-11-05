@@ -469,6 +469,11 @@ function hasAntialiasingSharpening() {
   return has_antialiasing_sharpening(aa)
 }
 
+function canDoBackgroundScale() {
+  let mode = getGuiValue("antialiasingMode", "off")
+  return mode == "off" || mode == "low_fxaa" || mode == "high_fxaa"
+}
+
 function getAvailableLatencyModes() {
   let values = ["off"]
   if (is_low_latency_available(1))
@@ -598,6 +603,7 @@ mShared = {
         { cancel_fn = cancel_func, checkDuplicateId = true })
     }
     mShared.setCustomSettings()
+    mShared.rayTracingClick()
   }
 
   presetCheck = function() {
@@ -620,9 +626,7 @@ mShared = {
     changeOptions("antialiasingUpscaling")
     setGuiValue("antialiasingSharpening", 0)
 
-    let mode = getGuiValue("antialiasingMode", "off")
-    let enableSSAA = mode == "off" || mode == "low_fxaa" || mode == "high_fxaa"
-    if (!enableSSAA && getGuiValue("ssaa") == "4X") {
+    if (!canDoBackgroundScale()) {
       setGuiValue("ssaa", "none")
       setGuiValue("backgroundScale", 1.0)
     }
@@ -1027,7 +1031,7 @@ mSettings = {
 
   ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
     values = [ "none", "4X" ]
-    enabled = @() getGuiValue("antialiasingMode", "off") == "off" || getGuiValue("antialiasingMode", "off") == "low_fxaa" || getGuiValue("antialiasingMode", "off") == "high_fxaa"
+    enabled = @() canDoBackgroundScale()
     onChanged = "ssaaClick"
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 1.0)
@@ -1134,7 +1138,7 @@ mSettings = {
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 1.0)
     }
-    enabled = @() getGuiValue("antialiasing") != "low_taa"
+    enabled = @() canDoBackgroundScale()
     setGuiValueToConfig = function(blk, desc, val) {
       local res = getTblValue(val, desc.blkValues, desc.def)
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))

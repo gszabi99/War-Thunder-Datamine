@@ -1283,8 +1283,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "teleportToStart": true,
-          "object": "@target_tank",
-          "object_type": "isActive"
+          "object": "@target_tank"
         },
         "triggerEnable": {
           "target": "check_attack_unit"
@@ -1319,13 +1318,26 @@
       "actions": {
         "unitSetProperties": {
           "object": "@target_tank",
-          "cannotShoot": false
+          "attack_type": "fire_at_will",
+          "accuracy": 0.1,
+          "airAccuracy": 0.1,
+          "cannotShoot": false,
+          "fireRandom": true,
+          "targetChangeInterval": 5.0,
+          "targetChangeProb": 0.25,
+          "ignoreGunSpeedLimits": false,
+          "DelayAfterShoot": 3.0
         },
-        "unitAttackTarget": {
+        "__unitAttackTarget": {
           "playerAttracted": false,
           "object": "@target_tank",
-          "attack_type": "attack_target",
-          "target": "@player"
+          "attack_type": "fire_at_will",
+          "delayForObjects": [
+            3.0,
+            7.0
+          ],
+          "fireRandom": true,
+          "fightInArea": "@attack_area"
         },
         "triggerEnable": {
           "target": "name_assemble"
@@ -1372,7 +1384,7 @@
         ]
       },
       "actions": {
-        "unitLoadBehTree": {
+        "__unitLoadBehTree": {
           "name": "missionKamikaze",
           "objects": "@air_target01"
         },
@@ -1386,13 +1398,28 @@
           "object": "@air_target01",
           "target": "flight_point01"
         },
+        "wait": {
+          "time": 0.2
+        },
         "unitSetRoute": {
           "route": "flight_way_points_01",
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "teleportToStart": true,
-          "object": "@air_target01",
-          "object_type": "isActive"
+          "object": "@air_target01"
+        },
+        "playHint": {
+          "hintType": "standard",
+          "name": "@air_target01",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "unitSetIndication": {
           "set": true,
@@ -1430,7 +1457,7 @@
         ]
       },
       "actions": {
-        "unitLoadBehTree": {
+        "__unitLoadBehTree": {
           "name": "missionKamikaze",
           "objects": "@air_target02"
         },
@@ -1444,13 +1471,28 @@
           "object": "@air_target02",
           "target": "flight_point02"
         },
+        "wait": {
+          "time": 0.2
+        },
         "unitSetRoute": {
           "route": "flight_way_points_02",
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "teleportToStart": true,
-          "object": "@air_target02",
-          "object_type": "isActive"
+          "object": "@air_target02"
+        },
+        "__playHint": {
+          "hintType": "standard",
+          "name": "@air_target02",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "unitSetIndication": {
           "set": true,
@@ -1503,8 +1545,7 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "teleportToStart": true,
-          "object": "@air_target03",
-          "object_type": "isActive"
+          "object": "@air_target03"
         },
         "triggerEnable": {
           "target": "respawn_plane3"
@@ -1821,7 +1862,7 @@
       "else_actions": {}
     },
     "check_attack_area": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",

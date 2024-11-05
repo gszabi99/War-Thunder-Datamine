@@ -106,14 +106,14 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function createSquadButtons() {
     local markUp = ""
     foreach (buttonView in this.squadButtonsList)
-      markUp += handyman.renderCached("%gui/commonParts/button.tpl", buttonView)
+      markUp = "".concat(markUp, handyman.renderCached("%gui/commonParts/button.tpl", buttonView))
     return markUp
   }
 
   function createDummyButtons() {
     local markUp = ""
     foreach (buttonView in this.squadButtonsList)
-      markUp += handyman.renderCached("%gui/commonParts/dummyButton.tpl", buttonView)
+      markUp = "".concat(markUp, handyman.renderCached("%gui/commonParts/dummyButton.tpl", buttonView))
     return markUp
   }
 

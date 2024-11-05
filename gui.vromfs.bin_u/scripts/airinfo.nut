@@ -23,7 +23,8 @@ let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText, getUnitClassCol
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { canBuyNotResearched, getBitStatus, isUnitInSlotbar, isUnitDefault, canResearchUnit,
-  isUnitInResearch
+  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isRequireUnlockForUnit,
+  isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
@@ -52,9 +53,8 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
 let {
-  getEsUnitType, isUnitsEraUnlocked, getUnitName, getUnitCountry,
+  getEsUnitType, getUnitName, getUnitCountry,
   getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isRequireUnlockForUnit,
   getUnitExp, getUnitRealCost, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
@@ -141,14 +141,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
     if (name.tolower() == unitName)
       return unit
   return null
-}
-
-/**
- * Returns true if unit can be installed in slotbar,
- * unit can be decorated with decals, etc...
- */
-::isUnitUsable <- function isUnitUsable(unit) {
-  return unit ? unit.isUsable() : false
 }
 
 ::isUnitFeatureLocked <- function isUnitFeatureLocked(unit) {
@@ -471,7 +463,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
       air.minChars = effect.min
       air.maxChars = effect.max
 
-      if (isUnitSpecial(air) && !::isUnitUsable(air))
+      if (isUnitSpecial(air) && !isUnitUsable(air))
         air.modificators = effect.max
     }
     afterUpdateAirModificators(air, callBack)

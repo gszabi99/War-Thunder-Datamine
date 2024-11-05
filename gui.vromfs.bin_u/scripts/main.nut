@@ -20,15 +20,6 @@ let colorTagToColors = {
   [COLOR_TAG.TEAM_RED] = "teamRedColor",
 }
 
-let test_flight_unit_info = {}
-::get_test_flight_unit_info <- @() freeze(test_flight_unit_info)
-::update_test_flight_unit_info <- function(info) {
-  test_flight_unit_info.clear()
-  test_flight_unit_info.__update(info)
-}
-
-::get_mp_kick_countdown <- @() 1000000
-
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadOnce, registerPersistentData, isInReloading
 } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")

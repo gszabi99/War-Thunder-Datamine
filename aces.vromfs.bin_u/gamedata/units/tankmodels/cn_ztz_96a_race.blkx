@@ -3017,6 +3017,27 @@
     ],
     "detectionHeight": 2.2
   },
+  "nightVision": {
+    "nightVisionDmPart": "fire_control_system_dm",
+    "commanderViewIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "driverIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 5.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    }
+  },
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
@@ -3719,18 +3740,18 @@
           "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05
-          },
-          "commanderViewIr": {
-            "resolution": [
               800,
               600
             ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
+            "noiseFactor": 0.04
+          },
+          "commanderViewIr": {
+            "resolution": [
+              1600,
+              1200
+            ],
+            "lightMult": 9.0,
+            "ghosting": 0.6,
             "noiseFactor": 0.2
           },
           "driverIr": {

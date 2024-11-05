@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud, get_mp_kick_countdown
 from "%scripts/dagui_library.nut" import *
 
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
@@ -117,7 +117,7 @@ function hud_mission_result_debug(result = GO_WIN, checkResending = false, noLiv
 }
 
 function hud_show_in_battle_time_to_kick_timer() {
-  let time = ::get_mp_kick_countdown() + 5000
+  let time = get_mp_kick_countdown() + 5000
   ::get_mp_kick_countdown = @() time
   set_in_battle_time_to_kick_show_timer(time)
 }

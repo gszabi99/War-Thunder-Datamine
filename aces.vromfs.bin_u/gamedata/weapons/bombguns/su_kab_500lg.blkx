@@ -126,8 +126,11 @@
     "guidance": {
       "permanentlyActivated": true,
       "lockOnAfterLaunch": true,
-      "inertialNavigation": false,
       "hasTimeToHitTimer": true,
+      "launchAngleMax": [
+        180.0,
+        90.0
+      ],
       "guidanceAutopilot": {
         "timeToGain0": [
           60.0,
@@ -147,12 +150,12 @@
       },
       "laserSeeker": {
         "range": 6000.0,
-        "rangeMax": 7000.0,
+        "rangeMax": 6000.0,
         "fov": 30.0,
         "lockAngleMax": 60.0,
         "angleMax": 60.0,
         "rateMax": 8.0,
-        "prolongationTimeMax": 90.0,
+        "prolongationTimeMax": 1.0,
         "designationSourceTypeMask": 9,
         "filterAlpha": 0.85,
         "filterBetta": 0.2

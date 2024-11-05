@@ -6,7 +6,7 @@ let { format } =  require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
+let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 
 enum ShopDevModeOption {

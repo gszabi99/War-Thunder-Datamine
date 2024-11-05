@@ -44,9 +44,6 @@
   ],
   "canTakeoffWithoutGear": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2688,7 +2685,7 @@
             },
             "Weapon": {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 240,
               "external": true,
@@ -3320,7 +3317,12 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
+    "us_500lb_mk77_mod4": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "us_250lb_mk81": {
+      "prevModification": "us_500lb_mk77_mod4",
       "modClass": "weapon",
       "tier": 2
     },
@@ -3348,18 +3350,11 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "countermeasures_launcher_chaff_only_unchecked": {},
-    "countermeasures_launcher_flare_only_unchecked": {},
-    "countermeasures_launcher_chaff_priority_unchecked": {},
-    "countermeasures_launcher_flare_priority_unchecked": {},
-    "countermeasures_belt_pack_unchecked": {
+    "countermeasures_launcher_chaff": {},
+    "countermeasures_belt_pack": {
       "modClass": "weapon",
       "tier": 1,
       "requiresModelReload": false
-    },
-    "us_500lb_mk77_mod4": {
-      "modClass": "weapon",
-      "tier": 1
     }
   },
   "user_skin": {

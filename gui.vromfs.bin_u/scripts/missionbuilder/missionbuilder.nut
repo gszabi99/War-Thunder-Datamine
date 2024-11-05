@@ -25,6 +25,7 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -179,7 +180,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     if (showedUnit.value == null)
       return
 
-    ::aircraft_for_weapons = showedUnit.value.name
+    unitNameForWeapons.set(showedUnit.value.name)
 
     let settings = DataBlock();
     settings.setStr("player_class", showedUnit.value.name)

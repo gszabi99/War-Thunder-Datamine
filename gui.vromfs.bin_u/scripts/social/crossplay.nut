@@ -98,7 +98,7 @@ let setCrossNetworkChatStatus = function(boolVal) {
   updateCrossNetworkChatStatus()
 }
 
-let getTextWithCrossplayIcon = @(addIcon, text) (addIcon ? (loc("icon/cross_play") + " ") : "") + text
+let getTextWithCrossplayIcon = @(addIcon, text) addIcon ? $"{loc("icon/cross_play")} {text}" : text
 
 let getSeparateLeaderboardPlatformValue = function() {
   if (hasFeature("ConsoleSeparateLeaderboards")) {

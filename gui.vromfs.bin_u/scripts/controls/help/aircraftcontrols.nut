@@ -7,7 +7,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { TRIGGER_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
-let { isUnitWithRadar, isUnitWithRwr } = require("%scripts/unit/unitInfo.nut")
+let { isUnitWithRadar, isUnitWithRwr } = require("%scripts/unit/unitWeaponryInfo.nut")
 
 let cache = {}
 

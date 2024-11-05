@@ -13,17 +13,17 @@
     "mass": 277.14,
     "caliber": 0.2794,
     "length": 3.3274,
-    "distFromCmToStab": 0.5,
+    "distFromCmToStab": 0.25,
     "dragCx": 0.0257,
-    "CxK": 1.178,
+    "CxK": 1.65,
     "WdK": [
       2.5,
       2.5,
       2.5
     ],
-    "wingAreaMult": 1.8,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
+    "wingAreaMult": 2.75,
+    "finsAoaHor": 0.153392,
+    "finsAoaVer": 0.153392,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -49,7 +49,7 @@
       5.0,
       5.0
     ],
-    "timeLife": 60.0,
+    "timeLife": 110.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -127,35 +127,53 @@
     "guidance": {
       "permanentlyActivated": true,
       "lockOnAfterLaunch": true,
-      "inertialNavigation": false,
-      "hasTimeToHitTimer": true,
+      "inertialNavigation": true,
+      "inertialNavigationDriftSpeed": 0.0,
+      "launchAngleMax": [
+        180.0,
+        90.0
+      ],
       "laserSeeker": {
-        "range": 3657.0,
-        "rangeMax": 3657.0,
-        "fov": 20.0,
+        "range": 4876.8,
+        "rangeMax": 4876.8,
+        "fov": 32.0,
         "lockAngleMax": 0.0,
         "angleMax": 0.0,
         "rateMax": 10000.0,
         "prolongationTimeMax": 1.0,
         "filterAlpha": 0.85,
-        "filterBetta": 0.2
+        "filterBetta": 0.2,
+        "designationSourceTypeMask": 9
       },
       "guidanceAutopilot": {
         "timeToGain0": [
-          60.0,
+          110.0,
           1.0
         ],
         "timeToGain1": [
-          60.1,
+          110.1,
+          0.0
+        ],
+        "timeToGain2": [
+          55.0,
+          1.0
+        ],
+        "timeToGain3": [
+          55.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.0401,
-        "accelControlIntg": 0.1336,
+        "reqAccelMax": 6.0,
+        "accelControlProp": 0.0436,
+        "accelControlIntg": 0.091,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0005
+        "accelControlDiff": 0.0003,
+        "loftEnabled": true,
+        "loftElevation": 0.5,
+        "loftTargetElevation": -30.0,
+        "loftAngleToAccelMult": 0.125,
+        "loftTargetOmegaMax": 0.65
       }
     },
     "arcadeProp": {

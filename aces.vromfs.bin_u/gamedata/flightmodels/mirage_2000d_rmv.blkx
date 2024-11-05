@@ -2511,10 +2511,6 @@
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_r_550_magic_2.blk"
       },
       {
-        "name": "mirage_2000d_rmv_6x_mica_em",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_6x_mica_em.blk"
-      },
-      {
         "name": "mirage_2000d_rmv_cc_422_gunpod",
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_cc_422_gunpod.blk"
       },
@@ -2557,6 +2553,14 @@
       {
         "name": "mirage_2000d_rmv_bgl_400",
         "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_bgl_400.blk"
+      },
+      {
+        "name": "mirage_2000d_rmv_pgm_500",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_pgm_500.blk"
+      },
+      {
+        "name": "mirage_2000d_rmv_pgm_2000",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_2000d_rmv_pgm_2000.blk"
       },
       {
         "name": "mirage_2000d_rmv_as_30l",
@@ -2688,7 +2692,7 @@
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
-                "bullets": 24,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2697,7 +2701,7 @@
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 24,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2786,7 +2790,7 @@
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare2",
-                "bullets": 24,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2795,7 +2799,7 @@
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 24,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2873,22 +2877,6 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2_default.blk",
               "emitter": "rocket_r550_magic_001",
-              "bullets": 1
-            }
-          },
-          {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em",
-            "reqModification": "fr_mica_em",
-            "ShowNodes": {
-              "node": "pylon_mica_005"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
-              "emitter": "rocket_mica_005",
               "bullets": 1
             }
           },
@@ -3148,7 +3136,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/BombGuns/uk_pgm_500.blk",
-              "emitter": "bomb_pgm_500_3",
+              "emitter": "bomb7",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3242,21 +3230,6 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em_default",
-            "ShowNodes": {
-              "node": "pylon_mica_003"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
-              "emitter": "rocket_mica_003",
-              "bullets": 1
-            }
-          },
-          {
             "iconType": "bombs_middle",
             "name": "bomb_250",
             "ShowNodes": {
@@ -3331,22 +3304,6 @@
         "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em",
-            "reqModification": "fr_mica_em",
-            "ShowNodes": {
-              "node": "pylon_mica_001"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
-              "emitter": "rocket_mica_001",
-              "bullets": 1
-            }
-          },
           {
             "iconType": "bombs_middle",
             "name": "bomb_250",
@@ -3424,7 +3381,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/BombGuns/uk_pgm_500.blk",
-              "emitter": "bomb_pgm_500_1",
+              "emitter": "bomb1",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3747,7 +3704,7 @@
           {
             "iconType": "guided_bomb_special_laser",
             "name": "us_gbu_24",
-            "reqModification": "fr_bgl1000",
+            "reqModification": "us_gbu_24",
             "ShowNodes": {
               "node": "pylon_central"
             },
@@ -3789,7 +3746,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/BombGuns/uk_pgm_500.blk",
-              "emitter": "bomb_pgm_500_2",
+              "emitter": "bomb3",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3810,7 +3767,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/BombGuns/uk_pgm_2000.blk",
-              "emitter": "bomb_pgm_2000_1",
+              "emitter": "bomb3",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -3852,22 +3809,6 @@
         "order": 8,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em",
-            "reqModification": "fr_mica_em",
-            "ShowNodes": {
-              "node": "pylon_mica_002"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
-              "emitter": "rocket_mica_002",
-              "bullets": 1
-            }
-          },
           {
             "iconType": "bombs_middle",
             "name": "bomb_250",
@@ -3967,21 +3908,6 @@
         "order": 6,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em_default",
-            "ShowNodes": {
-              "node": "pylon_mica_004"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
-              "emitter": "rocket_mica_004",
-              "bullets": 1
-            }
-          },
           {
             "iconType": "bombs_middle",
             "name": "bomb_250",
@@ -4224,7 +4150,7 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/BombGuns/uk_pgm_500.blk",
-              "emitter": "bomb_pgm_500_4",
+              "emitter": "bomb8",
               "bullets": 1,
               "external": true,
               "separate": true,
@@ -4328,22 +4254,6 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2_default.blk",
               "emitter": "rocket_r550_magic_002",
-              "bullets": 1
-            }
-          },
-          {
-            "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em",
-            "reqModification": "fr_mica_em",
-            "ShowNodes": {
-              "node": "pylon_mica_006"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
-              "emitter": "rocket_mica_006",
               "bullets": 1
             }
           },
@@ -4704,11 +4614,6 @@
       "reqModification": "fr_pgm_500",
       "modClass": "weapon",
       "tier": 3
-    },
-    "fr_mica_em": {
-      "prevModification": "fr_pgm_2000",
-      "tier": 4,
-      "modClass": "weapon"
     }
   },
   "user_skin": {

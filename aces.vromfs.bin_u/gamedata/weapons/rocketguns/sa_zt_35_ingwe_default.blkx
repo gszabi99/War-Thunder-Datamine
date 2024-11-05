@@ -30,7 +30,6 @@
     "maxDistance": 5000.0,
     "minDistance": 200.0,
     "operatedDist": 5000.0,
-    "visRotationFreqX": 8.0,
     "maxLaunchAngle": 3.0,
     "autoAimingMaxAngle": 1.0,
     "guidanceType": "saclos",
@@ -106,25 +105,10 @@
         0.802
       ],
       "lineOfSightAutopilot": {
-        "timeToGain0": [
-          0.0,
-          0.0
-        ],
-        "timeToGain1": [
-          0.29,
-          0.3
-        ],
-        "timeToGain2": [
-          3.0,
-          0.3
-        ],
-        "timeToGain3": [
-          3.5,
-          1.0
-        ],
-        "crossDistToReqCrossVelMult": 3.0,
-        "reqCrossVelRationMax": 0.75,
-        "velDiffToReqAccelMult": 6.0,
+        "timeOut": 0.15,
+        "crossDistToReqCrossVelMult": 1.9,
+        "reqCrossVelRationMax": 0.5,
+        "velDiffToReqAccelMult": 11.0,
         "accelControl": {
           "velFrameReference": true,
           "baseIndSpeed": 1800.0,

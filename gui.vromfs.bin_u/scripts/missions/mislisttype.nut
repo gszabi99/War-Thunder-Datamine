@@ -19,6 +19,7 @@ let { toUpper } = require("%sqstd/string.nut")
 let { isMissionComplete, getCombineLocNameMission, is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -93,7 +94,7 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
       let reqUnit = misBlk.getStr("player_class", "")
       if (reqUnit != "") {
         let unit = ::findUnitNoCase(reqUnit)
-        if (unit && !::isUnitUsable(unit)) {
+        if (unit && !isUnitUsable(unit)) {
           misDescr.isUnlocked = false
           misDescr.mustHaveUnit <- unit.name
         }

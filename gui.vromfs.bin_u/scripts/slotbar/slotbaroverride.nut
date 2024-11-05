@@ -9,7 +9,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUrlOrFileMissionMetaInfo, isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
-let { isRequireUnlockForUnit } = require("%scripts/unit/unitInfo.nut")
+let { isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") //recalc slotbar only on mission change

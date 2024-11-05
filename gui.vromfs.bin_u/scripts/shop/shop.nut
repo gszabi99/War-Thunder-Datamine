@@ -44,11 +44,10 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
-let {
-  getEsUnitType, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
-  isUnitGroup, isGroupPart, getUnitName, isUnitBroken
+let { getEsUnitType, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
+  getUnitName
 } = require("%scripts/unit/unitInfo.nut")
-let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
+let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")

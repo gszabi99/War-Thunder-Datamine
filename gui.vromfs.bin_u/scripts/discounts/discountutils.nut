@@ -4,7 +4,7 @@ let { getBlkByPathArray, eachBlock } = require("%sqstd/datablock.nut")
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { get_price_blk } = require("blkGetters")
-let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
+let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 
 function invokeMultiArray(multiArray, currentArray, currentIndex, invokeCallback) {

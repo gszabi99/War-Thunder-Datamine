@@ -2626,7 +2626,7 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.MISSION_ACTION_HINTS
     showEvent = "hint:ammo_used_exit_zone:show"
     locId = "hints/ammo_used_exit_zone"
-    lifeTime = 5.0
+    lifeTime = 15.0
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }

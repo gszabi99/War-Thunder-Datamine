@@ -1,6 +1,6 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status, is_default_aircraft, shop_unit_research_status
+from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status, is_default_aircraft, shop_unit_research_status, is_era_available, wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
-let { bit_unit_status, getUnitReqExp, getUnitExp } = require("%scripts/unit/unitInfo.nut")
+let { bit_unit_status, getUnitReqExp, getUnitExp, getUnitCountry, getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
@@ -126,6 +126,41 @@ function isUnitInResearch(unit) {
   return ((status & ES_ITEM_STATUS_IN_RESEARCH) != 0) && !isUnitMaxExp(unit)
 }
 
+function isUnitsEraUnlocked(unit) {
+  return is_era_available(getUnitCountry(unit), unit?.rank ?? -1, getEsUnitType(unit))
+}
+
+function isUnitGroup(unit) {
+  return unit && "airsGroup" in unit
+}
+
+function isGroupPart(unit) {
+  return unit && unit.group != null
+}
+
+let isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !isUnlockOpened(unit.reqUnlock)
+
+let getUnitRepairCost = @(unit) ("name" in unit) ? wp_get_repair_cost(unit.name) : 0
+
+let isUnitBroken = @(unit) getUnitRepairCost(unit) > 0
+
+function isUnitDescriptionValid(unit) {
+  if (!hasFeature("UnitInfo"))
+    return false
+  if (hasFeature("WikiUnitInfo"))
+    return true // Because there is link to wiki.
+  let desc = unit ? loc($"encyclopedia/{unit.name}/desc", "") : ""
+  return desc != "" && desc != loc("encyclopedia/no_unit_description")
+}
+
+/**
+ * Returns true if unit can be installed in slotbar,
+ * unit can be decorated with decals, etc...
+ */
+function isUnitUsable(unit) {
+  return unit ? unit.isUsable() : false
+}
+
 return {
   canBuyNotResearched
   getBitStatus
@@ -137,4 +172,11 @@ return {
   isUnitMaxExp
   canResearchUnit
   isUnitInResearch
+  isUnitsEraUnlocked
+  isUnitGroup
+  isGroupPart
+  isRequireUnlockForUnit
+  isUnitBroken
+  isUnitDescriptionValid
+  isUnitUsable
 }

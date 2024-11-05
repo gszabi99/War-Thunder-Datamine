@@ -20,16 +20,16 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { removeTextareaTags, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getEsUnitType, isUnitsEraUnlocked, getUnitName,
-  isUnitGroup, bit_unit_status, getUnitReqExp,
-  getUnitExp, isUnitBroken
+let { getEsUnitType, getUnitName,
+  bit_unit_status, getUnitReqExp,
+  getUnitExp
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
 let { getBitStatus, isUnitElite, isUnitInSlotbar, isUnitDefault, canResearchUnit,
-  isUnitInResearch
+  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken, isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
@@ -495,7 +495,7 @@ function buildGroupSlot(id, unit, params) {
 
   foreach (a in unit.airsGroup) {
     let isInResearch = !forceNotInResearch && isUnitInResearch(a)
-    let isUsable = ::isUnitUsable(a)
+    let isUsable = isUnitUsable(a)
 
     if (isInResearch || (canResearchUnit(a) && !researchingUnit)) {
       researchingUnit = a
@@ -660,7 +660,7 @@ function buildCommonUnitSlot(id, unit, params) {
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
 
   let isOwn               = isUnitBought(unit)
-  let isUsable            = ::isUnitUsable(unit)
+  let isUsable            = isUnitUsable(unit)
   let isMounted           = isUnitInSlotbar(unit)
   let canResearch         = canResearchUnit(unit)
   let special             = isUnitSpecial(unit)

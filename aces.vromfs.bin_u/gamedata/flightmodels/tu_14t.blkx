@@ -56,6 +56,9 @@
     "armor8_5": {
       "armor2_dm": {
         "hp": 40.0
+      },
+      "armor6_dm": {
+        "hp": 40.0
       }
     },
     "armor_jet_engine": {
@@ -196,10 +199,10 @@
         "hp": 80.5
       },
       "wingcontrol_l_dm": {
-        "hp": 75.9
+        "hp": 69.8
       },
       "wingcontrol_r_dm": {
-        "hp": 75.8
+        "hp": 69.8
       }
     },
     "steel": {
@@ -226,6 +229,12 @@
       }
     },
     "steel_tank_s": {
+      "tank10_dm": {
+        "hp": 80.5
+      },
+      "tank11_dm": {
+        "hp": 80.5
+      },
       "tank1_dm": {
         "hp": 80.5
       },
@@ -233,21 +242,24 @@
         "hp": 80.5
       },
       "tank3_dm": {
-        "hp": 80.5
+        "hp": 69.6
       },
       "tank4_dm": {
-        "hp": 80.5
+        "hp": 69.6
       },
       "tank5_dm": {
         "hp": 80.5
       },
       "tank6_dm": {
-        "hp": 67.3
+        "hp": 80.5
       },
       "tank7_dm": {
         "hp": 80.5
       },
       "tank8_dm": {
+        "hp": 80.5
+      },
+      "tank9_dm": {
         "hp": 80.5
       }
     }
@@ -353,6 +365,9 @@
       },
       {
         "name": "armor5_dm"
+      },
+      {
+        "name": "armor6_dm"
       },
       {
         "name": "cannon1_dm"
@@ -1109,6 +1124,90 @@
         "name": "tailcontrol_dm"
       },
       {
+        "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.5,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 5.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank11_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.5,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 5.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
         "name": "tank1_dm",
         "onHit": [
           {
@@ -1404,6 +1503,48 @@
       },
       {
         "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
+          },
+          {
+            "damage": 50.0,
+            "fire": 0.5,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.5,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 1.0,
+            "leak": 9.0,
+            "nothing": 90.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 5.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
         "onHit": [
           {
             "fire": 0.01,

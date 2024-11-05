@@ -36,6 +36,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { getCurrentCampaignMission, setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { debug_dump_stack } = require("dagor.debug")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -91,7 +92,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       }
 
       if (this.gm == GM_TEST_FLIGHT)
-        country = ::getCountryByAircraftName(::get_test_flight_unit_info()?.unit.name)
+        country = ::getCountryByAircraftName(unitNameForWeapons.get())
       else
         country = ::getCountryByAircraftName(missionBlk.getStr("player_class", ""))
       log($"0 player_class = {missionBlk.getStr("player_class", "")}; country = {country}")
@@ -234,7 +235,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
     local m_weapon = blk.getStr("player_weapons", "")
 
     if (this.gm == GM_TEST_FLIGHT) {
-      m_aircraft = ::get_test_flight_unit_info()?.unit.name
+      m_aircraft = unitNameForWeapons.get()
       m_weapon = get_gui_option(USEROPT_WEAPONS)
     }
     if ((m_aircraft != "") && !(this.gt & GT_VERSUS))

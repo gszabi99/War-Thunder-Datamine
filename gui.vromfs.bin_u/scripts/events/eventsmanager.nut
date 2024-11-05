@@ -51,7 +51,8 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getEsUnitType, getUnitName, isUnitBroken } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { isUnitBroken, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
@@ -1503,7 +1504,7 @@ let Events = class {
 
     let ediff = this.getEDiffByEvent(event)
     foreach (unit in getAllUnits())
-       if (::isUnitUsable(unit) && this.isUnitMatchesRule(unit, requirements, true, ediff))
+       if (isUnitUsable(unit) && this.isUnitMatchesRule(unit, requirements, true, ediff))
          return true
     return false
   }
@@ -2151,7 +2152,7 @@ let Events = class {
         let airNameObj = ruleObj.findObject("air_name")
         airNameObj.setValue(loc($"{rule.name}_shop"))
 
-        if (::isUnitUsable(air))
+        if (isUnitUsable(air))
           airNameObj.airBought = "yes"
         else if (air && canBuyUnit(air))
           airNameObj.airCanBuy = "yes"

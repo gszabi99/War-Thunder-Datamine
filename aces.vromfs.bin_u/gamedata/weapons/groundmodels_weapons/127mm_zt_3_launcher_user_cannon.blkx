@@ -45,7 +45,7 @@
   "animChar": "zt3a2_ingwe_rocket_char",
   "reloadAnimParam": "rocket_hide",
   "bullet": {
-    "mass": 26.0,
+    "mass": 28.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
     "groundRicochetPreset": "atgm",
@@ -92,27 +92,24 @@
       "statType": "hydra",
       "caliber": 0.127,
       "length": 1.47,
-      "CxK": 1.75,
+      "CxK": 1.9,
       "wingAreaMult": 2.1,
       "finsAoaHor": 0.15,
       "finsAoaVer": 0.15,
       "distFromCmToStab": 0.025,
-      "mass": 26.0,
-      "massEnd": 25.7,
-      "massEnd1": 24.4,
-      "timeFire": 1.0,
-      "timeFire1": 8.0,
-      "force": 2950.0,
-      "force1": 360.0,
-      "fireDelay": 0.04,
+      "mass": 28.0,
+      "massEnd": 24.5,
+      "timeFire": 2.0,
+      "force": 4000.0,
+      "fireDelay": 0.14,
       "timeLife": 25.0,
       "thrustDeviation": 0.01,
       "useStartSpeed": true,
-      "startSpeed": 50.0,
-      "endSpeed": 240.0,
-      "maxDistance": 4000.0,
-      "minDistance": 30.0,
-      "rangeMax": 4000.0,
+      "startSpeed": 60.0,
+      "endSpeed": 345.0,
+      "maxDistance": 5000.0,
+      "minDistance": 200.0,
+      "rangeMax": 5000.0,
       "autoAimingMaxAngle": 1.0,
       "guidanceType": "saclos",
       "maxDeltaAngle": 0.03,
@@ -180,10 +177,10 @@
         "beamRider": true,
         "breakLockMaxTime": 3.0,
         "lineOfSightAutopilot": {
-          "timeOut": 0.3,
-          "crossDistToReqCrossVelMult": 3.0,
-          "reqCrossVelRationMax": 0.75,
-          "velDiffToReqAccelMult": 6.0,
+          "timeOut": 0.15,
+          "crossDistToReqCrossVelMult": 1.5,
+          "reqCrossVelRationMax": 0.5,
+          "velDiffToReqAccelMult": 15.0,
           "accelControl": {
             "velFrameReference": true,
             "baseIndSpeed": 1800.0,
@@ -703,7 +700,7 @@
   },
   "127mm_uk_zt3_swift": {
     "bullet": {
-      "mass": 26.0,
+      "mass": 28.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "groundRicochetPreset": "atgm",
@@ -750,27 +747,24 @@
         "statType": "hydra",
         "caliber": 0.127,
         "length": 1.47,
-        "CxK": 1.75,
+        "CxK": 1.9,
         "wingAreaMult": 2.1,
         "finsAoaHor": 0.15,
         "finsAoaVer": 0.15,
         "distFromCmToStab": 0.025,
-        "mass": 26.0,
-        "massEnd": 25.7,
-        "massEnd1": 24.4,
-        "timeFire": 1.0,
-        "timeFire1": 8.0,
-        "force": 2950.0,
-        "force1": 360.0,
-        "fireDelay": 0.04,
+        "mass": 28.0,
+        "massEnd": 24.5,
+        "timeFire": 2.0,
+        "force": 4000.0,
+        "fireDelay": 0.14,
         "timeLife": 25.0,
         "thrustDeviation": 0.01,
         "useStartSpeed": true,
-        "startSpeed": 50.0,
-        "endSpeed": 240.0,
-        "maxDistance": 4000.0,
-        "minDistance": 30.0,
-        "rangeMax": 4000.0,
+        "startSpeed": 60.0,
+        "endSpeed": 345.0,
+        "maxDistance": 5000.0,
+        "minDistance": 200.0,
+        "rangeMax": 5000.0,
         "autoAimingMaxAngle": 1.0,
         "guidanceType": "saclos",
         "maxDeltaAngle": 0.03,
@@ -838,10 +832,10 @@
           "beamRider": true,
           "breakLockMaxTime": 3.0,
           "lineOfSightAutopilot": {
-            "timeOut": 0.3,
-            "crossDistToReqCrossVelMult": 3.0,
-            "reqCrossVelRationMax": 0.75,
-            "velDiffToReqAccelMult": 6.0,
+            "timeOut": 0.15,
+            "crossDistToReqCrossVelMult": 1.5,
+            "reqCrossVelRationMax": 0.5,
+            "velDiffToReqAccelMult": 15.0,
             "accelControl": {
               "velFrameReference": true,
               "baseIndSpeed": 1800.0,
@@ -1479,8 +1473,6 @@
           1000.0
         ],
         "hitPower": 260.0,
-        "fuseDelayDist": 0.4,
-        "explodeTreshold": 0.01,
         "price": 3000.0,
         "mesh": "zt3a2_ingwe_rocket_deployed",
         "tracerTrailEmitter": [
@@ -1488,16 +1480,18 @@
           0.0,
           0.0
         ],
+        "fuseDelayDist": 0.4,
+        "explodeTreshold": 0.01,
         "guidance": {
           "launchAngleMax": 5.0,
           "controlConeFov": 15.0,
           "beamRider": true,
           "breakLockMaxTime": 3.0,
           "lineOfSightAutopilot": {
-            "timeOut": 0.3,
-            "crossDistToReqCrossVelMult": 3.0,
-            "reqCrossVelRationMax": 0.75,
-            "velDiffToReqAccelMult": 6.0,
+            "timeOut": 0.15,
+            "crossDistToReqCrossVelMult": 1.9,
+            "reqCrossVelRationMax": 0.5,
+            "velDiffToReqAccelMult": 11.0,
             "accelControl": {
               "velFrameReference": true,
               "baseIndSpeed": 1800.0,
@@ -1997,6 +1991,12 @@
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
+        "cumulativeDamage": {
+          "armorPower": 1000.0,
+          "distance": 7.5,
+          "damage": 600.0,
+          "onHitChanceMultFire": 25.0
+        },
         "kineticDamage": {
           "damageType": "tandemPrecharge"
         },
@@ -2009,12 +2009,6 @@
             50.0,
             10000.0
           ]
-        },
-        "cumulativeDamage": {
-          "armorPower": 1000.0,
-          "distance": 7.5,
-          "damage": 600.0,
-          "onHitChanceMultFire": 25.0
         }
       }
     }

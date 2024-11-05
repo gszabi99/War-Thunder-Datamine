@@ -70,12 +70,13 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial,
   startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -106,7 +107,7 @@ const HEADER_LEN_PER_CELL = 16
 ::open_weapons_for_unit <- function open_weapons_for_unit(unit, params = {}) {
   if (!("name" in unit))
     return
-  ::aircraft_for_weapons = unit.name
+  unitNameForWeapons.set(unit.name)
   handlersManager.loadHandler(gui_handlers.WeaponsModalHandler, params)
 }
 
@@ -227,7 +228,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       $"{textSpendExp} {loc("currency/researchPoints/sign")}",
       $"{textSpendExp} {loc("currency/researchPoints/sign/colored")}")
 
-    this.airName = ::aircraft_for_weapons
+    this.airName = unitNameForWeapons.get()
     this.air = getAircraftByName(this.airName)
     this.initMainParams()
 
@@ -332,7 +333,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.air = newUnit
     this.airName = this.air?.name ?? ""
-    ::aircraft_for_weapons = this.airName
+    unitNameForWeapons.set(this.airName)
 
     this.initMainParams()
   }
@@ -695,7 +696,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateBuyAllButton() {
     let btnId = "btn_buyAll"
     let cost = getAllModsCost(this.air, true)
-    let show = !cost.isZero() && ::isUnitUsable(this.air) && hasFeature("BuyAllModifications")
+    let show = !cost.isZero() && isUnitUsable(this.air) && hasFeature("BuyAllModifications")
     showObjById(btnId, show, this.scene)
     if (show)
       placePriceTextToButton(this.scene, btnId, loc("mainmenu/btnBuyAll"), cost)

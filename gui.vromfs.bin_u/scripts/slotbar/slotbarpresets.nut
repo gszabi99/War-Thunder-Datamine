@@ -23,6 +23,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
   getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode
@@ -488,7 +489,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
         let crewId = preset.crews[i]
         if (crewId == crew.id) {
           let unit = getAircraftByName(unitId)
-          if (unit && unit.isInShop && ::isUnitUsable(unit)
+          if (unit && unit.isInShop && isUnitUsable(unit)
               && (!unit.trainCost || isInArray(unitId, crewTrainedUnits))
               && !(unitId in unitsList)) {
             unitsList[unitId] <- crewId

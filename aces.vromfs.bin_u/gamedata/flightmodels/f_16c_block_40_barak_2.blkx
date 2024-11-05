@@ -2673,6 +2673,16 @@
             ]
           },
           {
+            "name": "2S6",
+            "detectLaunch": true,
+            "type": [
+              "1RL114 TA",
+              "1RL114 TT",
+              "PGZ-09 TA",
+              "PGZ-09 TT"
+            ]
+          },
+          {
             "name": "ARH",
             "detectTracking": true,
             "detectLaunch": true,
@@ -2769,6 +2779,10 @@
           {
             "text": "J39",
             "group": "J-39"
+          },
+          {
+            "text": "2S6",
+            "group": "2S6"
           },
           {
             "text": "MSL",
@@ -3102,6 +3116,10 @@
       {
         "name": "f_16c_block_40_barak_2_gbu_31",
         "blk": "gameData/FlightModels/weaponPresets/f_16c_block_40_barak_2_gbu_31.blk"
+      },
+      {
+        "name": "f_16c_block_40_barak_2_gbu_39",
+        "blk": "gameData/FlightModels/weaponPresets/f_16c_block_40_barak_2_gbu_39.blk"
       }
     ]
   },
@@ -3485,7 +3503,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -3501,7 +3519,7 @@
           {
             "iconType": "bombs_small_group_x4",
             "name": "ver_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -3596,7 +3614,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -3612,7 +3630,7 @@
           {
             "iconType": "bombs_small_high_drag_group_x2",
             "name": "ver_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon2"
             },
@@ -3715,6 +3733,25 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot3",
+            "reqModification": "us_mk82_gbu39",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_2000lb_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -3726,7 +3763,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -3742,7 +3779,7 @@
           {
             "iconType": "bombs_small_group_x4",
             "name": "ver_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -3818,7 +3855,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -3834,7 +3871,7 @@
           {
             "iconType": "bombs_small_high_drag_group_x2",
             "name": "ver_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon4"
             },
@@ -4061,7 +4098,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -4077,7 +4114,7 @@
           {
             "iconType": "bombs_small_group_x4",
             "name": "ver_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -4153,7 +4190,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -4169,7 +4206,7 @@
           {
             "iconType": "bombs_small_high_drag_group_x2",
             "name": "ver_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon5"
             },
@@ -4381,7 +4418,7 @@
           {
             "iconType": "bombs_middle_group",
             "name": "ter_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon6"
             },
@@ -4397,7 +4434,7 @@
           {
             "iconType": "bombs_small_group_x4",
             "name": "ver_mk82",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon6"
             },
@@ -4492,7 +4529,7 @@
           {
             "iconType": "bombs_middle_high_drag_group",
             "name": "ter_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon6"
             },
@@ -4508,7 +4545,7 @@
           {
             "iconType": "bombs_small_high_drag_group_x2",
             "name": "ver_mk82_snakeye",
-            "reqModification": "us_500lb_mk82",
+            "reqModification": "us_mk82_gbu39",
             "ShowNodes": {
               "node": "pylon6"
             },
@@ -4607,6 +4644,25 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
               "emitter": "bomb_2000lb_004",
               "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot8",
+            "reqModification": "us_mk82_gbu39",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "bomb_2000lb_004",
               "external": true,
               "separate": true,
               "machLimit": 1.01
@@ -4951,14 +5007,14 @@
         }
       }
     },
-    "us_500lb_mk82": {
+    "us_mk82_gbu39": {
       "modClass": "weapon",
       "tier": 1
     },
     "us_1000lb_mk83": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModification": "us_500lb_mk82"
+      "reqModification": "us_mk82_gbu39"
     },
     "us_2000lb_mk84_gbu31_jdam": {
       "modClass": "weapon",

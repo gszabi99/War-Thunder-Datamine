@@ -28,6 +28,7 @@ let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { getCurrentCampaignId, getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 ::mission_settings <- {
   name = null
@@ -182,7 +183,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
 
   if ((gt & GT_SP_USE_SKIN) && !(gt & GT_VERSUS)) {
     let aircraft = missionBlk.getStr("player_class", "")
-    ::aircraft_for_weapons = aircraft
+    unitNameForWeapons.set(aircraft)
     optionItems.append([USEROPT_SKIN, "spinner"])
   }
 
@@ -313,7 +314,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     this.isOnline = this.missionBlk.getBool("isOnline", false)
 
     let aircraft = this.missionBlk.getStr("player_class", "")
-    ::aircraft_for_weapons = aircraft
+    unitNameForWeapons.set(aircraft)
 
     ::mission_settings.name = this.missionName
     ::mission_settings.postfix = null

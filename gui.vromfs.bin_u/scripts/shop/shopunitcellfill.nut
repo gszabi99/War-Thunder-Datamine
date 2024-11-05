@@ -8,7 +8,8 @@ let { format, split_by_chars } = require("string")
 let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getBitStatus, canBuyNotResearched, isUnitElite, isUnitInSlotbar, canResearchUnit,
-  isUnitInResearch
+  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken,
+  isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")
 let { getUnitRole, getUnitRoleIcon, getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
@@ -20,8 +21,8 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getEsUnitType, isUnitsEraUnlocked, getUnitName, isUnitGroup,
-  bit_unit_status, getUnitReqExp, getUnitExp, isUnitBroken
+let { getEsUnitType, getUnitName,
+  bit_unit_status, getUnitReqExp, getUnitExp
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
@@ -389,7 +390,7 @@ let getUnitStatusTbl = function(unit, params) {
   } = params
 
   let isOwn           = unit.isBought()
-  let isUsable        = ::isUnitUsable(unit)
+  let isUsable        = isUnitUsable(unit)
   let isSpecial       = isUnitSpecial(unit)
   let bitStatus       = getBitStatus(unit, params)
 
@@ -535,7 +536,7 @@ function getGroupStatusTbl(group, params) {
 
   foreach (unit in unitsList) {
     let isInResearch = !forceNotInResearch && isUnitInResearch(unit)
-    let isUsable = ::isUnitUsable(unit)
+    let isUsable = isUnitUsable(unit)
 
     if (isInResearch || (canResearchUnit(unit) && !researchingUnit)) {
       researchingUnit = unit

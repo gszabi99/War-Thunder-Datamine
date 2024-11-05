@@ -341,7 +341,7 @@ function fillProfileSummary(sObj, summary, diff) {
           continue
 
         data += row
-        textsToSet[$"txt_{rowId}"] <- loc(item.name) + " (" + loc("mainmenu/type_" + statsFm[i].tolower()) + ")"
+        textsToSet[$"txt_{rowId}"] <- "".concat(loc(item.name), " (", loc($"mainmenu/type_{statsFm[i].tolower()}"), ")")
       }
     else {
       let row = buildProfileSummaryRowData(item, summary, diff)

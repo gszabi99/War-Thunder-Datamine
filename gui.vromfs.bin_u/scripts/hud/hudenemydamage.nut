@@ -152,10 +152,10 @@ let { getRgbStrFromHsv } = require("colorCorrector")
     local markup = ""
     foreach (_sectionIdx, section in this.partsOrder) {
       foreach (partId in section.parts)
-        markup += handyman.renderCached(("%gui/hud/hudEnemyDamage.tpl"), {
+        markup = "".concat(markup, handyman.renderCached(("%gui/hud/hudEnemyDamage.tpl"), {
           id = partId
           text = loc($"dmg_msg_short/{partId}")
-        })
+        }))
     }
     this.guiScene.replaceContentFromText(this.listObj, markup, markup.len(), this)
   }

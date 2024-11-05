@@ -1,6 +1,6 @@
 {
   "bombGun": true,
-  "preset_cost": 300,
+  "preset_cost": 20,
   "helicopterGroup": 2,
   "bullets": 1,
   "shotFreq": 1000.25,
@@ -10,12 +10,12 @@
   "tags": {},
   "bomb": {
     "bulletName": "us_2000lb_gbu_24",
-    "mass": 1050.0,
-    "mass_lbs": 2000.0,
-    "caliber": 0.368,
-    "length": 4.31,
-    "distFromCmToStab": 0.5,
-    "dragCx": 0.0793,
+    "mass": 1079.55,
+    "mass_lbs": 2380.0,
+    "caliber": 0.4572,
+    "length": 4.318,
+    "distFromCmToStab": 0.6,
+    "dragCx": 0.0257,
     "CxK": 1.15,
     "WdK": [
       2.5,
@@ -23,8 +23,8 @@
       2.5
     ],
     "wingAreaMult": 1.8,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
+    "finsAoaHor": 0.151153,
+    "finsAoaVer": 0.151153,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -42,14 +42,14 @@
     ],
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
-    "explosiveType": "tritonal",
+    "explosiveType": "comp_h6",
     "explosiveMass": 428.6,
+    "guidanceType": "laser",
     "isHasLaserChannel": true,
     "opticSightFov": [
       5.0,
       5.0
     ],
-    "guidanceType": "laser",
     "timeLife": 90.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
@@ -127,42 +127,48 @@
     },
     "guidance": {
       "permanentlyActivated": true,
-      "inertialNavigation": true,
-      "inertialNavigationDriftSpeed": 5.0,
-      "breakLockMaxTime": 5.0,
-      "laserSeeker": {
-        "range": 4572.0,
-        "rangeMax": 4572.0,
-        "fov": 30.0,
-        "lockAngleMax": 45.0,
-        "angleMax": 45.0,
-        "rateMax": 8.0,
-        "prolongationTimeMax": 0.5,
-        "designationSourceTypeMask": 9,
-        "filterAlpha": 0.85,
-        "filterBetta": 0.2
-      },
+      "lockOnAfterLaunch": true,
+      "hasTimeToHitTimer": true,
+      "launchAngleMax": [
+        180.0,
+        90.0
+      ],
       "guidanceAutopilot": {
-        "loftEnabled": true,
-        "loftElevation": 5.0,
-        "loftTargetElevation": -40.0,
-        "loftAngleToAccelMult": 0.001,
-        "loftTargetOmegaMax": 0.75,
         "timeToGain0": [
+          0.0,
+          0.0
+        ],
+        "timeToGain1": [
+          2.0,
+          1.0
+        ],
+        "timeToGain2": [
           90.0,
           1.0
         ],
-        "timeToGain1": [
+        "timeToGain3": [
           90.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.0996,
-        "accelControlIntg": 0.0626,
+        "reqAccelMax": 6.0,
+        "accelControlProp": 0.0696,
+        "accelControlIntg": 0.0895,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0001
+        "accelControlDiff": 0.0002
+      },
+      "laserSeeker": {
+        "range": 6132.25,
+        "rangeMax": 6132.25,
+        "fov": 30.0,
+        "lockAngleMax": 45.0,
+        "angleMax": 45.0,
+        "rateMax": 8.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 9,
+        "filterAlpha": 0.85,
+        "filterBetta": 0.2
       }
     },
     "arcadeProp": {

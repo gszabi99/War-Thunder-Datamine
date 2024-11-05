@@ -10,10 +10,11 @@
   "tags": {},
   "bomb": {
     "bulletName": "us_gbu_10_paveway_2",
-    "mass": 957.0,
+    "mass": 943.926,
+    "mass_lbs": 2081.0,
     "caliber": 0.4572,
     "length": 4.318,
-    "distFromCmToStab": 0.5,
+    "distFromCmToStab": 0.6,
     "dragCx": 0.0257,
     "CxK": 1.17,
     "WdK": [
@@ -22,8 +23,8 @@
       2.5
     ],
     "wingAreaMult": 1.8,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
+    "finsAoaHor": 0.151153,
+    "finsAoaVer": 0.151153,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "bomb_ground",
@@ -42,14 +43,14 @@
     "useEffectiveArmorThicknessForShatter": true,
     "explodeOnRendinst": true,
     "explosiveType": "comp_h6",
-    "explosiveMass": 428.7,
+    "explosiveMass": 428.6,
     "guidanceType": "laser",
     "isHasLaserChannel": true,
     "opticSightFov": [
       5.0,
       5.0
     ],
-    "timeLife": 60.0,
+    "timeLife": 55.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -88,7 +89,7 @@
       200.0,
       1000.0
     ],
-    "explosionFx": "bomb_expl_500kg",
+    "explosionFx": "bomb_expl_1000kg",
     "waterExplosionEffect": "water_explosion_big",
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
@@ -102,10 +103,10 @@
     "shatterPatchRadius": 0.0,
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "explosionPatchRadius": 12.0,
+    "explosionPatchRadius": 17.0,
     "explosionPatchHeightScale": 0.15,
     "rendinstDamageRadius": 29.0,
-    "sound": "weapon.bomb_std",
+    "sound": "weapon.bomb_big",
     "iconType": "guided_bomb_large_laser",
     "stabilityRicochetModifier": {
       "mod1": [
@@ -127,12 +128,11 @@
     "guidance": {
       "permanentlyActivated": true,
       "lockOnAfterLaunch": true,
-      "inertialNavigation": false,
       "hasTimeToHitTimer": true,
       "laserSeeker": {
-        "range": 4572.0,
-        "rangeMax": 4572.0,
-        "fov": 20.0,
+        "range": 4876.8,
+        "rangeMax": 4876.8,
+        "fov": 32.0,
         "lockAngleMax": 0.0,
         "angleMax": 0.0,
         "rateMax": 10000.0,
@@ -142,20 +142,28 @@
       },
       "guidanceAutopilot": {
         "timeToGain0": [
-          60.0,
-          1.0
+          0.0,
+          0.0
         ],
         "timeToGain1": [
-          60.1,
+          2.0,
+          1.0
+        ],
+        "timeToGain2": [
+          55.0,
+          1.0
+        ],
+        "timeToGain3": [
+          55.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.0996,
-        "accelControlIntg": 0.0536,
+        "reqAccelMax": 6.0,
+        "accelControlProp": 0.0731,
+        "accelControlIntg": 0.093,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0001
+        "accelControlDiff": 0.0004
       }
     },
     "arcadeProp": {

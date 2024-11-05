@@ -9,7 +9,7 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
+let { isUnitDefault, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
 let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
@@ -88,7 +88,7 @@ function checkUnlockedCountriesByAirs() { //starter packs
   local haveUnlocked = false
   foreach (air in getAllUnits())
     if (!isUnitDefault(air)
-        && ::isUnitUsable(air)
+        && isUnitUsable(air)
         && !isCountryAvailable(air.shopCountry)) {
       unlockCountry(air.shopCountry)
       haveUnlocked = true

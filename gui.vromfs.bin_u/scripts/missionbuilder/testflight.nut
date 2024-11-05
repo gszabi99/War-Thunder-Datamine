@@ -39,6 +39,7 @@ let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let DataBlock = require("DataBlock")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 
@@ -133,9 +134,10 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function checkBulletsRows() {
-    if (type(::aircraft_for_weapons) != "string")
+    let unitName = unitNameForWeapons.get() ?? ""
+    if (unitName == "")
       return
-    let air = getAircraftByName(::aircraft_for_weapons)
+    let air = getAircraftByName(unitName)
     if (!air)
       return
 
@@ -261,9 +263,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     this.updateOptionsArray()
 
-    ::update_test_flight_unit_info({unit = this.unit})
-    ::cur_aircraft_name = this.unit.name
-    ::aircraft_for_weapons = this.unit.name
+    unitNameForWeapons.set(this.unit.name)
     set_gui_option(USEROPT_AIRCRAFT, this.unit.name)
 
     let container = create_options_container("testflight_options", this.options, true, 0.5, true, this.optionsConfig)
@@ -432,15 +432,17 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     let limitedFuel = get_option(USEROPT_LIMITED_FUEL)
     let limitedAmmo = get_option(USEROPT_LIMITED_AMMO)
 
-    ::aircraft_for_weapons = this.unit.name
+    let unitName = this.unit.name
+    unitNameForWeapons.set(unitName)
 
     if(this.weaponsSelectorWeak)
       this.weaponsSelectorWeak.bulletsManager.updateBulletCountOptions()
     else
       ::UnitBulletsManager(this.unit).updateBulletCountOptions([])
 
-    enable_bullets_modifications(::aircraft_for_weapons)
-    ::enable_current_modifications(::aircraft_for_weapons)
+
+    enable_bullets_modifications(unitName)
+    ::enable_current_modifications(unitName)
 
     ::missionBuilderVehicleConfigForBlk = {
         selectedSkin  = skinValue,

@@ -91,19 +91,18 @@ function mkIcon(baseCfg, iconCfg, watched) {
         }
         iconCfg.text.enabled ? @() {
           rendObj = ROBJ_TEXT
-          pos = [0, ph(30)]
+          pos = [0, ph(48)]
           watch = text
+          padding = [0, 0, hdpx(10), 0]
           text = text.get()
           size = flex()
           font = baseCfg.iconFont
           color = iconCfg.text.color
           halign = ALIGN_RIGHT
           valign = ALIGN_BOTTOM
-          fontFx = FFT_SHADOW
-          fontFxColor = 0xFF000000
-          fontFxFactor = 100
-          fontFxOffsX = hdpx(1)
-          fontFxOffsY = hdpx(1)
+          fontFx = FFT_GLOW
+          fontFxColor = 0xFF40515C
+          fontFxFactor = 40
         } : null
       ]
     }

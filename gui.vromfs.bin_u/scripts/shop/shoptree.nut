@@ -4,7 +4,7 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format } = require("string")
 let { fatal } = require("dagor.debug")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { isUnitGroup } = require("%scripts/unit/unitInfo.nut")
+let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 

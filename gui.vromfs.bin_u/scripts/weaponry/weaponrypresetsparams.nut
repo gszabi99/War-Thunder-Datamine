@@ -21,6 +21,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { openRestrictionsWeaponryPreset } = require("%scripts/weaponry/restrictionsWeaponryPreset.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -390,7 +391,7 @@ function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = n
     chapterOrd        = chapterOrd
     isDefault         = preset.name.indexof("default") != null
     isEnabled         = preset?.isEnabled
-      ?? (isWeaponEnabled(unit, preset) || (::isUnitUsable(unit) && isWeaponUnlocked(unit, preset)))
+      ?? (isWeaponEnabled(unit, preset) || (isUnitUsable(unit) && isWeaponUnlocked(unit, preset)))
     rank              = getReqRankByMod(preset?.reqModification, modifications)
     customIdx         = isCustom ? cutPrefix(preset.name, CUSTOM_PRESET_PREFIX, -1).tointeger() : -1
     customNameText    = preset?.customNameText

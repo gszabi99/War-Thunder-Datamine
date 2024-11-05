@@ -15,7 +15,8 @@ let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getNearestSelectableChildIndex } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { getBitStatus, isUnitElite } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus, isUnitElite, isRequireUnlockForUnit, isUnitUsable
+} = require("%scripts/unit/unitStatus.nut")
 let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockShortText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
@@ -35,7 +36,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInFlight } = require("gameplayBinding")
-let { bit_unit_status, isRequireUnlockForUnit } = require("%scripts/unit/unitInfo.nut")
+let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { selectCountryForCurrentOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -1608,7 +1609,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!checkObj(obj) || unit == null)
         continue
 
-      let weaponsStatus = getWeaponsStatusName((slot.crew?.isLocalState ?? true) && ::isUnitUsable(unit)
+      let weaponsStatus = getWeaponsStatusName((slot.crew?.isLocalState ?? true) && isUnitUsable(unit)
         ? checkUnitWeapons(unit)
         : UNIT_WEAPONS_READY
       )

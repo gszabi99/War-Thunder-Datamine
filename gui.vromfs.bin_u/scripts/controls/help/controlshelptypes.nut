@@ -24,7 +24,7 @@ let generateSubmarineActionBars = require("%scripts/controls/help/generateContro
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { getTankRankForHelp } = require("%scripts/controls/help/controlsHelpUnitRankGetters.nut")
 let aircraftControls = require("%scripts/controls/help/aircraftControls.nut")
-let { isUnitWithRadar } = require("%scripts/unit/unitInfo.nut")
+let { isUnitWithRadar } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getEventConditionControlHelp } = require("%scripts/hud/maybeOfferControlsHelp.nut")
 
 const UNIT_WITH_PERISCOPE_DEPTH = "germ_sub_type_7"

@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { isWeaponAux, getLastWeapon, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { blkFromPath } = require("%sqstd/datablock.nut")
+let { blkFromPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 
 const USE_DELAY_EXPLOSION_DEFAULT = true
@@ -171,6 +171,29 @@ function hasBombDelayExplosion(unit) {
   return false
 }
 
+let unitSensorsCache = {}
+function isUnitWithSensorType(unit, sensorType) {
+  if (!unit)
+    return false
+  let unitName = unit.name
+  if (unitName in unitSensorsCache)
+    return unitSensorsCache[unitName]?[sensorType] ?? false
+
+  unitSensorsCache[unitName] <- {}
+  let unitBlk = ::get_full_unit_blk(unit.name)
+  if (unitBlk?.sensors)
+    foreach (sensor in (unitBlk.sensors % "sensor")) {
+      let sensType = blkOptFromPath(sensor?.blk)?.type ?? ""
+      if (sensType != "")
+        unitSensorsCache[unitName][sensType] <- true
+    }
+  return unitSensorsCache[unitName]?[sensorType] ?? false
+}
+
+let isUnitWithRadar = @(unit) isUnitWithSensorType(unit, "radar")
+
+let isUnitWithRwr = @(unit) isUnitWithSensorType(unit, "rwr")
+
 return {
   getUnitMassPerSecValue
   getUnitWeaponPresetsCount
@@ -180,4 +203,6 @@ return {
   isShipWithoutPurshasedTorpedoes
   hasCountermeasures
   hasBombDelayExplosion
+  isUnitWithRadar
+  isUnitWithRwr
 }

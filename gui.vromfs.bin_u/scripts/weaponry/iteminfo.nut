@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost, get_modification_level, shop_get_module_exp, wp_get_modification_max_count, shop_get_module_research_status
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -50,7 +51,7 @@ function isModStatusResearched(unit, mod) {
 }
 
 function getItemStatusTbl(unit, item) {
-  let isOwn = ::isUnitUsable(unit)
+  let isOwn = isUnitUsable(unit)
   let res = {
     amount = getItemAmount(unit, item)
     maxAmount = 0

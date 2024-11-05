@@ -2,12 +2,11 @@ from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 
 let { isUnitInSlotbar, canBuyNotResearched, isUnitMaxExp, canResearchUnit,
-  isUnitInResearch
+  isUnitInResearch, isUnitGroup, isUnitBroken, isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { isUnitGroup, getUnitExp, isUnitBroken
-} = require("%scripts/unit/unitInfo.nut")
+let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
@@ -59,7 +58,7 @@ function getSlotActionFunctionName(unit, params) {
     return "mainmenu/btnInvestSquadronExp"
   if (isInResearch && canBuyNotResearched(unit))
     return "mainmenu/btnOrder"
-  if (!::isUnitUsable(unit) && !isUnitGift(unit) && (!isSquadronVehicle || !isInResearch))
+  if (!isUnitUsable(unit) && !isUnitGift(unit) && (!isSquadronVehicle || !isInResearch))
     return (::isUnitResearched(unit) || isUnitMaxExp(unit)) ? "mainmenu/btnOrder" : "mainmenu/btnResearch"
   return ""
 }

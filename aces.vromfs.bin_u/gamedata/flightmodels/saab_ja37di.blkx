@@ -2295,10 +2295,14 @@
         "lavett_24_001_bol_451",
         "lavett_24_002",
         "lavett_71_001",
+        "us_lau_129aa_001",
         "u95_container",
         "lavett_24_003",
+        "us_lau_129aa_002",
         "lavett_24_004",
+        "us_lau_129aa_003",
         "lavett_24_005",
+        "us_lau_129aa_004",
         "lavett_71_002",
         "lavett_24_006",
         "lavett_24_006_bol_451",
@@ -2363,8 +2367,8 @@
             "name": "akan_m75_ltc_bol",
             "ShowNodes": {
               "node": [
-                "lavett_74_001_bol_451",
-                "lavett_74_006_bol_451",
+                "lavett_24_001_bol_451",
+                "lavett_24_006_bol_451",
                 "boy_401_container_l",
                 "boy_401_container_r"
               ]
@@ -2457,7 +2461,7 @@
             "name": "rb74",
             "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_74_002"
+              "node": "lavett_24_002"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2473,7 +2477,7 @@
             "name": "rb99_slot2",
             "reqModification": "swd_rb99",
             "ShowNodes": {
-              "node": "lavett_71_001"
+              "node": "us_lau_129aa_001"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2508,7 +2512,7 @@
             "name": "rb74",
             "reqModification": "swd_rb74",
             "ShowNodes": {
-              "node": "lavett_74_003"
+              "node": "lavett_24_003"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2523,6 +2527,9 @@
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "rb99_slot3",
             "reqModification": "swd_rb99",
+            "ShowNodes": {
+              "node": "us_lau_129aa_002"
+            },
             "Weapon": {
               "trigger": "aam",
               "external": true,
@@ -2592,6 +2599,9 @@
             "iconType": "missile_type_f_air_to_air_midrange",
             "name": "rb99_slot5",
             "reqModification": "swd_rb99",
+            "ShowNodes": {
+              "node": "us_lau_129aa_003"
+            },
             "Weapon": {
               "trigger": "aam",
               "external": true,
@@ -2641,7 +2651,7 @@
             "name": "rb99_slot6",
             "reqModification": "swd_rb99",
             "ShowNodes": {
-              "node": "lavett_71_002"
+              "node": "us_lau_129aa_004"
             },
             "Weapon": {
               "trigger": "aam",
@@ -2924,16 +2934,12 @@
       "tier": 2
     }
   },
-  "user_skin": {
-    "name": "saab_ja37di",
-    "replace_tex": [
-      {
-        "from": "saab_ja37di_c*"
-      },
-      {
-        "from": "saab_ja37di_n*"
-      }
-    ]
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "saab_ja37di_c*",
+      "to": "saab_ja37di_grey52_c*"
+    }
   },
   "default_skin_tomoe": {
     "replace_tex": {
@@ -3471,7 +3477,8 @@
           40.0
         ],
         "endPositionNoiseStrength": 0.1,
-        "endPositionNoiseSpeed": 41.0
+        "endPositionNoiseSpeed": 41.0,
+        "fmPart": "wing1_l_dm"
       },
       {
         "entryPoint": [
@@ -3544,7 +3551,8 @@
           40.0
         ],
         "endPositionNoiseStrength": 0.0,
-        "endPositionNoiseSpeed": 1.0
+        "endPositionNoiseSpeed": 1.0,
+        "fmPart": "wing1_r_dm"
       }
     ]
   }

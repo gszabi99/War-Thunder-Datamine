@@ -12,6 +12,7 @@ let { USEROPT_DIFFICULTY, USEROPT_WEAPONS, USEROPT_AIRCRAFT, OPTIONS_MODE_TRAINI
 } = require("%scripts/options/optionsExtNames.nut")
 let DataBlock = require("DataBlock")
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 const SEEN_MOD_TUTORIAL_PREFIX = "seen/modification_tutorial"
 
@@ -60,8 +61,7 @@ function needShowUnseenModTutorialForUnitMod(unit, mod) {
 function startModTutorialMission(unit, modName, tutorialMission, tutorialMissionWeapon = null) {
   let misInfo = get_meta_mission_info_by_gm_and_name(GM_TRAINING, tutorialMission)
 
-  ::cur_aircraft_name = unit.name
-  ::aircraft_for_weapons = unit.name
+  unitNameForWeapons.set(unit.name)
   set_last_called_gui_testflight(handlersManager.getLastBaseHandlerStartParams())
 
   setGuiOptionsMode(OPTIONS_MODE_TRAINING)
