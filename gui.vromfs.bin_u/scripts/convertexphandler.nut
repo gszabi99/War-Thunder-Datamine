@@ -21,7 +21,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitReqExp, getUnitExp } = require("%scripts/unit/unitInfo.nut")
-let { canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
+let { canResearchUnit, isUnitInResearch, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -188,7 +188,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let oldState = this.currentState
     if (!this.unit)
       this.currentState = windowState.noUnit
-    else if (canBuyUnit(this.unit) || ::isUnitResearched(this.unit))
+    else if (canBuyUnit(this.unit) || isUnitResearched(this.unit))
       this.currentState = windowState.canBuy
     else
       this.currentState = windowState.research
@@ -473,7 +473,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     let newUnit = this.unitList[obj.getValue()]
     let isNewUnitInResearch = isUnitInResearch(newUnit)
-    let isNewUnitResearched = ::isUnitResearched(newUnit)
+    let isNewUnitResearched = isUnitResearched(newUnit)
     let hasChangedUnit = !isEqual(newUnit, this.unit)
     if (!hasChangedUnit && (isNewUnitInResearch || isNewUnitResearched))
       return

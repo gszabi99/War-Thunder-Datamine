@@ -104,11 +104,12 @@
       "applyExtraDifficultyParameters": true,
       "breakLockMaxTime": 120.0,
       "uncageBeforeLaunch": true,
+      "inertialNavigation": true,
       "irSeeker": {
         "visibilityType": "optic",
         "rangeBand0": 12000.0,
-        "rangeMax": 25000.0,
-        "rangeSurface": 25000.0,
+        "rangeMax": 40000.0,
+        "rangeSurface": 40000.0,
         "fov": 0.1,
         "gateWidth": 0.1,
         "minAngleToSun": 0.0,
@@ -226,24 +227,6 @@
         ]
       }
     },
-    "collisions": {
-      "steel": {
-        "fx": "explosion_midair_small",
-        "ricochetFx": "hit_81_105mm_metal_ap"
-      },
-      "armor": {
-        "fx": "explosion_midair_small",
-        "ricochetFx": "hit_81_105mm_metal_ap"
-      },
-      "buildings": {
-        "fx": "explosion_midair_small",
-        "ricochetFx": "hit_106_132mm_stone_ap"
-      },
-      "wood": {
-        "fx": "explosion_midair_small",
-        "ricochetFx": "hit_106_132mm_wood_ap"
-      }
-    },
     "shatterCollisions": {
       "groundCollisionEffect": "hit_12_18mm_dirt_ap",
       "waterCollisionEffect": "hit_8_11mm_water",
@@ -351,6 +334,24 @@
       },
       "armorNPHiCal": {
         "fx": "hit_12_18mm_metal_ap"
+      }
+    },
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_big",
+        "ricochetFx": "hit_81_105mm_metal_ap"
+      },
+      "armor": {
+        "fx": "explosion_midair_big",
+        "ricochetFx": "hit_81_105mm_metal_ap"
+      },
+      "buildings": {
+        "fx": "explosion_midair_big",
+        "ricochetFx": "hit_106_132mm_stone_ap"
+      },
+      "wood": {
+        "fx": "explosion_midair_big",
+        "ricochetFx": "hit_106_132mm_wood_ap"
       }
     }
   }

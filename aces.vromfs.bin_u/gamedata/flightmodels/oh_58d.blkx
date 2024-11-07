@@ -2966,6 +2966,26 @@
       }
     ]
   },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    }
+  },
   "modifications": {
     "new_compressor_heli": {
       "tier": 1,
@@ -3007,6 +3027,7 @@
     },
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
+      "reqModification": "heli_flak_jacket_and_armor",
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,

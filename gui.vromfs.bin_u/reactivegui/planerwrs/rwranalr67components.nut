@@ -4,7 +4,7 @@ let rwrSetting = require("%rGui/rwrSetting.nut")
 
 let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nut")
 
-let { color, outerCircle,  middleCircle, innerCircle } = require("rwrAnAlr67Parameters.nut")
+let { color, baseLineWidth, outerCircle,  middleCircle, innerCircle } = require("rwrAnAlr67Parameters.nut")
 
 let ThreatType = {
   AI = 0,
@@ -18,7 +18,7 @@ let styleText = {
   color = color
   font = Fonts.hud
   fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = max(70, hdpx(90))
+  fontFxFactor = max(70, baseLineWidth * 90)
   fontFx = FFT_GLOW
   fontSize = getFontDefHt("hud") * 2.5
 }
@@ -81,7 +81,7 @@ function createRwrTarget(index, settings, objectStyle) {
       color = color
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
+      lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
       fillColor = 0
       size = flex()
       commands = [
@@ -168,7 +168,7 @@ function createRwrTarget(index, settings, objectStyle) {
       icon = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(4 * objectStyle.lineWidthScale)
+        lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
         fillColor = 0
         size = flex()
         commands = commands
@@ -253,7 +253,7 @@ function createRwrPriorityTarget(settings, objectStyle) {
   local priority = @() {
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4 * objectStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
     fillColor = 0
     size = flex()
     pos = [pw(0), ph(0)]
@@ -466,6 +466,7 @@ let rwrPriorityTargetComponent = function(objectStyle) {
 
 return {
   color,
+  baseLineWidth,
   outerCircle,
   middleCircle,
   innerCircle,

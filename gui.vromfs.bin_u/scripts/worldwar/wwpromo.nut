@@ -4,10 +4,11 @@ let { setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBloc
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 function getWorldWarPromoText(isWwEnabled = null) {
   local text = loc("mainmenu/btnWorldwar")
-  if (!::is_worldwar_enabled())
+  if (!isWorldWarEnabled())
     return text
 
   if ((isWwEnabled ?? ::g_world_war.canJoinWorldwarBattle())) {

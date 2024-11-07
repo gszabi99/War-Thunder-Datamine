@@ -128,11 +128,15 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
       return
 
     this.isPendingPackageCheck = true
-    requestPackageUpdateStatus(this.onPackageUpdateCheckResult.bindenv(this))
+    requestPackageUpdateStatus(@(isUpdateAvailable) broadcastEvent("PackageUpdateStatusReceived", { isUpdateAvailable }))
   }
 
   function onEventPs4AutoLoginRequested(_p) {
     this.onOk()
+  }
+
+  function onEventPackageUpdateStatusReceived(p) {
+    this.onPackageUpdateCheckResult(p.isUpdateAvailable)
   }
 
   function onDestroy() {

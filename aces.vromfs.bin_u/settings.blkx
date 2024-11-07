@@ -131,6 +131,7 @@
       "postfx_antialiasing": "",
       "force_aspect_ratio": "",
       "vsync": false,
+      "vrr": false,
       "adaptive_vsync": false,
       "instancing": "",
       "mode": "",
@@ -1234,6 +1235,28 @@
   },
   "vulkan": {
     "enableBindless": true,
+    "vendor": {
+      "Intel": {
+        "driverProps": {
+          "disableBindless": {
+            "entry": [
+              {
+                "hwType": 1,
+                "data": {
+                  "affected": true
+                }
+              },
+              {
+                "gpu": "Arc",
+                "data": {
+                  "affected": false
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
     "allocators": {
       "freelist": {
         "pageSizeMb": 64,

@@ -81,6 +81,10 @@ function getUnitCost(unit) {
   return Cost(wp_get_cost(unit.name), wp_get_cost_gold(unit.name))
 }
 
+function getPrevUnit(unit) {
+  return "reqAir" in unit ? getAircraftByName(unit.reqAir) : null
+}
+
 return {
   bit_unit_status,
   getEsUnitType, getUnitTypeTextByUnit, getUnitName,//next
@@ -90,4 +94,5 @@ return {
   getUnitExp
   getUnitRealCost
   getUnitCost
+  getPrevUnit
 }

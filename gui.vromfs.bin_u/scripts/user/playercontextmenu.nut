@@ -31,6 +31,7 @@ let { openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 let { is_console } = require("%sqstd/platform.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 //-----------------------------
 // params keys:
@@ -199,7 +200,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     }
     {
       text = loc("worldwar/inviteToOperation")
-      show = ::is_worldwar_enabled() && ::g_world_war.isWwOperationInviteEnable()
+      show = isWorldWarEnabled() && ::g_world_war.isWwOperationInviteEnable()
       action = @() ::g_world_war.inviteToWwOperation(contact.uid)
     }
     {

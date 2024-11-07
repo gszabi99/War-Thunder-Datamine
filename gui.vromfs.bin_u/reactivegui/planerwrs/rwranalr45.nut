@@ -9,6 +9,8 @@ let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
 
 let color = Color(10, 202, 10, 250)
 
+let baseLineWidth = LINE_WIDTH * 0.5
+
 function makeGridCommands() {
   let commands = []
   let step = 0.15
@@ -29,7 +31,7 @@ function createGrid(gridStyle) {
     size = flex()
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(2 * gridStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
     fillColor = 0
     commands = gridCommands
   }
@@ -67,7 +69,7 @@ function createRwrTarget(index, settings, objectStyle) {
       azimuth = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(10 * objectStyle.lineWidthScale)
+        lineWidth = baseLineWidth * 10 * objectStyle.lineWidthScale
         fillColor = 0
         size = flex()
         commands = commands

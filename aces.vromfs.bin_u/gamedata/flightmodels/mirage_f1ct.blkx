@@ -3531,6 +3531,33 @@
     "maxSpeed": 256.1,
     "turnTime": 25.0
   },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05
+    }
+  },
   "modifications": {
     "new_compressor_jet": {
       "tier": 1
@@ -3572,39 +3599,6 @@
     "aden_new_gun": {
       "reqModification": "aden_belt_pack",
       "tier": 3
-    },
-    "heli_night_vision_system": {
-      "tier": 4,
-      "prevModification": "aden_new_gun",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "sightThermal": {
-            "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05
-          }
-        }
-      }
     },
     "fr_250kg_type_25c": {
       "modClass": "weapon",

@@ -23,6 +23,7 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getNextNewbieEvent, getUnitTypeByNewbieEventId, isMeNewbie } = require("%scripts/myStats.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 /**
  * Game mode manager incapsulates working
@@ -141,7 +142,7 @@ let featuredModes = [
         return $"#ui/images/game_modes_tiles/worldwar_live_{(this.isWide() ? "wide" : "thin")}?P1"
     }
     videoPreview = null
-    isVisible = @() ::is_worldwar_enabled()
+    isVisible = @() isWorldWarEnabled()
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() !::g_world_war.canPlayWorldwar()
     crossPlayRestricted = @() isMultiplayerPrivilegeAvailable.value && !isCrossPlayEnabled()

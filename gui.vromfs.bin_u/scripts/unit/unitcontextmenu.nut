@@ -23,7 +23,7 @@ let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { canBuyNotResearched, isUnitInSlotbar, canResearchUnit, isUnitInResearch,
-  isUnitDescriptionValid, isUnitUsable
+  isUnitDescriptionValid, isUnitUsable, isUnitFeatureLocked, isUnitResearched
 } = require("%scripts/unit/unitStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -203,7 +203,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       local canBuyOnline = ::canBuyUnitOnline(unit)
       let canBuyNotResearchedUnit = canBuyNotResearched(unit)
       let canBuyAfterPrevUnit = !isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
-        && (isSpecial || ::isUnitResearched(unit))
+        && (isSpecial || isUnitResearched(unit))
       let canBuyIngame = !canBuyOnline && (canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
       local forceShowBuyButton = false
       local priceText = ""
@@ -248,7 +248,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         actionFunc = @() ::buyUnit(unit)
     }
     else if (action == "research") {
-      if (::isUnitResearched(unit))
+      if (isUnitResearched(unit))
         continue
 
       let isInResearch = isUnitInResearch(unit)
@@ -278,7 +278,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
               ? loc("mainmenu/btnConvert")
               : loc("mainmenu/btnResearch")
       showAction = inMenu && (!isInResearch || hasFeature("SpendGold"))
-        && (::isUnitFeatureLocked(unit) || canResearchUnit(unit)
+        && (isUnitFeatureLocked(unit) || canResearchUnit(unit)
           || canFlushSquadronExp || (isSquadronVehicle && !::is_in_clan()))
       disabled = !showAction
       actionFunc = needToFlushExp

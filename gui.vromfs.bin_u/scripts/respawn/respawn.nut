@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
+from "radarOptions" import set_option_radar_name, set_option_radar_scan_pattern_name
 
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -63,7 +64,7 @@ let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM,
-  USEROPT_LOAD_FUEL_AMOUNT } = require("%scripts/options/optionsExtNames.nut")
+  USEROPT_LOAD_FUEL_AMOUNT} = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -1472,6 +1473,18 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     fuelAmountObj.setValue(newValue)
     this.checkReady(obj)
     this.isInUpdateLoadFuelOptions = false
+  }
+
+  function onChangeRadarModeSelectedUnit(obj) {
+    set_option_radar_name(unitNameForWeapons.get(), obj.getValue())
+
+    this.updateOptions(RespawnOptUpdBit.UNIT_WEAPONS)
+  }
+
+  function onChangeRadarScanRangeSelectedUnit(obj) {
+    set_option_radar_scan_pattern_name(unitNameForWeapons.get(), obj.getValue())
+
+    this.updateOptions(RespawnOptUpdBit.UNIT_WEAPONS)
   }
 
   function onSkinSelect(obj = null) {

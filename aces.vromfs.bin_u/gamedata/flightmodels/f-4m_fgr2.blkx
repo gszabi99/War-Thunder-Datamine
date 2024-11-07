@@ -3869,6 +3869,26 @@
     "maxSpeed": 142.779,
     "turnTime": 21.6518
   },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    }
+  },
   "modifications": {
     "new_compressor_jet": {
       "modClass": "lth",
@@ -3916,36 +3936,9 @@
       "group": "countermeasures",
       "tier": 1
     },
-    "heli_night_vision_system": {
-      "modClass": "armor",
-      "tier": 2,
-      "prevModification": "countermeasures_belt_pack",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          }
-        }
-      }
-    },
     "f_4c_g_suit": {
       "modClass": "armor",
-      "prevModification": "heli_night_vision_system",
+      "prevModification": "countermeasures_belt_pack",
       "tier": 3
     },
     "M60_air_targets": {},

@@ -10,6 +10,7 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { getEventTournamentMode, isEventLastManStanding
 } = require("%scripts/events/eventInfo.nut")
+let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 
 enum LB_MODE {
   ARCADE            = 0x00001
@@ -151,7 +152,7 @@ let categoryTemplate = {
   }
 
   function getItemCell(value, row = null, allowNegative = false, forceDataType = null) {
-    let res = ::getLbItemCell(this.id, value, (forceDataType ? forceDataType : this.lbDataType), allowNegative)
+    let res = getLbItemCell(this.id, value, (forceDataType ? forceDataType : this.lbDataType), allowNegative)
     let additionalTooltipPart = this.getAdditionalTooltipPart(row)
     if (additionalTooltipPart != "") {
       let resTooltip = ("tooltip" in res) ? $"{res.tooltip}\n" : ""

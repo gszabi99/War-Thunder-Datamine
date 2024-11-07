@@ -1,7 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_option_xray_kill
 from "%scripts/dagui_library.nut" import *
 from "hitCamera" import *
-from "app" import is_dev_version
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_mission_time } = require("mission")
 let { g_hud_enemy_debuffs } = require("%scripts/hud/hudEnemyDebuffsType.nut")
@@ -50,12 +49,9 @@ let debuffTemplates = {
   [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDebuffsShip.blk",
 }
 
-let damageStatusTemplates = is_dev_version() ? {
+let damageStatusTemplates = {
   [ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShip.blk",
   [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShip.blk",
-} : {
-  [ES_UNIT_TYPE_BOAT] = "%gui/hud/hudEnemyDamageStatusShipLegacy.blk",
-  [ES_UNIT_TYPE_SHIP] = "%gui/hud/hudEnemyDamageStatusShipLegacy.blk",
 }
 
 let importantEventKeys = ["partEvent", "ammoEvent"]

@@ -42,9 +42,6 @@
   "perfectRangefinder": true,
   "supportsCombinedPriSecTriggers": true,
   "debrisPreset": "debris_preset_boat",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1657,38 +1654,37 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 27750.0,
+      "Empty": 60000.0,
       "momentOfInertia": [
-        6.0,
-        21.0,
-        11.0
+        12.0,
+        40.0,
+        20.0
       ],
       "CenterOfGravity": [
-        -0.8,
-        -0.6,
+        -1.45,
+        -0.5,
         0.0
-      ],
-      "AdvancedMass": false
+      ]
     },
     "settings": {
       "speedLossOnManeuver": 0.15
     },
     "engines": {
       "maxSpeed": 20.6,
-      "maxReverseSpeed": 9.0,
+      "maxReverseSpeed": 5.0,
       "speedToTime": {
         "row": [
           [
             5.0,
-            2.0
+            4.1
           ],
           [
             10.0,
-            3.5
+            5.6
           ],
           [
             20.6,
-            7.8
+            11.0
           ]
         ]
       },
@@ -1700,11 +1696,11 @@
           ],
           [
             4.0,
-            2.4
+            2.1
           ],
           [
-            9.0,
-            5.8
+            5.0,
+            5.2
           ]
         ]
       },
@@ -1737,10 +1733,10 @@
             -1.2,
             -1.0
           ],
-          "outputParam": "propeller_rotate_02:CRS",
-          "engineDmPart": "engine_02_dm",
-          "transmissionDmPart": "transmission_02_dm",
-          "propeller": "propeller_02"
+          "outputParam": "propeller_rotate_03:CRS",
+          "engineDmPart": "engine_03_dm",
+          "transmissionDmPart": "transmission_03_dm",
+          "propeller": "propeller_03"
         }
       ]
     },
@@ -1751,7 +1747,7 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 0.55,
+      "mulReaction": 0.75,
       "rudder": [
         {
           "pos": [
@@ -1759,8 +1755,8 @@
             -0.6,
             1.0
           ],
-          "area": 0.9,
-          "deflection": 38.0,
+          "area": 0.5,
+          "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         },
         {
@@ -1769,8 +1765,8 @@
             -0.6,
             -1.0
           ],
-          "area": 0.9,
-          "deflection": 38.0,
+          "area": 0.5,
+          "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         }
       ],
@@ -1780,24 +1776,24 @@
             "euler": [
               -0.9,
               90.0,
-              18.0
+              21.0
             ],
             "pos": [
-              4.6,
-              -0.6,
-              -0.8
+              5.1,
+              -1.08,
+              -0.9
             ],
             "size": [
-              0.9,
-              1.26
+              1.2,
+              2.3
             ],
-            "maxV": 58.0,
+            "maxV": 57.0,
             "polar": {
-              "Cl0": 0.064,
-              "CdMin": 0.0008,
-              "lineClCoeff": 0.058,
+              "Cl0": 0.009,
+              "CdMin": 0.001,
+              "lineClCoeff": 0.062,
               "ClCritHigh": 0.6,
-              "ClCritLow": -0.56,
+              "ClCritLow": -0.52,
               "alphaCritHigh": 4.0,
               "alphaCritLow": -3.0
             }
@@ -1806,24 +1802,24 @@
             "euler": [
               0.9,
               -90.0,
-              18.0
+              21.0
             ],
             "pos": [
-              4.6,
-              -0.6,
-              0.8
+              5.1,
+              -1.08,
+              0.9
             ],
             "size": [
-              0.9,
-              1.26
+              1.2,
+              2.3
             ],
-            "maxV": 58.0,
+            "maxV": 57.0,
             "polar": {
-              "Cl0": 0.064,
-              "CdMin": 0.0008,
-              "lineClCoeff": 0.058,
+              "Cl0": 0.009,
+              "CdMin": 0.001,
+              "lineClCoeff": 0.062,
               "ClCritHigh": 0.6,
-              "ClCritLow": -0.56,
+              "ClCritLow": -0.52,
               "alphaCritHigh": 4.0,
               "alphaCritLow": -3.0
             }
@@ -1836,15 +1832,15 @@
     "headPosOnShootingHeightMult": 1.25,
     "headPos": [
       0.0,
-      6.0,
-      -17.0
+      5.0,
+      -21.5
     ],
     "headPosOnShooting": [
-      1.0,
-      4.1,
+      2.2,
+      6.5,
       0.0
     ],
-    "detectionHeight": 4.9,
+    "detectionHeigh": 5.0,
     "cameraAhead": true
   },
   "sound": {

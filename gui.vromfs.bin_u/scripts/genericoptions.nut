@@ -29,7 +29,8 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A,
   USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
-  USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT, USEROPT_RADAR_SCAN_RANGE_SELECT
+  USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT,
+  USEROPT_RADAR_SCAN_RANGE_SELECT
 } = require("%scripts/options/optionsExtNames.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
@@ -341,14 +342,14 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeRadarMode(obj) {
-    set_option_radar_name(obj.getValue())
+    set_option_radar_name("", obj.getValue())
 
     this.updateOption(USEROPT_RADAR_SCAN_PATTERN_SELECT)
     this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECT)
   }
 
   function onChangeRadarScanRange(obj) {
-    set_option_radar_scan_pattern_name(obj.getValue())
+    set_option_radar_scan_pattern_name("", obj.getValue())
 
     this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECT)
   }

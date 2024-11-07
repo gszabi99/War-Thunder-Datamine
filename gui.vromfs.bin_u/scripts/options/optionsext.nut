@@ -57,7 +57,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { bombNbr } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { is_xboxone_X } = require("%sqstd/platform.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { has_forced_crosshair, set_hud_crosshair_color, get_hud_crosshair_color, set_option_tank_alt_crosshair, get_user_alt_crosshairs,
@@ -139,7 +139,6 @@ let { set_xray_parts_filter } = require("hangar")
 let { getTankXrayFilter, getShipXrayFilter } = require("%scripts/weaponry/dmgModel.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { has_console_120_hz } = require("graphicsOptions")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
@@ -183,20 +182,16 @@ addListenersWithoutEnv({
 function getConsolePresets() {
   if (is_xboxone_X)
     return ["#options/quality", "#options/performance"]
-  else if (isPlatformXboxScarlett)
-    return has_console_120_hz() ? ["#options/quality", "#options/balanced", "#options/performance", "#options/raytraced"] : ["#options/quality", "#options/raytraced"];
-  else if (isPlatformPS5)
-    return has_console_120_hz() ? ["#options/quality", "#options/balanced", "#options/performance"] : ["#options/quality"];
+  else
+    return hasFeature("optionRT") ? ["#options/quality", "#options/balanced", "#options/performance", "#options/raytraced"] : ["#options/quality", "#options/balanced", "#options/performance"];
   return ["#options/quality"];
 }
 
 function getConsolePresetsValues() {
   if (is_xboxone_X)
     return [0, 1]
-  else if (isPlatformXboxScarlett)
-    return has_console_120_hz() ? [0, 1, 2, 3] : [0, 3]
-  else if (isPlatformPS5)
-    return has_console_120_hz() ? [0, 1, 2] : [0];
+  else
+    return hasFeature("optionRT") ? [0, 1, 2, 3] : [0, 1, 2]
   return [0];
 }
 
@@ -1959,6 +1954,7 @@ let optionsMap = {
                         })
     }
     descr.optionCb = "onSelectPreset"
+    descr.skipOptContainerStyles <- true
   },
   [USEROPT_ROUNDS] = function(_optionId, descr, _context) {
     descr.id = "rounds"
@@ -2568,20 +2564,37 @@ let optionsMap = {
   },
   [USEROPT_RADAR_MODE_SELECT] = function(_optionId, descr, _context) {
     descr.id = "select_radar_mode"
-    descr.items = get_radar_mode_names()
-    descr.value = get_option_radar_name()
+    descr.items = get_radar_mode_names("")
+    descr.value = get_option_radar_name("")
     descr.optionCb = "onChangeRadarMode"
   },
   [USEROPT_RADAR_SCAN_PATTERN_SELECT] = function(_optionId, descr, _context) {
     descr.id = "select_radar_scan_pattern"
-    descr.items = get_radar_scan_pattern_names()
-    descr.value = get_option_radar_scan_pattern_name()
+    descr.items = get_radar_scan_pattern_names("")
+    descr.value = get_option_radar_scan_pattern_name("")
     descr.optionCb = "onChangeRadarScanRange"
   },
   [USEROPT_RADAR_SCAN_RANGE_SELECT] = function(_optionId, descr, _context) {
     descr.id = "select_radar_scan_range"
-    descr.items = get_radar_range_values()
-    descr.value = get_option_radar_range_value()
+    descr.items = get_radar_range_values("")
+    descr.value = get_option_radar_range_value("")
+  },
+  [USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT] = function(_optionId, descr, _context) {
+    descr.id = "select_radar_mode"
+    descr.items = get_radar_mode_names(unitNameForWeapons.get())
+    descr.value = get_option_radar_name(unitNameForWeapons.get())
+    descr.optionCb = "onChangeRadarModeSelectedUnit"
+  },
+  [USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT] = function(_optionId, descr, _context) {
+    descr.id = "select_radar_scan_pattern"
+    descr.items = get_radar_scan_pattern_names(unitNameForWeapons.get())
+    descr.value = get_option_radar_scan_pattern_name(unitNameForWeapons.get())
+    descr.optionCb = "onChangeRadarScanRangeSelectedUnit"
+  },
+  [USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT] = function(_optionId, descr, _context) {
+    descr.id = "select_radar_scan_range"
+    descr.items = get_radar_range_values(unitNameForWeapons.get())
+    descr.value = get_option_radar_range_value(unitNameForWeapons.get())
   },
   [USEROPT_USE_RADAR_HUD_IN_COCKPIT] = function(_optionId, descr, _context) {
     descr.id = "use_radar_hud_in_cockpit"
@@ -4377,12 +4390,16 @@ let optionsMap = {
   [USEROPT_AIR_SPAWN_POINT] = function(optionId, descr, _context) {
     descr.id = "air_spawn_point"
     let unit = getAircraftByName(unitNameForWeapons.get())
-    descr.values = unit?.isHelicopter() ? [0, 6, 1, 2] : [0, 6, 1, 2, 3, 4, 5]
-    let measure = loc("measureUnits/km_dist")
+    descr.values = unit?.isHelicopter() ? [0, 6, 7, 1, 2, 3] : [0, 6, 7, 1, 2, 3, 4, 5]
+    let aboveText = loc("options/air_spawn_point/above_airfield")
     descr.items = unit?.isHelicopter()
-      ? [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"), $"1 {measure}", $"2 {measure}"]
-      : [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"), $"1 {measure}", $"2 {measure}",
-          $"3 {measure}", $"5 {measure}", $"7 {measure}"]
+      ? [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"),
+          loc("options/air_spawn_point/glide_path"), aboveText.subst({ height = 0.5 }),
+          aboveText.subst({ height = 1 }), aboveText.subst({ height = 2 })]
+      : [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"),
+          loc("options/air_spawn_point/glide_path"), aboveText.subst({ height = 1 }),
+          aboveText.subst({ height = 2 }), aboveText.subst({ height = 3 }), aboveText.subst({ height = 5 }),
+          aboveText.subst({ height = 7 })]
     descr.value = get_gui_option(optionId)
   },
   [USEROPT_TARGET_RANK] = function(optionId, descr, _context) {
@@ -4832,9 +4849,12 @@ let optionsSetMap = {
   [USEROPT_RADAR_TARGET_CYCLING] = @(value, _descr, _optionId) set_option_radar_target_cycling(value),
   [USEROPT_RADAR_AIM_ELEVATION_CONTROL] = @(value, _descr, _optionId) set_option_radar_aim_elevation_control(value),
   [USEROPT_RWR_SENSITIVITY] = @(value, _descr, _optionId) set_option_rwr_sensitivity(value),
-  [USEROPT_RADAR_MODE_SELECT] = @(value, _descr, _optionId) set_option_radar_name(value),
-  [USEROPT_RADAR_SCAN_PATTERN_SELECT] = @(value, _descr, _optionId) set_option_radar_scan_pattern_name(value),
-  [USEROPT_RADAR_SCAN_RANGE_SELECT] = @(value, _descr, _optionId) set_option_radar_range_value(value),
+  [USEROPT_RADAR_MODE_SELECT] = @(value, _descr, _optionId) set_option_radar_name("", value),
+  [USEROPT_RADAR_SCAN_PATTERN_SELECT] = @(value, _descr, _optionId) set_option_radar_scan_pattern_name("", value),
+  [USEROPT_RADAR_SCAN_RANGE_SELECT] = @(value, _descr, _optionId) set_option_radar_range_value("", value),
+  [USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT] = @(value, _descr, _optionId) set_option_radar_name(unitNameForWeapons.get(), value),
+  [USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT] = @(value, _descr, _optionId) set_option_radar_scan_pattern_name(unitNameForWeapons.get(), value),
+  [USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT] = @(value, _descr, _optionId) set_option_radar_range_value(unitNameForWeapons.get(), value),
   [USEROPT_USE_RADAR_HUD_IN_COCKPIT] = @(value, _descr, _optionId) set_option_use_radar_hud_in_cockpit(value),
   [USEROPT_USE_TWS_HUD_IN_COCKPIT] = @(value, _descr, _optionId) set_option_use_tws_hud_in_cockpit(value),
   [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN] = @(value, _descr, _optionId) set_option_activate_airborne_active_counter_measures_on_spawn(value),

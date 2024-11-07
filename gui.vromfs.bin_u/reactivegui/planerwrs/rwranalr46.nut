@@ -11,11 +11,13 @@ let ThreatType = {
 
 let color = Color(10, 202, 10, 250)
 
+let baseLineWidth = LINE_WIDTH * 0.5
+
 let styleText = {
   color = color
   font = Fonts.hud
   fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = max(70, hdpx(90))
+  fontFxFactor = max(70, baseLineWidth * 90)
   fontFx = FFT_GLOW
   fontSize = getFontDefHt("hud") * 3.0
 }
@@ -84,7 +86,7 @@ function createRwrTarget(index, settings, objectStyle) {
       icon = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(4 * objectStyle.lineWidthScale)
+        lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
         fillColor = 0
         size = flex()
         commands = commands
@@ -99,7 +101,7 @@ function createRwrTarget(index, settings, objectStyle) {
       color = color
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4 * objectStyle.lineWidthScale)
+      lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
       fillColor = 0
       size = flex()
       commands = [
@@ -185,7 +187,7 @@ function createRwrPriorityTarget(settings, objectStyle) {
   local priority = @() {
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4 * objectStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
     fillColor = 0
     size = flex()
     pos = [pw(0), ph(0)]

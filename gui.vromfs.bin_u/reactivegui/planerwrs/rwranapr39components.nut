@@ -6,11 +6,13 @@ let { rwrTargetsTriggers, rwrTargets, RwrSignalHoldTimeInv, CurrentTime } = requ
 
 let color = Color(10, 202, 10, 250)
 
+let baseLineWidth = LINE_WIDTH * 0.5
+
 let styleText = {
   color = color
   font = Fonts.hud
   fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = max(70, hdpx(90))
+  fontFxFactor = max(70, baseLineWidth * 90)
   fontFx = FFT_GLOW
   fontSize = getFontDefHt("hud") * 2.5
 }
@@ -58,7 +60,7 @@ function createRwrTarget(index, settings, objectStyle) {
       color = color
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(2 * objectStyle.lineWidthScale)
+      lineWidth = baseLineWidth * 2 * objectStyle.lineWidthScale
       fillColor = 0
       size = [pw(100), ph(100)]
       commands = [
@@ -141,7 +143,7 @@ function createRwrTarget(index, settings, objectStyle) {
       icon = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(2 * objectStyle.lineWidthScale)
+        lineWidth = baseLineWidth * 2 * objectStyle.lineWidthScale
         fillColor = 0
         size = [pw(100), ph(100)]
         commands = commands
@@ -230,6 +232,7 @@ let rwrTargetsComponent = function(style) {
 }
 
 return {
-  color
+  color,
+  baseLineWidth,
   rwrTargetsComponent
 }

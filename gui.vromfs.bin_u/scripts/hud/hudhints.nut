@@ -1617,7 +1617,17 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.COMMON
     locId = "HUD/TXT_BUILDING_EXIT"
     noKeyLocId = "HUD/TXT_BUILDING_EXIT_NOKEY"
-    shortcuts = "ID_TOGGLE_CONSTRUCTION_MODE"
+    getShortcuts = @(_data) g_hud_action_bar_type.BUILDING.getVisualShortcut()
+    showEvent = "hint:building_exit:show"
+    hideEvent = "hint:building_exit:hide"
+    shouldBlink = true
+    delayTime = 1.0
+  }
+
+  BUILDING_APPLY_HINT = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_BUILDING_APPLY"
+    shortcuts = "ID_FIRE_GM"
     showEvent = "hint:building_exit:show"
     hideEvent = "hint:building_exit:hide"
     shouldBlink = true

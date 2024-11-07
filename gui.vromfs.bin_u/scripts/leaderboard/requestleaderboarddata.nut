@@ -142,7 +142,7 @@ let leaderboardKeyCorrection = {
   aiNKills = "naval_kills_ai"
 }
 
-function convertLeaderboardData(result, applyLocalisationToName = false) {
+function convertLeaderboardData(result, applyLocalisationToName = false, valueKey = LEADERBOARD_VALUE_TOTAL) {
   let list = []
   foreach (rowId, rowData in result) {
     if (type(rowData) != "table")
@@ -158,7 +158,7 @@ function convertLeaderboardData(result, applyLocalisationToName = false) {
 
       let valueFactor = leaderboardValueFactors?[columnId]
       local value = type(columnData) == "table"
-        ? columnData?.value_total
+        ? columnData?[valueKey]
         : columnId == "name" && applyLocalisationToName
             ? loc(columnData)
             : columnData

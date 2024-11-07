@@ -8,11 +8,12 @@ let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboar
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { WwBattleView } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
+let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
     getTooltipContent = function(_id, params) {
-      if (!::is_worldwar_enabled())
+      if (!isWorldWarEnabled())
         return ""
 
       let army = ::g_world_war.getArmyByName(params.currentId)
@@ -24,7 +25,7 @@ let wwTooltipTypes = {
 
   WW_MAP_TOOLTIP_TYPE_BATTLE = {
     getTooltipContent = function(_id, params) {
-      if (!::is_worldwar_enabled())
+      if (!isWorldWarEnabled())
         return ""
 
       let battle = ::g_world_war.getBattleById(params.currentId)
@@ -50,7 +51,7 @@ let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_GROUP = {
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, id, _params) {
-      if (!::is_worldwar_enabled())
+      if (!isWorldWarEnabled())
         return false
 
       let group = u.search(::g_world_war.getArmyGroups(),  function(group) { return group.clanId == id })

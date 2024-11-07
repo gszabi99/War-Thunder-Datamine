@@ -8,6 +8,7 @@
   "gearSinkRangeC": 0.08,
   "gyroSight": false,
   "hasPointOfInterestMemory": false,
+  "rwrIndicator": "AN/APR-39",
   "tpsCameraTargetOffsetAtZoom": [
     -20.0,
     55.0,
@@ -1247,8 +1248,8 @@
           "textureArea": [
             0.5,
             0.0,
-            0.5,
-            1.0
+            1.0,
+            0.5
           ],
           "page": {
             "type": "rwr",
@@ -2306,6 +2307,26 @@
       }
     ]
   },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    }
+  },
   "modifications": {
     "new_compressor_heli": {
       "tier": 1
@@ -2354,32 +2375,6 @@
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 2
-    },
-    "heli_night_vision_system": {
-      "tier": 3,
-      "modClass": "weapon",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          }
-        }
-      }
     }
   },
   "user_skin": {

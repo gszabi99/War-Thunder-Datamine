@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let math = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 
-let { color, outerCircle,  middleCircle, innerCircle } = require("rwrAnAlr67Parameters.nut")
+let { color, baseLineWidth, outerCircle,  middleCircle, innerCircle } = require("rwrAnAlr67Parameters.nut")
 
 function makeGridCommands() {
   let commands = [
@@ -26,12 +26,12 @@ function createGrid(gridStyle) {
     size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(4 * gridStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 4 * gridStyle.lineWidthScale
     fillColor = 0
     commands = gridCommands
   }
 }
 
 return {
- createGrid
+  createGrid
 }

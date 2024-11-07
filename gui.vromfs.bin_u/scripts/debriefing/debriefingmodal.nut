@@ -130,6 +130,9 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
 let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
+let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
+} = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -1780,7 +1783,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let now = tournamentResult.newStat
     let was = tournamentResult.oldStat
 
-    let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
+    let lbDiff = getLbDiff(now, was)
     let items = []
     foreach (lbFieldsConfig in eventsTableConfig) {
       if (!(lbFieldsConfig.field in now)
@@ -1790,14 +1793,14 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       let isFirstInRow = items.len() % DEBR_LEADERBOARD_LIST_COLUMNS == 0
       itemParams.pos = isFirstInRow ? posFirst : posCommon
 
-      items.append(::getLeaderboardItemView(lbFieldsConfig,
+      items.append(getLeaderboardItemView(lbFieldsConfig,
         now[lbFieldsConfig.field],
         getTblValue(lbFieldsConfig.field, lbDiff, null),
         itemParams))
     }
     lbWindgetsNestObj.show(true)
 
-    let blk = ::getLeaderboardItemWidgets({ items = items })
+    let blk = getLeaderboardItemWidgets({ items = items })
     this.guiScene.replaceContentFromText(lbWindgetsNestObj, blk, blk.len(), this)
     lbWindgetsNestObj.scrollToView()
   }
@@ -2619,7 +2622,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function loadWwCasualtiesHistory() {
-    if (!::is_worldwar_enabled())
+    if (!isWorldWarEnabled())
       return
 
     let wwBattleResults = this.getWwBattleResults()
@@ -2714,7 +2717,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return !this.isCurMissionExtr && (this.giftItems != null)
   }
   function is_show_ww_casualties() {
-    return this.needPlayersTbl && ::is_worldwar_enabled() && getCurMissionRules().isWorldWar
+    return this.needPlayersTbl && isWorldWarEnabled() && getCurMissionRules().isWorldWar
   }
   function is_show_research_list() {
     foreach (unitId, _unitData in this.debriefingResult.exp.aircrafts)
@@ -3043,7 +3046,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function needShowWorldWarOperationBtn() {
-    return ::is_worldwar_enabled() && ::g_world_war.isLastFlightWasWwBattle
+    return isWorldWarEnabled() && ::g_world_war.isLastFlightWasWwBattle
   }
 
   function switchWwOperationToCurrent() {

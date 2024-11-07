@@ -8,11 +8,13 @@ let gridColor = Color(10, 202, 10, 250)
 let targetColor = Color(250, 250, 10, 250)
 let ownShipColor = Color(0, 250, 250, 250)
 
+let baseLineWidth = LINE_WIDTH * 0.5
+
 let styleText = {
   color = targetColor
   font = Fonts.hud
   fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = max(70, hdpx(90))
+  fontFxFactor = max(70, baseLineWidth * 90)
   fontFx = FFT_GLOW
   fontSize = getFontDefHt("hud") * 1.0
 }
@@ -25,7 +27,7 @@ function createGrid(gridStyle) {
     size = flex()
     color = gridColor
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(3 * gridStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
     fillColor = 0
     commands = gridCommands
   }
@@ -42,7 +44,7 @@ function createOwnShip(gridStyle) {
     size = flex()
     color = ownShipColor
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(2 * gridStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
     fillColor = 0
     commands = ownShipCommands
   }
@@ -89,7 +91,7 @@ function createRwrTarget(index, settings, objectStyle) {
       color = targetColor
       opacity = attackOpacityRwr.get()
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(objectStyle.lineWidthScale)
+      lineWidth = baseLineWidth * objectStyle.lineWidthScale
       fillColor = 0
       size = flex()
       commands = [
@@ -140,7 +142,7 @@ function createRwrTarget(index, settings, objectStyle) {
         color = targetColor
         opacity = ageOpacity.get()
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(objectStyle.lineWidthScale) * newTargetLineWidthMult.get()
+        lineWidth = baseLineWidth * objectStyle.lineWidthScale * newTargetLineWidthMult.get()
         fillColor = 0
         size = flex()
         commands = commands

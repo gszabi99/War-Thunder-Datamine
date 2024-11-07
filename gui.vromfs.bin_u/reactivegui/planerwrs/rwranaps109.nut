@@ -16,6 +16,8 @@ function calcRwrTargetRadius(target) {
 
 let color = Color(10, 202, 10, 250)
 
+let baseLineWidth = LINE_WIDTH * 0.5
+
 function createRwrTarget(index, settings, objectStyle) {
   let target = rwrTargets[index]
 
@@ -38,7 +40,7 @@ function createRwrTarget(index, settings, objectStyle) {
       azimuth = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(20 * objectStyle.lineWidthScale)
+        lineWidth = baseLineWidth * 20 * objectStyle.lineWidthScale
         fillColor = 0
         size = flex()
         commands = commands

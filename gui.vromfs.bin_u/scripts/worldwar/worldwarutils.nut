@@ -56,6 +56,7 @@ let { getNearestMapToBattle, hasAvailableMapToBattle, getOperationById
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { openWwOperationRewardPopup } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -228,7 +229,7 @@ g_world_war = {
   canPlayWorldwar
 
   function canJoinWorldwarBattle() {
-    return ::is_worldwar_enabled() && canPlayWorldwar()
+    return isWorldWarEnabled() && canPlayWorldwar()
   }
 
   function getPlayWorldwarConditionText(fullText = false) {
@@ -294,7 +295,7 @@ g_world_war = {
   }
 
   function checkPlayWorldwarAccess() {
-    if (!::is_worldwar_enabled()) {
+    if (!isWorldWarEnabled()) {
       ::show_not_available_msg_box()
       return false
     }
@@ -1174,7 +1175,7 @@ g_world_war = {
   }
 
   function updateUserlogsAccess() {
-    if (!::is_worldwar_enabled())
+    if (!isWorldWarEnabled())
       return
 
     let wwUserLogTypes = [EULT_WW_START_OPERATION,

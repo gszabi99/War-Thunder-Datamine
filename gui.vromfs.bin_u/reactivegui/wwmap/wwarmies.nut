@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { sin, cos, PI } = require("math")
+let { sin, cos, PI, floor } = require("math")
 let { wwGetOperationTimeMillisec } = require("worldwar")
 let { loadedTransport } = require("%rGui/wwMap/wwMapStates.nut")
 let { isPlayerSide } = require("%rGui/wwMap/wwOperationStates.nut")
@@ -38,7 +38,7 @@ let function mkArmyPaths(armyWatch, areaBounds) {
 
     let arrowColor = getMapColor(isPlayerSide(armySide) ? "alliesArmyColorArrow" : "enemiesArmyColorArrow")
     let endArrowColor = getMapColor(isPlayerSide(armySide) ? "alliesArrowLastCircleColor" : "enemiesArrowLastCircleColor")
-    let radius = even(armyData.specs.battleStartRadiusN * mapZoom.get() + hdpx(2))
+    let radius = even(armyData.specs.battleStartRadiusN * mapZoom.get())
 
     let nextPathIdx = armyData.pathTracker.nextPathIdx
     let points = (armyData.pathTracker.path.points % "item").slice(nextPathIdx)
@@ -47,7 +47,7 @@ let function mkArmyPaths(armyWatch, areaBounds) {
     let firstPoint = convertToRelativeMapCoords(armyData.pathTracker.pos)
     let lastPoint = {}
 
-    let commands = [[VECTOR_LINE_INDENT_PX, hdpx(5), 0]]
+    let commands = [[VECTOR_LINE_INDENT_PX, hdpx(4), 0]]
     let command = points.reduce(function(res, p) {
       let nextPoint = convertToRelativeMapCoords(p.pos)
       res.append(100 * nextPoint.x, 100 * nextPoint.y)
@@ -93,7 +93,7 @@ let function mkArmyPaths(armyWatch, areaBounds) {
 }
 
 let mkArmyEntrenchIcon = @(armyData, areaBounds, mpZoom) function() {
-  let { iconName, iconSize, blinkPeriod } = getSettings("entrenchIcon")
+  let { iconName, blinkPeriod } = getSettings("entrenchIcon")
   let armyPos = convertToRelativeMapCoords(armyData.pathTracker.pos)
   let endBlinkTime = armyData.entrenchEndMillisec
 
@@ -102,7 +102,7 @@ let mkArmyEntrenchIcon = @(armyData, areaBounds, mpZoom) function() {
 
   let isBlinking = endBlinkTime > wwGetOperationTimeMillisec()
   let { areaWidth, areaHeight } = areaBounds
-  let entrenchIconSize = even(iconSize * mpZoom)
+  let entrenchIconSize = even(armyData.specs.battleStartRadiusN * mpZoom * 3.1)
   let pos = [areaWidth * armyPos.x - entrenchIconSize / 2, areaHeight * armyPos.y - entrenchIconSize / 2]
   let duration = (endBlinkTime - wwGetOperationTimeMillisec()) / 1000
   if (isBlinking)
@@ -169,13 +169,12 @@ function mkArmyBack(armyData, areaBounds) {
   let isArmyHovered = Computed(@() hoveredArmy.get() == armyData.name)
   let animation = { prop = AnimProp.translate, from = [0, 0], to = [0, 0], duration = 0, play = false }
   return function() {
-    let children = [ mkArmyIcon(armyData) ]
+    let children = []
     let armyGroupsInfo = getArmyGroupsInfo()
     let armyPos = convertToRelativeMapCoords(armyData.pathTracker.pos)
     let armySide = zoneSideType[armyData.owner.side]
     let { areaWidth, areaHeight } = areaBounds
-    let borderWidth = hdpx(2)
-    let armyBorderSize = even(armyData.specs.battleStartRadiusN * mapZoom.get() + borderWidth) * 2 - borderWidth / 2
+    let armyBorderSize = even(armyData.specs.battleStartRadiusN * mapZoom.get()) * 2
     let armyBorderPos = [areaWidth * armyPos.x - armyBorderSize / 2, areaHeight * armyPos.y - armyBorderSize / 2]
     local borderColor = getMapColor("armyOutlineColor")
 
@@ -211,11 +210,12 @@ function mkArmyBack(armyData, areaBounds) {
         let point1 = { x = cos(angle - delta), y = sin(angle - delta) }
         let point2 = { x = cos(angle + delta), y = sin(angle + delta) }
 
+        let r = floor(100 * (armyBorderSize / 2) / (armyBorderSize / 2 + hdpx(2)))
         let commands = [[VECTOR_POLY,
-          100 * 1.7 * point0.x, 100 * 1.7 * point0.y,
-          100 * point1.x, 100 * point1.y,
-          100 * point0.x, 100 * point0.y,
-          100 * point2.x, 100 * point2.y]]
+          r * 1.7 * point0.x, r * 1.7 * point0.y,
+          r * point1.x, r * point1.y,
+          r * point0.x, r * point0.y,
+          r * point2.x, r * point2.y]]
 
         children.append({
           rendObj = ROBJ_VECTOR_CANVAS
@@ -230,16 +230,21 @@ function mkArmyBack(armyData, areaBounds) {
       }
     }
 
-    return {
-      watch = [isArmySelected, isArmyHovered, isShowArmiesIndex, mapZoom]
+    children.append({
       rendObj = ROBJ_BOX
       subPixel = true
       borderColor
       size = [armyBorderSize, armyBorderSize]
       fillColor
-      borderWidth
-      key = {}
+      borderWidth = hdpx(2)
       borderRadius = armyBorderSize / 2
+    })
+
+    children.append(mkArmyIcon(armyData))
+
+    return {
+      watch = [isArmySelected, isArmyHovered, isShowArmiesIndex, mapZoom]
+      key = {}
       children
       transform = {
         translate = armyBorderPos
@@ -262,7 +267,7 @@ let mkArtilleryFire = @(armyData, areaBounds, armyStrike) function() {
 
   let fireIconSize = armySize
   let { areaWidth, areaHeight } = areaBounds
-  let armyIconPos = [areaWidth * armyPos.x + armySize / 2 - hdpx(5) , areaHeight * armyPos.y - armySize - hdpx(1)]
+  let armyIconPos = [areaWidth * armyPos.x + armySize / 2 - hdpx(7) , areaHeight * armyPos.y - armySize - hdpx(1)]
 
   return {
     watch = [armyStrike, mapZoom]
@@ -282,8 +287,8 @@ let mkArmy = @(armyWatch, areaBounds) function() {
     watch = [armyWatch, mapZoom]
     children = [
       mkArmyEntrenchIcon(armyData, areaBounds, mapZoom.get()),
-      mkArmyBack(armyData, areaBounds),
-      mkArtilleryFire(armyData, areaBounds, Computed(@() artilleryStrikesInfo.get().findindex(@(as) as.army == armyData.name) != null))
+      mkArtilleryFire(armyData, areaBounds, Computed(@() artilleryStrikesInfo.get().findindex(@(as) as.army == armyData.name) != null)),
+      mkArmyBack(armyData, areaBounds)
     ]
   }
 }

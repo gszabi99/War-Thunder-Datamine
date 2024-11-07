@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import enable_bullets_modifications, get_option_torpedo_dive_depth_auto
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
+from "radarOptions" import get_radar_mode_names, set_option_radar_name, get_radar_scan_pattern_names, set_option_radar_scan_pattern_name, get_radar_range_values
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -112,6 +113,19 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
 
+  function onChangeRadarModeSelectedUnit(obj) {
+    set_option_radar_name(unitNameForWeapons.get(), obj.getValue())
+
+    this.updateOption(USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT)
+    this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT)
+  }
+
+  function onChangeRadarScanRangeSelectedUnit(obj) {
+    set_option_radar_scan_pattern_name(unitNameForWeapons.get(), obj.getValue())
+
+    this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT)
+  }
+
   function updateLinkedOptions() {
     this.checkBulletsRows()
     this.updateWeaponOptions()
@@ -221,7 +235,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
         [USEROPT_FUEL_AMOUNT_CUSTOM, "slider"],
         [USEROPT_COUNTERMEASURES_SERIES_PERIODS, "spinner"],
         [USEROPT_COUNTERMEASURES_PERIODS, "spinner"],
-        [USEROPT_COUNTERMEASURES_SERIES, "spinner"]
+        [USEROPT_COUNTERMEASURES_SERIES, "spinner"],
       )
 
     if (this.unit?.isShipOrBoat()) {
@@ -229,6 +243,19 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
         [USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
         [USEROPT_ROCKET_FUSE_DIST, "spinner"],
         [USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
+      )
+    }
+
+    let radarModesCount = get_radar_mode_names(unitNameForWeapons.get()).len()
+
+    if (hasFeature("allowRadarModeOptions") && radarModesCount > 0
+      && (radarModesCount > 1
+        || get_radar_scan_pattern_names(unitNameForWeapons.get()).len() > 1
+        || get_radar_range_values(unitNameForWeapons.get()).len() > 1)) {
+      this.options.append(
+        [USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, "spinner"],
+        [USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, "spinner"],
+        [USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, "spinner"]
       )
     }
 
@@ -261,9 +288,9 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!showOptions)
       return
 
+    unitNameForWeapons.set(this.unit.name)
     this.updateOptionsArray()
 
-    unitNameForWeapons.set(this.unit.name)
     set_gui_option(USEROPT_AIRCRAFT, this.unit.name)
 
     let container = create_options_container("testflight_options", this.options, true, 0.5, true, this.optionsConfig)

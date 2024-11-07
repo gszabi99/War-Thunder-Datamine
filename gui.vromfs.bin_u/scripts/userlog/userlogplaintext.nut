@@ -17,6 +17,8 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
+} = require("%scripts/leaderboard/leaderboardHelpers.nut")
 
 let tab = "    "
 
@@ -325,18 +327,18 @@ function get_userlog_plain_text(logObj) {
   if (("tournamentResult" in logObj) && (events.getEvent(eventId)?.leaderboardEventTable == null)) {
     let now = getTblValue("newStat", logObj.tournamentResult)
     let was = getTblValue("oldStat", logObj.tournamentResult)
-    let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
+    let lbDiff = getLbDiff(now, was)
     let items = []
     foreach (lbFieldsConfig in eventsTableConfig) {
       if (!(lbFieldsConfig.field in now)
         || !events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
         continue
 
-      items.append(::getLeaderboardItemView(lbFieldsConfig,
+      items.append(getLeaderboardItemView(lbFieldsConfig,
         now[lbFieldsConfig.field],
         getTblValue(lbFieldsConfig.field, lbDiff, null)))
     }
-    let lbStatsBlk = ::getLeaderboardItemWidgets({ items = items })
+    let lbStatsBlk = getLeaderboardItemWidgets({ items = items })
     if (!("descriptionBlk" in res))
       res.descriptionBlk <- ""
     res.descriptionBlk = "".concat(res.descriptionBlk, format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk))

@@ -14,6 +14,7 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, toUpper } = require("%sqstd/string.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { isUnitFeatureLocked } = require("%scripts/unit/unitStatus.nut")
 let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { steam_is_overlay_active } = require("steam")
@@ -133,7 +134,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
       set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/checking"))
       this.afterSlotOp = function() {
-        if (!::isUnitFeatureLocked(this.unit))
+        if (!isUnitFeatureLocked(this.unit))
           this.goBack()
       }.bindenv(this)
     }

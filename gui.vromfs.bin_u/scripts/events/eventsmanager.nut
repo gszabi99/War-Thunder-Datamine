@@ -77,6 +77,7 @@ let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { checkLbRowVisibility } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -2063,7 +2064,7 @@ let Events = class {
   }
 
   function checkLbRowVisibility(row, params = {}) {
-    if (!::leaderboardModel.checkLbRowVisibility(row, params))
+    if (!checkLbRowVisibility(row, params))
       return false
 
     local event = events.getEvent(params?.eventId)

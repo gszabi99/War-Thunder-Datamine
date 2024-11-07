@@ -839,7 +839,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "support_plane_orbiting"
     getIcon = function(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       let ownerUnit = getOwnerUnit()
-      return ownerUnit.isShipOrBoat() ? "#ui/gameuiskin#ship_support_plane_orbital" :
+      return ownerUnit?.isShipOrBoat() ? "#ui/gameuiskin#ship_support_plane_orbital" :
         ownerUnit?.isHuman() ? "#ui/gameuiskin#quadrotor_hovering"
         : "#ui/gameuiskin#uav_orbiting"
     }

@@ -3155,6 +3155,34 @@
     "maxSpeed": 256.1,
     "turnTime": 25.0
   },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "sightThermal": {
+      "resolution": [
+        1080,
+        720
+      ],
+      "noiseFactor": 0.05,
+      "index": 2
+    }
+  },
   "modifications": {
     "new_compressor_jet": {
       "tier": 1
@@ -3225,43 +3253,8 @@
       "tier": 2,
       "modClass": "armor"
     },
-    "heli_night_vision_system": {
-      "tier": 3,
-      "modClass": "armor",
-      "prevModification": "f_4c_g_suit",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "sightThermal": {
-            "resolution": [
-              1080,
-              720
-            ],
-            "noiseFactor": 0.05,
-            "index": 2
-          }
-        }
-      }
-    },
     "air_extinguisher": {
-      "prevModification": "heli_night_vision_system",
+      "prevModification": "f_4c_g_suit",
       "tier": 4,
       "modClass": "weapon",
       "invertEnableLogic": false

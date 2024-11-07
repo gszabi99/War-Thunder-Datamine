@@ -2098,10 +2098,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -35.0,
-        35.0,
-        -154.0,
-        34.0
+        -20.0,
+        20.0,
+        -140.0,
+        10.0
       ],
       "opticType": "targeting"
     }
@@ -2109,7 +2109,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/ir_tracker.blk",
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
         "node": "optic1_gun"
       },
       {
@@ -2141,6 +2141,10 @@
       {
         "name": "f_117_gbu_16",
         "blk": "gameData/FlightModels/weaponPresets/f_117_gbu_16.blk"
+      },
+      {
+        "name": "f_117_gbu_27",
+        "blk": "gameData/FlightModels/weaponPresets/f_117_gbu_27.blk"
       },
       {
         "name": "f_117_gbu_10",
@@ -2188,12 +2192,12 @@
             },
             "limits": {
               "yaw": [
-                -90.0,
-                90.0
+                -20.0,
+                20.0
               ],
               "pitch": [
-                -90.0,
-                90.0
+                -140.0,
+                10.0
               ]
             }
           }
@@ -2278,6 +2282,20 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "gbu_10_001",
+              "bullets": 1,
+              "external": false,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "gbu27",
+            "reqModification": "us_gbu_27",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_27.blk",
               "emitter": "gbu_10_001",
               "bullets": 1,
               "external": false,
@@ -2393,6 +2411,20 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "gbu_10_002",
+              "bullets": 1,
+              "external": false,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "gbu27",
+            "reqModification": "us_gbu_27",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_27.blk",
               "emitter": "gbu_10_002",
               "bullets": 1,
               "external": false,
@@ -2702,8 +2734,13 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "us_gbu_10": {
+    "us_gbu_27": {
       "reqModification": "us_gbu_16",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "us_gbu_10": {
+      "reqModification": "us_gbu_27",
       "modClass": "weapon",
       "tier": 3
     }

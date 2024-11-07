@@ -53,7 +53,7 @@ def start_move_along_path_es(evt : EventMoveByRoute;
     let isEvtWpInvalid = evt.wpEid == INVALID_ENTITY_ID
     if !evt.start && isEvtWpInvalid
       logerr("start_move_along_path_es: try to continue path by invalid way_point Eid")
-    let wpEid = evt.start || !isEvtWpInvalid ? route__wayPoints[0] : evt.wpEid
+    let wpEid = evt.start || isEvtWpInvalid ? route__wayPoints[0] : evt.wpEid
     set_next_way_point(wpEid, evt.uEid)
 
 [es(tag=server)]

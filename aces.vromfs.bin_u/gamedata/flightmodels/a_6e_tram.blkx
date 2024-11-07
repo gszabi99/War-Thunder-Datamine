@@ -2158,6 +2158,44 @@
     "Engine": "engine05_J52",
     "gun": "gun_default"
   },
+  "nightVision": [
+    {
+      "gunnerIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 8.0,
+        "ghosting": 0.75,
+        "noiseFactor": 0.2
+      },
+      "pilotIr": {
+        "resolution": [
+          800,
+          600
+        ],
+        "lightMult": 8.0,
+        "ghosting": 0.75,
+        "noiseFactor": 0.2
+      },
+      "sightThermal": {
+        "resolution": [
+          500,
+          300
+        ],
+        "noiseFactor": 0.05
+      }
+    },
+    {
+      "sightTPodThermal": {
+        "resolution": [
+          500,
+          300
+        ],
+        "noiseFactor": 0.05
+      }
+    }
+  ],
   "cockpit": {
     "targetingPodFov": [
       12.0,
@@ -2611,15 +2649,6 @@
     ],
     "opticType": "targeting",
     "turretNo": 0
-  },
-  "nightVision": {
-    "sightTPodThermal": {
-      "resolution": [
-        500,
-        300
-      ],
-      "noiseFactor": 0.05
-    }
   },
   "sensors": {
     "sensor": [
@@ -4701,39 +4730,6 @@
       "prevModification": "countermeasures_belt_pack",
       "tier": 2,
       "modClass": "armor"
-    },
-    "heli_night_vision_system": {
-      "tier": 3,
-      "prevModification": "f_4c_g_suit",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "pilotIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "sightThermal": {
-            "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05
-          }
-        }
-      }
     },
     "us_mk_77": {
       "tier": 1,

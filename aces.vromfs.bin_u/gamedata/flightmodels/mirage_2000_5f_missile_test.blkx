@@ -2023,12 +2023,6 @@
       0.0
     ],
     "collimatorSize": 0.2,
-    "hmdBlockIlsArea": [
-      0.37,
-      0.37,
-      0.63,
-      0.63
-    ],
     "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
@@ -2722,12 +2716,31 @@
     }
   },
   "nightVision": {
-    "sightTPodThermal": {
+    "gunnerIr": {
       "resolution": [
-        800,
-        600
+        1920,
+        1080
       ],
-      "noiseFactor": 0.04
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "sightThermal": {
+      "resolution": [
+        1200,
+        800
+      ],
+      "noiseFactor": 0.04,
+      "index": 2
     }
   },
   "sensors": {
@@ -2932,41 +2945,6 @@
       "prevModification": "MAW_system_heli_false_thermal_targets_large",
       "tier": 2,
       "modClass": "armor"
-    },
-    "heli_night_vision_system": {
-      "tier": 3,
-      "modClass": "armor",
-      "prevModification": "f_4c_g_suit",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "sightThermal": {
-            "resolution": [
-              1200,
-              800
-            ],
-            "noiseFactor": 0.04,
-            "index": 2
-          }
-        }
-      }
     },
     "air_extinguisher": {
       "prevModification": "f_4c_g_suit",

@@ -106,10 +106,6 @@
         ],
         "wait": {
           "time": 0.1
-        },
-        "__unitSetIndication": {
-          "set": true,
-          "target": "@target_tanks_squad"
         }
       },
       "else_actions": {}
@@ -302,7 +298,7 @@
           },
           {
             "target": [
-              "make_aircraft_ship",
+              "check_helicopter",
               "change_attack_spawn"
             ]
           },
@@ -361,7 +357,7 @@
             "target": "unit_mode_idle"
           },
           {
-            "target": "make_aircraft_ship"
+            "target": "check_helicopter"
           },
           {
             "target": "bdt_part_init"
@@ -376,54 +372,6 @@
         "varSetInt": {
           "value": 1,
           "var": "bdt_balance_level"
-        }
-      }
-    },
-    "make_aircraft_ship": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "varCompareString": {
-          "var_value": "aircraft_ship_name",
-          "value": "",
-          "comparasion_func": "notEqual"
-        },
-        "objectExists": {
-          "target": "airfield01ship",
-          "type": "area"
-        }
-      },
-      "actions": {
-        "wait": {
-          "time": 1.0
-        },
-        "__varSetString": {
-          "value": "airfield_ship_unit",
-          "var": "airfield_spawn"
-        },
-        "unitWakeUp": {
-          "target": "@airfield_unit_name"
-        },
-        "triggerEnable": {
-          "target": "check_helicopter"
-        }
-      },
-      "else_actions": {
-        "unitWakeUp": {
-          "target": "@airfield_unit_name"
-        },
-        "triggerEnable": {
-          "target": "check_helicopter"
         }
       }
     },
@@ -459,10 +407,16 @@
         ]
       },
       "actions": {
-        "varSetString": {
-          "value": "airfield00heli",
-          "var": "airfield_spawn"
-        },
+        "varSetString": [
+          {
+            "value": "airfield00heli",
+            "var": "airfield_spawn"
+          },
+          {
+            "value": "airfield00heli",
+            "var": "airfield_spawn_reload"
+          }
+        ],
         "addAirfield": {
           "runwayStart": "airfield00heli",
           "runwayEnd": "airfield01heli_high",
@@ -471,15 +425,26 @@
           "spawnPoint": "heli_spawn_area",
           "visibleOnHud": false
         },
+        "varAddString": {
+          "value": "_heli",
+          "digits": 0,
+          "var": "air_spawn"
+        },
         "triggerEnable": {
-          "target": "init_carrier"
+          "target": "make_aircraft_ship"
         }
       },
       "else_actions": {
-        "varSetString": {
-          "value": "airfield00plane",
-          "var": "airfield_spawn"
-        },
+        "varSetString": [
+          {
+            "value": "airfield00plane",
+            "var": "airfield_spawn"
+          },
+          {
+            "value": "airfield00plane",
+            "var": "airfield_spawn_reload"
+          }
+        ],
         "addAirfield": {
           "runwayStart": "airfield00plane",
           "runwayEnd": "airfield01plane_high",
@@ -487,6 +452,59 @@
           "army": 1,
           "spawnPoint": "airfield_spawnpoint",
           "visibleOnHud": false
+        },
+        "triggerEnable": {
+          "target": "make_aircraft_ship"
+        }
+      }
+    },
+    "make_aircraft_ship": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "aircraft_ship_name",
+          "value": "",
+          "comparasion_func": "notEqual"
+        },
+        "objectExists": {
+          "target": "airfield01ship",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 1.0
+        },
+        "varSetString": {
+          "value": "airfield_ship_unit",
+          "var": "airfield_spawn"
+        },
+        "unitWakeUp": {
+          "target": "@airfield_unit_name"
+        },
+        "unitSetProperties": {
+          "object": "@airfield_spawn",
+          "speed": 60.0,
+          "lockSpeed": true
+        },
+        "triggerEnable": {
+          "target": "init_carrier"
+        }
+      },
+      "else_actions": {
+        "unitWakeUp": {
+          "target": "@airfield_unit_name"
         },
         "triggerEnable": {
           "target": "init_carrier"
@@ -512,9 +530,14 @@
         }
       },
       "actions": {
-        "triggerEnable": {
-          "target": "end_carrier_airfield"
-        },
+        "triggerEnable": [
+          {
+            "target": "end_carrier_airfield"
+          },
+          {
+            "target": "check_spawn_reload"
+          }
+        ],
         "wait": {
           "time": 0.1
         },
@@ -533,9 +556,14 @@
         }
       },
       "else_actions": {
-        "triggerEnable": {
-          "target": "end_carrier_air"
-        },
+        "triggerEnable": [
+          {
+            "target": "end_carrier_air"
+          },
+          {
+            "target": "check_spawn_reload"
+          }
+        ],
         "unitRespawn": {
           "delay": 1.0,
           "offset": [
@@ -554,6 +582,9 @@
             0.0
           ],
           "time": 0.1
+        },
+        "wait": {
+          "time": 2.0
         }
       }
     },
@@ -619,6 +650,52 @@
           ],
           "object": "@player",
           "target": "@air_spawn"
+        }
+      },
+      "else_actions": {}
+    },
+    "check_spawn_reload": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.1
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": [
+          {
+            "players": "isAlive",
+            "check_players": "any"
+          },
+          {
+            "players": "isOnGround",
+            "check_players": "any"
+          }
+        ],
+        "playerWhenSpawn": {},
+        "playersDistanceBetween": {
+          "value": 500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "@airfield_spawn_reload"
+        }
+      },
+      "actions": {
+        "spawnOnAirfield": {
+          "runwayName": "@airfield_spawn_reload",
+          "objects": "@player"
+        },
+        "wait": {
+          "time": 2.0
         }
       },
       "else_actions": {}
@@ -1408,19 +1485,6 @@
           "teleportToStart": true,
           "object": "@air_target01"
         },
-        "playHint": {
-          "hintType": "standard",
-          "name": "@air_target01",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
         "unitSetIndication": {
           "set": true,
           "target": "@air_target01"
@@ -1480,19 +1544,6 @@
           "object_var_comp_op": "equal",
           "teleportToStart": true,
           "object": "@air_target02"
-        },
-        "__playHint": {
-          "hintType": "standard",
-          "name": "@air_target02",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
         },
         "unitSetIndication": {
           "set": true,
@@ -1862,7 +1913,7 @@
       "else_actions": {}
     },
     "check_attack_area": {
-      "is_enabled": false,
+      "is_enabled": true,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1955,7 +2006,10 @@
     "is_high": true,
     "is_airfield_spawn": false,
     "airfield_spawn_area": "",
-    "attack_area": ""
+    "attack_area": "",
+    "base_respawn_time": 15,
+    "target_respawn_time": 30,
+    "airfield_spawn_reload": ""
   },
   "dialogs": {},
   "airfields": {},

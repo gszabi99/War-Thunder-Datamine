@@ -32,6 +32,7 @@ let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut"
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getRankByExp } = require("%scripts/ranks.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -738,7 +739,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
 ::getCurMpTitle <- function getCurMpTitle() {
   let text = []
 
-  if (getCurMissionRules().isWorldWar && ::is_worldwar_enabled()) {
+  if (getCurMissionRules().isWorldWar && isWorldWarEnabled()) {
     text.append(::g_world_war.getCurMissionWWBattleName())
   }
   else {

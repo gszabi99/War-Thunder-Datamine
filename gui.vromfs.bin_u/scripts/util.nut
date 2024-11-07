@@ -20,8 +20,6 @@ let { object_to_json_string } = require("json")
 //shouldDecreaseSize, allowedSizeIncrease = 100
 let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
 let penalty = require("penalty")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
@@ -578,12 +576,6 @@ local last_update_entitlements_time = get_time_msec()
   if (handler)
     return func.call(handler)
   return func()
-}
-
-::is_worldwar_enabled <- function is_worldwar_enabled() {
-  return hasFeature("WorldWar")
-    && ("g_world_war" in getroottable())
-    && (!isPlatformSony || isCrossPlayEnabled())
 }
 
 ::check_tanks_available <- function check_tanks_available(silent = false) {

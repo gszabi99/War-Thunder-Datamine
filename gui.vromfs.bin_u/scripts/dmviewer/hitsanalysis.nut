@@ -19,6 +19,7 @@ let { image_for_air } = require("%scripts/options/optionsExt.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
   getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 
 let bulletInfoCache = {}
 
@@ -29,23 +30,42 @@ function getBulletInfo(unit, hit) {
 
   let bulletSet = DataBlock()
 
+  let weaponBlk = DataBlock()
+  weaponBlk.tryLoad(hit.weapon)
+
+  if (weaponBlk?.rocketGun == true) {
+    let rockets = weaponBlk % "rocket"
+    bulletSet.setFrom(rockets[hit.ammoNo])
+
+    bulletInfoCache[key] <- {
+      bulletDesc = doesLocTextExist(bulletSet.bulletName) ? loc(bulletSet.bulletName) : loc($"weapons/{bulletSet.bulletName}/short", "")
+      isRocket = true
+    }
+    return bulletInfoCache[key]
+  }
+
+  if (weaponBlk?.bombGun == true) {
+    let bombs = weaponBlk % "bomb"
+    bulletSet.setFrom(bombs[hit.ammoNo])
+
+    bulletInfoCache[key] <- {
+      bulletDesc = doesLocTextExist(bulletSet.bulletName) ? loc(bulletSet.bulletName) : loc($"weapons/{bulletSet.bulletName}/short", "")
+      isBomb = true
+    }
+    return bulletInfoCache[key]
+  }
+
   let ammoType = hit.ammo != "" ? hit.ammo : hit.ammoType
   let bulletSetName = getBulletSetNameByBulletName(unit, ammoType)
   let bulletsSet = getBulletsSetData(unit, bulletSetName ?? ammoType)
 
-  let weaponBlk = DataBlock()
-  weaponBlk.tryLoad(hit.weapon)
-
-  let isBulletBelt = bulletsSet?.isBulletBelt ?? (weaponBlk.bullets > 1)
+  let isBulletBelt = bulletsSet?.isBulletBelt ?? ((weaponBlk?.bullets ?? -1) > 1)
 
   if (!isBulletBelt) {
     bulletInfoCache[key] <- {
-      bulletName = hit.ammo
       bulletDesc = doesLocTextExist(hit.ammo) ? loc(hit.ammo) : loc($"weapons/{hit.ammo}/short", "")
       isBulletBelt
-      bulletSet
-      bulletsSet
-      bulletSetName
+      bulletSetName = bulletSetName ?? ""
     }
     return bulletInfoCache[key]
   }
@@ -61,7 +81,6 @@ function getBulletInfo(unit, hit) {
     isBulletBelt
     bulletSet
     bulletsSet
-    bulletSetName
   }
   return bulletInfoCache[key]
 }
@@ -172,20 +191,55 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateBulletTooltip(unit) {
-    let { bulletName, isBulletBelt, bulletSet, bulletsSet, bulletSetName } = getBulletInfo(unit, this.selectedHit)
-    if (!isBulletBelt) {
+    let { bulletName = "", bulletSet = null, bulletsSet = null, bulletSetName = "",
+      isBulletBelt = false, isRocket = false, isBomb = false } = getBulletInfo(unit, this.selectedHit)
+
+    this.scene.findObject("bulletTooltip")["tooltipId"] = ""
+
+    if (isRocket || isBomb) {
+      let unitBlk = ::get_full_unit_blk(unit.name)
+      let weapons = getUnitWeapons(unitBlk)
+
+      local presetName = ""
+      local tType = ""
+      let hit = this.selectedHit
+
+      for (local i = 0; i < weapons.len(); i++) {
+        let weapon = weapons[i]
+        if (weapon?.blk == hit.weapon) {
+          tType = weapon.trigger
+          presetName = weapon.presetId
+          break
+        }
+        let wblk = DataBlock()
+        wblk.tryLoad(weapon.blk)
+        if (wblk?.blk == hit.weapon) {
+          tType = weapon.trigger
+          presetName = weapon.presetId
+          break
+        }
+      }
+
+      if (tType !="" && presetName != "")
+        this.scene.findObject("bulletTooltip")["tooltipId"] = getTooltipType("SINGLE_WEAPON").getTooltipId(unit.name, {
+          blkPath = this.selectedHit.weapon
+          tType
+          presetName
+        })
+      return
+    }
+
+    if (!isBulletBelt && bulletSetName != "") {
       this.scene.findObject("bulletTooltip")["tooltipId"] = getTooltipType("MODIFICATION").getTooltipId(unit.name, bulletSetName)
       return
     }
 
-    if (bulletsSet == null) {
-      this.scene.findObject("bulletTooltip")["tooltipId"] = ""
+    if (bulletsSet == null)
       return
-    }
 
     let bSet = bulletsSet.__merge({
       bullets = [bulletName]
-      bulletAnimations = [bulletSet.shellAnimation]
+      bulletAnimations = [bulletSet?.shellAnimation]
     })
 
     let searchName = getBulletsSearchName(unit, this.selectedHit.ammo)
@@ -194,15 +248,13 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       (useDefaultBullet && this.selectedHit.weapon) || getModificationBulletsEffect(searchName),
       useDefaultBullet, false)
 
-    let bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletSet.bulletType)
+    let bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletSet?.bulletType)
 
-    let tooltipId = getTooltipType("SINGLE_BULLET").getTooltipId(unit.name, bulletName, {
+    this.scene.findObject("bulletTooltip")["tooltipId"] = getTooltipType("SINGLE_BULLET").getTooltipId(unit.name, bulletName, {
       modName = this.selectedHit.ammo
       bSet
       bulletParams
     })
-
-    this.scene.findObject("bulletTooltip")["tooltipId"] = tooltipId
   }
 
   function onSimulateShot(_) {

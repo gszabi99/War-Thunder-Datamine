@@ -75,6 +75,7 @@ let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGame
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -483,7 +484,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       g_squad_manager.setReadyFlag()
     }
-    else if (::is_worldwar_enabled())
+    else if (isWorldWarEnabled())
       this.guiScene.performDelayed(this, @() ::g_world_war.joinOperationById(
         g_squad_manager.getWwOperationId(), g_squad_manager.getWwOperationCountry()))
   }

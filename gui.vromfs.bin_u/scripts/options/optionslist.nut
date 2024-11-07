@@ -71,7 +71,7 @@ let getMainOptions = function() {
   let isTank = unit?.isTank() ?? false
   let isAir = unit?.isAir() ?? false
   let isHelicopter = unit?.isHelicopter() ?? false
-  let isAllowRadarMode = hasFeature("allowRadarModeOptions") && get_radar_mode_names().len() > 0 && (get_radar_mode_names().len() > 1 || get_radar_scan_pattern_names().len() > 1 || get_radar_range_values().len() > 1)
+  let isAllowRadarMode = hasFeature("allowRadarModeOptions") && get_radar_mode_names("").len() > 0 && (get_radar_mode_names("").len() > 1 || get_radar_scan_pattern_names("").len() > 1 || get_radar_range_values("").len() > 1)
 
   if (overrideMainOptionsFn != null)
     return overrideMainOptionsFn()

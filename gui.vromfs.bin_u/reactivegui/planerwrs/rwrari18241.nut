@@ -12,11 +12,13 @@ let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nu
 
 let color = Color(10, 202, 10, 250)
 
+let baseLineWidth = LINE_WIDTH * 0.5
+
 let styleText = {
   color = color
   font = Fonts.hud
   fontFxColor = Color(0, 0, 0, 255)
-  fontFxFactor = max(70, hdpx(90))
+  fontFxFactor = max(70, baseLineWidth * 90)
   fontFx = FFT_GLOW
   fontSize = getFontDefHt("hud")
 }
@@ -42,7 +44,7 @@ function createPolarGrid(gridStyle) {
     size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(2 * gridStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
     fillColor = 0
     commands = polarGridCommands
   }
@@ -57,7 +59,7 @@ function createTabularGrid(gridStyle) {
     size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(2 * gridStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
     fillColor = 0
     commands = tabularGridCommands
   }
@@ -115,7 +117,7 @@ function createRwrTarget(index, settings, objectStyle) {
     color = color
     opacity = attackOpacityRwr.get()
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(5 * objectStyle.lineWidthScale)
+    lineWidth = baseLineWidth * 5 * objectStyle.lineWidthScale
     fillColor = 0
     size = flex()
     commands = [

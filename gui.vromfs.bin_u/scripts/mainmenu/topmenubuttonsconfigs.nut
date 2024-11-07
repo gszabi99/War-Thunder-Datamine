@@ -50,6 +50,7 @@ let { guiStartCredits } = require("%scripts/credits.nut")
 let { guiStartReplays } = require("%scripts/replays/replayScreen.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 let { openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDeepLink } = require("%scripts/user/wtAssistantDeeplink.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 let list = {
   SKIRMISH = {
@@ -94,11 +95,11 @@ let list = {
         "isCanNewflight"
       )
     }
-    tooltip = @() ::is_worldwar_enabled() ? ::g_world_war.getCantPlayWorldwarReasonText() : ""
-    isVisualDisabled = @() ::is_worldwar_enabled() && !::g_world_war.canPlayWorldwar()
-    isHidden = @(...) !::is_worldwar_enabled()
+    tooltip = @() isWorldWarEnabled() ? ::g_world_war.getCantPlayWorldwarReasonText() : ""
+    isVisualDisabled = @() isWorldWarEnabled() && !::g_world_war.canPlayWorldwar()
+    isHidden = @(...) !isWorldWarEnabled()
     isInactiveInQueue = true
-    unseenIcon = @() ::is_worldwar_enabled() && ::g_world_war.canPlayWorldwar() ?
+    unseenIcon = @() isWorldWarEnabled() && ::g_world_war.canPlayWorldwar() ?
       SEEN.WW_MAPS_AVAILABLE : null
   }
   TUTORIAL = {

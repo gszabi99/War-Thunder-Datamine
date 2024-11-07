@@ -576,13 +576,18 @@ function findAndStackPrizeCurrency(prize, stackList) {
   return true
 }
 
-function findAndStackPrizeUnit(prize, stackList, stackLevel, shopDesc) {
+function findAndStackPrizeUnit(prize, stackList, stackLevel, shopDesc, needCheckBoughtItems) {
   if (shopDesc)
     return false
 
   let prizeType = getPrizeType(prize)
-
-  local stack = findOneStack(stackList, prizeType)
+  let prizeUnit = getAircraftByName(prize?.unit)
+  let isPrizeBought = prizeUnit?.isBought() ?? false
+  local stack = null
+  if (needCheckBoughtItems)
+    stack = findOneStack(stackList, prizeType, @(stk) stk?.isBought != null && stk.isBought == isPrizeBought)
+  else
+    stack = findOneStack(stackList, prizeType)
 
   if (stack) {
     stack.params.prizes.append(prize)
@@ -593,6 +598,10 @@ function findAndStackPrizeUnit(prize, stackList, stackLevel, shopDesc) {
     else if (stack.size >= UNITS_STACK_DETAILED_COUNT)
       stack.level = max(prizesStack.DETAILED, stackLevel)
 
+    if (needCheckBoughtItems) {
+      stack.isBought <- isPrizeBought
+      stack.level = max(prizesStack.BY_TYPE, stackLevel)
+    }
     return true
   }
 
@@ -600,6 +609,9 @@ function findAndStackPrizeUnit(prize, stackList, stackLevel, shopDesc) {
   stack.params = {
     prizes = [ prize ]
   }
+  if (needCheckBoughtItems)
+    stack.isBought <- isPrizeBought
+
   stackList.append(stack)
   return true
 }
@@ -642,10 +654,17 @@ function stackContent(content, stackLevel = prizesStack.BY_TYPE, shopDesc = fals
       continue
     if (stackType == STACK_TYPE.CURRENCY && findAndStackPrizeCurrency(prize, res))
       continue
-    if (stackType == STACK_TYPE.VEHICLE && findAndStackPrizeUnit(prize, res, stackLevel, shopDesc))
+    if (stackType == STACK_TYPE.VEHICLE && findAndStackPrizeUnit(prize, res, stackLevel, shopDesc, !needShowChance))
       continue
 
     res.append(createStack(prize))
+  }
+
+  if (res.len() > 1) {
+    let isBoughtStackIndex = res.findindex(@(st) st?.isBought ?? false)
+    let IsNotBoughtStackIndex = res.findindex(@(st) !(st?.isBought ?? false))
+    if (isBoughtStackIndex != null && IsNotBoughtStackIndex != null && isBoughtStackIndex < IsNotBoughtStackIndex)
+      res.insert(isBoughtStackIndex, res.remove(IsNotBoughtStackIndex))
   }
 
   if (!needShowChance)
@@ -1125,7 +1144,7 @@ addTooltipTypes({
       local data = null
       if (st.level == prizesStack.NOT_STACKED)
         data = this.getPrizesViewData(st.prize, showCount, params)
-      else if (st.stackType == STACK_TYPE.ITEM) { //onl stack by items atm, so this only to do last check.
+      else if (st.stackType == STACK_TYPE.ITEM) { //only stack by items atm, so this only to do last check.
         let detailed = st.level == prizesStack.DETAILED
         local name = ""
         if (detailed)
@@ -1147,6 +1166,10 @@ addTooltipTypes({
         data = {
           title = this._getStackUnitsText(st)
         }
+        if (st?.isBought)
+          data.title = "\n".concat(data.title, colorize("badTextColor", loc("mainmenu/receiveOnlyOnce")))
+        if (stacksList.len() > 1)
+          data.listOfTrophies <- true
       }
       else if (st.stackType == STACK_TYPE.CURRENCY) {
         data = {

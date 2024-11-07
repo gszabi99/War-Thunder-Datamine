@@ -53,6 +53,9 @@ let { getSkillCrewLevel, crewSkillPages, loadCrewSkillsOnce
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
+} = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 let imgFormat = @"img {size:t='%s'; background-image:t='%s';
  background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
@@ -405,18 +408,18 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     if (("tournamentResult" in logObj) && (events.getEvent(eventId)?.leaderboardEventTable == null)) {
       let now = getTblValue("newStat", logObj.tournamentResult)
       let was = getTblValue("oldStat", logObj.tournamentResult)
-      let lbDiff = ::leaderboarsdHelpers.getLbDiff(now, was)
+      let lbDiff = getLbDiff(now, was)
       let items = []
       foreach (lbFieldsConfig in eventsTableConfig) {
         if (!(lbFieldsConfig.field in now)
           || !events.checkLbRowVisibility(lbFieldsConfig, { eventId }))
           continue
 
-        items.append(::getLeaderboardItemView(lbFieldsConfig,
+        items.append(getLeaderboardItemView(lbFieldsConfig,
                                                  now[lbFieldsConfig.field],
                                                  getTblValue(lbFieldsConfig.field, lbDiff, null)))
       }
-      let lbStatsBlk = ::getLeaderboardItemWidgets({ items = items })
+      let lbStatsBlk = getLeaderboardItemWidgets({ items = items })
       if (!("descriptionBlk" in res))
         res.descriptionBlk <- ""
       res.descriptionBlk = "".concat(res.descriptionBlk, format("tdiv { width:t='pw'; flow:t='h-flow'; %s }", lbStatsBlk))
@@ -1499,7 +1502,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     let locId = logObj.type == EULT_WW_CREATE_OPERATION ? "worldWar/userlog/createOperation"
                                                          : "worldWar/userlog/startOperation"
     local operation = ""
-    if (::is_worldwar_enabled())
+    if (isWorldWarEnabled())
       operation = ::WwOperation.getNameTextByIdAndMapName(
         getTblValue("operationId", logObj),
         WwMap.getNameTextByMapName(getTblValue("mapName", logObj))

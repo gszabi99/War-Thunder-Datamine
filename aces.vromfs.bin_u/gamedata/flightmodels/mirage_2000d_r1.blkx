@@ -2378,15 +2378,44 @@
       "turretNo": 0
     }
   },
-  "nightVision": {
-    "sightTPodThermal": {
-      "resolution": [
-        500,
-        300
-      ],
-      "noiseFactor": 0.05
+  "nightVision": [
+    {
+      "sightTPodThermal": {
+        "resolution": [
+          500,
+          300
+        ],
+        "noiseFactor": 0.05
+      },
+      "sightThermal": {
+        "resolution": [
+          1080,
+          720
+        ],
+        "noiseFactor": 0.05
+      }
+    },
+    {
+      "gunnerIr": {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "lightMult": 10.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.15
+      },
+      "pilotIr": {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "lightMult": 10.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.15
+      }
     }
-  },
+  ],
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -3954,42 +3983,8 @@
       "tier": 2,
       "modClass": "armor"
     },
-    "heli_night_vision_system": {
-      "tier": 3,
-      "modClass": "armor",
-      "prevModification": "f_4c_g_suit",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "sightThermal": {
-            "resolution": [
-              1080,
-              720
-            ],
-            "noiseFactor": 0.05
-          }
-        }
-      }
-    },
     "air_extinguisher": {
-      "prevModification": "heli_night_vision_system",
+      "prevModification": "f_4c_g_suit",
       "tier": 4,
       "modClass": "armor",
       "invertEnableLogic": false

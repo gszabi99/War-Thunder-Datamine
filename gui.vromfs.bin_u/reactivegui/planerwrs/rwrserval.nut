@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { color, rwrTargetsComponent, rwrPriorityTargetComponent } = require("rwrAnAlr56Components.nut")
+let { color, baseLineWidth, rwrTargetsComponent, rwrPriorityTargetComponent } = require("rwrAnAlr56Components.nut")
 
 let gridCommands = [
   [VECTOR_LINE, -10, 0, 10, 0],
@@ -14,7 +14,7 @@ function createGrid(gridStyle) {
     size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpx(gridStyle.lineWidthScale)
+    lineWidth = baseLineWidth * gridStyle.lineWidthScale
     fillColor = 0
     commands = gridCommands
   }

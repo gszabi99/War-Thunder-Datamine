@@ -12,12 +12,14 @@
   "haveCCIPForBombs": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
-  "ilsEP17": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
+  "ilsEP17": true,
+  "rwrIndicator": "Ar830",
+  "hmdJas39": true,
+  "mfdCamTads": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
-  "hmdJas39": true,
   "isMetricHmd": false,
   "isMetricIls": false,
   "hasHelmetDesignator": true,
@@ -2062,15 +2064,15 @@
       0.583,
       0.0
     ],
+    "hmdBlockIlsArea": [
+      0.15,
+      -0.5,
+      0.73,
+      0.85
+    ],
     "mfdTextureSize": [
       1024,
       1024
-    ],
-    "hmdBlockIlsArea": [
-      0.37,
-      0.37,
-      0.63,
-      0.63
     ],
     "hmdEnabledByDefault": true,
     "shadowSphereMultiplier": 2.0,
@@ -2449,6 +2451,24 @@
     }
   },
   "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
     "sightTPodThermal": {
       "resolution": [
         800,
@@ -4915,41 +4935,6 @@
       "modClass": "weapon",
       "prevModification": "akan_85_new_gun",
       "tier": 3
-    },
-    "heli_night_vision_system": {
-      "tier": 4,
-      "modClass": "weapon",
-      "prevModification": "swe_135mm_m70b",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "sightTPodThermal": {
-            "resolution": [
-              800,
-              600
-            ],
-            "noiseFactor": 0.04,
-            "index": 1
-          }
-        }
-      }
     },
     "us_mk82_gbu38_gbu39": {
       "modClass": "weapon",

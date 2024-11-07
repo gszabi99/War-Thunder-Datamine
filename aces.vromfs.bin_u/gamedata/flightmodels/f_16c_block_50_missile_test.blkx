@@ -2046,10 +2046,10 @@
     "sightFov": 1.0,
     "isDoubleBulletImpactLine": true,
     "hmdBlockIlsArea": [
-      0.37,
-      0.37,
-      0.63,
-      0.63
+      0.5,
+      -0.4,
+      0.55,
+      0.6
     ],
     "headPos": [
       4.25,
@@ -2963,13 +2963,23 @@
     }
   },
   "nightVision": {
-    "sightThermal": {
+    "gunnerIr": {
       "resolution": [
-        500,
-        300
+        1920,
+        1080
       ],
-      "noiseFactor": 0.05,
-      "index": 2
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
+    },
+    "pilotIr": {
+      "resolution": [
+        1920,
+        1080
+      ],
+      "lightMult": 10.0,
+      "ghosting": 0.7,
+      "noiseFactor": 0.15
     },
     "sightTPodThermal": {
       "resolution": [
@@ -2978,6 +2988,14 @@
       ],
       "noiseFactor": 0.04,
       "index": 1
+    },
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 2
     }
   },
   "sensors": {
@@ -3188,49 +3206,6 @@
       "prevModification": "countermeasures_belt_pack",
       "tier": 2,
       "modClass": "armor"
-    },
-    "heli_night_vision_system": {
-      "tier": 3,
-      "modClass": "armor",
-      "prevModification": "f_4c_g_suit",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "sightTPodThermal": {
-            "resolution": [
-              800,
-              600
-            ],
-            "noiseFactor": 0.04,
-            "index": 1
-          },
-          "sightThermal": {
-            "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05,
-            "index": 2
-          }
-        }
-      }
     },
     "M60_air_targets": {},
     "M60_armor_targets": {},

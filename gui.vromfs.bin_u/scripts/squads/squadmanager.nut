@@ -37,6 +37,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -487,7 +488,7 @@ g_squad_manager = {
     if (!g_squad_manager.isInSquad())
       return
 
-    let isWorldwarEnabled = ::is_worldwar_enabled()
+    let isWorldwarEnabled = isWorldWarEnabled()
     data = data ?? getMyStateData()
     data.__update({
       isReady = g_squad_manager.isMeReady()
@@ -546,7 +547,7 @@ g_squad_manager = {
   }
 
   function updateCurrentWWOperation() {
-    if (!g_squad_manager.isSquadLeader() || !::is_worldwar_enabled())
+    if (!g_squad_manager.isSquadLeader() || !isWorldWarEnabled())
       return
 
     let wwOperationId = wwGetOperationId()

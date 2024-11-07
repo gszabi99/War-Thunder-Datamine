@@ -2,7 +2,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
@@ -59,7 +59,7 @@ function getUnitAvailabilityForBuyType(unit, isFriendWishList = false) {
 
   let res = []
   let hasDiscount = ::g_discount.getUnitDiscount(unit) > 0
-  if(((isSquadronVehicle && ::isUnitResearched(unit)) || !isSquadronVehicle) && hasDiscount)
+  if(((isSquadronVehicle && isUnitResearched(unit)) || !isSquadronVehicle) && hasDiscount)
     res.append("discount")
 
   if(isShopVehicle || isStockVehicle)

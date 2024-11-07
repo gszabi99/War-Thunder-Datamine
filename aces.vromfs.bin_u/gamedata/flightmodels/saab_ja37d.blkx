@@ -2234,16 +2234,38 @@
       ]
     }
   },
-  "nightVision": {
-    "sightTPodThermal": {
-      "resolution": [
-        500,
-        300
-      ],
-      "noiseFactor": 0.05,
-      "index": 2
+  "nightVision": [
+    {
+      "sightTPodThermal": {
+        "resolution": [
+          500,
+          300
+        ],
+        "noiseFactor": 0.05,
+        "index": 2
+      }
+    },
+    {
+      "gunnerIr": {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "lightMult": 10.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.15
+      },
+      "pilotIr": {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "lightMult": 10.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.15
+      }
     }
-  },
+  ],
   "sensors": {
     "sensor": [
       {
@@ -2955,33 +2977,6 @@
       "tier": 3,
       "modClass": "armor"
     },
-    "heli_night_vision_system": {
-      "prevModification": "f_4c_g_suit",
-      "tier": 4,
-      "modClass": "weapon",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          }
-        }
-      }
-    },
     "akan_m75_ground_targets": {},
     "akan_m75_air_targets": {},
     "akan_m75_belt_pack": {
@@ -3553,7 +3548,7 @@
         ],
         "endPositionNoiseStrength": 0.1,
         "endPositionNoiseSpeed": 41.0,
-        "fmPart": "wing1_l_dm"
+        "fmPart": "spar1_l_dm"
       },
       {
         "entryPoint": [
@@ -3627,7 +3622,7 @@
         ],
         "endPositionNoiseStrength": 0.0,
         "endPositionNoiseSpeed": 1.0,
-        "fmPart": "wing1_r_dm"
+        "fmPart": "spar1_r_dm"
       }
     ]
   }

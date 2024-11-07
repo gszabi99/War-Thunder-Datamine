@@ -1,5 +1,5 @@
 //-file:param-pos
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, get_config_name, is_gpu_nvidia, get_video_modes
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, get_config_name, is_gpu_nvidia, get_video_modes
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -486,7 +486,7 @@ function getAvailableLatencyModes() {
 
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
-let hasRT = @() hasFeature("optionRT") && !is_platform_macosx
+let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && getGuiValue("graphicsQuality", "high") != "ultralow"
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
@@ -585,6 +585,7 @@ mShared = {
     let quality = getGuiValue("graphicsQuality", "high")
     if (!silent && quality == "ultralow") {
       function ok_func() {
+        setGuiValue("rayTracing", "off")
         mShared.graphicsQualityClick(true)
         updateGuiNavbar(true)
       }
@@ -984,18 +985,18 @@ mSettings = {
     enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
     isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
   }
-  vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = false
+  vsync = { widgetType = "list" def = is_vrr_available() ? "vsync_vrr" : "vsync_off" blk = "video/vsync" restart = false
     getValueFromConfig = function(blk, _desc) {
+      let vrr = is_vrr_available() && getBlkValueByPath(blk, "video/vrr", false)
       let vsync = getBlkValueByPath(blk, "video/vsync", false)
-      let adaptive = is_gpu_nvidia() && getBlkValueByPath(blk, "video/adaptive_vsync", true)
-      return (vsync && adaptive) ? "vsync_adaptive" : (vsync) ? "vsync_on" : "vsync_off"
+      return vrr ? "vsync_vrr" : vsync ? "vsync_on" : "vsync_off"
     }
     setGuiValueToConfig = function(blk, _desc, val) {
-      setBlkValueByPath(blk, "video/vsync", val != "vsync_off")
-      setBlkValueByPath(blk, "video/adaptive_vsync", val == "vsync_adaptive")
+      setBlkValueByPath(blk, "video/vrr", val == "vsync_vrr")
+      setBlkValueByPath(blk, "video/vsync", val == "vsync_on")
     }
     init = function(_blk, desc) {
-      desc.values <- is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
+      desc.values <- is_vrr_available() ? [ "vsync_vrr", "vsync_on" ] : [ "vsync_off", "vsync_on" ]
     }
     enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
   }

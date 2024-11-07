@@ -1,7 +1,8 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status, is_default_aircraft, shop_unit_research_status, is_era_available, wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
-let { bit_unit_status, getUnitReqExp, getUnitExp, getUnitCountry, getEsUnitType } = require("%scripts/unit/unitInfo.nut")
-let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
+let { bit_unit_status, getUnitReqExp, getUnitExp, getUnitCountry, getEsUnitType, getPrevUnit
+} = require("%scripts/unit/unitInfo.nut")
+let { canBuyUnit, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
@@ -161,6 +162,25 @@ function isUnitUsable(unit) {
   return unit ? unit.isUsable() : false
 }
 
+function isUnitFeatureLocked(unit) {
+  return unit.reqFeature != null && !hasFeature(unit.reqFeature)
+}
+
+function isUnitResearched(unit) {
+  if (isUnitBought(unit) || canBuyUnit(unit))
+    return true
+
+  let status = shop_unit_research_status(unit.name)
+  return (0 != (status & ES_ITEM_STATUS_RESEARCHED))
+}
+
+function isPrevUnitResearched(unit) {
+  let prevUnit = getPrevUnit(unit)
+  if (!prevUnit || isUnitResearched(prevUnit))
+    return true
+  return false
+}
+
 return {
   canBuyNotResearched
   getBitStatus
@@ -179,4 +199,7 @@ return {
   isUnitBroken
   isUnitDescriptionValid
   isUnitUsable
+  isUnitFeatureLocked
+  isUnitResearched
+  isPrevUnitResearched
 }

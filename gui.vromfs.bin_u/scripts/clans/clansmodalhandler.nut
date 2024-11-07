@@ -27,6 +27,7 @@ let { charRequestBlk } = require("%scripts/tasker.nut")
 let { openCreateClanWnd } = require("%scripts/clans/modify/createClanModalHandler.nut")
 let { openClanSeasonInfoWnd } = require("%scripts/clans/clanSeasonInfoModal.nut")
 let { lbCategoryTypes, getLbCategoryTypeById } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -538,7 +539,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       : itemId == "fits_requirements" ? ""
       : rowBlk.astat?[itemId] ?? 0
 
-    let res = ::getLbItemCell(item.id, value, item.type)
+    let res = getLbItemCell(item.id, value, item.type)
     res.active <- this.clansLbSortByPage[this.curPage].id == item.id
     if (item?.width != null) {
       res.width <- item.width

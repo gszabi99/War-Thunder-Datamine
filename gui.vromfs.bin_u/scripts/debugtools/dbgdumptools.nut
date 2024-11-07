@@ -43,6 +43,7 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { setGameChatLogText } = require("%scripts/chat/mpChat.nut")
 let { getMpChatLog, setMpChatLog } = require("%scripts/chat/mpChatState.nut")
+let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 
 //==================================================================================================
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
@@ -81,7 +82,7 @@ function debug_dump_debriefing_save(filename) {
     "get_mission_difficulty_int"
     "get_premium_reward_wp"
     "get_premium_reward_xp"
-    "is_worldwar_enabled"
+    { id = "isWorldWarEnabled", value = isWorldWarEnabled() }
     { id = "wwIsOperationLoaded", value = wwIsOperationLoaded() }
     { id = "wwGetOperationId", value = wwGetOperationId() }
     { id = "wwGetOperationWinner", value = wwGetOperationWinner() }

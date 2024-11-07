@@ -45,9 +45,10 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
 let { getEsUnitType, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
-  getUnitName
+  getUnitName, getPrevUnit
 } = require("%scripts/unit/unitInfo.nut")
-let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken } = require("%scripts/unit/unitStatus.nut")
+let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken, isUnitResearched
+} = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
@@ -258,7 +259,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           && getUnitCountry(unit) == this.curCountry
           && !isUnitGift(unit)
           && !isUnitSpecial(unit)
-          && !::isUnitResearched(unit))
+          && !isUnitResearched(unit))
         return false
     return true
   }
@@ -1793,7 +1794,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (unit in group) {
       if (!unit)
         continue
-      let reqUnit = ::getPrevUnit(unit)
+      let reqUnit = getPrevUnit(unit)
       if (reqUnit  && prevGroupUnit
           && reqUnit.name == prevGroupUnit.name) {
         local status = isUnitBought(prevGroupUnit) || isUnitBought(unit)

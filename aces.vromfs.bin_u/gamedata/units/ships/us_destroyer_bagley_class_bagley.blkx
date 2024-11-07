@@ -1412,6 +1412,9 @@
       "armorThrough": 500.0,
       "transmission_01_dm": {
         "hp": 2400.0
+      },
+      "transmission_02_dm": {
+        "hp": 2400.0
       }
     },
     "shafts": {
@@ -1458,7 +1461,7 @@
         "hp": 2000.0
       },
       "fuel_tank_02_dm": {
-        "hp": 1893.0
+        "hp": 1500.0
       },
       "fuel_tank_03_dm": {
         "hp": 2000.0
@@ -1655,13 +1658,13 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 200.0,
       "ammunition_storage_shells_01_dm": {
-        "hp": 1500.0
+        "hp": 1200.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1223.0
+        "hp": 1200.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 1306.0
+        "hp": 1200.0
       },
       "ammunition_storage_shells_04_dm": {
         "hp": 1200.0
@@ -1676,13 +1679,13 @@
         "hp": 1600.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 1644.0
+        "hp": 1600.0
       },
       "ammunition_storage_charges_03_dm": {
-        "hp": 1600.0
+        "hp": 1792.0
       },
       "ammunition_storage_charges_04_dm": {
-        "hp": 1600.0
+        "hp": 1792.0
       }
     },
     "ammo_storages_auxiliary": {
@@ -1708,6 +1711,12 @@
         "hp": 1500.0
       },
       "ammo_turret_02_dm": {
+        "hp": 1500.0
+      },
+      "ammo_turret_03_dm": {
+        "hp": 1500.0
+      },
+      "ammo_turret_04_dm": {
         "hp": 1500.0
       }
     },
@@ -1822,7 +1831,7 @@
         "hp": 550.0
       },
       "elevator_02_dm": {
-        "hp": 625.0
+        "hp": 700.0
       },
       "elevator_03_dm": {
         "hp": 550.0
@@ -1831,10 +1840,10 @@
         "hp": 700.0
       },
       "elevator_05_dm": {
-        "hp": 625.0
+        "hp": 700.0
       },
       "elevator_06_dm": {
-        "hp": 550.0
+        "hp": 678.0
       }
     },
     "pumps": {
@@ -2606,7 +2615,7 @@
             "engine_room_01_dm",
             "engine_room_02_dm"
           ],
-          "transmissionDmPart": "transmission_01_dm",
+          "transmissionDmPart": "transmission_02_dm",
           "shaftDmPart": "shaft_02_dm",
           "propeller": "propeller_02"
         }
@@ -2769,8 +2778,8 @@
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
@@ -2778,6 +2787,12 @@
           ]
         },
         "limitsTable": {
+          "lim1": [
+            -180.0,
+            -150.0,
+            33.0,
+            85.0
+          ],
           "lim2": [
             -150.0,
             -34.0,
@@ -2818,6 +2833,12 @@
             34.0,
             150.0,
             -15.0,
+            85.0
+          ],
+          "lim9": [
+            150.0,
+            180.0,
+            33.0,
             85.0
           ]
         },
@@ -2884,8 +2905,8 @@
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
@@ -2894,33 +2915,57 @@
         },
         "limitsTable": {
           "lim1": [
-            -150.0,
+            -180.0,
+            -167.0,
+            39.0,
+            85.0
+          ],
+          "lim2": [
+            -167.0,
+            -153.0,
+            24.0,
+            85.0
+          ],
+          "lim3": [
+            -153.0,
             -131.0,
             -12.0,
             85.0
           ],
-          "lim2": [
+          "lim4": [
             -131.0,
             -20.0,
             -15.0,
             85.0
           ],
-          "lim3": [
+          "lim5": [
             -20.0,
             20.0,
             -9.0,
             85.0
           ],
-          "lim4": [
+          "lim6": [
             20.0,
             131.0,
             -15.0,
             85.0
           ],
-          "lim5": [
+          "lim7": [
             131.0,
-            150.0,
+            153.0,
             -12.0,
+            85.0
+          ],
+          "lim8": [
+            153.0,
+            167.0,
+            24.0,
+            85.0
+          ],
+          "lim9": [
+            167.0,
+            180.0,
+            39.0,
             85.0
           ]
         },
@@ -2976,8 +3021,8 @@
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
@@ -2986,33 +3031,45 @@
         },
         "limitsTable": {
           "lim1": [
+            -180.0,
+            -150.0,
+            32.0,
+            85.0
+          ],
+          "lim2": [
             -150.0,
             -134.0,
             -15.0,
             85.0
           ],
-          "lim2": [
+          "lim3": [
             -134.0,
             -15.0,
             -10.0,
             85.0
           ],
-          "lim3": [
+          "lim4": [
             -15.0,
             15.0,
             -8.0,
             85.0
           ],
-          "lim4": [
+          "lim5": [
             15.0,
             134.0,
             -10.0,
             85.0
           ],
-          "lim5": [
+          "lim6": [
             134.0,
             150.0,
             -15.0,
+            85.0
+          ],
+          "lim7": [
+            150.0,
+            180.0,
+            32.0,
             85.0
           ]
         },
@@ -3068,8 +3125,8 @@
         },
         "limits": {
           "yaw": [
-            -150.0,
-            150.0
+            -180.0,
+            180.0
           ],
           "pitch": [
             -15.0,
@@ -3078,45 +3135,57 @@
         },
         "limitsTable": {
           "lim1": [
+            -180.0,
+            -150.0,
+            32.0,
+            85.0
+          ],
+          "lim2": [
             -150.0,
             -131.0,
             -13.0,
             85.0
           ],
-          "lim2": [
+          "lim3": [
             -131.0,
             -37.0,
             -15.0,
             85.0
           ],
-          "lim3": [
+          "lim4": [
             -37.0,
             -17.0,
             -7.0,
             85.0
           ],
-          "lim4": [
+          "lim5": [
             -17.0,
             17.0,
             -2.0,
             85.0
           ],
-          "lim5": [
+          "lim6": [
             17.0,
             37.0,
             -7.0,
             85.0
           ],
-          "lim6": [
+          "lim7": [
             37.0,
             131.0,
             -15.0,
             85.0
           ],
-          "lim7": [
+          "lim8": [
             131.0,
             150.0,
             -13.0,
+            85.0
+          ],
+          "lim9": [
+            150.0,
+            180.0,
+            32.0,
             85.0
           ]
         },
@@ -4935,9 +5004,8 @@
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
-      "replenishmentDelay": 3.0,
-      "replenishmentTime": 3.0,
-      "removeLoadedAmmo": true,
+      "replenishmentDelay": 8.0,
+      "replenishmentTime": 2.0,
       "explosionEvent": "ammo_explosion_1",
       "fireEvent": "ammo_fire_1",
       "fireParamsPreset": "ship_ammo_fire_total",
@@ -5035,7 +5103,7 @@
         },
         {
           "entityMunition": "shells",
-          "reloadTimeMult": 1.25,
+          "reloadTimeMult": 1.46,
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
@@ -5046,7 +5114,7 @@
       ],
       "charges": {
         "entityMunition": "charges",
-        "reloadTimeMult": 1.25,
+        "reloadTimeMult": 1.46,
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_01_dm": {
@@ -5056,9 +5124,8 @@
     },
     "ammo2": {
       "weaponTrigger": "gunner1",
-      "replenishmentDelay": 3.0,
-      "replenishmentTime": 3.0,
-      "removeLoadedAmmo": true,
+      "replenishmentDelay": 8.0,
+      "replenishmentTime": 2.0,
       "explosionEvent": "ammo_explosion_2",
       "fireEvent": "ammo_fire_2",
       "fireParamsPreset": "ship_ammo_fire_total",
@@ -5156,7 +5223,7 @@
         },
         {
           "entityMunition": "shells",
-          "reloadTimeMult": 1.25,
+          "reloadTimeMult": 1.46,
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
@@ -5167,7 +5234,7 @@
       ],
       "charges": {
         "entityMunition": "charges",
-        "reloadTimeMult": 1.25,
+        "reloadTimeMult": 1.46,
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_02_dm": {
@@ -5262,19 +5329,32 @@
           ]
         }
       },
-      "shells": {
-        "entityMunition": "shells",
-        "reloadTimeMult": 1.25,
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_03_dm": {
-          "count": 300
+      "shells": [
+        {
+          "entityMunition": "first_stage",
+          "firstStage": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "fireEvent": "ready_use_ammo_fire",
+          "explosionEvent": "ready_use_ammo_explosion",
+          "damageEffect": "ammunition_first_stage",
+          "ammo_turret_03_dm": {
+            "count": 20
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "reloadTimeMult": 1.25,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_03_dm": {
+            "count": 280
+          }
         }
-      },
+      ],
       "charges": {
         "entityMunition": "charges",
-        "reloadTimeMult": 1.25,
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_03_dm": {
@@ -5369,19 +5449,32 @@
           ]
         }
       },
-      "shells": {
-        "entityMunition": "shells",
-        "reloadTimeMult": 1.25,
-        "fatalFire": false,
-        "fatalExplosion": false,
-        "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_04_dm": {
-          "count": 300
+      "shells": [
+        {
+          "entityMunition": "first_stage",
+          "firstStage": true,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "fireEvent": "ready_use_ammo_fire",
+          "explosionEvent": "ready_use_ammo_explosion",
+          "damageEffect": "ammunition_first_stage",
+          "ammo_turret_04_dm": {
+            "count": 20
+          }
+        },
+        {
+          "entityMunition": "shells",
+          "reloadTimeMult": 1.25,
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_04_dm": {
+            "count": 280
+          }
         }
-      },
+      ],
       "charges": {
         "entityMunition": "charges",
-        "reloadTimeMult": 1.25,
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_04_dm": {

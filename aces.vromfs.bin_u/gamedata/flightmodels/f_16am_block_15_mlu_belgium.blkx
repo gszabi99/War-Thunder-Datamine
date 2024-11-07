@@ -2056,10 +2056,10 @@
     "sightFov": 1.0,
     "isDoubleBulletImpactLine": true,
     "hmdBlockIlsArea": [
-      0.37,
-      0.37,
-      0.63,
-      0.63
+      0.15,
+      -0.5,
+      0.73,
+      0.85
     ],
     "hmdEnabledByDefault": true,
     "headPos": [
@@ -2988,15 +2988,45 @@
       "nvIndex": 1
     }
   },
-  "nightVision": {
-    "sightTPodThermal": {
-      "resolution": [
-        800,
-        600
-      ],
-      "noiseFactor": 0.05
+  "nightVision": [
+    {
+      "sightTPodThermal": {
+        "resolution": [
+          800,
+          600
+        ],
+        "noiseFactor": 0.05
+      },
+      "sightThermal": {
+        "resolution": [
+          500,
+          300
+        ],
+        "noiseFactor": 0.05,
+        "index": 1
+      }
+    },
+    {
+      "gunnerIr": {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "lightMult": 10.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.15
+      },
+      "pilotIr": {
+        "resolution": [
+          1920,
+          1080
+        ],
+        "lightMult": 10.0,
+        "ghosting": 0.7,
+        "noiseFactor": 0.15
+      }
     }
-  },
+  ],
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -4032,10 +4062,7 @@
             "iconType": "guided_bomb_middle_jdam_group_x2_ltc_pod",
             "name": "us_gbu_38_x2_pids_slot3",
             "ShowNodes": {
-              "node": [
-                "pylon_terma_mlu_pids_l",
-                "pylon2_holder"
-              ]
+              "node": "pylon_terma_mlu_pids_p_l"
             },
             "Weapon": [
               {
@@ -4067,10 +4094,7 @@
             "iconType": "guided_bomb_heavy_middle_jdam_ltc_pod",
             "name": "us_gbu_31_pids_slot3",
             "ShowNodes": {
-              "node": [
-                "pylon_terma_mlu_pids_l",
-                "pylon2_holder"
-              ]
+              "node": "pylon_terma_mlu_pids_p_l"
             },
             "Weapon": [
               {
@@ -4100,14 +4124,11 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "iconType": "glide_guided_bomb_small_jdam_maws_ltc_pod_group_x4",
             "name": "us_gbu_39_pids_slot3",
             "reqModification": "us_blu27_gbu39",
             "ShowNodes": {
-              "node": [
-                "pylon_terma_mlu_pids_l",
-                "pylon2_holder"
-              ]
+              "node": "pylon_terma_mlu_pids_p_l"
             },
             "Weapon": [
               {
@@ -5179,10 +5200,7 @@
             "iconType": "guided_bomb_middle_jdam_group_x2_ltc_pod",
             "name": "us_gbu_38_x2_pids_slot8",
             "ShowNodes": {
-              "node": [
-                "pylon_terma_mlu_pids_r",
-                "pylon6_holder"
-              ]
+              "node": "pylon_terma_mlu_pids_p_r"
             },
             "Weapon": [
               {
@@ -5214,10 +5232,7 @@
             "iconType": "guided_bomb_heavy_middle_jdam_ltc_pod",
             "name": "us_gbu_31_pids_slot8",
             "ShowNodes": {
-              "node": [
-                "pylon_terma_mlu_pids_r",
-                "pylon6_holder"
-              ]
+              "node": "pylon_terma_mlu_pids_p_r"
             },
             "Weapon": [
               {
@@ -5247,14 +5262,11 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "iconType": "glide_guided_bomb_small_jdam_maws_ltc_pod_group_x4",
             "name": "us_gbu_39_pids_slot8",
             "reqModification": "us_blu27_gbu39",
             "ShowNodes": {
-              "node": [
-                "pylon_terma_mlu_pids_r",
-                "pylon6_holder"
-              ]
+              "node": "pylon_terma_mlu_pids_p_r"
             },
             "Weapon": [
               {
@@ -5551,41 +5563,6 @@
       "prevModification": "PIDS_false_thermal_targets",
       "tier": 3,
       "modClass": "armor"
-    },
-    "heli_night_vision_system": {
-      "tier": 4,
-      "modClass": "armor",
-      "prevModification": "f_4c_g_suit",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "pilotIr": {
-            "resolution": [
-              1920,
-              1080
-            ],
-            "lightMult": 10.0,
-            "ghosting": 0.7,
-            "noiseFactor": 0.15
-          },
-          "sightThermal": {
-            "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05,
-            "index": 1
-          }
-        }
-      }
     },
     "M60_air_targets": {},
     "M60_armor_targets": {},

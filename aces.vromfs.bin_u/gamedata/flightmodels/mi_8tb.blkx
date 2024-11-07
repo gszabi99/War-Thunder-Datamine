@@ -2742,6 +2742,26 @@
       }
     ]
   },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    }
+  },
   "modifications": {
     "new_compressor_jet": {
       "tier": 1,
@@ -2770,35 +2790,8 @@
       "tier": 1,
       "modClass": "armor"
     },
-    "heli_night_vision_system": {
-      "tier": 3,
-      "prevModification": "heli_flak_jacket",
-      "modClass": "armor",
-      "effects": {
-        "nightVision": {
-          "gunnerIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          },
-          "pilotIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 8.0,
-            "ghosting": 0.75,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
     "automatic_air_extinguisher": {
-      "prevModification": "heli_night_vision_system",
+      "prevModification": "heli_flak_jacket",
       "modClass": "armor",
       "tier": 4,
       "invertEnableLogic": false

@@ -66,9 +66,6 @@
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2294,10 +2291,10 @@
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
     "hmdBlockIlsArea": [
-      0.37,
-      0.37,
-      0.63,
-      0.63
+      0.15,
+      -0.5,
+      0.73,
+      0.85
     ],
     "hmdEnabledByDefault": true,
     "mirror": true,
@@ -2772,71 +2769,6 @@
             },
             {
               "type": "map"
-            },
-            {
-              "type": "custom",
-              "pageName": "f15cWpn"
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
-            },
-            {
-              "type": "ils_duplicate"
             }
           ]
         },
@@ -3246,6 +3178,8 @@
         "us_lau_129aa_004",
         "pylon_3",
         "pylon_3_holder",
+        "adu578_adapter_001",
+        "adu578_adapter_002",
         "pylon_2",
         "lau_7_003",
         "lau_7_004",
@@ -3550,7 +3484,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "dragCx": 0.02
             },
             "DependentWeaponPreset": {
               "slot": 8,
@@ -3732,7 +3667,25 @@
             "DependentWeaponPreset": {
               "slot": 12,
               "preset": "ptb_right"
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              }
+            ]
           }
         ]
       },
@@ -4920,7 +4873,8 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "machLimit": 1.01
+                "machLimit": 1.01,
+                "dragCx": 0.02
               }
             ],
             "DependentWeaponPreset": {
@@ -5103,34 +5057,7 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_003",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
                 "emitter": "250lb_mk_81_006",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_002",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
@@ -5460,7 +5387,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "dragCx": 0.02
             },
             "DependentWeaponPreset": {
               "slot": 6,
@@ -5618,34 +5546,7 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_003",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
                 "emitter": "250lb_mk_81_006",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_002",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
@@ -5862,7 +5763,8 @@
               "trigger": "targetingPod",
               "blk": "gameData/Weapons/equipment/an_aaq_25_lantirn.blk",
               "emitter": "fuel_tank1",
-              "bullets": 1
+              "bullets": 1,
+              "dragCx": 0.035
             },
             "sensors": {
               "sensor": [
@@ -5874,7 +5776,41 @@
                   "node": "optic1_gun"
                 }
               ]
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_120b_tank_slot10"
+              }
+            ]
           },
           {
             "iconType": "ltc",
@@ -5978,7 +5914,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "dragCx": 0.02
             },
             "DependentWeaponPreset": {
               "slot": 6,
@@ -6046,7 +5983,25 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              }
+            ]
           },
           {
             "iconType": "glide_guided_bomb_small_jdam_group_x4",
@@ -7071,7 +7026,8 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true,
-                "machLimit": 1.01
+                "machLimit": 1.01,
+                "dragCx": 0.02
               }
             ],
             "DependentWeaponPreset": {
@@ -7254,34 +7210,7 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_012",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_014",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
                 "emitter": "250lb_mk_81_010",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_013",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
@@ -7611,7 +7540,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "dragCx": 0.02
             },
             "DependentWeaponPreset": {
               "slot": 6,
@@ -7769,34 +7699,7 @@
               {
                 "trigger": "guided bombs",
                 "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_012",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_014",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
                 "emitter": "250lb_mk_81_010",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
-                "emitter": "250lb_mk_81_013",
                 "bullets": 1,
                 "external": true,
                 "separate": true,
@@ -8264,7 +8167,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "dragCx": 0.02
             },
             "DependentWeaponPreset": {
               "slot": 6,
@@ -8446,7 +8350,25 @@
             "DependentWeaponPreset": {
               "slot": 2,
               "preset": "ptb_left"
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_7m_tank_slot4"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_slot10"
+              },
+              {
+                "slot": 10,
+                "preset": "aim_7m_tank_slot10"
+              }
+            ]
           }
         ]
       },

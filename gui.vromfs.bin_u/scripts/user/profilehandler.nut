@@ -79,7 +79,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { userIdStr, havePlayerTag, isGuestLogin } = require("%scripts/user/profileStates.nut")
+let { userIdStr, userIdInt64, havePlayerTag, isGuestLogin } = require("%scripts/user/profileStates.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
@@ -426,6 +426,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
       btn_SkinPreview = isInMenu() && sheet == "UnlockSkin"
+      btn_leaderboard = sheet == "Records" && hasFeature("Leaderboards")
     }
 
     showObjectsByTable(this.scene, buttonsList)
@@ -1900,6 +1901,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     base.goBack()
   }
+
+  onLeaderboard = @() loadHandler(gui_handlers.LeaderboardWindow, { userId = userIdInt64.get() })
 }
 
 let openProfileSheetParamsFromPromo = {

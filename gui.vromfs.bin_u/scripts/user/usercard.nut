@@ -52,6 +52,8 @@ let { isUnlockVisible, getUnlockRewardText } = require("%scripts/unlocks/unlocks
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -155,8 +157,8 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let customNick = getCustomNick(this.player)
     let profileName = customNick == null
-      ? this.player.name
-      : $"{this.player.name}{loc("ui/parentheses/space", { text = customNick })}"
+      ? getPlayerName(this.player.name)
+      : $"{getPlayerName(this.player.name)}{loc("ui/parentheses/space", { text = customNick })}"
     this.scene.findObject("profile-name").setValue(profileName)
     this.scene.findObject("usercard-container").show(false)
     let breadCrumbTitle = this.scene.findObject("breadcrumb_title")
@@ -778,7 +780,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           continue
 
         if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly) {
-          let cell = ::getLbItemCell(item.id, airData[item.id], item.type)
+          let cell = getLbItemCell(item.id, airData[item.id], item.type)
           cell.active <- this.statsSortBy == item.id
           cell.tdalign <- "center"
           if ("tooltip" in cell) {
@@ -810,11 +812,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.curStatsPage = obj.to_page.tointeger()
     this.updateStatPage()
   }
-
-  function checkLbRowVisibility(row) {
-    return ::leaderboardModel.checkLbRowVisibility(row, this)
-  }
-
 
   function onChangePilotIcon(_obj) {}
   function openChooseTitleWnd() {}
@@ -861,6 +858,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       btn_complain = showProfBar && !isMe
       btn_friendChangeNick = hasFeature("CustomNicks") && showProfBar && !isMe
       btn_achievements_url = isVisibleAchievementsUrlBtn
+      btn_leaderboard = sheet == "Records" && hasFeature("Leaderboards")
     })
 
     if (isVisibleAchievementsUrlBtn)
@@ -1110,4 +1108,9 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return this.player?.unlocks.medal[name] != null
   }
 
+  function onLeaderboard() {
+    let userId = (this.player?.uid ?? "-1").tointeger()
+    if (userId >= 0)
+      loadHandler(gui_handlers.LeaderboardWindow, { userId })
+  }
 }

@@ -1,6 +1,5 @@
-from "%scripts/dagui_natives.nut" import request_leaderboard_blk, get_leaderboard_blk, clan_get_requested_clan_id
+from "%scripts/dagui_natives.nut" import clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
-from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -9,7 +8,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil, floor } = require("math")
 let { format } = require("string")
@@ -26,7 +24,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig
 } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
+let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 
 ::leaderboards_list <- [
   lbCategoryTypes.PVP_RATIO
@@ -125,266 +123,6 @@ let { addBgTaskCb } = require("%scripts/tasker.nut")
   loadHandler(gui_handlers.EventsLeaderboardWindow, params)
 }
 
-::leaderboardModel <-
-{
-  selfRowData       = null
-  leaderboardData   = null
-  lastRequestData   = null
-  lastRequestSRData = null //last self row request
-  canRequestLb      = true
-
-  defaultRequest =
-  {
-    lbType = ETTI_VALUE_INHISORY
-    lbField = "each_player_victories"
-    rowsInPage = 1
-    pos = 0
-    lbMode = ""
-    platformFilter = ""
-  }
-
-  function reset() {
-    this.selfRowData       = null
-    this.leaderboardData   = null
-    this.lastRequestData   = null
-    this.lastRequestSRData = null
-    this.canRequestLb      = true
-  }
-
-  /**
-   * Function requests leaderboards asynchronously and puts result
-   * as argument to callback function
-   */
-  function requestLeaderboard(requestData, callback, context = null) {
-    requestData = this.validateRequestData(requestData)
-
-    //trigging callback if data is lready here
-    if (this.leaderboardData && this.compareRequests(this.lastRequestData, requestData)) {
-      if (context)
-        callback.call(context, this.leaderboardData)
-      else
-        callback(this.leaderboardData)
-      return
-    }
-
-    requestData.callBack <- Callback(callback, context)
-    this.loadLeaderboard(requestData)
-  }
-
-  /**
-   * Function requests self leaderboard row asynchronously and puts result
-   * as argument to callback function
-   */
-  function requestSelfRow(requestData, callback, context = null) {
-    requestData = this.validateRequestData(requestData)
-    if (this.lastRequestSRData)
-      this.lastRequestSRData.pos <- requestData.pos
-
-    //trigging callback if data is lready here
-    if (this.selfRowData && this.compareRequests(this.lastRequestSRData, requestData)) {
-      if (context)
-        callback.call(context, this.selfRowData)
-      else
-        callback(this.selfRowData)
-      return
-    }
-
-    requestData.callBack <- Callback(callback, context)
-    this.loadSeflRow(requestData)
-  }
-
-  function loadLeaderboard(requestData) {
-    this.lastRequestData = requestData
-    if (!this.canRequestLb)
-      return
-
-    this.canRequestLb = false
-
-    let db = DataBlock()
-    db.setStr("category", requestData.lbField)
-    db.setStr("valueType", requestData.lbType == ETTI_VALUE_INHISORY ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
-    db.setInt("count", requestData.rowsInPage)
-    db.setStr("gameMode", requestData.lbMode)
-    db.setStr("platformFilter", requestData.platformFilter)
-    db.setStr("platform",       requestData.platformFilter)  // deprecated, remove after lb-server release
-    db.setInt("start", requestData.pos)
-
-    let taskId = request_leaderboard_blk(db)
-    addBgTaskCb(taskId, @() ::leaderboardModel.handleLbRequest(requestData))
-  }
-
-  function loadSeflRow(requestData) {
-    this.lastRequestSRData = requestData
-    if (!this.canRequestLb)
-      return
-    this.canRequestLb = false
-
-    let db = DataBlock()
-    db.setStr("category", requestData.lbField)
-    db.setStr("valueType", requestData.lbType == ETTI_VALUE_INHISORY ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL)
-    db.setInt("count", 0)
-    db.setStr("gameMode", requestData.lbMode)
-    db.setStr("platformFilter", requestData.platformFilter)
-    db.setStr("platform",       requestData.platformFilter)  // deprecated, remove after lb-server release
-
-    let taskId = request_leaderboard_blk(db)
-    addBgTaskCb(taskId, @() ::leaderboardModel.handleSelfRowLbRequest(requestData))
-  }
-
-  function handleLbRequest(requestData) {
-    let LbBlk = get_leaderboard_blk()
-    this.leaderboardData = {}
-    this.leaderboardData["rows"] <- this.lbBlkToArray(LbBlk, requestData)
-    this.canRequestLb = true
-    if (!this.compareRequests(this.lastRequestData, requestData))
-      this.requestLeaderboard(this.lastRequestData,
-                     getTblValue("callBack", requestData),
-                     getTblValue("handler", requestData))
-    else if ("callBack" in requestData) {
-        if ("handler" in requestData)
-          requestData.callBack.call(requestData.handler, this.leaderboardData)
-        else
-          requestData.callBack(this.leaderboardData)
-    }
-  }
-
-  function handleSelfRowLbRequest(requestData) {
-    let sefRowblk = get_leaderboard_blk()
-    this.selfRowData = this.lbBlkToArray(sefRowblk, requestData)
-    this.canRequestLb = true
-    if (!this.compareRequests(this.lastRequestSRData, requestData))
-      this.loadSeflRow(this.lastRequestSRData)
-    else if ("callBack" in requestData) {
-        if ("handler" in requestData)
-          requestData.callBack.call(requestData.handler, this.selfRowData)
-        else
-          requestData.callBack(this.selfRowData)
-    }
-  }
-
-  function lbBlkToArray(blk, requestData) {
-    let res = []
-    let valueKey = (requestData.lbType == ETTI_VALUE_INHISORY) ? LEADERBOARD_VALUE_INHISTORY : LEADERBOARD_VALUE_TOTAL
-    for (local i = 0; i < blk.blockCount(); i++) {
-      let table = {}
-      let row = blk.getBlock(i)
-      table.name <- row.getBlockName()
-      table.pos <- row.idx != null ? row.idx : -1
-      for (local j = 0; j < row.blockCount(); j++) {
-        let param = row.getBlock(j)
-        if (param.paramCount() <= 0 || param?[valueKey] == null)
-          continue
-        table[param.getBlockName()] <- param[valueKey]
-      }
-      res.append(table)
-    }
-    return res
-  }
-
-  function validateRequestData(requestData) {
-    foreach (name, field in this.defaultRequest)
-      if (!(name in requestData))
-        requestData[name] <- field
-    return requestData
-  }
-
-  function compareRequests(req1, req2) {
-    foreach (name, _field in this.defaultRequest) {
-      if ((name in req1) != (name in req2))
-        return false
-      if (!(name in req1)) //no name in both req
-        continue
-      if (req1[name] != req2[name])
-        return false
-    }
-    return true
-  }
-
-  function checkLbRowVisibility(row, params = {}) {
-    // check ownProfileOnly
-    if (getTblValue("ownProfileOnly", row, false) && !getTblValue("isOwnStats", params, false))
-      return false
-
-    // check reqFeature
-    if (!row.isVisibleByFeature())
-      return false
-
-    // check modesMask
-    let lbMode = getTblValue("lbMode", params)
-    if (!row.isVisibleByLbModeName(lbMode))
-      return false
-
-    return true
-  }
-}
-
-::leaderboarsdHelpers <-
-{
-  /**
-   * Comapares two lb row with the same fields and returns
-   * a table of diff for each field.
-   * Result table containes only fields with different values
-   * The first argument is base of comarsion. In other words a is now and b is
-   * was.
-   * If a.f1 > b.f1 and a.f1 - b.f1 == 3
-   * the result will looks like
-   * res.f1 = 3
-   * String fields are ignored
-   */
-  function getLbDiff(a, b) {
-    let res = {}
-    foreach (fieldId, fieldValue in a) {
-      if (fieldId == "_id")
-        continue
-      if (type(fieldValue) == "string")
-        continue
-      let compareToValue = getTblValue(fieldId, b, 0)
-      if (fieldValue != compareToValue)
-        res[fieldId] <- fieldValue - compareToValue
-    }
-    return res
-  }
-}
-
-/**
- * Generates view for leaderbord item
- *
- * @param field_config  - item of ::leaderboards_list
- *                        or eventsTableConfig
- * @param lb_value      - value of specified field as it comes from char
- * @param lb_value_diff - optional, diff data, generated
- *                        with ::leaderboarsdHelpers.getLbDiff(...)
- *
- * @return view for getLeaderboardItemWidgets(...)
- */
-::getLeaderboardItemView <- function getLeaderboardItemView(lbCategory, lb_value, lb_value_diff = null, params = null) {
-  let view = lbCategory.getItemCell(lb_value)
-  view.name <- lbCategory.headerTooltip
-  view.icon <- lbCategory.headerImage
-
-  view.width  <- getTblValue("width",  params)
-  view.pos    <- getTblValue("pos",    params)
-  view.margin <- getTblValue("margin", params)
-
-  if (lb_value_diff) {
-    view.progress <- {
-      positive = lb_value_diff > 0
-      diff = lbCategory.getItemCell(lb_value_diff, null, true)
-    }
-  }
-
-  return view
-}
-
-/**
- * Generates view for leaderbord items array
- * @param view  - { items = array of ::getLeaderboardItemView(...) }
- * @return markup ready for insertion into scene
- */
-::getLeaderboardItemWidgets <- function getLeaderboardItemWidgets(view) {
-  return handyman.renderCached("%gui/leaderboard/leaderboardItemWidget.tpl", view)
-}
-
 gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/leaderboard/leaderboard.blk"
@@ -397,6 +135,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   lbModesList   = null
   lb_presets    = null
   lbData        = null
+  userId        = null
   forClans      = false
 
   pos         = 0
@@ -411,6 +150,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     pos        = null
     lbMode     = ""
     platformFilter = ""
+    userId     = null
   }
   pageData    = null
   selfRowData = null
@@ -423,7 +163,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     reqUnlockByClient("view_leaderboards")
     if (!this.lbModel) {
-      this.lbModel = ::leaderboardModel
+      this.lbModel = leaderboardModel
       this.lbModel.reset()
     }
     if (!this.lb_presets)
@@ -895,17 +635,4 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     this.customSelfStats = userstatCustomLeaderboardStats.value?.stats[event.leaderboardEventTable]
     this.fillLeaderboard(this.pageData)
   }
-}
-
-::getLbItemCell <- function getLbItemCell(id, value, dataType, allowNegative = false) {
-  let res = {
-    id   = id
-    text = dataType.getShortTextByValue(value, allowNegative)
-  }
-
-  let tooltipText =  dataType.getPrimaryTooltipText(value, allowNegative)
-  if (tooltipText != "")
-    res.tooltip <- tooltipText
-
-  return res
 }

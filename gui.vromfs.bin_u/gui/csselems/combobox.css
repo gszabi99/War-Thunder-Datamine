@@ -27,7 +27,7 @@ ComboBox {
   css-hier-invalidate:yes;
   total-input-transparent:yes;
 
-  _needBtnPos:yes;
+  btnPos:right;
   screen-offset:@bh;
 
   background-color:@comboBgColor;
@@ -87,17 +87,10 @@ tr > tdiv > ComboBox {
   btnName:X;
 }
 
-ComboBox[btnPos] {
-  _needBtnPos:no;
-}
-
-ComboBox[_needBtnPos=yes] {
-  btnPos:right;
-}
-
 ComboBox[btnPos=left] {
   padding-left:@comboBtnWidth;
 }
+
 ComboBox[btnPos=right] {
   padding-right:@comboBtnWidth;
 }
