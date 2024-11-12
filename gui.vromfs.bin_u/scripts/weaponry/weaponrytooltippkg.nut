@@ -239,7 +239,10 @@ function getBasesEstimatedDamageRewardText(unit, item) {
             return
           local weaponKey = val.paramCount() == 0 ? "" : val.getParamName(0)
           if (weaponKey != "") {
-            customPresetWeaponTable[weaponKey] <- itemPresetList[key]
+            let weaponAmount = val.getParamValue(0) * itemPresetList[key]
+            customPresetWeaponTable[weaponKey] <- (customPresetWeaponTable?[weaponKey] ?? 0) + weaponAmount
+            itemPresetList.rawdelete(key)
+            return
           }
         })
       })

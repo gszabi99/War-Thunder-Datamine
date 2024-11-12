@@ -4,7 +4,6 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones, wwUpdateHoverArmyName } = require("worldwar")
@@ -19,15 +18,13 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = null
   sceneBlkName = "%gui/worldWar/worldWarOperationLogInfo"
-  logRowTplName = "%gui/worldWar/wwOperationLogRow.tpl"
-
+  emptyLogBlockBlk = "%gui/worldWar/wwOperationLogRow.blk"
   prevLogDate = ""
   viewLogAmount = 0
   isLogPageScrolledDown = false
 
   logFrameObj = null
   logContainerObj = null
-  emptyLogChild = null
 
   selectedArmyName = ""
   hoveredArmyName = ""
@@ -50,22 +47,8 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.prevLogDate = ""
     ::g_ww_logs.applyLogsFilter()
-    this.buildEmptyLogsBlock()
     this.fillLogBlock()
     ::g_ww_logs.saveLastReadLogMark()
-  }
-
-  function buildEmptyLogsBlock() {
-    let emptyBattleArmies = array(WW_LOG_BATTLE.MAX_ARMIES_PER_SIDE, {})
-    let emptyDamagedArmies = []
-    for (local i = 0; i < WW_LOG_BATTLE.MAX_DAMAGED_ARMIES; i++)
-      emptyDamagedArmies.append({ idx = i })
-
-    let emptyLog = { battleArmy = emptyBattleArmies, damagedArmy = emptyDamagedArmies }
-    let logsList = array(WW_LOG_MAX_DISPLAY_AMOUNT, emptyLog)
-    let logData = handyman.renderCached(this.logRowTplName, { operationLogRow = logsList })
-    this.guiScene.replaceContentFromText(this.logContainerObj, logData, logData.len(), this)
-    this.emptyLogChild = handyman.renderCached(this.logRowTplName, { operationLogRow = [emptyLog] })
   }
 
   function onEventWWNewLogsAdded(params = {}) {
@@ -106,7 +89,9 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     this.markPreviousLogsAsReaded()
     this.guiScene.setUpdatesEnabled(false, false)
     this.viewLogAmount = 0
-    for (local i = 0; i < this.logContainerObj.childrenCount(); i++) {
+    for (local i = 0; i < min(::g_ww_logs.loaded.len(), WW_LOG_MAX_DISPLAY_AMOUNT); i++) {
+      if (this.logContainerObj.childrenCount() < i + 1)
+        this.guiScene.createElementByObject(this.logContainerObj, this.emptyLogBlockBlk, "tdiv", this)
       let logObj = this.logContainerObj.getChild(i)
       let logIdx = i + ::g_ww_logs.viewIndex
       if (!(logIdx in ::g_ww_logs.filtered)) {
@@ -276,7 +261,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
       return -1
 
     for (local i = 1; i < WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE; i++)
-      if (this.logContainerObj.getChild(i).id == firstLogId)
+      if (this.logContainerObj.childrenCount() > i && this.logContainerObj.getChild(i).id == firstLogId)
         return i
 
     return -1
@@ -297,11 +282,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!amount)
       return
 
-    local emptyLogsStrToAdd = ""
-    for (local i = 0; i < amount; i++)
-      emptyLogsStrToAdd += this.emptyLogChild
-
-    this.guiScene.appendWithBlk(this.logContainerObj, emptyLogsStrToAdd, this)
+    this.guiScene.createMultiElementsByObject(this.logContainerObj, this.emptyLogBlockBlk, "tdiv", amount, this)
   }
 
   function onEventWWNewLogsLoaded(_params = null) {

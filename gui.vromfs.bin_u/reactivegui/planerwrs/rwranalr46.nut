@@ -6,7 +6,8 @@ let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nu
 
 let ThreatType = {
   AIRBORNE_PULSE = 0,
-  AIRBORNE_PULSE_DOPPLER = 1
+  AIRBORNE_PULSE_DOPPLER = 1,
+  SHIP = 2
 }
 
 let color = Color(10, 202, 10, 250)
@@ -82,6 +83,8 @@ function createRwrTarget(index, settings, objectStyle) {
           target.x * targetRadiusRel * 100.0 - 0.25 * iconRadiusRel * 100.0,
           target.y * targetRadiusRel * 100.0 + 0.10 * iconRadiusRel * 100.0 ]
       ]
+    else if (directionGroup.type == ThreatType.SHIP)
+      commands = []
     if (commands != null)
       icon = @() {
         color = color
@@ -264,6 +267,11 @@ let directionGroups = [
   {
     text = "A",
     originalName = "hud/rwr_threat_aaa",
+    lethalRangeMax = 4000.0
+  },
+  {
+    type = ThreatType.SHIP,
+    originalName = "hud/rwr_threat_naval",
     lethalRangeMax = 4000.0
   }
 ]

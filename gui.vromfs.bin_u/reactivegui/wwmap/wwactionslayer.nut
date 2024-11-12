@@ -272,22 +272,20 @@ function mkArmyArrow(arrowPos, radius, arrowAngle, color, fillColor) {
 
 let mkFlyOutArrow = @(areaBounds) function() {
   let airfield = selectedAirfield.get()
+  let { areaWidth, areaHeight } = areaBounds
+  let posTo = convertAbsoluteToMapCoords(cursorPosition.get(), areaBounds)
+  posTo.x = posTo.x / areaWidth
+  posTo.y = posTo.y / areaHeight
 
-  if (airfield == null || isOperationPaused.get() || !isPlayerSide(zoneSideType[airfield.side]))
+  let isPointerInMap = (posTo.x > 0 && posTo.x < 1) && (posTo.y > 0 && posTo.y < 1)
+  if (airfield == null || isOperationPaused.get() || !isPlayerSide(zoneSideType[airfield.side]) || !isPointerInMap)
     return {
       watch = [cursorPosition, selectedAirfield, isOperationPaused, mapZoom]
     }
 
   let { airfieldType, ownedZoneId } = airfield
-
   let ownedZone = getZoneById(ownedZoneId)
-  let { areaWidth, areaHeight } = areaBounds
-
   let posFrom = { x = ownedZone.center.x, y = ownedZone.center.y }
-  let posTo = convertAbsoluteToMapCoords(cursorPosition.get(), areaBounds)
-  posTo.x = posTo.x / areaWidth
-  posTo.y = posTo.y / areaHeight
-
   let airfieldArrowArmyShowK = getSettings("airfieldArrowArmyShowK")
   let lineLen = lineLength(posFrom, posTo, [areaWidth, areaHeight])
   let radius = getSettings("airfieldArrowFirstCircleRadius") * mapZoom.get()

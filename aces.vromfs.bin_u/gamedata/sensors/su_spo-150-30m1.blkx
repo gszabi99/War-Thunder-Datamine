@@ -46,6 +46,9 @@
   "mandatoryRecognition": false,
   "band2": true,
   "band3": true,
+  "override:targetSuperResolution": true,
+  "band10": true,
+  "band11": true,
   "receivers": {
     "receiver": [
       {
@@ -465,13 +468,12 @@
         "type": "Roland TA"
       },
       {
-        "name": "SAM",
-        "detectLaunch": true,
-        "type": [
-          "ADATS TA",
-          "ASRAD TA",
-          "TriAD TA"
-        ]
+        "name": "ADATS",
+        "type": "ADATS TA"
+      },
+      {
+        "name": "ASRAD",
+        "type": "ASRAD TA"
       },
       {
         "name": "Naval",
@@ -492,6 +494,26 @@
         "detectTracking": true,
         "detectLaunch": true,
         "type": "weapon"
+      },
+      {
+        "name": "AH-64",
+        "type": "AN/APG-78"
+      },
+      {
+        "name": "Ka-52",
+        "type": "RN-01 Arbalet"
+      },
+      {
+        "name": "Mi-28",
+        "type": "N-025"
+      },
+      {
+        "name": "S1",
+        "detectLaunch": true,
+        "type": [
+          "1RS1",
+          "1RS2"
+        ]
       }
     ]
   },
@@ -627,12 +649,33 @@
         "group": "2S6"
       },
       {
-        "text": "SAM",
-        "group": "SAM"
+        "text": "ADS",
+        "group": "ADATS"
+      },
+      {
+        "text": "ASR",
+        "group": "ASRAD"
       },
       {
         "text": "MSL",
         "group": "ARH"
+      },
+      {
+        "text": "A64",
+        "group": "AH-64"
+      },
+      {
+        "text": "K52",
+        "group": "Ka-52"
+      },
+      {
+        "text": "M28",
+        "group": "Mi-28"
+      },
+      {
+        "text": "S1",
+        "detectLaunch": true,
+        "group": "S1"
       }
     ]
   }

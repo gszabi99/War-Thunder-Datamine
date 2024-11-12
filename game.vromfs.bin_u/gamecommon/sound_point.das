@@ -35,7 +35,7 @@ def sound_radio_localized(evt : Event;
   let gameLang = string(get_game_language())
   if gameLang == "Russian"
     sound_radio_localized__lang = 1
-  elif gameLang == "Chilese"
+  elif gameLang == "Chinese"
     sound_radio_localized__lang = 2
   else
     sound_radio_localized__lang = 0

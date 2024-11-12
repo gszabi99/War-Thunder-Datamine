@@ -118,9 +118,14 @@
                   "border-color": "#FFFFFF",
                   "border-radius": "2@sf/@pf",
                   "css-hier-invalidate": "yes",
+                  "profileEditBtnShadow": {
+                    "type": "big",
+                    "pos": "pw - w - 4@sf/@pf, 4@sf/@pf"
+                  },
                   "profileEditBtn": {
                     "type": "big",
                     "pos": "pw - w - 5@sf/@pf, 5@sf/@pf",
+                    "btnName": "",
                     "_on_click": "onChangePilotIcon"
                   }
                 },
@@ -157,7 +162,7 @@
                             "padding-right": "1@blockInterval",
                             "hideEmptyText": "yes",
                             "text": "",
-                            "color": "@mainPlayerColor"
+                            "color": "#FFFFFFFF"
                           },
                           {
                             "position": "relative",
@@ -199,7 +204,8 @@
                           "ButtonImg": {}
                         },
                         "profileEditBtn": {
-                          "pos": "pw,(ph - h)/2",
+                          "pos": "pw,(ph - h + 4@sf/@pf)/2",
+                          "btnName": "",
                           "_on_click": "openChooseTitleWnd"
                         }
                       }
@@ -313,13 +319,49 @@
                 "id": "usercard-container",
                 "size": "pw, fh",
                 "flow": "vertical",
-                "tdiv": {
-                  "position": "absolute",
-                  "left": "(pw-w)/2",
-                  "size": "@accountHeaderWidth, (sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf",
-                  "background-image": "!ui/images/profile/widget_bg",
-                  "background-color": "#FFFFFF"
-                }
+                "tdiv": [
+                  {
+                    "position": "absolute",
+                    "left": "(pw-w)/2",
+                    "size": "@accountHeaderWidth, (sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf",
+                    "background-image": "!ui/images/profile/widget_bg",
+                    "background-color": "#FFFFFF"
+                  },
+                  {
+                    "id": "favorite_top",
+                    "position": "relative",
+                    "left": "(pw-w)/2",
+                    "padding-bottom": "21@sf/@pf",
+                    "width": "@accountHeaderWidth",
+                    "min-height": "100@sf/@pf",
+                    "css-hier-invalidate": "yes",
+                    "tdiv": {
+                      "id": "showcase_title_nest",
+                      "position": "relative",
+                      "width": "pw",
+                      "flow": "vertical",
+                      "padding-top": "70@sf/@pf",
+                      "height": "160@sf/@pf",
+                      "showInEditMode": "no"
+                    }
+                  },
+                  {
+                    "id": "showcase_mid_nest",
+                    "position": "relative",
+                    "flow": "vertical",
+                    "left": "(pw-w)/2",
+                    "width": "@accountHeaderWidth"
+                  },
+                  {
+                    "id": "favorite_bottom_nest",
+                    "position": "relative",
+                    "flow": "vertical",
+                    "left": "(pw-w)/2",
+                    "css-hier-invalidate": "yes",
+                    "width": "@accountHeaderWidth - 30@sf/@pf",
+                    "padding-top": "25@sf/@pf"
+                  }
+                ]
               },
               {
                 "id": "stats-container",

@@ -2490,46 +2490,33 @@
       }
     ]
   },
-  "nightVision": [
-    {
-      "sightTPodThermal": [
-        {
-          "resolution": [
-            800,
-            600
-          ],
-          "noiseFactor": 0.04
-        },
-        {
-          "resolution": [
-            800,
-            600
-          ],
-          "noiseFactor": 0.04
-        }
-      ]
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04
     },
-    {
-      "gunnerIr": {
-        "resolution": [
-          1920,
-          1080
-        ],
-        "lightMult": 10.0,
-        "ghosting": 0.7,
-        "noiseFactor": 0.15
-      },
-      "pilotIr": {
-        "resolution": [
-          1920,
-          1080
-        ],
-        "lightMult": 10.0,
-        "ghosting": 0.7,
-        "noiseFactor": 0.15
-      }
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
-  ],
+  },
   "gunnerOpticFps": {
     "Target": {
       "pos": [
@@ -3141,7 +3128,11 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.5
+              ]
             }
           },
           {
@@ -3491,7 +3482,11 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.5
+              ]
             }
           },
           {
@@ -3728,7 +3723,11 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.5
+              ]
             }
           },
           {

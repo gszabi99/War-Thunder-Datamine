@@ -233,7 +233,7 @@ def loot_create_after_ri_destr_es(evt : EventRendInstDestroyed;
 
 [es(tag=server, on_event=EventFlightStart, REQUIRE=loot_creater__scrapProb)]
 def loot_chance_mult_zone_init(evt : Event)
-  var a = [[int[7] 1; 2; 3; 4; 0; 0; 0; ]]
+  var a = [[int[7] 1; 2; 3; 4; 0; 0; 0;]]
   a |> shuffle()
   using() <| $(var zones : EidList)
     query() <| $ [es(REQUIRE=loot_chance_mult__scrap)] (eid : EntityId)

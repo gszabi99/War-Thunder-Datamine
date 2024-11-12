@@ -53,9 +53,6 @@
     4.4,
     -1.6
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -1006,6 +1003,9 @@
     "masts": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 20.0,
+      "mast_01_dm": {
+        "hp": 2500.0
+      },
       "mast_02_dm": {
         "hp": 2500.0
       }
@@ -1214,13 +1214,13 @@
       "armorThickness": 20.0,
       "fireDamageMult": 0.1,
       "main_caliber_gun_01_dm": {
-        "hp": 500.0
+        "hp": 466.0
       },
       "main_caliber_gun_02_dm": {
-        "hp": 500.0
+        "hp": 466.0
       },
       "main_caliber_gun_03_dm": {
-        "hp": 500.0
+        "hp": 466.0
       }
     },
     "gun_aux_caliber": {
@@ -2213,34 +2213,34 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 2600000.0,
+      "Empty": 2300000.0,
       "momentOfInertia": [
-        50.0,
-        580.0,
-        370.0
+        45.0,
+        520.0,
+        340.0
       ],
       "CenterOfGravity": [
         -6.0,
-        0.0,
+        -0.2,
         0.0
       ]
     },
     "engines": {
-      "maxSpeed": 15.43,
+      "maxSpeed": 16.46,
       "maxReverseSpeed": 7.5,
       "speedToTime": {
         "row": [
           [
             5.0,
-            6.4
+            6.0
           ],
           [
             10.0,
-            12.2
+            12.0
           ],
           [
-            15.43,
-            24.4
+            16.46,
+            23.4
           ]
         ]
       },
@@ -2318,7 +2318,7 @@
             -0.9,
             1.9
           ],
-          "area": 23.0,
+          "area": 25.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         },
@@ -2328,7 +2328,7 @@
             -0.9,
             -1.9
           ],
-          "area": 23.0,
+          "area": 25.0,
           "deflection": 35.0,
           "dmPart": "steering_gear_01_dm"
         }
@@ -2339,12 +2339,12 @@
     "headPosOnShootingHeightMult": 1.5,
     "headPos": [
       0.0,
-      24.0,
-      -86.0
+      20.0,
+      -72.0
     ],
     "headPosOnShooting": [
-      27.6,
-      23.8,
+      17.6,
+      19.8,
       0.0
     ],
     "detectionHeight": 22.5

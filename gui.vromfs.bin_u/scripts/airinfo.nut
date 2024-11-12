@@ -22,9 +22,10 @@ let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText, getUnitClassCol
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { canBuyNotResearched, getBitStatus, isUnitInSlotbar, isUnitDefault, canResearchUnit,
+let { canBuyNotResearched, getBitStatus, isUnitDefault, canResearchUnit,
   isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isRequireUnlockForUnit,
-  isUnitUsable, isUnitFeatureLocked, isUnitResearched, isPrevUnitResearched
+  isUnitUsable, isUnitFeatureLocked, isUnitResearched, isPrevUnitResearched,
+  isPrevUnitBought, isUnitAvailableForGM
 } = require("%scripts/unit/unitStatus.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
@@ -328,7 +329,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
     return loc("msgbox/need_unlock_prev_unit/researchAndPurchase",
       { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
   }
-  else if (!::isPrevUnitBought(unit)) {
+  else if (!isPrevUnitBought(unit)) {
     if (isShopTooltip)
       return loc("mainmenu/needBuyPreviousVehicle")
     return loc("msgbox/need_unlock_prev_unit/purchase", { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
@@ -352,20 +353,8 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return ""
 }
 
-::isUnitAvailableForGM <- function isUnitAvailableForGM(air, gm) {
-  if (air == null || !air.unitType.isAvailable())
-    return false
-  if (gm == GM_TEST_FLIGHT)
-    return air.testFlight != "" || air.isAir() || air.isHelicopter() //For airplanes and helicopters is enable universal testflight
-  if (gm == GM_DYNAMIC)
-    return air.isAir()
-  if (gm == GM_BUILDER)
-    return air.isAir() && isUnitInSlotbar(air)
-  return true
-}
-
 ::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false) {
-  if (!::isUnitAvailableForGM(unit, GM_TEST_FLIGHT))
+  if (!isUnitAvailableForGM(unit, GM_TEST_FLIGHT))
     return false
 
   if (unit.isUsable()
@@ -550,13 +539,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
     )
       req--
   return max(req, 0)
-}
-
-::isPrevUnitBought <- function isPrevUnitBought(unit) {
-  let prevUnit = getPrevUnit(unit)
-  if (!prevUnit || isUnitBought(prevUnit))
-    return true
-  return false
 }
 
 function getHighestRankDiffNoPenalty(inverse = false) {
@@ -1699,7 +1681,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     if (checkObj(addTextObj) && reason != "") {
       addTextObj.setValue(colorize("redMenuButtonColor", reason))
       if(checkObj(unitNest)) {
-        let isPrevUnitShow = (!isPrevUnitResearched(air) || !::isPrevUnitBought(air)) &&
+        let isPrevUnitShow = (!isPrevUnitResearched(air) || !isPrevUnitBought(air)) &&
           is_era_available(air.shopCountry, air?.rank ?? -1, unitType)
         unitNest.show(isPrevUnitShow)
         if (isPrevUnitShow) {

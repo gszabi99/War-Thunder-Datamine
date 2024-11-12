@@ -22,6 +22,7 @@ let { getEsUnitType, getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched,
+  isPrevUnitBought
 } = require("%scripts/unit/unitStatus.nut")
 let { get_ranks_blk, get_discounts_blk, get_shop_blk } = require("blkGetters")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
@@ -168,7 +169,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
           if (this.unitType == getEsUnitType(newUnit)
               && !isUnitSpecial(newUnit)
               && canBuyUnit(newUnit)
-              && ::isPrevUnitBought(newUnit))
+              && isPrevUnitBought(newUnit))
             unit = newUnit
     return unit
   }

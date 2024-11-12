@@ -40,6 +40,8 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getPlayWorldwarConditionText, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -333,10 +335,10 @@ let WwBattle = class {
       fullReasonText = ""
     }
 
-    if (!::g_world_war.canJoinWorldwarBattle()) {
+    if (!canJoinWorldwarBattle()) {
       res.code = WW_BATTLE_CANT_JOIN_REASON.NO_WW_ACCESS
       res.reasonText = loc("worldWar/noAccess")
-      res.fullReasonText = ::g_world_war.getPlayWorldwarConditionText()
+      res.fullReasonText = getPlayWorldwarConditionText()
       return res
     }
 
@@ -685,7 +687,7 @@ let WwBattle = class {
   }
 
   function getUnitsRequiredForJoin(team, side) {
-    let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
+    let unitAvailability = getWwSetting("checkUnitAvailability",
       WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
 
     if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
@@ -787,7 +789,7 @@ let WwBattle = class {
     if (this.battleActivateMillisec <= 0)
       return 0
 
-    let waitTimeSec = ::g_world_war.getSetting("joinBattleDelayTimeSec", 0)
+    let waitTimeSec = getWwSetting("joinBattleDelayTimeSec", 0)
     let passedSec = get_charserver_time_sec() -
       time.millisecondsToSecondsInt(this.battleActivateMillisec)
 
@@ -887,7 +889,7 @@ let WwBattle = class {
   }
 
   function getMaxPlayersDisbalance() {
-    return ::g_world_war.getSetting("maxBattlePlayersDisbalance",
+    return getWwSetting("maxBattlePlayersDisbalance",
       WW_MAX_PLAYERS_DISBALANCE_DEFAULT)
   }
 

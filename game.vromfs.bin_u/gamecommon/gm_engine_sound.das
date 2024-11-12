@@ -22,6 +22,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                             playerNo : int;
                             className : string;
                             unitType : int;
+                            var gm_engine_sound__cached_params : FloatList&;
                             var gm_engine_sound__pos_offset : float3&;
                             var gm_engine_sound__load_smooth : float&;
                             var gm_engine_sound__event_name : das_string&;
@@ -45,6 +46,8 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   if modelSoundBlk == null
     addSubTemplate(eid, "disabled_update")
     return
+
+  gm_engine_sound__cached_params |> resize(10)
 
   var modifyEngineSound = false
   if *modelSoundBlk |> datablock_param_exists("EngineNameModification", -1) && unit.modBlk != null
@@ -197,6 +200,14 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
   if !is_playing(gm_engine_sound__stop_inside_event)
     abandon(gm_engine_sound__stop_inside_event)
 
+def set_param_cached(sound_event : SoundEvent;
+                     name : string;
+                     new_val : float;
+                     var cached_val : float&)
+  if !is_equal_float(cached_val, new_val, 0.1)
+    sound_event |> set_var_optional(name, new_val)
+    cached_val = new_val
+
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
 def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                               unit__ref : UnitRef;
@@ -208,6 +219,7 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                               var gm_engine_sound__start_event : SoundEvent&;
                               var gm_engine_sound__stop_event : SoundEvent&;
                               var gm_engine_sound__event : SoundEvent&;
+                              var gm_engine_sound__cached_params : FloatList&;
                               gm_engine_sound__event_inside : SoundEvent;
                               gm_engine_sound__pos_offset : float3;
                               gm_engine_sound__is_inside : bool;
@@ -261,16 +273,16 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
   let visible = gm.isVisibleFromHero ? 1. : 0.
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__event_inside : gm_engine_sound__event
   if gm_engine_sound__is_playing
-    curEvent |> set_var_optional("rpm", rpm)
-    curEvent |> set_var_optional("swim", swim)
-    curEvent |> set_var_optional("broken", broken)
-    curEvent |> set_var_optional("load", gm_engine_sound__load)
-    curEvent |> set_var_optional("loadswitch", gm_engine_sound__loadswitch ? rawLoad : 0.)
-    curEvent |> set_var_optional("speed", speed)
-    curEvent |> set_var_optional("climb", climb)
-    curEvent |> set_var_optional("is_visible", visible)
-    curEvent |> set_var_optional("building_density", gm.buildingDensity)
-    curEvent |> set_var_optional("depth", depth)
+    set_param_cached(curEvent, "rpm", rpm, gm_engine_sound__cached_params[0])
+    set_param_cached(curEvent, "swim", swim, gm_engine_sound__cached_params[1])
+    set_param_cached(curEvent, "broken", broken, gm_engine_sound__cached_params[2])
+    set_param_cached(curEvent, "load", gm_engine_sound__load, gm_engine_sound__cached_params[3])
+    set_param_cached(curEvent, "loadswitch", gm_engine_sound__loadswitch ? rawLoad : 0., gm_engine_sound__cached_params[4])
+    set_param_cached(curEvent, "speed", speed, gm_engine_sound__cached_params[5])
+    set_param_cached(curEvent, "climb", climb, gm_engine_sound__cached_params[6])
+    set_param_cached(curEvent, "is_visible", visible, gm_engine_sound__cached_params[7])
+    set_param_cached(curEvent, "building_density", gm.buildingDensity, gm_engine_sound__cached_params[8])
+    set_param_cached(curEvent, "depth", depth, gm_engine_sound__cached_params[9])
 
   if !is_playing(gm_engine_sound__event) && is_valid_event(gm_engine_sound__event)
     release(gm_engine_sound__event)

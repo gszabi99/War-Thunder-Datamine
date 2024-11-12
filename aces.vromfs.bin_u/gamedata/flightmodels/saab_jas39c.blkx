@@ -2252,7 +2252,7 @@
           "page": [
             {
               "type": "thermal",
-              "turretIdx": 0
+              "turretIdx": 1
             },
             {
               "type": "target_tracking",
@@ -2413,24 +2413,43 @@
       ]
     }
   },
-  "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        2.6,
-        -0.15,
-        0.0
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
       ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
-      ],
-      "opticType": "tv",
-      "turretNo": 0
+      "noiseFactor": 0.05,
+      "index": 1
     },
+    "sightTPodThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04,
+      "index": 2
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    }
+  },
+  "gunnerOpticFps": {
     "Target": {
       "pos": [
         1.0,
@@ -2447,35 +2466,44 @@
       ],
       "opticType": "targeting",
       "turretNo": 0,
-      "nvIndex": 1
-    }
-  },
-  "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
+      "nvIndex": 2
     },
-    "pilotIr": {
-      "resolution": [
-        1920,
-        1080
+    "TV1": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
       ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "RB75"
     },
-    "sightTPodThermal": {
-      "resolution": [
-        800,
-        600
+    "TV2": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
       ],
-      "noiseFactor": 0.04,
-      "index": 1
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1,
+      "name": "RB75T"
     }
   },
   "sensors": {
@@ -2485,7 +2513,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/swd_ar830.blk"
+        "blk": "gameData/sensors/swd_bow_21.blk"
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk"

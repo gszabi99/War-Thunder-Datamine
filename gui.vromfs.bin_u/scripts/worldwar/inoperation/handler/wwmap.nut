@@ -36,6 +36,7 @@ let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { setWWMapParams, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { register_command } = require("console")
+let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -895,7 +896,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let operStatObj = this.scene.findObject("wwmap_operation_status")
     if (checkObj(operStatObj))
       operStatObj.animation = "hide"
-    let afkLoseTimeShowSec = (::g_world_war.getSetting("afkLoseTimeShowSec", 0)
+    let afkLoseTimeShowSec = (getWwSetting("afkLoseTimeShowSec", 0)
       / wwGetSpeedupFactor()).tointeger()
     let delayTime = max(time.millisecondsToSecondsInt(this.afkData.afkLoseTimeMsec)
       - ::g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)

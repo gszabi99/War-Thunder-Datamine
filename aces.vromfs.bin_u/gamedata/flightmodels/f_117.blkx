@@ -8,7 +8,7 @@
   "haveCCIPForBombs": true,
   "gyroSight": true,
   "haveCCRPForBombs": true,
-  "ilsF15a": true,
+  "ilsF117": true,
   "mfdCamTads": true,
   "laserDesignator": true,
   "havePointOfInterestDesignator": true,
@@ -1691,8 +1691,6 @@
       1.28,
       0.0
     ],
-    "hasAirCannonIlsMode": true,
-    "isDoubleBulletImpactLine": true,
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "lightPos": [
@@ -1927,6 +1925,10 @@
         0.0,
         13200.0
       ],
+      "rpm1": [
+        0.0,
+        13200.0
+      ],
       "oil_pressure": [
         0.0,
         120.0
@@ -1976,9 +1978,6 @@
               "type": "ils_duplicate"
             },
             {
-              "type": "ils_on_camera"
-            },
-            {
               "type": "map"
             }
           ]
@@ -1996,9 +1995,6 @@
             },
             {
               "type": "ils_duplicate"
-            },
-            {
-              "type": "ils_on_camera"
             }
           ]
         },
@@ -2017,13 +2013,11 @@
           "page": [
             {
               "type": "thermal",
-              "turretIdx": 0,
-              "scale": 0.95
+              "turretIdx": 0
             },
             {
               "type": "target_tracking",
-              "turretIdx": 0,
-              "scale": 0.95
+              "turretIdx": 0
             }
           ]
         },
@@ -2049,7 +2043,7 @@
               120
             ],
             "bloomForce": 0.115,
-            "lineWidthScale": 0.6
+            "lineWidthScale": 1.0
           }
         }
       ]
@@ -2078,33 +2072,22 @@
         300
       ],
       "noiseFactor": 0.05
-    },
-    "sightTPodThermal": {
-      "resolution": [
-        500,
-        300
-      ],
-      "noiseFactor": 0.05,
-      "index": 1
     }
   },
   "gunnerOpticFps": {
-    "Target": {
-      "pos": [
-        2.6,
-        -0.2,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -20.0,
-        20.0,
-        -140.0,
-        10.0
-      ],
-      "opticType": "targeting"
-    }
+    "pos": [
+      2.6,
+      0.4,
+      0.0
+    ],
+    "head": "optic1_turret",
+    "angularLimits": [
+      -20.0,
+      20.0,
+      -140.0,
+      10.0
+    ],
+    "crosshairPreset": "test_crosshair"
   },
   "sensors": {
     "sensor": [
@@ -2172,7 +2155,6 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "name": "default_common",
-          "hasTargetingPod": true,
           "Weapon": {
             "dummy": true,
             "trigger": "gunner0",
@@ -2192,12 +2174,12 @@
             },
             "limits": {
               "yaw": [
-                -20.0,
-                20.0
+                -90.0,
+                90.0
               ],
               "pitch": [
-                -140.0,
-                10.0
+                -90.0,
+                90.0
               ]
             }
           }

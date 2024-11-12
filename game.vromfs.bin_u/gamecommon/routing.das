@@ -69,7 +69,7 @@ def routing_update_es(act : ecs::UpdateStageInfoAct;
     unit_current_route__routeEid != INVALID_ENTITY_ID)
     let state = get_move_sys_state(get_unit_by_eid(eid))
     if (state == int(MoveSysState ST_HALT))
-      sendEvent(unit_current_route__routeEid, [[ArrivedToWayPoint uEid=eid, wpEid=unit_current_route__curWayPoint ]])
+      sendEvent(unit_current_route__routeEid, [[ArrivedToWayPoint uEid=eid, wpEid=unit_current_route__curWayPoint]])
 
 [es(tag=server, no_order, REQUIRE_NOT=move_sys__maxDecel)]
 def plane_routing_update_es(act : ecs::UpdateStageInfoAct;
@@ -80,4 +80,4 @@ def plane_routing_update_es(act : ecs::UpdateStageInfoAct;
                                                            way_point__radius : float)
       let distSq = length_sq(way_point__transform[3] - get_unit_pos(get_unit_by_eid(eid)))
       if (distSq < way_point__radius * way_point__radius)
-        sendEvent(unit_current_route__routeEid, [[ArrivedToWayPoint uEid=eid, wpEid=unit_current_route__curWayPoint ]])
+        sendEvent(unit_current_route__routeEid, [[ArrivedToWayPoint uEid=eid, wpEid=unit_current_route__curWayPoint]])

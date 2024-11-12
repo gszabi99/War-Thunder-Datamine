@@ -98,7 +98,6 @@ let validateResponseData = {
     },
     [ validationCheckBitMask.REQUIRED ] = {
       accountid = ""
-      position = 0
       quantity = 0
       state = "none"
       timestamp = ""
@@ -114,15 +113,12 @@ let validateResponseData = {
       type = ""
       Timestamp = ""
       marketable = false
-      tradable = false
       exchange = ""
       background_color = ""
       name_color = ""
-      promo = ""
       item_quality = 0
       meta = ""
       tags = ""
-      item_slot = ""
     },
     [ validationCheckBitMask.REQUIRED_AND_VALUE ] = {
       icon_url = ""

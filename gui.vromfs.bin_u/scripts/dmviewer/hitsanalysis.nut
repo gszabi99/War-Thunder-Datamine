@@ -20,6 +20,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
   getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 
 let bulletInfoCache = {}
 
@@ -28,29 +29,24 @@ function getBulletInfo(unit, hit) {
   if (key in bulletInfoCache)
     return bulletInfoCache[key]
 
+  if (hit?.supportGun == true) {
+    bulletInfoCache[key] <- {
+      bulletDesc = loc("multiplayer/artillery")
+      isSupport = true
+    }
+    return bulletInfoCache[key]
+  }
+
   let bulletSet = DataBlock()
 
   let weaponBlk = DataBlock()
   weaponBlk.tryLoad(hit.weapon)
 
-  if (weaponBlk?.rocketGun == true) {
-    let rockets = weaponBlk % "rocket"
-    bulletSet.setFrom(rockets[hit.ammoNo])
-
+  if (weaponBlk?.rocketGun == true || weaponBlk?.bombGun == true) {
+    let bulletName = getWeaponNameByBlkPath(hit.weapon)
     bulletInfoCache[key] <- {
-      bulletDesc = doesLocTextExist(bulletSet.bulletName) ? loc(bulletSet.bulletName) : loc($"weapons/{bulletSet.bulletName}/short", "")
-      isRocket = true
-    }
-    return bulletInfoCache[key]
-  }
-
-  if (weaponBlk?.bombGun == true) {
-    let bombs = weaponBlk % "bomb"
-    bulletSet.setFrom(bombs[hit.ammoNo])
-
-    bulletInfoCache[key] <- {
-      bulletDesc = doesLocTextExist(bulletSet.bulletName) ? loc(bulletSet.bulletName) : loc($"weapons/{bulletSet.bulletName}/short", "")
-      isBomb = true
+      bulletDesc = doesLocTextExist(bulletName) ? loc(bulletName) : loc($"weapons/{bulletName}/short", "")
+      isRocketOrBomb = true
     }
     return bulletInfoCache[key]
   }
@@ -192,11 +188,14 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateBulletTooltip(unit) {
     let { bulletName = "", bulletSet = null, bulletsSet = null, bulletSetName = "",
-      isBulletBelt = false, isRocket = false, isBomb = false } = getBulletInfo(unit, this.selectedHit)
+      isBulletBelt = false, isRocketOrBomb = false, isSupport = false } = getBulletInfo(unit, this.selectedHit)
 
     this.scene.findObject("bulletTooltip")["tooltipId"] = ""
 
-    if (isRocket || isBomb) {
+    if (isSupport)
+      return
+
+    if (isRocketOrBomb) {
       let unitBlk = ::get_full_unit_blk(unit.name)
       let weapons = getUnitWeapons(unitBlk)
 

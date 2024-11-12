@@ -29,6 +29,7 @@ let { isInHangar } = require("gameplayBinding")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getCrewsListByCountry, getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -347,7 +348,7 @@ function getDecoratorDataToUse(resource, resourceType) {
   }
 }
 
-function showDecoratorAccessRestriction(decorator, unit) {
+function showDecoratorAccessRestriction(decorator, unit, needShowMessageBox = false) {
   if (!decorator || decorator.canUse(unit))
     return false
 
@@ -374,7 +375,11 @@ function showDecoratorAccessRestriction(decorator, unit) {
     text.append(format(loc("mainmenu/decalNoCampaign"), loc($"charServer/entitlement/{decorator.lockedByDLC}")))
 
   if (text.len() != 0) {
-    addPopup("", ", ".join(text, true))
+    let infoText = ", ".join(text, true)
+    if (needShowMessageBox)
+      showInfoMsgBox(infoText)
+    else
+      addPopup("", infoText)
     return true
   }
 
@@ -382,21 +387,36 @@ function showDecoratorAccessRestriction(decorator, unit) {
     return false
 
   if (hasAvailableCollections() && isCollectionPrize(decorator)) {
-    addPopup(
-      null,
-      loc("mainmenu/decoratorNoCompletedCollection" {
-        decoratorName = colorize("activeTextColor", decorator.getName())
-      }),
-      null,
-      [{
-        id = "gotoCollection"
-        text = loc("collection/go_to_collection")
-        func = @() openCollectionsWnd({ selectedDecoratorId = decorator.id })
-      }])
+    let locText = loc("mainmenu/decoratorNoCompletedCollection" {
+      decoratorName = colorize("activeTextColor", decorator.getName())
+    })
+
+    if (needShowMessageBox)
+      add_msg_box("safe_unfinished", locText,
+        [
+          ["#collection/go_to_collection", function() {
+            openCollectionsWnd({ selectedDecoratorId = decorator.id })
+          }],
+          ["cancel", function() {}]
+        ], "cancel")
+    else
+      addPopup(
+        null,
+        locText,
+        null,
+        [{
+          id = "gotoCollection"
+          text = loc("collection/go_to_collection")
+          func = @() openCollectionsWnd({ selectedDecoratorId = decorator.id })
+        }])
     return true
   }
 
-  addPopup("", loc("mainmenu/decalNoAchievement"))
+  if (needShowMessageBox)
+    showInfoMsgBox(loc("mainmenu/decalNoAchievement"))
+  else
+    addPopup("", loc("mainmenu/decalNoAchievement"))
+
   return true
 }
 

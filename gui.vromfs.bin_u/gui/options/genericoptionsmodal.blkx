@@ -83,9 +83,20 @@
             }
           ],
           "optionsBoxRightScroll": {
-            "id": "optionslist",
             "width": "pw",
-            "alignMode": "center"
+            "flow": "vertical",
+            "alignMode": "center",
+            "class": "compactHeight",
+            "div": {
+              "id": "optionslist",
+              "width": "pw"
+            },
+            "rankUpList": {
+              "id": "unit_nest",
+              "pos": "0.5pw - 0.5w, 0",
+              "position": "relative",
+              "holdTooltipChildren": "yes"
+            }
           },
           "textAreaCentered": {
             "id": "no_options_textarea",
@@ -94,12 +105,6 @@
             "position": "absolute",
             "textHide": "yes",
             "text": ""
-          },
-          "rankUpList": {
-            "id": "unit_nest",
-            "pos": "0.5pw - 0.5w, 0",
-            "position": "relative",
-            "holdTooltipChildren": "yes"
           }
         }
       },

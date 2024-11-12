@@ -26,6 +26,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+let { isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -120,7 +121,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function isBuilderAvailable() {
-    return ::isUnitAvailableForGM(showedUnit.value, GM_BUILDER)
+    return isUnitAvailableForGM(showedUnit.value, GM_BUILDER)
   }
 
   function updateButtons() {

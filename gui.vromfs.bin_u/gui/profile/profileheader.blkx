@@ -17,9 +17,14 @@
         "border-color": "#FFFFFF",
         "border-radius": "2@sf/@pf",
         "css-hier-invalidate": "yes",
+        "profileEditBtnShadow": {
+          "type": "big",
+          "pos": "pw - w - 4@sf/@pf, 4@sf/@pf"
+        },
         "profileEditBtn": {
           "type": "big",
           "pos": "pw - w - 5@sf/@pf, 5@sf/@pf",
+          "btnName": "",
           "_on_click": "onChangePilotIcon"
         }
       },
@@ -56,7 +61,7 @@
                   "padding-right": "1@blockInterval",
                   "hideEmptyText": "yes",
                   "text": "",
-                  "color": "@mainPlayerColor"
+                  "color": "#FFFFFFFF"
                 },
                 {
                   "position": "relative",
@@ -98,7 +103,8 @@
                 "ButtonImg": {}
               },
               "profileEditBtn": {
-                "pos": "pw,(ph - h)/2",
+                "pos": "pw,(ph - h + 4@sf/@pf)/2",
+                "btnName": "",
                 "_on_click": "openChooseTitleWnd"
               }
             }

@@ -325,70 +325,79 @@
           "pos": "pw/2 - w/2, 1@topCenterMessagesTopPos",
           "position": "absolute",
           "flow": "vertical",
-          "tdiv": {
-            "id": "hud_messages_top_center_container",
-            "behaviour": "bhvUpdateByWatched",
-            "min-height": "1@topCenterMainMessagesMinHeight",
-            "position": "relative",
-            "pos": "pw/2 - w/2, 0",
-            "flow": "vertical",
-            "hudMessages": {
-              "id": "hud_message_center_main_notification",
-              "pos": "pw/2 - w/2, 0",
-              "position": "relative",
-              "message_style": "center_main_notification",
-              "display": "hide"
-            },
-            "animSizeObj": {
-              "id": "hud_streaks",
+          "tdiv": [
+            {
+              "id": "hud_messages_top_center_container",
+              "behaviour": "bhvUpdateByWatched",
+              "min-height": "0.85@topCenterMainMessagesMinHeight",
               "position": "relative",
               "pos": "pw/2 - w/2, 0",
-              "width": "45%@rwHud",
-              "animation": "hide",
-              "height-base": "1",
-              "height-end": "100",
-              "height": "1",
-              "_size-timer": "0",
-              "tdiv": {
-                "id": "streak_content",
-                "width": "pw",
-                "flow": "vertical",
-                "display": "hide",
-                "enable": "no",
-                "behaviour": "massTransparency",
-                "transp-base": "255",
-                "transp-end": "0",
-                "transp-func": "cube",
-                "transp-time": "2000",
-                "_transp-timer": "1",
-                "_blink": "no",
-                "img": {
-                  "id": "streak_icon",
-                  "size": "0.06@shHud, 0.06@shHud",
-                  "pos": "pw/2-w/2, 0",
-                  "position": "relative"
-                },
-                "textareaNoTab": [
-                  {
-                    "id": "streak_header",
-                    "width": "pw",
-                    "style": "color:@streakTextColor; font:@fontHudMedium; text-align:center;",
-                    "text": "",
-                    "shadeStyle": "HudHeader3D",
-                    "pos": "0, -0.004*@shHud",
+              "flow": "vertical",
+              "hudMessages": {
+                "id": "hud_message_center_main_notification",
+                "pos": "pw/2 - w/2, 0",
+                "position": "relative",
+                "message_style": "center_main_notification",
+                "display": "hide"
+              },
+              "animSizeObj": {
+                "id": "hud_streaks",
+                "position": "relative",
+                "pos": "pw/2 - w/2, 0",
+                "width": "45%@rwHud",
+                "animation": "hide",
+                "height-base": "1",
+                "height-end": "100",
+                "height": "1",
+                "_size-timer": "0",
+                "tdiv": {
+                  "id": "streak_content",
+                  "width": "pw",
+                  "flow": "vertical",
+                  "display": "hide",
+                  "enable": "no",
+                  "behaviour": "massTransparency",
+                  "transp-base": "255",
+                  "transp-end": "0",
+                  "transp-func": "cube",
+                  "transp-time": "2000",
+                  "_transp-timer": "1",
+                  "_blink": "no",
+                  "img": {
+                    "id": "streak_icon",
+                    "size": "0.06@shHud, 0.06@shHud",
+                    "pos": "pw/2-w/2, 0",
                     "position": "relative"
                   },
-                  {
-                    "id": "streak_score",
-                    "width": "pw",
-                    "style": "color:@white; font:@fontHudSmall; text-align:center;",
-                    "shadeStyle": "HudTinyLight",
-                    "text": ""
-                  }
-                ]
+                  "textareaNoTab": [
+                    {
+                      "id": "streak_header",
+                      "width": "pw",
+                      "style": "color:@streakTextColor; font:@fontHudMedium; text-align:center;",
+                      "text": "",
+                      "shadeStyle": "HudHeader3D",
+                      "pos": "0, -0.004*@shHud",
+                      "position": "relative"
+                    },
+                    {
+                      "id": "streak_score",
+                      "width": "pw",
+                      "style": "color:@white; font:@fontHudSmall; text-align:center;",
+                      "shadeStyle": "HudTinyLight",
+                      "text": ""
+                    }
+                  ]
+                }
               }
+            },
+            {
+              "id": "warning_hints",
+              "width": "@shHud",
+              "pos": "pw/2 - w/2, 0",
+              "position": "relative",
+              "flow": "vertical"
             }
-          },
+          ],
           "hudMessages": [
             {
               "id": "hud_messages_death_reason_notification",
@@ -548,13 +557,6 @@
             "width": "pw",
             "position": "root",
             "pos": "50%sw-50%w, 1@bhHud + 0.67@shHud",
-            "flow": "vertical"
-          },
-          {
-            "id": "warning_hints",
-            "width": "pw",
-            "position": "root",
-            "pos": "50%sw-50%w, 1@bhHud + 0.2@shHud",
             "flow": "vertical"
           },
           {

@@ -32,7 +32,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
 let { guiStartBuilder, guiStartFlight, guiStartCdOptions, setCurrentCampaignMission
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -301,8 +301,9 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function isBuilderAvailable() {
-    return ::isUnitAvailableForGM(this.unit, GM_BUILDER)
+    return isUnitAvailableForGM(this.unit, GM_BUILDER)
   }
+
   function isTestFlightAvailable() {
     return ::isTestFlightAvailable(this.unit, this.shouldSkipUnitCheck)
   }

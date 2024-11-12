@@ -124,7 +124,7 @@ tdiv {
         tooltip:t=''
         on_click:t='unlockToFavorites'
         unlockId:t=''
-        btnName:t='Y'
+        btnName:t='LT'
         isChecked:t='no'
         ButtonImg {}
         buttonWink {}

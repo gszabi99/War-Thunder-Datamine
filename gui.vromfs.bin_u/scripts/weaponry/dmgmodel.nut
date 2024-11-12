@@ -226,6 +226,7 @@ function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
 
   //armored vehicles data
   let explMassInTNT = explosiveMass * (explTypeBlk?.strengthEquivalent ?? 0)
+
   let splashParamsBlk = blk?.explosiveTypeToSplashParams
   if (explMassInTNT && isDataBlock(splashParamsBlk)) {
     let maxPenetration = getLinearValueFromP2blk(splashParamsBlk?.explosiveMassToPenetration, explMassInTNT)
@@ -244,12 +245,31 @@ function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
   //not armored vehicles data
   let fillingRatio = ammoMass ? explosiveMass / ammoMass : 1.0
   let brisanceMass = explosiveMass * (explTypeBlk?.brisanceEquivalent ?? 0)
+
   let destroyRadiusNotArmored = calcDestroyRadiusNotArmored(blk?.explosiveTypeToShattersParams,
     fillingRatio, brisanceMass)
   if (destroyRadiusNotArmored > 0)
     res.destroyRadiusNotArmoredText = getMeasureTypeByName("dist_short", true).getMeasureUnitsText(destroyRadiusNotArmored)
 
   return res
+}
+
+function getMaxArmorPiercing(explosiveType, explosiveMass) {
+  let blk = getExplosiveBlk()
+  let explTypeBlk = blk?.explosiveTypes[explosiveType]
+  if (explTypeBlk == null)
+    return null
+
+  let splashParamsBlk = blk?.explosiveTypeToSplashParams
+  if (splashParamsBlk == null)
+    return null
+
+  let explMassInTNT = explosiveMass * (explTypeBlk?.strengthEquivalent ?? 0)
+  if (explMassInTNT == 0)
+    return null
+
+  let maxPenetration = getLinearValueFromP2blk(splashParamsBlk?.explosiveMassToPenetration, explMassInTNT)
+  return maxPenetration
 }
 
 local xrayFilterCached = null
@@ -296,4 +316,5 @@ return {
   getDestructionInfoTexts
   getTankXrayFilter
   getShipXrayFilter
+  getMaxArmorPiercing
 }

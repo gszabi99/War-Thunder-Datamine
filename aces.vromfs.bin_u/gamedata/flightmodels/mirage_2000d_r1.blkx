@@ -2344,7 +2344,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/fr_thomson-csf_rdi.blk",
+        "blk": "gameData/sensors/fr_antilope_5.blk",
         "dmPart": "radar_dm"
       },
       {
@@ -2378,44 +2378,40 @@
       "turretNo": 0
     }
   },
-  "nightVision": [
-    {
-      "sightTPodThermal": {
-        "resolution": [
-          500,
-          300
-        ],
-        "noiseFactor": 0.05
-      },
-      "sightThermal": {
-        "resolution": [
-          1080,
-          720
-        ],
-        "noiseFactor": 0.05
-      }
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        1200,
+        800
+      ],
+      "noiseFactor": 0.04
     },
-    {
-      "gunnerIr": {
-        "resolution": [
-          1920,
-          1080
-        ],
-        "lightMult": 10.0,
-        "ghosting": 0.7,
-        "noiseFactor": 0.15
-      },
-      "pilotIr": {
-        "resolution": [
-          1920,
-          1080
-        ],
-        "lightMult": 10.0,
-        "ghosting": 0.7,
-        "noiseFactor": 0.15
-      }
+    "sightTPodThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
-  ],
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -3958,7 +3954,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/fr_thomson-csf_rdi.blk",
+              "blk": "gameData/sensors/fr_antilope_5.blk",
               "dmPart": "radar_dm"
             },
             {

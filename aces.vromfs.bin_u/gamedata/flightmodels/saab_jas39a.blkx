@@ -2397,6 +2397,42 @@
       ]
     }
   },
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 1
+    },
+    "sightTPodThermal": {
+      "resolution": [
+        800,
+        600
+      ],
+      "noiseFactor": 0.04,
+      "index": 2
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    }
+  },
   "gunnerOpticFps": {
     "TV": {
       "pos": [
@@ -2413,7 +2449,8 @@
         30.0
       ],
       "opticType": "tv",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 1
     },
     "Target": {
       "pos": [
@@ -2431,35 +2468,7 @@
       ],
       "opticType": "targeting",
       "turretNo": 0,
-      "nvIndex": 1
-    }
-  },
-  "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "pilotIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "sightTPodThermal": {
-      "resolution": [
-        800,
-        600
-      ],
-      "noiseFactor": 0.04,
-      "index": 1
+      "nvIndex": 2
     }
   },
   "sensors": {

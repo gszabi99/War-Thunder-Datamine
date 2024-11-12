@@ -102,6 +102,11 @@
             "value": true,
             "var": "is_airfield_spawn",
             "fromDescriptor": "is_airfield_spawn"
+          },
+          {
+            "value": true,
+            "var": "is_ship_spawn",
+            "fromDescriptor": "is_ship_spawn"
           }
         ],
         "wait": {
@@ -197,20 +202,22 @@
           "object": "airfield_ship_unit",
           "type": "ship"
         },
-        "unitSetProperties": {
-          "object": "airfield_ship_unit",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "isImmortal": true
-        },
         "unitSetRoute": {
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "route": "ship_airfield",
           "teleportToStart": false,
           "object": "airfield_ship_unit"
+        },
+        "unitSetProperties": {
+          "object": "airfield_ship_unit",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "isImmortal": true,
+          "speed": 60.0,
+          "lockSpeed": true
         }
       },
       "else_actions": {
@@ -477,9 +484,20 @@
           "value": "",
           "comparasion_func": "notEqual"
         },
-        "objectExists": {
-          "target": "airfield01ship",
-          "type": "area"
+        "objectExists": [
+          {
+            "target": "airfield01ship",
+            "type": "area"
+          },
+          {
+            "target": "airfield_ship_unit",
+            "type": "unit"
+          }
+        ],
+        "varCompareBool": {
+          "var_value": "is_ship_spawn",
+          "value": true,
+          "comparasion_func": "equal"
         }
       },
       "actions": {
@@ -492,11 +510,6 @@
         },
         "unitWakeUp": {
           "target": "@airfield_unit_name"
-        },
-        "unitSetProperties": {
-          "object": "@airfield_spawn",
-          "speed": 60.0,
-          "lockSpeed": true
         },
         "triggerEnable": {
           "target": "init_carrier"
@@ -516,18 +529,25 @@
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
+        "conditionsType": "ANY",
         "enableAfterComplete": false
       },
       "events": {
         "initMission": {}
       },
       "conditions": {
-        "varCompareBool": {
-          "var_value": "is_airfield_spawn",
-          "value": true,
-          "comparasion_func": "equal"
-        }
+        "varCompareBool": [
+          {
+            "var_value": "is_airfield_spawn",
+            "value": true,
+            "comparasion_func": "equal"
+          },
+          {
+            "var_value": "is_ship_spawn",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        ]
       },
       "actions": {
         "triggerEnable": [
@@ -1393,19 +1413,7 @@
         }
       },
       "actions": {
-        "unitSetProperties": {
-          "object": "@target_tank",
-          "attack_type": "fire_at_will",
-          "accuracy": 0.1,
-          "airAccuracy": 0.1,
-          "cannotShoot": false,
-          "fireRandom": true,
-          "targetChangeInterval": 5.0,
-          "targetChangeProb": 0.25,
-          "ignoreGunSpeedLimits": false,
-          "DelayAfterShoot": 3.0
-        },
-        "__unitAttackTarget": {
+        "unitAttackTarget": {
           "playerAttracted": false,
           "object": "@target_tank",
           "attack_type": "fire_at_will",
@@ -1413,8 +1421,8 @@
             3.0,
             7.0
           ],
-          "fireRandom": true,
-          "fightInArea": "@attack_area"
+          "fightAreaRadius": 8000.0,
+          "accuracyInZone": 0.1
         },
         "triggerEnable": {
           "target": "name_assemble"
@@ -2009,7 +2017,8 @@
     "attack_area": "",
     "base_respawn_time": 15,
     "target_respawn_time": 30,
-    "airfield_spawn_reload": ""
+    "airfield_spawn_reload": "",
+    "is_ship_spawn": true
   },
   "dialogs": {},
   "airfields": {},

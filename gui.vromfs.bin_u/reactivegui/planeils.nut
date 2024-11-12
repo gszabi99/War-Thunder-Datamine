@@ -28,11 +28,13 @@ let Elbit = require("planeIlses/ilsElbit967.nut")
 let StockHeliIls = require("heliIls.nut")
 let Ils28K = require("planeIlses/ils28k.nut")
 let ilsF15a = require("planeIlses/ilsF15a.nut")
+let ilsF15e = require("planeIlses/ilsF15e.nut")
 let ilsEP17 = require("planeIlses/ilsEP17.nut")
 let ilsAmx = require("planeIlses/ilsAmx.nut")
 let KaiserVDO = require("planeIlses/ilsKaiserVDO.nut")
 let ilsKai24p = require("planeIlses/ilsKai24p.nut")
 let ilsF20 = require("planeIlses/ilsF20.nut")
+let ilsF117 = require("planeIlses/ilsF117.nut")
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -70,6 +72,8 @@ let ilsSetting = Computed(function() {
     isKai24p = false
     isF20 = false
     isMetric = false
+    isF15e = false
+    isF117 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -113,6 +117,8 @@ let ilsSetting = Computed(function() {
     isF20 = blk.getBool("ilsF20", false)
     isChinaLang = blk.getBool("chinaLang", false)
     isMetric = blk.getBool("isMetricIls", false)
+    isF15e = blk.getBool("ilsF15e", false)
+    isF117 = blk.getBool("ilsF117", false)
   }
 })
 
@@ -124,12 +130,12 @@ let planeIls = @(width, height) function() {
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
-    isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c } = ilsSetting.value
+    isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117 } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
-      isF20 || isKaiserA10c)
+      isF20 || isKaiserA10c || isF15e || isF117)
   return {
     watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
     children = [
@@ -171,6 +177,8 @@ let planeIls = @(width, height) function() {
       (isKai24p ? ilsKai24p(width, height) : null),
       (isF20 ? ilsF20(width, height) : null),
       (isKaiserA10c ? KaiserA10(width, height, true) : null),
+      (isF15e ? ilsF15e(width, height) : null),
+      (isF117 ? ilsF117(width, height) : null),
       (isStockHeli ? StockHeliIls() : null)
     ]
   }

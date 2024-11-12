@@ -8,7 +8,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
+let { getPlayWorldwarConditionText } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -74,7 +74,7 @@ gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
       alertText = loc("worldWar/noAccess")
     else if (!memberData.canPlayWorldWar) {
       alertText = loc("worldWar/noAccess")
-      fullAlertText = ::g_world_war.getPlayWorldwarConditionText()
+      fullAlertText = getPlayWorldwarConditionText()
     }
     else if (!memberData.isReady)
       alertText = loc("multiplayer/state/player_is_not_ready")

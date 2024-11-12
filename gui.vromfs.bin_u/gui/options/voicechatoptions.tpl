@@ -5,7 +5,7 @@ include "%gui/options/assignHotkeyOption.tpl"
 <</hotkeyOpts>>
 
 tr {
-  size:t="pw, @optConatainerHeight"
+  size:t="pw, @optContainerHeight"
   optContainer:t='yes'
 
   td {

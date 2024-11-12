@@ -91,18 +91,17 @@ function processPointerPress(evt, areaBounds) {
   mapCoordsUnderCursor.set(convertPointerToMapCoords(evt, areaBounds))
 
   if (evt.btnId == 0 && evt.shiftKey && selectedArmy.get() != null) {
-    moveArmy(selectedArmy.get(), { x, y }, true)
+    moveArmy(null, { x, y }, true)
     return
   }
 
   if (evt.btnId == 1) {
+    let armyTargetName = hoveredBattle.get()?.id ?? hoveredArmy.get()
     if (selectedArmy.get() != null)
-      moveArmy(selectedArmy.get(), { x, y }, false)
-
-    else if (selectedAirfield.get() != null) {
-      let armyTargetName = hoveredBattle.get()?.id ?? hoveredArmy.get()
+      moveArmy(armyTargetName, { x, y }, false)
+    else if (selectedAirfield.get() != null)
       sendAircraft(selectedAirfield.get(), armyTargetName, { x, y })
-    }
+
     return
   }
 

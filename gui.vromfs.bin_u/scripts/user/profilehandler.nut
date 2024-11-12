@@ -91,6 +91,8 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getGameModeBoxIndex,
+   writeGameModeToTerseInfo, getShowcaseGameModeByIndex } = require("%scripts/user/profileShowcase.nut")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -135,6 +137,8 @@ function guiStartProfile(params = {}) {
   }
   loadHandler(gui_handlers.Profile, params)
 }
+
+local cachedTerseInfo = null
 
 gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   wndType = handlerType.BASE
@@ -207,6 +211,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function initScreen() {
+    this.terseInfo = cachedTerseInfo
     this.editModeTempData = {}
     this.selMedalIdx = {}
     setBreadcrumbGoBackParams(this)
@@ -249,7 +254,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
 
     this.initShortcuts()
-    this.updateStats()
   }
 
   function initSheetsList() {
@@ -466,13 +470,15 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onProfileEditCancelBtn() {
     this.setEditMode(!this.isEditModeEnabled)
-
     if (this.editModeTempData?.title) {
       let stats = getStats()
       this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles", false)
     }
     if (this.editModeTempData?.icon)
       this.fillProfileIcon(getProfileInfo().icon)
+
+    if (this.editModeTempData?.terseInfo)
+      this.fillShowcase(this.terseInfo, getStats())
   }
 
   function saveProfileIcon(newIcon) {
@@ -499,6 +505,16 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
       this.saveProfileTitle(this.editModeTempData.title)
+
+    if (this.editModeTempData?.terseInfo) {
+      let handler = this
+      let showcaseToSave = this.editModeTempData.terseInfo
+      let showcaseOnError = this.terseInfo
+      saveShowcase(showcaseToSave,
+        @() handler?.isValid() ? handler.onSaveShowcaseComplete(showcaseToSave) : null,
+        @() handler?.isValid() ? handler.onSaveShowcaseError(showcaseOnError) : null
+      )
+    }
   }
 
   function setEditMode(val) {
@@ -537,6 +553,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
       return true
+
+    if (this.editModeTempData?.terseInfo)
+      return true
+
     return false
   }
 
@@ -578,7 +598,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let resourceType = decor.decoratorType.resourceType
     let decorData = getDecoratorDataToUse(decor.id, resourceType)
     if (decorData.decorator == null) {
-      showDecoratorAccessRestriction(decor, getPlayerCurUnit())
+      showDecoratorAccessRestriction(decor, getPlayerCurUnit(), true)
       return
     }
 
@@ -614,8 +634,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let accountImage = this.scene.findObject("profile_header_picture")
     accountImage.height = pageHasProfileHeader ? "1@maxAccountHeaderHeight" : "1@minAccountHeaderHeight"
 
-    if (pageHasProfileHeader && !this.isProfileInited)
-      this.updateStats()
+    if (!this.isProfileInited) {
+      ::fill_gamer_card(getProfileInfo(), "profile-", this.scene)
+      if (pageHasProfileHeader)
+        this.updateStats()
+    }
 
     if (sheet == "UserCard") {
       this.showSheetDiv("usercard")
@@ -1157,8 +1180,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function getSkinsUnitType(skinName) {
     let unit = this.getUnitBySkin(skinName)
-    if (! unit)
-        return ES_UNIT_TYPE_INVALID
+    if (!unit)
+      return ES_UNIT_TYPE_INVALID
     return getEsUnitType(unit)
   }
 
@@ -1231,13 +1254,20 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       listObj.setValue(newValue)
   }
 
+  function onCollapseDecals(obj) {
+    this.doCollapse(obj, this.scene.findObject("decals_group_list"))
+  }
+
   function onCollapse(obj) {
-    if (!obj)
+    this.doCollapse(obj, this.scene.findObject("unlocks_group_list"))
+  }
+
+  function doCollapse(obj, listBoxObj) {
+    if (!obj || !listBoxObj)
       return
     let id = obj.id
     if (id.len() > 4 && id.slice(0, 4) == "btn_") {
       this.collapse(id.slice(4))
-      let listBoxObj = this.scene.findObject("unlocks_group_list")
       let listItemCount = listBoxObj.childrenCount()
       for (local i = 0; i < listItemCount; i++) {
         let listItemId = listBoxObj.getChild(i)?.id
@@ -1379,7 +1409,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!checkObj(checkBoxObj))
       return
 
-    checkBoxObj.setValue(!checkBoxObj.getValue() ? "yes" : "no")
+    this.unlockToFavorites(checkBoxObj)
   }
 
   function onManualOpenUnlock(obj) {
@@ -1520,7 +1550,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     return $"{unlockId}_block"
   }
 
-
   function onUnlockSelect(obj) {
     if (obj?.isValid())
       this.initialUnlockId = ""
@@ -1638,6 +1667,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return
     this.isProfileInited = true
     this.fillProfileStats(myStats)
+    this.updateShowcase()
   }
 
   function openChooseTitleWnd(_obj) {
@@ -1673,6 +1703,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         itemTag = "campaign_item"
         itemText = $"#decals/category/{categoryId}"
         isCollapsable = hasGroups
+        onCollapseFunc = "onCollapseDecals"
       })
 
       if (hasGroups)  {
@@ -1703,7 +1734,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if ("uid" in stats && stats.uid != userIdStr.value)
       externalIDsService.reqPlayerExternalIDsByUserId(stats.uid)
     this.fillClanInfo(getProfileInfo())
-    ::fill_gamer_card(getProfileInfo(), "profile-", this.scene)
     this.scene.findObject("profile_loading").show(false)
   }
 
@@ -1903,6 +1933,67 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   onLeaderboard = @() loadHandler(gui_handlers.LeaderboardWindow, { userId = userIdInt64.get() })
+
+  function onShowcaseSelect(_obj) {
+
+  }
+
+  function fillShowcaseEdit(terseInfo) {
+    local data = getEditViewData()
+    let nest = this.scene.findObject("showcase_edit");
+    this.guiScene.replaceContentFromText(nest, data, data.len(), this)
+
+    data = getShowcaseTypeBoxData(terseInfo)
+    let showcaseTypesBox = nest.findObject("showcase_gamemodes")
+    this.guiScene.replaceContentFromText(showcaseTypesBox, data, data.len(), this)
+
+    let index = getGameModeBoxIndex(terseInfo)
+    if (index >= 0)
+      showcaseTypesBox.setValue(index)
+  }
+
+  function onSaveShowcaseComplete(savedShowcase) {
+    this.terseInfo = savedShowcase
+    cachedTerseInfo = savedShowcase
+    this.fillShowcase(savedShowcase, getStats())
+  }
+
+  function onSaveShowcaseError(showcaseForRestore) {
+    this.terseInfo = showcaseForRestore
+    cachedTerseInfo = showcaseForRestore
+    this.fillShowcase(showcaseForRestore, getStats())
+  }
+
+  function onShowcaseGameModeSelect(obj) {
+    if (!this.isEditModeEnabled)
+      return
+    let gameMode = getShowcaseGameModeByIndex(obj.getValue(), this.editModeTempData?.terseInfo ?? this.terseInfo)
+    if (!gameMode)
+      return
+    if (this.editModeTempData?.terseInfo == null) {
+      this.editModeTempData.terseInfo <- clone this.terseInfo
+      this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
+    }
+    writeGameModeToTerseInfo(this.editModeTempData.terseInfo, gameMode.mode)
+    this.fillShowcase(this.editModeTempData.terseInfo, getStats(), false)
+  }
+
+  function getPageProfileStats() {
+    return getStats()
+  }
+
+  function fillShowcase(terseInfo, userStats, needFillEdit = true) {
+    this.fillShowcaseTitle(terseInfo)
+    this.fillShowcaseMid(terseInfo, userStats)
+    if (needFillEdit)
+      this.fillShowcaseEdit(terseInfo)
+  }
+
+  function onUserInfoRequestComplete(responce, stats = null) {
+    base.onUserInfoRequestComplete(responce, stats)
+    cachedTerseInfo = this.terseInfo
+  }
+
 }
 
 let openProfileSheetParamsFromPromo = {

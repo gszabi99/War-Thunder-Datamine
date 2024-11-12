@@ -217,9 +217,8 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       if (sm_weather != "")
         sm_weather = getWeatherLocName(sm_weather)
 
-      config.condition = "".concat(config.condition, sm_location,
-        config.condition != "" ? "; " : "", sm_time,
-        config.condition != "" ? "; " : "", sm_weather)
+      config.condition = "".concat(config.condition,
+        "; ".join([sm_location, sm_time, sm_weather], true))
 
       if (this.gm == GM_DYNAMIC) {
         config.date <- config.condition

@@ -332,9 +332,15 @@ let directionGroups = [
   },
   {
     text = "L"
-    desc = "L"
+    desc = "MARKSMAN"
 
     originalName = "MSM"
+  },
+  {
+    text = "L"
+    desc = "GEPARD"
+
+    originalName = "GPD"
   },
   //
 
@@ -402,8 +408,8 @@ let settings = Computed(function() {
     if (directionGroupIndex != null) {
       let directionGroup = directionGroups[directionGroupIndex]
       directionGroupOut[i] = {
-        text = directionGroup.text
-        desc = directionGroup.desc
+        text = directionGroup?.text
+        desc = directionGroup?.desc
       }
     }
   }

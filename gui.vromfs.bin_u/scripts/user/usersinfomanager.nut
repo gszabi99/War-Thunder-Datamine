@@ -5,6 +5,7 @@ let DataBlock = require("DataBlock")
 let avatars = require("%scripts/user/avatars.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { charRequestBlk } = require("%scripts/tasker.nut")
+let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 
 /**
   client api:
@@ -85,8 +86,11 @@ function _convertServerResponse(response) {
       title = userInfo?.title ?? ""
       clanTag =  userInfo?.clanTag ?? ""
       clanName =  userInfo?.clanName ?? ""
+      shcType = userInfo?.shcType ?? ""
+      showcase = isDataBlock(userInfo?.showcase)
+        ? convertBlk(userInfo.showcase)
+        : {}
     }
-
     res[uid] <- convertedData
   }
 
@@ -170,7 +174,13 @@ function requestUserInfoData(userId) {
   setTimeout(0.3, updateUsersInfo)
 }
 
+function getUserInfo(uid) {
+  return usersInfo?[uid]
+}
+
 return {
   requestUserInfoData
   requestUsersInfo
+  getUserInfo
+  userInfoEventName
 }

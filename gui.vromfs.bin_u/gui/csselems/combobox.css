@@ -300,6 +300,10 @@ tr:hover > td > ComboBox > option > optiontext {
   color:@hoverTextColor;
 }
 
+tr[optContainer=yes][disabled=yes] > td > ComboBox > option > optiontext {
+  color:@disabledTextColor;
+}
+
 ComboBox:expanded > option,
 ComboBox:expanded > option > optiontext,
 ComboBox > listBox > option,

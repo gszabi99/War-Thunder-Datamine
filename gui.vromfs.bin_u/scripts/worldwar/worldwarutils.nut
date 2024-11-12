@@ -19,16 +19,12 @@ let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 let { get_current_mission_desc } = require("guiMission")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
@@ -56,7 +52,8 @@ let { getNearestMapToBattle, hasAvailableMapToBattle, getOperationById
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { openWwOperationRewardPopup } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinWorldwarBattle
+} = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -65,22 +62,6 @@ const WW_UNIT_WEAPON_PRESET_PATH = "worldWar/weaponPreset/"
 const WW_OBJECTIVE_OUT_OF_DATE_DAYS = 1
 
 const LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableMapInPromo"
-
-function canPlayWorldwar() {
-  if (!isMultiplayerPrivilegeAvailable.value
-      || hasMultiplayerRestritionByBalance())
-    return false
-
-  if (!isCrossPlayEnabled())
-    return false
-
-  let minRankRequired = this.getSetting("minCraftRank", 0)
-  let unit = u.search(getAllUnits(), @(unit)
-    unit.canUseByPlayer() && unit.rank >= minRankRequired
-  )
-
-  return !!unit
-}
 
 let wwstorage = persist("wwstorage", @() {configurableValues = DataBlock(), curOperationCountry = null})
 
@@ -206,7 +187,7 @@ g_world_war = {
 
   function inviteToWwOperation(uid) {
     let operationId = wwGetOperationId()
-    if (operationId < 0 || !this.canJoinWorldwarBattle())
+    if (operationId < 0 || !canJoinWorldwarBattle())
       return
 
     addMail({
@@ -220,34 +201,6 @@ g_world_war = {
       }
       ttl = 3600
     })
-  }
-
-  function getSetting(settingName, defaultValue) {
-    return get_game_settings_blk()?.ww_settings?[settingName] ?? defaultValue
-  }
-
-  canPlayWorldwar
-
-  function canJoinWorldwarBattle() {
-    return isWorldWarEnabled() && canPlayWorldwar()
-  }
-
-  function getPlayWorldwarConditionText(fullText = false) {
-    if (!isMultiplayerPrivilegeAvailable.value)
-      return loc("xbox/noMultiplayer")
-
-    if (!isCrossPlayEnabled())
-      return fullText
-        ? loc("xbox/actionNotAvailableCrossNetworkPlay")
-        : loc("xbox/crossPlayRequired")
-
-    let rankText = colorize("@unlockHeaderColor",
-      get_roman_numeral(this.getSetting("minCraftRank", 0)))
-    return loc("worldWar/playCondition", { rank = rankText })
-  }
-
-  function getCantPlayWorldwarReasonText() {
-    return !canPlayWorldwar() ? this.getPlayWorldwarConditionText(true) : ""
   }
 
   function openMainWnd(forceOpenMainMenu = false) {
@@ -305,7 +258,7 @@ g_world_war = {
         checkAndShowMultiplayerPrivilegeWarning()
       else if (!isShowGoldBalanceWarning())
         checkAndShowCrossplayWarning(@()
-          showInfoMsgBox(this.getPlayWorldwarConditionText(true)))
+          showInfoMsgBox(getPlayWorldwarConditionText(true)))
       return false
     }
     return true
@@ -1243,5 +1196,3 @@ g_world_war = {
 ::g_world_war <- g_world_war
 
 subscribe_handler(g_world_war, g_listener_priority.DEFAULT_HANDLER)
-
-return g_world_war

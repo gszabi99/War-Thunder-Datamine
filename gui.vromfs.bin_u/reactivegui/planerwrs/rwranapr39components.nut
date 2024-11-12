@@ -202,7 +202,7 @@ let directionGroups = [
     type = ThreatType.ZSU23
   },
   {
-    originalName = "M",
+    originalName = "MSL",
     type = ThreatType.WEAPON
   }
 ]

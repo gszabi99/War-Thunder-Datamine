@@ -14,7 +14,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
@@ -159,7 +159,7 @@ function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = fa
   local unlocked = !isCrewLockedByPrevBattle(crew)
   if (unit) {
     unlocked = unlocked && (!country || isCrewAvailableInSession(crew, unit, needDbg))
-    unlocked = unlocked && (::isUnitAvailableForGM(unit, get_game_mode()) || isInFlight())
+    unlocked = unlocked && (isUnitAvailableForGM(unit, get_game_mode()) || isInFlight())
       && (!unit.disableFlyout || !isInFlight())
       && (missionRules?.isUnitEnabledBySessionRank(unit) ?? true)
     if (unlocked && !::SessionLobby.canChangeCrewUnits() && !isInFlight()

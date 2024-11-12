@@ -17,6 +17,10 @@
 @const profileSeparatorExtraWidth: 128@sf/@pf;
 @const maxProfileFrameWidth: 2560@sf/@pf - 2@framePadding;
 @const beyondScrollbarSize: 10@sf/@pf;
+@const showcaseBoxBorder: #6f767d;
+@const showcaseGreyText: #7C8389;
+@const showcaseBlue: #FF17CBFC;
+@const countriesSmallListHeight:50@sf/@pf;
 
 
 profileContent {
@@ -31,7 +35,7 @@ profileContentLeft {
 }
 
 profileContentLeft[page=skins] {
-  size:0.30*pw, ph;
+  size:0.28*pw, ph;
 }
 
 profileContentSeparator {
@@ -101,7 +105,7 @@ medalsList ScrollBar {
 
 HorizontalListBox[class=countries_small] > shopFilter,
 HorizontalListBox[class=countries_small] {
-  height:50@sf/@pf;
+  height:@countriesSmallListHeight;
   background-color:@transparent;
 }
 
@@ -364,6 +368,36 @@ profileEditBtn[type=big] {
 }
 
 [isEditModeEnabled=yes] profileEditBtn {
+  display:show;
+}
+
+[show_console_buttons=yes] [btnName=''] profileEditBtn {
+  interactive:no;
+}
+
+profileEditBtnShadow {
+  position:absolute;
+  size: 26@sf/@pf, 26@sf/@pf;
+  background-svg-size: 26@sf/@pf, 26@sf/@pf;
+  background-image:"!#ui/images/profile/ic_change.svg";
+  background-color:#FF000000;
+  display:hide;
+}
+
+profileEditBtnShadow[type=big]  {
+  size: 34@sf/@pf, 34@sf/@pf;
+  background-svg-size: 34@sf/@pf, 34@sf/@pf;
+}
+
+[isEditModeEnabled=yes] profileEditBtnShadow {
+  display:show;
+}
+
+[isEditModeEnabled=yes] [showInEditMode=no] {
+  display:hide;
+}
+
+[isEditModeEnabled=yes] [showInEditMode=yes] {
   display:show;
 }
 

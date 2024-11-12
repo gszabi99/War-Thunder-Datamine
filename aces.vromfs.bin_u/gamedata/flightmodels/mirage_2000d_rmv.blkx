@@ -15,6 +15,7 @@
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
   "hasOpticTurret": true,
+  "isBwOpticSight": true,
   "hasHelmetDesignator": [
     true,
     true
@@ -81,9 +82,6 @@
   "laserDesignator": true,
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2074,6 +2072,12 @@
     "sightOutFov": 18.0,
     "sightFov": 1.0,
     "hmdEnabledByDefault": true,
+    "hmdBlockIlsArea": [
+      0.5,
+      -0.4,
+      0.55,
+      0.6
+    ],
     "headPos": [
       4.12,
       0.57,
@@ -2382,9 +2386,24 @@
             1.0,
             1.0
           ],
-          "page": {
-            "type": "map"
-          }
+          "page": [
+            {
+              "type": "map"
+            },
+            {
+              "type": "rwr",
+              "grid": {
+                "scale": 1.3,
+                "lineWidthScale": 0.8,
+                "fontScale": 0.8
+              },
+              "object": {
+                "scale": 0.8,
+                "lineWidthScale": 0.4,
+                "fontScale": 0.4
+              }
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2426,7 +2445,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/fr_thales_rdy.blk",
+        "blk": "gameData/sensors/fr_antilope_5_hmd.blk",
         "dmPart": "radar_dm"
       },
       {
@@ -2725,32 +2744,6 @@
                 "bullets": 8,
                 "external": true,
                 "separate": true,
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_chaff_large.blk",
-                "emitter": "emtr_flare7",
-                "bullets": 56,
-                "external": true,
-                "separate": true,
-                "brakeChuteRange": [
-                  0.0,
-                  0.0
-                ],
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_chaff_large.blk",
-                "emitter": "emtr_flare6",
-                "bullets": 56,
-                "external": true,
-                "separate": true,
-                "brakeChuteRange": [
-                  0.0,
-                  0.0
-                ],
                 "bulletsCartridge": 1
               }
             ]
@@ -3352,7 +3345,25 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "mk82_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk82_snakeye_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_12_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_49_x2_slot5"
+              }
+            ]
           },
           {
             "iconType": "guided_bomb_middle_laser",
@@ -3849,7 +3860,25 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "mk82_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "mk82_snakeye_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_12_x2_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "gbu_49_x2_slot5"
+              }
+            ]
           },
           {
             "iconType": "flir_container",
@@ -4414,7 +4443,7 @@
         "sensors": {
           "sensor": [
             {
-              "blk": "gameData/sensors/fr_thales_rdy.blk",
+              "blk": "gameData/sensors/fr_antilope_5_hmd.blk",
               "dmPart": "radar_dm"
             },
             {
@@ -4577,7 +4606,7 @@
     "emtr_break_wing2_l_from": [
       -1.26286,
       -0.328882,
-      2.93074
+      2.53074
     ],
     "emtr_break_wing2_l_to": [
       -1.26286,
@@ -4607,7 +4636,7 @@
     "emtr_break_wing2_r_from": [
       -1.26286,
       -0.328882,
-      -2.93074
+      -2.53074
     ],
     "emtr_break_wing2_r_to": [
       -1.26286,

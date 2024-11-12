@@ -707,10 +707,10 @@ def b_scope_half_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
 
   let color = is_color_or_white(data.lineColor) //remove color_is_white if use is_color on scope_sector
   let lcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMin) * size.x, -radiusMin * cos(cueAzimuthMin) * size.y);
-   origin + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y); ]])
+   origin + float2(radiusMax * sin(cueAzimuthMin) * size.x, -radiusMax * cos(cueAzimuthMin) * size.y);]])
   ctx |> render_line_aa(lcoord, false, 2. * data.lineWidth, float2(0, 0), color)
   let rcoord <- to_array_move([[float2[2] origin + float2(radiusMin * sin(cueAzimuthMax) * size.x, -radiusMin * cos(cueAzimuthMax) * size.y);
-   origin + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y); ]])
+   origin + float2(radiusMax * sin(cueAzimuthMax) * size.x, -radiusMax * cos(cueAzimuthMax) * size.y);]])
   ctx |> render_line_aa(rcoord, false, 2. * data.lineWidth, float2(0, 0), color)
 
 def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; position : float2)

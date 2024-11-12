@@ -3132,13 +3132,12 @@
             "type": "Roland TA"
           },
           {
-            "name": "SAM",
-            "detectLaunch": true,
-            "type": [
-              "ADATS TA",
-              "ASRAD TA",
-              "TriAD TA"
-            ]
+            "name": "ADATS",
+            "type": "ADATS TA"
+          },
+          {
+            "name": "ASRAD",
+            "type": "ASRAD TA"
           },
           {
             "name": "Naval",
@@ -3294,8 +3293,12 @@
             "group": "2S6"
           },
           {
-            "text": "SAM",
-            "group": "SAM"
+            "text": "ADS",
+            "group": "ADATS"
+          },
+          {
+            "text": "ASR",
+            "group": "ASRAD"
           },
           {
             "text": "MSL",
@@ -3304,7 +3307,8 @@
         ]
       },
       "modeLamps": {
-        "launchLamp": 2
+        "launchLamp": 2,
+        "launchLampBlinkingPeriod": 0.5
       }
     },
     "multifunctionDisplays": {

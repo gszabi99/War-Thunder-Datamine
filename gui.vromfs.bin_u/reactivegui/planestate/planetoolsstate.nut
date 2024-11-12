@@ -28,6 +28,7 @@ let RwrScale = Watched(1.0)
 let RwrBackHide = Watched(false)
 let RadarTargetDistRate = Watched(0.0)
 let RadarTargetDist = Watched(0.0)
+let RadarTargetHeight = Watched(0.0)
 let RadarTargetPosValid = Watched(false)
 let RadarTargetPos = [0, 0]
 let RadarTargetAngle = Watched(-1.0)
@@ -91,6 +92,7 @@ let planeState = {
   RadarTargetPosValid,
   RadarTargetPos,
   RadarTargetDistRate,
+  RadarTargetHeight,
   RadarTargetAngle,
   GunfireSolution,
   AamAccelLock,

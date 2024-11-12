@@ -269,6 +269,7 @@
   "criticalOffenderMaxClimbWeight": 1.0,
   "criticalOffenderMaxSpeedWeight": 1.0,
   "criticalOffenderMetricsDiffMin": 0.3,
+  "lightWeightClientCriticalDamageDetector": true,
   "leaveKillerSearchDistanceMax": 3000.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
   "enableAircraftSevereDamage": true,
@@ -13359,7 +13360,8 @@
     "maxNumberOfDestructableBodies": 100,
     "numOfDestrBodiesForScaleDt": 50,
     "distForScaleDt": 100.0,
-    "maxScaleDt": 3.0
+    "maxScaleDt": 3.0,
+    "errorOnBodiesOverflow": false
   },
   "clouds": {
     "mapTexWidth": 256,
@@ -23822,7 +23824,8 @@
         "ventilation_pipe_d_dmg",
         "debris_brick_small_",
         "coil_cable_",
-        "af_cc_gate_a_guide"
+        "af_cc_gate_a_guide",
+        "af_cc_frame_"
       ],
       "excRE": [
         "american_statue_a",
@@ -23951,6 +23954,7 @@
         "debris_brick_small_",
         "coil_cable_",
         "af_cc_gate_a_guide",
+        "af_cc_frame_",
         "berlin_reichstag_back_center",
         "berlin_reichstag_back_left",
         "berlin_reichstag_back_right",
@@ -24000,11 +24004,19 @@
         "soviet_lamp_post_low_",
         "ventilation_pipe_small_",
         "af_cc_stair_b",
+        "af_cc_department_c_roof_decals",
         "af_cc_department_e_roof_decals",
         "af_cc_department_medium_a_roof_decals",
-        "af_cc_frame_",
+        "af_cc_department_medium_c_roof_decals",
         "af_cc_roof_frame_",
         "debris_wooden_plank_",
+        "af_cc_roof_detail_",
+        "af_cc_beam_metal_",
+        "af_cc_fan_a",
+        "af_cc_window_e",
+        "af_cc_electro_stuff_",
+        "af_cc_stairs_ramp_",
+        "af_cc_tubes_",
         "concrete_fence_",
         "wrought_fence_",
         "metal_lattice_"
@@ -24594,6 +24606,35 @@
         "air_hangar_field_tower_c",
         "air_hangar_field_building_control_tower",
         "air_hangar_field_building_a",
+        "air_port_building_service_i_snow",
+        "air_port_building_service_h_snow",
+        "air_port_building_service_b_snow",
+        "air_port_building_service_a_part_a_snow",
+        "air_port_building_1_floors_b_snow",
+        "air_port_building_straddle_carriers_service_b_snow",
+        "air_pallet_cardboard_a_pile_a_snow",
+        "air_floating_big_gsm_fuel_tank_a_snow",
+        "air_storage_gsm_fuel_tank_horizontal_a_snow",
+        "air_box_pile_b_snow",
+        "air_metal_radio_tower_a_snow",
+        "air_hangar_field_tower_b_snow",
+        "air_hangar_field_tower_c_snow",
+        "air_hangar_field_building_control_tower_snow",
+        "air_hangar_field_building_a_snow",
+        "airfield_caponir_gate_a_snow",
+        "airfield_caponir_gate_a",
+        "airfield_caponir_gate_a_universal",
+        "airfield_caponir_gate_b_snow",
+        "airfield_caponir_gate_b",
+        "airfield_caponir_gate_b_universal",
+        "airfield_caponir_gate_snow",
+        "airfield_caponir_gate",
+        "airfield_caponir_gate_universal",
+        "airfield_caponir_hill_snow",
+        "airfield_caponir_hill",
+        "airfield_caponir_hill_universal",
+        "temporary_caponier_a",
+        "temporary_caponier_a_snow",
         "airfield_fuel_tent_b",
         "airfield_fuel_tent_a",
         "airfield_caponir_gate",
@@ -24602,7 +24643,17 @@
         "airfield_fuel_box_a",
         "transmitter_powerstation",
         "glide_path_transmitter",
-        "universal_1line_3000_a_mesh"
+        "airfield_fuel_tent_b_snow",
+        "airfield_fuel_tent_a_snow",
+        "airfield_caponir_gate_snow",
+        "airfield_flight_radar_snow",
+        "airfield_fuel_box_b_snow",
+        "airfield_fuel_box_a_snow",
+        "transmitter_powerstation_snow",
+        "glide_path_transmitter_snow",
+        "universal_1line_3000_a_mesh",
+        "universal_1line_3000_a_mesh_universal",
+        "universal_1line_3000_a_mesh_snow"
       ]
     },
     "badLod1ForStaticShadow": {
@@ -25447,19 +25498,25 @@
       ]
     },
     "branchDestr": {
-      "enable": true,
+      "enable": false,
       "multiplyMode": false,
       "impulseMul": 1.0,
-      "impulseMaxLength": 2.0,
-      "branchSizeMax": 6.0,
+      "impulseMin": 0.0,
+      "impulseMax": 10.0,
+      "branchSizeMin": 10.0,
+      "branchSizeMax": 20.0,
       "rotateSpeedMulX": 1.33,
-      "rotateSpeedMulY": 1.33,
+      "rotateSpeedMulY": 0.5,
       "rotateSpeedMulZ": 1.33,
       "rotateAngleSpread": 1.5,
+      "horizontalSpeedMul": 1.33,
       "branchSizeSlowDown": 0.3,
       "fallingSpeedMul": 0.25,
       "fallingSpeedRnd": 0.15,
-      "horizontalSpeedMul": 1.33
+      "maxVisibleDistance": 100.0
+    },
+    "branchDestrOther": {
+      "impulseMul": 0.5
     }
   },
   "ground_decals_detail": {
@@ -27274,9 +27331,9 @@
     "enabled": true,
     "snowEmitterIntensity": 0.0,
     "velocitySheddingMult": 0.0005,
-    "impulseEmitterLifetime": 0.5,
-    "impulseEmitterCaliberMult": 30.0,
-    "impulseEmitterMinCaliber": 0.08
+    "impulseEmitterLifetime": 0.3,
+    "impulseEmitterCaliberMult": 40.0,
+    "impulseEmitterMinCaliber": 0.05
   },
   "BuildObjectsParams": {
     "AmmoBox": {

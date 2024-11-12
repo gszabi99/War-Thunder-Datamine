@@ -56,7 +56,7 @@ let country_names = [[string[NUM_COUNTRIES] "australia";
 
 let operator_country_names = [[string[NUM_OPERATOR_COUNTRIES] "south_africa";
                                   "hungary";
-                                  "finland"; ]]
+                                  "finland";]]
 
 [es(tag=sound, on_event=(EventEntityCreated, EventComponentsAppear))]
 def music_init_es(evt : Event;

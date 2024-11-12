@@ -72,6 +72,18 @@ def try_build_object_es(evt : Event;
     *hero |> toggleBuildingMode(true)
     simpleObject__transparentColor = float3(0.5, 0.5, 0.5)
 
+[es(tag=gameClient, track=buildingTimer)]
+def building_timer_track(evt : Event;
+                         transform : float3x4;
+                         buildingTimer : float;
+                         builder_preview__soundName : string;
+                         var builder_preview__soundEvent : SoundEvent&)
+  if buildingTimer > 0.
+    if !is_playing(builder_preview__soundEvent)
+      builder_preview__soundEvent |> play(builder_preview__soundName, transform[3])
+  elif is_playing(builder_preview__soundEvent)
+    builder_preview__soundEvent |> abandon()
+
 [es(tag=gameClient, no_order)]
 def building_process_update_es(info : UpdateStageInfoAct;
                                var buildingTimer : float&;
@@ -80,8 +92,6 @@ def building_process_update_es(info : UpdateStageInfoAct;
                                buildingTime : float;
                                var debuffUpdateTimer : float&;
                                buildingRadius : float;
-                               builder_preview__soundName : string;
-                               var builder_preview__soundEvent : SoundEvent&;
                                buildingTemplates : StringList;
                                simpleObject__offsets : Point3List)
   if buildingTimer > 0.
@@ -91,8 +101,6 @@ def building_process_update_es(info : UpdateStageInfoAct;
       if inArea
         if hero.speed < 1.
           buildingTimer -= info.dt
-          if !is_playing(builder_preview__soundEvent)
-            builder_preview__soundEvent |> play(builder_preview__soundName, transform[3])
           if buildingTimer <= 0.
             if hero.isAlive && hero.eid != INVALID_ENTITY_ID
               for i in range(length(simpleObject__visibleList))
@@ -101,8 +109,6 @@ def building_process_update_es(info : UpdateStageInfoAct;
                   var tm = transform
                   tm[3] = transform * simpleObject__offsets[i]
                   send_net_event(hero.eid, [[CmdBuildObject tm = tm, objectTemplate = string(buildingTemplates[i]), triggerGroup = triggerGroup]])
-              if is_playing(builder_preview__soundEvent)
-                builder_preview__soundEvent |> abandon()
             for visible in simpleObject__visibleList
               visible = false
       else

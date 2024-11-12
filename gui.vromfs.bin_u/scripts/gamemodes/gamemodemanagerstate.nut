@@ -23,7 +23,8 @@ let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scrip
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getNextNewbieEvent, getUnitTypeByNewbieEventId, isMeNewbie } = require("%scripts/myStats.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
+let { deferOnce } = require("dagor.workcycle")
 
 /**
  * Game mode manager incapsulates working
@@ -144,7 +145,7 @@ let featuredModes = [
     videoPreview = null
     isVisible = @() isWorldWarEnabled()
     isCrossPlayRequired = needShowCrossPlayInfo
-    inactiveColor = @() !::g_world_war.canPlayWorldwar()
+    inactiveColor = @() !canPlayWorldwar()
     crossPlayRestricted = @() isMultiplayerPrivilegeAvailable.value && !isCrossPlayEnabled()
     hasNewIconWidget = true
     updateByTimeFunc = function(scene, objId) {
@@ -762,6 +763,22 @@ function getCurrentGameModeEdiff() {
   return gameMode && gameMode.ediff != -1 ? gameMode.ediff : EDifficulties.ARCADE
 }
 
+function updateVisibleGameMode() {
+  if (g_squad_manager.isSquadLeader())
+    return
+
+  if (g_squad_manager.isMeReady()) {
+    let id = g_squad_manager.getLeaderGameModeId()
+    if (id != "" && id != getCurrentGameModeId())
+      setLeaderGameMode(id)
+    return
+  }
+
+  let id = getUserGameModeId()
+  if (id && id != "")
+    setCurrentGameModeById(id)
+}
+
 addListenersWithoutEnv({
   EventsDataUpdated          = @(_) updateManager()
   MyStatsUpdated             = @(_) updateManager()
@@ -780,21 +797,7 @@ addListenersWithoutEnv({
     currentGameModeId = null
     clearGameModes()
   }
-  function SquadDataUpdated(_params) {
-    if (g_squad_manager.isSquadLeader())
-      return
-
-    if (g_squad_manager.isMeReady()) {
-      let id = g_squad_manager.getLeaderGameModeId()
-      if (id != "" && id != getCurrentGameModeId())
-        setLeaderGameMode(id)
-      return
-    }
-
-    let id = getUserGameModeId()
-    if (id && id != "")
-      setCurrentGameModeById(id)
-  }
+  SquadDataUpdated = @(_) deferOnce(updateVisibleGameMode)
 }, CONFIG_VALIDATION)
 
 return {

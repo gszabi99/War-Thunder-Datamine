@@ -156,7 +156,7 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
   ctx |> draw_line(radarPos.x - 3., radarPos.y + radarSize.y * 0.66, radarPos.x + 5., radarPos.y + radarSize.y * 0.66, data.lineWidth)
 
   ctx |> draw_line(radarPos.x + radarSize.x - 5., radarPos.y + radarSize.y * 0.165, radarPos.x + radarSize.x, radarPos.y + radarSize.y * 0.165, data.lineWidth)
-  ctx |> draw_line(radarPos.x - 5. +  + radarSize.x, radarPos.y + radarSize.y * 0.33, radarPos.x + 3. + radarSize.x, radarPos.y + radarSize.y * 0.33, data.lineWidth)
+  ctx |> draw_line(radarPos.x - 5. +  +radarSize.x, radarPos.y + radarSize.y * 0.33, radarPos.x + 3. + radarSize.x, radarPos.y + radarSize.y * 0.33, data.lineWidth)
   ctx |> draw_line(radarPos.x + radarSize.x - 5., radarPos.y + radarSize.y * 0.5, radarPos.x + radarSize.x, radarPos.y + radarSize.y * 0.5, data.lineWidth)
   ctx |> draw_line(radarPos.x - 5. + radarSize.x, radarPos.y + radarSize.y * 0.66, radarPos.x + 3. + radarSize.x, radarPos.y + radarSize.y * 0.66, data.lineWidth)
   ctx |> draw_line(radarPos.x + radarSize.x - 5., radarPos.y + radarSize.y * 0.83, radarPos.x + radarSize.x, radarPos.y + radarSize.y * 0.83, data.lineWidth)

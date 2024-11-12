@@ -17,7 +17,7 @@
   "maxDeltaAngleVertical": 0.08,
   "shotFreq": 0.5,
   "traceFreq": 4,
-  "reloadTime": 15.0,
+  "reloadTime": 1.0,
   "bEnablePause": false,
   "bullets": 8,
   "bulletsCluster": 1,
@@ -440,6 +440,14 @@
       },
       "collisions": {
         "steel": {
+          "fx": "explosion_midair_medium",
+          "ricochetFx": "hit_81_105mm_metal_ap"
+        },
+        "aluminum_armor": {
+          "fx": "explosion_midair_medium",
+          "ricochetFx": "hit_81_105mm_metal_ap"
+        },
+        "tank_structural_steel": {
           "fx": "explosion_midair_medium",
           "ricochetFx": "hit_81_105mm_metal_ap"
         },
@@ -1161,6 +1169,14 @@
         },
         "collisions": {
           "steel": {
+            "fx": "explosion_midair_medium",
+            "ricochetFx": "hit_81_105mm_metal_ap"
+          },
+          "aluminum_armor": {
+            "fx": "explosion_midair_medium",
+            "ricochetFx": "hit_81_105mm_metal_ap"
+          },
+          "tank_structural_steel": {
             "fx": "explosion_midair_medium",
             "ricochetFx": "hit_81_105mm_metal_ap"
           },

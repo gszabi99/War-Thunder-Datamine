@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { sin, cos, PI, floor } = require("math")
 let { wwGetOperationTimeMillisec } = require("worldwar")
 let { loadedTransport } = require("%rGui/wwMap/wwMapStates.nut")
-let { isPlayerSide } = require("%rGui/wwMap/wwOperationStates.nut")
+let { isPlayerSide, isOperationPaused } = require("%rGui/wwMap/wwOperationStates.nut")
 let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
@@ -199,7 +199,7 @@ function mkArmyBack(armyData, areaBounds) {
       let timeLeft = (nextPoint.arrivalTimeShift + armyData.pathTracker.path.startTime - wwGetOperationTimeMillisec()) / 1000.0
       let nextPointPos = convertToRelativeMapCoords(nextPoint.pos)
       let nextArmyPos = [areaWidth * nextPointPos.x - armyBorderSize / 2, areaHeight * nextPointPos.y - armyBorderSize / 2]
-      animation.__update({ from = armyBorderPos, to = nextArmyPos, duration = timeLeft, play = true })
+      animation.__update({ from = armyBorderPos, to = nextArmyPos, duration = timeLeft, play = !isOperationPaused.get() })
 
       if (!isArmySelected.get() && !isArmyHovered.get()) {
         let pointTo = { x = points[nextPathIdx].pos.x - armyData.pathTracker.pos.x, y = points[nextPathIdx].pos.y - armyData.pathTracker.pos.y }
@@ -243,7 +243,7 @@ function mkArmyBack(armyData, areaBounds) {
     children.append(mkArmyIcon(armyData))
 
     return {
-      watch = [isArmySelected, isArmyHovered, isShowArmiesIndex, mapZoom]
+      watch = [isArmySelected, isArmyHovered, isShowArmiesIndex, mapZoom, isOperationPaused]
       key = {}
       children
       transform = {

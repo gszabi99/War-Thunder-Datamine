@@ -8,7 +8,7 @@ let haveActiveAction = @() wwGetCurrActionType() != actionType.AUT_None
 
 let doAction = @(pos) sendToDagui("ww.doAction", { action = wwGetCurrActionType(), pos })
 
-let moveArmy = @(armyName, pos, append) sendToDagui("ww.moveArmy", { armyName, pos, append })
+let moveArmy = @(targetArmyName, pos, append) sendToDagui("ww.moveArmy", { targetArmyName, pos, append })
 
 let sendAircraft = @(airField, armyTargetName, pos) sendToDagui("ww.sendAircraft", { airfieldIdx = airField.airfieldIdx, armyTargetName, pos })
 

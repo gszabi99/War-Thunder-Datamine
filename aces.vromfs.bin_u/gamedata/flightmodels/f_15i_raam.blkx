@@ -3042,27 +3042,64 @@
       ],
       "noiseFactor": 0.04,
       "index": 2
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
   },
   "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        2.6,
-        -0.15,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
-      ],
-      "opticType": "tv",
-      "turretNo": 0,
-      "nvIndex": 1
-    },
+    "TV": [
+      {
+        "pos": [
+          2.6,
+          -0.15,
+          0.0
+        ],
+        "head": "optic1_turret",
+        "crosshairPreset": "test_crosshair",
+        "angularLimits": [
+          -30.0,
+          30.0,
+          -30.0,
+          30.0
+        ],
+        "opticType": "tv",
+        "turretNo": 0
+      },
+      {
+        "pos": [
+          2.6,
+          -0.15,
+          0.0
+        ],
+        "head": "optic1_turret",
+        "crosshairPreset": "test_crosshair",
+        "angularLimits": [
+          -30.0,
+          30.0,
+          -30.0,
+          30.0
+        ],
+        "opticType": "tv",
+        "turretNo": 0,
+        "nvIndex": 0
+      }
+    ],
     "Target": {
       "pos": [
         1.0,
@@ -3230,8 +3267,6 @@
         "us_lantirn_pod_anaaq14",
         "optic2_turret",
         "optic2_gun",
-        "chaff_cap_l",
-        "chaff_cap_r",
         "pylon_1_aim_9_l",
         "pylon_1_aim_9_r",
         "pylon_2_aim_9_l",
@@ -4656,7 +4691,7 @@
             ]
           },
           {
-            "iconType": "bombs_heavy_middle_drag_group",
+            "iconType": "bombs_heavy_high_drag_group",
             "name": "us_mk84_air_tank_slot5",
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {
@@ -5773,7 +5808,7 @@
                 },
                 {
                   "blk": "gameData/sensors/ir_tracker_tgp.blk",
-                  "node": "optic1_gun"
+                  "node": "optic2_gun"
                 }
               ]
             },
@@ -5815,6 +5850,12 @@
           {
             "iconType": "ltc",
             "name": "ltc_left",
+            "HideNodes": {
+              "node": [
+                "chaff_cap_l1",
+                "chaff_cap_l"
+              ]
+            },
             "Weapon": {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
@@ -6032,6 +6073,9 @@
         "WeaponPreset": {
           "iconType": "ltc",
           "name": "ltc_right",
+          "HideNodes": {
+            "node": "chaff_cap_r"
+          },
           "Weapon": {
             "trigger": "countermeasures",
             "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
@@ -6809,7 +6853,7 @@
             ]
           },
           {
-            "iconType": "bombs_heavy_middle_drag_group",
+            "iconType": "bombs_heavy_high_drag_group",
             "name": "us_mk84_air_tank_slot9",
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
             "ShowNodes": {

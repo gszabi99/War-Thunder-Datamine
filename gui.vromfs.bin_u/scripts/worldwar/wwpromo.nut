@@ -4,14 +4,14 @@ let { setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBloc
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { isWorldWarEnabled, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 function getWorldWarPromoText(isWwEnabled = null) {
   local text = loc("mainmenu/btnWorldwar")
   if (!isWorldWarEnabled())
     return text
 
-  if ((isWwEnabled ?? ::g_world_war.canJoinWorldwarBattle())) {
+  if ((isWwEnabled ?? canJoinWorldwarBattle())) {
     let operationText = ::g_world_war.getPlayedOperationText(false)
     if (operationText != "")
       text = operationText
@@ -32,7 +32,7 @@ addPromoButtonConfig({
   needUpdateByTimer = true
   updateFunctionInHandler = function() {
     let id = promoButtonId
-    let isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
+    let isWwEnabled = canJoinWorldwarBattle()
     let isVisible = getShowAllPromoBlocks()
       || (isWwEnabled && ::g_world_war.isWWSeasonActive())
 

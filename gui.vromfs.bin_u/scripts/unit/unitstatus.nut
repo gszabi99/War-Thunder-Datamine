@@ -181,6 +181,25 @@ function isPrevUnitResearched(unit) {
   return false
 }
 
+function isPrevUnitBought(unit) {
+  let prevUnit = getPrevUnit(unit)
+  if (!prevUnit || isUnitBought(prevUnit))
+    return true
+  return false
+}
+
+function isUnitAvailableForGM(air, gm) {
+  if (air == null || !air.unitType.isAvailable())
+    return false
+  if (gm == GM_TEST_FLIGHT)
+    return air.testFlight != "" || air.isAir() || air.isHelicopter() //For airplanes and helicopters is enable universal testflight
+  if (gm == GM_DYNAMIC)
+    return air.isAir()
+  if (gm == GM_BUILDER)
+    return air.isAir() && isUnitInSlotbar(air)
+  return true
+}
+
 return {
   canBuyNotResearched
   getBitStatus
@@ -202,4 +221,6 @@ return {
   isUnitFeatureLocked
   isUnitResearched
   isPrevUnitResearched
+  isPrevUnitBought
+  isUnitAvailableForGM
 }

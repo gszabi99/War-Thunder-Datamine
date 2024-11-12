@@ -20,7 +20,8 @@ let {
 let { WEAPON_TYPE,
   isCaliberCannon, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
-let { getMeasuredExplosionText, getTntEquivalentText, getRicochetData, getTntEquivalentDmg
+let { getMeasuredExplosionText, getTntEquivalentText, getRicochetData, getTntEquivalentDmg,
+  getMaxArmorPiercing
 } = require("%scripts/weaponry/dmgModel.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -152,7 +153,7 @@ function getBulletsIconData(bulletsSet) {
   return handyman.renderCached(("%gui/weaponry/bullets.tpl"), getBulletsIconView(bulletsSet))
 }
 
-function getArmorPiercingViewData(armorPiercing, dist) {
+function getArmorPiercingViewData(armorPiercing, dist, isCumulative) {
   local res = null
   if (armorPiercing.len() <= 0)
     return res
@@ -166,26 +167,34 @@ function getArmorPiercingViewData(armorPiercing, dist) {
       angles = u.keys(armorTbl)
       angles.sort(@(a, b) a <=> b)
       let headRow = {
-        text = ""
+        text = isCumulative ? loc("bullet_properties/hitAngle") : ""
         values = angles.map(function(v) { return { value = $"{v}{loc("measureUnits/deg")}" } })
       }
       res.append(headRow)
     }
 
     let row = {
-      text = $"{dist[ind]}{loc("measureUnits/meters_alt")}"
+      text = isCumulative ? "" : $"{dist[ind]}{loc("measureUnits/meters_alt")}"
       values = []
     }
     foreach (angle in angles)
       row.values.append({ value = $"{armorTbl?[angle] ?? 0}{loc("measureUnits/mm")}" })
     res.append(row)
+
+    if (isCumulative)
+      break
   }
   return res
 }
 
 function addArmorPiercingToDesc(bulletsData, descTbl) {
-  let { armorPiercing, armorPiercingDist } = bulletsData
-  let props = getArmorPiercingViewData(armorPiercing, armorPiercingDist)
+  let { armorPiercing, armorPiercingDist, needHideArmorPiercingTable } = bulletsData
+  if (needHideArmorPiercingTable)
+    return
+
+  let isCumulative = bulletsData?.cumulativeDmg ?? false
+
+  let props = getArmorPiercingViewData(armorPiercing, armorPiercingDist, isCumulative)
   if (props == null)
     return
 
@@ -194,9 +203,17 @@ function addArmorPiercingToDesc(bulletsData, descTbl) {
     : ""
 
   let bulletName = currWeaponName != "" ? loc($"weapons/{currWeaponName}") : ""
-  let header = "\n".concat(
-    "".concat(loc("bullet_properties/armorPiercing"),
-      bulletName != "" ? $"{loc("ui/colon")}{bulletName}" : "")
+
+  local header = loc("bullet_properties/armorPiercing")
+  if (isCumulative)
+    header = " ".concat(header, loc("bullet_properties/armorPiercing/cumulative"))
+  else if (bulletsData?.explosiveType)
+    header = " ".concat(header, loc("bullet_properties/armorPiercing/kinetic"))
+  else
+    header = "".concat(header, bulletName != "" ? $" {loc("ui/colon")}{bulletName}" : "")
+
+  if (!isCumulative)
+    header = "\n".concat(header,
     format("(%s / %s)", loc("distance"), loc("bullet_properties/hitAngle"))
   )
 
@@ -351,11 +368,14 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   if (explosiveMass)
     addProp(p, loc("bullet_properties/explosiveMass"),
       getMeasuredExplosionText(explosiveMass))
-
   if (explosiveType && explosiveMass) {
     let tntEqText = getTntEquivalentText(explosiveType, explosiveMass)
     if (tntEqText.len())
       addProp(p, loc("bullet_properties/explosiveMassInTNTEquivalent"), tntEqText)
+    let maxArmorPenetration = getMaxArmorPiercing(explosiveType, explosiveMass)
+    if (maxArmorPenetration)
+      addProp(p, loc("bullet_properties/maxArmorPenetration"),
+        $"{roundToDigits(maxArmorPenetration, 2)} {loc("measureUnits/mm")}")
   }
 
   let fuseDelayDist = roundToDigits(bulletsData.fuseDelayDist, 2)
@@ -427,6 +447,7 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
     armorPiercing = []
     armorPiercingDist = []
     isCountermeasure
+    needHideArmorPiercingTable = bullet_parameters?.needHideArmorPiercingTable ?? false
   }
 
   if (bulletsSet?.bullets?[0] == "napalm_tank") {

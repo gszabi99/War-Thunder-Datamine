@@ -456,6 +456,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   onOptionContainerUnhover = @() this.scene.findObject("option_info_container").show(false)
 
   function onOptionContainerHover(obj) {
+    if (obj?.disabled == "yes")
+      return
     let id = obj.id.split("_tr")[0]
     let infoContainerObj = this.scene.findObject("option_info_container")
 

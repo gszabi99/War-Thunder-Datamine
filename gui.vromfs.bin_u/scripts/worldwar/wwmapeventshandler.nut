@@ -75,8 +75,8 @@ function doAction(_params) {
 }
 
 function moveArmy(params) {
-  let { pos, armyName, append } = params
-  ::g_world_war.moveSelectedArmes(pos.x, pos.y, armyName, append, mapCellUnderCursor.get())
+  let { pos, targetArmyName, append } = params
+  ::g_world_war.moveSelectedArmes(pos.x, pos.y, targetArmyName, append, mapCellUnderCursor.get())
 }
 
 function sendAircraft(params) {

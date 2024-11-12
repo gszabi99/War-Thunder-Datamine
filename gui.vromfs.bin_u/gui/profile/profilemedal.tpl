@@ -67,7 +67,7 @@ tdiv {
     text:t='#mainmenu/UnlockAchievementsToFavorite'
     tooltip:t=''
     unlockId:t=''
-    btnName:t='Y'
+    btnName:t='LT'
     isChecked:t='no'
     on_click:t='unlockToFavorites'
 

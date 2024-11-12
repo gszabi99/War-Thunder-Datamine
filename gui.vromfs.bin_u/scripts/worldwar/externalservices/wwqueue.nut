@@ -10,6 +10,7 @@ let { actionWithGlobalStatusRequest,
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let DataBlock  = require("DataBlock")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 
 ::WwQueue <- class {
   map = null
@@ -156,7 +157,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
         res.reasonText = loc("clan/wwar/lacksMembers", {
           clanType = myClanType.getTypeNameLoc()
           count = myClanType.getMinMemberCountToWWar()
-          minRankRequired = get_roman_numeral(::g_world_war.getSetting("minCraftRank", 0))
+          minRankRequired = get_roman_numeral(getWwSetting("minCraftRank", 0))
         })
         res.hasRestrictClanRegister = true
       }

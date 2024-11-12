@@ -2260,7 +2260,7 @@
           "page": [
             {
               "type": "thermal",
-              "turretIdx": 0
+              "turretIdx": 1
             },
             {
               "type": "target_tracking",
@@ -2428,7 +2428,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/swd_ar830.blk"
+        "blk": "gameData/sensors/swd_bow_21.blk"
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk"
@@ -3332,24 +3332,6 @@
     }
   },
   "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "pilotIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
     "sightThermal": {
       "resolution": [
         500,
@@ -3365,27 +3347,27 @@
       ],
       "noiseFactor": 0.04,
       "index": 2
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
   },
   "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        2.6,
-        -0.15,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
-      ],
-      "opticType": "tv",
-      "turretNo": 0,
-      "nvIndex": 1
-    },
     "Target": {
       "pos": [
         1.0,
@@ -3403,6 +3385,43 @@
       "opticType": "targeting",
       "turretNo": 0,
       "nvIndex": 2
+    },
+    "TV1": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "RB75"
+    },
+    "TV2": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1,
+      "name": "RB75T"
     }
   },
   "weapon_presets": {

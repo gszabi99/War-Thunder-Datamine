@@ -1,9 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import char_send_custom_action
 from "%scripts/items/itemsConsts.nut" import itemType
+from "app" import is_dev_version
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
+let { getUserstatItemRewardData } = require("%scripts/userstat/userstatItemsRewards.nut")
 
 local shouldCheckAutoConsume = false
 
@@ -20,13 +22,17 @@ function onFinishMultiItemsConsume() {
 
 function fillItemsListsForAutoConsume() {
   let itemList = ::ItemsManager.getInventoryList(itemType.ALL, @(i) i.shouldAutoConsume)
+  if (!is_dev_version()) {
+    singleConsumeList.extend(itemList)
+    return
+  }
 
   foreach (item in itemList) {
-    if (item.canMultipleConsume && item?.canConsume()) {
-      multiConsumeList.append(item)
+    if (!item.canMultipleConsume || !item?.canConsume() || getUserstatItemRewardData(item.id) != null) {
+      singleConsumeList.append(item)
       continue
     }
-    singleConsumeList.append(item)
+    multiConsumeList.append(item)
   }
 }
 

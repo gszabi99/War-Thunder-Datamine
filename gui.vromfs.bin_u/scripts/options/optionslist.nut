@@ -53,7 +53,7 @@ function getPrivacyOptionsList() {
 }
 
 function hasConsolePresets() {
-  return is_xboxone_X || isPlatformXboxScarlett
+  return (is_xboxone_X || isPlatformXboxScarlett) && hasFeature("optionConsolePreset")
 }
 
 let otherOptionsList = @() [

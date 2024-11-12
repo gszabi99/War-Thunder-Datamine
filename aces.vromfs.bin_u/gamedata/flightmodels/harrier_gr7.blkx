@@ -2531,7 +2531,8 @@
               "SAM"
             ],
             "trackLamp": 0,
-            "launchLamp": 0
+            "launchLamp": 0,
+            "launchLampBlinkingPeriod": 0.25
           },
           {
             "group": [
@@ -2540,13 +2541,41 @@
               "ARH"
             ],
             "trackLamp": 1,
-            "launchLamp": 1
+            "launchLamp": 1,
+            "launchLampBlinkingPeriod": 0.25
           },
           {
             "group": "AAA",
             "trackLamp": 2
           }
         ]
+      }
+    },
+    "maw": {
+      "type": "mlws",
+      "name": "ARI 23348/1",
+      "range": 3500.0,
+      "band0": true,
+      "band1": true,
+      "band2": true,
+      "matchSector": 10.0,
+      "signalHoldTime": 2.0,
+      "closureRateMin": 0.0,
+      "angularRateMax": 30.0,
+      "signalSfxName": "alarm_launch_detected",
+      "automaticFlares": true,
+      "flaresSeriesInterval": 1.0,
+      "numFlares": 4,
+      "flaresInterval": 0.1,
+      "lamp": 0,
+      "receivers": {
+        "receiver": {
+          "azimuth": -180.0,
+          "elevation": 0.0,
+          "azimuthWidth": 140.0,
+          "elevationWidth": 90.0,
+          "angleFinder": true
+        }
       }
     },
     "multifunctionDisplays": {

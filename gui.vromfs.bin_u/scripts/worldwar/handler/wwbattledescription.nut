@@ -33,6 +33,7 @@ let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { isCountryAllCrewsUnlockedInHangar } = require("%scripts/slotbar/slotbarState.nut")
 let { get_mp_team_by_team_name } = require("%appGlobals/ranks_common_shared.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
@@ -664,7 +665,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     let warningIconObj = showObjById("warning_icon", !u.isEmpty(fullWarningText), this.scene)
     warningIconObj.tooltip = fullWarningText
 
-    let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
+    let unitAvailability = getWwSetting("checkUnitAvailability",
       WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
     showObjById("required_crafts_block",
       unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.OPERATION_UNITS ||

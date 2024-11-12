@@ -12,6 +12,7 @@ let { getQueueByMapName, getOperationGroupByMapId
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 
 let WwMap = class {
   name = ""
@@ -157,7 +158,7 @@ let WwMap = class {
 
   function isWillAvailable(isNearFuture = true) {
     let changeStateTime = this.getChangeStateTime() - get_charserver_time_sec()
-    let operationAnnounceTimeSec = ::g_world_war.getSetting("operationAnnounceTimeSec",
+    let operationAnnounceTimeSec = getWwSetting("operationAnnounceTimeSec",
       time.TIME_DAY_IN_SECONDS)
     return !this.isActive()
       && changeStateTime > 0
@@ -297,7 +298,7 @@ let WwMap = class {
     if (this._cachedUnitsGroupsByCountry != null)
       return this._cachedUnitsGroupsByCountry
 
-    let countriesBlk = ::g_world_war.getSetting("unitGroups", null)?[this.name]
+    let countriesBlk = getWwSetting("unitGroups", null)?[this.name]
     if (countriesBlk == null)
       return null
 

@@ -286,6 +286,18 @@ let directionGroups = [
     originalName = "M2K",
     lethalRangeMax = 40000.0
   },
+  {
+    text = "39",
+    originalName = "J39",
+    type = ThreatType.AI,
+    lethalRangeMax = 40000.0
+  },
+  {
+    text = "JF",
+    originalName = "J17",
+    type = ThreatType.AI,
+    lethalRangeMax = 40000.0
+  },
   //
 
 
@@ -324,6 +336,16 @@ let directionGroups = [
     lethalRangeMax = 8000.0
   },
   {
+    text = "AD",
+    originalName = "ADS",
+    lethalRangeMax = 8000.0
+  },
+  {
+    text = "AR",
+    originalName = "ASR",
+    lethalRangeMax = 8000.0
+  },
+  {
     text = "A",
     originalName = "hud/rwr_threat_aaa",
     lethalRangeMax = 4000.0
@@ -348,7 +370,7 @@ let settings = Computed(function() {
     if (directionGroupIndex != null) {
       let directionGroup = directionGroups[directionGroupIndex]
       directionGroupOut[i] = {
-        text = directionGroup.text
+        text = directionGroup?.text
         type = directionGroup?.type
         lethalRangeRel = directionGroup?.lethalRangeMax != null ? (directionGroup.lethalRangeMax - rwrSetting.get().range.x) / (rwrSetting.get().range.y - rwrSetting.get().range.x) : null
       }

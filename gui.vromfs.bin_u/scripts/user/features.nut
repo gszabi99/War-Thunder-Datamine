@@ -289,6 +289,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   optionBVH_SM = true
   optionGFXAPI = true
   optionGFXAPIVulkan = true
+  optionConsolePreset = true
 })
 
 let override = Watched({})

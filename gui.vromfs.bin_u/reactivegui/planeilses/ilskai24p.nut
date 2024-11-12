@@ -289,6 +289,7 @@ function basicInfo(width, height) {
   }
 }
 
+let drawAdvancedReticle = Computed(@() CCIPMode.value || BombingMode.value)
 let distSectorAng = Computed(@() cvt(DistToTarget.value >= 10000.0 ? 5000.0 : DistToTarget.value, 0.0, 8000.0, -90.0, 270.0).tointeger())
 let distValue = Computed(@() (DistToTarget.value >= 10000.0 ? 50.0 : DistToTarget.value * 0.01).tointeger())
 let CVisible = Computed(@() DistToTarget.value < 2000.0 )
@@ -308,8 +309,6 @@ let reticle = @(){
       [VECTOR_LINE, 130, 0, 70, 0],
       [VECTOR_LINE, 0, 100, 0, 70],
       [VECTOR_LINE, 0, -100, 0, -70],
-      [VECTOR_LINE, 49.9, -98, 59, -115.8],
-      [VECTOR_LINE, -28.5, 106.3, -33.6, 125.6]
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
@@ -318,9 +317,9 @@ let reticle = @(){
       }
     }
     children = @(){
-      watch = [CCIPMode, CVisible]
+      watch = [CVisible, drawAdvancedReticle]
       size = flex()
-      children = [
+      children = drawAdvancedReticle.value ? [
         @(){
           watch = distSectorAng
           rendObj = ROBJ_VECTOR_CANVAS
@@ -329,7 +328,9 @@ let reticle = @(){
           fillColor = Color(0, 0, 0, 0)
           lineWidth = baseLineWidth * IlsLineScale.value
           commands = [
-            [VECTOR_SECTOR, 0, 0, 110, 110, -90, distSectorAng.value]
+            [VECTOR_SECTOR, 0, 0, 110, 110, -90, distSectorAng.value],
+            [VECTOR_LINE, 49.9, -98, 59, -115.8],
+            [VECTOR_LINE, -28.5, 106.3, -33.6, 125.6]
           ]
         },
         @(){
@@ -354,7 +355,7 @@ let reticle = @(){
             [VECTOR_LINE, 150, 50, 190, 50]
           ]
         } : null)
-      ]
+      ] : []
     }
   } : null
 }

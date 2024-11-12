@@ -214,8 +214,13 @@ let directionGroups = [
     type = ThreatType.AD
   },
   {
-    text = "S P",
-    originalName = "hud/rwr_threat_sam",
+    text = "A D",
+    originalName = "ADS",
+    type = ThreatType.AD
+  },
+  {
+    text = "A R",
+    originalName = "ASR",
     type = ThreatType.AD
   },
   {
@@ -235,7 +240,7 @@ let directionGroups = [
   },
   {
     text = "M M",
-    originalName = "M"
+    originalName = "MSL"
   }
 ]
 

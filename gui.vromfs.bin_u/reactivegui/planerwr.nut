@@ -23,6 +23,7 @@ let rwrAnApr39Mfd = require("planeRwrs/rwrAnApr39Mfd.nut")
 let rwrAnApr39Apr42 = require("planeRwrs/rwrAnApr39Apr42.nut")
 let rwrServal = require("planeRwrs/rwrServal.nut")
 let rwrAr830 = require("planeRwrs/rwrAr830.nut")
+let rwrL150 = require("planeRwrs/rwrL150.nut")
 
 function loadStyleBlock(styleBlock, blk, defStyleBlock) {
   styleBlock.scale = blk.getReal("scale", defStyleBlock.scale)
@@ -121,7 +122,8 @@ let rwrs = {
   ["AN/APR-39 MFD"] = rwrAnApr39Mfd,
   ["AN/APR-39/APR-42"] = rwrAnApr39Apr42,
   ["Serval"] = rwrServal,
-  ["Ar830"] = rwrAr830
+  ["Ar830"] = rwrAr830,
+  ["L-150"] = rwrL150
 }
 
 let planeRwr = @(posWatched, sizeWatched, colorWatched, scaleDef, backHide, scale, fontSizeMult) function() {

@@ -835,10 +835,15 @@ table.btlReward[minimized=yes] > tr[headerRow=yes] textareaNoTab {
 }
 
 tr[optContainer=yes] {
-  size:pw, @optConatainerHeight;
+  size:pw,@optContainerHeight;
   margin-top:1@blockInterval;
 }
 
+.compactHeight tr[optContainer=yes] {
+  size:pw,@optContainerCompactHeight;
+}
+
+tr[optContainer=yes][disabled=yes] > td[cellType="right"] > *
 tr[optContainer=yes] > td[cellType="right"] > * {
   behavior:basicTransparency;
   transp-base:170;
@@ -871,7 +876,11 @@ tr[optContainer=yes] > td[cellType=left] optiontext {
 }
 
 tr[optContainer=yes] > td {
-  height:@optConatainerHeight;
+  height:@optContainerHeight;
+}
+
+.compactHeight tr[optContainer=yes] > td {
+  height:@optContainerCompactHeight;
 }
 
 tr[optContainer=yes] > td[cellType=right] {
@@ -891,7 +900,7 @@ optionsBoxRightScroll[alignMode=center] tr[optContainer=yes] > td[cellType=left]
 }
 
 tr[optContainer=yes][headerRow=yes] {
-  height:@optConatainerHeight;
+  height:@optContainerHeight;
   padding-top:0;
   background-color:@transparent;
 }
@@ -915,4 +924,17 @@ tr[optContainer=yes] > td > cellSeparator  {
 
 tr[hotkeyOpt=yes] {
   interactive:no;
+}
+
+tr[optContainer=yes][disabled=yes] td {
+  enable:no;
+}
+
+tr[optContainer=yes][disabled=yes] > td optiontext,
+tr[optContainer=yes][disabled=yes]:hover > td optiontext  {
+  color:@disabledTextColor;
+}
+
+tr[optContainer=yes][disabled=yes]:hover {
+  background-color: @transparent;
 }

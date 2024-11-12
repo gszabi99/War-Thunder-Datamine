@@ -6,6 +6,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 
 gui_handlers.WwJoinBattleCondition <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -17,7 +18,7 @@ gui_handlers.WwJoinBattleCondition <- class (gui_handlers.BaseGuiHandlerWT) {
   static maxUnitsInColumn = 8
 
   function getSceneTplView() {
-    let unitAvailability = ::g_world_war.getSetting("checkUnitAvailability",
+    let unitAvailability = getWwSetting("checkUnitAvailability",
       WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
 
     let team = this.battle.getTeamBySide(this.side)

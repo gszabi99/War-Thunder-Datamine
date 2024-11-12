@@ -16,6 +16,7 @@ let { Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll, MaxOverload } = re
 let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/planeState/planeWeaponState.nut")
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
+let { settings } = require("%rGui/planeRwrs/rwrAri23333Components.nut")
 
 let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {
@@ -465,7 +466,7 @@ let timeToReleaseBomb = @() {
   ] : null
 }
 
-function mkRwrTarget(target, index) {
+function mkRwrTarget(target) {
   let targetComponent = @() {
     watch = [IlsColor, IlsLineScale]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -484,7 +485,7 @@ function mkRwrTarget(target, index) {
       color = IlsColor.value
       font = Fonts.hud
       fontSize = 40
-      text = (index + 1).tostring()
+      text = settings.get().directionGroups?[target.groupId].text ?? settings.get().unknownText
       transform = {
         pivot = [0.5, 0.5]
         rotate = -atan2(target.y, target.x) * (180.0 / PI) + 45
@@ -521,7 +522,7 @@ function mkRwrTarget(target, index) {
 let rwrTargetsComponent = @() {
   watch = rwrTargetsTriggers
   size = flex()
-  children = rwrTargets.filter(@(t) t != null && t.age < 2.0).map(@(t, i) mkRwrTarget(t, i))
+  children = rwrTargets.filter(@(t) t != null && t.age < 2.0).map(@(t, _i) mkRwrTarget(t))
 }
 
 function SU145(width, height) {
