@@ -6,7 +6,7 @@ let { AXIS_MODIFIERS, GAMEPAD_AXIS } = require("%scripts/controls/controlsConsts
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 ::Input.Axis <- class (::Input.InputBase) {
-  //from ::JoystickParams().getAxis()
+  //from JoystickParams().getAxis()
   axisId = null
   //AXIS_MODIFIERS
   axisModifyer = null
@@ -18,7 +18,7 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
   //so we cache it on construction to not to keep shortcut id all the time
   mouseAxis = null
 
-  // @deviceAxisDescription is a result of g_shortcut_type::_getDeviceAxisDescription
+  // @deviceAxisDescription is a result of g_shortcut_type->_getDeviceAxisDescription
   constructor (deviceAxisDescription, axisMod = AXIS_MODIFIERS.NONE, v_preset = null) {
     this.deviceId = deviceAxisDescription.deviceId
     this.axisId = deviceAxisDescription.axisId

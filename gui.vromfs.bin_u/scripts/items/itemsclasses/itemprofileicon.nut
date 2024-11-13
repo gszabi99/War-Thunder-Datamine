@@ -7,7 +7,7 @@ let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let ProfileIcon = class (ItemCouponBase) {
   static iType = itemType.PROFILE_ICON
   static name = "ProfileIcon"
-  getSmallIconName     = @() $"#ui/images/avatars/{this.getUnlockId()}"
+  getSmallIconName     = @() $"#ui/images/avatars/{this.getUnlockId()}.avif"
   getContentIconData   = @() null
   canConsume           = @() this.isInventoryItem && this.canReceivePrize()
 

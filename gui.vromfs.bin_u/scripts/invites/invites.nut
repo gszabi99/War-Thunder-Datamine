@@ -10,6 +10,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { findInviteClass, invitesClasses } = require("%scripts/invites/invitesClasses.nut")
 let { MAX_POPUPS_ON_SCREEN, addPopup } = require("%scripts/popups/popups.nut")
+let { doWithAllGamercards, updateGcInvites } = require("%scripts/gamercard.nut")
 
 const INVITE_CHAT_LINK_PREFIX = "INV_"
 
@@ -214,7 +215,7 @@ function updateNewInvitesAmount() {
     return
 
   setNewInvitesAmount(amount)
-  ::do_with_all_gamercards(::update_gc_invites)
+  doWithAllGamercards(updateGcInvites)
 }
 
 ::g_invites.updateNewInvitesAmount <- updateNewInvitesAmount

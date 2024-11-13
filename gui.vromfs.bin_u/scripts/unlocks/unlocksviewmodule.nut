@@ -168,7 +168,7 @@ function getIconByUnlockBlk(unlockBlk) {
       return unit.getUnlockImage()
   }
   else if (unlockType == UNLOCKABLE_PILOT)
-    return $"#ui/images/avatars/{unlockBlk.id}"
+    return $"#ui/images/avatars/{unlockBlk.id}.avif"
 
   return unlockBlk?.icon
 }

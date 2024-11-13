@@ -170,7 +170,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
         return []
 
       side = this.invertUpdateValue ?
-        ::ww_side_val_to_name(::g_world_war.getOppositeSide(ww_side_name_to_val(side))) :
+        ww_side_val_to_name(::g_world_war.getOppositeSide(ww_side_name_to_val(side))) :
         side
 
       let res = []

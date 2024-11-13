@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import add_last_played, show_gui, string_to_restore_type, get_mission_progress, map_to_location
+from "%scripts/dagui_natives.nut" import add_last_played, show_gui, string_to_restore_type, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
@@ -15,7 +15,7 @@ let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.
 let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 let { setGuiOptionsMode, set_gui_option } = require("guiOptions")
 let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
-let { get_meta_missions_info, get_meta_mission_info_by_gm_and_name,
+let { get_meta_mission_info_by_gm_and_name,
   select_mission, select_mission_full, quit_to_debriefing
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")
@@ -194,25 +194,6 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
     optionItems.append([USEROPT_SESSION_PASSWORD, "editbox"])
 
   return optionItems
-}
-
-::if_any_mission_completed_in <- function if_any_mission_completed_in(gm) {
-  let mi = get_meta_missions_info(gm)
-  for (local i = 0; i < mi.len(); ++i) {
-    let missionBlk = mi[i]
-
-    let chapterName = missionBlk.getStr("chapter", "")
-    let name = missionBlk.getStr("name", "")
-
-    if (get_mission_progress($"{chapterName}/{name}") < 3) // completed
-      return true;
-  }
-  return false
-}
-
-::if_any_mission_completed <- function if_any_mission_completed() {
-  return ::if_any_mission_completed_in(GM_CAMPAIGN) ||
-         ::if_any_mission_completed_in(GM_SINGLE_MISSION)
 }
 
 ::get_mission_types_from_meta_mission_info <- function get_mission_types_from_meta_mission_info(metaInfo) {

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, get_game_mode_name, has_entitlement
+from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
 let { g_team } = require("%scripts/teams.nut")
@@ -46,25 +46,8 @@ let canPlayGamemodeBySquad = @(gm) !g_squad_manager.isNotAloneOnline()
   return 0
 }
 
-::get_game_mode_loc_name <- function get_game_mode_loc_name(gm) {
-  return loc(format("multiplayer/%sMode", get_game_mode_name(gm)))
-}
-
 ::is_skirmish_with_killstreaks <- function is_skirmish_with_killstreaks(misBlk) {
   return misBlk.getBool("allowedKillStreaks", false);
-}
-
-::upgrade_url_mission <- function upgrade_url_mission(fullMissionBlk) {
-  let misBlk = fullMissionBlk?.mission_settings?.mission
-  if (!fullMissionBlk || !misBlk)
-    return
-
-  if (misBlk?.useKillStreaks && !misBlk?.allowedKillStreaks)
-    misBlk.useKillStreaks = false
-
-  foreach (unitType in unitTypes.types)
-    if (unitType.isAvailable() && !(unitType.missionSettingsAvailabilityFlag in misBlk))
-      misBlk[unitType.missionSettingsAvailabilityFlag] = ::has_unittype_in_full_mission_blk(fullMissionBlk, unitType.esUnitType)
 }
 
 ::get_mission_allowed_unittypes_mask <- function get_mission_allowed_unittypes_mask(misBlk, useKillStreaks = null) {
@@ -125,7 +108,7 @@ let canPlayGamemodeBySquad = @(gm) !g_squad_manager.isNotAloneOnline()
   return false
 }
 
-::select_next_avail_campaign_mission <- function select_next_avail_campaign_mission(chapterName, missionName) {
+function selectNextAvailCampaignMission(chapterName, missionName) {
   if (get_game_mode() != GM_CAMPAIGN)
     return
 
@@ -339,4 +322,5 @@ return {
   clearMapsCache
   isMissionExtr
   isMissionExtrByName
+  selectNextAvailCampaignMission
 }

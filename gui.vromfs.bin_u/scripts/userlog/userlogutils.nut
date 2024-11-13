@@ -16,7 +16,7 @@ function disableSeenUserlogs(idsList) {
     if (!id)
       continue
 
-    let disableFunc = u.isString(id) ? ::disable_user_log_entry_by_id : disable_user_log_entry
+    let disableFunc = u.isString(id) ? disable_user_log_entry_by_id : disable_user_log_entry
     if (disableFunc(id)) {
       needSave = true
       u.appendOnce(id, ::shown_userlog_notifications)

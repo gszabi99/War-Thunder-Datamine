@@ -175,19 +175,21 @@ objectiveBlock wwObjective taskIcon[background-image=""] {
 }
 
 imageButton[type=ww_helipad] {
-  background-image:#ui/gameuiskin#map_helipad;
+  background-image:#ui/gameuiskin#map_helipad.svg;
+  background-repeat:aspect-ratio;
 }
 
 imageButton[type=ww_helipad]:hover {
-  background-image:#ui/gameuiskin#map_helipad_hover;
+  background-image:#ui/gameuiskin#map_helipad_hover.svg;
 }
 
 imageButton[type=ww_airfield] {
-  background-image:#ui/gameuiskin#map_airfield;
+  background-image:#ui/gameuiskin#map_airfield.svg;
+  background-repeat:aspect-ratio;
 }
 
 imageButton[type=ww_airfield]:hover {
-  background-image:#ui/gameuiskin#map_airfield_hover;
+  background-image:#ui/gameuiskin#map_airfield_hover.svg;
 }
 
 imageButton[type=ww_helipad]:hover > textarea,
@@ -197,12 +199,12 @@ imageButton[type=ww_airfield]:hover > textarea {
 
 imageButton[type=ww_helipad][selected=yes] {
   background-color:@white;
-  background-image:#ui/gameuiskin#map_helipad_selected;
+  background-image:#ui/gameuiskin#map_helipad_selected.svg;
 }
 
 imageButton[type=ww_airfield][selected=yes] {
   background-color:@white;
-  background-image:#ui/gameuiskin#map_airfield_selected;
+  background-image:#ui/gameuiskin#map_airfield_selected.svg;
 }
 
 imageButton[type=ww_helipad][selected=yes] > textarea,

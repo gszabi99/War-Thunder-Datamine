@@ -883,9 +883,12 @@ function pitch(width, height, generateFunc) {
   }
 }
 
+
 function TvvLinked(width, height) {
+  let picthElem = pitch(width, height, generatePitchLine)
+  let hasPitchElem = Computed(@() !HasRadarTarget.get() || isAAMMode.get() || CCIPMode.get() || BombingMode.get())
   return @() {
-    watch = [HasRadarTarget, isAAMMode, CCIPMode, BombingMode, isDGFTMode]
+    watch = [hasPitchElem, isDGFTMode]
     size = flex()
     children = !isDGFTMode.value ? [
       @() {
@@ -902,7 +905,7 @@ function TvvLinked(width, height) {
           [VECTOR_LINE, 0, -30, 0, -70]
         ]
       },
-      (!HasRadarTarget.value || isAAMMode.value || CCIPMode.value || BombingMode.value ? pitch(width, height, generatePitchLine) : null)
+      (hasPitchElem.get() ? picthElem : null)
     ] : null
     behavior = Behaviors.RtPropUpdate
     update = @() {

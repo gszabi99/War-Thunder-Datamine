@@ -45,6 +45,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -584,8 +585,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let needDownloadPack = pack != null && !::have_package(pack)
     let packBtn = showObjById("btn_download_pack", needDownloadPack, this.scene)
     if (needDownloadPack && packBtn) {
-      packBtn.tooltip = ::get_pkg_loc_name(pack)
-      packBtn.setValue(" ".concat(loc("msgbox/btn_download"), ::get_pkg_loc_name(pack, true)))
+      packBtn.tooltip = getPkgLocName(pack)
+      packBtn.setValue(" ".concat(loc("msgbox/btn_download"), getPkgLocName(pack, true)))
     }
 
     showObjById("btn_queue_options", isCurItemInFocus && isEvent

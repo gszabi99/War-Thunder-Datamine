@@ -148,6 +148,9 @@ let mkArmyIcon = @(armyData) function() {
     size = [armyIconSize, armyIconSize]
     image = Picture($"{iconName}:{armyIconSize}:{armyIconSize}")
     color = Color(0, 0, 0)
+    transform = {
+      rotate = icon?.iconRotate ?? 0
+    }
     children = isShow && groupIdxs.contains(armyData.owner.armyGroupIdx)
       ? {
           padding = [hdpx(2), 0, 0, hdpx(2)]

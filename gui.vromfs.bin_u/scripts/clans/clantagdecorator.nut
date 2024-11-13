@@ -3,6 +3,26 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_warpoints_blk } = require("blkGetters")
 
+class ClanTagDecorator {
+  id = null
+  start = null
+  end = null
+  free = false
+
+  constructor(decoratorString, freeChange) {
+    let halfLength = (0.5 * decoratorString.len()).tointeger()
+    this.id = decoratorString
+    this.start = decoratorString.slice(0, halfLength)
+    this.end = decoratorString.slice(halfLength)
+    this.free = freeChange
+  }
+
+  function checkTagText(tagText) {
+    if (tagText.indexof(this.start) != 0 || tagText.len() < this.end.len())
+      return false
+    return tagText.slice(-this.end.len()) == this.end
+  }
+}
 
 ::g_clan_tag_decorator <- {
 
@@ -65,30 +85,8 @@ let { get_warpoints_blk } = require("blkGetters")
 
     if (decoratorsBlk != null)
       foreach (decoratorString in decoratorsBlk % "decor")
-        decorators.append(::ClanTagDecorator(decoratorString, free))
+        decorators.append(ClanTagDecorator(decoratorString, free))
 
     return decorators
-  }
-}
-
-
-::ClanTagDecorator <- class {
-  id = null
-  start = null
-  end = null
-  free = false
-
-  constructor(decoratorString, freeChange) {
-    let halfLength = (0.5 * decoratorString.len()).tointeger()
-    this.id = decoratorString
-    this.start = decoratorString.slice(0, halfLength)
-    this.end = decoratorString.slice(halfLength)
-    this.free = freeChange
-  }
-
-  function checkTagText(tagText) {
-    if (tagText.indexof(this.start) != 0 || tagText.len() < this.end.len())
-      return false
-    return tagText.slice(-this.end.len()) == this.end
   }
 }

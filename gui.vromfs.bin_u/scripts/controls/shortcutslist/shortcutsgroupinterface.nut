@@ -45,13 +45,13 @@ return [
   {
     id = "ID_SCREENSHOT"
     checkAssign = false
-    condition = @() is_platform_pc // See AcesApp::makeScreenshot()
+    condition = @() is_platform_pc // See AcesApp->makeScreenshot()
     needShowInHelp = true
   }
   {
     id = "ID_SCREENSHOT_WO_HUD"
     checkAssign = false
-    condition = @() is_platform_pc // See AcesApp::makeScreenshot()
+    condition = @() is_platform_pc // See AcesApp->makeScreenshot()
     needShowInHelp = true
   }
   {

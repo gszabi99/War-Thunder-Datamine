@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import stat_get_value_respawns, ps4_is_ugc_enabled, disable_network, pause_game, run_reactive_gui, epic_is_running, get_player_user_id_str, set_show_attachables, fetch_devices_inited_once, set_host_cb, ps4_is_chat_enabled, get_num_real_devices, fetch_profile_inited_once, get_localization_blk_copy
+from "%scripts/dagui_natives.nut" import stat_get_value_respawns, ps4_is_ugc_enabled, disable_network, pause_game, run_reactive_gui, epic_is_running, get_player_user_id_str, set_show_attachables, fetch_devices_inited_once, set_host_cb, ps4_is_chat_enabled, get_num_real_devices, fetch_profile_inited_once, get_localization_blk_copy, dgs_get_argv
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE
@@ -50,11 +50,13 @@ let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
 
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null, shouldRestartPseudoThread = true})
+let cachedLoginData = persist("cachedLoginData", @() { use_dmm_login = null })
 
 function gui_start_startscreen(_) {
   bqSendNoAuthStart()
@@ -81,13 +83,20 @@ function go_to_account_web_page(bqKey = "") {
   openUrl(urlBase, false, false, bqKey)
 }
 
+function useDmmLogin() {
+  if (cachedLoginData.use_dmm_login == null) {
+    cachedLoginData.use_dmm_login = dgs_get_argv("dmm_user_id") && dgs_get_argv("dmm_token")
+  }
+  return cachedLoginData.use_dmm_login
+}
+
 ::g_login.loadLoginHandler <- function loadLoginHandler() {
   local hClass = gui_handlers.LoginWndHandler
   if (isPlatformSony)
     hClass = gui_handlers.LoginWndHandlerPs4
   else if (is_platform_xbox)
     hClass = gui_handlers.LoginWndHandlerXboxOne
-  else if (::use_dmm_login())
+  else if (useDmmLogin())
     hClass = gui_handlers.LoginWndHandlerDMM
   else if (steam_is_running())
     hClass = gui_handlers.LoginWndHandlerSteam
@@ -172,7 +181,7 @@ function go_to_account_web_page(bqKey = "") {
         steam_process_dlc()
 
       if (is_dev_version())
-        ::checkShopBlk()
+        checkShopBlk()
 
       updatePlayerRankByCountries()
     }

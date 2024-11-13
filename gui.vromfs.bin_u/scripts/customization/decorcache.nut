@@ -224,9 +224,7 @@ addListenersWithoutEnv({
 }, g_listener_priority.CONFIG_VALIDATION)
 
 // native code callback
-::on_dl_content_skins_invalidate <- function on_dl_content_skins_invalidate() {
-  invalidateCache()
-}
+eventbus_subscribe("on_dl_content_skins_invalidate", @(_) invalidateCache())
 
 // native code callback
 eventbus_subscribe("update_unit_skins_list", function update_unit_skins_list(evt) {

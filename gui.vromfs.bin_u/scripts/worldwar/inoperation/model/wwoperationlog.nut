@@ -9,6 +9,7 @@ let { wwGetPlayerSide } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperationLogView.nut")
 
 ::g_ww_logs <- {
   loaded = []
@@ -185,7 +186,7 @@ let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 ::g_ww_logs.saveLogView <- function saveLogView(logObj) {
   if (!(logObj.id in this.logsViews))
-    this.logsViews[logObj.id] <- ::WwOperationLogView(logObj)
+    this.logsViews[logObj.id] <- WwOperationLogView(logObj)
 }
 
 ::g_ww_logs.saveLogBattle <- function saveLogBattle(blk) {

@@ -91,7 +91,7 @@ function setRewardIconCfg(cfg, blk, unlocked) {
 
   let prize = item.getTopPrize()
   if (prize?.unlock && getUnlockType(prize.unlock) ==  UNLOCKABLE_PILOT) {
-    cfg.image <- $"#ui/images/avatars/{prize.unlock}"
+    cfg.image <- $"#ui/images/avatars/{prize.unlock}.avif"
     cfg.isTrophyLocked <- !unlocked
     return
   }
@@ -535,7 +535,7 @@ let getEmptyConditionsConfig = @() {
 
   else if ( uType == UNLOCKABLE_PILOT) {
     if (id != "") {
-      res.descrImage <- $"#ui/images/avatars/{id}"
+      res.descrImage <- $"#ui/images/avatars/{id}.avif"
       res.descrImageSize <- "100, 100"
       res.needFrame <- true
     }

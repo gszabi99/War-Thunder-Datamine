@@ -35,7 +35,18 @@ function batchTrainCrew(requestData, taskOptions = null, onSuccess = null, onErr
   addTask(taskId, taskOptions, onTaskSuccess, onTaskError)
 }
 
+function unlockCrew(crewId, byGold, cost) {
+  let blk = DataBlock()
+  blk["crew"] = crewId
+  blk["gold"] = byGold
+  blk["cost"] = cost?.wp ?? 0
+  blk["costGold"] = cost?.gold ?? 0
+
+  return char_send_blk("cln_unlock_crew", blk)
+}
+
 return {
   batchTrainCrew
   createBatchTrainCrewRequestBlk
+  unlockCrew
 }

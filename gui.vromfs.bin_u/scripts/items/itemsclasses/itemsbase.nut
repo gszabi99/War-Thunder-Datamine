@@ -229,7 +229,7 @@ let BaseItem = class {
 
   function getCost(ignoreCanBuy = false) {
     if (this.isCanBuy() || ignoreCanBuy)
-      return Cost(::wp_get_item_cost(this.id), wp_get_item_cost_gold(this.id)).multiply(this.getSellAmount())
+      return Cost(wp_get_item_cost(this.id), wp_get_item_cost_gold(this.id)).multiply(this.getSellAmount())
     return Cost()
   }
 

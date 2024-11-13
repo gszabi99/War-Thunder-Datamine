@@ -24,6 +24,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
+let { checkPackageAndAskDownloadOnce } = require("%scripts/clientState/contentPacks.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -140,7 +141,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
     let lowQuality = !::is_loaded_model_high_quality()
     showObjById("low-quality-model-warning", lowQuality, this.scene)
     if (lowQuality && this.isSceneActive() && isInMenu())
-      ::check_package_and_ask_download_once("pkg_main", "air_in_hangar")
+      checkPackageAndAskDownloadOnce("pkg_main", "air_in_hangar")
   }
 
   forceUpdateSelUnitInfo = @() this.updateSelUnitInfo(true)

@@ -14,7 +14,7 @@ let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
-::BulletGroup <- class {
+class BulletGroup {
   unit = null
   groupIndex = -1
   selectedName = ""   //selected bullet name
@@ -207,3 +207,5 @@ let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
     return needSetWeaponName ? this.gunInfo?.weapName ?? "" : ""
   }
 }
+
+return BulletGroup

@@ -51,7 +51,7 @@ let { get_meta_mission_info_by_name, leave_mp_session, quit_to_debriefing,
   interrupt_multiplayer, get_mission_difficulty_int
 } = require("guiMission")
 let { set_game_mode, get_game_mode, get_game_type, get_cur_game_mode_name } = require("mission")
-let { addRecentContacts } = require("%scripts/contacts/contactsManager.nut")
+let { addRecentContacts, getContactsGroupUidList } = require("%scripts/contacts/contactsManager.nut")
 let { notifyQueueLeave } = require("%scripts/matching/serviceNotifications/match.nut")
 let { matchingApiFunc, matchingRpcSubscribe, checkMatchingError } = require("%scripts/matching/api.nut")
 let { serializeDyncampaign, invitePlayerToRoom, roomSetReadyState, roomSetPassword,
@@ -1624,7 +1624,7 @@ SessionLobby = {
     }
     if (SessionLobbyState.password && SessionLobbyState.password != "")
       initParams.password <- SessionLobbyState.password
-    let blacklist = ::getContactsGroupUidList(EPL_BLOCKLIST)
+    let blacklist = getContactsGroupUidList(EPL_BLOCKLIST)
     if (blacklist.len())
       initParams.blacklist <- blacklist
 

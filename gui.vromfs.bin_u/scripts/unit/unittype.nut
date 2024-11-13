@@ -28,14 +28,6 @@ function get_unit_icon_by_unit(unit, iconName) {
   return $"!#ui/unitskin#tomoe_{iconName}{isForGroup ? "_group" : ""}.ddsx"
 }
 
-::get_unit_type_font_icon <- function get_unit_type_font_icon(esUnitType) {
-  return unitTypes.getByEsUnitType(esUnitType).fontIcon
-}
-
-::get_army_id_by_es_unit_type <- function get_army_id_by_es_unit_type(esUnitType) {
-  return unitTypes.getByEsUnitType(esUnitType).armyId
-}
-
 return {
   get_unit_icon_by_unit
 }

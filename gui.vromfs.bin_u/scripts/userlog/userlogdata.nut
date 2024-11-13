@@ -51,10 +51,24 @@ let { hasKnowPrize } = require("%scripts/items/prizesView.nut")
 
 registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
 
+let popupUserlogs = [
+  EULT_SESSION_RESULT
+  {
+    type = EULT_CHARD_AWARD
+    rewardType = [
+      "WagerWin"
+      "WagerFail"
+      "WagerStageWin"
+      "WagerStageFail"
+    ]
+  }
+  EULT_EXCHANGE_WARBONDS
+]
+
 function checkPopupUserLog(user_log_blk) {
   if (user_log_blk == null)
     return false
-  foreach (popupItem in ::popup_userlogs) {
+  foreach (popupItem in popupUserlogs) {
     if (u.isTable(popupItem)) {
       if (popupItem.type != user_log_blk?.type)
         continue

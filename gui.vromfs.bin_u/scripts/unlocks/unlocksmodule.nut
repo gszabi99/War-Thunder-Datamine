@@ -272,7 +272,7 @@ function debugLogVisibleByTimeInfo(id) {
 }
 
 function getUnlockCost(id) {
-  return Cost(::wp_get_unlock_cost(id), wp_get_unlock_cost_gold(id))
+  return Cost(wp_get_unlock_cost(id), wp_get_unlock_cost_gold(id))
 }
 
 function getUnlockRewardCost(unlock) {

@@ -33,6 +33,7 @@ let { isInFlight } = require("gameplayBinding")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { items_classes } = require("%scripts/items/itemsClasses/itemsClasses.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let seenInventory = seenList.get(SEEN.INVENTORY)
 let seenItems = seenList.get(SEEN.ITEMS_SHOP)
@@ -797,8 +798,7 @@ function onItemsLoaded() {
   isInventoryInternalUpdated = true
   markInventoryUpdate()
 }
-::on_items_loaded <- @() deferOnce(onItemsLoaded)
-
+eventbus_subscribe("on_items_loaded", @(_) deferOnce(onItemsLoaded))
 
 ::ItemsManager <- {
   // circ reft and some other issues with the export

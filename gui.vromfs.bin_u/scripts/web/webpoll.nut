@@ -185,10 +185,6 @@ subscriptions.addListenersWithoutEnv({
 
 web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
 
-::webpoll_event <- function webpoll_event(id, token, voted) { //use in native code
-  webpollEvent(id, token, voted)
-}
-
 return {
   setPollBaseUrl
   getPollIdByFullUrl

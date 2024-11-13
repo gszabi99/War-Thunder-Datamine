@@ -2,7 +2,6 @@ from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-
 let { format, split_by_chars } = require("string")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
@@ -19,6 +18,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::Decorator <- class {
   id = ""
@@ -162,7 +162,7 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
     if (u.isEmpty(this.units))
       return null
 
-    return ::get_unit_type_font_icon(getEsUnitType(getAircraftByName(this.units[0])))
+    return unitTypes.getByEsUnitType(getEsUnitType(getAircraftByName(this.units[0]))).fontIcon
   }
 
   function getTypeDesc() {

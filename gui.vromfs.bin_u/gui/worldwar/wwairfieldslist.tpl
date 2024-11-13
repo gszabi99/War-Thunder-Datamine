@@ -10,7 +10,8 @@ imageButton {
   on_click:t='onAirfieldClick'
   on_hover:t='onHoverAirfieldItem'
   on_unhover:t='onHoverLostAirfieldItem'
-  size:t='40, 40'
+  size:t='40@sf/@pf, 40@sf/@pf'
+  background-svg-size:t='40@sf/@pf, 40@sf/@pf'
   margin:t='0.01@scrn_tgt'
 
   textareaNoTab {

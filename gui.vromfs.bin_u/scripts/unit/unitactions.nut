@@ -145,6 +145,21 @@ function setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc = @() null) {
   showFlushSquadronExpMsgBox(unit, @() setResearchClanVehicleWithAutoFlushImpl(unit, afterDoneFunc), afterDoneFunc)
 }
 
+function flushExcessExpToUnit(unit) {
+  let blk = DataBlock()
+  blk.setStr("unit", unit)
+
+  return char_send_blk("cln_move_exp_to_unit", blk)
+}
+
+function flushExcessExpToModule(unit, module) {
+  let blk = DataBlock()
+  blk.setStr("unit", unit)
+  blk.setStr("mod", module)
+
+  return char_send_blk("cln_move_exp_to_module", blk)
+}
+
 return {
   repair
   repairWithMsgBox
@@ -152,4 +167,6 @@ return {
   buy
   research
   setResearchClanVehicleWithAutoFlush
+  flushExcessExpToUnit
+  flushExcessExpToModule
 }

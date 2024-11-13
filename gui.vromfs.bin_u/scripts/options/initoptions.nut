@@ -49,16 +49,8 @@ function init_all_units() { //Not moved to allUnits.nut due to "require loops"
   }
 }
 
-::update_all_units <- function update_all_units() {
-  updateShopCountriesList()
-  ::countUsageAmountOnce()
-  generateUnitShopInfo()
-
-  log("update_all_units called, got", allUnits.len(), "items");
-}
-
 local usageAmountCounted = false
-::countUsageAmountOnce <- function countUsageAmountOnce() {
+function countUsageAmountOnce() {
   if (usageAmountCounted)
     return
 
@@ -101,6 +93,14 @@ local usageAmountCounted = false
     ::usageRating_amount[i] = (idx == shopStatsAirs.len() - 1) ? shopStatsAirs[idx] : 0.5 * (shopStatsAirs[idx] + shopStatsAirs[idx + 1])
   }
   usageAmountCounted = true
+}
+
+::update_all_units <- function update_all_units() {
+  updateShopCountriesList()
+  countUsageAmountOnce()
+  generateUnitShopInfo()
+
+  log("update_all_units called, got", allUnits.len(), "items");
 }
 
 ::init_options_steps <- [

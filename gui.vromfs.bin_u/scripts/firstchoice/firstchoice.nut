@@ -42,7 +42,7 @@ let fillUserNick = function (nestObj, _headerLocId = null) {
 
   let cfg = getProfileInfo()
   let data =  handyman.renderCached("%gui/firstChoice/userNick.tpl", {
-      userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}" : ""
+      userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}.avif" : ""
       userName = colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
     })
   guiScene.replaceContentFromText(nestObj, data, data.len(), null)

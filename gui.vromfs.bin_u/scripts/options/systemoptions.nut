@@ -24,7 +24,7 @@ let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/s
 let { eventbus_subscribe } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
 let { findNearest } = require("%scripts/util.nut")
-let { is_win64, is_win32 } = require("%sqstd/platform.nut")
+let { is_win64 } = require("%sqstd/platform.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -972,7 +972,7 @@ mShared = {
   widgetType - type of the widget in UI ("list", "slider", "value_slider", "checkbox", "editbox", "tabs").
   def - default value in UI (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
   blk - path to variable in config.blk file structure (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
-  restart - client restart is required to apply an option (e.g. no support in Renderer::onSettingsChanged() function).
+  restart - client restart is required to apply an option (e.g. no support in Renderer->onSettingsChanged() function).
   values - for string variables only, list of possible variable values in UI (for dropdown widget).
   items - optional, for string variables only, list of item titles in UI (for dropdown widget).
   min, max - for integer variables only, minimum and maximum variable values in UI (for slider widget).
@@ -996,13 +996,16 @@ mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     init = function(_blk, desc) {
       desc.values <- is_win64 ? [ "auto", "dx12" ]
-        : is_win32 ? [ "dx11" ]
-        : is_platform_macosx ? [ "metal" ]
-        : [ "vulkan" ]
+        : [ "auto" ]
 
       if (is_win64 && hasFeature("optionGFXAPIVulkan"))
         desc.values.append("vulkan")
 
+      desc.items <- desc.values.map(function(value) {
+        if (is_win64 && value == "auto")
+          return { text = "".concat(loc("options/gfx_api_auto"), loc("ui/parentheses/space", {text = loc("options/gfx_api_dx11") })) }
+        return { text = loc($"options/gfx_api_{value}") }
+      })
       desc.def <- desc.values[0]
     }
     onChanged = "gfxApiClick"

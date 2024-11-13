@@ -133,7 +133,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let plusButtonObj = showObjById("btn_squadPlus", canInvite, this.scene)
     if (plusButtonObj && canInvite)
-      plusButtonObj.enable(::ps4_is_ugc_enabled() && ps4_is_chat_enabled())
+      plusButtonObj.enable(ps4_is_ugc_enabled() && ps4_is_chat_enabled())
 
     showObjById("wait_icon", isInTransition, this.scene)
 
@@ -170,7 +170,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onSquadPlus() {
     if (is_platform_xbox && !hasFeature("SquadInviteIngame")) {
-      // MPSD-based code used ::xbox_show_invite_window() here, but we switched to MPA.
+      // MPSD-based code used xbox_show_invite_window() here, but we switched to MPA.
       // MPA doesn't have such window and we should use ingame invitations and system
       // invitations together.
       return

@@ -20,12 +20,14 @@ enum MIS_LOAD { //bit enum
 }
 
   //calls from c++ code.
-::on_update_es_from_host <- function on_update_es_from_host() {
+function onUpdateEsFromHost(_) {
   log("on_update_es_from_host called")
   invalidateCrewsList()
   reinitAllSlotbars()
   broadcastEvent("UpdateEsFromHost")
 }
+
+eventbus_subscribe("on_update_es_from_host", onUpdateEsFromHost)
 
   // for now it's only state of respawn bases
 eventbus_subscribe("on_mission_changed", function on_mission_changed(...) {

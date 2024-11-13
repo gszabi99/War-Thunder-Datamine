@@ -7,6 +7,7 @@ let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { checkPackageFull } = require("%scripts/clientState/contentPacks.nut")
 
 let eventIdsForMainGameModeList = [
   "tank_event_in_random_battles_arcade"
@@ -104,7 +105,7 @@ function checkEventFeaturePacks(event, isSilent = false) {
   let pack = getEventReqPack(event)
   if (!pack)
     return true
-  return ::check_package_full(pack, isSilent)
+  return checkPackageFull(pack, isSilent)
 }
 
 let getCurGameModeMinMRankForNightBattles = @(event) event?.minMRankForNightBattles

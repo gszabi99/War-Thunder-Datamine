@@ -100,7 +100,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 /**
  * Edit specified clan.
  * clanId @string - id of clan to edit, -1 if your clan
- * params @DataBlock - result of g_clan::prepareEditRequest function
+ * params @DataBlock - result of g_clan->prepareEditRequest function
  */
 ::g_clans.editClan <- function editClan(clanId, params, handler) {
   let isMyClan = ::my_clan_info != null && clanId == "-1"
@@ -266,7 +266,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   params.count = rowsCount
 
   //Allow to display only clan info changes
-  if ((::clan_get_my_clan_id() != clanId) && !clan_get_admin_editor_mode())
+  if ((clan_get_my_clan_id() != clanId) && !clan_get_admin_editor_mode())
     params.events = "create;info"
 
   if (requestMarker != null)
@@ -709,6 +709,26 @@ registerPersistentData("ClansGlobals", getroottable(),
 
 ::ranked_column_prefix <- "dr_era5"  //really used only rank 5, but in lb exist 5
 
+function handleNewMyClanData() {
+  ::g_clans.parseSeenCandidates()
+  contactsByGroups[EPLX_CLAN] <- {}
+  if ("members" in ::my_clan_info) {
+    foreach (_mem, block in ::my_clan_info.members) {
+      if (!(block.uid in contactsPlayers))
+        ::getContact(block.uid, block.nick)
+
+      let contact = contactsPlayers[block.uid]
+      if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
+        contact.presence = ::getMyClanMemberPresence(block.nick)
+
+      if (userIdStr.value != block.uid)
+        addContact(contact, EPLX_CLAN)
+
+      ::clanUserTable[block.nick] <- ::my_clan_info.tag
+    }
+  }
+}
+
 ::requestMyClanData <- function requestMyClanData(forceUpdate = false) {
   if (!get_my_clan_data_free)
     return
@@ -738,7 +758,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   addBgTaskCb(taskId, function() {
     let wasCreated = !::my_clan_info
     ::my_clan_info = ::get_clan_info_table()
-    ::handle_new_my_clan_data()
+    handleNewMyClanData()
     get_my_clan_data_free = true
     broadcastEvent("ClanInfoUpdate")
     ::update_gamercards()
@@ -749,26 +769,6 @@ registerPersistentData("ClansGlobals", getroottable(),
 
 ::is_in_clan <- function is_in_clan() {
   return clan_get_my_clan_id() != "-1"
-}
-
-::handle_new_my_clan_data <- function handle_new_my_clan_data() {
-  ::g_clans.parseSeenCandidates()
-  contactsByGroups[EPLX_CLAN] <- {}
-  if ("members" in ::my_clan_info) {
-    foreach (_mem, block in ::my_clan_info.members) {
-      if (!(block.uid in contactsPlayers))
-        ::getContact(block.uid, block.nick)
-
-      let contact = contactsPlayers[block.uid]
-      if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
-        contact.presence = ::getMyClanMemberPresence(block.nick)
-
-      if (userIdStr.value != block.uid)
-        addContact(contact, EPLX_CLAN)
-
-      ::clanUserTable[block.nick] <- ::my_clan_info.tag
-    }
-  }
 }
 
 ::is_in_my_clan <- function is_in_my_clan(name = null, uid = null) {
@@ -791,19 +791,19 @@ registerPersistentData("ClansGlobals", getroottable(),
   { id = "date", type = lbDataType.DATE }
 ];
 
-::empty_rating <- {
+let emptyRating = {
   [($"{::ranked_column_prefix}_arc")]   = 0,
   [($"{::ranked_column_prefix}_hist")]  = 0,
   [($"{::ranked_column_prefix}_sim")]   = 0
 }
 
-::empty_activity <- {
+let emptyActivity = {
   cur = 0
   total = 0
 }
 
 
-::clanInfoTemplate <- {
+let clanInfoTemplate = {
   function isRegionChangeAvailable() {
     if (this.regionLastUpdate == 0) // warning disable: -never-declared
       return true
@@ -881,7 +881,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   if (!clanInfo?._id)
     return null
 
-  let clan = clone ::clanInfoTemplate
+  let clan = clone clanInfoTemplate
   clan.id     <- clanInfo._id
   clan.name   <- getTblValue("name",   clanInfo, "")
   clan.tag    <- getTblValue("tag",    clanInfo, "")
@@ -929,13 +929,13 @@ registerPersistentData("ClansGlobals", getroottable(),
 
     //get members ELO
     let ratingTable = getTblValue(memberItem.uid, member_ratings, {})
-    foreach (key, value in ::empty_rating)
+    foreach (key, value in emptyRating)
       memberItem[key] <- round(getTblValue(key, ratingTable, value))
     memberItem.onlineStatus <- contactPresence.UNKNOWN
 
     //get members activity
     let memberActivityInfo = clanActivityInfo.getBlockByName(memberItem.uid) || DataBlock()
-    foreach (key, value in ::empty_activity)
+    foreach (key, value in emptyActivity)
       memberItem[$"{key}Activity"] <- memberActivityInfo.getInt(key, value)
     let history = memberActivityInfo.getBlockByName("history")
     memberItem["activityHistory"] <- u.isDataBlock(history) ? convertBlk(history) : {}
@@ -1022,7 +1022,7 @@ function getSeasonName(blk) {
   return name
 }
 
-::ClanSeasonTitle <- class {
+class ClanSeasonTitle {
   clanTag = ""
   clanName = ""
   seasonName = ""
@@ -1054,7 +1054,7 @@ function getSeasonName(blk) {
 }
 
 
-::ClanSeasonPlaceTitle <- class (::ClanSeasonTitle) {
+::ClanSeasonPlaceTitle <- class (ClanSeasonTitle) {
   place = ""
   seasonType = ""
   seasonTag = null

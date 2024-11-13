@@ -9,7 +9,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
+let { get_warpoints_blk, get_ranks_blk, get_discounts_blk } = require("blkGetters")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -163,6 +163,19 @@ function getFirstPurchaseAdditionalAmount(ent) {
   return 0
 }
 
+function getSteamMarkUp() {
+  let blk = get_discounts_blk()
+
+  let blocksCount = blk.blockCount()
+  for (local i = 0; i < blocksCount; i++) {
+    let block = blk.getBlock(i)
+    if (block.getBlockName() == "steam_markup")
+      return block.all
+  }
+
+  return 0
+}
+
 function getEntitlementPrice(ent) {
   if (ent?.onlinePurchase ?? false) {
     let info = bundlesShopInfo.value?[ent.name]
@@ -176,7 +189,7 @@ function getEntitlementPrice(ent) {
     if (priceText == "")
       return ""
 
-    let markup = steam_is_running() ? 1.0 + ::getSteamMarkUp() / 100.0 : 1.0
+    let markup = steam_is_running() ? 1.0 + getSteamMarkUp() / 100.0 : 1.0
     local totalPrice = priceText.tofloat() * markup
     let discount = ::g_discount.getEntitlementDiscount(ent.name)
     if (discount)

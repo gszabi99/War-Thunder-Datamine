@@ -371,7 +371,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       Callback(function() {
         this.applyFunc = function() {
           if (get_gui_option(USEROPT_DIFFICULTY) == "custom") {
-            guiStartCdOptions(this.startTestFlight, this) // See "MissionDescriptor::loadFromBlk"
+            guiStartCdOptions(this.startTestFlight, this) // See "MissionDescriptor->loadFromBlk"
             this.doWhenActiveOnce("updateSceneDifficulty")
           }
           else
@@ -590,6 +590,15 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
 
     set_option(option.type, obj.getValue(), option)
     this.updateTripleAerobaticsSmokeOptions()
+  }
+
+  function onTestFlightNameChange(obj) {
+    let option = this.get_option_by_id(obj?.id)
+    if (!option)
+      return
+
+    set_option(option.type, obj.getValue(), option)
+    this.updateOption(USEROPT_AIR_SPAWN_POINT)
   }
 
   function checkRocketDisctanceFuseRow() {

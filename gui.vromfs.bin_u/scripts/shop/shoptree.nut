@@ -7,6 +7,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { get_shop_blk } = require("blkGetters")
 
 function getReqAirPosInArray(reqName, arr) {
   foreach (r, row in arr)
@@ -499,6 +500,53 @@ function generateTreeData(page) {
   return page
 }
 
+function checkShopBlk() {
+  let resArray = []
+  let shopBlk = get_shop_blk()
+  for (local tree = 0; tree < shopBlk.blockCount(); tree++) {
+    let tblk = shopBlk.getBlock(tree)
+    let country = tblk.getBlockName()
+
+    for (local page = 0; page < tblk.blockCount(); page++) {
+      let pblk = tblk.getBlock(page)
+      let groups = []
+      for (local range = 0; range < pblk.blockCount(); range++) {
+        let rblk = pblk.getBlock(range)
+        for (local a = 0; a < rblk.blockCount(); a++) {
+          let airBlk = rblk.getBlock(a)
+          let airName = airBlk.getBlockName()
+          local air = getAircraftByName(airName)
+          if (!air) {
+            let groupTotal = airBlk.blockCount()
+            if (groupTotal == 0) {
+              resArray.append($"Not found aircraft {airName} in {country}")
+              continue
+            }
+            groups.append(airName)
+            for (local ga = 0; ga < groupTotal; ga++) {
+              let gAirBlk = airBlk.getBlock(ga)
+              air = getAircraftByName(gAirBlk.getBlockName())
+              if (!air)
+                resArray.append($"Not found aircraft {gAirBlk.getBlockName()} in {country}")
+            }
+          }
+          else if ((airBlk?.reqAir ?? "") != "") {
+              let reqAir = getAircraftByName(airBlk.reqAir)
+              if (!reqAir && !isInArray(airBlk.reqAir, groups))
+                resArray.append($"Not found reqAir {airBlk.reqAir} for {airName} in {country}")
+          }
+        }
+      }
+    }
+  }
+  let resText = "\n".join(resArray, true)
+  if (resText == "")
+    log("Shop.blk checked.")
+  else
+    fatal($"Incorrect shop.blk!\n{resText}")
+}
+
 return {
-  generateTreeData = generateTreeData
+  generateTreeData
+  checkShopBlk
 }

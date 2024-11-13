@@ -40,7 +40,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
   topMenu = true
   topMenuInited = false
-  menuConfig = null /*::topMenu_config*/
+  menuConfig = null /*topMenu_config*/
 
   canQuitByGoBack = false
 

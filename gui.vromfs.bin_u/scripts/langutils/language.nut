@@ -253,17 +253,6 @@ function isAvailableForCurLang(block) {
 
 let getCurrentSteamLanguage = @() currentSteamLanguage
 
-
-// using from C++ to convert current language to inventory's abbreviation language
-// to properly load localization for its goods
-::get_abbreviated_language_for_inventory <- function get_abbreviated_language_for_inventory(fullLang) {
-  local abbrevLang = "en"
-  if (fullLang in langsListForInventory)
-    abbrevLang = langsListForInventory[fullLang]
-
-  return abbrevLang
-}
-
 // called from native playerProfile on language change, so at this point we can use get_language
 eventbus_subscribe("on_language_changed", function on_language_changed(...) {
   saveLanguage(get_language())

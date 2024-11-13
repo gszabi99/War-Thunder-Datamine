@@ -21,6 +21,7 @@ let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
+let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -29,20 +30,6 @@ let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
   EULT_WW_CREATE_OPERATION,
   EULT_WW_END_OPERATION,
   EULT_WW_AWARD
-]
-
-::popup_userlogs <- [
-  EULT_SESSION_RESULT
-  {
-    type = EULT_CHARD_AWARD
-    rewardType = [
-      "WagerWin"
-      "WagerFail"
-      "WagerStageWin"
-      "WagerStageFail"
-    ]
-  }
-  EULT_EXCHANGE_WARBONDS
 ]
 
 function isMissionExtrCheckFucn(userLog) {
@@ -304,7 +291,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillLog(logObj) {
     let rowName =$"row{logObj.idx}"
     let rowObj = this.listObj.findObject(rowName)
-    let rowData = ::get_userlog_view_data(logObj)
+    let rowData = getUserlogViewData(logObj)
     if ((rowData?.descriptionBlk ?? "") != "")
       rowData.hasExpandImg <- true
     let viewBlk = handyman.renderCached(this.logRowTplName, rowData)

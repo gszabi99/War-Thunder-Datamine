@@ -20,6 +20,19 @@ let { getFullUnlockCondsDesc,
 let { isInFlight } = require("gameplayBinding")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { measureType } = require("%scripts/measureType.nut")
+let { floor } = require("math")
+
+function getArrayFromInt(intNum) {
+  let arr = []
+  do {
+    let div = intNum % 10
+    arr.append(div)
+    intNum = floor(intNum / 10).tointeger()
+  } while (intNum != 0)
+
+  arr.reverse()
+  return arr
+}
 
 let Booster = class (BaseItem) {
   static name = "Booster"
@@ -324,7 +337,7 @@ let Booster = class (BaseItem) {
   function _getMulIconCfg() {
     let layersArray = []
     let mul = max(this.wpRate, this.xpRate)
-    let numsArray = ::getArrayFromInt(mul)
+    let numsArray = getArrayFromInt(mul)
     if (numsArray.len() > 0) {
       let plusLayer = LayersIcon.findLayerCfg("item_plus")
       if (plusLayer)

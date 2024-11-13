@@ -20,7 +20,7 @@ let { langsById } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { getContentPackStatus, requestContentPack, ContentPackStatus } = require("contentpacks")
 
-function get_pkg_loc_name(pack, isShort = false) {
+function getPkgLocName(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
 }
 
@@ -33,7 +33,7 @@ function check_members_pkg(pack) {
   let mText = ", ".join(members.reduce(@(acc, m) acc.append(m.name), []))
   local msg = loc("msgbox/members_no_package", {
                       members = colorize("userlogColoredText", mText)
-                      package = colorize("activeTextColor", get_pkg_loc_name(pack))
+                      package = colorize("activeTextColor", getPkgLocName(pack))
                     })
   showInfoMsgBox(msg, "members_req_new_content")
 }
@@ -44,7 +44,7 @@ function have_package(packName) {
   return getContentPackStatus(packName) == ContentPackStatus.OK
 }
 
-function check_package_full(pack, silent = false) {
+function checkPackageFull(pack, silent = false) {
   local res = true
   if (silent)
     res = have_package(pack)
@@ -57,7 +57,7 @@ function check_package_full(pack, silent = false) {
 
 function check_gamemode_pkg(gm, silent = false) {
   if (isInArray(gm, [GM_SINGLE_MISSION, GM_SKIRMISH, GM_DYNAMIC, GM_USER_MISSION]))
-    return check_package_full("pkg_main", silent)
+    return checkPackageFull("pkg_main", silent)
 
   return true
 }
@@ -65,7 +65,7 @@ function check_gamemode_pkg(gm, silent = false) {
 function check_diff_pkg(diff, silent = false) {
   foreach (d in [DIFFICULTY_HARDCORE, DIFFICULTY_CUSTOM])
     if (diff == d || get_difficulty_name(d) == diff)
-      return check_package_full("pkg_main", silent)
+      return checkPackageFull("pkg_main", silent)
   return true
 }
 
@@ -155,7 +155,7 @@ function request_packages_and_restart(packList) {
 
   if (text == "") {
     text = loc("yn1/have_new_content")
-    let pText = ", ".join(reqPacksList.reduce(@(acc, pack) acc.append(colorize("activeTextColor", get_pkg_loc_name(pack))), []))
+    let pText = ", ".join(reqPacksList.reduce(@(acc, pack) acc.append(colorize("activeTextColor", getPkgLocName(pack))), []))
     text = "".concat(text, "\n", pText)
   }
 
@@ -208,7 +208,7 @@ function set_asked_pack(pack, askTag = null) {
       let ending = continueFunc ? "/continue" : ""
       _msg = loc($"msgbox/no_package{ending}")
     }
-    _msg = format(_msg, colorize("activeTextColor", get_pkg_loc_name(pack)))
+    _msg = format(_msg, colorize("activeTextColor", getPkgLocName(pack)))
   }
 
   local defButton = "cancel"
@@ -241,7 +241,7 @@ function set_asked_pack(pack, askTag = null) {
   return false
 }
 
-::check_package_and_ask_download_once <- function check_package_and_ask_download_once(pack, askTag = null, msg = null) {
+function checkPackageAndAskDownloadOnce(pack, askTag = null, msg = null) {
   if (!is_asked_pack(pack, askTag))
     ::check_package_and_ask_download(pack, msg, null, null, askTag)
 }
@@ -268,7 +268,7 @@ function set_asked_pack(pack, askTag = null) {
     [["download", function() { request_packages_and_restart([pack]) }], ["cancel"]], "cancel", params)
 }
 
-::check_speech_country_unit_localization_package_and_ask_download <- function check_speech_country_unit_localization_package_and_ask_download() {
+function checkSpeechCountryUnitLocalizationPackageAndAskDownload() {
   let reqPacksList = []
 
   foreach (langId, langData in langsById) {
@@ -340,16 +340,16 @@ function restart_to_launcher() {
 addPromoAction("content_pack", @(_handler, params, _obj) ::check_package_and_ask_download(params?[0] ?? ""),
   @(params) hasFeature("Packages") && !have_package(params?[0] ?? ""))
 
-::get_pkg_loc_name <- get_pkg_loc_name
 ::have_package <- have_package
-::check_package_full <- check_package_full
 ::check_gamemode_pkg <- check_gamemode_pkg
 ::check_diff_pkg <- check_diff_pkg
 
 return {
-  get_pkg_loc_name
+  getPkgLocName
   have_package
-  check_package_full
+  checkPackageFull
   check_gamemode_pkg
   check_diff_pkg
+  checkSpeechCountryUnitLocalizationPackageAndAskDownload
+  checkPackageAndAskDownloadOnce
 }

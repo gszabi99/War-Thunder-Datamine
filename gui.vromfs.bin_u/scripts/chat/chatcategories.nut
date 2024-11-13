@@ -163,5 +163,4 @@ g_chat_categories._setSearchCategories <- function _setSearchCategories(newValue
 }
 
 subscribe_handler(g_chat_categories, g_listener_priority.DEFAULT_HANDLER)
-::g_chat_categories <- g_chat_categories
 return { g_chat_categories }

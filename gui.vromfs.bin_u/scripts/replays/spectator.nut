@@ -55,6 +55,7 @@ let { gui_start_tactical_map } = require("%scripts/tacticalMap.nut")
 let { showOrdersContainer } = require("%scripts/items/orders.nut")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let { loadGameChatToObj } = require("%scripts/chat/mpChat.nut")
+let { register_command } = require("console")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -1553,13 +1554,15 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
 gui_handlers.Spectator <- Spectator
 
-::spectator_debug_mode <- function spectator_debug_mode() {
+function spectatorDebugMode() {
   let handler = is_dev_version() && handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
   if (!handler)
     return null
   handler.debugMode = !handler.debugMode
   return handler.debugMode
 }
+
+register_command(spectatorDebugMode, "debug.spectatorDebugMode")
 
 ::isPlayerDedicatedSpectator <- function isPlayerDedicatedSpectator(name = null) {
   if (name) {

@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_option_aerobatics_smoke_type
 from "%scripts/dagui_library.nut" import *
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
+let { checkSpeechCountryUnitLocalizationPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 let checkUnitSpeechLangPackWatch = mkWatched(persist, "checkUnitSpeechLangPackWatch", false)
 
@@ -12,7 +13,7 @@ function checkUnitSpeechLangPack(_params) {
   get_cur_gui_scene().performDelayed(
     {},
     function() {
-      ::check_speech_country_unit_localization_package_and_ask_download()
+      checkSpeechCountryUnitLocalizationPackageAndAskDownload()
     }
   )
 

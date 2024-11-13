@@ -57,6 +57,8 @@ function selectBattle(params) {
 }
 
 function hoverArmy(params) {
+  if (params?.armyName == "")
+    params.rawdelete("armyName")
   sendMapEvent("UpdateCursorByTimer", params)
 }
 

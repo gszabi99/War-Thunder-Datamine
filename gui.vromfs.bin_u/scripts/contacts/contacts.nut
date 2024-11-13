@@ -65,13 +65,6 @@ foreach (fn in [
 
 ::missed_contacts_data <- {}
 
-::getContactsGroupUidList <- function getContactsGroupUidList(groupName) {
-  let res = []
-  if (!(groupName in contactsByGroups))
-    return res
-  return contactsByGroups[groupName].keys()
-}
-
 ::isPlayerInContacts <- function isPlayerInContacts(uid, groupName) {
   if (!(groupName in contactsByGroups) || u.isEmpty(uid))
     return false
@@ -230,7 +223,7 @@ foreach (fn in [
   let view = {
     name = fullName
     presenceText = colorize(contact.presence.getIconColor(), contact.getPresenceText())
-    icon = contact.steamAvatar ?? $"#ui/images/avatars/{contact.pilotIcon}"
+    icon = contact.steamAvatar ?? $"#ui/images/avatars/{contact.pilotIcon}.avif"
     hasUnitList = false
     title
     wtName = contact.steamName == null || contact.name == "" ? ""

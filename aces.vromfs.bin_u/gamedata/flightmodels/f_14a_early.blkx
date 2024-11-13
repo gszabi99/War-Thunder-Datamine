@@ -2451,6 +2451,7 @@
               "N019",
               "N001",
               "N010",
+              "V004",
               "ELTA EL/M-2001B",
               "PS-37",
               "PS-05",
@@ -2492,6 +2493,11 @@
               "N001",
               "N010"
             ]
+          },
+          {
+            "name": "Su-34",
+            "detectLaunch": true,
+            "type": "V004"
           },
           {
             "name": "F-4",
@@ -2641,6 +2647,10 @@
             "group": "MiG-29"
           },
           {
+            "text": "S34",
+            "group": "Su-34"
+          },
+          {
             "text": "F4",
             "group": "F-4"
           },
@@ -2702,6 +2712,48 @@
           }
         ]
       },
+      "targetsPresenceGroups": {
+        "targetsPresenceGroup": [
+          {
+            "text": "hud/rwr_threat_ai_track",
+            "search": false,
+            "track": true,
+            "launch": true,
+            "group": [
+              "AI",
+              "Attacker",
+              "MiG-21",
+              "MiG-23",
+              "MiG-29",
+              "F-4",
+              "F-5",
+              "F-14",
+              "F-15",
+              "F-16",
+              "F-18",
+              "Tornado F",
+              "Mirage 2000",
+              "J-39",
+              "JF-17",
+              "ARH"
+            ]
+          },
+          {
+            "text": "hud/rwr_threat_sam_track",
+            "search": false,
+            "track": true,
+            "launch": true,
+            "group": [
+              "S-125",
+              "9K330",
+              "9K33",
+              "2S6",
+              "Roland",
+              "Crotal"
+            ]
+          }
+        ]
+      },
       "typeLamps": {
         "typeLamp": [
           {
@@ -2711,6 +2763,7 @@
               "MiG-21",
               "MiG-23",
               "MiG-29",
+              "Su-34",
               "F-4",
               "F-5",
               "F-14",

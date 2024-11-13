@@ -208,13 +208,14 @@ function altCompressed(is_metric) {
 }
 
 function altWrap(width, height, generateFunc, is_metric) {
+  let altElem = altitude(height * 0.4, generateFunc, is_metric)
   return @(){
     watch = isAAMMode
     size = [width * 0.17, height * 0.4]
     pos = [width * 0.75, height * 0.3]
     clipChildren = true
     children = !isAAMMode.value ? [
-      altitude(height * 0.4, generateFunc, is_metric)
+      altElem
       {
         rendObj = ROBJ_VECTOR_CANVAS
         size = [width * 0.02, height * 0.024]

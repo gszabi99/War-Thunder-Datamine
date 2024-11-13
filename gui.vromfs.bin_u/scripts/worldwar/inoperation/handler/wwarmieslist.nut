@@ -29,6 +29,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   curItemsPerPage = 0
   itemsPerPageWithPaginator = 0
   itemsPerPageWithoutPaginator = 0
+  prevHoveredArmyName = null
 
   function initScreen() {
     this.itemsPerPageWithPaginator = this.getArmiesPerPage()
@@ -197,9 +198,12 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
     wwUpdateHoverArmyName(obj.armyName)
     hoverArmyByName(obj.armyName)
     wwEvent("HoverArmyItem", { armyName = obj.armyName })
+    this.prevHoveredArmyName = obj.armyName
   }
 
-  function onHoverLostArmyItem(_obj) {
+  function onHoverLostArmyItem(obj) {
+    if (this.prevHoveredArmyName != obj.armyName)
+      return
     wwUpdateHoverArmyName("")
     hoverArmyByName("")
     wwEvent("HoverLostArmyItem", { armyName = null })

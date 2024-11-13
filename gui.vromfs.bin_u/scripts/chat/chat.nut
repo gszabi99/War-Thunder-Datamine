@@ -27,6 +27,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { update_gamercards_chat_info } = require("%scripts/gamercard.nut")
 
 local g_chat
 
@@ -314,7 +315,7 @@ g_chat.updateThreadInfo <- function updateThreadInfo(dataBlk) {
   if (dataBlk?.type == "thread_list")
     ::g_chat_latest_threads.onNewThreadInfoToList(this.threadsInfo[roomId])
 
-  ::update_gamercards_chat_info()
+  update_gamercards_chat_info()
   broadcastEvent("ChatThreadInfoChanged", { roomId = roomId })
 }
 

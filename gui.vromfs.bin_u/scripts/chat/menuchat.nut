@@ -48,6 +48,7 @@ let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
+let { getLastGamercardScene } = require("%scripts/gamercard.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -69,7 +70,7 @@ enum chatErrorName {
 
 ::clanUserTable <- {}
 
-::default_chat_rooms <- ["general"]
+let defaultChatRooms = ["general"]
 ::langs_list <- ["en", "ru"] //first is default
 ::global_chat_rooms_list <- null
 ::global_chat_rooms <- [{ name = "general", langs = ["en", "ru", "de", "zh", "vn"] },
@@ -83,7 +84,7 @@ enum chatErrorName {
                        "(", ")", "+", "|", "-", "=", "\\", "/", "<", ">", "[", "]", "{", "}", "`", "?"]
 ::cur_chat_lang <- loc("current_lang")
 
-::available_cmd_list <- ["help", //local command to view help
+let availableCmdList = ["help", //local command to view help
                          "edit", //local command to open thread edit window for opened thread
                          "msg", "join", "part", "invite", "mode",
                          "kick", /*"list",*/
@@ -832,7 +833,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function loadRoomParams(roomName, joinParams) {
-    foreach (r in ::default_chat_rooms) //validate incorrect created default chat rooms by cur lang
+    foreach (r in defaultChatRooms) //validate incorrect created default chat rooms by cur lang
       if (roomName == $"#{r}_{::cur_chat_lang}")  {
         let rList = ::getGlobalRoomsListByLang(::cur_chat_lang, [r])
         // default rooms should have empty joinParams
@@ -1324,7 +1325,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         if (::g_chat.isRoomSquad(roomData.id))
           this.onSquadListMember(nick, false)
         else if ("isOwner" in user && user.isOwner == true)
-          ::gchat_list_names(gchat_escape_target(roomData.id))
+          gchat_list_names(gchat_escape_target(roomData.id))
         roomData.users.remove(idx)
         if (this.curRoom == roomData)
           this.updateUsersList()
@@ -1634,7 +1635,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (customScene && !roomData)
       this.addRoom(id, customScene, ownerHandler) //for correct reconnect
 
-    let task = ::gchat_join_room(gchat_escape_target(id), password) //FIX ME: better to remove this and work via gchat_raw_command always
+    let task = gchat_join_room(gchat_escape_target(id), password) //FIX ME: better to remove this and work via gchat_raw_command always
     if (task != "")
       this.chatTasks.append({ task = task, handler = this.onJoinRoom, roomId = id,
                          onJoinFunc = onJoinFunc, customScene = customScene,
@@ -1838,7 +1839,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
   function checkCmd(msg) {
     if (msg.slice(0, 1) == "\\" || msg.slice(0, 1) == "/")
-      foreach (cmd in ::available_cmd_list)
+      foreach (cmd in availableCmdList)
         if ((msg.len() > (cmd.len() + 2) && msg.slice(1, cmd.len() + 2) == ($"{cmd} "))
             || (msg.len() == (cmd.len() + 1) && msg.slice(1, cmd.len() + 1) == cmd)) {
           let hasParam = msg.len() > cmd.len() + 2;
@@ -2176,7 +2177,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     if (!this.curRoom)
       return
 
-    if (!::gchat_chat_private_message(gchat_escape_target(this.curRoom.id), gchat_escape_target(data.user), data.msg))
+    if (!gchat_chat_private_message(gchat_escape_target(this.curRoom.id), gchat_escape_target(data.user), data.msg))
       return
 
     this.addRoomMsg(this.curRoom.id, userName.value, data.msg, true, true)
@@ -2449,7 +2450,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
     this.searchInProgress = true
     this.defaultRoomsInSearch = false
     this.searchRoomList = []
-    ::gchat_list_rooms(gchat_escape_target(value))
+    gchat_list_rooms(gchat_escape_target(value))
     this.fillSearchList()
 
     this.last_search_time = get_time_msec()
@@ -2557,7 +2558,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
   }
 
   function openChatRoom(roomId) {
-    let curScene = ::getLastGamercardScene()
+    let curScene = getLastGamercardScene()
 
     ::switchMenuChatObj(::getChatDiv(curScene))
     this.chatSceneShow(true)
@@ -2782,7 +2783,7 @@ if (::g_login.isLoggedIn())
     return false
   }
 
-  let scene = ownerHandler ? ownerHandler.scene : ::getLastGamercardScene()
+  let scene = ownerHandler ? ownerHandler.scene : getLastGamercardScene()
   if (!checkObj(scene))
     return false
 
@@ -2824,7 +2825,6 @@ if (::g_login.isLoggedIn())
 
 function resetChat(...) {
   ::g_chat.rooms.clear()
-  ::new_menu_chat_messages <- false
   ::last_send_messages = []
   ::last_chat_scene_show = false
   if (::menu_chat_handler)

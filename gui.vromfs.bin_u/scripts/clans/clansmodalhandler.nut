@@ -247,7 +247,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       local requestSent = false
       if (::clan_get_requested_clan_id() != "-1" && clan_get_my_clan_name() != "") {
         requestSent = true
-        this.curPageObj.findObject("req_clan_name").setValue(" ".concat(::clan_get_my_clan_tag(), clan_get_my_clan_name()))
+        this.curPageObj.findObject("req_clan_name").setValue(" ".concat(clan_get_my_clan_tag(), clan_get_my_clan_name()))
       }
       this.curPageObj.findObject("reques_to_clan_sent").show(requestSent)
       this.curPageObj.findObject("how_to_get_membership").show(!requestSent)

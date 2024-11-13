@@ -99,7 +99,7 @@ local ClanSquadsList = class {
 
   function updateClanSquadsList(squads) { //can be called each update
     if (squads.len() > MAX_SQUADS_LIST_LEN) {
-      let message = format("Error in clanSquads::updateClanSquadsList:\nToo long clan squads list - %d",
+      let message = format("Error in updateClanSquadsList:\nToo long clan squads list - %d",
                                 squads.len())
       script_net_assert_once("too long clan squads list", message)
 

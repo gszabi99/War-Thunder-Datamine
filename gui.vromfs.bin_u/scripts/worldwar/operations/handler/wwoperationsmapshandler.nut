@@ -43,6 +43,7 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let wwTopMenuOperationMap = require("%scripts/worldWar/externalServices/wwTopMenuOperationMapConfig.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -116,7 +117,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.topMenuHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
       this.scene.findObject("topmenu_menu_panel"),
       this,
-      ::g_ww_top_menu_operation_map,
+      wwTopMenuOperationMap,
       this.scene.findObject("left_gc_panel_free_width")
     )
     this.registerSubHandler(this.topMenuHandlerWeak)

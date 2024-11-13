@@ -19,7 +19,7 @@ let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasC
   hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision, hasHelmetDesignator,
   hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem,
   getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasAiGunners, hasGunStabilizer,
-  hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview,
+  hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview, hasOpticsFps, hasTvOpticalGuidance,
   hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask,
   hasSpecialWeaponAdditionalSight, isGearsExtended, isMouseAimRollOverride
 } = require("vehicleModel")
@@ -388,8 +388,8 @@ let cfg = {
       { shortcut = [ "ID_CAMERA_VIRTUAL_FPS" ], enable = hasCameraVirtualCockpit }
       { shortcut = [ "ID_CAMERA_GUNNER" ], enable = @(_unitId) hasGunners() }
       { shortcut = [ "ID_CAMERA_BOMBVIEW" ], enable = @(_unitId) hasBombview() }
-      { shortcut = [ "ID_CAMERA_OPTICS" ], enable = @(_unitId) hasBombview() }
-      { shortcut = [ "ID_CAMERA_SEEKER" ], enable = @(_unitId) hasBombview() }
+      { shortcut = [ "ID_CAMERA_OPTICS" ], enable = @(_unitId) hasOpticsFps() }
+      { shortcut = [ "ID_CAMERA_SEEKER" ], enable = @(_unitId) hasTvOpticalGuidance() }
       null
       null
     ]

@@ -1,4 +1,4 @@
-global enum EVENT_TYPE { //bit values for easy multi-type search
+enum EVENT_TYPE { //bit values for easy multi-type search
   UNKNOWN         = 0
   SINGLE          = 1,
   CLAN            = 2,

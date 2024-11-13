@@ -113,7 +113,7 @@ function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
 
 let patchnoteSelector = @() {
   watch = [versions, isVersionsExists, showConsoleButtons]
-  size = [flex(), buttonHeight]
+  size = [flex(), buttonHeight + 2*blockInterval]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
   padding = [blockInterval, 0, 0, 0]

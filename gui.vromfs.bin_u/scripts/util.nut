@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, is_online_available, update_entitlements, is_tanks_allowed, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, char_send_blk, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
+from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, is_online_available, update_entitlements, is_tanks_allowed, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
@@ -13,7 +13,7 @@ let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nu
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
-let { floor, fabs } = require("math")
+let { fabs } = require("math")
 let { rnd } = require("dagor.random")
 let { object_to_json_string } = require("json")
 //ATTENTION! this file is coupling things to much! Split it!
@@ -23,7 +23,6 @@ let penalty = require("penalty")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
@@ -50,30 +49,7 @@ local gui_start_logout_scheduled = false
 
 dagui_propid_add_name_id("tooltipId")
 
-::cssColorsMapDark <- {
-  ["commonTextColor"] = "black",
-  ["white"] = "black",
-  ["activeTextColor"] = "activeTextColorDark",
-  ["unlockActiveColor"] = "activeTextColorDark",
-  ["highlightedTextColor"] = "activeTextColorDark",
-  ["goodTextColor"] = "goodTextColorDark",
-  ["badTextColor"] = "badTextColorDark",
-  ["userlogColoredText"] = "userlogColoredTextDark",
-  ["fadedTextColor"] = "fadedTextColorDark",
-  ["warningTextColor"] = "warningTextColorDark",
-  ["currencyGoldColor"] = "currencyGoldColorDark",
-  ["currencyWpColor"] = "currencyWpColorDark",
-  ["currencyRpColor"] = "currencyRpColorDark",
-  ["currencyFreeRpColor"] = "currencyFreeRpColorDark",
-  ["hotkeyColor"] = "hotkeyColorDark",
-  ["axisSymbolColor"] = "axisSymbolColorDark",
-}
-::cssColorsMapLigth <- {}
-foreach (i, v in ::cssColorsMapDark)
-    ::cssColorsMapLigth[v] <- i
-
 ::global_max_players_versus <- 64
-::global_max_players_coop <- 4
 
 ::locOrStrip <- function locOrStrip(text) {
   return (text.len() && text.slice(0, 1) != "#") ? stripTags(text) : text
@@ -302,13 +278,25 @@ local last_update_entitlements_time = get_time_msec()
   return blk
 }
 
+function createNewPairKeyValueToBlk(blk, index, value) {
+  /*Known feature - cannot create a pair, if index is used for other type
+   i.e. ["string", 1, 2, 3, "string"] in this case will be ("string", "string") result
+   on other case [1, 2, 3, "string"] will be (1, 2, 3) result. */
+
+  blk[index] <- value
+}
+
+function assignValueToBlk(blk, index, value) {
+  blk[index] = value
+}
+
 ::build_blk_from_container <- function build_blk_from_container(container, arrayKey = "array") {
   let blk = DataBlock()
   let isContainerArray = u.isArray(container)
 
-  local addValue = ::assign_value_to_blk
+  local addValue = assignValueToBlk
   if (isContainerArray)
-    addValue = ::create_new_pair_key_value_to_blk
+    addValue = createNewPairKeyValueToBlk
 
   foreach (key, value in container) {
     local newValue = value
@@ -322,17 +310,6 @@ local last_update_entitlements_time = get_time_msec()
   return blk
 }
 
-::create_new_pair_key_value_to_blk <- function create_new_pair_key_value_to_blk(blk, index, value) {
-  /*Known feature - cannot create a pair, if index is used for other type
-   i.e. ["string", 1, 2, 3, "string"] in this case will be ("string", "string") result
-   on other case [1, 2, 3, "string"] will be (1, 2, 3) result. */
-
-  blk[index] <- value
-}
-
-::assign_value_to_blk <- function assign_value_to_blk(blk, index, value) {
-  blk[index] = value
-}
 
 ::buildTableRow <- function buildTableRow(rowName, rowData, even = null, trParams = "", _tablePad = "@tblPad") {
   //tablePad not using, but passed through many calls of this function
@@ -377,12 +354,6 @@ local last_update_entitlements_time = get_time_msec()
 
 ::roman_numerals <- ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
                          "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]
-
-::increment_parameter <- function increment_parameter(object, parameter) {
-  if (!(parameter in object))
-    object[parameter] <- 0;
-  object[parameter]++;
-}
 
 ::get_number_of_units_by_years <- function get_number_of_units_by_years(country, years) {
   let result = {}
@@ -525,30 +496,6 @@ local last_update_entitlements_time = get_time_msec()
   }
 }
 
-::getValueForMode <- function getValueForMode(optionsMode, oType) {
-  let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(optionsMode)
-  local value = ::get_option(oType)
-  value = value.values[value.value]
-  setGuiOptionsMode(mainOptionsMode)
-  return value
-}
-
-::flushExcessExpToUnit <- function flushExcessExpToUnit(unit) {
-  let blk = DataBlock()
-  blk.setStr("unit", unit)
-
-  return char_send_blk("cln_move_exp_to_unit", blk)
-}
-
-::flushExcessExpToModule <- function flushExcessExpToModule(unit, module) {
-  let blk = DataBlock()
-  blk.setStr("unit", unit)
-  blk.setStr("mod", module)
-
-  return char_send_blk("cln_move_exp_to_module", blk)
-}
-
 ::quit_and_run_cmd <- function quit_and_run_cmd(cmd) {
   direct_launch(cmd); //FIXME: mac???
   exit_game();
@@ -605,30 +552,8 @@ function findNearest(val, arrayOfVal) {
 }
 ::find_nearest <- findNearest
 
-local informTexQualityRestrictedDone = false
-::informTexQualityRestricted <- function informTexQualityRestricted() {
-  if (informTexQualityRestrictedDone)
-    return
-  let message = loc("msgbox/graphicsOptionValueReduced/lowVideoMemory", {
-    name =  colorize("userlogColoredText", loc("options/texQuality"))
-    value = colorize("userlogColoredText", loc("options/quality_medium"))
-  })
-  showInfoMsgBox(message, "sysopt_tex_quality_restricted")
-  informTexQualityRestrictedDone = true
-}
-
 ::is_myself_anyof_moderators <- function is_myself_anyof_moderators() {
-  return ::is_myself_moderator() || ::is_myself_grand_moderator() || is_myself_chat_moderator()
-}
-
-::unlockCrew <- function unlockCrew(crewId, byGold, cost) {
-  let blk = DataBlock()
-  blk["crew"] = crewId
-  blk["gold"] = byGold
-  blk["cost"] = cost?.wp ?? 0
-  blk["costGold"] = cost?.gold ?? 0
-
-  return char_send_blk("cln_unlock_crew", blk)
+  return is_myself_moderator() || is_myself_grand_moderator() || is_myself_chat_moderator()
 }
 
 ::get_navigation_images_text <- function get_navigation_images_text(cur, total) {
@@ -677,18 +602,6 @@ local server_message_end_time = 0
 
   serverMessageObject.setValue(text)
   return text != ""
-}
-
-::getArrayFromInt <- function getArrayFromInt(intNum) {
-  let arr = []
-  do {
-    let div = intNum % 10
-    arr.append(div)
-    intNum = floor(intNum / 10).tointeger()
-  } while (intNum != 0)
-
-  arr.reverse()
-  return arr
 }
 
 const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"

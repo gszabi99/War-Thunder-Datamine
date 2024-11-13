@@ -167,7 +167,7 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
   }
 }
 
-::get_userlog_view_data <- function get_userlog_view_data(logObj) {
+function getUserlogViewData(logObj) {
   let colon = loc("ui/colon")
   let res = {
     name = "",
@@ -1773,4 +1773,8 @@ function getLinkMarkup(text, url, acccessKeyName = null) {
     res.name = loc($"userlog/{logName}")
 
   return res
+}
+
+return {
+  getUserlogViewData
 }

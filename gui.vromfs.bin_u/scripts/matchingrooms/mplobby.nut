@@ -30,6 +30,7 @@ let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
+let { fill_gamer_card } = require("%scripts/gamercard.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
   if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())
@@ -260,7 +261,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let playerIcon = (!player || player.isBot) ? "cardicon_bot" : avatars.getIconById(player.pilotId)
-    ::fill_gamer_card({
+    fill_gamer_card({
                       name = player.name
                       clanTag = player.clanTag
                       icon = playerIcon

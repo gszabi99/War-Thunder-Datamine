@@ -23,6 +23,7 @@ let { shopIsModificationPurchased } = require("chardResearch")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { guiStartWeaponrySelectModal } = require("%scripts/weaponry/weaponrySelectModal.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
+let BulletGroup = require("%scripts/weaponry/unitBulletsGroup.nut")
 
 enum bulletsAmountState {
   READY
@@ -397,7 +398,7 @@ enum bulletsAmountState {
       let currCounters = bullGroupsCountersByGun[data.linkedIdx]
       let isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
         && currCounters.limitedGroupCount == currCounters.groupCount)
-      this.bulGroups.append(::BulletGroup(this.unit, groupIndex, this.getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn),
+      this.bulGroups.append(BulletGroup(this.unit, groupIndex, this.getGroupGunInfo(data.linkedIdx, isUniformNoBelts, data.maxToRespawn),
         {
           isActive = stdMath.is_bit_set(this.groupsActiveMask, groupIndex)
           canChangeActivity = this.canChangeBulletsActivity()

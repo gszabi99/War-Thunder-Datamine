@@ -5,6 +5,7 @@ let { addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent } = require("%sq
 let { get_current_mission_info_cached } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let missionRules = {}
 local curRules = null
@@ -46,13 +47,14 @@ function getCurMissionRules(isDebug = false) {
   return curRules
 }
 
-function onMissionStateChanged() {
+function onMissionStateChanged(_) {
   if (curRules)
     curRules.onMissionStateChanged()
   broadcastEvent("MissionCustomStateChanged")
 }
 
-function onUserStateChanged(userId64) {
+function onUserStateChanged(p) {
+  let { userId64 } = p
   if (userId64 != userIdInt64.value)
     return
 
@@ -61,13 +63,8 @@ function onUserStateChanged(userId64) {
   //broadcastEvent("UserCustomStateChanged", { userId64 = userId64 }) //not used ATM but maybe needed in future
 }
 
-::on_custom_mission_state_changed <- function on_custom_mission_state_changed() {
-  onMissionStateChanged()
-}
-
-::on_custom_user_state_changed <- function on_custom_user_state_changed(userId64) {
-  onUserStateChanged(userId64)
-}
+eventbus_subscribe("on_custom_mission_state_changed", onMissionStateChanged)
+eventbus_subscribe("on_custom_user_state_changed", onUserStateChanged)
 
 addListenersWithoutEnv({
   LoadingStateChange = @(_) curMissionRulesInvalidate()

@@ -21,7 +21,6 @@ let { get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values
 let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
-let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
 let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
@@ -76,9 +75,7 @@ let getMainOptions = function() {
   if (overrideMainOptionsFn != null)
     return overrideMainOptionsFn()
 
-  let isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
-    (getCurrentCampaignMission() == "tutorial01")
-  let canChangeViewType = !isFirstTutorial && (getPlayerCurUnit()?.unitType.canChangeViewType ?? false)
+  let canChangeViewType = getPlayerCurUnit()?.unitType.canChangeViewType ?? false
 
   return {
     name = isInFlight() ? "main" : "mainParameters"

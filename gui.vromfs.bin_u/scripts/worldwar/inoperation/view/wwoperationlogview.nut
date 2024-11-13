@@ -6,7 +6,7 @@ let time = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
 
-::WwOperationLogView <- class {
+class WwOperationLogView {
   logBlk = null
   logId = 0
   logType = null
@@ -288,3 +288,5 @@ let { wwGetPlayerSide } = require("worldwar")
     this.isFirstRow = val
   }
 }
+
+return WwOperationLogView

@@ -12,6 +12,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
+let HudTutorialObject = require("%scripts/hud/hudTutorialObject.nut")
 
 let visibleHTObjects = persist("visibleHTObjects", @() {})
 let debugHudTutorState = persist("debugHudTutorState", @() {isDebugMode=false, debugBlkName = null, debugLastModified = -1})
@@ -110,7 +111,7 @@ g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, 
   }
 
   if (!htObj || !htObj.isValid()) {
-    htObj = ::HudTutorialObject(id, this.scene)
+    htObj = HudTutorialObject(id, this.scene)
     if (!htObj.isValid())
       return null
 

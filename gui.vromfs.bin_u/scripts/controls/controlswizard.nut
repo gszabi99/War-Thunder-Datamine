@@ -297,7 +297,7 @@ let tank_controls_wizard_config = [
   { id = "msg/wizard_done_msg", type = CONTROL_TYPE.MSG_BOX }
 ]
 
-::initControlsWizardConfig <- function initControlsWizardConfig(arr) {
+function initControlsWizardConfig(arr) {
   for (local i = 0; i < arr.len(); i++) {
     if (type(arr[i]) == "string")
       arr[i] = { id = arr[i] }
@@ -313,6 +313,12 @@ let tank_controls_wizard_config = [
     }
     arr[i].shortcutId <- -1
   }
+}
+
+function applySelectedPreset(presetName) {
+  if (isInArray(presetName, ["keyboard", "keyboard_shooter"]))
+    set_option(USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
+  return $"config/hotkeys/hotkey.{presetName}.blk"
 }
 
 ::gui_modal_controlsWizard <- function gui_modal_controlsWizard() {
@@ -1492,7 +1498,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function onPresetDone(_obj) {
-    this.applyPreset(::applySelectedPreset(this.presetSelected))
+    this.applyPreset(applySelectedPreset(this.presetSelected))
   }
 
   function applyPreset(preset) {
@@ -1518,7 +1524,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     else
       script_net_assert_once("unsupported unit type", "Given unit type has not wizard config")
 
-    ::initControlsWizardConfig(this.controls_wizard_config)
+    initControlsWizardConfig(this.controls_wizard_config)
     this.initShortcutsNames()
     this.shortcuts = ::get_shortcuts(this.shortcutNames)
 

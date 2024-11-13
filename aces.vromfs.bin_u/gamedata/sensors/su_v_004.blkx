@@ -3,7 +3,6 @@
   "name": "V004",
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
-  "canMoveCamera": true,
   "weaponTargetsMax": 4,
   "launchedMissilesPredictedPositionsMax": 4,
   "transivers": {
@@ -21,7 +20,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 1.5,
+        "angleHalfSens": 1.8,
         "sideLobesSensitivity": -35.0
       }
     },
@@ -39,7 +38,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 1.5,
+        "angleHalfSens": 1.8,
         "sideLobesSensitivity": -35.0
       }
     },
@@ -62,7 +61,7 @@
           "sideLobesSensitivity": -50.0
         },
         "elevation": {
-          "angleHalfSens": 1.5,
+          "angleHalfSens": 1.8,
           "sideLobesSensitivity": -50.0
         }
       }
@@ -146,9 +145,9 @@
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
       "period": 0.1,
-      "width": 4.0,
+      "width": 2.0,
       "barHeight": 1.5,
-      "barsCount": 4,
+      "barsCount": 8,
       "rowMajor": true,
       "indicate": true
     },
@@ -165,7 +164,7 @@
       "rollStabLimit": 90.0,
       "pitchStabLimit": 60.0,
       "period": 0.1,
-      "width": 4.0,
+      "width": 2.0,
       "barHeight": 1.5,
       "barsCount": 4,
       "rowMajor": true,
@@ -914,6 +913,18 @@
           },
           "setModeName": {
             "name": "TWS GTM search"
+          }
+        },
+        "setMprfBvrLockMode": {
+          "setBvrLockMode": {},
+          "setModeName": {
+            "name": "PD acquisition"
+          }
+        },
+        "setHprfBvrLockMode": {
+          "setBvrLockMode": {},
+          "setModeName": {
+            "name": "PD HDN acquisition"
           }
         },
         "setGtmBvrLockMode": {
@@ -1913,7 +1924,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 4,
+              "limit": 10,
               "onlyExisting": true,
               "radius": 1000.0,
               "dopplerSpeedGateMaxTime": 8.0
@@ -1926,57 +1937,20 @@
     },
     "bvrLock": {
       "stateInit": "lock",
-      "actionsTemplates": {
-        "setMprfLock": {
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "mprfSearch"
-          }
-        },
-        "setHprfLock": {
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfSearch"
-          }
-        }
-      },
       "transitions": {
-        "init": {
-          "event": "fsmActivate",
-          "actions": {
-            "setMprfLock": {}
-          }
-        },
         "scan": {
           "event": "update",
           "actions": {
-            "setMprfLock": {},
-            "scan": [
-              {},
-              {}
-            ],
-            "setHprfLock": {}
+            "scan": {}
           }
         },
         "detect": {
           "event": "targetInSight",
           "actions": {
-            "setMprfLock": {},
-            "detectTarget": [
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              },
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              }
-            ],
-            "setHprfLock": {}
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
           }
         }
       }

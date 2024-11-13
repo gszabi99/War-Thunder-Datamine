@@ -186,7 +186,6 @@ foreach (fn in [
   "%scripts/shop/shopViewWnd.nut"
   "%scripts/convertExpHandler.nut"
 
-  "%scripts/weaponry/unitBulletsGroup.nut"
   "%scripts/weaponry/unitBulletsManager.nut"
   "%scripts/dmViewer/dmViewer.nut"
   "%scripts/weaponry/weaponryTypes.nut"
@@ -299,7 +298,6 @@ foreach (fn in [
   "%scripts/hud/hudBattleLog.nut"
   "%scripts/hud/hudLiveStats.nut"
   "%scripts/hud/hudTutorialElements.nut"
-  "%scripts/hud/hudTutorialObject.nut"
   "%scripts/streaks.nut"
   "%scripts/wheelmenu/voicemenu.nut"
   "%scripts/wheelmenu/multifuncmenu.nut"

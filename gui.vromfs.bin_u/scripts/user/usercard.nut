@@ -56,6 +56,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { requestUserInfoData, getUserInfo, userInfoEventName } = require("%scripts/user/usersInfoManager.nut")
 let { getShowcaseTitleViewData, getShowcaseViewData, trySetBestShowcaseMode } = require("%scripts/user/profileShowcase.nut")
 let { add_event_listener, removeEventListenersByEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
+let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -68,7 +70,6 @@ let { add_event_listener, removeEventListenersByEnv } = require("%sqStdLibs/help
   loadHandler(gui_handlers.UserCardHandler, { info = playerInfo })
 }
 
-
 function getUnlockFiltersList(uType, getCategoryFunc) {
   let categories = []
   let unlocks = getUnlocksByTypeInBlkOrder(uType)
@@ -79,8 +80,20 @@ function getUnlockFiltersList(uType, getCategoryFunc) {
   return categories
 }
 
+function getCurrentWndDifficulty() {
+  let diffCode = loadLocalByAccount("wnd/diffMode", getCurrentShopDifficulty().diffCode)
+  local diff = g_difficulty.getDifficultyByDiffCode(diffCode)
+  if (!diff.isAvailable())
+    diff = g_difficulty.ARCADE
+  return diff.diffCode
+}
+
+function setCurrentWndDifficulty(mode = 0) {
+  saveLocalByAccount("wnd/diffMode", mode)
+}
+
 gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
-  wndType = handlerType.BASE
+  wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/userCard.blk"
 
   isOwnStats = false
@@ -146,6 +159,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
       return this.goBack()
 
+    addGamercardScene(this.scene) //for show popups
     let needShortSeparators = to_pixels("sw") > to_pixels("1@maxProfileFrameWidth + 2@framePadding")
     let frame = this.scene.findObject("wnd_frame")
     frame.needShortSeparators = needShortSeparators ? "yes" : "no"
@@ -226,7 +240,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initStatsParams() {
-    this.curMode = ::get_current_wnd_difficulty()
+    this.curMode = getCurrentWndDifficulty()
     this.statsType = loadLocalByAccount("leaderboards_type", ETTI_VALUE_INHISORY)
   }
 
@@ -339,7 +353,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillTitleName(this.player.title, false)
     this.fillClanInfo(this.player)
     this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)
-    ::fill_gamer_card(this.player, "profile-", this.scene)
+    fill_gamer_card(this.player, "profile-", this.scene)
     this.scene.findObject("profile_loading").show(false)
     this.isProfileInited = true
   }
@@ -347,7 +361,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventContactsUpdated(_p) {
     if (this.isMyPage)
       return
-    ::fill_gamer_card(this.player, "profile-", this.scene)
+    fill_gamer_card(this.player, "profile-", this.scene)
   }
 
   function fillTitleName(name, setEmpty = true) {
@@ -367,10 +381,12 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let value = obj.getValue()
 
     this.curMode = value
-    ::set_current_wnd_difficulty(this.curMode)
+    this.setCurrentWndDifficulty(this.curMode)
     this.updateCurrentStatsMode(this.curMode)
     fillProfileSummary(this.scene.findObject("stats_table"), this.player.summary, this.curMode)
   }
+
+  setCurrentWndDifficulty = @(value) setCurrentWndDifficulty(value)
 
   function onEventContactsGroupUpdate(_p) {
     this.updateButtons()
@@ -448,7 +464,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.curMode = value
-    ::set_current_wnd_difficulty(this.curMode)
+    this.setCurrentWndDifficulty(this.curMode)
     this.updateCurrentStatsMode(value)
     this.fillAirStats()
   }
@@ -669,9 +685,9 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (item in checkList) {
       let air = getAircraftByName(item.name)
       let airLocName = air ? getUnitName(air, true) : ""
-      let unitTypeShopId = ::get_army_id_by_es_unit_type(getEsUnitType(air))
+      let unitTypeShopId = unitTypes.getByEsUnitType(getEsUnitType(air)).armyId
       if (!isInArray(unitTypeShopId, filterUnits))
-          continue
+        continue
 
       if (!isInArray(air.rank, filterRank))
         continue

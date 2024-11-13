@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
-let { fabs } = require("math")
+let { pow } = require("math")
 let { wwGetArmiesNames, wwGetArmyInfo, wwClearOutlinedZones, wwUpdateSelectedArmyName } = require("worldwar")
 let { subscribe } = require("eventbus")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
@@ -51,7 +51,7 @@ function getArmyByPoint(point) {
     .filter(function(armyData) {
       let armyPos = convertToRelativeMapCoords(armyData.pathTracker.pos)
       let armyRadius = armyData.specs.battleStartRadiusN / getMapSize().width
-      return (fabs(armyPos.x - point.x) < armyRadius) && (fabs(armyPos.y - point.y) * aspectRatio < armyRadius)
+      return (pow(armyPos.x - point.x, 2) + pow((armyPos.y - point.y) * aspectRatio, 2) < pow(armyRadius, 2))
     })
 }
 
@@ -110,8 +110,7 @@ subscribe("selectArmy", function(armyName) {
 })
 
 hoveredArmy.subscribe(function(armyName) {
-  if (armyName != null)
-    sendToDagui("ww.hoverArmy", { armyName })
+  sendToDagui("ww.hoverArmy", armyName != null ? { armyName } : {})
 })
 
 selectedArmy.subscribe(function(armyName) {

@@ -1,15 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsVisible, IlsPosSize, CannonMode, RocketMode, BombCCIPMode,
-        BlkFileName, BombingMode } = require("planeState/planeToolsState.nut")
+let { IlsVisible, IlsPosSize, BlkFileName } = require("planeState/planeToolsState.nut")
 let DataBlock = require("DataBlock")
-let { TrackerVisible } = require("rocketAamAimState.nut")
-let { compassWrap, generateCompassMark } = require("planeIlses/ilsCompasses.nut")
 
-let { AVQ7Basic, AVQ7BombingMode, AVQ7CCIPMode } = require("planeIlses/ilsAVQ7.nut")
+let { ilsAVQ7 } = require("planeIlses/ilsAVQ7.nut")
 let ASP17 = require("planeIlses/ilsASP17.nut")
 let buccaneerHUD = require("planeIlses/ilsBuccaneer.nut")
-let { basic410SUM, SUMCCIPMode, SumAAMMode, SumBombingSight, SUMGunReticle } = require("planeIlses/ils410Sum.nut")
+let ilsSum410 = require("planeIlses/ils410Sum.nut")
 let { LCOSS, ASG23 } = require("planeIlses/ilsLcoss.nut")
 let { J7EAdditionalHud, ASP23ModeSelector } = require("planeIlses/ilsASP23.nut")
 let swedishEPIls = require("planeIlses/ilsEP.nut")
@@ -122,8 +119,6 @@ let ilsSetting = Computed(function() {
   }
 })
 
-let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
-
 let planeIls = @(width, height) function() {
 
   let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
@@ -137,25 +132,16 @@ let planeIls = @(width, height) function() {
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
       isF20 || isKaiserA10c || isF15e || isF117)
   return {
-    watch = [BombingMode, CCIPMode, TrackerVisible, ilsSetting]
+    watch = ilsSetting
     children = [
-      (isAVQ7 ? AVQ7Basic(width, height) : null),
-      (haveAVQ7Bombing && BombingMode.value ? AVQ7BombingMode(width, height) : null),
-      (haveAVQ7CCIP && CCIPMode.value ? AVQ7CCIPMode(width, height) : null),
-      (isAVQ7 && (!BombingMode.value || !haveAVQ7Bombing) &&
-       (!CCIPMode.value || !haveAVQ7CCIP) ? compassWrap(width, height, 0.1, generateCompassMark) : null),
+      (isAVQ7 ? ilsAVQ7(width, height, haveAVQ7Bombing, haveAVQ7CCIP) : null),
       (isASP17 ? ASP17(width, height) : null),
       (isBuccaneerIls ? buccaneerHUD(width, height) : null),
-      (is410SUM1Ils ? basic410SUM(width, height) : null),
-      (is410SUM1Ils && CCIPMode.value ? SUMCCIPMode(width, height) : null),
-      (is410SUM1Ils && TrackerVisible.value ? SumAAMMode(width, height) : null),
-      (is410SUM1Ils && BombingMode.value ? SumBombingSight(width, height) : null),
-      (is410SUM1Ils && !BombingMode.value && !CCIPMode.value ? SUMGunReticle(width, height) : null),
+      (is410SUM1Ils ? ilsSum410(width, height) : null),
       (isLCOSS ? LCOSS(width, height) : null),
       (isASG23 ? ASG23(width, height) : null),
       (isASP23 || isIPP2_53 ? ASP23ModeSelector(width, height, isIPP2_53) : null),
-      (haveJ7ERadar && (!BombingMode.value || !haveAVQ7Bombing) &&
-       (!CCIPMode.value || !haveAVQ7CCIP) ? J7EAdditionalHud(width, height) : null),
+      (haveJ7ERadar ? J7EAdditionalHud(width, height) : null),
       (isEP08 || isEP12 ? swedishEPIls(width, height, isEP08) : null),
       (isShimadzu ? ShimadzuIls(width, height) : null),
       (isTCSF196 ? TCSF196(width, height) : null),

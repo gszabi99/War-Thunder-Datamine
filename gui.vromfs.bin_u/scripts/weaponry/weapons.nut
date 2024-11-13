@@ -77,6 +77,7 @@ let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+let { flushExcessExpToModule } = require("%scripts/unit/unitActions.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -1450,7 +1451,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    this.taskId = ::flushExcessExpToModule(this.airName, modName)
+    this.taskId = flushExcessExpToModule(this.airName, modName)
     if (this.taskId >= 0) {
       set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()

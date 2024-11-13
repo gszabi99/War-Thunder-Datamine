@@ -393,13 +393,6 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
     }
   }
 
-  ::addHideToObjStringById <- function addHideToObjStringById(data, objId) {
-    let pos = data.indexof($"id:t = '{objId}';")
-    if (pos)
-      return "".concat(data.slice(0, pos), "display:t='hide'; ", data.slice(pos))
-    return data
-  }
-
   registerRespondent("is_tactical_map_active", function is_tactical_map_active() {
     if (!("TacticalMap" in gui_handlers))
       return false

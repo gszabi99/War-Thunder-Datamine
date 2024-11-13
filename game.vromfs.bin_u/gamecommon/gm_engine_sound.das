@@ -2,6 +2,7 @@ require ecs
 require DagorMath
 require math.base
 require DagorSystem
+require DagorRandom
 require DagorConsole
 require Unit
 require IGroundModel
@@ -229,18 +230,21 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
   if gm == null || unit.isDelayed
     return
 
-  gm_engine_sound__update_interval += act.dt
-  if gm_engine_sound__update_interval < gm.engineSoundUpdateInterval
+  gm_engine_sound__update_interval -= act.dt
+  if gm_engine_sound__update_interval > 0.
     return
   else
-    gm_engine_sound__update_interval = 0.
+    let gmInterval = gm.engineSoundUpdateInterval
+    gm_engine_sound__update_interval = rnd_float(gmInterval * 0.5, gmInterval)
 
   gm_engine_sound__is_playing = is_playing(gm_engine_sound__event) || is_playing(gm_engine_sound__event_inside)
-  gm_engine_sound__pos = unit.unitTm * gm_engine_sound__pos_offset
-  if gm_engine_sound__is_playing
-    gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
-  gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
-  gm_engine_sound__start_event |> set_pos(gm_engine_sound__pos)
+  let newPos = unit.unitTm * gm_engine_sound__pos_offset
+  if length_sq(newPos - gm_engine_sound__pos) > 0.09
+    if gm_engine_sound__is_playing
+      gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
+    gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
+    gm_engine_sound__start_event |> set_pos(gm_engine_sound__pos)
+    gm_engine_sound__pos = newPos
 
   if unit.isDelayed
     return

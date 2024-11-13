@@ -1,11 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
 let { get_time_msec } = require("dagor.time")
-let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
+let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
 
 dagui_propid_add_name_id("_set_aabb_by_object")
 
-::HudTutorialObject <- class {
+class HudTutorialObject {
   obj = null
   showUpTo = 0
   hasAabb = false
@@ -64,7 +64,7 @@ dagui_propid_add_name_id("_set_aabb_by_object")
     if (!this.aabbFromName || !this.isValid())
       return
 
-    let aabb = g_hud_tutorial_elements.getAABB(this.aabbFromName)
+    let aabb = getHudElementAabb(this.aabbFromName)
     if (!aabb || aabb.size[0] <= 0)
       return
 
@@ -73,3 +73,5 @@ dagui_propid_add_name_id("_set_aabb_by_object")
     this.obj.position = "root"
   }
 }
+
+return HudTutorialObject

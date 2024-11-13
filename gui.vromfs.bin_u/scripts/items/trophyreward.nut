@@ -285,7 +285,7 @@ function rewardsSortComparator(a, b) {
       if (isInArray(param, this.rewardTypes))
         return param
 
-  log("TROPHYREWARD::GETTYPE received bad config")
+  log("TROPHYREWARD GETTYPE received bad config")
   debugTableData(config)
   return ""
 }

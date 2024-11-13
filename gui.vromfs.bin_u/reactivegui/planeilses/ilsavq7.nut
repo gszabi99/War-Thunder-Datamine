@@ -4,8 +4,8 @@ let { Speed, Altitude, ClimbSpeed, Tangage, Roll, Aoa } = require("%rGui/planeSt
 let { compassWrap, generateCompassMark } = require("ilsCompasses.nut")
 let { flyDirection, angleTxt, yawIndicator, cancelBombing,
       lowerSolutionCue, bombFallingLine, aimMark } = require("commonElements.nut")
-let { IlsColor, TargetPos, DistToSafety, IlsLineScale,
-        IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked } = require("%rGui/planeState/planeToolsState.nut")
+let { IlsColor, TargetPos, DistToSafety, IlsLineScale, BombingMode, RocketMode, CannonMode,
+      BombCCIPMode, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked } = require("%rGui/planeState/planeToolsState.nut")
 let { mpsToKnots, metrToFeet, mpsToFpm, baseLineWidth } = require("ilsConstants.nut")
 let { floor } = require("%sqstd/math.nut")
 
@@ -253,6 +253,7 @@ let maverickAim = @() {
 }
 
 function basicInformation(width, height) {
+  let toGroundMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get() || BombingMode.get())
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
@@ -263,7 +264,12 @@ function basicInformation(width, height) {
       flyDirection(width, height),
       pitch(width, height),
       aimMark,
-      maverickAim
+      maverickAim,
+      @(){
+        watch = toGroundMode
+        size = flex()
+        children = !toGroundMode.get() ? compassWrap(width, height, 0.1, generateCompassMark) : null
+      }
     ]
   }
 }
@@ -318,31 +324,43 @@ function rotatedBombReleaseReticle(width, height) {
 }
 
 function CCIP(width, height) {
-  return {
+  let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
+  return @(){
+    watch = CCIPMode
     size = [width, height]
-    children = [
+    children = CCIPMode.get() ? [
       compassWrap(width, height, 0.85, generateCompassMark),
       cancelBombing(20, 20),
       yawIndicator
-    ]
+    ] : null
   }
 }
 
 function bombingMode(width, height) {
-  return {
+  return @(){
+    watch = BombingMode
     size = [width, height]
-    children = [
+    children = BombingMode.get() ? [
       rotatedBombReleaseReticle(width, height),
       compassWrap(width, height, 0.85, generateCompassMark),
       cancelBombing(20, 20),
       yawIndicator
+    ] : null
+  }
+}
+
+function ilsAVQ7(width, height, have_bombing_mode, have_ccip_mode) {
+  return {
+    size = [width, height]
+    children = [
+      basicInformation(width, height),
+      (have_bombing_mode ? bombingMode(width, height) : null),
+      (have_ccip_mode ? CCIP(width, height) : null)
     ]
   }
 }
 
 return {
-  AVQ7Basic = basicInformation
-  AVQ7BombingMode = bombingMode
-  AVQ7CCIPMode = CCIP
+  ilsAVQ7
   AVQ7CCRP = rotatedBombReleaseReticle
 }

@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease, BombingMode,
        AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety } = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, Roll, Aoa, ClimbSpeed, Tangage } = require("%rGui/planeState/planeFlyState.nut");
 let { mpsToKnots, mpsToFpm, baseLineWidth } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
-let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { GuidanceLockState, TrackerVisible } = require("%rGui/rocketAamAimState.nut")
 let { cvt } = require("dagor.math")
 let { compassWrap, generateCompassMarkSUM } = require("ilsCompasses.nut")
 let { yawIndicator, angleTxt, bombFallingLine, SUMAltitude } = require("commonElements.nut")
@@ -196,10 +196,9 @@ function basic410SUM(width, height) {
   }
 }
 
-function SUMGunReticle(width, height) {
-  return @() {
+let SUMGunReticle = @() {
     watch = IlsColor
-    size = [width * 0.1, height * 0.1]
+    size = [pw(10), ph(10)]
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
     rendObj = ROBJ_VECTOR_CANVAS
@@ -225,7 +224,6 @@ function SUMGunReticle(width, height) {
       }
     }
   }
-}
 
 let SUMCCIPReticle = @() {
   watch = IlsColor
@@ -249,26 +247,32 @@ let SUMCCIPReticle = @() {
   }
 }
 
-function SUMCCIPMode(width, height) {
-  return @() {
-    watch = TargetPosValid
-    size = [width, height]
-    children = [
-      (TargetPosValid.value ? SUMCCIPReticle : null),
-      @() {
-        watch = [BombCCIPMode, IlsColor]
-        size = [pw(3), ph(3)]
-        pos = [pw(50), ph(BombCCIPMode.value ? 50 : 30)]
-        color = IlsColor.value
-        lineWidth = baseLineWidth * IlsLineScale.value
-        rendObj = ROBJ_VECTOR_CANVAS
-        commands = [
-          [VECTOR_LINE, -100, 0, 100, 0],
-          [VECTOR_LINE, 0, -100, 0, 100],
-        ]
-      }
-    ]
-  }
+let BombCCIPModeComp = @() {
+  watch = [BombCCIPMode, IlsColor]
+  size = [pw(3), ph(3)]
+  pos = [pw(50), ph(BombCCIPMode.get() ? 50 : 30)]
+  color = IlsColor.value
+  lineWidth = baseLineWidth * IlsLineScale.get()
+  rendObj = ROBJ_VECTOR_CANVAS
+  commands = [
+    [VECTOR_LINE, -100, 0, 100, 0],
+    [VECTOR_LINE, 0, -100, 0, 100],
+  ]
+}
+
+let CCIPModeComp = @(){
+  watch = TargetPosValid
+  size = flex()
+  children = [
+    (TargetPosValid.get() ? SUMCCIPReticle : null),
+    BombCCIPModeComp
+  ]
+}
+
+let SUMCCIPMode = @(){
+  watch = CCIPMode
+  size = flex()
+  children = CCIPMode.get() ? CCIPModeComp : null
 }
 
 function SumAAMCrosshair(position, anim) {
@@ -294,9 +298,9 @@ function SumAAMCrosshair(position, anim) {
 
 function SumAAMMode(width, height) {
   return @() {
-    watch = GuidanceLockState
+    watch = [TrackerVisible, GuidanceLockState]
     size = [width, height]
-    children = [
+    children = TrackerVisible.get() ? [
       SumAAMCrosshair([width * 0.5, height * 0.5], false),
       (GuidanceLockState.value != GuidanceLockResult.RESULT_TRACKING ?
       {
@@ -308,7 +312,7 @@ function SumAAMMode(width, height) {
         ]
       }
       : null)
-    ]
+    ] : null
   }
 }
 
@@ -398,20 +402,34 @@ let timeToRelease = @() {
 }
 
 function SumBombingSight(width, height) {
-  return {
+  return @(){
+    watch = BombingMode
     size = [width, height]
-    children = [
+    children = BombingMode.get() ? [
       rotatedBombReleaseSUM(width, height),
       timeToRelease,
       cancelBombingSUM
+    ] : null
+  }
+}
+
+let gunVisible = Computed(@() !CCIPMode.get() && !BombingMode.get())
+let gunWrap = @(){
+  watch = gunVisible
+  size = flex()
+  children = gunVisible.get() ? SUMGunReticle : null
+}
+function IlsSum(width, height) {
+  return {
+    size = [width, height]
+    children = [
+      basic410SUM(width, height)
+      SUMCCIPMode
+      SumAAMMode(width, height)
+      SumBombingSight(width, height)
+      gunWrap
     ]
   }
 }
 
-return {
-  basic410SUM
-  SUMCCIPMode
-  SumAAMMode
-  SumBombingSight
-  SUMGunReticle
-}
+return IlsSum

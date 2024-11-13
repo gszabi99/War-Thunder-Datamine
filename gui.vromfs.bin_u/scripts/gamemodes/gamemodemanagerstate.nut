@@ -36,7 +36,7 @@ let { deferOnce } = require("dagor.workcycle")
  *   source   - link to dominationModes item or event
  *   type     - event or dominationModes item
  *   locId    - localization to show in list
- *   modeIdx  - index in ::dominationModes array
+ *   modeIdx  - index in dominationModes array
  *   diffCode - difficulty code (0, 1, 2...) or -1 if code is invalid
  * }
  *

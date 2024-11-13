@@ -56,7 +56,8 @@ let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultF
   gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
   updateDebriefingResultGiftItemsInfo, setDebriefingResult
 } = require("%scripts/debriefing/debriefingFull.nut")
-let { locCurrentMissionName, isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
+let { locCurrentMissionName, isMissionExtrByName, selectNextAvailCampaignMission
+} = require("%scripts/missions/missionsUtils.nut")
 let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions,
   guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF,
   guiStartMpLobby, getCurrentCampaignId, getCurrentCampaignMission
@@ -2872,7 +2873,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         if ((currentCampaignMission == "jpn_guadalcanal_m4")
             || (currentCampaignMission == "us_guadalcanal_m4"))
           needCheckForVictory(true)
-        ::select_next_avail_campaign_mission(currentCampaignId, currentCampaignMission)
+        selectNextAvailCampaignMission(currentCampaignId, currentCampaignMission)
       }
       goDebriefingNextFunc = guiStartMenuCampaign
       return
@@ -3362,7 +3363,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function getCurAwardText() {
-    return Cost(::get_premium_reward_wp(), 0, get_premium_reward_xp()).tostring()
+    return Cost(get_premium_reward_wp(), 0, get_premium_reward_xp()).tostring()
   }
 
   getLocalTeam = @() ::get_local_team_for_mpstats(this.debriefingResult.localTeam)

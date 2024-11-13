@@ -290,6 +290,13 @@ function updateContactsListFromContactsServer(res) {
 
 let findContactBySteamId = @(steamId) contactsPlayers.findvalue(@(player) player.steamId == steamId)
 
+function getContactsGroupUidList(groupName) {
+  let res = []
+  if (!(groupName in contactsByGroups))
+    return res
+  return contactsByGroups[groupName].keys()
+}
+
 if (contactsByGroups.len() == 0)
   clear_contacts()
 
@@ -332,4 +339,5 @@ return {
   findContactBySteamId
   steamContactsGroup
   contactsGroupWithoutMaxCount
+  getContactsGroupUidList
 }

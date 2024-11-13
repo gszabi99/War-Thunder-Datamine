@@ -115,15 +115,13 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     return contactsByGroups[gName].values().sort(sortContacts)
   }
 
-  function initScreen(obj, resetList = true) {
+  function initScreen(obj) {
     if (checkObj(this.scene) && this.scene.isEqual(obj))
       return
 
     this.sceneShow(false)
     this.scene = obj
     this.sceneChanged = true
-    if (resetList)
-      ::friend_prev_scenes <- []
     this.sceneShow(true)
     this.closeSearchGroup()
   }
@@ -160,7 +158,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     else {
       ::contacts_prev_scenes.append({ scene = this.scene, show = ::last_contacts_scene_show, owner = this.owner })
       this.owner = newOwner
-      this.initScreen(obj, false)
+      this.initScreen(obj)
     }
   }
 

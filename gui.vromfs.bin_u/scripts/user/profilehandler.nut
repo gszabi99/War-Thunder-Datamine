@@ -93,6 +93,7 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getGameModeBoxIndex,
    writeGameModeToTerseInfo, getShowcaseGameModeByIndex } = require("%scripts/user/profileShowcase.nut")
+let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -141,7 +142,7 @@ function guiStartProfile(params = {}) {
 local cachedTerseInfo = null
 
 gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
-  wndType = handlerType.BASE
+  wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/profile.blk"
   initialSheet = ""
 
@@ -218,6 +219,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!this.scene)
       return this.goBack()
 
+    addGamercardScene(this.scene) //for show popups
     this.countryStats = profileSelectedFiltersCache.country
     this.unitStats = profileSelectedFiltersCache.unit
     this.rankStats = profileSelectedFiltersCache.rank
@@ -635,7 +637,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     accountImage.height = pageHasProfileHeader ? "1@maxAccountHeaderHeight" : "1@minAccountHeaderHeight"
 
     if (!this.isProfileInited) {
-      ::fill_gamer_card(getProfileInfo(), "profile-", this.scene)
+      fill_gamer_card(getProfileInfo(), "profile-", this.scene)
       if (pageHasProfileHeader)
         this.updateStats()
     }
@@ -1746,7 +1748,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     this.curMode = obj.getValue()
 
-    ::set_current_wnd_difficulty(this.curMode)
+    this.setCurrentWndDifficulty(this.curMode)
     this.updateCurrentStatsMode(this.curMode)
     fillProfileSummary(this.scene.findObject("stats_table"), myStats.summary, this.curMode)
   }
@@ -1803,7 +1805,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onEventProfileUpdated(_params) {
-    ::fill_gamer_card(getProfileInfo(), "profile-", this.scene)
+    fill_gamer_card(getProfileInfo(), "profile-", this.scene)
   }
 
   function onEventMyStatsUpdated(_params) {

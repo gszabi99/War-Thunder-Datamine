@@ -37,6 +37,7 @@ let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { steamContactsGroup } = require("%scripts/contacts/contactsManager.nut")
 let { defer } = require("dagor.workcycle")
+let { fill_gamer_card } = require("%scripts/gamercard.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -128,7 +129,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function getNavbarTplView() { return null }
 
   function fillGamercard() {
-    ::fill_gamer_card(null, "gc_", this.scene)
+    fill_gamer_card(null, "gc_", this.scene)
     this.initGcBackButton()
     this.initSquadWidget()
     this.initVoiceChatWidget()

@@ -65,7 +65,7 @@ function isModMounted(unitName, modName) {
 
 function isModAvailableOrFree(unitName, modName) {
   return (shopIsModificationAvailable(unitName, modName, true)
-          || (!::wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
+          || (!wp_get_modification_cost(unitName, modName) && !wp_get_modification_cost_gold(unitName, modName)))
 }
 
 function isModPurchasedOrFree(unitName, modName) {

@@ -652,7 +652,7 @@ addListenersWithoutEnv({
 })
 
 registerRespondent("is_chat_screen_allowed", function is_chat_screen_allowed() {
-  return ::is_hud_visible() && !is_menu_state()
+  return is_hud_visible() && !is_menu_state()
 })
 
 return {

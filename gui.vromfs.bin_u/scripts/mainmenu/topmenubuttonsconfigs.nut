@@ -52,6 +52,7 @@ let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 let { openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDeepLink } = require("%scripts/user/wtAssistantDeeplink.nut")
 let { isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText
 } = require("%scripts/globalWorldWarScripts.nut")
+let { openLeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
 
 let list = {
   SKIRMISH = {
@@ -166,7 +167,7 @@ let list = {
   }
   LEADERBOARDS = {
     text = @() "#mainmenu/btnLeaderboards"
-    onClickFunc = @(_obj, handler) handler.goForwardIfOnline(::gui_modal_leaderboards, false, true)
+    onClickFunc = @(_obj, handler) handler.goForwardIfOnline(openLeaderboardWindow, false, true)
     isHidden = @(...) !hasFeature("Leaderboards")
   }
   CLANS = {

@@ -45,8 +45,7 @@ let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdO
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 ::current_campaign <- null
-::current_campaign_name <- ""
-registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign", "current_campaign_name"])
+registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign"])
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]

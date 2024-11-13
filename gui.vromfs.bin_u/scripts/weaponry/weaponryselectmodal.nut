@@ -16,7 +16,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
   config = {
     unit  //unit for weapons
     onChangeValueCb = function(chosenWeaponryItem)   //callback on value select (only if value was changed)
-    weaponItemParams = null //list of special items render params (for weaponVisual::updateItem)
+    weaponItemParams = null //list of special items render params (for updateModItem in weaponryVisual.nut)
 
     align = "top"/"bottom"/"left"/"right"
     alignObj = DaguiObj  //object to align menu

@@ -115,10 +115,6 @@ let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut"
   }
 ]
 
-::gui_modal_leaderboards <- function gui_modal_leaderboards(lb_presets = null) {
-  loadHandler(gui_handlers.LeaderboardWindow, { lb_presets = lb_presets })
-}
-
 ::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(params) {
   loadHandler(gui_handlers.EventsLeaderboardWindow, params)
 }
@@ -635,4 +631,8 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     this.customSelfStats = userstatCustomLeaderboardStats.value?.stats[event.leaderboardEventTable]
     this.fillLeaderboard(this.pageData)
   }
+}
+
+return {
+  openLeaderboardWindow = @() loadHandler(gui_handlers.LeaderboardWindow)
 }

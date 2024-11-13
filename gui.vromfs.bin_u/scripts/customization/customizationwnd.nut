@@ -114,7 +114,7 @@ eventbus_subscribe("on_decal_job_complete", @(p) on_decal_job_complete(p))
 
 eventbus_subscribe("hangar_add_popup", @(data) addPopup("", loc(data.text)))
 
-::delayed_download_enabled_msg <- function delayed_download_enabled_msg() {
+function delayedDownloadEnabledMsg() {
   if (!::g_login.isProfileReceived())
     return
   let skip = loadLocalAccountSettings("skipped_msg/delayedDownloadContent", false)
@@ -142,6 +142,8 @@ eventbus_subscribe("hangar_add_popup", @(data) addPopup("", loc(data.text)))
     set_option_delayed_download_content(choosenDDC)
   }
 }
+
+eventbus_subscribe("delayed_download_enabled_msg", @(_) delayedDownloadEnabledMsg())
 
 gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/customization/customization.blk"

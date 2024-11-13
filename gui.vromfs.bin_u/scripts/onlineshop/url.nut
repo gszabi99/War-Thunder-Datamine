@@ -109,7 +109,7 @@ eventbus_subscribe("openUrlImpl", function(urlConfig) {
   log($"[URL] Base Url = {baseUrl}")
   let hasFeat = urlType.isOnlineShop ? hasFeature("EmbeddedBrowserOnlineShop")
     : hasFeature("EmbeddedBrowser")
-  if (!useExternalBrowser && ::use_embedded_browser() && !steam_is_running() && hasFeat) {
+  if (!useExternalBrowser && use_embedded_browser() && !steam_is_running() && hasFeat) {
     // Embedded browser
     ::open_browser_modal(urlToOpen, urlTags, baseUrl)
     broadcastEvent("BrowserOpened", { url = urlToOpen, external = false })

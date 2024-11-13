@@ -20,9 +20,92 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getProfileInfo, getCurExpTable } = require("%scripts/user/userInfoStats.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 
-::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
+let lastGamercardScenes = persist("lastGamercardScenes", @() [])
+
+function doWithAllGamercards(func) {
+  foreach (scene in lastGamercardScenes)
+    if (checkObj(scene))
+      func(scene)
+}
+
+function addGamercardScene(scene) {
+  for (local idx = lastGamercardScenes.len() - 1; idx >= 0; idx--) {
+    let s = lastGamercardScenes[idx]
+    if (!checkObj(s))
+      lastGamercardScenes.remove(idx)
+    else if (s.isEqual(scene))
+      return
+  }
+  lastGamercardScenes.append(scene)
+}
+
+::set_last_gc_scene_if_exist <- function set_last_gc_scene_if_exist(scene) {
+  foreach (idx, gcs in lastGamercardScenes)
+    if (checkObj(gcs) && scene.isEqual(gcs)
+        && idx < lastGamercardScenes.len() - 1) {
+      lastGamercardScenes.remove(idx)
+      lastGamercardScenes.append(scene)
+      break
+    }
+}
+
+function getLastGamercardScene() {
+  if (lastGamercardScenes.len() > 0)
+    for (local i = lastGamercardScenes.len() - 1; i >= 0; i--)
+      if (checkObj(lastGamercardScenes[i]))
+        return lastGamercardScenes[i]
+      else
+        lastGamercardScenes.remove(i)
+  return null
+}
+
+function updateGcButton(obj, isNew, tooltip = null) {
+  if (!checkObj(obj))
+    return
+
+  if (tooltip)
+    obj.tooltip = tooltip
+
+  showObjectsByTable(obj, {
+    icon    = !isNew
+    iconNew = isNew
+  })
+
+  let objGlow = obj.findObject("iconGlow")
+  if (checkObj(objGlow))
+    objGlow.wink = isNew ? "yes" : "no"
+}
+
+function updateGcInvites(scene) {
+  let haveNew = ::g_invites.getNewInvitesAmount() > 0
+  updateGcButton(scene.findObject("gc_invites_btn"), haveNew)
+}
+
+function update_gamercards_chat_info(prefix = "gc_") {
+  if (!gchat_is_enabled() || !hasMenuChat.value)
+    return
+
+  ::g_chat.countNewMessages(function(newMessagesCount) {
+    let haveNew = newMessagesCount > 0
+    let tooltip = loc(haveNew ? "mainmenu/chat_new_messages" : "mainmenu/chat")
+
+    let newMessagesText = newMessagesCount ? newMessagesCount.tostring() : ""
+
+    doWithAllGamercards(function(scene) {
+      let objBtn = scene.findObject($"{prefix}chat_btn")
+      if (!checkObj(objBtn))
+        return
+
+      updateGcButton(objBtn, haveNew, tooltip)
+      let newCountChatObj = objBtn.findObject($"{prefix}new_chat_messages")
+      newCountChatObj.setValue(newMessagesText)
+    })
+  })
+}
+
+function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
   if (!checkObj(scene)) {
-    scene = ::getLastGamercardScene()
+    scene = getLastGamercardScene()
     if (!scene)
       return
   }
@@ -37,7 +120,7 @@ let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
     showTitleLogo(div)
 
   if (scene && save_scene && isGamercard && isValidGamercard)
-    ::add_gamercard_scene(scene)
+    addGamercardScene(scene)
 
   if (!isShowGamercard)
     return
@@ -149,11 +232,11 @@ let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
       let haveNew = newLogsCount > 0
       let tooltip = haveNew ?
         format(loc("userlog/new_messages"), newLogsCount) : loc("userlog/no_new_messages")
-      ::update_gc_button(objBtn, haveNew, tooltip)
+      updateGcButton(objBtn, haveNew, tooltip)
     }
   }
 
-  ::update_gamercards_chat_info(prefix)
+  update_gamercards_chat_info(prefix)
 
   if (hasFeature("Friends")) {
     let friendsOnline = ::getFriendsOnlineNum()
@@ -274,19 +357,19 @@ let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
   ::g_discount.updateDiscountNotifications(scene)
   setVersionText(scene)
   ::server_message_update_scene(scene)
-  ::update_gc_invites(scene)
+  updateGcInvites(scene)
 }
 
 ::update_gamercards <- function update_gamercards() {
   let info = getProfileInfo()
   local needUpdateGamerCard = false
-  for (local idx = ::last_gamercard_scenes.len() - 1; idx >= 0; idx--) {
-    let s = ::last_gamercard_scenes[idx]
+  for (local idx = lastGamercardScenes.len() - 1; idx >= 0; idx--) {
+    let s = lastGamercardScenes[idx]
     if (!s || !s.isValid())
-      ::last_gamercard_scenes.remove(idx)
+      lastGamercardScenes.remove(idx)
     else if (s.isVisible()) {
       needUpdateGamerCard = true
-      ::fill_gamer_card(info, "gc_", s, false)
+      fill_gamer_card(info, "gc_", s, false)
     }
   }
   if (!needUpdateGamerCard)
@@ -296,104 +379,22 @@ let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
   broadcastEvent("UpdateGamercard")
 }
 
-::do_with_all_gamercards <- function do_with_all_gamercards(func) {
-  foreach (scene in ::last_gamercard_scenes)
-    if (checkObj(scene))
-      func(scene)
-}
-
-::last_gamercard_scenes <- []
-::add_gamercard_scene <- function add_gamercard_scene(scene) {
-  for (local idx = ::last_gamercard_scenes.len() - 1; idx >= 0; idx--) {
-    let s = ::last_gamercard_scenes[idx]
-    if (!checkObj(s))
-      ::last_gamercard_scenes.remove(idx)
-    else if (s.isEqual(scene))
-      return
-  }
-  ::last_gamercard_scenes.append(scene)
-}
-
-::set_last_gc_scene_if_exist <- function set_last_gc_scene_if_exist(scene) {
-  foreach (idx, gcs in ::last_gamercard_scenes)
-    if (checkObj(gcs) && scene.isEqual(gcs)
-        && idx < ::last_gamercard_scenes.len() - 1) {
-      ::last_gamercard_scenes.remove(idx)
-      ::last_gamercard_scenes.append(scene)
-      break
-    }
-}
-
-::getLastGamercardScene <- function getLastGamercardScene() {
-  if (::last_gamercard_scenes.len() > 0)
-    for (local i = ::last_gamercard_scenes.len() - 1; i >= 0; i--)
-      if (checkObj(::last_gamercard_scenes[i]))
-        return ::last_gamercard_scenes[i]
-      else
-        ::last_gamercard_scenes.remove(i)
-  return null
-}
-
-::update_gc_invites <- function update_gc_invites(scene) {
-  let haveNew = ::g_invites.getNewInvitesAmount() > 0
-  ::update_gc_button(scene.findObject("gc_invites_btn"), haveNew)
-}
-
-::update_gc_button <- function update_gc_button(obj, isNew, tooltip = null) {
-  if (!checkObj(obj))
-    return
-
-  if (tooltip)
-    obj.tooltip = tooltip
-
-  showObjectsByTable(obj, {
-    icon    = !isNew
-    iconNew = isNew
-  })
-
-  let objGlow = obj.findObject("iconGlow")
-  if (checkObj(objGlow))
-    objGlow.wink = isNew ? "yes" : "no"
-}
-
 ::get_active_gc_popup_nest_obj <- function get_active_gc_popup_nest_obj() {
-  let gcScene = ::getLastGamercardScene()
+  let gcScene = getLastGamercardScene()
   let nestObj = gcScene ? gcScene.findObject("chatPopupNest") : null
   return checkObj(nestObj) ? nestObj : null
 }
 
 ::update_clan_alert_icon <- function update_clan_alert_icon() {
   let needAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
-  ::do_with_all_gamercards(function(scene) {
+  doWithAllGamercards(function(scene) {
       showObjById("gc_clanAlert", needAlert, scene)
     })
 }
 
-::update_gamercards_chat_info <- function update_gamercards_chat_info(prefix = "gc_") {
-  if (!gchat_is_enabled() || !hasMenuChat.value)
-    return
-
-  ::g_chat.countNewMessages(function(newMessagesCount) {
-    let haveNew = newMessagesCount > 0
-    let tooltip = loc(haveNew ? "mainmenu/chat_new_messages" : "mainmenu/chat")
-
-    let newMessagesText = newMessagesCount ? newMessagesCount.tostring() : ""
-
-    ::do_with_all_gamercards(function(scene) {
-      let objBtn = scene.findObject($"{prefix}chat_btn")
-      if (!checkObj(objBtn))
-        return
-
-      ::update_gc_button(objBtn, haveNew, tooltip)
-      let newCountChatObj = objBtn.findObject($"{prefix}new_chat_messages")
-      newCountChatObj.setValue(newMessagesText)
-    })
-  })
-}
-
 function updateGamercardChatButton() {
   let canChat = gchat_is_enabled() && hasMenuChat.value
-  ::do_with_all_gamercards(@(scene) showObjById("gc_chat_btn", canChat, scene))
+  doWithAllGamercards(@(scene) showObjById("gc_chat_btn", canChat, scene))
 }
 
 hasMenuChat.subscribe(@(_) updateGamercardChatButton())
@@ -403,3 +404,13 @@ globalCallbacks.addTypes({
     onCb = @(_obj, _params) broadcastEvent("OpenGameModeSelect")
   }
 })
+
+
+return {
+  fill_gamer_card
+  update_gamercards_chat_info
+  doWithAllGamercards
+  getLastGamercardScene
+  updateGcInvites
+  addGamercardScene
+}

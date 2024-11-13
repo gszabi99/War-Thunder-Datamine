@@ -76,6 +76,7 @@ let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeMan
 let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { unlockCrew } = require("%scripts/crew/crewActions.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -948,7 +949,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let msg = format("%s %s?", loc("msgbox/question_crew_unlock"), cost.getTextAccordingToBalance())
     this.msgBox("unlock_crew", msg, [
         ["yes", function() {
-          this.taskId = ::unlockCrew(crewId, isGold, cost)
+          this.taskId = unlockCrew(crewId, isGold, cost)
           sync_handler_simulate_signal("profile_reload")
           if (this.taskId >= 0) {
             set_char_cb(this, this.slotOpCb)

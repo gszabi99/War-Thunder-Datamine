@@ -37,6 +37,7 @@ let { setWWMapParams, dargMapVisible } = require("%scripts/worldWar/wwMapDataBri
 let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { register_command } = require("console")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let wwTopMenuLeftSideSections = require("%scripts/worldWar/externalServices/worldWarTopMenuSectionsConfigs.nut")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -93,7 +94,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.leftSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
       this.scene.findObject("topmenu_menu_panel"),
       this,
-      ::g_ww_top_menu_left_side_sections,
+      wwTopMenuLeftSideSections,
       this.scene.findObject("left_gc_panel_free_width")
     )
     this.registerSubHandler(this.leftSectionHandlerWeak)
@@ -827,7 +828,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (side, isEmpty in emptySidesReinforcementList)
       if (isEmpty)
-        ::ww_turn_off_sector_sprites("Reinforcement", rearZones[ww_side_val_to_name(side)])
+        ww_turn_off_sector_sprites("Reinforcement", rearZones[ww_side_val_to_name(side)])
       else {
         ww_turn_off_sector_sprites("Reinforcement", ::g_world_war.getRearZonesLostBySide(side))
         if (!(side in arrivingReinforcementSides))

@@ -230,7 +230,7 @@ local isFullScriptsLoaded = false
   end_es_loading()
 }
 
-//app does not exist on script load, so we cant to use ::app->shouldDisableMenu
+//app does not exist on script load, so we cant to use app->shouldDisableMenu
 {
   let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
   let shouldDisableMenu = (disable_network() && getFromSettingsBlk("debug/disableMenu", false))

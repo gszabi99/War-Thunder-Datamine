@@ -1,5 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
+let { eventbus_subscribe } = require("eventbus")
+
 // Functions in this file called from C++ code
 
 ::is_last_load_controls_succeeded <- false
@@ -17,14 +19,9 @@ from "%scripts/dagui_library.nut" import *
   }
 }
 
-::save_controls_to_blk <- function save_controls_to_blk(blk) {
-  if (::g_controls_manager.getCurPreset().isLoaded) {
-    ::g_controls_manager.getCurPreset().saveToBlk(blk)
-    ::g_controls_manager.clearGuiOptions()
-  }
-}
-
-::controls_fix_device_mapping <- function controls_fix_device_mapping() {
+function controlsFixDeviceMapping() {
   ::g_controls_manager.fixDeviceMapping()
   ::g_controls_manager.commitControls()
 }
+
+eventbus_subscribe("controls_fix_device_mapping", @(_) controlsFixDeviceMapping())

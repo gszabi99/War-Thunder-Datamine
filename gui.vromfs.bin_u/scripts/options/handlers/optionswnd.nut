@@ -55,7 +55,7 @@ function getOptionsWndOpenParams(group) {
     wndOptionsMode = OPTIONS_MODE_GAMEPLAY
     sceneNavBlkName = "%gui/options/navOptionsIngame.blk"
     function cancelFunc() {
-      ::set_option_gamma(get_option_gamma(), false)
+      set_option_gamma(get_option_gamma(), false)
       for (local i = 0; i < SND_NUM_TYPES; i++)
         set_sound_volume(i, get_sound_volume(i), false)
     }

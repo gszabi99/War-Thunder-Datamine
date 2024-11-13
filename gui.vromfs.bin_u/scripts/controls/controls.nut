@@ -16,7 +16,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_low_width_screen, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { MAX_SHORTCUTS, CONTROL_TYPE, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
-let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let globalEnv = require("globalEnv")
 let controllerState = require("controllerState")
 let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
@@ -122,7 +121,7 @@ function resetDefaultControlSettings() {
   return true
 }
 
-::switch_helpers_mode_and_option <- function switch_helpers_mode_and_option(preset = "") {
+function switchHelpersModeAndOption(preset = "") {
   let joyCurSettings = ::joystick_get_cur_settings()
   if (joyCurSettings.useMouseAim)
     ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
@@ -156,7 +155,7 @@ local shortcutsNotChangeByPreset = [
     ::switch_show_console_buttons(preset.indexof("xinput") != null)
 
   if (updateHelpersMode)
-    ::switch_helpers_mode_and_option(preset)
+    switchHelpersModeAndOption(preset)
 
   saveProfile()
 }
@@ -1868,41 +1867,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   return loc("ui/comma").join([ baseTxt, hotkeyTxt ], true)
 }
 
-//works like get_shortcut_text, but returns only first bound shortcut for action
-//needed wor hud
-::get_first_shortcut_text <- function get_first_shortcut_text(shortcutData) {
-  let textArr = []
-  if (shortcutData.len() > 0) {
-    let sc = shortcutData[0]
-
-    let curPreset = ::g_controls_manager.getCurPreset()
-    for (local j = 0; j < sc.btn.len(); j++)
-      textArr.append(getLocalizedControlName(curPreset, sc.dev[j], sc.btn[j]))
-  }
-
-  return " + ".join(textArr)
-}
-
-::get_shortcut_gamepad_textures <- function get_shortcut_gamepad_textures(shortcutData) {
-  let res = []
-  foreach (sc in shortcutData) {
-    if (sc.dev.len() <= 0 || sc.dev[0] != JOYSTICK_DEVICE_0_ID)
-      continue
-
-    for (local i = 0; i < sc.dev.len(); i++)
-      res.append(gamepadIcons.getTextureByButtonIdx(sc.btn[i]))
-    return res
-  }
-  return res
-}
-
 //*************************Functions***************************//
-
-::applySelectedPreset <- function applySelectedPreset(presetName) {
-  if (isInArray(presetName, ["keyboard", "keyboard_shooter"]))
-    set_option(USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
-  return ($"config/hotkeys/hotkey.{presetName}.blk")
-}
 
 ::remapAxisName <- function remapAxisName(preset, axisId) {
   let text = preset.getAxisName(axisId)
@@ -1943,32 +1908,6 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   return mainText
 }
 
-::getUnmappedControlsForCurrentMission <- function getUnmappedControlsForCurrentMission() {
-  let gm = get_game_mode()
-  if (is_benchmark_game_mode())
-    return []
-
-  let unit = getPlayerCurUnit()
-  let helpersMode = ::getCurrentHelpersMode()
-  let required = ::getRequiredControlsForUnit(unit, helpersMode)
-
-  let unmapped = ::getUnmappedControls(required, helpersMode, true, false)
-  if (isInFlight() && gm == GM_TRAINING) {
-    let tutorialUnmapped = ::getUnmappedControlsForTutorial(getCurrentCampaignMission(), helpersMode)
-    foreach (id in tutorialUnmapped)
-      u.appendOnce(id, unmapped)
-  }
-  return unmapped
-}
-
-::getCurrentHelpersMode <- function getCurrentHelpersMode() {
-  let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
-  if (difficulty == 2)
-    return (is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
-  let option = ::get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
-  return option.values[option.value]
-}
-
 let needRequireEngineControl = @() !CONTROLS_ALLOW_ENGINE_AUTOSTART
   && (get_mission_difficulty_int() == g_difficulty.SIMULATOR.diffCode) // warning disable: -const-in-bool-expr
 
@@ -1985,7 +1924,66 @@ let tutorialSkipControl = {
   ["ID_TOGGLE_ENGINE"] = @() !needRequireEngineControl()
 }
 
-::getUnmappedControlsForTutorial <- function getUnmappedControlsForTutorial(missionId, helpersMode) {
+function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCheckRequirements = false) {
+  let unmapped = []
+
+  let joyParams = ::joystick_get_cur_settings()
+  foreach (item in ::shortcutsList) {
+    if (isInArray(item.id, controls)) {
+      if ((("filterHide" in item) && isInArray(helpersMode, item.filterHide))
+        || (("filterShow" in item) && !isInArray(helpersMode, item.filterShow))
+        || (("showFunc" not in item) || !item.showFunc())
+        || (shouldCheckRequirements && helpersMode == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim))
+        continue
+
+      if (item.type == CONTROL_TYPE.SHORTCUT) {
+        let shortcuts = ::get_shortcuts([ item.id ])
+        if (!shortcuts.len() || isShortcutMapped(shortcuts[0]))
+          continue
+
+        let altIds = item?.alternativeIds ?? []
+        foreach (otherItem in ::shortcutsList)
+          if ((otherItem?.alternativeIds ?? []).indexof(item.id) != null)
+            u.appendOnce(otherItem.id, altIds)
+        local isMapped = false
+        foreach (s in ::get_shortcuts(altIds))
+          if (isShortcutMapped(s)) {
+            isMapped = true
+            break
+          }
+        if (isMapped)
+          continue
+
+        unmapped.append("".concat(getLocNames ? "hotkeys/" : "", item.id))
+      }
+      else if (item.type == CONTROL_TYPE.AXIS) {
+        if (::is_axis_mapped_on_mouse(item.id, helpersMode, joyParams))
+          continue
+
+        let axisIndex = get_axis_index(item.id)
+        let axisId = axisIndex >= 0
+          ? joyParams.getAxis(axisIndex).axisId : -1
+        if (axisId == -1) {
+          let modifiers = ["rangeMin", "rangeMax"]
+          local shortcutsCount = 0
+          foreach (modifier in modifiers) {
+            if (!("hideAxisOptions" in item) || !isInArray(modifier, item.hideAxisOptions)) {
+              let shortcuts = ::get_shortcuts([ $"{item.id}_{modifier}" ])
+              if (shortcuts.len() && isShortcutMapped(shortcuts[0]))
+                shortcutsCount++
+            }
+          }
+          if (shortcutsCount < modifiers.len())
+            unmapped.append("".concat(getLocNames ? "controls/" : "", item.axisName))
+        }
+      }
+    }
+  }
+
+  return unmapped
+}
+
+function getUnmappedControlsForTutorial(missionId, helpersMode) {
   local res = []
 
   local mis_file = null
@@ -2065,7 +2063,7 @@ let tutorialSkipControl = {
     foreach (id in cond.shortcuts)
       if (!isInArray(id, controlsList))
         controlsList.append(id)
-  let unmapped = ::getUnmappedControls(controlsList, helpersMode, false, false)
+  let unmapped = getUnmappedControls(controlsList, helpersMode, false, false)
 
   foreach (cond in conditionsList) {
     if (cond.condition == "ALL")
@@ -2092,8 +2090,34 @@ let tutorialSkipControl = {
     }
   }
 
-  res = ::getUnmappedControls(res, helpersMode, true, false)
+  res = getUnmappedControls(res, helpersMode, true, false)
   return res
+}
+
+::getUnmappedControlsForCurrentMission <- function getUnmappedControlsForCurrentMission() {
+  let gm = get_game_mode()
+  if (is_benchmark_game_mode())
+    return []
+
+  let unit = getPlayerCurUnit()
+  let helpersMode = ::getCurrentHelpersMode()
+  let required = ::getRequiredControlsForUnit(unit, helpersMode)
+
+  let unmapped = getUnmappedControls(required, helpersMode, true, false)
+  if (isInFlight() && gm == GM_TRAINING) {
+    let tutorialUnmapped = getUnmappedControlsForTutorial(getCurrentCampaignMission(), helpersMode)
+    foreach (id in tutorialUnmapped)
+      u.appendOnce(id, unmapped)
+  }
+  return unmapped
+}
+
+::getCurrentHelpersMode <- function getCurrentHelpersMode() {
+  let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
+  if (difficulty == 2)
+    return (is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
+  let option = ::get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
+  return option.values[option.value]
 }
 
 function getWeaponFeatures(weaponsList) {
@@ -2417,66 +2441,6 @@ function getWeaponFeatures(weaponsList) {
 
   return controls
 }
-
-::getUnmappedControls <- function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCheckRequirements = false) {
-  let unmapped = []
-
-  let joyParams = ::joystick_get_cur_settings()
-  foreach (item in ::shortcutsList) {
-    if (isInArray(item.id, controls)) {
-      if ((("filterHide" in item) && isInArray(helpersMode, item.filterHide))
-        || (("filterShow" in item) && !isInArray(helpersMode, item.filterShow))
-        || (("showFunc" not in item) || !item.showFunc())
-        || (shouldCheckRequirements && helpersMode == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim))
-        continue
-
-      if (item.type == CONTROL_TYPE.SHORTCUT) {
-        let shortcuts = ::get_shortcuts([ item.id ])
-        if (!shortcuts.len() || isShortcutMapped(shortcuts[0]))
-          continue
-
-        let altIds = item?.alternativeIds ?? []
-        foreach (otherItem in ::shortcutsList)
-          if ((otherItem?.alternativeIds ?? []).indexof(item.id) != null)
-            u.appendOnce(otherItem.id, altIds)
-        local isMapped = false
-        foreach (s in ::get_shortcuts(altIds))
-          if (isShortcutMapped(s)) {
-            isMapped = true
-            break
-          }
-        if (isMapped)
-          continue
-
-        unmapped.append("".concat(getLocNames ? "hotkeys/" : "", item.id))
-      }
-      else if (item.type == CONTROL_TYPE.AXIS) {
-        if (::is_axis_mapped_on_mouse(item.id, helpersMode, joyParams))
-          continue
-
-        let axisIndex = get_axis_index(item.id)
-        let axisId = axisIndex >= 0
-          ? joyParams.getAxis(axisIndex).axisId : -1
-        if (axisId == -1) {
-          let modifiers = ["rangeMin", "rangeMax"]
-          local shortcutsCount = 0
-          foreach (modifier in modifiers) {
-            if (!("hideAxisOptions" in item) || !isInArray(modifier, item.hideAxisOptions)) {
-              let shortcuts = ::get_shortcuts([ $"{item.id}_{modifier}" ])
-              if (shortcuts.len() && isShortcutMapped(shortcuts[0]))
-                shortcutsCount++
-            }
-          }
-          if (shortcutsCount < modifiers.len())
-            unmapped.append("".concat(getLocNames ? "controls/" : "", item.axisName))
-        }
-      }
-    }
-  }
-
-  return unmapped
-}
-
 
 ::is_shortcut_display_equal <- function is_shortcut_display_equal(sc1, sc2) {
   foreach (_i, sb in sc1)

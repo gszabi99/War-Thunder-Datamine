@@ -966,7 +966,7 @@ function checkBadWeapons() {
     if (curWeapon == "")
       continue
 
-    if (!::shop_is_weapon_available(unit.name, curWeapon, false, false) && !shop_is_weapon_purchased(unit.name, curWeapon))
+    if (!shop_is_weapon_available(unit.name, curWeapon, false, false) && !shop_is_weapon_purchased(unit.name, curWeapon))
       setLastWeapon(unit.name, "")
   }
 }

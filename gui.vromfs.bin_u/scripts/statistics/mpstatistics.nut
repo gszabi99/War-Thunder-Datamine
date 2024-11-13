@@ -37,6 +37,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { openOrdersInventory, updateActiveOrder, orderCanBeActivated,
   getActivateButtonLabel, activateSoonExpiredOrder
 } = require("%scripts/items/orders.nut")
+let { fill_gamer_card } = require("%scripts/gamercard.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -776,7 +777,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       teamObj.setValue(loc("ui/colon").concat(loc("multiplayer/team"), teamTxt))
     }
 
-    ::fill_gamer_card({
+    fill_gamer_card({
                       name = playerInfo ? playerInfo.name : ""
                       clanTag = playerInfo ? playerInfo.clanTag : ""
                       icon = (!playerInfo || playerInfo.isBot) ? "cardicon_bot" : avatars.getIconById(playerInfo.pilotId)

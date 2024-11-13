@@ -7,6 +7,20 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+
+function upgradeUrlMission(fullMissionBlk) {
+  let misBlk = fullMissionBlk?.mission_settings?.mission
+  if (!fullMissionBlk || !misBlk)
+    return
+
+  if (misBlk?.useKillStreaks && !misBlk?.allowedKillStreaks)
+    misBlk.useKillStreaks = false
+
+  foreach (unitType in unitTypes.types)
+    if (unitType.isAvailable() && !(unitType.missionSettingsAvailabilityFlag in misBlk))
+      misBlk[unitType.missionSettingsAvailabilityFlag] = ::has_unittype_in_full_mission_blk(fullMissionBlk, unitType.esUnitType)
+}
 
 gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -97,7 +111,7 @@ gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local errorText = loc("wait/ugm_download_failed")
     if (success) {
-      ::upgrade_url_mission(blk)
+      upgradeUrlMission(blk)
       errorText = validate_custom_mission(blk)
       this.requestSuccess = u.isEmpty(errorText)
       success = this.requestSuccess

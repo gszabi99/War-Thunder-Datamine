@@ -117,7 +117,7 @@ let respawnWndState = persist("respawnWndState", @() {
 })
 let usedPlanes = persist("usedPlanes", @() {})
 
-::on_mission_started_mp <- function on_mission_started_mp() {
+function onMissionStartedMp(_) {
   log("on_mission_started_mp - CLIENT")
   ::g_streaks.clear()
   respawnWndState.beforeFirstFlightInSession = true
@@ -125,6 +125,8 @@ let usedPlanes = persist("usedPlanes", @() {})
   reset_cur_mission_mode()
   broadcastEvent("MissionStarted")
 }
+
+eventbus_subscribe("on_mission_started_mp", onMissionStartedMp)
 
 enum ESwitchSpectatorTarget {
   E_DO_NOTHING,
@@ -2422,11 +2424,13 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 }
 
-::cant_respawn_anymore <- function cant_respawn_anymore() { // called when no more respawn bases left
+function cantRespawnAnymore(_) { // called when no more respawn bases left
   let current_base_gui_handler = get_current_base_gui_handler()
   if (current_base_gui_handler && ("stayOnRespScreen" in current_base_gui_handler))
     current_base_gui_handler.stayOnRespScreen = true
 }
+
+eventbus_subscribe("cant_respawn_anymore", cantRespawnAnymore)
 
 ::get_mouse_relative_coords_on_obj <- function get_mouse_relative_coords_on_obj(obj) {
   if (!checkObj(obj))

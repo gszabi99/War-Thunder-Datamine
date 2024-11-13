@@ -10,7 +10,7 @@ local isRequestedOnSceneSwitch = false
 local cbFunc = null
 
 /**
- * Calls client func Renderer::onSettingsChanged(), to apply the modified graphics settings
+ * Calls client func Renderer->onSettingsChanged(), to apply the modified graphics settings
  * from config.blk. Renderer applies all changes from config.blk on the next frame.
  * @param {bool} shouldReloadScene - Pass true to reload the GUI Scene after renderer settings applied.
  *     Please note, that renderer can request the GUI Scene reload too, via on_renderer_settings_applied()

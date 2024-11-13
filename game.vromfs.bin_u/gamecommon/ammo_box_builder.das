@@ -158,6 +158,7 @@ def on_ammo_box_destroy(evt : Event;
         elif baseGun != null
           count += max(0, weapon.prop.bullets)
       count -= reloadedFromAmmoBoxCount[i]
+      count = max(count, 0)
       if count > 0
         break
     if count <= 0

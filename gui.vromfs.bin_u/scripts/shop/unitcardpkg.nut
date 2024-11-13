@@ -13,7 +13,7 @@ let getUnitShopPriceText = @(unit)
   : isUnitUsable(unit) ? ""
   : isUnitGift(unit) ? stripTags(loc($"shop/giftAir/{unit.gift}", "shop/giftAir/alpha"))
   : canBuyUnit(unit) || isUnitSpecial(unit) || isUnitResearched(unit)
-    ? Cost(::wp_get_cost(unit.name), wp_get_cost_gold(unit.name)).getTextAccordingToBalance()
+    ? Cost(wp_get_cost(unit.name), wp_get_cost_gold(unit.name)).getTextAccordingToBalance()
   : ""
 
 return { getUnitShopPriceText }

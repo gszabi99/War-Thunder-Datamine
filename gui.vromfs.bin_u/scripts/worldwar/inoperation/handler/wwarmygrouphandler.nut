@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-::WwArmyGroupHandler <- class {
+class WwArmyGroupHandler {
   group = null
   scene = null
 
@@ -55,3 +55,5 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
     viewObj.selected = "no"
   }
 }
+
+return WwArmyGroupHandler

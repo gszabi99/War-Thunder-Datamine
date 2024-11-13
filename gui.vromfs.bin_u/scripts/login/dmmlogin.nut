@@ -43,7 +43,7 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
     log("DMM Login: dmm_user_id ", dgs_get_argv("dmm_user_id"))
     log("DMM Login: dmm_token ", dgs_get_argv("dmm_token"))
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "dmm" })
-    let ret = ::check_login_pass(dgs_get_argv("dmm_user_id"),
+    let ret = check_login_pass(dgs_get_argv("dmm_user_id"),
       dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
     this.proceedAuthorizationResult(ret)
   }

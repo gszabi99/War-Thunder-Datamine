@@ -364,7 +364,7 @@ let Trophy = class (BaseItem) {
 
   function getCost(ignoreCanBuy = false) {
     if (this.isCanBuy() || ignoreCanBuy)
-      return Cost(::wp_get_trophy_cost(this.id), wp_get_trophy_cost_gold(this.id))
+      return Cost(wp_get_trophy_cost(this.id), wp_get_trophy_cost_gold(this.id))
     return Cost()
   }
 

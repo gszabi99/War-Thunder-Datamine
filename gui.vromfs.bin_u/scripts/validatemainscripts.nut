@@ -6,7 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { file_exists } = require("dagor.fs")
 require("%scripts/main.nut")
 
-log("::load_scripts_after_login()")
+log("load_scripts_after_login_once()")
 ::load_scripts_after_login_once()
 
 

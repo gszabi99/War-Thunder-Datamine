@@ -566,14 +566,15 @@ function J7ERadar(width, height) {
 }
 
 function J7EAdditionalHud(width, height) {
+  let needAdditionalHud = Computed(@() !BombingMode.get() && !BombCCIPMode.get() && !RocketMode.get() && !CannonMode.get())
   return @() {
-    watch = IsRadarVisible
+    watch = [needAdditionalHud, IsRadarVisible]
     size = [width, height]
-    children = [
+    children = needAdditionalHud.get() ? [
       J7ERadar(width, height),
       (IsRadarVisible.value ? ASPTargetMark(width, height, true, false) : null),
       ASPTargetMark(width, height, false, false, true)
-    ]
+    ] : null
   }
 }
 

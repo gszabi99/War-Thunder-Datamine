@@ -1,5 +1,7 @@
+from "%scripts/dagui_natives.nut" import get_game_mode_name
 from "%scripts/dagui_library.nut" import *
 
+let { format } = require("string")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -20,6 +22,8 @@ enum presenceCheckOrder {
   IN_WW_BATTLE_PREPARE
   IDLE
 }
+
+let getGameModeLocName = @(gm) loc(format("multiplayer/%sMode", get_game_mode_name(gm)))
 
 ::g_presence_type <- {
   types = []
@@ -79,7 +83,7 @@ enums.addTypesByGlobalName("g_presence_type", {
     getLocText = function (presenceParams) {
       let eventName = presenceParams?.eventName ?? ""
       return loc(this.locId,
-        { gameMode = eventName == "" ? ::get_game_mode_loc_name(presenceParams?.gameMod)
+        { gameMode = eventName == "" ? getGameModeLocName(presenceParams?.gameMod)
           : events.getNameByEconomicName(presenceParams?.eventName)
           country = loc(presenceParams?.country ?? "")
         })

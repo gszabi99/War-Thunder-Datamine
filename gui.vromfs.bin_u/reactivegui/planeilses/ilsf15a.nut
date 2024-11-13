@@ -565,29 +565,32 @@ function pitchWrap(width, height) {
   }
 }
 
-let tvvLinked = @(){
-  watch = isAAMMode
-  size = flex()
-  children = !isAAMMode.value ? [
-    {
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(3), ph(3)]
-      color = IlsColor.value
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.value
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 50, 50],
-        [VECTOR_LINE, -100, 0, -50, 0],
-        [VECTOR_LINE, 100, 0, 50, 0],
-        [VECTOR_LINE, 0, -100, 0, -50]
-      ]
-    }
-    pitchWrap(IlsPosSize[2], IlsPosSize[3])
-  ] : null
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-    transform = {
-      translate = TvvMark
+function tvvLinked(width, height) {
+  let pitchElem = pitchWrap(width, height)
+  return @(){
+    watch = isAAMMode
+    size = flex()
+    children = !isAAMMode.value ? [
+      {
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = [pw(3), ph(3)]
+        color = IlsColor.value
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth * IlsLineScale.value
+        commands = [
+          [VECTOR_ELLIPSE, 0, 0, 50, 50],
+          [VECTOR_LINE, -100, 0, -50, 0],
+          [VECTOR_LINE, 100, 0, 50, 0],
+          [VECTOR_LINE, 0, -100, 0, -50]
+        ]
+      }
+      pitchElem
+    ] : null
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = TvvMark
+      }
     }
   }
 }
@@ -644,13 +647,14 @@ function compass(width, generateFunc) {
 }
 
 function compassWrap(width, height, generateFunc) {
+  let compassElem = compass(width * 0.2, generateFunc)
   return @(){
     watch = isAAMMode
     size = [width * 0.5, height * 0.1]
     pos = [width * 0.25, height * 0.1]
     clipChildren = true
     children = !isAAMMode.value ? [
-      compass(width * 0.2, generateFunc)
+      compassElem
       {
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS
@@ -782,7 +786,7 @@ function ilsF15a(width, height) {
       distScale
       inRangeLabel
       bombImpactLine
-      tvvLinked
+      tvvLinked(width, height)
       compassWrap(width, height, generateCompassMark)
       ccrpMarks
     ]

@@ -96,7 +96,8 @@ let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
   set_option_voicechat, get_option_chat_messages_filter,
   set_option_chat_messages_filter } = require("chat")
 let { get_game_mode } = require("mission")
-let { get_mp_session_info, get_mission_set_difficulty_int } = require("guiMission")
+let { get_mp_session_info, get_mission_set_difficulty_int, get_meta_mission_info_by_name
+} = require("guiMission")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
@@ -107,8 +108,6 @@ let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName, getGam
 } = require("%scripts/missions/missionsUtils.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getGameLocalizationInfo, setGameLocalization, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let { get_game_params_blk, get_user_skins_profile_blk, get_unittags_blk } = require("blkGetters")
@@ -122,7 +121,7 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { getCurrentGameMode, getCurrentShopDifficulty
+let { getCurrentGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -374,7 +373,7 @@ let create_option_switchbox = @(config) handyman.renderCached(("%gui/options/opt
   return data
 }
 
-::create_option_row_multiselect <- function create_option_row_multiselect(params) {
+function createOptionRowMultiselect(params) {
   let option = params?.option
   if (option == null
       || !checkArgument(option?.id, option?.items, "array")
@@ -463,18 +462,6 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
   get_volume_limits(sndType))
 
 
-::get_current_wnd_difficulty <- function get_current_wnd_difficulty() {
-  let diffCode = loadLocalByAccount("wnd/diffMode", getCurrentShopDifficulty().diffCode)
-  local diff = g_difficulty.getDifficultyByDiffCode(diffCode)
-  if (!diff.isAvailable())
-    diff = g_difficulty.ARCADE
-  return diff.diffCode
-}
-
-::set_current_wnd_difficulty <- function set_current_wnd_difficulty(mode = 0) {
-  saveLocalByAccount("wnd/diffMode", mode)
-}
-
 function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos = true, context = null, hasTitle = true) {
   local selectedRow = 0
   local iRow = 0
@@ -545,7 +532,7 @@ function create_options_container(name, options, is_centered, columnsRatio = 0.5
 
     else if ( controlName == "multiselect") {
       let listClass = ("listClass" in optionData) ? optionData.listClass : "options"
-      elemTxt = ::create_option_row_multiselect({ option = optionData, isFull = true, listClass = listClass })
+      elemTxt = createOptionRowMultiselect({ option = optionData, isFull = true, listClass = listClass })
       haveOptText = optionData?.showTitle ?? false
     }
 
@@ -3544,7 +3531,7 @@ let optionsMap = {
       let item = {
         idx = nc
         unlockId
-        image = $"#ui/images/avatars/{unlockId}"
+        image = $"#ui/images/avatars/{unlockId}.avif"
         show = isShown
         enabled = isUnlockOpened(unlockId, UNLOCKABLE_PILOT)
         tooltipId = getTooltipType("UNLOCK").getTooltipId(unlockId, { showProgress = true })
@@ -4394,6 +4381,7 @@ let optionsMap = {
     descr.items = []
     descr.values = []
     descr.value = get_gui_option(optionId)
+    descr.optionCb = "onTestFlightNameChange"
     local missionsList = []
     let cb = @(res) missionsList = res
     g_mislist_type.BASE.requestMissionsList(false, cb, "test_flights_universal")
@@ -4416,6 +4404,13 @@ let optionsMap = {
     let testFlightShip = get_unittags_blk()?[unitName].testFlightShip ?? ""
     if (testFlightShip != "")
       descr.values.insert(0, AIR_SPAWN_POINT.CARRIER)
+
+    let testFlightNameOpt = get_option(USEROPT_TEST_FLIGHT_NAME)
+    let testFlightName = testFlightNameOpt.values[testFlightNameOpt.value]
+    let misBlk = get_meta_mission_info_by_name(testFlightName)
+    let availableSpawnPoints = (misBlk?.availableSpawnPoints ?? "").split("; ")
+    if (availableSpawnPoints.len() > 0)
+      descr.values = descr.values.filter(@(v) availableSpawnPoints.contains(v.tostring()))
     descr.items = descr.values.map(@(v) airSpawnPointNames[v](unit))
     descr.value = get_gui_option(optionId)
   },

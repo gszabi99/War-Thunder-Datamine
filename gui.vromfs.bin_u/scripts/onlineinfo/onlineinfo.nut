@@ -10,33 +10,6 @@ let { get_time_msec } = require("dagor.time")
   rooms_total = 0
 }
 
-::available_countries_info <-
-{
-  [0] = { //arcade
-     country_ussr = 1,
-     country_japan = 1,
-     country_usa = 1,
-     country_germany = 1,
-     country_britain = 1
-  },
-  [1] = { //historical
-     country_0 = 1,
-     country_ussr = 1,
-     country_japan = 1,
-     country_usa = 1,
-     country_germany = 1,
-     country_britain = 1
-  },
-  [2] = { //realistic
-     country_0 = 1,
-     country_ussr  = 1,
-     country_japan = 1,
-     country_usa   = 1,
-     country_germany = 1,
-     country_britain = 1
-  }
-}
-
 ::last_show_update_popup_time <- -60000
 ::online_info_server_time_param <- 0
 ::online_info_server_time_received <- 0

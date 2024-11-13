@@ -7,7 +7,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mainmenu/topMenuSections.nut")
 
-::g_ww_top_menu_operation_map <- {
+let wwTopMenuOperationMap = {
   types = []
   cache = {
     byName = {}
@@ -17,7 +17,7 @@ let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mai
   getSectionByName = getTopMenuSectionByName
 }
 
-enums.addTypesByGlobalName("g_ww_top_menu_operation_map", [
+enums.addTypes(wwTopMenuOperationMap, [
   {
     name = "ww_menu"
     btnName = "ww_menu"
@@ -40,3 +40,5 @@ enums.addTypesByGlobalName("g_ww_top_menu_operation_map", [
     ]
   }
 ])
+
+return wwTopMenuOperationMap

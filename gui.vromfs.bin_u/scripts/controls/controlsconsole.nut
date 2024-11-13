@@ -72,7 +72,7 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function checkHeadtrackRows() {
-    let show = ::ps4_headtrack_is_attached() && ps4_headtrack_get_enable()
+    let show = ps4_headtrack_is_attached() && ps4_headtrack_get_enable()
     foreach (o in [USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y])
       this.showOptionRow(::get_option(o), show)
     showObjById("btn_calibrate", show, this.scene)

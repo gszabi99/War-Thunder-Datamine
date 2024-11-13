@@ -8,9 +8,8 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { fatal } = require("dagor.debug")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
+let { research, flushExcessExpToUnit } = require("%scripts/unit/unitActions.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
@@ -24,7 +23,7 @@ let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched,
   isPrevUnitBought
 } = require("%scripts/unit/unitStatus.nut")
-let { get_ranks_blk, get_discounts_blk, get_shop_blk } = require("blkGetters")
+let { get_ranks_blk } = require("blkGetters")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
@@ -395,7 +394,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
     if (unit) {
       this.lastResearchUnit = unit
-      unitActions.research(unit, false)
+      research(unit, false)
     }
     else
       shop_reset_researchable_unit(this.unitCountry, this.unitType)
@@ -423,7 +422,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       return
     }
 
-    this.taskId = ::flushExcessExpToUnit(unitOnResearch.name)
+    this.taskId = flushExcessExpToUnit(unitOnResearch.name)
     if (this.taskId >= 0) {
       set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = executeAfterDoneFunc
@@ -483,63 +482,4 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     sendBqEvent("CLIENT_GAMEPLAY_1", "completed_new_research_unit", { unit = unit.name
       howResearched = "earned_exp" })
   }
-}
-
-::getSteamMarkUp <- function getSteamMarkUp() {
-  let blk = get_discounts_blk()
-
-  let blocksCount = blk.blockCount()
-  for (local i = 0; i < blocksCount; i++) {
-    let block = blk.getBlock(i)
-    if (block.getBlockName() == "steam_markup")
-      return block.all
-  }
-
-  return 0
-}
-
-::checkShopBlk <- function checkShopBlk() {
-  let resArray = []
-  let shopBlk = get_shop_blk()
-  for (local tree = 0; tree < shopBlk.blockCount(); tree++) {
-    let tblk = shopBlk.getBlock(tree)
-    let country = tblk.getBlockName()
-
-    for (local page = 0; page < tblk.blockCount(); page++) {
-      let pblk = tblk.getBlock(page)
-      let groups = []
-      for (local range = 0; range < pblk.blockCount(); range++) {
-        let rblk = pblk.getBlock(range)
-        for (local a = 0; a < rblk.blockCount(); a++) {
-          let airBlk = rblk.getBlock(a)
-          let airName = airBlk.getBlockName()
-          local air = getAircraftByName(airName)
-          if (!air) {
-            let groupTotal = airBlk.blockCount()
-            if (groupTotal == 0) {
-              resArray.append($"Not found aircraft {airName} in {country}")
-              continue
-            }
-            groups.append(airName)
-            for (local ga = 0; ga < groupTotal; ga++) {
-              let gAirBlk = airBlk.getBlock(ga)
-              air = getAircraftByName(gAirBlk.getBlockName())
-              if (!air)
-                resArray.append($"Not found aircraft {gAirBlk.getBlockName()} in {country}")
-            }
-          }
-          else if ((airBlk?.reqAir ?? "") != "") {
-              let reqAir = getAircraftByName(airBlk.reqAir)
-              if (!reqAir && !isInArray(airBlk.reqAir, groups))
-                resArray.append($"Not found reqAir {airBlk.reqAir} for {airName} in {country}")
-          }
-        }
-      }
-    }
-  }
-  let resText = "\n".join(resArray, true)
-  if (resText == "")
-    log("Shop.blk checked.")
-  else
-    fatal($"Incorrect shop.blk!\n{resText}")
 }
