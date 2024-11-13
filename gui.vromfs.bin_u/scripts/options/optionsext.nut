@@ -7,9 +7,8 @@ from "soundOptions" import *
 from "radarOptions" import get_radar_mode_names, get_option_radar_name, get_radar_scan_pattern_names, get_option_radar_scan_pattern_name, get_radar_range_values, get_option_radar_range_value, set_option_radar_name, set_option_radar_scan_pattern_name, set_option_radar_range_value
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
-from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_DIGIT
+from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_DIGIT, TANK_ALT_CROSSHAIR_ADD_NEW, AIR_SPAWN_POINT
 from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
-from "%scripts/options/optionsConsts.nut" import TANK_ALT_CROSSHAIR_ADD_NEW
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/mainConsts.nut" import SEEN
 
@@ -112,7 +111,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getGameLocalizationInfo, setGameLocalization, isChineseHarmonized } = require("%scripts/langUtils/language.nut")
-let { get_game_params_blk, get_user_skins_profile_blk } = require("blkGetters")
+let { get_game_params_blk, get_user_skins_profile_blk, get_unittags_blk } = require("blkGetters")
 let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isEnabledCustomLocalization, setCustomLocalization,
   getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
@@ -142,6 +141,23 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+
+let airSpawnPointNames = {
+  [AIR_SPAWN_POINT.AIRFIELD] = @(_unit) loc("multiplayer/airfieldName"),
+  [AIR_SPAWN_POINT.ABOVE_AIRFIELD_1] =
+    @(unit) loc("options/air_spawn_point/above_airfield").subst({ height = unit?.isHelicopter() ? 0.5 : 1 }),
+  [AIR_SPAWN_POINT.ABOVE_AIRFIELD_2] =
+    @(unit) loc("options/air_spawn_point/above_airfield").subst({ height = unit?.isHelicopter() ? 1 : 2 }),
+  [AIR_SPAWN_POINT.ABOVE_AIRFIELD_3] =
+    @(unit) loc("options/air_spawn_point/above_airfield").subst({ height = unit?.isHelicopter() ? 2 : 3 }),
+  [AIR_SPAWN_POINT.ABOVE_AIRFIELD_4] =
+    @(_unit) loc("options/air_spawn_point/above_airfield").subst({ height = 5 }),
+  [AIR_SPAWN_POINT.ABOVE_AIRFIELD_5] =
+    @(_unit) loc("options/air_spawn_point/above_airfield").subst({ height = 7 }),
+  [AIR_SPAWN_POINT.ENEMY_DEFENSE_ZONE] = @(_unit) loc("options/air_spawn_point/sam"),
+  [AIR_SPAWN_POINT.GLIDE_PATH] = @(_unit) loc("options/air_spawn_point/glide_path"),
+  [AIR_SPAWN_POINT.CARRIER] = @(_unit) loc("mainmenu/type_cv_ship"),
+}
 
 function mkUseroptHardWatched(id, defValue = null) {
   let opt = hardPersistWatched(id, defValue)
@@ -4389,17 +4405,18 @@ let optionsMap = {
   },
   [USEROPT_AIR_SPAWN_POINT] = function(optionId, descr, _context) {
     descr.id = "air_spawn_point"
-    let unit = getAircraftByName(unitNameForWeapons.get())
-    descr.values = unit?.isHelicopter() ? [0, 6, 7, 1, 2, 3] : [0, 6, 7, 1, 2, 3, 4, 5]
-    let aboveText = loc("options/air_spawn_point/above_airfield")
-    descr.items = unit?.isHelicopter()
-      ? [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"),
-          loc("options/air_spawn_point/glide_path"), aboveText.subst({ height = 0.5 }),
-          aboveText.subst({ height = 1 }), aboveText.subst({ height = 2 })]
-      : [loc("multiplayer/airfieldName"), loc("options/air_spawn_point/sam"),
-          loc("options/air_spawn_point/glide_path"), aboveText.subst({ height = 1 }),
-          aboveText.subst({ height = 2 }), aboveText.subst({ height = 3 }), aboveText.subst({ height = 5 }),
-          aboveText.subst({ height = 7 })]
+    let unitName = unitNameForWeapons.get()
+    let unit = getAircraftByName(unitName)
+    descr.values = unit?.isHelicopter()
+      ? [AIR_SPAWN_POINT.AIRFIELD, AIR_SPAWN_POINT.ENEMY_DEFENSE_ZONE, AIR_SPAWN_POINT.GLIDE_PATH,
+        AIR_SPAWN_POINT.ABOVE_AIRFIELD_1, AIR_SPAWN_POINT.ABOVE_AIRFIELD_2, AIR_SPAWN_POINT.ABOVE_AIRFIELD_3]
+      : [AIR_SPAWN_POINT.AIRFIELD, AIR_SPAWN_POINT.ENEMY_DEFENSE_ZONE, AIR_SPAWN_POINT.GLIDE_PATH,
+        AIR_SPAWN_POINT.ABOVE_AIRFIELD_1, AIR_SPAWN_POINT.ABOVE_AIRFIELD_2, AIR_SPAWN_POINT.ABOVE_AIRFIELD_3,
+        AIR_SPAWN_POINT.ABOVE_AIRFIELD_4, AIR_SPAWN_POINT.ABOVE_AIRFIELD_5]
+    let testFlightShip = get_unittags_blk()?[unitName].testFlightShip ?? ""
+    if (testFlightShip != "")
+      descr.values.insert(0, AIR_SPAWN_POINT.CARRIER)
+    descr.items = descr.values.map(@(v) airSpawnPointNames[v](unit))
     descr.value = get_gui_option(optionId)
   },
   [USEROPT_TARGET_RANK] = function(optionId, descr, _context) {

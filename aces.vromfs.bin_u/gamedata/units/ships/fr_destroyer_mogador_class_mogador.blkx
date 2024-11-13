@@ -5196,10 +5196,6 @@
             {
               "partNo": "ammunition_storage_charges_01_dm",
               "critWaterLevel": 0.75
-            },
-            {
-              "partNo": "ammunition_storage_aux_01_dm",
-              "critWaterLevel": 0.8
             }
           ]
         }
@@ -5217,10 +5213,6 @@
             {
               "partNo": "ammunition_storage_charges_02_dm",
               "critWaterLevel": 0.75
-            },
-            {
-              "partNo": "ammunition_storage_aux_01_dm",
-              "critWaterLevel": 0.8
             }
           ]
         }
@@ -5394,6 +5386,8 @@
           "firstStage": true,
           "fatalFire": false,
           "fatalExplosion": false,
+          "fireEvent": "ready_use_ammo_fire",
+          "explosionEvent": "ready_use_ammo_explosion",
           "damageEffect": "ammunition_first_stage",
           "ammo_turret_01_dm": {
             "count": 10
@@ -5404,9 +5398,7 @@
           "reloadTimeMult": 1.33,
           "fatalFire": false,
           "fatalExplosion": false,
-          "fireEvent": "ready_use_ammo_fire",
-          "explosionEvent": "ready_use_ammo_explosion",
-          "damageEffect": "ammunition_first_stage",
+          "damageEffect": "ammunition_storage_shells",
           "ammunition_storage_shells_01_dm": {
             "count": 170
           }

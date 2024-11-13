@@ -42,6 +42,17 @@
       },
       "conditions": {},
       "actions": {
+        "unitPutToSleep": {
+          "target": [
+            "target_tanks_low_squad",
+            "target_flightsOld_squad",
+            "target_flightsJet_squad",
+            "target_tanks_high_squad",
+            "airfield_low",
+            "airfield_high",
+            "ship_destroyer_squad"
+          ]
+        },
         "varSetString": [
           {
             "value": "",
@@ -76,16 +87,6 @@
             0.0
           ],
           "time": 0.0
-        },
-        "unitPutToSleep": {
-          "target": [
-            "target_tanks_low_squad",
-            "target_flightsOld_squad",
-            "target_flightsJet_squad",
-            "target_tanks_high_squad",
-            "airfield_low",
-            "airfield_high"
-          ]
         },
         "varSetInt": {
           "value": 0,
@@ -216,8 +217,21 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "isImmortal": true,
-          "speed": 60.0,
+          "speed": 50.0,
           "lockSpeed": true
+        },
+        "varSetString": {
+          "value": "",
+          "var": "ship_destroyer",
+          "input_var": "aircraft_ship_name"
+        },
+        "varAddString": {
+          "value": "_destroyer",
+          "digits": 0,
+          "var": "ship_destroyer"
+        },
+        "triggerEnable": {
+          "target": "ship_destroyer_spawn"
         }
       },
       "else_actions": {
@@ -225,6 +239,62 @@
           "target": "airfield_ship_unit"
         }
       }
+    },
+    "ship_destroyer_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "@ship_destroyer",
+            "type": "unit"
+          },
+          {
+            "target": "ship_destroyer_spawn_point",
+            "type": "area"
+          }
+        ]
+      },
+      "actions": {
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "@ship_destroyer",
+          "target": "ship_destroyer_spawn_point"
+        },
+        "unitSetRoute": {
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "route": "ship_destroyer_way",
+          "teleportToStart": false,
+          "object": "@ship_destroyer"
+        },
+        "unitSetProperties": {
+          "object": "@ship_destroyer",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "isImmortal": true,
+          "speed": 50.0,
+          "lockSpeed": true
+        }
+      },
+      "else_actions": {}
     },
     "check_high": {
       "is_enabled": false,
@@ -1421,6 +1491,7 @@
             3.0,
             7.0
           ],
+          "trackingTime": 5.0,
           "fightAreaRadius": 8000.0,
           "accuracyInZone": 0.1
         },
@@ -1920,6 +1991,53 @@
       },
       "else_actions": {}
     },
+    "reload_missiles": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "target_tank_attack_high04_01",
+          "type": "unit"
+        },
+        "unitWhenStatus": {
+          "object_type": "hasMissilesInWorld",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "target_tank_attack_high04_01"
+        }
+      },
+      "actions": {
+        "unitSetZeroAmmo": {
+          "target": "target_tank_attack_high04_01"
+        },
+        "wait": {
+          "time": 30.0
+        },
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": false,
+          "target": "target_tank_attack_high04_01",
+          "ammoRestore": true
+        }
+      },
+      "else_actions": {}
+    },
     "check_attack_area": {
       "is_enabled": true,
       "comments": "",
@@ -2018,7 +2136,8 @@
     "base_respawn_time": 15,
     "target_respawn_time": 30,
     "airfield_spawn_reload": "",
-    "is_ship_spawn": true
+    "is_ship_spawn": true,
+    "ship_destroyer": ""
   },
   "dialogs": {},
   "airfields": {},

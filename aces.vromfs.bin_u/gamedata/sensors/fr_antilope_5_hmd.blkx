@@ -156,6 +156,36 @@
         -30.0,
         30.0
       ]
+    },
+    "hmdLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "period": 0.2,
+      "width": 0.75,
+      "barHeight": 1.5,
+      "barsCount": 2,
+      "rowMajor": true,
+      "indicate": true,
+      "hmd": true
+    },
+    "hmdTrack": {
+      "type": "no",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "hmd": true
     }
   },
   "signals": {
@@ -232,6 +262,9 @@
     },
     "acmLock": {
       "scanPattern1": "boresightLock"
+    },
+    "hmdLock": {
+      "scanPattern1": "hmdLock"
     }
   },
   "scopeRangeSets": {
@@ -502,6 +535,92 @@
             "fsm": "lock",
             "active": false
           }
+        },
+        "setHmdLockMode": {
+          "setModeName": {
+            "name": "HMD"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setFsmActive": [
+            {
+              "fsm": "lock",
+              "active": true
+            },
+            {
+              "fsm": "helmetDesignation",
+              "active": true
+            }
+          ],
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acmLock"
+          },
+          "setTransiver": {
+            "transiver": "ACM"
+          },
+          "setSignal": {
+            "signal": "track"
+          },
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          }
+        },
+        "setHmdStandbyMode": {
+          "setModeName": {
+            "name": "HMD"
+          },
+          "setEnabled": {
+            "value": false
+          },
+          "clearTargetsOfInterest": {},
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "hmdLock"
+          },
+          "resetScanPhase": {},
+          "setDistGatePos": {
+            "source": "constRange",
+            "pos": 9250.0,
+            "width": 18500.0
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "acmLock"
+          },
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": true
+          }
+        },
+        "resetHmdStandbyMode": {
+          "resetStandbyMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": false
+          }
+        },
+        "resetHmdLockMode": {
+          "resetAcmLockMode": {},
+          "setFsmActive": {
+            "fsm": "helmetDesignation",
+            "active": false
+          }
+        },
+        "setHmdTrackMode": {
+          "setTrackMode": {},
+          "setScanPattern": {
+            "scanPattern": "hmdTrack"
+          }
+        },
+        "resetHmdTrackMode": {
+          "resetTrackMode": {}
         }
       },
       "transitions": {
@@ -656,15 +775,6 @@
             "setStandbyMode": {}
           }
         },
-        "acmLockToSearch": {
-          "stateFrom": "acmLock",
-          "command": "acmSwitch",
-          "stateTo": "search",
-          "actions": {
-            "resetAcmLockMode": {},
-            "setSearchMode": {}
-          }
-        },
         "acmTrackToAcmLock": {
           "stateFrom": "acmTrack",
           "event": "targetsOfInterestCleanup",
@@ -690,6 +800,73 @@
           "actions": {
             "resetTrackMode": {},
             "setSearchMode": {}
+          }
+        },
+        "standbyToHmdStandby": {
+          "stateFrom": "standby",
+          "command": [
+            "acmSwitch",
+            "selectTarget"
+          ],
+          "stateTo": "hmdLock",
+          "actions": {
+            "resetStandbyMode": {},
+            "setHmdLockMode": {}
+          }
+        },
+        "acmLockToHmdStandby": {
+          "stateFrom": "acmLock",
+          "command": "acmSwitch",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "resetAcmLockMode": {},
+            "setHmdStandbyMode": {}
+          }
+        },
+        "hmdStandbyToSearch": {
+          "stateFrom": "hmdStandby",
+          "command": "acmSwitch",
+          "stateTo": "search",
+          "actions": {
+            "resetHmdStandbyMode": {},
+            "setSearchMode": {}
+          }
+        },
+        "hmdStandbyToHmdLock": {
+          "stateFrom": "hmdStandby",
+          "command": "selectTarget",
+          "stateTo": "hmdLock",
+          "actions": {
+            "resetHmdStandbyMode": {},
+            "setHmdLockMode": {}
+          }
+        },
+        "hmdLockToHmdTrack": {
+          "stateFrom": "hmdLock",
+          "event": "targetDetected",
+          "stateTo": "hmdTrack",
+          "actions": {
+            "resetHmdLockMode": {},
+            "setHmdTrackMode": {}
+          }
+        },
+        "hmdLockToHmdStandby": {
+          "stateFrom": "hmdLock",
+          "event": "scanFinished",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "resetHmdLockMode": {},
+            "setHmdStandbyMode": {}
+          }
+        },
+        "hmdTrackToHmdStandby": {
+          "stateFrom": "hmdTrack",
+          "event": "targetsOfInterestCleanup",
+          "command": "selectTarget",
+          "stateTo": "hmdStandby",
+          "actions": {
+            "resetHmdTrackMode": {},
+            "setHmdStandbyMode": {}
           }
         }
       }
@@ -853,6 +1030,36 @@
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
+          }
+        }
+      }
+    },
+    "helmetDesignation": {
+      "stateInit": "helmetDesignation",
+      "actionsTemplates": {
+        "designateHelmetTargetDir": {
+          "designateHelmetTarget": {
+            "self": true
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          }
+        }
+      },
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "actions": {
+            "designateHelmetTargetDir": {}
+          }
+        },
+        "updateDesignation": {
+          "event": "update",
+          "actions": {
+            "designateHelmetTargetDir": {}
           }
         }
       }

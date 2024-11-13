@@ -14,7 +14,7 @@ require Weapon
 require %game.constructions_utils
 require DagorSystem
 require DagorMath
-require app
+require Mission
 
 [es(on_appear)]
 def building_preview_collobj_init_es(evt : Event;
@@ -114,6 +114,7 @@ def build_object_es(evt : CmdBuildObject;
       query() <| $ [es] (eid aka box_eid : EntityId; ammo_box__owner : EntityId; ammo_box__triggerGroupNo : int)
         if ammo_box__owner == unit_eid && ammo_box__triggerGroupNo == int(evt.triggerGroup)
           destroyEntity(box_eid)
+      *unit |> setLastBuildingTime(float(get_total_time()))
       createEntity(evt.objectTemplate) <| $(init)
         init |> set("transform", evt.tm)
         init |> set("ammo_box__owner", unit_eid)

@@ -69,7 +69,7 @@ def try_build_object_es(evt : Event;
       hud_notify_script("hint:building_forbidden_obstacles:show", eventData)
   else
     buildingTimer = buildingTime
-    *hero |> toggleBuildingMode(true)
+    *hero |> toggleBuildingMode()
     simpleObject__transparentColor = float3(0.5, 0.5, 0.5)
 
 [es(tag=gameClient, track=buildingTimer)]

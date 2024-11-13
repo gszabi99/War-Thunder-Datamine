@@ -5,8 +5,21 @@ enum misCountries {
   CUSTOM
 }
 
+enum AIR_SPAWN_POINT {
+  AIRFIELD
+  ABOVE_AIRFIELD_1
+  ABOVE_AIRFIELD_2
+  ABOVE_AIRFIELD_3
+  ABOVE_AIRFIELD_4
+  ABOVE_AIRFIELD_5
+  ENEMY_DEFENSE_ZONE
+  GLIDE_PATH
+  CARRIER
+}
+
 return {
   misCountries
   SAVE_ONLINE_JOB_DIGIT = 123 //super secure digit for job tag :)
   TANK_ALT_CROSSHAIR_ADD_NEW = -2
+  AIR_SPAWN_POINT
 }

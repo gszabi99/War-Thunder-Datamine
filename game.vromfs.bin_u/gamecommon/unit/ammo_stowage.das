@@ -320,7 +320,6 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
   for stowage_id, replenishment_start_end, replenishment_time, bullets_cartridge, triggers_range in iter_range(v.ammo_stowages__state), v.ammo_stowages__replenishmentStartEnd, v.ammo_stowages__replenishmentTime, v.ammo_stowages__bulletsCartridge, v.ammo_stowages__weaponTriggersRange
     // update per ammo type state + gather total ammo count in each stage
     let gathered_stowage_data = ammo_stowage_gather_and_update_ammo(unit, stowage_id, v)
-    let per_ammo_data_range = gathered_stowage_data.data_range
 
     // early exist if replenishment is disabled or unit is burning
     if replenishment_time.x < VERY_SMALL_NUMBER || !allow_replenishment || unit.isBurn
@@ -328,23 +327,15 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
       v.ammo_stowages__cachedAmmoHash[stowage_id] = 0u
       continue
 
-    // reset progress if weapon is reloading, however dont do this if weapon is blocked
+    // reset progress if weapon is reloading
     var any_weapon_reloading = false
     for i in triggers_range.x..triggers_range.y
       if weapon_controller.Weapons |> is_weapon_reloading(v.ammo_stowage__weaponTriggers[i], current_time)
         any_weapon_reloading = true
     if any_weapon_reloading
-      var any_weapon_blocked = false
-      for glob_ammo_idx in per_ammo_data_range.x..per_ammo_data_range.y
-        let per_ammo_state = v.ammo_per_type_data__state[glob_ammo_idx]
-        if get_flag(per_ammo_state, AmmoStowagePerAmmoState EMPTY_FIRST_STAGE) && get_flag(per_ammo_state, AmmoStowagePerAmmoState EMPTY_SECOND_STAGE)
-          any_weapon_blocked = true
-        if get_flag(per_ammo_state, AmmoStowagePerAmmoState EMPTY_LOADED_AMMO) && get_flag(per_ammo_state, AmmoStowagePerAmmoState EMPTY_AUTO_LOAD)
-          any_weapon_blocked = true
-      if !any_weapon_blocked
-        replenishment_start_end = float2(-1.0f)
-        v.ammo_stowages__cachedAmmoHash[stowage_id] = 0u
-        continue
+      replenishment_start_end = float2(-1.0f)
+      v.ammo_stowages__cachedAmmoHash[stowage_id] = 0u
+      continue
 
     // cancel replenishment if there is no loader available
     var can_reload = false

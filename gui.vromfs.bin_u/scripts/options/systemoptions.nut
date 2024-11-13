@@ -1059,7 +1059,7 @@ mSettings = {
       setBlkValueByPath(blk, "video/vsync", val == "vsync_on")
     }
     init = function(_blk, desc) {
-      desc.values <- is_vrr_available() ? [ "vsync_vrr", "vsync_off" ] : [ "vsync_off", "vsync_on" ]
+      desc.values <- is_vrr_available() ? [ "vsync_vrr", "vsync_on" ] : [ "vsync_off", "vsync_on" ]
     }
     enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
   }

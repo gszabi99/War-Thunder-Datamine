@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import enable_bullets_modifications, get_optio
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "radarOptions" import get_radar_mode_names, set_option_radar_name, get_radar_scan_pattern_names, set_option_radar_scan_pattern_name, get_radar_range_values
+from "%scripts/options/optionsConsts.nut" import AIR_SPAWN_POINT
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -421,9 +422,9 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (isUniversalTestFlight) {
       let airSpawnOpt = get_option(USEROPT_AIR_SPAWN_POINT)
       let airSpawnValue = airSpawnOpt.values[airSpawnOpt.value]
-      misBlk.is_airfield_spawn = airSpawnValue == 0
-      if (airSpawnValue != 0)
-        misBlk.air_spawn_point = airSpawnValue
+      misBlk.is_airfield_spawn = airSpawnValue == AIR_SPAWN_POINT.AIRFIELD
+      misBlk.is_ship_spawn = airSpawnValue == AIR_SPAWN_POINT.CARRIER
+      misBlk.air_spawn_point = airSpawnValue
 
       if (isAir)
         misBlk.is_high = get_gui_option(USEROPT_TARGET_RANK) == 0
