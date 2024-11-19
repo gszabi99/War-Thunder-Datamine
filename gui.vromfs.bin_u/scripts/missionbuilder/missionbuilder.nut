@@ -23,7 +23,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
 let { create_options_container, create_option_list } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
@@ -400,7 +400,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     missionBlk.setBool("isLimitedFuel", ::get_option(USEROPT_LIMITED_FUEL).value)
     missionBlk.setBool("isLimitedAmmo", ::get_option(USEROPT_LIMITED_AMMO).value)
 
-    setCurrentCampaignMission(missionBlk.getStr("name", ""))
+    currentCampaignMission.set(missionBlk.getStr("name", ""))
     ::mission_settings.mission = missionBlk
     ::mission_settings.missionFull = fullMissionBlk
     select_mission_full(missionBlk, fullMissionBlk);

@@ -181,6 +181,11 @@ addTypes(measureType, {
 
     getMeasureUnitsLocKey = @() "measureUnits/bytes"
   }
+
+  MM_HG = {
+    name = "mmHg"
+    presize = 1
+  }
 })
 
 function getMeasureTypeByName(name, createIfNotFound = false) {

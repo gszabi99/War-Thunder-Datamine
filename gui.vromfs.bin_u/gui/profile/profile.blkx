@@ -86,93 +86,89 @@
             "normalFont": "yes",
             "on_select": "onSheetChange"
           },
-          "tdiv": [
-            {
-              "position": "absolute",
-              "pos": "pw-w, 0",
-              "Button_text": [
-                {
-                  "id": "profile-warpoints",
-                  "visualStyle": "noFrame",
-                  "tooltip": "#mainmenu/warpoints",
-                  "showBonusPersonal": "",
-                  "showBonusCommon": "",
-                  "_on_click": "onOnlineShopLions",
-                  "img": {
-                    "isFirstLeft": "yes",
-                    "position": "relative",
-                    "size": "1@cIco, 1@cIco",
-                    "background-image": "#ui/gameuiskin#shop_warpoints.svg",
-                    "background-svg-size": "1@cIco, 1@cIco"
-                  },
-                  "btnText": {
-                    "id": "profile-balance",
-                    "min-width": "0.05@sf",
-                    "pos": "@blockInterval, 50%ph-50%h",
-                    "position": "relative",
-                    "text-align": "left"
-                  },
-                  "BonusCorner": [
-                    {
-                      "bonusType": "personal"
-                    },
-                    {
-                      "bonusType": "common"
-                    }
-                  ]
+          "tdiv": {
+            "position": "absolute",
+            "pos": "pw-w, 0",
+            "Button_text": [
+              {
+                "id": "profile-warpoints",
+                "visualStyle": "noFrame",
+                "tooltip": "#mainmenu/warpoints",
+                "showBonusPersonal": "",
+                "showBonusCommon": "",
+                "_on_click": "onOnlineShopLions",
+                "img": {
+                  "isFirstLeft": "yes",
+                  "position": "relative",
+                  "size": "1@cIco, 1@cIco",
+                  "background-image": "#ui/gameuiskin#shop_warpoints.svg",
+                  "background-svg-size": "1@cIco, 1@cIco"
                 },
-                {
-                  "id": "profile-eagles",
-                  "visualStyle": "noFrame",
-                  "tooltip": "#mainmenu/gold",
-                  "_on_click": "onOnlineShopEagles",
-                  "img": {
-                    "isFirstLeft": "yes",
-                    "position": "relative",
-                    "size": "1@cIco, 1@cIco",
-                    "background-image": "#ui/gameuiskin#shop_warpoints_premium.svg",
-                    "background-svg-size": "1@cIco, 1@cIco"
+                "btnText": {
+                  "id": "profile-balance",
+                  "min-width": "0.05@sf",
+                  "pos": "@blockInterval, 50%ph-50%h",
+                  "position": "relative",
+                  "text-align": "left"
+                },
+                "BonusCorner": [
+                  {
+                    "bonusType": "personal"
                   },
-                  "btnText": {
-                    "id": "profile-gold",
-                    "min-width": "0.05@sf",
-                    "pos": "@blockInterval, 50%ph-50%h",
-                    "position": "relative",
-                    "text-align": "left"
+                  {
+                    "bonusType": "common"
                   }
-                }
-              ],
-              "textareaNoTab": {
-                "id": "balance_text",
-                "pos": "0, 0.5ph-0.5h",
-                "position": "relative",
-                "hideEmptyText": "yes",
-                "text": "",
-                "tooltip": ""
+                ]
               },
-              "tdiv": {
-                "id": "sorting_block",
-                "width": "1@subsetComboBoxWidth",
-                "position": "relative",
-                "top": "0.5ph-0.5h",
-                "margin-left": "1@listboxPad",
-                "display": "hide",
-                "tdiv": {
-                  "id": "sorting_block_bg",
-                  "width": "pw",
-                  "background-color": "@rowHoverBackgroundColor",
-                  "padding": "1@dp"
+              {
+                "id": "profile-eagles",
+                "visualStyle": "noFrame",
+                "tooltip": "#mainmenu/gold",
+                "_on_click": "onOnlineShopEagles",
+                "img": {
+                  "isFirstLeft": "yes",
+                  "position": "relative",
+                  "size": "1@cIco, 1@cIco",
+                  "background-image": "#ui/gameuiskin#shop_warpoints_premium.svg",
+                  "background-svg-size": "1@cIco, 1@cIco"
+                },
+                "btnText": {
+                  "id": "profile-gold",
+                  "min-width": "0.05@sf",
+                  "pos": "@blockInterval, 50%ph-50%h",
+                  "position": "relative",
+                  "text-align": "left"
                 }
               }
+            ],
+            "textareaNoTab": {
+              "id": "balance_text",
+              "pos": "0, 0.5ph-0.5h",
+              "position": "relative",
+              "hideEmptyText": "yes",
+              "text": "",
+              "tooltip": ""
             },
-            {
-              "id": "chatPopupNest",
-              "size": "0.4@sf, 0.075*@sf",
-              "position": "absolute",
-              "pos": "pw-w, ph",
-              "flow": "vertical"
+            "tdiv": {
+              "id": "sorting_block",
+              "width": "1@subsetComboBoxWidth",
+              "position": "relative",
+              "top": "0.5ph-0.5h",
+              "margin-left": "1@listboxPad",
+              "display": "hide",
+              "tdiv": {
+                "id": "sorting_block_bg",
+                "width": "pw",
+                "background-color": "@rowHoverBackgroundColor",
+                "padding": "1@dp"
+              }
             }
-          ]
+          },
+          "chatPopupNest": {
+            "id": "chatPopupNest",
+            "position": "absolute",
+            "pos": "pw-w, ph"
+          }
         },
         {
           "size": "pw, fh",
@@ -183,7 +179,7 @@
             "flow": "vertical",
             "position": "relative",
             "pos": "(pw-w)/2, 0",
-            "padding": "28@sf/@pf",
+            "padding": "1@profileHeaderPadding",
             "css-hier-invalidate": "yes",
             "frameSeparator": {
               "position": "root",
@@ -411,8 +407,8 @@
                 "css-hier-invalidate": "yes",
                 "tdiv": [
                   {
-                    "position": "absolute",
-                    "left": "(pw-w)/2",
+                    "position": "root",
+                    "pos": "(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf",
                     "size": "@accountHeaderWidth, (sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf",
                     "background-image": "!ui/images/profile/widget_bg",
                     "background-color": "#FFFFFF"
@@ -471,8 +467,8 @@
                 "total-input-transparent": "yes",
                 "tdiv": [
                   {
-                    "position": "absolute",
-                    "left": "(pw-w)/2",
+                    "position": "root",
+                    "pos": "(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf",
                     "size": "@accountHeaderWidth, (sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf",
                     "background-image": "!ui/images/profile/widget_bg",
                     "background-color": "#FFFFFF"

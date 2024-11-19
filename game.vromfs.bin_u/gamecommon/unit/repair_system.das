@@ -669,5 +669,5 @@ def repair_system_on_damage_es(evt : EventUnitDamage;
     if part_id.id == evt.partId.id && get_flag(part_state, DmPartRepairState IN_PROGRESS)
       let current_hp = get_part_hp(unit.dmData, part_id)
       if part_hp.y * mult < evt.damage && current_hp > 0.0f
-        part_hp.x = current_hp
+        part_hp.x = max(current_hp - evt.damage, 0.0f)
       break

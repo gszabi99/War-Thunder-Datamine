@@ -28,45 +28,49 @@ function createCompass(gridStyle) {
   let markAngleStep = 10.0
   let markAngle = PI * markAngleStep / 180.0
   let markDashCount = 360.0 / markAngleStep
-  let azimuthMarkLength = 2
+  let azimuthMarkLength = 4
 
   let commands = array(markDashCount).map(@(_, i) [
     VECTOR_LINE,
-    50 + cos(i * markAngle) * (50 + azimuthMarkLength),
-    50 + sin(i * markAngle) * (50 + azimuthMarkLength),
-    50 + cos(i * markAngle) * 50,
-    50 + sin(i * markAngle) * 50
+    50 + cos(i * markAngle) * (100 + azimuthMarkLength),
+    50 + sin(i * markAngle) * (100 + azimuthMarkLength),
+    50 + cos(i * markAngle) * 100,
+    50 + sin(i * markAngle) * 100
   ])
 
   let textAngleStep = 30.0
+  let textMarkAngle = PI * textAngleStep / 180.0
   let textDashCount = 360.0 / textAngleStep
   local azimuthMarks = []
   for (local i = 0; i < textDashCount; ++i) {
     azimuthMarks.append({
       rendObj = ROBJ_TEXT
-      pos = [pw(0), ph(-7.0)],
+      pos = [pw(sin(i * textMarkAngle) * 110), ph(-cos(i * textMarkAngle) * 110)],
       size = flex(),
       color = color,
       font = styleText.font,
       fontSize = gridStyle.fontScale * styleText.fontSize * compassFontSizeMult,
       text = (i * textAngleStep * 0.1).tointeger(),
       halign = ALIGN_CENTER,
-      transform = {
-        rotate = i * textAngleStep,
-        pivot = [0.5, 0.5 + 0.07 ]
+      valign = ALIGN_CENTER,
+      behavior = Behaviors.RtPropUpdate,
+      update = @() {
+        transform = {
+          rotate = CompassValue.get()
+        }
       }
     })
   }
 
   return {
-    size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
-    color = color
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
-    fillColor = backGroundColor
-    commands = commands
-    children = azimuthMarks
-    behavior = Behaviors.RtPropUpdate
+    rendObj = ROBJ_VECTOR_CANVAS,
+    size = flex(),
+    color = color,
+    lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
+    fillColor = backGroundColor,
+    commands = commands,
+    children = azimuthMarks,
+    behavior = Behaviors.RtPropUpdate,
     update = @() {
       transform = {
         rotate = -CompassValue.get()
@@ -78,20 +82,20 @@ function createCompass(gridStyle) {
 function createRwrGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)],
-    size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)],
+    size = flex(),
     children = [
       {
         size = flex()
         rendObj = ROBJ_VECTOR_CANVAS,
         color = color,
-        lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale,
+        lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
         fillColor = 0,
         commands = [
-          [VECTOR_ELLIPSE, 0,   0, 16, 16],
-          [VECTOR_ELLIPSE, 0,   0, 33, 33],
-          [VECTOR_ELLIPSE, 0,   0, 50, 50],
-          [VECTOR_LINE,    0, -50,  0, 50],
-          [VECTOR_LINE,  -50,   0, 50,  0]
+          [VECTOR_ELLIPSE,  0,    0,  33,  33],
+          [VECTOR_ELLIPSE,  0,    0,  67,  67],
+          [VECTOR_ELLIPSE,  0,    0, 100, 100],
+          [VECTOR_LINE,     0, -100,   0, 100],
+          [VECTOR_LINE,  -100,    0, 100,   0]
         ]
       }
     ]
@@ -105,7 +109,7 @@ function createRwrGridMarks(gridStyle, settings) {
     children = [
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(15), ph(5)]
+        pos = [ph(30), ph(10)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -114,7 +118,7 @@ function createRwrGridMarks(gridStyle, settings) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(32), ph(10)]
+        pos = [ph(64), ph(20)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -123,7 +127,7 @@ function createRwrGridMarks(gridStyle, settings) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(47), ph(15)]
+        pos = [ph(95), ph(30)]
         size = flex()
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -149,38 +153,38 @@ function makeRwrTargetIconCommands(pos, sizeMult, targetType) {
   if (targetType == ThreatType.AI)
     return [
       [ VECTOR_LINE,
-        (pos[0] - 0.5 * sizeMult) * 50.0,
-        (pos[1] - 0.5 * sizeMult) * 50.0,
-        (pos[0] + 0.5 * sizeMult) * 50.0,
-        (pos[1] - 0.5 * sizeMult) * 50.0 ],
+        (pos[0] - 0.5 * sizeMult) * 100.0,
+        (pos[1] - 0.5 * sizeMult) * 100.0,
+        (pos[0] + 0.5 * sizeMult) * 100.0,
+        (pos[1] - 0.5 * sizeMult) * 100.0 ],
       [ VECTOR_LINE,
-        pos[0] * 50.0,
-        (pos[1] - 0.50 * sizeMult) * 50.0,
-        pos[0] * 50.0,
-        (pos[1] - 0.75 * sizeMult) * 50.0 ]
+        pos[0] * 100.0,
+        (pos[1] - 0.50 * sizeMult) * 100.0,
+        pos[0] * 100.0,
+        (pos[1] - 0.75 * sizeMult) * 100.0 ]
     ]
   else if ( targetType == ThreatType.SAM ||
             targetType == ThreatType.AAA ||
             targetType == null)
     return [
       [ VECTOR_LINE,
-        (pos[0] - 0.5 * sizeMult) * 50.0,
-        (pos[1] + 0.5 * sizeMult) * 50.0,
-        (pos[0] + 0.5 * sizeMult) * 50.0,
-        (pos[1] + 0.5 * sizeMult) * 50.0 ],
+        (pos[0] - 0.5 * sizeMult) * 100.0,
+        (pos[1] + 0.5 * sizeMult) * 100.0,
+        (pos[0] + 0.5 * sizeMult) * 100.0,
+        (pos[1] + 0.5 * sizeMult) * 100.0 ],
       [ VECTOR_LINE,
-        pos[0] * 50.0,
-        (pos[1] + 0.50 * sizeMult) * 50.0,
-        pos[0] * 50.0,
-        (pos[1] + 0.75 * sizeMult) * 50.0 ]
+        pos[0] * 100.0,
+        (pos[1] + 0.50 * sizeMult) * 100.0,
+        pos[0] * 100.0,
+        (pos[1] + 0.75 * sizeMult) * 100.0 ]
     ]
   else if (targetType == ThreatType.MSL)
     return [
       [ VECTOR_LINE,
-        (pos[0] - 0.25 * sizeMult) * 50.0,
-        (pos[1] - 0.50 * sizeMult) * 50.0,
-        (pos[0] + 0.25 * sizeMult) * 50.0,
-        (pos[1] - 0.50 * sizeMult) * 50.0 ] ]
+        (pos[0] - 0.25 * sizeMult) * 100.0,
+        (pos[1] - 0.50 * sizeMult) * 100.0,
+        (pos[0] + 0.25 * sizeMult) * 100.0,
+        (pos[1] - 0.50 * sizeMult) * 100.0 ] ]
   else
     return null
 }
@@ -195,19 +199,16 @@ function createRwrTarget(index, settings, objectStyle) {
   let targetRadiusRel = calcRwrTargetRadius(target)
 
   let targetSizeMult = target.priority ? 1.5 : 1.0
-  let launchOpacityRwr = Computed(@() target.launch && ((CurrentTime.get() * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0)
 
   let targetTypeFontSizeMult = 2.0
   let targetType = @()
     styleText.__merge({
-      watch = launchOpacityRwr
       rendObj = ROBJ_TEXT
-      pos = [pw(target.x * 50.0 * targetRadiusRel), ph(target.y * 50.0 * targetRadiusRel)]
+      pos = [pw(target.x * 100.0 * targetRadiusRel), ph(target.y * 100.0 * targetRadiusRel)]
       size = flex()
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       color = iconColor
-      opacity = launchOpacityRwr.get()
       fontSize = objectStyle.fontScale * styleText.fontSize * targetTypeFontSizeMult * targetSizeMult
       text = directionGroup != null ? directionGroup.text : settings.unknownText
     })
@@ -218,10 +219,11 @@ function createRwrTarget(index, settings, objectStyle) {
   if (target.track || target.launch)
     iconCommands.append(
       [ VECTOR_RECTANGLE,
-        (target.x * targetRadiusRel - attackBoxIconMult) * 50.0,
-        (target.y * targetRadiusRel - attackBoxIconMult) * 50.0,
-        attackBoxIconMult * 2 * 50.0, attackBoxIconMult * 2 * 50.0])
+        (target.x * targetRadiusRel - attackBoxIconMult) * 100.0,
+        (target.y * targetRadiusRel - attackBoxIconMult) * 100.0,
+        attackBoxIconMult * 2 * 100.0, attackBoxIconMult * 2 * 100.0])
 
+  let launchOpacityRwr = Computed(@() target.launch && ((CurrentTime.get() * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0)
   let icon = @() {
     watch = launchOpacityRwr
     rendObj = ROBJ_VECTOR_CANVAS
@@ -237,8 +239,8 @@ function createRwrTarget(index, settings, objectStyle) {
     size = flex()
     children = [
       {
-        pos = [pw(50), ph(50)]
-        size = flex()
+        pos = [pw(50), ph(50)],
+        size = flex(),
         children = [
           icon
         ]
@@ -469,13 +471,13 @@ function rwrTargetsComponent(objectStyle) {
 
 function scope(scale, style) {
   return {
-    size = [pw(scale), ph(scale)]
+    size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [pw(-40), ph(-50)],
-        size = [pw(180), ph(180)],
+        pos = [pw(7), ph(0)],
+        size = [pw(90), ph(90)],
         children = [
           {
             size = [pw(100), ph(100)],

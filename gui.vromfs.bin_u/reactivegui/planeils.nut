@@ -32,6 +32,7 @@ let KaiserVDO = require("planeIlses/ilsKaiserVDO.nut")
 let ilsKai24p = require("planeIlses/ilsKai24p.nut")
 let ilsF20 = require("planeIlses/ilsF20.nut")
 let ilsF117 = require("planeIlses/ilsF117.nut")
+let ilsSu34 = require("planeIlses/ilsSu34.nut")
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -71,6 +72,7 @@ let ilsSetting = Computed(function() {
     isMetric = false
     isF15e = false
     isF117 = false
+    isSu34 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -116,6 +118,7 @@ let ilsSetting = Computed(function() {
     isMetric = blk.getBool("isMetricIls", false)
     isF15e = blk.getBool("ilsF15e", false)
     isF117 = blk.getBool("ilsF117", false)
+    isSu34 = blk.getBool("ilsSu34", false)
   }
 })
 
@@ -125,12 +128,12 @@ let planeIls = @(width, height) function() {
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
-    isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117 } = ilsSetting.value
+    isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117, isSu34 } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
-      isF20 || isKaiserA10c || isF15e || isF117)
+      isF20 || isKaiserA10c || isF15e || isF117 || isSu34)
   return {
     watch = ilsSetting
     children = [
@@ -165,6 +168,7 @@ let planeIls = @(width, height) function() {
       (isKaiserA10c ? KaiserA10(width, height, true) : null),
       (isF15e ? ilsF15e(width, height) : null),
       (isF117 ? ilsF117(width, height) : null),
+      (isSu34 ? ilsSu34(width, height) : null),
       (isStockHeli ? StockHeliIls() : null)
     ]
   }

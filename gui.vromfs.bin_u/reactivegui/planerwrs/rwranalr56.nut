@@ -4,7 +4,7 @@ let { rwrTargetsComponent, rwrPriorityTargetComponent } = require("rwrAnAlr56Com
 
 function scope(scale, style) {
   return {
-    size = [pw(scale), ph(scale)]
+    size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [

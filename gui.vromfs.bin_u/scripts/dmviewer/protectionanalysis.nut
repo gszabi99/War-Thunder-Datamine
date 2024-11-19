@@ -19,7 +19,8 @@ let { cutPrefix, utf8ToLower } = require("%sqstd/string.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_replay_hits_dir, repeat_shot_from_file } = require("replays")
+let { get_replay_hits_dir, repeat_shot_from_file, set_replay_hits_mode,
+  on_update_loaded_model, restore_loaded_model } = require("replays")
 let DataBlock = require("DataBlock")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -109,7 +110,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     allowCuttingInHangar(false)
     this.resetFilter()
 
-    showObjById("btnOpenHitFile", hasFeature("HitsAnalysis") && is_platform_windows)
+    showObjById("btnOpenHitFile", hasFeature("HitsAnalysis") && is_platform_pc)
     showObjById("btnSimulateHit", false)
   }
 
@@ -154,6 +155,8 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     hangar_set_dm_viewer_mode(DM_VIEWER_NONE)
     repairUnit()
     set_protection_analysis_editing(false)
+    restore_loaded_model()
+    set_replay_hits_mode(false)
     base.goBack()
   }
 
@@ -341,6 +344,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenHitFile(_) {
+    restore_loaded_model()
     handlersManager.loadHandler(gui_handlers.FileDialog, {
       isSaveFile = false
       dirPath = get_replay_hits_dir()
@@ -355,14 +359,19 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hitFilePath = path
     this.hitData = DataBlock()
     let res = this.hitData.tryLoad(this.hitFilePath)
-    if (!res)
+    if (!res) {
+      set_replay_hits_mode(false)
       return false
+    }
 
     this.isAllowResetHitAnalysis = false
     this.scene.findObject("filter_edit_box").setValue("")
     this.updateOptions(this.hitData)
+    set_replay_hits_mode(true)
+
     if (getShowedUnit()?.name == this.hitData.object) {
       showObjById("btnSimulateHit", true)
+      on_update_loaded_model(this.hitData)
       return true
     }
     setShowUnit(getAircraftByName(this.hitData.object))
@@ -379,6 +388,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.hitData == null)
       return
     showObjById("btnSimulateHit", true)
+    on_update_loaded_model(this.hitData)
   }
 
   function resetRepeatHit() {
@@ -391,6 +401,8 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hitFilePath = null
     this.hitData = null
     showObjById("btnSimulateHit", false)
+    set_replay_hits_mode(false)
+    restore_loaded_model()
   }
 
   function getOptionsView(unit, ammo = null, distance = null) {

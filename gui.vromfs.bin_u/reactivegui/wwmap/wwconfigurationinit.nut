@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 let { initConfigurableValues } = require("%rGui/wwMap/wwConfigurableValues.nut")
-let { initWWSettings } = require("%rGui/wwMap/wwSettings.nut")
+let { initWWSettings, clearSettingsCache } = require("%rGui/wwMap/wwSettings.nut")
 let { loadOperationData, isOperationDataLoaded } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { updateAirfieldsData } = require("%rGui/wwMap/wwAirfieldsStates.nut")
 
@@ -18,6 +18,7 @@ function initConfiguration() {
 function invalidateConfiguration() {
   configurationLoaded.set(false)
   isOperationDataLoaded.set(false)
+  clearSettingsCache()
 }
 
 return {

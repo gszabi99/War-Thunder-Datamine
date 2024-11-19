@@ -10,10 +10,34 @@
     "background-color": "@shadeBackgroundColor",
     "type": "big"
   },
-  "titletext": {
-    "id": "menu-title",
-    "type": "big"
-  },
+  "tdiv": [
+    {
+      "position": "absolute",
+      "pos": "@titlePos,1@topBarHeight",
+      "flow": "vertical",
+      "smallFont": "yes",
+      "textareaNoTab": [
+        {
+          "id": "menu-title",
+          "overlayTextColor": "active",
+          "mediumFont": "yes",
+          "textShade": "yes",
+          "text": ""
+        },
+        {
+          "id": "conditions_text",
+          "overlayTextColor": "premiumNotEarned",
+          "textShade": "yes",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "id": "update_timer",
+      "behaviour": "Timer",
+      "timer_handler_func": "update"
+    }
+  ],
   "optionlist_container": {
     "id": "flight_menu_bgd",
     "type": "big",
@@ -170,10 +194,5 @@
     "size": "sw,sh",
     "behavior": "button",
     "_on_click": "goBack"
-  },
-  "tdiv": {
-    "id": "update_timer",
-    "behaviour": "Timer",
-    "timer_handler_func": "update"
   }
 }

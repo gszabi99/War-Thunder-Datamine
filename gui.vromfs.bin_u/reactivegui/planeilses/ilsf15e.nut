@@ -12,7 +12,7 @@ let { cos, sin, PI, abs, acos } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { AamLaunchZoneDistMin, AamLaunchZoneDistMax, DistanceMax,
  AamLaunchZoneDistDgftMax, AamLaunchZoneDistDgftMin, AamLaunchZoneDist } = require("%rGui/radarState.nut")
-let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { IlsTrackerVisible, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { AdlPoint, BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
 
@@ -522,7 +522,8 @@ let aamReticle = @(){
   children = isAAMMode.get() && IlsTrackerVisible.get() ? @(){
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [pw(20), ph(20)]
+    size = [pw(30), ph(30)]
+    pos = [pw(50), ph(50)]
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
     fillColor = Color(0, 0, 0, 0)
@@ -565,12 +566,6 @@ let aamReticle = @(){
         }
       }
     } : null
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [IlsTrackerX.get(), IlsTrackerY.get()]
-      }
-    }
   } : null
 }
 

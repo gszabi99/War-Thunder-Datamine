@@ -11,7 +11,7 @@ let gridCommands = [
 function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = [pw(100 * gridStyle.scale), ph(100 * gridStyle.scale)]
+    size = flex()
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale
@@ -22,7 +22,7 @@ function createGrid(gridStyle) {
 
 function scope(scale, style) {
   return {
-    size = [pw(scale), ph(scale)]
+    size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [

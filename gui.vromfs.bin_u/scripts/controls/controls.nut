@@ -61,7 +61,7 @@ let { getLocaliazedPS4ControlName, getLocalizedControlName
 } = require("%scripts/controls/controlsVisual.nut")
 let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
-let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 ::preset_changed <- false
@@ -2105,7 +2105,7 @@ function getUnmappedControlsForTutorial(missionId, helpersMode) {
 
   let unmapped = getUnmappedControls(required, helpersMode, true, false)
   if (isInFlight() && gm == GM_TRAINING) {
-    let tutorialUnmapped = getUnmappedControlsForTutorial(getCurrentCampaignMission(), helpersMode)
+    let tutorialUnmapped = getUnmappedControlsForTutorial(currentCampaignMission.get(), helpersMode)
     foreach (id in tutorialUnmapped)
       u.appendOnce(id, unmapped)
   }

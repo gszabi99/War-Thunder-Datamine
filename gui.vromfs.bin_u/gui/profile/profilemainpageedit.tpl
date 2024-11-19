@@ -30,4 +30,5 @@ ComboBox {
   on_select:t='onShowcaseGameModeSelect'
   margin-bottom:t='25@sf/@pf'
   display:t='hide'
+  showInEditMode:t='yes'
 }

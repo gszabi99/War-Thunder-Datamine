@@ -36,6 +36,7 @@ let SelectedTrigger = Watched(-1)
 let HasOperatedShell = Watched(false)
 let TriggerPulled = Watched(false)
 let LaunchImpossible = Watched(false)
+let SlotCount = Watched(0)
 
 let planeState = {
   OpticAtgmSightVisible,
@@ -70,7 +71,8 @@ let planeState = {
   HasOperatedShell,
   SelectedWeapSlot,
   TriggerPulled,
-  LaunchImpossible
+  LaunchImpossible,
+  SlotCount
 }
 
 interop.updateLaserPoint <- function(x, y) {

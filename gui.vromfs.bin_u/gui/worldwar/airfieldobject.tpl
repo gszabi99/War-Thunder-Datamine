@@ -8,6 +8,7 @@ tdiv {
     pos:t='50%pw-50%w, 0'
     position:t='relative'
     flow:t='h-flow'
+    max-width:t='pw'
   }
 
   tdiv {

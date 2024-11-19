@@ -34,8 +34,9 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
-let { guiStartBuilder, guiStartFlight, guiStartCdOptions, setCurrentCampaignMission
+let { guiStartBuilder, guiStartFlight, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
@@ -403,7 +404,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!misBlkBase)
       return assert(false,$"Error: wrong testflight mission {misName}")
 
-    setCurrentCampaignMission(misName)
+    currentCampaignMission.set(misName)
 
     this.saveAircraftOptions()
     setCurSkinToHangar(this.unit.name)

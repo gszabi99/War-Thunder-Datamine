@@ -102,7 +102,7 @@ let mkArmyEntrenchIcon = @(armyData, areaBounds, mpZoom) function() {
 
   let isBlinking = endBlinkTime > wwGetOperationTimeMillisec()
   let { areaWidth, areaHeight } = areaBounds
-  let entrenchIconSize = even(armyData.specs.battleStartRadiusN * mpZoom * 3.1)
+  let entrenchIconSize = even(armyData.specs.battleStartRadiusN * mpZoom * 2.6)
   let pos = [areaWidth * armyPos.x - entrenchIconSize / 2, areaHeight * armyPos.y - entrenchIconSize / 2]
   let duration = (endBlinkTime - wwGetOperationTimeMillisec()) / 1000
   if (isBlinking)
@@ -306,8 +306,7 @@ let mkArmies = function() {
   entrenchIconColors.blinkColor = convertColor4(blinkColor)
 
   let armies = armiesData.get()
-    //todo sort by type. airs above
-    .sort(@(army1, army2) army1.owner.side <=> army2.owner.side)
+    .sort(@(army1, army2) army1.owner.side <=> army2.owner.side || army2.specs.unitType <=> army1.specs.unitType)
     .map(@(_army, idx) mkArmy(Computed(@() armiesData.get()?[idx]), activeAreaBounds.get()))
 
   let armiesPaths = armiesData.get()

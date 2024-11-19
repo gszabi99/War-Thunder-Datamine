@@ -45,6 +45,7 @@ addListenersWithoutEnv({
   CrewTakeUnit = @(_p) resetCache(cacheCrewId)
   QualificationIncreased = @(_p) resetCache(cacheCrewId, unit)
   CrewSkillsReloaded = @(_p)resetCache(cacheCrewId, unit)
+  ModificationChanged = @(_p)resetCache(cacheCrewId, unit)
 }, UNIT_CREW_CACHE_UPDATE)
 
 return {

@@ -89,6 +89,42 @@ let mfdRwrSettings = Computed(function() {
 
 let targetsCommonOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.value * min(RwrSignalHoldTimeInv.value, MlwsLwsSignalHoldTimeInv.value), 1.0)))
 
+function centeredIcon(colorWatched, centralCircleSizeMult) {
+  return {
+    size = flex()
+    children = [
+      @() styleLineBackground.__merge({
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        fillColor = Color(0, 0, 0, 0)
+        color = colorWatched.value
+        opacity = targetsCommonOpacity.value
+        watch = [targetsCommonOpacity, colorWatched]
+        lineWidth = hdpx(LINE_WIDTH)
+        commands = [
+          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.1 * centralCircleSizeMult, indicatorRadius * 0.1 * centralCircleSizeMult]
+        ]
+      }),
+      @() styleLineBackground.__merge({
+        watch = colorWatched
+        rendObj = ROBJ_VECTOR_CANVAS
+        lineWidth = hdpx(LINE_WIDTH)
+        fillColor = Color(0, 0, 0, 0)
+        color = colorWatched.value
+        vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
+        size = [pw(10 * centralCircleSizeMult), ph(10 * centralCircleSizeMult)]
+        pos = [0, 0]
+        opacity = RADAR_LINES_OPACITY
+        commands = [
+          [VECTOR_LINE, 10, 50, 90, 50],
+          [VECTOR_LINE, 50, 10, 50, 90]
+        ]
+      })
+    ]
+  }
+}
+
 let aircraftVectorImageCommands = (function() {
   let tailW = 25
   let tailH = 10
@@ -141,7 +177,7 @@ function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
     color = colorWatched.value
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    size = [pw(33 * centralCircleSizeMult), ph(33 * centralCircleSizeMult)]
+    size = [pw(10 * centralCircleSizeMult), ph(10 * centralCircleSizeMult)]
     pos = [0, 0]
     opacity = RADAR_LINES_OPACITY
     commands = aircraftVectorImageCommands
@@ -159,7 +195,7 @@ function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
         watch = [targetsCommonOpacity, colorWatched]
         lineWidth = hdpx(LINE_WIDTH)
         commands = [
-          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.25 * centralCircleSizeMult, indicatorRadius * 0.25 * centralCircleSizeMult]
+          [VECTOR_ELLIPSE, 50, 50, indicatorRadius * 0.1 * centralCircleSizeMult, indicatorRadius * 0.1 * centralCircleSizeMult]
         ]
       }),
       aircraftIcon
@@ -438,7 +474,7 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
   if (!target.valid)
     return @() { }
 
-  let targetRange = 0.6 + target.rangeRel * 0.4
+  let targetRange = 0.3 + target.rangeRel * 0.7
 
   let targetOpacityRwr = Computed(@() max(0.0, 1.0 - min(target.age * RwrSignalHoldTimeInv.value, 1.0)) *
     (target.launch && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) *
@@ -484,8 +520,8 @@ function createRwrTarget(index, colorWatched, fontSizeMult, forMfd) {
 
   local trackLine = null
   if (target.track || target.launch) {
-    let nearRadius = -140
-    let farRadius = target.groupId != null ? nearRadius + 50 * target.rangeRel : nearRadius + 70 * target.rangeRel
+    let nearRadius = -175
+    let farRadius = target.groupId != null ? nearRadius + 90 * target.rangeRel : nearRadius + 110 * target.rangeRel
     trackLine = @() {
       watch = [colorWatched]
       color = isColorOrWhite(colorWatched.value)
@@ -904,7 +940,7 @@ function centralBigCross(colorWatched, _centralCircleSizeMult) {
 
 function getCentralMark(forMfd, centralMark) {
   if (!forMfd)
-    return centeredAircraftIcon
+    return centeredIcon
   if (centralMark == centralMarkType.plane)
     return centeredAircraftIcon
   else if (centralMark == centralMarkType.empty)

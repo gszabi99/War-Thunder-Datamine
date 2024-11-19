@@ -125,7 +125,7 @@ let { getCurrentGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { complaintCategories } = require("%scripts/penitentiary/tribunal.nut")
 
 let { isWishlistEnabledForFriends, isWishlistCommentsEnabledForFriends,
@@ -3454,9 +3454,9 @@ let optionsMap = {
     descr.items = []
     descr.values = []
     local index = 0
-    let currentCampaignMission = getCurrentCampaignMission()
-    if (currentCampaignMission != null) {
-      let metaInfo = getUrlOrFileMissionMetaInfo(currentCampaignMission)
+    let currentCampMission = currentCampaignMission.get()
+    if (currentCampMission != null) {
+      let metaInfo = getUrlOrFileMissionMetaInfo(currentCampMission)
       let values = ::get_mission_types_from_meta_mission_info(metaInfo)
       for (index = 0; index < values.len(); index++) {
         descr.items.append($"#options/{values[index]}")
@@ -5294,9 +5294,9 @@ let optionsSetMap = {
   [USEROPT_HEADTRACK_SCALE_X] = @(value, _descr, _optionId) ps4_headtrack_set_xscale(value),
   [USEROPT_HEADTRACK_SCALE_Y] = @(value, _descr, _optionId) ps4_headtrack_set_yscale(value),
   [USEROPT_MISSION_NAME_POSTFIX] = function(value, descr, optionId) {
-    let currentCampaignMission = getCurrentCampaignMission()
-    if (currentCampaignMission != null) {
-      let metaInfo = getUrlOrFileMissionMetaInfo(currentCampaignMission)
+    let currentCampMission = currentCampaignMission.get()
+    if (currentCampMission != null) {
+      let metaInfo = getUrlOrFileMissionMetaInfo(currentCampMission)
       let values = ::get_mission_types_from_meta_mission_info(metaInfo)
       if (values.len() > 0) {
         let optValue = descr.values[value]

@@ -9,7 +9,8 @@ let { OPTIONS_MODE_TRAINING, USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getPvpRespawnsOnUnitType, isStatsLoaded } = require("%scripts/myStats.nut")
-let { guiStartFlight, setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
@@ -97,7 +98,7 @@ function startFleetTrainingMission() {
   enable_bullets_modifications(unitName)
   ::enable_current_modifications(unitName)
 
-  setCurrentCampaignMission(misName)
+  currentCampaignMission.set(misName)
   let misBlk = get_meta_mission_info_by_name(misName)
   select_training_mission(misBlk)
   guiStartFlight()

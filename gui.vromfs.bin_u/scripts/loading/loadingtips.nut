@@ -13,7 +13,7 @@ let { get_game_mode } = require("mission")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
-let { getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -128,7 +128,7 @@ function getDefaultUnitTypeMask() {
   else if (isInArray(gm, [GM_SINGLE_MISSION, GM_CAMPAIGN, GM_DYNAMIC, GM_BUILDER, GM_DOMINATION]))
     res = unitTypes.AIRCRAFT.bit
   else // keep this check last
-    res = ::get_mission_allowed_unittypes_mask(getUrlOrFileMissionMetaInfo(getCurrentCampaignMission() ?? "", gm))
+    res = ::get_mission_allowed_unittypes_mask(getUrlOrFileMissionMetaInfo(currentCampaignMission.get() ?? "", gm))
 
   return (res & existTipsMask) || existTipsMask
 }

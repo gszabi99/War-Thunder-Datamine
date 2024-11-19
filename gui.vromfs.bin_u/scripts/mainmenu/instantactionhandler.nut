@@ -66,7 +66,7 @@ let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete,
   getTimePlayedOnUnitType
 } = require("%scripts/myStats.nut")
-let { guiStartSessionList, setMatchSearchGm, guiStartFlight, setCurrentCampaignMission
+let { guiStartSessionList, guiStartFlight
 } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById,
   getCurrentGameMode, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount,
@@ -77,6 +77,7 @@ let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit } = requi
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { unlockCrew } = require("%scripts/crew/crewActions.nut")
+let { matchSearchGm, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -433,7 +434,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       if (name != "name")
         missionBlk[name] <- value
     select_mission(missionBlk, false)
-    setCurrentCampaignMission(missionBlk.name)
+    currentCampaignMission.set(missionBlk.name)
     this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight) })
   }
 
@@ -783,7 +784,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function afterCountryApply(membersData = null, team = null, event = null) {
     if (disable_network()) {
-      setMatchSearchGm(GM_DOMINATION)
+      matchSearchGm.set(GM_DOMINATION)
       this.guiScene.performDelayed(this, function() {
         this.goForwardIfOnline(guiStartSessionList, false)
       })

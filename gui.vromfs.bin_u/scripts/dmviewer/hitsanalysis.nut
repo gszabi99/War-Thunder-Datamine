@@ -37,16 +37,31 @@ function getBulletInfo(unit, hit) {
     return bulletInfoCache[key]
   }
 
-  let bulletSet = DataBlock()
-
   let weaponBlk = DataBlock()
   weaponBlk.tryLoad(hit.weapon)
 
-  if (weaponBlk?.rocketGun == true || weaponBlk?.bombGun == true) {
+  if (weaponBlk?.rocketGun == true || weaponBlk?.bombGun == true || weaponBlk?.torpedoGun == true) {
     let bulletName = getWeaponNameByBlkPath(hit.weapon)
     bulletInfoCache[key] <- {
       bulletDesc = doesLocTextExist(bulletName) ? loc(bulletName) : loc($"weapons/{bulletName}/short", "")
       isRocketOrBomb = true
+    }
+    return bulletInfoCache[key]
+  }
+
+  if (weaponBlk?.drawRocketInBullet == true) {
+    let rocketName = weaponBlk.bullet.bulletName
+    local bulletDesc = doesLocTextExist(rocketName) ? loc(rocketName) : loc($"weapons/{rocketName}/short", "")
+    if (hit.isSecond) {
+      let rocketPartName = weaponBlk.bullet.rocket.bulletName
+      let rocketPartDesc = doesLocTextExist(rocketPartName) ? loc(rocketPartName) : loc($"weapons/{rocketPartName}/short", "")
+      bulletDesc = $"{bulletDesc} ({rocketPartDesc})"
+    }
+
+    bulletInfoCache[key] <- {
+      bulletDesc
+      isRocketInBullet = true
+      bulletSetName = getBulletSetNameByBulletName(unit, rocketName)
     }
     return bulletInfoCache[key]
   }
@@ -69,6 +84,7 @@ function getBulletInfo(unit, hit) {
   let bullets = (hit.ammo == "" || weaponBlk.getBlockByName(hit.ammo) == null) ? weaponBlk % "bullet"
     : weaponBlk[hit.ammo] % "bullet"
 
+  let bulletSet = DataBlock()
   bulletSet.setFrom(bullets[hit.ammoNo])
   let { bulletType, caliber } = bulletSet
   bulletInfoCache[key] <- {
@@ -188,7 +204,8 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateBulletTooltip(unit) {
     let { bulletName = "", bulletSet = null, bulletsSet = null, bulletSetName = "",
-      isBulletBelt = false, isRocketOrBomb = false, isSupport = false } = getBulletInfo(unit, this.selectedHit)
+      isBulletBelt = false, isRocketOrBomb = false, isSupport = false,
+      isRocketInBullet = false } = getBulletInfo(unit, this.selectedHit)
 
     this.scene.findObject("bulletTooltip")["tooltipId"] = ""
 
@@ -225,6 +242,11 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
           tType
           presetName
         })
+      return
+    }
+
+    if (isRocketInBullet) {
+      this.scene.findObject("bulletTooltip")["tooltipId"] = getTooltipType("MODIFICATION").getTooltipId(unit.name, bulletSetName, { hasPlayerInfo = false })
       return
     }
 

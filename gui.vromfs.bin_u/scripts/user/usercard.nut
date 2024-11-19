@@ -787,7 +787,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           image = ::getUnitClassIco(airData.name),
           tooltipId = unitTooltipId,
           cellType = "splitRight",
-          imageRawParams = "left:t='pw-w-2@sf/@pf';",
+          imageRawParams = "left:t='pw-w-2@sf/@pf';interactive:t='yes';",
           needText = false,
           tdalign = "right"
         }

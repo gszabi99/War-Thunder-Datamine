@@ -23,8 +23,8 @@ let { OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
-let { checkAndCreateGamemodeWnd, setMatchSearchGm, getMatchSearchGm
-} = require("%scripts/missions/startMissionsList.nut")
+let { checkAndCreateGamemodeWnd } = require("%scripts/missions/startMissionsList.nut")
+let { matchSearchGm } = require("%scripts/missions/missionsStates.nut")
 
 gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   sceneBlkName = "%gui/sessionsList.blk"
@@ -50,7 +50,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     this.curPageRoomsList = []
     this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
 
-    this.isCoop = isGameModeCoop(getMatchSearchGm())
+    this.isCoop = isGameModeCoop(matchSearchGm.get())
     this.scene.findObject("sessions_update").setUserData(this)
 
     let head = this.scene.findObject("sessions_diff_header")
@@ -104,7 +104,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
         [USEROPT_SEARCH_GAMEMODE, "spinner"],
         [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
-    else if (getMatchSearchGm() == GM_SKIRMISH)
+    else if (matchSearchGm.get() == GM_SKIRMISH)
       options = [
         [USEROPT_SEARCH_DIFFICULTY, "spinner"],
       ]
@@ -128,7 +128,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     if (!(value in option.values))
       return
 
-    setMatchSearchGm(option.values[value])
+    matchSearchGm.set(option.values[value])
   }
 
   function onDifficultyChange(obj) {

@@ -92,10 +92,15 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
         ctx |> draw_line(pos.x - 5., origin.y - size.y * 0.165, pos.x + 5., origin.y - size.y * 0.165, data.lineWidth)
         ctx |> draw_line(pos.x - 5., origin.y - size.y * 0.5, pos.x + 5., origin.y - size.y * 0.5, data.lineWidth)
       if target.isSelected && get_radar_hud_has_azimuth_scale()
+        let losAngle = atan2(distanceRel * distMax * 1000.0, target.height - hero.pos.y) + atan2(target.losVerSpeed, -target.losSpeed)
+        ctx |> setRotViewTm(pos.x, pos.y, losAngle, 0., false)
         ctx |> set_color(e3dColor)
+
+        let los = sqrt(target.losSpeed * target.losSpeed + target.losVerSpeed * target.losVerSpeed) * 0.1
         let linePos = pos + float2(size.y * 0.02, 0.)
-        let spd <- to_array_move([[float2[2] linePos; linePos + float2(size.x * 0.05, 0.)]])
+        let spd <- to_array_move([[float2[2] linePos; linePos + float2(0., los)]])
         ctx |> render_line_aa(spd, false, data.lineWidth,  float2(0, 0), targetColor)
+
         ctx |> render_ellipse_aa(pos, float2(size.x * 0.01), 1., targetColor, targetColor)
         if target.isTracked
           ctx |> render_ellipse_aa(pos, float2(size.x * 0.02), data.lineWidth, targetColor, transparentColor)
@@ -103,14 +108,14 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
         ctx |> render_line_aa(cross, false, data.lineWidth,  float2(0, 0), targetColor)
         let cross2 <- to_array_move([[float2[2] pos - float2(size.x * 0.02, -size.x * 0.02); pos + float2(size.x * 0.02, -size.x * 0.02)]])
         ctx |> render_line_aa(cross2, false, data.lineWidth,  float2(0, 0), targetColor)
+
+        ctx |> resetViewTm()
       else
         let coord <- to_array_move([[float2[3] pos;
             float2(pos.x - size.x * 0.03, pos.y + size.y * 0.04);
             float2(pos.x - size.x * 0.03, pos.y - size.y * 0.04)]])
         ctx |> render_poly(coord, e3dColor)
         ctx |> render_line_aa(coord, true, data.lineWidth, float2(0, 0), e3dColor)
-        let spd <- to_array_move([[float2[2] pos; pos + float2(size.x * 0.05, 0.)]])
-        ctx |> render_line_aa(spd, false, data.lineWidth,  float2(0, 0), targetColor)
 
 def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let arrowPos = float2(pos.x + size.x * 0.02 + padding, pos.y + size.y * 0.83)
@@ -126,10 +131,17 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
 
   ctx |> set_viewport(radarPos.x, radarPos.y, rb.x, rb.y)
 
-  let scanAngles = float2(get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
+  var pitch = 0.0
+  let hero = get_controlled_hero()
+  if hero != null && !hero.isDelayed
+    let fmw = hero |> as_fmw()
+    if fmw != null
+      pitch = -fmw.tangage * PI / 180.0
+
+  let scanAngles = float2(pitch - get_radar_hud_scan_elevation_max(), pitch - get_radar_hud_scan_elevation_min())
   ctx |> render_sector_aa(arrowPos, float2(size.x) * get_radar_hud_target_distance(), scanAngles, 1., transparentColor, radarScanColor)
 
-  let maxAngles = float2(get_radar_hud_elevation_min(), get_radar_hud_elevation_max())
+  let maxAngles = float2(pitch - get_radar_hud_elevation_max(), pitch - get_radar_hud_elevation_min())
   let sectorL1 <- to_array_move([[float2[2] arrowPos; arrowPos + float2(cos(maxAngles.x), sin(maxAngles.x)) * size.x]])
   ctx |> render_line_aa(sectorL1, false, data.lineWidth, float2(0., 0.), textColor)
 

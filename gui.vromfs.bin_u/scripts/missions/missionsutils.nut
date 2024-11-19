@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, has_entitlement
+from "%scripts/dagui_natives.nut" import add_last_played, get_player_army_for_hud, has_entitlement, map_to_location
 from "%scripts/dagui_library.nut" import *
 
 let { g_team } = require("%scripts/teams.nut")
@@ -19,6 +19,8 @@ let { isStringInteger, isStringFloat, toUpper } = require("%sqstd/string.nut")
 let { getDynamicLayoutsBlk } = require("dynamicMission")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let regexp2 = require("regexp2")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let { measureType } = require("%scripts/measureType.nut")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -240,23 +242,40 @@ function getMissionTimeText(missionTime) {
   return loc($"options/time{toUpper(missionTime, 1)}")
 }
 
+function getMissionCondition(misBlk) {
+  let condition = []
+  let timeText = misBlk.getStr("time", misBlk.getStr("environment", ""))
+  if (timeText != "")
+    condition.append(getMissionTimeText(timeText))
+  let weatherText = misBlk.getStr("weather", "")
+  if (weatherText != "")
+    condition.append(getWeatherLocName(weatherText))
+  let temperature = misBlk?.temperature ?? 0
+  if (temperature != 0)
+    condition.append(measureType.TEMPERATURE.getMeasureUnitsText(temperature))
+  let pressure = misBlk?.pressure ?? 0
+  if (pressure != 0)
+    condition.append(measureType.MM_HG.getMeasureUnitsText(pressure))
+  let altitude = misBlk?.altitude ?? 0
+  if (altitude != 0)
+    condition.append("".concat(loc("options/altitude_baro"), loc("ui/colon"),
+      measureType.ALTITUDE.getMeasureUnitsText(altitude)))
+  return condition
+}
+
 function setMissionEnviroment(obj) {
   if (!(obj?.isValid() ?? false))
     return
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  let time = misBlk?.time ?? misBlk?.environment ?? ""
-  let weather = misBlk?.weather ?? ""
-  if (time == "" && weather == "") {
+  let condition = getMissionCondition(misBlk)
+  if (condition.len() == 0) {
     obj.setValue("")
     return
   }
-  let cond = []
-  if (time != "")
-    cond.append(colorize("activeTextColor", getMissionTimeText(time)))
-  if (weather != "")
-    cond.append(colorize("activeTextColor", getWeatherLocName(weather)))
-  obj.setValue(loc("ui/colon").concat(loc("sm_conditions"), loc("ui/comma").join(cond, true)))
+
+  obj.setValue(loc("ui/colon").concat(loc("sm_conditions"),
+    loc("ui/comma").join(condition.map(@(v) colorize("activeTextColor", v)))))
 }
 
 function getGameModeMaps() {
@@ -305,6 +324,26 @@ function clearMapsCache() {
   dynamicLayouts.clear()
 }
 
+function getMissionLocaltionAndConditionText(blk) {
+  local conditionText = ""
+  let currentCampMission = currentCampaignMission.get() ?? ""
+  if (currentCampMission != "")
+    conditionText = loc($"missions/{currentCampMission}/condition", "")
+
+  if (conditionText == "" && !(get_game_type() & GT_VERSUS)) {
+    let condition = getMissionCondition(blk)
+    let locationText = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
+    if (locationText != "")
+      condition.insert(0, loc($"location/{locationText}"))
+    conditionText = "; ".join(condition)
+  }
+
+  if (conditionText != "")
+    conditionText = "".concat(loc("sm_conditions"), loc("ui/colon"), " ", conditionText)
+
+  return conditionText
+}
+
 // first april 2024
 let isMissionExtrByName = @(misName = "") regexp2(@"_extr$").match(misName)
 let isMissionExtr = @() isMissionExtrByName(get_current_mission_name())
@@ -323,4 +362,5 @@ return {
   isMissionExtr
   isMissionExtrByName
   selectNextAvailCampaignMission
+  getMissionLocaltionAndConditionText
 }

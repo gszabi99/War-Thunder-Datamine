@@ -13,7 +13,7 @@ let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft
   OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { locCurrentMissionName, setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
 let { isInFlight } = require("gameplayBinding")
 let { registerRespondent } = require("scriptRespondent")
 
@@ -128,6 +128,7 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
         titleText = loc($"multiplayer/{get_cur_game_mode_name()}Mode")
 
       this.setSceneTitle(titleText, this.scene, "menu-title")
+      setMissionEnviroment(this.scene.findObject("conditions_text"))
     }
 
     function update(obj, dt) {

@@ -14,7 +14,7 @@
   "havePointOfInterestDesignator": true,
   "isBwOpticSight": true,
   "haveOpticTurret": true,
-  "ils31": true,
+  "ilsSu34": true,
   "ilsHasRadarHud": true,
   "mfdCamPlatan": true,
   "rwrIndicator": "L-150",
@@ -2206,12 +2206,11 @@
       0.927,
       0.42
     ],
-    "hasAirCannonIlsMode": true,
-    "isDoubleBulletImpactLine": true,
     "mfdTextureSize": [
       2048,
       1024
     ],
+    "slotCount": 12,
     "mirror": true,
     "mirrorPos": [
       8.0,
@@ -2498,7 +2497,8 @@
               "turretIdx": 0
             },
             {
-              "type": "rwr"
+              "type": "rwr",
+              "scale": 0.9
             }
           ]
         },
@@ -2511,7 +2511,8 @@
           ],
           "page": [
             {
-              "type": "rwr"
+              "type": "rwr",
+              "scale": 0.9
             },
             {
               "type": "target_tracking_bw",
@@ -2641,7 +2642,8 @@
               ]
             },
             {
-              "type": "rwr"
+              "type": "rwr",
+              "scale": 0.9
             },
             {
               "type": "custom",
@@ -2672,7 +2674,8 @@
               "type": "ils_on_camera"
             },
             {
-              "type": "rwr"
+              "type": "rwr",
+              "scale": 0.9
             },
             {
               "type": "target_tracking_bw",
@@ -2745,11 +2748,8 @@
           ],
           "page": [
             {
-              "type": "custom",
-              "pageName": "su27Pod"
-            },
-            {
-              "type": "rwr"
+              "type": "rwr",
+              "scale": 0.9
             },
             {
               "type": "target_tracking_bw",
@@ -9871,16 +9871,16 @@
       "colorOverDepthNoiseSpeed": 10.0,
       "colorIntensityNoiseStrength": 2.0,
       "colorIntensityNoiseSpeed": 30.0,
-      "minStartingRingHeight": 2.4,
-      "maxStartingRingHeight": 2.4,
+      "minStartingRingHeight": 0.93,
+      "maxStartingRingHeight": 0.82,
       "ringIntensity": 2.0,
       "ringFrequency": 11.3097,
       "preNominalEasingParams": {
         "animationTime": 3.0,
-        "ascendingSmoothIntensityParams": 0.5
+        "ascendingSmoothIntensityParams": 0.7
       },
       "postNominalEasingParams": {
-        "animationTime": 1.5,
+        "animationTime": 1.0,
         "ascendingSmoothIntensityParams": 1.0
       },
       "lightProperties": {

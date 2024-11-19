@@ -24,7 +24,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { getTip } = require("%scripts/loading/loadingTips.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getUrlOrFileMissionMetaInfo, locCurrentMissionName, getMissionTimeText, getWeatherLocName
+let { locCurrentMissionName, getMissionLocaltionAndConditionText
 } = require("%scripts/missions/missionsUtils.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -34,8 +34,7 @@ let { loadLocalByAccount, saveLocalByAccount
 let { getCountryFlagsPresetName, getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { getCurrentCampaignMission, setCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
-let { debug_dump_stack } = require("dagor.debug")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 
 const MIN_SLIDE_TIME = 2.0
@@ -72,24 +71,15 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let missionBlk = DataBlock()
     local country = ""
-    if (getCurrentCampaignMission() || is_mplayer_peer()) {
+    if (currentCampaignMission.get() || is_mplayer_peer()) {
       if (is_mplayer_peer()) {
         get_current_mission_desc(missionBlk)
-        setCurrentCampaignMission(missionBlk.getStr("name", ""))
+        currentCampaignMission.set(missionBlk.getStr("name", ""))
       }
       else if (get_game_type() & GT_DYNAMIC)
         missionBlk.setFrom(::mission_settings.mission)
-      else {
-        let missionName = getCurrentCampaignMission()
-        let missionInfoBlk = getUrlOrFileMissionMetaInfo(missionName, this.gm)
-        if (missionInfoBlk != null)
-          missionBlk.setFrom(missionInfoBlk)
-        else {
-          let gMode = this.gm // warning disable: -declared-never-used
-          debug_dump_stack()
-          logerr("[LoadingBrief] Missing mission blk")
-        }
-      }
+      else
+        get_current_mission_desc(missionBlk)
 
       if (this.gm == GM_TEST_FLIGHT)
         country = ::getCountryByAircraftName(unitNameForWeapons.get())
@@ -109,10 +99,10 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       let excludeArray = exclBlock ? (exclBlock % "name") : []
 
       local sceneInfo = ""
-      let currentCampaignMission = getCurrentCampaignMission()
-      if (currentCampaignMission) {
-        sceneInfo = loc($"mb/{currentCampaignMission}/date", "")
-        sceneInfo = "".concat(sceneInfo, sceneInfo == "" ? "" : "\n", loc($"mb/{currentCampaignMission}/place", ""))
+      let currentCampMission = currentCampaignMission.get()
+      if (currentCampMission) {
+        sceneInfo = loc($"mb/{currentCampMission}/date", "")
+        sceneInfo = "".concat(sceneInfo, sceneInfo == "" ? "" : "\n", loc($"mb/{currentCampMission}/place", ""))
       }
       if (sceneInfo == "")
         sceneInfo = loc(this.briefing.getStr("place_loc", ""))
@@ -242,26 +232,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       res.append("".concat(loc("options/aircraft"), loc("ui/colon"), " ",
         getUnitName(m_aircraft), "; ", getWeaponNameText(m_aircraft, null, m_weapon, ", ")))
 
-    local m_condition = ""
-    let currentCampaignMission = getCurrentCampaignMission()
-    if (currentCampaignMission)
-      m_condition = loc($"missions/{currentCampaignMission}/condition", "")
-
-    if (m_condition == "") {
-      if (!(this.gt & GT_VERSUS)) {
-        let m_location = blk.getStr("locationName", map_to_location(blk.getStr("level", "")))
-        if (m_location != "")
-          m_condition = loc($"location/{m_location}")
-        let m_time = blk.getStr("time", blk.getStr("environment", ""))
-        if (m_time != "")
-          m_condition = "".concat(m_condition, m_condition != "" ? "; " : "", getMissionTimeText(m_time))
-        let m_weather = blk.getStr("weather", "")
-        if (m_weather != "")
-          m_condition = "".concat(m_condition, m_condition != "" ? "; " : "", getWeatherLocName(m_weather))
-      }
-    }
-    if (m_condition != "")
-      res.append("".concat(loc("sm_conditions"), loc("ui/colon"), " ", m_condition))
+    res.append(getMissionLocaltionAndConditionText(blk))
     return "\n".join(res, true)
   }
 
@@ -429,13 +400,13 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       this.waitForMap = false
       if (this.briefing) {
         local misObj = ""
-        let currentCampaignMission = getCurrentCampaignMission()
-        if (currentCampaignMission)
-          misObj = loc($"mb/{currentCampaignMission}/objective", "")
-        if ((this.gt & GT_VERSUS) && currentCampaignMission)
+        let currentCampMission = currentCampaignMission.get()
+        if (currentCampMission)
+          misObj = loc($"mb/{currentCampMission}/objective", "")
+        if ((this.gt & GT_VERSUS) && currentCampMission)
           misObj = ::loc_current_mission_desc()
-        if (misObj == "" && currentCampaignMission)
-          misObj = loc($"missions/{currentCampaignMission}/objective", "")
+        if (misObj == "" && currentCampMission)
+          misObj = loc($"missions/{currentCampMission}/objective", "")
         if (misObj == "")
           misObj = loc(this.briefing.getStr("objective_loc", ""))
         if (this.misObj_add != "")

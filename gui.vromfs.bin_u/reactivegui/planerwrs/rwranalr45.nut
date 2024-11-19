@@ -128,7 +128,7 @@ let rwrTargetsComponent = function(objectStyle) {
 
 function scope(scale, style) {
   return {
-    size = [pw(scale * 0.85), ph(scale * 0.85)]
+    size = [pw(scale * 0.85 * style.grid.scale), ph(scale * 0.85 * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [

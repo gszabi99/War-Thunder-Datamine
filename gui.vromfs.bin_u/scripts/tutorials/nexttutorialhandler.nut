@@ -23,8 +23,9 @@ let { setPromoButtonText, getPromoActionParamsKey, setPromoActionsParamsData,
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { guiStartTutorial, guiStartFlight, setCurrentCampaignMission
+let { guiStartTutorial, guiStartFlight
 } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -90,7 +91,7 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     set_game_mode(GM_TRAINING)
     select_mission(this.tutorialMission, true)
-    setCurrentCampaignMission(this.tutorialMission.name)
+    currentCampaignMission.set(this.tutorialMission.name)
     this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight); })
     save_profile(false)
   }

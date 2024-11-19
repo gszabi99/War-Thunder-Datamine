@@ -29,8 +29,179 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "init": {
+    "TMP_param": {
       "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "target_rank_index",
+          "fromDescriptor": "target_rank_index"
+        },
+        "varSetBool": {
+          "value": true,
+          "var": "is_high",
+          "fromDescriptor": "is_high"
+        },
+        "varSetString": {
+          "value": "armada_01",
+          "var": "player"
+        },
+        "triggerEnable": {
+          "target": "init_rank_settings"
+        }
+      },
+      "else_actions": {}
+    },
+    "init_rank_settings": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "target_rank_index",
+          "value": 0,
+          "comparasion_func": "notEqual"
+        }
+      },
+      "actions": {
+        "varSetString": [
+          {
+            "value": "target_rank_",
+            "var": "target_rank_tmp"
+          },
+          {
+            "value": "",
+            "var": "target_rank",
+            "input_var": "@target_rank_tmp"
+          }
+        ],
+        "varSetInt": {
+          "value": 0,
+          "var": "target_rank_index",
+          "fromDescriptor": "target_rank_index"
+        },
+        "varAddString": {
+          "value": "",
+          "digits": 2,
+          "var": "target_rank_tmp",
+          "input_var": "target_rank_index"
+        },
+        "triggerEnable": {
+          "target": [
+            "check_high",
+            "init"
+          ]
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "use_bool_param"
+        }
+      }
+    },
+    "use_bool_param": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_high",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "varSetString": {
+          "value": "high",
+          "var": "target_rank"
+        },
+        "triggerEnable": {
+          "target": [
+            "check_high",
+            "init"
+          ]
+        }
+      },
+      "else_actions": {
+        "varSetString": {
+          "value": "low",
+          "var": "target_rank"
+        },
+        "triggerEnable": {
+          "target": [
+            "check_high",
+            "init"
+          ]
+        }
+      }
+    },
+    "check_high": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitCheckTag": [
+          {
+            "target": "@player",
+            "tags": {
+              "air": true,
+              "type_utility_helicopter": true
+            }
+          },
+          {
+            "target": "@player",
+            "tags": {
+              "air": true,
+              "type_attack_helicopter": true
+            }
+          }
+        ]
+      },
+      "actions": {
+        "varSetString": {
+          "value": "high",
+          "var": "target_rank"
+        }
+      },
+      "else_actions": {}
+    },
+    "init": {
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -44,32 +215,22 @@
       "actions": {
         "unitPutToSleep": {
           "target": [
-            "target_tanks_low_squad",
-            "target_flightsOld_squad",
-            "target_flightsJet_squad",
-            "target_tanks_high_squad",
+            "units_squad",
             "airfield_low",
-            "airfield_high",
-            "ship_destroyer_squad"
+            "airfield_high"
           ]
         },
-        "varSetString": [
-          {
-            "value": "",
-            "var": "aircraft_ship_name",
-            "fromDescriptor": "aircraft_ship_name"
-          },
-          {
-            "value": "armada_01",
-            "var": "player"
-          }
-        ],
+        "varSetString": {
+          "value": "",
+          "var": "aircraft_ship_name",
+          "fromDescriptor": "aircraft_ship_name"
+        },
         "triggerEnable": [
           {
             "target": "ship_spawn"
           },
           {
-            "target": "check_high"
+            "target": "check_rank"
           },
           {
             "target": [
@@ -93,12 +254,12 @@
           "var": "air_spawn_point",
           "fromDescriptor": "air_spawn_point"
         },
+        "__varSetBool": {
+          "value": true,
+          "var": "is_high",
+          "fromDescriptor": "is_high"
+        },
         "varSetBool": [
-          {
-            "value": true,
-            "var": "is_high",
-            "fromDescriptor": "is_high"
-          },
           {
             "value": true,
             "var": "is_airfield_spawn",
@@ -112,40 +273,6 @@
         ],
         "wait": {
           "time": 0.1
-        }
-      },
-      "else_actions": {}
-    },
-    "change_attack_spawn": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "varCompareString": {
-          "var_value": "air_spawn",
-          "value": "spawn_area06",
-          "comparasion_func": "equal"
-        },
-        "varCompareBool": {
-          "var_value": "is_high",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
-      "actions": {
-        "varAddString": {
-          "value": "_high",
-          "digits": 0,
-          "var": "air_spawn"
         }
       },
       "else_actions": {}
@@ -296,7 +423,7 @@
       },
       "else_actions": {}
     },
-    "check_high": {
+    "check_rank": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -307,66 +434,68 @@
       "events": {
         "initMission": {}
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "is_high",
-          "value": true,
-          "comparasion_func": "equal"
-        },
-        "unitCheckTag": [
-          {
-            "target": "@player",
-            "tags": {
-              "air": true,
-              "type_utility_helicopter": true
-            }
-          },
-          {
-            "target": "@player",
-            "tags": {
-              "air": true,
-              "type_attack_helicopter": true
-            }
-          }
-        ]
-      },
+      "conditions": {},
       "actions": {
-        "varSetBool": {
-          "value": true,
-          "var": "is_high"
-        },
-        "varSetString": [
+        "varAddString": [
           {
-            "value": "airfield_high",
-            "var": "airfield_unit_name"
+            "value": "",
+            "digits": 0,
+            "var": "airfield_unit_name",
+            "input_var": "target_rank"
           },
           {
-            "value": "attack_area_high",
-            "var": "attack_area"
+            "value": "",
+            "digits": 0,
+            "var": "attack_area",
+            "input_var": "target_rank"
           },
           {
-            "value": "airfield_high",
-            "var": "airfield_spawn"
+            "value": "",
+            "digits": 0,
+            "var": "airfield_spawn",
+            "input_var": "target_rank"
           },
           {
-            "value": "target_tanks_high_squad",
-            "var": "target_tanks_squad_total"
+            "value": "",
+            "digits": 0,
+            "var": "target_tanks_squad_total",
+            "input_var": "target_rank"
           },
           {
-            "value": "airfield01plane_high",
-            "var": "airfield_end"
+            "value": "",
+            "digits": 0,
+            "var": "airfield_end",
+            "input_var": "target_rank"
           },
           {
-            "value": "flight_targetJet01",
-            "var": "air_target01"
+            "value": "",
+            "digits": 0,
+            "var": "air_spawn",
+            "input_var": "air_spawn_point"
           },
           {
-            "value": "flight_targetJet02",
-            "var": "air_target02"
+            "value": "",
+            "digits": 0,
+            "var": "air_target01",
+            "input_var": "target_rank"
           },
           {
-            "value": "flight_targetJet03",
-            "var": "air_target03"
+            "value": "",
+            "digits": 0,
+            "var": "air_target02",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "air_target03",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "bdt_balance_level_tmp",
+            "input_var": "target_rank"
           }
         ],
         "triggerEnable": [
@@ -375,82 +504,58 @@
           },
           {
             "target": [
-              "check_helicopter",
-              "change_attack_spawn"
+              "change_attack_spawn",
+              "check_helicopter"
             ]
           },
           {
             "target": "bdt_part_init"
           }
         ],
-        "varAddString": {
-          "value": "",
-          "digits": 0,
-          "var": "air_spawn",
-          "input_var": "air_spawn_point"
-        },
         "varSetInt": {
-          "value": 50,
-          "var": "bdt_balance_level"
+          "value": 0,
+          "var": "bdt_balance_level",
+          "input_var": "@bdt_balance_level_tmp"
         }
       },
-      "else_actions": {
-        "varSetString": [
-          {
-            "value": "attack_area_low",
-            "var": "attack_area"
-          },
-          {
-            "value": "airfield_high",
-            "var": "airfield_unit_name"
-          },
-          {
-            "value": "target_tanks_low_squad",
-            "var": "target_tanks_squad_total"
-          },
-          {
-            "value": "flight_target01",
-            "var": "air_target01"
-          },
-          {
-            "value": "flight_target02",
-            "var": "air_target02"
-          },
-          {
-            "value": "flight_target03",
-            "var": "air_target03"
-          },
-          {
-            "value": "airfield_high",
-            "var": "airfield_spawn"
-          },
-          {
-            "value": "airfield01plane_high",
-            "var": "airfield_end"
-          }
-        ],
-        "triggerEnable": [
-          {
-            "target": "unit_mode_idle"
-          },
-          {
-            "target": "check_helicopter"
-          },
-          {
-            "target": "bdt_part_init"
-          }
-        ],
-        "varAddString": {
-          "value": "",
-          "digits": 0,
-          "var": "air_spawn",
-          "input_var": "air_spawn_point"
-        },
-        "varSetInt": {
-          "value": 1,
-          "var": "bdt_balance_level"
+      "else_actions": {}
+    },
+    "change_attack_spawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
         }
-      }
+      },
+      "conditions": {
+        "varCompareString": {
+          "var_value": "air_spawn",
+          "value": "spawn_area06",
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "varAddString": [
+          {
+            "value": "_",
+            "digits": 0,
+            "var": "air_spawn"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "air_spawn",
+            "input_var": "target_rank"
+          }
+        ]
+      },
+      "else_actions": {}
     },
     "check_helicopter": {
       "is_enabled": false,
@@ -803,13 +908,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "is_high",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
+      "conditions": {},
       "actions": {
         "varSetInt": {
           "value": 1,
@@ -817,11 +916,11 @@
         },
         "varSetString": [
           {
-            "value": "target_tanks_idle_high_squad",
+            "value": "target_tanks_idle_squad_",
             "var": "target_tanks_squad"
           },
           {
-            "value": "target_tank_idle_high",
+            "value": "target_tank_idle_",
             "var": "target_tank_status"
           },
           {
@@ -831,6 +930,20 @@
           {
             "value": "tank_spawn_idle_area",
             "var": "target_tank_spawn_status"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tanks_squad",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tank_status",
+            "input_var": "target_rank"
           }
         ],
         "varSetBool": {
@@ -841,37 +954,7 @@
           "target": "name_assemble"
         }
       },
-      "else_actions": {
-        "varSetInt": {
-          "value": 1,
-          "var": "tank_num"
-        },
-        "varSetString": [
-          {
-            "value": "target_tanks_idle_low_squad",
-            "var": "target_tanks_squad"
-          },
-          {
-            "value": "target_tank_idle_low",
-            "var": "target_tank_status"
-          },
-          {
-            "value": "unit_mode_move",
-            "var": "mode_trigger"
-          },
-          {
-            "value": "tank_spawn_idle_area",
-            "var": "target_tank_spawn_status"
-          }
-        ],
-        "varSetBool": {
-          "value": false,
-          "var": "is_move_unit"
-        },
-        "triggerEnable": {
-          "target": "name_assemble"
-        }
-      }
+      "else_actions": {}
     },
     "unit_mode_move": {
       "is_enabled": false,
@@ -886,13 +969,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "is_high",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
+      "conditions": {},
       "actions": {
         "varSetInt": [
           {
@@ -906,11 +983,11 @@
         ],
         "varSetString": [
           {
-            "value": "target_tanks_move_high_squad",
+            "value": "target_tanks_move_squad_",
             "var": "target_tanks_squad"
           },
           {
-            "value": "target_tank_move_high",
+            "value": "target_tank_move_",
             "var": "target_tank_status"
           },
           {
@@ -920,6 +997,20 @@
           {
             "value": "unit_mode_ship",
             "var": "mode_trigger"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tanks_squad",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tank_status",
+            "input_var": "target_rank"
           }
         ],
         "varSetBool": {
@@ -930,43 +1021,7 @@
           "target": "name_assemble"
         }
       },
-      "else_actions": {
-        "varSetInt": [
-          {
-            "value": 1,
-            "var": "tank_num"
-          },
-          {
-            "value": 0,
-            "var": "tank_spawn_number"
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "target_tanks_move_low_squad",
-            "var": "target_tanks_squad"
-          },
-          {
-            "value": "target_tank_move_low",
-            "var": "target_tank_status"
-          },
-          {
-            "value": "tank_spawn_move_area",
-            "var": "target_tank_spawn_status"
-          },
-          {
-            "value": "unit_mode_ship",
-            "var": "mode_trigger"
-          }
-        ],
-        "varSetBool": {
-          "value": true,
-          "var": "is_move_unit"
-        },
-        "triggerEnable": {
-          "target": "name_assemble"
-        }
-      }
+      "else_actions": {}
     },
     "unit_mode_ship": {
       "is_enabled": false,
@@ -981,13 +1036,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "is_high",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
+      "conditions": {},
       "actions": {
         "varSetInt": [
           {
@@ -1001,11 +1050,11 @@
         ],
         "varSetString": [
           {
-            "value": "target_tanks_ship_high_squad",
+            "value": "target_tanks_ship_squad_",
             "var": "target_tanks_squad"
           },
           {
-            "value": "target_tank_ship_high",
+            "value": "target_tank_ship_",
             "var": "target_tank_status"
           },
           {
@@ -1015,6 +1064,20 @@
           {
             "value": "unit_mode_attack",
             "var": "mode_trigger"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tanks_squad",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tank_status",
+            "input_var": "target_rank"
           }
         ],
         "varSetBool": {
@@ -1025,43 +1088,7 @@
           "target": "name_assemble"
         }
       },
-      "else_actions": {
-        "varSetInt": [
-          {
-            "value": 1,
-            "var": "tank_num"
-          },
-          {
-            "value": 0,
-            "var": "tank_spawn_number"
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "target_tanks_ship_low_squad",
-            "var": "target_tanks_squad"
-          },
-          {
-            "value": "target_tank_ship_low",
-            "var": "target_tank_status"
-          },
-          {
-            "value": "tank_spawn_ship_area",
-            "var": "target_tank_spawn_status"
-          },
-          {
-            "value": "unit_mode_attack",
-            "var": "mode_trigger"
-          }
-        ],
-        "varSetBool": {
-          "value": false,
-          "var": "is_move_unit"
-        },
-        "triggerEnable": {
-          "target": "name_assemble"
-        }
-      }
+      "else_actions": {}
     },
     "unit_mode_attack": {
       "is_enabled": false,
@@ -1076,13 +1103,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "varCompareBool": {
-          "var_value": "is_high",
-          "value": true,
-          "comparasion_func": "equal"
-        }
-      },
+      "conditions": {},
       "actions": {
         "varSetInt": [
           {
@@ -1096,11 +1117,11 @@
         ],
         "varSetString": [
           {
-            "value": "target_tanks_attack_high_squad",
+            "value": "target_tanks_attack_squad_",
             "var": "target_tanks_squad"
           },
           {
-            "value": "target_tank_attack_high",
+            "value": "target_tank_attack_",
             "var": "target_tank_status"
           },
           {
@@ -1110,6 +1131,20 @@
           {
             "value": "tick_killed",
             "var": "mode_trigger"
+          }
+        ],
+        "varAddString": [
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tanks_squad",
+            "input_var": "target_rank"
+          },
+          {
+            "value": "",
+            "digits": 0,
+            "var": "target_tank_status",
+            "input_var": "target_rank"
           }
         ],
         "varSetBool": {
@@ -1120,43 +1155,7 @@
           "target": "name_assemble"
         }
       },
-      "else_actions": {
-        "varSetInt": [
-          {
-            "value": 1,
-            "var": "tank_num"
-          },
-          {
-            "value": 0,
-            "var": "tank_spawn_number"
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "target_tanks_attack_low_squad",
-            "var": "target_tanks_squad"
-          },
-          {
-            "value": "target_tank_attack_low",
-            "var": "target_tank_status"
-          },
-          {
-            "value": "tank_spawn_attack_area",
-            "var": "target_tank_spawn_status"
-          },
-          {
-            "value": "tick_killed",
-            "var": "mode_trigger"
-          }
-        ],
-        "varSetBool": {
-          "value": true,
-          "var": "is_attack_unit"
-        },
-        "triggerEnable": {
-          "target": "name_assemble"
-        }
-      }
+      "else_actions": {}
     },
     "name_assemble": {
       "is_enabled": false,
@@ -1313,14 +1312,6 @@
           "object": "@target_tank",
           "target": "@tank_spawn_area"
         },
-        "triggerEnable": [
-          {
-            "target": "check_radar"
-          },
-          {
-            "target": "check_move_unit"
-          }
-        ],
         "unitSetVar": [
           {
             "object_var_name": "killed",
@@ -1353,6 +1344,9 @@
         "varSetString": {
           "value": "check_tank_group",
           "var": "name_assemble_trigger"
+        },
+        "triggerEnable": {
+          "target": "check_move_unit"
         }
       },
       "else_actions": {
@@ -2111,8 +2105,8 @@
     "is_attack_unit": false,
     "way_name": "",
     "target_tank_spawn_status": "",
-    "target_tanks_squad_total": "",
-    "airfield_spawn": "",
+    "target_tanks_squad_total": "target_tanks_squad_",
+    "airfield_spawn": "airfield_",
     "air_spawn": "spawn_area0",
     "player": "",
     "target_tank": "",
@@ -2120,24 +2114,32 @@
     "tank_num_group": 1,
     "tank_spawn_area": "",
     "target_tanks_squad": "",
-    "air_target01": "",
-    "air_target02": "",
-    "air_target03": "",
+    "air_target01": "flight_target01_",
+    "air_target02": "flight_target02_",
+    "air_target03": "flight_target03_",
     "target_tank_status": "",
     "name_assemble_trigger": "check_exist",
     "aircraft_ship_name": "",
-    "airfield_end": "",
-    "airfield_unit_name": "",
+    "airfield_end": "airfield01plane_",
+    "airfield_unit_name": "airfield_",
     "air_spawn_point": 1,
     "is_high": true,
     "is_airfield_spawn": false,
     "airfield_spawn_area": "",
-    "attack_area": "",
+    "attack_area": "attack_area_",
     "base_respawn_time": 15,
     "target_respawn_time": 30,
     "airfield_spawn_reload": "",
     "is_ship_spawn": true,
-    "ship_destroyer": ""
+    "ship_destroyer": "",
+    "target_rank_index": 0,
+    "target_rank": "",
+    "target_rank_01": "low",
+    "target_rank_02": "high",
+    "target_rank_tmp": "",
+    "bdt_balance_level_low": 1,
+    "bdt_balance_level_high": 50,
+    "bdt_balance_level_tmp": "bdt_balance_level_"
   },
   "dialogs": {},
   "airfields": {},

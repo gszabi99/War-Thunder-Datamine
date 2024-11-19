@@ -114,8 +114,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     let haveCustomTooltip = this.getTooltipObjFunc() != null
     let start = this.currentPage * this.itemsPerPage
     let end = min((this.currentPage + 1) * this.itemsPerPage, this.options.len()) - 1
-    let selIdx = this.valueInited ? min(this.contentObj.getValue(), end - start)
-      : clamp(this.value - start, 0, end - start)
+    let selIdx = (this.value >= start && this.value <= end) ? (this.value - start) : -1
     for (local i = start; i <= end; i++) {
       let item = this.options[i]
       let avatar = {
@@ -168,7 +167,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onImageChoose(_obj) {
     let selIdx = this.getSelIconIdx()
-
+    this.value = selIdx
     if (!(this.options?[selIdx].enabled ?? false))
       return
 
@@ -291,11 +290,19 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   function getSelIconIdx() {
     if (!checkObj(this.contentObj))
       return -1
-    return this.contentObj.getValue() + this.currentPage * this.itemsPerPage
+    let idx = this.contentObj.getValue()
+    return idx < 0 ? idx : idx + this.currentPage * this.itemsPerPage
   }
 
   function updateButtons() {
     let option = getTblValue(this.getSelIconIdx(), this.options)
+    if (option == null) {
+      showObjById("btn_buy", false, this.scene)
+      showObjById("btn_select", false, this.scene)
+      showObjById("btn_fav",  false, this.scene)
+      return
+    }
+
     let cost = getUnlockCost(option.unlockId)
     let canBuy = !option.enabled && !cost.isZero()
     showObjById("btn_buy", canBuy, this.scene)
@@ -317,6 +324,9 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
         : loc("preloaderSettings/trackProgress"))
       return
     }
+
+    if (!isVisible)
+      return
 
     if (option?.enabled) {
       btn.setValue(loc("mainmenu/btnSelect"))

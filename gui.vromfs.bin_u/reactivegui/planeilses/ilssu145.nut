@@ -16,7 +16,7 @@ let { Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll, MaxOverload } = re
 let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/planeState/planeWeaponState.nut")
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
-let { settings } = require("%rGui/planeRwrs/rwrAri23333Components.nut")
+let { settings } = require("%rGui/planeRwrs/rwrAri23333ThreatsLibrary.nut")
 
 let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {

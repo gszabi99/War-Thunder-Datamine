@@ -4,7 +4,14 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
-let { wwGetSpeedupFactor } = require("worldwar")
+let { wwGetSpeedupFactor, wwGetOperationId } = require("worldwar")
+let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+
+let getForceControlledByAIUnitTypes = memoize(function() {
+  let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
+  return getWwSetting("forceControlledByAIUnitType", null)?[mapName]
+})
 
 function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
   if (!blk)
@@ -15,8 +22,12 @@ function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
     let unitBlk = blk.getBlock(i)
     let unit    = WwUnit(unitBlk)
 
-    if (unit.isValid())
+    if (unit.isValid()) {
+      let types = getForceControlledByAIUnitTypes()
+      let unitForceControlledByAI = types?[unit.wwUnitType.textCode] ?? false
+      unit.setForceControlledByAI(unitForceControlledByAI)
       units.append(unit)
+    }
 
     if (aiUnitsBlk) {
       let aiUnitData = getTblValue(unitBlk.getBlockName(), aiUnitsBlk)

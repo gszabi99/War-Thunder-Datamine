@@ -322,7 +322,9 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
       let { additionalMassKg = 0.0 } = tier?.weaponry.tiers[idx]
       let { amountPerTier = 1.0 } = tier?.weaponry.tiers[idx]
       let { massKg = 0.0 } = tier?.weaponry
-      return tatoalWeight + additionalMassKg + amountPerTier * massKg
+      let addWeaponryMassKg = tier?.weaponry.addWeaponry.massKg ?? 0
+      let addWeaponryAmountPerTier = tier?.weaponry.addWeaponry.tiers[idx].amountPerTier ?? 1
+      return tatoalWeight + additionalMassKg + (amountPerTier * massKg) + (addWeaponryAmountPerTier * addWeaponryMassKg)
     }, 0)
   }
 }

@@ -2,28 +2,36 @@ from "%scripts/dagui_library.nut" import *
 
 let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { crossNetworkPlayStatus } = require("%scripts/social/crossplay.nut")
 let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/xbox/permissions.nut")
-let { crossnetworkPrivilege } = require("%xboxLib/crossnetwork.nut")
-
-let isMultiplayerPrivilegeAvailable = mkWatched(persist, "isMultiplayerPrivilegeAvailable", true)
+let { multiplayerPrivilege } = require("%xboxLib/crossnetwork.nut")
 
 local multiplayerPrivelegeCallback = null
 local crossplayPrivelegeCallback = null
 
+let dummyValue = Watched(true)
+
+
+function mpPrivilegeNotify() {
+  if (!::g_login.isLoggedIn())
+    return
+  broadcastEvent("XboxMultiplayerPrivilegeUpdated")
+}
+
+
+if (isPlatformXboxOne) {
+  multiplayerPrivilege.subscribe(function(_){
+    mpPrivilegeNotify()
+  })
+}
+
 
 function multiplayer_sessions_privilege_callback(is_allowed) {
-  isMultiplayerPrivilegeAvailable(is_allowed)
-
   if (is_allowed)
     multiplayerPrivelegeCallback?()
 
   multiplayerPrivelegeCallback = null
 
-  if (!::g_login.isLoggedIn())
-    return
-
-  broadcastEvent("XboxMultiplayerPrivilegeUpdated")
+  mpPrivilegeNotify()
 }
 
 
@@ -39,9 +47,6 @@ function checkMultiplayerPrivilege(showWarning = false, cb = null) {
 
 
 function crossnetwork_play_privilege_callback(is_allowed) {
-  if (isPlatformXboxOne) //callback returns actual updated state
-    crossNetworkPlayStatus(is_allowed)
-
   if (!is_allowed && !isPlatformXboxOne) //Xbox code will show warning message if isAllowed = false
     crossplayPrivelegeCallback?()
 
@@ -59,15 +64,9 @@ function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
 }
 
 
-crossnetworkPrivilege.subscribe(function(v) {
-  crossNetworkPlayStatus(v)
-})
-
-
 return {
-  isMultiplayerPrivilegeAvailable
+  isMultiplayerPrivilegeAvailable = isPlatformXboxOne ? multiplayerPrivilege : dummyValue
   checkAndShowMultiplayerPrivilegeWarning = @(cb = null) checkMultiplayerPrivilege(true, cb)
-  resetMultiplayerPrivilege = @() isMultiplayerPrivilegeAvailable(true)
   updateMultiplayerPrivilege = function() {
     if (!::g_login.isLoggedIn())
       return

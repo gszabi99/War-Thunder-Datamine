@@ -14,6 +14,7 @@ tdiv {
   left:t='(pw-w)/2'
   position:t='relative'
   flow:t='horizontal'
+  showInEditMode:t='no'
 
   image {
     position:t='relative'

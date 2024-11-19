@@ -39,9 +39,10 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdOptions, setIsRemoteMission,
-  getCurrentCampaignId, setCurrentCampaignId, setCurrentCampaignMission, getCurrentCampaignMission
+let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
+let { isRemoteMissionVar, currentCampaignId, currentCampaignMission
+} = require("%scripts/missions/missionsStates.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 ::current_campaign <- null
@@ -145,13 +146,13 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     else if (this.gm == GM_SKIRMISH)
       title = loc("mainmenu/btnSkirmish")
     else
-      title = loc($"chapters/{getCurrentCampaignId()}")
+      title = loc($"chapters/{currentCampaignId.get()}")
 
     this.initMissionsList(title)
   }
 
   function initMissionsList(title) {
-    let customChapterId = (this.gm == GM_DYNAMIC) ? getCurrentCampaignId() : missionsListCampaignId.value
+    let customChapterId = (this.gm == GM_DYNAMIC) ? currentCampaignId.get() : missionsListCampaignId.value
     local customChapters = null
     if (!this.showAllCampaigns && (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION))
       customChapters = ::current_campaign
@@ -568,8 +569,8 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function setMission() {
     ::mission_settings.postfix = null
-    setCurrentCampaignId(this.curMission.chapter)
-    setCurrentCampaignMission(this.curMission.id)
+    currentCampaignId.set(this.curMission.chapter)
+    currentCampaignMission.set(this.curMission.id)
     if (this.gm == GM_DYNAMIC)
       ::mission_settings.currentMissionIdx <- this.curMissionIdx
 
@@ -735,9 +736,9 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function openMissionOptions(mission) {
-    let campaignName = getCurrentCampaignId()
+    let campaignName = currentCampaignId.get()
 
-    this.missionName = getCurrentCampaignMission()
+    this.missionName = currentCampaignMission.get()
 
     if (campaignName == null || this.missionName == null)
       return
@@ -1171,7 +1172,7 @@ let RemoteMissionModalHandler = class (CampaignChapter) {
       owner = this
       applyFunc = applyFunc
       cancelFunc = Callback(function() {
-                                setIsRemoteMission(false)
+                                isRemoteMissionVar.set(false)
                                 this.goBack()
                               }, this)
     }

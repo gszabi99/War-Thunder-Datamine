@@ -31,14 +31,15 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
-let { guiStartCdOptions, getCurrentCampaignMission } = require("%scripts/missions/startMissionsList.nut")
+let { guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { disableOrders } = require("%scripts/items/orders.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
 function gui_start_briefing_restart(_ = {}) {
   log("gui_start_briefing_restart")
-  let missionName = getCurrentCampaignMission()
+  let missionName = currentCampaignMission.get()
   if (missionName != null) {
     let missionBlk = DataBlock()
     let gm = get_game_mode()

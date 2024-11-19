@@ -497,8 +497,11 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
               item.sideLobesSensitivity <- 0.0
               item.dopplerSpeed <- false
             }
-            if (itemBlk.guidance?.inertialNavigation)
+            if (itemBlk.guidance?.inertialNavigation) {
               item.guidanceType = "".concat(item.guidanceType, "+IOG")
+              if (itemBlk.guidance?.inertialNavigationDriftSpeed == 0)
+                item.guidanceType = "".concat(item.guidanceType, "+GNSS")
+            }
             if (itemBlk.guidance?.inertialGuidance.datalink != null)
               item.guidanceType = "".concat(item.guidanceType, "+DL")
           }

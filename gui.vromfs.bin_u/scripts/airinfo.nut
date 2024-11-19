@@ -779,7 +779,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let isSquadronVehicle = air.isSquadronVehicle()
   let isInClan = ::is_in_clan()
   let expCur = getUnitExp(air)
-  let showShortestUnitInfo = air.showShortestUnitInfo
+  let showShortestUnitInfo = params?.showShortestUnitInfo ?? air.showShortestUnitInfo
 
   let isSecondaryModsValid = ::check_unit_mods_update(air)
     && ::check_secondary_weapon_mods_recount(air)

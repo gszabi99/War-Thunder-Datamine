@@ -127,6 +127,7 @@ let WwUnit = class {
       tooltipId = getTooltipType("UNIT").getTooltipId(this.name, {
         showLocalState = needShopInfo
         needShopInfo = needShopInfo
+        showShortestUnitInfo = this.isForceControlledByAI
       })
     }
 

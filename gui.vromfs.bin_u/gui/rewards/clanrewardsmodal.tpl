@@ -95,11 +95,9 @@ root {
 
   gamercard_div {}
 
-  tdiv{
-    id:t='chatPopupNest';
-    size:t='0.4@sf+10, 0.075*@sf+10';
-    position:t='absolute';
+  chatPopupNest {
+    id:t='chatPopupNest'
+    position:t='absolute'
     pos:t='1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight'
-    flow:t='vertical'
   }
 }
