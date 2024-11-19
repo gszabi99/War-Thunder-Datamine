@@ -299,7 +299,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let user_comment = clearBorderSymbolsMultiline(this.scene.findObject("complaint_text").getValue())
-    if (user_comment.len() < 10 && !["FOUL", "ABUSE", "HATE", "SPAM"].contains(this.compliantCategory)) {
+    if (user_comment.len() < 10 && !["FOUL", "ABUSE", "HATE", "SPAM", "NICK_HATESPEECH"].contains(this.compliantCategory)) {
       this.msgBox("need_text", loc("msg/complain/needDetailedComment"),
         [["ok", function() {} ]], "ok")
       return

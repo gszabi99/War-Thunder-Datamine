@@ -3,7 +3,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format } = require("string")
-let { getRoleText } = require("%scripts/unit/unitInfoTexts.nut")
+let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")

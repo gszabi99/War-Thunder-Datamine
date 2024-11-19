@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { get_game_settings_blk } = require("blkGetters")
 
-let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "SPAM", "OTHER"])
+let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "NICK_HATESPEECH", "SPAM", "OTHER"])
 
 ::tribunal <- {
   maxComplaintCount = 10

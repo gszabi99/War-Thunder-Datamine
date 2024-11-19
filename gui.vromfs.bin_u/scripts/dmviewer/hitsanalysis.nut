@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { format } = require("string")
+let { floor } = require("math")
 let { hangar_set_dm_viewer_mode } = require("hangar")
 let { on_parse_replay, get_parsed_replay, get_replay_info, repeat_shot_from_blk,
   on_parse_temp_replay, get_temp_replay_info, get_replay_hits_dir, set_replay_hits_mode,
@@ -168,6 +169,8 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillShotsList()
   }
 
+  prepareDistanceText = @(value) $"{(value > 1) ? floor(value) : "<1"} {loc("measureUnits/meters_dist")}"
+
   function onItemSelect(obj) {
     let item = obj.getChild(obj.getValue())
     let idx = to_integer_safe(item["idx"])
@@ -192,7 +195,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("unitTooltip")["tooltipId"] = getTooltipType("UNIT").getTooltipId(unit.name, { showLocalState = false })
     this.scene.findObject("bulletName").setValue(bulletDesc)
     this.scene.findObject("shotDistance").setValue(this.selectedHit.distance)
-    this.scene.findObject("shotDistanceText").setValue($"{this.selectedHit.distance} {loc("measureUnits/meters_dist")}")
+    this.scene.findObject("shotDistanceText").setValue(this.prepareDistanceText(this.selectedHit.distance))
     this.updateBulletTooltip(unit)
 
     if (getShowedUnit()?.name == this.selectedHit.object) {

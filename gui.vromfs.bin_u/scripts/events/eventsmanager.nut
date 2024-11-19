@@ -28,7 +28,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole, getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
@@ -2158,7 +2158,7 @@ let Events = class {
         else if (air && canBuyUnit(air))
           airNameObj.airCanBuy = "yes"
         else {
-          let reason = ::getCantBuyUnitReason(air, true)
+          let reason = getCantBuyUnitReason(air, true)
           airNameObj.airCanBuy = reason == "" ? "yes" : "no"
         }
 

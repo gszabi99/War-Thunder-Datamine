@@ -18,12 +18,12 @@ let { blkFromPath } = require("%sqstd/datablock.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { fabs, round, roundToDigits, round_by_value } = require("%sqstd/math.nut")
-let { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText, getUnitClassColor,
-  getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
+let { getUnitTooltipImage, getFullUnitRoleText, getUnitClassColor,
+  getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText, getCantBuyUnitReason
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { canBuyNotResearched, getBitStatus, isUnitDefault, canResearchUnit,
-  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isRequireUnlockForUnit,
+  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup,
   isUnitUsable, isUnitFeatureLocked, isUnitResearched, isPrevUnitResearched,
   isPrevUnitBought, isUnitAvailableForGM
 } = require("%scripts/unit/unitStatus.nut")
@@ -55,8 +55,7 @@ let { shopIsModificationEnabled } = require("chardResearch")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
 let {
   getEsUnitType, getUnitName, getUnitCountry,
-  getUnitCountryIcon,  getUnitsNeedBuyToOpenNextInEra,
-  getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit
+  getUnitCountryIcon, getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
@@ -72,7 +71,6 @@ let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { hideBonus } = require("%scripts/bonusModule.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -218,7 +216,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 }
 
 ::show_cant_buy_or_research_unit_msgbox <- function show_cant_buy_or_research_unit_msgbox(unit) {
-  let reason = ::getCantBuyUnitReason(unit)
+  let reason = getCantBuyUnitReason(unit)
   if (u.isEmpty(reason))
     return true
 
@@ -250,7 +248,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 
   if (!isUnitSpecial(unit) && !isUnitGift(unit)
     && !isSquadronVehicle && !isUnitsEraUnlocked(unit)) {
-    showInfoMsgBox(::getCantBuyUnitReason(unit), "need_unlock_rank")
+    showInfoMsgBox(getCantBuyUnitReason(unit), "need_unlock_rank")
     return false
   }
 
@@ -286,71 +284,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   }
 
   return ::show_cant_buy_or_research_unit_msgbox(unit)
-}
-
-
-::getCantBuyUnitReason <- function getCantBuyUnitReason(unit, isShopTooltip = false) {
-  if (!unit)
-    return loc("leaderboards/notAvailable")
-
-  if (isUnitBought(unit) || isUnitGift(unit))
-    return ""
-
-  let special = isUnitSpecial(unit)
-  let isSquadronVehicle = unit.isSquadronVehicle()
-  if (!special && !isSquadronVehicle && !isUnitsEraUnlocked(unit)) {
-    let countryId = getUnitCountry(unit)
-    let unitType = getEsUnitType(unit)
-    let rank = unit?.rank ?? -1
-
-    for (local prevRank = rank - 1; prevRank > 0; prevRank--) {
-      local unitsCount = 0
-      foreach (un in getAllUnits())
-        if (isUnitBought(un) && (un?.rank ?? -1) == prevRank && getUnitCountry(un) == countryId && getEsUnitType(un) == unitType)
-          unitsCount++
-      let unitsNeed = getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
-      let unitsLeft = max(0, unitsNeed - unitsCount)
-
-      if (unitsLeft > 0) {
-        return  "\n".concat(
-          loc("shop/unlockTier/locked", { rank = get_roman_numeral(rank) }),
-          loc("shop/unlockTier/reqBoughtUnitsPrevRank",
-            { prevRank = get_roman_numeral(prevRank), amount = unitsLeft }))
-      }
-    }
-    return loc("shop/unlockTier/locked", { rank = get_roman_numeral(rank) })
-  }
-  else if (!isPrevUnitResearched(unit)) {
-    if (isShopTooltip)
-      return loc("mainmenu/needResearchPreviousVehicle")
-    if (!isUnitResearched(unit))
-      return loc("msgbox/need_unlock_prev_unit/research",
-        { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
-    return loc("msgbox/need_unlock_prev_unit/researchAndPurchase",
-      { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
-  }
-  else if (!isPrevUnitBought(unit)) {
-    if (isShopTooltip)
-      return loc("mainmenu/needBuyPreviousVehicle")
-    return loc("msgbox/need_unlock_prev_unit/purchase", { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
-  }
-  else if (isRequireUnlockForUnit(unit))
-    return getUnitRequireUnlockText(unit)
-  else if (!special && !isSquadronVehicle && !canBuyUnit(unit) && canResearchUnit(unit))
-    return loc(isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
-
-  if (!isShopTooltip) {
-    let info = getProfileInfo()
-    let balance = info?.balance ?? 0
-    let balanceG = info?.gold ?? 0
-
-    if (special && (wp_get_cost_gold(unit.name) > balanceG))
-      return loc("mainmenu/notEnoughGold")
-    else if (!special && (wp_get_cost(unit.name) > balance))
-      return loc("mainmenu/notEnoughWP")
-  }
-
-  return ""
 }
 
 ::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false) {
@@ -1024,12 +957,12 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
   holderObj.findObject("aircraft-speedAlt").setValue((air.shop?.maxSpeedAlt ?? 0) > 0 ?
     countMeasure(1, air.shop.maxSpeedAlt) : loc("shop/max_speed_alt_sea"))
-//    holderObj.findObject("aircraft-climbTime").setValue(format("%02d:%02d", air.shop.climbTime.tointeger() / 60, air.shop.climbTime.tointeger() % 60))
-//    holderObj.findObject("aircraft-climbAlt").setValue(countMeasure(1, air.shop.climbAlt))
+  // holderObj.findObject("aircraft-climbTime").setValue(format("%02d:%02d", air.shop.climbTime.tointeger() / 60, air.shop.climbTime.tointeger() % 60))
+  // holderObj.findObject("aircraft-climbAlt").setValue(countMeasure(1, air.shop.climbAlt))
   holderObj.findObject("aircraft-altitude").setValue(countMeasure(1, air.shop.maxAltitude))
   holderObj.findObject("aircraft-airfieldLen").setValue(countMeasure(1, air.shop.airfieldLen))
   holderObj.findObject("aircraft-wingLoading").setValue(countMeasure(5, air.shop.wingLoading))
-//  holderObj.findObject("aircraft-range").setValue(countMeasure(2, air.shop.range * 1000.0))
+  // holderObj.findObject("aircraft-range").setValue(countMeasure(2, air.shop.range * 1000.0))
 
   let totalCrewObj = holderObj.findObject("total-crew")
   if (checkObj(totalCrewObj))
@@ -1675,7 +1608,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   }
 
   if (needShopInfo && !isRented) {
-    let reason = ::getCantBuyUnitReason(air, true)
+    let reason = getCantBuyUnitReason(air, true)
     let addTextObj = showObjById("aircraft-cant_buy_info", !showShortestUnitInfo && reason != "", holderObj)
     let unitNest = holderObj.findObject("prev_unit_nest")
     if (checkObj(addTextObj) && reason != "") {

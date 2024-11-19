@@ -94,6 +94,8 @@ def building_process_update_es(info : UpdateStageInfoAct;
                                buildingRadius : float;
                                buildingTemplates : StringList;
                                simpleObject__offsets : Point3List)
+  var showTimer = true
+  var hintTime = buildingTimer
   if buildingTimer > 0.
     let hero = get_controlled_hero()
     if hero != null && !hero.isDelayed
@@ -102,6 +104,7 @@ def building_process_update_es(info : UpdateStageInfoAct;
         if hero.speed < 1.
           buildingTimer -= info.dt
           if buildingTimer <= 0.
+            hintTime = 0.
             if hero.isAlive && hero.eid != INVALID_ENTITY_ID
               for i in range(length(simpleObject__visibleList))
                 if simpleObject__visibleList[i] && i < length(buildingTemplates)
@@ -111,19 +114,23 @@ def building_process_update_es(info : UpdateStageInfoAct;
                   send_net_event(hero.eid, [[CmdBuildObject tm = tm, objectTemplate = string(buildingTemplates[i]), triggerGroup = triggerGroup]])
             for visible in simpleObject__visibleList
               visible = false
+            showTimer = false
       else
         buildingTimer += info.dt
         if buildingTimer > buildingTime
           for visible in simpleObject__visibleList
             visible = false
+          showTimer = false
+          hintTime = buildingTime
           buildingTimer = -1.
       debuffUpdateTimer -= info.dt;
       if debuffUpdateTimer < 0.f || buildingTimer <= 0.
         debuffUpdateTimer = 1.
         using() <| $(var eventData : DataBlock)
-          add(eventData, "timer", buildingTimer)
+          add(eventData, "timer", hintTime)
           add(eventData, "totalTime", buildingTime)
           add(eventData, "backward", !inArea)
+          add(eventData, "showTimer", showTimer)
           add(eventData, "pause", hero.speed >= 1. && inArea)
           hud_notify_script("TankDebuffs:Building", eventData)
 

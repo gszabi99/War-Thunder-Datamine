@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
 let u = require("%sqStdLibs/helpers/u.nut")
-let { getRoleText, getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRoleIcon, getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")

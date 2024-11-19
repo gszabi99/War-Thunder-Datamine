@@ -534,7 +534,7 @@ function getUserlogViewData(logObj) {
       let airName = logObj[$"aname{idx}"]
       desc = "".concat(desc, getUnitName(airName), loc("ui/colon"),
         Cost(logObj[$"cost{idx}"]).toStringWithParams({ isWpAlwaysShown = true }))
-      totalCost = "".concat(totalCost, logObj[$"cost{idx}"])
+      totalCost += logObj[$"cost{idx}"]
       if (oneCountry) {
         let c = ::getShopCountry(airName)
         if (idx == 0)

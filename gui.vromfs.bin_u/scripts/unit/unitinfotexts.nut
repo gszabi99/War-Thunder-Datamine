@@ -1,52 +1,21 @@
+from "%scripts/dagui_natives.nut" import wp_get_cost_gold, wp_get_cost
 from "%scripts/dagui_library.nut" import *
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
-let { getEsUnitType, bit_unit_status } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, bit_unit_status, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName,
+  getPrevUnit
+} = require("%scripts/unit/unitInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
-let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-
-let basicUnitRoles = {
-  [ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
-  [ES_UNIT_TYPE_TANK] = ["type_tank", "type_light_tank", "type_medium_tank", "type_heavy_tank",
-    "type_tank_destroyer", "type_spaa", "type_lbv", "type_mbv", "type_hbv", "type_exoskeleton"],
-  [ES_UNIT_TYPE_BOAT] = ["type_boat", "type_heavy_boat", "type_barge", "type_frigate"],
-  [ES_UNIT_TYPE_SHIP] = ["type_ship", "type_destroyer", "type_light_cruiser",
-    "type_heavy_cruiser", "type_battlecruiser", "type_battleship", "type_submarine"],
-  [ES_UNIT_TYPE_HELICOPTER] = ["type_attack_helicopter", "type_utility_helicopter"],
-}
-
-let unitRoleFontIcons = {
-  fighter                  = loc("icon/unitclass/fighter"),
-  assault                  = loc("icon/unitclass/assault"),
-  bomber                   = loc("icon/unitclass/bomber"),
-  attack_helicopter        = loc("icon/unitclass/attack_helicopter"),
-  utility_helicopter       = loc("icon/unitclass/utility_helicopter"),
-  light_tank               = loc("icon/unitclass/light_tank"),
-  medium_tank              = loc("icon/unitclass/medium_tank"),
-  heavy_tank               = loc("icon/unitclass/heavy_tank"),
-  tank_destroyer           = loc("icon/unitclass/tank_destroyer"),
-  spaa                     = loc("icon/unitclass/spaa"),
-  lbv                      = loc("icon/unitclass/light_tank")
-  mbv                      = loc("icon/unitclass/medium_tank")
-  hbv                      = loc("icon/unitclass/heavy_tank")
-  exoskeleton              = loc("icon/unitclass/medium_tank"),
-  ship                     = loc("icon/unitclass/ship"),
-  boat                     = loc("icon/unitclass/gun_boat")
-  heavy_boat               = loc("icon/unitclass/heavy_gun_boat")
-  barge                    = loc("icon/unitclass/naval_ferry_barge")
-  destroyer                = loc("icon/unitclass/destroyer")
-  frigate                  = loc("icon/unitclass/destroyer")
-  light_cruiser            = loc("icon/unitclass/light_cruiser")
-  cruiser                  = loc("icon/unitclass/cruiser")
-  heavy_cruiser            = loc("icon/unitclass/cruiser")
-  battlecruiser            = loc("icon/unitclass/battlecruiser")
-  battleship               = loc("icon/unitclass/battleship")
-  submarine                = loc("icon/unitclass/submarine")
-}
+let { isUnitDefault, isUnitsEraUnlocked, isPrevUnitResearched, isUnitResearched, isPrevUnitBought,
+  isRequireUnlockForUnit, canResearchUnit, isUnitInResearch
+} = require("%scripts/unit/unitStatus.nut")
+let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { basicUnitRoles, getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
 
 let unitRoleByTag = {
   type_light_fighter    = "light_fighter",
@@ -125,32 +94,12 @@ function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport"
   return role
 }
 
-let getRoleName = @(role) role.slice(5)
-
-function getUnitBasicRole(unit) {
-  let unitType = getEsUnitType(unit)
-  let basicRoles = basicUnitRoles?[unitType]
-  if (!basicRoles || !basicRoles.len())
-    return ""
-
-  foreach (tag in unit.tags)
-    if (isInArray(tag, basicRoles))
-      return getRoleName(tag)
-  return getRoleName(basicRoles[0])
-}
-
-let getRoleText = @(role) loc($"mainmenu/type_{role}")
 let getRoleTextByTag = @(tag) loc($"mainmenu/{tag}")
 
 /*
   typeof @source == Unit     -> @source is unit
   typeof @source == "string" -> @source is role id
 */
-function getUnitRoleIcon(source) {
-  let role = u.isString(source) ? source
-    : getUnitBasicRole(source)
-  return unitRoleFontIcons?[role] ?? ""
-}
 
 function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)
@@ -281,11 +230,72 @@ function getUnitClassColor(unit) {
 
 let getUnitClassIco = @(unit) unit.customClassIco ?? $"#ui/gameuiskin#{unit.name}_ico.svg"
 
+function getCantBuyUnitReason(unit, isShopTooltip = false) {
+  if (!unit)
+    return loc("leaderboards/notAvailable")
+
+  if (isUnitBought(unit) || isUnitGift(unit))
+    return ""
+
+  let special = isUnitSpecial(unit)
+  let isSquadronVehicle = unit.isSquadronVehicle()
+  if (!special && !isSquadronVehicle && !isUnitsEraUnlocked(unit)) {
+    let countryId = getUnitCountry(unit)
+    let unitType = getEsUnitType(unit)
+    let rank = unit?.rank ?? -1
+
+    for (local prevRank = rank - 1; prevRank > 0; prevRank--) {
+      local unitsCount = 0
+      foreach (un in getAllUnits())
+        if (isUnitBought(un) && (un?.rank ?? -1) == prevRank && getUnitCountry(un) == countryId && getEsUnitType(un) == unitType)
+          unitsCount++
+      let unitsNeed = getUnitsNeedBuyToOpenNextInEra(countryId, unitType, prevRank)
+      let unitsLeft = max(0, unitsNeed - unitsCount)
+
+      if (unitsLeft > 0) {
+        return  "\n".concat(
+          loc("shop/unlockTier/locked", { rank = get_roman_numeral(rank) }),
+          loc("shop/unlockTier/reqBoughtUnitsPrevRank",
+            { prevRank = get_roman_numeral(prevRank), amount = unitsLeft }))
+      }
+    }
+    return loc("shop/unlockTier/locked", { rank = get_roman_numeral(rank) })
+  }
+  else if (!isPrevUnitResearched(unit)) {
+    if (isShopTooltip)
+      return loc("mainmenu/needResearchPreviousVehicle")
+    if (!isUnitResearched(unit))
+      return loc("msgbox/need_unlock_prev_unit/research",
+        { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
+    return loc("msgbox/need_unlock_prev_unit/researchAndPurchase",
+      { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
+  }
+  else if (!isPrevUnitBought(unit)) {
+    if (isShopTooltip)
+      return loc("mainmenu/needBuyPreviousVehicle")
+    return loc("msgbox/need_unlock_prev_unit/purchase", { name = colorize("userlogColoredText", getUnitName(getPrevUnit(unit), true)) })
+  }
+  else if (isRequireUnlockForUnit(unit))
+    return getUnitRequireUnlockText(unit)
+  else if (!special && !isSquadronVehicle && !canBuyUnit(unit) && canResearchUnit(unit))
+    return loc(isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
+
+  if (!isShopTooltip) {
+    let info = getProfileInfo()
+    let balance = info?.balance ?? 0
+    let balanceG = info?.gold ?? 0
+
+    if (special && (wp_get_cost_gold(unit.name) > balanceG))
+      return loc("mainmenu/notEnoughGold")
+    else if (!special && (wp_get_cost(unit.name) > balance))
+      return loc("mainmenu/notEnoughWP")
+  }
+
+  return ""
+}
+
 return {
   getUnitRole
-  getUnitBasicRole
-  getRoleText
-  getUnitRoleIcon
   getUnitTooltipImage
   getFullUnitRoleText
   getChanceToMeetText
@@ -294,4 +304,5 @@ return {
   getUnitRarity
   getUnitClassColor
   getUnitClassIco
+  getCantBuyUnitReason
 }

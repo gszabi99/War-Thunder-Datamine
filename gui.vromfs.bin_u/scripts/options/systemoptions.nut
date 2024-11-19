@@ -317,7 +317,7 @@ function setValue(id, value, skipUI = false) {
 
 function getDisabledOptionTooltip(id) {
   let locKey = $"guiHints/{id}/disabled"
-  return doesLocTextExist(locKey) ? loc(locKey) : null
+  return doesLocTextExist(locKey) ? stripTags(loc(locKey)) : null
 }
 
 function enableGuiOption(id, state) {

@@ -497,21 +497,22 @@ let g_hud_display_timers = {
     if (!checkObj(placeObj))
       return
 
-    let showTimer = debuffs_data.timer > 0.0
+    let { timer, totalTime, pause, backward, showTimer } = debuffs_data
     placeObj.animation = showTimer ? "show" : "hide"
 
     let timeTextObj = placeObj.findObject("time_text")
-    timeTextObj.setValue(debuffs_data.timer.tointeger().tostring());
+    timeTextObj.setValue(timer.tointeger().tostring());
     let timebarObj = placeObj.findObject("timer")
 
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
-    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.timer)
-    if (debuffs_data.pause) {
-      ::g_time_bar.pauseTimer(timebarObj)
-    }
-    else if (debuffs_data.backward == true) {
+    ::g_time_bar.setPeriod(timebarObj, totalTime)
+    if (backward)
       ::g_time_bar.setDirectionBackward(timebarObj)
-    }
+    else
+      ::g_time_bar.setDirectionForward(timebarObj)
+    ::g_time_bar.setCurrentTime(timebarObj, backward ? timer : totalTime - timer)
+
+    if (pause)
+      ::g_time_bar.pauseTimer(timebarObj)
   }
 
   function onInextinguishableFire(debuffs_data) {

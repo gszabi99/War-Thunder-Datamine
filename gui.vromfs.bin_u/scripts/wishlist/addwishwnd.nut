@@ -11,8 +11,9 @@ let { format } = require("string")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName} = require("%scripts/unit/unitInfo.nut")
-let { getUnitTooltipImage, getUnitRoleIcon, getFullUnitRoleText,
+let { getUnitTooltipImage, getFullUnitRoleText,
   getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 
 let class WishListHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

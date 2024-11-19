@@ -654,67 +654,69 @@ function compassWrap(width, height, generateFunc) {
   }
 }
 
-function getWeaponSlotCnt() {
+function getWeaponSlotCnt(weaponSlotsV) {
   local cnt = 0
-  for (local i = 0; i < WeaponSlots.get().len(); ++i) {
-    if (WeaponSlots.get()[i] != null && WeaponSlots.get()[i] > cnt)
-      cnt = WeaponSlots.get()[i]
-  }
+  foreach (weaponCnt in weaponSlotsV)
+    if (weaponCnt != null && weaponCnt > cnt)
+      cnt = weaponCnt
   return cnt
 }
 
-function getWeaponSlotCommands() {
+function getWeaponSlotCommands(weaponSlotsV) {
   let commands = []
-  for (local i = 0; i < WeaponSlots.get().len(); ++i) {
-    if (WeaponSlots.get()[i] != null)
-      commands.append([VECTOR_LINE, 20 * (WeaponSlots.get()[i] - 1), 100, 20 * (WeaponSlots.get()[i] - 1) + 10, 100])
-  }
+  foreach (weaponCnt in weaponSlotsV)
+    if (weaponCnt != null)
+      commands.append([VECTOR_LINE, 20 * (weaponCnt - 1), 100, 20 * (weaponCnt - 1) + 10, 100])
   return commands
 }
 
-function getWeaponSlotNumber() {
+function getWeaponSlotNumber(weaponSlotsV, weaponSlotActiveV) {
   let numbers = []
-  let added = []
-  for (local i = 0; i < WeaponSlots.get().len(); ++i) {
-    if (WeaponSlots.get()[i] != null && WeaponSlotActive.get()[i] == true && added.findindex(@(v) v == WeaponSlots.get()[i]) == null) {
-      let pos = 20 * (WeaponSlots.get()[i] - 1)
-      added.append(WeaponSlots.get()[i])
-      numbers.append(
-        {
-          rendObj = ROBJ_TEXT
-          size = SIZE_TO_CONTENT
-          pos = [pw(pos), 0]
-          color = IlsColor.get()
-          fontSize = 30
-          font = Fonts.ils31
-          text = (i + 1).tostring()
-        }
-        {
-          rendObj = ROBJ_FRAME
-          color = IlsColor.get()
-          pos = [pw(pos - 1), -5]
-          size = [pw(16), 40]
-          borderWidth = baseLineWidth * IlsLineScale.get()
-        }
-      )
-    }
+  let added = {}
+  foreach (i, weaponCnt in weaponSlotsV) {
+    if (weaponCnt == null || !weaponSlotActiveV?[i] || (weaponCnt in added))
+      continue
+
+    let pos = 20 * (weaponCnt - 1)
+    added[weaponCnt] <- true
+    let text = (i + 1).tostring()
+    numbers.append(
+      @() {
+        watch = IlsColor
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
+        pos = [pw(pos), 0]
+        color = IlsColor.get()
+        fontSize = 30
+        font = Fonts.ils31
+        text
+      }
+      @() {
+        watch = [IlsColor, IlsLineScale]
+        rendObj = ROBJ_FRAME
+        color = IlsColor.get()
+        pos = [pw(pos - 1), -5]
+        size = [pw(16), 40]
+        borderWidth = baseLineWidth * IlsLineScale.get()
+      }
+    )
   }
   return numbers
 }
 
 let connectors = @() {
-  watch = [WeaponSlots, IlsColor]
+  watch = [WeaponSlots, IlsColor, IlsLineScale]
   size = [pw(24), ph(3)]
-  pos = [pw(55 - 20 * getWeaponSlotCnt() / 7), ph(90)]
+  pos = [pw(55 - 20 * getWeaponSlotCnt(WeaponSlots.get()) / 7), ph(90)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = getWeaponSlotCommands()
+  commands = getWeaponSlotCommands(WeaponSlots.get())
   children = [
     @() {
       watch = WeaponSlotActive
       size = flex()
-      children = getWeaponSlotNumber()
+      children = getWeaponSlotNumber(WeaponSlots.get(), WeaponSlotActive.get())
     }
   ]
 }

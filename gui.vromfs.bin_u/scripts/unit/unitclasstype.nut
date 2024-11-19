@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { getUnitRoleIcon } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 
 local unitClassType = {

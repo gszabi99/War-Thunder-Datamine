@@ -12,7 +12,7 @@ let defaultShowcaseType = "air_arcade"
 
 function getStatsValue(params, value, scorePeriod) {
   let gameType = params?.showcaseType ?? defaultShowcaseType
-  let stats = params.stats.leaderboard?[gameType][scorePeriod]
+  let stats = params.stats?.leaderboard[gameType][scorePeriod]
   let val = stats?[value.valueId][scorePeriod] ?? 0
   return val == -1 ? 0 : val
 }
