@@ -809,10 +809,13 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     members.sort(function(left, right) {
       local res = 0
       if (sortId != "" && sortId != "nick") {
-        if (left[sortId] < right[sortId])
-          res = 1
-        else if (left[sortId] > right[sortId])
-          res = -1
+        local leftSort = left[sortId]
+        local rightSort = right[sortId]
+        if (sortId == "onlineStatus") {
+          leftSort = leftSort.sortOrder
+          rightSort = rightSort.sortOrder
+        }
+        res = rightSort <=> leftSort
       }
 
       if (!res) {

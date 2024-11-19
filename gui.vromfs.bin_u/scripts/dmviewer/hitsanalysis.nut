@@ -84,6 +84,13 @@ function getBulletInfo(unit, hit) {
   let bullets = (hit.ammo == "" || weaponBlk.getBlockByName(hit.ammo) == null) ? weaponBlk % "bullet"
     : weaponBlk[hit.ammo] % "bullet"
 
+  if (hit.ammoNo not in bullets) {
+    bulletInfoCache[key] <- {
+      bulletDesc = ""
+    }
+    return bulletInfoCache[key]
+  }
+
   let bulletSet = DataBlock()
   bulletSet.setFrom(bullets[hit.ammoNo])
   let { bulletType, caliber } = bulletSet
