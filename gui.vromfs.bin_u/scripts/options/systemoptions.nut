@@ -1051,18 +1051,16 @@ mSettings = {
     enabled = @() getGuiValue("mode", "fullscreen") != "windowed"
     isVisible = @() (get_available_monitors()?.list ?? []).len() > 2
   }
-  vsync = { widgetType = "list" def = is_vrr_available() ? "vsync_vrr" : "vsync_off" blk = "video/vsync" restart = false
+  vsync = { widgetType = "list" def = "vsync_off" blk = "video/vsync" restart = false
     getValueFromConfig = function(blk, _desc) {
-      let vrr = is_vrr_available() && getBlkValueByPath(blk, "video/vrr", false)
       let vsync = getBlkValueByPath(blk, "video/vsync", false)
-      return vrr ? "vsync_vrr" : vsync ? "vsync_on" : "vsync_off"
+      return vsync ? "vsync_on" : "vsync_off"
     }
     setGuiValueToConfig = function(blk, _desc, val) {
-      setBlkValueByPath(blk, "video/vrr", val == "vsync_vrr")
       setBlkValueByPath(blk, "video/vsync", val == "vsync_on")
     }
     init = function(_blk, desc) {
-      desc.values <- is_vrr_available() ? [ "vsync_vrr", "vsync_on" ] : [ "vsync_off", "vsync_on" ]
+      desc.values <- [ "vsync_off", "vsync_on" ]
     }
     enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
   }
