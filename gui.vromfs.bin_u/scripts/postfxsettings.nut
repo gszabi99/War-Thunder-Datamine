@@ -7,6 +7,7 @@ let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerM
 let { format } = require("string")
 let { round } = require("math")
 let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFxVignetteMultiplier,
+      setSharpenTps, getSharpenTps, getDefaultSharpenTps,
       setSharpenGunner, getSharpenGunner, getDefaultSharpenGunner,
       setSharpenBomber, getSharpenBomber, getDefaultSharpenBomber,
       setSharpenCockpit, getSharpenCockpit, getDefaultSharpenCockpit,
@@ -153,6 +154,8 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     this.createOneSlider("vignette", (1 - getPostFxVignetteMultiplier()) * scale, "onVignetteChanged",
       { min = 0.01 * scale, max = scale }, false)
 
+    this.createOneSlider("sharpenTPS", getSharpenTps() * scale, "onSharpenTpsChanged",
+      { min = 0, max = 0.4 * scale }, false)
     this.createOneSlider("sharpenGunner", getSharpenGunner() * scale, "onSharpenGunnerChanged",
       { min = 0, max = 0.7 * scale }, false)
     this.createOneSlider("sharpenBomber", getSharpenBomber() * scale, "onSharpenBomberChanged",
@@ -204,6 +207,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onResetToDefaults(_obj) {
     this.setValue("postfx_settings_vignette", getDefaultPostFxVignetteMultiplier() * scale);
+    this.setValue("postfx_settings_sharpenTPS", getDefaultSharpenTps() * scale);
     this.setValue("postfx_settings_sharpenGunner", getDefaultSharpenGunner() * scale);
     this.setValue("postfx_settings_sharpenBomber", getDefaultSharpenBomber() * scale);
     this.setValue("postfx_settings_sharpenCockpit", getDefaultSharpenCockpit() * scale);
@@ -225,6 +229,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     setPostFxVignetteMultiplier(getDefaultPostFxVignetteMultiplier());
+    setSharpenTps(getDefaultSharpenTps());
     setSharpenGunner(getDefaultSharpenGunner());
     setSharpenBomber(getDefaultSharpenBomber());
     setSharpenCockpit(getDefaultSharpenCockpit());
@@ -263,6 +268,11 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!obj)
       return;
     setPostFxVignetteMultiplier(1 - obj.getValue() * recScale);
+  }
+  function onSharpenTpsChanged(obj) {
+    if (!obj)
+      return;
+    setSharpenTps(obj.getValue() * recScale);
   }
   function onSharpenGunnerChanged(obj) {
     if (!obj)
