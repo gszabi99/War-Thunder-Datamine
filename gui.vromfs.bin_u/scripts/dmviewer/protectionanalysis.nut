@@ -41,6 +41,12 @@ let helpHintsParams = [
   {hintName = "hint_checkboxVerticalAngle", objName = "checkboxVerticalAngle", shiftX = "- 1@bw + 1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding", shiftY = "- 1@bh"}
 ]
 
+function isValidHitData(hitData) {
+  foreach (paramName in ["object", "offenderObject", "ammo", "distance"])
+    if (paramName not in hitData)
+      return false
+  return true
+}
 
 gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.BASE
@@ -359,7 +365,9 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hitFilePath = path
     this.hitData = DataBlock()
     let res = this.hitData.tryLoad(this.hitFilePath)
-    if (!res) {
+    if (!res || !isValidHitData(this.hitData)) {
+      showInfoMsgBox(loc("hitsAnalisys/openHitFile/error"))
+      this.hitData = null
       set_replay_hits_mode(false)
       return false
     }
