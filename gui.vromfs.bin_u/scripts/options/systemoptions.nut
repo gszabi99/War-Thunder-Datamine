@@ -499,7 +499,7 @@ function hasAntialiasingSharpening() {
 
 function canDoBackgroundScale() {
   let mode = getGuiValue("antialiasingMode", "off")
-  return mode == "off" || mode == "low_fxaa" || mode == "high_fxaa"
+  return !(mode == "dlss" || mode == "xess")
 }
 
 function getAvailableLatencyModes() {

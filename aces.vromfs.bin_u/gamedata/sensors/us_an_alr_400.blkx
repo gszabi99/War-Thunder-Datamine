@@ -1,6 +1,6 @@
 {
   "type": "rwr",
-  "name": "AN/ALR-400",
+  "name": "ALR-400",
   "power": 250.0,
   "txAngle": [
     5.0,
@@ -32,7 +32,7 @@
   "detectLaunch": false,
   "targetTracking": true,
   "matchSector": 10.0,
-  "targetSuperResolution": false,
+  "targetSuperResolution": true,
   "trackedTargetsMax": 12,
   "targetRangeFinder": true,
   "targetRange": [
@@ -46,6 +46,7 @@
   "mandatoryRecognition": false,
   "band2": true,
   "band3": true,
+  "band10": true,
   "receivers": {
     "receiver": [
       {
@@ -509,6 +510,26 @@
         "detectTracking": true,
         "detectLaunch": true,
         "type": "weapon"
+      },
+      {
+        "name": "AH-64",
+        "type": "AN/APG-78"
+      },
+      {
+        "name": "Ka-52",
+        "type": "RN-01 Arbalet"
+      },
+      {
+        "name": "Mi-28",
+        "type": "N-025"
+      },
+      {
+        "name": "S1",
+        "detectLaunch": true,
+        "type": [
+          "1RS1",
+          "1RS2"
+        ]
       }
     ]
   },
@@ -661,86 +682,23 @@
       {
         "text": "MSL",
         "group": "ARH"
-      }
-    ]
-  },
-  "targetsPresenceGroups": {
-    "targetsPresenceGroup": [
-      {
-        "text": "hud/rwr_threat_ai_track",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": [
-          "AI",
-          "Attacker",
-          "MiG-21",
-          "MiG-23",
-          "MiG-29",
-          "Su-34",
-          "F-4",
-          "F-5",
-          "F-14",
-          "F-15",
-          "F-16",
-          "F-18",
-          "Tornado F",
-          "Mirage 2000",
-          "J-39",
-          "JF-17",
-          "MiG-23 LAUNCH",
-          "MiG-29 LAUNCH",
-          "Su-34 LAUNCH",
-          "F-4 LAUNCH",
-          "F-14 LAUNCH",
-          "F-15 LAUNCH",
-          "F-16 LAUNCH",
-          "F-18 LAUNCH",
-          "Tornado F LAUNCH",
-          "Mirage 2000 LAUNCH",
-          "J-39 LAUNCH",
-          "JF-17 LAUNCH",
-          "ARH"
-        ]
       },
       {
-        "text": "hud/rwr_threat_aaa_track",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": "AAA"
+        "text": "A64",
+        "group": "AH-64"
       },
       {
-        "text": "hud/rwr_threat_sam_track",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": [
-          "S-125",
-          "9K330",
-          "9K33",
-          "2S6",
-          "Roland",
-          "Crotal"
-        ]
+        "text": "K52",
+        "group": "Ka-52"
       },
       {
-        "text": "hud/rwr_threat_cw",
-        "search": false,
-        "track": true,
-        "launch": true,
-        "group": [
-          "MiG-23 LAUNCH",
-          "MiG-29 LAUNCH",
-          "Su-34 LAUNCH",
-          "F-4 LAUNCH",
-          "F-14 LAUNCH",
-          "F-15 LAUNCH",
-          "F-16 LAUNCH",
-          "F-18 LAUNCH",
-          "Tornado F LAUNCH",
-          "Mirage 2000 LAUNCH"
-        ]
+        "text": "M28",
+        "group": "Mi-28"
+      },
+      {
+        "text": "S1",
+        "detectLaunch": true,
+        "group": "S1"
       }
     ]
   }
