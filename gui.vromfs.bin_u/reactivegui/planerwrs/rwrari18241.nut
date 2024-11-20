@@ -193,6 +193,12 @@ let directionGroups = [
     originalName = "S24"
   },
   {
+    text = "Y"
+    desc = "FULLBACK"
+
+    originalName = "S34"
+  },
+  {
     text = "F"
     desc = "F-4 AI"
 

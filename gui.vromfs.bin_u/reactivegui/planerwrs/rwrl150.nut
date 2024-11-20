@@ -282,6 +282,12 @@ let directionGroups = [
     lethalRangeMax = 40000.0
   },
   {
+    text = "С34",
+    type = ThreatType.AI,
+    originalName = "S34",
+    lethalRangeMax = 40000.0
+  },
+  {
     text = "С24",
     type = ThreatType.AI,
     originalName = "S24",
@@ -450,7 +456,7 @@ let settings = Computed(function() {
       }
     }
   }
-  return { directionGroups = directionGroupOut, rangeMax = rwrSetting.get().range.y, unknownText = "UNK" }
+  return { directionGroups = directionGroupOut, rangeMax = rwrSetting.get().range.y, unknownText = "Н/О" }
 })
 
 function rwrGridMarksComponent(gridStyle) {
