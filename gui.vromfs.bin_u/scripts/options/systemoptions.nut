@@ -9,12 +9,8 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
-<<<<<<< HEAD   (9f2714 WT: hitContext: Fix crash for replay's Hit Analysis)
-let { get_available_monitors, get_monitor_info, has_broken_recreate_image, get_antialiasing_options, get_antialiasing_upscaling_options, has_antialiasing_sharpening } = require("graphicsOptions")
-=======
-let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
-  has_antialiasing_sharpening, is_dx12_supported } = require("graphicsOptions")
->>>>>>> CHANGE (1b31a4 WT: GUI: FIX: DX12 graphic API is available to choose on PC )
+let { get_available_monitors, get_monitor_info, has_broken_recreate_image, get_antialiasing_options,
+  get_antialiasing_upscaling_options, has_antialiasing_sharpening, is_dx12_supported = @() true } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
