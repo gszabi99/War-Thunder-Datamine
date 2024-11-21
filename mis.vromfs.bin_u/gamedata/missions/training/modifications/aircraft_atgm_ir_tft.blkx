@@ -141,7 +141,7 @@
             ]
           }
         ],
-        "playerEmulateShortcut": {
+        "__playerEmulateShortcut": {
           "control": "ID_LOCK_TARGET",
           "holdTime": 1.0
         },
@@ -452,10 +452,15 @@
             "setStatus": "enable",
             "control": [
               "AXIS_MOUSE_AIM_Y",
-              "AXIS_MOUSE_AIM_X",
               "AXIS_ELEVATOR",
-              "AXIS_RUDDER",
               "ID_TOGGLE_LASER_DESIGNATOR"
+            ]
+          },
+          {
+            "setStatus": "enable",
+            "control": [
+              "AXIS_MOUSE_AIM_X",
+              "AXIS_RUDDER"
             ]
           }
         ],
@@ -481,9 +486,14 @@
           "speed": 1.0,
           "realtimeTriggers": true
         },
-        "wait": {
-          "time": 0.1
-        },
+        "wait": [
+          {
+            "time": 0.1
+          },
+          {
+            "time": 1.0
+          }
+        ],
         "triggerEnable": {
           "target": "start_msg"
         }
@@ -619,7 +629,7 @@
         "wait": {
           "time": 0.5
         },
-        "playerEmulateShortcut": {
+        "__playerEmulateShortcut": {
           "control": "ID_LOCK_TARGET",
           "holdTime": 0.5
         },
@@ -645,7 +655,7 @@
       "conditions": {},
       "actions": {
         "missionSetTimeSpeed": {
-          "speed": 0.3,
+          "speed": 0.5,
           "realtimeTriggers": true
         },
         "playHint": {
@@ -662,8 +672,8 @@
           "object_var_value": 0
         },
         "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
+          "object": "area_view",
+          "element": ""
         },
         "triggerEnable": {
           "target": "aim_starts"
@@ -684,35 +694,11 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerWhenCursorIn": {
-          "cursor": "crosshair",
-          "element": "curTarget",
-          "targetName": "target_tank02"
-        }
-      },
+      "conditions": {},
       "actions": {
-        "__missionSetTimeSpeed": {
-          "speed": 1.0,
-          "realtimeTriggers": true
-        },
-        "__playerControls": {
-          "setStatus": "disable",
-          "control": [
-            "AXIS_MOUSE_AIM_Y",
-            "AXIS_ELEVATOR"
-          ]
-        },
-        "__wait": {
-          "time": 0.5
-        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
-        },
-        "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
         },
         "triggerEnable": {
           "target": "activate_spi1"
@@ -765,7 +751,7 @@
       "conditions": {},
       "actions": {
         "missionSetTimeSpeed": {
-          "speed": 0.0,
+          "speed": 0.3,
           "realtimeTriggers": true
         },
         "playHint": {
@@ -920,7 +906,7 @@
       },
       "actions": {
         "missionSetTimeSpeed": {
-          "speed": 0.0,
+          "speed": 0.5,
           "realtimeTriggers": true
         },
         "playHint": {
@@ -992,15 +978,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "hudElementSelectionShade": [
-          {
-            "element": ""
-          },
-          {
-            "element": "curTarget",
-            "targetName": "target_tank02"
-          }
-        ],
         "triggerDisable": {
           "target": "time_out_timer_rocket"
         },
@@ -1010,6 +987,10 @@
         },
         "wait": {
           "time": 1.0
+        },
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
         },
         "triggerActivate": {
           "target": "check_aim",
@@ -1203,6 +1184,10 @@
         }
       },
       "actions": {
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        },
         "playHint": {
           "hintType": "standard",
           "name": "",
@@ -2617,18 +2602,18 @@
       "tm": [
         [
           10.0,
-          0.000346141,
-          0.000296174
+          0.0,
+          0.0
         ],
         [
-          -0.000453813,
-          7.60711,
-          6.49092
+          0.00000174444,
+          10.0,
+          -0.00000429153
         ],
         [
-          -0.00000917912,
-          -6.49092,
-          7.6071
+          -0.00000855395,
+          -0.00000238419,
+          10.0
         ],
         [
           3382.55,
@@ -2740,24 +2725,24 @@
       "type": "Sphere",
       "tm": [
         [
-          1.72705,
-          -4.73915,
-          8.63468
+          -5.04793,
+          -0.3925,
+          8.62348
         ],
         [
-          0.591485,
-          8.80049,
-          4.71185
+          -0.214442,
+          9.99228,
+          0.329273
         ],
         [
-          -9.83196,
-          -0.303028,
-          1.8002
+          -8.62974,
+          -0.0187061,
+          -5.05245
         ],
         [
-          3758.51,
+          4192.65,
           1965.67,
-          -3597.34
+          -4171.99
         ]
       ],
       "objLayer": 0,
@@ -2769,18 +2754,18 @@
       "type": "Sphere",
       "tm": [
         [
-          1.72705,
-          -4.73915,
+          3.07221,
+          -4.00047,
           8.63468
         ],
         [
-          0.591485,
-          8.80049,
+          -2.08225,
+          8.57104,
           4.71185
         ],
         [
-          -9.83196,
-          -0.303028,
+          -9.28578,
+          -3.24553,
           1.8002
         ],
         [
@@ -2849,6 +2834,33 @@
       "props": {
         "forceReplication": true
       }
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          -46.9258,
+          0.0,
+          55.9239
+        ],
+        [
+          0.0,
+          96.5625,
+          0.0
+        ],
+        [
+          -61.0839,
+          0.0,
+          -51.2553
+        ],
+        [
+          1361.39,
+          80.793,
+          766.827
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {

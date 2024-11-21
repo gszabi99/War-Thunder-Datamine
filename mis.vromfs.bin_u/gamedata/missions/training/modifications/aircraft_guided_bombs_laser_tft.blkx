@@ -15,11 +15,11 @@
       "level": "levels/avg_egypt_sinai.bin",
       "environment": "16",
       "weather": "clear",
+      "forbiddenDifficulty": "hardcore",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
-      "timeLimit": 30,
-      "forbiddenDifficulty": "hardcore"
+      "timeLimit": 30
     },
     "briefing": {
       "place_loc": "",
@@ -120,10 +120,6 @@
             ]
           }
         ],
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 1.0
-        },
         "triggerEnable": [
           {
             "target": "start_spawn_difficulty"
@@ -573,10 +569,6 @@
         "wait": {
           "time": 0.5
         },
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 0.5
-        },
         "triggerEnable": {
           "target": "find_target_start"
         }
@@ -726,16 +718,10 @@
         "triggerDisable": {
           "target": "find_target_sim"
         },
-        "__missionSetTimeSpeed": [
-          {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          },
-          {
-            "speed": 0.3,
-            "realtimeTriggers": true
-          }
-        ],
+        "__missionSetTimeSpeed": {
+          "speed": 1.0,
+          "realtimeTriggers": true
+        },
         "__playerControls": {
           "setStatus": "disable",
           "control": [
@@ -743,8 +729,9 @@
             "AXIS_ELEVATOR"
           ]
         },
-        "__wait": {
-          "time": 0.5
+        "hudElementSelectionShade": {
+          "object": "area_view",
+          "element": ""
         },
         "triggerEnable": {
           "target": [
@@ -848,37 +835,13 @@
           "object_var_value": 0,
           "item": "ID_LOCK_TARGETING_AT_POINT"
         },
-        "wait": [
-          {
-            "time": 0.1
-          },
-          {
-            "time": 3.0
-          }
-        ],
+        "wait": {
+          "time": 0.1
+        },
         "__missionSetTimeSpeed": {
           "speed": 0.3,
           "realtimeTriggers": true
         },
-        "missionMarkAsWaypoint": [
-          {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 0.7,
-            "target": "area_01",
-            "team": "B"
-          },
-          {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 1.0,
-            "target": "area_01"
-          }
-        ],
         "triggerEnable": {
           "target": [
             "spi_check_button",
@@ -1156,10 +1119,6 @@
         ],
         "wait": {
           "time": 0.5
-        },
-        "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
         },
         "playerControls": [
           {
@@ -2915,6 +2874,33 @@
       "props": {
         "forceReplication": true
       }
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          -46.9258,
+          0.0,
+          55.9239
+        ],
+        [
+          0.0,
+          48.3737,
+          0.0
+        ],
+        [
+          -61.0839,
+          0.0,
+          -51.2553
+        ],
+        [
+          3408.44,
+          687.109,
+          2362.98
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {

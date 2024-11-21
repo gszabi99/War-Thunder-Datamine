@@ -9,7 +9,12 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
+<<<<<<< HEAD   (9f2714 WT: hitContext: Fix crash for replay's Hit Analysis)
 let { get_available_monitors, get_monitor_info, has_broken_recreate_image, get_antialiasing_options, get_antialiasing_upscaling_options, has_antialiasing_sharpening } = require("graphicsOptions")
+=======
+let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
+  has_antialiasing_sharpening, is_dx12_supported } = require("graphicsOptions")
+>>>>>>> CHANGE (1b31a4 WT: GUI: FIX: DX12 graphic API is available to choose on PC )
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -25,6 +30,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
 let { findNearest } = require("%scripts/util.nut")
 let { is_win64 } = require("%sqstd/platform.nut")
+let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -45,6 +51,14 @@ const mMaxSliderSteps = 50
 //-------------------------------------------------------------------------------
 let mQualityPresets = DataBlock()
 mQualityPresets.load("%guiConfig/graphicsPresets.blk")
+
+let isDx12Supported = hardPersistWatched("isDx12Supported", null)
+function initIsDx12SupportedOnce() { //is_dx12_supported is a heavy function and should not be called often.
+  if (isDx12Supported.get() == null) {
+    let is_dx12_sup = is_dx12_supported()
+    isDx12Supported.set(is_win64 && is_dx12_sup)
+  }
+}
 
 /*
 compMode - When TRUE, option is enabled in GUI when Compatibility Mode is ON.
@@ -995,8 +1009,11 @@ mShared = {
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     init = function(_blk, desc) {
-      desc.values <- is_win64 ? [ "auto", "dx12" ]
-        : [ "auto" ]
+      initIsDx12SupportedOnce()
+      desc.values <- [ "auto" ]
+
+      if (isDx12Supported.get())
+        desc.values.append("dx12")
 
       if (is_win64 && hasFeature("optionGFXAPIVulkan"))
         desc.values.append("vulkan")

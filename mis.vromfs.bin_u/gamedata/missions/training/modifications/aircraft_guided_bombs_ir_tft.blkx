@@ -15,11 +15,11 @@
       "level": "levels/avg_soviet_range.bin",
       "environment": "16",
       "weather": "clear",
+      "forbiddenDifficulty": "hardcore",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
-      "timeLimit": 30,
-      "forbiddenDifficulty": "hardcore"
+      "timeLimit": 30
     },
     "briefing": {
       "place_loc": "",
@@ -120,10 +120,6 @@
             ]
           }
         ],
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 1.0
-        },
         "triggerEnable": [
           {
             "target": "start_spawn_difficulty"
@@ -598,10 +594,6 @@
         "wait": {
           "time": 0.5
         },
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 0.5
-        },
         "triggerEnable": {
           "target": "find_target_start"
         }
@@ -652,30 +644,12 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "missionMarkAsWaypoint": [
-          {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 0.7,
-            "target": "area_01",
-            "team": "B"
-          },
-          {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 1.0,
-            "target": "area_01"
-          }
-        ],
+        "hudElementSelectionShade": {
+          "object": "area_view",
+          "element": ""
+        },
         "triggerEnable": {
           "target": "find_target_cursor_in"
-        },
-        "wait": {
-          "time": 2.0
         }
       },
       "else_actions": {
@@ -1141,8 +1115,8 @@
           "time": 0.5
         },
         "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
+          "object": "area_view",
+          "element": ""
         },
         "playerControls": [
           {
@@ -3039,6 +3013,33 @@
           1959.95,
           105.901,
           670.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          -46.9258,
+          0.0,
+          55.9239
+        ],
+        [
+          0.0,
+          60.8333,
+          0.0
+        ],
+        [
+          -61.0839,
+          0.0,
+          -51.2553
+        ],
+        [
+          2169.16,
+          12.4249,
+          1377.97
         ]
       ],
       "objLayer": 0,

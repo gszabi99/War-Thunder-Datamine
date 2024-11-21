@@ -141,10 +141,6 @@
             ]
           }
         ],
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 1.0
-        },
         "triggerEnable": {
           "target": "check_agm_btn_bounded"
         }
@@ -558,13 +554,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "wait": {
-          "time": 0.5
-        },
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 0.5
-        },
         "triggerEnable": {
           "target": "find_enemy"
         }
@@ -604,8 +593,8 @@
           "object_var_value": 0
         },
         "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
+          "object": "area_view",
+          "element": ""
         },
         "triggerEnable": {
           "target": "aim_starts"
@@ -626,35 +615,11 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerWhenCursorIn": {
-          "cursor": "crosshair",
-          "element": "curTarget",
-          "targetName": "target_tank02"
-        }
-      },
+      "conditions": {},
       "actions": {
-        "__missionSetTimeSpeed": {
-          "speed": 1.0,
-          "realtimeTriggers": true
-        },
-        "__playerControls": {
-          "setStatus": "disable",
-          "control": [
-            "AXIS_MOUSE_AIM_Y",
-            "AXIS_ELEVATOR"
-          ]
-        },
-        "__wait": {
-          "time": 0.5
-        },
         "missionSetTimeSpeed": {
-          "speed": 0.0,
+          "speed": 0.3,
           "realtimeTriggers": true
-        },
-        "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
         },
         "triggerEnable": {
           "target": "activate_spi1"
@@ -706,10 +671,6 @@
       },
       "conditions": {},
       "actions": {
-        "missionSetTimeSpeed": {
-          "speed": 0.0,
-          "realtimeTriggers": true
-        },
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/spi1",
@@ -723,13 +684,6 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "item": "ID_LOCK_TARGETING_AT_POINT"
-        },
-        "__wait": {
-          "time": 0.5
-        },
-        "__missionSetTimeSpeed": {
-          "speed": 0.3,
-          "realtimeTriggers": true
         },
         "triggerEnable": {
           "target": [
@@ -939,8 +893,8 @@
             "element": ""
           },
           {
-            "element": "curTarget",
-            "targetName": "target_tank02"
+            "object": "area_view",
+            "element": ""
           }
         ],
         "triggerDisable": {
@@ -999,8 +953,8 @@
             "element": ""
           },
           {
-            "element": "curTarget",
-            "targetName": "target_tank02"
+            "object": "area_view",
+            "element": ""
           }
         ],
         "triggerDisable": {
@@ -1165,10 +1119,6 @@
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
-        },
-        "hudElementSelectionShade": {
-          "object": "tank_target",
-          "element": ""
         },
         "varSetInt": {
           "value": 15,
@@ -2637,6 +2587,33 @@
           1462.25,
           22.45,
           -242.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          -28.3799,
+          0.0,
+          33.8218
+        ],
+        [
+          0.0,
+          38.2757,
+          0.0
+        ],
+        [
+          -36.9424,
+          0.0,
+          -30.9983
+        ],
+        [
+          968.251,
+          161.827,
+          179.347
         ]
       ],
       "objLayer": 0,

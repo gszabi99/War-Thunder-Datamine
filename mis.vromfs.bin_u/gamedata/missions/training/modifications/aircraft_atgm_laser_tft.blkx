@@ -114,13 +114,7 @@
             "speed": 600.0
           },
           {
-            "object": [
-              "target_tank02",
-              "target_tank03",
-              "target_tank04",
-              "target_tank05",
-              "target_tank06"
-            ],
+            "object": "target_tank02",
             "isImmortal": true
           }
         ],
@@ -537,14 +531,9 @@
           "speed": 1.0,
           "realtimeTriggers": true
         },
-        "wait": [
-          {
-            "time": 1.0
-          },
-          {
-            "time": 2.0
-          }
-        ],
+        "wait": {
+          "time": 1.0
+        },
         "playHint": {
           "hintType": "standard",
           "name": "hints/aircraft_modifications/find_target",
@@ -558,25 +547,10 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "missionMarkAsWaypoint": [
-          {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 0.7,
-            "target": "area_02",
-            "team": "B"
-          },
-          {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 1.0,
-            "target": "area_02"
-          }
-        ],
+        "hudElementSelectionShade": {
+          "object": "area_view",
+          "element": ""
+        },
         "triggerEnable": {
           "target": "find_target_cursor_in"
         }
@@ -1706,308 +1680,66 @@
       },
       "way": {}
     },
-    "structures": [
-      {
-        "name": "target_tank02",
-        "tm": [
-          [
-            -0.793354,
-            0.0,
-            -0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.608761,
-            0.0,
-            -0.793354
-          ],
-          [
-            2177.63,
-            8.0,
-            237.395
-          ]
+    "structures": {
+      "name": "target_tank02",
+      "tm": [
+        [
+          -0.793354,
+          0.0,
+          -0.608761
         ],
-        "unit_class": "tank_target_25_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "isDelayed": true,
-          "setStealth": true,
-          "targetAir": false,
-          "targetGnd": false
-        },
-        "way": {}
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.608761,
+          0.0,
+          -0.793354
+        ],
+        [
+          2177.63,
+          8.0,
+          237.395
+        ]
+      ],
+      "unit_class": "tank_target_25_char",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [
+          2.5,
+          2.0
+        ],
+        "formation_noise": [
+          0.1,
+          0.1
+        ],
+        "isDelayed": true,
+        "setStealth": true,
+        "targetAir": false,
+        "targetGnd": false
       },
-      {
-        "name": "target_tank03",
-        "tm": [
-          [
-            -0.793354,
-            0.0,
-            -0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.608761,
-            0.0,
-            -0.793354
-          ],
-          [
-            2261.3,
-            8.0,
-            237.395
-          ]
-        ],
-        "unit_class": "tank_target_25_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "isDelayed": true,
-          "setStealth": true,
-          "targetAir": false,
-          "targetGnd": false
-        },
-        "way": {}
-      },
-      {
-        "name": "target_tank04",
-        "tm": [
-          [
-            -0.793354,
-            0.0,
-            -0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.608761,
-            0.0,
-            -0.793354
-          ],
-          [
-            2067.45,
-            8.0,
-            237.395
-          ]
-        ],
-        "unit_class": "tank_target_25_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "isDelayed": true,
-          "setStealth": true,
-          "targetAir": false,
-          "targetGnd": false
-        },
-        "way": {}
-      },
-      {
-        "name": "target_tank05",
-        "tm": [
-          [
-            -0.793354,
-            0.0,
-            -0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.608761,
-            0.0,
-            -0.793354
-          ],
-          [
-            2178.85,
-            8.0,
-            133.95
-          ]
-        ],
-        "unit_class": "tank_target_25_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "isDelayed": true,
-          "setStealth": true,
-          "targetAir": false,
-          "targetGnd": false
-        },
-        "way": {}
-      },
-      {
-        "name": "target_tank06",
-        "tm": [
-          [
-            -0.793354,
-            0.0,
-            -0.608761
-          ],
-          [
-            0.0,
-            1.0,
-            0.0
-          ],
-          [
-            0.608761,
-            0.0,
-            -0.793354
-          ],
-          [
-            2178.85,
-            8.0,
-            362.35
-          ]
-        ],
-        "unit_class": "tank_target_25_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [
-            2.5,
-            2.0
-          ],
-          "formation_noise": [
-            0.1,
-            0.1
-          ],
-          "isDelayed": true,
-          "setStealth": true,
-          "targetAir": false,
-          "targetGnd": false
-        },
-        "way": {}
-      }
-    ]
+      "way": {}
+    }
   },
   "areas": {
     "player_respawn_pt": {
@@ -2094,6 +1826,33 @@
       "props": {
         "forceReplication": true
       }
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          3.18431,
+          0.0,
+          72.934
+        ],
+        [
+          0.0,
+          96.5625,
+          0.0
+        ],
+        [
+          -79.6633,
+          0.0,
+          3.47831
+        ],
+        [
+          2161.06,
+          49.1089,
+          71.4957
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {

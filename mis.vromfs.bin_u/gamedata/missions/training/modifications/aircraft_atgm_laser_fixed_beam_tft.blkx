@@ -164,10 +164,6 @@
           "setStatus": "enable",
           "control": "ID_LOCK_TARGET"
         },
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 1.0
-        },
         "triggerEnable": {
           "target": "start_check_agm_btn_bounded"
         }
@@ -574,10 +570,6 @@
         "wait": {
           "time": 0.5
         },
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 0.5
-        },
         "__hudElementSelectionShade": {
           "element": "curTarget",
           "targetName": "target_tank02"
@@ -755,28 +747,6 @@
         "missionSetTimeSpeed": {
           "speed": 1.0,
           "realtimeTriggers": true
-        },
-        "missionMarkAsWaypoint": [
-          {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "target_area",
-            "team": "B"
-          },
-          {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 1.0,
-            "target": "target_area"
-          }
-        ],
-        "wait": {
-          "time": 3.0
         },
         "triggerEnable": {
           "target": "rocket_check_laser"
@@ -1142,8 +1112,8 @@
           ]
         },
         "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
+          "element": "",
+          "object": "area_view"
         },
         "playHint": {
           "hintType": "standard",
@@ -1223,7 +1193,8 @@
           "target": [
             "target_missed",
             "target_hit",
-            "rocket_check_zoom"
+            "rocket_check_zoom",
+            "rocket_check_zoom_hud"
           ]
         }
       },
@@ -1283,6 +1254,32 @@
         },
         "triggerEnable": {
           "target": "rocket_zoom"
+        }
+      },
+      "else_actions": {}
+    },
+    "rocket_check_zoom_hud": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "isZoom": true
+        }
+      },
+      "actions": {
+        "hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
         }
       },
       "else_actions": {}
@@ -2062,6 +2059,33 @@
       "props": {
         "forceReplication": true
       }
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          -46.9258,
+          0.0,
+          55.9239
+        ],
+        [
+          0.0,
+          96.5625,
+          0.0
+        ],
+        [
+          -61.0839,
+          0.0,
+          -51.2553
+        ],
+        [
+          2659.34,
+          50.4141,
+          904.484
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {

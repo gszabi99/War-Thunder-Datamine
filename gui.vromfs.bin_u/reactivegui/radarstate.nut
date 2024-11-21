@@ -375,6 +375,8 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
     ScreenTargetsTrigger.trigger()
 }
 
+IsRadarHudVisible.subscribe(@(_) azimuthMarkers.clear())
+
 interop.updateAzimuthMarker <- function(id, target_time, age, azimuth_world_deg, is_selected, is_detected, is_enemy) {
   if (!azimuthMarkers)
     azimuthMarkers = {}

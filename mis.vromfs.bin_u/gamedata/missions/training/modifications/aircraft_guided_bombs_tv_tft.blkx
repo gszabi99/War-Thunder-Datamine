@@ -15,11 +15,11 @@
       "level": "levels/avg_africa_desert.bin",
       "environment": "16",
       "weather": "clear",
+      "forbiddenDifficulty": "hardcore",
       "gt_reload_explosives": false,
       "isLimitedFuel": false,
       "isLimitedAmmo": false,
-      "timeLimit": 30,
-      "forbiddenDifficulty": "hardcore"
+      "timeLimit": 30
     },
     "briefing": {
       "place_loc": "",
@@ -120,10 +120,6 @@
             ]
           }
         ],
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 1.0
-        },
         "triggerEnable": [
           {
             "target": "start_spawn_difficulty"
@@ -598,10 +594,6 @@
         "wait": {
           "time": 0.5
         },
-        "playerEmulateShortcut": {
-          "control": "ID_LOCK_TARGET",
-          "holdTime": 0.5
-        },
         "triggerEnable": {
           "target": "find_target_start"
         }
@@ -652,30 +644,12 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0
         },
-        "missionMarkAsWaypoint": [
-          {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 0.7,
-            "target": "area_01",
-            "team": "B"
-          },
-          {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": true,
-            "scale": 0.7,
-            "target": "area_01"
-          }
-        ],
+        "__hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank02"
+        },
         "triggerEnable": {
           "target": "find_target_cursor_in"
-        },
-        "wait": {
-          "time": 3.0
         }
       },
       "else_actions": {
@@ -784,6 +758,10 @@
             "AXIS_MOUSE_AIM_Y",
             "AXIS_ELEVATOR"
           ]
+        },
+        "hudElementSelectionShade": {
+          "object": "area_view",
+          "element": ""
         },
         "triggerEnable": {
           "target": "spi_check_button_bounded"
@@ -1460,7 +1438,7 @@
           "time": 1.0
         },
         "triggerEnable": {
-          "target": "bomb_activate_homing"
+          "target": "bomb_check_targeting"
         }
       },
       "else_actions": {}
@@ -1510,7 +1488,7 @@
           "time": 1.0
         },
         "triggerEnable": {
-          "target": "bomb_activate_homing"
+          "target": "bomb_check_targeting"
         }
       },
       "else_actions": {}
@@ -1704,13 +1682,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerWhenCursorIn": {
-          "cursor": "crosshair",
-          "element": "curTarget",
-          "targetName": "target_tank01"
-        }
-      },
+      "conditions": {},
       "actions": {
         "triggerEnable": {
           "target": "bomb_activate_homing"
@@ -1736,38 +1708,36 @@
         "wait": {
           "time": 1.5
         },
-        "playHint": [
-          {
-            "hintType": "standard",
-            "name": "",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          },
-          {
-            "hintType": "standard",
-            "name": "hints/aircraft_modifications/activation_lock",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_GUIDED_BOMBS_LOCK"
-          }
-        ],
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
         "missionSetTimeSpeed": {
           "speed": 0.0,
           "realtimeTriggers": true
+        },
+        "__playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_modifications/activation_lock",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_GUIDED_BOMBS_LOCK"
         },
         "triggerEnable": {
           "target": "fly_change_view_info"
@@ -1788,11 +1758,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_GUIDED_BOMBS_LOCK"
-        }
-      },
+      "conditions": {},
       "actions": {
         "playHint": {
           "hintType": "standard",
@@ -3023,6 +2989,33 @@
       "props": {
         "forceReplication": true
       }
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          -46.9258,
+          0.0,
+          55.9239
+        ],
+        [
+          0.0,
+          48.3737,
+          0.0
+        ],
+        [
+          -61.0839,
+          0.0,
+          -51.2553
+        ],
+        [
+          2239.75,
+          65.3912,
+          3713.04
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {

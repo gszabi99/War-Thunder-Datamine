@@ -517,7 +517,7 @@
         "wait": {
           "time": 2.0
         },
-        "playerLockTarget": {
+        "__playerLockTarget": {
           "target": "target_tank01"
         },
         "missionSetTimeSpeed": {
@@ -667,8 +667,8 @@
       },
       "else_actions": {
         "hudElementSelectionShade": {
-          "element": "curTarget",
-          "targetName": "target_tank02"
+          "object": "area_view",
+          "element": ""
         }
       }
     },
@@ -813,6 +813,10 @@
         },
         "triggerEnable": {
           "target": "rocket_check_controls"
+        },
+        "__hudElementSelectionShade": {
+          "element": "curTarget",
+          "targetName": "target_tank01"
         }
       },
       "else_actions": {}
@@ -1642,66 +1646,6 @@
           }
         }
       }
-    },
-    "structures": {
-      "name": "target_tank02",
-      "tm": [
-        [
-          -0.793354,
-          0.0,
-          -0.608761
-        ],
-        [
-          0.0,
-          1.0,
-          0.0
-        ],
-        [
-          0.608761,
-          0.0,
-          -0.793354
-        ],
-        [
-          2821.45,
-          68.8362,
-          955.55
-        ]
-      ],
-      "unit_class": "tank_target_25_char",
-      "objLayer": 0,
-      "closed_waypoints": false,
-      "isShipSpline": false,
-      "shipTurnRadius": 100.0,
-      "weapons": "",
-      "bullets0": "",
-      "bullets1": "",
-      "bullets2": "",
-      "bullets3": "",
-      "bulletsCount0": 0,
-      "bulletsCount1": 0,
-      "bulletsCount2": 0,
-      "bulletsCount3": 0,
-      "crewSkillK": 0.0,
-      "applyAllMods": false,
-      "props": {
-        "army": 2,
-        "count": 1,
-        "formation_type": "rows",
-        "formation_div": 3,
-        "formation_step": [
-          2.5,
-          2.0
-        ],
-        "formation_noise": [
-          0.1,
-          0.1
-        ],
-        "isDelayed": true,
-        "setStealth": true,
-        "targetAir": false,
-        "targetGnd": false
-      },
-      "way": {}
     }
   },
   "areas": {
@@ -1785,6 +1729,33 @@
           2900.58,
           6.2,
           838.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "area_view": {
+      "type": "Box",
+      "tm": [
+        [
+          -13.9325,
+          0.0,
+          16.6041
+        ],
+        [
+          0.0,
+          28.67,
+          0.0
+        ],
+        [
+          -18.1362,
+          0.0,
+          -15.218
+        ],
+        [
+          2816.13,
+          80.7929,
+          916.105
         ]
       ],
       "objLayer": 0,
