@@ -154,16 +154,25 @@ let directionGroups = [
   {
     text = "19",
     originalName = "2S6",
+    type = ThreatType.SAM,
     lethalRangeMax = 8000.0
+  },
+  {
+    text = "22",
+    originalName = "S1",
+    type = ThreatType.SAM,
+    lethalRangeMax = 16000.0
   },
   {
     text = "AD",
     originalName = "ADS",
+    type = ThreatType.SAM,
     lethalRangeMax = 8000.0
   },
   {
     text = "AR",
     originalName = "ASR",
+    type = ThreatType.SAM,
     lethalRangeMax = 8000.0
   },
   {

@@ -39,7 +39,13 @@ let directionGroups = [
     text = "19",
     originalName = "2S6",
     lethalRangeMax = 8000.0
-  },    {
+  },
+  {
+    text = "22",
+    originalName = "S1",
+    lethalRangeMax = 16000.0
+  },
+  {
     text = "M",
     originalName = "hud/rwr_threat_sam",
     lethalRangeMax = 12000.0
@@ -53,7 +59,8 @@ let directionGroups = [
     text = "Z",
     originalName = "Z23",
     lethalRangeMax = 2500.0
-  },    {
+  },
+  {
     text = "W",
     originalName = "ARH",
     isWeapon = true
