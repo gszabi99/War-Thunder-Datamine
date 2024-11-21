@@ -17,7 +17,7 @@ let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.n
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needShowOverrideSlotbar, isLeaderboardsAvailable, getEventEconomicName
 } = require("%scripts/events/eventInfo.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")

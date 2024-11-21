@@ -13,7 +13,7 @@ let { format } = require("string")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { updateTopSquadScore, getSquadInfo, isShowSquad,

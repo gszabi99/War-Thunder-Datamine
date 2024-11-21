@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 let fakeInfantryUnitName = "fake_infantry"

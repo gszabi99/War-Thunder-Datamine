@@ -5,7 +5,7 @@ let { format } = require("string")
 let { fabs } = require("math")
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getQueueByMapName, getOperationGroupByMapId
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")

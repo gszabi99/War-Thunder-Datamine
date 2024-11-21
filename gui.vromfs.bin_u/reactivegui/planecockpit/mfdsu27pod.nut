@@ -27,14 +27,14 @@ let aircraft = {
   ]
 }
 
-function getWeaponSlotNumber() {
+function getWeaponSlotNumber(WeaponSlotsV, WeaponSlotsCntV, WeaponSlotActiveV, SlotCountV) {
   let numbers = []
-  let count = SlotCount.get() > 0 ? SlotCount.get() : 10
+  let count = SlotCountV > 0 ? SlotCountV : 10
   let size = (100 / count)
-  let added = []
-  for (local i = 0; i < WeaponSlots.get().len(); ++i) {
+  let added = {}
+  foreach (i, weaponSlot in WeaponSlotsV) {
     let posL = size * i
-    if (i < count) {
+    if (i < count)
       numbers.append(
         {
           rendObj = ROBJ_SOLID
@@ -43,64 +43,73 @@ function getWeaponSlotNumber() {
           color = baseColor
         }
       )
-    }
-    if (WeaponSlots.get()[i] != null && added.findindex(@(v) v == WeaponSlots.get()[i]) == null) {
-      let pos = size * (WeaponSlots.get()[i] - 1)
-      let leng = 15 * (WeaponSlots.get()[i] <= (count / 2) ? WeaponSlots.get()[i] : (count + 1) - WeaponSlots.get()[i])
-      added.append(WeaponSlots.get()[i])
-      numbers.append(
-        {
-          rendObj = ROBJ_TEXT
-          size = [pw(size), SIZE_TO_CONTENT]
-          pos = [pw(pos), 20]
-          color = baseColor
-          fontSize = 20
-          font = Fonts.ils31
-          text = (i + 1).tostring()
-          halign = ALIGN_CENTER
-        }
-      )
-      if (WeaponSlotsCnt.get()[i] > 0) {
-        numbers.append(
-          {
-            rendObj = ROBJ_VECTOR_CANVAS
-            pos = [pw(pos), 40]
-            size = [pw(size), flex()]
-            color = baseColor
-            fillColor = Color(0, 0, 0, 0)
-            commands = [
-              [VECTOR_LINE, 50, 0, 50, leng],
-              [VECTOR_COLOR, WeaponSlotActive.get()[i] == true ? Color(0, 255, 0, 255) : baseColor],
-              [VECTOR_ELLIPSE, 50, leng + 5, 15, 5],
-              [VECTOR_LINE, 40, leng + 2, 34, leng - 1],
-              [VECTOR_LINE, 60, leng + 2, 66, leng - 1],
-              [VECTOR_LINE, 40, leng + 8, 34, leng + 11],
-              [VECTOR_LINE, 60, leng + 8, 66, leng + 11],
-            ]
-          }
-        )
-        numbers.append(
-          {
-            rendObj = ROBJ_TEXT
-            size = SIZE_TO_CONTENT
-            pos = [WeaponSlots.get()[i] <= count / 2 ? pw(-2) : pw(103), ph(leng + 27)]
-            color = WeaponSlotActive.get()[i] == true ? Color(0, 255, 0, 255) : baseColor
-            fontSize = 15
-            font = Fonts.ils31
-            text = WeaponSlotsTrigger.get()[i] == weaponTriggerName.BOMBS_TRIGGER ? "АБ" : loc_checked(WeaponSlotsName.get()[i])
-          }
-        )
+
+    if (weaponSlot == null || (weaponSlot in added))
+      continue
+
+    let pos = size * (weaponSlot - 1)
+    let leng = 15 * (weaponSlot <= (count / 2) ? weaponSlot : (count + 1) - weaponSlot)
+    let slotText = (i + 1).tostring()
+    added[weaponSlot] <- true
+    numbers.append(
+      {
+        rendObj = ROBJ_TEXT
+        size = [pw(size), SIZE_TO_CONTENT]
+        pos = [pw(pos), 20]
+        color = baseColor
+        fontSize = 20
+        font = Fonts.ils31
+        text = slotText
+        halign = ALIGN_CENTER
       }
-    }
+    )
+
+    if ((WeaponSlotsCntV?[i] ?? 0) <= 0)
+      continue
+
+    let countColor = WeaponSlotActiveV?[i] ? Color(0, 255, 0, 255) : baseColor
+    let curIdx = i
+    let weaponName = Computed(@() (WeaponSlotsTrigger.get()?[curIdx] ?? -1) == weaponTriggerName.BOMBS_TRIGGER ? "АБ"
+      : WeaponSlotsName.get()?[curIdx] != null ? loc_checked(WeaponSlotsName.get()[curIdx])
+      : "")
+    let weaponNamePos = [weaponSlot <= count / 2 ? pw(-2) : pw(103), ph(leng + 27)]
+    numbers.append(
+      {
+        rendObj = ROBJ_VECTOR_CANVAS
+        pos = [pw(pos), 40]
+        size = [pw(size), flex()]
+        color = baseColor
+        fillColor = 0
+        commands = [
+          [VECTOR_LINE, 50, 0, 50, leng],
+          [VECTOR_COLOR, countColor],
+          [VECTOR_ELLIPSE, 50, leng + 5, 15, 5],
+          [VECTOR_LINE, 40, leng + 2, 34, leng - 1],
+          [VECTOR_LINE, 60, leng + 2, 66, leng - 1],
+          [VECTOR_LINE, 40, leng + 8, 34, leng + 11],
+          [VECTOR_LINE, 60, leng + 8, 66, leng + 11],
+        ]
+      }
+      @() {
+        watch = weaponName
+        rendObj = ROBJ_TEXT
+        size = SIZE_TO_CONTENT
+        pos = weaponNamePos
+        color = countColor
+        fontSize = 15
+        font = Fonts.ils31
+        text = weaponName.get()
+      }
+    )
   }
   return numbers
 }
 
 let connectors = @() {
-  watch = [WeaponSlots, WeaponSlotsCnt, WeaponSlotActive]
+  watch = [WeaponSlots, WeaponSlotsCnt, WeaponSlotActive, SlotCount]
   size = [pw(78), ph(30)]
   pos = [pw(4), ph(32)]
-  children = getWeaponSlotNumber()
+  children = getWeaponSlotNumber(WeaponSlots.get(), WeaponSlotsCnt.get(), WeaponSlotActive.get(), SlotCount.get())
 }
 
 let text = {

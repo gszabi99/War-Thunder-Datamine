@@ -9,7 +9,7 @@ let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { cutPostfix, utf8ToLower } = require("%sqstd/string.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getEntitlementConfig, getEntitlementName,
   getEntitlementDescription, getEntitlementLocParams, premiumAccountDescriptionArr } = require("%scripts/onlineShop/entitlements.nut")

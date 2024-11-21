@@ -11,9 +11,9 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let { PI, round, roundToDigits } = require("%sqstd/math.nut")
-let { getUnitRole, getUnitTooltipImage, getFullUnitRoleText, getShipMaterialTexts, getUnitClassColor
-} = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitBasicRole, getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
+let { getUnitTooltipImage, getShipMaterialTexts } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor
+} = require("%scripts/unit/unitInfoRoles.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")

@@ -577,8 +577,11 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       && showConsoleButtons.value
       && isMultiplayerPrivilegeAvailable.value, this.scene
     )
-    showObjById("night_battles_console_button", showConsoleButtons.value
-      && hasNightGameModes(gameMode?.getEvent()), this.scene)
+
+    let isVisibleNightBattlesBtn = showConsoleButtons.value && hasNightGameModes(gameMode?.getEvent())
+    let nightBattlesBtn = showObjById("night_battles_console_button", isVisibleNightBattlesBtn, this.scene)
+    if (isVisibleNightBattlesBtn)
+      nightBattlesBtn.modeId = gameMode?.id
 
     let prefObj = showObjById("map_preferences_console_button",
       this.isShowMapPreferences(gameMode?.getEvent()) && showConsoleButtons.value,

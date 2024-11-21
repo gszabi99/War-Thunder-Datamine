@@ -4,7 +4,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let { getUnitRole } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")

@@ -18,10 +18,10 @@ let { blkFromPath } = require("%sqstd/datablock.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { fabs, round, roundToDigits, round_by_value } = require("%sqstd/math.nut")
-let { getUnitTooltipImage, getFullUnitRoleText, getUnitClassColor,
+let { getUnitTooltipImage,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText, getCantBuyUnitReason
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
+let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { canBuyNotResearched, getBitStatus, isUnitDefault, canResearchUnit,
   isUnitInResearch, isUnitsEraUnlocked, isUnitGroup,
   isUnitUsable, isUnitFeatureLocked, isUnitResearched, isPrevUnitResearched,

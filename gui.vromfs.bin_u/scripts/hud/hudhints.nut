@@ -2668,6 +2668,7 @@ enums.addTypes(g_hud_hints, {
     ]
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_RETURN_TO_ZONE = {
@@ -2676,6 +2677,7 @@ enums.addTypes(g_hud_hints, {
     toggleHint = ["warn:return_to_zone"]
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_CUSTOM = {
@@ -2684,6 +2686,7 @@ enums.addTypes(g_hud_hints, {
     toggleHint = ["warn:custom"]
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_FLAPS = {
@@ -2693,6 +2696,7 @@ enums.addTypes(g_hud_hints, {
     shortcuts = "ID_FLAPS"
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_GEAR = {
@@ -2702,6 +2706,7 @@ enums.addTypes(g_hud_hints, {
     shortcuts = "ID_GEAR"
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_FLAPS_TAKEOFF = {
@@ -2711,6 +2716,7 @@ enums.addTypes(g_hud_hints, {
     shortcuts = "ID_FLAPS"
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_COCKPIT_DOOR = {
@@ -2720,6 +2726,7 @@ enums.addTypes(g_hud_hints, {
     shortcuts = "ID_TOGGLE_COCKPIT_DOOR"
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_OVERLOAD = {
@@ -2728,6 +2735,7 @@ enums.addTypes(g_hud_hints, {
     toggleHint = ["warn:danger_overload"]
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_OVERLOAD_CRIT = {
@@ -2736,6 +2744,7 @@ enums.addTypes(g_hud_hints, {
     toggleHint = ["warn:crit_overload"]
     isHideOnDeath = false
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_ROYAL_AREA = {
@@ -2745,6 +2754,7 @@ enums.addTypes(g_hud_hints, {
     isHideOnDeath = false
     buildText = @(data) data.isShrinkZone ? colorize("@red", data.text) : colorize("@white", data.text)
     shouldBlink = true
+    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 },
 function() {

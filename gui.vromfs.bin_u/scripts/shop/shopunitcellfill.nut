@@ -11,9 +11,9 @@ let { getBitStatus, canBuyNotResearched, isUnitElite, isUnitInSlotbar, canResear
   isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken,
   isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")
-let { getUnitRole, getUnitItemStatusText, getUnitRarity
+let { getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
+let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitShopPriceText } = require("unitCardPkg.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")

@@ -1032,19 +1032,6 @@
                     "ButtonImg": {}
                   },
                   {
-                    "id": "btn_view_highlights",
-                    "class": "image",
-                    "text": "#mainmenu/btnViewHighlights",
-                    "_on_click": "onViewHighlights",
-                    "display": "hide",
-                    "enable": "no",
-                    "isColoredImg": "yes",
-                    "img": {
-                      "background-image": "#ui/gameuiskin#nv_icon"
-                    },
-                    "ButtonImg": {}
-                  },
-                  {
                     "id": "btn_requirements_list",
                     "text": "#unlocks/requirements",
                     "_on_click": "onViewBattleTaskRequirements",
@@ -1096,16 +1083,31 @@
                 ]
               },
               "navRight": {
-                "Button_text": {
-                  "id": "btn_back",
-                  "text": "#mainmenu/btnQuit",
-                  "_on_click": "goBack",
-                  "btnName": "B",
-                  "display": "hide",
-                  "visualStyle": "secondary",
-                  "buttonWink": {},
-                  "ButtonImg": {}
-                }
+                "Button_text": [
+                  {
+                    "id": "btn_view_highlights",
+                    "class": "image",
+                    "text": "#mainmenu/btnViewHighlights",
+                    "_on_click": "onViewHighlights",
+                    "display": "hide",
+                    "enable": "no",
+                    "isColoredImg": "yes",
+                    "img": {
+                      "background-image": "#ui/gameuiskin#nv_icon"
+                    },
+                    "ButtonImg": {}
+                  },
+                  {
+                    "id": "btn_back",
+                    "text": "#mainmenu/btnQuit",
+                    "_on_click": "goBack",
+                    "btnName": "B",
+                    "display": "hide",
+                    "visualStyle": "secondary",
+                    "buttonWink": {},
+                    "ButtonImg": {}
+                  }
+                ]
               }
             },
             "dummy": [

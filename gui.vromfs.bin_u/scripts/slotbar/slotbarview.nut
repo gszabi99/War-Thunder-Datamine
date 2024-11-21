@@ -26,9 +26,8 @@ let { getEsUnitType, getUnitName,
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitRole, getUnitItemStatusText, getUnitRarity
-} = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
+let { getUnitItemStatusText, getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { getBitStatus, isUnitElite, isUnitInSlotbar, isUnitDefault, canResearchUnit,
   isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken, isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")

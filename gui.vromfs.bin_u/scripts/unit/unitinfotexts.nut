@@ -15,54 +15,6 @@ let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopIn
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { basicUnitRoles, getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-
-let unitRoleByTag = {
-  type_light_fighter    = "light_fighter",
-  type_medium_fighter   = "medium_fighter",
-  type_heavy_fighter    = "heavy_fighter",
-  type_naval_fighter    = "naval_fighter",
-  type_jet_fighter      = "jet_fighter",
-  type_light_bomber     = "light_bomber",
-  type_medium_bomber    = "medium_bomber",
-  type_heavy_bomber     = "heavy_bomber",
-  type_naval_bomber     = "naval_bomber",
-  type_jet_bomber       = "jet_bomber",
-  type_dive_bomber      = "dive_bomber",
-  type_common_bomber    = "common_bomber", //to use as a second type: "Light fighter / Bomber"
-  type_common_assault   = "common_assault",
-  type_strike_fighter   = "strike_fighter",
-  type_attack_helicopter  = "attack_helicopter",
-  type_utility_helicopter = "utility_helicopter",
-  //tanks:
-  type_tank             = "tank" //used in profile stats
-  type_light_tank       = "light_tank",
-  type_medium_tank      = "medium_tank",
-  type_heavy_tank       = "heavy_tank",
-  type_tank_destroyer   = "tank_destroyer",
-  type_spaa             = "spaa",
-  //battle vehicles:
-  type_lbv              = "lbv",
-  type_mbv              = "mbv",
-  type_hbv              = "hbv",
-  //ships:
-  type_ship             = "ship",
-  type_boat             = "boat",
-  type_heavy_boat       = "heavy_boat",
-  type_barge            = "barge",
-  type_destroyer        = "destroyer",
-  type_frigate          = "frigate",
-  type_light_cruiser    = "light_cruiser",
-  type_cruiser          = "cruiser",
-  type_heavy_cruiser    = "heavy_cruiser",
-  type_battlecruiser    = "battlecruiser",
-  type_battleship       = "battleship",
-  type_submarine        = "submarine",
-  //basic types
-  type_fighter          = "medium_fighter",
-  type_assault          = "common_assault",
-  type_bomber           = "medium_bomber"
-}
 
 let chancesText = [
   { text = "chance_to_met/high",    color = "@chanceHighColor",    brDiff = 0.0 }
@@ -70,31 +22,6 @@ let chancesText = [
   { text = "chance_to_met/low",     color = "@chanceLowColor",     brDiff = 0.71 }
   { text = "chance_to_met/never",   color = "@chanceNeverColor",   brDiff = 1.01 }
 ]
-
-let unitRoleByName = {}
-
-function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
-  local unit = unitData
-  if (type(unitData) == "string")
-    unit = getAircraftByName(unitData);
-
-  if (!unit)
-    return ""; //not found
-
-  local role = unitRoleByName?[unit.name] ?? ""
-  if (role == "") {
-    foreach (tag in unit.tags)
-      if (tag in unitRoleByTag) {
-        role = unitRoleByTag[tag]
-        break
-      }
-    unitRoleByName[unit.name] <- role
-  }
-
-  return role
-}
-
-let getRoleTextByTag = @(tag) loc($"mainmenu/{tag}")
 
 /*
   typeof @source == Unit     -> @source is unit
@@ -117,35 +44,6 @@ function getUnitTooltipImage(unit) {
   if (unitType == ES_UNIT_TYPE_SHIP)
     return $"!ui/ships/{unit.name}"
   return ""
-}
-
-function getFullUnitRoleText(unit) {
-  let tags = unit?.tags
-  if (tags == null)
-    return ""
-
-  if (unit?.isSubmarine())
-    return getRoleText("submarine")
-
-  let needShowBaseTag = tags.indexof("visibleBaseTag") != null
-  let basicRoles = basicUnitRoles?[getEsUnitType(unit)] ?? []
-  local basicRole = ""
-  let textsList = []
-  foreach (tag in tags)
-    if (tag.len() > 5 && tag.slice(0, 5) == "type_") {
-      if (!isInArray(tag, basicRoles))
-        textsList.append(getRoleTextByTag(tag))
-      else if (basicRole == "") {
-        basicRole = tag
-        if (needShowBaseTag)
-          textsList.append(getRoleTextByTag(tag))
-      }
-    }
-
-  if (textsList.len())
-    return loc("mainmenu/unit_type_separator").join(textsList, true)
-
-  return basicRole != "" ? getRoleTextByTag(basicRole) : ""
 }
 
 function getChanceToMeetText(battleRating1, battleRating2) {
@@ -221,13 +119,6 @@ function getUnitRarity(unit) {
   return "common"
 }
 
-function getUnitClassColor(unit) {
-  let role = getUnitRole(unit) //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
-  if (role == null || role == "" || role == "none")
-    return "white";
-  return $"{role}Color"
-}
-
 let getUnitClassIco = @(unit) unit.customClassIco ?? $"#ui/gameuiskin#{unit.name}_ico.svg"
 
 function getCantBuyUnitReason(unit, isShopTooltip = false) {
@@ -295,14 +186,11 @@ function getCantBuyUnitReason(unit, isShopTooltip = false) {
 }
 
 return {
-  getUnitRole
   getUnitTooltipImage
-  getFullUnitRoleText
   getChanceToMeetText
   getShipMaterialTexts
   getUnitItemStatusText
   getUnitRarity
-  getUnitClassColor
   getUnitClassIco
   getCantBuyUnitReason
 }

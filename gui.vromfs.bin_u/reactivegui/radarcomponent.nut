@@ -2417,7 +2417,9 @@ let forestallComponent = @(color) function() {
 function scanZoneAzimuthComponent(color) {
   let width = sw(100)
   let height = sh(100)
-
+  let mw = 100 / width
+  let mh = 100 / height
+  let lineWidth = hdpx(4)
   return function() {
     if (!IsScanZoneAzimuthVisible.value)
       return { watch = IsScanZoneAzimuthVisible }
@@ -2425,26 +2427,21 @@ function scanZoneAzimuthComponent(color) {
     let { x0, y0, x1, y1 } = ScanZoneWatched.value
     let _x0 = (x0 + x1) * 0.5
     let _y0 = (y0 + y1) * 0.5
-    let mw = 100 / width
-    let mh = 100 / height
     let px0 = (x0 - _x0) * mw
     let py0 = (y0 - _y0) * mh
     let px1 = (x1 - _x0) * mw
     let py1 = (y1 - _y0) * mh
 
-    let commands = [
-      [ VECTOR_LINE, px0, py0, px1, py1 ]
-    ]
     return {
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = hdpx(4)
+      lineWidth
       watch = [ScanZoneWatched, IsScanZoneAzimuthVisible]
       opacity = 0.3
       fillColor = 0
       size = [width, height]
       color
       pos = [_x0, _y0]
-      commands
+      commands = [[ VECTOR_LINE, px0, py0, px1, py1 ]]
     }
   }
 }
@@ -2477,7 +2474,7 @@ function scanZoneElevationComponent(color) {
       color
       fillColor = 0
       size
-      pos = [(x2 + x3) * 0.5, (y2 + y3) * 0.5]
+      pos = [_x0, _y0]
       commands = [[ VECTOR_LINE, px2, py2, px3, py3 ]]
     }
   }

@@ -78,9 +78,42 @@
         }
       },
       "actions": {
-        "comment": {
-          "value": "rang 0-3"
+        "triggerDisable": {
+          "target": [
+            "arcade_spawn_middle",
+            "arcade_spawn_far",
+            "arcade_spawn_huge"
+          ]
         },
+        "comment": [
+          {
+            "value": "rang 0-3"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_near",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_near",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_near",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_near",
+            "var": "t2_assaults_spawn_name"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/assaults_spawn",
@@ -127,13 +160,6 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_assaults_spawn_near",
             "team": "B",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
               "type_assault": true,
               "tank": false,
@@ -202,34 +228,9 @@
             }
           }
         ],
-        "triggerDisable": {
-          "target": [
-            "arcade_spawn_middle",
-            "arcade_spawn_far",
-            "arcade_spawn_huge"
-          ]
-        },
         "triggerEnable": {
           "target": "common_bombers_spawn"
-        },
-        "varSetString": [
-          {
-            "value": "t1_fighters_spawn_near",
-            "var": "t1_fighters_spawn_name"
-          },
-          {
-            "value": "t2_fighters_spawn_near",
-            "var": "t2_fighters_spawn_name"
-          },
-          {
-            "value": "t1_assaults_spawn_near",
-            "var": "t1_assaults_spawn_name"
-          },
-          {
-            "value": "t2_assaults_spawn_near",
-            "var": "t2_assaults_spawn_name"
-          }
-        ]
+        }
       },
       "else_actions": {}
     },
@@ -259,9 +260,42 @@
         ]
       },
       "actions": {
-        "comment": {
-          "value": "rang 4-6"
+        "triggerDisable": {
+          "target": [
+            "arcade_spawn_near",
+            "arcade_spawn_far",
+            "arcade_spawn_huge"
+          ]
         },
+        "comment": [
+          {
+            "value": "rang 4-6"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_middle",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_middle",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_middle",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_middle",
+            "var": "t2_assaults_spawn_name"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/assaults_spawn",
@@ -383,37 +417,12 @@
             }
           }
         ],
-        "triggerDisable": {
-          "target": [
-            "arcade_spawn_near",
-            "arcade_spawn_far",
-            "arcade_spawn_huge"
-          ]
-        },
         "triggerEnable": [
           {
             "target": "common_bombers_spawn"
           },
           {
-            "target": "common_bombers_spawn"
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "t1_fighters_spawn_middle",
-            "var": "t1_fighters_spawn_name"
-          },
-          {
-            "value": "t2_fighters_spawn_middle",
-            "var": "t2_fighters_spawn_name"
-          },
-          {
-            "value": "t1_assaults_spawn_middle",
-            "var": "t1_assaults_spawn_name"
-          },
-          {
-            "value": "t2_assaults_spawn_middle",
-            "var": "t2_assaults_spawn_name"
+            "target": "far_bombers_spawn"
           }
         ]
       },
@@ -445,9 +454,42 @@
         ]
       },
       "actions": {
-        "comment": {
-          "value": "rang 7-14"
+        "triggerDisable": {
+          "target": [
+            "arcade_spawn_near",
+            "arcade_spawn_middle",
+            "arcade_spawn_huge"
+          ]
         },
+        "comment": [
+          {
+            "value": "rang 7-14"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_far",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_far",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_far",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_far",
+            "var": "t2_assaults_spawn_name"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/assaults_spawn",
@@ -468,13 +510,6 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_assaults_spawn_far",
             "team": "A",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
               "type_assault": true,
               "tank": false,
@@ -501,13 +536,6 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_assaults_spawn_far",
             "team": "B",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
               "type_assault": true,
               "tank": false,
@@ -576,37 +604,12 @@
             }
           }
         ],
-        "triggerDisable": {
-          "target": [
-            "arcade_spawn_near",
-            "arcade_spawn_middle",
-            "arcade_spawn_huge"
-          ]
-        },
         "triggerEnable": [
           {
-            "target": "far_bombers_spawn"
-          },
-          {
             "target": "common_bombers_spawn"
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "t1_fighters_spawn_far",
-            "var": "t1_fighters_spawn_name"
           },
           {
-            "value": "t2_fighters_spawn_far",
-            "var": "t2_fighters_spawn_name"
-          },
-          {
-            "value": "t1_assaults_spawn_far",
-            "var": "t1_assaults_spawn_name"
-          },
-          {
-            "value": "t2_assaults_spawn_far",
-            "var": "t2_assaults_spawn_name"
+            "target": "far_bombers_spawn"
           }
         ]
       },
@@ -631,9 +634,42 @@
         }
       },
       "actions": {
-        "comment": {
-          "value": "rang 15+"
+        "triggerDisable": {
+          "target": [
+            "arcade_spawn_near",
+            "arcade_spawn_middle",
+            "arcade_spawn_far"
+          ]
         },
+        "comment": [
+          {
+            "value": "rang 15+"
+          },
+          {
+            "value": ""
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_fighters_spawn_huge",
+            "var": "t1_fighters_spawn_name"
+          },
+          {
+            "value": "t2_fighters_spawn_huge",
+            "var": "t2_fighters_spawn_name"
+          },
+          {
+            "value": "t1_assaults_spawn_huge",
+            "var": "t1_assaults_spawn_name"
+          },
+          {
+            "value": "t2_assaults_spawn_huge",
+            "var": "t2_assaults_spawn_name"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/assaults_spawn",
@@ -762,37 +798,12 @@
             }
           }
         ],
-        "triggerDisable": {
-          "target": [
-            "arcade_spawn_near",
-            "arcade_spawn_middle",
-            "arcade_spawn_far"
-          ]
-        },
         "triggerEnable": [
           {
-            "target": "far_bombers_spawn"
-          },
-          {
             "target": "common_bombers_spawn"
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "t1_fighters_spawn_huge",
-            "var": "t1_fighters_spawn_name"
           },
           {
-            "value": "t2_fighters_spawn_huge",
-            "var": "t2_fighters_spawn_name"
-          },
-          {
-            "value": "t1_assaults_spawn_huge",
-            "var": "t1_assaults_spawn_name"
-          },
-          {
-            "value": "t2_assaults_spawn_huge",
-            "var": "t2_assaults_spawn_name"
+            "target": "far_bombers_spawn"
           }
         ]
       },
@@ -811,9 +822,24 @@
       },
       "conditions": {},
       "actions": {
-        "comment": {
-          "value": "spavny dlya bomberov"
-        },
+        "comment": [
+          {
+            "value": "spavny dlya bomberov"
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_bombers_spawn",
+            "var": "t1_bombers_spawn_name"
+          },
+          {
+            "value": "t2_bombers_spawn",
+            "var": "t2_bombers_spawn_name"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/bombers_spawn",
@@ -864,16 +890,6 @@
               "type_longrange_bomber": false,
               "tank": false
             }
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "t1_bombers_spawn",
-            "var": "t1_bombers_spawn_name"
-          },
-          {
-            "value": "t2_bombers_spawn",
-            "var": "t2_bombers_spawn_name"
           }
         ]
       },
@@ -903,9 +919,24 @@
         ]
       },
       "actions": {
-        "comment": {
-          "value": "dal'nie spavny dlya bomberov"
-        },
+        "comment": [
+          {
+            "value": "dal'nie spavny dlya bomberov"
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_bombers_spawn_far",
+            "var": "t1_bombers_spawn_name"
+          },
+          {
+            "value": "t2_bombers_spawn_far",
+            "var": "t2_bombers_spawn_name"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/bombers_spawn",
@@ -959,22 +990,27 @@
               "tank": false
             }
           }
-        ],
-        "varSetString": [
-          {
-            "value": "t1_bombers_spawn_far",
-            "var": "t1_bombers_spawn_name"
-          },
-          {
-            "value": "t2_bombers_spawn_far",
-            "var": "t2_bombers_spawn_name"
-          }
         ]
       },
       "else_actions": {
-        "comment": {
-          "value": "obychnye spavny dlya bomberov"
-        },
+        "comment": [
+          {
+            "value": "obychnye spavny dlya bomberov"
+          },
+          {
+            "value": ""
+          }
+        ],
+        "varSetString": [
+          {
+            "value": "t1_bombers_spawn",
+            "var": "t1_bombers_spawn_name"
+          },
+          {
+            "value": "t2_bombers_spawn",
+            "var": "t2_bombers_spawn_name"
+          }
+        ],
         "missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/bombers_spawn",
@@ -995,13 +1031,6 @@
             "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn",
             "team": "A",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
               "type_bomber": true,
               "tank": false
@@ -1026,27 +1055,10 @@
             "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn",
             "team": "B",
-            "separate_fuel_time": false,
-            "modular_airfield": false,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
             "tags": {
               "type_bomber": true,
               "tank": false
             }
-          }
-        ],
-        "varSetString": [
-          {
-            "value": "t1_bombers_spawn",
-            "var": "t1_bombers_spawn_name"
-          },
-          {
-            "value": "t2_bombers_spawn",
-            "var": "t2_bombers_spawn_name"
           }
         ]
       }
