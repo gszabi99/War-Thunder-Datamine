@@ -175,6 +175,7 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
                                      gm_engine_sound__event_inside_name : das_string;
                                      var gm_engine_sound__loadswitch : bool&;
                                      var gm_engine_sound__is_inside : bool&;
+                                     var gm_engine_sound__cached_params : FloatList&;
                                      var gm_engine_sound__event : SoundEvent&;
                                      var gm_engine_sound__start_inside_event : SoundEvent&;
                                      var gm_engine_sound__stop_inside_event : SoundEvent&;
@@ -185,6 +186,8 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
 
   if gm_engine_sound__is_inside != unit.isCameraInCockpit
     gm_engine_sound__loadswitch = false
+    for p in gm_engine_sound__cached_params
+      p = -1.f
   gm_engine_sound__is_inside = unit.isCameraInCockpit
 
   if unit.isCameraInCockpit
