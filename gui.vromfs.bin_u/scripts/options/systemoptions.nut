@@ -10,7 +10,7 @@ let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
 let { get_available_monitors, get_monitor_info, has_broken_recreate_image, get_antialiasing_options,
-  get_antialiasing_upscaling_options, has_antialiasing_sharpening, is_dx12_supported = @() true } = require("graphicsOptions")
+  get_antialiasing_upscaling_options, is_dx12_supported = @() true } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -506,11 +506,6 @@ function hasAntialiasingUpscaling() {
   return modesString.split(";").len() > 1
 }
 
-function hasAntialiasingSharpening() {
-  let aa = getGuiValue("antialiasingMode", "off")
-  return has_antialiasing_sharpening(aa)
-}
-
 function canDoBackgroundScale() {
   let mode = getGuiValue("antialiasingMode", "off")
   return !(mode == "dlss" || mode == "xess")
@@ -667,7 +662,6 @@ mShared = {
     let canBgScale = canDoBackgroundScale()
     enableGuiOption("ssaa", canBgScale)
     enableGuiOption("antialiasingUpscaling", hasAntialiasingUpscaling())
-    enableGuiOption("antialiasingSharpening", hasAntialiasingSharpening())
 
     changeOptions("antialiasingUpscaling")
 
@@ -1106,7 +1100,7 @@ mSettings = {
   }
 
   antialiasingSharpening = { widgetType = "button" def = 0 blk = "video/antialiasing_sharpening" restart = false
-    enabled = @() hasAntialiasingSharpening() && !getGuiValue("compatibilityMode")
+    enabled = @() !getGuiValue("compatibilityMode")
     onClick = "onPostFxSettings"
     btnLocId = "options/setInPostFxSettings"
     delayed = true
