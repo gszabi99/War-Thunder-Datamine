@@ -27,6 +27,7 @@ let { doesLocTextExist } = require("dagor.localize")
 let { findNearest } = require("%scripts/util.nut")
 let { is_win64 } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -281,6 +282,9 @@ function validateGuiValue(id, value) {
       logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is too long.")
       return value
     }
+  }
+  else if (widgetType == "button") {
+    return desc?.def ?? value
   }
   return value
 }
@@ -666,7 +670,6 @@ mShared = {
     enableGuiOption("antialiasingSharpening", hasAntialiasingSharpening())
 
     changeOptions("antialiasingUpscaling")
-    setGuiValue("antialiasingSharpening", 0)
 
     if (!canBgScale) {
       setGuiValue("ssaa", "none")
@@ -1102,10 +1105,11 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/upscaling/%s"
   }
 
-  antialiasingSharpening = { widgetType = "slider" def = 0 min = 0 max = 100 blk = "video/antialiasing_sharpening" restart = false
+  antialiasingSharpening = { widgetType = "button" def = 0 blk = "video/antialiasing_sharpening" restart = false
     enabled = @() hasAntialiasingSharpening() && !getGuiValue("compatibilityMode")
-    infoImgPattern = "#ui/images/settings/sharpening/%s"
-    availableInfoImgVals = [0, 33, 66, 100]
+    onClick = "onPostFxSettings"
+    btnLocId = "options/setInPostFxSettings"
+    delayed = true
   }
 
   ssaa = { widgetType = "list" def = "none" blk = "graphics/ssaa" restart = false
@@ -1442,7 +1446,7 @@ function validateInternalConfigs() {
   let errorsList = []
   foreach (id, desc in mSettings) {
     let widgetType = getTblValue("widgetType", desc)
-    if (!isInArray(widgetType, ["list", "slider", "value_slider", "checkbox", "editbox", "tabs"]))
+    if (!isInArray(widgetType, ["list", "slider", "value_slider", "checkbox", "editbox", "tabs", "button"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'widgetType' invalid or undefined."))
     if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
@@ -1501,6 +1505,11 @@ function validateInternalConfigs() {
       if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'maxlength'/'def' conflict."))
+    }
+    else if (widgetType == "button") {
+      let { onClick = null } = desc
+      if (onClick == null)
+        errorsList.append(logError("sysopt.validateInternalConfigs()", $"Option '{id}' - missing onClick."))
     }
   }
 
@@ -1762,6 +1771,9 @@ function onGuiOptionChanged(obj) {
   local value = null
   let raw = obj.getValue()
   let {widgetType} = desc
+  if (widgetType == "button")
+    return
+
   if ( widgetType == "checkbox" ) {
     value = raw == true
   }
@@ -1886,6 +1898,15 @@ function fillGuiOptions(containerObj, handler) {
           id = desc.widgetId,
           value = raw,
           maxlength = desc.maxlength
+        })
+      }
+      else if (widgetType == "button") {
+        option = handyman.renderCached(("%gui/commonParts/button.tpl"), {
+          id = desc.widgetId,
+          funcName = desc.onClick,
+          delayed = desc?.delayed ?? false
+          text = loc(desc?.btnLocId ?? "")
+          buttonClass = "systemOption"
         })
       }
 
