@@ -224,25 +224,32 @@ let pods = @(width, height, less_pods) function() {
     [width * 0.7, height * 0.5]//11 right wing, right AA pylon
   ]
 
-  for (local i = 0; i < WeaponSlots.get().len(); ++i) {
-    if (WeaponSlots.get()[i] != null) {
-      if (WeaponSlotsTrigger.get()[i] == weaponTriggerName.AAM_TRIGGER && WeaponSlotsCnt.get()[i] > 0) {
-        childrens.append(aamMark(less_pods ? positionsJ[WeaponSlots.get()[i]] : positionsC[WeaponSlots.get()[i]], i))
+  foreach (idx, weaponSlot in WeaponSlots.get()) {
+    if (weaponSlot == null)
+      continue
+    let weaponSlotTrigger = WeaponSlotsTrigger.get()?[idx]
+    let weaponSlotCnt = WeaponSlotsCnt.get()?[idx] ?? 0
+    if (weaponSlotTrigger == weaponTriggerName.AAM_TRIGGER && weaponSlotCnt > 0) {
+      childrens.append(aamMark(less_pods ? positionsJ[weaponSlot] : positionsC[weaponSlot], idx))
+      continue
+    }
+
+    if (!less_pods && (weaponSlot == 2 || weaponSlot == 12 || weaponSlot == 7)) {
+      childrens.append(fuelMark(positionsC[weaponSlot], idx))
+      if (weaponSlot != 2) {
+        let isCenter = weaponSlot == 7
+        childrens.append(cbt(isCenter ? [width * 0.32, height * 0.8] : [width * 0.32, height * 0.85], isCenter, weaponSlotTrigger != weaponTriggerName.EXTERNAL_FUEL_TANKS_TRIGGER))
       }
-      else if (!less_pods && (WeaponSlots.get()[i] == 2 || WeaponSlots.get()[i] == 12 || WeaponSlots.get()[i] == 7)) {
-        childrens.append(fuelMark(less_pods ? positionsJ[WeaponSlots.get()[i]] : positionsC[WeaponSlots.get()[i]], i))
-        if (WeaponSlots.get()[i] != 2) {
-          let isCenter = WeaponSlots.get()[i] == 7
-          childrens.append(cbt(isCenter ? [width * 0.32, height * 0.8] : [width * 0.32, height * 0.85], isCenter, WeaponSlotsTrigger.get()[i] != weaponTriggerName.EXTERNAL_FUEL_TANKS_TRIGGER))
-        }
+      continue
+    }
+
+    if (less_pods && (weaponSlot == 2 || weaponSlot == 10 || weaponSlot == 6)) {
+      childrens.append(fuelMark(positionsJ[weaponSlot], idx))
+      if (weaponSlot != 2) {
+        let isCenter = weaponSlot == 6
+        childrens.append(cbt(isCenter ? [width * 0.32, height * 0.8] : [width * 0.32, height * 0.85], isCenter, weaponSlotTrigger != weaponTriggerName.EXTERNAL_FUEL_TANKS_TRIGGER))
       }
-      else if (less_pods && (WeaponSlots.get()[i] == 2 || WeaponSlots.get()[i] == 10 || WeaponSlots.get()[i] == 6)) {
-        childrens.append(fuelMark(less_pods ? positionsJ[WeaponSlots.get()[i]] : positionsC[WeaponSlots.get()[i]], i))
-        if (WeaponSlots.get()[i] != 2) {
-          let isCenter = WeaponSlots.get()[i] == 6
-          childrens.append(cbt(isCenter ? [width * 0.32, height * 0.8] : [width * 0.32, height * 0.85], isCenter, WeaponSlotsTrigger.get()[i] != weaponTriggerName.EXTERNAL_FUEL_TANKS_TRIGGER))
-        }
-      }
+      continue
     }
   }
 
