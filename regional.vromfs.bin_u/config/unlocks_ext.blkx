@@ -4023,6 +4023,45 @@
       }
     },
     {
+      "id": "2024_11_27_title_pitch_black",
+      "locDescId": "2024_11_27_title_pitch_black/desc",
+      "userLogId": "2024_11_27_title_pitch_black",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "black_friday",
+      "shouldMarkUnits": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": [
+              "p-61a_1",
+              "us_m18_hellcat_black_cat",
+              "uk_a_43_black_prince",
+              "ka_50"
+            ],
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-11-27 11:00:00",
+            "endDate": "2024-12-04 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2024_11_12_bundeswehr_chevron_decal",
       "locDescId": "2024_11_12_bundeswehr_chevron_decal/desc",
       "userLogId": "2024_11_12_bundeswehr_chevron_decal",
@@ -12152,6 +12191,12 @@
     },
     {
       "id": "title_thunderer",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_pitch_black",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -83327,6 +83372,673 @@
             "type": "timeRange",
             "beginDate": "2024-11-17 11:00:00",
             "endDate": "2024-11-18 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_iar_93b_coupon",
+      "type": "inventory",
+      "userLogId": "50289",
+      "chapter": "2024_11_air",
+      "icon": "!https://static-ggc.gaijin.net/units/iar_93b.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "09_12_2024_aircraft_stage",
+          "07_12_2024_aircraft_stage",
+          "05_12_2024_aircraft_stage",
+          "03_12_2024_aircraft_stage",
+          "01_12_2024_aircraft_stage",
+          "29_11_2024_aircraft_stage",
+          "27_11_2024_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_iar_93b_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215105",
+      "chapter": "2024_11_air",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 600000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.8,
+        "mulRank2": 0.8,
+        "mulRank3": 0.8,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-11-27 11:00:00",
+            "endDate": "2024-12-11 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_11_aircraft_trophy_1",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_11_air",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "09_12_2024_aircraft_stage",
+          "07_12_2024_aircraft_stage",
+          "05_12_2024_aircraft_stage",
+          "03_12_2024_aircraft_stage",
+          "01_12_2024_aircraft_stage",
+          "29_11_2024_aircraft_stage",
+          "27_11_2024_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_11_aircraft_decal_trophy_1",
+      "locId": "item/gift_2024_11_aircraft_decal_trophy",
+      "locDescId": "gift_2024_11_aircraft_decal_trophy/desc",
+      "userLogId": "2024_11_aircraft_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_11_air",
+      "icon": "!https://static-ggc.gaijin.net/decals/vulture_decal_set.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "09_12_2024_aircraft_stage",
+          "07_12_2024_aircraft_stage",
+          "05_12_2024_aircraft_stage",
+          "03_12_2024_aircraft_stage",
+          "01_12_2024_aircraft_stage",
+          "29_11_2024_aircraft_stage",
+          "27_11_2024_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_11_aircraft_trophy_2",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_11_air",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "09_12_2024_aircraft_stage",
+          "07_12_2024_aircraft_stage",
+          "05_12_2024_aircraft_stage",
+          "03_12_2024_aircraft_stage",
+          "01_12_2024_aircraft_stage",
+          "29_11_2024_aircraft_stage",
+          "27_11_2024_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_11_aircraft_decal_trophy_2",
+      "locId": "item/gift_2024_11_aircraft_decal_trophy",
+      "locDescId": "gift_2024_11_aircraft_decal_trophy/desc",
+      "userLogId": "2024_11_aircraft_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_11_air",
+      "icon": "!https://static-ggc.gaijin.net/decals/vulture_decal_set.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 4,
+        "unlock": [
+          "09_12_2024_aircraft_stage",
+          "07_12_2024_aircraft_stage",
+          "05_12_2024_aircraft_stage",
+          "03_12_2024_aircraft_stage",
+          "01_12_2024_aircraft_stage",
+          "29_11_2024_aircraft_stage",
+          "27_11_2024_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2024_11_aircraft_trophy_3",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_11_air",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 5,
+        "unlock": [
+          "09_12_2024_aircraft_stage",
+          "07_12_2024_aircraft_stage",
+          "05_12_2024_aircraft_stage",
+          "03_12_2024_aircraft_stage",
+          "01_12_2024_aircraft_stage",
+          "29_11_2024_aircraft_stage",
+          "27_11_2024_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "2024_11_aircraft_event_loading_screen_trophy",
+      "userLogId": "2024_11_aircraft_event_loading_screen_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2024_11_air",
+      "icon": "!https://static-ggc.gaijin.net/loading_screen/air_marathon_2024.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "09_12_2024_aircraft_stage",
+          "07_12_2024_aircraft_stage",
+          "05_12_2024_aircraft_stage",
+          "03_12_2024_aircraft_stage",
+          "01_12_2024_aircraft_stage",
+          "29_11_2024_aircraft_stage",
+          "27_11_2024_aircraft_stage"
+        ]
+      }
+    },
+    {
+      "id": "09_12_2024_aircraft_stage",
+      "locId": "marathon_air_stage_7/name",
+      "chapter": "2024_11_air",
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-12-09 11:00:00",
+            "endDate": "2024-12-11 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "07_12_2024_aircraft_stage",
+      "locId": "marathon_air_stage_6/name",
+      "chapter": "2024_11_air",
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-12-07 11:00:00",
+            "endDate": "2024-12-09 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "05_12_2024_aircraft_stage",
+      "locId": "marathon_air_stage_5/name",
+      "chapter": "2024_11_air",
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-12-05 11:00:00",
+            "endDate": "2024-12-07 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "03_12_2024_aircraft_stage",
+      "locId": "marathon_air_stage_4/name",
+      "chapter": "2024_11_air",
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-12-03 11:00:00",
+            "endDate": "2024-12-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "01_12_2024_aircraft_stage",
+      "locId": "marathon_air_stage_3/name",
+      "chapter": "2024_11_air",
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-12-01 11:00:00",
+            "endDate": "2024-12-03 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "29_11_2024_aircraft_stage",
+      "locId": "marathon_air_stage_2/name",
+      "chapter": "2024_11_air",
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-11-29 11:00:00",
+            "endDate": "2024-12-01 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "27_11_2024_aircraft_stage",
+      "locId": "marathon_air_stage_1/name",
+      "chapter": "2024_11_air",
+      "type": "achievement",
+      "group": "tasks",
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "costGold": 999,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode0": 1.0,
+        "mulMode1": 1.4,
+        "mulMode2": 2.3,
+        "forceShowMulMode": 0,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "air_arcade",
+              "air_realistic",
+              "air_simulation_timeDelay_battles"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2024-11-27 11:00:00",
+            "endDate": "2024-11-29 11:30:00"
           }
         ]
       }
