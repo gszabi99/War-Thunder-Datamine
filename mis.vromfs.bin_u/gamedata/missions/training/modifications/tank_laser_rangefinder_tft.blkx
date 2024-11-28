@@ -211,7 +211,12 @@
           "time": 0.01
         }
       },
-      "conditions": {},
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "notEqual"
+        }
+      },
       "actions": {
         "__missionSetTimeSpeed": {
           "speed": 0.0,
@@ -235,7 +240,14 @@
           "target": "check_msg1"
         }
       },
-      "else_actions": {}
+      "else_actions": {
+        "triggerActivate": {
+          "target": "check_msg1",
+          "activate_type": "ignoreConditions",
+          "check_trigger_status": false,
+          "after_activation": "disable"
+        }
+      }
     },
     "check_msg1": {
       "is_enabled": false,
@@ -345,7 +357,7 @@
         }
       },
       "actions": {
-        "hudElementSelectionShade": {
+        "__hudElementSelectionShade": {
           "element": ""
         },
         "playHint": {
@@ -612,16 +624,10 @@
           "element": "curTarget",
           "targetName": "target_tank02"
         },
-        "playerTankRangefinderValue": [
-          {
-            "func": "more",
-            "dist": 800
-          },
-          {
-            "func": "less",
-            "dist": 820
-          }
-        ]
+        "playerTankRangefinderValue": {
+          "func": "more",
+          "dist": 700
+        }
       },
       "actions": {
         "playerControls": {

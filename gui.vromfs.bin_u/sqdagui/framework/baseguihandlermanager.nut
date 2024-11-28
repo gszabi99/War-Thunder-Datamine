@@ -90,8 +90,11 @@ let handlersManager = {
       handler = this.loadModalHandler(handlerClass, params)
     else if (hType == handlerType.CUSTOM)
       handler = this.loadCustomHandler(handlerClass, params)
-    else
+    else {
+      if (this.isFullReloadInProgress) // Removing looped opening of handler on close
+        this.setLastBaseHandlerBackSceneParams()
       handler = this.loadBaseHandler(handlerClass, params)
+    }
 
     println(format("GuiManager: loading time = %d (%s)", (get_time_msec() - startTime),  dbgName))
 
@@ -705,6 +708,16 @@ let handlersManager = {
     let handlerClassName = this.getHandlerClassName(handlerClass)
     this.setLastBaseHandlerStartParams({ handlerName = handlerClassName, params },
       null, handlerClass?.handlerLocId)
+  }
+
+  function setLastBaseHandlerBackSceneParams() {
+    let handler = this.getActiveBaseHandler()
+    if (handler == null)
+      return
+    let { backSceneParams } = handler
+    if (backSceneParams == null)
+      return
+    this.setLastBaseHandlerStartParams(backSceneParams, null, backSceneParams?.handlerLocId ?? "")
   }
 
   function destroyPrevHandlerAndLoadNew(handlerClass, params, needDestroyIfAlreadyOnTop = false) {
