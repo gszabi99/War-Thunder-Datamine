@@ -1882,6 +1882,26 @@
       }
     },
     {
+      "id": "2024_11_steam_award_popup_unlock",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2024-11-28 00:00:00",
+        "endDate": "2024-12-04 00:00:00",
+        "condition": [
+          {
+            "type": "char_unlocked",
+            "unlock": "2022_03_check_2_era"
+          },
+          {
+            "type": "char_player_has_entitlement",
+            "entitlement": "STEAMAccount"
+          }
+        ]
+      }
+    },
+    {
       "id": "2022_03_check_STEAMAccount_need_to_link",
       "type": "challenge",
       "hidden": true,
@@ -4030,7 +4050,6 @@
       "amount_trophies": 1,
       "chapter": "black_friday",
       "shouldMarkUnits": true,
-      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
