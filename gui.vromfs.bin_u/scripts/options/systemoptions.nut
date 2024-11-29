@@ -1,5 +1,5 @@
 //-file:param-pos
-from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, get_config_name, is_gpu_nvidia, get_video_modes
+from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, get_config_name, is_gpu_nvidia, get_video_modes, has_ray_query
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -523,8 +523,8 @@ function getAvailableLatencyModes() {
 
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
-let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && getGuiValue("graphicsQuality", "high") != "ultralow"
-  && getGuiValue("gfx_api") == "dx12"
+let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && has_ray_query()
+  && getGuiValue("graphicsQuality", "high") != "ultralow" && getGuiValue("gfx_api") == "dx12"
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
@@ -1652,9 +1652,15 @@ function configMaintain() {
   if (!mScriptValid)
     return
 
-  if (getSystemConfigOption("graphicsQuality", "high") == "user") { // Need to reset
+  let graphicsQuality = getSystemConfigOption("graphicsQuality", "high")
+  if (graphicsQuality == "user") { // Need to reset
     let isCompatibilityMode = getSystemConfigOption("video/compatibilityMode", false)
     setSystemConfigOption("graphicsQuality", isCompatibilityMode ? "ultralow" : "high")
+  }
+
+  if (getSystemConfigOption("graphics/bvhMode", "off") != "off") {//check rayTracing
+    if (is_platform_macosx || graphicsQuality == "ultralow" || !has_ray_query() || getSystemConfigOption("video/driver", "auto") != "dx12")
+      setSystemConfigOption("graphics/bvhMode", "off")
   }
 
   configRead()

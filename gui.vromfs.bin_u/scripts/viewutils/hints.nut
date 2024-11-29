@@ -243,13 +243,14 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {}) {
             (openingColorTagStartIndex ?? -1) > (closingColorTagStartIndex ?? -1)) {
             if (unclosedTags > 0)
               unclosedTags--
-            else {
+            else if (colors.len() > 0) {
               let lenBefore = piece.len()
               piece = "".concat("<color=", colors.top(), ">", piece)
               carriage += piece.len() - lenBefore
             }
 
-            colors.pop()
+            if (colors.len() > 0)
+              colors.pop()
             if (needSplitByWords && colors.len() == 0 && rawRowPiece.type == HINT_PIECE_TYPE.TEXT) {
               textsArray.append(piece.slice(lastIdxOfSlicedPiece, carriage))
               lastIdxOfSlicedPiece = carriage
