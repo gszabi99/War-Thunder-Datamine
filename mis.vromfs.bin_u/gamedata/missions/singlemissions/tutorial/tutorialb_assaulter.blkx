@@ -88,11 +88,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -241,6 +243,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "speed": 350.0,
@@ -570,11 +575,13 @@
           "target": "tutorialB_assaulter_waypoint",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_assaulter",
-          "params": "task 1/4: player reached the waypoint"
+          "params": "task 1/4: player reached the waypoint",
+          "event": ""
         },
         "wait": {
           "time": 1.0
@@ -867,10 +874,13 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "speed": 200.0,
-          "lookat": "target_truck01",
+          "lookat": "player_bombing_view",
           "velocity": 200.0
         },
         "missionKillEffects": {
@@ -1739,7 +1749,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_assaulter",
-          "params": "task 2/4: player divebombed the truck and pulled out of dive"
+          "params": "task 2/4: player divebombed the truck and pulled out of dive",
+          "event": ""
         },
         "wait": [
           {
@@ -1753,7 +1764,8 @@
           "target": "tutorialB_assaulter_kill_truck",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "triggerEnable": {
           "target": "bombing_kill_other_trucks"
@@ -2096,6 +2108,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "lookat": "trucks_area",
@@ -2196,7 +2211,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_assaulter",
-          "params": "task 3/4: player used rockets"
+          "params": "task 3/4: player used rockets",
+          "event": ""
         },
         "wait": {
           "time": 0.5
@@ -2211,11 +2227,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "target_truck02",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "target_truck02"
+          "object_var_value": 0
         }
       },
       "else_actions": {}
@@ -2299,11 +2315,13 @@
           "target": "tutorialB_assaulter_destroy_all_trucks",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_assaulter",
-          "params": "task 4/4: player killed the rest of the trucks and finished the tutorial"
+          "params": "task 4/4: player killed the rest of the trucks and finished the tutorial",
+          "event": ""
         },
         "wait": {
           "time": 0.5
@@ -3359,6 +3377,7 @@
       "bulletsCount2": 0,
       "bulletsCount3": 0,
       "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "count": 1,
@@ -3421,6 +3440,7 @@
       "bulletsCount2": 0,
       "bulletsCount3": 0,
       "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -3477,6 +3497,7 @@
       "bulletsCount2": 0,
       "bulletsCount3": 0,
       "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 5,
@@ -3520,11 +3541,11 @@
         ]
       ],
       "props": {
-        "object_marking": 0,
         "squad_members": [
           "target_truck01",
           "target_truck02"
-        ]
+        ],
+        "object_marking": 0
       }
     }
   },
@@ -3887,6 +3908,34 @@
           -5270.15,
           2.45,
           -12090.9
+        ]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "player_bombing_view": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          2.0
+        ],
+        [
+          -5349.96,
+          -1.09992,
+          -12139.9
         ]
       ],
       "props": {
