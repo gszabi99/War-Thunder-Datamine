@@ -2,7 +2,6 @@
 from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, get_config_name, is_gpu_nvidia, get_video_modes, has_ray_query
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
-let { has_enough_vram_for_rt } = require("bvhSettings")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let DataBlock = require("DataBlock")
@@ -1386,7 +1385,7 @@ mSettings = {
   riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
   }
   rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false enabled = hasRT
-    values = has_enough_vram_for_rt() ? ["off", "low", "medium", "high", "ultra", "custom"] : ["off"]
+    values = ["off", "low", "medium", "high", "ultra", "custom"]
     onChanged = "rayTracingClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtQuality/%s"
   }
