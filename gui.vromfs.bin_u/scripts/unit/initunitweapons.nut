@@ -7,6 +7,7 @@ let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
 let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { getWeaponsByTypes } = require("%scripts/weaponry/weaponryPresets.nut")
 let { get_wpcost_blk, get_modifications_blk } = require("blkGetters")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",
@@ -51,7 +52,7 @@ function initPresetParams(weapon, blk = null) {
 }
 
 function initCustomPresetParams(unit, weapon) {
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   let hasUnitCountermeasures = unitBlk?.commonWeapons == null ? false
     : getWeaponsByTypes(unitBlk, unitBlk.commonWeapons).findvalue (@(w) w.trigger == "countermeasures") != null
 

@@ -64,7 +64,7 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
                 let gAirBlk = airBlk.getBlock(group);
                 air = getAircraftByName(gAirBlk.getBlockName());
                 if (this.isShowUnit(air, showAsUnlock)) {
-                  airRow += buildUnitSlot(air.name, air);
+                  airRow = "".concat(airRow, buildUnitSlot(air.name, air))
                   unitItems.append({ id = air.name, unit = air })
                 }
               }

@@ -44,6 +44,7 @@ let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 let wwTopMenuOperationMap = require("%scripts/worldWar/externalServices/wwTopMenuOperationMapConfig.nut")
+let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -1127,7 +1128,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isVisibleBtn || !btnObj?.isValid())
       return
 
-    btnObj.link = loc($"url/wWarBtn/{worldWarUrlBtnKey}")
+    btnObj.link = getCurCircuitOverride($"wikiWWar{worldWarUrlBtnKey}URL", loc($"url/wWarBtn/{worldWarUrlBtnKey}"))
     btnObj.findObject("ww_wiki_text").setValue(loc($"worldwar/urlBtn/{worldWarUrlBtnKey}"))
   }
 

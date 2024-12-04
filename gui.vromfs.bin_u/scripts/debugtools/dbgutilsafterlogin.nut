@@ -28,8 +28,8 @@ let { get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-//let { get_charserver_time_sec } = require("chard")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { get_wpcost_blk } = require("blkGetters")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
@@ -280,7 +280,7 @@ function debug_show_weapon(weaponName) {
   foreach (unit in getAllUnits()) {
     if (!unit.isInShop)
       continue
-    let unitBlk = ::get_full_unit_blk(unit.name)
+    let unitBlk = getFullUnitBlk(unit.name)
     let weapons = getUnitWeapons(unitBlk)
     foreach (weap in weapons)
       if (weaponName == getWeaponNameByBlkPath(weap?.blk ?? "")) {

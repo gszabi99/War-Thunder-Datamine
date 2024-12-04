@@ -14,6 +14,8 @@ let time = require("%scripts/time.nut")
 let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { cacheComplaintOnUser } = require("%scripts/user/complaints.nut")
+let { get_mp_session_id_str } = require("multiplayer")
 
 ::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
   handlersManager.loadHandler(gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
@@ -329,6 +331,11 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     else
       this.taskId = send_complaint(this.pInfo.id, this.compliantCategory, user_comment, strChatLog, details)
     if (this.taskId >= 0) {
+      let sesId = get_mp_session_id_str()
+      let sessionId = sesId != "" ? sesId  : null
+      let uid = this.pInfo?.uid ?? this.pInfo?.userId ?? this.pInfo.playerName
+      cacheComplaintOnUser(uid, sessionId)
+
       set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))
       this.afterSlotOp = this.goBack

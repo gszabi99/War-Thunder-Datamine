@@ -1,6 +1,7 @@
 massTransp {
   id:t='crews_anim_<<countryIdx>>'
   type:t='slotbar'
+  css-hier-invalidate:t='yes'
   <<#needSkipAnim>>
   _transp-timer:t='1'
   <</needSkipAnim>>

@@ -33,6 +33,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getRankByExp } = require("%scripts/ranks.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -615,7 +616,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
           unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
         else if (showAirIcons && ("aircraftName" in player)) {
           unitId = player.aircraftName
-          unitIco = ::getUnitClassIco(unitId)
+          unitIco = getUnitClassIco(unitId)
           unitIcoColorType = getUnitRole(unitId)
           weapon = player?.weapon ?? ""
         }
@@ -763,16 +764,6 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
 
   text.append(locCurrentMissionName())
   return loc("ui/comma").join(text, true)
-}
-
-::getUnitClassIco <- function getUnitClassIco(unit) {
-  local unitName = unit?.name ?? ""
-  if (type(unit) == "string") {
-    unitName = unit
-    unit = getAircraftByName(unit)
-  }
-  return unitName == "" ? ""
-    : unit?.customClassIco ?? $"#ui/gameuiskin#{unitName}_ico.svg"
 }
 
 ::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName) {

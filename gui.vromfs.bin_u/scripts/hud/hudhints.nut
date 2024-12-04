@@ -553,6 +553,8 @@ enums.addTypes(g_hud_hints, {
 
     selfRemove = true
     isVerticalAlignText = true
+    isShowedInVR = true
+
     function buildText(data) {
       local res = $"{g_hud_hints._buildText.call(this, data)} {g_hint_tag.TIMER.makeFullTag()}"
       let leaveKill = data?.leaveKill ?? false
@@ -1122,6 +1124,7 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:event_start_time:show"
     hideEvent = "hint:event_start_time:hide"
     getShortcuts = @(eventData) eventData?.shortcut
+    isShowedInVR = true
 
     makeSmallImageStr = @(image, color = null, sizeStyle = null) g_hint_tag.IMAGE.makeFullTag({
       image = image
@@ -2677,7 +2680,6 @@ enums.addTypes(g_hud_hints, {
     toggleHint = ["warn:return_to_zone"]
     isHideOnDeath = false
     shouldBlink = true
-    isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
 
   WARNING_CUSTOM = {

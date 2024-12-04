@@ -29,6 +29,7 @@ let { getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut"
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 function getActiveTicketTxt(event) {
   if (!event)
@@ -130,7 +131,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
         foreach (name, _v in units)
           items.append({
             text = getUnitName(getAircraftByName(name))
-            image = ::getUnitClassIco(name)
+            image = getUnitClassIco(name)
             shopItemType = getUnitRole(name)
           })
       }

@@ -35,6 +35,7 @@ let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_game_params_blk, get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
 let { round_by_value } = require("%sqstd/math.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
@@ -440,7 +441,7 @@ dmViewer = {
   function loadUnitBlk() {
     // Unit weapons and sensors are part of unit blk, should be unloaded togeter with unitBlk
     this.clearCachedUnitBlkNodes()
-    this.unitBlk = ::get_full_unit_blk(this.unit.name)
+    this.unitBlk = getFullUnitBlk(this.unit.name)
   }
 
   function getUnitWeaponList() {
@@ -1869,7 +1870,8 @@ dmViewer = {
           desc.append("".concat(loc("shop/ammo"), loc("ui/colon"), ammo))
 
         if (isSpecialBullet || isSpecialBulletEmitter)
-          desc[desc.len() - 1] += getWeaponXrayDescText(weaponInfoBlk, this.unit, getCurrentGameModeEdiff())
+          desc[desc.len() - 1] = "".concat(desc.top(),
+            getWeaponXrayDescText(weaponInfoBlk, this.unit, getCurrentGameModeEdiff()))
         else {
           let status = this.getWeaponStatus(weaponPartName, weaponInfoBlk)
           desc.extend(this.getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status))

@@ -32,6 +32,8 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 let { is_console } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
+let { get_mp_session_id_str } = require("multiplayer")
 
 //-----------------------------
 // params keys:
@@ -494,7 +496,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
           }
         }
 
-        ::gui_modal_complain(config, chatLog)
+        checkCanComplainAndProceed(uid, get_mp_session_id_str(), @() ::gui_modal_complain(config, chatLog))
       }
     })
 //---- </Complain> ------------------

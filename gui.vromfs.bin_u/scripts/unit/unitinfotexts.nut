@@ -119,7 +119,14 @@ function getUnitRarity(unit) {
   return "common"
 }
 
-let getUnitClassIco = @(unit) unit.customClassIco ?? $"#ui/gameuiskin#{unit.name}_ico.svg"
+function getUnitClassIco(unit) {
+  local unitName = unit?.name ?? ""
+  if (type(unit) == "string") {
+    unitName = unit
+    unit = getAircraftByName(unit)
+  }
+  return unitName == "" ? "" : unit?.customClassIco ?? $"#ui/gameuiskin#{unitName}_ico.svg"
+}
 
 function getCantBuyUnitReason(unit, isShopTooltip = false) {
   if (!unit)

@@ -26,6 +26,7 @@ let Contact = require("%scripts/contacts/contact.nut")
 let { get_battle_type_by_ediff } = require("%scripts/difficulty.nut")
 let { getFontIconByBattleType } = require("%scripts/airInfo.nut")
 let { getGameModeById, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 ::g_contacts <- {
   findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
@@ -250,7 +251,7 @@ foreach (fn in [
           view.unitList.append({
             rank = format("%.1f", unit.getBattleRating(ediff))
             unit = unitName
-            icon = ::getUnitClassIco(unit)
+            icon = getUnitClassIco(unit)
           })
         }
         else {
@@ -259,7 +260,7 @@ foreach (fn in [
             view.unitList.append({
               rank = format("%.1f", unit.getBattleRating(ediff))
               unit = unitName
-              icon = ::getUnitClassIco(unit)
+              icon = getUnitClassIco(unit)
               even = id % 2 == 0
               isWideIco = ["ships", "helicopters", "boats"].contains(unit.unitType.armyId)
             })

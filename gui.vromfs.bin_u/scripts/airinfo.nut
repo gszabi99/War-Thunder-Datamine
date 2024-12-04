@@ -4,11 +4,9 @@ from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format, split_by_chars } = require("string")
@@ -57,7 +55,9 @@ let {
   getEsUnitType, getUnitName, getUnitCountry,
   getUnitCountryIcon, getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit
 } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { showCantBuyOrResearchUnitMsgbox, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
@@ -72,7 +72,6 @@ let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { hideBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCrewLevel, getCrewName, getCrewStatus } = require("%scripts/crew/crew.nut")
 let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength
@@ -134,26 +133,18 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return !isUnitBought(unit) && isAvailableBuyUnitOnMarketPlace(unit)
 }
 
-::findUnitNoCase <- function findUnitNoCase(unitName) {
-  unitName = unitName.tolower()
-  foreach (name, unit in getAllUnits())
-    if (name.tolower() == unitName)
-      return unit
-  return null
-}
-
 ::buyUnit <- function buyUnit(unit, silent = false) {
   if (!::checkFeatureLock(unit, CheckFeatureLockAction.BUY))
     return false
 
   let canBuyNotResearchedUnit = canBuyNotResearched(unit)
   let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
-  if (unitCost.gold > 0 && !::can_spend_gold_on_unit_with_popup(unit))
+  if (unitCost.gold > 0 && !canSpendGoldOnUnitWithPopup(unit))
     return false
 
   if (!canBuyUnit(unit) && !canBuyNotResearchedUnit) {
     if ((isUnitResearched(unit) || isUnitSpecial(unit)) && !silent)
-      ::show_cant_buy_or_research_unit_msgbox(unit)
+      showCantBuyOrResearchUnitMsgbox(unit)
     return false
   }
 
@@ -204,24 +195,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
     broadcastEvent("UnitBought", { unitName = unit.name, needSelectCrew })
   })
   return true
-}
-
-::can_spend_gold_on_unit_with_popup <- function can_spend_gold_on_unit_with_popup(unit) {
-  if (unit.unitType.canSpendGold())
-    return true
-
-  addPopup(getUnitName(unit), loc("msgbox/unitTypeRestrictFromSpendGold"),
-    null, null, null, "cant_spend_gold_on_unit")
-  return false
-}
-
-::show_cant_buy_or_research_unit_msgbox <- function show_cant_buy_or_research_unit_msgbox(unit) {
-  let reason = getCantBuyUnitReason(unit)
-  if (u.isEmpty(reason))
-    return true
-
-  scene_msg_box("need_buy_prev", null, reason, [["ok", function () {}]], "ok")
-  return false
 }
 
 ::checkFeatureLock <- function checkFeatureLock(unit, lockAction) {
@@ -283,7 +256,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
       return true
   }
 
-  return ::show_cant_buy_or_research_unit_msgbox(unit)
+  return showCantBuyOrResearchUnitMsgbox(unit)
 }
 
 ::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false) {
@@ -1794,30 +1767,10 @@ function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
   return count
 }
 
-{
-  local unitCacheName = null
-  local unitCacheBlk = null
-  ::get_full_unit_blk <- function get_full_unit_blk(unitName) { //better to not use this funtion, and collect all data from wpcost and unittags
-    if (unitName != unitCacheName) {
-      unitCacheName = unitName
-      unitCacheBlk = DataBlock()
-      let path = getUnitFileName(unitName)
-      if (!unitCacheBlk.tryLoad(path, true))
-        logerr($"not found unit blk on filePath = {path}")
-    }
-    return unitCacheBlk
-  }
-
-  eventbus_subscribe("clearCacheForBullets", function clear_unit_blk_cache(_) {
-    unitCacheName = null
-    unitCacheBlk = null
-  })
-}
-
 ::get_fm_file <- function get_fm_file(unitId, unitBlkData = null) {
   let unitPath = getUnitFileName(unitId)
   if (unitBlkData == null)
-    unitBlkData = ::get_full_unit_blk(unitId)
+    unitBlkData = getFullUnitBlk(unitId)
   let nodes = split_by_chars(unitPath, "/")
   if (nodes.len())
     nodes.pop()

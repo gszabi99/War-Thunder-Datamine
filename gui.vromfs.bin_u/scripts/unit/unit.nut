@@ -34,6 +34,7 @@ let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
   get_modifications_blk, get_ranks_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { getUnitCountry, getUnitExp } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitInResearch, isUnitBroken, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
@@ -217,7 +218,7 @@ local Unit = class {
     }
 
     let errorsTextArray = initUnitModifications(this.modifications,
-      uWpCost?.modifications ?? ::get_full_unit_blk(this.name)?.modifications, this.esUnitType)
+      uWpCost?.modifications ?? getFullUnitBlk(this.name)?.modifications, this.esUnitType)
     if (uWpCost?.spare != null) {
       let spareBlk = get_modifications_blk()?.modifications.spare
 
@@ -490,7 +491,7 @@ local Unit = class {
       return
 
     this.nvdSights = {}
-    eachBlock(::get_full_unit_blk(this.name)?.modifications, function(mode, modeName) {
+    eachBlock(getFullUnitBlk(this.name)?.modifications, function(mode, modeName) {
       this.nvdSights[modeName] <- []
       eachBlock(mode?.effects.nightVision, @(_, name) this.nvdSights[modeName].append(name), this) //-ident-hides-ident
     }, this)
@@ -500,7 +501,7 @@ local Unit = class {
     if (this.defaultWeaponPreset)
       return this.defaultWeaponPreset
 
-    let unitBlk = ::get_full_unit_blk(this.name)
+    let unitBlk = getFullUnitBlk(this.name)
     if (!unitBlk)
       return null
 

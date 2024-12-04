@@ -26,6 +26,7 @@ let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -481,7 +482,7 @@ options.addTypes({
       if(hasFeature("ProtectionAnalysisShowBombs"))
         specialBulletTypes.append("bomb")
 
-      let unitBlk = unit ? ::get_full_unit_blk(unit.name) : null
+      let unitBlk = unit ? getFullUnitBlk(unit.name) : null
       let weapons = getUnitWeapons(unitBlk)
       let knownWeapBlkArray = []
 

@@ -28,7 +28,7 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let stdMath = require("%sqstd/math.nut")
-let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
+let { getCantBuyUnitReason, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
@@ -2164,7 +2164,7 @@ let Events = class {
         }
 
         let airIconObj = ruleObj.findObject("air_icon")
-        airIconObj["background-image"] = ::getUnitClassIco(rule.name)
+        airIconObj["background-image"] = getUnitClassIco(rule.name)
         airIconObj.shopItemType = getUnitRole(rule.name)
 
         ruleObj.findObject("tooltip_obj").tooltipId = getTooltipType("UNIT").getTooltipId(air.name, { needShopInfo = true })

@@ -26,6 +26,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
@@ -774,7 +775,7 @@ function getViewDataUnit(unitName, params = null, rentTimeHours = 0, numSpares =
 
   let isBought = isUnitBought(unit)
   let receivedPrizes = getTblValue("receivedPrizes", params, true)
-  let classIco = getTblValue("singlePrize", params, false) ? null : ::getUnitClassIco(unit)
+  let classIco = getTblValue("singlePrize", params, false) ? null : getUnitClassIco(unit)
   let countryIco = getUnitCountryIcon(unit, false)
   let shopItemType = getUnitRole(unit)
   let isShowLocalState = receivedPrizes || rentTimeHours > 0
@@ -893,7 +894,7 @@ function getViewDataMod(unitName, modName, params) {
 
   return {
     icon = icon
-    classIco = ::getUnitClassIco(unit)
+    classIco = getUnitClassIco(unit)
     icon2 = getUnitCountryIcon(unit)
     shopItemType = getUnitRole(unit)
     title = "".concat(colorize("activeTextColor", getUnitName(unitName, true)), loc("ui/colon"),
@@ -1300,7 +1301,7 @@ addTooltipTypes({
   if (isPrizeMultiAward(prize))
     return TrophyMultiAward(prize).getTypeIcon()
   if (prize?.unit)
-    return unitImage ? ::image_for_air(prize.unit) : ::getUnitClassIco(prize.unit)
+    return unitImage ? ::image_for_air(prize.unit) : getUnitClassIco(prize.unit)
   if (prize?.rentedUnit)
     return "#ui/gameuiskin#item_type_rent.svg"
   if (prize?.item) {

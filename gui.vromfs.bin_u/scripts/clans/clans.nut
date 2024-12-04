@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, ps4_is_ugc_enabled, clan_request_edit_black_list, clan_get_my_clan_type, sync_handler_simulate_signal, clan_action_blk, clan_get_my_role, set_char_cb, clan_request_log, clan_request_accept_membership_request, clan_request_membership_request, clan_request_change_info_blk, clan_get_my_clan_tag, clan_request_my_info, clan_request_disband, clan_get_my_clan_name, clan_request_reject_membership_request, clan_get_clan_log, clan_request_dismiss_member, clan_get_clan_info, char_send_blk, clan_get_membership_requirements, char_send_clan_oneway_blk, clan_get_exp, clan_request_info, clan_get_role_rights, clan_get_requested_clan_id, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
+from "%scripts/contacts/contactsConsts.nut" import contactEvent
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -94,6 +95,24 @@ registerPersistentData("ClansGlobals", getroottable(),
       "clan_create_sacces",
       loc("clan/create_clan_success"),
       [["ok",  function() { handler.goBack() }]], "ok")
+  }
+}
+
+function clearClanTagForRemovedMembers(prevUids, currUids) {
+  let uidsToClean = {}
+  foreach(prevUid in prevUids)
+    uidsToClean[prevUid] <- prevUid
+
+  if (currUids.len())
+    foreach(currUid in currUids)
+      if (currUid in uidsToClean)
+        uidsToClean.rawdelete(currUid)
+
+  if (uidsToClean.len()) {
+    foreach(uid in uidsToClean)
+      ::getContact(uid)?.update({ clanTag = "" })
+
+    broadcastEvent(contactEvent.CONTACTS_UPDATED)
   }
 }
 
@@ -730,6 +749,7 @@ function handleNewMyClanData() {
 }
 
 ::requestMyClanData <- function requestMyClanData(forceUpdate = false) {
+  let myClanPrevMembersUid = ::g_clans.getMyClanMembers().map(@(m) m.uid)
   if (!get_my_clan_data_free)
     return
 
@@ -741,6 +761,7 @@ function handleNewMyClanData() {
     if (::my_clan_info) {
       ::my_clan_info = null
       ::g_clans.parseSeenCandidates()
+      clearClanTagForRemovedMembers(myClanPrevMembersUid, [])
       broadcastEvent("ClanInfoUpdate")
       broadcastEvent("ClanChanged") //i.e. dismissed
       ::update_gamercards()
@@ -758,6 +779,11 @@ function handleNewMyClanData() {
   addBgTaskCb(taskId, function() {
     let wasCreated = !::my_clan_info
     ::my_clan_info = ::get_clan_info_table()
+
+    let myClanCurrMembersUid = ::g_clans.getMyClanMembers().map(@(m) m.uid)
+    if (myClanCurrMembersUid.len() < myClanPrevMembersUid.len())
+      clearClanTagForRemovedMembers(myClanPrevMembersUid, myClanCurrMembersUid)
+
     handleNewMyClanData()
     get_my_clan_data_free = true
     broadcastEvent("ClanInfoUpdate")

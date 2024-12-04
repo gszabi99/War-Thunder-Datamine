@@ -22,6 +22,7 @@ let { openRestrictionsWeaponryPreset } = require("%scripts/weaponry/restrictions
 let { deep_clone } = require("%sqstd/underscore.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -339,7 +340,7 @@ function updateUnitWeaponsByPreset(unit) {  //!!! FIX ME: why is this here and w
   if (!unit)
     return
 
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   if (!unitBlk)
     return
 
@@ -401,7 +402,7 @@ function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = n
     tiersView         = {}
     weaponPreset      = u.copy(preset)
     weaponsByTypes    = {}
-    weaponsSlotCount  = ::get_full_unit_blk(unit.name)?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
+    weaponsSlotCount  = getFullUnitBlk(unit.name)?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
   }
 
   presetView.weaponPreset.hasSweepRange <- weaponry.hasSweepRange
@@ -441,7 +442,7 @@ function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = n
 function getCustomWeaponryPresetView(unit, curPreset, favoriteArr, availableWeapons) {
   let presetBlk = convertPresetToBlk(curPreset)
   let preset =  getCustomPresetByPresetBlk(unit, curPreset.name, presetBlk)
-  let weaponry = addWeaponsFromBlk({}, getWeaponsByTypes(::get_full_unit_blk(unit.name), presetBlk), unit)
+  let weaponry = addWeaponsFromBlk({}, getWeaponsByTypes(getFullUnitBlk(unit.name), presetBlk), unit)
   return getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons)
 }
 
@@ -452,7 +453,7 @@ function getWeaponryPresetView(unit, preset, favoriteArr, availableWeapons) {
 
 function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
   updateUnitWeaponsByPreset(unit)
-  let fullUnitBlk = ::get_full_unit_blk(unit.name)
+  let fullUnitBlk = getFullUnitBlk(unit.name)
   let res = {
     weaponsSlotCount = fullUnitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT
     presets = []

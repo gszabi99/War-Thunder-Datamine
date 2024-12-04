@@ -56,6 +56,7 @@ let { showOrdersContainer } = require("%scripts/items/orders.nut")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let { loadGameChatToObj } = require("%scripts/chat/mpChat.nut")
 let { register_command } = require("console")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -1175,7 +1176,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
 
       let unitId = player.aircraftName != "" ? player.aircraftName : null
       let iconImg = !player.ingame ? "#ui/gameuiskin#player_not_ready.svg"
-        : unitId ? ::getUnitClassIco(unitId)
+        : unitId ? getUnitClassIco(unitId)
         : "#ui/gameuiskin#dead.svg"
       let iconType = unitId ? getUnitRole(unitId) : ""
       let stateDesc = this.getPlayerStateDesc(player)

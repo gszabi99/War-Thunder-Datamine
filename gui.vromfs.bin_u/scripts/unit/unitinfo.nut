@@ -1,9 +1,11 @@
 from "%scripts/dagui_natives.nut" import is_era_available, shop_get_unit_exp, wp_get_cost, wp_get_cost_gold
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
+
 let { get_ranks_blk } = require("blkGetters")
+let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { Cost } = require("%scripts/money.nut")
+let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 
 enum bit_unit_status {
   locked      = 1
@@ -59,7 +61,7 @@ function getUnitsNeedBuyToOpenNextInEra(countryId, unitType, rank, ranksBlk = nu
 }
 
 function getRomanNumeralRankByUnitName (unitName) {
-  let unit = unitName ? ::findUnitNoCase(unitName) : null
+  let unit = unitName ? findUnitNoCase(unitName) : null
   return unit ? get_roman_numeral(unit.rank) : null
 }
 

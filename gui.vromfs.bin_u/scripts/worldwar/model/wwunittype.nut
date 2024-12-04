@@ -4,6 +4,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 let fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2
@@ -31,7 +32,7 @@ let g_ww_unit_type = {
     canBeControlledByPlayer = false
 
     getUnitName = @(name) getUnitName(name)
-    getUnitClassIcon = @(unit) ::getUnitClassIco(unit)
+    getUnitClassIcon = @(unit) getUnitClassIco(unit)
     getUnitRole
   }
 

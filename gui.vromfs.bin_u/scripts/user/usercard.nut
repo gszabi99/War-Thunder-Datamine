@@ -58,6 +58,9 @@ let { getShowcaseTitleViewData, getShowcaseViewData, trySetBestShowcaseMode } = 
 let { add_event_listener, removeEventListenersByEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
+let { get_mp_session_id_str } = require("multiplayer")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -183,6 +186,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("profile_header").show(false)
     this.initTabs()
     this.initStatsParams()
+    this.updateCurrentStatsMode(this.curMode)
 
     this.taskId = -1
     if ("uid" in this.player) {
@@ -427,7 +431,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasFeature("Clans"))
       return
 
-    let clanTagObj = this.scene.findObject("profile-clanTag")
+    let clanTagObj = this.scene.findObject("clanTag")
     if (clanTagObj) {
       let text = ::checkClanTagForDirtyWords(playerData.clanTag)
       clanTagObj.setValue(text)
@@ -784,7 +788,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         {
           id = "unit",
           width = rcWidth,
-          image = ::getUnitClassIco(airData.name),
+          image = getUnitClassIco(airData.name),
           tooltipId = unitTooltipId,
           cellType = "splitRight",
           imageRawParams = "left:t='pw-w-2@sf/@pf';interactive:t='yes';",
@@ -914,8 +918,9 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onComplain() {
-    if (this.infoReady && ("uid" in this.player))
-      ::gui_modal_complain(this.player)
+    if (this.infoReady && ("uid" in this.player)) {
+      checkCanComplainAndProceed(this.player.uid, get_mp_session_id_str(), @() ::gui_modal_complain(this.player))
+    }
   }
 
   function onOpenXboxProfile() {

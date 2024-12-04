@@ -5,6 +5,7 @@ let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut"
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { blkFromPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const USE_DELAY_EXPLOSION_DEFAULT = true
 
@@ -89,7 +90,7 @@ function isAvailablePrimaryWeapon(unit, weaponName) {
   if (availableWeapons != null)
     return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   if (!unitBlk)
     return false
 
@@ -158,7 +159,7 @@ function hasBombDelayExplosion(unit) {
   if (!curPreset?.bomb)
     return false
 
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   let weapons = getPresetWeapons(unitBlk, curPreset)
   let weaponCache = {}
 
@@ -180,7 +181,7 @@ function isUnitWithSensorType(unit, sensorType) {
     return unitSensorsCache[unitName]?[sensorType] ?? false
 
   unitSensorsCache[unitName] <- {}
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   if (unitBlk?.sensors)
     foreach (sensor in (unitBlk.sensors % "sensor")) {
       let sensType = blkOptFromPath(sensor?.blk)?.type ?? ""

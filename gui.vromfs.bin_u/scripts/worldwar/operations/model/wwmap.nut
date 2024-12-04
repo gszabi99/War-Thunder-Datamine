@@ -13,6 +13,7 @@ let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/ww
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 let WwMap = class {
   name = ""
@@ -196,7 +197,7 @@ let WwMap = class {
         let defaultUnit = group.defaultUnit
         wwUnitsList.append({
           name         = loc(group.name)
-          icon         = ::getUnitClassIco(defaultUnit)
+          icon         = getUnitClassIco(defaultUnit)
           shopItemType = getUnitRole(defaultUnit)
         })
 

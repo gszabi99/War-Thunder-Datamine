@@ -10,6 +10,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -122,7 +123,7 @@ function upgradeUnitSpec(crew, unit, crewUnitTypeToCheck = null, nextSpecType = 
   }
 
   let cost = curSpecType.getUpgradeCostByCrewAndByUnit(crew, unit, nextSpecType.code)
-  if (cost.gold > 0 && !::can_spend_gold_on_unit_with_popup(unit))
+  if (cost.gold > 0 && !canSpendGoldOnUnitWithPopup(unit))
     return
 
   msgLocParams.cost <- colorize("activeTextColor", cost.getTextAccordingToBalance())

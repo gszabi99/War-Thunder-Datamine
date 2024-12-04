@@ -13,6 +13,7 @@ let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -123,7 +124,7 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
 
   let ignoreAvailability = params?.ignoreAvailability
   let isBought = ignoreAvailability ? false : unit.isBought()
-  let classIco = ::getUnitClassIco(unit)
+  let classIco = getUnitClassIco(unit)
   let shopItemType = getUnitRole(unit)
   let buttons = getUnitActionButtonsView(unit)
   let receiveOnce = "mainmenu/receiveOnlyOnce"

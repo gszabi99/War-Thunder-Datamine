@@ -8,6 +8,7 @@ let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { TRIGGER_TYPE } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isUnitWithRadar, isUnitWithRwr } = require("%scripts/unit/unitWeaponryInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 let cache = {}
 
@@ -24,7 +25,7 @@ function getAircraftHelpType() {
     return cache[curUnit.name]
   }
 
-  let weapons = getUnitWeapons(::get_full_unit_blk(curUnit.name))
+  let weapons = getUnitWeapons(getFullUnitBlk(curUnit.name))
 
   local hasAAM = false
   local hasATGM = false

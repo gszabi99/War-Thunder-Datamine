@@ -9,7 +9,7 @@ let { getLocalLanguage } = require("language")
 let dagor_fs = require("dagor.fs")
 let stdpath = require("%sqstd/path.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
-let unitInfoTexts = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitTooltipImage, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { register_command } = require("console")
@@ -278,7 +278,7 @@ local unitImagesCheckCfgs = [
     getUnitIdByImgFn = @(fn) fn.indexof("_ico.svg") != null ? fn.slice(0, fn.indexof("_ico.svg")) : ""
     getImgFnByUnitId = @(unitId) $"{unitId}_ico.svg"
     getImgFnForUnit = function(unit) {
-      local img = ::getUnitClassIco(unit)
+      local img = getUnitClassIco(unit)
       return img.slice(lastIndexOf(img, "#") + 1)
     }
   },
@@ -325,7 +325,7 @@ local unitImagesCheckCfgs = [
     getUnitIdByImgFn = @(fn) fn.indexof(".") != null ? fn.slice(0, fn.indexof(".")) : ""
     getImgFnByUnitId = @(unitId) $"{unitId}.dds"
     getImgFnForUnit = function(unit) {
-      local img = unitInfoTexts.getUnitTooltipImage(unit)
+      local img = getUnitTooltipImage(unit)
       return "".concat(img.slice(lastIndexOf(img, "/") + 1), ".dds")
     }
   },

@@ -9,7 +9,7 @@ let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
-let unitActions = require("%scripts/unit/unitActions.nut")
+let { repairNoMsgBox, canSpendGoldOnUnitWithPopup} = require("%scripts/unit/unitActions.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getItemCost,
         getAllModsCost,
@@ -34,7 +34,7 @@ function canBuyForEagles(cost, unit) {
     if (!hasFeature("SpendGold"))
       return false
 
-    if (!::can_spend_gold_on_unit_with_popup(unit))
+    if (!canSpendGoldOnUnitWithPopup(unit))
       return false
   }
 
@@ -172,7 +172,7 @@ local class WeaponsPurchaseProcess {
     if (!canBuyItem(repairCost, this.unit, afterBalanceRefillFunc, this.silent))
       this.complete()
     else
-      unitActions.repair(this.unit, afterSuccessFunc, Callback(@() this.complete(), this))
+      repairNoMsgBox(this.unit, afterSuccessFunc, Callback(@() this.complete(), this))
   }
 
   function fillModItemSpecificParams(amount = 1) {

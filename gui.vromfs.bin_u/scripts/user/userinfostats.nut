@@ -330,8 +330,8 @@ function fillProfileSummary(sObj, summary, diff) {
       continue
 
     if (item.header)
-      data += ::buildTableRowNoPad("", [{ text = $"#{item.name}", textType = "text"}], null,
-                  format("headerRow:t='%s'; ", idx ? "yes" : "first"))
+      data = "".concat(data, ::buildTableRowNoPad("", [{ text = $"#{item.name}", textType = "text"}], null,
+        format("headerRow:t='%s'; ", idx ? "yes" : "first")))
     else if (item.separateRowsByFm)
       for (local i = 0; i < statsFm.len(); i++) {
         let rowId = $"row_{idx}_{i}"

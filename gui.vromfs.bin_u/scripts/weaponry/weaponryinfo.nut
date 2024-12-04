@@ -30,6 +30,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -788,7 +789,7 @@ function getPrimaryWeaponsList(unit) {
 
   unit.primaryWeaponMods = [""]
 
-  let airBlk = ::get_full_unit_blk(unit.name)
+  let airBlk = getFullUnitBlk(unit.name)
   if (!airBlk?.modifications)
     return unit.primaryWeaponMods
 
@@ -834,7 +835,7 @@ function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS) {
   if (!unit)
     return null
 
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   if (!unitBlk)
     return null
 

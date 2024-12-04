@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const MIN_TIERS_COUNT = 13
 const MAX_PRESETS_NUM = 20
@@ -173,7 +174,7 @@ function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, params = {}) {
 }
 
 function getUnitWeaponsByTier(unit, blkPath, tierId) {
-    let unitBlk = ::get_full_unit_blk(unit.name)
+    let unitBlk = getFullUnitBlk(unit.name)
     let tiersCount = unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
 
     return unit.hasWeaponSlots
@@ -184,7 +185,7 @@ function getUnitWeaponsByTier(unit, blkPath, tierId) {
   }
 
 function getUnitWeaponsByPreset(unit, blkPath, presetName) {
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   if (unit.hasWeaponSlots) {
     local res = []
     foreach (slot in getUnitWeaponSlots(unitBlk))

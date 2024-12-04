@@ -271,7 +271,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         btn_view_replay   = isCurItemInFocus && canPlayReplay(curReplay)
         btn_rename_replay = isCurItemInFocus
         btn_del_replay    = isCurItemInFocus
-        btn_parse_replay  = isCurItemInFocus && canOpenHitsAnalysisWindow() && !isCorruptedReplay(curReplay)
+        btn_parse_replay  = isCurItemInFocus && canOpenHitsAnalysisWindow() && !(curReplay?.corrupted ?? false)
     })
   }
 

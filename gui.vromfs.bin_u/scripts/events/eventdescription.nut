@@ -297,7 +297,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, this.room)
     let tierText = events.getBrTextByRules(reqUnits)
     if (tierText.len())
-      res =$"res{tierText} "
+      res = $"{tierText} "
 
     res = "".concat(res, ::SessionLobby.getMissionNameLoc(this.room))
 

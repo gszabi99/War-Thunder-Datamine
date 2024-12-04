@@ -1726,25 +1726,30 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.hasResearchesBtn || this.singleCountry != null)
       return
     this.guiScene.applyPendingChanges(false)
-    let shopVisibleCountries = getShopVisibleCountries()
-    let countriesCount = shopVisibleCountries.len()
+    let countriesCount = this.headerObj.childrenCount()
+    let needReinitCountriesWidths = (this.initialCountriesWidths?.len() ?? 0) != countriesCount
     if (!topMenuShopActive.get()) {
-      if (this.initialCountriesWidths != null) {
-        for (local i = 0; i < countriesCount; i++)
-          this.headerObj.findObject($"header_country{i}")["width"] = this.initialCountriesWidths[shopVisibleCountries[i]]
-      }
+      if (!needReinitCountriesWidths)
+        for (local i = 0; i < countriesCount; i++) {
+          let countryObj = this.headerObj.getChild(i)
+          let countryId = countryObj.countryId
+          countryObj["width"] = this.initialCountriesWidths[countryId]
+        }
       return
     }
 
-    if (this.initialCountriesWidths == null) {
+    if (needReinitCountriesWidths) {
       this.initialCountriesWidths = {}
-      for (local i = 0; i < countriesCount; i++)
-        this.initialCountriesWidths[shopVisibleCountries[i]] <- this.headerObj.findObject($"header_country{i}").getSize()[0]
+      for (local i = 0; i < countriesCount; i++) {
+        let countryObj = this.headerObj.getChild(i)
+        let countryId = countryObj.countryId
+        this.initialCountriesWidths[countryId] <- countryObj.getSize()[0]
+      }
     }
 
     let countryIndex = this.headerObj.getValue()
     for (local i = 0; i < countriesCount; i++) {
-      let countryObj = this.headerObj.findObject($"header_country{i}")
+      let countryObj = this.headerObj.getChild(i)
       let countryId = countryObj.countryId
       let countryMarkersWidth = getCountryMarkersWidth(countryId)
       let needStack = (countryIndex != i) && this.initialCountriesWidths[countryId] * 0.95 < countryMarkersWidth

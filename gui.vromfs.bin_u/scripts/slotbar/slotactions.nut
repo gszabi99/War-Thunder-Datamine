@@ -4,7 +4,8 @@ from "%scripts/dagui_library.nut" import *
 let { isUnitInSlotbar, canBuyNotResearched, isUnitMaxExp, canResearchUnit,
   isUnitInResearch, isUnitGroup, isUnitBroken, isUnitUsable, isUnitResearched
 } = require("%scripts/unit/unitStatus.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
+let { repairWithMsgBox, buy, flushSquadronExp, research, canSpendGoldOnUnitWithPopup
+} = require("%scripts/unit/unitActions.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
@@ -70,7 +71,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
   params = MAIN_FUNC_PARAMS.__merge(params)
 
   if (isUnitBroken(unit))
-    return unitActions.repairWithMsgBox(unit)
+    return repairWithMsgBox(unit)
   if (isUnitInSlotbar(unit))
     return ::open_weapons_for_unit(unit, { curEdiff = params.curEdiff })
   if (unit.isUsable() && !isUnitInSlotbar(unit))
@@ -78,7 +79,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
   if (::canBuyUnitOnline(unit))
     return showUnitGoods(unit.name, "slot_action")
   if (canBuyUnit(unit))
-    return unitActions.buy(unit, "slotAction")
+    return buy(unit, "slotAction")
 
   let isSquadronVehicle = unit.isSquadronVehicle()
   let isInResearch = isUnitInResearch(unit)
@@ -90,18 +91,18 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     && (canResearchUnit(unit) || isInResearch))
     return params.onSpendExcessExp()
   if (isInResearch && hasFeature("SpendGold")
-      && !isSquadronVehicle && ::can_spend_gold_on_unit_with_popup(unit))
+      && !isSquadronVehicle && canSpendGoldOnUnitWithPopup(unit))
     return ::gui_modal_convertExp(unit)
 
   if (canFlushSquadronExp && isInResearch)
-    return unitActions.flushSquadronExp(unit)
+    return flushSquadronExp(unit)
   if (isInResearch && canBuyNotResearched(unit)
     && isSquadronVehicle && ::is_in_clan())
-    return unitActions.buy(unit, "slot_action_squad")
+    return buy(unit, "slot_action_squad")
   if (unit.isCrossPromo)
     return openCrossPromoWnd(unit.crossPromoBanner)
   if (::checkForResearch(unit)) // Also shows msgbox about requirements for Research or Purchase
-    return unitActions.research(unit)
+    return research(unit)
 }
 
 return {

@@ -4274,25 +4274,7 @@
             "DependentWeaponPreset": {
               "slot": 12,
               "preset": "ptb_right"
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "aim_7m_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              }
-            ]
+            }
           },
           {
             "iconType": "missile_air_to_uni",
@@ -4428,7 +4410,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_b_air_to_air_midrange_group",
+            "iconType": "missile_air_to_air_midrange_special_group",
             "name": "aim_7m_slot4",
             "reqModification": "us_aim_7m",
             "Weapon": [
@@ -4457,6 +4439,7 @@
             "ShowNodes": {
               "node": [
                 "fuel_tank1",
+                "fuel_tank2",
                 "pylon_10",
                 "pylon_10_rocket_locks"
               ]
@@ -4479,14 +4462,14 @@
                 "separate": true
               }
             ],
-            "DependentWeaponPreset": [
+            "BannedWeaponPreset": [
               {
-                "slot": 5,
-                "preset": "fueltank_fuse_slot5"
+                "slot": 10,
+                "preset": "aim_7m_slot10"
               },
               {
-                "slot": 9,
-                "preset": "fueltank_fuse_slot9"
+                "slot": 10,
+                "preset": "aim_120b_slot10"
               }
             ]
           },
@@ -4520,6 +4503,7 @@
             "ShowNodes": {
               "node": [
                 "fuel_tank1",
+                "fuel_tank2",
                 "pylon_10",
                 "pylon_10_rocket_locks"
               ]
@@ -4542,14 +4526,14 @@
                 "separate": true
               }
             ],
-            "DependentWeaponPreset": [
+            "BannedWeaponPreset": [
               {
-                "slot": 5,
-                "preset": "fueltank_fuse_slot5"
+                "slot": 10,
+                "preset": "aim_7m_slot10"
               },
               {
-                "slot": 9,
-                "preset": "fueltank_fuse_slot9"
+                "slot": 10,
+                "preset": "aim_120b_slot10"
               }
             ]
           }
@@ -4579,10 +4563,6 @@
               "external": true,
               "jettisonable": false,
               "dragCx": 0.028
-            },
-            "DependentWeaponPreset": {
-              "slot": 9,
-              "preset": "fueltank_fuse_slot9"
             },
             "BannedWeaponPreset": [
               {
@@ -6439,41 +6419,7 @@
                   "node": "optic2_gun"
                 }
               ]
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "aim_7m_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
-              }
-            ]
+            }
           },
           {
             "iconType": "ltc",
@@ -6616,6 +6562,26 @@
             }
           },
           {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_slot7",
+            "reqModification": "us_500lb_mk82_gbu38_jdam",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot7",
             "reqModification": "us_2000lb_mk84_gbu31_jdam",
@@ -6653,25 +6619,7 @@
               "external": true,
               "separate": true,
               "dragCx": 0.028
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "aim_7m_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              }
-            ]
+            }
           },
           {
             "iconType": "glide_guided_bomb_small_jdam_group_x4",
@@ -6740,10 +6688,6 @@
               "external": true,
               "jettisonable": false,
               "dragCx": 0.028
-            },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "fueltank_fuse_slot5"
             },
             "BannedWeaponPreset": [
               {
@@ -8595,6 +8539,7 @@
             "reqModification": "us_aim_7m",
             "ShowNodes": {
               "node": [
+                "fuel_tank1",
                 "fuel_tank2",
                 "pylon_11",
                 "pylon_11_rocket_locks"
@@ -8616,6 +8561,16 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
               }
             ]
           },
@@ -8648,6 +8603,7 @@
             "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": [
+                "fuel_tank1",
                 "fuel_tank2",
                 "pylon_11",
                 "pylon_11_rocket_locks"
@@ -8669,6 +8625,16 @@
                 "bullets": 1,
                 "external": true,
                 "separate": true
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "aim_7m_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim_120b_slot4"
               }
             ]
           }
@@ -9024,25 +8990,7 @@
             "DependentWeaponPreset": {
               "slot": 2,
               "preset": "ptb_left"
-            },
-            "BannedWeaponPreset": [
-              {
-                "slot": 4,
-                "preset": "aim_7m_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              }
-            ]
+            }
           },
           {
             "iconType": "missile_air_to_uni",

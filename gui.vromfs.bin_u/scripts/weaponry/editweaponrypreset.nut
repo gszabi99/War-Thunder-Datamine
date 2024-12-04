@@ -23,6 +23,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { set_weapon_visual_custom_blk } = require("unitCustomization")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const MASS_KG_PRESIZE = 0.1
 
@@ -60,7 +61,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.scene.findObject("edit_wnd").width = "{0}@tierIconSize + 1@modPresetTextMaxWidth + 2@blockInterval".subst(this.originalPreset.weaponsSlotCount)
-    this.unitBlk = ::get_full_unit_blk(this.unit.name)
+    this.unitBlk = getFullUnitBlk(this.unit.name)
     this.checkWeightRestrictions()
     this.updateWeightCapacityText()
     this.presetNest = this.scene.findObject("presetNest")

@@ -10,7 +10,7 @@ let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT
 let { ceil } = require("math")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { research } = require("%scripts/unit/unitActions.nut")
+let { research, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
@@ -42,7 +42,7 @@ enum windowState {
 ::gui_modal_convertExp <- function gui_modal_convertExp(unit = null) {
   if (!hasFeature("SpendGold"))
     return
-  if (unit && !::can_spend_gold_on_unit_with_popup(unit))
+  if (unit && !canSpendGoldOnUnitWithPopup(unit))
     return
 
   loadHandler(gui_handlers.ConvertExpHandler, { unit = unit })

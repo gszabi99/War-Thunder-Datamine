@@ -441,7 +441,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < ::trophyReward.maxRewardsShow; i++) {
       let config = this.shrinkedConfigsArray?[i]
       if (config)
-        layersData += ::trophyReward.getImageByConfig(config, false)
+        layersData = "".concat(layersData, ::trophyReward.getImageByConfig(config, false))
     }
 
     if (layersData == "")

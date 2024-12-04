@@ -21,6 +21,7 @@ let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let regexp2 = require("regexp2")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { measureType } = require("%scripts/measureType.nut")
+let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 
 const COOP_MAX_PLAYERS = 4
 
@@ -89,7 +90,7 @@ let canPlayGamemodeBySquad = @(gm) !g_squad_manager.isNotAloneOnline()
       if (block && isInArray(block?.name, wings))
         if (block?.unit_class) {
           if (!(block.unit_class in unitsCache))
-            unitsCache[block.unit_class] <- getEsUnitType(::findUnitNoCase(block.unit_class))
+            unitsCache[block.unit_class] <- getEsUnitType(findUnitNoCase(block.unit_class))
           if (unitsCache[block.unit_class] == esUnitType)
             return true
         }

@@ -19,6 +19,7 @@ let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -219,7 +220,7 @@ function getWeaponXrayDescText(weaponBlk, unit, ediff) {
 
 
 function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   let primaryWeapon = getLastPrimaryWeapon(unit)
   let secondaryWeapon = getLastWeapon(unit.name)
 

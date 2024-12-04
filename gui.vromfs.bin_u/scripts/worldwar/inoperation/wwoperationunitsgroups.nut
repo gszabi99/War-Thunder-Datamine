@@ -4,6 +4,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { wwGetOperationId } = require("worldwar")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 function getUnitsGroups() {
   let unitsGroupByCountry = getOperationById(
@@ -24,7 +25,7 @@ function overrideUnitViewParamsByGroups(wwUnitViewParams, unitsGroups) {
 
   let defaultUnit = group?.defaultUnit
   wwUnitViewParams.name         = loc(group.name)
-  wwUnitViewParams.icon         = ::getUnitClassIco(defaultUnit)
+  wwUnitViewParams.icon         = getUnitClassIco(defaultUnit)
   wwUnitViewParams.shopItemType = getUnitRole(defaultUnit)
   wwUnitViewParams.tooltipId    = getTooltipType("UNIT_GROUP").getTooltipId(group)
   wwUnitViewParams.hasPresetWeapon = false

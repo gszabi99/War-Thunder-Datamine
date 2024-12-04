@@ -15,6 +15,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 function getUnitsData(unlockId) {
   let data = {}
@@ -61,7 +62,7 @@ function getCountriesView(unlockId) {
         isTooltipByHold = showConsoleButtons.value
         units = unitsList.map(@(u) {
           id = u.name
-          ico = ::getUnitClassIco(u)
+          ico = getUnitClassIco(u)
           type = getUnitRole(u)
           tooltipId = getTooltipType("UNIT").getTooltipId(u.name)
           text = nbsp.concat(

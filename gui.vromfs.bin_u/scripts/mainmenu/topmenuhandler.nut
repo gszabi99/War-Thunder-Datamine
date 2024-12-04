@@ -308,6 +308,10 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       this.doWhenActiveOnce("updateGamercards")
   }
 
+  function onEventUpdateGamercards(_p) {
+    this.doWhenActiveOnce("updateGamercards")
+  }
+
   function updateGamercards() {
     ::update_gamercards()
   }

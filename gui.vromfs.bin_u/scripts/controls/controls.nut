@@ -63,6 +63,7 @@ let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 ::preset_changed <- false
 
@@ -2181,7 +2182,7 @@ function getWeaponFeatures(weaponsList) {
   let preset = ::g_controls_manager.getCurPreset()
   local actionBarShortcutFormat = null
 
-  let unitBlk = ::get_full_unit_blk(unitId)
+  let unitBlk = getFullUnitBlk(unitId)
   let commonWeapons = getCommonWeapons(unitBlk, getLastPrimaryWeapon(unit))
   local weaponPreset = []
 

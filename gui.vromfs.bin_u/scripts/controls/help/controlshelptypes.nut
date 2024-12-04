@@ -26,6 +26,7 @@ let { getTankRankForHelp } = require("%scripts/controls/help/controlsHelpUnitRan
 let aircraftControls = require("%scripts/controls/help/aircraftControls.nut")
 let { isUnitWithRadar } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getEventConditionControlHelp } = require("%scripts/hud/maybeOfferControlsHelp.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 const UNIT_WITH_PERISCOPE_DEPTH = "germ_sub_type_7"
 const DEF_PERESCOPE_DEPTH_VALUE = 10
@@ -340,7 +341,7 @@ enums.addTypes(result, {
     actionBars = generateSubmarineActionBars(2)
 
     customUpdateSheetFunc = function(obj) {
-      let { periscopeDepth = DEF_PERESCOPE_DEPTH_VALUE } = ::get_full_unit_blk(UNIT_WITH_PERISCOPE_DEPTH)
+      let { periscopeDepth = DEF_PERESCOPE_DEPTH_VALUE } = getFullUnitBlk(UNIT_WITH_PERISCOPE_DEPTH)
 
       obj.findObject("periscope_usage_label")
         .setValue(loc("controls/help/submarine/periscope_usage_depth", { meters = periscopeDepth}))

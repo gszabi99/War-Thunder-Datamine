@@ -14,6 +14,7 @@ let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -104,7 +105,7 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
           else {
             armyView.units.append({
               id = u.name
-              ico = ::getUnitClassIco(u)
+              ico = getUnitClassIco(u)
               type = getUnitRole(u)
               tooltipId = getTooltipType("UNIT").getTooltipId(u.name)
               text = nbsp.concat(colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))),

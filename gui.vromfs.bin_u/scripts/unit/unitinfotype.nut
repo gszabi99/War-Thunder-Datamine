@@ -11,7 +11,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let { PI, round, roundToDigits } = require("%sqstd/math.nut")
-let { getUnitTooltipImage, getShipMaterialTexts } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor
 } = require("%scripts/unit/unitInfoRoles.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
@@ -21,6 +21,7 @@ let { isBullets, getModificationInfo, getModificationName } = require("%scripts/
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { measureType } = require("%scripts/measureType.nut")
 
@@ -192,7 +193,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       blk.image = getUnitTooltipImage(unit)
       blk.cardImage = ::image_for_air(unit)
-      blk.icon = ::getUnitClassIco(unit)
+      blk.icon = getUnitClassIco(unit)
       blk.iconColor = get_main_gui_scene().getConstantValue(getUnitClassColor(unit)) || ""
     }
   }
@@ -944,7 +945,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/displacement"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let value = ::get_full_unit_blk(unit.name)?.ShipPhys?.mass?.TakeOff
+      let value = getFullUnitBlk(unit.name)?.ShipPhys?.mass?.TakeOff
       local valueText = ""
       if (value != null) {
         valueText = measureType.SHIP_DISPLACEMENT_TON.getMeasureUnitsText(value / 1000, true)

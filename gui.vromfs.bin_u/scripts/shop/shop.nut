@@ -18,7 +18,7 @@ let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
+let { buy, research, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
 let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -1937,7 +1937,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBuy() {
-    unitActions.buy(this.getCurAircraft(true, true), "shop")
+    buy(this.getCurAircraft(true, true), "shop")
   }
 
   function onResearch(_obj) {
@@ -1945,12 +1945,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!unit || isUnitGroup(unit) || unit?.isFakeUnit || !::checkForResearch(unit))
       return
 
-    unitActions.research(unit)
+    research(unit)
   }
 
   function onConvert(_obj) {
     let unit = this.getCurAircraft()
-    if (!unit || !::can_spend_gold_on_unit_with_popup(unit))
+    if (!unit || !canSpendGoldOnUnitWithPopup(unit))
       return
 
     let unitName = unit.name

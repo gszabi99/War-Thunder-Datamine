@@ -150,11 +150,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   curPlayerMode = 0
   curSubFilter = -1
   curFilterType = ""
-  airStatsInited = false
 
   airStatsList = null
   statsType = ETTI_VALUE_INHISORY
-  statsMode = ""
   statsCountries = null
   statsSortBy = ""
   statsSortReverse = false
@@ -248,6 +246,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.medalsFilters = shopCountriesList.filter(@(c) isInArray(c, medalCountries))
 
     this.initStatsParams()
+    this.updateCurrentStatsMode(this.curMode)
     this.initSheetsList()
     this.initTabs()
 

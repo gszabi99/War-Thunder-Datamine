@@ -29,6 +29,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_MODIFICATIONS
 let { shopIsModificationPurchased } = require("chardResearch")
 let { get_ranks_blk, get_modifications_blk } = require("blkGetters")
 let { measureType } = require("%scripts/measureType.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR          = "rocket_aircraft"
@@ -172,7 +173,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
     return air.bulletsSets[modifName] //all sets saved for no need analyze blk everytime when it need.
 
   local res = null
-  let airBlk = ::get_full_unit_blk(air.name)
+  let airBlk = getFullUnitBlk(air.name)
   if (!airBlk?.modifications)
     return res
 
@@ -488,7 +489,7 @@ function getBulletsInfoForPrimaryGuns(air) {
     unitsPrimaryBulletsInfo[air.name][primaryWeapon] <- {}
   unitsPrimaryBulletsInfo[air.name][primaryWeapon][presetWeapon] <- res
 
-  let airBlk = ::get_full_unit_blk(air.name)
+  let airBlk = getFullUnitBlk(air.name)
   if (!airBlk)
     return res
 
@@ -1005,7 +1006,7 @@ function updatePrimaryBullets(unit, primaryWeapon, weaponToFakeBulletMask) {
   local primary = 0
   let primaryList = getPrimaryWeaponsList(unit)
   if (primaryList.len() > 0) {
-    let airBlk = ::get_full_unit_blk(unit.name)
+    let airBlk = getFullUnitBlk(unit.name)
     if (airBlk)
       primary = getActiveBulletsIntByWeaponsBlk(unit,
         getCommonWeapons(airBlk, primaryWeapon), weaponToFakeBulletMask)
@@ -1016,7 +1017,7 @@ function updatePrimaryBullets(unit, primaryWeapon, weaponToFakeBulletMask) {
 function updateSecondaryBullets(unit, secondaryWeapon, weaponToFakeBulletMask) {
   let weapon = unit.getWeapons().findvalue(@(w) w.name == secondaryWeapon)
   unit.secondaryBullets[secondaryWeapon] <- getActiveBulletsIntByWeaponsBlk(unit,
-    getPresetWeapons(::get_full_unit_blk(unit.name), weapon), weaponToFakeBulletMask)
+    getPresetWeapons(getFullUnitBlk(unit.name), weapon), weaponToFakeBulletMask)
 }
 
 function getActiveBulletsGroupInt(unit, params = null) {
@@ -1135,7 +1136,7 @@ function getModifIconItem(unit, item) {
 
 function getAmmoStowageConstraintsByTrigger(unit) {
   let constraintsByTrigger = {}
-  let unitBlk = ::get_full_unit_blk(unit.name)
+  let unitBlk = getFullUnitBlk(unit.name)
   if (!unitBlk?.ammoStowages || !(unitBlk.ammoStowages?.enablePerAmmoTypesAndConstraints ?? false))
     return constraintsByTrigger
   let stowagesBlk = unitBlk.ammoStowages

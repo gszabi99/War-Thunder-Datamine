@@ -6,6 +6,7 @@ let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { charSendBlk } = require("chard")
 let { addTask } = require("%scripts/tasker.nut")
 let DataBlock = require("DataBlock")
+let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 let defaultShowcase = "favorite_mode"
 let defaultShowcaseType = "air_arcade"
@@ -49,7 +50,7 @@ let visibleValues = {
     icon = "lb_average_active_kills"
     locId = "multiplayer/lb_kills_player"
     valueId = "average_active_kills"
-    getValue = @(params, _val) getPlayerKillsForMode(params?.stats, params.showcaseType)
+    getValue = @(params, _val) decimalFormat(getPlayerKillsForMode(params?.stats, params.showcaseType))
   }
   aiVehicleDestroys = {
     type = "stat"
@@ -149,13 +150,15 @@ function getShowcaseViewData(playerStats, terseInfo) {
 
   foreach (line in modeLines) {
     let stats = []
+    local idx = 0
 
     foreach (valName in line) {
       let value = visibleValues[valName]
       if (value.type == "stat") {
-        let statData = {icon = $"!#ui/gameuiskin#{value.icon}.svg", statName = loc(value.locId),
-          statValue = $"{value?.getValue ? value.getValue(params, value) : getStatsValue(params, value, showcase.scorePeriod)}"}
+        let statData = {icon = $"!#ui/gameuiskin#{value.icon}.svg", statName = loc(value.locId), idx,
+          statValue = $"{value?.getValue ? value.getValue(params, value) : decimalFormat(getStatsValue(params, value, showcase.scorePeriod))}"}
         stats.append(statData)
+        idx++
         continue
       }
     }

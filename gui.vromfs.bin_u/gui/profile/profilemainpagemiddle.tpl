@@ -7,15 +7,10 @@
     <<#stats>>
       tdiv {
         position:t='relative'
-        width:t='200@sf/@pf'
-        height:t='166@sf/@pf'
+        width:t='1@accountHeaderWidth/3'
+        min-height:t='166@sf/@pf'
         flow:t='vertical'
-        <<#isLeftCell>>
-        padding-right:t='57@sf/@pf'
-        <</isLeftCell>>
-        <<#isRightCell>>
-        padding-left:t='57@sf/@pf'
-        <</isRightCell>>
+        padding:t='20@sf/@pf, 0'
 
         tdiv {
           position:t='relative'
@@ -55,16 +50,15 @@
             text:t='<<statName>>'
           }
         <</statName>>
-
-        <<^isEndInRow>>
-          tdiv {
-            size:t='2@sf/@pf, ph-14@sf/@pf'
-            position:t='absolute'
-            pos:t='pw-w, (ph-h)/2'
-            background-color:t='@showcaseBoxBorder'
-          }
-        <</isEndInRow>>
       }
+      <<^isEndInRow>>
+        tdiv {
+          position:t='absolute'
+          size:t='2@sf/@pf, ph-14@sf/@pf'
+          pos:t='(<<idx>> + 1) * 1@accountHeaderWidth/3 - w/2, (ph-h)/2'
+          background-color:t='@showcaseBoxBorder'
+        }
+      <</isEndInRow>>
     <</stats>>
   }
 <</statLines>>

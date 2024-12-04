@@ -7,7 +7,6 @@ let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
@@ -383,25 +382,20 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (showClanSeasonRewards) {
       let containerObj = this.scene.findObject("clan_awards_container")
-      if (checkObj(containerObj))
-        this.guiScene.performDelayed(this, (@(clanData) function () { //-ident-hides-ident
-          if (!this.isValid())
-            return
-
-          let count = countSizeInItems(containerObj.getParent(), "@clanMedalSizeMin", 1, 0, 0).itemsCountX
-          let medals = ::g_clans.getClanPlaceRewardLogData(clanData, count)
-          local markup = ""
-          local rest = min(medals.len(), get_warpoints_blk()?.maxClanBestRewards ?? 6)
-          foreach (m in medals)
-            if (clanRewardsModal.isRewardVisible(m, clanData))
-              if (rest-- > 0)
-                markup = "".concat(markup,
-                  "layeredIconContainer { size:t='@clanMedalSizeMin,",
-                  "@clanMedalSizeMin'; overflow:t='hidden' ",
-                  LayersIcon.getIconData(m.iconStyle, null, null, null, m.iconParams, m.iconConfig),
-                  "}")
-          this.guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
-        })(this.clanData))
+      if (containerObj?.isValid() ?? false) {
+        let medals = ::g_clans.getClanPlaceRewardLogData(this.clanData)
+        local markup = ""
+        local rest = min(medals.len(), get_warpoints_blk()?.maxClanBestRewards ?? 6)
+        foreach (m in medals)
+          if (clanRewardsModal.isRewardVisible(m, this.clanData))
+            if (rest-- > 0)
+              markup = "".concat(markup,
+                "layeredIconContainer { size:t='@clanMedalSizeMin,",
+                "@clanMedalSizeMin'; overflow:t='hidden' ",
+                LayersIcon.getIconData(m.iconStyle, null, null, null, m.iconParams, m.iconConfig),
+                "}")
+        this.guiScene.replaceContentFromText(containerObj, markup, markup.len(), this)
+      }
     }
 
     this.updateAdminModeSwitch()

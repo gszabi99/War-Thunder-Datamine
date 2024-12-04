@@ -5,6 +5,7 @@ let { Cost } = require("%scripts/money.nut")
 
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getEsUnitType, getUnitName, getUnitCountry, getUnitExp
 } = require("%scripts/unit/unitInfo.nut")
@@ -12,6 +13,17 @@ let { canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nu
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
+let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
+let { addPopup } = require("%scripts/popups/popups.nut")
+
+function canSpendGoldOnUnitWithPopup(unit) {
+  if (unit.unitType.canSpendGold())
+    return true
+
+  addPopup(getUnitName(unit), loc("msgbox/unitTypeRestrictFromSpendGold"),
+    null, null, null, "cant_spend_gold_on_unit")
+  return false
+}
 
 function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   let blk = DataBlock()
@@ -31,7 +43,7 @@ function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
   addTask(taskId, progBox, onTaskSuccess, onErrorCb)
 }
 
-function repair(unit, onSuccessCb = null, onErrorCb = null) {
+function repairNoMsgBox(unit, onSuccessCb = null, onErrorCb = null) {
   if (!unit) {
     onErrorCb?()
     return
@@ -56,7 +68,7 @@ function repairWithMsgBox(unit, onSuccessCb = null) {
   let msgText = loc("msgbox/question_repair", { unitName = loc(getUnitName(unit)), cost = price.tostring() })
   scene_msg_box("question_repair", null, msgText,
   [
-    ["yes", function() { repair(unit, onSuccessCb) }],
+    ["yes", function() { repairNoMsgBox(unit, onSuccessCb) }],
     ["no", function() {} ]
   ], "no", { cancel_fn = function() {} })
 }
@@ -85,6 +97,15 @@ function flushSquadronExp(unit, params = {}) {
       broadcastEvent("FlushSquadronExp", { unit = unit })
     })
   showFlushSquadronExpMsgBox(unit, onDoneCb, afterDoneFunc)
+}
+
+function showCantBuyOrResearchUnitMsgbox(unit) {
+  let reason = getCantBuyUnitReason(unit)
+  if (u.isEmpty(reason))
+    return true
+
+  scene_msg_box("need_buy_prev", null, reason, [["ok", function () {}]], "ok")
+  return false
 }
 
 function buy(unit, metric) {
@@ -161,7 +182,7 @@ function flushExcessExpToModule(unit, module) {
 }
 
 return {
-  repair
+  repairNoMsgBox
   repairWithMsgBox
   flushSquadronExp
   buy
@@ -169,4 +190,6 @@ return {
   setResearchClanVehicleWithAutoFlush
   flushExcessExpToUnit
   flushExcessExpToModule
+  showCantBuyOrResearchUnitMsgbox
+  canSpendGoldOnUnitWithPopup
 }

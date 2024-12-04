@@ -6,7 +6,7 @@ let { floor } = require("math")
 let { hangar_set_dm_viewer_mode } = require("hangar")
 let { on_parse_replay, get_parsed_replay, get_replay_info, repeat_shot_from_blk,
   on_parse_temp_replay, get_temp_replay_info, get_replay_hits_dir, set_replay_hits_mode,
-  on_update_loaded_model } = require("replays")
+  on_update_loaded_model, restore_loaded_model } = require("replays")
 let { doesLocTextExist } = require("dagor.localize")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -14,6 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getUnitName, getUnitCountry, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
+let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { secondsToTimeSimpleString } = require("%scripts/time.nut")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { image_for_air } = require("%scripts/options/optionsExt.nut")
@@ -172,6 +173,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   prepareDistanceText = @(value) $"{(value > 1) ? floor(value) : "<1"} {loc("measureUnits/meters_dist")}"
 
   function onItemSelect(obj) {
+    restore_loaded_model()
     let item = obj.getChild(obj.getValue())
     let idx = to_integer_safe(item["idx"])
     this.selectedHit = this.currentHitsData[idx]
@@ -223,7 +225,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (isRocketOrBomb) {
-      let unitBlk = ::get_full_unit_blk(unit.name)
+      let unitBlk = getFullUnitBlk(unit.name)
       let weapons = getUnitWeapons(unitBlk)
 
       local presetName = ""
@@ -318,6 +320,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function goBack() {
     hangar_set_dm_viewer_mode(DM_VIEWER_NONE)
     set_replay_hits_mode(false)
+    restore_loaded_model()
     base.goBack()
   }
 }

@@ -75,7 +75,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
         }
         headerRow.append(block)
       }
-      data += ::buildTableRow("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'")
+      data = "".concat(data, ::buildTableRow("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'"))
     }
 
     this.isLastPage = false
@@ -86,7 +86,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (rowIdx < this.rowsInPage) {
         for (local i = rowIdx; i < this.rowsInPage; i++)
-          data += ::buildTableRow($"row_{i}", [], i % 2 == 0, "inactive:t='yes';")
+          data = "".concat(data, ::buildTableRow($"row_{i}", [], i % 2 == 0, "inactive:t='yes';"))
         this.isLastPage = true
       }
 

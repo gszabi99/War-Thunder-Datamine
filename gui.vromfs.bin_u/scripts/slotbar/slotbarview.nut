@@ -26,7 +26,7 @@ let { getEsUnitType, getUnitName,
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitItemStatusText, getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitItemStatusText, getUnitRarity, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { getBitStatus, isUnitElite, isUnitInSlotbar, isUnitDefault, canResearchUnit,
   isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken, isUnitUsable
@@ -775,7 +775,7 @@ function buildCommonUnitSlot(id, unit, params) {
     else if (unitTypeName == "HELICOPTER")
       unitTypeIcon = unitTypes.AIRCRAFT.fontIcon
     let respawnsLeft = missionRules.getUnitLeftRespawns(unit)
-    let respawnsInitial = missionRules.getUnitInitialRespawns(unit)
+    let respawnsInitial = missionRules?.getUnitInitialRespawns(unit) ?? 0
     if (respawnsInitial > 0)
       additionalRespawns = $"{unitTypeIcon}{respawnsLeft}/{respawnsInitial}"
     if (additionalRespawns != "" && respawnsLeft == 0)
@@ -835,7 +835,7 @@ function buildCommonUnitSlot(id, unit, params) {
     hasAdditionalRespawns
     additionalRespawns
     addRespawnsWidth = "fw"
-    unitClassIco = ::getUnitClassIco(unit.name)
+    unitClassIco = getUnitClassIco(unit.name)
     unitClassIcoColor
     priceText
     priceWidth = "fw"
@@ -1150,7 +1150,7 @@ addTooltipTypes({
 
         list.append({
           unitName = getUnitName(str)
-          icon = ::getUnitClassIco(str)
+          icon = getUnitClassIco(str)
           shopItemType = getUnitRole(unit)
         })
       }
@@ -1195,7 +1195,7 @@ addTooltipTypes({
         else
           unitsView.append({
             name = getUnitName(unit)
-            unitClassIcon = ::getUnitClassIco(unit.name)
+            unitClassIcon = getUnitClassIco(unit.name)
             shopItemType = getUnitRole(unit)
             tooltipId = getTooltipType("UNIT").getTooltipId(unit.name, { needShopInfo = true })
           })

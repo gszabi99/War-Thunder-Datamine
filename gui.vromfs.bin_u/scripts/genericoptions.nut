@@ -421,7 +421,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     let optValue = ::get_option(USEROPT_DISPLAY_MY_REAL_NICK).value
     if (optValue == obj.getValue())
       return
-    ::queues.checkAndStart(null, @() obj.setValue(optValue), "isCanNewflight")
+    ::queues.checkAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")
   }
 
   function setCrossNetworkChatValue(obj, value, needSendNotification = false) {
