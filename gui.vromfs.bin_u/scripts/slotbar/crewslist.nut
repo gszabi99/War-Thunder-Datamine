@@ -124,8 +124,8 @@ let suspendSlotbarUpdates = @() isSlotbarUpdateSuspended = true
   getCrewsList
 }
 
-isInBattleState.subscribe(function(v) {
-  if (!v && invalidateCrewsList())
+isInBattleState.subscribe(function(_v) {
+  if (invalidateCrewsList())
     reinitSlotbars()
 })
 
