@@ -319,7 +319,8 @@
     "_use": [
       "root",
       "replicating",
-      "base_unit_ext"
+      "base_unit_ext",
+      "replicate_early"
     ],
     "uid": -1,
     "className": "",
@@ -548,7 +549,10 @@
     "unit_tag__infantry_troop:tag": {}
   },
   "expendable_mod": {
-    "_use": "replicating",
+    "_use": [
+      "replicating",
+      "replicate_early"
+    ],
     "mod__enabled_without_mod": false,
     "mod__count_effects_mod": false,
     "mod__send_economic_spend": true,
