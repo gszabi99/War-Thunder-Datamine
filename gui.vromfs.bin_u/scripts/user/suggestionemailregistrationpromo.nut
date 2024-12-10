@@ -15,9 +15,9 @@ addPromoButtonConfig({
   promoButtonId = promoButtonId
   buttonType = "imageButton"
   getText = @() loc("promo/btnXBOXAccount_linked")
-  image = isPlatformSony ? "https://static.warthunder.ru/upload/image/Promo/2022_03_psn_promo?P1"
-    : isPlatformXboxOne ? "https://static.warthunder.ru/upload/image/Promo/2022_03_xbox_promo?P1"
-    : steam_is_running() ? "https://static.warthunder.ru/upload/image/Promo/2022_03_steam_promo?P1"
+  image = isPlatformSony ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_psn_promo?P1"
+    : isPlatformXboxOne ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_xbox_promo?P1"
+    : steam_is_running() ? "https://staticfiles.warthunder.com/upload/image/Promo/2022_03_steam_promo?P1"
     : ""
   aspect_ratio = 2.07
   updateFunctionInHandler = function() {

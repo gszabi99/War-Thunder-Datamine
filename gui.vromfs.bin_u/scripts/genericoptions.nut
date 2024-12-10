@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "soundOptions" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/options/optionsConsts.nut" import misCountries, TANK_ALT_CROSSHAIR_ADD_NEW
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -218,7 +219,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isOptionInUpdate = true
     if (option.controlType == optionControlType.LIST) {
-      let markup = ::create_option_combobox(option.id, option.items, option.value, null, false)
+      let markup = create_option_combobox(option.id, option.items, option.value, null, false)
       this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
     }
     else
@@ -342,14 +343,14 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeRadarMode(obj) {
-    set_option_radar_name("", obj.getValue())
+    set_option_radar_name("", "", obj.getValue())
 
     this.updateOption(USEROPT_RADAR_SCAN_PATTERN_SELECT)
     this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECT)
   }
 
   function onChangeRadarScanRange(obj) {
-    set_option_radar_scan_pattern_name("", obj.getValue())
+    set_option_radar_scan_pattern_name("", "", obj.getValue())
 
     this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECT)
   }

@@ -684,6 +684,11 @@ function loadCondition(blk, unlockBlk) {
       notLess = blk?.notLess ?? true
     }
   }
+  else if (t == "char_unlock_open_count") {
+    res.values = blk?.unlock
+      ? loc($"streaks/{blk.unlock}")
+      : ""
+  }
 
   let overrideCondType = getOverrideCondType(blk, unlockBlk?.mode.type)
   if (overrideCondType)

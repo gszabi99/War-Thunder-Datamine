@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { getSettings } = require("%rGui/wwMap/wwSettings.nut")
+let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
 let { sectorSprites } = require("%rGui/wwMap/wwMapStates.nut")
 let { getZoneById, getZoneSize } = require("%rGui/wwMap/wwMapZonesData.nut")
 let { convertColor4 } = require("%rGui/wwMap/wwMapUtils.nut")
@@ -8,6 +8,7 @@ let { get_time_msec } = require("dagor.time")
 let { activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { setTimeout } = require("dagor.workcycle")
 let { even } = require("%rGui/wwMap/wwUtils.nut")
+let { floor } = require("math")
 
 let mkSectorSprite = @(sectorSpriteData, sectorSpriteSettings, areaBounds) function() {
   let { spriteColor, blinkColor, blinkPeriod, iconName, iconRotate = 0 } = sectorSpriteSettings
@@ -19,7 +20,7 @@ let mkSectorSprite = @(sectorSpriteData, sectorSpriteSettings, areaBounds) funct
 
   let zoneSize = getZoneSize()
   let spriteIconSize = even(zoneSize.w * areaWidth * 0.22)
-  let pos = [areaWidth * ownedZone.center.x - spriteIconSize / 2, areaHeight * ownedZone.center.y - spriteIconSize / 2]
+  let pos = [floor(areaWidth * ownedZone.center.x - spriteIconSize / 2), floor(areaHeight * ownedZone.center.y - spriteIconSize / 2)]
   setTimeout(blinkDuration, @() anim_request_stop($"sectorSprite_{sectorSpriteData.zoneIdx}"))
 
   return {
@@ -27,8 +28,9 @@ let mkSectorSprite = @(sectorSpriteData, sectorSpriteSettings, areaBounds) funct
     pos
     size = [spriteIconSize, spriteIconSize]
     keepAspect = true
-    image = Picture($"{iconName}:{spriteIconSize}:{spriteIconSize}")
+    image = Picture($"{iconName}:{floor(spriteIconSize)}:{floor(spriteIconSize)}")
     color = convertColor4(spriteColor)
+    subPixel = true
     transform = {
       rotate = iconRotate
     }

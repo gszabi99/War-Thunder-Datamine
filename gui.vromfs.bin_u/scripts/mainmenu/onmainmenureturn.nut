@@ -30,10 +30,11 @@ let { checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice
 let { searchAndRepairInvalidPresets } = require("%scripts/weaponry/weaponryPresetsRepair.nut")
 let { checkDecalsOnOtherPlayersOptions }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
-  if (!::g_login.isLoggedIn()) {
+  if (!isLoggedIn.get()) {
     delayed_gblk_error_popups.append({ type = errCode, path = path })
     return
   }
@@ -47,7 +48,7 @@ function showGblkErrorPopup(errCode, path) {
 ::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
 
 function popGblkErrorPopups() {
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   let total = delayed_gblk_error_popups.len()
@@ -63,7 +64,7 @@ function popGblkErrorPopups() {
 function onMainMenuReturn(handler, isAfterLogin) {
   if (!handler)
     return
-  local isAllowPopups = ::g_login.isProfileReceived() && !getFromSettingsBlk("debug/skipPopups")
+  local isAllowPopups = isProfileReceived.get() && !getFromSettingsBlk("debug/skipPopups")
   local guiScene = handler.guiScene
   if (isAfterLogin && isAllowPopups)
     ::SessionLobby.checkReconnect()

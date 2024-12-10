@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_mode_with_teams
 
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
@@ -93,7 +94,7 @@ let g_hud_live_stats = {
         (this.gameType & GT_RACE) ? GT_RACE
       : (this.gameType & GT_FOOTBALL) ? GT_FOOTBALL
       : GT_VERSUS
-    this.isMissionTeamplay = ::is_mode_with_teams(this.gameType)
+    this.isMissionTeamplay = is_mode_with_teams(this.gameType)
     this.isMissionRace = !!(this.gameType & GT_RACE)
     this.isMissionFinished = false
     this.missionResult = null

@@ -17,6 +17,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { setScrnTgt } = require("%scripts/utils/screenUtils.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
@@ -243,7 +244,7 @@ function getDefault() {
   if (!canChange())
     return update_font_heights(getDefault())
 
-  if (!::g_login.isProfileReceived()) {
+  if (!isProfileReceived.get()) {
     let fontSaveId = getSystemConfigOption(FONTS_SAVE_PATH_CONFIG)
     return update_font_heights((fontSaveId && getAvailableFontBySaveId(fontSaveId))
       || getDefault())

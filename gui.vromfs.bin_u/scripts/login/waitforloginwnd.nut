@@ -4,6 +4,7 @@ from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let { hasLoginState } = require("%scripts/login/loginStates.nut")
 
 gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/login/waitForLoginWnd.blk"
@@ -17,9 +18,9 @@ gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
 
   function updateText() {
     local text = ""
-    if (!::g_login.hasState(LOGIN_STATE.MATCHING_CONNECTED))
+    if (!hasLoginState(LOGIN_STATE.MATCHING_CONNECTED))
       text = loc("yn1/connecting_msg")
-    else if (!::g_login.hasState(LOGIN_STATE.CONFIGS_INITED))
+    else if (!hasLoginState(LOGIN_STATE.CONFIGS_INITED))
       text = loc("loading")
     this.scene.findObject("msgText").setValue(text)
   }
@@ -30,7 +31,7 @@ gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
   }
 
   function updateBg() {
-    let shouldBgVisible = !::g_login.hasState(LOGIN_STATE.HANGAR_LOADED)
+    let shouldBgVisible = !hasLoginState(LOGIN_STATE.HANGAR_LOADED)
     if (this.isBgVisible == shouldBgVisible && this.isInitialized)
       return
 

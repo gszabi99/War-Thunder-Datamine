@@ -3,6 +3,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { getCountryFlagsPresetName } = require("%scripts/options/countryFlagsPreset.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
+let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 /* Data in config (gui.blk/loading_bg)
 
@@ -184,7 +185,7 @@ let isBgUnlockableByUser = @(id) isBgUnlockable(id) && canDoUnlock(getUnlockById
 
 function filterLoadingBgData(bgData) {
   bgData = clone bgData
-  bgData.list = bgData.list.filter(::g_login.isProfileReceived()
+  bgData.list = bgData.list.filter(isProfileReceived.get()
     ? @(_v, id) isBgUnlocked(id)
     : @(_v, id) !isBgUnlockable(id))
   return bgData
@@ -192,15 +193,15 @@ function filterLoadingBgData(bgData) {
 
 function getFilterBgList() {
   initOnce()
-  let curBgData = ::g_login.isLoggedIn() ? bgDataAfterLogin : bgDataBeforeLogin
-  return ::g_login.isProfileReceived()
+  let curBgData = isLoggedIn.get() ? bgDataAfterLogin : bgDataBeforeLogin
+  return isProfileReceived.get()
     ? curBgData.list.keys().filter(@(id) isBgUnlocked(id) || isBgUnlockableByUser(id))
     : curBgData.list.keys().filter(@(id) !isBgUnlockable(id))
 }
 
 function getCurLoadingBgData() {
   initOnce()
-  return filterLoadingBgData(::g_login.isLoggedIn() ? bgDataAfterLogin : bgDataBeforeLogin)
+  return filterLoadingBgData(isLoggedIn.get() ? bgDataAfterLogin : bgDataBeforeLogin)
 }
 
 function getLoadingBgIdByUnlockId(unlockId) {

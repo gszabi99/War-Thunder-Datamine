@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, switch_voice_message_list_in_squad
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRow
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -60,7 +62,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
 
       let fastShortcutId = $"ID_FAST_VOICE_MESSAGE_{i + 1}"
 
-      let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(fastShortcutId)
+      let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(fastShortcutId)
       if (!shortcutType.isAssigned(fastShortcutId))
         continue
 
@@ -91,7 +93,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
                         textRawParam = "overlayTextColor:t='disabled'" })
       }
 
-      messagesArray.append(::buildTableRow(fastShortcutId, cells))
+      messagesArray.append(buildTableRow(fastShortcutId, cells))
     }
 
     showObjById("empty_messages_warning", messagesArray.len() == 0, this.scene)

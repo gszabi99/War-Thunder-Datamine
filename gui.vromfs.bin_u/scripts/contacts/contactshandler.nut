@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import save_to_json
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -221,7 +222,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isContactsWindowActive()) {
       let obj = this.scene.findObject("contacts_wnd")
       contactsWndSizes({ pos = obj.getPosRC(), size = obj.getSize() })
-      saveLocalByScreenSize("contacts_sizes", ::save_to_json(contactsWndSizes.value))
+      saveLocalByScreenSize("contacts_sizes", save_to_json(contactsWndSizes.value))
     }
   }
 

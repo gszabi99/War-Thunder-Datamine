@@ -6,6 +6,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const BANNED_SCREENS_SAVE_ID = "preloaderOptions/bannedScreens"
 
@@ -13,7 +14,7 @@ local bannedScreens = {}
 local isInited = false
 
 function initOnce() {
-  if (isInited || !::g_login.isProfileReceived())
+  if (isInited || !isProfileReceived.get())
     return
 
   isInited = true

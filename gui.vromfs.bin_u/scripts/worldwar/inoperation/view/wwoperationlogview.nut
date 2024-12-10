@@ -5,6 +5,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 let time = require("%scripts/time.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
+let { getWWLogsData, getWWLogArmyId, isWWPlayerWinner } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 
 class WwOperationLogView {
   logBlk = null
@@ -38,13 +39,15 @@ class WwOperationLogView {
     this.logEndKey  = ""
     this.detailedInfoText = ""
 
+    let { objectivesStaticBlk, logsArmies, logsBattles } = getWWLogsData()
+
     if (this.logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
         this.logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED) {
       this.logTypeKey += this.getEndToKey()
     }
     else if (this.logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED) {
       this.logEndKey = this.logBlk.type + this.getEndToKey()
-      let statBlk = ::g_ww_logs.objectivesStaticBlk.getBlockByName(this.logBlk.id)
+      let statBlk = objectivesStaticBlk.getBlockByName(this.logBlk.id)
       if (statBlk) {
         this.detailedInfoText = this.getObjectiveName(statBlk)
         this.logTypeKey += this.getObjectiveType(statBlk)
@@ -56,15 +59,15 @@ class WwOperationLogView {
 
     local wwArmyId = ""
     if ("army" in this.logBlk) {
-      wwArmyId = ::g_ww_logs.getLogArmyId(this.logId, this.logBlk.army)
-      let wwArmy = ::g_ww_logs.logsArmies[wwArmyId]
+      wwArmyId = getWWLogArmyId(this.logId, this.logBlk.army)
+      let wwArmy = logsArmies[wwArmyId]
       wwArmy.getView().setId(wwArmyId)
       this.armyData = this.getArmyViewBasicData()
       this.armyData.army.append(wwArmy.getView())
     }
 
     if ("battle" in this.logBlk) {
-      let wwBattle = ::g_ww_logs.logsBattles[this.logBlk.battle.id].battle
+      let wwBattle = logsBattles[this.logBlk.battle.id].battle
       this.detailedInfoText = wwBattle.getLocName()
       this.battleData = {
         battleView = {
@@ -77,11 +80,11 @@ class WwOperationLogView {
 
       for (local i = 0; i < this.logBlk.battle.teams.blockCount(); i++)
         foreach (army in this.logBlk.battle.teams.getBlock(i).armyNames % "item") {
-          let wwBattleArmyId = ::g_ww_logs.getLogArmyId(this.logBlk.thisLogId, army)
+          let wwBattleArmyId = getWWLogArmyId(this.logBlk.thisLogId, army)
           if (wwBattleArmyId == wwArmyId)
             continue
 
-          let wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
+          let wwArmy = logsArmies[wwBattleArmyId]
           wwArmy.getView().setId(wwBattleArmyId)
           if (i == 0)
             this.battleData.armySide1View.army.append(wwArmy.getView())
@@ -93,8 +96,8 @@ class WwOperationLogView {
     if ("damagedArmies" in this.logBlk) {
       this.dmgArmiesData = []
       foreach (army in this.logBlk.damagedArmies) {
-        let wwBattleArmyId = ::g_ww_logs.getLogArmyId(this.logId, army.getBlockName())
-        let wwArmy = ::g_ww_logs.logsArmies[wwBattleArmyId]
+        let wwBattleArmyId = getWWLogArmyId(this.logId, army.getBlockName())
+        let wwArmy = logsArmies[wwBattleArmyId]
         wwArmy.getView().setId(wwBattleArmyId)
         this.dmgArmiesData.append({
           armyName = wwBattleArmyId
@@ -160,7 +163,7 @@ class WwOperationLogView {
 
   function getEventColor() {
     if ("army" in this.logBlk) {
-      let wwArmy = ::g_ww_logs.logsArmies[::g_ww_logs.getLogArmyId(this.logBlk.thisLogId, this.logBlk.army)]
+      let wwArmy = getWWLogsData().logsArmies[getWWLogArmyId(this.logBlk.thisLogId, this.logBlk.army)]
       if (!wwArmy)
         return WW_LOG_COLORS.NEUTRAL_EVENT
 
@@ -178,7 +181,7 @@ class WwOperationLogView {
     if (this.logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
         this.logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED ||
         this.logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
-      return ::g_ww_logs.isPlayerWinner(this.logBlk) ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
+      return isWWPlayerWinner(this.logBlk) ? WW_LOG_COLORS.GOOD_EVENT : WW_LOG_COLORS.BAD_EVENT
 
     return WW_LOG_COLORS.NEUTRAL_EVENT
   }
@@ -187,7 +190,7 @@ class WwOperationLogView {
     if (this.logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
         this.logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED ||
         this.logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED)
-      return ::g_ww_logs.isPlayerWinner(this.logBlk) ? "_win" : "_lose"
+      return isWWPlayerWinner(this.logBlk) ? "_win" : "_lose"
     return ""
   }
 

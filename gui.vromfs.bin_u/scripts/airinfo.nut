@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, calculate_tank_parameters_async, wp_get_repair_cost, calculate_min_and_max_parameters, has_entitlement, get_name_by_gamemode, calculate_ship_parameters_async, shop_purchase_aircraft, wp_get_cost, char_send_blk, clan_get_exp, get_global_stats_blk, shop_time_until_repair, remove_calculate_modification_effect_jobs, is_era_available, shop_get_full_repair_time_by_mode, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -22,9 +23,10 @@ let { getUnitTooltipImage,
 let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { canBuyNotResearched, getBitStatus, isUnitDefault, canResearchUnit,
   isUnitInResearch, isUnitsEraUnlocked, isUnitGroup,
-  isUnitUsable, isUnitFeatureLocked, isUnitResearched, isPrevUnitResearched,
+  isUnitUsable, isUnitResearched, isPrevUnitResearched,
   isPrevUnitBought, isUnitAvailableForGM
 } = require("%scripts/unit/unitStatus.nut")
+let { checkFeatureLock } = require("%scripts/unit/unitChecks.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -134,7 +136,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 }
 
 ::buyUnit <- function buyUnit(unit, silent = false) {
-  if (!::checkFeatureLock(unit, CheckFeatureLockAction.BUY))
+  if (!checkFeatureLock(unit, CheckFeatureLockAction.BUY))
     return false
 
   let canBuyNotResearchedUnit = canBuyNotResearched(unit)
@@ -197,22 +199,9 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return true
 }
 
-::checkFeatureLock <- function checkFeatureLock(unit, lockAction) {
-  if (!isUnitFeatureLocked(unit))
-    return true
-  let params = {
-    purchaseAvailable = hasFeature("OnlineShopPacks")
-    featureLockAction = lockAction
-    unit = unit
-  }
-
-  loadHandler(gui_handlers.VehicleRequireFeatureWindow, params)
-  return false
-}
-
 ::checkForResearch <- function checkForResearch(unit) {
   // Feature lock has higher priority than canResearchUnit.
-  if (!::checkFeatureLock(unit, CheckFeatureLockAction.RESEARCH))
+  if (!checkFeatureLock(unit, CheckFeatureLockAction.RESEARCH))
     return false
 
   let isSquadronVehicle = unit.isSquadronVehicle()
@@ -227,7 +216,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 
   if (isSquadronVehicle) {
     if (min(clan_get_exp(), unit.reqExp - getUnitExp(unit)) <= 0
-      && (!hasFeature("ClanVehicles") || !::is_in_clan())) {
+      && (!hasFeature("ClanVehicles") || !is_in_clan())) {
       if (!hasFeature("ClanVehicles")) {
         ::show_not_available_msg_box()
         return false
@@ -683,7 +672,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let isRented = air.isRented()
   let showAsRent = (showLocalState && isRented) || rentTimeHours > 0
   let isSquadronVehicle = air.isSquadronVehicle()
-  let isInClan = ::is_in_clan()
+  let isInClan = is_in_clan()
   let expCur = getUnitExp(air)
   let showShortestUnitInfo = params?.showShortestUnitInfo ?? air.showShortestUnitInfo
 
@@ -763,7 +752,9 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     obj = holderObj.findObject("aircraft-image-nest")
     if (obj?.isValid() ?? false) {
       obj.findObject("aircraft-image")["background-image"] = getUnitTooltipImage(air)
-      obj.findObject("country-image")["background-image"] = getCountryFlagForUnitTooltip(air.getOperatorCountry())
+      let countryImage = showObjById("country-image", !showShortestUnitInfo, obj)
+      if (!showShortestUnitInfo)
+        countryImage["background-image"] = getCountryFlagForUnitTooltip(air.getOperatorCountry())
     }
   }
 

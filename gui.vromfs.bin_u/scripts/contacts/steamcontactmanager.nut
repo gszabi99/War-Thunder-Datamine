@@ -7,6 +7,7 @@ let { requestUnknownSteamIds } = require("%scripts/contacts/externalContactsServ
 let { findContactBySteamId, steamContactsGroup } = require("%scripts/contacts/contactsManager.nut")
 let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
 let Contact = require("%scripts/contacts/contact.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 enum STEAM_FRIEND_STATE { //excerpted from steam api EPersonaState description
   OFFLINE
@@ -113,7 +114,7 @@ function clearContacts() {
   steamFriendsList.clear()
 }
 
-if (::g_login.isLoggedIn())
+if (isLoggedIn.get())
   updateSteamFriendsList()
 
 eventbus_subscribe("steam.friend_state", function(p) {

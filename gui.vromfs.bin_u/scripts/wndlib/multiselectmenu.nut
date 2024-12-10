@@ -1,7 +1,9 @@
 from "%scripts/dagui_library.nut" import *
+import "%sqstd/math.nut" as stdMath
+
+let { get_array_by_bit_value } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
-let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
@@ -81,7 +83,7 @@ gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurValuesArray() {
-    let selOptions = ::get_array_by_bit_value(this.currentBitMask, this.list)
+    let selOptions = get_array_by_bit_value(this.currentBitMask, this.list)
     return selOptions.map(@(o) getTblValue("value", o))
   }
 

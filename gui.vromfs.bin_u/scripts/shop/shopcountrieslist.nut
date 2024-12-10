@@ -33,8 +33,19 @@ addListenersWithoutEnv({
   DebugUnlockEnabled = @(_p) invalidateVisibleCountriesCache()
 })
 
+function checkCountry(country, _assertText, country_0_available = false) {
+  if (!country || country == "")
+    return false
+  if (country == "country_0")
+    return country_0_available
+  if (isInArray(country, shopCountriesList))
+    return true
+  return false
+}
+
 return {
   shopCountriesList
   updateShopCountriesList
   getShopVisibleCountries
+  checkCountry
 }

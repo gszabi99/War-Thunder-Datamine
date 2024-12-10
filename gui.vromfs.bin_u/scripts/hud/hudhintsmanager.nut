@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import set_hint_options_by_blk, disable_hint
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
+from "%scripts/timeBar.nut" import g_time_bar
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -561,8 +562,8 @@ let g_hud_hints_manager = {
     if (checkObj(timeBarObj)) {
       let totaltime = hintData.hint.getTimerTotalTimeSec(hintData.eventData)
       let currentTime = hintData.hint.getTimerCurrentTimeSec(hintData.eventData, hintData.addTime)
-      ::g_time_bar.setPeriod(timeBarObj, totaltime)
-      ::g_time_bar.setCurrentTime(timeBarObj, currentTime)
+      g_time_bar.setPeriod(timeBarObj, totaltime)
+      g_time_bar.setCurrentTime(timeBarObj, currentTime)
     }
   }
 

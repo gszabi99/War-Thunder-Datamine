@@ -15,6 +15,7 @@ let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
@@ -64,7 +65,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
   }
 
   function refresh(cb = null) {
-    if (!::g_login.isLoggedIn()) {
+    if (!isLoggedIn.get()) {
       data.set(clone defValue)
       if (cb)
         cb({ error = "not logged in" })
@@ -183,7 +184,7 @@ let isUserstatMissingData = Computed(@() userstatUnlocks.value.len() == 0
   || userstatDescList.value.len() == 0
   || userstatStats.value.len() == 0)
 
-let canUpdateUserstat = @() ::g_login.isLoggedIn() && !isInFlight()
+let canUpdateUserstat = @() isLoggedIn.get() && !isInFlight()
 
 local validateTaskTimer = -1
 function validateUserstatData(_dt = 0) {

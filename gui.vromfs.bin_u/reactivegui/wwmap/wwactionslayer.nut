@@ -3,13 +3,13 @@ from "%rGui/globals/ui_library.nut" import *
 let { floor, pow } = require("math")
 let { wwArtilleryGetAttackRadius, wwArtillerySetAttackRadius, wwCanUnloadArmyFromTransport } = require("worldwar")
 let { artilleryReadyToStrike, artilleryAttackRaduis } = require("%rGui/wwMap/wwArtilleryStrikeStates.nut")
-let { getSettings, getSettingsArray } = require("%rGui/wwMap/wwSettings.nut")
+let { getSettings, getSettingsArray } = require("%appGlobals/worldWar/wwSettings.nut")
 let { getMapColor, convertColor4 } = require("%rGui/wwMap/wwMapUtils.nut")
-let { getArtilleryParams, artilleryReadyState } = require("%rGui/wwMap/wwArtilleryUtils.nut")
+let { getArtilleryParams } = require("%rGui/wwMap/wwArtilleryUtils.nut")
 let { convertAbsoluteToMapCoords, convertToRelativeMapCoords
   getMapCellByCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { hoveredArmy, getArmyIcon, getArmyByName } = require("%rGui/wwMap/wwArmyStates.nut")
-let { isPlayerSide, isOperationPaused } = require("%rGui/wwMap/wwOperationStates.nut")
+let { isPlayerSide, isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { transportReadyToUnload, transportReadyToLoad, getLoadedArmyName, getLoadedArmy } = require("%rGui/wwMap/wwTransportUtils.nut")
 let { loadedTransport, cursorPosition } = require("%rGui/wwMap/wwMapStates.nut")
@@ -17,6 +17,7 @@ let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
 let { selectedAirfield } = require("%rGui/wwMap/wwAirfieldsStates.nut")
 let { getZoneById } = require("%rGui/wwMap/wwMapZonesData.nut")
 let { calcAngleBetweenVectors, even } = require("%rGui/wwMap/wwUtils.nut")
+let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 
 let partSize = hdpx(20)
 
@@ -278,9 +279,9 @@ let mkFlyOutArrow = @(areaBounds) function() {
   posTo.y = posTo.y / areaHeight
 
   let isPointerInMap = (posTo.x > 0 && posTo.x < 1) && (posTo.y > 0 && posTo.y < 1)
-  if (airfield == null || isOperationPaused.get() || !isPlayerSide(zoneSideType[airfield.side]) || !isPointerInMap)
+  if (airfield == null || isOperationPausedWatch.get() || !isPlayerSide(zoneSideType[airfield.side]) || !isPointerInMap)
     return {
-      watch = [cursorPosition, selectedAirfield, isOperationPaused, mapZoom]
+      watch = [cursorPosition, selectedAirfield, isOperationPausedWatch, mapZoom]
     }
 
   let { airfieldType, ownedZoneId } = airfield
@@ -298,7 +299,7 @@ let mkFlyOutArrow = @(areaBounds) function() {
   let arrowPos = { x = areaWidth * posTo.x, y = areaHeight * posTo.y }
 
   return {
-    watch = [cursorPosition, selectedAirfield, isOperationPaused, mapZoom]
+    watch = [cursorPosition, selectedAirfield, isOperationPausedWatch, mapZoom]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
     lineWidth = radius * 2

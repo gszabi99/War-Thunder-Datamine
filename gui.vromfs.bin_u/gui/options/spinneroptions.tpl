@@ -80,6 +80,10 @@
         <<@tooltipParams>>
       }
     <</tooltipObj>>
+    <<#onOptHoverFnName>>
+    idx:t='<<idx>>'
+    on_hover:t='<<onOptHoverFnName>>'
+    <</onOptHoverFnName>>
   }
   <</options>>
 

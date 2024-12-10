@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { get_game_params_blk } = require("blkGetters")
@@ -250,7 +251,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.applyReady != loading_is_finished()) {
       this.applyReady = loading_is_finished()
-      let showStart = !::is_multiplayer() && this.gm != GM_TRAINING && !changeStartMission
+      let showStart = !is_multiplayer() && this.gm != GM_TRAINING && !changeStartMission
       if ((this.applyReady && !showStart) || this.finished)
         this.finishLoading()
       else {

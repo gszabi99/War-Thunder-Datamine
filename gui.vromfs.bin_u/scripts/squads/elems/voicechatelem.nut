@@ -11,6 +11,7 @@ let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { get_option_voicechat } = require("chat")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const MAX_VOICE_ELEMS_IN_GC = 2
 
@@ -33,7 +34,7 @@ elemViewType.addTypes({
     model = elemModelType.VOICE_CHAT
 
     updateView = function(obj, _params) {
-      if (!::g_login.isLoggedIn())
+      if (!isLoggedIn.get())
         return
 
       let nestObj = obj.getParent().getParent()

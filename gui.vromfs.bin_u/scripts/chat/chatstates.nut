@@ -7,9 +7,10 @@ let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { check_communications_privilege, check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/xbox/permissions.nut")
 let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 function getXboxChatEnableStatus() {
-  if (!is_platform_xbox || !::g_login.isLoggedIn())
+  if (!is_platform_xbox || !isLoggedIn.get())
     return CommunicationState.Allowed
   return check_crossnetwork_communications_permission()
 }

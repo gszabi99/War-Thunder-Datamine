@@ -28,6 +28,7 @@ let WwUnit = class {
   name  = ""
   unit = null
   count = -1
+  maxCount = -1
   inactiveCount = 0
   weaponPreset = ""
   weaponCount = 0
@@ -41,17 +42,18 @@ let WwUnit = class {
     if (!blk)
       return
 
-    this.name = blk.getBlockName() || getTblValue("name", blk, "")
+    this.name = blk.getBlockName() || (blk?.name ?? "")
     this.unit = getAircraftByName(this.name)
 
     this.wwUnitType = g_ww_unit_type.getUnitTypeByWwUnit(this)
     this.expClass = this.wwUnitType.expClass || (this.unit ? this.unit.expClass.name : "")
-    this.stengthGroupExpClass = getTblValue(this.expClass, strength_unit_expclass_group, this.expClass)
+    this.stengthGroupExpClass = strength_unit_expclass_group?[this.expClass] ?? this.expClass
 
-    this.inactiveCount = getTblValue("inactiveCount", blk, 0)
-    this.count = getTblValue("count", blk, -1)
-    this.weaponPreset = getTblValue("weaponPreset", blk, "")
-    this.weaponCount = getTblValue("weaponCount", blk, 0)
+    this.inactiveCount = blk?.inactiveCount ?? 0
+    this.count = blk?.count ?? -1
+    this.maxCount = blk?.maxCount ?? 0
+    this.weaponPreset = blk?.weaponPreset ?? ""
+    this.weaponCount = blk?.weaponCount ?? 0
   }
 
   function isValid() {
@@ -77,6 +79,10 @@ let WwUnit = class {
 
   function getActiveCount() {
     return this.count - this.inactiveCount
+  }
+
+  function getMaxCount() {
+    return this.maxCount
   }
 
   function getName() {
@@ -105,14 +111,20 @@ let WwUnit = class {
     }
 
     let activeCount = this.getActiveCount()
+    let maxCount = this.getMaxCount()
     let totalCount = this.getCount()
+
+    local activeCountStr = activeCount.tostring()
+    if (maxCount > 0)
+      activeCountStr = $"{activeCountStr}/{maxCount}"
+
     let res = {
       id = this.name
-      isShow = this.count > 0 || !hideZeroCount
+      isShow = this.maxCount > 0 || this.count > 0 || !hideZeroCount
       unitType = this.getUnitTypeText()
       wwUnitType = this.wwUnitType
       name = nameText
-      activeCount = activeCount ? activeCount.tostring() : null
+      activeCount = activeCountStr
       count = totalCount ? totalCount.tostring() : null
       isControlledByAI = this.isControlledByAI()
       weapon = presetText.len() > 0 ? colorize("@activeTextColor", presetText) : ""

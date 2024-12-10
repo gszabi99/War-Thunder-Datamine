@@ -4,7 +4,7 @@ from "%globalScripts/loc_helpers.nut" import loc_checked
 let { Speed, BarAltitude, Tangage, Roll, ClimbSpeed, Altitude, Tas,
  CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 let { mpsToKmh, baseLineWidth, radToDeg } = require("ilsConstants.nut")
-let { round, floor } = require("%sqstd/math.nut")
+let { round, floor, abs } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { format } = require("string")
 let { IlsColor, IlsLineScale, TargetPos, BombCCIPMode, RocketMode, CannonMode,
@@ -538,35 +538,53 @@ function radar() {
   }
 }
 
-let radarReticle = @() {
-  watch = RadarTargetPosValid
-  size = flex()
-  children = RadarTargetPosValid.get() ?
-  [
-    @() {
-      watch = IlsColor
-      size = [pw(3), ph(3)]
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.get()
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 100, 100]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = RadarTargetPos
+function radarReticle(width, height) {
+  return @() {
+    watch = RadarTargetPosValid
+    size = flex()
+    children = RadarTargetPosValid.get() ?
+    [
+      @() {
+        watch = IlsColor
+        size = [pw(3), ph(3)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.get()
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        commands = [
+          [VECTOR_ELLIPSE, 0, 0, 100, 100]
+        ]
+        animations = [
+          { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = function() {
+          let reticleLim = [0.47 * width, 0.47 * height]
+          if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+            anim_start("radar_target_out_of_limit")
+          else
+            anim_request_stop("radar_target_out_of_limit")
+          let RadarTargetPosLim =  [
+            0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+            0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+          ]
+          return {
+            transform = {
+              translate = RadarTargetPosLim
+            }
+          }
         }
       }
-    }
-  ] : null
+    ] : null
+  }
 }
 
-let radarReticlWrap = @(){
-  watch = IsRadarVisible
-  size = flex()
-  children = IsRadarVisible.get() ? radarReticle : null
+function radarReticlWrap(width, height) {
+  return @() {
+    watch = IsRadarVisible
+    size = flex()
+    children = IsRadarVisible.get() ? radarReticle(width, height) : null
+  }
 }
 
 let generateCompassMark = function(num) {
@@ -906,7 +924,7 @@ function ilsSu34(width, height) {
       barAltitude
       distanceScale
       radar()
-      radarReticlWrap
+      radarReticlWrap(width, height)
       compassWrap(width, height, generateCompassMark)
       connectors
       ccip

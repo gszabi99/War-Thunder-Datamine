@@ -7,104 +7,87 @@ from "%scripts/dagui_library.nut" import *
 
 let { fabs } = require("math")
 
-::g_time_bar <- {
-  _direction = {
-    backward = {
-      incSignMultiplier = -1
-    }
-    forward = {
-      incSignMultiplier = 1
-    }
-    stationary = {
-      incSignMultiplier = 0
-    }
+let _direction = {
+  backward = {
+    incSignMultiplier = -1
   }
-
-  /**
-   * Set full period time to timeBar
-   * @time_bar_obj - timeBar object
-   * @period_time - time in seconds
-   */
-  function setPeriod(timeBarObj, periodTime, isCyclic = false) {
-    let speed = periodTime ? 360.0 / periodTime : 0
-    this._setSpeed(timeBarObj, speed)
-
-    if (isCyclic) {
-      timeBarObj["inc-min"] = "0.0"
-      timeBarObj["inc-max"] = "360.0"
-      timeBarObj["inc-is-cyclic"] = "yes"
-    }
+  forward = {
+    incSignMultiplier = 1
   }
-
-  function _setSpeed(timeBarObj, speed) {
-    speed = this.getDirection(timeBarObj).incSignMultiplier * fabs(speed)
-    timeBarObj["inc-factor"] = speed.tostring()
+  stationary = {
+    incSignMultiplier = 0
   }
+}
 
-  function _getSpeed(timeBarObj) {
-    return (timeBarObj?["inc-factor"] ?? 0).tofloat()
-  }
+let setValue = @(timeBarObj, value) timeBarObj["sector-angle-2"] = (360 * value).tointeger().tostring()
 
-  /**
-   * Set current time to timeBar
-   * @time_bar_obj - timeBar object
-   * @current_time - time in seconds
-   */
-  function setCurrentTime(timeBarObj, currentTime) {
-    let curVal = currentTime * this._getSpeed(timeBarObj)
-    timeBarObj["sector-angle-2"] = curVal.tostring()
-  }
+let _getSpeed = @(timeBarObj) (timeBarObj?["inc-factor"] ?? 0).tofloat()
 
-  function setValue(timeBarObj, value) {
-    timeBarObj["sector-angle-2"] = (360 * value).tointeger().tostring()
-  }
+function setCurrentTime(timeBarObj, currentTime) {
+  let curVal = currentTime * _getSpeed(timeBarObj)
+  timeBarObj["sector-angle-2"] = curVal.tostring()
+}
 
-  function getDirection(timeBarObj) {
-    return this._direction[this.getDirectionName(timeBarObj)]
-  }
+let getDirectionName = @(timeBarObj) (timeBarObj?.direction != null) ? timeBarObj.direction : "forward"
 
-  function getDirectionName(timeBarObj) {
-    if (timeBarObj?.direction != null)
-      return timeBarObj.direction
-    else
-      return "forward"
-  }
+/**
+ * Set current time to timeBar
+ * @time_bar_obj - timeBar object
+ * @current_time - time in seconds
+ */
 
-  /**
-   * Set clockwise direction of time bar.
-   * @time_bar_obj - timeBar object
-   */
-  function setDirectionForward(timeBarObj) {
-    this._setDirection(timeBarObj, "forward")
-  }
+let getDirection = @(timeBarObj)_direction[getDirectionName(timeBarObj)]
 
-  /**
-   * Set counter clockwise direction of time bar.
-   * @time_bar_obj - timeBar object
-   */
-  function setDirectionBackward(timeBarObj) {
-    this._setDirection(timeBarObj, "backward")
-  }
+function _setSpeed(timeBarObj, speed) {
+  speed = getDirection(timeBarObj).incSignMultiplier * fabs(speed)
+  timeBarObj["inc-factor"] = speed.tostring()
+}
 
-  /**
-   * Set timer stationary.
-   * @time_bar_obj - timeBar object
-   */
-  function pauseTimer(timeBarObj) {
-    this._setSpeed(timeBarObj, 0)
-  }
+function _setDirection(timeBarObj, direction) {
+  let w = _getSpeed(timeBarObj)
+  timeBarObj.direction = direction
+  _setSpeed(timeBarObj, w)
+}
 
-  /**
-   * Toggle direction of time bar.
-   * @time_bar_obj - timeBar object
-   */
-  function toggleDirection(timeBarObj) {
-    this._setDirection(timeBarObj, this.getDirectionName(timeBarObj) == "forward" ? "backward" : "forward")
-  }
+let pauseTimer = @(timeBarObj) _setSpeed(timeBarObj, 0)
 
-  function _setDirection(timeBarObj, direction) {
-    let w = this._getSpeed(timeBarObj)
-    timeBarObj.direction = direction
-    this._setSpeed(timeBarObj, w)
+/**
+ * Set full period time to timeBar
+ * @time_bar_obj - timeBar object
+ * @period_time - time in seconds
+ */
+function setPeriod(timeBarObj, periodTime, isCyclic = false) {
+  let speed = periodTime ? 360.0 / periodTime : 0
+  _setSpeed(timeBarObj, speed)
+
+  if (isCyclic) {
+    timeBarObj["inc-min"] = "0.0"
+    timeBarObj["inc-max"] = "360.0"
+    timeBarObj["inc-is-cyclic"] = "yes"
   }
+}
+
+let setDirectionForward = @(timeBarObj) _setDirection(timeBarObj, "forward")
+
+let setDirectionBackward = @(timeBarObj) _setDirection(timeBarObj, "backward")
+
+let toggleDirection= @(timeBarObj)
+  _setDirection(timeBarObj, getDirectionName(timeBarObj) == "forward" ? "backward" : "forward")
+
+let g_time_bar = {
+  setValue
+  _getSpeed
+  setCurrentTime
+  getDirectionName
+  getDirection
+  pauseTimer
+  _setSpeed
+  setPeriod
+  toggleDirection
+  setDirectionBackward
+  setDirectionForward
+}
+
+return {
+  g_time_bar
 }

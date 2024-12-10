@@ -8,6 +8,7 @@ let DataBlock  = require("DataBlock")
 let { wwGetOperationId } = require("worldwar")
 let { WwOperationModel } = require("model/wwOperationModel.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+let { ArmyFlags } = require("worldwarConst")
 
 ::g_operations <- {
   operationStatusById = {}
@@ -54,7 +55,7 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
     foreach (wwArmyByGroup in wwArmyByStatus)
       foreach (wwArmy in wwArmyByGroup)
         if (wwArmy.getArmyGroupIdx() == groupIdx
-          && !(wwArmy.getArmyFlags() & EAF_NO_AIR_LIMIT_ACCOUNTING)
+          && !(wwArmy.getArmyFlags() & ArmyFlags.EAF_NO_AIR_LIMIT_ACCOUNTING)
             && g_ww_unit_type.isAir(wwArmy.getUnitType())
               && wwArmy.getOverrideUnitType() == overrideUnitType)
           armyCount++

@@ -690,7 +690,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let chapterObj = this.eventsListObj.findObject(chapterId)
     if (! chapterObj)
       return
-    let collapsed = chapterObj.collapsed == "yes" ? true : false
+    let collapsed = chapterObj.collapsed == "yes"
     let curChapter = events.getChapter(chapterId)
     if (! curChapter)
       return

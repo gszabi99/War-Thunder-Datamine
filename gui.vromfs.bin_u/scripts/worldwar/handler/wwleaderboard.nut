@@ -1,8 +1,9 @@
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let DataBlock  = require("DataBlock")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
@@ -237,7 +238,7 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
         @(lbPageData) callback(lbPageData))
     }
 
-    if (this.isUsersLeaderboard() || (this.forClans && ::is_in_clan())) {
+    if (this.isUsersLeaderboard() || (this.forClans && is_in_clan())) {
       let callback = Callback(
         function(lbSelfData) {
           this.selfRowData = wwLeaderboardData.addClanInfoIfNeedAndConvert(this.requestData.modeName, lbSelfData, this.isCountriesLeaderboard()).rows

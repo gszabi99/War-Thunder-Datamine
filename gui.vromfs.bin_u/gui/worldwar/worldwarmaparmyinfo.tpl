@@ -7,7 +7,7 @@ tdiv {
     margin:t='0, 1@framePadding'
 
     tdiv {
-      size:t='pw/3, ph'
+      size:t='pw/4, ph'
       cardImg {
         pos:t='50%pw-50%w, 50%ph-50%h'
         position:t='relative'
@@ -16,7 +16,7 @@ tdiv {
     }
 
     tdiv {
-      size:t='pw/3, ph'
+      size:t='pw/2, ph'
       tdiv {
         pos:t='50%pw-50%w, 0'
         position:t='relative'
@@ -35,9 +35,7 @@ tdiv {
             position:t='absolute'
           }
           armyUnitType {
-            text:t='<<getUnitTypeCustomText>>'
-            pos:t='50%pw-50%w, 50%ph-50%h'
-            position:t='absolute'
+            background-image:t='<<getUnitTypeIcon>>'
           }
           <<#showArmyGroupText>>
           armyGroupText {
@@ -64,7 +62,7 @@ tdiv {
     }
 
     tdiv {
-      size:t='pw/3, ph'
+      size:t='pw/4, ph'
       clanTag {
         pos:t='50%pw-50%w, 50%ph-50%h'
         position:t='relative'

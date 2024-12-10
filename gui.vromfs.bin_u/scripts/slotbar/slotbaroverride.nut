@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_country_available
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -51,7 +52,7 @@ function getMissionEditSlotbarBlk(missionName) {
 function calcSlotbarOverrideByMissionName(missionName, event = null) {
   local res = null
   let gmEditSlotbar = event?.mission_decl.editSlotbar
-  let editSlotbar = gmEditSlotbar ? ::build_blk_from_container(gmEditSlotbar) //!!!FIX ME Will be better to turn editSlotbar data block from missions config into table
+  let editSlotbar = gmEditSlotbar ? build_blk_from_container(gmEditSlotbar) //!!!FIX ME Will be better to turn editSlotbar data block from missions config into table
     : getMissionEditSlotbarBlk(missionName)
   if (!editSlotbar)
     return res

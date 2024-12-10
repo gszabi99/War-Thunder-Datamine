@@ -18,6 +18,8 @@ let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatu
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+
 let selectedCrews = persist("selectedCrews", @() [])
 
 function getCrewsListByCountry(country) {
@@ -59,7 +61,7 @@ function selectAvailableCrew(countryId) {
 }
 
 function saveSelectedCrews() {
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   let blk = DataBlock()

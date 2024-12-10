@@ -2,8 +2,10 @@ from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
-from "%scripts/utils_sa.nut" import colorTextByValues
+from "%scripts/utils_sa.nut" import colorTextByValues, get_tomoe_unit_icon
+from "%scripts/clans/clanState.nut" import is_in_clan
 
+let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
@@ -22,7 +24,7 @@ let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getEsUnitType, getUnitName,
   bit_unit_status, getUnitReqExp,
-  getUnitExp
+  getUnitExp, image_for_air
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -188,7 +190,7 @@ function getUnitSlotResearchProgressText(unit, priceText = "") {
     return ""
 
   let isSquadronVehicle = unit?.isSquadronVehicle?() ?? false
-  if (isSquadronVehicle && !::is_in_clan()
+  if (isSquadronVehicle && !is_in_clan()
     && min(clan_get_exp(), unitExpReq - unitExpCur) <= 0)
     return ""
 
@@ -209,7 +211,7 @@ function getUnitSlotProgressStatus(unit, params) {
     || (diffSquadronExp > 0 && diffSquadronExp >= unitExpReq)
 
   let isVehicleInResearch = !forceNotInResearch && isUnitInResearch(unit)
-    && (!isSquadronVehicle || ::is_in_clan() || diffSquadronExp > 0)
+    && (!isSquadronVehicle || is_in_clan() || diffSquadronExp > 0)
 
   return isFull ? "researched"
     : isVehicleInResearch ? "research"
@@ -606,8 +608,8 @@ function buildGroupSlot(id, unit, params) {
   //
 
   let shopAirImage = ::get_unit_preset_img(unit.name)
-    ?? (::is_harmonized_unit_image_reqired(nextAir)
-        ? ::get_tomoe_unit_icon(unit.name, !unit.name.endswith("_group"))
+    ?? (is_harmonized_unit_image_required(nextAir)
+        ? get_tomoe_unit_icon(unit.name, !unit.name.endswith("_group"))
         : "!{0}".subst(unit?.image ?? "#ui/unitskin#planes_group.ddsx"))
   let groupSlotView = params.__merge({
     slotId              = id
@@ -677,7 +679,7 @@ function buildCommonUnitSlot(id, unit, params) {
 
   let isBroken            = isUnitBroken(unit)
   let unitRarity          = getUnitRarity(unit)
-  let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
+  let isLockedSquadronVehicle = isSquadronVehicle && !is_in_clan() && diffExp <= 0
 
   if (status == DEFAULT_STATUS) {
     let bitStatus = getBitStatus(unit, params)
@@ -922,7 +924,7 @@ function buildCommonUnitSlot(id, unit, params) {
     shopStatus          = status
     unitRarity          = unitRarity
     isBroken            = isLocalState && isBroken
-    shopAirImg          = ::image_for_air(unit)
+    shopAirImg          = image_for_air(unit)
     isPkgDev            = unit.isPkgDev
     isRecentlyReleased  = unit.isRecentlyReleased()
     discountId          = $"{id}-discount"

@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import is_flight_menu_disabled, get_is_in_flig
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
@@ -636,7 +637,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let rowData = {
         text = loc($"controls/help/{shortcutId}_0")
-        shortcutMarkup = ::g_shortcut_type.getShortcutMarkup(shortcutId, this.preset)
+        shortcutMarkup = g_shortcut_type.getShortcutMarkup(shortcutId, this.preset)
       }
       view.rows.append(rowData)
     }

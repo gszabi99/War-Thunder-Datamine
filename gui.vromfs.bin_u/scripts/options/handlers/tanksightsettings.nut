@@ -9,7 +9,7 @@ let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_sett
   TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings,
   reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair, delete_user_tank_sight_preset
 } = require("tankSightSettings")
-let { create_option_combobox } = require("%scripts/options/optionsExt.nut")
+let { create_option_combobox } = require("%scripts/options/optionsCtors.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { doesLocTextExist } = require("dagor.localize")

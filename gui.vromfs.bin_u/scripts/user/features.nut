@@ -290,6 +290,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   optionGFXAPI = true
   optionGFXAPIVulkan = true
   optionConsolePreset = true
+  ReplaySystemWindow = true
 })
 
 let override = Watched({})

@@ -1,11 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { getSettings } = require("%rGui/wwMap/wwSettings.nut")
+let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
 let { selectColorBySide } = require("%rGui/wwMap/wwMapUtils.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { zonesSides, zonesConnectedToRear } = require("%rGui/wwMap/wwMapStates.nut")
 let { activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
+let { isShowZonesFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
 
 let transparentColor = 0x00000000
 
@@ -23,9 +24,10 @@ function getBackgroundParams(zoneSide, rearForTeam, zoneConnectedToRear) {
 }
 
 let mkMapZoneBackground = @(zoneData) function() {
-  if (zonesSides.get().len() == 0 || zonesConnectedToRear.get().len() == 0)
+  let isShowZoneBackground = Computed(@() zonesSides.get().len() > 0 && zonesConnectedToRear.get().len() > 0 && isShowZonesFilter.get())
+  if (!isShowZoneBackground.get())
     return {
-      watch = [zonesSides, zonesConnectedToRear]
+      watch = [isShowZoneBackground, zonesSides, zonesConnectedToRear]
     }
 
   let { pos, size, coords, rearForTeam, id } = zoneData
@@ -33,7 +35,7 @@ let mkMapZoneBackground = @(zoneData) function() {
 
   let { color, isRounded } = getBackgroundParams(zonesSides.get()[id], rearForTeam, zonesConnectedToRear.get()[id])
   return {
-    watch = [zonesSides, zonesConnectedToRear]
+    watch = [isShowZoneBackground, zonesSides, zonesConnectedToRear]
     rendObj = ROBJ_VECTOR_CANVAS
     pos = [pw(100 * pos.x), ph(100 * pos.y)]
     size = [pw(100 * size.w), ph(100 * size.h)]

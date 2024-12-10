@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
 let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
@@ -197,7 +198,7 @@ g_hud_action_bar_type.template <- {
     hudUnitType = hudUnitType ?? getHudUnitType()
     let shortcut = this.getShortcut(actionItem, hudUnitType)
     let isBound = shortcut != null
-      && ::g_shortcut_type.getShortcutTypeByShortcutId(shortcut).isAssigned(shortcut)
+      && g_shortcut_type.getShortcutTypeByShortcutId(shortcut).isAssigned(shortcut)
     if (isBound || (!this.isForWheelMenu() && !this.isForSelectWeaponMenu() && !this.isForMFM))
       return shortcut
 

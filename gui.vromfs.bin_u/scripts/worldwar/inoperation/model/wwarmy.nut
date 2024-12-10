@@ -17,6 +17,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { ceil } = require("math")
 let { getLoadedTransport } = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+let { ArmyFlags } = require("worldwarConst")
+let { getIcon } = require("%scripts/worldWar/wwArmyIconOverride.nut")
 
 local WwArmy
 function getTransportedArmiesData(formation) {
@@ -71,9 +73,9 @@ let WwArmyView = class {
     return g_ww_unit_type.getUnitTypeFontIcon(this.formation.getUnitType())
   }
 
-  function getUnitTypeCustomText() {
+  function getUnitTypeIcon() {
     let overrideIcon = "getOverrideIcon" in this.formation ? this.formation.getOverrideIcon() : null
-    return overrideIcon || this.getUnitTypeText()
+    return overrideIcon ?? g_ww_unit_type.getUnitTypeIcon(this.formation.getUnitType())
   }
 
   function getDescription() {
@@ -104,7 +106,7 @@ let WwArmyView = class {
 
   function unitsList() {
     let wwUnits = this.formation.getUnits().reduce(function (memo, unit) {
-      if (unit.getActiveCount())
+      if (unit.getMaxCount() > 0 || unit.getActiveCount() > 0)
         memo.append(unit)
       return memo
     }, [])
@@ -118,7 +120,7 @@ let WwArmyView = class {
         units = wwActionsWithUnitsList.getUnitsListViewParams({ wwUnits = army.getUnits() }),
         title = "".concat(loc("worldwar/transportedArmy"),
           loc("ui/parentheses/space", {
-            text = army.getOverrideIcon() ?? g_ww_unit_type.getUnitTypeFontIcon(army.unitType) }),
+            text = army.getOverrideFontIcon() ?? g_ww_unit_type.getUnitTypeFontIcon(army.unitType) }),
           loc("ui/colon"))
       })
     let view = this.getSectionsView(sections, isMultipleColumns)
@@ -228,7 +230,7 @@ let WwArmyView = class {
     let refillTimeSec = this.formation.getNextAmmoRefillTime()
     if (refillTimeSec > 0)
       return " ".concat(time.hoursToString(time.secondsToHours(refillTimeSec), false, true),
-        loc("weapon/torpedoIcon"))
+        this.formation.isSAM ? loc("weapon/rocketIcon") : loc("weapon/torpedoIcon"))
     return ""
   }
 
@@ -350,13 +352,13 @@ let WwArmyView = class {
 
     if (this.formation.isStrikePreparing()) {
       let timeToPrepareStike = this.formation.artilleryAmmo.getTimeToNextStrike()
-      return "".concat(loc("worldwar/artillery/aiming"), loc("ui/colon"),
+      return "".concat(loc($"worldwar/{this.formation.isSAM ? "sam" : "artillery"}/aiming"), loc("ui/colon"),
         time.hoursToString(time.secondsToHours(timeToPrepareStike), false, true))
     }
 
     if (this.formation.isStrikeInProcess()) {
       let timeToFinishStike = this.formation.artilleryAmmo.getTimeToCompleteStrikes()
-      return "".concat(loc("worldwar/artillery/firing"), loc("ui/colon"),
+      return "".concat(loc($"worldwar/{this.formation.isSAM ? "sam" : "artillery"}/firing"), loc("ui/colon"),
         time.hoursToString(time.secondsToHours(timeToFinishStike), false, true))
     }
 
@@ -364,7 +366,7 @@ let WwArmyView = class {
       return "".concat(loc("worldwar/artillery/preparation"), loc("ui/colon"),
         time.hoursToString(time.secondsToHours(this.formation.secondsLeftToFireEnable()), false, true))
 
-    return loc("worldwar/artillery/can_fire")
+    return loc($"worldwar/{this.formation.isSAM ? "sam" : "artillery"}/can_fire")
   }
 
   function isAlert() { // warning disable: -named-like-return-bool
@@ -388,7 +390,7 @@ let WwArmyView = class {
 
   function getAmmoText() {
     return  "".concat(this.formation.getAmmoCount(), "/", this.formation.getMaxAmmoCount(), " ",
-      loc("weapon/torpedoIcon"))
+      this.formation.isSAM ? loc("weapon/rocketIcon") : loc("weapon/torpedoIcon"))
   }
 
   function getShortInfoText() {
@@ -422,9 +424,6 @@ let WwArmyView = class {
   function getZoneName() {
     let wwArmyPosition = this.formation.getPosition()
     if (!wwArmyPosition)
-      return ""
-
-    if (g_ww_unit_type.isAir(this.formation.getUnitType()))
       return ""
 
     return loc("ui/parentheses",
@@ -474,8 +473,11 @@ let WwFormation = class {
   armyView = null
   formationId = null
   mapObjectName = "army"
+  mapObjectPos = null
   artilleryAmmo = null
   hasArtilleryAbility = false
+  isSAM = false
+  hasEntrenchAbility = false
   overrideIconId = ""
   loadedArmyType = ""
 
@@ -600,10 +602,6 @@ let WwFormation = class {
     return this.morale
   }
 
-  function getPosition() {
-    return null
-  }
-
   function isFormation() {
     return true
   }
@@ -632,11 +630,18 @@ let WwFormation = class {
     return this.mapObjectName
   }
 
-  function getOverrideIcon() {
+  function getOverrideFontIcon() {
     if (u.isEmpty(this.overrideIconId))
       return null
 
     return wwGetArmyOverrideIcon(this.overrideIconId, this.loadedArmyType, this.hasArtilleryAbility)
+  }
+
+  function getOverrideIcon() {
+    if (u.isEmpty(this.overrideIconId) && !this.hasArtilleryAbility)
+      return null
+
+    return getIcon(this.name, this.overrideIconId, this.loadedArmyType, this.hasArtilleryAbility)
   }
 
   function getOverrideUnitType() {
@@ -651,6 +656,14 @@ let WwFormation = class {
 
   function setMapObjectName(mapObjName) {
     this.mapObjectName = mapObjName
+  }
+
+  function setPosition(mapObjPos) {
+    this.mapObjectPos = mapObjPos
+  }
+
+  function getPosition() {
+    return this.mapObjectPos
   }
 
   function getUnitsNumber() {
@@ -716,7 +729,8 @@ WwArmy = class(WwFormation) {
     this.stoppedAtMillisec = getTblValue("stoppedAtMillisec", blk, 0)
     this.overrideIconId = getTblValue("iconOverride", blk, "")
     this.hasArtilleryAbility = blk?.specs.canArtilleryFire ?? false
-
+    this.isSAM = this.overrideIconId == "sam_site"
+    this.hasEntrenchAbility = this.armyFlags & ArmyFlags.EAF_CAN_ENTRENCH
     let armyArtilleryParams = this.hasArtilleryAbility ?
       ::g_world_war.getArtilleryUnitParamsByBlk(blk.getBlockByName("units")) : null
     this.artilleryAmmo.setArtilleryParams(armyArtilleryParams)

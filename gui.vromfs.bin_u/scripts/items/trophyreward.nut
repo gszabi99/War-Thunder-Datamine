@@ -1,15 +1,14 @@
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getUnitTypeText, getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getPrizeText, getPrizeCurrencyCfg, getDescriptonView, getPrizeTooltipConfig } = require("%scripts/items/prizesView.nut")
 
@@ -151,7 +150,7 @@ function rewardsSortComparator(a, b) {
     return image
   }
   else if (rewardType == "unit" || rewardType == "rentedUnit")
-    style = "_".concat(style, ::getUnitTypeText(getEsUnitType(getAircraftByName(rewardValue))).tolower())
+    style = "_".concat(style, getUnitTypeText(getEsUnitType(getAircraftByName(rewardValue))).tolower())
   else if (rewardType == "resource" || rewardType == "resourceType") {
     if (config.resourceType) {
       let visCfg = this.getDecoratorVisualConfig(config)

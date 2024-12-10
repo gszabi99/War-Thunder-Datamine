@@ -125,7 +125,6 @@ foreach (fn in [
   "%scripts/loading/loading.nut"
 
   "%scripts/options/gamepadCursorControls.nut"
-  "%scripts/unit/unitType.nut"
   "%scripts/loading/bhvLoadingTip.nut"
   "%scripts/options/countryFlagsPreset.nut"
 
@@ -245,7 +244,8 @@ local isFullScriptsLoaded = false
 if (is_platform_pc && getSystemConfigOption("debug/netLogerr") == null)
     setSystemConfigOption("debug/netLogerr", true)
 
-if (::g_login.isAuthorized() || ::should_disable_menu()) { //scripts reload
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
+if (isAuthorized.get() || ::should_disable_menu()) { //scripts reload
   ::load_scripts_after_login_once()
   if (!isInReloading())
     run_reactive_gui()

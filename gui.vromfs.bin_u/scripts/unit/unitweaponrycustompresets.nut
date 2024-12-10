@@ -12,9 +12,10 @@ let { getWeaponToFakeBulletMask, updateSecondaryBullets } = require("%scripts/we
 let customPresetsConfigByUnit = mkWatched(persist, "customPresetsConfigByUnit", {})
 let customPresetsByUnit = mkWatched(persist, "customPresetsByUnit", {})
 let { addTask } = require("%scripts/tasker.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 function loadCustomPresets(unitName) {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
 
   let blk = DataBlock()

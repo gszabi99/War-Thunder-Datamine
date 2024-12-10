@@ -2,11 +2,12 @@ from "%rGui/globals/ui_library.nut" import *
 
 let rwrSetting = require("%rGui/rwrSetting.nut")
 
-let { rwrTargetsTriggers, rwrTargets, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
+let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
 
 let gridColor = Color(10, 202, 10, 250)
 let targetColor = Color(250, 250, 10, 250)
 let ownShipColor = Color(0, 250, 250, 250)
+let backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -60,7 +61,7 @@ function calcRwrTargetRadius(target) {
 }
 
 function createRwrTarget(index, settings, objectStyle) {
-  let target = rwrTargets[index]
+  let target = rwrTargets[rwrTargetsOrder[index]]
 
   if (!target.valid || target.groupId == null)
     return @() { }
@@ -109,8 +110,27 @@ function createRwrTarget(index, settings, objectStyle) {
     }
   }
 
-  let newTargetLineWidthMult = Computed(@() (target.age0 * RwrNewTargetHoldTimeInv.get() < 1.0 ? 3.0 : 1.0))
   let ageOpacity = Computed(@() (target.age * RwrSignalHoldTimeInv.get() < 0.25 ? 1.0 : 0.1))
+
+  let backGroundSizeRel = targetAttackIconSizeRel * 1.25
+  let background = @() {
+    watch = ageOpacity
+    color = backgroundColor
+    opacity = ageOpacity.get()
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = baseLineWidth * objectStyle.lineWidthScale * 3.0
+    fillColor = backgroundColor
+    size = flex()
+    commands = [
+      [ VECTOR_RECTANGLE,
+        (target.x * targetRadiusRel - backGroundSizeRel) * 100.0,
+        (target.y * targetRadiusRel - backGroundSizeRel) * 100.0,
+        backGroundSizeRel * 2.0 * 100.0,
+        backGroundSizeRel * 2.0 * 100.0 ]
+    ]
+  }
+
+  let newTargetLineWidthMult = Computed(@() (target.age0 * RwrNewTargetHoldTimeInv.get() < 1.0 ? 3.0 : 1.0))
   local icon = null
   if (directionGroup != null && directionGroup?.type != null) {
     local commands = null
@@ -138,7 +158,7 @@ function createRwrTarget(index, settings, objectStyle) {
       ]
     if (commands != null) {
       icon = @() {
-        watch = [newTargetLineWidthMult, ageOpacity]
+        watch = [ageOpacity, newTargetLineWidthMult]
         color = targetColor
         opacity = ageOpacity.get()
         rendObj = ROBJ_VECTOR_CANVAS
@@ -157,6 +177,7 @@ function createRwrTarget(index, settings, objectStyle) {
         pos = [pw(50), ph(50)]
         size = flex()
         children = [
+          background,
           icon,
           attack
         ]

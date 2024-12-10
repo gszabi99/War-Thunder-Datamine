@@ -19,6 +19,7 @@ enum INFO_DETAIL { //text detalization level. for weapons and modifications name
   EXTENDED   //full description + addtitional info for more detailed tooltip
 }
 
+const fakeBullets_prefix = "fake"
 return {
   UNIT_WEAPONS_ZERO    = 0
   UNIT_WEAPONS_WARNING = 1
@@ -28,4 +29,5 @@ return {
   INFO_DETAIL
 
   weaponsItem
+  fakeBullets_prefix
 }

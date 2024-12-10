@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import save_online_single_job, hangar_customization_preset_create, save_profile, hangar_customization_preset_set_name, hangar_customization_preset_get_name, hangar_customization_preset_calc_usage, hangar_customization_preset_unassign_from_skin, hangar_customization_preset_assign_to_skin
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -43,7 +44,7 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     let objCombobox = this.scene.findObject("master_skin")
     let selIdx = this.getIndexBySkinId(this.masterSkinId)
-    let markup = ::create_option_combobox(null, this.skinList.items, selIdx, null, false)
+    let markup = create_option_combobox(null, this.skinList.items, selIdx, null, false)
     this.guiScene.replaceContentFromText(objCombobox, markup, markup.len(), this)
     this.updateMasterPreset()
   }

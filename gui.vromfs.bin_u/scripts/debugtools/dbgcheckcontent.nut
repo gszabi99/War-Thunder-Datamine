@@ -1,3 +1,4 @@
+from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -22,6 +23,8 @@ let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { isInFlight } = require("gameplayBinding")
+let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
+let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 
 local skyquakePath = debug_get_skyquake_path()
 
@@ -175,7 +178,7 @@ function debug_check_unit_naming() {
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._0[i] != "" &&
-        ::utf8_strlen(names[c]._shop[i]) > ::utf8_strlen(names[c]._0[i])) {
+        utf8_strlen(names[c]._shop[i]) > utf8_strlen(names[c]._0[i])) {
         log(format("    '%s_shop' (\"%s\") is longer than '%s_0' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._shop[i], unitIds[i], names[c]._0[i]))
         count++
@@ -189,7 +192,7 @@ function debug_check_unit_naming() {
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
       if (names[c]._shop[i] != "" && names[c]._1[i] != "" &&
-        ::utf8_strlen(names[c]._1[i]) > ::utf8_strlen(names[c]._shop[i])) {
+        utf8_strlen(names[c]._1[i]) > utf8_strlen(names[c]._shop[i])) {
         log(format("    '%s_1' (\"%s\") is longer than '%s_shop' (\"%s\"), probably names are mixed up",
           unitIds[i], names[c]._1[i], unitIds[i], names[c]._shop[i]))
         count++
@@ -292,7 +295,7 @@ local unitImagesCheckCfgs = [
     getUnitIdByImgFn = @(fn) fn.indexof(".") != null ? fn.slice(0, fn.indexof(".")) : ""
     getImgFnByUnitId = @(unitId) $"{unitId}.tga"
     getImgFnForUnit = function(unit) {
-      local img = ::image_for_air(unit)
+      local img = image_for_air(unit)
       return "".concat(img.slice(lastIndexOf(img, "#") + 1), ".tga")
     }
   },
@@ -306,10 +309,10 @@ local unitImagesCheckCfgs = [
     getUnitIdByImgFn = @(fn) fn.indexof(".") != null ? fn.slice(0, fn.indexof(".")) : ""
     getImgFnByUnitId = @(unitId) $"{unitId}.tga"
     getImgFnForUnit = function(unit) {
-      local img = ::image_for_air(unit)
+      local img = image_for_air(unit)
       return "".concat(img.slice(lastIndexOf(img, "#") + 1), ".tga")
     }
-    filterUnits = @(unit) ::is_harmonized_unit_image_reqired(unit)
+    filterUnits = @(unit) is_harmonized_unit_image_required(unit)
     onStart  = function() {
     }
     onFinish = function() {

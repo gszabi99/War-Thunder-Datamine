@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_option_gamma, is_internet_radio_station_removable, remove_internet_radio_station, get_internet_radio_options, set_option_gamma, gchat_voice_echo_test
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -12,8 +13,8 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_gui_option } = require("guiOptions")
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
-let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
-  } = require("%scripts/options/systemOptions.nut")
+let { fillSystemGuiOptions, resetSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient,
+  onSystemOptionControlHover } = require("%scripts/options/systemOptions.nut")
 let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
@@ -49,7 +50,7 @@ function getOptionsWndOpenParams(group) {
 
   return {
     titleText = isInFlight()
-      ? ::is_multiplayer() ? null : loc("flightmenu/title")
+      ? is_multiplayer() ? null : loc("flightmenu/title")
       : loc("mainmenu/btnGameplay")
     optGroups = options
     wndOptionsMode = OPTIONS_MODE_GAMEPLAY
@@ -79,6 +80,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   filterText = ""
 
   getOptionInfoViewFn = null
+  lastHoveredRowId = null
 
   function initScreen() {
     if (!this.optGroups)
@@ -119,6 +121,9 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     let newGroup = obj.getValue()
     if (this.curGroup == newGroup && !(newGroup in this.optGroups))
       return
+
+    this.scene.findObject("option_info_container").show(false)
+    this.lastHoveredRowId = null
 
     this.resetNavigation()
 
@@ -453,30 +458,36 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       objParent.setValue(val)
   }
 
-  onOptionContainerUnhover = @() this.scene.findObject("option_info_container").show(false)
-
   function onOptionContainerHover(obj) {
-    if (obj?.disabled == "yes")
+    if (!this.scene?.isValid() || !obj?.isValid() || obj?.disabled == "yes")
       return
     let id = obj.id.split("_tr")[0]
     let infoContainerObj = this.scene.findObject("option_info_container")
+    if (!infoContainerObj?.isValid())
+      return
 
-    this.guiScene.performDelayed(this, function() {  // To ensure that showing info block happens after hiding the previous one
-      if (!infoContainerObj?.isValid())
-        return
+    let opt = this.get_option_by_id(id)
+    let view = this.getOptionInfoViewFn?(id)
+      ?? {
+            title = opt?.text ?? loc($"options/{id}")
+            description = opt?.hint ?? loc($"guiHints/{id}", "")
+         }
+    let markup = handyman.renderCached("%gui/options/optionInfo.tpl", view)
 
-      let opt = this.get_option_by_id(id)
-      let view = this.getOptionInfoViewFn?(id)
-        ?? {
-              title = opt?.text ?? loc($"options/{id}")
-              description = opt?.hint ?? loc($"guiHints/{id}", "")
-           }
-      let markup = handyman.renderCached("%gui/options/optionInfo.tpl", view)
+    this.guiScene.replaceContentFromText(infoContainerObj, markup, markup.len(), this)
+    infoContainerObj.show(true)
 
-      this.guiScene.replaceContentFromText(infoContainerObj, markup, markup.len(), this)
-      infoContainerObj.show(true)
-    })
+    if (this.lastHoveredRowId != null) {
+      let lastHoveredRow = this.scene.findObject(this.lastHoveredRowId)
+      if (lastHoveredRow?.isValid())
+        lastHoveredRow.active="no"
+    }
+    obj.active = "yes"
+    this.lastHoveredRowId = obj.id
   }
+
+  onSystemOptionControlHover = @(obj) this.guiScene.performDelayed({}, // Ensures it's called after onOptionContainerHover
+    @() onSystemOptionControlHover(obj))
 
   function fillOptionsList(group) {
     this.curGroup = group
@@ -493,7 +504,6 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     this.optionsConfig.__update({
       onHoverFnName = config?.isInfoOnTheRight ? "onOptionContainerHover" : null
-      onUnhoverFnName = config?.isInfoOnTheRight ? "onOptionContainerUnhover" : null
     })
 
     this.currentContainerName =$"options_{config.name}"

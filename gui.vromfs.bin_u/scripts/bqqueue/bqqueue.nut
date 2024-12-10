@@ -14,6 +14,7 @@ let DataBlock = require("DataBlock")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
 const RETRY_MSEC = 30000 //retry send on all servers down
@@ -43,7 +44,7 @@ function sendAll() {
   if (queue.value.len() == 0)
     return
 
-  if(!::g_login.isLoggedIn())
+  if(!isLoggedIn.get())
     return
 
   let list = {}

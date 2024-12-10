@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
+
 let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -137,7 +139,7 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
 
   function updateSearchContactsGroups() {
     this.sg_groups = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD]
-    if (::is_in_clan()) {
+    if (is_in_clan()) {
       this.sg_groups.append(EPLX_CLAN)
       ::g_clans.updateClanContacts()
     }

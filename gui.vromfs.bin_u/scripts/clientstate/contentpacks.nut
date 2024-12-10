@@ -19,6 +19,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { langsById } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { getContentPackStatus, requestContentPack, ContentPackStatus } = require("contentpacks")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 function getPkgLocName(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
@@ -113,7 +114,7 @@ function request_packages_and_restart(packList) {
   if (isPlatformSony || isPlatformXboxOne)
     return //no launcher there!
 
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   log("[PACK] updateContentPacks called");

@@ -12,6 +12,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentModeId
 } = require("%scripts/chat/mpChatState.nut")
 let { register_command } = require("console")
+let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
 
 let chatLogFormatForBanhammer = {
   category = ""
@@ -99,11 +100,11 @@ function onModeChanged(modeId, _playerName) {
   if (currentModeId == modeId)
     return
 
-  if (!::g_mp_chat_mode.getModeById(modeId).isEnabled()) {
+  if (!g_mp_chat_mode.getModeById(modeId).isEnabled()) {
     let isEnabledCurMod = currentModeId != null
-      && ::g_mp_chat_mode.getModeById(currentModeId).isEnabled()
+      && g_mp_chat_mode.getModeById(currentModeId).isEnabled()
     let enabledModId = isEnabledCurMod ? currentModeId
-      : ::g_mp_chat_mode.getNextMode(currentModeId)
+      : g_mp_chat_mode.getNextMode(currentModeId)
     if (enabledModId != null)
       chat_set_mode(enabledModId, "")
     return
@@ -120,7 +121,7 @@ function onInputChanged(str) {
 }
 
 function onModeSwitched() {
-  let newModeId = ::g_mp_chat_mode.getNextMode(getCurrentModeId())
+  let newModeId = g_mp_chat_mode.getNextMode(getCurrentModeId())
   if (newModeId == null)
     return
 

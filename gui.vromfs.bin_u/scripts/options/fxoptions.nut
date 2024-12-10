@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_hdr_enabled, save_profile
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_slider
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -39,7 +40,7 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
 
       view.rows.append({
         id = $"{s.id}"
-        option = ::create_option_slider(s.id, val.tointeger(), "onSettingChanged", true, "slider", s)
+        option = create_option_slider(s.id, val.tointeger(), "onSettingChanged", true, "slider", s)
         leftInfoRows = [{
           label = $"#options/{s.id}"
           leftInfoWidth = "0.45pw"

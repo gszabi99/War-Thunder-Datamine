@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import roman_numerals
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -212,7 +213,7 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
   function showNotAllowedMessage() {
     let reason = ::slotbarPresets.havePresetsReserve()
       ? loc("shop/slotbarPresetsReserve",
-        { tier = ::roman_numerals[::slotbarPresets.eraIdForBonus], unitTypes = ::slotbarPresets.getPresetsReseveTypesText() })
+        { tier = roman_numerals[::slotbarPresets.eraIdForBonus], unitTypes = ::slotbarPresets.getPresetsReseveTypesText() })
       : loc("shop/slotbarPresetsMax")
     showInfoMsgBox(format(loc("weaponry/action_not_allowed"), reason))
   }

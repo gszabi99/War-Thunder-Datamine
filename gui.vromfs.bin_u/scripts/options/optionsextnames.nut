@@ -1,8 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { addOptionMode, addUserOption, setGuiOptionsMode, getGuiOptionsMode,
-  set_gui_option, get_gui_option
-} = require("guiOptions")
+let { addOptionMode, addUserOption} = require("guiOptions")
 
 let export = {
   userOptionNameByIdx = {}
@@ -485,38 +483,13 @@ let optList = [
   "USEROPT_TEST_FLIGHT_NAME"
   "USEROPT_AIR_SPAWN_POINT"
   "USEROPT_TARGET_RANK"
+  "USEROPT_SHOW_MESSAGE_MISSILE_EVADE"
 ]
 
 foreach(idx, useropt in optList) {
   let relIdx = addUserOption(useropt) ?? idx
   export[useropt] <- relIdx
   export.userOptionNameByIdx[relIdx] <- useropt
-}
-
-::get_option_in_mode <- function get_option_in_mode(optionId, mode) {
-  let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(mode)
-  let res = ::get_option(optionId)
-  setGuiOptionsMode(mainOptionsMode)
-  return res
-}
-
-::get_gui_option_in_mode <- function get_gui_option_in_mode(optionId, mode, defaultValue = null) {
-  let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(mode)
-  let res = get_gui_option(optionId)
-  if (mainOptionsMode >= 0)
-    setGuiOptionsMode(mainOptionsMode)
-  if (defaultValue != null && res == null)
-    return defaultValue
-  return res
-}
-
-::set_gui_option_in_mode <- function set_gui_option_in_mode(optionId, value, mode) {
-  let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(mode)
-  set_gui_option(optionId, value)
-  setGuiOptionsMode(mainOptionsMode)
 }
 
 export.testsOptList <- optList //remove me this is for case conversion!

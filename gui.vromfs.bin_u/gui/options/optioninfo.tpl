@@ -1,8 +1,9 @@
 tdiv {
-  width:t='pw'
+  size:t='pw, ph'
   flow:t='vertical'
   padding-left:t='10@sf/@pf'
   padding-top:t='14@sf/@pf'
+  overflow-y:t='auto'
 
   activeText {
     width:t='pw'
@@ -10,17 +11,18 @@ tdiv {
     text:t='<<title>>'
   }
 
-  <<#imageSrc>>
   img {
     id:t='option_info_image'
-    width:t='pw'
-    height:t='0.552pw' // 0.552 is the info-images ratio
+    width:t='0.8ph/0.552' // 0.552 is the info-images ratio
+    max-width:t='pw'
+    height:t='0.552w'
+    min-height:t='0.552w' // in some cases re_size height is set to 0 without this
     margin-top:t='2@blockInterval'
     margin-bottom:t='4@blockInterval'
     background-image:t='<<imageSrc>>'
     background-repeat:t='aspect-ratio'
+    display:t='<<#imageSrc>>show<</imageSrc>><<^imageSrc>>hide<</imageSrc>>'
   }
-  <</imageSrc>>
 
   textareaNoTab {
     width:t='pw'

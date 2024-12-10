@@ -2,8 +2,9 @@ from "%scripts/dagui_natives.nut" import get_option_torpedo_dive_depth_auto, sho
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING, INFO_DETAIL
 
+let { get_game_params_blk } = require("blkGetters")
 let { zero_money } = require("%scripts/money.nut")
-let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
+let { get_difficulty_by_ediff, g_difficulty } = require("%scripts/difficulty.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { Point2 } = require("dagor.math")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -108,6 +109,21 @@ let WEAPON_TEXT_PARAMS = { //const
   isLocalState          = true //should apply my local parameters to unit (modifications, crew skills, etc)
   weaponsFilterFunc     = null //function. When set, only filtered weapons are collected from weaponPreset.
   isSingle              = false //should ignore ammo count
+}
+
+let torpedoSpeedMultByDiff = {}
+
+function getTorpedoSpeedMultByDiff(ediff) {
+  if (torpedoSpeedMultByDiff.len() == 0) {
+    let blk = get_game_params_blk()
+    torpedoSpeedMultByDiff.__update(g_difficulty.types.reduce(function(res, val) {
+      let realGunnery = (blk.difficulty_presets?[val.name].realGunnery ?? 1) == 1 ? "on" : "off"
+      res[val.name] <- blk.difficulty_settings.realGunnery[realGunnery]?.torpedoSpeedMultFromDist.x ?? 1
+      return res
+    }, {}))
+  }
+  let diff = get_difficulty_by_ediff(ediff)
+  return torpedoSpeedMultByDiff[diff.name]
 }
 
 function isWeaponAux(weapon) {
@@ -596,8 +612,10 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
           continue
         }
 
-        if (tierPreset.presetId == tier.presetId && tierPreset.slot == tier.slot && tierPreset.iconType == tier.iconType)
+        if (tierPreset.presetId == tier.presetId && tierPreset.slot == tier.slot && tierPreset.iconType == tier.iconType) {
           tierPreset.amountPerTier += tier.amountPerTier
+          tierPreset.additionalMassKg += tier.additionalMassKg
+        }
       }
       foreach (dependentWeaponName, dependentWeapon in item.dependentWeaponPreset) {
         let dependentWeaponPreset = currentType.weaponBlocks[weaponName].dependentWeaponPreset?[dependentWeaponName] ?? []
@@ -726,7 +744,7 @@ function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
 
     if (weapon?.maxSpeedInWater)
       res.append("".concat(loc("torpedo/maxSpeedInWater"), colon,
-        measureType.SPEED.getMeasureUnitsText(weapon?.maxSpeedInWater)))
+        measureType.SPEED.getMeasureUnitsText(getTorpedoSpeedMultByDiff(ediff ?? getCurrentGameModeEdiff()) * (weapon?.maxSpeedInWater ?? 0))))
 
     if (weapon?.distToLive)
       res.append("".concat(loc("torpedo/distanceToLive"), colon,

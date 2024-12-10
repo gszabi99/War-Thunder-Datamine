@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import save_to_json
 
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -129,8 +130,8 @@ replace_script_gui_behaviour("bhvUnseen", BhvUnseen)
 
 let makeConfig = @(listId, entity = null) { listId, entity }
 let makeConfigStr = @(listId, entity = null)
-  entity ? ::save_to_json(makeConfig(listId, entity)) : listId
-let makeConfigStrByList = @(unseenList) ::save_to_json(unseenList)
+  entity ? save_to_json(makeConfig(listId, entity)) : listId
+let makeConfigStrByList = @(unseenList) save_to_json(unseenList)
 
 return {
   makeConfig

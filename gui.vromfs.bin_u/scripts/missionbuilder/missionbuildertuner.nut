@@ -1,11 +1,13 @@
 from "%scripts/dagui_natives.nut" import set_context_to_player
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import locOrStrip
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
+
+let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -75,10 +77,10 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     let value = units.indexof(selUnitId) ?? 0
     let items = units.map(@(unitId) {
       text = $"#{unitId}_shop"
-      image = ::image_for_air(unitId)
+      image = image_for_air(unitId)
     })
     return {
-      markup = ::create_option_combobox(id, items, value, "onChangeAircraft", true)
+      markup = create_option_combobox(id, items, value, "onChangeAircraft", true)
       values = units
     }
   }
@@ -92,7 +94,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let value = weapons.values.indexof(selWeapon) ?? 0
     return {
-      markup = ::create_option_combobox(id, weapons.items, value, null, isFull)
+      markup = create_option_combobox(id, weapons.items, value, null, isFull)
       values = weapons.values
     }
   }
@@ -101,7 +103,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     let skins = getSkinsOption(unitId)
     let value = skins.values.indexof(selSkin) ?? 0
     return {
-      markup = ::create_option_combobox(id, skins.items, value, null, isFull)
+      markup = create_option_combobox(id, skins.items, value, null, isFull)
       values = skins.values
     }
   }
@@ -112,7 +114,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
       values.append(i)
     let value = values.indexof(selCount) ?? 0
     return {
-      markup = ::create_option_combobox(id, values.map(@(v) v.tostring()), value, null, true)
+      markup = create_option_combobox(id, values.map(@(v) v.tostring()), value, null, true)
       values
     }
   }
@@ -124,7 +126,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
           id = ""
           cellType = "left"
           width = "45%pw"
-          rawParam = format("overflow:t='hidden'; optiontext{ text:t='%s' }", ::locOrStrip(labelText))
+          rawParam = format("overflow:t='hidden'; optiontext{ text:t='%s' }", locOrStrip(labelText))
         } }, { params = {
           id = ""
           cellType = "right"

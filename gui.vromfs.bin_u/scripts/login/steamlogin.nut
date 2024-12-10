@@ -15,6 +15,7 @@ let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
 
 gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -33,7 +34,7 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
 
     //Called init while in loading, so no need to call again authorization.
     //Just wait, when the loading will be over.
-    if (::g_login.isAuthorized())
+    if (isAuthorized.get())
       return
 
     let useSteamLoginAuto = loadLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)

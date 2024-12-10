@@ -25,6 +25,7 @@ let { getNextNewbieEvent, getUnitTypeByNewbieEventId, isMeNewbie } = require("%s
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
 let { deferOnce } = require("dagor.workcycle")
+let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 /**
  * Game mode manager incapsulates working
@@ -392,7 +393,7 @@ function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -
 
   local idFromAccount = null
   local unitType = ES_UNIT_TYPE_INVALID
-  if (!ignoreLocalProfile && ::g_login.isProfileReceived()) {
+  if (!ignoreLocalProfile && isProfileReceived.get()) {
     // Step 1. Attempting to retrieve current game mode id from account.
     idFromAccount = loadLocalByAccount("selected_random_battle", null)
     if (idFromAccount in gameModeById)
@@ -613,7 +614,7 @@ function initShowingGameModesSeen() {
   if (seenShowingGameModesInited)
     return true
 
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return false
 
   let blk = loadLocalByAccount(SEEN_MODES_SAVE_PATH, DataBlock())
@@ -785,7 +786,7 @@ addListenersWithoutEnv({
   UnitTypeChosen             = @(_) updateManager()
   CrewTakeUnit               = @(_) updateManager()
   function GameLocalizationChanged(_) {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return
     updateManager()
   }

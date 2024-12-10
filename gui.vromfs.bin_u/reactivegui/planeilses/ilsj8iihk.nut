@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let string = require("string")
 let { Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude } = require("%rGui/planeState/planeFlyState.nut");
-let { IlsColor, TargetPosValid, TargetPos, CannonMode,
+let { IlsColor, TargetPosValid, TargetPos, CannonMode, RadarTargetPos, RadarTargetPosValid,
         BombCCIPMode, RocketMode, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
 let { mpsToKmh, baseLineWidth } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
@@ -310,6 +310,45 @@ let J8AirAimMark = {
     }
 }
 
+function radarTarget(width, height) {
+  return @() {
+    watch = RadarTargetPosValid
+    size = flex()
+    children = RadarTargetPosValid.value ?
+      @() {
+        watch = IlsColor
+        size = [pw(8), ph(8)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.value
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth * IlsLineScale.value
+        commands = [
+          [VECTOR_RECTANGLE, -50, -50, 100, 100]
+        ]
+        animations = [
+          { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = function() {
+          let reticleLim = [0.45 * width, 0.45 * height]
+          if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+            anim_start("radar_target_out_of_limit")
+          else
+            anim_request_stop("radar_target_out_of_limit")
+          let RadarTargetPosLim =  [
+            0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+            0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+          ]
+          return {
+            transform = {
+              translate = RadarTargetPosLim
+            }
+          }
+        }
+      } : null
+  }
+}
+
 let J8AamMode = @() {
   watch = GuidanceLockState
   size = flex()
@@ -379,6 +418,7 @@ function J8IIHK(width, height) {
       J8ClimbInfo,
       J8AltInfo,
       compassWrap(width, height, 0.05, generateCompassMarkJ8, 0.6),
+      radarTarget(width, height),
       @() {
         watch = IlsColor
         pos = [pw(15), ph(75)]

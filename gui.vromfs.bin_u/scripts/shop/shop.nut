@@ -63,6 +63,7 @@ let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { setNationBonusMarkState, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 local lastUnitType = null
 
@@ -2224,7 +2225,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initShowMode(tgtNavBar) {
     let obj = tgtNavBar.findObject("show_mode")
-    if (!::g_login.isProfileReceived() || !checkObj(obj))
+    if (!isProfileReceived.get() || !checkObj(obj))
       return
 
     let storedMode = getShopDiffMode()
@@ -2448,7 +2449,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     rankTable["height-base"] = needCollapse ? height : collapseHeight
     rankTable["height-end"] = needCollapse ? collapseHeight : height
-    rankTable.findObject("collapsed_icons").show(needCollapse ? true : false)
+    rankTable.findObject("collapsed_icons").show(needCollapse)
 
     if (isInstant)
       rankTable.height = $"{needCollapse ? collapseHeight : height }*sh/100.0"

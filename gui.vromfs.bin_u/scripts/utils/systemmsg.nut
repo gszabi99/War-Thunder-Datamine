@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import save_to_json
 //from "%scripts/teams.nut" import g_team
 
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -113,7 +114,7 @@ let systemMsg = { //functons here need to be able recursive call self
     if (textValidateFunction)
       langConfig = this.validateLangConfig(langConfig, textValidateFunction)
 
-    let jsonString = ::save_to_json(langConfig)
+    let jsonString = save_to_json(langConfig)
     return jsonString
   }
 

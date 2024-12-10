@@ -16,6 +16,7 @@ let { startsWith } = require("%sqstd/string.nut")
 let { wwGetOperationId, wwGetOperationWinner, wwClearOutlinedZones } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwObjectiveView } =  require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
+let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 
 gui_handlers.wwObjective <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -240,7 +241,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
   }
 
   function getAFKStatusBlock() {
-    if (!::g_world_war.isCurrentOperationFinished())
+    if (!isOperationFinished())
       return null
     foreach (idx, inst in this.staticBlk)
       if (startsWith(idx, "dont_afk") && this.getStatusBlock(inst)?.winner)

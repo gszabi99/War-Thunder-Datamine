@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%scripts/utils_sa.nut" import buildTableRow
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -365,10 +366,10 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
         width = "0.1@sf"
         textRawParam = "pare-text:t='no'"
       }]
-      res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
+      res = "".concat(res, buildTableRow("", headerData, null, rowParams, "0"))
 
       let rowData = this.buildQueueStatsRowData(myClanQueueTable)
-      res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
+      res = "".concat(res, buildTableRow("", rowData, null, rowParams, "0"))
     }
 
     let headerData = [{
@@ -376,10 +377,10 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
       width = "0.1@sf"
       textRawParam = "pare-text:t='no'"
     }]
-    res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
+    res = "".concat(res, buildTableRow("", headerData, null, rowParams, "0"))
 
     let rowData = this.buildQueueStatsRowData(queueStats.getClansQueueTable())
-    res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
+    res = "".concat(res, buildTableRow("", rowData, null, rowParams, "0"))
     return res
   }
 
@@ -409,7 +410,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
         tdalign = "center"
       })
     }
-    return ::buildTableRow("", headerData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
+    return buildTableRow("", headerData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
   }
 
   //

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui, ps4_is_circle_selected_as_enter_button
 from "%scripts/dagui_library.nut" import *
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -248,7 +249,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local needLbBtn = true
     if (shouldShowPages && hasXInputDevice()) {
       let shortcutId = getHudKillStreakShortcutId()
-      let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+      let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
       let scInput = shType.getFirstInput(shortcutId)
       needLbBtn = scInput?.elements.findvalue(@(btn) (getButtonNameByIdx(btn?.buttonId ?? -1) == "l_shoulder")) == null
     }

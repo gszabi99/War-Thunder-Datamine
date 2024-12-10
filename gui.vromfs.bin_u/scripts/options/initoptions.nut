@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_global_stats_blk, disable_network, gather_and_build_aircrafts_list
 from "%scripts/dagui_library.nut" import *
 
+let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber
+} = require("%scripts/options/optionsStorage.nut")
 let { init_postfx } = require("%scripts/postFxSettings.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -21,6 +23,7 @@ let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
 let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank } = require("%scripts/ranks.nut")
 let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
 
 let allUnits = getAllUnits()
 //remap all units to new class on scripts reload
@@ -30,7 +33,7 @@ if (showedUnit.value != null)
   showedUnit(allUnits?[showedUnit.value.name])
 
 ::init_options <- function init_options() {
-  if (optionsMeasureUnits.isInitialized() && (::g_login.isAuthorized() || disable_network()))
+  if (optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disable_network()))
     return
 
   local stepStatus
@@ -111,9 +114,9 @@ function countUsageAmountOnce() {
   function() {
     ::tribunal.init()
     clearMapsCache() //to refreash maps on demand
-    ::crosshair_icons.clear()
+    set_crosshair_icons([])
     crosshair_colors.clear()
-    ::thermovision_colors.clear()
+    set_thermovision_colors([])
   }
 
   @() optionsMeasureUnits.init()
@@ -123,8 +126,8 @@ function countUsageAmountOnce() {
 
     initBulletIcons(blk)
 
-    foreach (name in ["bullets_locId_by_caliber", "modifications_locId_by_caliber"])
-      getroottable()[name] = blk?[name] ? (blk[name] % "ending") : []
+    set_bullets_locId_by_caliber(blk?["bullets_locId_by_caliber"] ? (blk["bullets_locId_by_caliber"] % "ending") : [])
+    set_modifications_locId_by_caliber(blk?["modifications_locId_by_caliber"] ? (blk["modifications_locId_by_caliber"] % "ending") : [])
 
     if (type(blk?.unlocks_punctuation_without_space) == "string")
       setUnlocksPunctuationWithoutSpace(blk.unlocks_punctuation_without_space)
@@ -137,8 +140,10 @@ function countUsageAmountOnce() {
     blk.load("config/hud.blk")
     if (blk?.crosshair) {
       let crosshairs = blk.crosshair % "pictureTpsView"
+      let new_crosshairs = []
       foreach (crosshair in crosshairs)
-        ::crosshair_icons.append(crosshair)
+        new_crosshairs.append(crosshair)
+      set_crosshair_icons(new_crosshairs)
       let colors = blk.crosshair % "crosshairColor"
       foreach (colorBlk in colors)
         crosshair_colors.append({
@@ -148,9 +153,11 @@ function countUsageAmountOnce() {
     }
     if (blk?.thermovision) {
       let clrs = blk.thermovision % "color"
+      let new_thermovision_colors = []
       foreach (colorBlk in clrs) {
-        ::thermovision_colors.append({ menu_rgb = colorBlk.menu_rgb })
+        new_thermovision_colors.append({ menu_rgb = colorBlk.menu_rgb })
       }
+      set_thermovision_colors(new_thermovision_colors)
     }
   }
 

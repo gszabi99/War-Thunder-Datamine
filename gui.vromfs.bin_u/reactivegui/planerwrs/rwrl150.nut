@@ -4,7 +4,7 @@ let { format } = require("string")
 let { sin, cos, PI } = require("math")
 
 let rwrSetting = require("%rGui/rwrSetting.nut")
-let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nut")
+let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("%rGui/twsState.nut")
 
 let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 
@@ -189,33 +189,39 @@ function makeRwrTargetIconCommands(pos, sizeMult, targetType) {
     return null
 }
 
-function createRwrTarget(index, settings, objectStyle) {
-  let target = rwrTargets[index]
+function createRwrTarget(index, settingsIn, objectStyle) {
+  let target = rwrTargets[rwrTargetsOrder[index]]
 
   if (!target.valid || target.groupId == null)
     return null
 
-  let directionGroup = settings.directionGroups?[target.groupId]
+  let directionGroup = settingsIn.directionGroups?[target.groupId]
   let targetRadiusRel = calcRwrTargetRadius(target)
 
   let targetSizeMult = target.priority ? 1.5 : 1.0
+  let iconSizeMult = 0.15 * objectStyle.scale * targetSizeMult
+  let attackBoxIconMult = iconSizeMult * 0.75
 
   let targetTypeFontSizeMult = 2.0
-  let targetType = @()
-    styleText.__merge({
-      rendObj = ROBJ_TEXT
-      pos = [pw(target.x * 100.0 * targetRadiusRel), ph(target.y * 100.0 * targetRadiusRel)]
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      color = iconColor
-      fontSize = objectStyle.fontScale * styleText.fontSize * targetTypeFontSizeMult * targetSizeMult
-      text = directionGroup != null ? directionGroup.text : settings.unknownText
-    })
 
-  let iconSizeMult = 0.15 * objectStyle.scale * targetSizeMult
+  local targetTypeText = styleText.__merge({
+    rendObj = ROBJ_TEXT
+    size = SIZE_TO_CONTENT
+    color = iconColor
+    fontSize = objectStyle.fontScale * styleText.fontSize * targetTypeFontSizeMult * targetSizeMult
+    text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
+    padding = [2, 2]
+  })
+  let targetTypeTextSize = calc_comp_size(targetTypeText)
+  local targetType = @() {
+    rendObj = ROBJ_SOLID
+    color = backGroundColor
+    pos = [pw(target.x * 100.0 * targetRadiusRel - 0.25 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.25 * targetTypeTextSize[1])]
+    children = targetTypeText
+  }
+
   let iconCommands = makeRwrTargetIconCommands([target.x * targetRadiusRel, target.y * targetRadiusRel], iconSizeMult, directionGroup?.type)
-  let attackBoxIconMult = iconSizeMult * 0.75
+
   if (target.track || target.launch)
     iconCommands.append(
       [ VECTOR_RECTANGLE,
@@ -224,6 +230,16 @@ function createRwrTarget(index, settings, objectStyle) {
         attackBoxIconMult * 2 * 100.0, attackBoxIconMult * 2 * 100.0])
 
   let launchOpacityRwr = Computed(@() target.launch && ((CurrentTime.get() * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0)
+  let background = @() {
+    watch = launchOpacityRwr
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = flex()
+    color = backGroundColor
+    opacity = launchOpacityRwr.get()
+    fillColor = backGroundColor
+    lineWidth = baseLineWidth * (4 + 6) * objectStyle.lineWidthScale
+    commands = iconCommands
+  }
   let icon = @() {
     watch = launchOpacityRwr
     rendObj = ROBJ_VECTOR_CANVAS
@@ -236,16 +252,12 @@ function createRwrTarget(index, settings, objectStyle) {
   }
 
   return @() {
-    size = flex()
+    pos = [pw(50), ph(50)],
+    size = flex(),
     children = [
-      {
-        pos = [pw(50), ph(50)],
-        size = flex(),
-        children = [
-          icon
-        ]
-      },
-      targetType
+      background,
+      targetType,
+      icon
     ]
   }
 }

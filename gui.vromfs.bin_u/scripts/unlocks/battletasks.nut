@@ -35,6 +35,7 @@ let { loadLocalByAccount, saveLocalByAccount
 let { get_personal_unlocks_blk, get_proposed_personal_unlocks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const TASKS_OUT_OF_DATE_DAYS = 15
 const SEEN_SAVE_ID = "seen/battletasks"
@@ -479,7 +480,7 @@ function updateCompleteTaskWatched() {
 
 function updateTasksData() {
   currentTasksArray.clear()
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   updatedProposedTasks()

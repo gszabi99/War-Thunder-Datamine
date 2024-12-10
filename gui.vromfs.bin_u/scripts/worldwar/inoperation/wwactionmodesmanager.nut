@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_send_operation_request
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_send_operation_request, ww_find_army_name_by_coordinates
 from "%scripts/dagui_library.nut" import *
 let DataBlock = require("DataBlock")
 let { wwSetCurrActionType, wwGetCurrActionType, wwArtillerySetAttackRadius, wwArtilleryGetAttackRadius,
@@ -34,6 +34,7 @@ let actionModesById = {
       blk.setStr("army", army.name)
       blk.setStr("point", $"{mapPos.x},{mapPos.y}")
       blk.setStr("radius", wwArtilleryGetAttackRadius().tostring())
+      blk.setStr("forcedTargetArmyName", ww_find_army_name_by_coordinates(mapPos.x, mapPos.y) ?? "")
 
       let taskId = ww_send_operation_request("cln_ww_artillery_strike", blk)
       addTask(taskId, null, @() setActionMode(),
@@ -47,7 +48,7 @@ let actionModesById = {
         this.startArtilleryFire(mapPos, army)
       }
       else
-        addPopup(this.getTitle(), loc("worldwar/artillery/notReadyToFire"),
+        addPopup(this.getTitle(), loc($"worldwar/{army.isSAM ? "sam" : "artillery"}/notReadyToFire"),
           null, null, null, "cant_fire")
     }
     useAction = function useAction() {

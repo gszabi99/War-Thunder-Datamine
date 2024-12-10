@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -94,7 +95,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateLangsButton() {
-    let show = ::g_chat.canChooseThreadsLang()
+    let show = g_chat.canChooseThreadsLang()
     let langsBtn = showObjById("threads_search_langs_btn", show, this.scene)
     if (!show)
       return
@@ -147,14 +148,14 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   function getThreadByObj(obj = null) {
     let rId = obj?.roomId
     if (rId && rId.len())
-      return ::g_chat.getThreadInfo(rId)
+      return g_chat.getThreadInfo(rId)
 
     if (!checkObj(this.listObj))
       return null
 
     let value = this.listObj.getValue() || 0
     if (value >= 0 && value < this.listObj.childrenCount())
-      return ::g_chat.getThreadInfo(this.listObj.getChild(value).roomId)
+      return g_chat.getThreadInfo(this.listObj.getChild(value).roomId)
     return null
   }
 
@@ -173,7 +174,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEditThread(obj) {
     let actionThread = this.getThreadByObj(obj)
     if (actionThread)
-      ::g_chat.openModifyThreadWnd(actionThread)
+      g_chat.openModifyThreadWnd(actionThread)
   }
 
   function openThreadMenu() {
@@ -191,7 +192,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onCreateThread() {
-    ::g_chat.openRoomCreationWnd()
+    g_chat.openRoomCreationWnd()
   }
 
   function onRefresh() {
@@ -239,7 +240,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return this.markListChanged()
 
-    let threadInfo = ::g_chat.getThreadInfo(id)
+    let threadInfo = g_chat.getThreadInfo(id)
     if (threadInfo)
       threadInfo.updateInfoObj(this.scene.findObject($"room_{id}"), !showConsoleButtons.value)
   }

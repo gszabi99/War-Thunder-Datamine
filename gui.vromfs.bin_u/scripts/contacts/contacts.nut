@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, find_nicks_b
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import contactEvent
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
+from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -242,7 +243,7 @@ foreach (fn in [
       view.unitList <- []
       view.hasUnitList = memberDataAirs.len() != 0
 
-      if (memberData?.country != null && ::checkCountry(memberData.country, $"memberData of contact = {contact.uid}")
+      if (memberData?.country != null && checkCountry(memberData.country, $"memberData of contact = {contact.uid}")
           && memberDataAirs.len() != 0) {
         view.unitList.append({ header = loc("conditions/playerTag") })
         if (!event?.multiSlot) {

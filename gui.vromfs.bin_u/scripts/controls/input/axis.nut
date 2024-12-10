@@ -4,8 +4,9 @@ from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { AXIS_MODIFIERS, GAMEPAD_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
+let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
-::Input.Axis <- class (::Input.InputBase) {
+let Axis = class (InputBase) {
   //from JoystickParams().getAxis()
   axisId = null
   //AXIS_MODIFIERS
@@ -91,3 +92,4 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
     }
   }
 }
+return {Axis}

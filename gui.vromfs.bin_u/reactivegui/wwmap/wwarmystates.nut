@@ -6,10 +6,9 @@ let { wwGetArmiesNames, wwGetArmyInfo, wwClearOutlinedZones, wwUpdateSelectedArm
 let { subscribe } = require("eventbus")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
-let { updateSelectedAirfield } = require("%rGui/wwMap/wwAirfieldsStates.nut")
 let { getMapAspectRatio, convertToRelativeMapCoords, getMapSize } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { armyIconByType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { getSettings, getSettingsArray } = require("%rGui/wwMap/wwSettings.nut")
+let { getSettings, getSettingsArray } = require("%appGlobals/worldWar/wwSettings.nut")
 
 let selectedArmy = Watched(null)
 let hoveredArmy = Watched(null)
@@ -20,6 +19,8 @@ local lastSelectedArmyIndex = -1
 
 let armiesList = Watched([])
 let armiesData = Watched([])
+
+let movingArmiesPositions = Watched({})
 
 function updateArmiesState() {
   let wwArmiesNames = wwGetArmiesNames()
@@ -99,11 +100,7 @@ function getArmyIcon(armyData) {
 
 subscribe("ww.hoverArmyByName", @(v) hoveredArmy.set(v))
 subscribe("ww.showArmiesIndex", @(v) isShowArmiesIndex.set(v))
-
 subscribe("ww.selectArmyByName", @(v) selectedArmy.set(v))
-subscribe("ww.unselectAirfield", @(_v) updateSelectedAirfield(null))
-
-
 subscribe("selectArmy", function(armyName) {
   updateArmiesState()
   selectedArmy.set(armyName)
@@ -115,11 +112,8 @@ hoveredArmy.subscribe(function(armyName) {
 
 selectedArmy.subscribe(function(armyName) {
   wwClearOutlinedZones()
-  if (armyName == null)
-    return
-
-  wwUpdateSelectedArmyName(armyName, true)
-  sendToDagui("ww.selectArmy", { armyName })
+  wwUpdateSelectedArmyName(armyName ?? "", true)
+  sendToDagui("ww.selectArmy", { armyName = armyName ?? "" })
 })
 
 return {
@@ -136,4 +130,6 @@ return {
 
   getArmyByName
   getArmyIcon
+
+  movingArmiesPositions
 }

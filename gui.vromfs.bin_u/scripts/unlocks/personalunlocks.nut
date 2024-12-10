@@ -7,6 +7,7 @@ let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible, canClaimUnlockRewardForUnit
 } = require("%scripts/unlocks/unlocksModule.nut")
 let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let markerUnlocks = persist("markerUnlocksCache", @() [])
 let manualUnlocks = persist("manualUnlocksCache", @() [])
@@ -14,7 +15,7 @@ let nightBattlesUnlocks = persist("nightBattlesUnlocks", @() [])
 let isCacheValid = persist("isPersonalUnlocksCacheValid", @() { value = false })
 
 function cache() {
-  if (isCacheValid.value || !::g_login.isLoggedIn())
+  if (isCacheValid.value || !isLoggedIn.get())
     return
 
   foreach (unlockBlk in getAllUnlocksWithBlkOrder()) {

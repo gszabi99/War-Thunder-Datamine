@@ -326,7 +326,6 @@ armyBlock[selected=yes] > armyIcon > background {
   foreground-color:@armyForegroundImageSelect;
 }
 
-armyIcon > armyUnitType,
 armyIcon > armyGroupText,
 armyBlock > textAfterIcon
 {
@@ -334,16 +333,6 @@ armyBlock > textAfterIcon
   re-type:textarea;
   font:@fontNormal;
   color:@userlogColoredText;
-}
-
-armyUnitType[battleDescriptionIconSize=medium] {
-  font:@fontMedium;
-  color:@activeTextColor;
-}
-
-armyUnitType[battleDescriptionIconSize=small] {
-  font:@fontSmall;
-  color:@activeTextColor;
 }
 
 textAfterIcon[battleDescriptionIconSize=medium] {
@@ -355,7 +344,12 @@ armyIcon[managerAccess=yes] > armyGroupText {
 }
 
 armyIcon > armyUnitType {
-  color:@black;
+  position: absolute;
+  background-svg-size: 0.7pw, 0.7ph;
+  background-color: @black;
+  size: 0.7pw, 0.7ph;
+  valign: center;
+  halign: center;
 }
 
 armyBlock:hover > armyIcon > armyGroupText {

@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, EVENTS_SHORT_LB_VISIBLE_ROWS
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/utils_sa.nut" import buildTableRow
 
 let { zero_money } = require("%scripts/money.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
@@ -488,7 +489,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       td.tdalign <- "right"
       rowData.append(td)
     }
-    let data = ::buildTableRow(rowName, rowData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
+    let data = buildTableRow(rowName, rowData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
     return data
   }
 

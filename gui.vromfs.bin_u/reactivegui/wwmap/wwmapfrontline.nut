@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { pow, sqrt } = require("math")
-let { getZoneById, createZoneFrontLine, getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
+let { createZoneFrontLine, getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { zonesSides } = require("%rGui/wwMap/wwMapStates.nut")
 let { isPlayerSide } = require("%rGui/wwMap/wwOperationStates.nut")
@@ -110,12 +110,11 @@ function buildFrontLines(zones, sides) {
       continue
     let neighbors = zone.neighbors
     for (local j = 0; j < neighbors.len(); j++) {
-      let neighbor = getZoneById(neighbors[j])
-      if (sides[zone.id] != sides[neighbor.id]) {
-        let commonPart = findCommonPart(zone, neighbor)
-        if (commonPart != null)
-          frontLine.append(commonPart)
-      }
+      if (sides[zone.id] == sides[neighbors[j].id])
+        continue
+      let commonPart = findCommonPart(zone, neighbors[j])
+      if (commonPart != null)
+        frontLine.append(commonPart)
     }
   }
 

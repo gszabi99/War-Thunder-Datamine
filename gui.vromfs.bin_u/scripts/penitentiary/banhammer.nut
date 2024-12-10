@@ -1,5 +1,8 @@
 from "%scripts/dagui_natives.nut" import send_complaint_by_uid, myself_can_devoice, gchat_raw_command, gchat_escape_target, myself_can_ban, set_char_cb, send_complaint, get_game_mode_name, send_complaint_by_nick, char_ban_user
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import save_to_json
+from "%scripts/options/optionsCtors.nut" import create_option_list
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -9,7 +12,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode, get_local_mplayer } = require("mission")
-let { set_option, create_option_list } = require("%scripts/options/optionsExt.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 let time = require("%scripts/time.nut")
 let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME
 } = require("%scripts/options/optionsExtNames.nut")
@@ -34,14 +37,14 @@ let chatLogToString = function(chatLog) {
     return ""
   }
 
-  local res = ::save_to_json(chatLog)
+  local res = save_to_json(chatLog)
   local size = res.len()
   local idx = 0
   while (size > 29300)
-    size -= ::save_to_json(chatLog.chatLog[idx++]).len() + 1
+    size -= save_to_json(chatLog.chatLog[idx++]).len() + 1
   if (idx > 0) {
     chatLog.chatLog = chatLog.chatLog.slice(idx)
-    res = ::save_to_json(chatLog)
+    res = save_to_json(chatLog)
   }
   return res
 }
@@ -309,7 +312,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if(this.compliantCategory == "BOT2") //2 different reasons for the complaint are sent under the same BOT category
       this.compliantCategory = "BOT"
-    let details = ::save_to_json({
+    let details = save_to_json({
       own      = this.collectUserDetailsForTribunal(get_local_mplayer()),
       offender = this.collectUserDetailsForTribunal(this.pInfo),
       chats    = this.collectThreadListForTribunal()

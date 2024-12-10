@@ -4,6 +4,7 @@ let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/xbox/permissions.nut")
 let { multiplayerPrivilege } = require("%xboxLib/crossnetwork.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 local multiplayerPrivelegeCallback = null
 local crossplayPrivelegeCallback = null
@@ -12,7 +13,7 @@ let dummyValue = Watched(true)
 
 
 function mpPrivilegeNotify() {
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
   broadcastEvent("XboxMultiplayerPrivilegeUpdated")
 }
@@ -68,7 +69,7 @@ return {
   isMultiplayerPrivilegeAvailable = isPlatformXboxOne ? multiplayerPrivilege : dummyValue
   checkAndShowMultiplayerPrivilegeWarning = @(cb = null) checkMultiplayerPrivilege(true, cb)
   updateMultiplayerPrivilege = function() {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return
 
     checkMultiplayerPrivilege()

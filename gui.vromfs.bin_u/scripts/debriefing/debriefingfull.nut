@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_playe
 from "%scripts/dagui_library.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 from "%scripts/teams.nut" import g_team
+from "%scripts/utils_sa.nut" import is_multiplayer, is_mode_with_teams
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { get_pve_trophy_name } = require("%appGlobals/ranks_common_shared.nut")
@@ -1220,13 +1221,13 @@ function gatherDebriefingResult() {
   debriefingResult.restoreType <- get_mission_restore_type()
   debriefingResult.gm <- gm
   debriefingResult.gameType <- get_game_type()
-  debriefingResult.isTeamplay <- ::is_mode_with_teams(debriefingResult.gameType)
+  debriefingResult.isTeamplay <- is_mode_with_teams(debriefingResult.gameType)
 
   debriefingResult.isInRoom <- isInSessionRoom.get()
   debriefingResult.roomEvent <- isInSessionRoom.get() ? ::SessionLobby.getRoomEvent() : null
   debriefingResult.isSpectator <- isInSessionRoom.get() && ::SessionLobby.getIsSpectator()
 
-  debriefingResult.isMp <- ::is_multiplayer()
+  debriefingResult.isMp <- is_multiplayer()
   debriefingResult.isReplay <- is_replay_playing()
   debriefingResult.sessionId <- get_mp_session_id_str()
   debriefingResult.useFinalResults <- getTblValue("useFinalResults", get_current_mission_info_cached(), false)

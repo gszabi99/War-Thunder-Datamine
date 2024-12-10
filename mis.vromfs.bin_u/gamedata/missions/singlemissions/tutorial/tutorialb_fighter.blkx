@@ -86,11 +86,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -273,6 +275,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "lookat": "player_lookAtArea02"
@@ -284,11 +289,11 @@
           "objects": "player"
         },
         "unitSetProperties": {
+          "object": "player",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "player",
           "speed": 250.0
         },
         "unitForceRearmSpeed": {
@@ -3202,7 +3207,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 1/7: movement controls learned"
+          "params": "task 1/7: movement controls learned",
+          "event": ""
         },
         "missionStopSpeech": {},
         "varSetInt": {
@@ -3255,7 +3261,8 @@
           "target": "tutorialB_fighter_waypoints",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 0.5
@@ -3520,7 +3527,8 @@
           "target": "tutorialB_fighter_map",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         }
       },
       "else_actions": {}
@@ -3626,7 +3634,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 2/7: map controls learned"
+          "params": "task 2/7: map controls learned",
+          "event": ""
         },
         "missionStopSpeech": {},
         "playHint": {
@@ -4065,6 +4074,9 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "speed": 400.0,
@@ -4338,13 +4350,15 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 3/7: player killed the balloon"
+          "params": "task 3/7: player killed the balloon",
+          "event": ""
         },
         "moSetObjectiveStatus": {
           "target": "tutorialB_fighter_balloon",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 2.0
@@ -4775,6 +4789,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane01",
             "move_type": "teleport",
             "lookat": "way_of_plane01"
@@ -4796,6 +4813,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
             "lookat": "player_spawn04"
@@ -4817,6 +4837,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane01"
           }
         ],
@@ -5725,7 +5748,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 4/7: player hit the enemy plane / forestall indication learned"
+          "params": "task 4/7: player hit the enemy plane / forestall indication learned",
+          "event": ""
         },
         "wait": [
           {
@@ -5739,7 +5763,8 @@
           "target": "tutorialB_fighter_planes",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         }
       },
       "else_actions": {}
@@ -6199,6 +6224,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane01",
             "move_type": "teleport",
             "lookat": "target_plane01_lookAtArea"
@@ -6220,6 +6248,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
             "lookat": "player_lookAtArea"
@@ -6241,6 +6272,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane01"
           }
         ],
@@ -7055,6 +7089,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane01",
             "move_type": "teleport",
             "lookat": "target_plane01_lookAtArea"
@@ -7076,6 +7113,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
             "lookat": "player_lookAtArea"
@@ -7097,6 +7137,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane01"
           }
         ],
@@ -7743,13 +7786,15 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 4/7: player hit the enemy plane / forestall indication learned"
+          "params": "task 4/7: player hit the enemy plane / forestall indication learned",
+          "event": ""
         },
         "moSetObjectiveStatus": {
           "target": "tutorialB_fighter_planes",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         }
       },
       "else_actions": {}
@@ -8285,6 +8330,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane02",
             "move_type": "teleport",
             "lookat": "target_plane02_final_position"
@@ -8306,6 +8354,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_plane02_starting_position"
@@ -8327,6 +8378,9 @@
             "object_var_value": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
             "object": "target_plane02",
             "move_type": "zigzag_move",
             "zzPeriod": 5.0,
@@ -8334,11 +8388,11 @@
           }
         ],
         "unitSetProperties": {
+          "object": "target_plane02",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_plane02",
           "attack_type": "hold_fire",
           "ignoresEnemy": true
         },
@@ -8679,7 +8733,8 @@
           "target": "tutorialB_fighter_training",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "playerControls": {
           "setStatus": "disable",
@@ -8687,7 +8742,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 5/7: player killed 2 enemy planes"
+          "params": "task 5/7: player killed 2 enemy planes",
+          "event": ""
         },
         "wait": {
           "time": 2.0
@@ -9148,16 +9204,19 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "lookat": "vehicle_area"
         },
         "unitSetProperties": {
+          "object": "target_vehicle_01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_vehicle_01",
           "attack_type": "hold_fire",
           "ignoresEnemy": true
         },
@@ -9191,11 +9250,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "target_vehicle_01",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "target_vehicle_01"
+          "object_var_value": 0
         },
         "playHint": [
           {
@@ -9460,16 +9519,19 @@
           "object_var_value": 0,
           "fastClimb": false,
           "destTimeMode": false,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
           "object": "player",
           "move_type": "teleport",
           "lookat": "vehicle_area"
         },
         "unitSetProperties": {
+          "object": "target_vehicle_01",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "target_vehicle_01",
           "attack_type": "hold_fire",
           "ignoresEnemy": true
         },
@@ -9488,11 +9550,11 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target": "target_vehicle_01",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "target_vehicle_01"
+          "object_var_value": 0
         },
         "triggerEnable": [
           {
@@ -10214,7 +10276,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 6/7: player killed the truck"
+          "params": "task 6/7: player killed the truck",
+          "event": ""
         },
         "wait": {
           "time": 1.0
@@ -10601,7 +10664,8 @@
           "target": "tutorialB_fighter_ground_target",
           "status": 2,
           "object_var_comp_op": "equal",
-          "object_var_name": ""
+          "object_var_name": "",
+          "object_marking": 0
         },
         "wait": {
           "time": 1.0
@@ -10673,7 +10737,8 @@
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_fighter",
-          "params": "task 7/7: player pulled out of a dive maneuver and finished the tutorial"
+          "params": "task 7/7: player pulled out of a dive maneuver and finished the tutorial",
+          "event": ""
         },
         "wait": [
           {
@@ -13184,6 +13249,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -13245,6 +13311,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -13307,6 +13374,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 2,
@@ -13369,6 +13437,7 @@
       "bulletsCount2": 0,
       "bulletsCount3": 0,
       "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -13412,13 +13481,13 @@
         ]
       ],
       "props": {
-        "object_marking": 0,
         "squad_members": [
           "target_plane01",
           "target_balloon",
           "target_plane02",
           "target_vehicle_01"
-        ]
+        ],
+        "object_marking": 0
       }
     },
     "wheeled_vehicles": {
@@ -13459,6 +13528,7 @@
       "bulletsCount2": 0,
       "bulletsCount3": 0,
       "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,

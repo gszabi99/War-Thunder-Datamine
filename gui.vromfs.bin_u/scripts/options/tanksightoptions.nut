@@ -7,11 +7,12 @@ let { TSI_RANGE_TEXT_COLOR, TSI_RANGE_BACK_COLOR, TSI_RANGE_NV_TEXT_COLOR, TSI_R
   TSI_GUN_READY_TEXT_SIZE, TSI_GUN_READY_COLOR, TSI_GUN_READY_LIGHT_COLOR, TSI_GUN_READY_NV_COLOR, TSO_RANGEFINDER,
   TSO_TURRET, TSO_FOV, TSO_GUN_READY, TSI_RANGE_TH_TEXT_COLOR, TSI_RANGE_TH_BACK_COLOR, TSI_TURRET_TH_COLOR,
   TSI_FOV_THERMAL_COLOR, TSI_GUN_READY_TH_COLOR, TSI_CROSSHAIR, TSO_CROSSHAIR, TSI_RANGEFINDER_VISIBLE, TSI_RANGEFINDER_FONT,
-  TSI_CROSSHAIR_COLOR, TSI_CROSSHAIR_L_COLOR, TSI_CROSSHAIR_NV_COLOR, TSI_CROSSHAIR_TH_COLOR, TSI_GUN_READY_FONT,
-  TSI_BULLET_TYPE_VISIBLE, TSI_BULLET_TYPE_SHORT, TSI_BULLET_TYPE_TEXT_COLOR, TSI_BULLET_TYPE_BACK_COLOR,
+  TSI_CROSSHAIR_COLOR, TSI_CROSSHAIR_L_COLOR, TSI_CROSSHAIR_NV_COLOR, TSI_CROSSHAIR_TH_COLOR, TSI_GUN_READY_FONT, TSI_GUN_READY_MARK_VISIBLE,
+  TSI_GUN_RELOAD_COUNTDOWN_VISIBLE, TSI_BULLET_TYPE_VISIBLE, TSI_BULLET_TYPE_SHORT, TSI_BULLET_TYPE_TEXT_COLOR, TSI_BULLET_TYPE_BACK_COLOR,
   TSI_BULLET_TYPE_NV_TEXT_COLOR, TSI_BULLET_TYPE_NV_BACK_COLOR, TSI_BULLET_TYPE_LTEXT_COLOR, TSI_BULLET_TYPE_LBACK_COLOR,
   TSI_BULLET_TYPE_TH_TEXT_COLOR, TSI_BULLET_TYPE_TH_BACK_COLOR, TSI_BULLET_TYPE_TEXT_SIZE, TSI_BULLET_TYPE_FONT,
-  TSO_BULLET_TYPE
+  TSO_BULLET_TYPE, TSI_RANGEFINDER_PROGRESS_COLOR, TSI_RANGEFINDER_PROGRESS_BACKGROUND_COLOR, TSO_RETICLE, TSI_RETICLE_OVERRIDE,
+  TSI_RETICLE_LINE_WIDTH, TSI_RETICLE_FONT_SIZE
 } = require("tankSightSettings")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let { isEqual } = require("%globalScripts/isEqual.nut")
@@ -33,7 +34,7 @@ let tankSightOptionsSections = [
     options = [
       TSI_RANGEFINDER_VISIBLE, TSI_RANGE_TEXT_COLOR, TSI_RANGE_BACK_COLOR, TSI_RANGE_NV_TEXT_COLOR, TSI_RANGE_NV_BACK_COLOR,
       TSI_RANGE_LTEXT_COLOR, TSI_RANGE_LBACK_COLOR, TSI_RANGE_TH_TEXT_COLOR, TSI_RANGE_TH_BACK_COLOR,
-      TSI_RANGE_TEXT_SIZE, TSI_RANGEFINDER_FONT
+      TSI_RANGE_TEXT_SIZE, TSI_RANGEFINDER_FONT, TSI_RANGEFINDER_PROGRESS_COLOR, TSI_RANGEFINDER_PROGRESS_BACKGROUND_COLOR
     ]
   }
   {
@@ -50,7 +51,7 @@ let tankSightOptionsSections = [
     id = TSO_GUN_READY
     title = "#tankSight/gunReady"
     options = [
-      TSI_GUN_READY_VISIBLE, TSI_GUN_READY_TEXT_SIZE, TSI_GUN_READY_FONT, TSI_GUN_READY_COLOR, TSI_GUN_READY_LIGHT_COLOR,
+      TSI_GUN_READY_VISIBLE, TSI_GUN_READY_MARK_VISIBLE, TSI_GUN_RELOAD_COUNTDOWN_VISIBLE, TSI_GUN_READY_TEXT_SIZE, TSI_GUN_READY_FONT, TSI_GUN_READY_COLOR, TSI_GUN_READY_LIGHT_COLOR,
       TSI_GUN_READY_NV_COLOR, TSI_GUN_READY_TH_COLOR
     ]
   }
@@ -61,6 +62,13 @@ let tankSightOptionsSections = [
       TSI_BULLET_TYPE_VISIBLE, TSI_BULLET_TYPE_SHORT, TSI_BULLET_TYPE_TEXT_COLOR, TSI_BULLET_TYPE_BACK_COLOR,
       TSI_BULLET_TYPE_NV_TEXT_COLOR, TSI_BULLET_TYPE_NV_BACK_COLOR, TSI_BULLET_TYPE_LTEXT_COLOR, TSI_BULLET_TYPE_LBACK_COLOR,
       TSI_BULLET_TYPE_TH_TEXT_COLOR, TSI_BULLET_TYPE_TH_BACK_COLOR, TSI_BULLET_TYPE_TEXT_SIZE, TSI_BULLET_TYPE_FONT
+    ]
+  }
+  {
+    id = TSO_RETICLE
+    title = "#tankSight/reticle"
+    options = [
+      TSI_RETICLE_OVERRIDE, TSI_RETICLE_LINE_WIDTH, TSI_RETICLE_FONT_SIZE
     ]
   }
 ]
@@ -78,6 +86,26 @@ let textSizeOpts = [
   {value = 30, text = "#options/medium_text"}
   {value = 40, text = "#options/large_text"}
 ]
+
+let textSizeMultOptions = {
+  idx = 1,
+  options = [
+    {value = 0.7, text = "#options/small_text"}
+    {value = 1.0, text = "#options/medium_text"}
+    {value = 1.3, text = "#options/large_text"}
+  ]
+}
+
+let reticleLineWidthOpts = {
+  idx = 1,
+  options = [
+    {value = 1.0, text = "1.0"}
+    {value = 2.0, text = "2.0"}
+    {value = 3.0, text = "3.0"}
+    {value = 4.0, text = "4.0"}
+  ]
+}
+
 let mkFontOpts = @() ["digital", "hud", "tiny_text_hud", "ils31", "ussr_ils", "usa_ils", "mirage_ils", "ah64", "f14_ils"]
   .map(function(fontType) {
     let fontTypeLoc = doesLocTextExist($"tankSight/fontType/{fontType}")
@@ -150,6 +178,23 @@ function getColorOpts(options, text = "", idx = 9) {
   }
 }
 
+let gunReadyMarkVisibilityOptions =
+{
+  idx = 0,
+  options = [
+    {value = true, text = "#tankSight/ReadyMarkVisible"}
+    {value = false, text = "#tankSight/ReadyMarkHidden"}
+  ]
+}
+let gunReadyReloadCountdownVisibilityOptions =
+{
+  idx = 0,
+  options = [
+    {value = true, text = "#tankSight/ReloadCountdownVisible"}
+    {value = false, text = "#tankSight/ReloadCountdownHidden"}
+  ]
+}
+
 function mkTankSightOptionsMap(params) {
   let bgColorOpts = [].extend(params.colorOpts, [transparentColorOption])
 
@@ -171,6 +216,8 @@ function mkTankSightOptionsMap(params) {
     [TSI_RANGE_TH_BACK_COLOR]   = getColorOpts(bgColorOpts, "#tankSight/thermalBgColor"),
     [TSI_RANGE_TEXT_SIZE]       = getTextSizeOpts(1),
     [TSI_RANGEFINDER_FONT]      = getFontOpts(),
+    [TSI_RANGEFINDER_PROGRESS_COLOR] = getColorOpts(bgColorOpts, "#tankSight/rangefinderProgressColor"),
+    [TSI_RANGEFINDER_PROGRESS_BACKGROUND_COLOR] = getColorOpts(bgColorOpts, "#tankSight/rangefinderProgressBackgroundColor"),
 
     [TSI_TURRET_VISIBLE]        = getVisibilityOpts(1),
     [TSI_TURRET_COLOR]          = getColorOpts(params.colorOpts, "#tankSight/color"),
@@ -191,6 +238,8 @@ function mkTankSightOptionsMap(params) {
     [TSI_GUN_READY_LIGHT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/backlightColor"),
     [TSI_GUN_READY_NV_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/nightVisionColor"),
     [TSI_GUN_READY_TH_COLOR]    = getColorOpts(params.colorOpts, "#tankSight/thermalColor"),
+    [TSI_GUN_READY_MARK_VISIBLE] = gunReadyMarkVisibilityOptions,
+    [TSI_GUN_RELOAD_COUNTDOWN_VISIBLE] = gunReadyReloadCountdownVisibilityOptions,
 
     [TSI_BULLET_TYPE_VISIBLE]   = getVisibilityOpts(1),
     [TSI_BULLET_TYPE_SHORT]     = getShortNameOpts(1),
@@ -203,7 +252,12 @@ function mkTankSightOptionsMap(params) {
     [TSI_BULLET_TYPE_TH_TEXT_COLOR] = getColorOpts(params.colorOpts, "#tankSight/thermalTextColor"),
     [TSI_BULLET_TYPE_TH_BACK_COLOR] = getColorOpts(bgColorOpts, "#tankSight/thermalBgColor"),
     [TSI_BULLET_TYPE_TEXT_SIZE] = getTextSizeOpts(1),
-    [TSI_BULLET_TYPE_FONT]      = getTextFontOpts()
+    [TSI_BULLET_TYPE_FONT] = getTextFontOpts(),
+
+
+    [TSI_RETICLE_OVERRIDE] = getVisibilityOpts(1),
+    [TSI_RETICLE_LINE_WIDTH] = reticleLineWidthOpts,
+    [TSI_RETICLE_FONT_SIZE] = textSizeMultOptions
   }
 }
 

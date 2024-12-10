@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
-from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText
+from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText, roman_numerals
 
 let { getPresetRewardMul, getWeaponDamage } = require("%appGlobals/econWeaponUtils.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -295,7 +295,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let reqMods = ::getNextTierModsCount(unit, curTier - 1)
     if (reqMods > 0)
       reqText = loc("weaponry/unlockModTierReq",
-                      { tier = ::roman_numerals[curTier], amount = reqMods.tostring() })
+                      { tier = roman_numerals[curTier], amount = reqMods.tostring() })
     else
       reqText = loc("weaponry/unlockTier/reqPrevTiers")
     reqText = $"<color=@badTextColor>{reqText}</color>"
@@ -309,7 +309,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
 
   if (item.type == weaponsItem.weapon) {
     name = ""
-    desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = item.name,
+    desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = item.name, ediff = params?.curEdiff,
       detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
 
     if ((item.rocket || item.bomb) && (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED) {
@@ -328,7 +328,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   }
   else if (item.type == weaponsItem.primaryWeapon) {
     name = ""
-    desc = getWeaponInfoText(unit, { isPrimary = true, weaponPreset = item.name,
+    desc = getWeaponInfoText(unit, { isPrimary = true, weaponPreset = item.name, ediff = params?.curEdiff,
       detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
     let upgradesList = getItemUpgradesList(item)
     if (upgradesList) {

@@ -4,7 +4,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { setObjPosition } = require("%sqDagui/daguiUtil.nut")
-let { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
+let { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY, WW_MAP_TOOLTIP_TYPE_AIRFIELD
 } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
@@ -17,9 +17,10 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
   controllerScene = null
 
   specifyTypeOrder = {
-    [WW_MAP_TOOLTIP_TYPE.BATTLE] = { paramsKey = "battleName" },
-    [WW_MAP_TOOLTIP_TYPE.ARMY]   = { paramsKey = "armyName" },
-    [WW_MAP_TOOLTIP_TYPE.NONE]   = {}
+    [WW_MAP_TOOLTIP_TYPE.BATTLE]   = { paramsKey = "battleName" },
+    [WW_MAP_TOOLTIP_TYPE.ARMY]     = { paramsKey = "armyName" },
+    [WW_MAP_TOOLTIP_TYPE.AIRFIELD] = { paramsKey = "airfieldIndex" },
+    [WW_MAP_TOOLTIP_TYPE.NONE]     = {}
   }
 
   specs = null
@@ -136,6 +137,16 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
         this.updateSelectedBattle(hoveredBattle)
       }
     }
+
+    if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.AIRFIELD) {
+
+      let hoveredAirfield = ::g_world_war.getAirfieldByIndex(this.specs.currentId)
+      this.destroyDescriptionTimer()
+
+      this.descriptionTimer = Timer(
+        this.scene, 1, @() this.updateSelectedAirfield(hoveredAirfield), this, true
+      )
+    }
   }
 
   function destroyDescriptionTimer() {
@@ -155,6 +166,20 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
       let redrawFieldObj = this.scene.findObject(fieldId)
       if (checkObj(redrawFieldObj))
         redrawFieldObj.setValue(func.call(armyView) ?? "")
+    }
+  }
+
+
+  function updateSelectedAirfield(hoveredAirfield) {
+    if (!checkObj(this.scene) || !hoveredAirfield)
+      return
+
+    //hoveredAirfield.update(hoveredAirfield.name)
+    let airfieldView = hoveredAirfield.getView()
+    foreach (fieldId, func in airfieldView.getRedrawArmyStatusData()) {
+      let redrawFieldObj = this.scene.findObject(fieldId)
+      if (checkObj(redrawFieldObj))
+        redrawFieldObj.setValue(func.call(airfieldView) ?? "")
     }
   }
 
@@ -211,6 +236,9 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY)
       return WW_MAP_TOOLTIP_TYPE_ARMY.getTooltipId(this.specs.currentId, this.specs)
+
+    if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.AIRFIELD)
+      return WW_MAP_TOOLTIP_TYPE_AIRFIELD.getTooltipId(this.specs.currentId, this.specs)
 
     return ""
   }

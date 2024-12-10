@@ -8,6 +8,7 @@ let { is_stereo_mode } = require("vr")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SCREEN_SAFE_AREA
 } = require("%scripts/options/optionsExtNames.nut")
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
 
 let defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]
@@ -35,14 +36,14 @@ let getValue = function() {
   if (value != -1)
     return value
 
-  if (!::g_login.isAuthorized())
+  if (!isAuthorized.get())
     return defValue
 
   return get_option_hud_screen_safe_area()
 }
 
 local setValue = function(value) {
-  if (!::g_login.isAuthorized())
+  if (!isAuthorized.get())
     return
 
   value = isInArray(value, values) ? value : defValue

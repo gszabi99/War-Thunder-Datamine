@@ -8,15 +8,16 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 eventbus_subscribe("gui_start_loading", function gui_start_loading(payload) {
   let isMissionLoading = payload?["showBriefing"] ?? false
   let briefing = loading_get_briefing()
-  if (::g_login.isLoggedIn() && isMissionLoading && (briefing.blockCount() > 0)) {
+  if (isLoggedIn.get() && isMissionLoading && (briefing.blockCount() > 0)) {
     log("briefing loaded, place =", briefing.getStr("place_loc", ""))
     handlersManager.loadHandler(gui_handlers.LoadingBrief, { briefing })
   }
-  else if (::g_login.isLoggedIn())
+  else if (isLoggedIn.get())
     handlersManager.loadHandler(gui_handlers.LoadingHangarHandler, { isEnteringMission = isMissionLoading })
   else
     handlersManager.loadHandler(gui_handlers.LoadingHandler)

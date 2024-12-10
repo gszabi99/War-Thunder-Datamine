@@ -26,7 +26,7 @@ let speed = @() {
   text = (SpeedValue.value * 5).tostring()
 }
 
-let AccelWatch = Computed(@() Accel.value > 0 ? true : false)
+let AccelWatch = Computed(@() Accel.value > 0)
 let acceleration = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS

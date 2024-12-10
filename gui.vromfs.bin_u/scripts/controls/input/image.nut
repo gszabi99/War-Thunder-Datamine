@@ -1,8 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
-::Input.InputImage <- class (::Input.InputBase) {
+let InputImage = class (InputBase) {
   image = ""
   constructor(imageName) {
     this.image = imageName
@@ -30,4 +31,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
       buttonImage = this.image
     }
   }
+}
+return {
+  InputImage
 }

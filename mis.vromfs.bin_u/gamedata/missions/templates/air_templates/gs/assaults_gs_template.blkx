@@ -326,9 +326,17 @@
       },
       "conditions": {},
       "actions": {
-        "comment": {
-          "value": ""
-        },
+        "comment": [
+          {
+            "value": ""
+          },
+          {
+            "value": "trying to attack heavy units first"
+          },
+          {
+            "value": ""
+          }
+        ],
         "unitRespawn": [
           {
             "delay": 0.0,
@@ -353,15 +361,106 @@
             "resetFormation": true
           }
         ],
+        "varSetString": [
+          {
+            "value": "t1_heavy_units_squad",
+            "var": "t1_squad_to_attack"
+          },
+          {
+            "value": "t2_heavy_units_squad",
+            "var": "t2_squad_to_attack"
+          }
+        ],
         "triggerEnable": {
           "target": [
-            "at_t1_tasks",
-            "at_t2_tasks",
-            "at_rearm"
+            "at_t1_heavy_task_check",
+            "at_t2_heavy_task_check",
+            "at_rearm",
+            "at_tickets_bleed_type"
           ]
         }
       },
       "else_actions": {}
+    },
+    "at_t1_heavy_task_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@t2_squad_to_attack",
+          "type": "squad"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "heavy units exist"
+        },
+        "triggerEnable": {
+          "target": "at_t1_tasks"
+        }
+      },
+      "else_actions": {
+        "comment": {
+          "value": "attacking alll quest units"
+        },
+        "varSetString": {
+          "value": "t2_quest_units_squad",
+          "var": "t2_squad_to_attack"
+        },
+        "triggerEnable": {
+          "target": "at_t1_tasks"
+        }
+      }
+    },
+    "at_t2_heavy_task_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@t1_squad_to_attack",
+          "type": "squad"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "heavy units exist"
+        },
+        "triggerEnable": {
+          "target": "at_t2_tasks"
+        }
+      },
+      "else_actions": {
+        "comment": {
+          "value": "attacking alll quest units"
+        },
+        "varSetString": {
+          "value": "t1_quest_units_squad",
+          "var": "t1_squad_to_attack"
+        },
+        "triggerEnable": {
+          "target": "at_t2_tasks"
+        }
+      }
     },
     "at_t1_tasks": {
       "is_enabled": false,
@@ -389,7 +488,7 @@
         "unitAttackTarget": {
           "playerAttracted": false,
           "object": "at_t1_assault",
-          "target": "t2_quest_units_squad",
+          "target": "@t2_squad_to_attack",
           "fireRandom": true
         },
         "unitSetProperties": {
@@ -413,9 +512,6 @@
               ]
             }
           }
-        },
-        "triggerEnable": {
-          "target": "at_t1_kill_counter"
         }
       },
       "else_actions": {}
@@ -446,7 +542,7 @@
         "unitAttackTarget": {
           "playerAttracted": false,
           "object": "at_t2_assault",
-          "target": "t1_quest_units_squad",
+          "target": "@t1_squad_to_attack",
           "fireRandom": true
         },
         "unitSetProperties": {
@@ -470,9 +566,6 @@
               ]
             }
           }
-        },
-        "triggerEnable": {
-          "target": "at_t2_kill_counter"
         }
       },
       "else_actions": {}
@@ -505,6 +598,49 @@
         }
       },
       "else_actions": {}
+    },
+    "at_tickets_bleed_type": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "at_only_players_affect_tickets",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "only players cause tickets to bleed when killing assaults"
+        },
+        "triggerEnable": {
+          "target": [
+            "at_t1_kill_counter_by_players_only",
+            "at_t2_kill_counter_by_players_only"
+          ]
+        }
+      },
+      "else_actions": {
+        "comment": {
+          "value": "any assaults deaths causes tickets to bleed"
+        },
+        "triggerEnable": {
+          "target": [
+            "at_t1_kill_counter",
+            "at_t2_kill_counter"
+          ]
+        }
+      }
     },
     "at_t1_kill_counter": {
       "is_enabled": false,
@@ -567,6 +703,86 @@
           "func": "more",
           "value": 0,
           "object": "at_t2_assault",
+          "var": "at_t2_kill_count"
+        }
+      },
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "at_t2_kill_count"
+        },
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "team": "B"
+        }
+      },
+      "else_actions": {}
+    },
+    "at_t1_kill_counter_by_players_only": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "killedBy",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "at_t1_assault",
+          "killedByObject": "t2_players_squad",
+          "var": "at_t1_kill_count"
+        }
+      },
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "at_t1_kill_count"
+        },
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "team": "A"
+        }
+      },
+      "else_actions": {}
+    },
+    "at_t2_kill_counter_by_players_only": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "killedBy",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "at_t2_assault",
+          "killedByObject": "t1_players_squad",
           "var": "at_t2_kill_count"
         }
       },
@@ -1360,7 +1576,10 @@
     "at_t2_players_spawn_mid_02_name": "",
     "at_t2_players_spawn_low_02_name": "",
     "at_t2_players_spawn_top_02_name": "",
-    "at_spawn_with_players": false
+    "at_spawn_with_players": false,
+    "t1_squad_to_attack": "t1_quest_units_squad",
+    "t2_squad_to_attack": "t2_quest_units_squad",
+    "at_only_players_affect_tickets": true
   },
   "dialogs": {},
   "airfields": {},

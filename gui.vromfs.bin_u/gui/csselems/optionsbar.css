@@ -1,0 +1,77 @@
+optionsBar {
+  width:pw-24@sf/@pf;
+  height:ph;
+  behavior:optionsBar;
+  valign:center;
+  css-hier-invalidate:all;
+  interactive:yes;
+  shortcut-on-hover:yes;
+}
+
+optionsBar > optionsBarsContainer {
+  position:relative;
+  width:fw;
+  height:ph;
+  padding-bottom:6@sf/@pf;
+}
+
+optionsBar fullHeightBar {
+  height:ph;
+  padding-right:1@dp;
+  css-hier-invalidate:yes;
+}
+
+optionsBar visibleBar {
+  width:pw;
+  height:6@sf/@pf;
+  position:relative;
+  bottom:0;
+}
+
+optionsBar > optionsBarsContainer visibleBar   {
+  background-color: #606060;
+}
+
+optionsBar > optionsBarsContainer visibleBar[selected=yes] {
+  background-color: #A0A0A0;
+}
+
+tr[active=yes] optionsBar > optionsBarsContainer visibleBar {
+  background-color: #808080;
+}
+
+tr[active=yes] optionsBar > optionsBarsContainer visibleBar[selected=yes] {
+  background-color: #fafafa;
+}
+
+optionsBar[isChanging=no] > optionsBarsContainer > fullHeightBar:hover visibleBar[selected=no] {
+  background-color: #b0b0b0;
+}
+
+td[enable=no] optionsBar visibleBar {
+  background-color:@black;
+}
+
+td[enable=no] optionsBar visibleBar[selected=yes] {
+  background-color:@controlDisabledColor;
+}
+
+td[enable=no] optionsBar textareaNoTab {
+  color:@disabledTextColor;
+}
+
+
+optionsBar textareaNoTab {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:15*@scrn_tgt/100.0;
+  move-sleep-time:1000;
+  move-start:no;
+}
+
+optionsBar:hover textareaNoTab[autoScroll=yes] {
+  move-start:yes;
+}
+
+optionsBar[isChanging=yes] > optionsBarsContainer > fullHeightBar {
+  tooltip:"";
+}

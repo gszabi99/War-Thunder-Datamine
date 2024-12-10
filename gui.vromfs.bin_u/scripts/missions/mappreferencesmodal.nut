@@ -16,6 +16,7 @@ let { setMapPreview, getMissionBriefingConfig } = require("%scripts/missions/map
 let { trim, utf8ToLower } = require("%sqstd/string.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"
 
@@ -418,7 +419,7 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updatePaginator() {
     let paginatorObj = this.scene.findObject("paginator_place")
-    ::generatePaginator(paginatorObj, this,
+    generatePaginator(paginatorObj, this,
       this.currentPage, this.mapsList[this.currentMapId].missions.len() - 1, null)
   }
 

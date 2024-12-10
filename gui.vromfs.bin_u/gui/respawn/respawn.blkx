@@ -194,6 +194,57 @@
                   "id": "tactical-map-box",
                   "size": "pw,fh",
                   "padding": "2",
+                  "div": [
+                    {
+                      "behaviour": "button",
+                      "id": "POI_resetter",
+                      "size": "sw,sh",
+                      "position": "root",
+                      "on_click": "onRespawnScreenClick"
+                    },
+                    {
+                      "pos": "pw-w-2@blockInterval, ph-h-2@blockInterval",
+                      "position": "absolute",
+                      "flow": "vertical",
+                      "Button_text": [
+                        {
+                          "id": "btn_move_map",
+                          "tooltip": "#options/moveMap",
+                          "class": "image",
+                          "btnName": "RB",
+                          "_on_click": "onMoveMapActivate",
+                          "ButtonImg": {},
+                          "img": {
+                            "background-image": "#ui/gameuiskin#dnd_icon.svg"
+                          }
+                        },
+                        {
+                          "id": "btn_set_point_of_interest",
+                          "tooltip": "#options/setPointOfInterest",
+                          "class": "image",
+                          "btnName": "LT",
+                          "on_click": "onSetPointOfInterest",
+                          "ButtonImg": {},
+                          "img": {
+                            "id": "hud_poi_img",
+                            "background-image": "#ui/gameuiskin#map_interestpoint.svg"
+                          }
+                        },
+                        {
+                          "id": "btn_set_hud_type",
+                          "tooltip": "#options/forceHudType",
+                          "class": "image",
+                          "btnName": "LB",
+                          "on_click": "onForcedSetHudType",
+                          "ButtonImg": {},
+                          "img": {
+                            "id": "hud_type_img",
+                            "background-image": "#ui/gameuiskin#objective_tank.svg"
+                          }
+                        }
+                      ]
+                    }
+                  ],
                   "tacticalMap": {
                     "id": "tactical-map",
                     "size": "pw, ph",

@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { floor } = require("math")
 let { getPlayerSideStr, isPlayerSideStr } = require("%rGui/wwMap/wwOperationStates.nut")
 let { getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
-let { getSettings } = require("%rGui/wwMap/wwSettings.nut")
+let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
 let { battlesInfo, getBattleState } = require("%rGui/wwMap/wwBattlesStates.nut")
 let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { getArmyIcon } = require("%rGui/wwMap/wwArmyStates.nut")

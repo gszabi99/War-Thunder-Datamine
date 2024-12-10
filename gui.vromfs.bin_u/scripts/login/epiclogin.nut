@@ -22,6 +22,7 @@ gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
   function doLogin() {
     log("Epic login: check_login_pass")
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "epic" })
+    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
     let ret = check_login_pass("", "", "epic", "epic", false, false)
     this.proceedAuthorizationResult(ret)
   }

@@ -3,20 +3,21 @@ from "%rGui/globals/ui_library.nut" import *
 let { sin, cos, PI, floor } = require("math")
 let { wwGetOperationTimeMillisec } = require("worldwar")
 let { loadedTransport } = require("%rGui/wwMap/wwMapStates.nut")
-let { isPlayerSide, isOperationPaused } = require("%rGui/wwMap/wwOperationStates.nut")
+let { isPlayerSide, isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
 let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { convertColor4, getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
 let { selectedArmy, hoveredArmy, getArmyIcon
-  armiesList, armiesData, isShowArmiesIndex } = require("%rGui/wwMap/wwArmyStates.nut")
-let { artilleryReadyState } = require("%rGui/wwMap/wwArtilleryUtils.nut")
+  armiesList, armiesData, isShowArmiesIndex, movingArmiesPositions } = require("%rGui/wwMap/wwArmyStates.nut")
+let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 let { isTransport, getLoadedArmyType } = require("%rGui/wwMap/wwTransportUtils.nut")
-let { getSettings } = require("%rGui/wwMap/wwSettings.nut")
+let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
 let { calcAngleBetweenVectors, even } = require("%rGui/wwMap/wwUtils.nut")
 let { artilleryStrikesInfo } = require("%rGui/wwMap/wwArtilleryStrikeStates.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 let { setTimeout } = require("dagor.workcycle")
+let { isShowPathForSelectedArmyFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
 
 let entrenchIconColors = {
   spriteColor = 0
@@ -25,7 +26,7 @@ let entrenchIconColors = {
 
 let function mkArmyPaths(armyWatch, areaBounds) {
   let hasPathTracker = Computed(@() armyWatch.get()?.pathTracker.status == "ES_MOVING_BY_PATH"
-    && [selectedArmy.get(), hoveredArmy.get()].contains(armyWatch.get().name))
+    && ([selectedArmy.get(), hoveredArmy.get()].contains(armyWatch.get().name) || !isShowPathForSelectedArmyFilter.get()))
 
   return function() {
     if (!hasPathTracker.get())
@@ -102,8 +103,9 @@ let mkArmyEntrenchIcon = @(armyData, areaBounds, mpZoom) function() {
 
   let isBlinking = endBlinkTime > wwGetOperationTimeMillisec()
   let { areaWidth, areaHeight } = areaBounds
-  let entrenchIconSize = even(armyData.specs.battleStartRadiusN * mpZoom * 2.6)
-  let pos = [areaWidth * armyPos.x - entrenchIconSize / 2, areaHeight * armyPos.y - entrenchIconSize / 2]
+  let entrenchIconWidth = even(armyData.specs.battleStartRadiusN * mpZoom * 2.2)
+  let entrenchIconHeight = floor(entrenchIconWidth * 36 / 32)
+  let pos = [areaWidth * armyPos.x - entrenchIconWidth / 2, areaHeight * armyPos.y - entrenchIconHeight / 2 + hdpx(1.5)]
   let duration = (endBlinkTime - wwGetOperationTimeMillisec()) / 1000
   if (isBlinking)
     setTimeout(duration, @() anim_request_stop($"entrench_{armyData.name}"))
@@ -111,9 +113,9 @@ let mkArmyEntrenchIcon = @(armyData, areaBounds, mpZoom) function() {
   return {
     rendObj = ROBJ_IMAGE
     pos
-    size = [entrenchIconSize, entrenchIconSize]
+    size = [entrenchIconWidth, entrenchIconHeight]
     subPixel = true
-    image = Picture($"{iconName}:{entrenchIconSize}:{entrenchIconSize}")
+    image = Picture($"{iconName}:{entrenchIconWidth}:{entrenchIconHeight}")
     color = entrenchIconColors.spriteColor
     animations = [{ prop = AnimProp.color, from = entrenchIconColors.blinkColor, to = entrenchIconColors.spriteColor,
       duration = blinkPeriod, loop = true, easing = CosineFull, play = isBlinking, trigger = $"entrench_{armyData.name}",
@@ -167,10 +169,21 @@ let mkArmyIcon = @(armyData) function() {
   }
 }
 
+function onArmyMove(x, armyName, from, to) {
+  let deltaX = to.x - from.x
+  let deltaY = to.y - from.y
+  movingArmiesPositions.mutate(@(t) t[armyName] <- { x = (from.x + deltaX * x), y = (from.y + deltaY * x) })
+  return x
+}
+
+function onArmyMoveFinish(armyName) {
+  movingArmiesPositions.mutate(@(t) t.rawdelete(armyName))
+}
+
 function mkArmyBack(armyData, areaBounds) {
   let isArmySelected = Computed(@() selectedArmy.get() == armyData.name)
   let isArmyHovered = Computed(@() hoveredArmy.get() == armyData.name)
-  let animation = { prop = AnimProp.translate, from = [0, 0], to = [0, 0], duration = 0, play = false }
+  let animation = { prop = AnimProp.translate, from = [0, 0], to = [0, 0], duration = 0, play = false, onFinish = @() onArmyMoveFinish(armyData.name)}
   return function() {
     let children = []
     let armyGroupsInfo = getArmyGroupsInfo()
@@ -202,7 +215,7 @@ function mkArmyBack(armyData, areaBounds) {
       let timeLeft = (nextPoint.arrivalTimeShift + armyData.pathTracker.path.startTime - wwGetOperationTimeMillisec()) / 1000.0
       let nextPointPos = convertToRelativeMapCoords(nextPoint.pos)
       let nextArmyPos = [areaWidth * nextPointPos.x - armyBorderSize / 2, areaHeight * nextPointPos.y - armyBorderSize / 2]
-      animation.__update({ from = armyBorderPos, to = nextArmyPos, duration = timeLeft, play = !isOperationPaused.get() })
+      animation.__update({ from = armyBorderPos, to = nextArmyPos, duration = timeLeft, play = !isOperationPausedWatch.get(), easing = @(x) onArmyMove(x, armyData.name, armyPos, nextPointPos) })
 
       if (!isArmySelected.get() && !isArmyHovered.get()) {
         let pointTo = { x = points[nextPathIdx].pos.x - armyData.pathTracker.pos.x, y = points[nextPathIdx].pos.y - armyData.pathTracker.pos.y }
@@ -232,6 +245,8 @@ function mkArmyBack(armyData, areaBounds) {
         })
       }
     }
+    else
+      onArmyMoveFinish(armyData.name)
 
     children.append({
       rendObj = ROBJ_BOX
@@ -246,7 +261,7 @@ function mkArmyBack(armyData, areaBounds) {
     children.append(mkArmyIcon(armyData))
 
     return {
-      watch = [isArmySelected, isArmyHovered, isShowArmiesIndex, mapZoom, isOperationPaused]
+      watch = [isArmySelected, isArmyHovered, isShowArmiesIndex, mapZoom, isOperationPausedWatch]
       key = {}
       children
       transform = {
@@ -290,7 +305,7 @@ let mkArmy = @(armyWatch, areaBounds) function() {
     watch = [armyWatch, mapZoom]
     children = [
       mkArmyEntrenchIcon(armyData, areaBounds, mapZoom.get()),
-      mkArtilleryFire(armyData, areaBounds, Computed(@() artilleryStrikesInfo.get().findindex(@(as) as.army == armyData.name) != null)),
+      mkArtilleryFire(armyData, areaBounds, Computed(@() artilleryStrikesInfo.get().findindex(@(as) as.army.name == armyData.name) != null)),
       mkArmyBack(armyData, areaBounds)
     ]
   }
@@ -306,7 +321,7 @@ let mkArmies = function() {
   entrenchIconColors.blinkColor = convertColor4(blinkColor)
 
   let armies = armiesData.get()
-    .sort(@(army1, army2) army1.owner.side <=> army2.owner.side || army2.specs.unitType <=> army1.specs.unitType)
+    .sort(@(army1, army2) isPlayerSide(army1.owner.side) <=> isPlayerSide(army2.owner.side) || army2.specs.unitType <=> army1.specs.unitType)
     .map(@(_army, idx) mkArmy(Computed(@() armiesData.get()?[idx]), activeAreaBounds.get()))
 
   let armiesPaths = armiesData.get()

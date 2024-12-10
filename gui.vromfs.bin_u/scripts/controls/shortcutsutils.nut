@@ -3,8 +3,10 @@ from "%scripts/dagui_library.nut" import *
 let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
-let { AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
+let { GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { Button } = require("%scripts/controls/input/button.nut")
+let { Combination } = require("%scripts/controls/input/combination.nut")
 
 let getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
 
@@ -58,32 +60,6 @@ function getInputsMarkup(inputs) {
   return res
 }
 
-function getAxisActivationShortcutData(shortcuts, item, preset) {
-  preset = preset ?? ::g_controls_manager.getCurPreset()
-  let inputs = []
-  let axisDescr = ::g_shortcut_type._getDeviceAxisDescription(item.id)
-  let axisInput = (axisDescr.axisId > -1 || axisDescr.mouseAxis != null)
-    ? ::Input.Axis(axisDescr, AXIS_MODIFIERS.NONE, preset)
-    : null
-  let buttons = axisInput ? [axisInput] : []
-  let scArr = shortcuts[item.modifiersId[""]]
-  for (local i = 0; i < scArr.len(); i++) {
-    let sc = scArr[i]
-    for (local j = 0; j < sc.dev.len(); j++)
-      buttons.append(::Input.Button(sc.dev[j], sc.btn[j], preset))
-
-    if (buttons.len() > 1)
-      inputs.append(::Input.Combination(buttons))
-    else
-      inputs.extend(buttons)
-  }
-  // Use only axis input if has no shortcuts for combination
-  if (scArr.len() == 0 && axisInput)
-    inputs.append(axisInput)
-
-  return getInputsMarkup(inputs)
-}
-
 function getShortcutData(shortcuts, shortcutId, cantBeEmpty = true, preset = null) {
   if (shortcuts?[shortcutId] == null)
     return cantBeEmpty ? getTextMarkup(loc("ui/not_applicable")) : ""
@@ -95,10 +71,10 @@ function getShortcutData(shortcuts, shortcutId, cantBeEmpty = true, preset = nul
     let sc = shortcuts[shortcutId][i]
 
     for (local j = 0; j < sc.dev.len(); j++)
-      buttons.append(::Input.Button(sc.dev[j], sc.btn[j], preset))
+      buttons.append(Button(sc.dev[j], sc.btn[j], preset))
 
     if (buttons.len() > 1)
-      inputs.append(::Input.Combination(buttons))
+      inputs.append(Combination(buttons))
     else
       inputs.extend(buttons)
   }
@@ -163,12 +139,12 @@ function hasMappedSecondaryWeaponSelector(unitType) {
 
 return {
   getShortcutById
+  getInputsMarkup
   isAxisBoundToMouse
   getComplexAxesId
   isComponentsAssignedToSingleInputItem
   getTextMarkup
   getShortcutData
-  getAxisActivationShortcutData
   isShortcutMapped
   restoreShortcuts
   hasMappedSecondaryWeaponSelector

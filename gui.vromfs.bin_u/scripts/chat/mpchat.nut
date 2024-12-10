@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_hud_visible, get_is_in_flight_menu, is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_mode_with_teams
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -30,6 +32,7 @@ let { isInFlight } = require("gameplayBinding")
 let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { defer } = require("dagor.workcycle")
+let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
 
 enum mpChatView {
   CHAT
@@ -88,7 +91,7 @@ function getSenderColor(message) {
     return senderMeColor
   if (::isPlayerDedicatedSpectator(message.sender))
     return senderSpectatorColor
-  if (message.team != get_player_army_for_hud() || !::is_mode_with_teams())
+  if (message.team != get_player_army_for_hud() || !is_mode_with_teams())
     return senderEnemyColor
   if (isSenderInMySquad(message))
     return senderMySquadColor
@@ -106,7 +109,7 @@ function getMessageColor(message) {
 
     return voiceTeamColor
   }
-  return ::g_mp_chat_mode.getModeById(message.mode).textColor
+  return g_mp_chat_mode.getModeById(message.mode).textColor
 }
 
 function formatMessageText(message, text) {
@@ -125,7 +128,7 @@ function formatMessageText(message, text) {
     "%s <Color=%s>[%s] <Link=PL_%s>%s:</Link></Color> <Color=%s>%s</Color>",
     timeString,
     userColor,
-    ::g_mp_chat_mode.getModeById(message.mode).getNameText(),
+    g_mp_chat_mode.getModeById(message.mode).getNameText(),
     message.sender,
     fullName,
     msgColor,
@@ -143,9 +146,9 @@ function getTextFromMessage(message) {
     return formatMessageText(message, message.text)
 
   if (!message.isMyself && ::isPlayerNickInContacts(message.sender, EPL_BLOCKLIST))
-    return formatMessageText(message, ::g_chat.makeBlockedMsg(message.text))
+    return formatMessageText(message, g_chat.makeBlockedMsg(message.text))
 
-  return formatMessageText(message, ::g_chat.filterMessageText(message.text, message.isMyself))
+  return formatMessageText(message, g_chat.filterMessageText(message.text, message.isMyself))
 }
 
 function isVisibleWithCursor(sceneData) {
@@ -269,7 +272,7 @@ function updateChatInput(sceneData) {
   enableObjsByTable(scene, {
       chat_input              = show
       btn_send                = show
-      chat_prompt             = show && ::g_mp_chat_mode.getNextMode(getCurrentModeId()) != null
+      chat_prompt             = show && g_mp_chat_mode.getNextMode(getCurrentModeId()) != null
       chat_mod_accesskey      = show && (sceneData.isInSpectateMode || !is_hud_visible)
   })
   if (show && sceneData.scene.isVisible())
@@ -287,7 +290,7 @@ function showPlayerRClickMenu(playerName) {
 
 function updatePrompt(sceneData) {
   let scene = sceneData.scene
-  let curMode = ::g_mp_chat_mode.getModeById(getCurrentModeId())
+  let curMode = g_mp_chat_mode.getModeById(getCurrentModeId())
   let prompt = scene.findObject("chat_prompt")
   if (prompt) {
     prompt.chatMode = curMode.name
@@ -303,7 +306,7 @@ function updatePrompt(sceneData) {
 
   let hint = scene.findObject("chat_hint")
   if (hint)
-    hint.setValue(::g_mp_chat_mode.getChatHint())
+    hint.setValue(g_mp_chat_mode.getChatHint())
 }
 
 function enableChatInput(active) {
@@ -351,10 +354,10 @@ function onChatLink(obj, link, lclick) {
     else
       showPlayerRClickMenu(link.slice(3))
   }
-  else if (::g_chat.checkBlockedLink(link)) {
-    mpChatHandlerState.log_text = ::g_chat.revealBlockedMsg(mpChatHandlerState.log_text, link)
+  else if (g_chat.checkBlockedLink(link)) {
+    mpChatHandlerState.log_text = g_chat.revealBlockedMsg(mpChatHandlerState.log_text, link)
 
-    let pureMessage = ::g_chat.convertLinkToBlockedMsg(link)
+    let pureMessage = g_chat.convertLinkToBlockedMsg(link)
     unblockMessageInLog(pureMessage)
     updateAllLogs()
   }
@@ -495,7 +498,7 @@ let chatHandler = { //Contains functions used in the dagui scene
   }
 
   function onChatMode() {
-    setModeId(::g_mp_chat_mode.getNextMode(getCurrentModeId()) ?? CHAT_MODE_ALL)
+    setModeId(g_mp_chat_mode.getNextMode(getCurrentModeId()) ?? CHAT_MODE_ALL)
   }
 
   function onShowChatInput() {

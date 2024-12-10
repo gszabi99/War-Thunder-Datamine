@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT, INFO_DETAIL
+from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -713,7 +714,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateAllByFilters()
     saveLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}",
-      ::build_blk_from_container(this.filterStates))
+      build_blk_from_container(this.filterStates))
   }
 
   function editWeaponryPreset(preset) {

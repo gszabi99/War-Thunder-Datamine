@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_player_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
+from "%scripts/utils_sa.nut" import is_mode_with_teams
 
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
@@ -38,6 +39,7 @@ let { openOrdersInventory, updateActiveOrder, orderCanBeActivated,
   getActivateButtonLabel, activateSoonExpiredOrder
 } = require("%scripts/items/orders.nut")
 let { fill_gamer_card } = require("%scripts/gamercard.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -287,9 +289,9 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   function initStatsMissionParams() {
     this.gameMode = get_game_mode()
     this.gameType = get_game_type()
-    this.isOnline = ::g_login.isLoggedIn()
+    this.isOnline = isLoggedIn.get()
 
-    this.isTeamplay = ::is_mode_with_teams(this.gameType)
+    this.isTeamplay = is_mode_with_teams(this.gameType)
     this.isTeamsRandom = !this.isTeamplay || this.gameMode == GM_DOMINATION
     if (isInSessionRoom.get() || is_replay_playing())
       this.isTeamsWithCountryFlags = this.isTeamplay &&
@@ -784,14 +786,6 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
                       country = playerInfo ? playerInfo.country : ""
                     },
                     "player_", this.scene)
-  }
-
-  function onComplain(_obj) {
-    let pInfo = this.getSelectedPlayer()
-    if (!pInfo || pInfo.isBot || pInfo.isLocal)
-      return
-
-    ::gui_modal_complain(pInfo)
   }
 
   function updateListsButtons() {

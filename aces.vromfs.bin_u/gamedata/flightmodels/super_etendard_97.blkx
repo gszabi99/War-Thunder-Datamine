@@ -2688,6 +2688,25 @@
       "turretNo": 0
     }
   },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/fr_anemone.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/tv_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/fr_sherloc.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic1_gun"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -2789,7 +2808,9 @@
         "alkan_lc_3_pylon1",
         "alkan_lc_3_pod1",
         "alkan_lc_3_pylon2",
-        "alkan_lc_3_pod2"
+        "alkan_lc_3_pod2",
+        "phimat_container",
+        "phimat_container_cap"
       ]
     },
     "WeaponSlot": [
@@ -3050,6 +3071,27 @@
               "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21_200.blk",
               "emitter": "bomb_anm64_1",
               "bullets": 1
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_12_slot1",
+            "reqModification": "us_gbu_12",
+            "ShowNodes": {
+              "node": "pylon_alkan257_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "bomb_anm64_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "atlis2"
             }
           }
         ]
@@ -4066,6 +4108,47 @@
               "emitter": "bomb_anm64_2",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_12_slot7",
+            "reqModification": "us_gbu_12",
+            "ShowNodes": {
+              "node": "pylon_alkan257_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "bomb_anm64_2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "atlis2"
+            }
+          },
+          {
+            "iconType": "ltc",
+            "name": "phimat_counteiner",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "pylon_alkan257_2",
+                "phimat_container"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "phimat_container",
+              "bullets": 216,
+              "bulletsCartridge": 1
+            }
           }
         ]
       }
@@ -4079,25 +4162,6 @@
       },
       {
         "from": "super_etendard_97_n*"
-      }
-    ]
-  },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/fr_anemone.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/tv_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/fr_sherloc.blk"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic1_gun"
       }
     ]
   },

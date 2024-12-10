@@ -35,6 +35,7 @@ require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 let battlePassRewardTitleLocId = "battlePass/rewardsTitle"
 
@@ -202,7 +203,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage,
+    generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage,
       ceil((stagesList.len().tofloat() + doubleWidthStagesIcon.value.len()) / this.stagesPerPage)
       - 1, null, true /*show last page*/ )
   }

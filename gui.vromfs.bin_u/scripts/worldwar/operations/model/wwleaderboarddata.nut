@@ -9,6 +9,7 @@ let { requestLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let modes = [
   {
@@ -80,7 +81,7 @@ function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = {}) 
 }
 
 function requestWwLeaderboardModes(modeName, cb) {
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   let mode = getModeByName(modeName)

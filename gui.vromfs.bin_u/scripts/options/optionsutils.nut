@@ -1,7 +1,9 @@
 from "%scripts/dagui_natives.nut" import get_thermovision_index, set_thermovision_index
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "%scripts/utils_sa.nut" import findNearest
 
+let { get_thermovision_colors } = require("%scripts/options/optionsStorage.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_option_bool } = require("gameOptions")
 let { blkFromPath } = require("%sqstd/datablock.nut")
@@ -10,24 +12,9 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { startsWith } = require("%sqstd/string.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 
 let changedOptionReqRestart = mkWatched(persist, "changedOptionReqRestart", {})
-
-let checkArgument = function(id, arg, varType) {
-  if (type(arg) == varType)
-    return true
-
-  let msg = "\n".concat(
-    $"[ERROR] Wrong argument type supplied for option item '{id}'.",
-    $"Value = {toString(arg)}.",
-    $"Expected '{varType}' found '{type(arg)}'."
-  )
-
-  script_net_assert_once(id, msg)
-  return false
-}
 
 let createDefaultOption = function() {
   return {
@@ -100,7 +87,7 @@ let fillHSVOption_ThermovisionColor = function(descr) {
   descr.values = []
 
   local idx = 0
-  foreach (it in ::thermovision_colors) {
+  foreach (it in get_thermovision_colors()) {
     descr.items.append({ rgb = it.menu_rgb })
     descr.values.append(idx)
     idx++
@@ -144,7 +131,7 @@ function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = nu
   //now black
   addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.0)
 
-  local valueIdx = ::find_nearest(curHue, descr.values)
+  local valueIdx = findNearest(curHue, descr.values)
   if (curHue == -1)
     valueIdx = 0 // defValue
   if (valueIdx >= 0)
@@ -172,7 +159,7 @@ function fillHueOption(descr, id, curHue = null, defHue = null, defSat = null, d
     even = !even
   }
 
-  local valueIdx = ::find_nearest(curHue, descr.values)
+  local valueIdx = findNearest(curHue, descr.values)
   if (curHue == -1)
     valueIdx = 0 // defValue
   if (valueIdx >= 0)
@@ -255,7 +242,6 @@ function isOptionReqRestartChanged(option, newValue) {
 }
 
 return {
-  checkArgument
   createDefaultOption
   fillBoolOption
   fillHueSaturationBrightnessOption

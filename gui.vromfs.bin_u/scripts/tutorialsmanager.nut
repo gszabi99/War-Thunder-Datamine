@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import check_aircraft_tags
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -9,7 +10,7 @@ let { WEAPON_TAG,
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-::g_tutorials_manager <- {
+let g_tutorials_manager = {
   actions = []
 
   function canAct() {
@@ -56,7 +57,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
     else if (tryOpenNextTutorialHandler("fighter"))
       return true
 
-    if (::check_aircraft_tags(unit.tags, ["bomberview"]))
+    if (check_aircraft_tags(unit.tags, ["bomberview"]))
       return tryOpenNextTutorialHandler("bomber")
     else if (isUnitHaveAnyWeaponsTags(unit, [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET]))
       return tryOpenNextTutorialHandler("assaulter")
@@ -65,4 +66,4 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
   }
 }
 
-subscribe_handler(::g_tutorials_manager, g_listener_priority.DEFAULT_HANDLER)
+subscribe_handler(g_tutorials_manager, g_listener_priority.DEFAULT_HANDLER)

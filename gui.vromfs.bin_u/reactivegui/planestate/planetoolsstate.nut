@@ -32,6 +32,7 @@ let RadarTargetHeight = Watched(0.0)
 let RadarTargetPosValid = Watched(false)
 let RadarTargetPos = [0, 0]
 let RadarTargetAngle = Watched(-1.0)
+let RadarTargetVel = Watched(-1.0)
 let GunfireSolution = [-1, -1]
 let AamAccelLock = Watched(false)
 let MfdRadarWithNavVis = Watched(false)
@@ -94,6 +95,7 @@ let planeState = {
   RadarTargetDistRate,
   RadarTargetHeight,
   RadarTargetAngle,
+  RadarTargetVel,
   GunfireSolution,
   AamAccelLock,
   MfdRadarWithNavVis,

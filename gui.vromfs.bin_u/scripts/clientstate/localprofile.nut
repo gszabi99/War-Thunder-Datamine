@@ -8,17 +8,18 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
 let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
+let { getStateDebugStr, isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const EATT_UNKNOWN = -1
 
 eventbus_subscribe("onUpdateProfile", function(msg) {
   let { taskId = -1, action = "", transactionType = EATT_UNKNOWN } = msg
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     ::g_login.onProfileReceived()
 
   broadcastEvent("ProfileUpdated", { taskId, action, transactionType })
 
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   ::update_gamercards()
@@ -27,10 +28,10 @@ eventbus_subscribe("onUpdateProfile", function(msg) {
 
 //save/load settings by account. work only after local profile received from host.
 function saveLocalAccountSettings(path, value) {
-  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
+  if (!::should_disable_menu() && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings write: saveLocalAccountSettings at login state ",
-      ::g_login.getStateDebugStr()))
+      getStateDebugStr()))
     return
   }
 
@@ -40,10 +41,10 @@ function saveLocalAccountSettings(path, value) {
 }
 
 function loadLocalAccountSettings(path, defValue = null) {
-  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
+  if (!::should_disable_menu() && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: loadLocalAccountSettings at login state ",
-      ::g_login.getStateDebugStr()))
+      getStateDebugStr()))
     return defValue
   }
 
@@ -67,7 +68,7 @@ let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
 
 //save/load settings by account and by screenSize
 function loadLocalByScreenSize(name, defValue = null) {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return defValue
 
   let rootName = getRootSizeText()
@@ -79,7 +80,7 @@ function loadLocalByScreenSize(name, defValue = null) {
 }
 
 function saveLocalByScreenSize(name, value) {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
 
   let rootName = getRootSizeText()
@@ -101,7 +102,7 @@ function saveLocalByScreenSize(name, value) {
 //remove all data by screen size from all size blocks
 //also clear empty size blocks
 function clearLocalByScreenSize(name) {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
 
   let cdb = get_local_custom_settings_blk()

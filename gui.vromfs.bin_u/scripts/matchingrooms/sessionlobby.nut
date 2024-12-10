@@ -3,7 +3,10 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/options/optionsConsts.nut" import misCountries
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%scripts/mainConsts.nut" import global_max_players_versus
+from "%scripts/utils_sa.nut" import is_mode_with_teams
 
+let { gen_rnd_password, get_array_by_bit_value } = require("%scripts/utils_sa.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
@@ -84,6 +87,7 @@ let { isMeBanned } = require("%scripts/penitentiary/penalties.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 /*
 SessionLobby API
@@ -384,7 +388,7 @@ function onCheckReconnect(response) {
 }
 
 function checkReconnect() {
-  if (isReconnectChecking.value || !::g_login.isLoggedIn() || isInBattleState.value || isMeBanned())
+  if (isReconnectChecking.value || !isLoggedIn.get() || isInBattleState.value || isMeBanned())
     return
 
   isReconnectChecking(true)
@@ -538,6 +542,7 @@ SessionLobby = {
       _settings.mission[key] <- u.isDataBlock(value) ? convertBlk(value) : value
     }
 
+    _settings.mission.keepOwnUnits <- mission?.editSlotbar?.keepOwnUnits ?? true
     _settings.creator <- userName.value
     _settings.mission.originalMissionName <- getTblValue("name", _settings.mission, "")
     if ("postfix" in _settings.mission && _settings.mission.postfix) {
@@ -576,7 +581,7 @@ SessionLobby = {
       }
       else if (countriesType == misCountries.SYMMETRIC || countriesType == misCountries.CUSTOM) {
         let bitMaskKey = (countriesType == misCountries.SYMMETRIC) ? "country_allies" : name
-        countries = ::get_array_by_bit_value(getTblValue($"{bitMaskKey}_bitmask", missionSettings, 0), shopCountriesList)
+        countries = get_array_by_bit_value(getTblValue($"{bitMaskKey}_bitmask", missionSettings, 0), shopCountriesList)
       }
       _settings[name] <- (countries && countries.len()) ? countries : fullCountriesList
     }
@@ -597,7 +602,7 @@ SessionLobby = {
     if (mrankMin > 0 || mrankMax < getMaxEconomicRank())
       _settings.mranks <- { min = mrankMin, max = mrankMax }
 
-    _settings.chatPassword <- isInSessionRoom.get() ? this.getChatRoomPassword() : ::gen_rnd_password(16)
+    _settings.chatPassword <- isInSessionRoom.get() ? this.getChatRoomPassword() : gen_rnd_password(16)
     if (!u.isEmpty(SessionLobbyState.settings?.externalSessionId))
       _settings.externalSessionId <- SessionLobbyState.settings.externalSessionId
     if (!u.isEmpty(SessionLobbyState.settings?.psnMatchId))
@@ -1754,7 +1759,7 @@ SessionLobby = {
     if (SessionLobbyState.roomId == v_roomId && isInSessionRoom.get())
       return
 
-    if (!::g_login.isLoggedIn() || isInSessionRoom.get()) {
+    if (!isLoggedIn.get() || isInSessionRoom.get()) {
       //delayedJoinRoomFunc =  function() { this.joinRoom(v_roomId, senderId, v_password, cb) }
 
       if (isInSessionRoom.get())
@@ -2198,7 +2203,7 @@ SessionLobby = {
       res.statusText = loc("multiplayer/not_all_ready")
 
     let gt = this.getGameType()
-    let checkTeams = ::is_mode_with_teams(gt)
+    let checkTeams = is_mode_with_teams(gt)
     if (!checkTeams)
       return res
 
@@ -2504,7 +2509,7 @@ SessionLobby = {
   }
 
   function getMaxDisbalance() {
-    return getTblValue("maxLobbyDisbalance", this.getMGameMode(), ::global_max_players_versus)
+    return getTblValue("maxLobbyDisbalance", this.getMGameMode(), global_max_players_versus)
   }
 
   function onEventMatchingDisconnect(_p) {

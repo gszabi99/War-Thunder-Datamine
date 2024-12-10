@@ -2287,6 +2287,7 @@
       "matchSector": 10.0,
       "targetSuperResolution": false,
       "trackedTargetsMax": 12,
+      "priorityTargetSelection": false,
       "targetRangeFinder": true,
       "targetRange": [
         5000.0,
@@ -2328,6 +2329,8 @@
             "name": "9K330",
             "detectLaunch": true,
             "type": [
+              "HQ-17 TA",
+              "HQ-17 TT",
               "9K330 TA",
               "9K330 TT"
             ]
@@ -3284,35 +3287,7 @@
     "prop0": -1,
     "engine0": 0
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_alr_67.blk"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-      }
-    ]
-  },
   "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "pilotIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
     "sightThermal": {
       "resolution": [
         500,
@@ -3328,6 +3303,24 @@
       ],
       "noiseFactor": 0.04,
       "index": 1
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
   },
   "gunnerOpticFps": {
@@ -3406,6 +3399,16 @@
       "turretNo": 0,
       "nvIndex": 1
     }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_alr_67.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {

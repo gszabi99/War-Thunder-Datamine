@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_get_role_rank, myself_can_devoice, ps4_is_chat_enabled, clan_get_my_role, myself_can_ban, copy_to_clipboard, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -34,7 +35,7 @@ let { is_console } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
 let { get_mp_session_id_str } = require("multiplayer")
-
+let { g_chat } = require("%scripts/chat/chat.nut")
 //-----------------------------
 // params keys:
 //  - uid
@@ -104,7 +105,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   let hasChatEnable = isChatEnabled()
 
   let roomId = params?.roomId
-  let roomData = roomId ? ::g_chat.getRoomById(roomId) : null
+  let roomData = roomId ? g_chat.getRoomById(roomId) : null
 
   let isMPChat = params?.isMPChat ?? false
   let isMPLobby = params?.isMPLobby ?? false
@@ -224,8 +225,8 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     actions.append(
       {
         text = loc("squadAction/openChat")
-        show = !isMe && ::g_chat.isSquadRoomJoined() && inMySquad && hasChatEnable
-        action = @() ::g_chat.openChatRoom(::g_chat.getMySquadRoomId())
+        show = !isMe && g_chat.isSquadRoomJoined() && inMySquad && hasChatEnable
+        action = @() g_chat.openChatRoom(g_chat_room_type.getMySquadRoomId())
       }
       {
         text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, hasApplicationInMySquad
@@ -415,7 +416,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 //---- <Chat> -----------------------
   if (hasMenuChat.value) {
     if (hasChatEnable && canInviteToChatRoom) {
-      let inviteMenu = ::g_chat.generateInviteMenu(name)
+      let inviteMenu = g_chat.generateInviteMenu(name)
       actions.append({
         text = loc("chat/invite_to_room")
         isVisualDisabled = !canChat || !canInteractCrossConsole || !canInteractCrossPlatform || isProfileMuted || isBlock
@@ -441,7 +442,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       actions.append(
         {
           text = loc("chat/kick_from_room")
-          show = !::g_chat.isRoomSquad(roomId) && !::SessionLobby.isLobbyRoom(roomId) && ::g_chat.isImRoomOwner(roomData)
+          show = !g_chat.isRoomSquad(roomId) && !::SessionLobby.isLobbyRoom(roomId) && g_chat.isImRoomOwner(roomData)
           action = @() ::menu_chat_handler ? ::menu_chat_handler.kickPlayeFromRoom(name) : null
         }
         {
@@ -461,7 +462,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         }
       }
       else {
-        let threadInfo = ::g_chat.getThreadInfo(roomId)
+        let threadInfo = g_chat.getThreadInfo(roomId)
         if (threadInfo && threadInfo.ownerNick == name)
           canComplain = true
       }
@@ -484,7 +485,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         }
 
         if (!isMPChat) {
-          let threadInfo = ::g_chat.getThreadInfo(roomId)
+          let threadInfo = g_chat.getThreadInfo(roomId)
           if (threadInfo) {
             chatLog = chatLog != null ? chatLog : {}
             chatLog.category   <- threadInfo.category
@@ -502,7 +503,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 //---- </Complain> ------------------
 
 //---- <Moderator> ------------------
-  if (::is_myself_anyof_moderators() && (roomId || isMPChat || isMPLobby))
+  if (is_myself_anyof_moderators() && (roomId || isMPChat || isMPLobby))
     actions.append(
       {
         text = loc("contacts/moderator_copyname")
@@ -565,10 +566,20 @@ function showSquadMemberMenu(obj) {
   })
 }
 
+function showChatPlayerRClickMenu(playerName, roomId = null, contact = null, position = null) {
+  showMenu(contact, this, {
+    position = position
+    roomId = roomId
+    playerName = playerName
+    canComplain = true
+  })
+}
+
 return {
   showMenu = showMenu
   showXboxPlayerMuted = showXboxPlayerMuted
   notifyPlayerAboutRestriction = notifyPlayerAboutRestriction
   showBlockedPlayerPopup = showBlockedPlayerPopup
   showSquadMemberMenu
+  showChatPlayerRClickMenu
 }

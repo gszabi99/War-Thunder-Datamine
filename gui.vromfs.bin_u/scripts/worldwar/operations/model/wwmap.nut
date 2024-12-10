@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
@@ -342,7 +343,7 @@ let WwMap = class {
     let reasonData = ::WwQueue.getCantJoinAnyQueuesReasonData()
     return hasFeature("WorldWarClansQueue") &&
            hasFeature("Clans") &&
-           ::is_in_clan() && this.isActive() &&
+           is_in_clan() && this.isActive() &&
            (reasonData.canJoin || reasonData.hasRestrictClanRegister)
   }
 }

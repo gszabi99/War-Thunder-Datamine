@@ -3,6 +3,7 @@ from "app" import is_offline_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -220,7 +221,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function sendDisconnectMessage() {
     broadcastEvent("PlayerQuitMission")
-    if (::is_multiplayer()) {
+    if (is_multiplayer()) {
       leave_mp_session()
       this.onResumeRaw()
     }

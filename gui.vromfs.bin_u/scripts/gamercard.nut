@@ -19,6 +19,8 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getProfileInfo, getCurExpTable } = require("%scripts/user/userInfoStats.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { chatRooms } = require("%scripts/chat/chatStorage.nut")
 
 let lastGamercardScenes = persist("lastGamercardScenes", @() [])
 
@@ -81,11 +83,30 @@ function updateGcInvites(scene) {
   updateGcButton(scene.findObject("gc_invites_btn"), haveNew)
 }
 
+function countNewMessages(callback) {
+  local newMessagesCount = 0
+  local countInternal = null
+  countInternal = function(rooms_, idx) {
+    if (idx >= rooms_.len()) {
+      callback?(newMessagesCount)
+    }
+    else {
+      local room = rooms_[idx]
+      room.concealed(function(isConcealed) {
+        if (!room.hidden && !isConcealed)
+          newMessagesCount += room.newImportantMessagesCount
+        countInternal(rooms_, idx + 1)
+      })
+    }
+  }
+  countInternal(chatRooms, 0)
+}
+
 function update_gamercards_chat_info(prefix = "gc_") {
   if (!gchat_is_enabled() || !hasMenuChat.value)
     return
 
-  ::g_chat.countNewMessages(function(newMessagesCount) {
+  countNewMessages(function(newMessagesCount) {
     let haveNew = newMessagesCount > 0
     let tooltip = loc(haveNew ? "mainmenu/chat_new_messages" : "mainmenu/chat")
 
@@ -110,7 +131,7 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
       return
   }
   let isGamercard = prefix == "gc_"
-  let isShowGamercard = ::g_login.isLoggedIn()
+  let isShowGamercard = isLoggedIn.get()
   let div = showObjById("gamercard_div", isShowGamercard, scene)
   let isValidGamercard = checkObj(div)
   if (isGamercard && !isValidGamercard)

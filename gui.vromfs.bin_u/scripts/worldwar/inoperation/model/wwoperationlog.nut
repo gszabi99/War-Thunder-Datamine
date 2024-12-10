@@ -2,16 +2,15 @@ from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_l
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let DataBlock  = require("DataBlock")
+let DataBlock = require("DataBlock")
 let { wwGetPlayerSide } = require("worldwar")
+let { copy, search } = require("%sqStdLibs/helpers/u.nut")
+let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperationLogView.nut")
 
-::g_ww_logs <- {
+let logsData = {
   loaded = []
   filter = [ true, true, true, true, true ]
   filtered = []
@@ -67,39 +66,107 @@ let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperation
   ]
 }
 
-::g_ww_logs.getObjectivesBlk <- function getObjectivesBlk() {
+let getWWLogsData = @() logsData
+
+function getUnreadedNumber() {
+  return logsData.loaded.reduce(function(res, logObj) {
+    return res + (!logObj?.isReaded ? 1 : 0)
+  }, 0)
+}
+
+function applyLogsFilter() {
+  logsData.filtered.clear()
+  for (local i = 0; i < logsData.loaded.len(); i++)
+    if (logsData.filter[logsData.loaded[i].category])
+      logsData.filtered.append(i)
+}
+
+function isPlayerWinner(logBlk) {
+  let mySideName = ww_side_val_to_name(wwGetPlayerSide())
+  if (logBlk?.type == WW_LOG_TYPES.BATTLE_FINISHED)
+    for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
+      if (logBlk.battle.teams.getBlock(i).side == mySideName)
+        return logBlk.battle.teams.getBlock(i)?.isWinner
+
+  return logBlk?.winner == mySideName
+}
+
+function getLogArmyId(logId, armyName) {
+  return $"log_{logId}_{armyName}"
+}
+
+function getObjectivesBlk() {
   let objectivesBlk = ::g_world_war.getOperationObjectives()
-  return objectivesBlk ? u.copy(objectivesBlk?.data) : DataBlock()
+  return objectivesBlk ? copy(objectivesBlk?.data) : DataBlock()
 }
 
-::g_ww_logs.requestNewLogs <- function requestNewLogs(loadAmount, useLogMark, handler = null) {
-  if (useLogMark && ::g_ww_logs.lastMark != "")
-    return
-
-  ::g_ww_logs.changeLogsLoadStatus(true)
-  let cb = Callback(function() {
-    this.loadNewLogs(useLogMark, handler)
-    this.changeLogsLoadStatus()
-  }, this)
-  let errorCb = Callback(this.changeLogsLoadStatus, this)
-  ::g_world_war.requestLogs(loadAmount, useLogMark, cb, errorCb)
+function getLogArmy(logBlk) {
+  let wwArmyId = getLogArmyId(logBlk?.thisLogId, logBlk?.army)
+  return logsData.logsArmies?[wwArmyId]
 }
 
-::g_ww_logs.changeLogsLoadStatus <- function changeLogsLoadStatus(isLogsLoading = false) {
+function playLogSound(logBlk) {
+  let logBlkType = logBlk?.type
+
+  if (logBlkType == WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE) {
+    let wwArmy = getLogArmy(logBlk)
+    if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
+      get_cur_gui_scene()?.playSound("ww_artillery_enemy")
+  }
+
+  else if (logBlkType == WW_LOG_TYPES.ARMY_FLYOUT) {
+    let wwArmy = getLogArmy(logBlk)
+    if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
+      get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
+  }
+
+  else if (WW_LOG_TYPES.BATTLE_STARTED == logBlkType) {
+    get_cur_gui_scene()?.playSound("ww_battle_start")
+  }
+
+  else if (WW_LOG_TYPES.BATTLE_FINISHED == logBlkType) {
+    get_cur_gui_scene()?.playSound(isPlayerWinner(logBlk) ?
+      "ww_battle_end_win" : "ww_battle_end_fail")
+  }
+}
+
+function changeLogsLoadStatus(isLogsLoading = false) {
   wwEvent("LogsLoadStatusChanged", { isLogsLoading = isLogsLoading })
 }
 
-::g_ww_logs.loadNewLogs <- function loadNewLogs(useLogMark, handler) {
-  let logsBlk = ww_operation_get_log()
-  if (useLogMark)
-    ::g_ww_logs.lastMark = logsBlk?.lastMark ?? ""
+function saveLogBattle(blk) {
+  if (!blk?.battle)
+    return
+  let savedData = getTblValue(blk.battle?.id, logsData.logsBattles)
+  let savedDataTime = savedData?.time ?? -1
+  let logTime = blk?.time ?? -1
+  if (savedDataTime > -1 && savedDataTime >= logTime)
+    return
 
-  this.saveLoadedLogs(logsBlk, useLogMark, handler)
+  logsData.logsBattles[blk.battle.id] <- {
+    battle = WwBattle(blk.battle)
+    time = logTime
+    logBlk = blk
+  }
 }
 
-::g_ww_logs.saveLoadedLogs <- function saveLoadedLogs(loadedLogsBlk, useLogMark, _handler) {
-  if (!this.objectivesStaticBlk)
-    this.objectivesStaticBlk = this.getObjectivesBlk()
+function saveLogView(logObj) {
+  if (!(logObj.id in logsData.logsViews))
+    logsData.logsViews[logObj.id] <- logObj
+}
+
+function saveLogArmies(blk, logId) {
+  if ("armies" in blk)
+    foreach (armyBlk in blk.armies) {
+      let armyId = getLogArmyId(logId, armyBlk?.name)
+      if (!(armyId in logsData.logsArmies))
+        logsData.logsArmies[armyId] <- WwArmy(armyBlk?.name, armyBlk)
+    }
+}
+
+function saveLoadedLogs(loadedLogsBlk, useLogMark, _handler) {
+  if (!logsData.objectivesStaticBlk)
+    logsData.objectivesStaticBlk = getObjectivesBlk()
 
   wwEvent("NewLogsLoaded")
 
@@ -108,8 +175,8 @@ let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperation
     return
 
   let freshLogs = []
-  let firstLogId = ::g_ww_logs.loaded.len() ?
-    ::g_ww_logs.loaded[::g_ww_logs.loaded.len() - 1].id : ""
+  let firstLogId = logsData.loaded.len() ?
+    logsData.loaded[logsData.loaded.len() - 1].id : ""
 
   local isStrengthUpdateNeeded = false
   local isToBattleUpdateNeeded = false
@@ -126,15 +193,15 @@ let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperation
 
     let logTable = {
       id = logBlk?.thisLogId
-      blk = u.copy(logBlk)
+      blk = copy(logBlk)
       time = logBlk?.time ?? -1
       category = logType.category
       isReaded = false
     }
 
-    ::g_ww_logs.saveLogBattle(logTable.blk)
-    ::g_ww_logs.saveLogArmies(logTable.blk, logTable.id)
-    ::g_ww_logs.saveLogView(logTable)
+    saveLogBattle(logTable.blk)
+    saveLogArmies(logTable.blk, logTable.id)
+    saveLogView(logTable)
 
     // on some fresh logs - we need to play sound or update strength
     if (!useLogMark) {
@@ -147,17 +214,17 @@ let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperation
                                logBlk.type == WW_LOG_TYPES.BATTLE_STARTED ||
                                logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
                                isToBattleUpdateNeeded
-      this.playLogSound(logBlk)
+      playLogSound(logBlk)
     }
 
     addedLogsNumber++
     if (useLogMark)
-      ::g_ww_logs.loaded.insert(0, logTable)
+      logsData.loaded.insert(0, logTable)
     else
       freshLogs.insert(0, logTable)
   }
   if (!useLogMark)
-    ::g_ww_logs.loaded.extend(freshLogs)
+    logsData.loaded.extend(freshLogs)
 
   if (!addedLogsNumber) {
     wwEvent("NoLogsAdded")
@@ -165,132 +232,73 @@ let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperation
   }
 
   local isLastReadedLogFounded = false
-  for (local i = ::g_ww_logs.loaded.len() - 1; i >= 0; i--) {
-    if (::g_ww_logs.loaded[i]?.isReaded)
+  for (local i = logsData.loaded.len() - 1; i >= 0; i--) {
+    if (logsData.loaded[i]?.isReaded)
       break
 
-    if (!isLastReadedLogFounded && ::g_ww_logs.loaded[i]?.id == this.lastReadLogMark)
+    if (!isLastReadedLogFounded && logsData.loaded[i]?.id == logsData.lastReadLogMark)
       isLastReadedLogFounded = true
 
     if (isLastReadedLogFounded)
-      ::g_ww_logs.loaded[i].isReaded = true
+      logsData.loaded[i].isReaded = true
   }
 
-  this.applyLogsFilter()
+  applyLogsFilter()
   wwEvent("NewLogsAdded", {
     isLogMarkUsed = useLogMark
     isStrengthUpdateNeeded = isStrengthUpdateNeeded
     isToBattleUpdateNeeded = isToBattleUpdateNeeded })
-  wwEvent("NewLogsDisplayed", { amount = this.getUnreadedNumber() })
+  wwEvent("NewLogsDisplayed", { amount = getUnreadedNumber() })
 }
 
-::g_ww_logs.saveLogView <- function saveLogView(logObj) {
-  if (!(logObj.id in this.logsViews))
-    this.logsViews[logObj.id] <- WwOperationLogView(logObj)
+function loadNewLogs(useLogMark, handler) {
+  let logsBlk = ww_operation_get_log()
+  if (useLogMark)
+    logsData.lastMark = logsBlk?.lastMark ?? ""
+
+  saveLoadedLogs(logsBlk, useLogMark, handler)
 }
 
-::g_ww_logs.saveLogBattle <- function saveLogBattle(blk) {
-  if (!blk?.battle)
-    return
-  let savedData = getTblValue(blk.battle?.id, this.logsBattles)
-  let savedDataTime = savedData?.time ?? -1
-  let logTime = blk?.time ?? -1
-  if (savedDataTime > -1 && savedDataTime >= logTime)
+function requestNewLogs(loadAmount, useLogMark, handler = null) {
+  if (useLogMark && logsData.lastMark != "")
     return
 
-  this.logsBattles[blk.battle.id] <- {
-    battle = WwBattle(blk.battle)
-    time = logTime
-    logBlk = blk
+  changeLogsLoadStatus(true)
+  let cb = function() {
+    loadNewLogs(useLogMark, handler)
+    changeLogsLoadStatus()
   }
+  ::g_world_war.requestLogs(loadAmount, useLogMark, cb, changeLogsLoadStatus)
 }
 
-::g_ww_logs.saveLogArmies <- function saveLogArmies(blk, logId) {
-  if ("armies" in blk)
-    foreach (armyBlk in blk.armies) {
-      let armyId = this.getLogArmyId(logId, armyBlk?.name)
-      if (!(armyId in this.logsArmies))
-        this.logsArmies[armyId] <- WwArmy(armyBlk?.name, armyBlk)
-    }
+function getLastReadLogMark() {
+  return search(logsData.loaded, @(l) l.isReaded, true)?.id ?? ""
 }
 
-::g_ww_logs.getLogArmyId <- function getLogArmyId(logId, armyName) {
-  return $"log_{logId}_{armyName}"
+function saveLastReadLogMark() {
+  logsData.lastReadLogMark = getLastReadLogMark()
+  saveLocalByAccount(::g_world_war.getSaveOperationLogId(), logsData.lastReadLogMark)
 }
 
-::g_ww_logs.saveLastReadLogMark <- function saveLastReadLogMark() {
-  this.lastReadLogMark = this.getLastReadLogMark()
-  saveLocalByAccount(::g_world_war.getSaveOperationLogId(), this.lastReadLogMark)
+function clearWWLogs() {
+  saveLastReadLogMark()
+  logsData.loaded.clear()
+  logsData.filtered.clear()
+  logsData.logsBattles.clear()
+  logsData.logsArmies.clear()
+  logsData.logsViews.clear()
+  logsData.lastMark = ""
+  logsData.viewIndex = 0
+  logsData.objectivesStaticBlk = null
 }
 
-::g_ww_logs.getLastReadLogMark <- function getLastReadLogMark() {
-  return u.search(::g_ww_logs.loaded, @(l) l.isReaded, true)?.id ?? ""
-}
-
-::g_ww_logs.getUnreadedNumber <- function getUnreadedNumber() {
-  local unreadedNumber = 0
-  foreach (logObj in this.loaded)
-    if (!logObj?.isReaded)
-      unreadedNumber ++
-
-  return unreadedNumber
-}
-
-::g_ww_logs.applyLogsFilter <- function applyLogsFilter() {
-  this.filtered.clear()
-  for (local i = 0; i < this.loaded.len(); i++)
-    if (this.filter[this.loaded[i].category])
-      this.filtered.append(i)
-}
-
-::g_ww_logs.playLogSound <- function playLogSound(logBlk) {
-  let logBlkType = logBlk?.type
-
-  if (logBlkType == WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE) {
-    let wwArmy = this.getLogArmy(logBlk)
-    if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
-      get_cur_gui_scene()?.playSound("ww_artillery_enemy")
-  }
-
-  else if (logBlkType == WW_LOG_TYPES.ARMY_FLYOUT) {
-    let wwArmy = this.getLogArmy(logBlk)
-    if (wwArmy && !wwArmy.isMySide(wwGetPlayerSide()))
-      get_cur_gui_scene()?.playSound("ww_enemy_airplane_incoming")
-  }
-
-  else if (WW_LOG_TYPES.BATTLE_STARTED == logBlkType) {
-    get_cur_gui_scene()?.playSound("ww_battle_start")
-  }
-
-  else if (WW_LOG_TYPES.BATTLE_FINISHED == logBlkType) {
-    get_cur_gui_scene()?.playSound(this.isPlayerWinner(logBlk) ?
-      "ww_battle_end_win" : "ww_battle_end_fail")
-  }
-}
-
-::g_ww_logs.isPlayerWinner <- function isPlayerWinner(logBlk) {
-  let mySideName = ww_side_val_to_name(wwGetPlayerSide())
-  if (logBlk?.type == WW_LOG_TYPES.BATTLE_FINISHED)
-    for (local i = 0; i < logBlk.battle.teams.blockCount(); i++)
-      if (logBlk.battle.teams.getBlock(i).side == mySideName)
-        return logBlk.battle.teams.getBlock(i)?.isWinner
-
-  return logBlk?.winner == mySideName
-}
-
-::g_ww_logs.getLogArmy <- function getLogArmy(logBlk) {
-  let wwArmyId = this.getLogArmyId(logBlk?.thisLogId, logBlk?.army)
-  return getTblValue(wwArmyId, this.logsArmies)
-}
-
-::g_ww_logs.clear <- function clear() {
-  this.saveLastReadLogMark()
-  this.loaded.clear()
-  this.filtered.clear()
-  this.logsBattles.clear()
-  this.logsArmies.clear()
-  this.logsViews.clear()
-  this.lastMark = ""
-  this.viewIndex = 0
-  this.objectivesStaticBlk = null
+return {
+  getWWLogsData
+  requestNewWWLogs = requestNewLogs
+  getWWLogArmyId = getLogArmyId
+  saveLastReadWWLogMark = saveLastReadLogMark
+  getUnreadedWWLogsNumber = getUnreadedNumber
+  applyWWLogsFilter = applyLogsFilter
+  isWWPlayerWinner = isPlayerWinner
+  clearWWLogs
 }

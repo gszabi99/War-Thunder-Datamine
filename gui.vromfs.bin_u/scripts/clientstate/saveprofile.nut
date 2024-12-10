@@ -6,6 +6,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { ceil } = require("math")
 let { get_time_msec } = require("dagor.time")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
 let MIN_SAVE_TIMEOUT = 5000
@@ -33,11 +34,11 @@ function startSaveTimer(timeout) {
 
   lg($"Schedule profile save after {timeout / 1000} sec")
   nextAllowedSaveTime = timeToUpdate
-  let isProfileReceived = ::g_login.isProfileReceived()
+  let wasProfileReceived = isProfileReceived.get()
   saveTask.value = periodic_task_register({},
     function(_) {
       clearSaveTask()
-      if (isProfileReceived != ::g_login.isProfileReceived()) {
+      if (wasProfileReceived != isProfileReceived.get()) {
         lg($"Ignore profile save because of logged in status changed")
         return
       }
@@ -48,7 +49,7 @@ function startSaveTimer(timeout) {
       }
 
       lg($"Save profile")
-      if (isProfileReceived)
+      if (wasProfileReceived)
         save_profile(false)
       else
         save_common_local_settings()
@@ -57,7 +58,7 @@ function startSaveTimer(timeout) {
 }
 
 function forceSaveProfile() {
-  startSaveTimer(::g_login.isProfileReceived() ? MIN_SAVE_TIMEOUT : MIN_SAVE_TIMEOUT_NOT_LOGGED)
+  startSaveTimer(isProfileReceived.get() ? MIN_SAVE_TIMEOUT : MIN_SAVE_TIMEOUT_NOT_LOGGED)
 }
 
 function saveProfile() {

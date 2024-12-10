@@ -6,6 +6,8 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted
+} = require("%scripts/login/loginStates.nut")
 
 enum LOGIN_PROGRESS {
   NOT_STARTED
@@ -32,7 +34,7 @@ let class LoginProcess {
   constructor(shouldCheckScriptsReload) {
     if (shouldCheckScriptsReload)
       this.restoreStateAfterScriptsReload()
-    if (::g_login.isAuthorized())
+    if (isAuthorized.get() || isLoginStarted.get())
       this.curProgress = LOGIN_PROGRESS.IN_LOGIN_WND
 
     subscribe_handler(this, g_listener_priority.LOGIN_PROCESS)
@@ -80,15 +82,15 @@ let class LoginProcess {
 
   function checkNextStep() {
     if (this.curProgress == LOGIN_PROGRESS.IN_LOGIN_WND) {
-      if (::g_login.isAuthorized())
+      if (isAuthorized.get())
         this.nextStep()
     }
     else if (this.curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES) {
-      if (::g_login.isReadyToFullLoad())
+      if (isReadyToFullLoad.get())
         this.nextStep()
     }
     else if (this.curProgress == LOGIN_PROGRESS.INIT_CONFIGS) {
-      if (::g_login.isLoggedIn())
+      if (isLoggedIn.get())
         this.nextStep()
     }
   }

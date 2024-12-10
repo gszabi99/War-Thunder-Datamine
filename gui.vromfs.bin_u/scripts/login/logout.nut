@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import disable_network, sign_out, exit_game
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { set_disable_autorelogin_once } = require("loginState.nut")
@@ -8,6 +9,7 @@ let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut"
 let { isInFlight } = require("gameplayBinding")
 let { isXbox } = require("%sqstd/platform.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
@@ -27,7 +29,7 @@ function doLogout() {
   if (!canLogout())
     return exit_game()
 
-  if (::is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
+  if (is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
     if (isInFlight()) {
       needLogoutAfterSession(true)
       quitMission()
@@ -37,7 +39,7 @@ function doLogout() {
       ::destroy_session_scripted("on start logout")
   }
 
-  if (::should_disable_menu() || ::g_login.isProfileReceived())
+  if (::should_disable_menu() || isProfileReceived.get())
     broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
 
   log("Start Logout")

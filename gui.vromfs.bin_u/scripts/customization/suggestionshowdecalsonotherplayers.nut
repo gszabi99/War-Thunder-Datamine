@@ -13,6 +13,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCachedDataByType } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const SHOWED_SUGGESTED_SAVE_PATH = "seen/suggestionShowDecalsOnOtherPlayers"
 const SUGGESTED_DELAY_TIME_SEC = 15552000 //180 days
@@ -89,7 +90,7 @@ function hasInflictedForbiddenDecal() {
 }
 
 function checkDecalsOnOtherPlayersOptions() {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
 
   if (loadLocalAccountSettings(SHOW_SAVE_ID)) //options already checked visible
@@ -110,7 +111,7 @@ function checkDecalsOnOtherPlayersOptions() {
 }
 
 function tryShowPeriodicPopupDecalsOnOtherPlayers() {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
 
   if (isEnableDecalsOnOtherPlayersOpt())

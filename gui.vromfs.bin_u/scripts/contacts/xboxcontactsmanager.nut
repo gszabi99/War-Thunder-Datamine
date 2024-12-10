@@ -11,6 +11,7 @@ let logX = log_with_prefix("[XBOX PRESENCE] ")
 let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
@@ -202,7 +203,7 @@ addListenersWithoutEnv({
   }
 
   function XboxSystemUIReturn(_) {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return
 
     updateContacts(true)

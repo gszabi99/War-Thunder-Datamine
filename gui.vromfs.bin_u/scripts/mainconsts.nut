@@ -41,9 +41,12 @@ enum COLOR_TAG {
   TEAM_RED = "tr"
 }
 
+const global_max_players_versus = 64
+
 return {
   COLOR_TAG
   HELP_CONTENT_SET
   SEEN
   LOST_DELAYED_ACTION_MSEC = 500
+  global_max_players_versus
 }

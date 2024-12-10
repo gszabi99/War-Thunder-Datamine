@@ -25,7 +25,7 @@ let { getUnlockType, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
-let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountryIcon, image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
@@ -1301,7 +1301,7 @@ addTooltipTypes({
   if (isPrizeMultiAward(prize))
     return TrophyMultiAward(prize).getTypeIcon()
   if (prize?.unit)
-    return unitImage ? ::image_for_air(prize.unit) : getUnitClassIco(prize.unit)
+    return unitImage ? image_for_air(prize.unit) : getUnitClassIco(prize.unit)
   if (prize?.rentedUnit)
     return "#ui/gameuiskin#item_type_rent.svg"
   if (prize?.item) {

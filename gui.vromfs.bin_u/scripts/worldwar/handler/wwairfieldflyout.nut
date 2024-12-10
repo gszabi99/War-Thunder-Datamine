@@ -20,6 +20,7 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { RenderCategory } = require("worldwarConst")
 
 let unitsTypesList = {
   [airfieldTypes.AT_HELIPAD] = [
@@ -224,7 +225,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
+    g_world_war_render.setCategory(RenderCategory.ERC_AIRFIELD_ARROW, false)
 
     this.sendButtonObj = this.scene.findObject("send_aircrafts_button")
     this.updateVisibleUnits()
@@ -632,7 +633,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
-    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
+    g_world_war_render.setCategory(RenderCategory.ERC_AIRFIELD_ARROW, true)
   }
 
   function fillUnitWeaponPreset(unitTable) {

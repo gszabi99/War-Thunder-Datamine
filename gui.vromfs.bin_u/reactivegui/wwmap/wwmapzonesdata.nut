@@ -44,8 +44,14 @@ function addNeighbors(zone, zones) {
       continue
     if (fabs(zones[i].center.x - zone.center.x) < 0.8 * zoneWidth &&
       fabs(zones[i].center.y - zone.center.y) < 1.1 * zoneHeight) {
-      zone.neighbors.append(zones[i].id)
-      zones[i].neighbors.append(zone.id)
+      zone.neighbors.append({
+        id = zones[i].id
+        parts = zones[i].parts
+      })
+      zones[i].neighbors.append({
+        id = zone.id
+        parts = zone.parts
+      })
     }
   }
 }

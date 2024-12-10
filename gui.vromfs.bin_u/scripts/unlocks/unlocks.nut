@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -642,7 +643,7 @@ let getEmptyConditionsConfig = @() {
     let skillPoints = getTblValue("sp", config, 0)
     let skillPointsStr = getCrewSpTextIfNotZero(skillPoints)
 
-    if (::checkCountry(country, "userlog EULT_*_CREW"))
+    if (checkCountry(country, "userlog EULT_*_CREW"))
       res.image2 = getCountryIcon(country)
 
     res.desc = "".concat(crewName, loc("unlocks/skillpoints/desc"), skillPointsStr)

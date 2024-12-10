@@ -5,6 +5,7 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { isWorldWarEnabled, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 function getWorldWarPromoText(isWwEnabled = null) {
   local text = loc("mainmenu/btnWorldwar")
@@ -42,7 +43,7 @@ addPromoButtonConfig({
 
     setPromoButtonText(buttonObj, id, getWorldWarPromoText(isWwEnabled))
 
-    if ((!::should_disable_menu() && !::g_login.isProfileReceived()) || !isPromoCollapsed(id))
+    if ((!::should_disable_menu() && !isProfileReceived.get()) || !isPromoCollapsed(id))
       return
 
     if (::g_world_war.hasNewNearestAvailableMapToBattle())

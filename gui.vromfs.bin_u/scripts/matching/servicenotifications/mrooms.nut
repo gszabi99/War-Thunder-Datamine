@@ -8,13 +8,14 @@ let { format } = require("string")
 let { checkMatchingError, matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 // rooms notifications
 function notify_room_invite(params) {
   log("notify_room_invite")
   //debugTableData(params)
 
-  if (!isInMenu() && ::g_login.isLoggedIn()) {
+  if (!isInMenu() && isLoggedIn.get()) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
     return false;
   }

@@ -13,6 +13,7 @@ let { getAllUnlocksWithBlkOrder, getUnlockById } = require("%scripts/unlocks/unl
 let { get_charserver_time_sec } = require("chard")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let battlePassChallenges = Watched([])
 let curSeasonChallenges = Computed(@() battlePassChallenges.value
@@ -70,7 +71,7 @@ addListenersWithoutEnv({
 })
 
 function updateChallenges() {
-  if (::g_login.isLoggedIn())
+  if (isLoggedIn.get())
     battlePassChallenges(getAllUnlocksWithBlkOrder()
       .filter(@(unlock) (unlock?.battlePassSeason != null) && isUnlockVisible(unlock)))
 }

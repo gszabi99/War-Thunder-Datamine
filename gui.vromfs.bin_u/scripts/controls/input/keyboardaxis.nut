@@ -2,8 +2,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { AxisDirection } = require("%scripts/controls/controlsConsts.nut")
+let { InputBase } = require("%scripts/controls/input/inputBase.nut")
+let { Button } = require("%scripts/controls/input/button.nut")
 
-local blockNameByDirection = {
+let blockNameByDirection = {
   [AxisDirection.X] = {
     rangeMin = "rightKey"
     rangeMax = "leftKey"
@@ -17,7 +19,7 @@ local blockNameByDirection = {
  * Input keyboard axis.
  * Container for displayed axis keyboard by min-max range
  */
-::Input.KeyboardAxis <- class (::Input.InputBase) {
+let KeyboardAxis = class (InputBase) {
   elements = null
   isCompositAxis = null
 
@@ -37,7 +39,7 @@ local blockNameByDirection = {
     foreach (element in this.elements) {
       needArrows = needArrows
         || element.input.getDeviceId() != STD_KEYBOARD_DEVICE_ID
-        || !(element.input instanceof ::Input.Button)
+        || !(element.input instanceof Button)
       view[blockNameByDirection[this.isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getMarkup()
     }
@@ -73,7 +75,7 @@ local blockNameByDirection = {
     foreach (element in this.elements) {
       needArrows = needArrows
         || element.input.getDeviceId() != STD_KEYBOARD_DEVICE_ID
-        || !(element.input instanceof ::Input.Button)
+        || !(element.input instanceof Button)
       elemConf[blockNameByDirection[this.isCompositAxis ? element.axisDirection : AxisDirection.X][element.postfix]]
         <- element.input.getConfig()
     }
@@ -89,3 +91,4 @@ local blockNameByDirection = {
     }
   }
 }
+return {KeyboardAxis}

@@ -59,7 +59,7 @@ local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
         tooltip = category.headerTooltip
       })
 
-    let hasManager = uLog?.managerStats == null ? false : true
+    let hasManager = uLog?.managerStats != null
     let rewardsList = [{
       icon = "#ui/gameuiskin#medal_bonus.svg"
       name = $"{loc("worldWar/endOperation/reward")}{loc("ui/colon")}"

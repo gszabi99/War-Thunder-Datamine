@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import d3d_enable_vsync
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -52,6 +53,6 @@ gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
                       }
                     ]
 
-    return ::buildTableRowNoPad(id, rowData, null, "commonTextColor:t='yes'")
+    return buildTableRowNoPad(id, rowData, null, "commonTextColor:t='yes'")
   }
 }

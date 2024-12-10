@@ -22,7 +22,7 @@ function isUsedCustomLocalization() {
 let setCustomLocalization = @(value) setSystemConfigOption("debug/testLocalization", value)
 
 let hasCustomLocalizationFlag = @()
-  getSystemConfigOption("debug/testLocalization") == null ? false : true
+  getSystemConfigOption("debug/testLocalization") != null
 
 let getLocalization = @(lang) doesLocTextExist(lang) ? loc(lang) : langs[lang]
 

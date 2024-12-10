@@ -2,7 +2,9 @@ from "%scripts/dagui_natives.nut" import is_hint_enabled, get_hint_seen_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 from "%scripts/viewUtils/hints.nut" import g_hints, g_hint_tag
+from "%scripts/utils_sa.nut" import get_team_color, get_mplayer_color
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -121,11 +123,11 @@ g_hud_hints._buildText <- function _buildText(data) {
       return loc(noKeyLocId)
   }
 
-  let expandedShortcutArray = ::g_shortcut_type.expandShortcuts(rawShortcutsArray)
+  let expandedShortcutArray = g_shortcut_type.expandShortcuts(rawShortcutsArray)
   local shortcutTag = g_hud_hints._wrapShortsCutIdWithTags(expandedShortcutArray)
 
   let shortcut = shortcuts[0]
-  let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcut)
+  let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shortcut)
   if (shortcut != "" && shortcutTag == "" && shortcutType != null
     && !shortcutType.isAssigned(shortcut)
   ) {
@@ -163,7 +165,7 @@ g_hud_hints.pickFirstValidShortcut <- function pickFirstValidShortcut(shortcutAr
     local localShortcutId = shortcutId //to avoid changes in original array
     if (startsWith(localShortcutId, "@"))
       localShortcutId = localShortcutId.slice(1)
-    let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(localShortcutId)
+    let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(localShortcutId)
     if (shortcutType.isAssigned(localShortcutId))
       return localShortcutId
   }
@@ -173,7 +175,7 @@ g_hud_hints.pickFirstValidShortcut <- function pickFirstValidShortcut(shortcutAr
 
 g_hud_hints.removeUnmappedShortcuts <- function removeUnmappedShortcuts(shortcutArray) {
   for (local i = shortcutArray.len() - 1; i >= 0; --i) {
-    let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutArray[i])
+    let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutArray[i])
     if (!shortcutType.isAssigned(shortcutArray[i]))
       shortcutArray.remove(i)
   }
@@ -1176,7 +1178,7 @@ enums.addTypes(g_hud_hints, {
 
         // Expected participant.image values are listed in "eventsIcons" block of hud.blk
         let icon = $"#ui/gameuiskin#{participant.image}"
-        let color = $"@{::get_mplayer_color(participantPlayer)}"
+        let color = $"@{get_mplayer_color(participantPlayer)}"
         let pStr = this.makeSmallImageStr(icon, color)
         if (playerTeam == participantPlayer.team) {
           participantsAStr = "".concat(participantsAStr, pStr, " ")
@@ -1217,11 +1219,11 @@ enums.addTypes(g_hud_hints, {
       if (eventData?.param) {
         local param = eventData.param
         if (eventData?.paramTeamId)
-          param = colorize(::get_team_color(eventData.paramTeamId), param)
+          param = colorize(get_team_color(eventData.paramTeamId), param)
         res = format(res, param)
       }
       if (eventData?.teamId && eventData.teamId > 0)
-        res = colorize(::get_team_color(eventData.teamId), res)
+        res = colorize(get_team_color(eventData.teamId), res)
       return res
     }
   }

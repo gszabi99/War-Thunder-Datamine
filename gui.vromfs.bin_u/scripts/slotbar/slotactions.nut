@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { isUnitInSlotbar, canBuyNotResearched, isUnitMaxExp, canResearchUnit,
   isUnitInResearch, isUnitGroup, isUnitBroken, isUnitUsable, isUnitResearched
@@ -47,7 +48,7 @@ function getSlotActionFunctionName(unit, params) {
     && min(clan_get_exp(), unit.reqExp - getUnitExp(unit)) > 0
   if ((params.availableFlushExp > 0 || !params.setResearchManually
       || (params.isSquadronResearchMode && params.needChosenResearchOfSquadron)
-      || (isSquadronVehicle && !::is_in_clan() && !canFlushSquadronExp))
+      || (isSquadronVehicle && !is_in_clan() && !canFlushSquadronExp))
     && (canResearchUnit(unit) || isInResearch))
     return "mainmenu/btnResearch"
   if(unit.isCrossPromo && !unit.isUsable())
@@ -97,7 +98,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
   if (canFlushSquadronExp && isInResearch)
     return flushSquadronExp(unit)
   if (isInResearch && canBuyNotResearched(unit)
-    && isSquadronVehicle && ::is_in_clan())
+    && isSquadronVehicle && is_in_clan())
     return buy(unit, "slot_action_squad")
   if (unit.isCrossPromo)
     return openCrossPromoWnd(unit.crossPromoBanner)

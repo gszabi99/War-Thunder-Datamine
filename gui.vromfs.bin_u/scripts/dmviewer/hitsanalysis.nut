@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let DataBlock = require("DataBlock")
 let { format } = require("string")
@@ -13,11 +14,10 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getUnitName, getUnitCountry, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
+let { image_for_air, getUnitName, getUnitCountry, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { secondsToTimeSimpleString } = require("%scripts/time.nut")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { image_for_air } = require("%scripts/options/optionsExt.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
   getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
@@ -135,7 +135,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       this.owners.append("victim")
     }
 
-    let data = ::create_option_combobox("hits_owner", items, 0, "onHitsOwnerChange", false)
+    let data = create_option_combobox("hits_owner", items, 0, "onHitsOwnerChange", false)
     this.guiScene.replaceContentFromText(hitsOwner, data, data.len(), this)
     hitsOwner.setValue(0)
     set_replay_hits_mode(true)

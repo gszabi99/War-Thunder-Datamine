@@ -162,8 +162,6 @@ function canJoinEventForNewbies(event) {
   function joinStep4_internal() {
     this.processStepName = "joinStep4_internal"
     let mGameMode = events.getMGameMode(this.event, this.room)
-    if (events.isEventTanksCompatible(this.event.name) && !::check_tanks_available())
-      return this.remove()
     if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
         !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, showOfflineSquadMembersPopup = true }))
       return this.remove()

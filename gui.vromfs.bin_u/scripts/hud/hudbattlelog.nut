@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%scripts/utils_sa.nut" import is_mode_with_teams, get_team_color, get_mplayer_color, is_team_friendly
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { format, split_by_chars } = require("string")
@@ -265,8 +266,8 @@ let HudBattleLog = {
     if (msg.type == HUD_MSG_MULTIPLAYER_DMG) { // Any player unit damaged or destroyed
       let p1 = get_mplayer_by_id(msg?.playerId ?? userIdInt64.value)
       let p2 = get_mplayer_by_id(msg?.victimPlayerId ?? userIdInt64.value)
-      let t1Friendly = ::is_team_friendly(msg?.team ?? Team.A)
-      let t2Friendly = ::is_team_friendly(msg?.victimTeam ?? Team.B)
+      let t1Friendly = is_team_friendly(msg?.team ?? Team.A)
+      let t2Friendly = is_team_friendly(msg?.victimTeam ?? Team.B)
 
       if (p1?.isLocal || p2?.isLocal)
         filters = filters | BATTLE_LOG_FILTER.HERO
@@ -347,13 +348,13 @@ let HudBattleLog = {
       if (unitId != "")
         unitNameLoc = loc($"{unitId}_1")
     }
-    return colorize(::get_mplayer_color(player), unitNameLoc)
+    return colorize(get_mplayer_color(player), unitNameLoc)
   }
 
   function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0, player = null) {
     player = player ?? get_mplayer_by_id(playerId)
     if(player == null)
-      return colorize(::get_team_color(teamId), unitNameLoc)
+      return colorize(get_team_color(teamId), unitNameLoc)
 
     if (is_replay_playing()) {
       player.isLocal = spectatorWatchedHero.id == player.id

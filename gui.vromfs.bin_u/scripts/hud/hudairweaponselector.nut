@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { setAllowedControlsMask } = require("controlsMask")
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -174,7 +176,7 @@ let class HudAirWeaponSelector {
       return
 
     this.nestObj.show(true)
-    let shType = ::g_shortcut_type.getShortcutTypeByShortcutId("ID_OPEN_VISUAL_WEAPON_SELECTOR")
+    let shType = g_shortcut_type.getShortcutTypeByShortcutId("ID_OPEN_VISUAL_WEAPON_SELECTOR")
     let shortCut = shType.getFirstInput("ID_OPEN_VISUAL_WEAPON_SELECTOR")
     this.nestObj.findObject("close_btn").setValue(shortCut.getTextShort())
     let joystickUpdateTimer = this.nestObj.findObject("visual_selector_axis_timer")

@@ -19,6 +19,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
+let { generatePaginator, paginator_set_unseen } = require("%scripts/viewUtils/paginator.nut")
 
 /*
   config = {
@@ -143,13 +144,13 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updatePaginator() {
     let paginatorObj = this.scene.findObject("paginator_place")
-    ::generatePaginator(paginatorObj, this, this.currentPage, (this.options.len() - 1) / this.itemsPerPage)
+    generatePaginator(paginatorObj, this, this.currentPage, (this.options.len() - 1) / this.itemsPerPage)
 
     let prevUnseen = this.currentPage ? this.getSeenConfig(0, this.currentPage * this.itemsPerPage - 1) : null
     let nextFirstIdx = (this.currentPage + 1) * this.itemsPerPage
     let nextUnseen = nextFirstIdx >= this.options.len() ? null
       : this.getSeenConfig(nextFirstIdx, this.options.len() - 1)
-    ::paginator_set_unseen(paginatorObj,
+    paginator_set_unseen(paginatorObj,
       prevUnseen && bhvUnseen.makeConfigStr(prevUnseen.listId, prevUnseen.entities),
       nextUnseen && bhvUnseen.makeConfigStr(nextUnseen.listId, nextUnseen.entities))
   }

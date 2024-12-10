@@ -23,7 +23,7 @@ let crewUnitTypeConfig = {
   }
 }
 
-local unitTypes = {
+let unitTypes = {
   template = {
     typeName = "" //filled automatically by typeName
     name = ""

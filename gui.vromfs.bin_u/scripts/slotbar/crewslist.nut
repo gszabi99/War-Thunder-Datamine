@@ -12,6 +12,7 @@ let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { getMyCrewUnitsState, getBrokenUnits } = require("%scripts/slotbar/crewsListInfo.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 function getCrewInfo(isInBattle) {
   let crewInfo = get_crew_info()
@@ -43,7 +44,7 @@ function getCrewInfo(isInBattle) {
   return crewInfo
 }
 
-local crewsList = !::g_login.isLoggedIn() ? [] : getCrewInfo(isInBattleState.value)
+local crewsList = !isLoggedIn.get() ? [] : getCrewInfo(isInBattleState.value)
 local version = 0
 local isSlotbarUpdateSuspended = false
 local isSlotbarUpdateRequired = false
@@ -110,7 +111,7 @@ function invalidateCrewsList(needForceInvalidate = false) {
 }
 
 function getCrewsList() {
-  if (!crewsList.len() && ::g_login.isProfileReceived())
+  if (!crewsList.len() && isProfileReceived.get())
     refresh()
   return crewsList
 }
@@ -145,14 +146,14 @@ addListenersWithoutEnv({
       }
     }
 
-    if (::g_login.isProfileReceived() && !isInArray(p.transactionType, ignoreTransactions)
+    if (isProfileReceived.get() && !isInArray(p.transactionType, ignoreTransactions)
         && invalidateCrewsList(hasRepairedUnits) && !disable_network())
       reinitSlotbars()
   }
 
   function UnlockedCountriesUpdate(_p) {
     updateShopCountriesList()
-    if (::g_login.isProfileReceived() && invalidateCrewsList())
+    if (isProfileReceived.get() && invalidateCrewsList())
       reinitSlotbars()
   }
 

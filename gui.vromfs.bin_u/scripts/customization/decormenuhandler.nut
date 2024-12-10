@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -180,7 +181,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
     if (!obj?.isValid())
       return null
 
-    let decorId = ::getObjIdByPrefix(obj, "decal_") ?? ""
+    let decorId = getObjIdByPrefix(obj, "decal_") ?? ""
     return getDecorator(decorId, decoratorType)
   }
 

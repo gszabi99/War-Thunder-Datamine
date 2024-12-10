@@ -30,6 +30,7 @@ let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { needShowGameModesNotLoadedMsg } = require("%scripts/matching/matchingGameModes.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -67,7 +68,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function reinitScreen(_params = null) {
-    if (!this.topMenuInited && ::g_login.isLoggedIn()) {
+    if (!this.topMenuInited && isLoggedIn.get()) {
       this.topMenuInited = true
 
       this.leftSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(

@@ -13,6 +13,7 @@ let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { showActivateOrderButton, orderCanBeActivated } = require("%scripts/items/orders.nut")
 let { registerRespondent } = require("scriptRespondent")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let MPStatisticsModal = class (gui_handlers.MPStatistics) {
   sceneBlkName = "%gui/mpStatistics.blk"
@@ -181,7 +182,7 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
 gui_handlers.MPStatisticsModal <- MPStatisticsModal
 
 registerRespondent("is_mpstatscreen_active", function is_mpstatscreen_active() { // used from native code
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return false
   let curHandler = handlersManager.getActiveBaseHandler()
   return curHandler != null && (curHandler instanceof gui_handlers.MPStatisticsModal)

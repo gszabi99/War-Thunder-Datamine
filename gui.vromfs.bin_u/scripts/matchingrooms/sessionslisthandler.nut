@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -25,6 +26,7 @@ let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.n
 let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { checkAndCreateGamemodeWnd } = require("%scripts/missions/startMissionsList.nut")
 let { matchSearchGm } = require("%scripts/missions/missionsStates.nut")
+let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   sceneBlkName = "%gui/sessionsList.blk"
@@ -152,7 +154,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
 
   function onSessionsUpdate(_obj = null, _dt = 0.0) {
     if (handlersManager.isAnyModalHandlerActive()
-        || ::is_multiplayer()
+        || is_multiplayer()
         || sessionLobbyStatus.get() != lobbyStates.NOT_IN_ROOM)
       return
 
@@ -304,9 +306,9 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   function updatePaginator(maxPage) {
     let pagObj = this.scene.findObject("paginator_place")
     if (maxPage > 0)
-      ::generatePaginator(pagObj, this, this.curPage, maxPage, null, true)
+      generatePaginator(pagObj, this, this.curPage, maxPage, null, true)
     else
-      ::hidePaginator(pagObj)
+      hidePaginator(pagObj)
   }
 
   function goToPage(obj) {

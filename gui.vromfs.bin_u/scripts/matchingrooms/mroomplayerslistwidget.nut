@@ -21,6 +21,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 
 gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -148,7 +149,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateFocusedTeamByObj(obj) {
-    this.focusedTeam = getTblValue(::getObjIdByPrefix(obj, this.TEAM_TBL_PREFIX), g_team, this.focusedTeam)
+    this.focusedTeam = getTblValue(getObjIdByPrefix(obj, this.TEAM_TBL_PREFIX), g_team, this.focusedTeam)
   }
 
   function onTableClick(obj) {

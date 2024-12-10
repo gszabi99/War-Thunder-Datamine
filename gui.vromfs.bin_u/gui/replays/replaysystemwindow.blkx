@@ -1,0 +1,383 @@
+{
+  "tdiv": {
+    "width": "0.6sw",
+    "max-height": "0.6sh",
+    "position": "absolute",
+    "pos": "pw/2-w/2, 0.2sh",
+    "overflow-y": "auto",
+    "not-input-transparent": "yes",
+    "css-hier-invalidate": "yes",
+    "tdiv": {
+      "margin": "1@blockInterval",
+      "width": "pw",
+      "min-height": "0.4sh",
+      "flow": "vertical",
+      "blur_foreground": {},
+      "replaySystemPage": [
+        {
+          "replaySystemTab": [
+            {
+              "replaySystemHeader": {
+                "arrow": {},
+                "activeText": {
+                  "text": "Replay"
+                }
+              },
+              "content": {
+                "row": {
+                  "Button_text": {
+                    "id": "rewind_button",
+                    "text": "Rewind",
+                    "noMargin": "yes"
+                  },
+                  "slider": {
+                    "id": "rewind_slider",
+                    "textValue": {
+                      "id": "rewind_slider_value"
+                    }
+                  },
+                  "activeText": {
+                    "text": "time to rewind"
+                  }
+                }
+              }
+            },
+            {
+              "replaySystemHeader": {
+                "arrow": {},
+                "activeText": {
+                  "text": "Options"
+                }
+              },
+              "content": {
+                "row": [
+                  {
+                    "slider": {
+                      "id": "free_camera_inertia_slider",
+                      "textValue": {
+                        "id": "free_camera_inertia_slider_value"
+                      }
+                    },
+                    "activeText": {
+                      "text": "Free Camera Inertia"
+                    }
+                  },
+                  {
+                    "slider": {
+                      "id": "camera_max_speed_slider",
+                      "textValue": {
+                        "id": "camera_max_speed_slider_value"
+                      }
+                    },
+                    "activeText": {
+                      "text": "Camera Max speed"
+                    }
+                  },
+                  {
+                    "slider": {
+                      "id": "camera_max_orient_speed_slider",
+                      "textValue": {
+                        "id": "camera_max_orient_speed_slider_value"
+                      }
+                    },
+                    "activeText": {
+                      "text": "Camera Max Orient speed"
+                    }
+                  },
+                  {
+                    "slider": {
+                      "id": "camera_fov_slider",
+                      "textValue": {
+                        "id": "camera_fov_slider_value"
+                      }
+                    },
+                    "activeText": {
+                      "text": "Camera Fov"
+                    }
+                  },
+                  {
+                    "slider": {
+                      "id": "free_camera_zoom_speed_slider",
+                      "textValue": {
+                        "id": "free_camera_zoom_speed_slider_value"
+                      }
+                    },
+                    "activeText": {
+                      "text": "Free Camera Zoom Speed"
+                    }
+                  },
+                  {
+                    "Button_text": {
+                      "id": "reset_camera_roll_button",
+                      "text": "Reset Camera Roll",
+                      "noMargin": "yes"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "replaySystemTab": {
+            "replaySystemHeader": {
+              "arrow": {},
+              "activeText": {
+                "text": "Depth of Field (DoF)"
+              }
+            },
+            "content": {
+              "row": [
+                {
+                  "CheckBox": {
+                    "id": "enable_dof_checkbox",
+                    "text": "Enable Depth of Field",
+                    "CheckBoxImg": {}
+                  }
+                },
+                {
+                  "CheckBox": {
+                    "id": "linear_blend_checkbox",
+                    "text": "Linear blend",
+                    "CheckBoxImg": {}
+                  }
+                }
+              ],
+              "replaySystemTab": [
+                {
+                  "replaySystemHeader": {
+                    "arrow": {},
+                    "activeText": {
+                      "text": "Near Dof"
+                    }
+                  },
+                  "content": {
+                    "row": [
+                      {
+                        "slider": {
+                          "id": "neardof_distance_slider",
+                          "textValue": {
+                            "id": "neardof_distance_slider_value"
+                          }
+                        },
+                        "activeText": {
+                          "text": "Distance"
+                        }
+                      },
+                      {
+                        "slider": {
+                          "id": "neardof_fade_distance_slider",
+                          "textValue": {
+                            "id": "neardof_fade_distance_slider_value"
+                          }
+                        },
+                        "activeText": {
+                          "text": "Fade Distance"
+                        }
+                      },
+                      {
+                        "slider": {
+                          "id": "neardof_blur_slider",
+                          "textValue": {
+                            "id": "neardof_blur_slider_value"
+                          }
+                        },
+                        "activeText": {
+                          "text": "Blur"
+                        }
+                      },
+                      {
+                        "CheckBox": {
+                          "id": "soft_render_checkbox",
+                          "text": "Soft render",
+                          "CheckBoxImg": {}
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "replaySystemHeader": {
+                    "arrow": {},
+                    "activeText": {
+                      "text": "Far Dof"
+                    }
+                  },
+                  "content": {
+                    "row": [
+                      {
+                        "slider": {
+                          "id": "fardof_distance_slider",
+                          "textValue": {
+                            "id": "fardof_distance_slider_value"
+                          }
+                        },
+                        "activeText": {
+                          "text": "Distance"
+                        }
+                      },
+                      {
+                        "slider": {
+                          "id": "fardof_fade_distance_slider",
+                          "textValue": {
+                            "id": "fardof_fade_distance_slider_value"
+                          }
+                        },
+                        "activeText": {
+                          "text": "Fade Distance"
+                        }
+                      },
+                      {
+                        "slider": {
+                          "id": "fardof_blur_slider",
+                          "textValue": {
+                            "id": "fardof_blur_slider_value"
+                          }
+                        },
+                        "activeText": {
+                          "text": "Blur"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "replaySystemTab": {
+            "replaySystemHeader": {
+              "arrow": {},
+              "activeText": {
+                "text": "Camera keyframes track editor"
+              }
+            },
+            "content": {
+              "row": [
+                {
+                  "Button_text": [
+                    {
+                      "id": "add_key_button",
+                      "text": "Add key",
+                      "noMargin": "yes"
+                    },
+                    {
+                      "id": "remove_last_key_button",
+                      "text": "Remove last Key",
+                      "noMargin": "yes"
+                    },
+                    {
+                      "id": "clear_all_key_button",
+                      "text": "Clear all Keys",
+                      "noMargin": "yes"
+                    }
+                  ]
+                },
+                {
+                  "Button_text": [
+                    {
+                      "id": "jump_prev_key",
+                      "text": "jumpPrevKey",
+                      "noMargin": "yes"
+                    },
+                    {
+                      "id": "jump_next_key",
+                      "text": "jumpNextKey",
+                      "noMargin": "yes"
+                    }
+                  ],
+                  "textValue": {
+                    "id": "track_time",
+                    "width": "150@sf/@pf",
+                    "text": "0"
+                  },
+                  "activeText": [
+                    {
+                      "text": "keyNo:"
+                    },
+                    {
+                      "id": "current_key_index",
+                      "text": "0/0",
+                      "margin-left": "1@blockInterval"
+                    }
+                  ]
+                },
+                {
+                  "textValue": {
+                    "id": "current_key_time",
+                    "width": "650@sf/@pf",
+                    "text": "0"
+                  },
+                  "activeText": {
+                    "text": "time"
+                  }
+                },
+                {
+                  "textValue": {
+                    "id": "current_key_fov",
+                    "width": "650@sf/@pf",
+                    "text": "0"
+                  },
+                  "activeText": {
+                    "text": "fov"
+                  }
+                },
+                {
+                  "textValue": {
+                    "id": "current_key_roll",
+                    "width": "650@sf/@pf",
+                    "text": "0"
+                  },
+                  "activeText": {
+                    "text": "roll"
+                  }
+                }
+              ],
+              "replaySystemTab": {
+                "replaySystemHeader": {
+                  "arrow": {},
+                  "activeText": {
+                    "text": "Apply keys filter parameters"
+                  }
+                },
+                "content": {
+                  "row": [
+                    {
+                      "CheckBox": {
+                        "id": "play_keys_position",
+                        "text": "Play key`s position",
+                        "CheckBoxImg": {}
+                      }
+                    },
+                    {
+                      "CheckBox": {
+                        "id": "play_keys_rotation",
+                        "text": "Play key`s rotation",
+                        "CheckBoxImg": {}
+                      }
+                    },
+                    {
+                      "CheckBox": {
+                        "id": "play_keys_roll",
+                        "text": "Play key`s roll",
+                        "CheckBoxImg": {}
+                      }
+                    },
+                    {
+                      "CheckBox": {
+                        "id": "play_keys_fov",
+                        "text": "Play key`s fov",
+                        "CheckBoxImg": {}
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

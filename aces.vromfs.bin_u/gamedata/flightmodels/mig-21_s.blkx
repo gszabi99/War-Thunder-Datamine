@@ -5,6 +5,8 @@
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
+  "haveOpticTurret": true,
+  "isBwOpticSight": true,
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.157,
   "gearSinkRangeC": 0.308,
@@ -2298,7 +2300,7 @@
           ],
           "page": {
             "type": "radar",
-            "scale": 1.1,
+            "scale": 0.98,
             "color": [
               27,
               115,
@@ -2316,7 +2318,7 @@
           ],
           "page": [
             {
-              "type": "night_vision",
+              "type": "thermal",
               "turretIdx": 0
             },
             {
@@ -2353,19 +2355,28 @@
       -0.1,
       0.1
     ],
-    "opticType": "targeting",
+    "opticType": "tv",
     "turretNo": 0
   },
   "nightVision": {
-    "sightIr": {
+    "sightThermal": {
       "resolution": [
         500,
         300
       ],
-      "lightMult": 6.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
+      "noiseFactor": 0.05
     }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/su_sapphire_21.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/su_spo-10.blk"
+      }
+    ]
   },
   "commonWeapons": {},
   "weapon_presets": {
@@ -2418,8 +2429,8 @@
   },
   "WeaponSlots": {
     "maxloadMass": 1300.0,
-    "maxloadMassLeftConsoles": 650.0,
-    "maxloadMassRightConsoles": 650.0,
+    "maxloadMassLeftConsoles": 675.0,
+    "maxloadMassRightConsoles": 675.0,
     "maxDisbalance": 570.0,
     "HideNodes": {
       "node": [
@@ -2460,6 +2471,7 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "name": "dummy_common",
+          "hasTargetingPod": true,
           "Weapon": {
             "dummy": true,
             "trigger": "gunner0",
@@ -3044,17 +3056,6 @@
       }
     ]
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/su_sapphire_21.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/su_spo-10.blk"
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -3518,7 +3519,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 0.8,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.05,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

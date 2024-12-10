@@ -233,7 +233,7 @@ let Promo = class {
 
     local show = getTblValue(param, this.sourceDataBlock[id], defaultValue)
     if (u.isString(show))
-      show = show == "yes" ? true : false
+      show = show == "yes"
 
     return show
   }

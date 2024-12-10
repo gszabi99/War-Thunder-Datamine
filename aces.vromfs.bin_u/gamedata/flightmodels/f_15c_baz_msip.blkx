@@ -2550,6 +2550,7 @@
       "matchSector": 15.0,
       "targetSuperResolution": false,
       "trackedTargetsMax": 12,
+      "priorityTargetSelection": true,
       "targetRangeFinder": true,
       "targetRange": [
         5000.0,
@@ -2589,6 +2590,8 @@
             "name": "9K330",
             "detectLaunch": true,
             "type": [
+              "HQ-17 TA",
+              "HQ-17 TT",
               "9K330 TA",
               "9K330 TT"
             ]
@@ -3224,17 +3227,6 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apg_63_baz.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_56c.blk"
-      }
-    ]
-  },
   "gunnerOpticFps": {
     "pos": [
       2.6,
@@ -3250,6 +3242,17 @@
       30.0
     ],
     "opticType": "tv"
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apg_63_baz.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_56c.blk"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -3546,6 +3549,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "us_2000lb_gbu_8_slot2"
             }
           }
         ]
@@ -3653,6 +3660,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 1,
+              "preset": "aim_120a_slot1"
             }
           },
           {
@@ -4942,6 +4953,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 13,
+              "preset": "aim_120a_slot13"
             }
           },
           {
@@ -5100,6 +5115,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 12,
+              "preset": "us_2000lb_gbu_8_slot12"
             }
           }
         ]
@@ -5630,7 +5649,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.1,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

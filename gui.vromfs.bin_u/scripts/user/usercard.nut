@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import get_unlock_type, get_nicks_find_result_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/utils_sa.nut" import is_myself_anyof_moderators, buildTableRow
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -61,6 +62,7 @@ let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerSt
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
 let { get_mp_session_id_str } = require("multiplayer")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo) {  // uid, id (in session), name
   if (!hasFeature("UserCards"))
@@ -752,7 +754,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       { id = "country", width = countryWidth, text="#options/country", cellType = "splitLeft",
         tdalign = "center", callback = "onStatsCategory", active = this.statsSortBy == "country" }
       { id = "rank", width = rankWidth, text = "#sm_rank", tdalign = "center", callback = "onStatsCategory", active = this.statsSortBy == "rank" }
-      { id = "locName", width = "0.05@scrn_tgt", cellType = "splitRight", callback = "onStatsCategory" }
+      { id = "locIcon", width = "0.05@scrn_tgt", cellType = "splitRight" }
       { id = "locName", width = nameWidth, text = "#options/unit", tdalign = "center", cellType = "splitLeft", callback = "onStatsCategory", active = this.statsSortBy == "locName" }
     ]
     foreach (item in airStatsListConfig) {
@@ -768,7 +770,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           needText = false
         })
     }
-    data.append(::buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
+    data.append(buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
 
     let tooltips = {}
     let fromIdx = this.curStatsPage * this.statsPerPage
@@ -813,7 +815,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           rowData.append(cell)
         }
       }
-      data.append(::buildTableRow(rowName, rowData ?? [], idx % 2 == 0))
+      data.append(buildTableRow(rowName, rowData ?? [], idx % 2 == 0))
     }
 
     let dataTxt = "".join(data)
@@ -826,7 +828,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           rowObj.findObject(name).tooltip = value
     }
     let nestObj = this.scene.findObject("paginator_place")
-    ::generatePaginator(nestObj, this, this.curStatsPage, floor((this.airStatsList.len() - 1) / this.statsPerPage))
+    generatePaginator(nestObj, this, this.curStatsPage, floor((this.airStatsList.len() - 1) / this.statsPerPage))
     this.updateButtons()
   }
 
@@ -876,7 +878,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       btn_friendRemove = showProfBar && hasFeatureFriends && isFriend && (contact?.isInFriendlist() ?? false)
       btn_blacklistAdd = showProfBar && hasFeatureFriends && !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
       btn_blacklistRemove = showProfBar && hasFeatureFriends && isBlock && canBlock && !isPS4Player
-      btn_moderatorBan = showProfBar && ::is_myself_anyof_moderators() && canBan
+      btn_moderatorBan = showProfBar && is_myself_anyof_moderators() && canBan
       btn_complain = showProfBar && !isMe
       btn_friendChangeNick = hasFeature("CustomNicks") && showProfBar && !isMe
       btn_achievements_url = isVisibleAchievementsUrlBtn

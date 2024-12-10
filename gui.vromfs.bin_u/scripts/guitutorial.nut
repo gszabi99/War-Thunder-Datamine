@@ -9,6 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { Button } = require("%scripts/controls/input/button.nut")
 
 const TITOR_STEP_TIMEOUT_SEC  = 30
 
@@ -235,7 +236,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     if (nextActionShortcut) {
       markup = "".concat(
         markup,
-        showConsoleButtons.value ? ::Input.Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : "",
+        showConsoleButtons.value ? Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : "",
         "activeText {text:t='{text}'; caption:t='yes'; margin-left:t='1@framePadding'}".subst({ text = $"#{nextActionShortcut}" })
       )
     }

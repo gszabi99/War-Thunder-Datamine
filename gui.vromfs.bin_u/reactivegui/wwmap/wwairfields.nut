@@ -1,32 +1,52 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { floor } = require("math")
-let { airfieldsInfo, hoveredAirfield, selectedAirfield } = require("%rGui/wwMap/wwAirfieldsStates.nut")
+let { airfieldsInfo, hoveredAirfield, selectedAirfield, hoveredAirfieldIndex } = require("%rGui/wwMap/wwAirfieldsStates.nut")
 let { activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { getZoneSize } = require("%rGui/wwMap/wwMapZonesData.nut")
+let { even } = require("%rGui/wwMap/wwUtils.nut")
+
+let hoverBounds = [0.2666, 0.2941, 0.7333, 0.7059]
+let airfieldImageAspectRatio = 68.0 / 60
+
+function createHoverBounds(imageWidth, imageHeight) {
+  let boundPos = [hoverBounds[0] * imageWidth, hoverBounds[1] * imageHeight]
+  let boundSize = [(hoverBounds[2] - hoverBounds[0]) * imageWidth, (hoverBounds[3] - hoverBounds[1]) * imageHeight]
+  return {
+    boundPos
+    boundSize
+  }
+}
 
 function mkAirfield(airfieldInfo, areaBounds) {
-  let { airfieldPos, aircraftTextures, airfieldIdx } = airfieldInfo
+  let { airfieldPos, airfieldTextures, airfieldIdx } = airfieldInfo
 
-  let aircraftTexture = Computed(@()
-    selectedAirfield.get()?.airfieldIdx == airfieldIdx ? aircraftTextures["airfieldTexSelected"]
-      : hoveredAirfield.get()?.airfieldIdx == airfieldIdx ? aircraftTextures["airfieldTexHover"]
-      : aircraftTextures["airfieldTex"])
+  let airfieldTexture = Computed(@()
+    selectedAirfield.get()?.airfieldIdx == airfieldIdx ? airfieldTextures["airfieldTexSelected"]
+      : hoveredAirfield.get()?.airfieldIdx == airfieldIdx ? airfieldTextures["airfieldTexHover"]
+      : airfieldTextures["airfieldTex"])
 
   let { areaWidth, areaHeight } = areaBounds
 
   let zoneSize = getZoneSize()
-
-  let size = [floor(areaWidth * zoneSize.w), floor(areaHeight * zoneSize.w)]
-  let pos = [areaWidth * airfieldPos.x - size[0] / 2, areaHeight * airfieldPos.y - size[1] / 2]
+  let imageWidth = even(areaWidth * zoneSize.w * 0.606492)
+  let imageHeight = imageWidth * airfieldImageAspectRatio
+  let pos = [floor(areaWidth * airfieldPos.x - imageWidth / 2), floor(areaHeight * airfieldPos.y - imageHeight / 2)]
+  let { boundPos, boundSize } = createHoverBounds(imageWidth, imageHeight)
 
   return @() {
     rendObj = ROBJ_IMAGE
-    watch = aircraftTexture
+    watch = airfieldTexture
     pos
-    size
-    keepAspect = true
-    image = Picture($"{aircraftTexture.get()}:{size[0]}:{size[1]}")
+    size = [imageWidth, imageHeight]
+    subPixel = true
+    image = Picture($"{airfieldTexture.get()}:{floor(imageWidth)}:{floor(imageHeight)}")
+    children = {
+      pos = boundPos
+      size = boundSize
+      onElemState = @(s) hoveredAirfieldIndex.set(((s & S_HOVER) == S_HOVER) ? airfieldIdx : null)
+      behavior = Behaviors.Button
+    }
   }
 }
 

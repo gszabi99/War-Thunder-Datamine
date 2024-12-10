@@ -7,6 +7,7 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { hasXInputDevice } = require("controls")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_ENABLE_CONSOLE_MODE } = require("%scripts/options/optionsExtNames.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
@@ -22,7 +23,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
   if (::get_is_console_mode_force_enabled())
     return true
 
-  if (::g_login.isProfileReceived())
+  if (isProfileReceived.get())
     return ::get_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, OPTIONS_MODE_GAMEPLAY, false)
 
   return getSystemConfigOption("use_gamepad_interface", false)
@@ -38,7 +39,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
   updateExtWatched({ showConsoleButtons = showCB })
   set_dagui_mouse_last_time_used(!showCB)
 
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return true
 
   ::set_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, showCB, OPTIONS_MODE_GAMEPLAY)

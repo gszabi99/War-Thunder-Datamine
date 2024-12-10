@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { round } = require("math")
@@ -83,7 +84,7 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       )
 
-    rowBlock = "".concat(rowBlock, ::buildTableRowNoPad("row_header", rowHeader, null,
+    rowBlock = "".concat(rowBlock, buildTableRowNoPad("row_header", rowHeader, null,
         "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; "))
 
     this.guiScene.replaceContentFromText(tableHeaderObj, rowBlock, rowBlock.len(), this)
@@ -119,7 +120,7 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
             : ""
         })
       }
-      rowBlock = "".concat(rowBlock, ::buildTableRowNoPad($"row_{rowIdx}", rowParams, null, ""))
+      rowBlock = "".concat(rowBlock, buildTableRowNoPad($"row_{rowIdx}", rowParams, null, ""))
       rowIdx++
     }
     this.guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)

@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { isInReloading } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
@@ -12,6 +13,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { INVITE_CHAT_LINK_PREFIX, openInviteWnd } = require("%scripts/invites/invites.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
+let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 let BaseInvite = class {
   static lifeTimeMsec = 3600000
@@ -141,7 +143,7 @@ let BaseInvite = class {
   }
 
   function getChatInviterLink() {
-    return ::g_chat.generatePlayerLink(this.inviterName)
+    return g_chat.generatePlayerLink(this.inviterName)
   }
 
   function checkChatLink(link) {
@@ -205,7 +207,7 @@ let BaseInvite = class {
 
   function showInviterMenu(position = null) {
     let contact = this.inviterUid && ::getContact(this.inviterUid, this.inviterName)
-    ::g_chat.showPlayerRClickMenu(this.inviterName, null, contact, position)
+    showChatPlayerRClickMenu(this.inviterName, null, contact, position)
   }
 
   function markSeen(silent = false) {

@@ -1,9 +1,12 @@
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRow
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -68,7 +71,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
         tdalign = "center",
       });
     }
-    data = ::buildTableRow("row_header", headerRow, null,
+    data = buildTableRow("row_header", headerRow, null,
       "enable:t='no'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; ");
 
     let startIdx = this.curPage * this.rowsPerPage
@@ -83,7 +86,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
           text = "",
         });
       }
-      data = "".concat(data, ::buildTableRow(rowName, rowData, (i - startIdx) % 2 == 0, ""))
+      data = "".concat(data, buildTableRow(rowName, rowData, (i - startIdx) % 2 == 0, ""))
     }
 
     this.guiScene.setUpdatesEnabled(false, false);
@@ -100,7 +103,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     move_mouse_on_child_by_value(tblObj)
     this.onSelect()
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.rowTexts.len() - 1) / this.rowsPerPage).tointeger())
+    generatePaginator(this.scene.findObject("paginator_place"), this, this.curPage, ((this.rowTexts.len() - 1) / this.rowsPerPage).tointeger())
   }
 
   function goToPage(obj) {

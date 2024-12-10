@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/mainConsts.nut" import SEEN
 
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -59,6 +60,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { getCountryMarkersWidth } = require("%scripts/markers/markerUtils.nut")
 let { floor } = require("math")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -494,7 +496,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillCountries() {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return
     if (this.slotbarOninit) {
       script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
@@ -502,7 +504,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (!getCrewsList().len()) {
-      if (::g_login.isLoggedIn() && (get_cur_circuit_name().indexof("production") != null
+      if (isLoggedIn.get() && (get_cur_circuit_name().indexof("production") != null
         || get_cur_circuit_name() == "nightly"))
           scene_msg_box("no_connection", null,
             loc("char/no_connection"), [["ok", startLogout ]], "ok")
@@ -713,7 +715,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       crewIdInCountry = -1
     }
 
-    let countryIdStr = ::getObjIdByPrefix(obj, "airs_table_")
+    let countryIdStr = getObjIdByPrefix(obj, "airs_table_")
     if (!countryIdStr)
       return res
     res.countryId = countryIdStr.tointeger()
@@ -887,7 +889,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     let prefix = $"td_slot_{this.curSlotCountryId}_"
     for (local i = 0; i < tblObj.childrenCount(); i++) {
-      let id = ::getObjIdByPrefix(tblObj.getChild(i), prefix)
+      let id = getObjIdByPrefix(tblObj.getChild(i), prefix)
       if (!id) {
         let objId = tblObj.getChild(i).id // warning disable: -declared-never-used
         script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
@@ -913,7 +915,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function checkSelectCountryByIdx(obj) {
     let idx = obj.getValue()
     let countryIdx = to_integer_safe(
-      ::getObjIdByPrefix(obj.getChild(idx), "header_country"), this.curSlotCountryId)
+      getObjIdByPrefix(obj.getChild(idx), "header_country"), this.curSlotCountryId)
     if (this.curSlotCountryId >= 0 && this.curSlotCountryId != countryIdx && countryIdx in getCrewsList()
         && !isCountryAvailable(getCrewsList()[countryIdx].country) && getUnlockedCountries().len()) {
       this.msgBox("notAvailableCountry", loc("mainmenu/countryLocked/tooltip"),
@@ -1029,7 +1031,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     let countryIdx = to_integer_safe(
-      ::getObjIdByPrefix(obj.getChild(curValue), "header_country"), this.curSlotCountryId)
+      getObjIdByPrefix(obj.getChild(curValue), "header_country"), this.curSlotCountryId)
     let country = getCrewsList()[countryIdx].country
 
     return {

@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
-
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { get_disable_autorelogin_once, set_disable_autorelogin_once } = require("loginState.nut")
@@ -245,7 +245,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     let shardObj = showObjById("sharding_block", show, this.scene)
     if (show && checkObj(shardObj)) {
       let dropObj = shardObj.findObject("sharding_dropright_block")
-      let shardData = ::create_option_combobox("sharding_list", this.shardItems, defValue, null, true)
+      let shardData = create_option_combobox("sharding_list", this.shardItems, defValue, null, true)
       this.guiScene.replaceContentFromText(dropObj, shardData, shardData.len(), this)
     }
   }
@@ -382,6 +382,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   function requestLoginWithCode(no_dump_login, code) {
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
+    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
     return check_login_pass(no_dump_login,
                               getObjValue(this.scene, "loginbox_password", ""),
                               this.check2StepAuthCode ? "" : this.stoken, //after trying use stoken it's set to "", but to be sure - use "" for 2stepAuth
@@ -465,6 +466,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "steam" })
     log($"Steam Login: check_login_pass with code {steamSpecCode}")
+    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
     let result = check_login_pass("", "", "steam", steamSpecCode, false, false)
     this.proceedAuthorizationResult(result, "")
   }
@@ -700,6 +702,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "guest" })
     log("Guest Login: check_login_pass")
     bqSendNoAuth("guest:login")
+    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
     let result = check_login_pass(guestLoginId, nick, "guest", $"guest{known ? "-known" : ""}", false, false)
     this.proceedAuthorizationResult(result, "")
   }

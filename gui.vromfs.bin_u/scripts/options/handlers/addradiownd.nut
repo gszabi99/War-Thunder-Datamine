@@ -36,7 +36,7 @@ gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (msg == "")
       msg = this.getMsgByEditbox("name")
     let btnAddRadio = this.scene.findObject("btn_add_radio")
-    btnAddRadio.enable((msg != "") ? false : true)
+    btnAddRadio.enable(msg == "")
     btnAddRadio.tooltip = msg
   }
 

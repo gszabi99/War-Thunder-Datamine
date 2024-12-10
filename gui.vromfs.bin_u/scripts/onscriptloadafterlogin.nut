@@ -363,5 +363,6 @@ require("%scripts/debugTools/dbgMarketplace.nut")
 
 require("%scripts/exportInfo/skinsLocExporter.nut")
 
-if (::g_login.isAuthorized() || disable_network()) //load scripts from packs only after login
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
+if (isAuthorized.get() || disable_network()) //load scripts from packs only after login
   require("%scripts/worldWar/worldWar.nut")

@@ -12,6 +12,7 @@ let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contac
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqual } = u
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let isContactsUpdated = mkWatched(persist, "isContactsUpdated", false)
 
@@ -237,7 +238,7 @@ addListenersWithoutEnv({
   SignOut = @(_) disposeHandlers()
 })
 
-if (::g_login.isLoggedIn())
+if (isLoggedIn.get())
   initHandlers()
 
 return {

@@ -70,7 +70,7 @@ let getMainOptions = function() {
   let isTank = unit?.isTank() ?? false
   let isAir = unit?.isAir() ?? false
   let isHelicopter = unit?.isHelicopter() ?? false
-  let isAllowRadarMode = hasFeature("allowRadarModeOptions") && get_radar_mode_names("").len() > 0 && (get_radar_mode_names("").len() > 1 || get_radar_scan_pattern_names("").len() > 1 || get_radar_range_values("").len() > 1)
+  let isAllowRadarMode = hasFeature("allowRadarModeOptions") && get_radar_mode_names("", "").len() > 0 && (get_radar_mode_names("", "").len() > 1 || get_radar_scan_pattern_names("", "").len() > 1 || get_radar_range_values("", "").len() > 1)
 
   if (overrideMainOptionsFn != null)
     return overrideMainOptionsFn()
@@ -156,6 +156,7 @@ let getMainOptions = function() {
       [USEROPT_RADAR_MODE_SELECT, "spinner", isAir && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isAir && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isAir && isAllowRadarMode],
+      [USEROPT_SHOW_MESSAGE_MISSILE_EVADE, "spinner"],
 
       ["options/header/helicopter"],
       [USEROPT_HUE_HELICOPTER_CROSSHAIR, "spinner"],

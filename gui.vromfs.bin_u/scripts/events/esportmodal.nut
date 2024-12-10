@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import build_blk_from_container
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
@@ -20,6 +22,7 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
@@ -91,7 +94,7 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.tournamentList = this.currSeason.tournamentList
-    if (::g_login.isProfileReceived()) {
+    if (isProfileReceived.get()) {
       let myFilters = loadLocalAccountSettings(MY_FILTERS, DataBlock())
       this.filter.__update({
         tourStates = myFilters?.tourStates ? myFilters.tourStates % "array" : []
@@ -282,7 +285,7 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.updateAllEventsByFilters()
-    saveLocalAccountSettings(MY_FILTERS, ::build_blk_from_container(this.filter))
+    saveLocalAccountSettings(MY_FILTERS, build_blk_from_container(this.filter))
   }
 
   function onEvent(obj) {

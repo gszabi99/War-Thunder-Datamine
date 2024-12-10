@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import toggle_freecam
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
@@ -51,7 +52,7 @@ enums.addTypes(buttons, {
   STATS = {
     idx = idx++
     name = "Stats"
-    isAvailableInMission = @() ::is_multiplayer()
+    isAvailableInMission = @() is_multiplayer()
   }
   CONTROLS_HELP = {
     idx = idx++
@@ -70,7 +71,7 @@ enums.addTypes(buttons, {
     isVisible = canBailout
     getUpdatedLabelText = function getUpdatedLabelText() {
       local txt = getPlayerCurUnit()?.unitType.getBailoutButtonText() ?? ""
-      if (!::is_multiplayer() && get_mission_restore_type() == ERT_ATTEMPTS) {
+      if (!is_multiplayer() && get_mission_restore_type() == ERT_ATTEMPTS) {
         local attemptsTxt
         let numLeft = get_num_attempts_left()
         if (numLeft < 0)

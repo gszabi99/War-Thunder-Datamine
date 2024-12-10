@@ -569,7 +569,8 @@ tr > td > optiontext {
   auto-scroll:fast;
   move-start:no;
 }
-tr:hover > td > optiontext {
+tr:hover > td > optiontext,
+tr[active=yes] > td > optiontext {
   color:@hoverTextColor;
   move-start:yes;
 }
@@ -850,12 +851,12 @@ tr[optContainer=yes] > td[cellType="right"] > * {
   transp-end:170;
 }
 
-tr[optContainer=yes]:hover > td[cellType="right"] > * {
+tr[optContainer=yes][active=yes] > td[cellType="right"] > * {
   transp-base:255;
   transp-end:255;
 }
 
-tr[optContainer=yes]:hover {
+tr[optContainer=yes][active=yes] {
   background-color:@rowHoverBackgroundColor;
 }
 

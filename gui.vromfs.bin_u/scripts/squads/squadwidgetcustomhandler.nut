@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
+from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -105,7 +106,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (member.isActualData()) {
       let contact = ::getContact(member.uid)
       local countryIcon = ""
-      if (::checkCountry(member.country, $"squad member data ( uid = {member.uid})", true))
+      if (checkCountry(member.country, $"squad member data ( uid = {member.uid})", true))
         countryIcon = getCountryIcon(member.country)
 
       let status = g_squad_manager.getPlayerStatusInMySquad(member.uid)

@@ -10,12 +10,13 @@ let { IlsColor, IlsLineScale, CannonMode, TargetPosValid, TargetPos, BombingMode
 let { baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { Speed, Mach, BarAltitude, Altitude, Overload, Tangage, Roll,
-  Accel } = require("%rGui/planeState/planeFlyState.nut")
-let { floor, round } = require("%sqstd/math.nut")
+  Accel, Aoa } = require("%rGui/planeState/planeFlyState.nut")
+let { floor, round, abs } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { CurWeaponName, GunBullets0, GunBullets1, BulletImpactPoints, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { AamTimeOfFlightMax, IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal } = require("%rGui/radarState.nut")
+let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 
 let SpeedValue = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let speed = @() {
@@ -81,6 +82,25 @@ let altitude = @() {
   text = AltValue.value < 5000 ? string.format("%d H", AltValue.value) : "***** H"
 }
 
+let localTime = @() {
+  watch = IlsColor
+  rendObj = ROBJ_TEXT
+  size = [pw(20), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  pos = [pw(40), ph(97)]
+  color = IlsColor.get()
+  fontSize = 40
+  font = Fonts.mirage_ils
+  text = "11:22:33"
+  behavior = Behaviors.RtPropUpdate
+  function update() {
+    let time = unixtime_to_local_timetbl(get_local_unixtime())
+    return {
+      text = string.format("%02d:%02d:%02d", time.hour, time.min, time.sec)
+    }
+  }
+}
+
 let OverloadWatch = Computed(@() (floor(Overload.value * 10)).tointeger())
 let overload = @() {
   watch = [OverloadWatch, IlsColor]
@@ -90,7 +110,36 @@ let overload = @() {
   color = IlsColor.value
   fontSize = 45
   font = Fonts.mirage_ils
-  text = string.format("%.1fG", OverloadWatch.value / 10.0)
+  text = string.format("G  %.1f", OverloadWatch.value / 10.0)
+}
+
+let aoaWatched = Computed(@() (Aoa.get() * 10.0).tointeger())
+let aoa = @() {
+  size = [pw(5), pw(10)]
+  flow = FLOW_HORIZONTAL
+  halign = ALIGN_LEFT
+  valign = ALIGN_BOTTOM
+  pos = [pw(10), ph(55)]
+  children = [
+    @(){
+      watch = [IlsColor]
+      rendObj = ROBJ_TEXT
+      size = [50  , SIZE_TO_CONTENT]
+      color = IlsColor.get()
+      fontSize = 55
+      font = Fonts.mirage_ils
+      text = "α"
+    }
+    @(){
+      watch = [aoaWatched, IlsColor]
+      rendObj = ROBJ_TEXT
+      size = SIZE_TO_CONTENT
+      color = IlsColor.get()
+      fontSize = 45
+      font = Fonts.mirage_ils
+      text = string.format((aoaWatched.get() >= 0) ? " %.1f" : "%.1f", aoaWatched.get() * 0.1)
+    }
+  ]
 }
 
 function pitch(width, height, generateFunc) {
@@ -353,23 +402,39 @@ let radarTargetDist = @() {
   ] : null
 }
 
-let targetMark = @() {
-  watch = [IlsColor, RadarTargetPosValid]
-  rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(7), ph(7)]
-  color = IlsColor.value
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth * IlsLineScale.value
-  commands = RadarTargetPosValid.value ? [
-    [VECTOR_LINE, -100, -100, 100, -100],
-    [VECTOR_LINE, 100, -100, 100, 100],
-    [VECTOR_LINE, 100, 100, -100, 100],
-    [VECTOR_LINE, -100, 100, -100, -100]
-  ] : null
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-    transform = {
-      translate = RadarTargetPos
+function targetMark(width, height) {
+  return @() {
+    watch = [IlsColor, RadarTargetPosValid]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = [pw(7), ph(7)]
+    color = IlsColor.value
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.value
+    commands = RadarTargetPosValid.value ? [
+      [VECTOR_LINE, -100, -100, 100, -100],
+      [VECTOR_LINE, 100, -100, 100, 100],
+      [VECTOR_LINE, 100, 100, -100, 100],
+      [VECTOR_LINE, -100, 100, -100, -100]
+    ] : null
+    animations = [
+      { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      let reticleLim = [0.42 * width, 0.42 * height]
+      if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+        anim_start("radar_target_out_of_limit")
+      else
+        anim_request_stop("radar_target_out_of_limit")
+      let RadarTargetPosLim =  [
+        0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+        0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+      ]
+      return {
+        transform = {
+          translate = RadarTargetPosLim
+        }
+      }
     }
   }
 }
@@ -605,11 +670,13 @@ function TCSFVE130(width, height) {
       overload,
       shellName,
       pitch(width, height, generatePitchLine),
-      targetMark,
+      targetMark(width, height),
       radarTargetDist,
       aamInfo(height),
       gunBullets,
-      bulletsImpactLine
+      bulletsImpactLine,
+      localTime,
+      aoa
     ]
   }
 }

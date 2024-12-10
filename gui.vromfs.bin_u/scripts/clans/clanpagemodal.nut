@@ -1,6 +1,9 @@
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_my_clan_tag, gchat_is_connected, ps4_is_ugc_enabled, is_myself_clan_moderator, clan_request_info, clan_request_leave, clan_get_my_role, sync_handler_simulate_signal, clan_get_requested_clan_id, clan_get_role_rights, clan_get_my_clan_name, clan_set_admin_editor_mode, set_char_cb, clan_get_researching_unit, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRowNoPad
+from "%scripts/clans/clanState.nut" import is_in_clan
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -23,7 +26,7 @@ let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
-let { create_option_switchbox } = require("%scripts/options/optionsExt.nut")
+let { create_option_switchbox } = require("%scripts/options/optionsCtors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -140,7 +143,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   setDefaultSort = @() this.statsSortBy = $"{::ranked_column_prefix}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
 
   function reinitClanWindow() {
-    if (::is_in_clan() &&
+    if (is_in_clan() &&
       (clan_get_my_clan_id() == this.clanIdStrReq ||
        clan_get_my_clan_name() == this.clanNameReq ||
        clan_get_my_clan_tag() == this.clanTagReq)) {
@@ -219,7 +222,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!u.isEmpty(feature) && !hasFeature(feature))
       text = ""
-    text = ::g_chat.filterMessageText(text, false)
+    text = g_chat.filterMessageText(text, false)
 
     obj.setValue(text)
   }
@@ -560,7 +563,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function leaveClan() {
-    if (!::is_in_clan())
+    if (!is_in_clan())
       return this.afterClanLeave()
 
     this.taskId = clan_request_leave()
@@ -596,7 +599,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
                        active = false
                     })
     }
-    rowBlock = "".concat(rowBlock, ::buildTableRowNoPad($"row_{rowIdx}", rowHeader, null,
+    rowBlock = "".concat(rowBlock, buildTableRowNoPad($"row_{rowIdx}", rowHeader, null,
       "class:t='smallIconsStyle'; background-color:t='@separatorBlockColor'"))
     rowIdx++
 
@@ -623,7 +626,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
                           tdalign = "center"
                         })
       }
-      rowBlock = "".concat(rowBlock, ::buildTableRowNoPad($"row_{rowIdx}", rowParams, null, ""))
+      rowBlock = "".concat(rowBlock, buildTableRowNoPad($"row_{rowIdx}", rowParams, null, ""))
       rowIdx++
     }
     this.guiScene.replaceContentFromText(clanTableObj, rowBlock, rowBlock.len(), this)
@@ -713,11 +716,11 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
         rowData.append(this.getClanMembersCell(member, column))
       }
 
-      markup.append(::buildTableRowNoPad($"row_{rowIdx}", rowData, rowIdx % 2 != 0, isMe ? "mainPlayer:t='yes';" : ""))
+      markup.append(buildTableRowNoPad($"row_{rowIdx}", rowData, rowIdx % 2 != 0, isMe ? "mainPlayer:t='yes';" : ""))
       this.playerByRow.append(member.nick)
     }
 
-    markup.insert(0, ::buildTableRowNoPad("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'"))
+    markup.insert(0, buildTableRowNoPad("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'"))
     markup = "".join(markup)
 
     this.guiScene.setUpdatesEnabled(false, false)

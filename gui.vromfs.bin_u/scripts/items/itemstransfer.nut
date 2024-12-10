@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 local sendingList = {}
 
@@ -24,7 +25,7 @@ function updateSendingList() {
 addListenersWithoutEnv({
   SignOut = @(_p) sendingList.clear()
   ProfileUpdated = @(_p) updateSendingList()
-  ScriptsReloaded = @(_p) ::g_login.isProfileReceived() && updateSendingList()
+  ScriptsReloaded = @(_p) isProfileReceived.get() && updateSendingList()
 }, g_listener_priority.CONFIG_VALIDATION)
 
 return {

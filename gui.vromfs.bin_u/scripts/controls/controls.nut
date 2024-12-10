@@ -3,7 +3,9 @@ from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/options/optionsCtors.nut" import create_option_dropright, create_option_list, create_option_slider, create_option_switchbox
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -14,7 +16,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_low_width_screen, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { MAX_SHORTCUTS, CONTROL_TYPE, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
+let { AXIS_MODIFIERS, MAX_SHORTCUTS, CONTROL_TYPE, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
 let globalEnv = require("globalEnv")
 let controllerState = require("controllerState")
@@ -36,7 +38,7 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { setGuiOptionsMode, getGuiOptionsMode, get_unit_option } = require("guiOptions")
-let { getShortcutById, getTextMarkup, getShortcutData, getAxisActivationShortcutData,
+let { getShortcutById, getTextMarkup, getShortcutData, getInputsMarkup,
   isShortcutMapped, restoreShortcuts, hasMappedSecondaryWeaponSelector
 } = require("%scripts/controls/shortcutsUtils.nut")
 let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -48,7 +50,7 @@ let { recomendedControlPresets, getControlsPresetBySelectedType
 let { joystickSetCurSettings, setShortcutsAndSaveControls
 } = require("%scripts/controls/controlsCompatibility.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { set_option, create_option_switchbox, create_option_list } = require("%scripts/options/optionsExt.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
   USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_SEPERATED_ENGINE_CONTROL_SHIP,
@@ -64,6 +66,35 @@ let { switchControlsMode, gui_start_controls_type_choice
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { Button } = require("%scripts/controls/input/button.nut")
+let { Combination } = require("%scripts/controls/input/combination.nut")
+let { Axis } = require("%scripts/controls/input/axis.nut")
+
+function getAxisActivationShortcutData(shortcuts, item, preset) {
+  preset = preset ?? ::g_controls_manager.getCurPreset()
+  let inputs = []
+  let axisDescr = g_shortcut_type._getDeviceAxisDescription(item.id)
+  let axisInput = (axisDescr.axisId > -1 || axisDescr.mouseAxis != null)
+    ? Axis(axisDescr, AXIS_MODIFIERS.NONE, preset)
+    : null
+  let buttons = axisInput ? [axisInput] : []
+  let scArr = shortcuts[item.modifiersId[""]]
+  for (local i = 0; i < scArr.len(); i++) {
+    let sc = scArr[i]
+    for (local j = 0; j < sc.dev.len(); j++)
+      buttons.append(Button(sc.dev[j], sc.btn[j], preset))
+
+    if (buttons.len() > 1)
+      inputs.append(Combination(buttons))
+    else
+      inputs.extend(buttons)
+  }
+  // Use only axis input if has no shortcuts for combination
+  if (scArr.len() == 0 && axisInput)
+    inputs.append(axisInput)
+
+  return getInputsMarkup(inputs)
+}
 
 ::preset_changed <- false
 
@@ -1748,7 +1779,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   else if (item.type == CONTROL_TYPE.SPINNER || item.type == CONTROL_TYPE.DROPRIGHT) {
     local createOptFunc = create_option_list
     if (item.type == CONTROL_TYPE.DROPRIGHT)
-      createOptFunc = ::create_option_dropright
+      createOptFunc = create_option_dropright
 
     let callBack = ("onChangeValue" in item) ? item.onChangeValue : null
 
@@ -1768,11 +1799,11 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     if ("optionType" in item) {
       let config = ::get_option(item.optionType)
       elemIdTxt =$"options/{config.id}"
-      elemTxt = ::create_option_slider(item.id, config.value, "onSliderChange", true, "slider", config)
+      elemTxt = create_option_slider(item.id, config.value, "onSliderChange", true, "slider", config)
     }
     else {
       let value = ("value" in item) ? item.value(params) : 50
-      elemTxt = ::create_option_slider(item.id, value.tointeger(), "onSliderChange", true, "slider", item)
+      elemTxt = create_option_slider(item.id, value.tointeger(), "onSliderChange", true, "slider", item)
     }
 
     elemTxt = "".concat(

@@ -1465,16 +1465,16 @@
   "gunnerOpticFps": {
     "pos": [
       0.5,
-      10.2,
+      0.2,
       0.0
     ],
     "head": "optic1_gun",
     "crosshairPreset": "test_crosshair",
     "angularLimits": [
-      -120.0,
-      120.0,
-      -25.0,
-      40.0
+      -119.0,
+      119.0,
+      -24.0,
+      39.0
     ]
   },
   "commonWeapons": {
@@ -1561,6 +1561,34 @@
               "turret": {
                 "head": "optic1_turret",
                 "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -120.0,
+                  120.0
+                ],
+                "pitch": [
+                  -25.0,
+                  40.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
                 "mainTurret": true
               },
               "limits": {

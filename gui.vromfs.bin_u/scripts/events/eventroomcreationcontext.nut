@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { array_to_blk, get_array_by_bit_value } = require("%scripts/utils_sa.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -223,7 +224,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
   function saveChosenMissions() {
     let names = this.chosenMissionsList.map(@(m) m.id)
-    saveLocalAccountSettings(this.getMissionsSaveId(), ::array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
+    saveLocalAccountSettings(this.getMissionsSaveId(), array_to_blk(names, CHOSEN_EVENT_MISSIONS_SAVE_KEY))
   }
 
   function setChosenMissions(missions) {
@@ -262,7 +263,7 @@ const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
   }
 
   function setCurCountries(team, countriesMask) {
-    this.curCountries[team.id] <- ::get_array_by_bit_value(countriesMask, shopCountriesList)
+    this.curCountries[team.id] <- get_array_by_bit_value(countriesMask, shopCountriesList)
   }
 
   function setCurCountriesArray(team, countriesSetIdx) {

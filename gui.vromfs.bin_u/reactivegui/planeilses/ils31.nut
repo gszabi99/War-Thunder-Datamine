@@ -4,16 +4,18 @@ let { Speed, BarAltitude, Tangage, Accel } = require("%rGui/planeState/planeFlyS
 let { mpsToKmh, baseLineWidth, radToDeg, weaponTriggerName } = require("ilsConstants.nut")
 let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget,
   BombCCIPMode, RocketMode, CannonMode, TargetPosValid, TargetPos, RadarTargetPos, IlsPosSize,
-  AirCannonMode, AimLockPos, AimLockValid, AimLockDist, BombingMode, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
+  AirCannonMode, AimLockPos, AimLockValid, AimLockDist, BombingMode, TimeBeforeBombRelease,
+  RadarTargetHeight, RadarTargetDistRate } = require("%rGui/planeState/planeToolsState.nut")
 let { compassWrap, generateCompassMarkASP } = require("ilsCompasses.nut")
 let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine } = require("commonElements.nut")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, AamLaunchZoneDistDgftMax,
   IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax, CueVisible,
-  CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel } = require("%rGui/radarState.nut")
+  CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel,
+  IsRadarEmitting } = require("%rGui/radarState.nut")
 let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
-let { floor, ceil, round } = require("%sqstd/math.nut")
+let { floor, ceil, round, sqrt, abs } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { IsAgmLaunchZoneVisible, IlsAtgmLaunchEdge1X, IlsAtgmLaunchEdge1Y, IlsAtgmLaunchEdge2X, IlsAtgmLaunchEdge2Y,
@@ -529,29 +531,45 @@ function createTargetDist(index) {
     ]
   }
 }
-let radarReticle = @() {
-  watch = RadarTargetPosValid
-  size = flex()
-  children = RadarTargetPosValid.value ?
-  [
-    @() {
-      watch = IlsColor
-      size = [pw(3), ph(3)]
-      rendObj = ROBJ_VECTOR_CANVAS
-      color = IlsColor.value
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.value
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 100, 100]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        transform = {
-          translate = RadarTargetPos
+function radarReticle(width, height) {
+  return @() {
+    watch = RadarTargetPosValid
+    size = flex()
+    children = RadarTargetPosValid.value ?
+    [
+      @() {
+        watch = IlsColor
+        size = [pw(3), ph(3)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.value
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth * IlsLineScale.value
+        commands = [
+          [VECTOR_ELLIPSE, 0, 0, 100, 100]
+        ]
+        animations = [
+          { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = function() {
+          let reticleLim = [0.4 * width, 0.4 * height]
+          if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+            anim_start("radar_target_out_of_limit")
+          else
+            anim_request_stop("radar_target_out_of_limit")
+          let RadarTargetPosLim =  [
+            0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+            0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+          ]
+          return {
+            transform = {
+              translate = RadarTargetPosLim
+            }
+          }
         }
       }
-    }
-  ] : null
+    ] : null
+  }
 }
 
 let cue = @() {
@@ -583,9 +601,128 @@ let cueIndicator = @(){
   } : null
 }
 
+let radarTargetAltitude = @() {
+  watch = [RadarTargetHeight, IlsColor]
+  size = SIZE_TO_CONTENT
+  rendObj = ROBJ_TEXT
+  pos = [pw(71), ph(15)]
+  color = IlsColor.value
+  fontSize = 50
+  font = Fonts.ils31
+  text = string.format("%d", RadarTargetHeight.value)
+}
+
+let radarTargetClosingSpeedScale = @() function() {
+  const maxDisplayedSpeed = 1200.0
+  const scaleLenght = 35
+
+  let closingSpeed = -RadarTargetDistRate.value
+  let tClosing = clamp(closingSpeed / maxDisplayedSpeed, 0.0, 1.0)
+  let closingPos = (- tClosing * scaleLenght).tointeger()
+
+  let tPlaneSpeed = min(SpeedValue.value / maxDisplayedSpeed, 1.0)
+  let speedPos = (- tPlaneSpeed * scaleLenght).tointeger()
+  return {
+    watch = [RadarTargetDistRate, SpeedValue, IlsColor, IlsLineScale]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = flex()
+    pos = [pw(74.5), ph(66)]
+    color = IlsColor.value
+    lineWidth = baseLineWidth * IlsLineScale.value
+    commands = [
+      [VECTOR_LINE, 0, 0, 0, -scaleLenght],
+      [VECTOR_LINE, 0, closingPos, 1, closingPos]
+    ]
+    children = [
+      // own speed arrow
+      @() {
+        pos = [0, ph(speedPos)]
+        size = [pw(3), ph(1)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.value
+        lineWidth = baseLineWidth * IlsLineScale.value
+        commands = [
+          [VECTOR_LINE, 0, 0, 40, -100],
+          [VECTOR_LINE, 0, 0, 40, 100],
+          [VECTOR_LINE, 40, -100, 40, -50],
+          [VECTOR_LINE, 40, 100, 40, 50],
+          [VECTOR_LINE, 40, 0, 100, 0],
+        ]
+      }
+    ]
+  }
+}
+
+function selectedTargetAspectAngle(index) {
+  const arrowWidth = 0.1
+  const arrowL = 0.66
+
+  let target = targets[index]
+  if (!target.isSelected)
+    return null
+
+  let arrowLength = 100.0 / max(sqrt(target.losHorSpeed * target.losHorSpeed + target.losSpeed * target.losSpeed), 1.0)
+
+  let Yx = -target.losHorSpeed* arrowLength,
+      Yy = -target.losSpeed * arrowLength
+  let Xx = -target.losSpeed * arrowLength,
+      Xy = target.losHorSpeed * arrowLength
+
+  return @() {
+    watch = [IlsColor, IlsLineScale]
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = [pw(5), ph(5)]
+    pos = [pw(25.5), ph(70)]
+    color = IlsColor.value
+    lineWidth = baseLineWidth * IlsLineScale.value
+    commands = [
+      [VECTOR_LINE,
+        0,
+        0,
+        Yx,
+        Yy],
+      [VECTOR_LINE,
+        Yx * arrowL + Xx * arrowWidth,
+        Yy * arrowL + Xy * arrowWidth,
+        Yx,
+        Yy
+      ],
+      [VECTOR_LINE,
+        Yx * arrowL - Xx * arrowWidth,
+        Yy * arrowL - Xy * arrowWidth,
+        Yx,
+        Yy
+      ]
+    ]
+  }
+}
+
+let selectedTargetDetails = @() function() {
+  return {
+    watch = [RadarTargetValid]
+    size = flex()
+    children = RadarTargetValid.value ? [
+      radarTargetAltitude
+      radarTargetClosingSpeedScale()
+      targetsComponent(selectedTargetAspectAngle)
+    ] : null
+  }
+}
+
+let radarEmittingIcon = @() {
+  watch = IlsColor
+  size = SIZE_TO_CONTENT
+  rendObj = ROBJ_TEXT
+  pos = [pw(5), ph(66)]
+  color = IlsColor.value
+  fontSize = 50
+  font = Fonts.ils31
+  text = "ИЗЛ"
+}
+
 let radar = @(is_cn) function() {
   return {
-    watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode]
+    watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode, IsRadarEmitting]
     size = flex()
     children = IsRadarVisible.value && !CCIPMode.value && !AirNoTargetCannonMode.value && !BombingMode.value ? [
       ((!Irst.value && !BVBMode.value) || RadarTargetValid.value ? radarDistGrid : null),
@@ -614,15 +751,19 @@ let radar = @(is_cn) function() {
         ]
       }),
       radarType(is_cn),
-      cueIndicator
+      cueIndicator,
+      selectedTargetDetails(),
+      (IsRadarEmitting.value && !Irst.value ? radarEmittingIcon : null)
     ] : null
   }
 }
 
-let radarReticlWrap = @(){
-  watch = IsRadarVisible
-  size = flex()
-  children = IsRadarVisible.get() ? radarReticle : null
+function radarReticlWrap(width, height) {
+  return @() {
+    watch = IsRadarVisible
+    size = flex()
+    children = IsRadarVisible.get() ? radarReticle(width, height) : null
+  }
 }
 
 function getRadarMode(is_cn) {
@@ -976,7 +1117,7 @@ function Ils31(width, height, is_cn) {
       (HasTargetTracker.value ? tvMode(is_cn) : null),
       laserMode(is_cn),
       bombingStabMark,
-      radarReticlWrap
+      radarReticlWrap(width, height)
     ]
   }
 }

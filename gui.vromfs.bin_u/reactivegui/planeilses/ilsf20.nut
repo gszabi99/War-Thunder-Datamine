@@ -451,26 +451,42 @@ let maxOverload = @() {
   }
 }
 
-let radarMark = @(){
-  watch = RadarTargetPosValid
-  size = flex()
-  children = RadarTargetPosValid.value ? @(){
-    watch = IlsColor
-    size = [pw(5), ph(5)]
-    rendObj = ROBJ_VECTOR_CANVAS
-    color = IlsColor.value
-    fillColor = Color(0, 0, 0, 0)
-    lineWidth = baseLineWidth * IlsLineScale.value
-    commands = [
-      [VECTOR_RECTANGLE, -50, -50, 100, 100]
-    ]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = RadarTargetPos
+function radarMark(width, height) {
+  return @() {
+    watch = RadarTargetPosValid
+    size = flex()
+    children = RadarTargetPosValid.value ? @(){
+      watch = IlsColor
+      size = [pw(5), ph(5)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_RECTANGLE, -50, -50, 100, 100]
+      ]
+      animations = [
+        { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+      ]
+      behavior = Behaviors.RtPropUpdate
+      update = function() {
+        let reticleLim = [0.47 * width, 0.47 * height]
+        if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+          anim_start("radar_target_out_of_limit")
+        else
+          anim_request_stop("radar_target_out_of_limit")
+        let RadarTargetPosLim =  [
+            0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+            0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+        ]
+        return {
+          transform = {
+            translate = RadarTargetPosLim
+          }
+        }
       }
-    }
-  } : null
+    } : null
+  }
 }
 
 let generateCompassMark = function(num, width) {
@@ -722,7 +738,7 @@ function ilsF20(width, height) {
       aamMark
       targetRadSpeed
       maxOverload
-      radarMark
+      radarMark(width, height)
       compassWrap(width, height, generateCompassMark)
       ccipMode
       bombImpactLine

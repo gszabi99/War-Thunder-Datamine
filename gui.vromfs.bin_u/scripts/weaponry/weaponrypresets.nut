@@ -19,6 +19,33 @@ let isEqualWeapon = @(a, b) a.slot == b.slot
   && a?.flash == b?.flash
   && a?.emitter == b?.emitter
 
+function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, params = {}) {
+  let self = callee()
+  let { containersCount = 1, containerMassKg = 0 } = params
+  local { bulletsCount = 1 } = params
+
+  let weaponBlk = weaponBlkCache?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
+  weaponBlkCache[weaponBlkPath] <- weaponBlk
+
+  bulletsCount = bulletsCount * (weaponBlk?.bullets ?? 1)
+  if (weaponBlk?.container && ("blk" in weaponBlk)) {
+    let containerParams = {
+      bulletsCount,
+      containersCount = weaponBlk?.bullets ?? 1
+      containerMassKg = containerMassKg + (weaponBlk?.mass ?? 0) * containersCount
+    }
+
+    return self(weaponBlk.blk, weaponBlkCache, containerParams)
+  }
+
+  return {
+    weaponBlk
+    weaponBlkPath
+    bulletsCount
+    containerMassKg
+  }
+}
+
 function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc = isEqualWeapon) {
   let reqModifications = preset % "reqModification"
   let presetsWeapons = []
@@ -34,6 +61,12 @@ function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc 
     foreach (bannedWeapon in (preset % "BannedWeaponPreset"))
       slotWeapon.bannedWeaponPreset  <- bannedWeapon
 
+    if (slotWeapon?.mass == null) {
+      let { weaponBlk } = getWeaponBlkParams(weapon.blk, {})
+      if (weaponBlk?.mass)
+        slotWeapon.mass <- weaponBlk.mass
+    }
+
     let idx = res.findindex(@(w) isEqualFunc(w, slotWeapon))
     if (idx == null) {
       if (preset?.reqModification == null && weapon?.reqModification != null) {
@@ -41,8 +74,11 @@ function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc 
       }
       res.append(slotWeapon)
       presetsWeapons.append(slotWeapon)
-    } else
+    } else {
       res[idx].bullets = (res[idx]?.bullets ?? 1) + (slotWeapon?.bullets ?? 1)
+      if (res[idx]?.mass)
+        res[idx].mass += slotWeapon?.mass ?? 0
+    }
   }
 
   // add preset all reqModifictions to all weapons in preset, to future determine weapon availability
@@ -144,33 +180,6 @@ function getSlotsWeaponsForEditPreset(unitBlk) {
   }
 
   return res
-}
-
-function getWeaponBlkParams(weaponBlkPath, weaponBlkCache, params = {}) {
-  let self = callee()
-  let { containersCount = 1, containerMassKg = 0 } = params
-  local { bulletsCount = 1 } = params
-
-  let weaponBlk = weaponBlkCache?[weaponBlkPath] ?? blkOptFromPath(weaponBlkPath)
-  weaponBlkCache[weaponBlkPath] <- weaponBlk
-
-  bulletsCount = bulletsCount * (weaponBlk?.bullets ?? 1)
-  if (weaponBlk?.container && ("blk" in weaponBlk)) {
-    let containerParams = {
-      bulletsCount,
-      containersCount = weaponBlk?.bullets ?? 1
-      containerMassKg = containerMassKg + (weaponBlk?.mass ?? 0) * containersCount
-    }
-
-    return self(weaponBlk.blk, weaponBlkCache, containerParams)
-  }
-
-  return {
-    weaponBlk
-    weaponBlkPath
-    bulletsCount
-    containerMassKg
-  }
 }
 
 function getUnitWeaponsByTier(unit, blkPath, tierId) {

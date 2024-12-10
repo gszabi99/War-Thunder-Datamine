@@ -3,6 +3,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
+let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 
 let ItemUnitCouponMod = class (ItemExternal) {
   static iType = itemType.UNIT_COUPON_MOD
@@ -14,7 +15,7 @@ let ItemUnitCouponMod = class (ItemExternal) {
   getContentIconData = function() {
     let unitName = this.itemDef?.tags.unit
     if (unitName)
-      return { contentIcon = ::image_for_air(unitName), contentType = "unit" }
+      return { contentIcon = image_for_air(unitName), contentType = "unit" }
 
     return { contentIcon = this.getSmallIconName() }
   }

@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, is_app_a
 from "%scripts/dagui_library.nut" import *
 from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -91,9 +92,11 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getGameModeBoxIndex,
-   writeGameModeToTerseInfo, getShowcaseGameModeByIndex } = require("%scripts/user/profileShowcase.nut")
+let { getEditViewData, getShowcaseTypeBoxData, saveShowcase,
+  getGameModeBoxIndex, getShowcaseByTerseInfo,
+  writeGameModeToTerseInfo, getShowcaseGameModeByIndex, getShowcaseByIndex } = require("%scripts/user/profileShowcase.nut")
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
+let { generateShowcaseInfo, setCurrentShowcase, updateShowcaseDataInCache } = require("%scripts/user/profileShowcasesData.nut")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -139,8 +142,6 @@ function guiStartProfile(params = {}) {
   loadHandler(gui_handlers.Profile, params)
 }
 
-local cachedTerseInfo = null
-
 gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/profile.blk"
@@ -158,6 +159,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   statsSortReverse = false
   curStatsPage = 0
   pending_logout = false
+  currentShowcaseName = ""
 
   presetSheetList = ["UserCard", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal"]
 
@@ -210,7 +212,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function initScreen() {
-    this.terseInfo = cachedTerseInfo
     this.editModeTempData = {}
     this.selMedalIdx = {}
     setBreadcrumbGoBackParams(this)
@@ -1659,7 +1660,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       let tooltip = ["#mainmenu/arcadeInstantAction", "#mainmenu/instantAction", "#mainmenu/fullRealInstantAction"][diff]
       row.append({ id = diff.tostring(), text = s.tostring(), tooltip = tooltip })
     }
-    return ::buildTableRowNoPad("", row)
+    return buildTableRowNoPad("", row)
   }
 
   function updateStats() {
@@ -1935,17 +1936,35 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   onLeaderboard = @() loadHandler(gui_handlers.LeaderboardWindow, { userId = userIdInt64.get() })
 
-  function onShowcaseSelect(_obj) {
+  function onShowcaseSelect(obj) {
+    if (!this.isEditModeEnabled)
+      return
 
+    let selectedShowcase = getShowcaseByIndex(obj.getValue())
+    if (selectedShowcase == null)
+      return
+
+    this.currentShowcaseName = selectedShowcase.terseName
+    this.editModeTempData.terseInfo <- generateShowcaseInfo(this.currentShowcaseName)
+    this.fillShowcase(this.editModeTempData.terseInfo, getStats(), false)
+    this.fillShowcaseGameModes(selectedShowcase, this.editModeTempData.terseInfo)
   }
 
   function fillShowcaseEdit(terseInfo) {
-    local data = getEditViewData()
+    let data = getEditViewData(terseInfo)
     let nest = this.scene.findObject("showcase_edit");
     this.guiScene.replaceContentFromText(nest, data, data.len(), this)
 
-    data = getShowcaseTypeBoxData(terseInfo)
-    let showcaseTypesBox = nest.findObject("showcase_gamemodes")
+    let showcase = getShowcaseByTerseInfo(terseInfo)
+    this.fillShowcaseGameModes(showcase, terseInfo)
+  }
+
+  function fillShowcaseGameModes(showcase, terseInfo) {
+    let showcaseTypesBox = showObjById("showcase_gamemodes", showcase?.hasGameMode, this.scene)
+    if (!showcase?.hasGameMode)
+      return
+
+    let data = getShowcaseTypeBoxData(terseInfo)
     this.guiScene.replaceContentFromText(showcaseTypesBox, data, data.len(), this)
 
     let index = getGameModeBoxIndex(terseInfo)
@@ -1955,13 +1974,14 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onSaveShowcaseComplete(savedShowcase) {
     this.terseInfo = savedShowcase
-    cachedTerseInfo = savedShowcase
+    updateShowcaseDataInCache(this.terseInfo.schType, this.terseInfo.showcase)
+    setCurrentShowcase(savedShowcase.schType)
     this.fillShowcase(savedShowcase, getStats())
   }
 
   function onSaveShowcaseError(showcaseForRestore) {
     this.terseInfo = showcaseForRestore
-    cachedTerseInfo = showcaseForRestore
+    this.currentShowcaseName = this.terseInfo.schType
     this.fillShowcase(showcaseForRestore, getStats())
   }
 
@@ -1990,11 +2010,26 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.fillShowcaseEdit(terseInfo)
   }
 
-  function onUserInfoRequestComplete(responce, stats = null) {
-    base.onUserInfoRequestComplete(responce, stats)
-    cachedTerseInfo = this.terseInfo
+  function updateShowcase() {
+    let userStats = this.getPageProfileStats()
+    if (userStats == null)
+      return
+
+    this.terseInfo = this.terseInfo ?? generateShowcaseInfo(this.currentShowcaseName)
+    if (!this.terseInfo)
+      return
+    this.fillShowcase(this.terseInfo, userStats)
   }
 
+  function onEventAllShowcasesDataUpdated(_data) {
+    this.terseInfo = generateShowcaseInfo(this.currentShowcaseName)
+    if (!this.terseInfo)
+      return
+    let userStats = this.getPageProfileStats()
+    if (userStats == null)
+      return
+    this.fillShowcase(this.terseInfo, userStats)
+  }
 }
 
 let openProfileSheetParamsFromPromo = {

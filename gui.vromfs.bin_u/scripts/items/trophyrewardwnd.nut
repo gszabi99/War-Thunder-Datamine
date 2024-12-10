@@ -28,6 +28,7 @@ let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
 let { findItemById, getInternalItemsDebugInfo } = require("%scripts/items/itemsManager.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 local afterCloseTrophyWnd = @(_configsTable) null
 
@@ -67,7 +68,7 @@ function guiStartOpenTrophy(configsTable = {}) {
   let trophyItem = findItemById(itemId)
   if (!trophyItem) {
     let configsArrayString = toString(configsArray, 2) // warning disable: -declared-never-used
-    let isLoggedIn = ::g_login.isLoggedIn()              // warning disable: -declared-never-used
+    let isLoggedInValue = isLoggedIn.get()              // warning disable: -declared-never-used
     let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
       dbgLoadedItemsInternalCount, dbgUpdateInternalItemsCount // warning disable: -declared-never-used
     } = getInternalItemsDebugInfo()  // warning disable: -declared-never-used

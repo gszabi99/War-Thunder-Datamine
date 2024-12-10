@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 import "%scripts/squads/squadApplications.nut" as squadApplications
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -17,6 +18,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -295,7 +297,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let leaderUid = actionSquad?.leader.tostring()
     let contact = leaderUid && ::getContact(leaderUid)
     let leaderName = contact ? contact.getName() : ""
-    ::g_chat.showPlayerRClickMenu(leaderName, null, contact, position)
+    showChatPlayerRClickMenu(leaderName, null, contact, position)
   }
 
   function getSelectedSquadInHover() {
@@ -391,7 +393,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function refreshOnlineUsersTable() {
     let roomId = g_chat_room_type.CLAN.roomPrefix + clan_get_my_clan_id()
-    let room = ::g_chat.getRoomById(roomId)
+    let room = g_chat.getRoomById(roomId)
     if (!room || !("users" in room))
       return
 

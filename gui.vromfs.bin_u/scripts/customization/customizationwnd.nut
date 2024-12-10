@@ -1,7 +1,9 @@
 from "%scripts/dagui_natives.nut" import save_online_single_job, save_profile, get_time_till_decals_disabled, is_decals_disabled, hangar_get_attachable_tm, set_option_delayed_download_content, hangar_prem_vehicle_view_close, reload_user_skins
 from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE, TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
+from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_slider, create_option_switchbox
 
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -53,7 +55,7 @@ let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin,
   previewedLiveSkinIds, approversUnitToPreviewLiveResource, getSkinsOption, getCurUserSkin
 } = require("%scripts/customization/skins.nut")
 let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
-let { set_option, create_option_switchbox } = require("%scripts/options/optionsExt.nut")
+let { set_option } = require("%scripts/options/optionsExt.nut")
 let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
@@ -81,6 +83,7 @@ let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManag
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -115,7 +118,7 @@ eventbus_subscribe("on_decal_job_complete", @(p) on_decal_job_complete(p))
 eventbus_subscribe("hangar_add_popup", @(data) addPopup("", loc(data.text)))
 
 function delayedDownloadEnabledMsg() {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
   let skip = loadLocalAccountSettings("skipped_msg/delayedDownloadContent", false)
   if (!skip) {
@@ -542,7 +545,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!checkObj(nestObj))
         return
     }
-    let skinsDropright = ::create_option_combobox(listObjId, items, index, cb, needCreateList)
+    let skinsDropright = create_option_combobox(listObjId, items, index, cb, needCreateList)
     if (needCreateList)
       this.guiScene.prependWithBlk(nestObj, skinsDropright, this)
     else
@@ -570,7 +573,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       view.rows.append({
         id = option.id
         name =$"#options/{option.id}"
-        option = ::create_option_slider(option.id, option.value, option.cb, true, "slider", option)
+        option = create_option_slider(option.id, option.value, option.cb, true, "slider", option)
       })
     }
     let data = handyman.renderCached(("%gui/options/verticalOptions.tpl"), view)
@@ -1284,14 +1287,14 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let slotName = ::getObjIdByPrefix(obj, "slot_attach_")
+    let slotName = getObjIdByPrefix(obj, "slot_attach_")
     let slotId = slotName ? slotName.tointeger() : -1
 
     this.openDecorationsListForSlot(slotId, obj, decoratorTypes.ATTACHABLES)
   }
 
   function onDecalSlotClick(obj) {
-    let slotName = ::getObjIdByPrefix(obj, "slot_")
+    let slotName = getObjIdByPrefix(obj, "slot_")
     let slotId = slotName ? slotName.tointeger() : -1
     this.openDecorationsListForSlot(slotId, obj, decoratorTypes.DECALS)
   }
@@ -1971,7 +1974,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_")
+    let slotName = getObjIdByPrefix(obj.getParent(), "slot_")
     let slotId = slotName.tointeger()
 
     this.deleteDecorator(decoratorTypes.DECALS, slotId)
@@ -1981,7 +1984,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let slotName = ::getObjIdByPrefix(obj.getParent(), "slot_attach_")
+    let slotName = getObjIdByPrefix(obj.getParent(), "slot_attach_")
     let slotId = slotName.tointeger()
 
     this.deleteDecorator(decoratorTypes.ATTACHABLES, slotId)

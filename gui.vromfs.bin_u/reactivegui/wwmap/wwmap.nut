@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { getArmyForHover, getArmyForSelection, selectedArmy, hoveredArmy } = require("%rGui/wwMap/wwArmyStates.nut")
-let { isOperationPaused } = require("%rGui/wwMap/wwOperationStates.nut")
+let { isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
 let { updateHoveredZone, getZoneByPoint, updateSelectedRearZone } = require("%rGui/wwMap/wwMapZonesData.nut")
 let mkMapZonesBackground = require("%rGui/wwMap/wwMapZonesBackground.nut")
 let { mkMapZonesEdges, mkMapHoveredZone } = require("%rGui/wwMap/wwMapZonesEdges.nut")
@@ -13,6 +13,7 @@ let { mkArmies } = require("%rGui/wwMap/wwArmies.nut")
 let { battles } = require("%rGui/wwMap/wwBattles.nut")
 let { mkBattlesMessages } = require("%rGui/wwMap/wwBattlesMessages.nut")
 let { artilleryStrikes } = require("%rGui/wwMap/wwArtilleryStrikes.nut")
+let { samVisualizations } = require("%rGui/wwMap/wwSAMVisualizations.nut")
 let { getBattleByPoint, updateHoveredBattle, updateSelectedBattle, hoveredBattle } = require("%rGui/wwMap/wwBattlesStates.nut")
 let { getAirfieldByPoint, updateHoveredAirfield, updateSelectedAirfield, selectedAirfield } = require("%rGui/wwMap/wwAirfieldsStates.nut")
 let { actionsLayer } = require("%rGui/wwMap/wwActionsLayer.nut")
@@ -96,7 +97,7 @@ function processPointerPress(evt, areaBounds) {
   }
 
   if (evt.btnId == 1) {
-    let armyTargetName = hoveredBattle.get()?.id ?? hoveredArmy.get()
+    let armyTargetName = hoveredBattle.get() ?? hoveredArmy.get()
     if (selectedArmy.get() != null)
       moveArmy(armyTargetName, { x, y }, false)
     else if (selectedAirfield.get() != null)
@@ -140,10 +141,10 @@ function processPointerPress(evt, areaBounds) {
 }
 
 let mapFOW = @() {
-  watch = isOperationPaused
+  watch = isOperationPausedWatch
   rendObj = ROBJ_SOLID
   size = flex()
-  color = isOperationPaused.get() ? Color(0, 0, 0, 64) : transparentColor
+  color = isOperationPausedWatch.get() ? Color(0, 0, 0, 64) : transparentColor
 }
 
 let mapBackground = @() {
@@ -175,6 +176,7 @@ let mkMapContainer = function() {
       mkMapZoneNames,
       mkAirfields,
       mkSectorSprites,
+      samVisualizations,
       mkArmies,
       battles,
       artilleryStrikes,

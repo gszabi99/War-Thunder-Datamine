@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_request_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -19,6 +20,18 @@ let wwTooltipTypes = {
       let army = ::g_world_war.getArmyByName(params.currentId)
       if (army)
         return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", army.getView())
+      return ""
+    }
+  }
+
+  WW_MAP_TOOLTIP_TYPE_AIRFIELD = {
+    getTooltipContent = function(_id, params) {
+      if (!isWorldWarEnabled())
+        return ""
+
+      let airfield = ::g_world_war.getAirfieldByIndex(params.currentId)
+      if (airfield)
+        return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", airfield.getView())
       return ""
     }
   }
@@ -67,7 +80,7 @@ let wwTooltipTypes = {
         obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
       }
 
-      if (::is_in_clan() &&
+      if (is_in_clan() &&
           (clan_get_my_clan_id() == clanId
           || clan_get_my_clan_tag() == clanTag)
          ) {

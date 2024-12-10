@@ -1,14 +1,38 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
 
-let isProfileReceived = Watched(::g_login.isProfileReceived())
+let curLoginProcess = persist("curLoginProcess", @() { value = null})
+let loginState = mkWatched(persist, "loginState", LOGIN_STATE.NOT_LOGGED_IN)
 
-addListenersWithoutEnv({
-  LoginStateChanged = @(_) isProfileReceived(::g_login.isProfileReceived())
-  ScriptsReloaded = @(_) isProfileReceived(::g_login.isProfileReceived())  //TO DO: Need move current login state to watch
-})
+let readyToFullLoadMask = LOGIN_STATE.AUTHORIZED | LOGIN_STATE.ONLINE_BINARIES_INITED
+
+function hasLoginState(state) {
+  return (loginState.get() & state) == state
+}
+
+function getStateDebugStr(state = null) {
+  state = state ?? loginState.get()
+  return state == 0 ? "0" : bitMaskToSstring(LOGIN_STATE, state)
+}
+
+function destroyLoginProgress() {
+  if (curLoginProcess.value)
+    curLoginProcess.value.destroy()
+  curLoginProcess.value = null
+}
 
 return {
-  isProfileReceived
+  isProfileReceived = Computed(@() (loginState.get() & LOGIN_STATE.PROFILE_RECEIVED) != 0)
+  isAuthorized = Computed(@() (loginState.get() & LOGIN_STATE.AUTHORIZED) != 0)
+  isLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
+  hasLoginState
+  isReadyToFullLoad = Computed(@() (loginState.get() & readyToFullLoadMask) == readyToFullLoadMask)
+  loginState
+  getStateDebugStr
+  getCurLoginProcess = @() curLoginProcess.value
+  setCurLoginProcess = @(newLoginProcess) curLoginProcess.value = newLoginProcess
+  destroyLoginProgress
+  isLoginStarted = Computed(@() (loginState.get() & LOGIN_STATE.LOGIN_STARTED) != 0)
 }

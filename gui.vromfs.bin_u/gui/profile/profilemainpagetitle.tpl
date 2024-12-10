@@ -9,7 +9,7 @@ blankTextArea {
 }
 <</title>>
 
-<<#gamemode>>
+<<#secondTitle>>
 tdiv {
   left:t='(pw-w)/2'
   position:t='relative'
@@ -32,7 +32,7 @@ tdiv {
     padding:t='32@sf/@pf, 0'
     font:t='@fontBigBold'
     color:t='#FFFFFF'
-    text:t='<<gamemode>>'
+    text:t='<<secondTitle>>'
   }
 
   image {
@@ -45,4 +45,4 @@ tdiv {
     background-repeat:t='aspect-ratio'
   }
 }
-<</gamemode>>
+<</secondTitle>>

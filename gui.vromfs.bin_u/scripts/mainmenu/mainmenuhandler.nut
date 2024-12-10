@@ -25,6 +25,7 @@ let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
 let { checkPackageAndAskDownloadOnce } = require("%scripts/clientState/contentPacks.nut")
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -38,14 +39,14 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   function initScreen() {
     set_presence_to_player("menu")
 
-    if (::g_login.isAuthorized())
+    if (isAuthorized.get())
       base.initScreen()
 
     tryOpenTutorialRewardHandler()
 
     this.forceUpdateSelUnitInfo()
 
-    if (::g_login.isAuthorized()) {
+    if (isAuthorized.get()) {
       this.showOnlineInfo()
       this.updateClanRequests()
     }

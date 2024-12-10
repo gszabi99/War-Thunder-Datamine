@@ -10,7 +10,7 @@ let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getFullUnlockDescByName, getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitTypeText, image_for_air, getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
@@ -133,13 +133,13 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getLayeredImage = function(blk, _warbond) {
       let unit = getAircraftByName(blk.name)
       let unitType = getEsUnitType(unit)
-      let style = "".concat("reward_unit_", ::getUnitTypeText(unitType).tolower())
+      let style = "".concat("reward_unit_", getUnitTypeText(unitType).tolower())
       return LayersIcon.getIconData(style)
     }
     getContentIconData = function(blk) {
       return {
         contentType = "unit"
-        contentIcon = ::image_for_air(blk.name)
+        contentIcon = image_for_air(blk.name)
       }
     }
     getIconHeaderText = function(blk) { return this.getNameText(blk) }

@@ -1,7 +1,12 @@
 from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, clan_get_unit_open_cost_gold, wp_get_repair_cost, shop_is_aircraft_purchased, remove_calculate_modification_effect_jobs, shop_is_unit_rented, shop_get_spawn_score, shop_is_player_has_unit
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import get_tomoe_unit_icon
+import "%sqstd/math.nut" as stdMath
+import "%scripts/time.nut" as time
 
+let { get_unit_icon_by_unit, getUnitCountry, getUnitExp } = require("%scripts/unit/unitInfo.nut")
+let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -9,10 +14,8 @@ let { split_by_chars } = require("string")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isString, isArray, isTable, isFunction } = u
-let time = require("%scripts/time.nut")
 let contentPreview = require("%scripts/customization/contentPreview.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let stdMath = require("%sqstd/math.nut")
 let { targetPlatform, canSpendRealMoney } = require("%scripts/clientState/platform.nut")
 let { getLastWeapon, isWeaponEnabled,
   isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -33,7 +36,6 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
   get_modifications_blk, get_ranks_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { getUnitCountry, getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitInResearch, isUnitBroken, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
@@ -238,10 +240,10 @@ local Unit = class {
       this.needBuyToOpenNextInTier.append(uWpCost?[$"needBuyToOpenNextInTier{i}"] ?? 0)
 
     this.customImage = uWpCost?.customImage ?? ::get_unit_preset_img(this.name)
-    if (!this.customImage && ::is_harmonized_unit_image_reqired(this))
-      this.customImage = ::get_tomoe_unit_icon(this.name)
+    if (!this.customImage && is_harmonized_unit_image_required(this))
+      this.customImage = get_tomoe_unit_icon(this.name)
     if (this.customImage && !isInArray(this.customImage.slice(0, 1), ["#", "!"]))
-      this.customImage = ::get_unit_icon_by_unit(this, this.customImage)
+      this.customImage = get_unit_icon_by_unit(this, this.customImage)
     shopSearchCore.cacheUnitSearchTokens(this)
 
     return errorsTextArray

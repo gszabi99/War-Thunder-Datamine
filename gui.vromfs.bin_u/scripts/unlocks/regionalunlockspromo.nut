@@ -11,6 +11,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let promoSeenList = require("%scripts/seen/seenList.nut").get(SEEN.REGIONAL_PROMO)
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 let class RegionalUnlocksPromoWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -33,7 +34,7 @@ let class RegionalUnlocksPromoWnd (gui_handlers.BaseGuiHandlerWT) {
 
     let lastPage = regionalPromos.value.len() - 1
     let paginatorPlace = this.scene.findObject("paginator_place")
-    ::generatePaginator(paginatorPlace, this, this.curPage, lastPage, null, true)
+    generatePaginator(paginatorPlace, this, this.curPage, lastPage, null, true)
   }
 
   function goToPage(obj) {

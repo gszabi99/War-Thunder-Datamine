@@ -1,12 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { split_by_chars } = require("string")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { startsWith, cutPrefix } = require("%sqstd/string.nut")
 let { get_num_attempts_left } = require("guiMission")
+let { Button } = require("%scripts/controls/input/button.nut")
 
 enum hintTagCheckOrder {
   EXACT_WORD //single word tags
@@ -65,11 +67,11 @@ enumsAddTypes(g_hint_tag, {
     getViewSlices = function(tagName, params) { //tagName == shortcutId
       let slices = []
       let needConfig = params?.needConfig ?? false
-      let expanded = ::g_shortcut_type.expandShortcuts([tagName], params?.showKeyBoardShortcutsForMouseAim ?? false)
+      let expanded = g_shortcut_type.expandShortcuts([tagName], params?.showKeyBoardShortcutsForMouseAim ?? false)
       let showShortcutsNameIfNotAssign = params?.showShortcutsNameIfNotAssign ?? false
       let shortcutsCount = expanded.len()
       foreach (i, expandedShortcut in expanded) {
-        let shortcutType = ::g_shortcut_type.getShortcutTypeByShortcutId(expandedShortcut)
+        let shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(expandedShortcut)
         let shortcutId = expandedShortcut
         slices.append({
           shortcut = needConfig
@@ -144,7 +146,7 @@ enumsAddTypes(g_hint_tag, {
       if (!u.isTable(shortcut))
         return []
 
-      let input = ::Input.Button(shortcut.dev[0], shortcut.btn[0])
+      let input = Button(shortcut.dev[0], shortcut.btn[0])
       return [{
         shortcut = (params?.needConfig ?? false)
           ? input.getConfig()

@@ -514,7 +514,6 @@ return freeze({
   is_tank_damage_indicator_visible = r["is_tank_damage_indicator_visible"]
   is_light_dm = r["is_light_dm"]
   is_tank_gunner_camera_from_sight_available = r["is_tank_gunner_camera_from_sight_available"]
-  is_tanks_allowed = r["is_tanks_allowed"]
   is_tier_available = r["is_tier_available"]
   is_unlocked = r["is_unlocked"]
   is_user_log_for_current_room = r["is_user_log_for_current_room"]

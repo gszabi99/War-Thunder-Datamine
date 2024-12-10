@@ -18,6 +18,8 @@ let WwOperationModel = class {
 
   function update() {
     this.armies.statusUpdate()
+    this.unitClassFlyoutRange = null
+    this.maxUniqueUnitsOnFlyout = ::g_world_war.getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
   }
 
   function getGroupAirArmiesLimit(airfieldTypeName) {

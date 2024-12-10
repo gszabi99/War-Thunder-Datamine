@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -48,7 +50,7 @@ local popupOptList = class (gui_handlers.BaseGuiHandlerWT) {
         : 0
       rows.append({
         title
-        options = ::create_option_combobox(objId, items, valBySelector, null, false)
+        options = create_option_combobox(objId, items, valBySelector, null, false)
       })
       inst.items <- items
       this.stateList[objId] <- {

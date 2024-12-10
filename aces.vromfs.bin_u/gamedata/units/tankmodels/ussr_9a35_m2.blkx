@@ -173,45 +173,6 @@
       "composite_armor_hull_01_dm": {
         "armorThickness": 7.0,
         "hidableInXrayViewer": true
-      },
-      "ex_armor_r_01_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_armor_l_01_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_l_06_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_l_05_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_l_04_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_r_06_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_r_05_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_r_04_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_04_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_05_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_06_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_l_11_dm": {
-        "armorThickness": 7.0
-      },
-      "ex_decor_r_11_dm": {
-        "armorThickness": 7.0
       }
     },
     "turret": {
@@ -232,7 +193,7 @@
         "armorThickness": 6.0
       },
       "turret_01_side_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 7.0
       },
       "turret_01_back_dm": {
         "armorThickness": 7.0
@@ -274,6 +235,33 @@
       "armorThickness": 15.0,
       "hp": 200.0,
       "antenna_target_tagging_dm": {}
+    },
+    "body_shields": {
+      "armorClass": "tank_structural_steel",
+      "hp": 200.0,
+      "armorThickness": 4.0,
+      "hidableInViewer": true,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "ex_armor_r_01_dm": {},
+      "ex_armor_l_01_dm": {},
+      "ex_decor_l_06_dm": {},
+      "ex_decor_l_05_dm": {},
+      "ex_decor_l_04_dm": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "armorThickness": 4.0
+      },
+      "ex_decor_r_06_dm": {},
+      "ex_decor_r_05_dm": {},
+      "ex_decor_r_04_dm": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "armorThickness": 4.0
+      },
+      "ex_decor_04_dm": {},
+      "ex_decor_05_dm": {},
+      "ex_decor_06_dm": {},
+      "ex_decor_l_11_dm": {},
+      "ex_decor_r_11_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -414,7 +402,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -1519,6 +1508,64 @@
         ]
       },
       {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "electronic_equipment_01_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
+      },
+      {
         "name": "ex_decor_l_06_dm",
         "onKill": {
           "ex_decor_l_04_dm": 1.0
@@ -1637,8 +1684,15 @@
           "head": "bone_turret",
           "gun": "bone_gun",
           "gunnerDm": "gunner_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": [
             {
               "verNode": "bone_roll_09",
@@ -1737,7 +1791,10 @@
     "sensor": {
       "blk": "gameData/sensors/su_9s86.blk",
       "turretIndex": 0,
-      "dmPart": "antenna_target_tagging_dm"
+      "dmPart": [
+        "antenna_target_tagging_dm",
+        "electronic_equipment_dm"
+      ]
     }
   },
   "controlDevices": {

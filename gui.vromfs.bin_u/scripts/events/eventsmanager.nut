@@ -3,8 +3,11 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENTS_SHORT_LB_VISIBLE_ROWS, UnitRelevance, EVENT_TYPE, GAME_EVENT_TYPE
 from "%scripts/items/itemsConsts.nut" import itemType
-from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN
+from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN, global_max_players_versus
+from "%scripts/clans/clanState.nut" import is_in_clan
 
+let { getEsUnitType, getUnitName, getUnitTypeText, getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { getGlobalModule, lateBindGlobalModule } = require("%scripts/global_modules.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -52,7 +55,6 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isUnitBroken, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { get_gui_regional_blk } = require("blkGetters")
@@ -721,7 +723,7 @@ let Events = class {
       foreach (key in ["name", "type"])
         if (key in rule)
           return ES_UNIT_TYPE_INVALID
-    return ::getUnitTypeByText(rule["class"])
+    return getUnitTypeByText(rule["class"])
   }
 
   function getMatchingUnitType(unit) {
@@ -1649,7 +1651,7 @@ let Events = class {
                     "no",
                     { cancel_fn = cancelFunc })
 
-    ::g_chat.sendLocalizedMessageToSquadRoom(langConfig)
+    g_chat.sendLocalizedMessageToSquadRoom(langConfig)
   }
 
   function getMembersTeamsData(event, room, teams) {
@@ -2023,11 +2025,6 @@ let Events = class {
     return event != null && isEventRandomBattles(event)
   }
 
-  function isEventTanksCompatible(eventId) {
-    let event = this.getEvent(eventId)
-    return event ? this.isUnitTypeAvailable(event, ES_UNIT_TYPE_TANK) : false
-  }
-
   function getMainLbRequest(event) {
     return _leaderboards.getMainLbRequest(event)
   }
@@ -2096,7 +2093,7 @@ let Events = class {
     local allowId = "all_units_allowed"
     local allowText = ""
     if (stdMath.number_of_set_bits(allowedUnitTypes) == 1)
-      allowId = "".concat("allowed_only/", ::getUnitTypeText(stdMath.number_of_set_bits(allowedUnitTypes - 1)))
+      allowId = "".concat("allowed_only/", getUnitTypeText(stdMath.number_of_set_bits(allowedUnitTypes - 1)))
     if (stdMath.number_of_set_bits(allowedUnitTypes) == 2) {
       let masksArray = unitTypes.getArrayBybitMask(allowedUnitTypes)
       if (masksArray && masksArray.len() == 2) {
@@ -2251,7 +2248,7 @@ let Events = class {
     if (!room)
       return true
     let maxDisbalance = getMaxLobbyDisbalance(mGameMode)
-    if (maxDisbalance >= ::global_max_players_versus)
+    if (maxDisbalance >= global_max_players_versus)
       return true
     let teams = this.getSidesList(mGameMode)
     let availTeams = this.getAvailableTeams(mGameMode, room)
@@ -2589,7 +2586,7 @@ let Events = class {
     let clanTournament = getBlkValueByPath(get_tournaments_blk(),$"{event.name}/clanTournament", false)
     if (!clanTournament)
       return true
-    if (!::is_in_clan())
+    if (!is_in_clan())
       return false
     if (getBlkValueByPath(get_tournaments_blk(),$"{event.name}/allowToSwitchClan"))
       return true

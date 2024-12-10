@@ -6,13 +6,14 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { getStateDebugStr, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 // Deprecated, for storing new data use loadLocalAccountSettings() instead.
 function loadLocalByAccount(path, defValue = null) {
-  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
+  if (!::should_disable_menu() && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: loadLocalByAccount at login state ",
-      ::g_login.getStateDebugStr()))
+      getStateDebugStr()))
     return defValue
   }
 
@@ -36,10 +37,10 @@ function loadLocalByAccount(path, defValue = null) {
 
 // Deprecated, for storing new data use saveLocalAccountSettings() instead.
 function saveLocalByAccount(path, value, saveFunc = saveProfile) {
-  if (!::should_disable_menu() && !::g_login.isProfileReceived()) {
+  if (!::should_disable_menu() && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: saveLocalByAccount at login state ",
-      ::g_login.getStateDebugStr()))
+      getStateDebugStr()))
     return
   }
 

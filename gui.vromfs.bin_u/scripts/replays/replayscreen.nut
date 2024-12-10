@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import set_presence_to_player, get_option_auto
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "app" import is_dev_version
+from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
@@ -28,6 +29,7 @@ let { move_mouse_on_child_by_value, select_editbox, loadHandler,
   handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -249,7 +251,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("optionlist-include").show(this.replays.len() > 0)
     this.scene.findObject("info-text").setValue(this.replays.len() ? "" : loc("mainmenu/noReplays"))
 
-    ::generatePaginator(this.scene.findObject("paginator_place"),
+    generatePaginator(this.scene.findObject("paginator_place"),
                         this,
                         this.curPage,
                         ((this.replays.len() - 1) / this.replaysPerPage).tointeger())
@@ -490,7 +492,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       if (data.markups[name].invert)
         data.rowHeader[name].reverse()
 
-      data.playersRows[name] <- "".concat(::buildTableRowNoPad("row_header", data.rowHeader[name], null, "class:t='smallIconsStyle'"),
+      data.playersRows[name] <- "".concat(buildTableRowNoPad("row_header", data.rowHeader[name], null, "class:t='smallIconsStyle'"),
         ::build_mp_table(playersTables[name], data.markups[name], data.headerArray[name], playersTables[name].len()))
     }
 

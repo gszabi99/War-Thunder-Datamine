@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -33,7 +34,7 @@ gui_handlers.FontChoiceWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function getSceneTplView() {
     this.option = ::get_option(USEROPT_FONTS_CSS)
     return {
-      options = ::create_option_combobox(this.option.id, this.option.items, this.option.value, null, false)
+      options = create_option_combobox(this.option.id, this.option.items, this.option.value, null, false)
     }
   }
 

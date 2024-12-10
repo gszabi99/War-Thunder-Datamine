@@ -30,6 +30,7 @@ let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { getCrewsListByCountry, getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -60,7 +61,7 @@ function gui_start_decals(params = null) {
 eventbus_subscribe("gui_start_decals", gui_start_decals)
 
 function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = false) {
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return "not_logged_in"
   if (!isInHangar())
     return "not_in_hangar"

@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
 from "%scripts/mainConsts.nut" import SEEN
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%scripts/utils_sa.nut" import buildTableRow
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -242,7 +243,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (finishedTasksUserlogsArray.len()) {
-      view.doneTasksTable.rows <- ::buildTableRow("tr_header",
+      view.doneTasksTable.rows <- buildTableRow("tr_header",
                [{ textType = "textareaNoTab", text = loc("unlocks/battletask"), tdalign = "left", width = "65%pw" },
                { textType = "textarea", text = loc("debriefing/sessionTime"), tdalign = "right", width = "35%pw" }])
 
@@ -257,7 +258,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         let rowData = [{ textType = "textareaNoTab", text = text, tooltip = text, width = "65%pw", textRawParam = "pare-text:t='yes'; width:t='pw'; max-height:t='ph'" },
                          { textType = "textarea", text = timeStr, tooltip = timeStr, tdalign = "right", width = "35%pw" }]
 
-        view.doneTasksTable.rows = "".concat(view.doneTasksTable.rows, ::buildTableRow($"tr_{idx}", rowData, idx % 2 == 0))
+        view.doneTasksTable.rows = "".concat(view.doneTasksTable.rows, buildTableRow($"tr_{idx}", rowData, idx % 2 == 0))
       }
     }
 

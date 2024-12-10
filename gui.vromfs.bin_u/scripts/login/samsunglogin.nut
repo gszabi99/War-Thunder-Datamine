@@ -22,6 +22,7 @@ gui_handlers.LoginWndHandlerSamsung <- class (gui_handlers.LoginWndHandler) {
   function doLogin() {
     log("Samsung TV login: check_login_pass")
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "samsung" })
+    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
     let ret = check_login_pass("", "", "samsung", "samsung", false, false)
     this.proceedAuthorizationResult(ret)
   }

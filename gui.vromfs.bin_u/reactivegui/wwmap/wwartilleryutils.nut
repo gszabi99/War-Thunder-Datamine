@@ -4,8 +4,7 @@ let { wwGetSpeedupFactor, wwGetOperationTimeMillisec } = require("worldwar")
 let { resetTimeout } = require("dagor.workcycle")
 let { getArtilleryParams } = require("%rGui/wwMap/wwConfigurableValues.nut")
 let { armiesData } = require("%rGui/wwMap/wwArmyStates.nut")
-
-let artilleryReadyState = Watched({})
+let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 
 let hasArtilleryAbility = @(armyData) armyData?.specs.canArtilleryFire ?? false
 
@@ -48,4 +47,5 @@ armiesData.subscribe(function(_p) {
 return {
   artilleryReadyState
   getArtilleryParams
+  isSAM = @(armyData) armyData?.iconOverride == "sam_site"
 }

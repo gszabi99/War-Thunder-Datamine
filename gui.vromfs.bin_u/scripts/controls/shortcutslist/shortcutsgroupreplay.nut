@@ -83,6 +83,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_REPLAY_SYSTEM_WINDOW"
+    checkAssign = false
+    showFunc = @() hasFeature("ReplaySystemWindow")
+  }
+  {
     id = "ID_REPLAY_SLOWER"
     checkAssign = false
   }

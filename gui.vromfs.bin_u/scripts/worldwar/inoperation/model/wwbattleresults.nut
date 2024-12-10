@@ -6,6 +6,7 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 let { WwBattleResultsView } = require("%scripts/worldWar/inOperation/view/wwBattleResultsView.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 
 let WwBattleResults = class {
   id = ""
@@ -259,7 +260,7 @@ let WwBattleResults = class {
         isBelongsToMyClan = clanTag == clan_get_my_clan_tag()
         getTextAfterIcon  = clanTag
         getUnitTypeText   = hasFoundArmy ? wwArmy.getView().getUnitTypeText() : wwUnitType.fontIcon
-        getUnitTypeCustomText = hasFoundArmy ? wwArmy.getView().getUnitTypeCustomText() : wwUnitType.fontIcon
+        getUnitTypeIcon = hasFoundArmy ? wwArmy.getView().getUnitTypeIcon() : wwUnitType.getUnitTypeIcon()
       }
 
       return {
@@ -282,7 +283,7 @@ let WwBattleResults = class {
     this.playerSide = sideInBattle
     this.playerCountry = countryInBattle
     this.locName = getTblValue("locName", userlog, "")
-    this.isBattleResultsIgnored = ::g_world_war.isCurrentOperationFinished()
+    this.isBattleResultsIgnored = isOperationFinished()
 
     this.teams = {}
     foreach (side in sidesOrder) {

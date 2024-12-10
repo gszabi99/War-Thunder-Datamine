@@ -10,6 +10,7 @@ let { APP_ID } = require("app")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let charClientEvent = require("%scripts/charClientEvent.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const CONTACTS_GAME_ID = "wt"
 
@@ -21,7 +22,7 @@ let lastLoginErrorTime = hardPersistWatched("lastLoginErrorTime", -1)
 let { request, registerHandler } = charClientEvent("contacts", contacts)
 
 registerHandler("cln_cs_login", function(result) {
-  if (!::g_login.isLoggedIn()) {
+  if (!isLoggedIn.get()) {
     logC("Ignore login cb because of not auth")
     return
   }
@@ -43,7 +44,7 @@ registerHandler("cln_cs_login", function(result) {
 })
 
 function loginContacts() {
-  if (isLoggedIntoContacts.value || !::g_login.isLoggedIn())
+  if (isLoggedIntoContacts.value || !isLoggedIn.get())
     return
 
   logC("Login request")

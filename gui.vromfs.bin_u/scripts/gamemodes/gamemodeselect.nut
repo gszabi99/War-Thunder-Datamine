@@ -87,7 +87,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
+    this.backSceneParams = { handlerName = "MainMenu" }
     this.updateContent()
   }
 

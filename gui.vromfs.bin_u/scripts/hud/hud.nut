@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_hud_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, hud_is_in_cutscene, get_mp_kick_countdown
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
@@ -153,7 +154,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     HudBattleLog.init()
     g_hud_message_stack.init(this.scene)
     g_hud_message_stack.clearMessageStacks()
-    g_hud_live_stats.init(this.scene, "hud_live_stats_nest", !this.spectatorMode && ::is_multiplayer())
+    g_hud_live_stats.init(this.scene, "hud_live_stats_nest", !this.spectatorMode && is_multiplayer())
     ::g_hud_hints_manager.init(this.scene)
     g_hud_tutorial_elements.init(this.scene)
 
@@ -191,7 +192,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       detachGameChatSceneData(this.curChatData)
       this.curChatData = null
     }
-    if (::is_multiplayer())
+    if (is_multiplayer())
       this.curChatData = loadGameChatToObj(this.scene.findObject("chatPlace"), "%gui/chat/gameChat.blk", this,
         { selfHideInput = true, selfHideLog = true, selectInputIfFocusLost = true })
   }

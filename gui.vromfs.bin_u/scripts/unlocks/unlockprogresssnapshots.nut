@@ -5,6 +5,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const SAVE_ID = "unlock_progress_snapshots"
 
@@ -12,7 +13,7 @@ local idToSnapshot = {}
 local isInited = false
 
 function initOnce() {
-  if (isInited || !::g_login.isProfileReceived())
+  if (isInited || !isProfileReceived.get())
     return
 
   isInited = true

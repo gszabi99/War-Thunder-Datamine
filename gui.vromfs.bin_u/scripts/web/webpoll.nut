@@ -10,6 +10,7 @@ let DataBlock = require("DataBlock")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000
 const REQUEST_AUTHORIZATION_TIMEOUT_MS = 3600000
@@ -40,19 +41,19 @@ function canRequestAuthorization(pollId) {
 }
 
 function loadVotedPolls() {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
   votedPolls = loadLocalAccountSettings(VOTED_POLLS_SAVE_ID, DataBlock())
 }
 
 function saveVotedPolls() {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
   saveLocalAccountSettings(VOTED_POLLS_SAVE_ID, votedPolls)
 }
 
 function getVotedPolls() {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return DataBlock()
   if (votedPolls == null)
     loadVotedPolls()

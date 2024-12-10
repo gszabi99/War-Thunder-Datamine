@@ -128,17 +128,24 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
       textPos.x + strBox.width.x + ctx |> hdpx(10.), textPos.y + ctx |> hdpx(5.), ctx |> hdpx(data.lineWidth))
   elif progress >= 0.
     let strBox = get_str_bbox("8888", 4, fctx)
-    let framePos = float2(pos.x + size.x * 0.5 - strBox.width.x * 0.7, pos.y - strBox.width.y * 0.1)
-    let frameRB = float2(pos.x + size.x * 0.5 + strBox.width.x * 0.7, pos.y + strBox.width.y * 1.1)
-    let progressRb = float2(pos.x + size.x * 0.5 + strBox.width.x * lerp(-0.7, 0.7, progress), pos.y + strBox.width.y * 1.1)
+
+    let leftX = pos.x + size.x * 0.5 - strBox.width.x * 0.7
+    let progressX = pos.x + size.x * 0.5 + strBox.width.x * lerp(-0.7, 0.7, progress)
+    let rightX = pos.x + size.x * 0.5 + strBox.width.x * 0.7
+
+    let topY = pos.y + strBox.width.y * 1.1
+    let botY = pos.y - strBox.width.y * 0.1
+
     let tc = float2(0., 0.)
-    ctx |> set_color(black)
-    ctx |> render_frame(framePos.x, framePos.y, frameRB.x, frameRB.y, ctx |> hdpx(data.lineWidth))
-    var color = float4(Color4(textColor))
+    ctx |> set_color(settings.rangefinderProgressColor)
+    ctx |> reset_textures()
+    ctx |> render_rect(leftX, topY, progressX, botY, tc, tc, tc)
+
+    var color = float4(Color4(settings.rangefinderProgressBackgroundColor))
     color *= 0.6
     let e3dColor = E3DCOLOR(Color4(color))
     ctx |> set_color(e3dColor)
-    ctx |> render_rect(framePos.x, framePos.y, progressRb.x, progressRb.y, tc, tc, tc)
+    ctx |> render_rect(progressX, topY, rightX, botY, tc, tc, tc)
 
 
 def deg_to_rad(rad : float)
@@ -256,10 +263,12 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
 
   let settings = get_tank_sight_settings()
   if isInoperable || timeToShot <= 0.
+    if !settings.gunReadyMarkVisible
+      return
     let sphCenter = pos + size * 0.3
     let color = isInoperable ? E3DCOLOR(0xFFFF0000) : E3DCOLOR(0xFF00FF00)
     ctx |> render_ellipse_aa(sphCenter, float2(ctx |> hdpx(10.)), ctx |> hdpx(1.), black, color)
-  else
+  elif settings.gunReadyReloadCountdownVisible
     var fctx : StdGuiFontContext
     let fontId = settings.gunReadyFontId != -1 ? settings.gunReadyFontId : get_font_id("digital")
     get_font_context(fctx, fontId, 0, 0, settings.gunReadyTextSize)

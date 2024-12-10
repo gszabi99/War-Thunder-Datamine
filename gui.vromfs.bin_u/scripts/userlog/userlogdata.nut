@@ -25,7 +25,6 @@ let { showUnlockWnd } = require("%scripts/unlocks/showUnlock.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
 } = require("%scripts/clans/clanFlushExpInfoModal.nut")
 let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
@@ -46,6 +45,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { isPrizeMultiAward }= require("%scripts/items/trophyMultiAward.nut")
 let { hasKnowPrize } = require("%scripts/items/prizesView.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -227,7 +227,7 @@ local logNameByType = {
 ::checkNewNotificationUserlogs <- function checkNewNotificationUserlogs(onStartAwards = false) {
   if (getFromSettingsBlk("debug/skipPopups"))
     return
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
   let handler = handlersManager.getActiveBaseHandler()
   if (!handler)
@@ -675,16 +675,6 @@ local logNameByType = {
 addListenersWithoutEnv({
   TrophyWndClose = @(_p) ::checkNewNotificationUserlogs()
 })
-
-::checkCountry <- function checkCountry(country, _assertText, country_0_available = false) {
-  if (!country || country == "")
-    return false
-  if (country == "country_0")
-    return country_0_available
-  if (isInArray(country, shopCountriesList))
-    return true
-  return false
-}
 
 /**
  * Function runs over all userlogs and collects all userLog items,

@@ -11,6 +11,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getCurLoadingBgData, removeLoadingBgFromLists } = require("%scripts/loading/loadingBgData.nut")
 let { isLoadingScreenBanned } = require("%scripts/options/preloaderOptions.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
+let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const MODIFY_UNKNOWN = -1
 const MODIFY_NO_FILE = -2
@@ -61,9 +62,9 @@ function load(blkFilePath = "", obj = null, curBgData = null) {
 
   if (blkFilePath != "")
     lastBg = blkFilePath
-  else if (::g_login.isLoggedIn() || lastBg == "") { //no change bg during first load
+  else if (isLoggedIn.get() || lastBg == "") { //no change bg during first load
       if (hasFeature("LoadingBackgroundFilter")
-        && ::g_login.isProfileReceived() && havePremium.value) {
+        && isProfileReceived.get() && havePremium.value) {
         let filteredCurBgList = curBgList.filter(@(_v, id) !isLoadingScreenBanned(id))
         if (filteredCurBgList.len() > 0)
           curBgList = filteredCurBgList

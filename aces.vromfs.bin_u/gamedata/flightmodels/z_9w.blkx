@@ -1469,17 +1469,32 @@
       ]
     }
   },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/cn_helicopter_z_rwr.blk"
-    }
-  },
   "helicopter": {
     "rotorBladeAnglesCoeffs": [
       0.0,
       0.5,
       0.5
     ]
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    }
   },
   "gunnerOpticFps": {
     "pos": [
@@ -1495,6 +1510,11 @@
       25.0
     ],
     "crosshairPreset": "test_crosshair"
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/cn_helicopter_z_rwr.blk"
+    }
   },
   "commonWeapons": {
     "Weapon": {
@@ -2393,26 +2413,6 @@
         }
       }
     ]
-  },
-  "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
-    },
-    "pilotIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
-    }
   },
   "modifications": {
     "new_compressor_heli": {

@@ -8,6 +8,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 
@@ -37,7 +38,7 @@ let checkOfferToBuyAtExpiration = function() {
   if (!isInMenu())
     return
 
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
   local needOfferBuyItemsList = loadLocalAccountSettings(ITEMS_FOR_OFFER_BUY_SAVE_ID)
   if (!needOfferBuyItemsList)

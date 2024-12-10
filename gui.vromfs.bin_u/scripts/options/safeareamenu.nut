@@ -8,6 +8,7 @@ let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_MENU_SCREEN_SAFE_AREA
 } = require("%scripts/options/optionsExtNames.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
 
 require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
@@ -31,7 +32,7 @@ let getFixedValue = @() //return -1 when not fixed
   : -1
 
 let compatibleGetValue = function() {
-  let value = !::g_login.isAuthorized() ?
+  let value = !isAuthorized.get() ?
     to_float_safe(getSystemConfigOption("video/safearea", defValue), defValue) :
     ::get_gui_option_in_mode(USEROPT_MENU_SCREEN_SAFE_AREA, OPTIONS_MODE_GAMEPLAY, defValue)
 
@@ -50,7 +51,7 @@ let getValue = function() {
 }
 
 local setValue = function(value) {
-  if (!::g_login.isAuthorized())
+  if (!isAuthorized.get())
     return
 
   value = isInArray(value, values) ? value : defValue

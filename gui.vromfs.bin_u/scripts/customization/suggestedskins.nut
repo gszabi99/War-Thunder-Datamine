@@ -7,6 +7,7 @@ let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"
@@ -53,7 +54,7 @@ function needSuggestSkin(unitName, skinId) {
 }
 
 function getSuggestedSkin(unitName) {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return null
   let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)
   if (skinIds.len() == 0)
@@ -69,7 +70,7 @@ function getSuggestedSkin(unitName) {
 }
 
 function saveSeenSuggestedSkin(unitName, skinId) {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
   let skinIds = getSuggestedSkins(unitName, decoratorTypes.SKINS)
   if (skinId not in skinIds)

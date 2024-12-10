@@ -18,6 +18,7 @@ let { steam_is_running } = require("steam")
 let { get_authenticated_url_sso } = require("auth_wt")
 let { object_to_json_string, parse_json } = require("json")
 let { defer } = require("dagor.workcycle")
+let { isAuthorized } = require("%scripts/login/loginStates.nut")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"
@@ -37,7 +38,7 @@ function getUrlWithQrRedirect(url) {
   return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))
 }
 
-let canAutoLogin = @() ::g_login.isAuthorized()
+let canAutoLogin = @() isAuthorized.get()
 
 eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
   let { status, contextStr = "", url = null } = msg

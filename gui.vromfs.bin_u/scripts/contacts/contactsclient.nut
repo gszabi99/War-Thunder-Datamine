@@ -7,6 +7,7 @@ let { rnd_int } = require("dagor.random")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let logC = log_with_prefix("[CONTACTS CLIENT] ")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 local lastRequestId = rnd_int(0, 32767)
 
@@ -30,7 +31,7 @@ function lowLevelClientRequest(requestData, callback) {
 }
 
 function contacts_request(action, data, callback, auth_token = null) {
-  if (!::g_login.isLoggedIn()) {
+  if (!isLoggedIn.get()) {
     logC("User is logout skip contacts_request")
     return
   }
@@ -50,7 +51,7 @@ function contacts_request(action, data, callback, auth_token = null) {
 }
 
 function contacts_request_rpcjson(action, data, callback, auth_token = null) {
-  if (!::g_login.isLoggedIn()) {
+  if (!isLoggedIn.get()) {
     logC("User is logout skip contacts_request")
     return
   }

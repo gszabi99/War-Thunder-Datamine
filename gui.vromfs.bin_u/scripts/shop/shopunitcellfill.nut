@@ -1,7 +1,10 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, is_era_available, wp_shop_get_aircraft_xp_rate, rented_units_get_last_max_full_rent_time, wp_shop_get_aircraft_wp_rate
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
+from "%scripts/utils_sa.nut" import get_tomoe_unit_icon
+from "%scripts/clans/clanState.nut" import is_in_clan
 
+let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
 let { format, split_by_chars } = require("string")
@@ -23,7 +26,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getEsUnitType, getUnitName,
-  bit_unit_status, getUnitReqExp, getUnitExp
+  bit_unit_status, getUnitReqExp, getUnitExp, image_for_air
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
@@ -367,7 +370,7 @@ let getUnitFixedParams = function(unit, params) {
   let { tooltipParams = {} } = params
   return {
     unitName            = unit.name
-    unitImage           = ::image_for_air(unit)
+    unitImage           = image_for_air(unit)
     nameText            = getUnitName(unit)
     unitRarity          = getUnitRarity(unit)
     unitClassIcon       = getUnitRoleIcon(unit)
@@ -418,11 +421,11 @@ let getUnitStatusTbl = function(unit, params) {
   }
 
   if (canBuyNotResearched(unit)) {
-    if(!::is_in_clan()) {
+    if(!is_in_clan()) {
       res.priceText = unit.getOpenCost().getTextAccordingToBalance()
       params.hideProgress <- getUnitExp(unit) > 0
     }
-    else if(::is_in_clan() && (bitStatus & bit_unit_status.inResearch) == 0 ) {
+    else if(is_in_clan() && (bitStatus & bit_unit_status.inResearch) == 0 ) {
       res.priceText = unit.getOpenCost().getTextAccordingToBalance()
       params.hideProgress <- true
     }
@@ -452,7 +455,7 @@ function getUnitResearchStatusTbl(unit, params) {
   let isSquadronVehicle = unit.isSquadronVehicle()
   let unitCurExp = getUnitExp(unit)
   let diffExp = isSquadronVehicle ? min(clan_get_exp(), unitReqExp - unitCurExp) : 0
-  let isLockedSquadronVehicle = isSquadronVehicle && !::is_in_clan() && diffExp <= 0
+  let isLockedSquadronVehicle = isSquadronVehicle && !is_in_clan() && diffExp <= 0
   if (isLockedSquadronVehicle && unitCurExp <= 0)
     return {}
 
@@ -591,8 +594,8 @@ function getGroupStatusTbl(group, params) {
 
   let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
   let unitImage = ::get_unit_preset_img(group.name)
-    ?? (::is_harmonized_unit_image_reqired(primaryUnit)
-        ? ::get_tomoe_unit_icon(group.name, !group.name.endswith("_group"))
+    ?? (is_harmonized_unit_image_required(primaryUnit)
+        ? get_tomoe_unit_icon(group.name, !group.name.endswith("_group"))
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group.ddsx"))
 
   return {

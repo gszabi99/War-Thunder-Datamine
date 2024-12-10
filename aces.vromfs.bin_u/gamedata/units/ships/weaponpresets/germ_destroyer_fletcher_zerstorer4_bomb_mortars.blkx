@@ -1,0 +1,94 @@
+{
+  "hideNodes": {
+    "node": [
+      "torpedo_01",
+      "torpedo_02",
+      "torpedo_03",
+      "torpedo_04",
+      "torpedo_05",
+      "torpedo_06",
+      "torpedo_07",
+      "depth_charge_49",
+      "depth_charge_50",
+      "depth_charge_51",
+      "depth_charge_52",
+      "depth_charge_53",
+      "depth_charge_54",
+      "depth_charge_55",
+      "depth_charge_56",
+      "depth_charge_57",
+      "depth_charge_58",
+      "depth_charge_59"
+    ]
+  },
+  "Weapon": [
+    {
+      "trigger": "gunner10",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/bomb_uk_hedgehog.blk",
+      "emitter": "bone_bomb_01",
+      "bullets": 24,
+      "external": true,
+      "dropSpeed": 55.0,
+      "useEmitter": true,
+      "emitterGenRange": [
+        1,
+        24
+      ],
+      "emitterGenFmt": "bone_bomb_%02d",
+      "ammoDpGenFmt": "depth_charge_%02d_dm",
+      "barrelDP": "depth_charge_mount_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "allowableDelta": 15.0,
+      "turret": {
+        "head": "body",
+        "gun": "depth_charge_mount_01"
+      },
+      "limits": {
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "trigger": "gunner11",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/bomb_uk_hedgehog.blk",
+      "emitter": "bone_bomb_25",
+      "bullets": 24,
+      "external": true,
+      "dropSpeed": 55.0,
+      "useEmitter": true,
+      "emitterGenRange": [
+        25,
+        48
+      ],
+      "emitterGenFmt": "bone_bomb_%02d",
+      "ammoDpGenFmt": "depth_charge_%02d_dm",
+      "barrelDP": "depth_charge_mount_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "allowableDelta": 15.0,
+      "turret": {
+        "head": "body",
+        "gun": "depth_charge_mount_02"
+      },
+      "limits": {
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
+      }
+    }
+  ]
+}

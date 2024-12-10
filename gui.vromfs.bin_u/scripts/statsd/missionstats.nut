@@ -1,5 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-let statsd = require("statsd")
+from "%scripts/utils_sa.nut" import is_multiplayer
+
+let { send_counter } = require("statsd")
 let { get_time_msec } = require("dagor.time")
 let { get_current_mission_name, get_game_mode } = require("mission")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -17,10 +19,10 @@ function onEventPlayerQuitMission(_) {
     return
   if (get_game_mode() != GM_DOMINATION)
     return
-  if (!::is_multiplayer())
+  if (!is_multiplayer())
     return
 
-  statsd.send_counter("sq.early_session_leave", 1, { mission = get_current_mission_name() })
+  send_counter("sq.early_session_leave", 1, { mission = get_current_mission_name() })
 }
 
 addListenersWithoutEnv({

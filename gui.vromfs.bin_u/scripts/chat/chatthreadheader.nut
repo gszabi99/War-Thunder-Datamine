@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
@@ -12,7 +13,7 @@ gui_handlers.ChatThreadHeader <- class (gui_handlers.BaseGuiHandlerWT) {
   threadInfo = null
 
   function getSceneTplView() {
-    this.threadInfo = ::g_chat.addThreadInfoById(this.roomId)
+    this.threadInfo = g_chat.addThreadInfoById(this.roomId)
     return {
       threads = [this.threadInfo]
       onlyInfo = true
@@ -40,7 +41,7 @@ gui_handlers.ChatThreadHeader <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEditThread() {
-    ::g_chat.openModifyThreadWnd(this.threadInfo)
+    g_chat.openModifyThreadWnd(this.threadInfo)
   }
 
   function onEventChatThreadInfoChanged(p) {

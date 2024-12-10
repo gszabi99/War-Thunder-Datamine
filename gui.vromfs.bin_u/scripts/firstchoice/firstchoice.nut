@@ -11,6 +11,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { isUnitDefault, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
 
@@ -30,7 +31,7 @@ let isNeedFirstCountryChoice = function() {
 }
 
 let fillUserNick = function (nestObj, _headerLocId = null) {
-  if (!::g_login.isProfileReceived() || !isPlatformXboxOne)
+  if (!isProfileReceived.get() || !isPlatformXboxOne)
     return
 
   if (!nestObj?.isValid())
@@ -76,7 +77,7 @@ function checkUnlockedCountries() {
       }
     }
     else if (unlockAll) {
-      unlockCountry(country, !::g_login.isLoggedIn())
+      unlockCountry(country, !isLoggedIn.get())
       curUnlocked.append(country)
     }
   if (wasInList != unlockedCountries.len())

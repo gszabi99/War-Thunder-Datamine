@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -131,7 +132,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let curIdx = g_squad_manager.getSquadSizesList().findindex(@(s) s.value == curValue) ?? 0
 
     let optionObj = this.scene.findObject("squad_size_option")
-    let markup = ::create_option_combobox("", sizes, curIdx, null, false)
+    let markup = create_option_combobox("", sizes, curIdx, null, false)
     this.guiScene.replaceContentFromText(optionObj, markup, markup.len(), this)
     optionObj.setValue(curIdx)
     optionObj.enable(g_squad_manager.canChangeSquadSize())

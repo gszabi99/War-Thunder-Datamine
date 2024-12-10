@@ -1,0 +1,261 @@
+{
+  "hideNodes": {
+    "node": [
+      "depth_charge_49",
+      "depth_charge_50",
+      "depth_charge_51",
+      "depth_charge_52",
+      "depth_charge_53",
+      "depth_charge_54",
+      "depth_charge_55",
+      "depth_charge_56",
+      "depth_charge_57",
+      "depth_charge_58",
+      "depth_charge_59"
+    ]
+  },
+  "Weapon": [
+    {
+      "trigger": "gunner7",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/us_533mm_21in_mark35_torpedo.blk",
+      "emitter": "bone_torpedo_01",
+      "bullets": 5,
+      "useEmitter": true,
+      "emitterGenRange": [
+        1,
+        5
+      ],
+      "emitterGenFmt": "bone_torpedo_%02d",
+      "ammoDpGenFmt": "torpedo_%02d_dm",
+      "barrelDP": [
+        "tt_01_dm",
+        "tt_01_dm"
+      ],
+      "brokenBarrelAllowShoot": [
+        false,
+        false
+      ],
+      "enableCourseCorrection": false,
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 18.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "turret": {
+        "head": "tt_head_01",
+        "gun": "tt_01",
+        "gunnerDm": "tt_01_dm"
+      },
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
+      },
+      "limitsDeadzone": [
+        {
+          "yaw": [
+            -180.0,
+            -120.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "yaw": [
+            -65.0,
+            65.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "yaw": [
+            120.0,
+            180.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "trigger": "gunner8",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/us_324mm_mark_44_torpedo.blk",
+      "emitter": "bone_torpedo_06",
+      "bullets": 1,
+      "useEmitter": true,
+      "barrelDP": "tt_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_06_dm",
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 20.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "enableCourseCorrection": false,
+      "turret": {
+        "head": "tt_head_02",
+        "gun": "tt_02",
+        "gunnerDm": "tt_02_dm"
+      },
+      "limits": {
+        "yaw": [
+          -160.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
+      },
+      "limitsDeadzone": {
+        "yaw": [
+          -20.0,
+          0.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "trigger": "gunner9",
+      "triggerGroup": "torpedoes",
+      "external": true,
+      "blk": "gameData/Weapons/torpedoes/us_324mm_mark_44_torpedo.blk",
+      "emitter": "bone_torpedo_07",
+      "bullets": 1,
+      "useEmitter": true,
+      "barrelDP": "tt_03_dm",
+      "brokenBarrelAllowShoot": false,
+      "ammoDP": "torpedo_07_dm",
+      "startFx": "start_torpedo",
+      "startFxOffset": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "startSpeed": 20.0,
+      "useStartSpeed": true,
+      "allowableDelta": 40.0,
+      "enableCourseCorrection": false,
+      "turret": {
+        "head": "tt_head_03",
+        "gun": "tt_03",
+        "gunnerDm": "tt_03_dm"
+      },
+      "limits": {
+        "yaw": [
+          0.0,
+          160.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
+      },
+      "limitsDeadzone": {
+        "yaw": [
+          0.0,
+          20.0
+        ],
+        "pitch": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "trigger": "gunner10",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/bomb_uk_hedgehog.blk",
+      "emitter": "bone_bomb_01",
+      "bullets": 24,
+      "external": true,
+      "dropSpeed": 55.0,
+      "useEmitter": true,
+      "emitterGenRange": [
+        1,
+        24
+      ],
+      "emitterGenFmt": "bone_bomb_%02d",
+      "ammoDpGenFmt": "depth_charge_%02d_dm",
+      "barrelDP": "depth_charge_mount_01_dm",
+      "brokenBarrelAllowShoot": false,
+      "allowableDelta": 15.0,
+      "turret": {
+        "head": "body",
+        "gun": "depth_charge_mount_01"
+      },
+      "limits": {
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "trigger": "gunner11",
+      "triggerGroup": "mortar",
+      "weaponType": "bombs",
+      "blk": "gameData/weapons/bombguns/bomb_uk_hedgehog.blk",
+      "emitter": "bone_bomb_25",
+      "bullets": 24,
+      "external": true,
+      "dropSpeed": 55.0,
+      "useEmitter": true,
+      "emitterGenRange": [
+        25,
+        48
+      ],
+      "emitterGenFmt": "bone_bomb_%02d",
+      "ammoDpGenFmt": "depth_charge_%02d_dm",
+      "barrelDP": "depth_charge_mount_02_dm",
+      "brokenBarrelAllowShoot": false,
+      "allowableDelta": 15.0,
+      "turret": {
+        "head": "body",
+        "gun": "depth_charge_mount_02"
+      },
+      "limits": {
+        "yaw": [
+          -0.0,
+          0.0
+        ],
+        "pitch": [
+          -0.0,
+          0.0
+        ]
+      }
+    }
+  ]
+}

@@ -260,7 +260,6 @@ eventbus_subscribe("on_language_changed", function on_language_changed(...) {
 
 registerRespondent("get_current_steam_language", getCurrentSteamLanguage)
 
-
 let g_language = {
   getCurLangInfo
   setGameLocalization
@@ -276,7 +275,6 @@ let g_language = {
   langsById
   getLanguageName
   getCurLangShortName
-
   function onEventNewSceneLoaded(_p) {
     if (!needCheckLangPack)
       return

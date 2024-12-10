@@ -1,17 +1,17 @@
 from "%scripts/dagui_library.nut" import *
 
-
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
 let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let bundlesShopInfo = Watched(null)
 
 function updateBundlesShopInfo() {
-  if (!::g_login.isLoggedIn() || bundlesShopInfo.value || !isPlatformPC)
+  if (!isLoggedIn.get() || bundlesShopInfo.value || !isPlatformPC)
     return
 
   let guidsList = []

@@ -2306,6 +2306,7 @@
       "matchSector": 15.0,
       "targetSuperResolution": false,
       "trackedTargetsMax": 12,
+      "priorityTargetSelection": true,
       "targetRangeFinder": true,
       "targetRange": [
         5000.0,
@@ -2345,6 +2346,8 @@
             "name": "9K330",
             "detectLaunch": true,
             "type": [
+              "HQ-17 TA",
+              "HQ-17 TT",
               "9K330 TA",
               "9K330 TT"
             ]
@@ -3003,24 +3006,6 @@
     }
   },
   "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "pilotIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
     "sightTPodThermal": {
       "resolution": [
         500,
@@ -3028,6 +3013,24 @@
       ],
       "noiseFactor": 0.05,
       "index": 2
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
   },
   "gunnerOpticFps": {
@@ -3066,6 +3069,25 @@
       "turretNo": 0,
       "nvIndex": 2
     }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_awg_9_tiseo.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_67.blk"
+      },
+      {
+        "blk": "gameData/sensors/tv_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic1_gun"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -5036,25 +5058,6 @@
     "maxPower": 6.0,
     "maxSegments": 50
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_awg_9_tiseo.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_67.blk"
-      },
-      {
-        "blk": "gameData/sensors/tv_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic1_gun"
-      }
-    ]
-  },
   "propellers": {
     "prop0": -1,
     "prop1": -1,
@@ -5636,7 +5639,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.1,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

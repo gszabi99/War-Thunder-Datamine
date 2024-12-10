@@ -12,6 +12,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { isInFlight } = require("gameplayBinding")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
@@ -55,7 +56,7 @@ function checkNuclearEvent(params = {}) {
 }
 
 function bigQuerryForNuclearEvent() {
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
 
   let needSendStatistic = loadLocalAccountSettings("sendNuclearStatistic", true)

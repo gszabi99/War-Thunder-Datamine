@@ -8,12 +8,35 @@
     border-color:t='@showcaseBoxBorder'
     on_select:t='<<onSelect>>'
     margin-bottom:t='25@sf/@pf'
-    display:t='hide'
 
     <<#options>>
     option {
       id:t='<<id>>'
       text:t='<<text>>'
+      <<#selected>>
+      selected:t='yes'
+      <</selected>>
+
+      <<#isDisabled>>
+      isDisabled:t='yes'
+      not-input-transparent:t='yes'
+
+      tdiv {
+        position:t='absolute'
+        size:t='pw, ph'
+        interactive:t='no'
+        tooltip:t="$tooltipObj"
+        input-transparent:t='no'
+        not-input-transparent:t='yes'
+
+        tooltipObj {
+          tooltipId:t='<<hintForDisabled>>'
+          on_tooltip_open:t="onGenericTooltipOpen"
+          on_tooltip_close:t="onTooltipObjClose"
+          display:t='hide'
+        }
+      }
+      <</isDisabled>>
     }
     <</options>>
   }
@@ -29,6 +52,4 @@ ComboBox {
   border-color:t='@showcaseBoxBorder'
   on_select:t='onShowcaseGameModeSelect'
   margin-bottom:t='25@sf/@pf'
-  display:t='hide'
-  showInEditMode:t='yes'
 }

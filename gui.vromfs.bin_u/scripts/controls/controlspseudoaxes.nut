@@ -1,8 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
-
-
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
@@ -28,7 +27,7 @@ enums.addTypes(pseudoAxesList, {
         return ["ID_TOGGLE_VIEW"]
     }
     isAssigned = function () {
-      return ::g_shortcut_type.COMMON_SHORTCUT.isAssigned(this.translate()[0])
+      return g_shortcut_type.COMMON_SHORTCUT.isAssigned(this.translate()[0])
     }
   }
 
@@ -54,7 +53,7 @@ enums.addTypes(pseudoAxesList, {
     }
     isAssigned = function () {
       foreach (shortcut in this.translate())
-        if (::g_shortcut_type.COMMON_SHORTCUT.isAssigned(shortcut))
+        if (g_shortcut_type.COMMON_SHORTCUT.isAssigned(shortcut))
           return true
       return false
     }
@@ -72,7 +71,7 @@ function getPseudoAxisById(shortcutId) {
   return u.search(pseudoAxesList.types, (@(item) item.id == shortcutId))
 }
 
-::g_shortcut_type.addType({
+g_shortcut_type.addType({
   PSEUDO_AXIS = {
     isMe = @(shortcutId) isPseudoAxis(shortcutId)
 

@@ -10,6 +10,7 @@ let { register_command } = require("console")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let activeSeenLists = {}
 
@@ -116,7 +117,7 @@ local SeenList = class {
   /*************************************************************************************************/
 
   function initOnce() {
-    if (this.isInited || !::g_login.isProfileReceived())
+    if (this.isInited || !isProfileReceived.get())
       return
     this.isInited = true
 
@@ -174,7 +175,7 @@ local SeenList = class {
   }
 
   function setSeen(entityOrList, shouldSeen) {
-    if (!::g_login.isProfileReceived()) //Don't try to mark or init seen list before profile received
+    if (!isProfileReceived.get()) //Don't try to mark or init seen list before profile received
       return
 
     this.initOnce()

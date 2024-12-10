@@ -16,7 +16,7 @@ tdiv {
 
     <<#isShow>>
       textareaNoTab {
-        width:t='0.05@sf'
+        width:t='0.085@sf'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         <<#isShowTotalCount>>

@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
@@ -31,9 +32,10 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { fill_gamer_card } = require("%scripts/gamercard.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
-  if (!player || player.isBot || !("userId" in player) || !::g_login.isLoggedIn())
+  if (!player || player.isBot || !("userId" in player) || !isLoggedIn.get())
     return
 
   playerContextMenu.showMenu(null, handler, {
@@ -437,14 +439,8 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getChatLog() {
-    let chatRoom = ::g_chat.getRoomById(SessionLobby.getChatRoomId())
+    let chatRoom = g_chat.getRoomById(SessionLobby.getChatRoomId())
     return chatRoom != null ? chatRoom.getLogForBanhammer() : null
-  }
-
-  function onComplain(_obj) {
-    let player = this.getSelectedPlayer()
-    if (player && !player.isBot && !player.isLocal)
-      ::gui_modal_complain({ uid = player.userId, name = player.name }, this.getChatLog())
   }
 
   function openUserCard(player) {

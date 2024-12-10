@@ -2541,24 +2541,6 @@
     }
   },
   "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "pilotIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
     "sightTPodThermal": {
       "resolution": [
         800,
@@ -2574,25 +2556,25 @@
       ],
       "noiseFactor": 0.05,
       "index": 2
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
     }
-  },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apg_68_v_7.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_56m.blk"
-      },
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-      }
-    ]
   },
   "gunnerOpticFps": {
     "TV": {
@@ -2650,6 +2632,24 @@
       "turretNo": 0,
       "nvIndex": 1
     }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apg_68_v_7.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_56m.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -4945,7 +4945,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.1,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

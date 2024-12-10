@@ -71,7 +71,7 @@ return {
     crewUnitType = CUT_TANK
     isAvailable = @() true
     isAvailableForFirstChoice = function(country = null) {
-      if (!this.isAvailable() || !::check_tanks_available(true))
+      if (!this.isAvailable())
         return false
       if (!country)
         return true

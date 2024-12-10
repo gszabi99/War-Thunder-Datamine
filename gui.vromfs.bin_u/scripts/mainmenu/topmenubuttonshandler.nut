@@ -8,6 +8,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -26,7 +27,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   ON_ESC_SECTION_OPEN = "menu"
 
   static function create(nestObj, parentHandler, sectionsStructure, objForWidth = null) {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return null
 
     if (!checkObj(nestObj))

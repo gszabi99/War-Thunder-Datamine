@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_slider, create_option_switchbox, create_option_list
 
 let DataBlock = require("DataBlock")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -26,8 +27,6 @@ let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFx
       setLenseFlareGhostsPower, getLenseFlareGhostsPower, getDefaultLenseFlareGhostsPower,
       setLenseFlareMode, getLenseFlareMode, getDefaultLenseFlareMode,
       setIsUsingDynamicLut, getIsUsingDynamicLut } = require("postFxSettings")
-
-let { create_option_switchbox, create_option_list } = require("%scripts/options/optionsExt.nut")
 
 let tonemappingMode_list = freeze(["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"])
 let lenseFlareMode_list = freeze(["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"])
@@ -116,7 +115,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function createOneSlider(name, value, cb, params, showValue) {
     params.step <- params?.step ?? max(1, round((params.max - params.min) / maxSliderSteps).tointeger())
-    local markup = ::create_option_slider($"postfx_settings_{name}", value.tointeger(), cb, true, "slider", params)
+    local markup = create_option_slider($"postfx_settings_{name}", value.tointeger(), cb, true, "slider", params)
     if (showValue)
       markup = "".concat(markup, format(" optionValueText { id:t='%s' } ", $"{name}_value"))
     markup = this.createRowMarkup(name, markup)

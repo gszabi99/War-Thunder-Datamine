@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
+let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 
 function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
   let params = {
@@ -17,7 +18,7 @@ function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
     unit = {
       name = name
       nameLoc = overrideParams?.nameLoc ?? ""
-      image = ::image_for_air(unit)
+      image = image_for_air(unit)
       isFakeUnit = true
     }
 
@@ -26,5 +27,5 @@ function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
 
 
 return {
-  getGroupUnitMarkUp = getGroupUnitMarkUp
+  getGroupUnitMarkUp
 }

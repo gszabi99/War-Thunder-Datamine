@@ -2341,43 +2341,6 @@
       ]
     }
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/fr_antilope_5.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/fr_serval_rwr.blk"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-      },
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
-      }
-    ]
-  },
-  "gunnerOpticFps": {
-    "Target": {
-      "pos": [
-        0.5,
-        -0.2,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -89.0,
-        89.0,
-        -159.0,
-        14.0
-      ],
-      "opticType": "targeting",
-      "turretNo": 0
-    }
-  },
   "nightVision": {
     "sightThermal": {
       "resolution": [
@@ -2411,6 +2374,43 @@
       "ghosting": 0.6,
       "noiseFactor": 0.2
     }
+  },
+  "gunnerOpticFps": {
+    "Target": {
+      "pos": [
+        0.5,
+        -0.2,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -89.0,
+        89.0,
+        -159.0,
+        14.0
+      ],
+      "opticType": "targeting",
+      "turretNo": 0
+    }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/fr_antilope_5.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/fr_serval_rwr.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -3299,7 +3299,7 @@
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/containers/ter_us_gbu_16_paveway_2.blk",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
               "emitter": "bomb3",
               "bullets": 1,
               "external": true,
@@ -4248,7 +4248,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.1,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

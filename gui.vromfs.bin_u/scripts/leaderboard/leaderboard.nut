@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -25,6 +26,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig
 } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 ::leaderboards_list <- [
   lbCategoryTypes.PVP_RATIO
@@ -246,7 +248,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjectsByTable(this.scene, {
       btn_usercard = showPlayer && hasFeature("UserCards")
       btn_clan_info = showClan
-      btn_membership_req = showClan && !::is_in_clan() && clan_get_requested_clan_id() != this.getLbClanUid(rowData)
+      btn_membership_req = showClan && !is_in_clan() && clan_get_requested_clan_id() != this.getLbClanUid(rowData)
     })
   }
 
@@ -496,7 +498,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     if (showTable)
       this.fillPagintator()
     else {
-      ::hidePaginator(this.scene.findObject("paginator_place"))
+      hidePaginator(this.scene.findObject("paginator_place"))
       this.updateButtons()
     }
 
@@ -513,12 +515,12 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     let nestObj = this.scene.findObject("paginator_place")
     let curPage = (this.pos / this.rowsInPage).tointeger()
     if (this.tableWeak.isLastPage && (curPage == 0))
-      ::hidePaginator(nestObj)
+      hidePaginator(nestObj)
     else {
       let lastPageNumber = curPage + (this.tableWeak.isLastPage ? 0 : 1)
       let myPlace = this.getSelfPos()
       local myPage = myPlace >= 0 ? floor(myPlace / this.rowsInPage) : null
-      ::generatePaginator(nestObj, this, curPage, lastPageNumber, myPage)
+      generatePaginator(nestObj, this, curPage, lastPageNumber, myPage)
     }
   }
   //----END_VIEW----//

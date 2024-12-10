@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import hud_request_hud_crew_state
 from "%scripts/dagui_library.nut" import *
+from "%scripts/timeBar.nut" import g_time_bar
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -21,8 +22,8 @@ function _setCrewMemberState(crewIconObj, newStateData) {
   }
   else if (newStateData.state == "takingPlace" || newStateData.state == "healing") {
     let timeBarObj = crewIconObj.findObject("transfere_indicatior")
-    ::g_time_bar.setPeriod(timeBarObj, newStateData.totalTakePlaceTime)
-    ::g_time_bar.setCurrentTime(timeBarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
+    g_time_bar.setPeriod(timeBarObj, newStateData.totalTakePlaceTime)
+    g_time_bar.setCurrentTime(timeBarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
     crewIconObj.state = "transfere"
     crewIconObj.tooltip = loc(this.tooltip)
   }

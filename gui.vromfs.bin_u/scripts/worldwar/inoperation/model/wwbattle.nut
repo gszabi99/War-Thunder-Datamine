@@ -803,10 +803,6 @@ let WwBattle = class {
     return get_charserver_time_sec() - time.millisecondsToSecondsInt(this.battleStartMillisec)
   }
 
-  function isTanksCompatible() {
-    return isInArray(this.opponentsType, ["BUT_GROUND", "BUT_AIR_GROUND", "BUT_ARTILLERY_AIR"])
-  }
-
   function isAutoBattle() {
     if (!this.isStillInOperation())
       return false

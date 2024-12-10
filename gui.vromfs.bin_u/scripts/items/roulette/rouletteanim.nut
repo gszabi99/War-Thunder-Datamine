@@ -1,8 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/utils_sa.nut" import save_to_json
 
 let { frnd } = require("dagor.random")
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { lerp, fabs } = require("%sqstd/math.nut")
 let { solveCubicBezier } = require("%sqstd/cubicBezierSolver.nut")
@@ -24,9 +23,9 @@ rouletteAnim.template <- {
   id = "" //filled automatically by typeName. so unique
   skipAnimTime = 0.5
 
-  startAnim = @(obj, targetIdx) obj.setValue(::save_to_json(
+  startAnim = @(obj, targetIdx) obj.setValue(save_to_json(
     { action = ANIM_ACTION.START, animId = this.id, targetIdx = targetIdx }))
-  skipAnim  = @(obj) obj.setValue(::save_to_json(
+  skipAnim  = @(obj) obj.setValue(save_to_json(
     { action = ANIM_ACTION.SKIP }))
 
   makeBhvAnimConfig = @() {

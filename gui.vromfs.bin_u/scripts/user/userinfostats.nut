@@ -1,5 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_player_public_stats, get_cur_rank_info, clan_get_my_clan_name, clan_get_my_clan_id, clan_get_my_clan_tag, clan_get_my_clan_type, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRowNoPad
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { getNumUnlocked } = require("unlocks")
 let { get_mp_session_info } = require("guiMission")
@@ -315,7 +317,7 @@ function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
     { text = s, textType = "text", rawParam = "isTableStatsVal:t='yes'" }
   ]
 
-  return ::buildTableRowNoPad("", row)
+  return buildTableRowNoPad("", row)
 }
 
 function fillProfileSummary(sObj, summary, diff) {
@@ -330,7 +332,7 @@ function fillProfileSummary(sObj, summary, diff) {
       continue
 
     if (item.header)
-      data = "".concat(data, ::buildTableRowNoPad("", [{ text = $"#{item.name}", textType = "text"}], null,
+      data = "".concat(data, buildTableRowNoPad("", [{ text = $"#{item.name}", textType = "text"}], null,
         format("headerRow:t='%s'; ", idx ? "yes" : "first")))
     else if (item.separateRowsByFm)
       for (local i = 0; i < statsFm.len(); i++) {
@@ -432,7 +434,7 @@ function getPlayerStatsFromBlk(blk) {
 }
 
 function getCurSessionCountry() {
-  if (::is_multiplayer()) {
+  if (is_multiplayer()) {
     let sessionInfo = get_mp_session_info()
     let team = get_mp_local_team()
     if (team == 1)

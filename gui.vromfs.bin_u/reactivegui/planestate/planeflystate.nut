@@ -36,6 +36,7 @@ let OilTemp0 = Watched(0)
 let TurnRate = Watched(0.0)
 let OilPress0 = Watched(0)
 let OilPress1 = Watched(0)
+let Gear = Watched(0.0)
 
 let planeState = {
   Speed,
@@ -71,7 +72,8 @@ let planeState = {
   OilTemp0,
   TurnRate,
   OilPress0,
-  OilPress1
+  OilPress1,
+  Gear
 }
 
 interopGen({

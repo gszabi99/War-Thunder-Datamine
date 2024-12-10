@@ -4,6 +4,7 @@ let { zonesHighlightedFlag } = require("%rGui/wwMap/wwMapStates.nut")
 let { hoveredZone, getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
 let { getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
 let { activeAreaBounds, gridWidth } = require("%rGui/wwMap/wwOperationConfiguration.nut")
+let { isShowZonesFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
 
 function mkZonesLines(parts, lineWidth) {
   if (parts.len() == 0)
@@ -96,15 +97,16 @@ function mkMapHoveredZone() {
 }
 
 function mkMapZonesEdges() {
-  if (zonesHighlightedFlag.get().len() == 0)
+  let isShowGrid = Computed(@() zonesHighlightedFlag.get().len() > 0 && isShowZonesFilter.get())
+  if (!isShowGrid.get())
     return {
-      watch = [zonesHighlightedFlag, activeAreaBounds, gridWidth]
+      watch = [isShowGrid, activeAreaBounds, gridWidth]
     }
 
   let uniqParts = getUniqParts(reorderZones(getZones(), zonesHighlightedFlag.get()))
 
   return {
-    watch = [zonesHighlightedFlag, activeAreaBounds, gridWidth]
+    watch = [isShowGrid, activeAreaBounds, gridWidth]
     size = activeAreaBounds.get().size
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

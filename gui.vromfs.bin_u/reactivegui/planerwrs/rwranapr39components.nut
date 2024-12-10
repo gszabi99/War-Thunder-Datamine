@@ -2,9 +2,10 @@ from "%rGui/globals/ui_library.nut" import *
 
 let rwrSetting = require("%rGui/rwrSetting.nut")
 
-let { rwrTargetsTriggers, rwrTargets, RwrSignalHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
+let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, RwrSignalHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
 
 let color = Color(10, 202, 10, 250)
+let backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -29,7 +30,7 @@ function calcRwrTargetRadius(target) {
 }
 
 function createRwrTarget(index, settings, objectStyle) {
-  let target = rwrTargets[index]
+  let target = rwrTargets[rwrTargetsOrder[index]]
 
   if (!target.valid || target.groupId == null)
     return @() { }
@@ -77,9 +78,17 @@ function createRwrTarget(index, settings, objectStyle) {
     }
   }
 
-  local icon = null
+  local iconColor = backgroundColor
+  local commands = [
+    [ VECTOR_RECTANGLE,
+      (target.x * targetRadiusRel - targetAttackIconSizeRel) * 100.0,
+      (target.y * targetRadiusRel - targetAttackIconSizeRel) * 100.0,
+      targetAttackIconSizeRel * 2.0 * 100.0,
+      targetAttackIconSizeRel * 2.0 * 100.0 ]
+    ]
+
   if (directionGroup != null && directionGroup?.type != null) {
-    local commands = null
+    iconColor = color
     if (directionGroup.type == ThreatType.AI)
       commands = [
         [ VECTOR_POLY,
@@ -139,15 +148,15 @@ function createRwrTarget(index, settings, objectStyle) {
            target.x * targetRadiusRel * 100.0,
           (target.y * targetRadiusRel + 0.25 * targetIconSizeRel - 0.5 * targetIconSizeRel) * 100.0 ]
         ]
-    if (commands != null)
-      icon = @() {
-        color = color
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = baseLineWidth * 2 * objectStyle.lineWidthScale
-        fillColor = 0
-        size = [pw(100), ph(100)]
-        commands = commands
-      }
+  }
+
+  let icon = @() {
+    color = iconColor
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = baseLineWidth * 2 * objectStyle.lineWidthScale
+    fillColor = backgroundColor
+    size = [pw(100), ph(100)]
+    commands = commands
   }
 
   let ageOpacity = Computed(@() 1.0 - min(target.age * RwrSignalHoldTimeInv.get(), 1.0))

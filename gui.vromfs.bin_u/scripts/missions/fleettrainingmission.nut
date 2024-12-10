@@ -16,6 +16,7 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let esUnitTypeMisNameMap = {
   [ES_UNIT_TYPE_SHIP] = "tutorial_destroyer_battle_arcade",
@@ -36,7 +37,7 @@ function findUnitInSlotByType(esUnitType) {
 }
 
 function canStartFleetTrainingMission() {
-  if (!isStatsLoaded() || !::g_login.isProfileReceived())
+  if (!isStatsLoaded() || !isProfileReceived.get())
     return false
 
   local unit = getPlayerCurUnit()

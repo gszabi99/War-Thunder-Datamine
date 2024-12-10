@@ -14,6 +14,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isRoomInSession } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
@@ -279,7 +280,7 @@ let proceedInvite = function(p) {
   if (isEmpty(sessionId) || isInPsnSession)
     return // Most-likely we are joining from PSN Overlay
 
-  if (!::g_login.isLoggedIn() || is_in_loading_screen()) {
+  if (!isLoggedIn.get() || is_in_loading_screen()) {
     log("[PSGI:PI] delaying PSN invite until logged in and loaded")
     postponeInvite(p)
     return

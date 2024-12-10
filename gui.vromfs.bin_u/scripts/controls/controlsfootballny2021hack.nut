@@ -9,6 +9,7 @@
 
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
+from "%scripts/utils_sa.nut" import save_to_json
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { get_charserver_time_sec } = require("chard")
@@ -20,12 +21,12 @@ let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { get_game_mode } = require("mission")
 let { parse_json } = require("json")
 let { hasXInputDevice, isXInputDevice } = require("controls")
-
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const FOOTBALL_NY2021_BACKUP_SAVE_ID = "footballNy2021Backup"
 
 function shouldManageControls() {
-  return (isXInputDevice() || hasXInputDevice()) && ::g_login.isProfileReceived()
+  return (isXInputDevice() || hasXInputDevice()) && isProfileReceived.get()
 }
 
 function removeSingleGamepadBtnId(hc, btnId) {
@@ -144,8 +145,8 @@ function tryControlsOverride() {
 
   saveLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID, {
     datetime = get_charserver_time_sec()
-    original = original.map(@(v) ::save_to_json(v))
-    modified = modified.map(@(v) ::save_to_json(v))
+    original = original.map(@(v) save_to_json(v))
+    modified = modified.map(@(v) save_to_json(v))
   })
   if (loadLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID) == null)
     return false // This case shouldn't happen. But we won't modify anything without a backup.
@@ -155,8 +156,8 @@ function tryControlsOverride() {
   log($"FoolballNy2021Hack: Modifying hotkeys:")
   foreach (hotkeyId, hc in original) {
     log($"  {hotkeyId}")
-    log($"    from: {::save_to_json(hc)}")
-    log($"    to:   {::save_to_json(modified[hotkeyId])}")
+    log($"    from: {save_to_json(hc)}")
+    log($"    to:   {save_to_json(modified[hotkeyId])}")
   }
 
   // Modifying the preset.
@@ -198,7 +199,7 @@ function tryControlsRestore() {
         log($"  OK   {hotkeyId}")
       }
       else
-        log($"  SKIP {hotkeyId}, current state is different: {::save_to_json(curHc)}")
+        log($"  SKIP {hotkeyId}, current state is different: {save_to_json(curHc)}")
     }
     ::g_controls_manager.commitControls()
   }

@@ -1,9 +1,10 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { split_by_chars } = require("string")
 let visibleConditionsList = {
-  isInClan = @() ::is_in_clan()
-  isNotInClan = @() !::is_in_clan()
+  isInClan = @() is_in_clan()
+  isNotInClan = @() !is_in_clan()
 }
 
 function isVisibleByConditions(blk) {
@@ -19,5 +20,5 @@ function isVisibleByConditions(blk) {
 }
 
 return {
-  isVisibleByConditions = isVisibleByConditions
+  isVisibleByConditions
 }

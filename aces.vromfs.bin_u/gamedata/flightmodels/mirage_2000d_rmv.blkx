@@ -2442,24 +2442,32 @@
       ]
     }
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/fr_antilope_5_hmd.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/fr_serval_rwr.blk"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic1_gun"
-      }
-    ]
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        1200,
+        800
+      ],
+      "noiseFactor": 0.04
+    },
+    "gunnerIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        1600,
+        1200
+      ],
+      "lightMult": 9.0,
+      "ghosting": 0.6,
+      "noiseFactor": 0.2
+    }
   },
   "gunnerOpticFps": {
     "Target": {
@@ -2497,32 +2505,24 @@
       "turretNo": 1
     }
   },
-  "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "pilotIr": {
-      "resolution": [
-        1920,
-        1080
-      ],
-      "lightMult": 10.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.15
-    },
-    "sightThermal": {
-      "resolution": [
-        1200,
-        800
-      ],
-      "noiseFactor": 0.04
-    }
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/fr_antilope_5_hmd.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/fr_serval_rwr.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic1_gun"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -4737,7 +4737,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.1,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

@@ -22,6 +22,7 @@ let { registerRespondent } = require("scriptRespondent")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { CommunicationState } = require("%scripts/xbox/permissions.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -50,7 +51,7 @@ systemMsg.registerLocTags(locTags)
   getMembersFlyoutDataByUnitsGroups = @() g_squad_manager.getMembers().map(
     @(member) { crafts_info = member?.craftsInfoByUnitsGroups })
 
-  canShowMembersBRDiffMsg = @() ::g_login.isProfileReceived()
+  canShowMembersBRDiffMsg = @() isProfileReceived.get()
     && !loadLocalAccountSettings("skipped_msg/membersBRDiff", false)
 
   checkMembersMrankDiff = function(handler, okFunc) {

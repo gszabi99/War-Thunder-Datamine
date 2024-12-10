@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, GAME_EVENT_TYPE
+from "%scripts/mainConsts.nut" import global_max_players_versus
 
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
@@ -78,7 +79,7 @@ let isEnableFriendsJoin = @(event) event?.enableFriendsJoin ?? false
 
 let isEventWithLobby = @(event) event?.withLobby ?? false
 
-let getMaxLobbyDisbalance = @(event) event?.maxLobbyDisbalance ?? ::global_max_players_versus
+let getMaxLobbyDisbalance = @(event) event?.maxLobbyDisbalance ?? global_max_players_versus
 
 let getEventReqFeature = @(event) event?.reqFeature ?? ""
 

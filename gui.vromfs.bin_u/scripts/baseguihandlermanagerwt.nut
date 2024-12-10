@@ -32,6 +32,7 @@ let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut
 let { isInFlight } = require("gameplayBinding")
 let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
 let { getMpChatControlsAllowMask } = require("%scripts/chat/mpChatState.nut")
+let { isLoggedIn, isAuthorized } = require("%scripts/login/loginStates.nut")
 
 require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
 
@@ -86,11 +87,11 @@ function generatePreLoadCssString() {
 
 
 function generateColorConstantsConfig() {
-  if (!::g_login.isAuthorized())
+  if (!isAuthorized.get())
     return []
 
   let cssConfig = []
-  let standardColors = !::g_login.isLoggedIn() || !::isPlayerDedicatedSpectator()
+  let standardColors = !isLoggedIn.get() || !::isPlayerDedicatedSpectator()
   let forcedColors = get_team_colors()
   let hasForcedColors = ("colorTeamA" in forcedColors) && ("colorTeamB" in forcedColors)
   local allyTeam, allyTeamColor, enemyTeamColor
@@ -228,7 +229,7 @@ handlersManager.__update({
   function beforeLoadHandler(hType) {
     //clear main gui scene when load to battle or from battle
     if ((hType == handlerType.BASE || hType == handlerType.ROOT)
-        && ::g_login.isLoggedIn()
+        && isLoggedIn.get()
         && this.lastGuiScene
         && this.lastGuiScene.isEqual(get_main_gui_scene())
         && !this.isMainGuiSceneActive())
@@ -236,7 +237,7 @@ handlersManager.__update({
   }
 
   function onBaseHandlerLoadFailed(handler) {
-    if (!::g_login.isLoggedIn()
+    if (!isLoggedIn.get()
         || handler.getclass() == gui_handlers.MainMenu
         || handler.getclass() == gui_handlers.FlightMenu
        )
@@ -248,7 +249,7 @@ handlersManager.__update({
   }
 
   function onSwitchBaseHandler() {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return
     let curHandler = this.getActiveBaseHandler()
     if (curHandler)
@@ -296,7 +297,7 @@ handlersManager.__update({
     let cssStringPost = generatePostLoadCssString()
     if (get_dagui_post_include_css_str() != cssStringPost) {
       set_dagui_post_include_css_str(cssStringPost)
-      let forcedColors = ::g_login.isLoggedIn() ? get_team_colors() : {}
+      let forcedColors = isLoggedIn.get() ? get_team_colors() : {}
       eventbus_send("recalculateTeamColors", { forcedColors })
       haveChanges = true
     }
@@ -451,7 +452,7 @@ handlersManager.__update({
     if (focusFrame.isEnabled)
       handler.guiScene.createElementByObject(handler.scene, "%gui/focusFrameAnim.blk", "tdiv", null)
 
-    if (!::g_login.isLoggedIn() || handler instanceof gui_handlers.BaseGuiHandlerWT)
+    if (!isLoggedIn.get() || handler instanceof gui_handlers.BaseGuiHandlerWT)
       return
 
     this.initVoiceChatWidget(handler)
@@ -461,7 +462,7 @@ handlersManager.__update({
     if (handler.rootHandlerClass || this.getHandlerType(handler) == handlerType.CUSTOM)
       return
 
-    if (::g_login.isLoggedIn() && (handler?.needVoiceChat ?? true))
+    if (isLoggedIn.get() && (handler?.needVoiceChat ?? true))
       handler.guiScene.createElementByObject(handler.scene, "%gui/chat/voiceChatWidget.blk", "widgets", null)
   }
 

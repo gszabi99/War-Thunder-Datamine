@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import save_to_json
+
 let { format } = require("string")
 let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
 
@@ -13,7 +15,7 @@ tooltipTypes.template <- {
     let t = params ? clone params : {}
     t.ttype <- this.typeName
     t.id    <- id
-    return ::save_to_json(t)
+    return save_to_json(t)
   }
   //full params list depend on specific type
   getTooltipId = function(id, params = null, _p2 = null, _p3 = null) {

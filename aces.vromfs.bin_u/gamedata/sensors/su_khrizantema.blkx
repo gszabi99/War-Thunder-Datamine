@@ -43,6 +43,24 @@
         "angleHalfSens": 0.5,
         "sideLobesSensitivity": -50.0
       }
+    },
+    "MTI": {
+      "sideLobesAttenuation": -20.0,
+      "power": 100.0,
+      "band": 10,
+      "rcs": 40.0,
+      "range": 8000.0,
+      "rangeMax": 12000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "angleHalfSens": 0.5,
+        "sideLobesSensitivity": -50.0
+      }
     }
   },
   "scanPatterns": {
@@ -138,6 +156,28 @@
         "minValue": 20.0,
         "maxValue": 8000.0
       }
+    },
+    "MTI": {
+      "groundClutter": false,
+      "groundMultipath": false,
+      "angularAccuracy": 0.002,
+      "distanceAccuracy": 1.0,
+      "aircraftAsTarget": true,
+      "groundVehiclesAsTarget": true,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 20.0,
+        "maxValue": 8000.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 2.5,
+        "maxValue": 110.0,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
     }
   },
   "scanPatternSets": {
@@ -180,6 +220,10 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setFsmActive": {
+            "fsm": "searchModes",
+            "active": true
           }
         },
         "setLockMode": {
@@ -584,6 +628,10 @@
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
+          },
+          "setFsmActive": {
+            "fsm": "searchModes",
+            "active": false
           }
         },
         "setSearchMode": {
@@ -604,10 +652,16 @@
             "source": "constant",
             "value": 0.0
           },
-          "setFsmActive": {
-            "fsm": "search",
-            "active": true
-          },
+          "setFsmActive": [
+            {
+              "fsm": "search",
+              "active": true
+            },
+            {
+              "fsm": "searchModes",
+              "active": true
+            }
+          ],
           "clearTargetsOfInterest": {},
           "setCueEnabled": {
             "value": true
@@ -625,10 +679,16 @@
         },
         "resetSearchMode": {
           "clearTargets": {},
-          "setFsmActive": {
-            "fsm": "search",
-            "active": false
-          },
+          "setFsmActive": [
+            {
+              "fsm": "search",
+              "active": false
+            },
+            {
+              "fsm": "searchModes",
+              "active": false
+            }
+          ],
           "setCueEnabled": {
             "value": false
           }
@@ -772,6 +832,83 @@
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
+          }
+        }
+      }
+    },
+    "searchModes": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "setCommonSearchMode": {
+          "setModeName": {
+            "name": "search"
+          },
+          "setTransiver": {
+            "transiver": "search"
+          },
+          "setSignal": {
+            "signal": "common"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "clearTargets": {}
+        },
+        "setMTIMode": {
+          "setModeName": {
+            "name": "MTI search"
+          },
+          "setTransiver": {
+            "transiver": "MTI"
+          },
+          "setSignal": {
+            "signal": "MTI"
+          },
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "clearTargets": {}
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "fsmActivate",
+          "stateTo": "search",
+          "actions": {
+            "setCommonSearchMode": {}
+          }
+        },
+        "showCommonSearchMode": {
+          "stateFrom": "search",
+          "event": "fsmActivate",
+          "stateTo": "search",
+          "actions": {
+            "setCommonSearchMode": {}
+          }
+        },
+        "showMTI": {
+          "stateFrom": "mti",
+          "event": "fsmActivate",
+          "stateTo": "mti",
+          "actions": {
+            "setMTIMode": {}
+          }
+        },
+        "switchToCommonSearchMode": {
+          "stateFrom": "mti",
+          "command": "modeSwitch",
+          "stateTo": "search",
+          "actions": {
+            "setCommonSearchMode": {}
+          }
+        },
+        "switchToMTI": {
+          "stateFrom": "search",
+          "command": "modeSwitch",
+          "stateTo": "mti",
+          "actions": {
+            "setMTIMode": {}
           }
         }
       }

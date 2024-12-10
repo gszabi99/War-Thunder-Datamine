@@ -1,12 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
-//All input classes are lives here
-::Input <- {}
-
 /**
  * Interface class for all Input classes.
  */
-::Input.InputBase <- class {
+let InputBase = class {
 
   /**
    * shortcut id for wich this method was created
@@ -51,4 +48,8 @@ from "%scripts/dagui_library.nut" import *
   function getConfig() {
     return { inputName = "inputBase" }
   }
+}
+
+return {
+  InputBase
 }

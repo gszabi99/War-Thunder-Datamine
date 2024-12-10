@@ -1,10 +1,10 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let { get_time_msec } = require("dagor.time")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
@@ -120,7 +120,7 @@ function refreshGlobalStatusData(refreshDelay = null) {
     return actionWithGlobalStatusRequest("cln_ww_global_status")
 
   let requestBlk = DataBlock()
-  if (::is_in_clan())
+  if (is_in_clan())
     requestBlk.clanId = clan_get_my_clan_id()
   if (::g_world_war.lastPlayedOperationId != null)
     requestBlk.operationId = ::g_world_war.lastPlayedOperationId

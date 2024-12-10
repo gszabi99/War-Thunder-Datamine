@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import check_login_pass
 from "%scripts/dagui_library.nut" import *
+from "%scripts/login/loginConsts.nut" import LOGIN_STATE
 
 let { set_disable_autorelogin_once } = require("loginState.nut")
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
@@ -73,6 +74,7 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
     set_disable_autorelogin_once(false)
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "regular" })
     log("Login: check_login_pass")
+    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
     let result = check_login_pass(
       getObjValue(this.loginScene, "loginbox_username", ""),
       getObjValue(this.loginScene, "loginbox_password", ""), "",

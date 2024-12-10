@@ -10,7 +10,7 @@ let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
 let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
 
 let {ThreatType, settings} = require("rwrAnAlr56ThreatsLibrary.nut")
-let { color, baseLineWidth, styleText, calcRwrTargetRadius, rwrPriorityTargetComponent } = require("rwrAnAlr56Components.nut")
+let { color, backgroundColor, baseLineWidth, styleText, calcRwrTargetRadius } = require("rwrAnAlr56Components.nut")
 
 function createOuterGrid(gridStyle) {
   return {
@@ -125,25 +125,61 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   let targetRadiusRel = calcRwrTargetRadius(target)
 
   let newTargetFontSizeMultRwr = Computed(@() (target.age0 * RwrNewTargetHoldTimeInv.get() < 1.0 && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 1.5 : 1.0))
-  local targetType = @()
-    styleText.__merge({
-      watch = newTargetFontSizeMultRwr
-      rendObj = ROBJ_TEXT
-      pos = [pw(target.x * 100.0 * targetRadiusRel), ph(target.y * 100.0 * targetRadiusRel)]
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      fontSize = styleText.fontSize * objectStyle.fontScale * newTargetFontSizeMultRwr.get()
-      text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-    })
+
+  local targetTypeText = styleText.__merge({
+    watch = newTargetFontSizeMultRwr
+    rendObj = ROBJ_TEXT
+    size = SIZE_TO_CONTENT
+    fontSize = styleText.fontSize * objectStyle.fontScale * newTargetFontSizeMultRwr.get()
+    text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
+    padding = [2, 2]
+  })
+  let targetTypeTextSize = calc_comp_size(targetTypeText)
+  local targetType = @() {
+    rendObj = ROBJ_SOLID
+    color = backgroundColor
+    pos = [pw(target.x * 100.0 * targetRadiusRel - 0.25 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.25 * targetTypeTextSize[1])]
+    children = @() targetTypeText
+  }
 
   let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
   let typeAirIconRadiusRel = iconRadiusRel * 0.8
   let typeShipIconRadiusRel = iconRadiusRel * 0.4
 
+  local background = null
+
   local icon = null
   if (directionGroup != null)
-    if (directionGroup?.type == ThreatType.AI || directionGroup?.type == ThreatType.SHIP)
+    if (directionGroup?.type == ThreatType.AI || directionGroup?.type == ThreatType.SHIP) {
+      if (!target.launch)
+        background = @() {
+          rendObj = ROBJ_VECTOR_CANVAS
+          size = flex()
+          lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
+          color = backgroundColor
+          fillColor = backgroundColor
+          commands = directionGroup?.type == ThreatType.AI ?
+            [
+              [ VECTOR_POLY,
+                target.x * targetRadiusRel * 100.0 - typeAirIconRadiusRel * 125.0,
+                target.y * targetRadiusRel * 100.0,
+                target.x * targetRadiusRel * 100.0,
+                target.y * targetRadiusRel * 100.0 - typeAirIconRadiusRel * 125.0,
+                target.x * targetRadiusRel * 100.0 + typeAirIconRadiusRel * 125.0,
+                target.y * targetRadiusRel * 100.0 ]
+            ] :
+            [
+              [ VECTOR_POLY,
+                target.x * targetRadiusRel * 100.0 -       typeShipIconRadiusRel * 125.0,
+                target.y * targetRadiusRel * 100.0 + 0.8 * typeShipIconRadiusRel * 125.0,
+                target.x * targetRadiusRel * 100.0 - 0.8 * typeShipIconRadiusRel * 125.0,
+                target.y * targetRadiusRel * 100.0 +       typeShipIconRadiusRel * 125.0,
+                target.x * targetRadiusRel * 100.0 + 0.8 * typeShipIconRadiusRel * 125.0,
+                target.y * targetRadiusRel * 100.0 +       typeShipIconRadiusRel * 125.0,
+                target.x * targetRadiusRel * 100.0 +       typeShipIconRadiusRel * 125.0,
+                target.y * targetRadiusRel * 100.0 + 0.8 * typeShipIconRadiusRel * 125.0]
+            ]
+        }
       icon = @() {
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
@@ -152,12 +188,16 @@ function createRwrTarget(index, settingsIn, objectStyle) {
         fillColor = 0
         commands = directionGroup?.type == ThreatType.AI ?
           [
-            [ VECTOR_POLY,
-              target.x * targetRadiusRel * 100.0 - typeAirIconRadiusRel * 100.0,
+            [ VECTOR_LINE,
+              target.x * targetRadiusRel * 100.0 - 0.5 * typeAirIconRadiusRel * 125.0,
+              target.y * targetRadiusRel * 100.0,
+              target.x * targetRadiusRel * 100.0 - typeAirIconRadiusRel * 125.0,
               target.y * targetRadiusRel * 100.0,
               target.x * targetRadiusRel * 100.0,
-              target.y * targetRadiusRel * 100.0 - typeAirIconRadiusRel * 100.0,
-              target.x * targetRadiusRel * 100.0 + typeAirIconRadiusRel * 100.0,
+              target.y * targetRadiusRel * 100.0 - typeAirIconRadiusRel * 125.0,
+              target.x * targetRadiusRel * 100.0 + typeAirIconRadiusRel * 125.0,
+              target.y * targetRadiusRel * 100.0,
+              target.x * targetRadiusRel * 100.0 + 0.5 * typeAirIconRadiusRel * 125.0,
               target.y * targetRadiusRel * 100.0 ]
           ] :
           [
@@ -172,10 +212,28 @@ function createRwrTarget(index, settingsIn, objectStyle) {
               target.y * targetRadiusRel * 100.0 + 0.8 * typeShipIconRadiusRel * 100.0]
           ]
       }
+    }
 
   let attackOpacityRwr = Computed(@() (target.launch && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
   local launch = null
   if (target.launch) {
+    let launchCommands = [
+      [ VECTOR_ELLIPSE,
+        target.x * targetRadiusRel * 100.0,
+        target.y * targetRadiusRel * 100.0,
+        iconRadiusRel * 100.0,
+        iconRadiusRel * 100.0]
+     ]
+    background = @() {
+      watch = attackOpacityRwr,
+      rendObj = ROBJ_VECTOR_CANVAS,
+      size = flex(),
+      lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale,
+      color = backgroundColor,
+      fillColor = backgroundColor,
+      opacity = attackOpacityRwr.get(),
+      commands = launchCommands
+    }
     launch = @() {
       watch = attackOpacityRwr,
       rendObj = ROBJ_VECTOR_CANVAS,
@@ -184,28 +242,18 @@ function createRwrTarget(index, settingsIn, objectStyle) {
       color = color,
       fillColor = 0,
       opacity = attackOpacityRwr.get(),
-      commands = [
-        [ VECTOR_ELLIPSE,
-          target.x * targetRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0,
-          iconRadiusRel * 100.0,
-          iconRadiusRel * 100.0]
-       ]
+      commands = launchCommands
     }
   }
 
   return @() {
+    pos = [pw(50), ph(50)]
     size = flex()
     children = [
-      {
-        pos = [pw(50), ph(50)]
-        size = flex()
-        children = [
-          icon,
-          launch
-        ]
-      },
-      targetType
+      background,
+      targetType,
+      icon,
+      launch
     ]
   }
 }
@@ -235,8 +283,7 @@ function scope(scale, style) {
             size = [pw(90), ph(90)],
             children = [
               createInnerGrid(style.grid),
-              rwrTargetsComponent(style.object),
-              rwrPriorityTargetComponent(style.object)
+              rwrTargetsComponent(style.object)
             ]
           }
         ]

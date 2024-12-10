@@ -463,7 +463,7 @@ let rwrTargetTransform = {
   rotate = 45.0
 }
 
-function createRwrTarget(target, colorWatched, fontSizeMult, forMfd) {
+function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMult, forMfd) {
 //  let target = rwrTargets[index]
 
   if (!target.valid)
@@ -582,6 +582,36 @@ function createRwrTarget(target, colorWatched, fontSizeMult, forMfd) {
     }
   }
 
+  local elevationMark = null
+  if (target.priority) {
+    if (target.elev > 0.1)
+      elevationMark = @() {
+        watch = targetOpacityRwr
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        color = colorWatched.value
+        fillColor = 0
+        opacity = targetOpacityRwr.value
+        lineWidth = scaleLineWidth * 4
+        commands = [
+          [VECTOR_SECTOR, 50, 50, indicatorRadius * 0.2 * centralCircleSizeMult, indicatorRadius * 0.2 * centralCircleSizeMult, 180, 360]
+        ]
+      }
+    else if (target.elev < -0.1)
+      elevationMark = @() {
+        watch = targetOpacityRwr
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        color = colorWatched.value
+        fillColor = 0
+        opacity = targetOpacityRwr.value
+        lineWidth = scaleLineWidth * 4
+        commands = [
+          [VECTOR_SECTOR, 50, 50, indicatorRadius * 0.2 * centralCircleSizeMult, indicatorRadius * 0.2 * centralCircleSizeMult, 0, 180]
+        ]
+      }
+  }
+
   return @() {
     watch = targetOpacityRwr
     size = flex()
@@ -602,7 +632,8 @@ function createRwrTarget(target, colorWatched, fontSizeMult, forMfd) {
         ]
       },
       targetType,
-      iffMark
+      iffMark,
+      elevationMark
     ]
   }
 }
@@ -778,11 +809,11 @@ function rwrTargetsState(colorWatched) {
   }
 }
 
-let rwrTargetsComponent = function(colorWatched, fontSizeMult, forMfd) {
+let rwrTargetsComponent = function(colorWatched, fontSizeMult, centralCircleSizeMult, forMfd) {
   return @() {
     watch = rwrTargetsTriggers
     size = flex()
-    children = rwrTargets.map(@(target) createRwrTarget(target, colorWatched, fontSizeMult, forMfd))
+    children = rwrTargets.map(@(target) createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMult, forMfd))
   }
 }
 
@@ -966,7 +997,7 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
           needAdditionalLights ? lwsTargetsState(lineColor) : null
           lwsTargetsComponent(lineColor, !needDrawCentralIcon)
           needAdditionalLights ? rwrTargetsState(lineColor) : null
-          rwrTargetsComponent(lineColor, fontSizeMult, forMfd)
+          rwrTargetsComponent(lineColor, fontSizeMult, centralCircleSizeMult, forMfd)
           needAdditionalLights ? rwrTargetsPresenceComponent(lineColor) : null
         ]
       }

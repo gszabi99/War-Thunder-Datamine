@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { parse_json } = require("json")
 let { getTooltipType } = require("genericTooltipTypes.nut")
@@ -12,7 +14,7 @@ function removeInvalidTooltipObjs() {
 }
 
 function getTooltipObjId(obj) {
-  return obj?.tooltipId ?? ::getObjIdByPrefix(obj, "tooltip_")
+  return obj?.tooltipId ?? getObjIdByPrefix(obj, "tooltip_")
 }
 
 function fillTooltip(obj, handler, tooltipType, id, params) {

@@ -1,6 +1,9 @@
 from "%scripts/dagui_natives.nut" import clan_get_current_season_info, clan_get_my_clan_tag, ps4_is_ugc_enabled, ps4_show_ugc_restriction, clan_get_requested_clan_id, clan_get_my_clan_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRow, buildTableRowNoPad
+from "%scripts/clans/clanState.nut" import is_in_clan
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -28,6 +31,7 @@ let { openCreateClanWnd } = require("%scripts/clans/modify/createClanModalHandle
 let { openClanSeasonInfoWnd } = require("%scripts/clans/clanSeasonInfoModal.nut")
 let { lbCategoryTypes, getLbCategoryTypeById } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 // how many top places rewards are displayed in clans list window
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
@@ -392,7 +396,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
 
     let paginatorObj = lbPageObj.findObject("mid_nav_bar")
     let myPage = (this.myClanLbData != null && "pos" in this.myClanLbData) ? floor(this.myClanLbData.pos / this.clansPerPage) : null
-    ::generatePaginator(paginatorObj, this, this.curClanLbPage, this.curClanLbPage + (this.isLastPage ? 0 : 1), myPage)
+    generatePaginator(paginatorObj, this, this.curClanLbPage, this.curClanLbPage + (this.isLastPage ? 0 : 1), myPage)
   }
 
   function showEmptySearchResult(show) {
@@ -431,12 +435,12 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     }
 
     for (local i = this.clanInfoByRow.len(); i < this.clansPerPage; i++) {
-      data.append(::buildTableRow($"row_{i}", [], i % 2 == 1, "inactive:t='yes';"))
+      data.append(buildTableRow($"row_{i}", [], i % 2 == 1, "inactive:t='yes';"))
       this.clanInfoByRow.append(null)
     }
 
     if (this.myClanLbData != null) {
-      data.append(::buildTableRow($"row_{this.clanInfoByRow.len()}", ["..."], null,
+      data.append(buildTableRow($"row_{this.clanInfoByRow.len()}", ["..."], null,
         "inactive:t='yes'; commonTextColor:t='yes'; style:t='height:0.7@leaderboardTrHeight;';"))
       this.clanInfoByRow.append(null)
       this.myClanLbData = ::getFilteredClanData(this.myClanLbData)
@@ -469,7 +473,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
         block.width <- item.width
       headerRow.append(block)
     }
-    data.insert(0, ::buildTableRow("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'"))
+    data.insert(0, buildTableRow("row_header", headerRow, null, "isShortLeaderBoardHeader:t='yes'"))
     data = "".join(data)
 
     this.guiScene.setUpdatesEnabled(false, false)
@@ -496,7 +500,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let rowName = $"row_{rowIdx}"
 
     let clanType = g_clan_type.getTypeByName(rowBlk?.type ?? "")
-    let highlightRow = this.myClanLbData != null && this.myClanLbData._id == rowBlk._id ? true : false
+    let highlightRow = this.myClanLbData != null && this.myClanLbData._id == rowBlk._id
     this.rowsTexts[rowName] <- {
       txt_name = this.colorizeClanText(clanType, rowBlk.name, highlightRow)
       txt_tag = this.colorizeClanText(clanType, rowBlk.tag, highlightRow)
@@ -522,7 +526,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
         rowData.append(this.getItemCell(item, rowBlk, rowName))
 
     assert(type(rowBlk._id) == "string", $"leaderboards receive _id type {type(rowBlk._id)}, instead of string on clan_request_page_of_leaderboard")
-    return ::buildTableRow(rowName, rowData, rowIdx % 2 != 0, highlightRow ? "mainPlayer:t='yes';" : "")
+    return buildTableRow(rowName, rowData, rowIdx % 2 != 0, highlightRow ? "mainPlayer:t='yes';" : "")
   }
 
   function colorizeClanText(clanType, clanText, isMainPlayer) {
@@ -535,7 +539,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     if (!rowBlk?.astat)
       rowBlk.astat = DataBlock()
     let value = itemId == "members_cnt" ? rowBlk?[itemId] ?? 0
-      : itemId == "slogan" ? ::g_chat.filterMessageText(rowBlk?[itemId] ?? "", false)
+      : itemId == "slogan" ? g_chat.filterMessageText(rowBlk?[itemId] ?? "", false)
       : itemId == "fits_requirements" ? ""
       : rowBlk.astat?[itemId] ?? 0
 
@@ -641,7 +645,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       mid_nav_bar        = this.clanInfoByRow.len() > 0
       btn_clan_info      = this.curClanInfo != null
       btn_clan_actions   = this.curClanInfo != null && showConsoleButtons.value
-      btn_membership_req = this.curClanInfo != null && !::is_in_clan()
+      btn_membership_req = this.curClanInfo != null && !is_in_clan()
         && (clan_get_requested_clan_id() != this.curClanInfo.id)
     })
 
@@ -790,7 +794,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
           active = false
         })
       }
-      rowBlock = "".concat(rowBlock, ::buildTableRowNoPad("row_0", rowData, null, ""))
+      rowBlock = "".concat(rowBlock, buildTableRowNoPad("row_0", rowData, null, ""))
       this.guiScene.replaceContentFromText(clanTableObj, rowBlock, rowBlock.len(), this)
     }
 
@@ -854,7 +858,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
         active = false
       })
     }
-    rowBlock = "".concat(rowBlock, ::buildTableRowNoPad("row_0", rowData, null, ""))
+    rowBlock = "".concat(rowBlock, buildTableRowNoPad("row_0", rowData, null, ""))
     this.guiScene.replaceContentFromText(clanTableObj, rowBlock, rowBlock.len(), this)
   }
 

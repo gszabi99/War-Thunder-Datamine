@@ -2516,6 +2516,36 @@
       "noiseFactor": 0.2
     }
   },
+  "gunnerOpticFps": {
+    "Target": {
+      "pos": [
+        -5.2,
+        -1.0,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -89.0,
+        89.0,
+        -159.0,
+        14.0
+      ],
+      "opticType": "targeting",
+      "turretNo": 0
+    }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -3558,36 +3588,6 @@
       }
     ]
   },
-  "gunnerOpticFps": {
-    "Target": {
-      "pos": [
-        -5.2,
-        -1.0,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -89.0,
-        89.0,
-        -159.0,
-        14.0
-      ],
-      "opticType": "targeting",
-      "turretNo": 0
-    }
-  },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -4022,7 +4022,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 0.1,
-        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionBrightnessNoiseStrength": 0.0,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

@@ -51,6 +51,7 @@ let { gui_start_controls_type_choice } = require("%scripts/controls/startControl
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
+let { hasLoginState, isLoggedIn, isAuthorized, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -109,7 +110,7 @@ function useDmmLogin() {
 }
 
 ::g_login.onAuthorizeChanged <- function onAuthorizeChanged() {
-  if (!this.isAuthorized()) {
+  if (!isAuthorized.get()) {
     if (loginWTState.initOptionsPseudoThread)
       loginWTState.initOptionsPseudoThread.clear()
     broadcastEvent("SignOut")
@@ -134,7 +135,7 @@ function useDmmLogin() {
   loginWTState.initOptionsPseudoThread.extend(::init_options_steps)
   loginWTState.initOptionsPseudoThread.append(
     function() {
-      if (!::g_login.hasState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED))
+      if (!hasLoginState(LOGIN_STATE.PROFILE_RECEIVED | LOGIN_STATE.CONFIGS_RECEIVED))
         return PT_STEP_STATUS.SUSPEND
 
       PRICE.checkUpdate()
@@ -153,7 +154,7 @@ function useDmmLogin() {
       return null
     }
     function() {
-      if (!::g_login.hasState(LOGIN_STATE.MATCHING_CONNECTED))
+      if (!hasLoginState(LOGIN_STATE.MATCHING_CONNECTED))
         return PT_STEP_STATUS.SUSPEND
 
       ::shown_userlog_notifications.clear()
@@ -282,7 +283,7 @@ function useDmmLogin() {
 }
 
 ::g_login.onLoggedInChanged <- function onLoggedInChanged() {
-  if (!this.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   this.statsdOnLogin()
@@ -303,7 +304,7 @@ function needAutoStartBattle() {
       || !hasFeature("BattleAutoStart")
       || disable_network()
       || stat_get_value_respawns(0, 1) > 0
-      || !::g_login.isProfileReceived()
+      || !isProfileReceived.get()
       || !loadLocalAccountSettings("needAutoStartBattle", true))
     return false
 
@@ -338,7 +339,7 @@ function needAutoStartBattle() {
     handler.doWhenActive(function() { gui_start_controls_type_choice() })
 
   if (showConsoleButtons.value) {
-    if (::g_login.isProfileReceived() && gui_handlers.GampadCursorControlsSplash.shouldDisplay())
+    if (isProfileReceived.get() && gui_handlers.GampadCursorControlsSplash.shouldDisplay())
       handler.doWhenActive(@() gui_handlers.GampadCursorControlsSplash.open())
   }
 

@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let math = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 
-let { color, baseLineWidth, rwrTargetsComponent, rwrPriorityTargetComponent } = require("rwrAnAlr56Components.nut")
+let { color, baseLineWidth, rwrTargetsComponent } = require("rwrAnAlr56Components.nut")
 
 function makeGridCommands() {
   let commands = [
@@ -35,8 +35,7 @@ function scope(scale, style) {
     hplace = ALIGN_CENTER
     children = [
       createGrid(style.grid),
-      rwrTargetsComponent(style.object),
-      rwrPriorityTargetComponent(style.object)
+      rwrTargetsComponent(style.object)
     ]
   }
 }

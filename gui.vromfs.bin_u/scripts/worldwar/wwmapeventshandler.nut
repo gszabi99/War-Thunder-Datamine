@@ -100,6 +100,12 @@ function sendAircraft(params) {
       null, null, null, "send_air_army_error")
 }
 
+function showAirfieldTooltip(params) {
+  if (params?.airfieldIndex == null)
+    params.rawdelete("airfieldIndex")
+  sendMapEvent("UpdateCursorByTimer", params)
+}
+
 return {
   selectAirfield
   selectArmy
@@ -111,4 +117,5 @@ return {
   doAction
   moveArmy
   sendAircraft
+  showAirfieldTooltip
 }

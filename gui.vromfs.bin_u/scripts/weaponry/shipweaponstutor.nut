@@ -8,6 +8,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getPvpRespawnsOnUnitType, isStatsLoaded, isMeNewbieOnUnitType
 } = require("%scripts/myStats.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const MAX_WEAPONS_TUTOR_SHOWS = 2
 const MIN_RESPAWNS_REQUIRED = 8
@@ -39,7 +40,7 @@ function checkShowShipWeaponsTutor(weaponsHandler, columnsConfig) {
   if (!weaponsHandler.unit?.isShipOrBoat())
     return
 
-  if (!::g_login.isProfileReceived())
+  if (!isProfileReceived.get())
     return
 
   let numShows = loadLocalAccountSettings("tutor/weapons/numShows", 0)

@@ -17,6 +17,7 @@ let { set_option } = require("%scripts/options/optionsExt.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let optionsExtNames = require("%scripts/options/optionsExtNames.nut")
 let { OPTIONS_MODE_GAMEPLAY } = optionsExtNames
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 function getLoadedPresetBlk() {
   let presetBlk = DataBlock()
@@ -211,7 +212,7 @@ function getLoadedPresetBlk() {
   }
 
   function commitGuiOptions() {
-    if (!::g_login.isProfileReceived())
+    if (!isProfileReceived.get())
       return
 
     let mainOptionsMode = getGuiOptionsMode()

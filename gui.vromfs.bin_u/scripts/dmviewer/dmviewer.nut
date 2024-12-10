@@ -34,7 +34,7 @@ let { utf8ToUpper, startsWith, utf8ToLower, cutPrefix } = require("%sqstd/string
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getUnitTypeTextByUnit } = require("%scripts/unit/unitInfo.nut")
+let { getUnitTypeTextByUnit, getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_game_params_blk, get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
 let { round_by_value } = require("%sqstd/math.nut")
@@ -49,6 +49,8 @@ let { USEROPT_XRAY_FILTER_TANK, USEROPT_XRAY_FILTER_SHIP
 let { openPopupFilter, RESET_ID } = require("%scripts/popups/popupFilterWidget.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
+let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
+let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 /*
   dmViewer API:
@@ -399,7 +401,7 @@ dmViewer = {
   }
 
   function reinit() {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return
 
     this.updateUnitInfo()
@@ -487,7 +489,7 @@ dmViewer = {
       if (this.unitBlk?.WeaponSlots)
         foreach (slotBlk in this.unitBlk.WeaponSlots % "WeaponSlot")
           foreach (slotPresetBlk in (slotBlk % "WeaponPreset"))
-            if (slotPresetBlk?.sensors)
+            if (slotPresetBlk?.sensors && slotPresetBlk?.reqModification && isModAvailableOrFree(this.unit.name, slotPresetBlk.reqModification))
               for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
                 u.appendOnce(slotPresetBlk.sensors.getBlock(b), this.unitSensorsBlkList, false, u.isEqual)
     }
@@ -568,7 +570,7 @@ dmViewer = {
     if (handlersManager.isAnyModalHandlerActive())
       return
 
-    if (!::g_login.isProfileReceived())
+    if (!isProfileReceived.get())
       return
 
     if (!isViewModeTutorAvailableForUser())
@@ -857,7 +859,7 @@ dmViewer = {
     if (idxSeparator)
       nameVariations.append(nameId.slice(0, idxSeparator))
     if (this.unit != null)
-      nameVariations.append("_".concat(::getUnitTypeText(this.unit.esUnitType).tolower(), nameId))
+      nameVariations.append("_".concat(getUnitTypeText(this.unit.esUnitType).tolower(), nameId))
     if (this.unit?.esUnitType == ES_UNIT_TYPE_BOAT)
       nameVariations.append($"ship_{nameId}")
 

@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": [
@@ -52,13 +48,17 @@
     "mission": {
       "level": "levels/guadalcanal.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "openDiffLevels": true,
       "scoreLimit": 5000,
-      "difficulty": ""
+      "restoreType": "attempts",
+      "difficulty": "",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
     },
     "spectator_points": {}
   },
@@ -82,12 +82,61 @@
         "varSetInt": {
           "value": -100,
           "var": "additional_units_tickets_cost"
+        },
+        "comment": {
+          "value": "checking tickets bleed type"
+        },
+        "triggerEnable": {
+          "target": "tickets_bleed_type"
         }
       },
       "else_actions": {}
     },
+    "tickets_bleed_type": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "only_players_affect_tickets",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "only players influence to ticket bleeding"
+        },
+        "triggerEnable": {
+          "target": [
+            "t1_land_damaged_by_player",
+            "t2_land_damaged_by_player"
+          ]
+        }
+      },
+      "else_actions": {
+        "comment": {
+          "value": "any source of tickets bleeding are alowed"
+        },
+        "triggerEnable": {
+          "target": [
+            "t1_land_damaged",
+            "t2_land_damaged"
+          ]
+        }
+      }
+    },
     "t1_land_damaged": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -105,6 +154,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t1_quest_units_squad",
           "var": "t1_land_death_counter"
         }
@@ -125,7 +176,7 @@
       "else_actions": {}
     },
     "t2_land_damaged": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -143,7 +194,91 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_quest_units_squad",
+          "var": "t2_land_death_counter"
+        }
+      },
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "var": "additional_units_tickets_cost",
+          "team": "B"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "t2_land_death_counter"
+        }
+      },
+      "else_actions": {}
+    },
+    "t1_land_damaged_by_player": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "killedBy",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "t1_quest_units_squad",
+          "killedByObject": "t2_players_squad",
+          "var": "t1_land_death_counter"
+        }
+      },
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "var": "additional_units_tickets_cost",
+          "team": "A"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "t1_land_death_counter"
+        }
+      },
+      "else_actions": {}
+    },
+    "t2_land_damaged_by_player": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "killedBy",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "t2_quest_units_squad",
+          "killedByObject": "t1_players_squad",
           "var": "t2_land_death_counter"
         }
       },
@@ -223,6 +358,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t1_quest_units_squad"
         }
       },
@@ -252,6 +389,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_quest_units_squad"
         }
       },
@@ -619,6 +758,8 @@
             "object_marking": 0,
             "func": "more",
             "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": [
               "t1_quest_units_squad",
               "t2_quest_units_squad"
@@ -769,7 +910,8 @@
     "additional_units_quantity": 0,
     "additional_units_cur_tickets": 0,
     "additional_units_tickets_cost": 0,
-    "adding_units_balance_level": 0
+    "adding_units_balance_level": 0,
+    "only_players_affect_tickets": true
   },
   "dialogs": {},
   "airfields": {},

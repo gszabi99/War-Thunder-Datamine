@@ -2882,6 +2882,33 @@
       ]
     }
   },
+  "gunnerOpticFps": {
+    "pos": [
+      0.3,
+      -0.2,
+      0.0
+    ],
+    "head": "optic1_turret",
+    "crosshairPreset": "test_crosshair",
+    "angularLimits": [
+      -20.0,
+      20.0,
+      -20.0,
+      20.0
+    ],
+    "opticType": "tv"
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apq_120.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_68_v.blk"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -4127,33 +4154,6 @@
     "maxPower": 6.0,
     "maxSegments": 50
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apq_120.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_68_v.blk"
-      }
-    ]
-  },
-  "gunnerOpticFps": {
-    "pos": [
-      0.3,
-      -0.2,
-      0.0
-    ],
-    "head": "optic1_turret",
-    "crosshairPreset": "test_crosshair",
-    "angularLimits": [
-      -20.0,
-      20.0,
-      -20.0,
-      20.0
-    ],
-    "opticType": "tv"
-  },
   "Aircraft": {
     "gunnersCount": 0
   },
@@ -4721,7 +4721,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 0.8,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.05,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

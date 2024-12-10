@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
 /**
  * Input combination.
@@ -8,7 +9,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
  * It may be a key combination (Ctrl + A) or
  * combinations of several axes (left gamebad trigger + right gamepad trigger.
  */
-::Input.Combination <- class (::Input.InputBase) {
+let Combination = class (InputBase) {
   elements = null
 
 
@@ -72,3 +73,4 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
   }
 
 }
+return {Combination}

@@ -5,6 +5,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let {getstackinfos} = require("debug")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let hotasPS4DevId = "044F:B67B"
 let hotasXONEDevId = "044F:B68C"
@@ -64,7 +65,7 @@ return {
       isPlatformXboxOne ? hotasXONEDevId :
       null
 
-    if (deviceId == null || !::g_login.isLoggedIn())
+    if (deviceId == null || !isLoggedIn.get())
       return false
 
     if (!::is_device_connected(deviceId))

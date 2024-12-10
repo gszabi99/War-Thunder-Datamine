@@ -16,6 +16,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { selectArmyByName, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
+let { RenderCategory } = require("worldwarConst")
 
 function ww_is_append_path_mode_active() {
   if (!::g_world_war.haveManagementAccessForSelectedArmies())
@@ -271,7 +272,7 @@ let worldWarMapControls = class {
   }
 
   function onMapHover(_obj) {
-    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, true)
+    g_world_war_render.setCategory(RenderCategory.ERC_AIRFIELD_ARROW, true)
   }
 
   function onMapUnhover(obj) {
@@ -279,7 +280,7 @@ let worldWarMapControls = class {
     this.updateHoveredObjects(params)
     this.sendMapEvent("UpdateCursorByTimer", params)
     obj.setUserData(params)
-    g_world_war_render.setCategory(ERC_AIRFIELD_ARROW, false)
+    g_world_war_render.setCategory(RenderCategory.ERC_AIRFIELD_ARROW, false)
   }
 
   function onMouseWheel(_obj, _mx, _my, is_up, _buttons) {

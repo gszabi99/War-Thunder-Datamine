@@ -9,6 +9,7 @@ let { matchingApiFunc } = require("%scripts/matching/api.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 ::g_user_presence <- {
   inited = false
@@ -77,7 +78,7 @@ let events = getGlobalModule("events")
 }
 
 ::g_user_presence.setPresence <- function setPresence(presence) {
-  if (!::g_login.isLoggedIn() || !this.checkPresence(presence))
+  if (!isLoggedIn.get() || !this.checkPresence(presence))
     return
 
   // Copy new values to current presence object.

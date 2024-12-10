@@ -29,6 +29,7 @@ let warningSystemState = {
   lwsTargetsAgeMin = Watched(1000.0),
 
   rwrTargets = [],
+  rwrTargetsOrder = [],
   rwrTargetsPresence = [],
   rwrTargetsTriggers = Watched(0),
   rwrTargetsPresenceTriggers = Watched(0),
@@ -70,7 +71,7 @@ interop.clearLwsTargets <- function() {
   }
 }
 
-interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null, _range_rel = null, _priority = null) {
+interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null, _range_rel = null, _priority = null, _elev = null) {
   if (index >= warningSystemState.mlwsTargets.len())
     warningSystemState.mlwsTargets.resize(index + 1)
   warningSystemState.mlwsTargets[index] = {
@@ -84,7 +85,7 @@ interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _la
   warningSystemState.mlwsTargetsTriggers.trigger()
 }
 
-interop.updateLwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null, _range_rel = null, _priority = null) {
+interop.updateLwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null, _range_rel = null, _priority = null, _elev = null) {
   if (index >= warningSystemState.lwsTargets.len())
    warningSystemState.lwsTargets.resize(index + 1)
   warningSystemState.lwsTargets[index] = {
@@ -147,7 +148,7 @@ interop.clearRwrTargets <- function() {
   }
 }
 
-interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch, sector, group_id = null, range_rel = null, priority = null) {
+interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch, sector, group_id = null, range_rel = null, priority = null, elev = 0.0) {
 
   local showDirection = true
   local targetGroupId = null // indicated as abstract source
@@ -182,7 +183,8 @@ interop.updateRwrTarget <- function(index, x, y, age0, age, enemy, track, launch
     enemy = enemy,
     sector = sector,
     groupId = targetGroupId,
-    priority = priority
+    priority = priority,
+    elev = elev
   }
 
   warningSystemState.rwrTargetsTriggers.trigger()
@@ -224,6 +226,15 @@ interop.postUpdateRwrTargets <- function () {
     return
   }
 
+  local rwrTargets = warningSystemState.rwrTargets
+  local rwrTargetsOrder = warningSystemState.rwrTargetsOrder
+  rwrTargetsOrder.resize(rwrTargets.len())
+  for (local i = 0; i < rwrTargetsOrder.len(); ++i)
+    rwrTargetsOrder[i] = i
+  rwrTargetsOrder.sort(@(left, right)
+    rwrTargets[left].priority <=> rwrTargets[right].priority || rwrTargets[left].launch <=> rwrTargets[right].launch ||
+    rwrTargets[left].track  <=> rwrTargets[right].track  || rwrTargets[right].rangeRel <=> rwrTargets[left].rangeRel)
+
   let tick = (warningSystemState.CurrentTime.value * 2.0).tointeger()
   if (tick == warningSystemState.rwrLastTargetsBlinkTick) {
     warningSystemState.rwrTargetsTriggers.trigger()
@@ -231,7 +242,6 @@ interop.postUpdateRwrTargets <- function () {
   }
   warningSystemState.rwrLastTargetsBlinkTick = tick
 
-  local rwrTargets = warningSystemState.rwrTargets
   local used = warningSystemState.rwrTargetsUsed
   local unused = warningSystemState.rwrTargetsUnused
 

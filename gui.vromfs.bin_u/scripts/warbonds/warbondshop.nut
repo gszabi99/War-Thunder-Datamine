@@ -20,6 +20,7 @@ let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -178,7 +179,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updatePaginator() {
     let totalPages = this.curWb ? ceil(this.curWb.getAwardsList().len().tofloat() / this.itemsPerPage) : 1
-    ::generatePaginator(this.scene.findObject("paginator_place"), this,
+    generatePaginator(this.scene.findObject("paginator_place"), this,
       this.curPage, totalPages - 1, null, true /*show last page*/ )
   }
 

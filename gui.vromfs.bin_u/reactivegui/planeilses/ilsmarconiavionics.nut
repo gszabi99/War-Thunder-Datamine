@@ -1,5 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
-let { floor } = require("%sqstd/math.nut")
+let { floor, abs } = require("%sqstd/math.nut")
 let { IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
   RadarTargetDistRate, RocketMode, CannonMode, BombCCIPMode, BombingMode,
   RadarTargetPos, TargetPos, TargetPosValid, TimeBeforeBombRelease, DistToTarget } = require("%rGui/planeState/planeToolsState.nut")
@@ -333,56 +333,74 @@ let mach = @() {
   text = string.format("%.2f", MachWatch.value / 100.0)
 }
 
-let radarTarget = @() {
-  watch = IlsColor
-  size = [pw(8), ph(8)]
-  rendObj = ROBJ_VECTOR_CANVAS
-  color = IlsColor.value
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth * IlsLineScale.value
-  commands = [
-    [VECTOR_RECTANGLE, -50, -50, 100, 100]
-  ]
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-    transform = {
-      translate = RadarTargetPos
+function radarTarget(width, height) {
+  return @() {
+    watch = IlsColor
+    size = [pw(8), ph(8)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color = IlsColor.value
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth = baseLineWidth * IlsLineScale.value
+    commands = [
+      [VECTOR_RECTANGLE, -50, -50, 100, 100]
+    ]
+    animations = [
+      { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      let reticleLim = [0.45 * width, 0.45 * height]
+      if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+        anim_start("radar_target_out_of_limit")
+      else
+        anim_request_stop("radar_target_out_of_limit")
+      let RadarTargetPosLim =  [
+        0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+        0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+      ]
+      return {
+        transform = {
+          translate = RadarTargetPosLim
+        }
+      }
     }
   }
 }
 
 let radarDist = Computed(@() (RadarTargetDist.value * metrToNavMile * 10).tointeger())
 let raderClosureSpeed = Computed(@() (RadarTargetDistRate.value * mpsToKnots * -1.0).tointeger())
-let radarTargetDist = @() {
-  watch = [RadarTargetPosValid, BombingMode]
-  size = flex()
-  children = RadarTargetPosValid.value && !BombingMode.value ?
-  [
-    {
-      size = flex()
-      children = [
-        @() {
-          watch = [IlsColor, radarDist]
-          size = SIZE_TO_CONTENT
-          rendObj = ROBJ_TEXT
-          pos = [pw(72), ph(70)]
-          color = IlsColor.value
-          fontSize = 35
-          text = string.format("%02d.%d", radarDist.value / 10, radarDist.value % 10)
-        },
-        @() {
-          watch = [IlsColor, raderClosureSpeed]
-          pos = [pw(72), ph(74)]
-          size = SIZE_TO_CONTENT
-          rendObj = ROBJ_TEXT
-          color = IlsColor.value
-          fontSize = 35
-          text = raderClosureSpeed.value.tostring()
-        }
-      ]
-    },
-    radarTarget
-  ] : null
+function radarTargetDist(width, height) {
+  return @() {
+    watch = [RadarTargetPosValid, BombingMode]
+    size = flex()
+    children = RadarTargetPosValid.value && !BombingMode.value ?
+    [
+      {
+        size = flex()
+        children = [
+          @() {
+            watch = [IlsColor, radarDist]
+            size = SIZE_TO_CONTENT
+            rendObj = ROBJ_TEXT
+            pos = [pw(72), ph(70)]
+            color = IlsColor.value
+            fontSize = 35
+            text = string.format("%02d.%d", radarDist.value / 10, radarDist.value % 10)
+          },
+          @() {
+            watch = [IlsColor, raderClosureSpeed]
+            pos = [pw(72), ph(74)]
+            size = SIZE_TO_CONTENT
+            rendObj = ROBJ_TEXT
+            color = IlsColor.value
+            fontSize = 35
+            text = raderClosureSpeed.value.tostring()
+          }
+        ]
+      },
+      radarTarget(width, height)
+    ] : null
+  }
 }
 
 let ilsMode = @() {
@@ -618,7 +636,7 @@ function MarconiAvionics(width, height) {
       },
       armLabel,
       mach,
-      radarTargetDist,
+      radarTargetDist(width, height),
       ilsMode,
       aamCircle,
       lcos,

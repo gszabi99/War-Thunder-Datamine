@@ -4,6 +4,8 @@ let { CHAT_MODE_TEAM, chat_set_mode } = require("chat")
 let { eventbus_send } = require("eventbus")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
+let { getMaxRoomMsgAmount } = require("%scripts/chat/chatStorage.nut")
+let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
 
 let mpChatState = persist("mpChatState", @() {
   log = [],
@@ -25,19 +27,19 @@ function validateCurModeImpl() {
     modeInited = true
     hasEnableChatMode = false
     // On mp session start mode is reset to TEAM
-    if (::g_mp_chat_mode.SQUAD.isEnabled()) {
+    if (g_mp_chat_mode.SQUAD.isEnabled()) {
       hasEnableChatMode = true
-      setModeId(::g_mp_chat_mode.SQUAD.id)
+      setModeId(g_mp_chat_mode.SQUAD.id)
       return
     }
   }
 
-  if (::g_mp_chat_mode.getModeById(mpChatState.currentModeId).isEnabled()) {
+  if (g_mp_chat_mode.getModeById(mpChatState.currentModeId).isEnabled()) {
     hasEnableChatMode = true
     return
   }
 
-  foreach (mode in ::g_mp_chat_mode.types)
+  foreach (mode in g_mp_chat_mode.types)
     if (mode.isEnabled()) {
       hasEnableChatMode = true
       setModeId(mode.id)
@@ -51,7 +53,7 @@ function validateCurMode() {
 }
 
 function initMpChatStates() {
-  mpChatState.maxLogSize = ::g_chat.getMaxRoomMsgAmount()
+  mpChatState.maxLogSize = getMaxRoomMsgAmount()
   validateCurMode()
 }
 

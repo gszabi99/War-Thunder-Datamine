@@ -48,6 +48,8 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
   let time = float(get_total_time())
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   foreach_screen_targets() <| $(var target)
+    if target.forIlsOnly
+      return
     var color = float4(Color4(data.color))
     if get_radar_hud_selected_target_blinking()
       let mult = 0.5 * (1.f - cos((time % 0.5) / 0.5 * PI));//InOutSine easing
@@ -82,12 +84,20 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
 
     if get_radar_hud_targeting_indicator_has_distance_scale()
       let distText = get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, target.dist, true, 0.1)
-      let strBox = get_str_bbox(distText, distText |> length(), fctx)
-      ctx |> goto_xy(rb.x + ctx |> hdpx(5.), lt.y + strBox.width.y)
+      let distStrBox = get_str_bbox(distText, distText |> length(), fctx)
+      ctx |> goto_xy(rb.x + ctx |> hdpx(5.), lt.y + distStrBox.width.y)
       ctx |> set_font(data.fontId, 0, 0)
       ctx |> set_font_ht(data.fontSize);
       ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
       ctx |> draw_str_scaled(1.0, distText, distText |> length())
+
+      let altText = get_measure_units_text(MeasureUnitsTypes MEASURE_UNIT_DIST, target.altRel, true, 0.1)
+      let altStrBox = get_str_bbox(altText, altText |> length(), fctx)
+      ctx |> goto_xy(target.pos.x - 0.5 * altStrBox.width.x, target.pos.y + 0.5 * targetOnScreenWidth + ctx |> hdpx(5.) + altStrBox.width.y)
+      ctx |> set_font(data.fontId, 0, 0)
+      ctx |> set_font_ht(data.fontSize);
+      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+      ctx |> draw_str_scaled(1.0, altText, altText |> length())
 
     if /*targerAspectEnabled*/target.losSpeed < 3000.
       let pos = float2((lt.x + rb.x) * 0.5, rb.y + 0.75 * targetOnScreenWidth)

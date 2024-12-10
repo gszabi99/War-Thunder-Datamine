@@ -1,9 +1,10 @@
 from "%scripts/dagui_library.nut" import *
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
 let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
+let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
-::Input.NullInput <- class (::Input.InputBase) {
+let NullInput = class (InputBase) {
   showPlaceholder = false
 
   function getMarkup() {
@@ -26,3 +27,4 @@ let { getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut
     }
   }
 }
+return {NullInput}

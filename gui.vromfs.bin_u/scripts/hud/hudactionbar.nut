@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
+from "%scripts/weaponry/weaponryConsts.nut" import fakeBullets_prefix
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
@@ -41,6 +43,7 @@ let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/generi
 let { openHudAirWeaponSelector, isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { getExtraActionItemsView } = require("%scripts/hud/hudActionBarExtraActions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -90,12 +93,12 @@ enum ActionBarVsisbility {
 local isCollapseBtnHidden = false
 
 function getCollapseShText() {
-  let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
+  let shType = g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
   return shType.getFirstInput(COLLAPSE_ACTION_BAR_SH_ID)
 }
 
 function hasCollapseShortcut() {
-  let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
+  let shType = g_shortcut_type.getShortcutTypeByShortcutId(COLLAPSE_ACTION_BAR_SH_ID)
   return shType.isAssigned(COLLAPSE_ACTION_BAR_SH_ID)
 }
 
@@ -152,7 +155,7 @@ let class ActionBar {
     this.isFootballMission = (get_game_type() & GT_FOOTBALL) != 0
 
     let savedVisibilityPath = getVisibilityStateProfilePath()
-    if (::g_login.isProfileReceived() && savedVisibilityPath != null) {
+    if (isProfileReceived.get() && savedVisibilityPath != null) {
       let savedVisibility = loadLocalByAccount(savedVisibilityPath, ActionBarVsisbility.EXPANDED)
       this.isCollapsed = savedVisibility != ActionBarVsisbility.EXPANDED
       updateExtWatched({ isActionBarCollapseBtnHidden = savedVisibility == ActionBarVsisbility.HIDDEN })
@@ -199,7 +202,7 @@ let class ActionBar {
     if (!this.isCollapsed)
       isCollapseBtnHidden = false
 
-    if (::g_login.isProfileReceived())
+    if (isProfileReceived.get())
       saveLocalByAccount(getVisibilityStateProfilePath(), this.getActionBarVisibility())
 
     if (!this.isCollapsed)
@@ -329,7 +332,7 @@ let class ActionBar {
           : item?.modificationName == "152mm_football_jump" ? "ID_FIRE_GM_MACHINE_GUN"
           : shortcutId
 
-      let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+      let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
       let scInput = shType.getFirstInput(shortcutId)
       shortcutText = scInput.getTextShort()
       isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID
@@ -372,7 +375,7 @@ let class ActionBar {
     if (modifName) {
       // if fake bullets are not generated yet, generate them
       if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
-        getBulletsSetData(unit, ::fakeBullets_prefix, {})
+        getBulletsSetData(unit, fakeBullets_prefix, {})
       let data = getBulletsSetData(unit, modifName)
       viewItem.bullets <- handyman.renderCached("%gui/weaponry/bullets.tpl", getBulletsIconView(data))
       viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, modifName, { isInHudActionBar = true })
@@ -764,7 +767,7 @@ let class ActionBar {
       let item = this.buildSecondItemView(action, index)
       local code = $"ID_SHIP_ACTION_BAR_ITEM_{index+1}"
 
-      let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(code)
+      let shType = g_shortcut_type.getShortcutTypeByShortcutId(code)
       let scInput = shType.getFirstInput(code)
       let shortcutText = scInput.getTextShort()
       let isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID

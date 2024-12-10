@@ -1,7 +1,8 @@
 from "%scripts/dagui_natives.nut" import is_tier_available, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
-from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, fakeBullets_prefix
 
+let { get_bullets_locId_by_caliber, get_modifications_locId_by_caliber } = require("%scripts/options/optionsStorage.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -104,7 +105,7 @@ function isWeaponTierAvailable(unit, tierNum) {
 }
 
 function isFakeBullet(modName) {
-  return startsWith(modName, ::fakeBullets_prefix)
+  return startsWith(modName, fakeBullets_prefix)
 }
 
 function setUnitLastBullets(unit, groupIndex, value) {
@@ -438,7 +439,7 @@ function getBulletsGroupCount(air, full = false) {
 
     let bulletSetsQuantity = air.unitType.bulletSetsQuantity
     if (air.bulGroups < bulletSetsQuantity) {
-      let add = getBulletsSetData(air, ::fakeBullets_prefix, modList) || 0
+      let add = getBulletsSetData(air, fakeBullets_prefix, modList) || 0
       air.bulGroups = min(air.bulGroups + add, bulletSetsQuantity)
     }
   }
@@ -589,7 +590,7 @@ function getLastFakeBulletsIndex(unit) {
 }
 
 function getFakeBulletName(bulletIdx) {
-  return $"{::fakeBullets_prefix}{bulletIdx}_default"
+  return $"{fakeBullets_prefix}{bulletIdx}_default"
 }
 
 function getBulletAnnotation(name, addName = null) {
@@ -716,7 +717,7 @@ function getModificationInfo(air, modifName, isShortDesc = false,
 
     if (res.desc == "") {
       local caliber = 0.0
-      foreach (n in ::modifications_locId_by_caliber)
+      foreach (n in get_modifications_locId_by_caliber())
         if (locId.len() > n.len() && locId.slice(locId.len() - n.len()) == n) {
           locId = n
           caliber = ("caliber" in mod) ? mod.caliber : 0.0
@@ -755,7 +756,7 @@ function getModificationInfo(air, modifName, isShortDesc = false,
   if (isShortDesc || ammo_pack_len) { //bullets name
     local locId = modifName
     let caliber = limitedName ? set.caliber.tointeger() : set.caliber
-    foreach (n in ::bullets_locId_by_caliber)
+    foreach (n in get_bullets_locId_by_caliber())
       if (locId.len() > n.len() && locId.slice(locId.len() - n.len()) == n) {
         locId = n
         break
@@ -1096,7 +1097,7 @@ function getOptionsBulletsList(air, groupIndex, needTexts = false, isForcedAvail
 function getFakeBulletsModByName(unit, modName) {
   if (isFakeBullet(modName)) {
     let groupIdxStr = slice(
-      modName, ::fakeBullets_prefix.len(), ::fakeBullets_prefix.len() + 1)
+      modName, fakeBullets_prefix.len(), fakeBullets_prefix.len() + 1)
     let groupIdx = to_integer_safe(groupIdxStr, -1)
     if (groupIdx < 0)
       return null

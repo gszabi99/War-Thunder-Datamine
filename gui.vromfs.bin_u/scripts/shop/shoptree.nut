@@ -111,7 +111,8 @@ function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem = null)
     item.used = true
     curBranch.append(item)
 
-    let next = (item.name in brIdxTbl) ? brIdxTbl[item.name] : []
+    let searchReqName = item?.airsGroup[0].name ?? item.name
+    let next = (searchReqName in brIdxTbl) ? brIdxTbl[searchReqName] : []
     if (idx < rangeData.len() - 1 && !rangeData[idx + 1]?.reqAir)
       next.append(idx + 1)
     if (next.len() == 0)
@@ -170,8 +171,9 @@ function getBranchesTbl(rangeData) {
     item.header <- i == 0
     if ((i < rangeData.len() - 1) && !(rangeData[i + 1]?.reqAir))
       item.childs += rangeData[i + 1].childs + (1 + rankK * rangeData[i + 1].rank)
-    if (item.name in addCount)
-      item.childs += addCount.$rawdelete(item.name)
+    let searchReqName = item?.airsGroup[0].name ?? item.name
+    if (searchReqName in addCount)
+      item.childs += addCount.$rawdelete(searchReqName)
     let itemReqAir = item?.futureReqAir ?? item?.reqAir
     if (itemReqAir)
       if (itemReqAir == "")

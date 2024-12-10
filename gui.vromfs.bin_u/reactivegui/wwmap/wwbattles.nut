@@ -3,6 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { floor } = require("math")
 let { battlesInfo, hoveredBattle, getBattleIconData, getBattleState } = require("%rGui/wwMap/wwBattlesStates.nut")
 let { convertToRelativeMapCoords, activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
+let { isShowBattlesFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
 
 let function mkBattleIcon(battleInfo, areaBounds) {
   return function() {
@@ -33,13 +34,14 @@ let function mkBattleIcon(battleInfo, areaBounds) {
 }
 
 function battles() {
-  if (battlesInfo.get().len() == 0)
+  let isShowBattles = Computed(@() battlesInfo.get().len() > 0 && isShowBattlesFilter.get())
+  if (!isShowBattles.get())
     return {
-      watch = [battlesInfo, activeAreaBounds]
+      watch = [isShowBattles, activeAreaBounds]
     }
 
   return {
-    watch = [battlesInfo, activeAreaBounds]
+    watch = [isShowBattles, activeAreaBounds]
     size = activeAreaBounds.get().size
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

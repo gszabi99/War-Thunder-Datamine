@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_player_army_for_hud
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import locOrStrip
 
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
@@ -357,7 +358,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
       else {
         local tdProp = textPadding
         local textType = "activeText"
-        let text = ::locOrStrip(item.tostring())
+        let text = locOrStrip(item.tostring())
         local halign = "center"
         local pareText = true
         local imageBg = ""

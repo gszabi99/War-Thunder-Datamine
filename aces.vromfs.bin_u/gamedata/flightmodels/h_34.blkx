@@ -1153,6 +1153,49 @@
       ]
     }
   },
+  "helicopter": {
+    "rotorBladeAnglesCoeffs": [
+      0.15,
+      0.25,
+      0.25
+    ],
+    "propellerStrainCoeff": -0.01
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    }
+  },
+  "gunnerOpticFps": {
+    "pos": [
+      0.3,
+      0.0,
+      0.0
+    ],
+    "head": "optic1_turret",
+    "angularLimits": [
+      -115.0,
+      115.0,
+      -50.0,
+      25.0
+    ],
+    "crosshairPreset": "test_crosshair"
+  },
   "commonWeapons": {
     "Weapon": {
       "dummy": true,
@@ -1183,29 +1226,6 @@
         ]
       }
     }
-  },
-  "helicopter": {
-    "rotorBladeAnglesCoeffs": [
-      0.15,
-      0.25,
-      0.25
-    ],
-    "propellerStrainCoeff": -0.01
-  },
-  "gunnerOpticFps": {
-    "pos": [
-      0.3,
-      0.0,
-      0.0
-    ],
-    "head": "optic1_turret",
-    "angularLimits": [
-      -115.0,
-      115.0,
-      -50.0,
-      25.0
-    ],
-    "crosshairPreset": "test_crosshair"
   },
   "weapon_presets": {
     "preset": [
@@ -1880,26 +1900,6 @@
         }
       }
     ]
-  },
-  "nightVision": {
-    "gunnerIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
-    },
-    "pilotIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
-    }
   },
   "modifications": {
     "new_compressor_mi_4": {

@@ -9,7 +9,7 @@ let {subscribe_to_relationships_change_events, ListType} = require("%xboxLib/imp
 let {fetchContactsList} = require("%scripts/contacts/xboxContactsManager.nut")
 let {init_default} = require("%scripts/xbox/user.nut")
 let {startLogout} = require("%scripts/login/logout.nut")
-
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 init_default(null)
 
@@ -27,7 +27,7 @@ function on_relationships_change(list, _change_type, _xuids) {
   if (list != ListType.Friends) {
     return
   }
-  if (!::g_login.isLoggedIn()) {
+  if (!isLoggedIn.get()) {
     return
   }
   fetchContactsList()

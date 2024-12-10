@@ -32,7 +32,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetOperationWinner,
+let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
   wwGetOperationTimeMillisec, wwGetZoneSideByName, wwGetAirfieldsCount, wwGetSelectedAirfield,
   wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo, wwGetConfigurableValues,
   wwGetReinforcementsInfo, wwGetBattlesInfo, wwGetMapCellByCoords } = require("worldwar")
@@ -54,6 +54,9 @@ let { openWwOperationRewardPopup } = require("%scripts/worldWar/inOperation/hand
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinWorldwarBattle
 } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
+let { getWWLogsData, clearWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
+let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -176,7 +179,7 @@ g_world_war = {
       return
 
     let operation = getOperationById(operationId)
-    operation?.setFinishedStatus(this.isCurrentOperationFinished())
+    operation?.setFinishedStatus(isOperationFinished())
   }
 
   function isWwOperationInviteEnable() {
@@ -223,7 +226,7 @@ g_world_war = {
     wwstorage.curOperationCountry = null
 
     removeAllGenericTooltip()
-    ::g_ww_logs.clear()
+    clearWWLogs()
     if (!wwIsOperationLoaded())
       return
 
@@ -759,13 +762,6 @@ g_world_war = {
     return blk
   }
 
-  function isCurrentOperationFinished() {
-    if (!wwIsOperationLoaded())
-      return false
-
-    return wwGetOperationWinner() != SIDE_NONE
-  }
-
   function getReinforcementsInfo() {
     let blk = DataBlock()
     wwGetReinforcementsInfo(blk)
@@ -860,7 +856,6 @@ g_world_war = {
     blk.setStr("moveType", moveType)
     blk.setStr("army", army.name)
     blk.setInt("targetCellIdx", cellIdx)
-
     let appendToPath = getTblValue("appendToPath", params, false)
     if (appendToPath)
       blk.setBool("appendToPath", appendToPath)
@@ -948,7 +943,7 @@ g_world_war = {
         continue
 
       if (g_ww_unit_type.isAir(army.unitType)) {
-        let targetAirfieldIdx = wwFindAirfieldByCoordinates(toX, toY)
+        let targetAirfieldIdx = hoveredAirfieldIndex.get() ?? wwFindAirfieldByCoordinates(toX, toY)
         this.moveSelectedArmyToCell(cellIdx, {
           army = army
           target = target
@@ -1063,7 +1058,7 @@ g_world_war = {
   }
 
   function requestLogs(loadAmount, useLogMark, cb, errorCb) {
-    let logMark = useLogMark ? ::g_ww_logs.lastMark : ""
+    let logMark = useLogMark ? getWWLogsData().lastMark : ""
     let reqBlk = DataBlock()
     reqBlk.setInt("count", loadAmount)
     reqBlk.setStr("last", logMark)

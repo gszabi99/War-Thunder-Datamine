@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
+
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let getNearestMap = function(mapsList) {
@@ -46,7 +48,7 @@ let getOperationGroupByMapId = @(mapId)
   u.search(::g_ww_global_status_type.OPERATIONS_GROUPS.getList(), @(og) og.mapId == mapId)
     ?? ::WwOperationsGroup(mapId)
 
-let isMyClanInQueue = @() ::is_in_clan()
+let isMyClanInQueue = @() is_in_clan()
   && u.search(::g_ww_global_status_type.QUEUE.getList(), @(q) q.isMyClanJoined()) != null
 
 ::g_ww_global_status_actions <- {   //!!!FIX ME: This global table used in main scripts. It is necessary to remove use of world war scripts from the main scripts and remove this table

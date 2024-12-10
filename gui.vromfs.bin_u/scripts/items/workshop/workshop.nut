@@ -11,6 +11,7 @@ let Set = require("workshopSet.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
 let { isArray } = require("%sqstd/underscore.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let OUT_OF_DATE_DAYS_WORKSHOP = 28
 
@@ -34,7 +35,7 @@ function checkBlkDuplicates(cfg, cfgName) {
 }
 
 function initOnce() {
-  if (isInited || !::g_login.isProfileReceived())
+  if (isInited || !isProfileReceived.get())
     return
   isInited = true
   setsList.clear()

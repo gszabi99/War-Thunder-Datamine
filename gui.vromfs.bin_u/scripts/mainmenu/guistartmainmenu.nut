@@ -10,13 +10,14 @@ let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { dynamicClear } = require("dynamicMission")
 let { mission_desc_clear } = require("guiMission")
+let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
 
 local dbgStartCheck = 0
 
 function gui_start_mainmenu(params = {}) {
   let { allowMainmenuActions = true } = params
   if (dbgStartCheck++) {
-    let msg = $"Error: recursive start mainmenu call. loginState = {::g_login.getStateDebugStr()}"
+    let msg = $"Error: recursive start mainmenu call. loginState = {getStateDebugStr()}"
     log(msg)
     debug_dump_stack()
     script_net_assert_once("mainmenu recursion", msg)
@@ -43,7 +44,7 @@ function gui_start_mainmenu_reload(params = {}) {
   log("Forced reload mainmenu")
   let { showShop = false } = params
   if (dbgStartCheck) {
-    let msg = $"Error: recursive start mainmenu call. loginState = {::g_login.getStateDebugStr()}"
+    let msg = $"Error: recursive start mainmenu call. loginState = {getStateDebugStr()}"
     log(msg)
     debug_dump_stack()
     script_net_assert_once("mainmenu recursion", msg)

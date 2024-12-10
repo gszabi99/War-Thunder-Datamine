@@ -1,14 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { getCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 
-::g_clan_log_type <- {
+let g_clan_log_type = {
   types = []
 }
 
-::g_clan_log_type_cache <- {
+let g_clan_log_type_cache = {
   byName = {}
 }
 
@@ -19,7 +19,7 @@ let getColoredNick = @(logEntry)
     getPlayerName(logEntry.nick)
   ), "</Link>")
 
-::g_clan_log_type.template <- {
+g_clan_log_type.template <- {
   name = ""
   logDetailsCommonFields = []
   logDetailsIndividualFields = []
@@ -52,7 +52,7 @@ let getColoredNick = @(logEntry)
   }
 }
 
-enums.addTypesByGlobalName("g_clan_log_type", {
+enumsAddTypes(g_clan_log_type, {
   CREATE = {
     name = "create"
     logDetailsCommonFields = [
@@ -180,7 +180,10 @@ enums.addTypesByGlobalName("g_clan_log_type", {
   UNKNOWN = {}
 })
 
-::g_clan_log_type.getTypeByName <- function getTypeByName(name) {
-  return enums.getCachedType("name", name, ::g_clan_log_type_cache.byName,
-                                       ::g_clan_log_type, ::g_clan_log_type.UNKNOWN)
+g_clan_log_type.getTypeByName <- function getTypeByName(name) {
+  return getCachedType("name", name, g_clan_log_type_cache.byName,
+                                       g_clan_log_type, g_clan_log_type.UNKNOWN)
+}
+return {
+  g_clan_log_type
 }

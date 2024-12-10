@@ -1,0 +1,116 @@
+replaySystemPage {
+  flow: vertical;
+  width: pw;
+}
+
+replaySystemHeader {
+  behaviour: button;
+  width: pw;
+  flow: horizontal;
+  background-color: #294a7a;
+  css-hier-invalidate: yes;
+  not-input-transparent: yes;
+  on_click: onContentExpand;
+}
+
+replaySystemHeader > activeText {
+  input-transparent: yes;
+  margin-left: 2.5@blockInterval;
+}
+
+replaySystemHeader > arrow {
+  margin-left: 2.5@blockInterval;
+  size: 2@blockInterval, 2@blockInterval;
+  valign: center;
+  background-image:#ui/gameuiskin#expand_info;
+  background-color:@white;
+  input-transparent: yes;
+}
+
+replaySystemHeader:hover {
+  background-color: #387ccc;
+}
+
+replaySystemTab {
+  width: pw;
+  flow: vertical;
+  css-hier-invalidate: yes;
+  margin-top: 0.5@blockInterval;
+}
+
+replaySystemTab > content {
+  width: pw;
+  margin: 6@blockInterval, 1@blockInterval, 0, 1@blockInterval;
+  flow: vertical;
+  display: hide;
+}
+
+replaySystemTab[expanded=yes] > content {
+  display: show;
+}
+
+replaySystemTab > content > row {
+  width: pw;
+  flow: horizontal;
+  margin: 0, 0.5@blockInterval, 0, 0.5@blockInterval;
+}
+
+replaySystemTab > content > row > slider {
+  height:1@buttonHeight;
+  width:0.66pw;
+  margin: 1@blockInterval, 0, 1@blockInterval, 0;
+  valign: center;
+  css-hier-invalidate: yes;
+  clicks-by-points: yes;
+  optionAlign: 1;
+  on_change_value: onSliderValueChange;
+}
+
+replaySystemTab > content > row > slider > sliderButton {
+  display:hide;
+}
+
+replaySystemTab > content > row > slider > textValue {
+  re-type: text;
+  input-transparent: yes;
+  pos: 0.5pw-0.5w, 0.5ph-0.5h;
+  font: @fontNormal;
+  color: @activeTextColor;
+}
+
+replaySystemTab > content > row > activeText {
+  valign: center;
+  margin: 0;
+}
+
+replaySystemTab > content > row > Button_text {
+  valign: center;
+  margin: 1@blockInterval, 0, 1@blockInterval, 0;
+  on_click: onButtonClick;
+}
+
+replaySystemTab > content > row > CheckBox {
+  valign: center;
+  margin: 0;
+  on_change_value: onCheckBoxSwitch;
+  color: @activeTextColor;
+}
+
+replaySystemTab > replaySystemHeader > arrow {
+  rotation: 270;
+}
+
+replaySystemTab[expanded=yes] > replaySystemHeader > arrow {
+  rotation: 0;
+}
+
+replaySystemTab > content > row > textValue {
+  re-type: text;
+  color: @commonTextColor;
+  font: @fontNormal;
+  text-align: center;
+  margin: 1@blockInterval, 0, 1@blockInterval, 0;
+  background-color: @sliderBgColor;
+  valign: center;
+  height: 1@buttonHeight;
+}

@@ -35,6 +35,7 @@ let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByIn
 } = require("%scripts/crew/crewDiscount.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -126,7 +127,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       let unit = this.getCurShowUnit()
       this.updateUnitIcon(unit)
 
-      let savedIndex = ::g_login.isProfileReceived() ?
+      let savedIndex = isProfileReceived.get() ?
         loadLocalAccountSettings(this.configSavePath, 0) : 0
       this.listboxObj.setValue(min(savedIndex, showTabsCount - 1))
       this.updateContentVisibility()
@@ -208,7 +209,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       collapseBtnContainer.collapsed = isPanelHidden ? "yes" : "no"
     showObjById("slot_info_content", ! isPanelHidden, this.scene)
     this.updateVisibleTabContent(true)
-    if (::g_login.isProfileReceived())
+    if (isProfileReceived.get())
       saveLocalAccountSettings(this.configSavePath, currentIndex)
   }
 

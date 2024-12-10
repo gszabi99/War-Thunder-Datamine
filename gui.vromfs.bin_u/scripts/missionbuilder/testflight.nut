@@ -116,14 +116,14 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onChangeRadarModeSelectedUnit(obj) {
-    set_option_radar_name(unitNameForWeapons.get(), obj.getValue())
+    set_option_radar_name(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get()), obj.getValue())
 
     this.updateOption(USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT)
     this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT)
   }
 
   function onChangeRadarScanRangeSelectedUnit(obj) {
-    set_option_radar_scan_pattern_name(unitNameForWeapons.get(), obj.getValue())
+    set_option_radar_scan_pattern_name(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get()), obj.getValue())
 
     this.updateOption(USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT)
   }
@@ -248,12 +248,12 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       )
     }
 
-    let radarModesCount = get_radar_mode_names(unitNameForWeapons.get()).len()
+    let radarModesCount = get_radar_mode_names(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get())).len()
 
     if (hasFeature("allowRadarModeOptions") && radarModesCount > 0
       && (radarModesCount > 1
-        || get_radar_scan_pattern_names(unitNameForWeapons.get()).len() > 1
-        || get_radar_range_values(unitNameForWeapons.get()).len() > 1)) {
+        || get_radar_scan_pattern_names(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get())).len() > 1
+        || get_radar_range_values(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get())).len() > 1)) {
       this.options.append(
         [USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, "spinner"],
         [USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, "spinner"],
@@ -427,8 +427,10 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       misBlk.is_ship_spawn = airSpawnValue == AIR_SPAWN_POINT.CARRIER
       misBlk.air_spawn_point = airSpawnValue
 
-      if (isAir)
-        misBlk.is_high = get_gui_option(USEROPT_TARGET_RANK) == 0
+      if (isAir) {
+        let targetRankIndex = get_gui_option(USEROPT_TARGET_RANK)
+        misBlk.target_rank_index = targetRankIndex + 1
+      }
       let testFlightShip = get_unittags_blk()?[this.unit.name].testFlightShip ?? ""
       if (testFlightShip != "")
         misBlk.aircraft_ship_name = testFlightShip

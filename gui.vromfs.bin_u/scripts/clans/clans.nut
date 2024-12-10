@@ -2,8 +2,11 @@ from "%scripts/dagui_natives.nut" import clan_get_role_rank, ps4_is_ugc_enabled,
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
 from "%scripts/contacts/contactsConsts.nut" import contactEvent
+from "%scripts/clans/clanState.nut" import is_in_clan
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
+let { g_clan_log_type } = require("%scripts/clans/clanLogType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -34,6 +37,7 @@ let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -58,7 +62,7 @@ registerPersistentData("ClansGlobals", getroottable(),
 
   function updateClanContacts() {
     contactsByGroups[EPLX_CLAN] <- {}
-    if (!::is_in_clan())
+    if (!is_in_clan())
       return
 
     foreach (block in (::my_clan_info?.members ?? [])) {
@@ -311,7 +315,7 @@ function clearClanTagForRemovedMembers(prevUids, currUids) {
           ::getContact(logEntry.uId, logEntry.uN)
 
         let logEntryTable = convertBlk(logEntry)
-        let logType = ::g_clan_log_type.getTypeByName(logEntryTable.ev)
+        let logType = g_clan_log_type.getTypeByName(logEntryTable.ev)
 
         if ("time" in logEntryTable)
           logEntryTable.time = time.buildDateTimeStr(logEntryTable.time)
@@ -343,7 +347,7 @@ function clearClanTagForRemovedMembers(prevUids, currUids) {
 }
 
 ::g_clans.hasRightsToQueueWWar <- function hasRightsToQueueWWar() {
-  if (!::is_in_clan())
+  if (!is_in_clan())
     return false
   if (!hasFeature("WorldWarClansQueue"))
     return false
@@ -384,7 +388,7 @@ function clearClanTagForRemovedMembers(prevUids, currUids) {
 
 ::g_clans.loadSeenCandidates <- function loadSeenCandidates() {
   let result = DataBlock()
-  if (::g_login.isProfileReceived() && this.isHaveRightsToReviewCandidates()) {
+  if (isProfileReceived.get() && this.isHaveRightsToReviewCandidates()) {
     let loaded = loadLocalAccountSettings(CLAN_SEEN_CANDIDATES_SAVE_ID, null)
     if (loaded != null)
       result.setFrom(loaded)
@@ -393,7 +397,7 @@ function clearClanTagForRemovedMembers(prevUids, currUids) {
 }
 
 ::g_clans.saveCandidates <- function saveCandidates() {
-  if (!::g_login.isProfileReceived() || !this.isHaveRightsToReviewCandidates() || !this.seenCandidatesBlk)
+  if (!isProfileReceived.get() || !this.isHaveRightsToReviewCandidates() || !this.seenCandidatesBlk)
     return
   saveLocalAccountSettings(CLAN_SEEN_CANDIDATES_SAVE_ID, this.seenCandidatesBlk)
 }
@@ -431,7 +435,7 @@ function clearClanTagForRemovedMembers(prevUids, currUids) {
 }
 
 ::g_clans.isHaveRightsToReviewCandidates <- function isHaveRightsToReviewCandidates() {
-  if (!::is_in_clan() || !hasFeature("Clans"))
+  if (!is_in_clan() || !hasFeature("Clans"))
     return false
   let rights = ::clan_get_role_rights(clan_get_my_role())
   return isInArray("MEMBER_ADDING", rights) || isInArray("MEMBER_REJECT", rights)
@@ -793,10 +797,6 @@ function handleNewMyClanData() {
   })
 }
 
-::is_in_clan <- function is_in_clan() {
-  return clan_get_my_clan_id() != "-1"
-}
-
 ::is_in_my_clan <- function is_in_my_clan(name = null, uid = null) {
   if (::my_clan_info == null)
     return false
@@ -1066,7 +1066,7 @@ class ClanSeasonTitle {
   }
 
   function getUpdatedClanInfo(unlockBlk) {
-    local isMyClan = ::is_in_clan() && (unlockBlk?.clanId ?? "").tostring() == clan_get_my_clan_id()
+    local isMyClan = is_in_clan() && (unlockBlk?.clanId ?? "").tostring() == clan_get_my_clan_id()
     return {
       clanTag  = isMyClan ? clan_get_my_clan_tag()  : unlockBlk?.clanTag
       clanName = isMyClan ? clan_get_my_clan_name() : unlockBlk?.clanName
@@ -1262,8 +1262,8 @@ let ps4ContentDisabledRegExp = regexp2("[^ ]")
 ::getMyClanMemberPresence <- function getMyClanMemberPresence(nick) {
   let clanActiveUsers = []
 
-  foreach (roomData in ::g_chat.rooms)
-    if (::g_chat.isRoomClan(roomData.id) && roomData.users.len() > 0) {
+  foreach (roomData in g_chat.rooms)
+    if (g_chat.isRoomClan(roomData.id) && roomData.users.len() > 0) {
       foreach (user in roomData.users)
         clanActiveUsers.append(user.name)
       break

@@ -7,6 +7,7 @@ let DataBlock = require("DataBlock")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let aeroSmokesList    = mkWatched(persist, "aeroSmokesList", [])
 let buyableSmokesList = mkWatched(persist, "buyableSmokesList", [])
@@ -37,7 +38,7 @@ function updateAeroSmokeList() {
 }
 
 function updateBuyableSmokesList() {
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
   let res = []
   foreach (inst in aeroSmokesList.value) {

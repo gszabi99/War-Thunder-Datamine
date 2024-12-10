@@ -1,5 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, copy_to_clipboard, set_char_cb, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
+
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -428,7 +430,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (value < 0 || value >= obj.childrenCount())
       return
 
-    let idx = to_integer_safe(::getObjIdByPrefix(obj.getChild(value), "page_"), -1)
+    let idx = to_integer_safe(getObjIdByPrefix(obj.getChild(value), "page_"), -1)
     let newPage = getTblValue(idx, ::userlog_pages)
     if (!newPage || newPage == this.curPage)
       return

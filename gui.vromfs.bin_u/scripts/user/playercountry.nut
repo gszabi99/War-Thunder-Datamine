@@ -5,10 +5,11 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let sonyUser = require("sony.user")
 let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_region } = require("%xboxLib/impl/app.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let getProfileCountry = @() get_profile_country() ?? "country_0"
 
-let profileCountrySq = mkWatched(persist, "profileCountrySq", ::g_login.isProfileReceived()
+let profileCountrySq = mkWatched(persist, "profileCountrySq", isProfileReceived.get()
   ? getProfileCountry()
   : "country_0")
 

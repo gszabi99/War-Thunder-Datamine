@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let rwrSetting = require("%rGui/rwrSetting.nut")
 
-let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nut")
+let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("%rGui/twsState.nut")
 
 let ThreatType = {
   AIRBORNE_PULSE = 0,
@@ -11,6 +11,7 @@ let ThreatType = {
 }
 
 let color = Color(10, 202, 10, 250)
+let backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -29,34 +30,42 @@ function calcRwrTargetRadius(target) {
 
 let iconRadiusBaseRel = 0.15
 
-function createRwrTarget(index, settings, objectStyle) {
-  let target = rwrTargets[index]
+function createRwrTarget(index, settingsIn, objectStyle) {
+  let target = rwrTargets[rwrTargetsOrder[index]]
 
   if (!target.valid || target.groupId == null)
     return @() { }
 
-  let directionGroup = target.groupId >= 0 && target.groupId < settings.directionGroups.len() ? settings.directionGroups[target.groupId] : null
+  let directionGroup = target.groupId >= 0 && target.groupId < settingsIn.directionGroups.len() ? settingsIn.directionGroups[target.groupId] : null
   let targetRadiusRel = calcRwrTargetRadius(target)
   let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
 
   local targetType = null
-  if (directionGroup == null || directionGroup?.text != null)
-    targetType = @()
-      styleText.__merge({
-        rendObj = ROBJ_TEXT
-        pos = [pw(target.x * 100.0 * targetRadiusRel), ph(target.y * 100.0 * targetRadiusRel)]
-        size = flex()
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        fontSize = objectStyle.fontScale * styleText.fontSize
-        text = directionGroup != null ? directionGroup.text : settings.unknownText
-      })
+  if (directionGroup == null || directionGroup?.text != null) {
+    local targetTypeText = styleText.__merge({
+      rendObj = ROBJ_TEXT
+      size = SIZE_TO_CONTENT
+      color = color
+      fontSize = objectStyle.fontScale * styleText.fontSize
+      text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
+      padding = [2, 2]
+    })
+    let targetTypeTextSize = calc_comp_size(targetTypeText)
+    targetType = @() {
+      rendObj = ROBJ_SOLID
+      color = backgroundColor
+      pos = [pw(target.x * 100.0 * targetRadiusRel - 0.125 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.125 * targetTypeTextSize[1])]
+      children = targetTypeText
+    }
+  }
+
+  local background = null
 
   local icon = null
   if (directionGroup != null && directionGroup?.type != null) {
-    local commands = null
+    local iconCommands = null
     if (directionGroup.type == ThreatType.AIRBORNE_PULSE)
-      commands = [
+      iconCommands = [
         [ VECTOR_POLY,
           target.x * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
           target.y * targetRadiusRel * 100.0 + 0.25 * iconRadiusRel * 100.0,
@@ -68,7 +77,7 @@ function createRwrTarget(index, settings, objectStyle) {
           target.y * targetRadiusRel * 100.0 + 0.10 * iconRadiusRel * 100.0 ]
       ]
     else if (directionGroup.type == ThreatType.AIRBORNE_PULSE_DOPPLER)
-      commands = [
+      iconCommands = [
         [ VECTOR_POLY,
           target.x * targetRadiusRel * 100.0 - 0.75 * iconRadiusRel * 100.0,
           target.y * targetRadiusRel * 100.0 + 0.25 * iconRadiusRel * 100.0,
@@ -84,21 +93,49 @@ function createRwrTarget(index, settings, objectStyle) {
           target.y * targetRadiusRel * 100.0 + 0.10 * iconRadiusRel * 100.0 ]
       ]
     else if (directionGroup.type == ThreatType.SHIP)
-      commands = []
-    if (commands != null)
+      iconCommands = []
+    if (iconCommands != null) {
+      if (!target.launch && !target.priority)
+        background = @() {
+          color = color
+          rendObj = ROBJ_VECTOR_CANVAS
+          lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale
+          fillColor = 0
+          size = flex()
+          commands = iconCommands
+        }
       icon = @() {
         color = color
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
         fillColor = 0
         size = flex()
-        commands = commands
+        commands = iconCommands
       }
+    }
   }
 
   let attackOpacityRwr = Computed(@() (target.launch && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
   local launch = null
   if (target.launch) {
+    let launchCommands = [
+      [ VECTOR_ELLIPSE,
+        target.x * targetRadiusRel * 100.0,
+        target.y * targetRadiusRel * 100.0,
+        iconRadiusRel * 100.0,
+        iconRadiusRel * 100.0 ]
+    ]
+    if (!target.priority)
+      background = @() {
+        watch = attackOpacityRwr
+        color = backgroundColor
+        opacity = attackOpacityRwr.get()
+        rendObj = ROBJ_VECTOR_CANVAS
+        lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale
+        fillColor = backgroundColor
+        size = flex()
+        commands = launchCommands
+      }
     launch = @() {
       watch = attackOpacityRwr
       color = color
@@ -107,116 +144,52 @@ function createRwrTarget(index, settings, objectStyle) {
       lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
       fillColor = 0
       size = flex()
-      commands = [
-        [ VECTOR_ELLIPSE,
-          target.x * targetRadiusRel * 100.0,
-          target.y * targetRadiusRel * 100.0,
-          iconRadiusRel * 100.0,
-          iconRadiusRel * 100.0]
-       ]
+      commands = launchCommands
     }
   }
-  return @() {
-    size = flex()
-    children = [
-      {
-        pos = [pw(50), ph(50)]
-        size = flex()
-        children = [
-          icon,
-          launch
-        ]
-      },
-      targetType
-    ]
-  }
-}
 
-function targetRangeSmaller(left, right, settings) {
-  let leftDirectionGroup = left.groupId >= 0 && left.groupId < settings.directionGroups.len() ? settings.directionGroups[left.groupId] : null
-  let rightDirectionGroup = right.groupId >= 0 && right.groupId < settings.directionGroups.len() ?
-    settings.directionGroups[right.groupId] : null
-  if (leftDirectionGroup != null && leftDirectionGroup?.lethalRangeRel != null &&
-      rightDirectionGroup != null && rightDirectionGroup?.lethalRangeRel != null) {
-    let leftOutsideLethalRangeRel = left.rangeRel - leftDirectionGroup.lethalRangeRel
-    let rightOutsideLethalRangeRel = right.rangeRel - rightDirectionGroup.lethalRangeRel
-    if (leftOutsideLethalRangeRel < 0.0 && rightOutsideLethalRangeRel < 0.0)
-      return left.rangeRel < right.rangeRel
-    else
-      return leftOutsideLethalRangeRel < rightOutsideLethalRangeRel
-  }
-  else if (leftDirectionGroup != null && leftDirectionGroup?.lethalRangeRel != null &&
-          !(rightDirectionGroup != null && rightDirectionGroup?.lethalRangeRel != null))
-    return true
-  else if (!(leftDirectionGroup != null && leftDirectionGroup?.lethalRangeRel != null) &&
-          rightDirectionGroup != null && rightDirectionGroup?.lethalRangeRel != null)
-    return false
-  else
-    return left.rangeRel < right.rangeRel
-}
-
-function targetPriorityGreater(left, right, settings) {
-  if (left.launch && !right.launch)
-    return true
-  else if (left.launch && right.launch)
-    return targetRangeSmaller(left, right, settings)
-  else if (!left.launch && right.launch)
-    return false
-  else if (left.track && !right.track)
-    return true
-  else if (left.track && right.track)
-    return targetRangeSmaller(left, right, settings)
-  else if (!left.track && right.track)
-    return false
-  else
-    return targetRangeSmaller(left, right, settings)
-}
-
-function createRwrPriorityTarget(settings, objectStyle) {
-  local priorityTarget = null
-  for (local i = 0; i < rwrTargets.len(); ++i) {
-    let target = rwrTargets[i]
-    if (target.valid && target.groupId != null) {
-      if (priorityTarget == null || targetPriorityGreater(target, priorityTarget, settings))
-        priorityTarget = target
-    }
-  }
-  if (priorityTarget == null || !priorityTarget.valid || priorityTarget.groupId == null)
-    return @() { }
-
-  let priorityTargetRadiusRel = calcRwrTargetRadius(priorityTarget)
-  let iconRadiusRel = iconRadiusBaseRel * objectStyle.scale
-
-  local priority = @() {
-    color = color
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
-    fillColor = 0
-    size = flex()
-    pos = [pw(0), ph(0)]
-    commands = [
+  local priority = null
+  if (target.priority) {
+    let priorityCommands = [
       [ VECTOR_POLY,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0 - iconRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0 - iconRadiusRel * 100.0,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0 + iconRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0,
-        priorityTarget.x * priorityTargetRadiusRel * 100.0,
-        priorityTarget.y * priorityTargetRadiusRel * 100.0 + iconRadiusRel * 100.0 ]
+        target.x * targetRadiusRel * 100.0 - iconRadiusRel * 100.0,
+        target.y * targetRadiusRel * 100.0,
+        target.x * targetRadiusRel * 100.0,
+        target.y * targetRadiusRel * 100.0 - iconRadiusRel * 100.0,
+        target.x * targetRadiusRel * 100.0 + iconRadiusRel * 100.0,
+        target.y * targetRadiusRel * 100.0,
+        target.x * targetRadiusRel * 100.0,
+        target.y * targetRadiusRel * 100.0 + iconRadiusRel * 100.0 ]
     ]
+    background = @() {
+      color = backgroundColor
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale
+      fillColor = backgroundColor
+      size = flex()
+      pos = [pw(0), ph(0)]
+      commands = priorityCommands
+    }
+    priority = @() {
+      color = color
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
+      fillColor = 0
+      size = flex()
+      pos = [pw(0), ph(0)]
+      commands = priorityCommands
+    }
   }
 
   return @() {
+    pos = [pw(50), ph(50)]
     size = flex()
     children = [
-      {
-        pos = [pw(50), ph(50)]
-        size = flex()
-        children = [
-          priority
-        ]
-      }
+      background,
+      targetType,
+      icon,
+      launch,
+      priority
     ]
   }
 }
@@ -302,22 +275,13 @@ function rwrTargetsComponent(objectStyle) {
   }
 }
 
-function rwrPriorityTargetComponent(objectStyle) {
-  return @() {
-    watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
-    children = createRwrPriorityTarget(settings.get(), objectStyle)
-  }
-}
-
 function scope(scale, style) {
   return {
     size = [pw(scale * style.grid.scale), ph(scale * style.grid.scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
-      rwrTargetsComponent(style.object),
-      rwrPriorityTargetComponent(style.object)
+      rwrTargetsComponent(style.object)
     ]
   }
 }

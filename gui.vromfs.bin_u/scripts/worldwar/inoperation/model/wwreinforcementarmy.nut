@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
@@ -38,7 +39,7 @@ let WwReinforcementArmy = class (WwFormation) {
     this.loadedArmyType = wwGetLoadedArmyType(this.name, true)
     this.hasArtilleryAbility = armyBlock?.specs.canArtilleryFire ?? false
     this.units = wwActionsWithUnitsList.loadUnitsFromBlk(armyBlock.getBlockByName("units"))
-    this.loadedArmies = ::build_blk_from_container(reinforcementBlock?.loadedArmies)
+    this.loadedArmies = build_blk_from_container(reinforcementBlock?.loadedArmies)
 
     let armyArtilleryParams = this.hasArtilleryAbility ?
       ::g_world_war.getArtilleryUnitParamsByBlk(armyBlock.getBlockByName("units")) : null

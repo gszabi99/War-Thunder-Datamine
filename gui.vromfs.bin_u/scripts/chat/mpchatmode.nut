@@ -1,9 +1,10 @@
 from "%scripts/dagui_natives.nut" import is_steam_big_picture
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_mode_with_teams
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad
 } = require("%scripts/user/matchingFeature.nut")
@@ -16,14 +17,14 @@ enum mpChatModeSort {
   PRIVATE
 }
 
-::g_mp_chat_mode <- {
+let g_mp_chat_mode = {
   types = []
   cache = {
     byId = {}
   }
 }
 
-::g_mp_chat_mode.template <- {
+g_mp_chat_mode.template <- {
   id = CHAT_MODE_ALL
   name = ""
   sortOrder = mpChatModeSort.ALL
@@ -34,7 +35,7 @@ enum mpChatModeSort {
   isEnabled   = function() { return false }
 }
 
-enums.addTypesByGlobalName("g_mp_chat_mode", {
+enumsAddTypes(g_mp_chat_mode, {
   ALL = {
     id = CHAT_MODE_ALL
     name = "all"
@@ -51,7 +52,7 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
     textColor = "@chatTextTeamColor"
 
     isEnabled = @() hasBattleChatModeTeam.value && !::isPlayerDedicatedSpectator()
-      && ::is_mode_with_teams()
+      && is_mode_with_teams()
   }
 
   SQUAD = {
@@ -74,18 +75,18 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
   }
 })
 
-::g_mp_chat_mode.types.sort(function(a, b) {
+g_mp_chat_mode.types.sort(function(a, b) {
   if (a.sortOrder != b.sortOrder)
     return a.sortOrder < b.sortOrder ? -1 : 1
   return 0
 })
 
-::g_mp_chat_mode.getModeById <- function getModeById(modeId) {
-  return enums.getCachedType("id", modeId, this.cache.byId, this, this.ALL)
+g_mp_chat_mode.getModeById <- function getModeById(modeId) {
+  return getCachedType("id", modeId, this.cache.byId, this, this.ALL)
 }
 
 
-::g_mp_chat_mode.getNextMode <- function getNextMode(modeId) {
+g_mp_chat_mode.getNextMode <- function getNextMode(modeId) {
   local isCurFound = false
   local newMode = null
   foreach (mode in this.types) {
@@ -106,14 +107,14 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
   return newMode
 }
 
-::g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode() {
+g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode() {
   let availableModes = this.types.filter(@(mode) mode.isEnabled())
   if (availableModes.len() <= 1)
     return ""
   return loc("ui/slash").join(availableModes.map(@(mode) mode.getNameText()), true)
 }
 
-::g_mp_chat_mode.getChatHint <- function getChatHint() {
+g_mp_chat_mode.getChatHint <- function getChatHint() {
   let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || is_steam_big_picture()
   let chatHelpText = hasIME ? "" : loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
   local availableModeText = this.getTextAvailableMode()
@@ -126,4 +127,5 @@ enums.addTypesByGlobalName("g_mp_chat_mode", {
   return loc("ui/comma").join([availableModeText, chatHelpText], true)
 }
 
-::cross_call_api.mp_chat_mode <- ::g_mp_chat_mode
+::cross_call_api.mp_chat_mode <- g_mp_chat_mode
+return {g_mp_chat_mode}

@@ -9,6 +9,9 @@ enum LOGIN_STATE { //bit mask
   ONLINE_BINARIES_INITED   = 0x0020
   HANGAR_LOADED            = 0x0040
 
+  //not required for login
+  LOGIN_STARTED            = 0x0100
+
   //masks
   NOT_LOGGED_IN            = 0x0000
   LOGGED_IN                = 0x003F //logged in to all hosts and all configs are loaded

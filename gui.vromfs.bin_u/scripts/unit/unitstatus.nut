@@ -1,5 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status, is_default_aircraft, shop_unit_research_status, is_era_available, wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
+
 let { bit_unit_status, getUnitReqExp, getUnitExp, getUnitCountry, getEsUnitType, getPrevUnit
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
@@ -7,6 +9,7 @@ let { isInFlight } = require("gameplayBinding")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnitDefault } = require("%scripts/unit/isUnitDefault.nut")
 
 let isUnitInSlotbar = @(unit) getCrewByAir(unit) != null
 
@@ -55,7 +58,7 @@ function getBitStatus(unit, params = {}) {
   let diffExp = isSquadVehicle
     ? min(clan_get_exp(), getUnitReqExp(unit) - unitExpGranted)
     : (params?.diffExp ?? 0)
-  let isLockedSquadronVehicle = isSquadVehicle && !::is_in_clan() && diffExp <= 0
+  let isLockedSquadronVehicle = isSquadVehicle && !is_in_clan() && diffExp <= 0
 
   local bitStatus = 0
   if (!isLocalState || isInFlight())
@@ -103,12 +106,6 @@ function isUnitEliteByStatus(status) {
 function isUnitElite(unit) {
   let unitName = unit?.name
   return unitName ? isUnitEliteByStatus(get_unit_elite_status(unitName)) : false
-}
-
-function isUnitDefault(unit) {
-  if (!("name" in unit))
-    return false
-  return is_default_aircraft(unit.name)
 }
 
 function isUnitLocked(unit) {

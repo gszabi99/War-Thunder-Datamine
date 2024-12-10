@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/loc_helpers.nut" import loc_checked
 
+let { abs } = require("%sqstd/math.nut")
 let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetPos, RadarTargetDist,
   BombingMode, BombCCIPMode, RocketMode, CannonMode,
   TargetPosValid, TargetPos } = require("%rGui/planeState/planeToolsState.nut")
@@ -47,7 +48,7 @@ let planeMarker = @() {
   ]
 }
 
-function targetMark(watchVar, is_radar) {
+function targetMark(width, height, watchVar, is_radar) {
   return @() {
     watch = [IlsColor, watchVar]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -61,10 +62,24 @@ function targetMark(watchVar, is_radar) {
       [VECTOR_LINE, 100, 0, 0, 100],
       [VECTOR_LINE, 0, 100, -100, 0]
     ] : null
+    animations = [
+      { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true, trigger = "radar_target_out_of_limit" }
+    ]
     behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = watchVar.value ? (is_radar ? RadarTargetPos : TargetPos.value) : [0, 0]
+    update = function() {
+      let reticleLim = [0.45 * width, 0.45 * height]
+      if (abs(RadarTargetPos[0] - 0.5 * width) > reticleLim[0] || abs(RadarTargetPos[1] - 0.5 * height) > reticleLim[1])
+        anim_start("radar_target_out_of_limit")
+      else
+        anim_request_stop("radar_target_out_of_limit")
+      let RadarTargetPosLim =  [
+        0.5 * width + clamp(RadarTargetPos[0] - 0.5 * width, -reticleLim[0], reticleLim[0]),
+        0.5 * height + clamp(RadarTargetPos[1] - 0.5 * height, -reticleLim[1], reticleLim[1])
+      ]
+      return {
+        transform = {
+          translate = watchVar.value ? (is_radar ? RadarTargetPosLim : TargetPos.value) : [0, 0]
+        }
       }
     }
   }
@@ -420,7 +435,7 @@ function ccrp(width, height) {
     children = BombingMode.value ?
     [
       flyDirection(width, height, false),
-      targetMark(TargetPosValid, false),
+      targetMark(width, height, TargetPosValid, false),
       AVQ7CCRP(width, height)
     ] : [aimMark]
   }
@@ -433,7 +448,7 @@ function ilsF14(width, height) {
       adlMarker,
       ccip(width, height),
       planeMarker,
-      targetMark(RadarTargetPosValid, true),
+      targetMark(width, height, RadarTargetPosValid, true),
       shellName,
       shellCount,
       compass(width, height),

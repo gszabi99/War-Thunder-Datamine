@@ -6,7 +6,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 
 enum ORDER {
   ENTRENCH
@@ -32,7 +32,7 @@ enum ORDER {
       : loc("ui/parentheses/space", { text = this.keyboardShortcut })
     text = @() $"{this.getActionName()}{this.getKeyboardShortcut()}"
     isHidden = @() true
-    isEnabled = @() !::g_world_war.isCurrentOperationFinished()
+    isEnabled = @() !isOperationFinished()
   }
 }
 
@@ -68,16 +68,14 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
 
       foreach (armyName in armiesNames) {
         let army = ::g_world_war.getArmyByName(armyName)
-        let unitType = army.getUnitType()
-        if (g_ww_unit_type.isGround(unitType) ||
-            g_ww_unit_type.isInfantry(unitType))
+        if (army.hasEntrenchAbility)
           return false
       }
 
       return true
     }
     isEnabled = function() {
-      if (!::g_world_war.isCurrentOperationFinished())
+      if (!isOperationFinished())
         foreach (army in ::g_world_war.getSelectedArmies())
           if (!army.isEntrenched())
             return true
@@ -104,9 +102,13 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     shortcut = WW_MAP_CONSPLE_SHORTCUTS.PREPARE_FIRE
     keyboardShortcut = "A"
     style = $"accessKey:'J:{WW_MAP_CONSPLE_SHORTCUTS.PREPARE_FIRE} | A';"
-    getActionName = @() actionModesManager.getCurActionModeId() == AUT_ArtilleryFire
-      ? loc("worldWar/armyCancel")
-      : loc("worldWar/armyFire")
+    getActionName = function() {
+      let isSAM = ww_get_selected_armies_names().findindex(@(armyName) ::g_world_war.getArmyByName(armyName).isSAM) != null
+      let textFire = isSAM ? loc("actionBarItem/weapon_lock") : loc("worldWar/armyFire")
+      return actionModesManager.getCurActionModeId() == AUT_ArtilleryFire
+        ? loc("worldWar/armyCancel")
+        : textFire
+    }
     isHidden = function () {
       let armiesNames = ww_get_selected_armies_names()
       if (!armiesNames.len())
@@ -149,7 +151,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       return true
     }
     isEnabled = function() {
-      if (::g_world_war.isCurrentOperationFinished())
+      if (isOperationFinished())
         return false
 
       let armiesNames = ww_get_selected_armies_names()
@@ -188,7 +190,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
       return true
     }
     isEnabled = function() {
-      if (::g_world_war.isCurrentOperationFinished())
+      if (isOperationFinished())
         return false
 
       let armiesNames = ww_get_selected_armies_names()

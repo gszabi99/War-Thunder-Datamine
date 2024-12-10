@@ -198,6 +198,9 @@
       },
       "water1_dm": {
         "hp": 13.5
+      },
+      "water2_dm": {
+        "hp": 11.5
       }
     },
     "steel_pilot": {
@@ -1091,6 +1094,15 @@
       },
       {
         "name": "water1_dm",
+        "onHit": {
+          "leak_water": 0.5
+        },
+        "onKill": {
+          "leak_water": 1.0
+        }
+      },
+      {
+        "name": "water2_dm",
         "onHit": {
           "leak_water": 0.5
         },

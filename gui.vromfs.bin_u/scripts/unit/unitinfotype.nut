@@ -20,7 +20,7 @@ let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut"
 let { isBullets, getModificationInfo, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { image_for_air, getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { measureType } = require("%scripts/measureType.nut")
@@ -192,7 +192,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     id = "image"
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
       blk.image = getUnitTooltipImage(unit)
-      blk.cardImage = ::image_for_air(unit)
+      blk.cardImage = image_for_air(unit)
       blk.icon = getUnitClassIco(unit)
       blk.iconColor = get_main_gui_scene().getConstantValue(getUnitClassColor(unit)) || ""
     }

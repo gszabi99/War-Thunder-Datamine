@@ -3,6 +3,7 @@ from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC, SEEN
+from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let { get_mission_time } = require("mission")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -34,6 +35,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { items_classes } = require("%scripts/items/itemsClasses/itemsClasses.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let seenInventory = seenList.get(SEEN.INVENTORY)
 let seenItems = seenList.get(SEEN.ITEMS_SHOP)
@@ -147,7 +149,7 @@ function fillFakeItemsList() {
         wpRate = floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(boosterEffectType.WP, level) + 0.5)
       }
     }
-    fakeItemsList[$"FakeBoosterForNetCafeLevel{i || ""}"] <- ::build_blk_from_container(table)
+    fakeItemsList[$"FakeBoosterForNetCafeLevel{i || ""}"] <- build_blk_from_container(table)
   }
 
   for (local i = 2; i <= g_squad_manager.getMaxSquadSize(); ++i) {
@@ -158,7 +160,7 @@ function fillFakeItemsList() {
         wpRate = floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(boosterEffectType.WP, i) + 0.5)
       }
     }
-    fakeItemsList[$"FakeBoosterForSquadFromSameCafe{i}"] <- ::build_blk_from_container(table)
+    fakeItemsList[$"FakeBoosterForSquadFromSameCafe{i}"] <- build_blk_from_container(table)
   }
 
   let trophyFromInventory = {
@@ -166,7 +168,7 @@ function fillFakeItemsList() {
     locId = "inventory/consumeItem"
     iconStyle = "gold_iron_box"
   }
-  fakeItemsList["trophyFromInventory"] <- ::build_blk_from_container(trophyFromInventory)
+  fakeItemsList["trophyFromInventory"] <- build_blk_from_container(trophyFromInventory)
 }
 
 function checkItemDefsUpdate() {
@@ -739,7 +741,7 @@ function markInventoryUpdateDelayed() {
 
   lastInventoryUpdateDelayedCall = get_time_msec()
   ::g_delayed_actions.add(function() {
-    if (!::g_login.isProfileReceived())
+    if (!isProfileReceived.get())
       return
     lastInventoryUpdateDelayedCall = 0
     markInventoryUpdate()

@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-
+let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
-::Input.DoubleAxis <- class (::Input.InputBase) {
+let DoubleAxis = class (InputBase) {
   //bit mask array of axis ids from JoystickParams().getAxis()
   axisIds = null
 
@@ -56,3 +56,4 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
     }
   }
 }
+return {DoubleAxis}

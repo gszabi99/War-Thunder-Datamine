@@ -19,7 +19,8 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_REWARDS_MSG
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_REWARDS_MSG,
+  USEROPT_SHOW_MESSAGE_MISSILE_EVADE
 } = require("%scripts/options/optionsExtNames.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
@@ -626,7 +627,9 @@ enumsAddTypes(g_hud_messages, {
         return
       if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_REWARDS_MSG, OPTIONS_MODE_GAMEPLAY, true))
         return
-
+      if (messageData?.messageCode == EXP_EVENT_MISSILE_EVADE
+        && !::get_gui_option_in_mode(USEROPT_SHOW_MESSAGE_MISSILE_EVADE, OPTIONS_MODE_GAMEPLAY, true))
+        return
       let isSeries = this.curRewardPriority != REWARD_PRIORITY.noPriority
       this.rewardWp += messageData.warpoints
       this.rewardXp += messageData.experience

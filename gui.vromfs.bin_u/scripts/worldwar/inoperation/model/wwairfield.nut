@@ -2,17 +2,17 @@ from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-
-let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
-let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
-let {WwAirfieldFormation} = require("wwAirfieldFormation.nut")
-let {WwCustomFormation} = require("wwCustomFormation.nut")
-let {WwAirfieldCooldownFormation} = require("wwAirfieldCooldownFormation.nut")
-let DataBlock  = require("DataBlock")
+let DataBlock = require("DataBlock")
 let { Point2 } = require("dagor.math")
 let { wwGetAirfieldInfo } = require("worldwar")
+let { search } = require("%sqStdLibs/helpers/u.nut")
+let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
+let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
+let { WwAirfieldFormation } = require("wwAirfieldFormation.nut")
+let { WwCustomFormation } = require("wwCustomFormation.nut")
+let { WwAirfieldCooldownFormation } = require("wwAirfieldCooldownFormation.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
+let WwAirfieldView = require("%scripts/worldWar/inOperation/view/wwAirfieldView.nut")
 
 let WwAirfield = class {
   index  = -1
@@ -26,6 +26,7 @@ let WwAirfield = class {
   clanFormation = null
   allyFormation = null
   createArmyMorale = 0
+  airfieldView = null
 
   constructor(airfieldIndex) {
     this.airfieldType = airfieldTypes.AT_RUNWAY
@@ -74,6 +75,7 @@ let WwAirfield = class {
           this.clanFormation = formation
           this.clanFormation.setFormationID(WW_ARMY_RELATION_ID.CLAN)
           this.clanFormation.setName($"formation_{WW_ARMY_RELATION_ID.CLAN}")
+          this.clanFormation.setPosition(this.pos)
         }
         else {
           if (!this.allyFormation) {
@@ -82,6 +84,7 @@ let WwAirfield = class {
             this.allyFormation.setName($"formation_{WW_ARMY_RELATION_ID.ALLY}")
             this.allyFormation.setUnitType(this.airfieldType.unitType.code)
             this.allyFormation.setMapObjectName(this.airfieldType.objName)
+            this.allyFormation.setPosition(this.pos)
           }
           this.allyFormation.addUnits(itemBlk)
         }
@@ -225,7 +228,13 @@ let WwAirfield = class {
     ? this.formations.filter(@(formation) formation.hasManageAccess()) : []
 
   getFormationByGroupIdx = @(groupIdx)
-    u.search(this.formations, @(group) group.owner.armyGroupIdx == groupIdx)
+    search(this.formations, @(group) group.owner.armyGroupIdx == groupIdx)
+
+  function getView() {
+    if (!this.airfieldView)
+      this.airfieldView = WwAirfieldView(this)
+    return this.airfieldView
+  }
 }
 
 return { WwAirfield }

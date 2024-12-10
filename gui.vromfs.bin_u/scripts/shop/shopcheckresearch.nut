@@ -23,6 +23,7 @@ let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched,
   isPrevUnitBought
 } = require("%scripts/unit/unitStatus.nut")
+let { checkFeatureLock } = require("%scripts/unit/unitChecks.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
@@ -111,7 +112,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       return
 
     let unitLockedByFeature = this.getNotResearchedUnitByFeature()
-    if (unitLockedByFeature && !::checkFeatureLock(unitLockedByFeature, CheckFeatureLockAction.RESEARCH))
+    if (unitLockedByFeature && !checkFeatureLock(unitLockedByFeature, CheckFeatureLockAction.RESEARCH))
       return
 
     let ranksBlk = get_ranks_blk()

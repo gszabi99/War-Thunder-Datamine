@@ -2,9 +2,11 @@
 from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, get_config_name, is_gpu_nvidia, get_video_modes, has_ray_query
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import findNearest
+from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_editbox, create_option_row_listbox, create_option_slider, create_option_switchbox, create_options_bar
+
 let { has_enough_vram_for_rt = @() true } = require_optional("bvhSettings")
 let u = require("%sqStdLibs/helpers/u.nut")
-
 let DataBlock = require("DataBlock")
 let { round } = require("math")
 let { format, strip } = require("string")
@@ -20,12 +22,10 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let { applyRestartClient, canRestartClient
 } = require("%scripts/utils/restartClient.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { create_option_switchbox, create_option_slider } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { doesLocTextExist } = require("dagor.localize")
-let { findNearest } = require("%scripts/util.nut")
 let { is_win64 } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -191,6 +191,7 @@ let perfValues = [
 ]
 //------------------------------------------------------------------------------
 let getGuiValue = @(id, defVal = null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
+let getOptionIdByObjId = @(objId) objId.slice(("sysopt_").len())
 
 function logError(from = "", msg = "") {
   let fullMsg = $"[sysopt] ERROR {from}: {msg}"
@@ -206,17 +207,18 @@ function getOptionDesc(id) {
   return mSettings[id]
 }
 
-function tryGetOptionImageSrc(id) {
+function tryGetOptionImageSrc(id, value = null) {
+  if (value == null)
+    value = mCfgCurrent[id]
   let opt = getOptionDesc(id)
-  let curValue = mCfgCurrent[id]
   let { infoImgPattern = null, availableInfoImgVals = null } = opt
 
-  if (infoImgPattern == null || curValue == null || curValue == "custom")
+  if (infoImgPattern == null || value == null || value == "custom")
     return null
 
   let imgVal = availableInfoImgVals
-    ? availableInfoImgVals[findNearest(curValue, availableInfoImgVals)]
-    : curValue
+    ? availableInfoImgVals[findNearest(value, availableInfoImgVals)]
+    : value
 
   return format(infoImgPattern, imgVal.tostring().replace(" ",  ""))
 
@@ -246,6 +248,27 @@ function getOptionInfoView(id) {
   }
 }
 
+function onSystemOptionControlHover(obj) {
+  if (!obj?.isValid() || !mHandler)
+    return
+  let controlObjId = obj.getParent()?.getParent().id
+  if (controlObjId == null)
+    return
+  let optId = getOptionIdByObjId(controlObjId)
+  let needHoverOnOptionRow = optId != mHandler.lastHoveredRowId?.split("_tr")[0]
+  if (needHoverOnOptionRow)
+    mHandler.onOptionContainerHover(mHandler.scene.findObject($"{optId}_tr"))
+
+  let desc = getOptionDesc(optId)
+  let hoveredValue = desc.values[obj.idx.tointeger()]
+  let imgSrc = tryGetOptionImageSrc(optId, hoveredValue)
+  let imgObj = mHandler.scene.findObject("option_info_image")
+
+  imgObj.show(imgSrc != null)
+  if (imgSrc)
+    imgObj["background-image"] = imgSrc
+}
+
 function configValueToGuiValue(id, value) {
   let desc = getOptionDesc(id)
   return desc?.configValueToGuiValue(value) ?? value
@@ -272,7 +295,7 @@ function validateGuiValue(id, value) {
       return (value < desc.min) ? desc.min : desc.max
     }
   }
-  else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "value_slider") {
+  else if ( widgetType == "list" || widgetType == "tabs") {
     if (desc.values.indexof(value) == null && (value not in desc?.hidden_values)) {
       logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is not in the allowed values list.")
       return desc.def
@@ -313,7 +336,7 @@ function setGuiValue(id, value, skipUI = false) {
     if ( widgetType == "checkbox"  || "slider" == widgetType) {
       raw = value
     }
-    else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "value_slider") {
+    else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "options_bar") {
       raw = desc.values.indexof(value) ?? -1
     }
     else if ( widgetType == "editbox" ) {
@@ -323,6 +346,8 @@ function setGuiValue(id, value, skipUI = false) {
       desc.ignoreNextUiCallback = desc.widgetType != "checkbox"
       obj.setValue(raw)
     }
+    if (widgetType == "options_bar")
+      desc.updateText(mHandler?.scene.findObject($"sysopt_{id}"), value)
   }
 }
 
@@ -420,7 +445,7 @@ function pickQualityPreset() {
     foreach (id, value in _cfgCurrent)
       mCfgCurrent[id] <- value
     mCfgCurrent["graphicsQuality"] = presetId
-    mShared.graphicsQualityClick(true)
+    mShared.graphicsQualityClick(true, true)
     let changes = checkChanges(mCfgCurrent, _cfgCurrent)
     if (!changes.needClientRestart && !changes.needEngineReload) {
       preset = presetId
@@ -489,9 +514,10 @@ function antiAliasingOptionsWithVersion() {
   return modesString.split(";").map(function(mode) {
     let [name, version = null] = mode.split("|")
     let locName = localize("antialiasingMode", name)
-    return version != null
+    let text = version != null
       ? " - v".concat(locName, version)
       : locName
+    return { text }
   })
 }
 
@@ -505,11 +531,6 @@ function hasAntialiasingUpscaling() {
   let aa = getGuiValue("antialiasingMode", "off")
   let modesString = get_antialiasing_upscaling_options(aa)
   return modesString.split(";").len() > 1
-}
-
-function canDoBackgroundScale() {
-  let mode = getGuiValue("antialiasingMode", "off")
-  return !(mode == "dlss" || mode == "xess")
 }
 
 function getAvailableLatencyModes() {
@@ -532,28 +553,61 @@ let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
 let isRTVisible = @() hasFeature("optionBVH")
 let isRTAOVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_AO")
 let isRTSMVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_SM")
-function getListOption(id, desc, cb, needCreateList = true) {
-  let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-  let customItems = ("items" in desc) ? desc.items : null
-  let items = []
-  foreach (index, valueId in desc.values)
-    items.append(customItems ? customItems[index] : localize(id, valueId))
-  return ::create_option_combobox(desc.widgetId, items, raw, cb, needCreateList)
+
+function canDoBackgroundScale() {
+  let mode = getGuiValue("antialiasingMode", "off")
+  return !(mode == "dlss" || mode == "xess" || hasRTGUI())
 }
 
-function changeOptions(id) {
+function getOptionValueItems(id, desc) {
+  let customItems = ("items" in desc) ? desc.items : null
+  let items = []
+
+  foreach (index, valueId in desc.values)
+    items.append(customItems ? customItems[index] : localize(id, valueId))
+  return items
+}
+
+function getListOption(id, desc, cb, onOptHoverFnName, needCreateList = true) {
+  let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
+  let items = getOptionValueItems(id, desc)
+  return create_option_combobox(desc.widgetId, items, raw, cb, needCreateList, { onOptHoverFnName, controlStyle = "class:t='systemOption'" })
+}
+
+function updateOption(id) {
   let desc = getOptionDesc(id)
   if (!desc)
     return
 
   desc.init(null, desc)
-  setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
+
+  if (desc.widgetType == "list")
+    setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
+  else if (desc.widgetType == "options_bar") {
+    let guiVal = getGuiValue(id)
+    let val = desc.values.contains(guiVal) ? guiVal : desc.def
+    setGuiValue(id, val)
+  }
+
   let obj = getGuiWidget(id)
   if (!checkObj(obj))
     return
 
-  let markup = getListOption(id, desc, "onSystemOptionChanged", false)
+  local markup = ""
+  let onChangeFnName = "onSystemOptionChanged"
+  let onOptHoverFnName = "onSystemOptionControlHover"
+  if (desc.widgetType == "list")
+    markup = getListOption(id, desc, onChangeFnName, onOptHoverFnName, false)
+  if (desc.widgetType == "options_bar") {
+    let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
+    let items = getOptionValueItems(id, desc)
+    markup = create_options_bar(desc.widgetId, raw,
+      localize(id, mCfgCurrent[id]), items, onChangeFnName, false, { onOptHoverFnName })
+  }
+
   mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
+  if (desc.widgetType == "options_bar")
+    obj.setValue(desc.values.indexof(mCfgCurrent[id]) ?? -1) // // FIXME: After updating the control via replaceContentFromText, the 'value' property is not updated. Need to investigate and fix.
 }
 
 //------------------------------------------------------------------------------
@@ -620,7 +674,7 @@ mShared = {
     mShared.setCompatibilityMode()
   }
 
-  graphicsQualityClick = function(silent = false) {
+  graphicsQualityClick = function(silent = false, skipRt = false) {
     let quality = getGuiValue("graphicsQuality", "high")
     if (!silent && quality == "ultralow") {
       function ok_func() {
@@ -643,7 +697,8 @@ mShared = {
         { cancel_fn = cancel_func, checkDuplicateId = true })
     }
     mShared.setCustomSettings()
-    mShared.rayTracingClick(silent)
+    if (!skipRt)
+      mShared.rayTracingClick(silent)
   }
 
   presetCheck = function() {
@@ -652,7 +707,7 @@ mShared = {
   }
 
   resolutionClick = function() {
-    changeOptions("antialiasingUpscaling")
+    updateOption("antialiasingUpscaling")
   }
 
   modeClick = @() enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
@@ -664,7 +719,7 @@ mShared = {
     enableGuiOption("ssaa", canBgScale)
     enableGuiOption("antialiasingUpscaling", hasAntialiasingUpscaling())
 
-    changeOptions("antialiasingUpscaling")
+    updateOption("antialiasingUpscaling")
 
     if (!canBgScale) {
       setGuiValue("ssaa", "none")
@@ -708,11 +763,13 @@ mShared = {
     if (getGuiValue("ssaa") == "4X") {
       function okFunc() {
         setGuiValue("backgroundScale", 2)
+        updateOption("fxResolutionQuality")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
       function cancelFunc() {
         setGuiValue("ssaa", "none")
+        updateOption("fxResolutionQuality")
         mShared.presetCheck()
         updateGuiNavbar(true)
       }
@@ -722,7 +779,8 @@ mShared = {
           ["cancel", cancelFunc],
         ], "cancel",
         { cancel_fn = cancelFunc, checkDuplicateId = true })
-    }
+    } else
+      updateOption("fxResolutionQuality")
   }
 
   fxResolutionClick = function() {
@@ -864,15 +922,23 @@ mShared = {
     let rt = getGuiValue("rayTracing", "off")
     if (silent || rt == "off") {
       mShared.rayTracingPresetHandler(rt)
-      return;
+      enableGuiOption("ssaa", true)
+      mShared.ssaaClick()
+
+      return
     }
 
     function okFunc() {
       mShared.rayTracingPresetHandler(rt)
+      setGuiValue("ssaa", "none")
+      enableGuiOption("ssaa", false)
+      mShared.ssaaClick()
     }
     function cancelFunc() {
       setGuiValue("rayTracing", "off")
       mShared.rayTracingPresetHandler("off")
+      enableGuiOption("ssaa", true)
+      mShared.ssaaClick()
     }
     scene_msg_box("msg_sysopt_rt", null, loc("msgbox/rt_warning"),
       [
@@ -883,8 +949,8 @@ mShared = {
   }
 
   vrModeClick = function() {
-    changeOptions("antialiasingMode")
-    changeOptions("antialiasingUpscaling")
+    updateOption("antialiasingMode")
+    updateOption("antialiasingUpscaling")
     setGuiValue("antialiasingMode", "off")
     setGuiValue("antialiasingUpscaling", "native")
     if (getGuiValue("enableVr")) {
@@ -977,7 +1043,7 @@ mShared = {
 }
 //------------------------------------------------------------------------------
 /*
-  widgetType - type of the widget in UI ("list", "slider", "value_slider", "checkbox", "editbox", "tabs").
+  widgetType - type of the widget in UI ("list", "slider", "checkbox", "editbox", "tabs", "options_bar").
   def - default value in UI (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
   blk - path to variable in config.blk file structure (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
   restart - client restart is required to apply an option (e.g. no support in Renderer->onSettingsChanged() function).
@@ -994,7 +1060,7 @@ mShared = {
   isVisible - function, for hide options
   infoImgPattern - optional, pattern for the option image in the format `#ui/path/img_name_%s`, where `%s` will be replaced with the current option value.
     For correct functionality, images for all possible options listed in the 'values' must be present.
-  availableInfoImgVals - optional, (works with the 'slider' and 'value_slider' widgetType) allows specifying which values have corresponding images.
+  availableInfoImgVals - optional, (works with the 'slider' widgetType) allows specifying which values have corresponding images.
     Sliders may have high granularity, so instead of loading an image for every option,
     we can load a few images. The image with the closest matching value will be displayed.
 
@@ -1121,7 +1187,7 @@ mSettings = {
     }
     configValueToGuiValue = @(val) (val == 4.0) ? "4X" : "none"
   }
-  anisotropy = { widgetType = "list" def = "2X" blk = "graphics/anisotropy" restart = false
+  anisotropy = { widgetType = "options_bar" def = "2X" blk = "graphics/anisotropy" restart = false
     values = [ "off", "2X", "4X", "8X", "16X" ]
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 2)
@@ -1169,7 +1235,7 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
   }
-  texQuality = { widgetType = "value_slider" def = "high" blk = "graphics/texquality" restart = has_broken_recreate_image()
+  texQuality = { widgetType = "options_bar" def = "high" blk = "graphics/texquality" restart = has_broken_recreate_image()
     init = function(_blk, desc) {
       let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
       let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
@@ -1192,22 +1258,35 @@ mSettings = {
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/textureQuality/%s"
   }
-  shadowQuality = { widgetType = "value_slider" def = "high" blk = "graphics/shadowQuality" restart = false
+  shadowQuality = { widgetType = "options_bar" def = "high" blk = "graphics/shadowQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "ultrahigh" ]
     infoImgPattern = "#ui/images/settings/shadowQuality/%s"
   }
-  waterEffectsQuality = { widgetType = "value_slider" def = "high" blk = "graphics/waterEffectsQuality" restart = false
+  waterEffectsQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/waterFxQuality/%s"
   }
-  compatibilityShadowQuality = { widgetType = "value_slider" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
+  compatibilityShadowQuality = { widgetType = "options_bar" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
     values = [ "low", "medium" ]
     infoImgPattern = "#ui/images/settings/compShadowQuality/%s"
   }
-  fxResolutionQuality = { widgetType = "value_slider" def = "high" blk = "graphics/fxTarget" restart = false
+  fxResolutionQuality = { widgetType = "options_bar" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"
-    values = [ "low", "medium", "high", "ultrahigh" ]
     infoImgPattern = "#ui/images/settings/fxQuality/%s"
+    init = function(blk, desc) {
+      local hasSsaa = false
+      let ssaaDesc = getOptionDesc("ssaa")
+      if (ssaaDesc.enabled()) {
+        let guiVal = getGuiValue("ssaa")
+        let hasGuiValue = guiVal != null
+        hasSsaa = hasGuiValue
+          ? guiVal
+          : ssaaDesc.getValueFromConfig(blk, ssaaDesc) != 1.0
+      }
+      desc.values <- hasSsaa
+        ? [ "low", "medium", "high" ]
+        : [ "low", "medium", "high", "ultrahigh" ]
+    }
   }
   selfReflection = { widgetType = "checkbox" def = true blk = "render/selfReflection" restart = false
   }
@@ -1227,7 +1306,7 @@ mSettings = {
     configValueToGuiValue = function(val) {
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
         val = 2.0
-      return ::find_nearest(val, this.blkValues)
+      return findNearest(val, this.blkValues)
     }
   }
   landquality = { widgetType = "slider" def = 0 min = 0 max = 4 blk = "graphics/landquality" restart = false
@@ -1283,7 +1362,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/grassRange/%s"
     availableInfoImgVals = [10, 55, 100, 145, 180]
   }
-  tireTracksQuality = { widgetType = "value_slider" def = "none" blk = "graphics/tireTracksQuality" restart = false
+  tireTracksQuality = { widgetType = "options_bar" def = "none" blk = "graphics/tireTracksQuality" restart = false
     values = [ "none", "medium", "high", "ultrahigh" ]
     configValueToGuiValue = @(val) this.values[val]
     getValueFromConfig = function(blk, desc) {
@@ -1295,15 +1374,15 @@ mSettings = {
     }
     infoImgPattern = "#ui/images/settings/trackMarks/%s"
   }
-  waterQuality = { widgetType = "value_slider" def = "high" blk = "graphics/waterQuality" restart = false
+  waterQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterQuality" restart = false
     values = [ "low", "medium", "high", "ultrahigh" ]
     infoImgPattern = "#ui/images/settings/waterQuality/%s"
   }
-  giQuality = { widgetType = "value_slider" def = "low" blk = "graphics/giQuality" restart = false
+  giQuality = { widgetType = "options_bar" def = "low" blk = "graphics/giQuality" restart = false
     values = [ "low", "medium", "high" ], isVisible = @() true
     infoImgPattern = "#ui/images/settings/GI/%s"
   }
-  dirtSubDiv = { widgetType = "value_slider" def = "high" blk = "graphics/dirtSubDiv" restart = false
+  dirtSubDiv = { widgetType = "options_bar" def = "high" blk = "graphics/dirtSubDiv" restart = false
     values = [ "high", "ultrahigh" ]
     getValueFromConfig = function(blk, desc) {
       return getBlkValueByPath(blk, desc.blk, 1)
@@ -1346,7 +1425,7 @@ mSettings = {
   lastClipSize = { widgetType = "checkbox" def = false blk = "graphics/lastClipSize" restart = false
     getValueFromConfig = function(blk, desc) { return getBlkValueByPath(blk, desc.blk, 4096) }
     setGuiValueToConfig = function(blk, desc, val) { setBlkValueByPath(blk, desc.blk, (val ? 8192 : 4096)) }
-    configValueToGuiValue = @(val) val == 8192 ? true : false
+    configValueToGuiValue = @(val) val == 8192
     infoImgPattern = "#ui/images/settings/farTerrain/%s"
   }
   lenseFlares = { widgetType = "checkbox" def = false blk = "graphics/lenseFlares" restart = false
@@ -1395,24 +1474,24 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/bvhDistance/%s"
     availableInfoImgVals = [1000, 2650, 4300, 6000]
   }
-  rtao = { widgetType = "value_slider" def = "off" blk = "graphics/RTAOQuality" restart = false
+  rtao = { widgetType = "options_bar" def = "off" blk = "graphics/RTAOQuality" restart = false
     values = ["off", "low", "medium", "high"] enabled = hasRTGUI
     onChanged = "rtOptionChanged" isVisible = isRTAOVisible
     infoImgPattern = "#ui/images/settings/rtAOQuality/%s"
   }
-  rtsm = { widgetType = "value_slider" def = "off" blk = "graphics/enableRTSM" restart = false
+  rtsm = { widgetType = "options_bar" def = "off" blk = "graphics/enableRTSM" restart = false
     values = [ "off", "sun", "sun_and_dynamic" ]
     enabled = hasRTGUI
     onChanged = "rtOptionChanged" isVisible = isRTSMVisible
     infoImgPattern = "#ui/images/settings/rtShadows/%s"
   }
-  rtr = { widgetType = "value_slider" def = "off" blk = "graphics/RTRQuality" restart = false
+  rtr = { widgetType = "options_bar" def = "off" blk = "graphics/RTRQuality" restart = false
     values = ["off", "low", "medium", "high"]
     enabled = hasRTGUI
     onChanged = "rtrClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtReflections/%s"
   }
-  rtrRes = { widgetType = "value_slider" def = "half" blk = "graphics/RTRRes" restart = false
+  rtrRes = { widgetType = "options_bar" def = "half" blk = "graphics/RTRRes" restart = false
     values = ["half", "full"]
     enabled = hasRTR
     onChanged = "rtOptionChanged" isVisible = isRTVisible
@@ -1423,13 +1502,13 @@ mSettings = {
     onChanged = "rtrWaterClick" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtWater/%s"
   }
-  rtrWaterRes = { widgetType = "value_slider" def = "half" blk = "graphics/RTRWaterRes" restart = false
+  rtrWaterRes = { widgetType = "options_bar" def = "half" blk = "graphics/RTRWaterRes" restart = false
     values = ["half", "full"]
     enabled = hasRTRWater
     onChanged = "rtOptionChanged" isVisible = isRTVisible
     infoImgPattern = "#ui/images/settings/rtWaterResolution/%s"
   }
-  rtrTranslucent = { widgetType = "value_slider" def = "off" blk = "graphics/RTRTranslucent" restart = false
+  rtrTranslucent = { widgetType = "options_bar" def = "off" blk = "graphics/RTRTranslucent" restart = false
     values = ["off", "medium", "high"]
     enabled = hasRTGUI
     onChanged = "rtOptionChanged" isVisible = isRTVisible
@@ -1441,7 +1520,7 @@ function validateInternalConfigs() {
   let errorsList = []
   foreach (id, desc in mSettings) {
     let widgetType = getTblValue("widgetType", desc)
-    if (!isInArray(widgetType, ["list", "slider", "value_slider", "checkbox", "editbox", "tabs", "button"]))
+    if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "tabs", "options_bar", "button"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'widgetType' invalid or undefined."))
     if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
@@ -1475,7 +1554,7 @@ function validateInternalConfigs() {
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'min'/'def'/'max' conflict."))
     }
-    else if ( widgetType == "value_slider") {
+    else if ( widgetType == "options_bar") {
       if (!desc?.values.len())
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'values' is empty or undefined."))
@@ -1751,10 +1830,10 @@ let isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
   ?? getSystemConfigOption("video/compatibilityMode", false)
 
 function onGuiOptionChanged(obj) {
-  let widgetId = checkObj(obj) ? obj?.id : null
-  if (!widgetId)
+  let objId = checkObj(obj) ? obj?.id : null
+  if (!objId)
     return
-  let id = widgetId.slice(("sysopt_").len())
+  let id = getOptionIdByObjId(objId)
 
   let desc = getOptionDesc(id)
   if (!desc)
@@ -1781,8 +1860,12 @@ function onGuiOptionChanged(obj) {
   else if ( widgetType == "slider" ) {
     value = raw.tointeger()
   }
-  else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "value_slider") {
+  else if ( widgetType == "list" || widgetType == "tabs" ) {
     value = desc.values[raw]
+  }
+  else if ( widgetType == "options_bar") {
+    value = desc.values[raw]
+    desc.updateText(obj, value)
   }
   else if ( widgetType == "editbox") {
     let {uiType} = desc
@@ -1812,6 +1895,12 @@ function onGuiOptionChanged(obj) {
   tryUpdateOptionImage(id)
 }
 
+function updateOptionsBarText(obj, val) {
+  let id = getOptionIdByObjId(obj.id)
+  let locVal = localize(id, val)
+  obj.findObject($"{obj.id}_text_value").setValue(locVal)
+}
+
 function fillGuiOptions(containerObj, handler) {
   if (!checkObj(containerObj) || !handler)
     return
@@ -1832,6 +1921,7 @@ function fillGuiOptions(containerObj, handler) {
 
   configRead()
   let cb = "onSystemOptionChanged"
+  let onOptHoverFnName = "onSystemOptionControlHover"
   local data = ""
   foreach (section in mUiStruct) {
     if (section.title == "options/rt" && !hasFeature("optionBVH"))
@@ -1867,17 +1957,22 @@ function fillGuiOptions(containerObj, handler) {
         option = create_option_switchbox(config)
       }
       else if ( widgetType == "slider" ) {
+        desc.cssClass <- "systemOption"
         desc.step <- desc?.step ?? max(1, round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
         option = create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
       }
-      else if ( widgetType == "value_slider" ) {
-        desc.step <- 1
-        desc.max <- desc.values.len() - 1
-        let val = desc.values.findindex(@(v) v == mCfgCurrent[id])
-        option = create_option_slider(desc.widgetId, val, cb, true, "slider", desc)
+      else if (widgetType == "options_bar") {
+        let value = desc.values.findindex(@(v) v == mCfgCurrent[id])
+        let items  = desc?.items ?? desc.values.map(@(v, idx) {
+          text = localize(id, v)
+          selected = idx == 0
+        })
+
+        option = create_options_bar(desc.widgetId, value, localize(id, mCfgCurrent[id]) items, cb, true, { onOptHoverFnName })
+        desc.updateText <- updateOptionsBarText
       }
       else if ( widgetType == "list" ) {
-        option = getListOption(id, desc, cb)
+        option = getListOption(id, desc, cb, onOptHoverFnName)
       }
       else if ( widgetType == "tabs" ) {
         let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
@@ -1891,11 +1986,11 @@ function fillGuiOptions(containerObj, handler) {
             tooltip = "".concat(loc(format("guiHints/%s_%s", id, valueId)), warn)
           })
         }
-        option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
+        option = create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
       }
       else if ( widgetType == "editbox" ) {
         let raw = mCfgCurrent[id].tostring()
-        option = ::create_option_editbox({
+        option = create_option_editbox({
           id = desc.widgetId,
           value = raw,
           maxlength = desc.maxlength
@@ -1919,9 +2014,9 @@ function fillGuiOptions(containerObj, handler) {
         let tooltipProp = disabledTooltip != null ? $" tooltip:t='{disabledTooltip}';" : ""
         let label = stripTags("".join([optionName, requiresRestart ? $"{nbsp}*" : $"{nbsp}{nbsp}"]))
         option = "".concat("tr { id:t='", id, "_tr'; disabled:t='", disabled, "' selected:t='no'", tooltipProp, "size:t='pw, ", mRowHeightScale,
-          "@optContainerHeight' overflow:t='hidden' optContainer:t='yes'  on_hover:t='onOptionContainerHover' on_unhover='onOptionContainerUnhover'",
-          " td { width:t='0.55pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
-          "@optContainerHeight' optiontext {text:t='", label, "'} }",  " td { width:t='0.45pw'; cellType:t='right';  height:t='",
+          "@optContainerHeight' overflow:t='hidden' optContainer:t='yes' on_hover:t='onOptionContainerHover'",
+          " td { width:t='0.50pw'; cellType:t='left'; overflow:t='hidden'; height:t='", mRowHeightScale,
+          "@optContainerHeight' optiontext {text:t='", label, "'} }",  " td { width:t='0.50pw'; cellType:t='right';  height:t='",
           mRowHeightScale, "@optContainerHeight' padding-left:t='@optPad'; cellSeparator{}", option, " } }"
         )
       }
@@ -1970,4 +2065,5 @@ return {
   onConfigApplyWithoutUiUpdate
   canShowGpuBenchmark
   getSystemOptionInfoView = getOptionInfoView
+  onSystemOptionControlHover
 }

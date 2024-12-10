@@ -53,6 +53,30 @@
           "sideLobesSensitivity": -32.0
         }
       }
+    },
+    "gtm": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1200.0,
+      "band": 8,
+      "rcs": 40.0,
+      "range": 23000.0,
+      "rangeMax": 150000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 1.0,
+          "sideLobesSensitivity": -50.0
+        },
+        "elevation": {
+          "angleHalfSens": 4.5,
+          "sideLobesSensitivity": -50.0
+        }
+      }
     }
   },
   "scanPatterns": {
@@ -342,6 +366,50 @@
         "maxValue": 1500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
+      }
+    },
+    "gtmSearch": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 150000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 4.11556,
+        "maxValue": 145.788,
+        "signalWidthMin": 2.5,
+        "width": 0.0
+      }
+    },
+    "gtmTrack": {
+      "groundClutter": false,
+      "aircraftAsTarget": false,
+      "groundVehiclesAsTarget": true,
+      "angularAccuracy": 0.0,
+      "distanceAccuracy": 1.0,
+      "absDopplerSpeed": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 150000.0,
+        "width": 15.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 4.11556,
+        "maxValue": 145.788,
+        "signalWidthMin": 2.5,
+        "width": 0.0
       }
     }
   },
@@ -761,6 +829,79 @@
             "type": 0,
             "self": true,
             "sensorIndex": 0
+          }
+        },
+        "setGtmStandbyMode": {
+          "setStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "gtm"
+          },
+          "setSignal": {
+            "signal": "gtmSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          },
+          "setModeName": {
+            "name": "GTM standby"
+          }
+        },
+        "setGtmSearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "gtm"
+          },
+          "setSignal": {
+            "signal": "gtmSearch"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "common"
+          },
+          "setModeName": {
+            "name": "GTM search"
+          }
+        },
+        "setGtmBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "bvrLock",
+            "active": true
+          },
+          "setScanPattern": {
+            "scanPattern": "bvrLockSearch"
+          },
+          "setTransiver": {
+            "transiver": "gtm"
+          },
+          "setSignal": {
+            "signal": "gtmSearch"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 2000.0
+          },
+          "setRelSpeedGatePos": {
+            "source": "constRange",
+            "pos": 0.0,
+            "width": 3000.0
+          },
+          "setModeName": {
+            "name": "GTM acquisition"
+          }
+        },
+        "resetGtmBvrLockMode": {
+          "setFsmActive": {
+            "fsm": "bvrLock",
+            "active": false
+          }
+        },
+        "setGtmBvrTrackMode": {
+          "setTrackMode": {},
+          "setTransiver": {
+            "transiver": "gtm"
+          },
+          "setSignal": {
+            "signal": "gtmTrack"
           }
         }
       },
@@ -1641,8 +1782,66 @@
             ]
           }
         },
-        "lprfToMprf": {
+        "lprfToGtm": {
           "stateFrom": "lprf",
+          "command": "modeSwitch",
+          "stateTo": "gtm",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setGtmStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setGtmSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setGtmBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetBvrLockMode",
+                "actionTemplateName": "resetGtmBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrTrackMode",
+                "actionTemplateName": "setGtmBvrTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "gtmToMprf": {
+          "stateFrom": "gtm",
           "command": "modeSwitch",
           "stateTo": "mprf",
           "actions": {
@@ -1664,10 +1863,29 @@
               },
               {
                 "fsm": "main",
+                "name": "resetBvrLockMode",
+                "actionTemplateName": "resetBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrTrackMode",
+                "actionTemplateName": "setTrackMode"
+              },
+              {
+                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
             ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
             "setFsmActive": [
               {
                 "fsm": "main",

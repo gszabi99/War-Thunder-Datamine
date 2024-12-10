@@ -38,6 +38,16 @@ function openEditPresetName(name, okFunc) {
   })
 }
 
+function calcWeaponWeight(weapon, tierId) {
+  let additionalMassKg = weapon.num > 1 ? weapon?.tiers[tierId].additionalMassKg ?? 0
+    : weapon?.additionalMassKg ?? 0
+  let amountPerTier = weapon.isGun ? 0 : (weapon?.tiers[tierId].amountPerTier ?? 1)
+  let massKg = weapon?.massKg ?? 0
+  let addWeaponryMassKg = weapon?.addWeaponry.massKg ?? 0
+  let addWeaponryAmountPerTier = weapon?.addWeaponry.tiers[tierId].amountPerTier ?? 1
+  return additionalMassKg + (amountPerTier * massKg) + (addWeaponryAmountPerTier * addWeaponryMassKg)
+}
+
 let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/editWeaponryPresetModal.tpl"
@@ -98,12 +108,13 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
     return res
   }
 
-  function getPopupItemName(weapon) {
-    let { massKg, additionalMassKg, ammo } = weapon
+  function getPopupItemName(weapon, tierId) {
+    let { ammo } = weapon
+    let weaponTotalWeight = calcWeaponWeight(weapon, tierId)
     let nameText = loc($"weapons/{weapon.id}")
 
     let countStr = $"{loc("shop/ammo")}{loc("ui/colon")}{ammo}"
-    let weightStr = $"{loc("shop/tank_mass")} {this.getKgUnitsText(additionalMassKg + massKg * (ammo || 1))}" // for containers ammo == 0 but we should count the mass
+    let weightStr = $"{loc("shop/tank_mass")} {this.getKgUnitsText(weaponTotalWeight)}"
     let detailsStr = !ammo
       ? weightStr
       : $"{countStr}{loc("ui/comma")}{weightStr}"
@@ -123,14 +134,14 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
       let dubIdx = res.findindex(@(v) v.presetId == weapon.presetId)
       if (dubIdx != null) {
         res[dubIdx].name = "".concat(res[dubIdx].name, loc("ui/comma"),
-          this.getPopupItemName(weapon))
+          this.getPopupItemName(weapon, tierId))
         continue
       }
 
       res.append({
         id = weapon.tiers?[tierId].presetId ?? weapon.id
         presetId = weapon.presetId // To find duplicates
-        name = this.getPopupItemName(weapon)
+        name = this.getPopupItemName(weapon, tierId)
         img = getTierIcon(tierWeaponConfig, weapon.ammo)
       })
     }
@@ -320,12 +331,8 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
 
   function getTotalWeight() {
     return this.preset.tiersView.reduce(function(tatoalWeight, tier, idx) {
-      let { additionalMassKg = 0.0 } = tier?.weaponry.tiers[idx]
-      let { amountPerTier = 1.0 } = tier?.weaponry.tiers[idx]
-      let { massKg = 0.0 } = tier?.weaponry
-      let addWeaponryMassKg = tier?.weaponry.addWeaponry.massKg ?? 0
-      let addWeaponryAmountPerTier = tier?.weaponry.addWeaponry.tiers[idx].amountPerTier ?? 1
-      return tatoalWeight + additionalMassKg + (amountPerTier * massKg) + (addWeaponryAmountPerTier * addWeaponryMassKg)
+      let curWeaponTotalWeight = tier?.weaponry != null ? calcWeaponWeight(tier.weaponry, idx) : 0
+      return tatoalWeight + curWeaponTotalWeight
     }, 0)
   }
 }

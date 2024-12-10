@@ -12,6 +12,7 @@ let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -226,10 +227,10 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     emptyListTextObj.setValue(loc($"items/shop/emptyTab/default{this.isLoadingInProgress ? "/loading" : ""}"))
 
     if (this.isLoadingInProgress)
-      ::hidePaginator(this.scene.findObject("paginator_place"))
+      hidePaginator(this.scene.findObject("paginator_place"))
     else {
       this.recalcCurPage()
-      ::generatePaginator(this.scene.findObject("paginator_place"), this,
+      generatePaginator(this.scene.findObject("paginator_place"), this,
         this.curPage, this.getPageNum(this.itemsList.len() - 1), null, true /*show last page*/ )
     }
 

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { LONG_ACTIONBAR_TEXT_LEN } = require("%scripts/hud/hudActionBarInfo.nut")
@@ -47,7 +48,7 @@ function getExtraActionItemsView(unit) {
   if (hasFeature("AirVisualWeaponSelector") && unit.hasWeaponSlots && isAir && has_secondary_weapons()) {
     let item = clone extraItemViewTemplate
     let shortcutId = "ID_OPEN_VISUAL_WEAPON_SELECTOR"
-    let shType = ::g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+    let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
     let scInput = shType.getFirstInput(shortcutId)
     let shortcutText = scInput.getTextShort()
     let isXinput = scInput.hasImage() && scInput.getDeviceId() != STD_KEYBOARD_DEVICE_ID

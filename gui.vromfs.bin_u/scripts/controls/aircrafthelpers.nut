@@ -6,6 +6,7 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
   USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM
 } = require("%scripts/options/optionsExtNames.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 ::g_aircraft_helpers <- {
   /* PRIVATE */
@@ -45,7 +46,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
   // Helper options change handler
   function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) {
     // Do not continue if not logged in or if recursion call happend
-    if (!::g_login.isLoggedIn() || this.isHelpersChangePerformed)
+    if (!isLoggedIn.get() || this.isHelpersChangePerformed)
       return
     this.isHelpersChangePerformed = true
 

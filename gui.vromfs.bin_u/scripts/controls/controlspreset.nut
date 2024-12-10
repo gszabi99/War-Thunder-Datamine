@@ -8,6 +8,7 @@ let DataBlock  = require("DataBlock")
 let { copyParamsToTable, eachBlock, eachParam, blkFromPath } = require("%sqstd/datablock.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4
@@ -782,7 +783,7 @@ function isSameMapping(lhs, rhs) {
   /******** Other functions ********/
 
   function getBasePresetNames() {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return {} // Because g_controls_presets loads after login.
 
     return this.basePresetPaths.map(@(path) ::g_controls_presets.parsePresetFileName(path).name)

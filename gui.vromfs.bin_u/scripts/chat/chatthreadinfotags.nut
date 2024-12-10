@@ -4,24 +4,24 @@ from "%scripts/dagui_library.nut" import *
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-::g_chat_thread_tag <- {
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
+let g_chat_thread_tag = {
   types = []
 }
 
-::g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, _valueString) {
+g_chat_thread_tag._setThreadInfoPropertyForBoolTag <- function _setThreadInfoPropertyForBoolTag(threadInfo, _valueString) {
   threadInfo[this.threadInfoParamName] = true
 }
-::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo) {
+g_chat_thread_tag._updateThreadWhenNoTagForBoolTag <- function _updateThreadWhenNoTagForBoolTag(threadInfo) {
   threadInfo[this.threadInfoParamName] = false
 }
-::g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo) {
+g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBoolTag(threadInfo) {
   if (threadInfo[this.threadInfoParamName])
     return this.prefix
   return ""
 }
 
-::g_chat_thread_tag.template <- {
+g_chat_thread_tag.template <- {
   prefix = ""
   threadInfoParamName = null
   isRegular = true //regular tags are converted direct to threadInfo params.
@@ -50,7 +50,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
   }
 }
 
-enums.addTypesByGlobalName("g_chat_thread_tag", {
+enumsAddTypes(g_chat_thread_tag, {
   CUSTOM = {
     isRegular = false
   }
@@ -89,17 +89,17 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
   HIDDEN = {
     prefix = "hidden"
     threadInfoParamName = "isHidden"
-    setThreadInfoProperty = ::g_chat_thread_tag._setThreadInfoPropertyForBoolTag
-    updateThreadWhenNoTag = ::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag
-    getTagString          = ::g_chat_thread_tag._getTagStringBoolForBoolTag
+    setThreadInfoProperty = g_chat_thread_tag._setThreadInfoPropertyForBoolTag
+    updateThreadWhenNoTag = g_chat_thread_tag._updateThreadWhenNoTagForBoolTag
+    getTagString          = g_chat_thread_tag._getTagStringBoolForBoolTag
   }
 
   PINNED = {
     prefix = "pinned"
     threadInfoParamName = "isPinned"
-    setThreadInfoProperty = ::g_chat_thread_tag._setThreadInfoPropertyForBoolTag
-    updateThreadWhenNoTag = ::g_chat_thread_tag._updateThreadWhenNoTagForBoolTag
-    getTagString          = ::g_chat_thread_tag._getTagStringBoolForBoolTag
+    setThreadInfoProperty = g_chat_thread_tag._setThreadInfoPropertyForBoolTag
+    updateThreadWhenNoTag = g_chat_thread_tag._updateThreadWhenNoTagForBoolTag
+    getTagString          = g_chat_thread_tag._getTagStringBoolForBoolTag
   }
 
   TIME_STAMP = {
@@ -148,8 +148,10 @@ enums.addTypesByGlobalName("g_chat_thread_tag", {
   }
 })
 
-::g_chat_thread_tag.types.sort(function(a, b) {
+g_chat_thread_tag.types.sort(function(a, b) {
   if (a.isRegular != b.isRegular)
     return a.isRegular ? -1 : 1
   return 0
 })
+
+return {g_chat_thread_tag}

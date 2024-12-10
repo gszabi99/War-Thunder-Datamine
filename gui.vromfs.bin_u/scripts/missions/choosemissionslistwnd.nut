@@ -6,6 +6,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 
 /*
  API:
@@ -151,7 +152,7 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onMissionCheckBox(obj) {
-    let id = ::getObjIdByPrefix(obj, "checkbox_")
+    let id = getObjIdByPrefix(obj, "checkbox_")
     if (!id)
       return
 

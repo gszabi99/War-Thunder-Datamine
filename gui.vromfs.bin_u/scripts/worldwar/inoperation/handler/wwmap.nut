@@ -26,7 +26,7 @@ let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
-let { wwGetOperationId, wwGetPlayerSide, wwIsOperationPaused, wwGetOperationWinner,
+let { wwGetOperationId, wwGetPlayerSide, wwGetOperationWinner,
   wwGetZoneName, wwGetSelectedAirfield, wwClearOutlinedZones, wwGetSpeedupFactor } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
@@ -38,6 +38,10 @@ let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { register_command } = require("console")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 let wwTopMenuLeftSideSections = require("%scripts/worldWar/externalServices/worldWarTopMenuSectionsConfigs.nut")
+let { isOperationPaused, isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
+let { getWWLogsData, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { RenderCategory } = require("worldwarConst")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -120,12 +124,13 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.markMainObjectiveZones()
 
     ::g_operations.forcedFullUpdate()
-    ::g_ww_logs.lastReadLogMark = loadLocalByAccount(::g_world_war.getSaveOperationLogId(), "")
-    ::g_ww_logs.requestNewLogs(WW_LOG_MAX_LOAD_AMOUNT, !::g_ww_logs.loaded.len())
+    let wwLogsData = getWWLogsData()
+    wwLogsData.lastReadLogMark = loadLocalByAccount(::g_world_war.getSaveOperationLogId(), "")
+    requestNewWWLogs(WW_LOG_MAX_LOAD_AMOUNT, !wwLogsData.loaded.len())
 
     this.scene.findObject("update_timer").setUserData(this)
-    if (g_world_war_render.isCategoryEnabled(ERC_ARMY_RADIUSES))
-      g_world_war_render.setCategory(ERC_ARMY_RADIUSES, false)
+    if (g_world_war_render.isCategoryEnabled(RenderCategory.ERC_ARMY_RADIUSES))
+      g_world_war_render.setCategory(RenderCategory.ERC_ARMY_RADIUSES, false)
 
     this.guiScene.performDelayed(this, function() {
       if (this.isValid())
@@ -428,7 +433,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onStart() {
-    if (::g_world_war.isCurrentOperationFinished())
+    if (isOperationFinished())
       return showInfoMsgBox(loc("worldwar/operation_complete"))
 
     if (g_squad_manager.isSquadMember()) {
@@ -462,7 +467,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWStopWorldWar(_p) {
-    if (!::g_login.isProfileReceived())
+    if (!isProfileReceived.get())
       return // to avoid MainMenu initialization during logout stage
 
     this.goBack()
@@ -517,14 +522,14 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onForceShowArmiesPath(_obj) {
-    this.isArmiesPathSwitchedOn = g_world_war_render.isCategoryEnabled(ERC_ARROWS_FOR_SELECTED_ARMIES)
+    this.isArmiesPathSwitchedOn = g_world_war_render.isCategoryEnabled(RenderCategory.ERC_ARROWS_FOR_SELECTED_ARMIES)
     if (this.isArmiesPathSwitchedOn)
-      g_world_war_render.setCategory(ERC_ARROWS_FOR_SELECTED_ARMIES, false)
+      g_world_war_render.setCategory(RenderCategory.ERC_ARROWS_FOR_SELECTED_ARMIES, false)
   }
 
   function onRemoveForceShowArmiesPath(_obj) {
-    if (this.isArmiesPathSwitchedOn != g_world_war_render.isCategoryEnabled(ERC_ARROWS_FOR_SELECTED_ARMIES))
-      g_world_war_render.setCategory(ERC_ARROWS_FOR_SELECTED_ARMIES, true)
+    if (this.isArmiesPathSwitchedOn != g_world_war_render.isCategoryEnabled(RenderCategory.ERC_ARROWS_FOR_SELECTED_ARMIES))
+      g_world_war_render.setCategory(RenderCategory.ERC_ARROWS_FOR_SELECTED_ARMIES, true)
   }
 
   function collectArmyStrengthData() {
@@ -878,14 +883,14 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateAFKTimer() {
     if (this.animationTimer && this.animationTimer.isValid())
       Timer(this.scene, 2, this.updateAFKTimer, this)
-    else if (!::g_world_war.isCurrentOperationFinished() && !wwIsOperationPaused()) {
+    else if (!isOperationFinished() && !isOperationPaused()) {
       this.updateAFKData()
       if (!this.afkData.isNeedAFKTimer && (this.afkLostTimer || this.afkCountdownTimer))
         return
 
       this.fillAFKTimer()
     }
-    else if (::g_world_war.isCurrentOperationFinished())
+    else if (isOperationFinished())
       this.destroyAllAFKTimers()
   }
 
@@ -929,12 +934,12 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
                 : "worldwar/operation/enemyTechnicalDefeat"))
             if (needMsgWnd && checkObj(textObj)) {
               textObj.setValue(txt)
-              statObj.show(!wwIsOperationPaused())
+              statObj.show(!isOperationPaused())
               statObj.animation = "show"
             }
             if (!needMsgWnd && checkObj(afkObj)) {
               afkObj.setValue(txt)
-              afkObj.show(!wwIsOperationPaused())
+              afkObj.show(!isOperationPaused())
             }
           }, this, true)
         wwEvent("AFKTimerStart", { needResize = !needMsgWnd })
@@ -950,8 +955,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(objTarget))
       return
 
-    let isFinished = ::g_world_war.isCurrentOperationFinished()
-    let isPaused = wwIsOperationPaused()
+    let isFinished = isOperationFinished()
     local statusText = ""
 
     if (isFinished) {
@@ -960,7 +964,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       this.guiScene.playSound(isVictory ? "ww_oper_end_win" : "ww_oper_end_fail")
       objStartBox.show(true)
     }
-    else if (isPaused) {
+    else if (isOperationPaused()) {
       let activationTime = ww_get_operation_activation_time()
       objStartBox.show(true)
       if (activationTime) {
@@ -1101,7 +1105,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
             this.currentOperationInfoTabType == ::g_ww_map_info_type.LOG)
           logHandler = this.mainBlockHandler
 
-        ::g_ww_logs.requestNewLogs(WW_LOG_EVENT_LOAD_AMOUNT, false, logHandler)
+        requestNewWWLogs(WW_LOG_EVENT_LOAD_AMOUNT, false, logHandler)
       }, this, false)
   }
 
@@ -1376,7 +1380,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.currentSelectedObject == mapObjectSelect.AIRFIELD ||
     this.currentSelectedObject == mapObjectSelect.LOG_ARMY
 
-  isOperationActive = @() !::g_world_war.isCurrentOperationFinished()
+  isOperationActive = @() !isOperationFinished()
   isInQueue = @() this.isOperationActive() && ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
 
   function onTransportArmyLoad() {

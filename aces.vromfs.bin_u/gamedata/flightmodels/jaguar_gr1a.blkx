@@ -2446,6 +2446,20 @@
       "noiseFactor": 0.05
     }
   },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/uk_ari_18223.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -3328,20 +3342,6 @@
       }
     ]
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/uk_ari_18223.blk"
-      },
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -3717,7 +3717,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 0.1,
-        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionBrightnessNoiseStrength": 0.0,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

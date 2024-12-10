@@ -32,6 +32,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { defer } = require("dagor.workcycle")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 let tabIdxToName = {
   [itemsTab.SHOP] = "items/shop",
@@ -485,7 +486,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     else
       this.updateItemInfo()
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this,
+    generatePaginator(this.scene.findObject("paginator_place"), this,
       this.curPage, ceil(this.itemsList.len().tofloat() / this.itemsPerPage) - 1, null, true /*show last page*/ )
 
     if (!this.itemsList.len())

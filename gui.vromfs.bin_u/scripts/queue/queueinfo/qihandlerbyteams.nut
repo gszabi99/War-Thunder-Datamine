@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%scripts/utils_sa.nut" import buildTableRow
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -98,14 +99,14 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
       let maxCluster = queueStats.getMaxClusterName()
       let teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
       let rowData = this.buildQueueStatsRowData(teamStats)
-      res = "".concat(res, ::buildTableRow("", rowData, 0, rowParams, "0"))
+      res = "".concat(res, buildTableRow("", rowData, 0, rowParams, "0"))
       return res
     }
 
     foreach (clusterName in clusters) {
       let teamStats = queueStats.getQueueTableByTeam(teamName, clusterName)
       let rowData = this.buildQueueStatsRowData(teamStats, getClusterShortName(clusterName))
-      res = "".concat(res, ::buildTableRow("", rowData, 0, rowParams, "0"))
+      res = "".concat(res, buildTableRow("", rowData, 0, rowParams, "0"))
     }
     return res
   }
@@ -124,20 +125,20 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
         text = loc("multiplayer/playersInYourClan")
         width = "0.1@sf"
       }]
-      res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
+      res = "".concat(res, buildTableRow("", headerData, null, rowParams, "0"))
 
       let rowData = this.buildQueueStatsRowData(myClanQueueTable)
-      res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
+      res = "".concat(res, buildTableRow("", rowData, null, rowParams, "0"))
     }
 
     let headerData = [{
       text = loc("multiplayer/clansInQueue")
       width = "0.1@sf"
     }]
-    res = "".concat(res, ::buildTableRow("", headerData, null, rowParams, "0"))
+    res = "".concat(res, buildTableRow("", headerData, null, rowParams, "0"))
 
     let rowData = this.buildQueueStatsRowData(queueStats.getClansQueueTable())
-    res = "".concat(res, ::buildTableRow("", rowData, null, rowParams, "0"))
+    res = "".concat(res, buildTableRow("", rowData, null, rowParams, "0"))
     return res
   }
 
@@ -166,6 +167,6 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
         tdalign = "center"
       })
     }
-    return ::buildTableRow("", headerData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
+    return buildTableRow("", headerData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
   }
 }

@@ -2597,6 +2597,7 @@
       "matchSector": 15.0,
       "targetSuperResolution": false,
       "trackedTargetsMax": 12,
+      "priorityTargetSelection": true,
       "targetRangeFinder": true,
       "targetRange": [
         5000.0,
@@ -2636,6 +2637,8 @@
             "name": "9K330",
             "detectLaunch": true,
             "type": [
+              "HQ-17 TA",
+              "HQ-17 TT",
               "9K330 TA",
               "9K330 TT"
             ]
@@ -3556,25 +3559,6 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apg_70.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_56c.blk"
-      },
-      {
-        "blk": "gameData/sensors/tv_tracker.blk",
-        "node": "optic1_gun"
-      },
-      {
-        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic2_gun"
-      }
-    ]
-  },
   "nightVision": {
     "sightThermal": {
       "resolution": [
@@ -3668,6 +3652,25 @@
       "nvIndex": 1,
       "name": "AGM65G"
     },
+    "TV2": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1,
+      "name": "GBU15V2"
+    },
     "Target": {
       "pos": [
         1.0,
@@ -3686,6 +3689,25 @@
       "turretNo": 0,
       "nvIndex": 2
     }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apg_70.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_56c.blk"
+      },
+      {
+        "blk": "gameData/sensors/tv_tracker.blk",
+        "node": "optic1_gun"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+        "node": "optic2_gun"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -9603,7 +9625,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.1,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

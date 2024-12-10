@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, shop_get_country_excess_exp, wp_get_repair_cost
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -253,7 +254,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
       let isInResearch = isUnitInResearch(unit)
       let isSquadronVehicle = unit.isSquadronVehicle()
-      let isInClan = ::is_in_clan()
+      let isInClan = is_in_clan()
       let reqExp = getUnitReqExp(unit) - getUnitExp(unit)
       let squadronExp = min(clan_get_exp(), reqExp)
       let canFlushSquadronExp = hasFeature("ClanVehicles") && isSquadronVehicle
@@ -279,7 +280,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
               : loc("mainmenu/btnResearch")
       showAction = inMenu && (!isInResearch || hasFeature("SpendGold"))
         && (isUnitFeatureLocked(unit) || canResearchUnit(unit)
-          || canFlushSquadronExp || (isSquadronVehicle && !::is_in_clan()))
+          || canFlushSquadronExp || (isSquadronVehicle && !is_in_clan()))
       disabled = !showAction
       actionFunc = needToFlushExp
         || (isSquadronResearchMode && (needChosenResearchOfSquadron || canFlushSquadronExp))

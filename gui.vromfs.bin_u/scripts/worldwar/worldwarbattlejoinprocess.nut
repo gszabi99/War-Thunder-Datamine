@@ -68,9 +68,6 @@ let WwBattleJoinProcess = class {
   }
 
   function joinStep3_internal() {
-    if (this.wwBattle.isTanksCompatible() && !::check_tanks_available())
-      return this.remove()
-
     if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
       return this.remove()
 

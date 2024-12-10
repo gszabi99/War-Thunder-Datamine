@@ -4,13 +4,14 @@ let { format } = require("string")
 let math = require("math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 
-let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nut")
+let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("%rGui/twsState.nut")
 
 let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
 
 let { settings } = require("rwrAri23333ThreatsLibrary.nut")
 
 let color = Color(10, 202, 10, 250)
+let backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -78,7 +79,7 @@ function calcRwrTargetRadius(target, directionGroup) {
 }
 
 function createRwrTarget(index, settingsIn, objectStyle) {
-  let target = rwrTargets[index]
+  let target = rwrTargets[rwrTargetsOrder[index]]
 
   if (!target.valid || target.groupId == null)
     return @() { }
@@ -87,16 +88,37 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 
   let directionGroup = target.groupId >= 0 && target.groupId < settingsIn.directionGroups.len() ? settingsIn.directionGroups[target.groupId] : null
   let targetRadiusRel = calcRwrTargetRadius(target, directionGroup)
-  local targetType = @()
-    styleText.__merge({
-      rendObj = ROBJ_TEXT
-      pos = [pw(target.x * 100.0 * targetRadiusRel), ph(target.y * 100.0 * targetRadiusRel)]
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      fontSize = objectStyle.fontScale * styleText.fontSize
-      text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-    })
+
+  let background = {
+    color = backgroundColor
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = baseLineWidth * objectStyle.lineWidthScale
+    fillColor = backgroundColor
+    size = flex()
+    commands = [
+      [ VECTOR_ELLIPSE,
+        target.x * targetRadiusRel * 100.0,
+        target.y * targetRadiusRel * 100.0,
+        iconSizeMult * 100.0,
+        iconSizeMult * 100.0]
+     ]
+  }
+
+  local targetTypeText = styleText.__merge({
+    rendObj = ROBJ_TEXT
+    size = SIZE_TO_CONTENT
+    color = color
+    fontSize = styleText.fontSize * objectStyle.fontScale
+    text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
+    padding = [2, 2]
+  })
+  let targetTypeTextSize = calc_comp_size(targetTypeText)
+  local targetType = @() {
+    rendObj = ROBJ_SOLID
+    color = backgroundColor
+    pos = [pw(target.x * 100.0 * targetRadiusRel - 0.16 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.16 * targetTypeTextSize[1])]
+    children = @() targetTypeText
+  }
 
   local track = null
   if (target.track) {
@@ -158,17 +180,13 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   }
 
   return @() {
+    pos = [pw(50), ph(50)]
     size = flex()
     children = [
-      {
-        pos = [pw(50), ph(50)]
-        size = flex()
-        children = [
-          track,
-          launch
-        ]
-      },
-      targetType
+      background,
+      targetType,
+      track,
+      launch
     ]
   }
 }

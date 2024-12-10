@@ -12,6 +12,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let contactsWndSizes = Watched(null)
 
@@ -163,7 +164,7 @@ function loadRecentGroupOnce() {
 }
 
 function addRecentContacts(contacts) {
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   loadRecentGroupOnce()

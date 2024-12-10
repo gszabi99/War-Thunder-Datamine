@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -35,8 +36,8 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.scene.findObject("thread_title_header").setValue(loc("chat/threadTitle/limits",
                                               {
-                                                min = ::g_chat.threadTitleLenMin
-                                                max = ::g_chat.threadTitleLenMax
+                                                min = g_chat.getThreadTitleLenMin()
+                                                max = g_chat.getThreadTitleLenMax()
                                               }))
 
     let titleEditbox = this.scene.findObject("thread_title_editbox")
@@ -64,7 +65,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function initLangs() {
     this.curLangs = this.threadInfo.langs
 
-    let show = ::g_chat.canChooseThreadsLang()
+    let show = g_chat.canChooseThreadsLang()
     showObjById("language_block", show, this.scene)
     if (show)
       this.updateLangButton()
@@ -102,7 +103,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkValues() {
-    this.isValuesValid = ::g_chat.checkThreadTitleLen(this.curTitle)
+    this.isValuesValid = g_chat.checkThreadTitleLen(this.curTitle)
 
     this.scene.findObject("btn_apply").enable(this.isValuesValid)
   }
@@ -122,7 +123,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.curLangs)
       modifyTable.langs <- this.curLangs
 
-    let res = ::g_chat.modifyThread(this.threadInfo, modifyTable)
+    let res = g_chat.modifyThread(this.threadInfo, modifyTable)
     if (res)
       this.goBack()
   }

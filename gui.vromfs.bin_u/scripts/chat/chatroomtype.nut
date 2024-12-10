@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
+let u = require("%sqStdLibs/helpers/u.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -13,6 +14,8 @@ let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
+let { getThreadInfo, canCreateThreads } = require("%scripts/chat/chatStorage.nut")
+let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -114,7 +117,7 @@ enumsAddTypes(g_chat_room_type, {
     getRoomName  = function(roomId, isColored = false) { //roomId == playerName
       local res = ::g_contacts.getPlayerFullName(getPlayerName(roomId), ::clanUserTable?[roomId] ?? "")
       if (isColored)
-        res = colorize(::g_chat.getSenderColor(roomId), res)
+        res = colorize(getSenderColor(roomId), res)
       return res
     }
     getRoomColorTag = function(roomId) { //roomId == playerName
@@ -148,16 +151,16 @@ enumsAddTypes(g_chat_room_type, {
     needCountAsImportant = true
 
     getRoomName = function(roomId, isColored = false, isFull = false) {
-      let isMySquadRoom = roomId == ::g_chat.getMySquadRoomId()
+      let isMySquadRoom = roomId == g_chat_room_type.getMySquadRoomId()
       local res = !isFull || isMySquadRoom ? loc(this.roomNameLocId) : loc("squad/disbanded/name")
       if (isColored && isMySquadRoom)
-        res = colorize(::g_chat.color.senderSquad[true], res)
+        res = colorize(chatColors.senderSquad[true], res)
       return res
     }
     getTooltip = @(roomId) this.getRoomName(roomId, true, true)
-    getRoomColorTag = @(roomId) roomId == ::g_chat.getMySquadRoomId() ? "squad" : "disbanded_squad"
+    getRoomColorTag = @(roomId) roomId == g_chat_room_type.getMySquadRoomId() ? "squad" : "disbanded_squad"
 
-    canBeClosed = function(roomId) { return !g_squad_manager.isInSquad() || roomId != ::g_chat.getMySquadRoomId() }
+    canBeClosed = function(roomId) { return !g_squad_manager.isInSquad() || roomId != g_chat_room_type.getMySquadRoomId() }
     getInviteClickNameText = function(_roomId) {
       return loc(showConsoleButtons.value ? "squad/inviteSquadName/acceptToJoin" : "squad/inviteSquadName")
     }
@@ -241,7 +244,7 @@ enumsAddTypes(g_chat_room_type, {
 
     threadNameLen = 15
     getRoomName = function(roomId, _isColored = false) {
-      let threadInfo = ::g_chat.getThreadInfo(roomId)
+      let threadInfo = getThreadInfo(roomId)
       if (!threadInfo)
         return loc(this.roomNameLocId)
 
@@ -256,11 +259,11 @@ enumsAddTypes(g_chat_room_type, {
       return title
     }
     getTooltip = function(roomId) {
-      let threadInfo = ::g_chat.getThreadInfo(roomId)
+      let threadInfo = getThreadInfo(roomId)
       return threadInfo ? threadInfo.getRoomTooltipText() : ""
     }
 
-    canCreateRoom = function() { return ::g_chat.canCreateThreads() }
+    canCreateRoom = function() { return canCreateThreads() }
 
     hasChatHeader = true
     fillChatHeader = function(obj, roomData) {
@@ -277,7 +280,7 @@ enumsAddTypes(g_chat_room_type, {
         ud.onSceneShow()
     }
 
-    checkConcealed = @(roomId, cb) cb?(::g_chat.getThreadInfo(roomId)?.isConcealed() ?? false)
+    checkConcealed = @(roomId, cb) cb?(getThreadInfo(roomId)?.isConcealed() ?? false)
     isVisible = @() hasMenuGeneralChats.value
   }
 
@@ -315,6 +318,17 @@ g_chat_room_type.getRoomType <- function getRoomType(roomId) {
 
   assert(false, $"Cant get room type by roomId = {roomId}")
   return this.DEFAULT_ROOM
+}
+
+g_chat_room_type.getMySquadRoomId <- function getMySquadRoomId() {
+  if (!g_squad_manager.isInSquad())
+    return null
+
+  let squadRoomName = g_squad_manager.getSquadRoomName()
+  if (u.isEmpty(squadRoomName))
+    return null
+
+  return g_chat_room_type.SQUAD.getRoomId(squadRoomName)
 }
 
 return {

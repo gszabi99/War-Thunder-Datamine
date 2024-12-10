@@ -2849,6 +2849,43 @@
       ]
     }
   },
+  "gunnerOpticFps": {
+    "Target": {
+      "pos": [
+        0.5,
+        -0.45,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -35.0,
+        35.0,
+        -160.0,
+        1.0
+      ],
+      "opticType": "",
+      "turretNo": 0
+    },
+    "TV": {
+      "pos": [
+        8.3,
+        -0.2,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "KH-29T"
+    }
+  },
   "sensors": {
     "sensor": [
       {
@@ -6568,6 +6605,10 @@
               "external": true,
               "machLimit": 1.01,
               "order": 10
+            },
+            "BannedWeaponPreset": {
+              "slot": 4,
+              "preset": "ptb_fuse"
             }
           },
           {
@@ -8395,43 +8436,6 @@
       }
     ]
   },
-  "gunnerOpticFps": {
-    "Target": {
-      "pos": [
-        0.5,
-        -0.45,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -35.0,
-        35.0,
-        -160.0,
-        1.0
-      ],
-      "opticType": "",
-      "turretNo": 0
-    },
-    "TV": {
-      "pos": [
-        8.3,
-        -0.2,
-        0.0
-      ],
-      "head": "optic1_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -38.0,
-        38.0,
-        -55.0,
-        38.0
-      ],
-      "opticType": "tv",
-      "turretNo": 1,
-      "name": "KH-29T"
-    }
-  },
   "propellers": {
     "prop0": -1,
     "prop1": -1,
@@ -8930,7 +8934,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.1,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

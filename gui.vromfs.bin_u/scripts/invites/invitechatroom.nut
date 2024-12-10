@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -22,7 +23,7 @@ let ChatRoom = class (BaseInvite) {
     this.roomType = g_chat_room_type.getRoomType(this.roomId)
 
     if (this.roomType == g_chat_room_type.THREAD) {
-      let threadInfo = ::g_chat.addThreadInfoById(this.roomId)
+      let threadInfo = g_chat.addThreadInfoById(this.roomId)
       threadInfo.checkRefreshThread()
       if (threadInfo.lastUpdateTime < 0)
         this.setDelayed(true)

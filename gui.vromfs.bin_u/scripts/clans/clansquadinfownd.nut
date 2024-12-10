@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -12,6 +13,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
+let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
@@ -89,7 +91,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     memberObj.findObject("clanTag").setValue(contact?.clanTag ?? "")
     memberObj.findObject("contactName").setValue(getCustomNick(contact) ?? contact?.getName() ?? "")
     memberObj.findObject("tooltip")["uid"] = memeberUidStr
-    memberObj.findObject("not_member_data").show(contact ? false : true)
+    memberObj.findObject("not_member_data").show(!contact)
     let statusObj = memberObj.findObject("statusImg")
     if (checkObj(statusObj)) {
       let presence = contact?.presence ?? contactPresence.UNKNOWN
@@ -111,7 +113,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getMemberUidByObj(obj) {
-    local id = ::getObjIdByPrefix(obj, "member_")
+    local id = getObjIdByPrefix(obj, "member_")
     return id ? id.tointeger() : null
   }
 
@@ -128,7 +130,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!contact)
       return
     let memberName = contact ? contact.getName() : ""
-    ::g_chat.showPlayerRClickMenu(memberName, null, contact, position)
+    showChatPlayerRClickMenu(memberName, null, contact, position)
   }
 
   function onItemSelect(obj) {

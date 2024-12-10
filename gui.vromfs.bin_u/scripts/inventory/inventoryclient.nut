@@ -23,6 +23,7 @@ let { get_network_block } = require("blkGetters")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -238,7 +239,7 @@ let class InventoryClient {
 
   constructor() {
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
-    if (::g_login.isProfileReceived())
+    if (isProfileReceived.get())
       this.refreshDataOnAuthorization()
   }
 

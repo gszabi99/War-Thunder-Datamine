@@ -24,6 +24,7 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { floor } = require("math")
 let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -787,7 +788,7 @@ local ExchangeRecipes = class {
 
   function loadStateRecipe() {
     this.mark = !this.needSaveMarkRecipe ? MARK_RECIPE.NONE
-      : ::g_login.isProfileReceived() ? loadLocalAccountSettings(this.getSaveId(), MARK_RECIPE.NONE)
+      : isProfileReceived.get() ? loadLocalAccountSettings(this.getSaveId(), MARK_RECIPE.NONE)
       : null
   }
 

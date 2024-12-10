@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let string = require("string")
 let { Speed, Altitude, Roll, Tangage, Mach } = require("%rGui/planeState/planeFlyState.nut");
 let { IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
-        IlsLineScale, RocketMode, CannonMode, AamAccelLock } = require("%rGui/planeState/planeToolsState.nut")
+        IlsLineScale, RocketMode, CannonMode, AamAccelLock, RadarTargetPos, IlsPosSize, RadarTargetDist} = require("%rGui/planeState/planeToolsState.nut")
 let { mpsToKmh, baseLineWidth } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { compassWrap, generateCompassMarkEP, generateCompassMarkEP08 } = require("ilsCompasses.nut")
@@ -138,6 +138,44 @@ let EP12Speed = @() {
     font = Fonts.hud
     text = string.format(Mach.value < 0.5 ? "%d" : "%.2f", EP12SpeedValue.value)
   } : null
+}
+
+let EP12RadarTargetVisible = Computed(@() RadarTargetDist.get() > 0.0 && !BombingMode.get())
+let EP12RadarTargetMark = @(){
+  watch = EP12RadarTargetVisible
+  size = flex()
+  children = EP12RadarTargetVisible.get() ? [
+    {
+      size = [pw(3), ph(3)]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.get()
+      fillColor = Color(0, 0, 0, 0)
+      lineWidth = baseLineWidth * IlsLineScale.get()
+      commands = [
+        [VECTOR_SECTOR, 0, 0, 100, 100, 180, 0]
+      ]
+      animations = [
+        { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.5, loop = true , trigger = "outside_hud_zone"}
+      ]
+      behavior = Behaviors.RtPropUpdate
+      update = function() {
+        let shouldClamp = RadarTargetPos[0] < IlsPosSize[2] * 0.04 || RadarTargetPos[0] > IlsPosSize[2] * 0.96 || RadarTargetPos[1] < IlsPosSize[3] * 0.04 || RadarTargetPos[1] > IlsPosSize[3] * 0.96
+        local pos = RadarTargetPos
+        if(shouldClamp) {
+          anim_start("outside_hud_zone")
+          pos = [clamp(RadarTargetPos[0], IlsPosSize[2] * 0.04, IlsPosSize[2] * 0.96),
+            clamp(RadarTargetPos[1], IlsPosSize[3] * 0.04, IlsPosSize[3] * 0.96)]
+        }
+        else
+          anim_request_stop("outside_hud_zone")
+        return {
+          transform = {
+            translate = pos
+          }
+        }
+      }
+    }
+  ] : null
 }
 
 let generateAltMarkEP = function(num) {
@@ -416,7 +454,8 @@ function swedishEPIls(width, height, is_ep08) {
       EPAimMark(width, height, !is_ep08),
       EP08AAMMarker,
       (is_ep08 ? EPCCRPTargetMark(width, height) : null),
-      (!is_ep08 ? bulletsImpactLine : null)
+      (!is_ep08 ? bulletsImpactLine : null),
+      (!is_ep08 ? EP12RadarTargetMark : null)
     ]
   }
 }

@@ -7,6 +7,7 @@ let { eachBlock } = require("%sqstd/datablock.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let contentPresets = []
 local contentPresetIdxByName = {}
@@ -14,7 +15,7 @@ local contentPresetIdxByName = {}
 const AGREED_PRESET_SAVE_ID_PREFIX = "contentPreset/agreed"
 
 function getContentPresets() {
-  if (contentPresets.len() > 0 || !::g_login.isLoggedIn())
+  if (contentPresets.len() > 0 || !isLoggedIn.get())
     return contentPresets
 
   eachBlock(get_ugc_blk()?.presets, @(_, n) contentPresets.append(n))

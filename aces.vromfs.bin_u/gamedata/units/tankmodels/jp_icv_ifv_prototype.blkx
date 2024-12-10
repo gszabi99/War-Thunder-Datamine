@@ -2039,18 +2039,21 @@
   },
   "class_tags": {},
   "commonWeapons": {
-    "updateAnimBonesAlways": true,
     "Weapon": [
       {
         "trigger": "gunner0",
         "blk": "gameData/Weapons/groundModels_weapons/30mm_Bushmaster_2_Mk_44_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "recoilOffset": 0.7,
+        "recoilOffset": 0.09,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
         "breechDP": "cannon_breech_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "jammedReloadTime": 8.0,
         "speedYaw": 53.0,
         "speedPitch": 28.0,
@@ -2107,49 +2110,41 @@
           ],
           "lim2": [
             -174.0,
-            -160.0,
-            10.0,
+            -140.0,
+            -2.0,
             45.0
           ],
           "lim3": [
+            -140.0,
+            -115.0,
+            -6.0,
+            45.0
+          ],
+          "lim4": [
             [
-              -160.0,
-              -150.0,
-              0.0,
+              -115.0,
+              112.0,
+              -10.0,
               45.0
             ],
             [
-              -150.0,
-              -115.0,
-              -2.0,
+              112.0,
+              140.0,
+              -6.0,
               45.0
             ]
           ],
-          "lim4": [
-            -115.0,
-            112.0,
-            -10.0,
-            45.0
-          ],
           "lim5": [
-            112.0,
-            156.0,
+            140.0,
+            174.0,
             -2.0,
             45.0
           ],
           "lim6": [
-            [
-              156.0,
-              175.0,
-              30.0,
-              45.0
-            ],
-            [
-              175.0,
-              180.0,
-              0.0,
-              45.0
-            ]
+            174.0,
+            180.0,
+            0.0,
+            45.0
           ]
         },
         "gunStabilizer": {
@@ -2233,67 +2228,8 @@
             0.0
           ]
         }
-      },
-      {
-        "trigger": "gunner3",
-        "triggerGroup": "commander",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "bone_commander_sight_v",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "parkInDeadzone": false,
-        "speedYaw": 120.0,
-        "speedPitch": 90.0,
-        "animatedEmitter": "bone_commander_sight_v",
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -10.0,
-            20.0
-          ]
-        },
-        "gunStabilizer": {
-          "hasVerticalGunFreeMode": false,
-          "forceEnabled": true,
-          "hasHorizontal": true,
-          "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 75.0,
-          "hasVertical": true,
-          "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
-          "errorKPHToDegrees": {
-            "row": [
-              [
-                5.0,
-                0.0
-              ],
-              [
-                45.0,
-                0.00015
-              ],
-              [
-                80.0,
-                0.0002
-              ]
-            ]
-          }
-        },
-        "turret": {
-          "head": "bone_commander_sight_h",
-          "gun": "bone_commander_sight_v",
-          "gunnerDm": "commander_dm",
-          "verDriveDm": "commander_panoramic_sight_dm",
-          "horDriveDm": "commander_panoramic_sight_dm"
-        }
       }
-    ],
-    "animatedBones": {
-      "node": "bone_gun_01"
-    }
+    ]
   },
   "weapon_presets": {
     "preset": {

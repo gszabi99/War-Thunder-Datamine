@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -188,7 +189,7 @@ gui_handlers.SaveDataDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     })
 
     local markUp = [
-      ::buildTableRowNoPad("row_header", headerRow, true,
+      buildTableRowNoPad("row_header", headerRow, true,
         "inactive:t='yes'; commonTextColor:t='yes'; skip-navigation:t='yes';")
     ]
 
@@ -209,7 +210,7 @@ gui_handlers.SaveDataDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         })
       })
 
-      markUp.append(::buildTableRowNoPad(rowName, rowData, idx % 2 != 0))
+      markUp.append(buildTableRowNoPad(rowName, rowData, idx % 2 != 0))
     }
 
     markUp = "".join(markUp, true)

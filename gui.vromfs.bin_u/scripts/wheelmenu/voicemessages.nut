@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import set_option_favorite_voice_message, add_voice_message, get_player_unit_name, on_voice_message_button, get_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_multiplayer, is_mode_with_teams
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -110,9 +111,9 @@ function getVoiceMessageListLine(index, is_category, name, squad, targetName, _m
 }
 
 function getCantUseVoiceMessagesReason(isForSquad) {
-  if (!::is_multiplayer())
+  if (!is_multiplayer())
     return loc("ui/unavailable")
-  if (!::is_mode_with_teams(get_game_type()))
+  if (!is_mode_with_teams(get_game_type()))
     return loc("chat/no_team")
   if (isForSquad && get_game_mode() == GM_SKIRMISH)
     return loc("squad/no_squads_in_custom_battles")

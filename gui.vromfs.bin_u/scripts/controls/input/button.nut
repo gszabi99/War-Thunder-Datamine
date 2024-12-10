@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let { getLocalizedControlName, getShortLocalizedControlName
-} = require("%scripts/controls/controlsVisual.nut")
+let { getLocalizedControlName, getShortLocalizedControlName} = require("%scripts/controls/controlsVisual.nut")
+let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
-::Input.Button <- class (::Input.InputBase) {
+let Button = class (InputBase) {
   deviceId = -1
   buttonId = -1
 
@@ -76,3 +76,4 @@ let { getLocalizedControlName, getShortLocalizedControlName
     }
   }
 }
+return {Button}

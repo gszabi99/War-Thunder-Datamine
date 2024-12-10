@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import ps4_is_production_env, periodic_task_register_ex
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage } = require("sony.user")
 let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
@@ -24,7 +25,7 @@ function startPremiumFeatureReporting() {
     periodic_task_register_ex(
       {},
       function(_dt) {
-        if (::is_multiplayer())
+        if (is_multiplayer())
           reportPremiumFeatureUsage(isCrossPlayEnabled(), ::isPlayerDedicatedSpectator())
       },
       1,

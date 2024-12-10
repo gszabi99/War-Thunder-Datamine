@@ -3,7 +3,11 @@ from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%scripts/mainConsts.nut" import global_max_players_versus
+from "%scripts/utils_sa.nut" import is_mode_with_teams
 
+let { g_chat } = require("%scripts/chat/chat.nut")
+let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
@@ -56,6 +60,7 @@ let { showOrdersContainer } = require("%scripts/items/orders.nut")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let { loadGameChatToObj } = require("%scripts/chat/mpChat.nut")
 let { register_command } = require("console")
+let { replaySystemWindowOpen, replaySystemWindowClose } = require("%scripts/replays/replaySystemWindow.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 enum SPECTATOR_MODE {
@@ -234,6 +239,8 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   replayMarkersEnabled = null
 
   isSensorViewModeEnabled = false
+  isReplaySystemWindowOpened = false
+
   updateCooldown = 0.0
   statNumRows = 0
   teams = [ { players = [] }, { players = [] } ]
@@ -266,7 +273,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     "isInHeroSquad",
   ]
 
-  historyMaxLen = ::g_chat.MAX_ROOM_MSGS_FOR_MODERATOR
+  historyMaxLen = g_chat.MAX_ROOM_MSGS_FOR_MODERATOR
   historySkipDuplicatesSec = 10
   historyLogCustomMsgType = -200
   historyLog = null
@@ -357,6 +364,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
         ID_TOGGLE_FORCE_SPECTATOR_CAM_ROT = true
         ID_REPLAY_SHOW_MARKERS      = this.mode == SPECTATOR_MODE.REPLAY
         ID_REPLAY_TOGGLE_SENSOR_VIEW  = this.mode == SPECTATOR_MODE.REPLAY
+        ID_REPLAY_SYSTEM_WINDOW    = this.mode == SPECTATOR_MODE.REPLAY && hasFeature("ReplaySystemWindow")
         ID_REPLAY_SLOWER            = this.canControlTimeline
         ID_REPLAY_FASTER            = this.canControlTimeline
         ID_REPLAY_PAUSE             = this.canControlTimeline
@@ -764,6 +772,8 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       showObjById("sensorFilters", this.isSensorViewModeEnabled, this.scene)
     }
 
+    this.scene.findObject("ID_REPLAY_SYSTEM_WINDOW").highlighted = this.isReplaySystemWindowOpened ? "yes" : "no"
+
     if (this.canSeeMissionTimer) {
       this.scene.findObject("txt_mission_timer").setValue(time.secondsToString(get_mission_time(), false))
     }
@@ -810,7 +820,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function statTblGetSelectedPlayer(obj) {
-    let teamNum = ::getObjIdByPrefix(obj, "table_team")
+    let teamNum = getObjIdByPrefix(obj, "table_team")
     if (!teamNum || (teamNum != "1" && teamNum != "2"))
       return null
     let teamIndex = teamNum.tointeger() - 1
@@ -1022,7 +1032,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     let _teams = array(2, null)
     let isMpMode = !!(this.gameType & GT_VERSUS) || !!(this.gameType & GT_COOPERATIVE)
     let isPvP = !!(this.gameType & GT_VERSUS)
-    let isTeamplay = isPvP && ::is_mode_with_teams(this.gameType)
+    let isTeamplay = isPvP && is_mode_with_teams(this.gameType)
 
     if (isTeamplay || !this.canSeeOppositeTeam) {
       let localTeam = get_mp_local_team() != 2 ? 1 : 2
@@ -1091,7 +1101,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     local length = 0
     foreach (info in _teams)
       length = max(length, info.players.len())
-    let maxNoScroll = ::global_max_players_versus / 2
+    let maxNoScroll = global_max_players_versus / 2
     this.statNumRows = min(maxNoScroll, length)
     return _teams
   }
@@ -1591,8 +1601,23 @@ function on_spectator_tactical_map_request() { // called from client
     handler.onMapClick()
 }
 
+function on_open_replay_system_window() {
+  if (!hasFeature("ReplaySystemWindow"))
+    return
+
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
+  if (handler) {
+    handler.isReplaySystemWindowOpened = !handler.isReplaySystemWindowOpened
+    if(handler.isReplaySystemWindowOpened)
+      replaySystemWindowOpen()
+    else
+      replaySystemWindowClose()
+  }
+}
+
 eventbus_subscribe("on_player_requested_artillery", @(p) on_player_requested_artillery(p))
 eventbus_subscribe("on_spectator_tactical_map_request", @(_p) on_spectator_tactical_map_request())
+eventbus_subscribe("on_open_replay_system_window", @(_p) on_open_replay_system_window())
 
 eventbus_subscribe("replayWait", function (event) {
   broadcastEvent("ReplayWait", event)

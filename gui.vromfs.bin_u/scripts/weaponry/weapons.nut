@@ -4,7 +4,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
-from "%scripts/utils_sa.nut" import get_flush_exp_text
+from "%scripts/utils_sa.nut" import get_flush_exp_text, roman_numerals, check_aircraft_tags
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { toPixels } = require("%sqDagui/daguiUtil.nut")
@@ -276,7 +276,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.items = []
     this.fillPage()
 
-    if (isUnitInSlotbar(this.air) && !::check_aircraft_tags(this.air.tags, ["bomberview"]))
+    if (isUnitInSlotbar(this.air) && !check_aircraft_tags(this.air.tags, ["bomberview"]))
       if (!this.canBomb(true) && this.canBomb(false))
         this.needCheckTutorial = true
 
@@ -1242,7 +1242,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (reqTierMods > 0)
         reason = format(loc("weaponry/action_not_allowed"),
                           loc("weaponry/unlockModTierReq",
-                                { tier = ::roman_numerals[item.tier], amount = (reqTierMods).tostring() }))
+                                { tier = roman_numerals[item.tier], amount = (reqTierMods).tostring() }))
       else if (reqMods.len() > 0)
         reason = format(loc("weaponry/action_not_allowed"), $"{loc("weaponry/unlockModsReq")}\n{reqMods}")
     }

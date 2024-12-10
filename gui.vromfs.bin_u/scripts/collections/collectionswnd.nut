@@ -13,6 +13,7 @@ let { askPurchaseDecorator, askConsumeDecoratorCoupon,
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
+let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
 const MAX_COLLECTION_ITEMS = 10
 const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"
@@ -107,7 +108,7 @@ local collectionsWnd = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateDecoratorInfo()
 
-    ::generatePaginator(this.scene.findObject("paginator_place"), this,
+    generatePaginator(this.scene.findObject("paginator_place"), this,
       this.curPage, ceil(this.collectionsList.len().tofloat() / this.collectionsPerPage) - 1, null, true /*show last page*/ )
   }
 

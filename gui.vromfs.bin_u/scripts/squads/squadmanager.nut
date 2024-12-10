@@ -2,7 +2,9 @@ from "%scripts/dagui_natives.nut" import get_cyber_cafe_level, gchat_is_connecte
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState
 import "%scripts/squads/squadApplications.nut" as squadApplications
+from "%scripts/utils_sa.nut" import gen_rnd_password
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { checkMatchingError, request_matching } = require("%scripts/matching/api.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -38,6 +40,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -710,7 +713,7 @@ g_squad_manager = {
     if (!gchat_is_connected())
       return
 
-    if (::g_chat.isSquadRoomJoined())
+    if (g_chat.isSquadRoomJoined())
       return
 
     if (smData.roomCreateInProgress)
@@ -724,7 +727,7 @@ g_squad_manager = {
       return
 
     if (g_squad_manager.isSquadLeader() && u.isEmpty(password)) {
-      password = ::gen_rnd_password(15)
+      password = gen_rnd_password(15)
       squadData.chatInfo.password = password
 
       smData.roomCreateInProgress = true
@@ -737,7 +740,7 @@ g_squad_manager = {
     if (u.isEmpty(password))
       return
 
-    ::g_chat.joinSquadRoom(callback)
+    g_chat.joinSquadRoom(callback)
   }
 
   function disbandSquad() {
@@ -749,7 +752,7 @@ g_squad_manager = {
   }
 
   function checkForSquad() {
-    if (!::g_login.isLoggedIn())
+    if (!isLoggedIn.get())
       return
 
     let callback = function(response) {
@@ -1095,7 +1098,7 @@ g_squad_manager = {
       g_squad_manager.setState(squadState.LEAVING)
 
     ::queues.leaveAllQueues()
-    ::g_chat.leaveSquadRoom()
+    g_chat.leaveSquadRoom()
 
     smData.cyberCafeSquadMembersNum = -1
 

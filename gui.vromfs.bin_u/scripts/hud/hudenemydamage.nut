@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_show_destroyed_parts, get_option_xray_kill
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -233,7 +234,7 @@ let { getRgbStrFromHsv } = require("colorCorrector")
   }
 
   function onHitcamTargetKilled(params) {
-    if (::is_multiplayer() || this.lastTargetKilled)
+    if (is_multiplayer() || this.lastTargetKilled)
       return
 
     let unitId      = getTblValue("unitId", params)

@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
@@ -11,7 +12,7 @@ let isAllClanUnitsResearched = @() getAllUnits().findvalue(
 ) == null
 
 function needChooseClanUnitResearch() {
-  if (!::is_in_clan() || !hasFeature("ClanVehicles")
+  if (!is_in_clan() || !hasFeature("ClanVehicles")
       || isAllClanUnitsResearched())
     return false
 

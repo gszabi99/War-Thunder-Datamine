@@ -75,7 +75,7 @@
       entrenchIcon {
         pos:t='50%pw-50%w, 50%ph-50%h'
         position:t='absolute'
-        background-image:t='#ui/gameuiskin#army_defense'
+        background-image:t='ui/gameuiskin#ww_army_entrenched.svg'
         background-color:t='@armyEntrencheColor'
       }
       <</isEntrenched>>
@@ -86,16 +86,9 @@
         position:t='absolute'
       }
       <<#reqUnitTypeIcon>>
-        armyUnitType {
-          width:t='pw'
-          top:t='50%ph-50%h'
-          position:t='absolute'
-          text:t='<<getUnitTypeCustomText>>'
-          text-align:t='center'
-        <<#battleDescriptionIconSize>>
-          battleDescriptionIconSize:t='<<battleDescriptionIconSize>>'
-        <</battleDescriptionIconSize>>
-        }
+      armyUnitType {
+        background-image:t='<<getUnitTypeIcon>>'
+      }
       <</reqUnitTypeIcon>>
       <<#showArmyGroupText>>
         armyGroupText {

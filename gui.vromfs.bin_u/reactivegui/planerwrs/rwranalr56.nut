@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { rwrTargetsComponent, rwrPriorityTargetComponent } = require("rwrAnAlr56Components.nut")
+let { rwrTargetsComponent } = require("rwrAnAlr56Components.nut")
 
 function scope(scale, style) {
   return {
@@ -8,8 +8,7 @@ function scope(scale, style) {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
-      rwrTargetsComponent(style.object),
-      rwrPriorityTargetComponent(style.object)
+      rwrTargetsComponent(style.object)
     ]
   }
 }

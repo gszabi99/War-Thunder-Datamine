@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 from "radarOptions" import get_radar_mode_names, set_option_radar_name, get_radar_scan_pattern_names, set_option_radar_scan_pattern_name, get_radar_range_values
+from "%scripts/options/optionsCtors.nut" import create_option_list
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -18,7 +19,9 @@ let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_T
   USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT
 } = require("%scripts/options/optionsExtNames.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
-let { get_option, create_option_list } = require("%scripts/options/optionsExt.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
+let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
 let options = {
   types = []
@@ -35,12 +38,12 @@ let _isVisible = @(p) p.unit != null
 let _isNeedUpdateByTrigger = @(trigger) this.isAvailableInMission() && (trigger & this.triggerUpdateBitMask) != 0
 let _isNeedUpdContentByTrigger = @(trigger, _p) (trigger & this.triggerUpdContentBitMask) != 0
 
-function hasRadarOptions(name) {
-  let radarModesCount = get_radar_mode_names(name).len()
+function hasRadarOptions(name, weapName) {
+  let radarModesCount = get_radar_mode_names(name, weapName).len()
   return hasFeature("allowRadarModeOptions") && radarModesCount > 0
     && (radarModesCount > 1
-      || get_radar_scan_pattern_names(name).len() > 1
-      || get_radar_range_values(name).len() > 1)
+      || get_radar_scan_pattern_names(name, weapName).len() > 1
+      || get_radar_range_values(name, weapName).len() > 1)
 }
 
 function _update(p, trigger, isAlreadyFilled) {
@@ -258,7 +261,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = false
-    isShowForUnit = @(p) (p.unit.isAir() || p.unit.isHelicopter())
+    isShowForUnit = @(p) ((p.unit.isAir() || p.unit.isHelicopter()) && getCurMissionRules().getUnitFuelPercent(p.unit.name) == 0)
     cType = optionControlType.SLIDER
     cb = "onLoadFuelCustomChange"
   }
@@ -338,7 +341,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
-    isShowForUnit = @(p) (hasRadarOptions(p.unit.name))
+    isShowForUnit = @(p) (hasRadarOptions(p.unit.name, getLastWeapon(p.unit.name)))
     cb="onChangeRadarModeSelectedUnit"
   }
   radar_scan_pattern_select = {
@@ -349,7 +352,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
-    isShowForUnit = @(p) (hasRadarOptions(p.unit.name))
+    isShowForUnit = @(p) (hasRadarOptions(p.unit.name, getLastWeapon(p.unit.name)))
     cb="onChangeRadarScanRangeSelectedUnit"
   }
   radar_scan_range_select = {
@@ -360,7 +363,7 @@ options.addTypes({
     needSetToReqData = true
     isShowForRandomUnit = false
     needCheckValueWhenOptionUpdate = true
-    isShowForUnit = @(p) (hasRadarOptions(p.unit.name))
+    isShowForUnit = @(p) (hasRadarOptions(p.unit.name, getLastWeapon(p.unit.name)))
   }
 })
 

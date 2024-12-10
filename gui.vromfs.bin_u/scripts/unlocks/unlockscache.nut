@@ -5,6 +5,7 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_unlocks_blk, get_personal_unlocks_blk } = require("blkGetters")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let cacheById = persist("unlocksCacheById", @() {})
 let cacheArray = persist("unlocksCacheArray", @() [])
@@ -41,7 +42,7 @@ function cache() {
   cacheArray.clear()
   cacheByType.clear()
   convertBlkToCache(get_unlocks_blk())
-  if (!::g_login.isLoggedIn())
+  if (!isLoggedIn.get())
     return
 
   convertBlkToCache(get_personal_unlocks_blk())

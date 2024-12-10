@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -13,6 +14,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { getCurLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
 
 ::g_chat_latest_threads <- {
   autoUpdatePeriodMsec = 60000
@@ -35,11 +37,11 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 //refresh for usual players
 ::g_chat_latest_threads.refresh <- function refresh() {
-  let langTags = this.getSearchLangsList().map(@(l) ::g_chat_thread_tag.LANG.prefix + l.chatId)
+  let langTags = this.getSearchLangsList().map(@(l) g_chat_thread_tag.LANG.prefix + l.chatId)
 
   local categoryTagsText = ""
   if (!g_chat_categories.isSearchAnyCategory()) {
-    local categoryTags = g_chat_categories.getSearchCategoriesLList().map(@(cName) ::g_chat_thread_tag.CATEGORY.prefix + cName)
+    local categoryTags = g_chat_categories.getSearchCategoriesLList().map(@(cName) g_chat_thread_tag.CATEGORY.prefix + cName)
     categoryTagsText = ",".join(categoryTags, true)
   }
   this.refreshAdvanced("hidden", ",".join(langTags, true), categoryTagsText)
@@ -94,7 +96,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 }
 
 ::g_chat_latest_threads.canRefresh <- function canRefresh() {
-  return ::g_chat.checkChatConnected()
+  return g_chat.checkChatConnected()
          && this.getUpdateState() != chatUpdateState.IN_PROGRESS
          && this.getTimeToRefresh() <= 0
 }
@@ -115,7 +117,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
     return
   this.langsInited = true
 
-  let canChooseLang =  ::g_chat.canChooseThreadsLang()
+  let canChooseLang =  g_chat.canChooseThreadsLang()
   if (!canChooseLang) {
     this.isCustomLangsList = false
     return
@@ -156,7 +158,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 }
 
 ::g_chat_latest_threads.openChooseLangsMenu <- function openChooseLangsMenu(align = "top", alignObj = null) {
-  if (!::g_chat.canChooseThreadsLang())
+  if (!g_chat.canChooseThreadsLang())
     return
 
   let optionsList = []

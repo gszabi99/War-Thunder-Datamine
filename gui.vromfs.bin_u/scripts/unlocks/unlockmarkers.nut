@@ -12,6 +12,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings
@@ -99,7 +100,7 @@ function cache(ediff) {
   if (ediff == null)
     return null
 
-  if (ediff in cacheByEdiff || !::g_login.isLoggedIn())
+  if (ediff in cacheByEdiff || !isLoggedIn.get())
     return cacheByEdiff?[ediff]
 
   let curCache = {

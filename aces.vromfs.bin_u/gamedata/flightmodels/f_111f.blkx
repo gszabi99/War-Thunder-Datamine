@@ -19,7 +19,6 @@
   "hasPointOfInterestMemory": true,
   "ilsASG23": true,
   "isBwOpticSight": true,
-  "viewDistKInSight": 6.0,
   "tpsCameraTargetOffsetAtZoom": [
     30.0,
     20.0,
@@ -30,6 +29,7 @@
     1.5,
     0.0
   ],
+  "viewDistKInSight": 6.0,
   "type": "typeFighter",
   "simplifiedJoyAileronMult": 1.0,
   "simplifiedJoyElevatorMult": 1.0,
@@ -3047,6 +3047,20 @@
       "turretNo": 0
     }
   },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apq_169.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_2002_rwr.blk"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_2002_mlws.blk"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
@@ -4654,20 +4668,6 @@
     "maxPower": 6.0,
     "maxSegments": 50
   },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apq_169.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_2002_rwr.blk"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_2002_mlws.blk"
-      }
-    ]
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -5211,7 +5211,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 0.8,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.05,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

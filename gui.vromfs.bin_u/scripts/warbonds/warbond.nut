@@ -12,6 +12,7 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
 let { get_charserver_time_sec } = require("chard")
 let { get_price_blk } = require("blkGetters")
+let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 let Warbond = class {
   id = ""
@@ -211,7 +212,7 @@ let Warbond = class {
   }
 
   function needShowNewItemsNotifications() {
-    if (!::g_login.isProfileReceived())
+    if (!isProfileReceived.get())
       return false
 
     let curLevel = this.getCurrentShopLevel()

@@ -274,6 +274,7 @@
   "airfieldSafeLeaveZoneRadius": -1.0,
   "enableAircraftSevereDamage": true,
   "enableMissileEvasion": true,
+  "enableAirToAirMissileEvasionOnly": false,
   "showDamageReport": false,
   "damageReportTimeOut": 1.0,
   "showFireDamageReport": true,
@@ -381,6 +382,7 @@
   "collapsedIconForRadarTws": true,
   "indicationForCollapsedRadar": false,
   "bulletCaliberForPlayHitEffectFromServerOnly": 0.0,
+  "isBrakeOnBrokenEngineDisabled": true,
   "allowSalvoForSecondaryWeaponSeries": true,
   "deadTankTemperatureMul": 0.9,
   "tankHullTemperature": 60.0,
@@ -10178,6 +10180,7 @@
       "enableLeaveKills": true,
       "rocketSpotting": true,
       "airToAirMissileDetection": false,
+      "missileEvasionMessage": true,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadTankOnMap": true,
@@ -10250,6 +10253,7 @@
       "enableLeaveKills": true,
       "rocketSpotting": true,
       "airToAirMissileDetection": false,
+      "missileEvasionMessage": true,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadTankOnMap": true,
@@ -10320,6 +10324,7 @@
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
       "airToAirMissileDetection": false,
+      "missileEvasionMessage": false,
       "rocketSpotting": false,
       "nightVisionInTPS": false,
       "hudDetectAlly": true,
@@ -10393,6 +10398,7 @@
       "enableLeaveKills": true,
       "rocketSpotting": false,
       "airToAirMissileDetection": false,
+      "missileEvasionMessage": true,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadTankOnMap": true,
@@ -10464,6 +10470,7 @@
       "aircraftFriendlyFireForBanOnly": false,
       "enableLeaveKills": true,
       "airToAirMissileDetection": false,
+      "missileEvasionMessage": false,
       "rocketSpotting": false,
       "nightVisionInTPS": false,
       "hudDetectAlly": true,
@@ -10536,6 +10543,7 @@
       "enableLeaveKills": true,
       "rocketSpotting": true,
       "airToAirMissileDetection": false,
+      "missileEvasionMessage": true,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadTankOnMap": true,
@@ -10609,6 +10617,7 @@
       "enableLeaveKills": true,
       "rocketSpotting": false,
       "airToAirMissileDetection": false,
+      "missileEvasionMessage": true,
       "nightVisionInTPS": true,
       "hudDetectAlly": false,
       "keepDeadTankOnMap": true,
@@ -10731,7 +10740,8 @@
         "shipCruiserRepairAssistRadius": 500.0,
         "shipCruiserRepairRequestHelpRadius": 1500.0,
         "drawGroundUnitMarkerForAirstreakFighter": false,
-        "agmOpticalArcadeDesignator": true
+        "agmOpticalArcadeDesignator": true,
+        "allowTargetingWithAimForShips": true
       },
       "medium": {
         "scoutPreset": "realistic",
@@ -10816,7 +10826,8 @@
         "shipRepairRequestHelpRadius": 500.0,
         "shipCruiserRepairAssistRadius": 500.0,
         "shipCruiserRepairRequestHelpRadius": 1500.0,
-        "agmOpticalArcadeDesignator": true
+        "agmOpticalArcadeDesignator": true,
+        "allowTargetingWithAimForShips": true
       },
       "hard": {
         "scoutPreset": "hard",
@@ -12187,6 +12198,14 @@
         "airToAirMissileDetection": true
       }
     },
+    "missileEvasionMessage": {
+      "off": {
+        "missileEvasionMessage": false
+      },
+      "on": {
+        "missileEvasionMessage": true
+      }
+    },
     "rocketSpotting": {
       "off": {
         "rocketSpotting": false
@@ -12348,7 +12367,8 @@
       "microdetail_snow_a_tex_n*",
       "microdetail_generic_granules_a_tex_n*",
       "microdetail_concrete_b_tex_n*",
-      "microdetail_stone_generic_flat_a_tex_n*"
+      "microdetail_stone_generic_flat_a_tex_n*",
+      "microdetail_sand_airfield_tex_n*"
     ]
   },
   "enviCoverMaterials": {
@@ -25461,7 +25481,7 @@
   "treeDestractible": {
     "heightThreshold": 3.0,
     "radiusThreshold": 0.1,
-    "impulseThresholdMult": 1000.0,
+    "impulseThresholdMult": 1.0,
     "canopyRestitution": 0.5,
     "canopyStiffnessMult": 1.0,
     "canopyAngularLimit": 0.3,
@@ -25498,22 +25518,21 @@
       ]
     },
     "branchDestr": {
-      "enable": false,
+      "enable": true,
       "multiplyMode": false,
       "impulseMul": 1.0,
       "impulseMin": 0.0,
       "impulseMax": 10.0,
-      "branchSizeMin": 10.0,
-      "branchSizeMax": 20.0,
-      "rotateSpeedMulX": 1.33,
-      "rotateSpeedMulY": 0.5,
-      "rotateSpeedMulZ": 1.33,
+      "branchSizeMin": 5.0,
+      "branchSizeMax": 10.0,
+      "rotateSpeedMulX": 1.3,
+      "rotateSpeedMulY": 1.3,
+      "rotateSpeedMulZ": 1.3,
       "rotateAngleSpread": 1.5,
-      "horizontalSpeedMul": 1.33,
+      "horizontalSpeedMul": 1.3,
       "branchSizeSlowDown": 0.3,
       "fallingSpeedMul": 0.25,
-      "fallingSpeedRnd": 0.15,
-      "maxVisibleDistance": 100.0
+      "fallingSpeedRnd": 0.15
     },
     "branchDestrOther": {
       "impulseMul": 0.5

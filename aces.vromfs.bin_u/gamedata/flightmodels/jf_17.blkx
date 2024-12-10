@@ -6,7 +6,6 @@
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.239,
   "gearSinkRangeC": 0.17,
-  "isBwOpticSight": true,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "gyroSight": true,
@@ -2269,19 +2268,7 @@
             0.5,
             0.5
           ],
-          "cameraFromTargetingPod": true,
           "page": [
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
-              "type": "ils_on_camera"
-            },
             {
               "type": "rwr",
               "scale": 0.9,
@@ -2289,6 +2276,9 @@
               "relativCircleRadius": 4.0,
               "centralMark": "cross",
               "centerRadar": true
+            },
+            {
+              "type": "ils_on_camera"
             },
             {
               "type": "map",
@@ -2358,6 +2348,14 @@
                 7
               ],
               "font": "usa_ils"
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             }
           ]
         },
@@ -2368,7 +2366,6 @@
             1.0,
             0.5
           ],
-          "cameraFromShell": true,
           "page": [
             {
               "type": "radar",
@@ -2467,8 +2464,15 @@
             0.5,
             1.0
           ],
-          "cameraFromShell": true,
           "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
             {
               "type": "rwr",
               "scale": 0.9,
@@ -2548,14 +2552,6 @@
             },
             {
               "type": "ils_on_camera"
-            },
-            {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
             }
           ]
         },
@@ -2596,6 +2592,15 @@
       ]
     }
   },
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        1200,
+        800
+      ],
+      "noiseFactor": 0.04
+    }
+  },
   "gunnerOpticFps": {
     "Target": {
       "pos": [
@@ -2612,18 +2617,7 @@
         34.0
       ],
       "opticType": "targeting",
-      "turretNo": 0,
-      "nvIndex": 1
-    }
-  },
-  "nightVision": {
-    "sightTPodThermal": {
-      "resolution": [
-        1080,
-        720
-      ],
-      "noiseFactor": 0.05,
-      "index": 1
+      "turretNo": 0
     }
   },
   "sensors": {
@@ -2637,11 +2631,11 @@
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic1_gun"
+        "node": "optic2_gun"
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic1_gun"
+        "node": "optic2_gun"
       }
     ]
   },
@@ -4732,7 +4726,7 @@
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
         "ignitionTextureIntensity": 0.8,
-        "ignitionBrightnessNoiseStrength": 0.5,
+        "ignitionBrightnessNoiseStrength": 0.05,
         "ignitionBrightnessNoiseSpeed": 16.0
       }
     }

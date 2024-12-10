@@ -296,7 +296,8 @@ ComboBox > listBox > option:current > optiontext {
 
 ComboBox:hover > option,
 ComboBox:hover > option > optiontext,
-tr:hover > td > ComboBox > option > optiontext {
+tr:hover > td > ComboBox > option > optiontext,
+tr[active=yes] > td > ComboBox > option > optiontext {
   color:@hoverTextColor;
 }
 
@@ -330,4 +331,12 @@ ComboBox > listBox > option:disabled > optiontext
 [optContainer=yes] ComboBox {
   width:@optContainerControlWidth;
   max-height:@comboOptContainerHeight;
+}
+
+ComboBox > option[isDisabled=yes] {
+  color:@missionLockedHoverColor;
+}
+
+ComboBox.systemOption {
+  width:pw-24@sf/@pf;
 }

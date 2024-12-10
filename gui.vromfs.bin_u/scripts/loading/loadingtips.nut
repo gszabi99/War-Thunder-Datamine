@@ -14,6 +14,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
 let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -70,7 +71,7 @@ function loadTipsKeysByUnitType(unitType, isNeedOnlyNewbieTips) {
     }
     notExistInARow = 0
 
-    if (isShow && (::g_login.isLoggedIn() || tip.indexof("{{") == null)) // Not show tip with shortcuts while not profile recived
+    if (isShow && (isLoggedIn.get() || tip.indexof("{{") == null)) // Not show tip with shortcuts while not profile recived
       res.append(key)
   }
   return res
@@ -114,7 +115,7 @@ function validate() {
 }
 
 function getDefaultUnitTypeMask() {
-  if (!::g_login.isLoggedIn() || isInMenu())
+  if (!isLoggedIn.get() || isInMenu())
     return existTipsMask
 
   local res = 0

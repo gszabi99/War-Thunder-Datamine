@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import gchat_raw_command, gchat_escape_target
 from "%scripts/dagui_library.nut" import *
 
+let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -58,17 +59,17 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.switchTab(0)
 
     let roomNameBoxObj = this.scene.findObject("room_name")
-    roomNameBoxObj["max-len"] = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
+    roomNameBoxObj["max-len"] = g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
 
     this.scene.findObject("thread_title_header").setValue(loc("chat/threadTitle/limits",
       {
-        min = ::g_chat.threadTitleLenMin
-        max = ::g_chat.threadTitleLenMax
+        min = g_chat.getThreadTitleLenMin()
+        max = g_chat.getThreadTitleLenMax()
       }))
     this.scene.findObject("chat_room_name_text").setValue(loc("chat/roomName/limits",
       {
-        maxSymbols = ::g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
-        maxDigits = ::g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
+        maxSymbols = g_chat.MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME
+        maxDigits = g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
       }))
 
     this.initCategories()
@@ -124,11 +125,11 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkValues() {
     if (this.roomType == g_chat_room_type.THREAD)
-      this.isValuesValid = ::g_chat.checkThreadTitleLen(this.curTitle)
+      this.isValuesValid = g_chat.checkThreadTitleLen(this.curTitle)
     else {
       this.isValuesValid = !is_chat_message_empty(this.curName)
       let onlyDigits = regexp2(@"\D").replace("", this.curName)
-      this.isValuesValid = this.isValuesValid && onlyDigits.len() <= ::g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
+      this.isValuesValid = this.isValuesValid && onlyDigits.len() <= g_chat.MAX_ALLOWED_DIGITS_IN_ROOM_NAME
     }
 
     this.scene.findObject("btn_create_room").enable(this.isValuesValid && this.roomType.isVisible())
@@ -136,7 +137,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onChangeRoomName(obj) {
     let value = obj.getValue()
-    let validValue = ::g_chat.validateRoomName(value)
+    let validValue = g_chat.validateRoomName(value)
     if (value != validValue) {
       obj.setValue(validValue)
       return
@@ -157,7 +158,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (this.roomType == g_chat_room_type.THREAD)
-      ::g_chat.createThread(this.curTitle, this.getSelThreadCategoryName())
+      g_chat.createThread(this.curTitle, this.getSelThreadCategoryName())
     else
       this.createChatRoom()
 

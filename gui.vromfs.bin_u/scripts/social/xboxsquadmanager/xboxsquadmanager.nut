@@ -14,6 +14,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
+let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
@@ -147,7 +148,7 @@ function requestXboxPlayerAndDo(xuid, cb) {
 function onSystemInviteAccept(xuid) {
   logX($"onSquadInviteAccept: sender {xuid}")
 
-  if (!::g_login.isLoggedIn() || !isInMenu()) {
+  if (!isLoggedIn.get() || !isInMenu()) {
     postponedInvitation(xuid)
     logX($"postpone invite accept, while not in menu")
     if (isInFlight()) {

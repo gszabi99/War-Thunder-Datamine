@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -68,7 +69,7 @@ let Ticket = class (BaseItem) {
   }
 
   function isCanBuy() {
-    return base.isCanBuy() && (!this.clanTournament || ::is_in_clan())
+    return base.isCanBuy() && (!this.clanTournament || is_in_clan())
   }
 
   function isActive(...) {

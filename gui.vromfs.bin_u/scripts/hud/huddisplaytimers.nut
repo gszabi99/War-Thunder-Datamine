@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
+from "%scripts/timeBar.nut" import g_time_bar
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -291,8 +292,8 @@ let g_hud_display_timers = {
       return
 
     let timebarObj = placeObj.findObject("timer")
-    ::g_time_bar.setPeriod(timebarObj, newStateData.totalTakePlaceTime)
-    ::g_time_bar.setCurrentTime(timebarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
+    g_time_bar.setPeriod(timebarObj, newStateData.totalTakePlaceTime)
+    g_time_bar.setCurrentTime(timebarObj, newStateData.totalTakePlaceTime - newStateData.timeToTakePlace)
   }
 
 
@@ -324,8 +325,8 @@ let g_hud_display_timers = {
     timerNestObj.show(true)
 
     let timebarObj = placeObj.findObject("available_timer")
-    ::g_time_bar.setPeriod(timebarObj, newStateData.availableTime)
-    ::g_time_bar.setCurrentTime(timebarObj, newStateData.availableTime - timeToAvailable)
+    g_time_bar.setPeriod(timebarObj, newStateData.availableTime)
+    g_time_bar.setCurrentTime(timebarObj, newStateData.availableTime - timeToAvailable)
 
     resetTimeout(newStateData.availableTime,  @()::g_hud_display_timers.hideAvailableTimer(memberId))
   }
@@ -342,8 +343,8 @@ let g_hud_display_timers = {
       return
 
     let timebarObj = placeObj.findObject("timer")
-    ::g_time_bar.setPeriod(timebarObj, newStateData.totalHealingTime)
-    ::g_time_bar.setCurrentTime(timebarObj, newStateData.currentHealingTime)
+    g_time_bar.setPeriod(timebarObj, newStateData.totalHealingTime)
+    g_time_bar.setCurrentTime(timebarObj, newStateData.currentHealingTime)
   }
 
 
@@ -360,18 +361,18 @@ let g_hud_display_timers = {
 
     let timebarObj = placeObj.findObject("timer")
 
-    ::g_time_bar.setDirectionForward(timebarObj)
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.timeToLoadOne)
-    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.currentLoadTime)
+    g_time_bar.setDirectionForward(timebarObj)
+    g_time_bar.setPeriod(timebarObj, debuffs_data.timeToLoadOne)
+    g_time_bar.setCurrentTime(timebarObj, debuffs_data.currentLoadTime)
     let { rearmState = null } = debuffs_data
     if (rearmState == null)
       return
 
     if (rearmState == "pause") {
-      ::g_time_bar.pauseTimer(timebarObj)
+      g_time_bar.pauseTimer(timebarObj)
     }
     else if (rearmState == "discharge") {
-      ::g_time_bar.setDirectionBackward(timebarObj)
+      g_time_bar.setDirectionBackward(timebarObj)
     }
 
   }
@@ -388,14 +389,14 @@ let g_hud_display_timers = {
     let timebarObj = placeObj.findObject("timer")
 
     if (!showTimer) {
-      ::g_time_bar.setPeriod(timebarObj, 0)
-      ::g_time_bar.setCurrentTime(timebarObj, 0)
+      g_time_bar.setPeriod(timebarObj, 0)
+      g_time_bar.setCurrentTime(timebarObj, 0)
       return
     }
 
-    ::g_time_bar.setDirectionBackward(timebarObj)
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data?.periodTime ?? 0, true)
-    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data?.currentLoadTime ?? 0)
+    g_time_bar.setDirectionBackward(timebarObj)
+    g_time_bar.setPeriod(timebarObj, debuffs_data?.periodTime ?? 0, true)
+    g_time_bar.setCurrentTime(timebarObj, debuffs_data?.currentLoadTime ?? 0)
   }
 
 
@@ -434,11 +435,11 @@ let g_hud_display_timers = {
 
     if (state == "prepareRepair") {
       iconObj.wink = "fast"
-      ::g_time_bar.setDirectionBackward(timebarObj)
+      g_time_bar.setDirectionBackward(timebarObj)
     }
     else if (state == "repairing" || isAutoRepairing) {
       iconObj.wink = "no"
-      ::g_time_bar.setDirectionForward(timebarObj)
+      g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec() - (totalTime - time) * 1000
       this.repairUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
@@ -451,8 +452,8 @@ let g_hud_display_timers = {
       })
     }
 
-    ::g_time_bar.setPeriod(timebarObj, totalTime)
-    ::g_time_bar.setCurrentTime(timebarObj, totalTime - time)
+    g_time_bar.setPeriod(timebarObj, totalTime)
+    g_time_bar.setCurrentTime(timebarObj, totalTime - time)
   }
 
   function onMoveCooldown(debuffs_data) {
@@ -466,14 +467,14 @@ let g_hud_display_timers = {
     let timebarObj = placeObj.findObject("timer")
 
     if (!showTimer) {
-      ::g_time_bar.setPeriod(timebarObj, 0)
-      ::g_time_bar.setCurrentTime(timebarObj, 0)
+      g_time_bar.setPeriod(timebarObj, 0)
+      g_time_bar.setCurrentTime(timebarObj, 0)
       return
     }
 
-    ::g_time_bar.setDirectionBackward(timebarObj)
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)
-    ::g_time_bar.setCurrentTime(timebarObj, 0)
+    g_time_bar.setDirectionBackward(timebarObj)
+    g_time_bar.setPeriod(timebarObj, debuffs_data.time)
+    g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
   function onBattery(debuffs_data) {
@@ -488,8 +489,8 @@ let g_hud_display_timers = {
     timeTextObj.setValue(debuffs_data.charge.tointeger().tostring());
     let timebarObj = placeObj.findObject("timer")
 
-    ::g_time_bar.setPeriod(timebarObj, 0)
-    ::g_time_bar.setCurrentTime(timebarObj, 0)
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
   function onBuilding(debuffs_data) {
@@ -504,15 +505,15 @@ let g_hud_display_timers = {
     timeTextObj.setValue(timer.tointeger().tostring());
     let timebarObj = placeObj.findObject("timer")
 
-    ::g_time_bar.setPeriod(timebarObj, totalTime)
+    g_time_bar.setPeriod(timebarObj, totalTime)
     if (backward)
-      ::g_time_bar.setDirectionBackward(timebarObj)
+      g_time_bar.setDirectionBackward(timebarObj)
     else
-      ::g_time_bar.setDirectionForward(timebarObj)
-    ::g_time_bar.setCurrentTime(timebarObj, backward ? timer : totalTime - timer)
+      g_time_bar.setDirectionForward(timebarObj)
+    g_time_bar.setCurrentTime(timebarObj, backward ? timer : totalTime - timer)
 
     if (pause)
-      ::g_time_bar.pauseTimer(timebarObj)
+      g_time_bar.pauseTimer(timebarObj)
   }
 
   function onInextinguishableFire(debuffs_data) {
@@ -540,9 +541,9 @@ let g_hud_display_timers = {
       })
     }
 
-    ::g_time_bar.setDirectionBackward(timebarObj)
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
-    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.time)
+    g_time_bar.setDirectionBackward(timebarObj)
+    g_time_bar.setPeriod(timebarObj, debuffs_data.totalTime)
+    g_time_bar.setCurrentTime(timebarObj, debuffs_data.totalTime - debuffs_data.time)
   }
 
   function hideAnimTimer(objId) {
@@ -564,10 +565,10 @@ let g_hud_display_timers = {
     timeTextObj.show(false)
 
     if (debuffs_data.time > 0)
-      ::g_time_bar.setDirectionBackward(timebarObj)
+      g_time_bar.setDirectionBackward(timebarObj)
 
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)
-    ::g_time_bar.setCurrentTime(timebarObj, 0)
+    g_time_bar.setPeriod(timebarObj, debuffs_data.time)
+    g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
   function onRepairBreaches(debuffs_data) {
@@ -596,7 +597,7 @@ let g_hud_display_timers = {
 
     if (debuffs_data.state == "repairing" || debuffs_data.state == "unwatering") {
       iconObj.wink = "no"
-      ::g_time_bar.setDirectionForward(timebarObj)
+      g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
       this.repairBreachesUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
@@ -609,8 +610,8 @@ let g_hud_display_timers = {
       })
     }
 
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)
-    ::g_time_bar.setCurrentTime(timebarObj, 0)
+    g_time_bar.setPeriod(timebarObj, debuffs_data.time)
+    g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
   function onCancelRepairBreaches(debuffs_data) {
@@ -640,14 +641,14 @@ let g_hud_display_timers = {
     let timebarObj = placeObj.findObject("timer")
 
     if (!showTimer) {
-      ::g_time_bar.setPeriod(timebarObj, 0)
-      ::g_time_bar.setCurrentTime(timebarObj, 0)
+      g_time_bar.setPeriod(timebarObj, 0)
+      g_time_bar.setCurrentTime(timebarObj, 0)
       return
     }
 
-    ::g_time_bar.setDirectionBackward(timebarObj)
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data?.periodTime ?? 0, true)
-    ::g_time_bar.setCurrentTime(timebarObj, debuffs_data?.timer ?? 0)
+    g_time_bar.setDirectionBackward(timebarObj)
+    g_time_bar.setPeriod(timebarObj, debuffs_data?.periodTime ?? 0, true)
+    g_time_bar.setCurrentTime(timebarObj, debuffs_data?.timer ?? 0)
   }
 
   function onExtinguish(debuffs_data) {
@@ -674,7 +675,7 @@ let g_hud_display_timers = {
 
     if (debuffs_data.state == "extinguish") {
       iconObj.wink = "no"
-      ::g_time_bar.setDirectionForward(timebarObj)
+      g_time_bar.setDirectionForward(timebarObj)
       let createTime = get_time_msec()
       this.extinguishUpdater = SecondsUpdater(timeTextObj, function(obj, _p) {
         let curTime = get_time_msec()
@@ -687,8 +688,8 @@ let g_hud_display_timers = {
       })
     }
 
-    ::g_time_bar.setPeriod(timebarObj, debuffs_data.time)
-    ::g_time_bar.setCurrentTime(timebarObj, 0)
+    g_time_bar.setPeriod(timebarObj, debuffs_data.time)
+    g_time_bar.setCurrentTime(timebarObj, 0)
   }
 
   function onCancelExtinguish(debuffs_data) {
@@ -745,8 +746,8 @@ let g_hud_display_timers = {
 
     this.lastZoneCaptureUpdate = get_time_msec()
     let timebarObj = placeObj.findObject("timer")
-    ::g_time_bar.setPeriod(timebarObj, 0)
-    ::g_time_bar.setValue(timebarObj, fabs(eventData.captureProgress))
+    g_time_bar.setPeriod(timebarObj, 0)
+    g_time_bar.setValue(timebarObj, fabs(eventData.captureProgress))
 
     let color = this.isCapturingZoneMy(eventData) ? "hudColorBlue" : "hudColorRed"
     timebarObj["background-color"] = this.guiScene.getConstantValue(color)

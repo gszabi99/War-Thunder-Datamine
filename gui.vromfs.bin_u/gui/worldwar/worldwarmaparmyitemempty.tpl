@@ -22,7 +22,7 @@
         id:t='entrenchIcon'
         pos:t='50%pw-50%w, 50%ph-50%h'
         position:t='absolute'
-        background-image:t='#ui/gameuiskin#army_defense'
+        background-image:t='ui/gameuiskin#ww_army_entrenched.svg'
         background-color:t='@armyEntrencheColor'
       }
       background {
@@ -32,12 +32,7 @@
         position:t='absolute'
       }
       armyUnitType {
-        width:t='pw'
-        top:t='50%ph-50%h'
-        position:t='absolute'
         id:t='armyUnitType'
-        text:t=''
-        text-align:t='center'
       }
     }
   }

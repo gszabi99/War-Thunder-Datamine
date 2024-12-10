@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import fetch_first_builder
 from "%scripts/dagui_library.nut" import *
+from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_list
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -20,7 +21,7 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
   USEROPT_LIMITED_AMMO, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_DYN_ALLIES,
   USEROPT_DYN_ENEMIES
 } = require("%scripts/options/optionsExtNames.nut")
-let { create_options_container, create_option_list } = require("%scripts/options/optionsExt.nut")
+let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
@@ -266,7 +267,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
         descrWeap.items[i] = { text = descrWeap.items[i], enabled = (i == 0) }
       descrWeap.value = 0
     }
-    let txt = ::create_option_combobox(descrWeap.id, descrWeap.items, descrWeap.value, "onMissionChange", false)
+    let txt = create_option_combobox(descrWeap.id, descrWeap.items, descrWeap.value, "onMissionChange", false)
     let dObj = this.scene.findObject(descrWeap.id)
     if (checkObj(dObj))
       this.guiScene.replaceContentFromText(dObj, txt, txt.len(), this)

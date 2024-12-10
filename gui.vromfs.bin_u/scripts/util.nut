@@ -1,32 +1,24 @@
-from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, is_online_available, update_entitlements, is_tanks_allowed, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
+from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, clan_request_sync_profile, get_cyber_cafe_level, is_online_available, update_entitlements, wp_shop_get_aircraft_xp_rate, direct_launch, chard_request_profile, get_player_army_for_hud, is_myself_grand_moderator, exit_game, wp_shop_get_aircraft_wp_rate, clan_get_my_clan_id, sync_handler_simulate_request, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe } = require("%appGlobals/ranks_common_shared.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
-let { fabs } = require("math")
-let { rnd } = require("dagor.random")
-let { object_to_json_string } = require("json")
 //ATTENTION! this file is coupling things to much! Split it!
 //shouldDecreaseSize, allowedSizeIncrease = 100
-let { is_mplayer_host, is_mplayer_peer, destroy_session } = require("multiplayer")
+let { is_mplayer_peer, destroy_session } = require("multiplayer")
 let penalty = require("penalty")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { get_game_mode, get_game_type } = require("mission")
+let { get_game_mode } = require("mission")
 let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
-let { stripTags, cutPrefix } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { OPTIONS_MODE_GAMEPLAY, OPTIONS_MODE_CAMPAIGN, OPTIONS_MODE_TRAINING,
   OPTIONS_MODE_SINGLE_MISSION, OPTIONS_MODE_DYNAMIC, OPTIONS_MODE_MP_DOMINATION,
@@ -39,21 +31,15 @@ let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { measureType } = require("%scripts/measureType.nut")
+let { is_mode_with_teams, get_mplayer_color } = require("%scripts/utils_sa.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
-::fakeBullets_prefix <- "fake"
 
 ::current_wait_screen <- null
 
 local gui_start_logout_scheduled = false
 
 dagui_propid_add_name_id("tooltipId")
-
-::global_max_players_versus <- 64
-
-::locOrStrip <- function locOrStrip(text) {
-  return (text.len() && text.slice(0, 1) != "#") ? stripTags(text) : text
-}
 
 local current_wait_screen_txt = ""
 ::show_wait_screen <- function show_wait_screen(txt) {
@@ -105,8 +91,6 @@ eventbus_subscribe("on_cannot_create_session", function on_cannot_create_session
 })
 
 
-::in_on_lost_psn <- false
-
 // left for future ps3/ps4 realisation
 function on_lost_psn() {
   log("on_lost_psn")
@@ -131,10 +115,8 @@ function on_lost_psn() {
     interrupt_multiplayer(true)
   }
   else {
-    ::in_on_lost_psn = true
     add_msg_box("lost_live", loc("yn1/disconnection/psn"), [["ok",
         function() {
-          ::in_on_lost_psn = false
           ::destroy_session_scripted("after 'on lost psn' message")
           startLogout()
         }
@@ -260,101 +242,6 @@ local last_update_entitlements_time = get_time_msec()
   return -1
 }
 
-::getObjIdByPrefix <- function getObjIdByPrefix(obj, prefix, idProp = "id") {
-  if (!obj)
-    return null
-  let id = obj?[idProp]
-  if (!id)
-    return null
-
-  return cutPrefix(id, prefix)
-}
-
-::array_to_blk <- function array_to_blk(arr, id) {
-  let blk = DataBlock()
-  if (arr)
-    foreach (v in arr)
-      blk[id] <- v
-  return blk
-}
-
-function createNewPairKeyValueToBlk(blk, index, value) {
-  /*Known feature - cannot create a pair, if index is used for other type
-   i.e. ["string", 1, 2, 3, "string"] in this case will be ("string", "string") result
-   on other case [1, 2, 3, "string"] will be (1, 2, 3) result. */
-
-  blk[index] <- value
-}
-
-function assignValueToBlk(blk, index, value) {
-  blk[index] = value
-}
-
-::build_blk_from_container <- function build_blk_from_container(container, arrayKey = "array") {
-  let blk = DataBlock()
-  let isContainerArray = u.isArray(container)
-
-  local addValue = assignValueToBlk
-  if (isContainerArray)
-    addValue = createNewPairKeyValueToBlk
-
-  foreach (key, value in container) {
-    local newValue = value
-    let index = isContainerArray ? arrayKey : key.tostring()
-    if (u.isTable(value) || u.isArray(value))
-      newValue = ::build_blk_from_container(value, arrayKey)
-
-    addValue(blk, index, newValue)
-  }
-
-  return blk
-}
-
-
-::buildTableRow <- function buildTableRow(rowName, rowData, even = null, trParams = "", _tablePad = "@tblPad") {
-  //tablePad not using, but passed through many calls of this function
-  let view = {
-    row_id = rowName
-    even = even
-    trParams = trParams
-    cell = []
-  }
-
-  foreach (idx, cell in rowData) {
-    let haveParams = type(cell) == "table"
-    let config = (haveParams ? cell : {}).__merge({
-      params = haveParams
-      display = (cell?.show ?? true) ? "show" : "hide"
-      id = getTblValue("id", cell,$"td_{idx}")
-      rawParam = getTblValue("rawParam", cell, "")
-      needText = getTblValue("needText", cell, true)
-      textType = getTblValue("textType", cell, "activeText")
-      text = haveParams ? getTblValue("text", cell, "") : cell.tostring()
-      textRawParam = getTblValue("textRawParam", cell, "")
-      imageType = getTblValue("imageType", cell, "cardImg")
-      fontIconType = getTblValue("fontIconType", cell, "fontIcon20")
-    })
-
-    view.cell.append(config)
-  }
-
-  return handyman.renderCached("%gui/commonParts/tableRow.tpl", view)
-}
-
-::buildTableRowNoPad <- function buildTableRowNoPad(rowName, rowData, even = null, trParams = "") {
-  return ::buildTableRow(rowName, rowData, even, trParams, "0")
-}
-
-::save_to_json <- function save_to_json(obj) {
-  assert(isInArray(type(obj), [ "table", "array" ]),
-    $"Data type not suitable for save_to_json: {type(obj)}")
-
-  return object_to_json_string(obj, false)
-}
-
-::roman_numerals <- ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
-                         "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]
-
 ::get_number_of_units_by_years <- function get_number_of_units_by_years(country, years) {
   let result = {}
   foreach (year in years) {
@@ -385,87 +272,6 @@ function assignValueToBlk(blk, index, value) {
           result[$"beforeyear{year}"]++
   }
   return result;
-}
-
-::generatePaginator <- function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = null, show_last_page = false, hasSimpleNavButtons = false) {
-  if (!checkObj(nest_obj))
-    return
-
-  let guiScene = nest_obj.getScene()
-  let paginatorTpl = "%gui/paginator/paginator.tpl"
-  local buttonsMid = ""
-  let numButtonText = "button { to_page:t='%s'; text:t='%s'; %s on_click:t='goToPage'; underline{}}"
-  let numPageText = "activeText{ text:t='%s'; %s}"
-  local paginatorObj = nest_obj.findObject("paginator_container")
-
-  if (!checkObj(paginatorObj)) {
-    let paginatorMarkUpData = handyman.renderCached(paginatorTpl, { hasSimpleNavButtons = hasSimpleNavButtons })
-    paginatorObj = guiScene.createElement(nest_obj, "paginator", handler)
-    guiScene.replaceContentFromText(paginatorObj, paginatorMarkUpData, paginatorMarkUpData.len(), handler)
-  }
-
-  //if by some mistake cur_page will be a float, - here can be a freeze on mac,
-  //because of (cur_page - 1 <= i) can become wrong result
-  cur_page = cur_page.tointeger()
-  //number of last wisible page
-  local lastShowPage = show_last_page ? last_page : min(max(cur_page + 1, 2), last_page)
-
-  let isSinglePage = last_page < 1
-  paginatorObj.show(! isSinglePage)
-  paginatorObj.enable(! isSinglePage)
-  if (isSinglePage)
-    return
-
-  if (my_page != null && my_page > lastShowPage && my_page <= last_page)
-    lastShowPage = my_page
-
-  for (local i = 0; i <= lastShowPage; i++) {
-    if (i == cur_page)
-      buttonsMid = "".concat(buttonsMid, format(numPageText, (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : "")))
-    else if ((cur_page - 1 <= i && i <= cur_page + 1)       //around current page
-             || (i == my_page)                              //equal my page
-             || (i < 3)                                     //always show first 2 entrys
-             || (show_last_page && i == lastShowPage))      //show last entry if show_last_page
-      buttonsMid = "".concat(buttonsMid, format(numButtonText, i.tostring(), (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : "")))
-    else {
-      buttonsMid = "".concat(buttonsMid, format(numPageText, "...", ""))
-      if (my_page != null && i < my_page && (my_page < cur_page || i > cur_page))
-        i = my_page - 1
-      else if (i < cur_page)
-        i = cur_page - 2
-      else if (show_last_page)
-        i = lastShowPage - 1
-    }
-  }
-
-  guiScene.replaceContentFromText(paginatorObj.findObject("paginator_page_holder"), buttonsMid, buttonsMid.len(), handler)
-  let nextObj = paginatorObj.findObject("pag_next_page")
-  nextObj.show(last_page > cur_page)
-  nextObj.to_page = min(last_page, cur_page + 1).tostring()
-  let prevObj = paginatorObj.findObject("pag_prew_page")
-  prevObj.show(cur_page > 0)
-  prevObj.to_page = max(0, cur_page - 1).tostring()
-}
-
-::hidePaginator <- function hidePaginator(nestObj) {
-  let paginatorObj = nestObj.findObject("paginator_container")
-  if (!paginatorObj)
-    return
-  paginatorObj.show(false)
-  paginatorObj.enable(false)
-}
-
-::paginator_set_unseen <- function paginator_set_unseen(nestObj, prevUnseen, nextUnseen) {
-  let paginatorObj = nestObj.findObject("paginator_container")
-  if (!checkObj(paginatorObj))
-    return
-
-  let prevObj = paginatorObj.findObject("pag_prew_page_unseen")
-  if (prevObj)
-    prevObj.setValue(prevUnseen || "")
-  let nextObj = paginatorObj.findObject("pag_next_page_unseen")
-  if (nextObj)
-    nextObj.setValue(nextUnseen || "")
 }
 
 ::on_have_to_start_chard_op <- function on_have_to_start_chard_op(message) {
@@ -501,59 +307,12 @@ function assignValueToBlk(blk, index, value) {
   exit_game();
 }
 
-::get_bit_value_by_array <- function get_bit_value_by_array(selValues, values) {
-  local res = 0
-  foreach (i, val in values)
-    if (isInArray(val, selValues))
-      res = res | (1 << i)
-  return res
-}
-
-::get_array_by_bit_value <- function get_array_by_bit_value(bitValue, values) {
-  let res = []
-  foreach (i, val in values)
-    if (bitValue & (1 << i))
-      res.append(val)
-  return res
-}
-
 ::call_for_handler <- function call_for_handler(handler, func) {
   if (!func)
     return
   if (handler)
     return func.call(handler)
   return func()
-}
-
-::check_tanks_available <- function check_tanks_available(silent = false) {
-  if (is_platform_pc && "is_tanks_allowed" in getroottable() && !is_tanks_allowed()) {
-    if (!silent)
-      showInfoMsgBox(loc("mainmenu/graphics_card_does_not_support_tank"), "graphics_card_does_not_support_tanks")
-    return false
-  }
-  return true
-}
-
-function findNearest(val, arrayOfVal) {
-  if (arrayOfVal.len() == 0)
-    return -1;
-
-  local bestIdx = 0;
-  local bestDist = fabs(arrayOfVal[0] - val);
-  for (local i = 1; i < arrayOfVal.len(); i++) {
-    let dist = fabs(arrayOfVal[i] - val);
-    if (dist < bestDist) {
-      bestDist = dist;
-      bestIdx = i;
-    }
-  }
-
-  return bestIdx;
-}
-::find_nearest <- findNearest
-
-::is_myself_anyof_moderators <- function is_myself_anyof_moderators() {
-  return is_myself_moderator() || is_myself_grand_moderator() || is_myself_chat_moderator()
 }
 
 ::get_navigation_images_text <- function get_navigation_images_text(cur, total) {
@@ -604,38 +363,9 @@ local server_message_end_time = 0
   return text != ""
 }
 
-const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-::gen_rnd_password <- function gen_rnd_password(charsAmount) {
-  local res = ""
-  let total = PASSWORD_SYMBOLS.len()
-  for (local i = 0; i < charsAmount; i++)
-    res = "".concat(res, PASSWORD_SYMBOLS[rnd() % total].tochar())
-  return res
-}
-
-::is_mode_with_teams <- function is_mode_with_teams(gt = null) {
-  if (gt == null)
-    gt = get_game_type()
-  return !(gt & (GT_FFA_DEATHMATCH | GT_FFA))
-}
-::cross_call_api.is_mode_with_teams <- ::is_mode_with_teams
+::cross_call_api.is_mode_with_teams <- is_mode_with_teams
 
 
-::is_team_friendly <- function is_team_friendly(teamId) {
-  return ::is_mode_with_teams() &&
-    teamId == get_player_army_for_hud()
-}
-
-::get_team_color <- function get_team_color(teamId) {
-  return ::is_team_friendly(teamId) ? "hudColorBlue" : "hudColorRed"
-}
-
-::get_mplayer_color <- function get_mplayer_color(player) {
-  return !player ? "" :
-    player.isLocal ? "hudColorHero" :
-    player.isInHeroSquad ? "hudColorSquad" :
-    ::get_team_color(player.team)
-}
 
 ::build_mplayer_name <- function build_mplayer_name(player, colored = true, withClanTag = true, withUnit = false, unitNameLoc = "") {
   if (!player)
@@ -657,10 +387,8 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
                                               clanTag,
                                               unitName)
 
-  return colored ? colorize(::get_mplayer_color(player), name) : name
+  return colored ? colorize(get_mplayer_color(player), name) : name
 }
-
-::is_multiplayer <- @() is_mplayer_host() || is_mplayer_peer()
 
 ::destroy_session_scripted <- function destroy_session_scripted(sourceInfo) {
   let needEvent = is_mplayer_peer()
@@ -673,5 +401,3 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 ::show_not_available_msg_box <- function show_not_available_msg_box() {
   showInfoMsgBox(loc("msgbox/notAvailbleYet"), "not_available", true)
 }
-
-return { findNearest }
