@@ -100,6 +100,7 @@ let { setAllowMoveCenter, isAllowedMoveCenter, resetCenterOffset, setForcedHudTy
   setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet  } = require("guiTacticalMap")
 let { hasSightStabilization } = require("vehicleModel")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
+let { isGroundAndAirMission } = require("%scripts/missions/missionType.nut")
 
 function getCrewSlotReadyMask() {
   if (!g_mis_loading_state.isCrewsListReceived())
@@ -326,6 +327,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     showObjById("screen_button_back", useTouchscreen && !this.isRespawn, this.scene)
     showObjById("gamercard_bottom", this.isRespawn, this.scene)
+    showObjById("btn_set_hud_type", isGroundAndAirMission(), this.scene)
 
     if (this.gameType & GT_RACE) {
       let finished = race_finished_by_local_player()

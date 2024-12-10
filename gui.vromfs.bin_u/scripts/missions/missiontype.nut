@@ -306,4 +306,9 @@ function getMissionGroup(mission) {
 
 let isShipBattle = @() g_mission_type.getCurrent()?.isShipMission
 
-return { g_mission_type, getMissionGroup, getMissionGroupName, isShipBattle }
+function isGroundAndAirMission() {
+  let objectives = g_mission_type.getCurrentObjectives()
+  return !!(objectives & MISSION_OBJECTIVE.KILLS_AIR) && !!(objectives & MISSION_OBJECTIVE.KILLS_GROUND)
+}
+
+return { g_mission_type, getMissionGroup, getMissionGroupName, isShipBattle, isGroundAndAirMission }
